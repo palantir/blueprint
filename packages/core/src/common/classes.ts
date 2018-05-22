@@ -4,11 +4,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
+import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || "pt";
+const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
@@ -40,20 +40,23 @@ export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
 export const INTENT_WARNING = intentClass(Intent.WARNING);
 export const INTENT_DANGER = intentClass(Intent.DANGER);
 
-// text utilities
-export const TEXT_MUTED = `${NS}-text-muted`;
-export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
-export const UI_TEXT = `${NS}-ui-text`;
-export const UI_TEXT_LARGE = `${NS}-ui-text-large`;
-export const RUNNING_TEXT = `${NS}-running-text`;
-export const RUNNING_TEXT_SMALL = `${NS}-running-text-small`;
-export const MONOSPACE_TEXT = `${NS}-monospace-text`;
-
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 
-// lists
+// text utilities
+export const UI_TEXT = `${NS}-ui-text`;
+export const RUNNING_TEXT = `${NS}-running-text`;
+export const MONOSPACE_TEXT = `${NS}-monospace-text`;
+export const TEXT_LARGE = `${NS}-text-large`;
+export const TEXT_MUTED = `${NS}-text-muted`;
+export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
+
+// textual elements
+export const BLOCKQUOTE = `${NS}-blockquote`;
+export const CODE = `${NS}-code`;
+export const CODE_BLOCK = `${NS}-code-block`;
+export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
-export const LIST_UNSTYLED = `${LIST}-unstyled`;
+export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 
 // components
 export const ALERT = `${NS}-alert`;
@@ -73,7 +76,6 @@ export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
-export const CALLOUT_TITLE = `${CALLOUT}-title`;
 
 export const CARD = `${NS}-card`;
 
@@ -94,7 +96,6 @@ export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
-export const DIALOG_HEADER_TITLE = `${DIALOG}-header-title`;
 
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
@@ -127,7 +128,6 @@ export const MODIFIER_KEY = `${NS}-modifier-key`;
 
 export const HOTKEY = `${NS}-hotkey`;
 export const HOTKEY_LABEL = `${HOTKEY}-label`;
-export const HOTKEY_GROUP = `${HOTKEY}-group`;
 export const HOTKEY_COLUMN = `${HOTKEY}-column`;
 export const HOTKEY_DIALOG = `${HOTKEY}-dialog`;
 
@@ -149,10 +149,6 @@ export const NAVBAR_HEADING = `${NAVBAR}-heading`;
 export const NAVBAR_DIVIDER = `${NAVBAR}-divider`;
 
 export const NON_IDEAL_STATE = `${NS}-non-ideal-state`;
-export const NON_IDEAL_STATE_ACTION = `${NON_IDEAL_STATE}-action`;
-export const NON_IDEAL_STATE_DESCRIPTION = `${NON_IDEAL_STATE}-description`;
-export const NON_IDEAL_STATE_ICON = `${NON_IDEAL_STATE}-icon`;
-export const NON_IDEAL_STATE_TITLE = `${NON_IDEAL_STATE}-title`;
 export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
@@ -201,8 +197,6 @@ export const SPINNER = `${NS}-spinner`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
-export const SPINNER_SVG_CONTAINER = `${SPINNER}-svg-container`;
-export const SVG_SPINNER = `${NS}-svg-spinner`;
 
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
@@ -272,7 +266,7 @@ export function elevationClass(elevation: Elevation) {
     return `${NS}-elevation-${elevation}`;
 }
 
-/** Return CSS class for icon, whether or not 'pt-icon-' prefix is included */
+/** Returns CSS class for icon name. */
 export function iconClass(iconName?: string) {
     if (iconName == null) {
         return undefined;
@@ -281,7 +275,7 @@ export function iconClass(iconName?: string) {
 }
 
 /** Return CSS class for intent. */
-export function intentClass(intent = Intent.NONE) {
+export function intentClass(intent?: Intent) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;
     }

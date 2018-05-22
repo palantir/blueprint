@@ -5,33 +5,39 @@
 
 import * as React from "react";
 
-import { Classes, Intent, NumericInput, Position, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Classes, Intent, Label, NumericInput, Position, Switch } from "@blueprintjs/core";
+import {
+    Example,
+    handleBooleanChange,
+    handleNumberChange,
+    handleStringChange,
+    IExampleProps,
+} from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
 export interface INumericInputBasicExampleState {
-    buttonPositionIndex?: number;
+    buttonPositionIndex: number;
 
-    minValueIndex?: number;
-    maxValueIndex?: number;
+    minValueIndex: number;
+    maxValueIndex: number;
 
-    stepSizeIndex?: number;
-    majorStepSizeIndex?: number;
-    minorStepSizeIndex?: number;
+    stepSizeIndex: number;
+    majorStepSizeIndex: number;
+    minorStepSizeIndex: number;
 
-    intent?: Intent;
+    intent: Intent;
 
-    numericCharsOnly?: boolean;
-    selectAllOnFocus?: boolean;
-    selectAllOnIncrement?: boolean;
-    showDisabled?: boolean;
-    showFullWidth?: boolean;
-    showLargeSize?: boolean;
-    showLeftIcon?: boolean;
-    showReadOnly?: boolean;
+    numericCharsOnly: boolean;
+    selectAllOnFocus: boolean;
+    selectAllOnIncrement: boolean;
+    showDisabled: boolean;
+    showFullWidth: boolean;
+    showLargeSize: boolean;
+    showLeftIcon: boolean;
+    showReadOnly: boolean;
 
-    value?: string;
+    value: string;
 }
 
 interface ISelectOption {
@@ -59,7 +65,7 @@ const BUTTON_POSITIONS: ISelectOption[] = [
     { label: "Right", value: Position.RIGHT },
 ];
 
-export class NumericInputBasicExample extends BaseExample<INumericInputBasicExampleState> {
+export class NumericInputBasicExample extends React.PureComponent<IExampleProps, INumericInputBasicExampleState> {
     public state: INumericInputBasicExampleState = {
         buttonPositionIndex: 2,
         intent: Intent.NONE,
@@ -101,6 +107,30 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         this.setState({ selectAllOnIncrement });
     });
 
+    public render() {
+        return (
+            <Example options={this.renderOptions()} {...this.props}>
+                <NumericInput
+                    allowNumericCharactersOnly={this.state.numericCharsOnly}
+                    buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
+                    fill={this.state.showFullWidth}
+                    intent={this.state.intent}
+                    large={this.state.showLargeSize}
+                    min={MIN_VALUES[this.state.minValueIndex].value}
+                    max={MAX_VALUES[this.state.maxValueIndex].value}
+                    disabled={this.state.showDisabled}
+                    readOnly={this.state.showReadOnly}
+                    leftIcon={this.state.showLeftIcon ? "dollar" : null}
+                    placeholder="Enter a number..."
+                    selectAllOnFocus={this.state.selectAllOnFocus}
+                    selectAllOnIncrement={this.state.selectAllOnIncrement}
+                    onValueChange={this.handleValueChange}
+                    value={this.state.value}
+                />
+            </Example>
+        );
+    }
+
     protected renderOptions() {
         const {
             buttonPositionIndex,
@@ -117,60 +147,32 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
             showLeftIcon,
         } = this.state;
 
-        return [
-            [
-                <label className={Classes.LABEL} key="modifierslabel">
-                    Modifiers
-                </label>,
-                this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly),
-                this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus),
-                this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement),
-                this.renderSwitch("Disabled", showDisabled, this.toggleDisabled),
-                this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly),
-                this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon),
-                this.renderSwitch("Fill container", showFullWidth, this.toggleFullWidth),
-                this.renderSwitch("Large", showLargeSize, this.toggleLargeSize),
-            ],
-            [
-                this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange),
-                this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange),
-            ],
-            [
-                this.renderSelectMenu(
+        return (
+            <>
+                <Label text="Modifiers" />
+                {this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly)}
+                {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
+                {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
+                {this.renderSwitch("Disabled", showDisabled, this.toggleDisabled)}
+                {this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly)}
+                {this.renderSwitch("Left icon", showLeftIcon, this.toggleLeftIcon)}
+                {this.renderSwitch("Fill container", showFullWidth, this.toggleFullWidth)}
+                {this.renderSwitch("Large", showLargeSize, this.toggleLargeSize)}
+                {this.renderSelectMenu("Minimum value", minValueIndex, MIN_VALUES, this.handleMinValueChange)}
+                {this.renderSelectMenu("Maximum value", maxValueIndex, MAX_VALUES, this.handleMaxValueChange)}
+                {this.renderSelectMenu(
                     "Button position",
                     buttonPositionIndex,
                     BUTTON_POSITIONS,
                     this.handleButtonPositionChange,
-                ),
-                <IntentSelect intent={intent} key="intent" onChange={this.handleIntentChange} />,
-            ],
-        ];
-    }
-
-    protected renderExample() {
-        return (
-            <NumericInput
-                allowNumericCharactersOnly={this.state.numericCharsOnly}
-                buttonPosition={BUTTON_POSITIONS[this.state.buttonPositionIndex].value}
-                fill={this.state.showFullWidth}
-                intent={this.state.intent}
-                large={this.state.showLargeSize}
-                min={MIN_VALUES[this.state.minValueIndex].value}
-                max={MAX_VALUES[this.state.maxValueIndex].value}
-                disabled={this.state.showDisabled}
-                readOnly={this.state.showReadOnly}
-                leftIcon={this.state.showLeftIcon ? "dollar" : null}
-                placeholder="Enter a number..."
-                selectAllOnFocus={this.state.selectAllOnFocus}
-                selectAllOnIncrement={this.state.selectAllOnIncrement}
-                onValueChange={this.handleValueChange}
-                value={this.state.value}
-            />
+                )}
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
+            </>
         );
     }
 
     private renderSwitch(label: string, checked: boolean, onChange: React.FormEventHandler<HTMLElement>) {
-        return <Switch checked={checked} label={label} key={label} onChange={onChange} />;
+        return <Switch checked={checked} label={label} onChange={onChange} />;
     }
 
     private renderSelectMenu(
@@ -180,14 +182,13 @@ export class NumericInputBasicExample extends BaseExample<INumericInputBasicExam
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (
-            <label className={Classes.LABEL} key={label}>
-                {label}
+            <Label text={label}>
                 <div className={Classes.SELECT}>
                     <select value={selectedValue} onChange={onChange}>
                         {this.renderSelectMenuOptions(options)}
                     </select>
                 </div>
-            </label>
+            </Label>
         );
     }
 

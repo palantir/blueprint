@@ -6,46 +6,36 @@
 
 import * as React from "react";
 
-import { Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { H5, Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IProgressExampleState {
-    className?: string;
-    hasValue?: boolean;
+    hasValue: boolean;
     intent?: Intent;
-    value?: number;
+    value: number;
 }
 
-export class ProgressExample extends BaseExample<IProgressExampleState> {
+export class ProgressExample extends React.PureComponent<IExampleProps, IProgressExampleState> {
     public state: IProgressExampleState = {
         hasValue: false,
         value: 0.7,
     };
 
-    protected className = "docs-progress-example";
-
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
     private handleModifierChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 
-    protected renderExample() {
+    public render() {
         const { hasValue, intent, value } = this.state;
-        return <ProgressBar intent={intent} value={hasValue ? value : null} />;
-    }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.hasValue}
-                    key="has-value"
-                    label="Known Value"
-                    onChange={this.handleIndeterminateChange}
-                />,
+        const options = (
+            <>
+                <H5>Props</H5>
+                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
+                <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
-                    disabled={!this.state.hasValue}
-                    key="value"
+                    disabled={!hasValue}
                     labelStepSize={1}
                     min={0}
                     max={1}
@@ -53,11 +43,16 @@ export class ProgressExample extends BaseExample<IProgressExampleState> {
                     labelRenderer={this.renderLabel}
                     stepSize={0.1}
                     showTrackFill={false}
-                    value={this.state.value}
-                />,
-            ],
-            [<IntentSelect intent={this.state.intent} key="intent" onChange={this.handleModifierChange} />],
-        ];
+                    value={value}
+                />
+            </>
+        );
+
+        return (
+            <Example options={options} {...this.props}>
+                <ProgressBar intent={intent} value={hasValue ? value : null} />
+            </Example>
+        );
     }
 
     private renderLabel = (value: number) => value.toFixed(1);

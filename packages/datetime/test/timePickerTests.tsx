@@ -12,7 +12,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
-import { Classes, ITimePickerProps, TimePicker, TimePickerPrecision } from "../src/index";
+import { Classes, ITimePickerProps, TimePicker, TimePrecision } from "../src/index";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
 describe("<TimePicker>", () => {
@@ -53,7 +53,7 @@ describe("<TimePicker>", () => {
     it("arrow buttons allow looping", () => {
         renderTimePicker({
             defaultValue: new Date(2015, 1, 1, 0, 0, 59, 999),
-            precision: TimePickerPrecision.MILLISECOND,
+            precision: TimePrecision.MILLISECOND,
             showArrowButtons: true,
         });
 
@@ -75,12 +75,12 @@ describe("<TimePicker>", () => {
     });
 
     it("shows the proper number of input fields", () => {
-        renderTimePicker({ precision: TimePickerPrecision.MILLISECOND });
+        renderTimePicker({ precision: TimePrecision.MILLISECOND });
         assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER_INPUT), 4);
     });
 
     it("all keyboard arrow presses work", () => {
-        renderTimePicker({ precision: TimePickerPrecision.MILLISECOND });
+        renderTimePicker({ precision: TimePrecision.MILLISECOND });
 
         assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
         keyDownOnInput(Classes.TIMEPICKER_HOUR, Keys.ARROW_UP);
@@ -103,7 +103,7 @@ describe("<TimePicker>", () => {
     });
 
     it("all arrow buttons work", () => {
-        renderTimePicker({ precision: TimePickerPrecision.MILLISECOND, showArrowButtons: true });
+        renderTimePicker({ precision: TimePrecision.MILLISECOND, showArrowButtons: true });
 
         assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
         clickIncrementBtn(Classes.TIMEPICKER_HOUR);
@@ -166,7 +166,7 @@ describe("<TimePicker>", () => {
     });
 
     it("value doesn't change when disabled", () => {
-        renderTimePicker({ disabled: true, precision: TimePickerPrecision.MILLISECOND, showArrowButtons: true });
+        renderTimePicker({ disabled: true, precision: TimePrecision.MILLISECOND, showArrowButtons: true });
 
         const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
         assert.isTrue(hourInput.disabled);
@@ -216,7 +216,7 @@ describe("<TimePicker>", () => {
             renderTimePicker({
                 defaultValue: createTimeObject(12, 30),
                 minTime: createTimeObject(15, 30),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             assertTimeIs(timePicker.state.value, 15, 30, 0, 0);
@@ -227,7 +227,7 @@ describe("<TimePicker>", () => {
                 defaultValue: createTimeObject(20, 30),
                 maxTime: createTimeObject(18, 30),
                 minTime: createTimeObject(15, 30),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             assertTimeIs(timePicker.state.value, 18, 30, 0, 0);
@@ -235,7 +235,7 @@ describe("<TimePicker>", () => {
 
         it("by default, any time can be selected", () => {
             renderTimePicker({
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
@@ -272,7 +272,7 @@ describe("<TimePicker>", () => {
             renderTimePicker({
                 maxTime: createTimeObject(3),
                 minTime: createTimeObject(22),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
@@ -284,7 +284,7 @@ describe("<TimePicker>", () => {
         it("time can't be smaller minTime, while decrementing unit", () => {
             renderTimePicker({
                 minTime: createTimeObject(15, 32, 20, 600),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
@@ -304,7 +304,7 @@ describe("<TimePicker>", () => {
             renderTimePicker({
                 defaultValue: createTimeObject(14, 55, 30, 200),
                 maxTime: createTimeObject(14, 55, 30, 200),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
@@ -324,7 +324,7 @@ describe("<TimePicker>", () => {
             renderTimePicker({
                 defaultValue: createTimeObject(15, 32, 20, 600),
                 minTime: createTimeObject(15, 32, 20, 600),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
@@ -344,7 +344,7 @@ describe("<TimePicker>", () => {
             renderTimePicker({
                 defaultValue: createTimeObject(15, 32, 20, 600),
                 maxTime: createTimeObject(15, 32, 20, 600),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
@@ -362,9 +362,7 @@ describe("<TimePicker>", () => {
 
         it("when minTime prop change, selected time immediately adjust to new range", () => {
             const defaultValue = createTimeObject(10, 20);
-            const wrapper = mount(
-                <TimePicker defaultValue={defaultValue} precision={TimePickerPrecision.MILLISECOND} />,
-            );
+            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
 
             wrapper.setProps({ minTime: createTimeObject(15, 32, 20, 600) });
 
@@ -373,9 +371,7 @@ describe("<TimePicker>", () => {
 
         it("when maxTime prop change, selected time immediately adjust to new range", () => {
             const defaultValue = createTimeObject(12, 20);
-            const wrapper = mount(
-                <TimePicker defaultValue={defaultValue} precision={TimePickerPrecision.MILLISECOND} />,
-            );
+            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
 
             wrapper.setProps({ maxTime: createTimeObject(10, 30, 15, 200) });
 
@@ -458,7 +454,7 @@ describe("<TimePicker>", () => {
         it("defaultValue sets the initialTime", () => {
             renderTimePicker({
                 defaultValue: new Date(2015, 1, 1, 10, 11, 12, 13),
-                precision: TimePickerPrecision.MILLISECOND,
+                precision: TimePrecision.MILLISECOND,
             });
             const { value } = timePicker.state;
             assert.strictEqual(value.getHours(), 10);

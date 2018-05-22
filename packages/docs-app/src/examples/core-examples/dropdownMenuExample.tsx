@@ -7,11 +7,11 @@
 import * as React from "react";
 
 import { Button, Menu, MenuDivider, MenuItem, Popover, Position } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class DropdownMenuExample extends BaseExample<{}> {
-    protected renderExample() {
-        const compassMenu = (
+export class DropdownMenuExample extends React.PureComponent<IExampleProps> {
+    public render() {
+        const exampleMenu = (
             <Menu>
                 <MenuItem icon="graph" text="Graph" />
                 <MenuItem icon="map" text="Map" />
@@ -25,9 +25,11 @@ export class DropdownMenuExample extends BaseExample<{}> {
             </Menu>
         );
         return (
-            <Popover content={compassMenu} position={Position.RIGHT_BOTTOM}>
-                <Button icon="share" text="Open in..." />
-            </Popover>
+            <Example options={false} {...this.props}>
+                <Popover content={exampleMenu} position={Position.RIGHT_BOTTOM}>
+                    <Button icon="share" text="Open in..." />
+                </Popover>
+            </Example>
         );
     }
 }

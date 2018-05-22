@@ -12,6 +12,7 @@ import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
+import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
@@ -115,14 +116,14 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
-                <h4 className={Classes.DIALOG_HEADER_TITLE}>{title}</h4>
+                <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>
         );
     }
 
     private handleContainerMouseDown = (evt: React.MouseEvent<HTMLDivElement>) => {
-        // quick re-implementation of canOutsideClickClose because .pt-dialog-container covers the backdrop
+        // quick re-implementation of canOutsideClickClose because DIALOG_CONTAINER covers the backdrop
         const isClickOutsideDialog = (evt.target as HTMLElement).closest(`.${Classes.DIALOG}`) == null;
         if (isClickOutsideDialog && this.props.canOutsideClickClose) {
             safeInvoke(this.props.onClose, evt);

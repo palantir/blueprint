@@ -4,16 +4,23 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Checkbox, Classes, Code } from "@blueprintjs/core";
+import classNames from "classnames";
 import { IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
-import { ModifierTable } from "../components/modifierTable";
+import { Example } from "../components/example";
+
+export interface ICssExampleState {
+    modifiers: Set<string>;
+}
 
 export class CssExample extends React.PureComponent<ITag> {
     public static contextTypes = DocumentationContextTypes;
     public static displayName = "Docs2.CssExample";
 
     public context: IDocumentationContext;
+    public state: ICssExampleState = { modifiers: new Set<string>() };
 
     public render() {
         const { value } = this.props;
@@ -22,47 +29,56 @@ export class CssExample extends React.PureComponent<ITag> {
             return null;
         }
         const { markup, markupHtml, modifiers, reference } = css[value];
-        const examples = modifiers.map(modifier => (
-            <tr key={modifier.name}>
-                <td data-modifier={modifier.name}>
-                    <code>{modifier.name}</code>
-                </td>
-                <td dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
-            </tr>
+        const options = modifiers.map(modifier => (
+            <Checkbox
+                key={modifier.name}
+                checked={this.state.modifiers.has(modifier.name)}
+                onChange={this.getModifierToggleHandler(modifier.name)}
+            >
+                <Code data-modifier={modifier.name}>{modifier.name}</Code>
+                <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
+            </Checkbox>
         ));
         return (
-            <div>
-                {examples.length > 0 && <ModifierTable title="Modifiers">{examples}</ModifierTable>}
-                <div className="docs-example-wrapper" data-reference={reference}>
-                    {this.renderMarkupExample(markup)}
-                    {modifiers.map(mod => this.renderMarkupExample(markup, mod.name))}
-                </div>
-                <div className="docs-markup" dangerouslySetInnerHTML={{ __html: markupHtml }} />
-            </div>
+            <>
+                <Example
+                    id={reference}
+                    options={options.length > 0 ? options : false}
+                    html={this.renderExample(markup)}
+                />
+                <div
+                    className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
+                    dangerouslySetInnerHTML={{ __html: markupHtml }}
+                />
+            </>
         );
     }
 
-    private renderMarkupExample(markup: string, modifierName = "default") {
-        return (
-            <div className="docs-example" data-modifier={modifierName} key={modifierName}>
-                <code>{modifierName}</code>
-                {this.renderMarkupForModifier(markup, modifierName)}
-            </div>
-        );
-    }
-
-    private renderMarkupForModifier(markup: string, modifierName: string) {
-        const html = markup.replace(MODIFIER_PLACEHOLDER_REGEXP, (_, prefix: string) => {
-            if (prefix && modifierName.charAt(0) === prefix) {
-                return modifierName.slice(1);
-            } else if (!prefix) {
-                return modifierName;
+    private getModifierToggleHandler(modifier: string) {
+        return () => {
+            const modifiers = new Set(this.state.modifiers);
+            if (modifiers.has(modifier)) {
+                modifiers.delete(modifier);
             } else {
-                return "";
+                modifiers.add(modifier);
             }
-        });
-        return <div dangerouslySetInnerHTML={{ __html: html }} />;
+            this.setState({ modifiers });
+        };
+    }
+
+    private renderExample(markup: string) {
+        const classes = this.getModifiers(".");
+        const attrs = this.getModifiers(":");
+        return markup.replace(MODIFIER_ATTR_REGEXP, attrs).replace(MODIFIER_CLASS_REGEXP, classes);
+    }
+
+    private getModifiers(prefix: "." | ":") {
+        return Array.from(this.state.modifiers.keys())
+            .filter(mod => mod.charAt(0) === prefix)
+            .map(mod => mod.slice(1))
+            .join(" ");
     }
 }
 
-const MODIFIER_PLACEHOLDER_REGEXP = /\{\{([.:]?)modifier\}\}/g;
+const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
+const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;

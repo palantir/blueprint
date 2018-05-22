@@ -7,13 +7,13 @@
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
-import { TimePickerPrecision } from "@blueprintjs/datetime";
+import { TimePrecision } from "@blueprintjs/datetime";
 
 export interface IPrecisionSelectProps {
     /**
      * The precision-string option to display as selected.
      */
-    value: TimePickerPrecision;
+    value: TimePrecision;
 
     /**
      * The callback to fire when the selected value changes.
@@ -38,9 +38,9 @@ export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = props => (
         <div className={Classes.SELECT}>
             <select value={props.value} onChange={props.onChange}>
                 {props.allowEmpty ? <option value="-1">None</option> : undefined}
-                <option value={TimePickerPrecision.MINUTE.toString()}>Minute</option>
-                <option value={TimePickerPrecision.SECOND.toString()}>Second</option>
-                <option value={TimePickerPrecision.MILLISECOND.toString()}>Millisecond</option>
+                <option value={TimePrecision.MINUTE.toString()}>Minute</option>
+                <option value={TimePrecision.SECOND.toString()}>Second</option>
+                <option value={TimePrecision.MILLISECOND.toString()}>Millisecond</option>
             </select>
         </div>
     </label>

@@ -8,93 +8,95 @@
 Form groups
 
 Markup:
-<div class="#{$ns}-form-group">
-  <label class="#{$ns}-label" for="example-form-group-input-a">
-    Label A
-    <span class="#{$ns}-text-muted">(required)</span>
-  </label>
-  <div class="#{$ns}-form-content">
-    <input id="example-form-group-input-a" class="#{$ns}-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
-    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
-  </div>
-</div>
-<div class="#{$ns}-form-group #{$ns}-intent-danger">
-  <label class="#{$ns}-label" for="example-form-group-input-b">
-    Label B
-    <span class="#{$ns}-text-muted">(required)</span>
-  </label>
-  <div class="#{$ns}-form-content">
-    <div class="#{$ns}-input-group #{$ns}-intent-danger">
-      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-      <input id="example-form-group-input-b" class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
-    </div>
-    <div class="#{$ns}-form-helper-text">Please enter a value</div>
-  </div>
-</div>
-<div class="#{$ns}-form-group">
-  <label class="#{$ns}-label" for="example-form-group-switch-c">
-    Label C
-    <span class="#{$ns}-text-muted">(required)</span>
-  </label>
-  <div class="#{$ns}-form-content">
-    <label class="#{$ns}-control #{$ns}-switch">
-      <input id="example-form-group-switch-c" type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      Switch C
+<div>
+  <div class="#{$ns}-form-group">
+    <label class="#{$ns}-label" for="example-form-group-input-a">
+      Label A
+      <span class="#{$ns}-text-muted">(required)</span>
     </label>
-    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
-  </div>
-</div>
-<div class="#{$ns}-form-group #{$ns}-inline">
-  <label class="#{$ns}-label" for="example-form-group-input-d">
-    Label D
-    <span class="#{$ns}-text-muted">(optional)</span>
-  </label>
-  <div class="#{$ns}-form-content">
-    <div class="#{$ns}-input-group">
-      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-      <input id="example-form-group-input-d" class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+    <div class="#{$ns}-form-content">
+      <input id="example-form-group-input-a" class="#{$ns}-input" style="width: 300px;" placeholder="Placeholder text" type="text" dir="auto" />
+      <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
     </div>
-    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
-</div>
-<div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
-  <label class="#{$ns}-label" for="example-form-group-input-e">
-    Label E
-    <span class="#{$ns}-text-muted">(optional)</span>
-  </label>
-  <div class="#{$ns}-form-content">
-    <div class="#{$ns}-input-group #{$ns}-large #{$ns}-disabled">
-      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-      <input id="example-form-group-input-e" class="#{$ns}-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+  <div class="#{$ns}-form-group #{$ns}-intent-danger">
+    <label class="#{$ns}-label" for="example-form-group-input-b">
+      Label B
+      <span class="#{$ns}-text-muted">(required)</span>
+    </label>
+    <div class="#{$ns}-form-content">
+      <div class="#{$ns}-input-group #{$ns}-intent-danger">
+        <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+        <input id="example-form-group-input-b" class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+      </div>
+      <div class="#{$ns}-form-helper-text">Please enter a value</div>
     </div>
-    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
   </div>
-</div>
-<div class="#{$ns}-form-group #{$ns}-inline">
-  <label class="#{$ns}-label" for="example-form-group-switch-f">
-    Label F
-  </label>
-  <div class="#{$ns}-form-content">
-    <label class="#{$ns}-control #{$ns}-switch">
-      <input id="example-form-group-switch-f" type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      Switch F
+  <div class="#{$ns}-form-group">
+    <label class="#{$ns}-label" for="example-form-group-switch-c">
+      Label C
+      <span class="#{$ns}-text-muted">(required)</span>
     </label>
-    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
+    <div class="#{$ns}-form-content">
+      <label class="#{$ns}-control #{$ns}-switch">
+        <input id="example-form-group-switch-c" type="checkbox" />
+        <span class="#{$ns}-control-indicator"></span>
+        Switch C
+      </label>
+      <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
+    </div>
   </div>
-</div>
-<div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
-  <label class="#{$ns}-label" for="example-form-group-switch-g">
-    Label G
-  </label>
-  <div class="#{$ns}-form-content">
-    <label class="#{$ns}-control #{$ns}-switch #{$ns}-large #{$ns}-disabled">
-      <input id="example-form-group-switch-g" type="checkbox" disabled />
-      <span class="#{$ns}-control-indicator"></span>
-      Switch G
+  <div class="#{$ns}-form-group #{$ns}-inline">
+    <label class="#{$ns}-label" for="example-form-group-input-d">
+      Label D
+      <span class="#{$ns}-text-muted">(optional)</span>
     </label>
-    <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
+    <div class="#{$ns}-form-content">
+      <div class="#{$ns}-input-group">
+        <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+        <input id="example-form-group-input-d" class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+      </div>
+      <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
+    </div>
+  </div>
+  <div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
+    <label class="#{$ns}-label" for="example-form-group-input-e">
+      Label E
+      <span class="#{$ns}-text-muted">(optional)</span>
+    </label>
+    <div class="#{$ns}-form-content">
+      <div class="#{$ns}-input-group #{$ns}-large #{$ns}-disabled">
+        <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
+        <input id="example-form-group-input-e" class="#{$ns}-input" disabled style="width: 200px;" type="text" placeholder="Placeholder text" dir="auto" />
+      </div>
+      <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
+    </div>
+  </div>
+  <div class="#{$ns}-form-group #{$ns}-inline">
+    <label class="#{$ns}-label" for="example-form-group-switch-f">
+      Label F
+    </label>
+    <div class="#{$ns}-form-content">
+      <label class="#{$ns}-control #{$ns}-switch">
+        <input id="example-form-group-switch-f" type="checkbox" />
+        <span class="#{$ns}-control-indicator"></span>
+        Switch F
+      </label>
+      <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
+    </div>
+  </div>
+  <div class="#{$ns}-form-group #{$ns}-inline #{$ns}-large #{$ns}-disabled">
+    <label class="#{$ns}-label" for="example-form-group-switch-g">
+      Label G
+    </label>
+    <div class="#{$ns}-form-content">
+      <label class="#{$ns}-control #{$ns}-switch #{$ns}-large #{$ns}-disabled">
+        <input id="example-form-group-switch-g" type="checkbox" disabled />
+        <span class="#{$ns}-control-indicator"></span>
+        Switch G
+      </label>
+      <div class="#{$ns}-form-helper-text">Helper text with details / user feedback</div>
+    </div>
   </div>
 </div>
 
@@ -148,7 +150,7 @@ Styleguide form-group
     .#{$ns}-label,
     .#{$ns}-text-muted,
     .#{$ns}-form-helper-text {
-      // pt-disable always overrides over styles
+      // disabled state always overrides over styles
       // stylelint-disable-next-line declaration-no-important
       color: $pt-text-color-disabled !important;
     }
@@ -171,7 +173,7 @@ Styleguide form-group
       .#{$ns}-label,
       .#{$ns}-text-muted,
       .#{$ns}-form-helper-text {
-        // pt-disable always overrides over styles
+        // disabled state always overrides over styles
         // stylelint-disable-next-line declaration-no-important
         color: $pt-dark-text-color-disabled !important;
       }

@@ -4,13 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { areSameDay, DateRange, DateRangeBoundary } from "./common/dateUtils";
+import { Boundary } from "@blueprintjs/core";
+import { areSameDay, DateRange } from "./common/dateUtils";
 
 export interface IDateRangeSelectionState {
     /**
      * The boundary that would be modified by clicking the provided `day`.
      */
-    boundary?: DateRangeBoundary;
+    boundary?: Boundary;
 
     /**
      * The date range that would be selected after clicking the provided `day`.
@@ -29,7 +30,7 @@ export class DateRangeSelectionStrategy {
         currentRange: DateRange,
         day: Date,
         allowSingleDayRange: boolean,
-        boundary?: DateRangeBoundary,
+        boundary?: Boundary,
     ): IDateRangeSelectionState {
         if (boundary != null) {
             return this.getNextStateForBoundary(currentRange, day, allowSingleDayRange, boundary);
@@ -42,13 +43,13 @@ export class DateRangeSelectionStrategy {
         currentRange: DateRange,
         day: Date,
         allowSingleDayRange: boolean,
-        boundary: DateRangeBoundary,
+        boundary: Boundary,
     ): IDateRangeSelectionState {
         const boundaryDate = this.getBoundaryDate(boundary, currentRange);
         const otherBoundary = this.getOtherBoundary(boundary);
         const otherBoundaryDate = this.getBoundaryDate(otherBoundary, currentRange);
 
-        let nextBoundary: DateRangeBoundary;
+        let nextBoundary: Boundary;
         let nextDateRange: DateRange;
 
         if (boundaryDate == null && otherBoundaryDate == null) {
@@ -134,26 +135,20 @@ export class DateRangeSelectionStrategy {
         return { dateRange: nextDateRange };
     }
 
-    private static getOtherBoundary(boundary: DateRangeBoundary) {
-        return boundary === DateRangeBoundary.START ? DateRangeBoundary.END : DateRangeBoundary.START;
+    private static getOtherBoundary(boundary: Boundary) {
+        return boundary === Boundary.START ? Boundary.END : Boundary.START;
     }
 
-    private static getBoundaryDate(boundary: DateRangeBoundary, dateRange: DateRange) {
-        return boundary === DateRangeBoundary.START ? dateRange[0] : dateRange[1];
+    private static getBoundaryDate(boundary: Boundary, dateRange: DateRange) {
+        return boundary === Boundary.START ? dateRange[0] : dateRange[1];
     }
 
-    private static isOverlappingOtherBoundary(
-        boundary: DateRangeBoundary,
-        boundaryDate: Date,
-        otherBoundaryDate: Date,
-    ) {
-        return boundary === DateRangeBoundary.START
-            ? boundaryDate > otherBoundaryDate
-            : boundaryDate < otherBoundaryDate;
+    private static isOverlappingOtherBoundary(boundary: Boundary, boundaryDate: Date, otherBoundaryDate: Date) {
+        return boundary === Boundary.START ? boundaryDate > otherBoundaryDate : boundaryDate < otherBoundaryDate;
     }
 
-    private static createRangeForBoundary(boundary: DateRangeBoundary, boundaryDate: Date, otherBoundaryDate: Date) {
-        return boundary === DateRangeBoundary.START
+    private static createRangeForBoundary(boundary: Boundary, boundaryDate: Date, otherBoundaryDate: Date) {
+        return boundary === Boundary.START
             ? ([boundaryDate, otherBoundaryDate] as DateRange)
             : ([otherBoundaryDate, boundaryDate] as DateRange);
     }

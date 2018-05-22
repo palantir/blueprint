@@ -12,7 +12,7 @@ any time.
 
 Blueprint includes a utility that manages the appearance of focus styles. When enabled, focus styles
 will be hidden while the user interacts using the mouse and will appear when the
-<kbd class="@ns-key">tab</kbd> key is pressed to begin keyboard navigation. Try this out for yourself
+<kbd>tab</kbd> key is pressed to begin keyboard navigation. Try this out for yourself
 below.
 
 **You must explictly enable this feature in your app (and you probably want to):**

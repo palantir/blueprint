@@ -25,6 +25,25 @@ export function isFunction(value: any): value is Function {
 }
 
 /**
+ * Converts a React child to an element: non-empty string or number or
+ * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
+ * are discarded.
+ */
+export function ensureElement(child: React.ReactChild | undefined, tagName: keyof JSX.IntrinsicElements = "span") {
+    if (child == null) {
+        return undefined;
+    } else if (typeof child === "string") {
+        // cull whitespace strings
+        return child.trim().length > 0 ? React.createElement(tagName, {}, child) : undefined;
+    } else if (typeof child === "number" || typeof child.type === "symbol") {
+        // React.Fragment has a symbol type
+        return React.createElement(tagName, {}, child);
+    } else {
+        return child;
+    }
+}
+
+/**
  * Represents anything that has a `name` property such as Functions.
  */
 export interface INamed {

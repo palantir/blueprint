@@ -4,7 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes } from "@blueprintjs/core";
+import { Classes, Table } from "@blueprintjs/core";
+import classNames from "classnames";
 import * as React from "react";
 
 export interface IModifierTableProps {
@@ -16,8 +17,8 @@ export interface IModifierTableProps {
 }
 
 export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, emptyMessage, title }) => (
-    <div className="docs-modifiers-table">
-        <table className={Classes.HTML_TABLE}>
+    <div className={classNames("docs-modifiers-table", Classes.RUNNING_TEXT)}>
+        <Table>
             <thead>
                 <tr>
                     <th>{title}</th>
@@ -25,7 +26,7 @@ export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, emptyM
                 </tr>
             </thead>
             <tbody>{isEmpty(children) ? renderEmptyState(emptyMessage) : children}</tbody>
-        </table>
+        </Table>
     </div>
 );
 

@@ -1,27 +1,31 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/blueprint/tree/develop)
+# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/workflows/blueprint)
 
 Blueprint is a React-based UI toolkit for the web.
 
 It is optimized for building complex, data-dense web interfaces for _desktop applications_.
 If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
 
+[**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
+
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-[**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
+### Bug report? Feature request? Support question?
 
-**Support question**? We use the [**blueprintjs** tag on Stack Overflow **▸**](http://stackoverflow.com/questions/tagged/blueprintjs)
+Use the [appropriate issue template](https://github.com/palantir/blueprint/issues/new) before submitting.
 
-## :star2: 2.0 is out! :star2:
+### What's new in 2.0
 
-[**What's new in Blueprint 2.0 ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0)
+Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path).
 
-[**2.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path)
+## 🚧 3.0 is in progress! 🚧
 
-To make a contribution that you wish to have released in a 1.x version of any `@blueprintjs` package, please submit a PR to the `release/1.x` branch.
+Blueprint 3.0 will support multiple major versions of Blueprint on the same page through removing global styles and deconflicting selectors. It also restores support for React 15 in most packages.
+
+To make a contribution that you wish to have released in an earlier major version of any `@blueprintjs` package, please submit a PR to the `release/1.x` or `release/2.x` branch.
 
 ## Packages
 

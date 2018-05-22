@@ -2,12 +2,14 @@
 // Licensed under the terms of the LICENSE file distributed with this project.
 
 .docs-prop-details code {
-  box-shadow: none;
-  background: none;
+  // stylelint-disable declaration-no-important
+  box-shadow: none !important;
+  background: none !important;
   padding: 0;
-  color: inherit;
+  color: inherit !important;
   font-size: small;
   font-weight: 600;
+  // stylelint-enable declaration-no-important
 }
 
 .docs-prop-default {
@@ -23,7 +25,7 @@
 }
 
 .docs-prop-description {
-  margin-top: $pt-grid-size;
+  margin-top: $pt-grid-size / 2;
 
   p:last-child {
     margin: 0;
@@ -31,14 +33,10 @@
 }
 
 .docs-prop-tags {
-  $tag-top-margin: ($pt-grid-size / 10) * 3;
-
-  margin: ($pt-grid-size - $tag-top-margin) 0 0;
-
   &:empty { display: none; }
 
   .#{$ns}-tag {
-    margin-top: $tag-top-margin;
+    margin-top: $pt-grid-size / 2;
     margin-right: $pt-grid-size;
   }
 }
@@ -109,6 +107,10 @@
 }
 
 .docs-modifiers-table {
+  .docs-section & .#{$ns}-html-table {
+    margin-top: $pt-grid-size;
+  }
+
   th:first-child,
   td:first-child {
     padding-left: 0;

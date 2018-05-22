@@ -37,7 +37,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * The position of the buttons with respect to the input field.
      * @default Position.RIGHT
      */
-    buttonPosition?: Position.LEFT | Position.RIGHT | "none";
+    buttonPosition?: typeof Position.LEFT | typeof Position.RIGHT | "none";
 
     /**
      * Whether the value should be clamped to `[min, max]` on blur.
@@ -73,7 +73,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     placeholder?: string;
 
     /**
-     * The increment between successive values when <kbd class="pt-key">shift</kbd> is held.
+     * The increment between successive values when <kbd>shift</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
      * @default 10
      */
@@ -86,7 +86,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     min?: number;
 
     /**
-     * The increment between successive values when <kbd class="pt-key">alt</kbd> is held.
+     * The increment between successive values when <kbd>alt</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
      * @default 0.1
      */

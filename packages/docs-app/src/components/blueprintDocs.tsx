@@ -6,7 +6,7 @@
 
 import { Classes, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
 import { isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
@@ -36,6 +36,12 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public state = { themeName: getTheme() };
 
     public render() {
+        const banner = (
+            <Banner href="http://blueprintjs.com/docs/v2/">
+                This documentation is for&nbsp;<strong>Blueprint v3.0.0</strong>, which is currently under development.
+                Click here to go to the v2.x docs.
+            </Banner>
+        );
         const footer = (
             <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
                 &copy; {new Date().getFullYear()}
@@ -57,6 +63,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return (
             <Documentation
                 {...this.props}
+                banner={banner}
                 className={this.state.themeName}
                 footer={footer}
                 header={header}

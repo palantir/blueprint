@@ -1,0 +1,13 @@
+<h1>Title</h1>
+ ~~             [err % ("H1")]
+
+<code>code element</code>
+ ~~~~           [err % ("Code")]
+
+<blockquote />
+ ~~~~~~~~~~     [err % ("Blockquote")]
+
+<H3>Subtitle</H3>
+<Pre>block</Pre>
+
+[err]: use Blueprint <%s> component instead of JSX intrinsic element.

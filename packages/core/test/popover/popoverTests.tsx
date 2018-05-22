@@ -52,8 +52,8 @@ describe("<Popover>", () => {
             const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover>
-                    <h1 />
-                    <h2 />
+                    <button />
+                    <article />
                     {"h3"}
                 </Popover>,
             );
@@ -147,12 +147,12 @@ describe("<Popover>", () => {
 
     it("renders Portal when usePortal=true", () => {
         wrapper = renderPopover({ isOpen: true, usePortal: true });
-        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 1);
+        assert.lengthOf(wrapper.find(Portal), 1);
     });
 
     it("does not render Portal when usePortal=false", () => {
         wrapper = renderPopover({ isOpen: true, usePortal: false });
-        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 0);
+        assert.lengthOf(wrapper.find(Portal), 0);
     });
 
     it("empty content disables it and warns", () => {

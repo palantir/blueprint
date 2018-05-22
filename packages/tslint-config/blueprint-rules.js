@@ -11,6 +11,7 @@ module.exports = {
 
     rules: {
         "blueprint-classes-constants": true,
+        "blueprint-html-components": true,
         "blueprint-icon-components": false,
     },
 

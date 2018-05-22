@@ -6,8 +6,9 @@
 
 import * as React from "react";
 
-import { Alert, Button, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Alert, Button, H5, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 export interface IAlertExampleState {
     canEscapeKeyCancel: boolean;
@@ -16,7 +17,7 @@ export interface IAlertExampleState {
     isOpenError: boolean;
 }
 
-export class AlertExample extends BaseExample<{}> {
+export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IAlertExampleState> {
     public state: IAlertExampleState = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
@@ -29,14 +30,29 @@ export class AlertExample extends BaseExample<{}> {
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyCancel => this.setState({ canEscapeKeyCancel }));
     private handleOutsideClickChange = handleBooleanChange(click => this.setState({ canOutsideClickCancel: click }));
 
-    protected renderExample() {
-        const { isOpen, isOpenError, ...switchProps } = this.state;
+    public render() {
+        const { isOpen, isOpenError, ...alertProps } = this.state;
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch
+                    checked={this.state.canEscapeKeyCancel}
+                    label="Can escape key cancel"
+                    onChange={this.handleEscapeKeyChange}
+                />
+                <Switch
+                    checked={this.state.canOutsideClickCancel}
+                    label="Can outside click cancel"
+                    onChange={this.handleOutsideClickChange}
+                />
+            </>
+        );
         return (
-            <div>
+            <Example options={options} {...this.props}>
                 <Button onClick={this.handleErrorOpen} text="Open file error alert" />
                 <Alert
-                    {...switchProps}
-                    className={this.props.themeName}
+                    {...alertProps}
+                    className={this.props.data.themeName}
                     confirmButtonText="Okay"
                     isOpen={isOpenError}
                     onClose={this.handleErrorClose}
@@ -46,10 +62,11 @@ export class AlertExample extends BaseExample<{}> {
                         redirected to your user folder.
                     </p>
                 </Alert>
+
                 <Button onClick={this.handleMoveOpen} text="Open file deletion alert" />
                 <Alert
-                    {...switchProps}
-                    className={this.props.themeName}
+                    {...alertProps}
+                    className={this.props.data.themeName}
                     cancelButtonText="Cancel"
                     confirmButtonText="Move to Trash"
                     icon="trash"
@@ -63,28 +80,10 @@ export class AlertExample extends BaseExample<{}> {
                         but it will become private to you.
                     </p>
                 </Alert>
-                <Toaster ref={ref => (this.toaster = ref)} />
-            </div>
-        );
-    }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.canEscapeKeyCancel}
-                    key="escape"
-                    label="Can escape key cancel"
-                    onChange={this.handleEscapeKeyChange}
-                />,
-                <Switch
-                    checked={this.state.canOutsideClickCancel}
-                    key="click"
-                    label="Can outside click cancel"
-                    onChange={this.handleOutsideClickChange}
-                />,
-            ],
-        ];
+                <Toaster ref={ref => (this.toaster = ref)} />
+            </Example>
+        );
     }
 
     private handleErrorOpen = () => this.setState({ isOpenError: true });
@@ -93,7 +92,7 @@ export class AlertExample extends BaseExample<{}> {
     private handleMoveOpen = () => this.setState({ isOpen: true });
     private handleMoveConfirm = () => {
         this.setState({ isOpen: false });
-        this.toaster.show({ className: this.props.themeName, message: TOAST_MESSAGE });
+        this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
     };
     private handleMoveCancel = () => this.setState({ isOpen: false });
 }

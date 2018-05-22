@@ -24,12 +24,13 @@ import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 // re-export this symbol for library consumers
 export { PopperModifiers };
 
-export enum PopoverInteractionKind {
-    CLICK = "click",
-    CLICK_TARGET_ONLY = "click-target",
-    HOVER = "hover",
-    HOVER_TARGET_ONLY = "hover-target",
-}
+export const PopoverInteractionKind = {
+    CLICK: "click" as "click",
+    CLICK_TARGET_ONLY: "click-target" as "click-target",
+    HOVER: "hover" as "hover",
+    HOVER_TARGET_ONLY: "hover-target" as "hover-target",
+};
+export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
 export interface IPopoverProps extends IOverlayableProps, IProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
@@ -487,8 +488,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // #validateProps asserts that 1 <= children.length <= 2 so content is optional
         const [targetChild, contentChild] = React.Children.toArray(children);
         return {
-            content: ensureElement(contentChild == null ? contentProp : contentChild),
-            target: ensureElement(targetChild == null ? targetProp : targetChild),
+            content: Utils.ensureElement(contentChild == null ? contentProp : contentChild),
+            target: Utils.ensureElement(targetChild == null ? targetProp : targetChild),
         };
     }
 
@@ -632,20 +633,4 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
         return data;
     };
-}
-
-/**
- * Converts a react child to an element: non-empty strings or numbers are wrapped in `<span>`;
- * empty strings are discarded.
- */
-function ensureElement(child: React.ReactChild | undefined) {
-    // wrap text in a <span> so children are always elements
-    if (typeof child === "string") {
-        // cull whitespace strings
-        return child.trim().length > 0 ? <span>{child}</span> : undefined;
-    } else if (typeof child === "number") {
-        return <span>{child}</span>;
-    } else {
-        return child;
-    }
 }

@@ -29,7 +29,9 @@ Styleguide button
   @include pt-button-height($pt-button-height);
 
   &:empty {
-    padding: 0;
+    // override padding from other modifiers (for CSS icon support)
+    // stylelint-disable-next-line declaration-no-important
+    padding: 0 !important;
   }
 
   &:disabled,
@@ -231,8 +233,8 @@ a.#{$ns}-button {
   flex: 0 1 auto;
 
   // when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
-  .#{$ns}-align-left &,
-  .#{$ns}-align-right & {
+  .#{$ns}-align-left > &,
+  .#{$ns}-align-right > & {
     flex: 1 1 auto;
   }
 }

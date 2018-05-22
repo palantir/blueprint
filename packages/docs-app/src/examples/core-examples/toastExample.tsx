@@ -10,20 +10,23 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    H5,
     Intent,
     IToasterProps,
     IToastProps,
+    Label,
     Position,
     ProgressBar,
     Switch,
     Toaster,
     ToasterPosition,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 type IToastDemo = IToastProps & { button: string };
 
-export class ToastExample extends BaseExample<IToasterProps> {
+export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IToasterProps> {
     public state: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
@@ -93,23 +96,24 @@ export class ToastExample extends BaseExample<IToasterProps> {
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
 
-    protected renderExample() {
+    public render() {
         return (
-            <div>
+            <Example options={this.renderOptions()} {...this.props}>
                 {this.TOAST_BUILDERS.map(this.renderToastDemo, this)}
                 <Button onClick={this.handleProgressToast} text="Upload file" />
                 <Toaster {...this.state} ref={this.refHandlers.toaster} />
-            </div>
+            </Example>
         );
     }
 
     protected renderOptions() {
-        return [
-            [
-                <label className={Classes.LABEL} key="position">
-                    Toast position
+        const { autoFocus, canEscapeKeyClear, position } = this.state;
+        return (
+            <>
+                <H5>Props</H5>
+                <Label text="Position">
                     <div className={Classes.SELECT}>
-                        <select value={this.state.position.toString()} onChange={this.handlePositionChange}>
+                        <select value={position.toString()} onChange={this.handlePositionChange}>
                             <option value={Position.TOP_LEFT.toString()}>Top left</option>
                             <option value={Position.TOP.toString()}>Top center</option>
                             <option value={Position.TOP_RIGHT.toString()}>Top right</option>
@@ -118,23 +122,11 @@ export class ToastExample extends BaseExample<IToasterProps> {
                             <option value={Position.BOTTOM_RIGHT.toString()}>Bottom right</option>
                         </select>
                     </div>
-                </label>,
-            ],
-            [
-                <Switch
-                    checked={this.state.autoFocus}
-                    label="Auto focus"
-                    key="autofocus"
-                    onChange={this.toggleAutoFocus}
-                />,
-                <Switch
-                    checked={this.state.canEscapeKeyClear}
-                    label="Can escape key clear"
-                    key="escapekey"
-                    onChange={this.toggleEscapeKey}
-                />,
-            ],
-        ];
+                </Label>
+                <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
+                <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />
+            </>
+        );
     }
 
     private renderToastDemo(toast: IToastDemo, index: number) {
@@ -144,7 +136,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
 
     private renderProgress(amount: number): IToastProps {
         return {
-            className: this.props.themeName,
+            className: this.props.data.themeName,
             icon: "cloud-upload",
             message: (
                 <ProgressBar
@@ -158,7 +150,7 @@ export class ToastExample extends BaseExample<IToasterProps> {
     }
 
     private addToast(toast: IToastProps) {
-        toast.className = this.props.themeName;
+        toast.className = this.props.data.themeName;
         toast.timeout = 5000;
         this.toaster.show(toast);
     }

@@ -6,8 +6,8 @@
 
 import * as React from "react";
 
-import { Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { H5, Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
 
 export interface ITimezonePickerExampleState {
@@ -17,7 +17,7 @@ export interface ITimezonePickerExampleState {
     timezone: string;
 }
 
-export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleState> {
+export class TimezonePickerExample extends React.PureComponent<IExampleProps, ITimezonePickerExampleState> {
     public state: ITimezonePickerExampleState = {
         disabled: false,
         showLocalTimezone: true,
@@ -26,64 +26,44 @@ export class TimezonePickerExample extends BaseExample<ITimezonePickerExampleSta
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
-    private handleShowLocalTimezoneChange = handleBooleanChange(showLocalTimezone =>
-        this.setState({ showLocalTimezone }),
-    );
+    private handleShowLocalChange = handleBooleanChange(showLocalTimezone => this.setState({ showLocalTimezone }));
     private handleFormatChange = handleStringChange((targetDisplayFormat: TimezoneDisplayFormat) =>
         this.setState({ targetDisplayFormat }),
     );
 
-    protected renderExample() {
+    public render() {
         const { timezone, targetDisplayFormat, disabled, showLocalTimezone } = this.state;
 
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch checked={showLocalTimezone} label="Show local timezone" onChange={this.handleShowLocalChange} />
+                <Switch checked={disabled} label="Disabled" onChange={this.handleDisabledChange} />
+                <RadioGroup
+                    label="Display format"
+                    onChange={this.handleFormatChange}
+                    selectedValue={this.state.targetDisplayFormat}
+                >
+                    <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION} />
+                    <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
+                    <Radio label="Name" value={TimezoneDisplayFormat.NAME} />
+                    <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET} />
+                </RadioGroup>
+            </>
+        );
+
         return (
-            <TimezonePicker
-                value={timezone}
-                onChange={this.handleTimezoneChange}
-                valueDisplayFormat={targetDisplayFormat}
-                showLocalTimezone={showLocalTimezone}
-                disabled={disabled}
-            />
+            <Example options={options} {...this.props}>
+                <TimezonePicker
+                    value={timezone}
+                    onChange={this.handleTimezoneChange}
+                    valueDisplayFormat={targetDisplayFormat}
+                    showLocalTimezone={showLocalTimezone}
+                    disabled={disabled}
+                />
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.showLocalTimezone}
-                    label="Show local timezone in initial list"
-                    key="show-local-timezone"
-                    onChange={this.handleShowLocalTimezoneChange}
-                />,
-                <Switch
-                    checked={this.state.disabled}
-                    label="Disabled"
-                    key="disabled"
-                    onChange={this.handleDisabledChange}
-                />,
-            ],
-            [this.renderDisplayFormatOption()],
-        ];
-    }
-
-    private renderDisplayFormatOption() {
-        return (
-            <RadioGroup
-                key="display-format"
-                label="Display format"
-                onChange={this.handleFormatChange}
-                selectedValue={this.state.targetDisplayFormat}
-            >
-                <Radio label="Abbreviation" value={TimezoneDisplayFormat.ABBREVIATION} />
-                <Radio label="Composite" value={TimezoneDisplayFormat.COMPOSITE} />
-                <Radio label="Name" value={TimezoneDisplayFormat.NAME} />
-                <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET} />
-            </RadioGroup>
-        );
-    }
-
-    private handleTimezoneChange = (timezone: string) => {
-        this.setState({ timezone });
-    };
+    private handleTimezoneChange = (timezone: string) => this.setState({ timezone });
 }

@@ -67,6 +67,10 @@ export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be grea
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 export const MULTIRANGESLIDER_INVALID_CHILD = ns + ` <MultiRangeSlider> children must be <SliderHandle>s`;
 
+export const TOASTER_CREATE_NULL =
+    ns +
+    ` Toaster.create() is not supported inside React lifecycle methods in React 16.` +
+    ` See usage example on the docs site.`;
 export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;

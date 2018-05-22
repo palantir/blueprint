@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
+import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
@@ -62,7 +62,7 @@ describe("<ColumnHeaderCell>", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
                 return (
                     <ColumnHeaderCell name={`COLUMN-${columnIndex}`}>
-                        <h4>Header of {columnIndex}</h4>
+                        <H4>Header of {columnIndex}</H4>
                     </ColumnHeaderCell>
                 );
             };

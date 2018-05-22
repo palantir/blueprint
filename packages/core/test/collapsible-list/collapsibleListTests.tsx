@@ -10,7 +10,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import {
-    CollapseFrom,
+    Boundary,
     CollapsibleList,
     ICollapsibleListProps,
     IMenuItemProps,
@@ -41,8 +41,8 @@ describe("<CollapsibleList>", () => {
         assert.strictEqual(popover.prop("position"), Position.TOP_LEFT);
     });
 
-    it("CollapseFrom.START renders popover target first", () => {
-        const list = renderCollapsibleList(5, { collapseFrom: CollapseFrom.START });
+    it("Boundary.START renders popover target first", () => {
+        const list = renderCollapsibleList(5, { collapseFrom: Boundary.START });
         assert.strictEqual(
             list
                 .find("ul")
@@ -53,8 +53,8 @@ describe("<CollapsibleList>", () => {
         );
     });
 
-    it("CollapseFrom.END renders popover target last", () => {
-        const list = renderCollapsibleList(5, { collapseFrom: CollapseFrom.END });
+    it("Boundary.END renders popover target last", () => {
+        const list = renderCollapsibleList(5, { collapseFrom: Boundary.END });
         assert.strictEqual(
             list
                 .find("ul")
@@ -92,7 +92,7 @@ describe("<CollapsibleList>", () => {
         it("is called with props of each child", () => {
             const visibleItemRenderer = spy();
             // using END so it won't reverse the list
-            renderCollapsibleList(5, { collapseFrom: CollapseFrom.END, visibleItemRenderer, visibleItemCount: 3 });
+            renderCollapsibleList(5, { collapseFrom: Boundary.END, visibleItemRenderer, visibleItemCount: 3 });
             assert.equal(visibleItemRenderer.callCount, 3);
             visibleItemRenderer.args.map((arg, index) => {
                 const props: IMenuItemProps = arg[0];
@@ -100,7 +100,7 @@ describe("<CollapsibleList>", () => {
             });
         });
 
-        it("is called with absolute index of item in props array when CollapseFrom.START", () => {
+        it("is called with absolute index of item in props array when Boundary.START", () => {
             const visibleItemRenderer = spy();
             renderCollapsibleList(7, { visibleItemRenderer, visibleItemCount: 3 });
             visibleItemRenderer.args.map(arg => {
@@ -110,9 +110,9 @@ describe("<CollapsibleList>", () => {
             });
         });
 
-        it("is called with absolute index of item in props array when CollapseFrom.END", () => {
+        it("is called with absolute index of item in props array when Boundary.END", () => {
             const visibleItemRenderer = spy();
-            renderCollapsibleList(6, { collapseFrom: CollapseFrom.END, visibleItemRenderer, visibleItemCount: 3 });
+            renderCollapsibleList(6, { collapseFrom: Boundary.END, visibleItemRenderer, visibleItemCount: 3 });
             visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
                 const absoluteIndex = +props.text.toString().slice(5); // "Item #"

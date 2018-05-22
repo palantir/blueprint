@@ -4,11 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Slider, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { H5, Slider, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ISliderExampleState {
     value1?: number;
@@ -17,7 +16,7 @@ export interface ISliderExampleState {
     vertical?: boolean;
 }
 
-export class SliderExample extends BaseExample<ISliderExampleState> {
+export class SliderExample extends React.PureComponent<IExampleProps, ISliderExampleState> {
     public state: ISliderExampleState = {
         value1: 0,
         value2: 2.5,
@@ -27,15 +26,17 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
-    protected renderExample() {
+    public render() {
         const { vertical } = this.state;
-
-        const rootClasses = classNames("docs-slider-example", {
-            "docs-slider-example-vertical": vertical,
-        });
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch checked={vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />
+            </>
+        );
 
         return (
-            <div className={rootClasses}>
+            <Example options={options} {...this.props}>
                 <Slider
                     min={0}
                     max={10}
@@ -51,7 +52,7 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     stepSize={0.01}
                     labelStepSize={0.14}
                     onChange={this.getChangeHandler("value1")}
-                    labelRenderer={this.renderLabel1}
+                    labelRenderer={this.renderLabel2}
                     value={this.state.value1}
                     vertical={vertical}
                 />
@@ -66,21 +67,15 @@ export class SliderExample extends BaseExample<ISliderExampleState> {
                     value={this.state.value3}
                     vertical={vertical}
                 />
-            </div>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [<Switch checked={this.state.vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />],
-        ];
     }
 
     private getChangeHandler(key: string) {
         return (value: number) => this.setState({ [key]: value });
     }
 
-    private renderLabel1(val: number) {
+    private renderLabel2(val: number) {
         return `${Math.round(val * 100)}%`;
     }
 

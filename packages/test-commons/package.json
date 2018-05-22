@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/test-commons",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Common utilities for tests in @blueprintjs packages",
   "main": "lib/cjs/index.js",
   "typings": "lib/cjs/index.d.ts",
@@ -15,10 +15,11 @@
     "chai": "^4.1.2",
     "core-js": "^2.5.3",
     "enzyme": "^3.3.0",
+    "enzyme-adapter-react-15": "^1.0.5",
     "enzyme-adapter-react-16": "^1.1.1"
   },
   "peerDependencies": {
-    "react": "^16.2.0"
+    "react": ">=15.3.0"
   },
   "devDependencies": {
     "react": "^16.2.0",
