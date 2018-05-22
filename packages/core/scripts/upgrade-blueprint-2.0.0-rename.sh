@@ -202,7 +202,8 @@ renameProp leftIconName leftIcon
 renameProp rightIconName rightIcon
 renameProp iconName icon
 renameString "icon=\{IconClasses" "icon={IconNames" # prop usage (previous line renames icon prop)
-renameString IconClasses "Classes.iconClass(IconNames"  # assuming user wanted class name
+renameString "visual=\{IconClasses" "visual={IconNames" # NonIdealState prop usage (previous line renames icon prop)
+warn IconClasses "Classes.iconClass(IconName.SOME_ICON)"  # assuming user wanted class name
 renameString FileUpload FileInput
 renameString fileUpload fileInput
 renameString "pt-file-upload(?!-)" pt-file-input # only rename full classname, not partial classname like pt-file-upload-input

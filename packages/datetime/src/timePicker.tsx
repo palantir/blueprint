@@ -22,11 +22,12 @@ import {
 } from "./common/timeUnit";
 import * as Utils from "./common/utils";
 
-export enum TimePickerPrecision {
-    MINUTE = 0,
-    SECOND = 1,
-    MILLISECOND = 2,
-}
+export const TimePrecision = {
+    MILLISECOND: "millisecond" as "millisecond",
+    MINUTE: "minute" as "minute",
+    SECOND: "second" as "second",
+};
+export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 
 export interface ITimePickerProps extends IProps {
     /**
@@ -50,7 +51,7 @@ export interface ITimePickerProps extends IProps {
      * The precision of time the user can set.
      * @default TimePickerPrecision.MINUTE
      */
-    precision?: TimePickerPrecision;
+    precision?: TimePrecision;
 
     /**
      * Whether all the text in each input should be selected on focus.
@@ -109,7 +110,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         disabled: false,
         maxTime: getDefaultMaxTime(),
         minTime: getDefaultMinTime(),
-        precision: TimePickerPrecision.MINUTE,
+        precision: TimePrecision.MINUTE,
         selectAllOnFocus: false,
         showArrowButtons: false,
         useAmPm: false,
@@ -131,8 +132,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     public render() {
-        const shouldRenderSeconds = this.props.precision >= TimePickerPrecision.SECOND;
-        const shouldRenderMilliseconds = this.props.precision >= TimePickerPrecision.MILLISECOND;
+        const shouldRenderMilliseconds = this.props.precision === TimePrecision.MILLISECOND;
+        const shouldRenderSeconds = shouldRenderMilliseconds || this.props.precision === TimePrecision.SECOND;
         const hourUnit = this.props.useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
         const classes = classNames(Classes.TIMEPICKER, this.props.className, {
             [CoreClasses.DISABLED]: this.props.disabled,

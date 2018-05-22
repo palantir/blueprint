@@ -6,16 +6,16 @@
 
 import * as React from "react";
 
-import { Classes, InputGroup, NonIdealState, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Classes, H5, InputGroup, NonIdealState, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface INonIdealStateExampleState {
-    action?: boolean;
-    description?: boolean;
-    icon?: boolean;
+    action: boolean;
+    description: boolean;
+    icon: boolean;
 }
 
-export class NonIdealStateExample extends BaseExample<INonIdealStateExampleState> {
+export class NonIdealStateExample extends React.PureComponent<IExampleProps, INonIdealStateExampleState> {
     public state: INonIdealStateExampleState = {
         action: true,
         description: true,
@@ -26,35 +26,32 @@ export class NonIdealStateExample extends BaseExample<INonIdealStateExampleState
     private toggleIcon = handleBooleanChange(icon => this.setState({ icon }));
     private toggleDescription = handleBooleanChange(description => this.setState({ description }));
 
-    protected renderExample() {
+    public render() {
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch label="Show icon" checked={this.state.icon} onChange={this.toggleIcon} />
+                <Switch label="Show description" checked={this.state.description} onChange={this.toggleDescription} />
+                <Switch label="Show action" checked={this.state.action} onChange={this.toggleAction} />
+            </>
+        );
+
         const action = <InputGroup className={Classes.ROUND} leftIcon="search" placeholder="Search..." />;
         const description = (
-            <div>
+            <>
                 Your search didn't match any files.<br />Try searching for something else.
-            </div>
+            </>
         );
-        return (
-            <NonIdealState
-                icon={this.state.icon ? "search" : undefined}
-                title="No search results"
-                description={this.state.description ? description : undefined}
-                action={this.state.action ? action : undefined}
-            />
-        );
-    }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch checked={this.state.icon} label="Show icon" key="icon" onChange={this.toggleIcon} />,
-                <Switch
-                    checked={this.state.description}
-                    label="Show description"
-                    key="description"
-                    onChange={this.toggleDescription}
-                />,
-                <Switch checked={this.state.action} label="Show action" key="action" onChange={this.toggleAction} />,
-            ],
-        ];
+        return (
+            <Example options={options} {...this.props}>
+                <NonIdealState
+                    icon={this.state.icon ? "search" : undefined}
+                    title="No search results"
+                    description={this.state.description ? description : undefined}
+                    action={this.state.action ? action : undefined}
+                />
+            </Example>
+        );
     }
 }

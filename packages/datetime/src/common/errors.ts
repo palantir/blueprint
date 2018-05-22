@@ -24,7 +24,7 @@ export const DATERANGEPICKER_INITIAL_MONTH_INVALID = DATEPICKER_INITIAL_MONTH_IN
 export const DATERANGEPICKER_MAX_DATE_INVALID = DATEPICKER_MAX_DATE_INVALID.replace("DatePicker", "DateRangePicker");
 export const DATERANGEPICKER_VALUE_INVALID = DATEPICKER_VALUE_INVALID.replace("DatePicker", "DateRangePicker");
 export const DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID =
-    "<DateRangePicker> preferredBoundaryToModify must be a valid DateRangeBoundary if defined.";
+    "<DateRangePicker> preferredBoundaryToModify must be a valid Boundary if defined.";
 
 export const DATERANGEINPUT_NULL_VALUE =
     ns +

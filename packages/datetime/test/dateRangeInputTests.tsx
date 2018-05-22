@@ -10,6 +10,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import {
+    Boundary,
     Classes as CoreClasses,
     HTMLDivProps,
     HTMLInputProps,
@@ -22,7 +23,7 @@ import {
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -33,12 +34,12 @@ type WrappedComponentDayElement = ReactWrapper<HTMLDivProps, any>;
 type OutOfRangeTestFunction = (
     inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
     inputString: string,
-    boundary?: DateRangeBoundary,
+    boundary?: Boundary,
 ) => void;
 
 type InvalidDateTestFunction = (
     inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-    boundary: DateRangeBoundary,
+    boundary: Boundary,
     otherInputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
 ) => void;
 
@@ -554,8 +555,7 @@ describe("<DateRangeInput>", () => {
 
             describe("calls onError with invalid date on blur", () => {
                 runTestForEachScenario((inputGetterFn, inputString, boundary) => {
-                    const expectedRange =
-                        boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
+                    const expectedRange = boundary === Boundary.START ? [inputString, null] : [null, inputString];
                     inputGetterFn(root).simulate("focus");
                     changeInputText(inputGetterFn(root), inputString);
                     expect(onError.called).to.be.false;
@@ -589,7 +589,7 @@ describe("<DateRangeInput>", () => {
             });
 
             function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
-                const { START, END } = DateRangeBoundary; // deconstruct to keep line lengths under threshold
+                const { START, END } = Boundary; // deconstruct to keep line lengths under threshold
                 it("if start < minDate", () => runTestFn(getStartInput, OUT_OF_RANGE_START_STR, START));
                 it("if start > maxDate", () => runTestFn(getStartInput, OUT_OF_RANGE_END_STR, START));
                 it("if end < minDate", () => runTestFn(getEndInput, OUT_OF_RANGE_START_STR, END));
@@ -651,7 +651,7 @@ describe("<DateRangeInput>", () => {
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
-                    const dateIndex = boundary === DateRangeBoundary.START ? 0 : 1;
+                    const dateIndex = boundary === Boundary.START ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
                 });
             });
@@ -697,17 +697,15 @@ describe("<DateRangeInput>", () => {
 
                     const actualRange = onChange.getCall(0).args[0];
                     const expectedRange =
-                        boundary === DateRangeBoundary.START
-                            ? [VALID_STR, UNDEFINED_DATE_STR]
-                            : [UNDEFINED_DATE_STR, VALID_STR];
+                        boundary === Boundary.START ? [VALID_STR, UNDEFINED_DATE_STR] : [UNDEFINED_DATE_STR, VALID_STR];
 
                     assertDateRangesEqual(actualRange, expectedRange);
                 });
             });
 
             function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
-                it("in start field", () => runTestFn(getStartInput, DateRangeBoundary.START, getEndInput));
-                it("in end field", () => runTestFn(getEndInput, DateRangeBoundary.END, getStartInput));
+                it("in start field", () => runTestFn(getStartInput, Boundary.START, getEndInput));
+                it("in end field", () => runTestFn(getEndInput, Boundary.END, getStartInput));
             }
         });
 
@@ -2207,8 +2205,7 @@ describe("<DateRangeInput>", () => {
 
             describe("calls onError with invalid date on blur", () => {
                 runTestForEachScenario((inputGetterFn, inputString, boundary) => {
-                    const expectedRange =
-                        boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
+                    const expectedRange = boundary === Boundary.START ? [inputString, null] : [null, inputString];
                     inputGetterFn(root).simulate("focus");
                     changeInputText(inputGetterFn(root), inputString);
                     expect(onError.called).to.be.false;
@@ -2229,7 +2226,7 @@ describe("<DateRangeInput>", () => {
             });
 
             function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
-                const { START, END } = DateRangeBoundary;
+                const { START, END } = Boundary;
                 it("if start < minDate", () => runTestFn(getStartInput, OUT_OF_RANGE_START_STR, START));
                 it("if start > maxDate", () => runTestFn(getStartInput, OUT_OF_RANGE_END_STR, START));
                 it("if end < minDate", () => runTestFn(getEndInput, OUT_OF_RANGE_START_STR, END));
@@ -2270,7 +2267,7 @@ describe("<DateRangeInput>", () => {
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
-                    const dateIndex = boundary === DateRangeBoundary.START ? 0 : 1;
+                    const dateIndex = boundary === Boundary.START ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
                 });
             });
@@ -2286,8 +2283,8 @@ describe("<DateRangeInput>", () => {
             });
 
             function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
-                it("in start field", () => runTestFn(getStartInput, DateRangeBoundary.START, getEndInput));
-                it("in end field", () => runTestFn(getEndInput, DateRangeBoundary.END, getStartInput));
+                it("in start field", () => runTestFn(getStartInput, Boundary.START, getEndInput));
+                it("in end field", () => runTestFn(getEndInput, Boundary.END, getStartInput));
             }
         });
 

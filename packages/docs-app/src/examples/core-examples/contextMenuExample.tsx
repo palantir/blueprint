@@ -10,7 +10,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 /**
  * This component uses the imperative ContextMenu API.
@@ -48,7 +48,16 @@ class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> 
  * This component uses the decorator API and implements the IContextMenuTarget interface.
  */
 @ContextMenuTarget
-export class ContextMenuExample extends BaseExample<{}> {
+export class ContextMenuExample extends React.PureComponent<IExampleProps, {}> {
+    public render() {
+        return (
+            <Example className="docs-context-menu-example" options={false} {...this.props}>
+                <GraphNode />
+                <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
+            </Example>
+        );
+    }
+
     public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
         return (
             <Menu>
@@ -66,15 +75,6 @@ export class ContextMenuExample extends BaseExample<{}> {
                 <MenuDivider />
                 <MenuItem disabled={true} text={`Clicked at (${e.clientX}, ${e.clientY})`} />
             </Menu>
-        );
-    }
-
-    public renderExample() {
-        return (
-            <div className="docs-context-menu-example">
-                <GraphNode />
-                <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
-            </div>
         );
     }
 }

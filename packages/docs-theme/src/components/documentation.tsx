@@ -129,7 +129,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             getDocsData: () => docs,
             renderBlock: block => renderBlock(block, this.props.tagRenderers),
             renderType: hasTypescriptData(docs)
-                ? type => linkify(type, docs.typescript, name => <ApiLink key={name} name={name} />)
+                ? type =>
+                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />)
                 : type => type,
             renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
                 ? renderViewSourceLinkText

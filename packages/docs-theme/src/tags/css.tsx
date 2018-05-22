@@ -9,6 +9,7 @@ import classNames from "classnames";
 import { IKssPluginData, ITag } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { Example } from "../components/example";
 
 export interface ICssExampleState {
     modifiers: Set<string>;
@@ -40,10 +41,11 @@ export class CssExample extends React.PureComponent<ITag> {
         ));
         return (
             <>
-                <div className="docs-example-frame" data-reference={reference}>
-                    <div className="docs-example" dangerouslySetInnerHTML={this.renderExample(markup)} />
-                    <div className="docs-example-options">{options}</div>
-                </div>
+                <Example
+                    id={reference}
+                    options={options.length > 0 ? options : false}
+                    html={this.renderExample(markup)}
+                />
                 <div
                     className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
                     dangerouslySetInnerHTML={{ __html: markupHtml }}
@@ -67,7 +69,7 @@ export class CssExample extends React.PureComponent<ITag> {
     private renderExample(markup: string) {
         const classes = this.getModifiers(".");
         const attrs = this.getModifiers(":");
-        return { __html: markup.replace(MODIFIER_ATTR_REGEXP, attrs).replace(MODIFIER_CLASS_REGEXP, classes) };
+        return markup.replace(MODIFIER_ATTR_REGEXP, attrs).replace(MODIFIER_CLASS_REGEXP, classes);
     }
 
     private getModifiers(prefix: "." | ":") {

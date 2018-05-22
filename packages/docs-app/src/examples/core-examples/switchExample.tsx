@@ -6,21 +6,24 @@
 
 import * as React from "react";
 
-import { Classes, Code, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Code, Label, Switch } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class SwitchExample extends BaseExample<{}> {
-    protected renderExample() {
+export class SwitchExample extends React.PureComponent<IExampleProps> {
+    public render() {
         return (
-            <div>
-                <label className={Classes.LABEL}>Privacy setting</label>
-                <Switch labelElement={<strong>Enabled</strong>} />
-                <Switch labelElement={<em>Public</em>} />
-                <Switch labelElement={<u>Cooperative</u>} defaultChecked={true} />
-                <small>
-                    This example uses <Code>labelElement</Code> to demonstrate JSX labels.
-                </small>
-            </div>
+            <Example options={false} {...this.props}>
+                <div>
+                    <Label text="Privacy setting" />
+                    <Switch labelElement={<strong>Enabled</strong>} />
+                    <Switch labelElement={<em>Public</em>} />
+                    <Switch labelElement={<u>Cooperative</u>} defaultChecked={true} />
+                    <small>
+                        This example uses <Code>labelElement</Code>
+                        <br /> to demonstrate JSX labels.
+                    </small>
+                </div>
+            </Example>
         );
     }
 }

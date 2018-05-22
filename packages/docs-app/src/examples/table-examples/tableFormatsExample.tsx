@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "@blueprintjs/table";
 
 interface ITimezone {
@@ -75,18 +75,20 @@ const FORMAT_OPTIONS = {
     year: "numeric",
 };
 
-export class TableFormatsExample extends BaseExample<{}> {
+export class TableFormatsExample extends React.PureComponent<IExampleProps, {}> {
     private data = TIME_ZONES;
     private date = new Date();
 
-    public renderExample() {
+    public render() {
         return (
-            <Table enableRowResizing={true} numRows={this.data.length}>
-                <Column name="Timezone" cellRenderer={this.renderTimezone} />
-                <Column name="UTC Offset" cellRenderer={this.renderOffset} />
-                <Column name="Local Time" cellRenderer={this.renderLocalTime} />
-                <Column name="Timezone JSON" cellRenderer={this.renderJSON} />
-            </Table>
+            <Example options={false} showOptionsBelowExample={true} {...this.props}>
+                <Table enableRowResizing={true} numRows={this.data.length}>
+                    <Column name="Timezone" cellRenderer={this.renderTimezone} />
+                    <Column name="UTC Offset" cellRenderer={this.renderOffset} />
+                    <Column name="Local Time" cellRenderer={this.renderLocalTime} />
+                    <Column name="Timezone JSON" cellRenderer={this.renderJSON} />
+                </Table>
+            </Example>
         );
     }
 

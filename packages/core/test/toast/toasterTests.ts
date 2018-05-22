@@ -5,10 +5,13 @@
  */
 
 import { assert } from "chai";
+import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
+import { mount } from "enzyme";
 import * as Classes from "../../src/common/classes";
+import { TOASTER_CREATE_NULL } from "../../src/common/errors";
 import { IToaster, Toaster } from "../../src/index";
 
 describe("Toaster", () => {
@@ -136,5 +139,22 @@ describe("Toaster", () => {
                 done();
             }, 10);
         });
+    });
+
+    it("throws an error if used within a React lifecycle method", () => {
+        class LifecycleToaster extends React.Component {
+            public render() {
+                return React.createElement("div");
+            }
+
+            public componentDidMount() {
+                try {
+                    Toaster.create();
+                } catch (err) {
+                    assert.equal(err.message, TOASTER_CREATE_NULL);
+                }
+            }
+        }
+        mount(React.createElement(LifecycleToaster));
     });
 });
