@@ -11,7 +11,7 @@ import {
     Intent,
     ISliderHandleProps,
     Label,
-    MultiRangeSlider,
+    MultiSlider,
     SliderHandle,
     SliderHandleInteractionKind,
     Switch,
@@ -61,7 +61,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
     public render() {
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <MultiRangeSlider
+                <MultiSlider
                     min={0}
                     max={100}
                     stepSize={2}
@@ -74,7 +74,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                     {this.renderWarningStartHandle()}
                     {this.renderWarningEndHandle()}
                     {this.renderDangerEndHandle()}
-                </MultiRangeSlider>
+                </MultiSlider>
             </Example>
         );
     }

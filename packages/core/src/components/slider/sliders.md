@@ -32,12 +32,12 @@ user has stopped interacting with the slider.
 
 @interface IRangeSliderProps
 
-@## Multi-range slider
+@## Multi slider
 
 TODO: Fill these docs in.
 
-@reactExample MultiRangeSliderExample
+@reactExample MultiSliderExample
 
-@interface IMultiRangeSliderProps
+@interface IMultiSliderProps
 
 @interface ISliderHandleProps

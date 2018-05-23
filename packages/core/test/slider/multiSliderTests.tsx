@@ -10,12 +10,12 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { Classes, IMultiRangeSliderProps, MultiRangeSlider, SliderHandle } from "../../src";
+import { Classes, IMultiSliderProps, MultiSlider, SliderHandle } from "../../src";
 import * as Keys from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 import * as Utils from "./sliderTestUtils";
 
-describe("<MultiRangeSlider>", () => {
+describe("<MultiSlider>", () => {
     let testsContainerElement: HTMLElement;
 
     let onChange: sinon.SinonSpy;
@@ -33,7 +33,7 @@ describe("<MultiRangeSlider>", () => {
     afterEach(() => testsContainerElement.remove());
 
     it("throws an error if a child is not a slider handle", () => {
-        expectPropValidationError(MultiRangeSlider, { children: <span>Bad</span> as any });
+        expectPropValidationError(MultiSlider, { children: <span>Bad</span> as any });
     });
 
     it("progress bars are rendered between all handles", () => {
@@ -360,15 +360,15 @@ describe("<MultiRangeSlider>", () => {
         });
     });
 
-    function renderSlider(joinedProps?: IMultiRangeSliderProps & { values?: [number, number, number] }) {
+    function renderSlider(joinedProps?: IMultiSliderProps & { values?: [number, number, number] }) {
         const { values, ...props } = joinedProps;
         const actualValues = values || [0, 5, 10];
         return mount(
-            <MultiRangeSlider {...props}>
+            <MultiSlider {...props}>
                 <SliderHandle value={actualValues[0]} />
                 <SliderHandle value={actualValues[1]} />
                 <SliderHandle value={actualValues[2]} />
-            </MultiRangeSlider>,
+            </MultiSlider>,
             { attachTo: testsContainerElement },
         );
     }

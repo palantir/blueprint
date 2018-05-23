@@ -15,32 +15,32 @@ import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
 import { ISliderHandleProps, SliderHandle, SliderHandleInteractionKind, SliderHandleType } from "./sliderHandle";
 
-export interface IMultiRangeSliderProps extends ICoreSliderProps {
+export interface IMultiSliderProps extends ICoreSliderProps {
     children?: Array<React.ReactElement<ISliderHandleProps>>;
     defaultTrackIntent?: Intent;
     onChange?(values: number[]): void;
     onRelease?(values: number[]): void;
 }
 
-export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
-    public static defaultProps: IMultiRangeSliderProps = {
+export class MultiSlider extends CoreSlider<IMultiSliderProps> {
+    public static defaultProps: IMultiSliderProps = {
         ...CoreSlider.defaultProps,
         defaultTrackIntent: Intent.NONE,
     };
 
-    public static displayName = "Blueprint2.MultiRangeSlider";
-    public className = classNames(Classes.SLIDER, Classes.MULTI_RANGE_SLIDER);
+    public static displayName = "Blueprint2.MultiSlider";
+    public className = classNames(Classes.SLIDER, Classes.MULTI_SLIDER);
 
     private handles: Handle[] = [];
 
-    public componentWillReceiveProps(nextProps: IMultiRangeSliderProps & { children: React.ReactNode }) {
+    public componentWillReceiveProps(nextProps: IMultiSliderProps & { children: React.ReactNode }) {
         super.componentWillReceiveProps(nextProps);
         if (getHandles(nextProps).length !== this.getHandles().length) {
             this.handles = [];
         }
     }
 
-    protected validateProps(props: IMultiRangeSliderProps) {
+    protected validateProps(props: IMultiSliderProps) {
         let anyNonHandleChildren = false;
         React.Children.forEach(props.children, child => {
             if (child != null && !Utils.isElementOfType(child, SliderHandle)) {
@@ -48,7 +48,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
             }
         });
         if (anyNonHandleChildren) {
-            throw new Error(Errors.MULTIRANGESLIDER_INVALID_CHILD);
+            throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
         }
     }
 
@@ -215,7 +215,7 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     }
 }
 
-function getHandles({ children }: IMultiRangeSliderProps): ISliderHandleProps[] {
+function getHandles({ children }: IMultiSliderProps): ISliderHandleProps[] {
     const maybeHandles = React.Children.map(
         children,
         child => (Utils.isElementOfType(child, SliderHandle) ? child.props : null),

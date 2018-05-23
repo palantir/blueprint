@@ -52,7 +52,7 @@ export * from "./text/text";
 export * from "./popover/popover";
 export * from "./portal/portal";
 export * from "./progress-bar/progressBar";
-export * from "./slider/multiRangeSlider";
+export * from "./slider/multiSlider";
 export * from "./slider/rangeSlider";
 export * from "./slider/slider";
 export * from "./slider/sliderHandle";
