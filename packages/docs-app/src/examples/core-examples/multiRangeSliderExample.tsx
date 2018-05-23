@@ -53,10 +53,10 @@ export class MultiRangeSliderExample extends React.PureComponent<IExampleProps, 
                     vertical={this.state.vertical}
                     defaultTrackIntent={Intent.SUCCESS}
                 >
-                    {this.renderInnerEndHandle()}
-                    {this.renderOuterEndHandle()}
                     {this.renderOuterStartHandle()}
                     {this.renderInnerStartHandle()}
+                    {this.renderInnerEndHandle()}
+                    {this.renderOuterEndHandle()}
                 </MultiRangeSlider>
             </Example>
         );
