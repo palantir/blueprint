@@ -154,7 +154,7 @@ Styleguide menu-header
     @include menu-item-intent($pt-dark-intent-text-colors);
 
     &::before,
-    .#{$ns}-icon {
+    > .#{$ns}-icon {
       color: $pt-dark-icon-color;
     }
 
