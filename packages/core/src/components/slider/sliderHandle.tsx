@@ -15,11 +15,18 @@ export const SliderHandleType = {
 };
 export type SliderHandleType = typeof SliderHandleType[keyof typeof SliderHandleType];
 
+export const SliderHandleInteractionKind = {
+    LOCK: "lock" as "lock",
+    PUSH: "push" as "push",
+};
+export type SliderHandleInteractionKind = typeof SliderHandleInteractionKind[keyof typeof SliderHandleInteractionKind];
+
 export interface ISliderHandleProps {
     value: number;
     trackIntentAfter?: Intent;
     trackIntentBefore?: Intent;
     type?: SliderHandleType;
+    interactionKind?: SliderHandleInteractionKind;
 }
 
 export class SliderHandle extends React.PureComponent<ISliderHandleProps> {

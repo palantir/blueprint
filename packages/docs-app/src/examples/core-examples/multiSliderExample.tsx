@@ -6,7 +6,16 @@
 
 import * as React from "react";
 
-import { Classes, Intent, ISliderHandleProps, Label, MultiRangeSlider, SliderHandle, Switch } from "@blueprintjs/core";
+import {
+    Classes,
+    Intent,
+    ISliderHandleProps,
+    Label,
+    MultiRangeSlider,
+    SliderHandle,
+    SliderHandleInteractionKind,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 interface ISliderValues {
@@ -20,6 +29,7 @@ type IntentOption = "danger" | "warning" | "both";
 type TailOption = "lower" | "upper" | "both" | "neither";
 
 interface IMultiSliderExampleState {
+    lockHandles: boolean;
     intent: IntentOption;
     tail: TailOption;
     values?: ISliderValues;
@@ -29,8 +39,9 @@ interface IMultiSliderExampleState {
 export type ConcreteHandleProps = Pick<ISliderHandleProps, "trackIntentBefore" | "trackIntentAfter">;
 
 // tslint:disable:object-literal-sort-keys
-export abstract class AbstractMultiSliderExample extends React.PureComponent<IExampleProps, IMultiSliderExampleState> {
+export class MultiSliderExample extends React.PureComponent<IExampleProps, IMultiSliderExampleState> {
     public state: IMultiSliderExampleState = {
+        lockHandles: false,
         intent: "both",
         tail: "both",
         values: {
@@ -43,6 +54,7 @@ export abstract class AbstractMultiSliderExample extends React.PureComponent<IEx
     };
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+    private toggleLockHandles = handleBooleanChange(lockHandles => this.setState({ lockHandles }));
     private handleIntentChange = handleStringChange((intent: IntentOption) => this.setState({ intent }));
     private handleTailChange = handleStringChange((tail: TailOption) => this.setState({ tail }));
 
@@ -56,7 +68,7 @@ export abstract class AbstractMultiSliderExample extends React.PureComponent<IEx
                     labelStepSize={20}
                     onChange={this.handleChange}
                     vertical={this.state.vertical}
-                    defaultTrackIntent={this.getDefaultTrackIntent()}
+                    defaultTrackIntent={Intent.SUCCESS}
                 >
                     {this.renderDangerStartHandle()}
                     {this.renderWarningStartHandle()}
@@ -66,12 +78,6 @@ export abstract class AbstractMultiSliderExample extends React.PureComponent<IEx
             </Example>
         );
     }
-
-    protected abstract getDefaultTrackIntent(): Intent;
-    protected abstract getDangerStartHandleProps(): ConcreteHandleProps;
-    protected abstract getWarningStartHandleProps(): ConcreteHandleProps;
-    protected abstract getWarningEndHandleProps(): ConcreteHandleProps;
-    protected abstract getDangerEndHandleProps(): ConcreteHandleProps;
 
     private renderDangerStartHandle() {
         const { intent, tail, values } = this.state;
@@ -83,7 +89,8 @@ export abstract class AbstractMultiSliderExample extends React.PureComponent<IEx
                 key="danger-start"
                 type="start"
                 value={values.dangerStart}
-                {...this.getDangerStartHandleProps()}
+                trackIntentBefore={Intent.DANGER}
+                {...this.getInteractionKind()}
             />
         );
     }
@@ -98,7 +105,8 @@ export abstract class AbstractMultiSliderExample extends React.PureComponent<IEx
                 key="warning-start"
                 type="start"
                 value={values.warningStart}
-                {...this.getWarningStartHandleProps()}
+                trackIntentBefore={Intent.WARNING}
+                interactionKind="push"
             />
         );
     }
@@ -109,7 +117,13 @@ export abstract class AbstractMultiSliderExample extends React.PureComponent<IEx
             return null;
         }
         return (
-            <SliderHandle key="warning-end" type="end" value={values.warningEnd} {...this.getWarningEndHandleProps()} />
+            <SliderHandle
+                key="warning-end"
+                type="end"
+                value={values.warningEnd}
+                trackIntentAfter={Intent.WARNING}
+                interactionKind="push"
+            />
         );
     }
 
@@ -119,14 +133,29 @@ export abstract class AbstractMultiSliderExample extends React.PureComponent<IEx
             return null;
         }
         return (
-            <SliderHandle key="danger-end" type="end" value={values.dangerEnd} {...this.getDangerEndHandleProps()} />
+            <SliderHandle
+                key="danger-end"
+                type="end"
+                value={values.dangerEnd}
+                trackIntentAfter={Intent.DANGER}
+                {...this.getInteractionKind()}
+            />
         );
+    }
+
+    private getInteractionKind() {
+        return {
+            interactionKind: this.state.lockHandles
+                ? SliderHandleInteractionKind.LOCK
+                : SliderHandleInteractionKind.PUSH,
+        };
     }
 
     private renderOptions() {
         return (
             <>
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.toggleVertical} />
+                <Switch checked={this.state.lockHandles} label="Lock handles" onChange={this.toggleLockHandles} />
                 <Label text="Intent">
                     <div className={Classes.SELECT}>
                         <select value={this.state.intent} onChange={this.handleIntentChange}>

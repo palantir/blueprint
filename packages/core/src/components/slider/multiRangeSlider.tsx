@@ -13,7 +13,7 @@ import * as Errors from "../../common/errors";
 import * as Utils from "../../common/utils";
 import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
-import { ISliderHandleProps, SliderHandle, SliderHandleType } from "./sliderHandle";
+import { ISliderHandleProps, SliderHandle, SliderHandleInteractionKind, SliderHandleType } from "./sliderHandle";
 
 export interface IMultiRangeSliderProps extends ICoreSliderProps {
     children?: Array<React.ReactElement<ISliderHandleProps>>;
@@ -169,27 +169,38 @@ export class MultiRangeSlider extends CoreSlider<IMultiRangeSliderProps> {
     private getHandlerForIndex = (index: number, callback?: (values: number[]) => void) => {
         return (newValue: number) => {
             if (Utils.isFunction(callback)) {
-                const values = this.getSortedHandles().map(handle => handle.value);
-                const start = values.slice(0, index);
-                const end = values.slice(index + 1);
-                const newValues = [...start, newValue, ...end];
-                newValues.sort();
-                callback(newValues);
+                callback(this.getNewHandleValues(newValue, index));
             }
         };
     };
 
-    private handleChange = (values: number[]) => {
+    private getNewHandleValues(newValue: number, index: number) {
+        const handles = this.getSortedHandles();
+        const values = handles.map(handle => handle.value);
+        const start = values.slice(0, index);
+        const end = values.slice(index + 1);
+        const newValues = [...start, newValue, ...end];
+        newValues.sort((left, right) => left - right);
+
+        const newIndex = newValues.indexOf(newValue);
+        if (handles[newIndex].interactionKind === SliderHandleInteractionKind.PUSH) {
+            newValues[index] = newValues[newIndex];
+        } else {
+            newValues[newIndex] = newValues[index];
+        }
+
+        return newValues;
+    }
+
+    private handleChange = (newValues: number[]) => {
         const oldValues = this.getSortedHandles().map(handle => handle.value);
-        const newValues = values.slice().sort((left, right) => left - right);
         if (!Utils.arraysEqual(newValues, oldValues) && Utils.isFunction(this.props.onChange)) {
             this.props.onChange(newValues);
         }
     };
 
-    private handleRelease = (values: number[]) => {
+    private handleRelease = (newValues: number[]) => {
         if (Utils.isFunction(this.props.onRelease)) {
-            const newValues = values.slice().sort((left, right) => left - right);
             this.props.onRelease(newValues);
         }
     };
