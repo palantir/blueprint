@@ -46,3 +46,11 @@
     transform: translate($label-offset, 50%);
   }
 }
+
+@mixin slider-progress-empty {
+  background: rgba($gray1, 0.2);
+
+  .#{$ns}-dark & {
+    background: rgba($black, 0.5);
+  }
+}

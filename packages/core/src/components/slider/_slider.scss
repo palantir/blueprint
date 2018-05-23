@@ -37,14 +37,6 @@ $track-height: $track-size !default;
   }
 }
 
-@mixin slider-progress-empty {
-  background: rgba($gray1, 0.2);
-
-  .#{$ns}-dark & {
-    background: rgba($black, 0.5);
-  }
-}
-
 .#{$ns}-slider-track:first-child {
   @include slider-progress-empty();
 }
