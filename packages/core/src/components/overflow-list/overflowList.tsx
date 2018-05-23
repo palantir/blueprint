@@ -30,7 +30,7 @@ export interface IOverflowListProps<T> extends IProps {
      * If `true`, all parent elements of the container will also be observed. If changes to a parent’s size is detected, the overflow will
      * be recalculated.
      * Only enable this prop if the overflow should be recalculated when a parent element resizes in a way that does not also cause the
-     * `OverflowContainer` to resize.
+     * `OverflowList` to resize.
      * @default false
      */
     observeParents?: boolean;
