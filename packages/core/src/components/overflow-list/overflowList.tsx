@@ -10,6 +10,7 @@ import ResizeObserver from "resize-observer-polyfill";
 
 import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
+import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
 import { IProps } from "../../common/props";
 import { throttle } from "../../common/utils";
 
@@ -53,7 +54,7 @@ export interface IOverflowListState<T> {
     visible: T[];
 }
 
-export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOverflowListState<T>> {
+export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, IOverflowListState<T>> {
     public static displayName = "Blueprint2.OverflowList";
 
     public static defaultProps: Partial<IOverflowListProps<any>> = {
@@ -96,10 +97,20 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
     }
 
     public componentWillReceiveProps(nextProps: IOverflowListProps<T>) {
-        this.setState({
-            overflow: [],
-            visible: nextProps.items,
-        });
+        const { items, observeParents, overflowRenderer, visibleItemRenderer } = this.props;
+        if (observeParents !== nextProps.observeParents) {
+            console.warn(OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED);
+        }
+        if (
+            items !== nextProps.items ||
+            overflowRenderer !== nextProps.overflowRenderer ||
+            visibleItemRenderer !== nextProps.visibleItemRenderer
+        ) {
+            this.setState({
+                overflow: [],
+                visible: nextProps.items,
+            });
+        }
     }
 
     public componentDidUpdate() {
