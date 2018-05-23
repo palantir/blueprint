@@ -39,20 +39,26 @@ describe("<OverflowList>", () => {
         assert.lengthOf(list.find(TestItem), 3);
     });
 
-    it("shows more after growing", () => {
+    it("shows more after growing", done => {
         list = renderOverflowList({ style: { width: 35 } });
         assert.lengthOf(list.find(TestItem), 3);
         list.setProps({ style: { width: 45 } });
-        list.update();
-        assert.lengthOf(list.find(TestItem), 4);
+        setTimeout(() => {
+            list.update();
+            assert.lengthOf(list.find(TestItem), 4);
+            done();
+        }, 10);
     });
 
-    it("shows all after growing", () => {
+    it("shows all after growing", done => {
         list = renderOverflowList({ style: { width: 15 } });
         assert.lengthOf(list.find(TestItem), 1);
         list.setProps({ style: { width: 200 } });
-        list.update();
-        assert.lengthOf(list.find(TestItem), ITEMS.length);
+        setTimeout(() => {
+            list.update();
+            assert.lengthOf(list.find(TestItem), ITEMS.length);
+            done();
+        }, 10);
     });
 
     it("shows fewer after shrinking", () => {
@@ -77,8 +83,8 @@ describe("<OverflowList>", () => {
         return <TestOverflow />;
     }
 
-    function renderItem() {
-        return <TestItem />;
+    function renderItem(_props: {}, index: number) {
+        return <TestItem key={index} />;
     }
 
     function renderOverflowList(props?: Partial<IOverflowListProps<{}>>) {
