@@ -5,7 +5,7 @@
  */
 
 import { Intent } from "@blueprintjs/core";
-import { AbstractMultiSliderExample, ConcreteHandleProps } from "./multiSliderExample";
+import { AbstractMultiSliderExample, ConcreteHandleProps } from "./abstractMultiSliderExample";
 
 // tslint:disable:object-literal-sort-keys
 export class MultiSliderBeforeAfterExample extends AbstractMultiSliderExample {

@@ -5,7 +5,7 @@
  */
 
 import { Intent, ISliderHandleProps } from "@blueprintjs/core";
-import { AbstractMultiSliderExample } from "./multiSliderExample";
+import { AbstractMultiSliderExample } from "./abstractMultiSliderExample";
 
 type ConcreteHandleProps = Pick<ISliderHandleProps, "trackIntentBefore">;
 
