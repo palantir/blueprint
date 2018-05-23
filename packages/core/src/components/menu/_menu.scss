@@ -59,7 +59,7 @@ Styleguide menu
   }
 
   &::before,
-  .#{$ns}-icon {
+  > .#{$ns}-icon {
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
     color: $pt-icon-color;
   }
