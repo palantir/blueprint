@@ -87,7 +87,7 @@ Styleguide menu
     color: $pt-text-color-disabled !important;
 
     &::before,
-    .#{$ns}-icon,
+    > .#{$ns}-icon,
     .#{$ns}-menu-item-label {
       color: $pt-icon-color-disabled !important;
     }
@@ -173,7 +173,7 @@ Styleguide menu-header
       color: $pt-dark-text-color-disabled !important;
 
       &::before,
-      .#{$ns}-icon,
+      > .#{$ns}-icon,
       .#{$ns}-menu-item-label {
         color: $pt-dark-icon-color-disabled !important;
       }
