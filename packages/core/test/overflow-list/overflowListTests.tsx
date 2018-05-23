@@ -47,7 +47,7 @@ describe("<OverflowList>", () => {
             list.update();
             assert.lengthOf(list.find(TestItem), 4);
             done();
-        }, 10);
+        }, 20);
     });
 
     it("shows all after growing", done => {
@@ -58,7 +58,7 @@ describe("<OverflowList>", () => {
             list.update();
             assert.lengthOf(list.find(TestItem), ITEMS.length);
             done();
-        }, 10);
+        }, 20);
     });
 
     it("shows fewer after shrinking", () => {
