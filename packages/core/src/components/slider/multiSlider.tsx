@@ -179,22 +179,35 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         };
     };
 
-    private getNewHandleValues(newValue: number, index: number) {
-        const values = this.sortedHandleProps.map(handle => handle.value);
-        const start = values.slice(0, index);
-        const end = values.slice(index + 1);
+    private getNewHandleValues(newValue: number, oldIndex: number) {
+        const oldValues = this.sortedHandleProps.map(handle => handle.value);
+        const start = oldValues.slice(0, oldIndex);
+        const end = oldValues.slice(oldIndex + 1);
         const newValues = [...start, newValue, ...end];
         newValues.sort((left, right) => left - right);
 
         const newIndex = newValues.indexOf(newValue);
-
-        if (this.sortedHandleProps[newIndex].interactionKind === SliderHandleInteractionKind.PUSH) {
-            newValues[index] = newValues[newIndex];
-        } else {
-            newValues[newIndex] = newValues[index];
+        if (newIndex !== oldIndex) {
+            const lockIndex = this.findFirstLockedHandleIndex(oldIndex, newIndex);
+            if (lockIndex === undefined) {
+                fillValues(newValues, oldIndex, newIndex, newValue);
+            } else {
+                const lockValue = oldValues[lockIndex];
+                fillValues(newValues, oldIndex, lockIndex, lockValue);
+            }
         }
 
         return newValues;
+    }
+
+    private findFirstLockedHandleIndex(startIndex: number, endIndex: number): number | undefined {
+        const inc = startIndex < endIndex ? 1 : -1;
+        for (let index = startIndex + inc; index !== endIndex + inc; index += inc) {
+            if (this.sortedHandleProps[index].interactionKind !== SliderHandleInteractionKind.PUSH) {
+                return index;
+            }
+        }
+        return undefined;
     }
 
     private handleChange = (newValues: number[]) => {
@@ -218,6 +231,13 @@ function getSortedHandleProps({ children }: IMultiSliderProps): ISliderHandlePro
     handles = handles.filter(handle => handle !== null);
     handles.sort((left, right) => left.value - right.value);
     return handles;
+}
+
+function fillValues(values: number[], startIndex: number, endIndex: number, fillValue: number) {
+    const inc = startIndex < endIndex ? 1 : -1;
+    for (let index = startIndex; index !== endIndex + inc; index += inc) {
+        values[index] = fillValue;
+    }
 }
 
 function argMin<T>(values: T[], argFn: (value: T) => any): T | undefined {
