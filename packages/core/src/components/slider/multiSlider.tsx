@@ -168,9 +168,7 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
 
     private getHandlerForIndex = (index: number, callback?: (values: number[]) => void) => {
         return (newValue: number) => {
-            if (Utils.isFunction(callback)) {
-                callback(this.getNewHandleValues(newValue, index));
-            }
+            Utils.safeInvoke(callback, this.getNewHandleValues(newValue, index));
         };
     };
 
@@ -194,15 +192,13 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
 
     private handleChange = (newValues: number[]) => {
         const oldValues = this.getSortedHandles().map(handle => handle.value);
-        if (!Utils.arraysEqual(newValues, oldValues) && Utils.isFunction(this.props.onChange)) {
-            this.props.onChange(newValues);
+        if (!Utils.arraysEqual(newValues, oldValues)) {
+            Utils.safeInvoke(this.props.onChange, newValues);
         }
     };
 
     private handleRelease = (newValues: number[]) => {
-        if (Utils.isFunction(this.props.onRelease)) {
-            this.props.onRelease(newValues);
-        }
+        Utils.safeInvoke(this.props.onRelease, newValues);
     };
 
     private getSortedHandles(): ISliderHandleProps[] {
