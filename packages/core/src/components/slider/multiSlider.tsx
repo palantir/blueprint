@@ -95,7 +95,7 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
                 max={max}
                 min={min}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}
-                onRelease={this.getHandlerForIndex(index, this.handleRelease)}
+                onRelease={this.getHandlerForIndex(index, this.props.onRelease)}
                 ref={this.addHandleRef}
                 stepSize={stepSize}
                 tickSize={this.state.tickSize}
@@ -215,10 +215,6 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         if (!Utils.arraysEqual(newValues, oldValues)) {
             Utils.safeInvoke(this.props.onChange, newValues);
         }
-    };
-
-    private handleRelease = (newValues: number[]) => {
-        Utils.safeInvoke(this.props.onRelease, newValues);
     };
 }
 
