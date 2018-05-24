@@ -23,6 +23,7 @@ Styleguide non-ideal-state
   @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
   width: 100%;
   max-width: $pt-grid-size * 40;
   height: 100%;
