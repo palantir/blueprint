@@ -91,9 +91,14 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 </div>
             );
         }
-        if (props.section.title === "Components") {
+        const match = /\/components(\.\w+)?$/.exec(props.section.route);
+        if (match != null) {
             // non-interactive header that expands its menu
-            return <div className="docs-nav-section docs-nav-expanded">{props.section.title}</div>;
+            const classes = classNames("docs-nav-section", "docs-nav-expanded", {
+                // sub-headings appear muted
+                [Classes.TEXT_MUTED]: match[1] != null,
+            });
+            return <div className={classes}>{props.section.title}</div>;
         }
         return <NavMenuItem {...props} />;
     };
