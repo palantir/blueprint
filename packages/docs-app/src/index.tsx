@@ -23,7 +23,7 @@ const releases: IPackageInfo[] = releasesData.map(pkg => ({
 }));
 
 const versions: IPackageInfo[] = Object.keys(versionsData).map(majorVersion => ({
-    url: `https://palantir.github.io/blueprint/docs/v${majorVersion}`,
+    url: `/docs/versions/${majorVersion}`,
     version: versionsData[majorVersion],
 }));
 
