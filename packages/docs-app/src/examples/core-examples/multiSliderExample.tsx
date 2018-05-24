@@ -25,25 +25,36 @@ interface ISliderValues {
     dangerEnd: number;
 }
 
-type IntentOption = "danger" | "warning" | "both";
-type TailOption = "lower" | "upper" | "both" | "neither";
+type HandleIntent = "danger" | "warning";
+type HandleTail = "lower" | "upper";
+type HandleKey = [HandleIntent, HandleTail];
+
+type ShownIntents = HandleIntent | "both";
+type ShownTails = HandleTail | "both" | "neither";
 
 interface IMultiSliderExampleState {
     lockHandles: boolean;
-    intent: IntentOption;
-    tail: TailOption;
+    shownIntents: ShownIntents;
+    shownTails: ShownTails;
     values?: ISliderValues;
     vertical?: boolean;
 }
 
 export type ConcreteHandleProps = Pick<ISliderHandleProps, "trackIntentBefore" | "trackIntentAfter">;
 
+const SLIDER_HANDLE_KEYS: HandleKey[] = [
+    ["danger", "lower"],
+    ["warning", "lower"],
+    ["warning", "upper"],
+    ["danger", "upper"],
+];
+
 // tslint:disable:object-literal-sort-keys
 export class MultiSliderExample extends React.PureComponent<IExampleProps, IMultiSliderExampleState> {
     public state: IMultiSliderExampleState = {
         lockHandles: false,
-        intent: "both",
-        tail: "both",
+        shownIntents: "both",
+        shownTails: "both",
         values: {
             dangerStart: 12,
             warningStart: 36,
@@ -55,8 +66,10 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
     private toggleLockHandles = handleBooleanChange(lockHandles => this.setState({ lockHandles }));
-    private handleIntentChange = handleStringChange((intent: IntentOption) => this.setState({ intent }));
-    private handleTailChange = handleStringChange((tail: TailOption) => this.setState({ tail }));
+    private handleShownIntentsChange = handleStringChange((shownIntents: ShownIntents) =>
+        this.setState({ shownIntents }),
+    );
+    private handleShownTailsChange = handleStringChange((shownTails: ShownTails) => this.setState({ shownTails }));
 
     public render() {
         return (
@@ -70,86 +83,35 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                     vertical={this.state.vertical}
                     defaultTrackIntent={Intent.SUCCESS}
                 >
-                    {this.renderDangerStartHandle()}
-                    {this.renderWarningStartHandle()}
-                    {this.renderWarningEndHandle()}
-                    {this.renderDangerEndHandle()}
+                    {SLIDER_HANDLE_KEYS.filter(this.isHandleShown).map(this.renderHandle)}
                 </MultiSlider>
             </Example>
         );
     }
 
-    private renderDangerStartHandle() {
-        const { intent, tail, values } = this.state;
-        if (intent === "warning" || tail === "upper" || tail === "neither") {
-            return null;
-        }
+    private renderHandle = (key: HandleKey) => {
+        const [handleIntent, handleTail] = key;
+        const { lockHandles, values } = this.state;
+        const intent = handleIntent === "danger" ? Intent.DANGER : Intent.WARNING;
         return (
             <SliderHandle
-                key="danger-start"
-                type="start"
-                value={values.dangerStart}
-                trackIntentBefore={Intent.DANGER}
-                {...this.getInteractionKind()}
+                key={`${handleIntent}-${handleTail}`}
+                type={handleTail === "lower" ? "start" : "end"}
+                value={values[getHandleValueKey(key)]}
+                trackIntentBefore={handleTail === "lower" ? intent : undefined}
+                trackIntentAfter={handleTail === "upper" ? intent : undefined}
+                interactionKind={lockHandles ? SliderHandleInteractionKind.LOCK : SliderHandleInteractionKind.PUSH}
             />
         );
-    }
+    };
 
-    private renderWarningStartHandle() {
-        const { intent, tail, values } = this.state;
-        if (intent === "danger" || tail === "upper" || tail === "neither") {
-            return null;
-        }
+    private isHandleShown = ([handleIntent, handleTail]: HandleKey) => {
+        const { shownIntents, shownTails } = this.state;
         return (
-            <SliderHandle
-                key="warning-start"
-                type="start"
-                value={values.warningStart}
-                trackIntentBefore={Intent.WARNING}
-                interactionKind="push"
-            />
+            (shownTails === "both" || shownTails === handleTail) &&
+            (shownIntents === "both" || shownIntents === handleIntent)
         );
-    }
-
-    private renderWarningEndHandle() {
-        const { intent, tail, values } = this.state;
-        if (intent === "danger" || tail === "lower" || tail === "neither") {
-            return null;
-        }
-        return (
-            <SliderHandle
-                key="warning-end"
-                type="end"
-                value={values.warningEnd}
-                trackIntentAfter={Intent.WARNING}
-                interactionKind="push"
-            />
-        );
-    }
-
-    private renderDangerEndHandle() {
-        const { intent, tail, values } = this.state;
-        if (intent === "warning" || tail === "lower" || tail === "neither") {
-            return null;
-        }
-        return (
-            <SliderHandle
-                key="danger-end"
-                type="end"
-                value={values.dangerEnd}
-                trackIntentAfter={Intent.DANGER}
-                {...this.getInteractionKind()}
-            />
-        );
-    }
-
-    private getInteractionKind() {
-        return {
-            interactionKind: this.state.lockHandles
-                ? SliderHandleInteractionKind.LOCK
-                : SliderHandleInteractionKind.PUSH,
-        };
-    }
+    };
 
     private renderOptions() {
         return (
@@ -158,7 +120,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                 <Switch checked={this.state.lockHandles} label="Lock handles" onChange={this.toggleLockHandles} />
                 <Label text="Intent">
                     <div className={Classes.SELECT}>
-                        <select value={this.state.intent} onChange={this.handleIntentChange}>
+                        <select value={this.state.shownIntents} onChange={this.handleShownIntentsChange}>
                             <option value="both">Both</option>
                             <option value="warning">Warning</option>
                             <option value="danger">Danger</option>
@@ -167,7 +129,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                 </Label>
                 <Label text="Tail">
                     <div className={Classes.SELECT}>
-                        <select value={this.state.tail} onChange={this.handleTailChange}>
+                        <select value={this.state.shownTails} onChange={this.handleShownTailsChange}>
                             <option value="both">Both</option>
                             <option value="lower">Lower</option>
                             <option value="upper">Upper</option>
@@ -180,71 +142,27 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private handleChange = (newValues: number[]) => {
-        const updatedValues = this.getUpdatedValues(newValues);
-        const valuesMap = { ...this.state.values, ...updatedValues };
+        const valuesMap = this.getUpdatedValues(newValues);
         const values = Object.keys(valuesMap).map((key: keyof ISliderValues) => valuesMap[key]);
         values.sort((a, b) => a - b);
         const [dangerStart, warningStart, warningEnd, dangerEnd] = values;
         this.setState({ values: { dangerStart, warningStart, warningEnd, dangerEnd } });
     };
 
-    private getUpdatedValues(values: number[]): Partial<ISliderValues> {
-        const { intent, tail } = this.state;
-        if (tail === "neither") {
-            return {};
-        }
-        switch (intent) {
-            case "both": {
-                switch (tail) {
-                    case "both": {
-                        const [dangerStart, warningStart, warningEnd, dangerEnd] = values;
-                        return { dangerStart, warningStart, warningEnd, dangerEnd };
-                    }
-                    case "lower": {
-                        const [dangerStart, warningStart] = values;
-                        return { dangerStart, warningStart };
-                    }
-                    case "upper": {
-                        const [warningEnd, dangerEnd] = values;
-                        return { warningEnd, dangerEnd };
-                    }
-                }
-                break;
-            }
-            case "danger": {
-                switch (tail) {
-                    case "both": {
-                        const [dangerStart, dangerEnd] = values;
-                        return { dangerStart, dangerEnd };
-                    }
-                    case "lower": {
-                        const [dangerStart] = values;
-                        return { dangerStart };
-                    }
-                    case "upper": {
-                        const [dangerEnd] = values;
-                        return { dangerEnd };
-                    }
-                }
-                break;
-            }
-            case "warning": {
-                switch (tail) {
-                    case "both": {
-                        const [warningStart, warningEnd] = values;
-                        return { warningStart, warningEnd };
-                    }
-                    case "lower": {
-                        const [warningStart] = values;
-                        return { warningStart };
-                    }
-                    case "upper": {
-                        const [warningEnd] = values;
-                        return { warningEnd };
-                    }
-                }
-            }
-        }
-        return {};
+    private getUpdatedValues(newValues: number[]) {
+        const updatedValuesMap: Partial<ISliderValues> = {};
+        const handleKeys = SLIDER_HANDLE_KEYS.filter(this.isHandleShown);
+        handleKeys.forEach((key, index) => {
+            updatedValuesMap[getHandleValueKey(key)] = newValues[index];
+        });
+        return { ...this.state.values, ...updatedValuesMap };
+    }
+}
+
+function getHandleValueKey([handleIntent, handleTail]: HandleKey): keyof ISliderValues {
+    if (handleIntent === "danger") {
+        return handleTail === "lower" ? "dangerStart" : "dangerEnd";
+    } else {
+        return handleTail === "lower" ? "warningStart" : "warningEnd";
     }
 }
