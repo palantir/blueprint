@@ -5,7 +5,7 @@
  */
 
 import * as React from "react";
-import { Intent } from "../../common";
+import { ISliderTrackStopProps } from "./sliderTrackStop";
 
 export const SliderHandleType = {
     FULL: "full" as "full",
@@ -21,10 +21,7 @@ export const SliderHandleInteractionKind = {
 };
 export type SliderHandleInteractionKind = typeof SliderHandleInteractionKind[keyof typeof SliderHandleInteractionKind];
 
-export interface ISliderHandleProps {
-    value: number;
-    trackIntentAfter?: Intent;
-    trackIntentBefore?: Intent;
+export interface ISliderHandleProps extends ISliderTrackStopProps {
     type?: SliderHandleType;
     interactionKind?: SliderHandleInteractionKind;
 }

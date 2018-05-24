@@ -14,9 +14,10 @@ import * as Utils from "../../common/utils";
 import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
 import { ISliderHandleProps, SliderHandle, SliderHandleInteractionKind, SliderHandleType } from "./sliderHandle";
+import { SliderTrackStop } from "./sliderTrackStop";
 
 export interface IMultiSliderProps extends ICoreSliderProps {
-    children?: Array<React.ReactElement<ISliderHandleProps>>;
+    children?: React.ReactNode;
     defaultTrackIntent?: Intent;
     onChange?(values: number[]): void;
     onRelease?(values: number[]): void;
@@ -48,13 +49,17 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     }
 
     protected validateProps(props: IMultiSliderProps) {
-        let anyNonHandleChildren = false;
+        let anyInvalidChildren = false;
         React.Children.forEach(props.children, child => {
-            if (child != null && !Utils.isElementOfType(child, SliderHandle)) {
-                anyNonHandleChildren = true;
+            if (
+                child != null &&
+                !Utils.isElementOfType(child, SliderHandle) &&
+                !Utils.isElementOfType(child, SliderTrackStop)
+            ) {
+                anyInvalidChildren = true;
             }
         });
-        if (anyNonHandleChildren) {
+        if (anyInvalidChildren) {
             throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
         }
     }
@@ -62,7 +67,8 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     protected renderFill() {
         const minHandle: ISliderHandleProps = { value: this.props.min };
         const maxHandle: ISliderHandleProps = { value: this.props.max };
-        const expandedHandles = [minHandle, ...this.sortedHandleProps, maxHandle];
+        const expandedHandles = [minHandle, ...this.sortedHandleProps, ...this.getTrackStops(), maxHandle];
+        expandedHandles.sort((left, right) => left.value - right.value);
 
         const tracks: Array<JSX.Element | null> = [];
 
@@ -152,6 +158,14 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         });
 
         return <div key={`track-${index}`} className={classes} style={style} />;
+    }
+
+    private getTrackStops(): ISliderHandleProps[] {
+        const maybeStops = React.Children.map(
+            this.props.children,
+            child => (Utils.isElementOfType(child, SliderTrackStop) ? child.props : null),
+        );
+        return maybeStops != null ? maybeStops : [];
     }
 
     private getOffsetRatio(value: number, tickSizeRatio: number) {
