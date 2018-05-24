@@ -187,14 +187,14 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         newValues.sort((left, right) => left - right);
 
         const newIndex = newValues.indexOf(newValue);
-        if (newIndex !== oldIndex) {
-            const lockIndex = this.findFirstLockedHandleIndex(oldIndex, newIndex);
-            if (lockIndex === undefined) {
-                fillValues(newValues, oldIndex, newIndex, newValue);
-            } else {
-                const lockValue = oldValues[lockIndex];
-                fillValues(newValues, oldIndex, lockIndex, lockValue);
-            }
+        const lockIndex = this.findFirstLockedHandleIndex(oldIndex, newIndex);
+        if (lockIndex === undefined) {
+            fillValues(newValues, oldIndex, newIndex, newValue);
+        } else {
+            // If pushing past a locked handle, discard the new value and only make the updates to clamp values against the lock.
+            const lockValue = oldValues[lockIndex];
+            fillValues(oldValues, oldIndex, lockIndex, lockValue);
+            return oldValues;
         }
 
         return newValues;
