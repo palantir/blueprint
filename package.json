@@ -12,7 +12,6 @@
     "clean": "lerna run --parallel clean",
     "copy:docs-app": "cp -rf packages/docs-app/dist/ site/docs",
     "copy:landing-app": "cp -rf packages/landing-app/dist/ site",
-    "copy:versions": "cp -rf docs-static/versions site/docs",
     "deploy": "gh-pages -d site -b master",
     "dev:all": "lerna run dev --parallel --scope \"!@blueprintjs/{landing-app,table-dev-app}\"",
     "dev:core": "lerna run dev --parallel --scope \"@blueprintjs/{core,icons,docs-app}\"",
