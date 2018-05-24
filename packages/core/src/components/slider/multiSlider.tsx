@@ -32,12 +32,19 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     public className = classNames(Classes.SLIDER, Classes.MULTI_SLIDER);
 
     private handles: Handle[] = [];
+    private sortedHandleProps: ISliderHandleProps[];
+
+    public componentWillMount() {
+        this.sortedHandleProps = getSortedHandleProps(this.props);
+    }
 
     public componentWillReceiveProps(nextProps: IMultiSliderProps & { children: React.ReactNode }) {
         super.componentWillReceiveProps(nextProps);
-        if (getHandles(nextProps).length !== this.getHandles().length) {
+        const newSortedHandleProps = getSortedHandleProps(nextProps);
+        if (newSortedHandleProps.length !== this.sortedHandleProps.length) {
             this.handles = [];
         }
+        this.sortedHandleProps = newSortedHandleProps;
     }
 
     protected validateProps(props: IMultiSliderProps) {
@@ -55,7 +62,7 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     protected renderFill() {
         const minHandle: ISliderHandleProps = { value: this.props.min };
         const maxHandle: ISliderHandleProps = { value: this.props.max };
-        const expandedHandles = [minHandle, ...this.getSortedHandles(), maxHandle];
+        const expandedHandles = [minHandle, ...this.sortedHandleProps, maxHandle];
 
         const tracks: Array<JSX.Element | null> = [];
 
@@ -76,14 +83,14 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
 
     protected renderHandles() {
         const { disabled, max, min, stepSize, vertical } = this.props;
-        return this.getSortedHandles().map(({ value, type }, index) => (
+        return this.sortedHandleProps.map(({ value, type }, index) => (
             <Handle
                 className={classNames({
                     [Classes.START]: type === SliderHandleType.START,
                     [Classes.END]: type === SliderHandleType.END,
                 })}
                 disabled={disabled}
-                key={`${index}-${this.getHandles().length}`}
+                key={`${index}-${this.sortedHandleProps.length}`}
                 label={this.formatLabel(value)}
                 max={max}
                 min={min}
@@ -173,15 +180,15 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     };
 
     private getNewHandleValues(newValue: number, index: number) {
-        const handles = this.getSortedHandles();
-        const values = handles.map(handle => handle.value);
+        const values = this.sortedHandleProps.map(handle => handle.value);
         const start = values.slice(0, index);
         const end = values.slice(index + 1);
         const newValues = [...start, newValue, ...end];
         newValues.sort((left, right) => left - right);
 
         const newIndex = newValues.indexOf(newValue);
-        if (handles[newIndex].interactionKind === SliderHandleInteractionKind.PUSH) {
+
+        if (this.sortedHandleProps[newIndex].interactionKind === SliderHandleInteractionKind.PUSH) {
             newValues[index] = newValues[newIndex];
         } else {
             newValues[newIndex] = newValues[index];
@@ -191,7 +198,7 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     }
 
     private handleChange = (newValues: number[]) => {
-        const oldValues = this.getSortedHandles().map(handle => handle.value);
+        const oldValues = this.sortedHandleProps.map(handle => handle.value);
         if (!Utils.arraysEqual(newValues, oldValues)) {
             Utils.safeInvoke(this.props.onChange, newValues);
         }
@@ -200,24 +207,17 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     private handleRelease = (newValues: number[]) => {
         Utils.safeInvoke(this.props.onRelease, newValues);
     };
-
-    private getSortedHandles(): ISliderHandleProps[] {
-        const handles = this.getHandles();
-        return handles.sort((left, right) => left.value - right.value);
-    }
-
-    private getHandles(): ISliderHandleProps[] {
-        return getHandles(this.props);
-    }
 }
 
-function getHandles({ children }: IMultiSliderProps): ISliderHandleProps[] {
+function getSortedHandleProps({ children }: IMultiSliderProps): ISliderHandleProps[] {
     const maybeHandles = React.Children.map(
         children,
         child => (Utils.isElementOfType(child, SliderHandle) ? child.props : null),
     );
-    const handles = maybeHandles != null ? maybeHandles : [];
-    return handles.filter(handle => handle !== null);
+    let handles = maybeHandles != null ? maybeHandles : [];
+    handles = handles.filter(handle => handle !== null);
+    handles.sort((left, right) => left.value - right.value);
+    return handles;
 }
 
 function argMin<T>(values: T[], argFn: (value: T) => any): T | undefined {
