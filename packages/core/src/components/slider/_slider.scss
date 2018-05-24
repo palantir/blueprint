@@ -165,12 +165,14 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider:not(.#{$ns}-vertical) .#{$ns}-slider-progress {
-  &.#{$ns}-start {
+  &.#{$ns}-start,
+  &:not(:first-of-type) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  &.#{$ns}-end {
+  &.#{$ns}-end,
+  &:not(:last-of-type) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
@@ -187,12 +189,14 @@ $track-height: $track-size !default;
   .#{$ns}-slider-progress {
     top: auto;
 
-    &.#{$ns}-start {
+    &.#{$ns}-start,
+    &:not(:first-of-type) {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
 
-    &.#{$ns}-end {
+    &.#{$ns}-end,
+    &:not(:last-of-type) {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }

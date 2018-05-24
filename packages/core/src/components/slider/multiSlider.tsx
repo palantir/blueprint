@@ -65,16 +65,20 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     }
 
     protected renderFill() {
-        const minHandle: ISliderHandleProps = { value: this.props.min };
-        const maxHandle: ISliderHandleProps = { value: this.props.max };
-        const expandedHandles = [minHandle, ...this.sortedHandleProps, ...this.getTrackStops(), maxHandle];
-        expandedHandles.sort((left, right) => left.value - right.value);
+        const trackStops = [...this.sortedHandleProps, ...this.getTrackStops()];
+        trackStops.sort((left, right) => left.value - right.value);
+        if (trackStops.length === 0 || trackStops[0].value > this.props.min) {
+            trackStops.unshift({ value: this.props.min });
+        }
+        if (trackStops[trackStops.length - 1].value < this.props.max) {
+            trackStops.push({ value: this.props.max });
+        }
 
         const tracks: Array<JSX.Element | null> = [];
 
-        for (let index = 0; index < expandedHandles.length - 1; index++) {
-            const left = expandedHandles[index];
-            const right = expandedHandles[index + 1];
+        for (let index = 0; index < trackStops.length - 1; index++) {
+            const left = trackStops[index];
+            const right = trackStops[index + 1];
             const fillIntentPriorities = [
                 left.trackIntentAfter,
                 right.trackIntentBefore,
@@ -130,10 +134,6 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         const { tickSizeRatio } = this.state;
         const startValue = start.value;
         const endValue = end.value;
-
-        if (startValue === endValue) {
-            return undefined;
-        }
 
         let startOffsetRatio = this.getOffsetRatio(startValue, tickSizeRatio);
         let endOffsetRatio = this.getOffsetRatio(endValue, tickSizeRatio);
