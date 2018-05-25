@@ -80,6 +80,7 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
             const left = trackStops[index];
             const right = trackStops[index + 1];
             const fillIntentPriorities = [
+                this.props.showTrackFill ? undefined : Intent.NONE,
                 left.trackIntentAfter,
                 right.trackIntentBefore,
                 this.props.defaultTrackIntent,

@@ -208,7 +208,7 @@ export abstract class CoreSlider<P extends ICoreSliderProps> extends AbstractPur
     }
 
     private maybeRenderFill() {
-        if (this.props.showTrackFill && this.trackElement != null) {
+        if (this.trackElement != null) {
             return this.renderFill();
         }
         return undefined;
