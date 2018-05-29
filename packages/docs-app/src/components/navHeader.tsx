@@ -75,9 +75,14 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
         const { versions } = this.props;
         if (versions.length === 1) {
             return (
-                <div className={Classes.TEXT_MUTED} key="_versions">
-                    v{versions[0].version}
-                </div>
+                <Popover position={Position.BOTTOM} key="_versions">
+                    <Tag interactive={true} minimal={true} round={true}>
+                        v{versions[0].version.split(".", 1)} <Icon icon="caret-down" />
+                    </Tag>
+                    <Menu className="docs-version-list">
+                        <MenuItem text="View latest version" href="/docs" />
+                    </Menu>
+                </Popover>
             );
         }
 
