@@ -73,25 +73,14 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
 
     private renderVersionsMenu() {
         const { versions } = this.props;
-        if (versions.length === 1) {
-            return (
-                <div className={Classes.TEXT_MUTED} key="_versions">
-                    v{versions[0].version}
-                </div>
-            );
-        }
-
-        const match = /docs\/v([0-9]+)/.exec(location.href);
-        // default to latest release if we can't find a major version in the URL
-        const currentRelease = match == null ? versions[versions.length - 1].version : match[1];
-        const releaseItems = versions.map((rel, i) => <MenuItem key={i} href={rel.url} text={rel.version} />);
-        const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
-
         return (
-            <Popover content={menu} position={Position.BOTTOM} key="_versions">
+            <Popover position={Position.BOTTOM} key="_versions">
                 <Tag interactive={true} minimal={true} round={true}>
-                    v{currentRelease.split(".", 1)} <Icon icon="caret-down" />
+                    v{versions[0].version.split(".", 1)} <Icon icon="caret-down" />
                 </Tag>
+                <Menu className="docs-version-list">
+                    <MenuItem text="View latest version" href="/docs" />
+                </Menu>
             </Popover>
         );
     }
