@@ -143,19 +143,6 @@ Lefthand navigation menu
   align-items: center;
 }
 
-.docs-nav-section {
-  margin-top: $pt-grid-size * 2;
-  margin-bottom: $pt-grid-size;
-  text-transform: uppercase;
-  font-size: small;
-  font-weight: 600;
-
-  // dedent menu under a section title
-  + .docs-nav-menu {
-    margin-left: 0;
-  }
-}
-
 // empty state item is hidden by default...
 .docs-empty-state {
   display: none;
