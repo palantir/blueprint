@@ -16,13 +16,13 @@ import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
 import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
-export interface IContextMenuTarget extends React.Component<any, any> {
+export interface IContextMenuTargetComponent extends React.Component {
     render(): React.ReactElement<any> | null | undefined;
     renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element | undefined;
     onContextMenuClose?(): void;
 }
 
-export function ContextMenuTarget<T extends IConstructor<IContextMenuTarget>>(WrappedComponent: T) {
+export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderContextMenu)) {
         console.warn(CONTEXTMENU_WARN_DECORATOR_NO_METHOD);
     }
