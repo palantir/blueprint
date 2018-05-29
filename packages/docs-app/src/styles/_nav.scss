@@ -82,7 +82,7 @@ $dark-package-colors: (
     flex: 1 1 auto;
     background-color: transparent;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   @each $package-name in map-keys($package-colors) {
@@ -142,6 +142,19 @@ $dark-package-colors: (
     &:empty {
       display: none;
     }
+  }
+}
+
+.docs-nav-section {
+  margin-top: $pt-grid-size * 2;
+  margin-bottom: $pt-grid-size;
+  text-transform: uppercase;
+  font-size: small;
+  font-weight: 700;
+
+  // dedent menu under a section title
+  + .docs-nav-menu {
+    margin-left: 0;
   }
 }
 
