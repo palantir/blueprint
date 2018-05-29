@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
+import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
 import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
@@ -14,8 +14,8 @@ import { IntentSelect } from "./common/intentSelect";
 
 export interface IIconExampleState {
     icon: IconName;
-    intent: Intent;
     iconSize: number;
+    intent: Intent;
 }
 
 export class IconExample extends React.PureComponent<IExampleProps, IIconExampleState> {
@@ -32,6 +32,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
             <>
                 <H5>Props</H5>
                 <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <Label text="Icon size" />
                 <Slider
                     labelStepSize={MAX_ICON_SIZE / 5}
@@ -41,14 +42,12 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
                     value={iconSize}
                     onChange={this.handleIconSizeChange}
                 />
-                <H5>Example</H5>
-                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
             </>
         );
 
         return (
             <Example options={options} {...this.props}>
-                <Icon icon={icon} iconSize={iconSize} className={Classes.intentClass(intent)} />
+                <Icon icon={icon} iconSize={iconSize} intent={intent} />
             </Example>
         );
     }
