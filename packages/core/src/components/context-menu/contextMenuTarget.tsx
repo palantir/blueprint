@@ -12,7 +12,7 @@ import { isFunction, safeInvoke } from "../../common/utils";
 import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
-export interface IContextMenuTarget extends React.Component<any, any> {
+export interface IContextMenuTarget extends React.Component {
     renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element | undefined;
     onContextMenuClose?(): void;
 }

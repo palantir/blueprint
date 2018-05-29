@@ -10,7 +10,7 @@ import { isFunction, safeInvoke } from "../../common/utils";
 import { IHotkeysProps } from "./hotkeys";
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
 
-export interface IHotkeysTarget extends React.Component<any, any>, React.ComponentLifecycle<any, any> {
+export interface IHotkeysTarget extends React.Component {
     /** @internal */
     globalHotkeysEvents?: HotkeysEvents;
 
