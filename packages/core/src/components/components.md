@@ -2,8 +2,6 @@
 
 <!-- Exact ordering of components in the navbar: -->
 
-@## Elements
-
 @page html
 @page breadcrumbs
 @page button

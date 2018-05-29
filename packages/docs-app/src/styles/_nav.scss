@@ -82,7 +82,7 @@ $dark-package-colors: (
     flex: 1 1 auto;
     background-color: transparent;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   @each $package-name in map-keys($package-colors) {

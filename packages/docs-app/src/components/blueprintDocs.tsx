@@ -17,6 +17,9 @@ const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
 const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
+// detect Components page and subheadings
+const COMPONENTS_PATTERN = /\/components(\.\w+)?$/;
+
 /** Return the current theme className. */
 export function getTheme(): string {
     return localStorage.getItem(THEME_LOCAL_STORAGE_KEY) || LIGHT_THEME;
@@ -75,13 +78,14 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     }
 
     private renderNavMenuItem = (props: INavMenuItemProps) => {
+        const { route, title } = props.section;
         if (isPageNode(props.section) && props.section.level === 1) {
-            const pkg = this.props.releases.find(p => p.name === `@blueprintjs/${props.section.route}`);
+            const pkg = this.props.releases.find(p => p.name === `@blueprintjs/${route}`);
             return (
-                <div className={classNames("docs-nav-package", props.className)} data-route={props.section.route}>
+                <div className={classNames("docs-nav-package", props.className)} data-route={route}>
                     <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
-                        <NavIcon route={props.section.route} />
-                        <span>{props.section.title}</span>
+                        <NavIcon route={route} />
+                        <span>{title}</span>
                     </a>
                     {pkg && (
                         <a className={Classes.TEXT_MUTED} href={pkg.url} target="_blank">
@@ -91,14 +95,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 </div>
             );
         }
-        const match = /\/components(\.\w+)?$/.exec(props.section.route);
-        if (match != null) {
+        if (COMPONENTS_PATTERN.test(route)) {
             // non-interactive header that expands its menu
-            const classes = classNames("docs-nav-section", "docs-nav-expanded", {
-                // sub-headings appear muted
-                [Classes.TEXT_MUTED]: match[1] != null,
-            });
-            return <div className={classes}>{props.section.title}</div>;
+            return <div className="docs-nav-section docs-nav-expanded">{title}</div>;
         }
         return <NavMenuItem {...props} />;
     };
