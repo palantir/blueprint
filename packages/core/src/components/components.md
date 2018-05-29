@@ -10,7 +10,6 @@
 @page card
 @page collapse
 @page collapsible-list
-@page context-menu
 @page editable-text
 @page hotkeys
 @page icon
@@ -53,6 +52,7 @@
 @page overlay
 @page portal
 @page alert
+@page context-menu
 @page dialog
 @page popover
 @page toast
