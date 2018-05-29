@@ -52,14 +52,24 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
      * provided for that prop. Modifying the value of this property will change
      * the default globally in your app.
      *
-     * Defaults to `<span class={Classes.TEXT_MUTED}>(required)</span>`.
+     * Defaults to `(required)`.
      */
-    public static DEFAULT_REQUIRED_CONTENT = <span className={Classes.TEXT_MUTED}>(required)</span>;
+    public static DEFAULT_REQUIRED_CONTENT = "(required)";
 
     public render() {
-        const { children, label, labelFor } = this.props;
+        const { children, className, disabled, inline, intent, label, labelFor } = this.props;
+        const classes = classNames(
+            Classes.FORM_GROUP,
+            Classes.intentClass(intent),
+            {
+                [Classes.DISABLED]: disabled,
+                [Classes.INLINE]: inline,
+            },
+            className,
+        );
+
         return (
-            <div className={this.getClassName()}>
+            <div className={classes}>
                 <label className={Classes.LABEL} htmlFor={labelFor}>
                     {label}
                     {this.maybeRenderRequiredLabel()}
@@ -72,22 +82,13 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
         );
     }
 
-    private getClassName() {
-        const { className, disabled, inline, intent } = this.props;
-        return classNames(
-            Classes.FORM_GROUP,
-            Classes.intentClass(intent),
-            {
-                [Classes.DISABLED]: disabled,
-                [Classes.INLINE]: inline,
-            },
-            className,
-        );
-    }
-
     private maybeRenderRequiredLabel() {
         const { requiredLabel } = this.props;
-        return requiredLabel === true ? FormGroup.DEFAULT_REQUIRED_CONTENT : requiredLabel;
+        if (requiredLabel !== false) {
+            const label = requiredLabel === true ? FormGroup.DEFAULT_REQUIRED_CONTENT : requiredLabel;
+            return <span className={Classes.TEXT_MUTED}> {label}</span>;
+        }
+        return undefined;
     }
 
     private maybeRenderHelperText() {
