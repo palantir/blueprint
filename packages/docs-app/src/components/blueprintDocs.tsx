@@ -67,25 +67,14 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
     private renderVersionsMenu() {
         const { versions } = this.props;
-        if (versions.length === 1) {
-            return (
-                <div className="pt-text-muted" key="_versions">
-                    v{versions[0].version}
-                </div>
-            );
-        }
-
-        const match = /docs\/v([0-9]+)/.exec(location.href);
-        // default to latest release if we can't find a major version in the URL
-        const currentRelease = match == null ? versions[0].version : match[1];
-        const releaseItems = versions.map((rel, i) => <MenuItem key={i} href={rel.url} text={rel.version} />);
-        const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
-
         return (
-            <Popover content={menu} position={Position.BOTTOM} key="_versions">
+            <Popover position={Position.BOTTOM} key="_versions">
                 <button className="docs-version-selector pt-text-muted">
-                    v{currentRelease} <span className="pt-icon-standard pt-icon-caret-down" />
+                    v{versions[0].version} <span className="pt-icon-standard pt-icon-caret-down" />
                 </button>
+                <Menu className="docs-version-list">
+                    <MenuItem text="View latest version" href="/docs" />
+                </Menu>
             </Popover>
         );
     }
