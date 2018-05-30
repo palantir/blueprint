@@ -280,6 +280,10 @@ export class Grid {
         return rowIndex >= this.numRows || columnIndex >= this.numCols;
     }
 
+    public isGhostColumn(columnIndex: number) {
+        return columnIndex >= this.numCols;
+    }
+
     public getExtremaClasses(rowIndex: number, columnIndex: number, rowEnd: number, columnEnd: number) {
         if (rowIndex === rowEnd && columnIndex === columnEnd) {
             return [Classes.TABLE_LAST_IN_COLUMN, Classes.TABLE_LAST_IN_ROW];
