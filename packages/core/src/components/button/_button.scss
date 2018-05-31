@@ -233,8 +233,8 @@ a.#{$ns}-button {
   flex: 0 1 auto;
 
   // when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
-  .#{$ns}-align-left &,
-  .#{$ns}-align-right & {
+  .#{$ns}-align-left > &,
+  .#{$ns}-align-right > & {
     flex: 1 1 auto;
   }
 }

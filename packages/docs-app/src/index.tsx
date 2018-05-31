@@ -22,8 +22,13 @@ const releases: IPackageInfo[] = releasesData.map(pkg => ({
     url: `https://www.npmjs.com/package/${pkg.name}`,
 }));
 
-const versions: IPackageInfo[] = Object.keys(versionsData).map(majorVersion => ({
-    url: `https://palantir.github.io/blueprint/docs/v${majorVersion}`,
+// sort versions so latest is first
+const majorVersions = Object.keys(versionsData)
+    .sort()
+    .reverse();
+const latestMajor = majorVersions[0];
+const versions: IPackageInfo[] = majorVersions.map(majorVersion => ({
+    url: majorVersion === latestMajor ? `/docs` : `/docs/versions/${majorVersion}`,
     version: versionsData[majorVersion],
 }));
 

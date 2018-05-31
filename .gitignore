@@ -25,3 +25,10 @@ generated
 coverage
 /docs
 docs-static/**/*.d.ts
+
+# exclude site except for site/docs/versions
+site/*
+site/docs/*
+!site/docs/
+!site/docs/versions/
+site/docs/versions/**/*.d.ts

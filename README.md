@@ -15,7 +15,7 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 ### Bug report? Feature request? Support question?
 
-Use the [appropriate issue template](https://github.com/palantir/blueprint/issues/new) before submitting.
+Choose the [appropriate issue type](https://github.com/palantir/blueprint/issues/new/choose) and fill out the template.
 
 ### What's new in 2.0
 

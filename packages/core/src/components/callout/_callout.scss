@@ -45,7 +45,7 @@ Styleguide callout
   &.#{$ns}-callout-icon {
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
-    .#{$ns}-icon {
+    > .#{$ns}-icon:first-child {
       position: absolute;
       top: $pt-grid-size;
       left: $pt-grid-size;
@@ -72,7 +72,7 @@ Styleguide callout
       background-color: rgba($color, 0.15);
 
       &[class*="#{$ns}-icon-"]::before,
-      .#{$ns}-icon,
+      > .#{$ns}-icon:first-child,
       .#{$ns}-heading {
         color: map-get($pt-intent-text-colors, $intent);
       }
@@ -81,7 +81,7 @@ Styleguide callout
         background-color: rgba($color, 0.25);
 
         &[class*="#{$ns}-icon-"]::before,
-        .#{$ns}-callout-icon,
+        > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
           color: map-get($pt-dark-intent-text-colors, $intent);
         }
