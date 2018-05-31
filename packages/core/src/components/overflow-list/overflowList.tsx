@@ -118,7 +118,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public render() {
-        const { className, collapseFrom, style } = this.props;
+        const { className, collapseFrom, style, visibleItemRenderer } = this.props;
         const overflow = this.maybeRenderOverflow();
         return (
             <div
@@ -127,15 +127,11 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 style={style}
             >
                 {collapseFrom === Boundary.START ? overflow : null}
-                {this.renderItems()}
+                {this.state.visible.map(visibleItemRenderer)}
                 {collapseFrom === Boundary.END ? overflow : null}
                 <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />
             </div>
         );
-    }
-
-    private renderItems() {
-        return this.state.visible.map(this.props.visibleItemRenderer);
     }
 
     private maybeRenderOverflow() {
