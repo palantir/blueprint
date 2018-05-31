@@ -161,7 +161,8 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 overflow: [],
                 visible: this.props.items,
             });
-        } else if (this.spacer.getBoundingClientRect().width < 1) {
+        } else if (this.spacer.clientWidth < 1) {
+            // spacer has flex-shrink and width 1px so if it's any smaller then we know to shrink
             this.setState(state => {
                 const collapseFromStart = this.props.collapseFrom === Boundary.START;
                 const visible = state.visible.slice();
