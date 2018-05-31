@@ -3,6 +3,7 @@
 
 .#{$ns}-overflow-list {
   display: flex;
+  flex-wrap: nowrap;
   min-width: 0;
 }
 
