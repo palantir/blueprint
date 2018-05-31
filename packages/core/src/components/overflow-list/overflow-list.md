@@ -2,7 +2,7 @@
 
 `OverflowList` takes a generic list of items and renders as many items as can
 fit inside itself. Overflowed items that do not fit are collapsed into a single
-item. The visible items will be recomputed when a resize is detected.
+element. The visible items will be recomputed when a resize is detected.
 
 The `items` prop accepts an array of generic objects. The required
 `visibleItemRenderer` callback prop determines the appearance of a visible item.
