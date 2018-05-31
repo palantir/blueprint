@@ -42,12 +42,12 @@ export interface IOverflowListProps<T> extends IProps {
     observeParents?: boolean;
 
     /**
-     * Callback invoked to render the overflowed items. The function will
-     * receive all items that do not fit in the container and should render a
-     * container for these items.
+     * Callback invoked to render the overflowed items. Unlike
+     * `visibleItemRenderer`, this prop is invoked once with all items that do
+     * not fit in the container.
      *
-     * Typical use cases for this prop will put all items in a dropdown menu or
-     * display a "+X items" label.
+     * Typical use cases for this prop will put overflowed items in a dropdown
+     * menu or display a "+X items" label.
      */
     overflowRenderer: (overflowItems: T[]) => React.ReactNode;
 
