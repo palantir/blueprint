@@ -114,7 +114,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public componentWillUnmount() {
-        Array.from(this.previousWidths.keys()).forEach(element => this.observer.unobserve(element));
+        this.observer.disconnect();
     }
 
     public render() {
