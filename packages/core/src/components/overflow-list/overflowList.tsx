@@ -16,35 +16,47 @@ import { throttle } from "../../common/utils";
 
 export interface IOverflowListProps<T> extends IProps {
     /**
-     * Which direction the items should collapse from: start or end of the children.
+     * Which direction the items should collapse from: start or end of the
+     * children. This also determines whether `overflowRenderer` appears before
+     * (`START`) or after (`END`) the visible items.
      * @default Boundary.START
      */
     collapseFrom?: Boundary;
 
     /**
-     * All items to display in the list. Items that don’t fit in the container will be rendered in the overflow instead.
+     * All items to display in the list. Items that do not fit in the container
+     * will be rendered in the overflow instead.
      */
     items: T[];
 
     /**
-     * If `true`, all parent elements of the container will also be observed. If changes to a parent’s size is detected, the overflow will
-     * be recalculated.
-     * Only enable this prop if the overflow should be recalculated when a parent element resizes in a way that does not also cause the
+     * If `true`, all parent DOM elements of the container will also be
+     * observed. If changes to a parent's size is detected, the overflow will be
+     * recalculated.
+     *
+     * Only enable this prop if the overflow should be recalculated when a
+     * parent element resizes in a way that does not also cause the
      * `OverflowList` to resize.
      * @default false
      */
     observeParents?: boolean;
 
     /**
-     * Callback invoked to render the overflow if necessary.
-     * @param overflowItems The items that didn’t fit in the container.
+     * Callback invoked to render the overflowed items. The function will
+     * receive all items that do not fit in the container and should render a
+     * container for these items.
+     *
+     * Typical use cases for this prop will put all items in a dropdown menu or
+     * display a "+X items" label.
      */
     overflowRenderer: (overflowItems: T[]) => React.ReactNode;
 
-    style?: React.HTMLProps<HTMLDivElement>;
+    /** CSS properties to apply to the root element. */
+    style?: React.CSSProperties;
 
     /**
      * Callback invoked to render each visible item.
+     * Remember to set a `key` on the rendered element!
      */
     visibleItemRenderer: (item: T, index: number) => React.ReactChild;
 }
