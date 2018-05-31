@@ -65,27 +65,22 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         return OverflowList as new (props: IOverflowListProps<T>) => OverflowList<T>;
     }
 
+    public state: IOverflowListState<T> = {
+        overflow: [],
+        visible: this.props.items,
+    };
+
     private element: Element | null = null;
-    private observer: ResizeObserver;
-    /**
-     * A cache containing the widths of all elements being observed. The observer calls its
-     * callback on observe, so we don't need to manually measure all elements in the beginning.
-     */
-    private previousWidths = new Map<Element, number>();
     private spacer: Element | null = null;
+    private observer: ResizeObserver;
 
-    public constructor(props: IOverflowListProps<T>, context?: any) {
-        super(props, context);
-
-        this.state = {
-            overflow: [],
-            visible: props.items,
-        };
-        this.observer = new ResizeObserver(throttle(this.resize));
-    }
+    /** A cache containing the widths of all elements being observed to detect growing/shrinking */
+    private previousWidths = new Map<Element, number>();
 
     public componentDidMount() {
+        this.observer = new ResizeObserver(throttle(this.resize));
         if (this.element != null) {
+            // observer callback is invoked immediately when observing new elements
             this.observer.observe(this.element);
             if (this.props.observeParents) {
                 for (let element: Element | null = this.element; element != null; element = element.parentElement) {
@@ -106,6 +101,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             overflowRenderer !== nextProps.overflowRenderer ||
             visibleItemRenderer !== nextProps.visibleItemRenderer
         ) {
+            // reset visible state if the above props change.
             this.setState({
                 overflow: [],
                 visible: nextProps.items,
