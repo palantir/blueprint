@@ -77,11 +77,6 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         return OverflowList as new (props: IOverflowListProps<T>) => OverflowList<T>;
     }
 
-    public state: IOverflowListState<T> = {
-        overflow: [],
-        visible: this.props.items,
-    };
-
     private element: Element | null = null;
     private spacer: Element | null = null;
     private observer: ResizeObserver;
@@ -89,8 +84,18 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     /** A cache containing the widths of all elements being observed to detect growing/shrinking */
     private previousWidths = new Map<Element, number>();
 
-    public componentDidMount() {
+    public constructor(props: IOverflowListProps<T>, context?: any) {
+        super(props, context);
+
+        // constructor is necessary to ensure observer is defined
         this.observer = new ResizeObserver(throttle(this.resize));
+        this.state = {
+            overflow: [],
+            visible: props.items,
+        };
+    }
+
+    public componentDidMount() {
         if (this.element != null) {
             // observer callback is invoked immediately when observing new elements
             this.observer.observe(this.element);
@@ -173,7 +178,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 overflow: [],
                 visible: this.props.items,
             });
-        } else if (this.spacer.clientWidth < 1) {
+        } else if (this.spacer.getBoundingClientRect().width < 1) {
             // spacer has flex-shrink and width 1px so if it's any smaller then we know to shrink
             this.setState(state => {
                 const collapseFromStart = this.props.collapseFrom === Boundary.START;
