@@ -256,8 +256,8 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             const right = trackStops[index + 1];
             const fillIntentPriorities = [
                 this.props.showTrackFill ? undefined : Intent.NONE,
-                left.trackIntentAfter,
-                right.trackIntentBefore,
+                left.intentAfter,
+                right.intentBefore,
                 this.props.defaultTrackIntent,
             ];
             const fillIntent = fillIntentPriorities.filter(intent => intent != null)[0];
@@ -299,7 +299,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(intent), {
             [Classes.START]: start.type === SliderHandleType.START,
             [Classes.END]: end.type === SliderHandleType.END,
-            [`${Classes.SLIDER_PROGRESS}-empty`]: intent === Intent.NONE,
         });
 
         return <div key={`track-${index}`} className={classes} style={style} />;
@@ -385,14 +384,13 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private getNewHandleValues(newValue: number, oldIndex: number) {
         const oldValues = this.sortedHandleProps.map(handle => handle.value);
-        const start = oldValues.slice(0, oldIndex);
-        const end = oldValues.slice(oldIndex + 1);
-        const newValues = [...start, newValue, ...end];
+        const newValues = oldValues.slice();
+        newValues[oldIndex] = newValue;
         newValues.sort((left, right) => left - right);
 
         const newIndex = newValues.indexOf(newValue);
         const lockIndex = this.findFirstLockedHandleIndex(oldIndex, newIndex);
-        if (lockIndex === undefined) {
+        if (lockIndex === -1) {
             fillValues(newValues, oldIndex, newIndex, newValue);
         } else {
             // If pushing past a locked handle, discard the new value and only make the updates to clamp values against the lock.
@@ -404,14 +402,14 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         return newValues;
     }
 
-    private findFirstLockedHandleIndex(startIndex: number, endIndex: number): number | undefined {
+    private findFirstLockedHandleIndex(startIndex: number, endIndex: number): number {
         const inc = startIndex < endIndex ? 1 : -1;
         for (let index = startIndex + inc; index !== endIndex + inc; index += inc) {
             if (this.sortedHandleProps[index].interactionKind !== SliderHandleInteractionKind.PUSH) {
                 return index;
             }
         }
-        return undefined;
+        return -1;
     }
 
     private handleChange = (newValues: number[]) => {

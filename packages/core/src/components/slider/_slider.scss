@@ -37,10 +37,6 @@ $track-height: $track-size !default;
   }
 }
 
-.#{$ns}-slider-track:first-child {
-  @include slider-progress-empty();
-}
-
 .#{$ns}-slider-track,
 .#{$ns}-slider-progress {
   @include slider-track-orientation($handle-size, $track-size, $vertical: false);
@@ -49,14 +45,16 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-progress {
+  background: rgba($gray1, 0.2);
+
+  .#{$ns}-dark & {
+    background: rgba($black, 0.5);
+  }
+
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       background-color: $color;
     }
-  }
-
-  &.#{$ns}-slider-progress-empty {
-    @include slider-progress-empty();
   }
 }
 

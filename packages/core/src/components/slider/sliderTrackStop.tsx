@@ -9,8 +9,8 @@ import { Intent } from "../../common";
 
 export interface ISliderTrackStopProps {
     value: number;
-    trackIntentAfter?: Intent;
-    trackIntentBefore?: Intent;
+    intentAfter?: Intent;
+    intentBefore?: Intent;
 }
 
 export class SliderTrackStop extends React.PureComponent<ISliderTrackStopProps> {

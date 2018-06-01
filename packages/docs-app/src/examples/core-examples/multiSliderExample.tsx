@@ -9,7 +9,6 @@ import * as React from "react";
 import {
     Classes,
     Intent,
-    ISliderHandleProps,
     Label,
     MultiSlider,
     SliderHandle,
@@ -39,8 +38,6 @@ interface IMultiSliderExampleState {
     values?: ISliderValues;
     vertical?: boolean;
 }
-
-export type ConcreteHandleProps = Pick<ISliderHandleProps, "trackIntentBefore" | "trackIntentAfter">;
 
 const SLIDER_HANDLE_KEYS: HandleKey[] = [
     ["danger", "lower"],
@@ -92,14 +89,14 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
     private renderHandle = (key: HandleKey) => {
         const [handleIntent, handleTail] = key;
         const { lockHandles, values } = this.state;
-        const intent = handleIntent === "danger" ? Intent.DANGER : Intent.WARNING;
+        const intent = handleIntent === "danger" ? Intent.NONE : Intent.NONE;
         return (
             <SliderHandle
                 key={`${handleIntent}-${handleTail}`}
                 type={handleTail === "lower" ? "start" : "end"}
                 value={values[getHandleValueKey(key)]}
-                trackIntentBefore={handleTail === "lower" ? intent : undefined}
-                trackIntentAfter={handleTail === "upper" ? intent : undefined}
+                intentBefore={handleTail === "lower" ? intent : undefined}
+                intentAfter={handleTail === "upper" ? intent : undefined}
                 interactionKind={lockHandles ? SliderHandleInteractionKind.LOCK : SliderHandleInteractionKind.PUSH}
             />
         );

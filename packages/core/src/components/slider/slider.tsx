@@ -43,22 +43,24 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
     public static displayName: "Blueprint.Slider";
 
     public render() {
-        const { initialValue, value, onChange, onRelease, ...props } = this.props;
+        const { initialValue, value, ...props } = this.props;
         return (
-            <MultiSlider {...props} onChange={this.getHandler(onChange)} onRelease={this.getHandler(onRelease)}>
+            <MultiSlider {...props} onChange={this.handleChange} onRelease={this.handleRelease}>
                 <SliderHandle
                     value={value}
-                    trackIntentAfter={value < initialValue ? Intent.PRIMARY : undefined}
-                    trackIntentBefore={value > initialValue ? Intent.PRIMARY : undefined}
+                    intentAfter={value < initialValue ? Intent.PRIMARY : undefined}
+                    intentBefore={value > initialValue ? Intent.PRIMARY : undefined}
                 />
                 <SliderTrackStop value={initialValue} />
             </MultiSlider>
         );
     }
 
-    private getHandler(callback: (value: number) => void) {
-        return ([value]: number[]) => {
-            Utils.safeInvoke(callback, value);
-        };
-    }
+    private handleChange = ([value]: number[]) => {
+        Utils.safeInvoke(this.props.onChange, value);
+    };
+
+    private handleRelease = ([value]: number[]) => {
+        Utils.safeInvoke(this.props.onRelease, value);
+    };
 }
