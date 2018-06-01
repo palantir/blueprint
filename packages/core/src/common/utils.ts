@@ -166,7 +166,7 @@ export function countDecimalPlaces(num: number) {
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
-    const throttledFunc = _throttleHelper(undefined, undefined, (event: Event) => {
+    const throttledFunc = _throttleHelper((event: Event) => {
         target.dispatchEvent(new CustomEvent(newEventName, event));
     });
     target.addEventListener(eventName, throttledFunc);
@@ -187,6 +187,7 @@ export function throttleReactEventCallback(
     options: IThrottledReactEventOptions = {},
 ) {
     const throttledFunc = _throttleHelper(
+        callback,
         (event2: React.SyntheticEvent<any>) => {
             if (options.preventDefault) {
                 event2.preventDefault();
@@ -194,15 +195,24 @@ export function throttleReactEventCallback(
         },
         // prevent React from reclaiming the event object before we reference it
         (event2: React.SyntheticEvent<any>) => event2.persist(),
-        callback,
     );
     return throttledFunc;
 }
 
-function _throttleHelper(
-    onBeforeIsRunningCheck: (...args: any[]) => void,
-    onAfterIsRunningCheck: (...args: any[]) => void,
-    onAnimationFrameRequested: (...args: any[]) => void,
+/**
+ * Throttle a method by wrapping it in a `requestAnimationFrame` call. Returns
+ * the throttled function.
+ */
+// tslint:disable-next-line:ban-types
+export function throttle<T extends Function>(method: T): T {
+    return _throttleHelper(method);
+}
+
+// tslint:disable-next-line:ban-types
+function _throttleHelper<T extends Function>(
+    onAnimationFrameRequested: T,
+    onBeforeIsRunningCheck?: T,
+    onAfterIsRunningCheck?: T,
 ) {
     let isRunning = false;
     const func = (...args: any[]) => {
@@ -222,11 +232,9 @@ function _throttleHelper(
         }
 
         requestAnimationFrame(() => {
-            if (isFunction(onAnimationFrameRequested)) {
-                onAnimationFrameRequested(...args);
-            }
+            onAnimationFrameRequested(...args);
             isRunning = false;
         });
     };
-    return func;
+    return (func as any) as T;
 }

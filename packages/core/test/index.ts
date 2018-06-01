@@ -30,6 +30,7 @@ import "./icon/iconTests";
 import "./menu/menuItemTests";
 import "./menu/menuTests";
 import "./non-ideal-state/nonIdealStateTests";
+import "./overflow-list/overflowListTests";
 import "./overlay/overlayTests";
 import "./popover/popoverTests";
 import "./portal/portalTests";
