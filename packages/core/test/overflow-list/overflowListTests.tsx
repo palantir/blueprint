@@ -15,7 +15,10 @@ const ITEMS = [{}, {}, {}, {}, {}, {}];
 const TestItem: React.SFC = () => <div style={{ width: 10 }} />;
 const TestOverflow: React.SFC = () => <div />;
 
-describe("<OverflowList>", () => {
+describe("<OverflowList>", function(this) {
+    // these tests rely on DOM measurement which can be flaky, so we allow some retries
+    this.retries(3);
+
     let list: ReactWrapper<IOverflowListProps<{}>, any> | undefined;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
@@ -47,7 +50,7 @@ describe("<OverflowList>", () => {
             list.update();
             assert.lengthOf(list.find(TestItem), 4);
             done();
-        }, 20);
+        }, 30);
     });
 
     it("shows all after growing", done => {
@@ -58,7 +61,7 @@ describe("<OverflowList>", () => {
             list.update();
             assert.lengthOf(list.find(TestItem), ITEMS.length);
             done();
-        }, 20);
+        }, 30);
     });
 
     it("shows fewer after shrinking", () => {
