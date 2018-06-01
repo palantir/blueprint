@@ -114,6 +114,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private handles: Handle[] = [];
     private sortedHandleProps: ISliderHandleProps[];
+
     private trackElement: HTMLElement;
     private refHandlers = {
         track: (el: HTMLDivElement) => (this.trackElement = el),
@@ -148,16 +149,16 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
     }
 
+    public componentWillMount() {
+        this.sortedHandleProps = getSortedHandleProps(this.props);
+    }
+
     public componentDidMount() {
         this.updateTickSize();
     }
 
     public componentDidUpdate() {
         this.updateTickSize();
-    }
-
-    public componentWillMount() {
-        this.sortedHandleProps = getSortedHandleProps(this.props);
     }
 
     public componentWillReceiveProps(nextProps: IMultiSliderProps) {
@@ -233,15 +234,11 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         }
         return <div className={`${Classes.SLIDER}-axis`}>{labels}</div>;
     }
-
     private maybeRenderFill() {
-        if (this.trackElement != null) {
-            return this.renderFill();
+        if (this.trackElement == null) {
+            return undefined;
         }
-        return undefined;
-    }
 
-    private renderFill() {
         const trackStops = [...this.sortedHandleProps, ...this.getTrackStops()];
         trackStops.sort((left, right) => left.value - right.value);
         if (trackStops.length === 0 || trackStops[0].value > this.props.min) {
@@ -269,62 +266,13 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         return <div className={Classes.SLIDER_TRACK}>{tracks}</div>;
     }
 
-    private renderHandles() {
-        const { disabled, max, min, stepSize, vertical } = this.props;
-        return this.sortedHandleProps.map(({ value, type }, index) => (
-            <Handle
-                className={classNames({
-                    [Classes.START]: type === SliderHandleType.START,
-                    [Classes.END]: type === SliderHandleType.END,
-                })}
-                disabled={disabled}
-                key={`${index}-${this.sortedHandleProps.length}`}
-                label={this.formatLabel(value)}
-                max={max}
-                min={min}
-                onChange={this.getHandlerForIndex(index, this.handleChange)}
-                onRelease={this.getHandlerForIndex(index, this.props.onRelease)}
-                ref={this.addHandleRef}
-                stepSize={stepSize}
-                tickSize={this.state.tickSize}
-                tickSizeRatio={this.state.tickSizeRatio}
-                value={value}
-                vertical={vertical}
-            />
-        ));
+    private getTrackStops(): ISliderHandleProps[] {
+        const maybeStops = React.Children.map(
+            this.props.children,
+            child => (Utils.isElementOfType(child, SliderTrackStop) ? child.props : null),
+        );
+        return maybeStops != null ? maybeStops : [];
     }
-
-    private maybeHandleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        if (this.canHandleTrackEvent(event)) {
-            this.handleTrackClick(event);
-        }
-    };
-
-    private handleTrackClick(event: React.MouseEvent<HTMLElement>) {
-        const foundHandle = this.nearestHandleForValue(this.handles, handle => handle.mouseEventClientOffset(event));
-        if (foundHandle) {
-            foundHandle.beginHandleMovement(event);
-        }
-    }
-
-    private maybeHandleTrackTouch = (event: React.TouchEvent<HTMLDivElement>) => {
-        if (this.canHandleTrackEvent(event)) {
-            this.handleTrackTouch(event);
-        }
-    };
-
-    private handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
-        const foundHandle = this.nearestHandleForValue(this.handles, handle => handle.touchEventClientOffset(event));
-        if (foundHandle) {
-            foundHandle.beginHandleTouchMovement(event);
-        }
-    }
-
-    private canHandleTrackEvent = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-        const target = event.target as HTMLElement;
-        // ensure event does not come from inside the handle
-        return !this.props.disabled && target.closest(`.${Classes.SLIDER_HANDLE}`) == null;
-    };
 
     private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps, intent: Intent) {
         const { tickSizeRatio } = this.state;
@@ -356,17 +304,68 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         return <div key={`track-${index}`} className={classes} style={style} />;
     }
 
-    private getTrackStops(): ISliderHandleProps[] {
-        const maybeStops = React.Children.map(
-            this.props.children,
-            child => (Utils.isElementOfType(child, SliderTrackStop) ? child.props : null),
-        );
-        return maybeStops != null ? maybeStops : [];
-    }
-
     private getOffsetRatio(value: number, tickSizeRatio: number) {
         return Utils.clamp((value - this.props.min) * tickSizeRatio, 0, 1);
     }
+
+    private renderHandles() {
+        const { disabled, max, min, stepSize, vertical } = this.props;
+        return this.sortedHandleProps.map(({ value, type }, index) => (
+            <Handle
+                className={classNames({
+                    [Classes.START]: type === SliderHandleType.START,
+                    [Classes.END]: type === SliderHandleType.END,
+                })}
+                disabled={disabled}
+                key={`${index}-${this.sortedHandleProps.length}`}
+                label={this.formatLabel(value)}
+                max={max}
+                min={min}
+                onChange={this.getHandlerForIndex(index, this.handleChange)}
+                onRelease={this.getHandlerForIndex(index, this.props.onRelease)}
+                ref={this.addHandleRef}
+                stepSize={stepSize}
+                tickSize={this.state.tickSize}
+                tickSizeRatio={this.state.tickSizeRatio}
+                value={value}
+                vertical={vertical}
+            />
+        ));
+    }
+
+    private addHandleRef = (ref: Handle) => {
+        if (ref != null) {
+            this.handles.push(ref);
+        }
+    };
+
+    private maybeHandleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        if (this.canHandleTrackEvent(event)) {
+            const foundHandle = this.nearestHandleForValue(this.handles, handle =>
+                handle.mouseEventClientOffset(event),
+            );
+            if (foundHandle) {
+                foundHandle.beginHandleMovement(event);
+            }
+        }
+    };
+
+    private maybeHandleTrackTouch = (event: React.TouchEvent<HTMLDivElement>) => {
+        if (this.canHandleTrackEvent(event)) {
+            const foundHandle = this.nearestHandleForValue(this.handles, handle =>
+                handle.touchEventClientOffset(event),
+            );
+            if (foundHandle) {
+                foundHandle.beginHandleTouchMovement(event);
+            }
+        }
+    };
+
+    private canHandleTrackEvent = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+        const target = event.target as HTMLElement;
+        // ensure event does not come from inside the handle
+        return !this.props.disabled && target.closest(`.${Classes.SLIDER_HANDLE}`) == null;
+    };
 
     private nearestHandleForValue(handles: Handle[], getOffset: (handle: Handle) => number): Handle | undefined {
         return argMin(handles, handle => {
@@ -376,12 +375,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             return Math.abs(offsetValue - handleValue);
         });
     }
-
-    private addHandleRef = (ref: Handle) => {
-        if (ref != null) {
-            this.handles.push(ref);
-        }
-    };
 
     private getHandlerForIndex = (index: number, callback?: (values: number[]) => void) => {
         return (newValue: number) => {
