@@ -12,8 +12,7 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Intent } from "../../common/intent";
-import { CoreSlider, ICoreSliderProps } from "./coreSlider";
-import { MultiSlider } from "./multiSlider";
+import { ICoreSliderProps, MultiSlider } from "./multiSlider";
 
 export type NumberRange = [number, number];
 
@@ -38,7 +37,7 @@ export interface IRangeSliderProps extends ICoreSliderProps {
 
 export class RangeSlider extends AbstractPureComponent<IRangeSliderProps> {
     public static defaultProps: IRangeSliderProps = {
-        ...CoreSlider.defaultProps,
+        ...MultiSlider.defaultCoreProps,
         value: [0, 10],
     };
 

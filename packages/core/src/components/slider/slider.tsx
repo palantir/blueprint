@@ -9,8 +9,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import { Intent } from "../../common/intent";
 import * as Utils from "../../common/utils";
-import { CoreSlider, ICoreSliderProps } from "./coreSlider";
-import { MultiSlider } from "./multiSlider";
+import { ICoreSliderProps, MultiSlider } from "./multiSlider";
 import { SliderHandle } from "./sliderHandle";
 import { SliderTrackStop } from "./sliderTrackStop";
 
@@ -36,7 +35,7 @@ export interface ISliderProps extends ICoreSliderProps {
 
 export class Slider extends AbstractPureComponent<ISliderProps> {
     public static defaultProps: ISliderProps = {
-        ...CoreSlider.defaultProps,
+        ...MultiSlider.defaultCoreProps,
         initialValue: 0,
         value: 0,
     };

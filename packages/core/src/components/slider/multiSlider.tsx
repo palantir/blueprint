@@ -8,13 +8,75 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent } from "../../common";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import { intentClass } from "../../common/classes";
 import * as Errors from "../../common/errors";
+import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
-import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
 import { Handle } from "./handle";
 import { ISliderHandleProps, SliderHandle, SliderHandleInteractionKind, SliderHandleType } from "./sliderHandle";
 import { SliderTrackStop } from "./sliderTrackStop";
+
+export interface ICoreSliderProps extends IProps {
+    /**
+     * Whether the slider is non-interactive.
+     * @default false
+     */
+    disabled?: boolean;
+
+    /**
+     * Increment between successive labels. Must be greater than zero.
+     * @default 1
+     */
+    labelStepSize?: number;
+
+    /**
+     * Number of decimal places to use when rendering label value. Default value is the number of
+     * decimals used in the `stepSize` prop. This prop has _no effect_ if you supply a custom
+     * `labelRenderer` callback.
+     * @default inferred from stepSize
+     */
+    labelPrecision?: number;
+
+    /**
+     * Maximum value of the slider.
+     * @default 10
+     */
+    max?: number;
+
+    /**
+     * Minimum value of the slider.
+     * @default 0
+     */
+    min?: number;
+
+    /**
+     * Whether a solid bar should be rendered on the track between current and initial values,
+     * or between handles for `RangeSlider`.
+     * @default true
+     */
+    showTrackFill?: boolean;
+
+    /**
+     * Increment between successive values; amount by which the handle moves. Must be greater than zero.
+     * @default 1
+     */
+    stepSize?: number;
+
+    /**
+     * Callback to render a single label. Useful for formatting numbers as currency or percentages.
+     * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
+     * If `false`, labels will not be shown.
+     * @default true
+     */
+    labelRenderer?: boolean | ((value: number) => string | JSX.Element);
+
+    /**
+     * Whether to show the slider in a vertical orientation.
+     * @default false
+     */
+    vertical?: boolean;
+}
 
 export interface IMultiSliderProps extends ICoreSliderProps {
     children?: React.ReactNode;
@@ -23,9 +85,27 @@ export interface IMultiSliderProps extends ICoreSliderProps {
     onRelease?(values: number[]): void;
 }
 
-export class MultiSlider extends CoreSlider<IMultiSliderProps> {
+export interface ISliderState {
+    labelPrecision?: number;
+    /** the client size, in pixels, of one tick */
+    tickSize?: number;
+    /** the size of one tick as a ratio of the component's client size */
+    tickSizeRatio?: number;
+}
+
+export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISliderState> {
+    public static defaultCoreProps: ICoreSliderProps = {
+        disabled: false,
+        labelStepSize: 1,
+        max: 10,
+        min: 0,
+        showTrackFill: true,
+        stepSize: 1,
+        vertical: false,
+    };
+
     public static defaultProps: IMultiSliderProps = {
-        ...CoreSlider.defaultProps,
+        ...MultiSlider.defaultCoreProps,
         defaultTrackIntent: Intent.NONE,
     };
 
@@ -34,13 +114,55 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
 
     private handles: Handle[] = [];
     private sortedHandleProps: ISliderHandleProps[];
+    private trackElement: HTMLElement;
+    private refHandlers = {
+        track: (el: HTMLDivElement) => (this.trackElement = el),
+    };
+
+    public constructor(props: IMultiSliderProps) {
+        super(props);
+        this.state = {
+            labelPrecision: this.getLabelPrecision(props),
+            tickSize: 0,
+            tickSizeRatio: 0,
+        };
+    }
+
+    public render() {
+        const classes = classNames(
+            this.className,
+            {
+                [Classes.DISABLED]: this.props.disabled,
+                [`${Classes.SLIDER}-unlabeled`]: this.props.labelRenderer === false,
+                [Classes.VERTICAL]: this.props.vertical,
+            },
+            this.props.className,
+        );
+        return (
+            <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
+                <div className={Classes.SLIDER_TRACK} ref={this.refHandlers.track} />
+                {this.maybeRenderFill()}
+                {this.maybeRenderAxis()}
+                {this.renderHandles()}
+            </div>
+        );
+    }
+
+    public componentDidMount() {
+        this.updateTickSize();
+    }
+
+    public componentDidUpdate() {
+        this.updateTickSize();
+    }
 
     public componentWillMount() {
         this.sortedHandleProps = getSortedHandleProps(this.props);
     }
 
-    public componentWillReceiveProps(nextProps: IMultiSliderProps & { children: React.ReactNode }) {
-        super.componentWillReceiveProps(nextProps);
+    public componentWillReceiveProps(nextProps: IMultiSliderProps) {
+        this.setState({ labelPrecision: this.getLabelPrecision(nextProps) });
+
         const newSortedHandleProps = getSortedHandleProps(nextProps);
         if (newSortedHandleProps.length !== this.sortedHandleProps.length) {
             this.handles = [];
@@ -49,6 +171,13 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
     }
 
     protected validateProps(props: IMultiSliderProps) {
+        if (props.stepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_STEP);
+        }
+        if (props.labelStepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
+        }
+
         let anyInvalidChildren = false;
         React.Children.forEach(props.children, child => {
             if (
@@ -64,7 +193,55 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         }
     }
 
-    protected renderFill() {
+    private formatLabel(value: number): React.ReactChild {
+        const { labelRenderer } = this.props;
+        if (labelRenderer === false) {
+            return undefined;
+        } else if (Utils.isFunction(labelRenderer)) {
+            // TODO: TS 2.7 might have a type narrowing issue?
+            return (labelRenderer as (value: number) => React.ReactChild)(value);
+        } else {
+            return value.toFixed(this.state.labelPrecision);
+        }
+    }
+
+    private maybeRenderAxis() {
+        // explicit typedefs are required because tsc (rightly) assumes that props might be overriden with different
+        // types in subclasses
+        const max: number = this.props.max;
+        const min: number = this.props.min;
+        const labelStepSize: number = this.props.labelStepSize;
+        if (this.props.labelRenderer === false) {
+            return undefined;
+        }
+
+        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
+        const labels: JSX.Element[] = [];
+        // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
+        for (
+            let i = min, offsetRatio = 0;
+            i < max || Utils.approxEqual(i, max);
+            i += labelStepSize, offsetRatio += stepSizeRatio
+        ) {
+            const offsetPercentage = formatPercentage(offsetRatio);
+            const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
+            labels.push(
+                <div className={`${Classes.SLIDER}-label`} key={i} style={style}>
+                    {this.formatLabel(i)}
+                </div>,
+            );
+        }
+        return <div className={`${Classes.SLIDER}-axis`}>{labels}</div>;
+    }
+
+    private maybeRenderFill() {
+        if (this.trackElement != null) {
+            return this.renderFill();
+        }
+        return undefined;
+    }
+
+    private renderFill() {
         const trackStops = [...this.sortedHandleProps, ...this.getTrackStops()];
         trackStops.sort((left, right) => left.value - right.value);
         if (trackStops.length === 0 || trackStops[0].value > this.props.min) {
@@ -92,7 +269,7 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         return <div className={Classes.SLIDER_TRACK}>{tracks}</div>;
     }
 
-    protected renderHandles() {
+    private renderHandles() {
         const { disabled, max, min, stepSize, vertical } = this.props;
         return this.sortedHandleProps.map(({ value, type }, index) => (
             <Handle
@@ -117,19 +294,37 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
         ));
     }
 
-    protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
+    private maybeHandleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        if (this.canHandleTrackEvent(event)) {
+            this.handleTrackClick(event);
+        }
+    };
+
+    private handleTrackClick(event: React.MouseEvent<HTMLElement>) {
         const foundHandle = this.nearestHandleForValue(this.handles, handle => handle.mouseEventClientOffset(event));
         if (foundHandle) {
             foundHandle.beginHandleMovement(event);
         }
     }
 
-    protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
+    private maybeHandleTrackTouch = (event: React.TouchEvent<HTMLDivElement>) => {
+        if (this.canHandleTrackEvent(event)) {
+            this.handleTrackTouch(event);
+        }
+    };
+
+    private handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
         const foundHandle = this.nearestHandleForValue(this.handles, handle => handle.touchEventClientOffset(event));
         if (foundHandle) {
             foundHandle.beginHandleTouchMovement(event);
         }
     }
+
+    private canHandleTrackEvent = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+        const target = event.target as HTMLElement;
+        // ensure event does not come from inside the handle
+        return !this.props.disabled && target.closest(`.${Classes.SLIDER_HANDLE}`) == null;
+    };
 
     private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps, intent: Intent) {
         const { tickSizeRatio } = this.state;
@@ -231,6 +426,25 @@ export class MultiSlider extends CoreSlider<IMultiSliderProps> {
             Utils.safeInvoke(this.props.onChange, newValues);
         }
     };
+
+    private getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
+        // infer default label precision from stepSize because that's how much the handle moves.
+        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
+    }
+
+    private updateTickSize() {
+        if (this.trackElement != null) {
+            const trackSize = this.props.vertical ? this.trackElement.clientHeight : this.trackElement.clientWidth;
+            const tickSizeRatio = 1 / ((this.props.max as number) - (this.props.min as number));
+            const tickSize = trackSize * tickSizeRatio;
+            this.setState({ tickSize, tickSizeRatio });
+        }
+    }
+}
+
+/** Helper function for formatting ratios as CSS percentage values. */
+export function formatPercentage(ratio: number) {
+    return `${(ratio * 100).toFixed(2)}%`;
 }
 
 function getSortedHandleProps({ children }: IMultiSliderProps): ISliderHandleProps[] {

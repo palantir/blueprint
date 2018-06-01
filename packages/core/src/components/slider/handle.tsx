@@ -12,7 +12,7 @@ import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
-import { formatPercentage } from "./coreSlider";
+import { formatPercentage } from "./multiSlider";
 
 /**
  * N.B. some properties need to be optional for spread in slider.tsx to work
