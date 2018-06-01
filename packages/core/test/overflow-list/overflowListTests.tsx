@@ -15,7 +15,10 @@ const ITEMS = [{}, {}, {}, {}, {}, {}];
 const TestItem: React.SFC = () => <div style={{ width: 10 }} />;
 const TestOverflow: React.SFC = () => <div />;
 
-describe("<OverflowList>", () => {
+describe("<OverflowList>", function(this) {
+    // these tests rely on DOM measurement which can be flaky, so we allow some retries
+    this.retries(3);
+
     let list: ReactWrapper<IOverflowListProps<{}>, any> | undefined;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);

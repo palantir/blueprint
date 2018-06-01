@@ -27,7 +27,10 @@ import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";
 
-describe("<Table>", () => {
+describe("<Table>", function(this) {
+    // allow retrying failed tests here to reduce flakes.
+    this.retries(2);
+
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${
         Classes.TABLE_HEADER
     }`;
