@@ -26,8 +26,8 @@ export function getLocalTimezone(): string | undefined {
  * @param date the date to use when determining timezone offsets
  * @returns a list of queryable strings
  */
-export function getTimezoneQueryCandidates(timezone: string, date: Date): string[] {
-    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
+export function getTimezoneQueryCandidates(timezone: string, date: Date, useManualCalc: boolean): string[] {
+    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date, useManualCalc);
     return [timezone, abbreviation, offsetAsString].filter(candidate => candidate !== undefined);
 }
 
