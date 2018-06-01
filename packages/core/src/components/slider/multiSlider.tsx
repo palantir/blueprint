@@ -16,6 +16,7 @@ import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { ISliderHandleProps, SliderHandle, SliderHandleInteractionKind, SliderHandleType } from "./sliderHandle";
 import { SliderTrackStop } from "./sliderTrackStop";
+import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
 export interface ICoreSliderProps extends IProps {
     /**
@@ -435,11 +436,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     }
 }
 
-/** Helper function for formatting ratios as CSS percentage values. */
-export function formatPercentage(ratio: number) {
-    return `${(ratio * 100).toFixed(2)}%`;
-}
-
 function getSortedHandleProps({ children }: IMultiSliderProps): ISliderHandleProps[] {
     const maybeHandles = React.Children.map(
         children,
@@ -449,31 +445,4 @@ function getSortedHandleProps({ children }: IMultiSliderProps): ISliderHandlePro
     handles = handles.filter(handle => handle !== null);
     handles.sort((left, right) => left.value - right.value);
     return handles;
-}
-
-function fillValues(values: number[], startIndex: number, endIndex: number, fillValue: number) {
-    const inc = startIndex < endIndex ? 1 : -1;
-    for (let index = startIndex; index !== endIndex + inc; index += inc) {
-        values[index] = fillValue;
-    }
-}
-
-function argMin<T>(values: T[], argFn: (value: T) => any): T | undefined {
-    if (values.length === 0) {
-        return undefined;
-    }
-
-    let minValue = values[0];
-    let minArg = argFn(minValue);
-
-    for (let index = 1; index < values.length; index++) {
-        const value = values[index];
-        const arg = argFn(value);
-        if (arg < minArg) {
-            minValue = value;
-            minArg = arg;
-        }
-    }
-
-    return minValue;
 }
