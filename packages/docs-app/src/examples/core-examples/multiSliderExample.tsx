@@ -89,7 +89,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
     private renderHandle = (key: HandleKey) => {
         const [handleIntent, handleTail] = key;
         const { lockHandles, values } = this.state;
-        const intent = handleIntent === "danger" ? Intent.NONE : Intent.NONE;
+        const intent = handleIntent === "danger" ? Intent.DANGER : Intent.WARNING;
         return (
             <SliderHandle
                 key={`${handleIntent}-${handleTail}`}
