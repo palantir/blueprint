@@ -20,6 +20,7 @@ module.exports = externalize({
     "react-transition-group": "ReactTransitionGroup",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
+    "tslib": "tslib",
 });
 
 /**
