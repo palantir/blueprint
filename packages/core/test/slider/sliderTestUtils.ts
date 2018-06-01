@@ -6,7 +6,7 @@
 
 import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 import { ReactWrapper } from "enzyme";
-import { ICoreSliderProps } from "../../src/components/slider/coreSlider";
+import { ICoreSliderProps } from "../../src/components/slider/multiSlider";
 
 export function mouseMoveHorizontal(movement: number, times = 1, initialValue = 0) {
     genericMoveHorizontal(movement, times, initialValue, "mousemove");
