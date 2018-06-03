@@ -135,29 +135,9 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     popoverClassName?: string;
 
     /**
-     * Callback invoked after the popover closes and has been removed from the DOM.
-     */
-    popoverDidClose?: () => void;
-
-    /**
-     * Callback invoked when the popover opens after it is added to the DOM.
-     */
-    popoverDidOpen?: () => void;
-
-    /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: (ref: HTMLDivElement | null) => void;
-
-    /**
-     * Callback invoked when a popover begins to close.
-     */
-    popoverWillClose?: () => void;
-
-    /**
-     * Callback invoked before the popover opens.
-     */
-    popoverWillOpen?: () => void;
 
     /**
      * Space-delimited string of class names applied to the
@@ -248,8 +228,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     /** DOM element that contains the target. */
     public targetElement: HTMLElement;
 
-    // a flag that is set to true while we are waiting for the underlying Portal to complete rendering
-    private isContentMounting = false;
     private cancelOpenTimeout: () => void;
 
     // a flag that lets us detect mouse movement between the target and popover,
@@ -277,7 +255,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     public render() {
-        const { className, disabled, hasBackdrop, targetClassName, targetElementTag } = this.props;
+        const { className, disabled, targetClassName, targetElementTag } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -333,15 +311,17 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                     canEscapeKeyClose={this.props.canEscapeKeyClose}
                     canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
                     className={this.props.portalClassName}
-                    didClose={this.props.popoverDidClose}
-                    didOpen={this.handleContentMount}
                     enforceFocus={this.props.enforceFocus}
-                    hasBackdrop={hasBackdrop}
-                    usePortal={this.props.usePortal}
+                    hasBackdrop={this.props.hasBackdrop}
                     isOpen={isOpen && !isContentEmpty}
                     onClose={this.handleOverlayClose}
+                    onClosed={this.props.onClosed}
+                    onClosing={this.props.onClosing}
+                    onOpened={this.props.onOpened}
+                    onOpening={this.props.onOpening}
                     transitionDuration={this.props.transitionDuration}
                     transitionName={Classes.POPOVER}
+                    usePortal={this.props.usePortal}
                 >
                     {this.renderPopper(children.content)}
                 </Overlay>
@@ -366,15 +346,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         } else if (this.state.isOpen && nextProps.isOpen == null && nextProps.disabled) {
             // special case: close an uncontrolled popover when disabled is set to true
             this.setOpenState(false);
-        }
-    }
-
-    public componentWillUpdate(_: IPopoverProps, nextState: IPopoverState) {
-        if (!this.state.isOpen && nextState.isOpen) {
-            this.isContentMounting = true;
-            Utils.safeInvoke(this.props.popoverWillOpen);
-        } else if (this.state.isOpen && !nextState.isOpen) {
-            Utils.safeInvoke(this.props.popoverWillClose);
         }
     }
 
@@ -503,13 +474,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             return props.defaultIsOpen;
         }
     }
-
-    private handleContentMount = () => {
-        if (this.isContentMounting) {
-            Utils.safeInvoke(this.props.popoverDidOpen);
-            this.isContentMounting = false;
-        }
-    };
 
     private handleTargetFocus = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
