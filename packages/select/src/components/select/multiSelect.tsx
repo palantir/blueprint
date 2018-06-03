@@ -115,8 +115,8 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
-                popoverDidOpen={this.handlePopoverDidOpen}
-                popoverWillOpen={this.handlePopoverWillOpen}
+                onOpened={this.handlePopoverOpened}
+                onOpening={this.handlePopoverOpening}
             >
                 <div
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
@@ -183,21 +183,21 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
         });
 
-    private handlePopoverWillOpen = () => {
+    private handlePopoverOpening = () => {
         const { popoverProps = {}, resetOnSelect } = this.props;
         if (resetOnSelect) {
             this.setState({ activeItem: this.props.items[0] });
         }
-        Utils.safeInvoke(popoverProps.popoverWillOpen);
+        Utils.safeInvoke(popoverProps.onOpening);
     };
 
-    private handlePopoverDidOpen = () => {
+    private handlePopoverOpened = () => {
         const { popoverProps = {} } = this.props;
         if (this.queryList != null) {
             // scroll active item into view after popover transition completes and all dimensions are stable.
             this.queryList.scrollActiveItemIntoView();
         }
-        Utils.safeInvoke(popoverProps.popoverDidOpen);
+        Utils.safeInvoke(popoverProps.onOpened);
     };
 
     private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });

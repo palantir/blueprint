@@ -356,9 +356,9 @@ describe("<DateRangeInput>", () => {
     describe("popoverProps", () => {
         it("accepts custom popoverProps", () => {
             const popoverProps = {
-                popoverDidOpen: sinon.spy(),
-                popoverWillClose: sinon.spy(),
-                popoverWillOpen: sinon.spy(),
+                onClosing: sinon.spy(),
+                onOpened: sinon.spy(),
+                onOpening: sinon.spy(),
                 position: Position.TOP_LEFT,
             };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
@@ -366,12 +366,12 @@ describe("<DateRangeInput>", () => {
             expect(root.find(Popover).prop("position")).to.equal(Position.TOP_LEFT);
 
             root.setState({ isOpen: true });
-            expect(popoverProps.popoverWillOpen.calledOnce).to.be.true;
-            expect(popoverProps.popoverDidOpen.calledOnce).to.be.true;
+            expect(popoverProps.onOpening.calledOnce).to.be.true;
+            expect(popoverProps.onOpened.calledOnce).to.be.true;
 
             // not testing popoverProps.onClose, because it has some setTimeout stuff to work around
             root.setState({ isOpen: false });
-            expect(popoverProps.popoverWillClose.calledOnce).to.be.true;
+            expect(popoverProps.onClosing.calledOnce).to.be.true;
         });
 
         it("ignores autoFocus, enforceFocus, and content in custom popoverProps", () => {

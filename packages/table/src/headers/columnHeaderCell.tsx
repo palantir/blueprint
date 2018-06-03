@@ -198,8 +198,8 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
                     position={Position.BOTTOM}
                     className={Classes.TABLE_TH_MENU}
                     modifiers={{ preventOverflow: { boundariesElement: "window" } }}
-                    popoverDidOpen={this.handlePopoverDidOpen}
-                    popoverWillClose={this.handlePopoverWillClose}
+                    onOpened={this.handlePopoverOpened}
+                    onClosing={this.handlePopoverClosing}
                 >
                     <Icon icon={menuIcon} />
                 </Popover>
@@ -207,11 +207,6 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
         );
     }
 
-    private handlePopoverDidOpen = () => {
-        this.setState({ isActive: true });
-    };
-
-    private handlePopoverWillClose = () => {
-        this.setState({ isActive: false });
-    };
+    private handlePopoverOpened = () => this.setState({ isActive: true });
+    private handlePopoverClosing = () => this.setState({ isActive: false });
 }
