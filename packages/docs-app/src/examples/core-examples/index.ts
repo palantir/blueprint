@@ -6,6 +6,7 @@
 
 export * from "./alertExample";
 export * from "./buttonsExample";
+export * from "./buttonsIconsExample";
 export * from "./buttonGroupExample";
 export * from "./buttonGroupPopoverExample";
 export * from "./calloutExample";
