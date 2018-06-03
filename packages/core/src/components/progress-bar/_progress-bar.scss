@@ -83,8 +83,7 @@ $progress-bar-gradient: linear-gradient(
   }
 }
 
-.#{$ns}-dark .#{$ns}-progress-bar,
-.#{$ns}-progress-bar.#{$ns}-dark {
+.#{$ns}-dark .#{$ns}-progress-bar {
   background: $dark-progress-track-color;
 
   .#{$ns}-progress-meter {
