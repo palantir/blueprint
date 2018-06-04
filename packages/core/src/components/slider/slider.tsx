@@ -11,7 +11,6 @@ import { Intent } from "../../common/intent";
 import * as Utils from "../../common/utils";
 import { ICoreSliderProps, MultiSlider } from "./multiSlider";
 import { SliderHandle } from "./sliderHandle";
-import { SliderTrackStop } from "./sliderTrackStop";
 
 export interface ISliderProps extends ICoreSliderProps {
     /**
@@ -51,7 +50,7 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
                     intentAfter={value < initialValue ? Intent.PRIMARY : undefined}
                     intentBefore={value > initialValue ? Intent.PRIMARY : undefined}
                 />
-                <SliderTrackStop value={initialValue} />
+                <SliderHandle value={0} interactionKind="none" />
             </MultiSlider>
         );
     }
