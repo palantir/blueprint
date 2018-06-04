@@ -15,7 +15,6 @@ import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { ISliderHandleProps, SliderHandle, SliderHandleInteractionKind, SliderHandleType } from "./sliderHandle";
-import { SliderTrackStop } from "./sliderTrackStop";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
 export interface ICoreSliderProps extends IProps {
@@ -111,18 +110,14 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     };
 
     public static displayName = "Blueprint2.MultiSlider";
-    public className = classNames(Classes.SLIDER, Classes.MULTI_SLIDER);
 
     private handleElements: Handle[] = [];
     private handleProps: ISliderHandleProps[];
 
-    private trackElement: HTMLElement;
-    private refHandlers = {
-        track: (el: HTMLDivElement) => (this.trackElement = el),
-    };
+    private trackElement: HTMLElement | null;
 
-    public constructor(props: IMultiSliderProps) {
-        super(props);
+    public constructor(props: IMultiSliderProps, context?: any) {
+        super(props, context);
         this.state = {
             labelPrecision: this.getLabelPrecision(props),
             tickSize: 0,
@@ -132,7 +127,8 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     public render() {
         const classes = classNames(
-            this.className,
+            Classes.SLIDER,
+            Classes.MULTI_SLIDER,
             {
                 [Classes.DISABLED]: this.props.disabled,
                 [`${Classes.SLIDER}-unlabeled`]: this.props.labelRenderer === false,
@@ -142,7 +138,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
         return (
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
-                <div className={Classes.SLIDER_TRACK} ref={this.refHandlers.track} />
+                <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)} />
                 {this.maybeRenderFill()}
                 {this.maybeRenderAxis()}
                 {this.renderHandles()}
@@ -439,3 +435,8 @@ function getSortedHandleProps(
     handles.sort((left, right) => left.value - right.value);
     return handles;
 }
+
+<MultiSlider>
+    <MultiSlider.Handle value={10} />
+    <SliderHandle value={10} />
+</MultiSlider>;

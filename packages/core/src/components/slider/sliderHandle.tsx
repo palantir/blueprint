@@ -27,8 +27,8 @@ export interface ISliderHandleProps {
     value: number;
     intentAfter?: Intent;
     intentBefore?: Intent;
-    type?: SliderHandleType;
     interactionKind?: SliderHandleInteractionKind;
+    type?: SliderHandleType;
 }
 
 export class SliderHandle extends React.PureComponent<ISliderHandleProps> {
