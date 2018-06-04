@@ -9,10 +9,10 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import { Intent } from "../../common/intent";
 import * as Utils from "../../common/utils";
-import { ICoreSliderProps, MultiSlider } from "./multiSlider";
+import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 import { SliderHandle } from "./sliderHandle";
 
-export interface ISliderProps extends ICoreSliderProps {
+export interface ISliderProps extends ISliderBaseProps {
     /**
      * Initial value of the slider, determines where the fill starts from.
      * @default 0
@@ -34,7 +34,7 @@ export interface ISliderProps extends ICoreSliderProps {
 
 export class Slider extends AbstractPureComponent<ISliderProps> {
     public static defaultProps: ISliderProps = {
-        ...MultiSlider.defaultCoreProps,
+        ...MultiSlider.defaultSliderProps,
         initialValue: 0,
         value: 0,
     };

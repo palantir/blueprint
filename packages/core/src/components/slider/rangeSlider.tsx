@@ -7,12 +7,12 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { SliderHandle } from "..";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Intent } from "../../common/intent";
-import { ICoreSliderProps, MultiSlider } from "./multiSlider";
+import { ISliderBaseProps, MultiSlider } from "./multiSlider";
+import { SliderHandle } from "./sliderHandle";
 
 export type NumberRange = [number, number];
 
@@ -21,7 +21,7 @@ enum RangeIndex {
     END = 1,
 }
 
-export interface IRangeSliderProps extends ICoreSliderProps {
+export interface IRangeSliderProps extends ISliderBaseProps {
     /**
      * Range value of slider. Handles will be rendered at each position in the range.
      * @default [0, 10]
@@ -37,7 +37,7 @@ export interface IRangeSliderProps extends ICoreSliderProps {
 
 export class RangeSlider extends AbstractPureComponent<IRangeSliderProps> {
     public static defaultProps: IRangeSliderProps = {
-        ...MultiSlider.defaultCoreProps,
+        ...MultiSlider.defaultSliderProps,
         value: [0, 10],
     };
 

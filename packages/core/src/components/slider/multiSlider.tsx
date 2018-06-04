@@ -17,7 +17,13 @@ import { Handle } from "./handle";
 import { ISliderHandleProps, SliderHandle, SliderHandleInteractionKind, SliderHandleType } from "./sliderHandle";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
-export interface ICoreSliderProps extends IProps {
+// TODO: move this to props.ts in a follow up PR
+/** A convenience type for React's optional children prop. */
+export interface IChildrenProps {
+    children?: React.ReactNode;
+}
+
+export interface ISliderBaseProps extends IProps {
     /**
      * Whether the slider is non-interactive.
      * @default false
@@ -78,10 +84,14 @@ export interface ICoreSliderProps extends IProps {
     vertical?: boolean;
 }
 
-export interface IMultiSliderProps extends ICoreSliderProps {
-    children?: React.ReactNode;
+export interface IMultiSliderProps extends ISliderBaseProps {
+    /** Default intent of a track segment, if no handle specifies `intentBefore/After`. */
     defaultTrackIntent?: Intent;
+
+    /** Callback invoked when a handle value changes. Receives handle values in sorted order. */
     onChange?(values: number[]): void;
+
+    /** Callback invoked when a handle is released. Receives handle values in sorted order. */
     onRelease?(values: number[]): void;
 }
 
@@ -94,7 +104,7 @@ export interface ISliderState {
 }
 
 export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISliderState> {
-    public static defaultCoreProps: ICoreSliderProps = {
+    public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
         labelStepSize: 1,
         max: 10,
@@ -105,7 +115,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     };
 
     public static defaultProps: IMultiSliderProps = {
-        ...MultiSlider.defaultCoreProps,
+        ...MultiSlider.defaultSliderProps,
         defaultTrackIntent: Intent.NONE,
     };
 
@@ -158,7 +168,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         this.updateTickSize();
     }
 
-    public componentWillReceiveProps(nextProps: IMultiSliderProps) {
+    public componentWillReceiveProps(nextProps: IMultiSliderProps & IChildrenProps) {
         this.setState({ labelPrecision: this.getLabelPrecision(nextProps) });
 
         const newHandleProps = getSortedInteractiveHandleProps(nextProps);
@@ -168,7 +178,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         this.handleProps = newHandleProps;
     }
 
-    protected validateProps(props: IMultiSliderProps) {
+    protected validateProps(props: IMultiSliderProps & IChildrenProps) {
         if (props.stepSize <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
@@ -418,12 +428,12 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     }
 }
 
-function getSortedInteractiveHandleProps(props: IMultiSliderProps): ISliderHandleProps[] {
+function getSortedInteractiveHandleProps(props: IChildrenProps): ISliderHandleProps[] {
     return getSortedHandleProps(props, childProps => childProps.interactionKind !== SliderHandleInteractionKind.NONE);
 }
 
 function getSortedHandleProps(
-    { children }: IMultiSliderProps,
+    { children }: IChildrenProps,
     predicate: (props: ISliderHandleProps) => boolean = () => true,
 ) {
     const maybeHandles = React.Children.map(
@@ -435,8 +445,3 @@ function getSortedHandleProps(
     handles.sort((left, right) => left.value - right.value);
     return handles;
 }
-
-<MultiSlider>
-    <MultiSlider.Handle value={10} />
-    <SliderHandle value={10} />
-</MultiSlider>;
