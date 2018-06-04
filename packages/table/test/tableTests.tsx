@@ -151,6 +151,56 @@ describe("<Table>", function(this) {
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
+    describe("Horizontally scrolling", () => {
+        const CONTAINER_WIDTH = 500;
+        const CONTAINER_HEIGHT = 500;
+
+        describe("with no rows of data and ghost cells enabled", () => {
+            it("isn't disabled when there are actual columns filling width", () => {
+                // large values that will force scrolling
+                const LARGE_COLUMN_WIDTH = 300;
+                const columnWidths = Array(3).fill(LARGE_COLUMN_WIDTH);
+
+                const { containerElement, table } = mountTable({ columnWidths });
+                const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
+                expect(tableContainer.hasClass(Classes.TABLE_NO_HORIZONTAL_SCROLL)).to.be.false;
+
+                // clean up created div
+                document.body.removeChild(containerElement);
+            });
+
+            it("is disabled when there are ghost cells filling width", () => {
+                // small value so no scrolling needed
+                const SMALL_COLUMN_WIDTH = 50;
+                const columnWidths = Array(3).fill(SMALL_COLUMN_WIDTH);
+
+                const { containerElement, table } = mountTable({ columnWidths });
+                const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
+                expect(tableContainer.hasClass(Classes.TABLE_NO_HORIZONTAL_SCROLL)).to.be.true;
+
+                // clean up created div
+                document.body.removeChild(containerElement);
+            });
+        });
+
+        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
+            const containerElement = document.createElement("div");
+            containerElement.style.width = `${CONTAINER_WIDTH}px`;
+            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
+            document.body.appendChild(containerElement);
+
+            const table = mount(
+                <Table numRows={0} enableGhostCells={true} {...tableProps}>
+                    <Column cellRenderer={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
+                    <Column cellRenderer={renderDummyCell} />
+                </Table>,
+                { attachTo: containerElement },
+            );
+            return { containerElement, table };
+        }
+    });
+
     describe("Instance methods", () => {
         describe("resizeRowsByApproximateHeight", () => {
             const STR_LENGTH_SHORT = 10;
