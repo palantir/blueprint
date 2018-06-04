@@ -188,8 +188,6 @@ export const SLIDER_HANDLE = `${SLIDER}-handle`;
 export const SLIDER_LABEL = `${SLIDER}-label`;
 export const SLIDER_TRACK = `${SLIDER}-track`;
 export const SLIDER_PROGRESS = `${SLIDER}-progress`;
-export const RANGE_SLIDER = `${NS}-range-slider`;
-export const MULTI_SLIDER = `${NS}-multi-slider`;
 export const START = `${NS}-start`;
 export const END = `${NS}-end`;
 

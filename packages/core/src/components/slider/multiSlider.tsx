@@ -138,7 +138,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     public render() {
         const classes = classNames(
             Classes.SLIDER,
-            Classes.MULTI_SLIDER,
             {
                 [Classes.DISABLED]: this.props.disabled,
                 [`${Classes.SLIDER}-unlabeled`]: this.props.labelRenderer === false,
@@ -148,8 +147,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
         return (
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
-                <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)} />
-                {this.maybeRenderFill()}
+                {this.renderFill()}
                 {this.maybeRenderAxis()}
                 {this.renderHandles()}
             </div>
@@ -237,11 +235,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         }
         return <div className={`${Classes.SLIDER}-axis`}>{labels}</div>;
     }
-    private maybeRenderFill() {
-        if (this.trackElement == null) {
-            return undefined;
-        }
-
+    private renderFill() {
         const trackStops = getSortedHandleProps(this.props);
         trackStops.sort((left, right) => left.value - right.value);
         if (trackStops.length === 0 || trackStops[0].value > this.props.min) {
@@ -266,7 +260,11 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             tracks.push(this.renderTrackFill(index, left, right, fillIntent));
         }
 
-        return <div className={Classes.SLIDER_TRACK}>{tracks}</div>;
+        return (
+            <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)}>
+                {tracks}
+            </div>
+        );
     }
 
     private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps, intent: Intent) {

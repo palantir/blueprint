@@ -4,11 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Intent } from "../../common/intent";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
@@ -44,9 +42,9 @@ export class RangeSlider extends AbstractPureComponent<IRangeSliderProps> {
     public static displayName = "Blueprint2.RangeSlider";
 
     public render() {
-        const { value, className, ...props } = this.props;
+        const { value, ...props } = this.props;
         return (
-            <MultiSlider {...props} className={classNames(Classes.RANGE_SLIDER, className)}>
+            <MultiSlider {...props}>
                 <SliderHandle value={value[RangeIndex.START]} type="start" intentAfter={Intent.PRIMARY} />
                 <SliderHandle value={value[RangeIndex.END]} type="end" />
             </MultiSlider>

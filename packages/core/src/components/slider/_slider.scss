@@ -236,9 +236,3 @@ $track-height: $track-size !default;
     }
   }
 }
-
-.#{$ns}-multi-slider {
-  .#{$ns}-slider-track:first-child {
-    background: none;
-  }
-}
