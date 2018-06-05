@@ -147,7 +147,9 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
         return (
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
-                {this.renderFill()}
+                <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)}>
+                    {this.renderTracks()}
+                </div>
                 <div className={Classes.SLIDER_AXIS}>{this.renderLabels()}</div>
                 {this.renderHandles()}
             </div>
@@ -231,69 +233,37 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         }
         return labels;
     }
-    private renderFill() {
+
+    private renderTracks() {
         const trackStops = getSortedHandleProps(this.props);
-        trackStops.sort((left, right) => left.value - right.value);
-        if (trackStops.length === 0 || trackStops[0].value > this.props.min) {
-            trackStops.unshift({ value: this.props.min });
-        }
-        if (trackStops[trackStops.length - 1].value < this.props.max) {
-            trackStops.push({ value: this.props.max });
-        }
+        trackStops.push({ value: this.props.max });
 
-        const tracks: Array<JSX.Element | null> = [];
-
-        for (let index = 0; index < trackStops.length - 1; index++) {
-            const left = trackStops[index];
-            const right = trackStops[index + 1];
-            const fillIntentPriorities = [
-                this.props.showTrackFill ? undefined : Intent.NONE,
-                left.intentAfter,
-                right.intentBefore,
-                this.props.defaultTrackIntent,
-            ];
-            const fillIntent = fillIntentPriorities.filter(intent => intent != null)[0];
-            tracks.push(this.renderTrackFill(index, left, right, fillIntent));
+        // render from current to previous, then increment previous
+        let previous: ISliderHandleProps = { value: this.props.min };
+        const handles: JSX.Element[] = [];
+        for (let index = 0; index < trackStops.length; index++) {
+            const current = trackStops[index];
+            handles.push(this.renderTrackFill(index, previous, current));
+            previous = current;
         }
-
-        return (
-            <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)}>
-                {tracks}
-            </div>
-        );
+        return handles;
     }
 
-    private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps, intent: Intent) {
-        const { tickSizeRatio } = this.state;
-        const startValue = start.value;
-        const endValue = end.value;
-
-        let startOffsetRatio = this.getOffsetRatio(startValue, tickSizeRatio);
-        let endOffsetRatio = this.getOffsetRatio(endValue, tickSizeRatio);
-
-        if (startOffsetRatio > endOffsetRatio) {
-            const temp = endOffsetRatio;
-            endOffsetRatio = startOffsetRatio;
-            startOffsetRatio = temp;
-        }
-
-        const startOffset = formatPercentage(startOffsetRatio);
-        const endOffset = formatPercentage(1 - endOffsetRatio);
-
+    private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps) {
+        // ensure startRatio <= endRatio
+        const [startRatio, endRatio] = [this.getOffsetRatio(start.value), this.getOffsetRatio(end.value)].sort();
+        const startOffset = formatPercentage(startRatio);
+        const endOffset = formatPercentage(1 - endRatio);
         const style: React.CSSProperties = this.props.vertical
             ? { bottom: startOffset, top: endOffset, left: 0 }
             : { left: startOffset, right: endOffset, top: 0 };
 
-        const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(intent), {
+        const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(this.getTrackIntent(start, end)), {
             [Classes.START]: start.type === SliderHandleType.START,
             [Classes.END]: end.type === SliderHandleType.END,
         });
 
         return <div key={`track-${index}`} className={classes} style={style} />;
-    }
-
-    private getOffsetRatio(value: number, tickSizeRatio: number) {
-        return Utils.clamp((value - this.props.min) * tickSizeRatio, 0, 1);
     }
 
     private renderHandles() {
@@ -410,6 +380,22 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     private getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
         // infer default label precision from stepSize because that's how much the handle moves.
         return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
+    }
+
+    private getOffsetRatio(value: number) {
+        return Utils.clamp((value - this.props.min) * this.state.tickSizeRatio, 0, 1);
+    }
+
+    private getTrackIntent(start: ISliderHandleProps, end?: ISliderHandleProps): Intent {
+        if (!this.props.showTrackFill) {
+            return Intent.NONE;
+        }
+        if (start.intentAfter !== undefined) {
+            return start.intentAfter;
+        } else if (end !== undefined && end.intentBefore !== undefined) {
+            return end.intentBefore;
+        }
+        return this.props.defaultTrackIntent;
     }
 
     private updateTickSize() {
