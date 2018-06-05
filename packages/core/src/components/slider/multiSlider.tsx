@@ -148,7 +148,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         return (
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
                 {this.renderFill()}
-                {this.maybeRenderAxis()}
+                <div className={Classes.SLIDER_AXIS}>{this.renderLabels()}</div>
                 {this.renderHandles()}
             </div>
         );
@@ -198,27 +198,23 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     private formatLabel(value: number): React.ReactChild {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
-            return undefined;
+            return null;
         } else if (Utils.isFunction(labelRenderer)) {
-            // TODO: TS 2.7 might have a type narrowing issue?
-            return (labelRenderer as (value: number) => React.ReactChild)(value);
+            return labelRenderer(value);
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
     }
 
-    private maybeRenderAxis() {
-        // explicit typedefs are required because tsc (rightly) assumes that props might be overriden with different
-        // types in subclasses
-        const max: number = this.props.max;
-        const min: number = this.props.min;
-        const labelStepSize: number = this.props.labelStepSize;
+    private renderLabels() {
         if (this.props.labelRenderer === false) {
-            return undefined;
+            return null;
         }
+        const { labelStepSize, max, min } = this.props;
 
-        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
         const labels: JSX.Element[] = [];
+        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
+        // step size lends itself naturally to a `for` loop
         // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
         for (
             let i = min, offsetRatio = 0;
@@ -228,12 +224,12 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             const offsetPercentage = formatPercentage(offsetRatio);
             const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
             labels.push(
-                <div className={`${Classes.SLIDER}-label`} key={i} style={style}>
+                <div className={Classes.SLIDER_LABEL} key={i} style={style}>
                     {this.formatLabel(i)}
                 </div>,
             );
         }
-        return <div className={`${Classes.SLIDER}-axis`}>{labels}</div>;
+        return labels;
     }
     private renderFill() {
         const trackStops = getSortedHandleProps(this.props);

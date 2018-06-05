@@ -184,6 +184,7 @@ export const SELECT = `${NS}-select`;
 export const SKELETON = `${NS}-skeleton`;
 
 export const SLIDER = `${NS}-slider`;
+export const SLIDER_AXIS = `${SLIDER}-axis`;
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
 export const SLIDER_LABEL = `${SLIDER}-label`;
 export const SLIDER_TRACK = `${SLIDER}-track`;
