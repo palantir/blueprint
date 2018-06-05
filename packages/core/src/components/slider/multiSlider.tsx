@@ -9,7 +9,6 @@ import * as React from "react";
 
 import { Classes, Intent } from "../../common";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import { intentClass } from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -85,7 +84,7 @@ export interface ISliderBaseProps extends IProps {
 }
 
 export interface IMultiSliderProps extends ISliderBaseProps {
-    /** Default intent of a track segment, if no handle specifies `intentBefore/After`. */
+    /** Default intent of a track segment, used only if no handle specifies `intentBefore/After`. */
     defaultTrackIntent?: Intent;
 
     /** Callback invoked when a handle value changes. Receives handle values in sorted order. */
@@ -259,7 +258,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             ? { bottom: startOffset, top: endOffset, left: 0 }
             : { left: startOffset, right: endOffset, top: 0 };
 
-        const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(this.getTrackIntent(start, end)));
+        const classes = classNames(Classes.SLIDER_PROGRESS, Classes.intentClass(this.getTrackIntent(start, end)));
         return <div key={`track-${index}`} className={classes} style={style} />;
     }
 

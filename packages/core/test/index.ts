@@ -34,7 +34,7 @@ import "./overlay/overlayTests";
 import "./popover/popoverTests";
 import "./portal/portalTests";
 import "./progress/progressBarTests";
-import "./slider/multiRangeSliderTests";
+import "./slider/multiSliderTests";
 import "./slider/rangeSliderTests";
 import "./slider/sliderTests";
 import "./spinner/spinnerTests";

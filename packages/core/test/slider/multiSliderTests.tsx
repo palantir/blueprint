@@ -1,12 +1,13 @@
 /*
  * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
- * 
+ *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -30,7 +31,10 @@ describe("<MultiSlider>", () => {
         onRelease = sinon.spy();
     });
 
-    afterEach(() => testsContainerElement.remove());
+    afterEach(() => {
+        ReactDOM.unmountComponentAtNode(testsContainerElement);
+        testsContainerElement.remove();
+    });
 
     it("throws an error if a child is not a slider handle", () => {
         expectPropValidationError(MultiSlider, { children: <span>Bad</span> as any });
@@ -250,6 +254,17 @@ describe("<MultiSlider>", () => {
         assert.deepEqual(onChange.firstCall.args[0], [5, 5, 9], "higher handle moves");
     });
 
+    it("handle values outside of bounds are clamped", () => {
+        const slider = renderSlider({ values: [-1, 5, 12] });
+        slider.find(`.${Classes.SLIDER_PROGRESS}`).forEach(progress => {
+            const { left, right } = progress.prop("style");
+            // CSS properties are percentage strings, but parsing will ignore trailing "%".
+            // percentages should be in 0-100% range.
+            assert.isAtLeast(parseFloat(left), 0);
+            assert.isAtMost(parseFloat(right), 100);
+        });
+    });
+
     describe("vertical orientation", () => {
         it("moving mouse on bottom handle updates first value", () => {
             const slider = renderSlider({ vertical: true, onChange });
@@ -361,13 +376,12 @@ describe("<MultiSlider>", () => {
     });
 
     function renderSlider(joinedProps?: IMultiSliderProps & { values?: [number, number, number] }) {
-        const { values, ...props } = joinedProps;
-        const actualValues = values || [0, 5, 10];
+        const { values = [0, 5, 10], ...props } = joinedProps;
         return mount(
             <MultiSlider {...props}>
-                <SliderHandle value={actualValues[0]} />
-                <SliderHandle value={actualValues[1]} />
-                <SliderHandle value={actualValues[2]} />
+                <SliderHandle value={values[0]} />
+                <SliderHandle value={values[1]} />
+                <SliderHandle value={values[2]} />
             </MultiSlider>,
             { attachTo: testsContainerElement },
         );
