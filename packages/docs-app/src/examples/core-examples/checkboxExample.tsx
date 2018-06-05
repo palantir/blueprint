@@ -14,7 +14,7 @@ export class CheckboxExample extends React.PureComponent<IExampleProps> {
         return (
             <Example options={false} {...this.props}>
                 <div>
-                    <Label text="Assign responsibility" />
+                    <Label>Assign responsibility</Label>
                     <Checkbox label="Gilad Gray" defaultIndeterminate={true} />
                     <Checkbox label="Jason Killian" />
                     <Checkbox label="Antoine Llorca" />

@@ -14,7 +14,7 @@ export class SwitchExample extends React.PureComponent<IExampleProps> {
         return (
             <Example options={false} {...this.props}>
                 <div>
-                    <Label text="Privacy setting" />
+                    <Label>Privacy setting</Label>
                     <Switch labelElement={<strong>Enabled</strong>} />
                     <Switch labelElement={<em>Public</em>} />
                     <Switch labelElement={<u>Cooperative</u>} defaultChecked={true} />

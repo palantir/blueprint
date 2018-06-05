@@ -33,7 +33,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
                 <H5>Props</H5>
                 <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
-                <Label text="Icon size" />
+                <Label>Icon size</Label>
                 <Slider
                     labelStepSize={MAX_ICON_SIZE / 5}
                     min={0}
