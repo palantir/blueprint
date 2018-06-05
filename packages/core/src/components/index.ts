@@ -31,7 +31,6 @@ export * from "./forms/controls";
 export * from "./forms/fileInput";
 export * from "./forms/formGroup";
 export * from "./forms/inputGroup";
-export * from "./forms/label";
 export * from "./forms/numericInput";
 export * from "./forms/radioGroup";
 export * from "./forms/textArea";
