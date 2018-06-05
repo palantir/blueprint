@@ -35,15 +35,10 @@ describe("<FormGroup>", () => {
         assert.strictEqual(label.prop("htmlFor"), "foo");
     });
 
-    it("requiredLabel=true renders default required content in label", () => {
-        const label = shallow(<FormGroup label="label" requiredLabel={true} />).find("label");
-        assert.isTrue(label.containsMatchingElement(FormGroup.DEFAULT_REQUIRED_CONTENT));
-    });
-
-    it("requiredLabel=JSX renders JSX content in label", () => {
-        const required = <em>fill me out</em>;
-        const label = shallow(<FormGroup label="label" requiredLabel={required} />).find("label");
-        assert.isTrue(label.containsMatchingElement(required));
+    it("labelInfo=JSX renders JSX content in label", () => {
+        const info = <em>fill me out</em>;
+        const label = shallow(<FormGroup label="label" labelInfo={info} />).find("label");
+        assert.isTrue(label.containsMatchingElement(info));
     });
 
     it("renders helperText", () => {
