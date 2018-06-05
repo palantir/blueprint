@@ -188,7 +188,8 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
         let anyInvalidChildren = false;
         React.Children.forEach(props.children, child => {
-            if (child != null && !Utils.isElementOfType(child, SliderHandle)) {
+            // allow boolean coercion to omit nulls and false values
+            if (child && !Utils.isElementOfType(child, SliderHandle)) {
                 anyInvalidChildren = true;
             }
         });
@@ -258,11 +259,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             ? { bottom: startOffset, top: endOffset, left: 0 }
             : { left: startOffset, right: endOffset, top: 0 };
 
-        const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(this.getTrackIntent(start, end)), {
-            [Classes.START]: start.type === SliderHandleType.START,
-            [Classes.END]: end.type === SliderHandleType.END,
-        });
-
+        const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(this.getTrackIntent(start, end)));
         return <div key={`track-${index}`} className={classes} style={style} />;
     }
 

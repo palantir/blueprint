@@ -41,7 +41,11 @@ $track-height: $track-size !default;
 .#{$ns}-slider-progress {
   @include slider-track-orientation($handle-size, $track-size, $vertical: false);
   position: absolute;
+}
+
+.#{$ns}-slider-track {
   border-radius: $pt-border-radius;
+  overflow: hidden;
 }
 
 .#{$ns}-slider-progress {
@@ -162,20 +166,6 @@ $track-height: $track-size !default;
   font-size: $pt-font-size-small;
 }
 
-.#{$ns}-slider:not(.#{$ns}-vertical) .#{$ns}-slider-progress {
-  &.#{$ns}-start,
-  &:not(:first-of-type) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  &.#{$ns}-end,
-  &:not(:last-of-type) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
 .#{$ns}-slider.#{$ns}-vertical {
   @include slider-orientation($pt-input-height-large, $vertical: true);
 
@@ -186,18 +176,6 @@ $track-height: $track-size !default;
 
   .#{$ns}-slider-progress {
     top: auto;
-
-    &.#{$ns}-start,
-    &:not(:first-of-type) {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    &.#{$ns}-end,
-    &:not(:last-of-type) {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
   }
 
   .#{$ns}-slider-label {
