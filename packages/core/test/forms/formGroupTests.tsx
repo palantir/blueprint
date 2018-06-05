@@ -31,7 +31,8 @@ describe("<FormGroup>", () => {
     it("renders label & labelFor", () => {
         const labelText = "This is the label.";
         const label = shallow(<FormGroup label={labelText} labelFor="foo" />).find("label");
-        assert.strictEqual(label.text(), labelText);
+        // remove space to separate from labelInfo (does not appear in DOM)
+        assert.strictEqual(label.text().trim(), labelText);
         assert.strictEqual(label.prop("htmlFor"), "foo");
     });
 
