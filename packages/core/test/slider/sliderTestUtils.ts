@@ -1,12 +1,12 @@
 /*
  * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
- * 
+ *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 import { ReactWrapper } from "enzyme";
-import { ICoreSliderProps } from "../../src/components/slider/multiSlider";
+import { ISliderBaseProps } from "../../src/components/slider/multiSlider";
 
 export function mouseMoveHorizontal(movement: number, times = 1, initialValue = 0) {
     genericMoveHorizontal(movement, times, initialValue, "mousemove");
@@ -40,11 +40,11 @@ export function touchEndVertical(clientY = 0) {
     dispatchTouchEvent(document, "touchend", undefined, clientY);
 }
 
-export function getSliderTopPixel(slider: ReactWrapper<ICoreSliderProps, any>) {
+export function getSliderTopPixel(slider: ReactWrapper<ISliderBaseProps, any>) {
     return slider.getDOMNode().getBoundingClientRect().top;
 }
 
-export function getSliderBottomPixel(slider: ReactWrapper<ICoreSliderProps, any>) {
+export function getSliderBottomPixel(slider: ReactWrapper<ISliderBaseProps, any>) {
     const { height, top } = slider.getDOMNode().getBoundingClientRect();
     return height + top;
 }
