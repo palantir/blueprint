@@ -47,6 +47,16 @@
   }
 }
 
+#{example("FormGroupExample")} {
+  .docs-example {
+    flex-direction: column;
+  }
+
+  .#{$ns}-form-content {
+    width: $pt-grid-size * 20;
+  }
+}
+
 .docs-context-menu-example {
   .docs-example {
     flex-direction: column;

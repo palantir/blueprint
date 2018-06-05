@@ -19,6 +19,7 @@ export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
 export * from "./focusExample";
+export * from "./formGroupExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
 export * from "./iconExample";
