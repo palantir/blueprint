@@ -65,7 +65,7 @@ export class OverflowListExample extends React.PureComponent<IExampleProps, IOve
                     selectedValue={this.state.collapseFrom.toString()}
                 />
                 <H5>Example</H5>
-                <Label text="Width" />
+                <Label>Width</Label>
                 <Slider
                     labelRenderer={this.renderLabel}
                     labelStepSize={50}
