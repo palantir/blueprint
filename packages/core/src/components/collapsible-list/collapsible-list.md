@@ -7,7 +7,7 @@ props from the `MenuItem` children.
 
 @reactExample CollapsibleListExample
 
-@## JavaScript API
+@## Props
 
 The `CollapsibleList` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
@@ -18,7 +18,9 @@ items using their [`IMenuItemProps`](#core/components/menu.menu-item).
 
 @interface ICollapsibleListProps
 
-@## Separators
+@## CSS
+
+### Separators
 
 Often a list of items calls for separators between each item.
 Adding separators to a `CollapsibleList` is easily achieved via CSS using `::after` pseudo-elements.
