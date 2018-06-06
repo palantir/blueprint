@@ -73,9 +73,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
 
     /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
-     * in the input.
+     * in the input. `hasUserManuallySelectedDate` is true if the user selected a day, and false
+     * if the date was automatically changed by the user navigating to a new month or year rather
+     * than explicitly clicking on a date in the calendar.
      */
-    onChange?: (selectedDate: Date) => void;
+    onChange?: (selectedDate: Date, hasUserManuallySelectedDate: boolean) => void;
 
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
@@ -294,7 +296,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         } else {
             this.setState({ isInputFocused, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, newDate);
+        Utils.safeInvoke(this.props.onChange, newDate, hasUserManuallySelectedDate);
     };
 
     private hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
@@ -338,10 +340,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             } else {
                 this.setState({ valueString });
             }
-            Utils.safeInvoke(this.props.onChange, value);
+            Utils.safeInvoke(this.props.onChange, value, true);
         } else {
             if (valueString.length === 0) {
-                Utils.safeInvoke(this.props.onChange, null);
+                Utils.safeInvoke(this.props.onChange, null, true);
             }
             this.setState({ valueString });
         }
@@ -367,7 +369,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             } else if (!this.isDateInRange(date)) {
                 Utils.safeInvoke(this.props.onError, date);
             } else {
-                Utils.safeInvoke(this.props.onChange, date);
+                Utils.safeInvoke(this.props.onChange, date, true);
             }
         } else {
             if (valueString.length === 0) {

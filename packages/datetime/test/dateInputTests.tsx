@@ -473,6 +473,7 @@ describe("<DateInput>", () => {
 
             assert.isTrue(onChange.calledOnce);
             assertDateEquals(onChange.args[0][0], new Date("4/27/2016"));
+            assert.isTrue(onChange.args[0][1], "expected hasUserManuallySelectedDate to be true");
         });
 
         it("Clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
@@ -481,7 +482,7 @@ describe("<DateInput>", () => {
             root.setState({ isOpen: true });
             getDay(4).simulate("click");
             assert.equal(root.find(InputGroup).prop("value"), "4/4/2016");
-            assert.isTrue(onChange.calledWith(null));
+            assert.isTrue(onChange.calledWith(null, true));
         });
 
         it("Updating value updates the text box", () => {
@@ -515,7 +516,7 @@ describe("<DateInput>", () => {
                 <DateInput {...DATE_FORMAT} value={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.find("input").simulate("change", { target: { value: "" } });
-            assert.isTrue(onChange.calledWith(null));
+            assert.isTrue(onChange.calledWith(null, true));
         });
 
         it.skip("Formats locale-specific format strings properly", () => {
@@ -542,6 +543,19 @@ describe("<DateInput>", () => {
 
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.firstCall.args, [DATE]);
+        });
+
+        it("hasUserManuallySelectedDate is false when month changes", () => {
+            const onChange = sinon.spy();
+            const wrapper = mount(<DateInput {...DATE_FORMAT} onChange={onChange} value={DATE} />);
+            wrapper.setState({ isOpen: true });
+
+            wrapper
+                .find(`.${Classes.DATEPICKER_MONTH_SELECT}`)
+                .simulate("change", { value: Months.FEBRUARY.toString() });
+
+            assert.isTrue(onChange.calledOnce);
+            assert.isTrue(onChange.args[0][1], "expected hasUserManuallySelectedDate to be false");
         });
     });
 
