@@ -6,21 +6,7 @@ Button groups arrange multiple buttons in a horizontal or vertical group.
 
 @## Usage with popovers
 
-`Button`s inside a `ButtonGroup` can optionally be wrapped with a [`Popover`](#core/components/popover). The following example demonstrates this composition:
-
-```tsx
-<ButtonGroup className={Classes.ALIGN_LEFT}>
-    <Popover content={...}>
-        <Button icon="document" rightIcon="caret-down" text="File" />
-    </Popover>
-    <Popover content={...}>
-        <Button icon="edit" rightIcon="caret-down" text="Edit" />
-    </Popover>
-    <Popover content={...}>
-        <Button icon="eye-open" rightIcon="caret-down" text="View" />
-    </Popover>
-</ButtonGroup>
-```
+`Button`s inside a `ButtonGroup` can optionally be wrapped with a [`Popover`](#core/components/popover).
 
 @reactExample ButtonGroupPopoverExample
 
@@ -30,7 +16,7 @@ This component is a simple wrapper around the CSS API.
 It exposes shorthand props for CSS modifier classes and supports the full range of HTML props.
 
 ```tsx
-<ButtonGroup minimal={true} large={false} onMouseEnter={...}>
+<ButtonGroup minimal={true} onMouseEnter={...}>
     <Button icon="database">Queries</Button>
     <Button icon="function">Functions</Button>
     <AnchorButton rightIcon="caret-down">Options</AnchorButton>
