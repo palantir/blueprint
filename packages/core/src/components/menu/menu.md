@@ -2,7 +2,7 @@
 
 Menus display lists of interactive items.
 
-@## JavaScript API
+@## Props
 
 The `Menu`, `MenuItem`, and `MenuDivider` components are available in the **@blueprintjs/core**
 package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
@@ -109,7 +109,7 @@ dismiss the `Popover`. Selecting other menu items does dismiss the popover.
 
 @reactExample DropdownMenuExample
 
-@## CSS API
+@## CSS
 
 Menus can be constructed manually using the HTML markup and `@ns-menu-*` classes below. However, you
 should use the menu [React components](#core/components/menu.javscript-api) instead wherever possible,
