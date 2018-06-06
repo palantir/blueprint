@@ -17,7 +17,7 @@ items using their [`IMenuItemProps`](#core/components/menu.menu-item).
 
 @## CSS
 
-### Separators
+@### Separators
 
 Often a list of items calls for separators between each item.
 Adding separators to a `CollapsibleList` is easily achieved via CSS using `::after` pseudo-elements.

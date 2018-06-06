@@ -33,6 +33,8 @@ the field to the last confirmed value. Neither callback is invoked if the value 
 By default, `EditableText` supports _exactly one line of text_ and will grow or shrink horizontally
 based on the length of text.
 
+@interface IEditableTextProps
+
 @### Multiline mode
 
 ```tsx
@@ -56,5 +58,3 @@ _vertically_ instead, based on the number of lines of text. You can use the `min
     which would provide a sub-optimal experience for users (multiline text does not always render
     cleanly into a single line).
 </div>
-
-@interface IEditableTextProps
