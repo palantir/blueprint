@@ -435,7 +435,7 @@ describe("<DateInput>", () => {
             getDay(DATE.getDate()).simulate("click");
 
             assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, [DATE]);
+            assert.deepEqual(onChange.firstCall.args, [DATE, true]);
         });
     });
 
@@ -542,7 +542,7 @@ describe("<DateInput>", () => {
                 .simulate("click");
 
             assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, [DATE]);
+            assert.deepEqual(onChange.firstCall.args, [DATE, true]);
         });
 
         it("hasUserManuallySelectedDate is false when month changes", () => {
@@ -555,7 +555,7 @@ describe("<DateInput>", () => {
                 .simulate("change", { value: Months.FEBRUARY.toString() });
 
             assert.isTrue(onChange.calledOnce);
-            assert.isTrue(onChange.args[0][1], "expected hasUserManuallySelectedDate to be false");
+            assert.isFalse(onChange.args[0][1], "expected hasUserManuallySelectedDate to be false");
         });
     });
 
