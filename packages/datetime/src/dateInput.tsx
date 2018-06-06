@@ -73,9 +73,8 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
 
     /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
-     * in the input. `hasUserManuallySelectedDate` is true if the user selected a day, and false
-     * if the date was automatically changed by the user navigating to a new month or year rather
-     * than explicitly clicking on a date in the calendar.
+     * in the input. The second argument is true if and only if the user clicked on a date in the
+     * calendar; it will be false if the date was changed by choosing a new month or year.
      */
     onChange?: (selectedDate: Date, hasUserManuallySelectedDate: boolean) => void;
 
