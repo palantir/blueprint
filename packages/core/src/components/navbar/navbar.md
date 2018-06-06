@@ -5,6 +5,35 @@ Navbars present useful navigation controls at the top of an application.
 The `.@ns-navbar` CSS component can have up to two groups of elements: a left-aligned group and a
 right-aligned group. These groups can contain multiple elements, which are laid out horizontally.
 
+@reactExample NavbarExample
+
+@## Props
+
+These components are simple wrappers around the corresponding CSS APIs. Each of
+them supports the full range of HTML props.
+
+`NavbarGroup`, `NavbarHeading`, and `NavbarDivider` can be referenced by their aliases
+as well: `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider`, respectively.
+
+```tsx
+<Navbar>
+    <NavbarGroup align={Alignment.LEFT}>
+        <NavbarHeading>Blueprint</NavbarHeading>
+        <NavbarDivider />
+        <Button className="@ns-minimal" icon="home" text="Home" />
+        <Button className="@ns-minimal" icon="document" text="Files" />
+    </NavbarGroup>
+</Navbar>
+```
+
+@interface INavbarProps
+
+@interface INavbarGroupProps
+
+@interface INavbarHeadingProps
+
+@interface INavbarDividerProps
+
 @## CSS API
 
 Use the following classes to construct a navbar:
@@ -40,32 +69,3 @@ Wrap your `.@ns-navbar-group`s in an element with your desired `width` and `marg
 horizontally center it.
 
 @css navbar-container
-
-@## JavaScript API
-
-The `Navbar` component is available in the **@blueprintjs/core** package. The
-package also includes three small helper components: `NavbarGroup`,
-`NavbarHeading`, and `NavbarDivider`. These can be referenced by their aliases
-as well: `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider`, respectively.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-These components are simple wrappers around the corresponding CSS APIs. Each of
-them supports the full range of HTML props.
-
-```tsx
-<Navbar>
-    <NavbarGroup align={Alignment.LEFT}>
-        <NavbarHeading>Blueprint</NavbarHeading>
-        <NavbarDivider />
-        <Button className="@ns-minimal" icon="home" text="Home" />
-        <Button className="@ns-minimal" icon="document" text="Files" />
-    </NavbarGroup>
-</Navbar>
-```
-
-@reactExample NavbarExample
-
-@interface INavbarProps
-@interface INavbarGroupProps
-@interface INavbarHeadingProps
-@interface INavbarDividerProps
