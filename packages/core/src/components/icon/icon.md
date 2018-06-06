@@ -19,10 +19,7 @@ a JSX element to use as the icon.
 
 @reactExample IconExample
 
-@## JavaScript API
-
-The `Icon` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon` prop is typed
 such that editors can offer autocomplete for known icon names. The optional `iconSize` prop ensures
@@ -59,7 +56,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 @interface IIconProps
 
-@## CSS API
+@## CSS
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Icon fonts are legacy in 2.0</h4>
