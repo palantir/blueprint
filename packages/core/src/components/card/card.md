@@ -28,14 +28,10 @@ shadow that simulates height in the UI.
 You can also use the `.@ns-elevation-*` classes by themselves to apply shadows
 to any arbitrary element.
 
-@css card
-
 @### Interactive cards
 
 Add the `.@ns-interactive` modifier class to make a `.@ns-card` respond to user
 interactions. When you hover over cards with this class applied, the mouse
 changes to a pointer and increases the elevation shadow on the card.
 
-Users expect an interactive card to be a single clickable unit.
-
-@css card-interactive
+@css card

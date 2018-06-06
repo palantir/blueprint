@@ -16,6 +16,7 @@ Markup:
 .#{$ns}-elevation-2 - Second. An even stronger shadow, moving on up.
 .#{$ns}-elevation-3 - Third. For containers overlaying content temporarily.
 .#{$ns}-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
+.#{$ns}-interactive - Higher elevation on hover.
 
 Styleguide card
 */
@@ -65,26 +66,6 @@ $dark-elevation-shadows: (
     }
   }
 }
-
-/*
-Interactive cards
-
-Markup:
-<div class="#{$ns}-card #{$ns}-elevation-0 #{$ns}-interactive">
-  <h5 class="#{$ns}-heading"><a href="#">Data fusion platforms</a></h5>
-  <div>Back-end infrastructure for integrating, managing, and securing data of any kind, from any source, at massive scale.</div>
-</div>
-<div class="#{$ns}-card #{$ns}-elevation-1 #{$ns}-interactive">
-  <h5 class="#{$ns}-heading"><a href="#">Analytical applications</a></h5>
-  <div>User interfaces that enable people to interact smoothly with data, ask better questions, and make better decisions.</div>
-</div>
-<div class="#{$ns}-card #{$ns}-elevation-2 #{$ns}-interactive">
-  <h5 class="#{$ns}-heading"><a href="#">For any data problem</a></h5>
-  <div>Proven technology that can be deployed today, adapts to any domain, and produces operational results in weeks.</div>
-</div>
-
-Styleguide card-interactive
-*/
 
 .#{$ns}-card.#{$ns}-interactive {
   &:hover {
