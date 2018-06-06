@@ -20,10 +20,7 @@ You should not use `EditableText` when a static always-editable `<input>` or
 
 @reactExample EditableTextExample
 
-@## JavaScript API
-
-The `EditableText` component is available in the __@blueprintjs/core__ package. Make sure to review
-the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 `EditableText` can be used like an [`input`
 element](https://facebook.github.io/react/docs/forms.html) and supports controlled or uncontrolled
@@ -33,13 +30,10 @@ The `onConfirm` and `onCancel` callbacks are invoked based on user interaction. 
 `enter` or blurs the input to confirm the current value, or presses `esc` to cancel. Canceling resets
 the field to the last confirmed value. Neither callback is invoked if the value is unchanged.
 
-`EditableText` by default supports _exactly one line of text_ and will grow or shrink horizontally
-based on the length of text. See below for information on [multiline
-support](#core/components/editable-text.multiline-mode).
+By default, `EditableText` supports _exactly one line of text_ and will grow or shrink horizontally
+based on the length of text.
 
-@interface IEditableTextProps
-
-@## Multiline mode
+@### Multiline mode
 
 ```tsx
 <EditableText multiline minLines={3} maxLines={12} {...props} />
@@ -62,3 +56,5 @@ _vertically_ instead, based on the number of lines of text. You can use the `min
     which would provide a sub-optimal experience for users (multiline text does not always render
     cleanly into a single line).
 </div>
+
+@interface IEditableTextProps
