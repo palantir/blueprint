@@ -6,42 +6,9 @@ To add hotkeys to your React component, use the `@HotkeyTarget` class decorator
 and add a `renderHotkeys()` method. The decorator will call `renderHotkeys()`
 and attach the appropriate key listeners.
 
-@## Hotkey scope
-
-`Hotkey`s can have either local or global scope. Local hotkeys will only be
-triggered when the target is focused, while global hotkeys can be triggered no
-matter which element is focused.
-
-Additionally, any keyboard input that occurs inside a text input (such as a
-`<textarea>`, `<input>`, or `<div contenteditable>`) is ignored.
-
-@## Hotkey dialog
-
-If you define hotkeys for your page, you'll want to display the hotkeys in a
-nice format for the user. If you register any global or local hotkeys, we
-automatically attach a hotkey `?`, which will display the hotkeys dialog.
-
-The dialog will always include all available global hotkeys, and if you are
-focused on an element that has any hotkeys, those will be shown as well.
-
-If you would like to change the style of the dialog (for example, to apply the
-dark theme class), call the `setHotkeysDialogProps` function with `IDialogProps`.
-
-@## Piano example
-
-Also known as the keyboard keyboard. First, click the keys or press
-<span class="@ns-key-combo">
-    <kbd class="@ns-key @ns-modifier-key">
-        <span class="@ns-icon-standard @ns-icon-key-shift"></span>
-        shift
-    </kbd>
-    <kbd class="@ns-key">P</kbd>
-</span>
-to focus the piano, then press the keys on your keyboard to play some music!
-
 @reactExample HotkeyPiano
 
-@## JavaScript API
+@## Usage
 
 1. Add the `@HotkeysTarget` class decorator to your react component.
 1. Implement the `renderHotkeys()` method.
@@ -84,7 +51,7 @@ make sure to implement the `renderHotkeys` method.
 
 @interface IHotkeysTarget
 
-@### Hotkeys
+@### Props
 
 Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
@@ -97,11 +64,30 @@ Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 
 @interface IHotkeysProps
 
-@### Hotkey
-
 @interface IHotkeyProps
 
-@### Key combos
+@## Scope
+
+`Hotkey`s can have either local or global scope. Local hotkeys will only be
+triggered when the target is focused, while global hotkeys can be triggered no
+matter which element is focused.
+
+Additionally, any keyboard input that occurs inside a text input (such as a
+`<textarea>`, `<input>`, or `<div contenteditable>`) is ignored.
+
+@## Dialog
+
+If you define hotkeys for your page, you'll want to display the hotkeys in a
+nice format for the user. If you register any global or local hotkeys, we
+automatically attach a hotkey `?`, which will display the hotkeys dialog.
+
+The dialog will always include all available global hotkeys, and if you are
+focused on an element that has any hotkeys, those will be shown as well.
+
+If you would like to change the style of the dialog (for example, to apply the
+dark theme class), call the `setHotkeysDialogProps` function with `IDialogProps`.
+
+@## Key combos
 
 Each hotkey must be assigned a key combo that will trigger its events. A key
 combo consists of zero or more modifier keys (`alt`, `ctrl`, `shift`, `meta`,
@@ -112,8 +98,7 @@ expressed as `!` and `cmd` is equal to `meta`. However, normal alphabetic
 characters do not have this aliasing, so `X` is equivalent to `x` but is not
 equivalent to `shift + x`.
 
-##### Examples of valid key combos
-
+Examples of valid key combos:
 * `cmd+plus`
 * `!` or, equivalently `shift+1`
 * `return` or, equivalently `enter`
@@ -122,7 +107,7 @@ equivalent to `shift + x`.
 
 Note that spaces are ignored.
 
-##### Named keys
+### Named keys
 
 * `plus`
 * `minus`
@@ -143,7 +128,7 @@ Note that spaces are ignored.
 * `ins`
 * `del`
 
-##### Aliased keys
+### Aliased keys
 
 * `option` &rarr; `alt`
 * `cmd` &rarr; `meta`
@@ -155,7 +140,7 @@ Note that spaces are ignored.
 The special modifier `mod` will choose the OS-preferred modifier key — `cmd`
 for macOS and iOS, or `ctrl` for Windows and Linux.
 
-##### Hotkey tester
+### Hotkey tester
 
 Below is a little widget to quickly help you try out hotkey combos and see how
 they will look in the dialog. See the key combos section above for more about
