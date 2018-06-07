@@ -11,7 +11,7 @@ You can create context menus in either of the following ways:
 
 @reactExample ContextMenuExample
 
-@## Decorator
+@## Decorator usage
 
 The `@ContextMenuTarget` [class decorator][ts-decorator] can be applied to any `React.Component`
 class that meets the following requirements:
@@ -60,7 +60,7 @@ class RightClickMe extends React.Component<{}, {}> {
 [ts-decorator]: https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/Decorators.md
 [wiki-cm]: https://en.wikipedia.org/wiki/Context_menu
 
-@## Imperative
+@## Imperative usage
 
 The imperative API provides a single static `ContextMenu` object, enforcing the principle that only
 one context menu can be open at a time.
