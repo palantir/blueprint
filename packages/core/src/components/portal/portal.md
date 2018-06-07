@@ -1,7 +1,7 @@
 @# Portals
 
 The `Portal` component renders its children into a new "subtree" outside of the current component
-hierarchy. It is essential piece of [`Overlay`](#core/components/overlay), responsible for ensuring that
+hierarchy. It is an essential piece of [`Overlay`](#core/components/overlay), responsible for ensuring that
 the overlay contents cover the application below. In most cases you do not need to use a `Portal`
 directly; this documentation is provided simply for reference.
 

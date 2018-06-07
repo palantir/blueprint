@@ -15,7 +15,7 @@ import { Hotkey, IHotkeyProps } from "./hotkey";
 
 export { Hotkey, IHotkeyProps } from "./hotkey";
 export { KeyCombo, IKeyComboProps } from "./keyCombo";
-export { HotkeysTarget, IHotkeysTarget } from "./hotkeysTarget";
+export { HotkeysTarget, IHotkeysTargetComponent } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";
 

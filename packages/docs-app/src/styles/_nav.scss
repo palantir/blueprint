@@ -145,6 +145,19 @@ $dark-package-colors: (
   }
 }
 
+.docs-nav-section {
+  margin-top: $pt-grid-size * 2;
+  margin-bottom: $pt-grid-size;
+  text-transform: uppercase;
+  font-size: small;
+  font-weight: 700;
+
+  // dedent menu under a section title
+  + .docs-nav-menu {
+    margin-left: 0;
+  }
+}
+
 .docs-copyright {
   display: flex;
   align-items: center;

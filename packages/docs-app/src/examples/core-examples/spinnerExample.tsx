@@ -54,7 +54,8 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
             <>
                 <H5>Props</H5>
                 <IntentSelect intent={intent} onChange={this.handleModifierChange} />
-                <Label text="Size">
+                <Label>
+                    Size
                     <div className={Classes.SELECT}>
                         <select value={size} onChange={this.handleSizeChange}>
                             {SIZES.map((opt, i) => <option key={i} {...opt} />)}

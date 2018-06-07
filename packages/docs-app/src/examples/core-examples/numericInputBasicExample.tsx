@@ -149,7 +149,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
 
         return (
             <>
-                <Label text="Modifiers" />
+                <Label>Modifiers</Label>
                 {this.renderSwitch("Numeric characters only", numericCharsOnly, this.toggleNumericCharsOnly)}
                 {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
                 {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
@@ -182,7 +182,8 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (
-            <Label text={label}>
+            <Label>
+                {label}
                 <div className={Classes.SELECT}>
                     <select value={selectedValue} onChange={onChange}>
                         {this.renderSelectMenuOptions(options)}
