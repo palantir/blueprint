@@ -39,7 +39,7 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
         value: 0,
     };
 
-    public static displayName: "Blueprint.Slider";
+    public static displayName = "Blueprint2.Slider";
 
     public render() {
         const { initialValue, value, ...props } = this.props;
@@ -48,9 +48,9 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
                 <SliderHandle
                     value={value}
                     intentAfter={value < initialValue ? Intent.PRIMARY : undefined}
-                    intentBefore={value > initialValue ? Intent.PRIMARY : undefined}
+                    intentBefore={value >= initialValue ? Intent.PRIMARY : undefined}
                 />
-                <SliderHandle value={0} interactionKind="none" />
+                <SliderHandle value={initialValue} interactionKind="none" />
             </MultiSlider>
         );
     }
