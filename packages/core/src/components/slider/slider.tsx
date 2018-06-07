@@ -14,7 +14,8 @@ import { SliderHandle } from "./sliderHandle";
 
 export interface ISliderProps extends ISliderBaseProps {
     /**
-     * Initial value of the slider, determines where the fill starts from.
+     * Initial value of the slider. This determines the other end of the
+     * track fill: from `initialValue` to `value`.
      * @default 0
      */
     initialValue?: number;
