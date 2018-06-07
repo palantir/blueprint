@@ -9,7 +9,22 @@ Labels enhance the usability of your forms.
     <p>Form groups support more complex control layouts but require more markup to maintain consistent visuals.</p>
 </div>
 
-@## CSS API
+@## Props
+
+This component supports the full range of HTML props.
+
+```tsx
+<Label
+    helperText="Helper text with details..."
+    text="Label A"
+>
+    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
+</Label>
+```
+
+@interface ILabelProps
+
+@## CSS
 
 @### Simple labels
 
@@ -32,20 +47,3 @@ must add the `:disabled` attribute directly to any nested elements to disable th
 `@ns-*` form control will need a `.@ns-disabled` modifier. See the examples below.
 
 @css label-disabled
-
-@## JavaScript API
-
-The `Label` component is available in the __@blueprintjs/core__ package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-This component is a simple wrapper around the corresponding CSS API. It supports the full range of HTML props.
-
-```tsx
-<Label
-    helperText="Helper text with details..."
-    text="Label A"
->
-    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
-</Label>
-```
-
-@interface ILabelProps
