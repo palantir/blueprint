@@ -34,7 +34,7 @@ as well: `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider`, respectively.
 
 @interface INavbarDividerProps
 
-@## CSS API
+@## CSS
 
 Use the following classes to construct a navbar:
 
