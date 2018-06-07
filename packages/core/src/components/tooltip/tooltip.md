@@ -5,10 +5,7 @@ Notably, it only supports `HOVER` interactions and the `target` prop is not supp
 
 @reactExample TooltipExample
 
-@## JavaScript API
-
-The `Tooltip` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
+@## Props
 
 When creating a tooltip, you must specify both:
 - its _content_, by setting the `content` prop, and
