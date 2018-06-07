@@ -1,6 +1,6 @@
 /*
  * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
- * 
+ *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
@@ -115,7 +115,8 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
             <>
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.toggleVertical} />
                 <Switch checked={this.state.lockHandles} label="Lock handles" onChange={this.toggleLockHandles} />
-                <Label text="Intent">
+                <Label>
+                    Intent
                     <div className={Classes.SELECT}>
                         <select value={this.state.shownIntents} onChange={this.handleShownIntentsChange}>
                             <option value="both">Both</option>
@@ -124,7 +125,8 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                         </select>
                     </div>
                 </Label>
-                <Label text="Tail">
+                <Label>
+                    Tail
                     <div className={Classes.SELECT}>
                         <select value={this.state.shownTails} onChange={this.handleShownTailsChange}>
                             <option value="both">Both</option>
