@@ -39,7 +39,7 @@ Additionally, in multiline mode the component's width is fixed at 100%. It grows
 _vertically_ instead, based on the number of lines of text. You can use the `minLines` and
 `maxLines` props to constrain the vertical size of the component.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-wa`rning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Multiline prop format</h4>
     You should declare `multiline` as a valueless boolean prop, as in the example above
     (`<EditableText multiline ...>`). This prevents you from changing the value after declaring it,
