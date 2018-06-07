@@ -11,10 +11,7 @@ The example below demonstrates some of the capabilities of our Popper.js-powered
 
 @reactExample PopoverExample
 
-@## JavaScript API
-
-The `Popover` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 @interface IPopoverProps
 
@@ -299,7 +296,7 @@ everything else on the page without needing to manually adjust z-indices, and Po
 
 @reactExample PopoverPortalExample
 
-@## Style
+@## CSS
 
 @### Dark theme
 
