@@ -5,10 +5,7 @@ hierarchy. It is an essential piece of [`Overlay`](#core/components/overlay), re
 the overlay contents cover the application below. In most cases you do not need to use a `Portal`
 directly; this documentation is provided simply for reference.
 
-@## JavaScript API
-
-The `Portal` component is available in the __@blueprintjs/core__ package. Make sure to review the
-[getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 The `Portal` component functions like a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
 The children of a `Portal` component are appended to the `<body>` element.
@@ -25,7 +22,7 @@ application.
 
 @interface IPortalProps
 
-@### React context
+@## React context
 
 `Portal` supports the following options on its [React context](https://facebook.github.io/react/docs/context.html).
 To use them, supply a child context to a subtree that contains the Portals you want to customize.
@@ -36,7 +33,7 @@ To use them, supply a child context to a subtree that contains the Portals you w
 
 @interface IPortalContext
 
-@### React 15
+@## React 15
 
 In a **React 15** environment, `Portal` will use `ReactDOM.unstable_renderSubtreeIntoContainer` to achieve the teleportation effect, which has a few caveats:
 
