@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { Classes, IMultiSliderProps, MultiSlider, SliderHandle } from "../../src";
+import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -173,9 +173,9 @@ describe("<MultiSlider>", () => {
         beforeEach(() => {
             slider = mount(
                 <MultiSlider defaultTrackIntent="warning">
-                    <SliderHandle value={3} intentBefore="primary" intentAfter="danger" />
-                    <SliderHandle value={5} intentBefore="primary" intentAfter="danger" />
-                    <SliderHandle value={7} intentBefore="primary" />
+                    <MultiSlider.Handle value={3} intentBefore="primary" intentAfter="danger" />
+                    <MultiSlider.Handle value={5} intentBefore="primary" intentAfter="danger" />
+                    <MultiSlider.Handle value={7} intentBefore="primary" />
                 </MultiSlider>,
                 { attachTo: testsContainerElement },
             );
@@ -226,9 +226,9 @@ describe("<MultiSlider>", () => {
         const { values = [0, 5, 10], ...props } = joinedProps;
         return mount(
             <MultiSlider {...props}>
-                <SliderHandle value={values[0]} />
-                <SliderHandle value={values[1]} />
-                <SliderHandle value={values[2]} />
+                <MultiSlider.Handle value={values[0]} />
+                <MultiSlider.Handle value={values[1]} />
+                <MultiSlider.Handle value={values[2]} />
             </MultiSlider>,
             { attachTo: testsContainerElement },
         );
