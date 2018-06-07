@@ -6,77 +6,74 @@
 
 import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 import { ReactWrapper } from "enzyme";
-import { ISliderBaseProps } from "../../src/components/slider/multiSlider";
+import { Handle } from "../../src/components/slider/handle";
 
-export function mouseMoveHorizontal(movement: number, times = 1, initialValue = 0) {
-    genericMoveHorizontal(movement, times, initialValue, "mousemove");
+interface IMoveOptions {
+    /** Size in pixels of one drag event. Direction of drag is determined by `vertical` option. */
+    dragSize?: number;
+    /** Number of drag events of length `dragSize` to perform. */
+    dragTimes: number;
+    /** Initial pixel of drag operation: where the mouse is initially pressed. */
+    from?: number;
+    /** Index of `Handle` to move. */
+    handleIndex?: number;
+    /** Whether to use touch events. */
+    touch?: boolean;
+    /** Whether to use vertical events. */
+    vertical?: boolean;
+    /** Height of slider when vertical. */
+    verticalHeight?: number;
 }
 
-export function mouseMoveVertical(movement: number, times = 1, initialValue = 0, offsetTop: number) {
-    genericMoveVertical(movement, times, initialValue, "mousemove", offsetTop);
+export const DRAG_SIZE = 20;
+
+/**
+ * Simulates a full move of a slider handle: engage, move, release.
+ * Supports touch and vertical events. Use options to configure exact movement.
+ */
+export function simulateMovement(wrapper: ReactWrapper, options: IMoveOptions) {
+    const { from, handleIndex = 0, touch } = options;
+    const handle = wrapper.find(Handle).at(handleIndex);
+    const eventData = options.vertical ? { clientY: options.verticalHeight - from } : { clientX: from };
+    if (touch) {
+        handle.simulate("touchstart", { changedTouches: [eventData] });
+    } else {
+        handle.simulate("mousedown", eventData);
+    }
+    genericMove(options);
+    genericRelease(options);
+    return wrapper;
 }
 
-export function mouseUpHorizontal(clientPixel = 0) {
-    dispatchMouseEvent(document, "mouseup", clientPixel, undefined);
-}
-
-export function mouseUpVertical(clientPixel = 0) {
-    dispatchMouseEvent(document, "mouseup", undefined, clientPixel);
-}
-
-export function touchMoveHorizontal(movement: number, times = 1, initialValue = 0) {
-    genericMoveHorizontal(movement, times, initialValue, "touchmove");
-}
-
-export function touchMoveVertical(movement: number, times = 1, initialValue = 0, offsetTop: number) {
-    genericMoveVertical(movement, times, initialValue, "touchmove", offsetTop);
-}
-
-export function touchEndHorizontal(clientX = 0) {
-    dispatchTouchEvent(document, "touchend", clientX, undefined);
-}
-
-export function touchEndVertical(clientY = 0) {
-    dispatchTouchEvent(document, "touchend", undefined, clientY);
-}
-
-export function getSliderTopPixel(slider: ReactWrapper<ISliderBaseProps, any>) {
-    return slider.getDOMNode().getBoundingClientRect().top;
-}
-
-export function getSliderBottomPixel(slider: ReactWrapper<ISliderBaseProps, any>) {
-    const { height, top } = slider.getDOMNode().getBoundingClientRect();
-    return height + top;
-}
-
-export function getDispatchEventFn(eventType: "mousemove" | "touchmove") {
-    return eventType === "touchmove" ? dispatchTouchEvent : dispatchMouseEvent;
-}
+/** Release the mouse at the given clientX pixel. Useful for ending a drag interaction. */
+export const mouseUpHorizontal = (clientX: number) => genericRelease({ dragTimes: 0, from: clientX });
 
 // Private helpers
 // ===============
 
-function genericMoveHorizontal(movement: number, times = 1, initialValue = 0, eventType: "mousemove" | "touchmove") {
-    // vertical sliders go from bottom-up, so everything is backward
-    const dispatchEventFn = getDispatchEventFn(eventType);
-    for (let i = 0; i < times; i += 1) {
-        const clientPixel = initialValue + i * movement;
-        dispatchEventFn(document, eventType, clientPixel, undefined);
+function genericMove(options: IMoveOptions) {
+    const { dragSize = DRAG_SIZE, from = 0, dragTimes = 1, touch } = options;
+    const eventName = touch ? "touchmove" : "mousemove";
+    for (let i = 0; i < dragTimes; i += 1) {
+        const clientPixel = from + i * dragSize;
+        dispatchEvent(options, eventName, clientPixel);
     }
 }
 
-function genericMoveVertical(
-    movement: number,
-    times = 1,
-    initialValue = 0,
-    eventType: "mousemove" | "touchmove",
-    sliderBottom: number,
-) {
-    const dispatchEventFn = getDispatchEventFn(eventType);
-    // vertical sliders go from the bottom gulp up, so 0 is actually at the
-    // bottom of the element
-    for (let i = 0; i < times; i += 1) {
-        const clientPixel = sliderBottom - (initialValue + i * movement);
-        dispatchEventFn(document, eventType, undefined, clientPixel);
+function genericRelease(options: IMoveOptions) {
+    const { dragSize = DRAG_SIZE, from = 0, dragTimes = 1, touch } = options;
+    const eventName = touch ? "touchend" : "mouseup";
+    const clientPixel = from + dragTimes * dragSize;
+    dispatchEvent(options, eventName, clientPixel);
+}
+
+function dispatchEvent(options: IMoveOptions, eventName: string, clientPixel: number) {
+    const { touch, vertical, verticalHeight = 0 } = options;
+    const dispatchFn = touch ? dispatchTouchEvent : dispatchMouseEvent;
+    if (vertical) {
+        // vertical sliders go from bottom-up, so everything is backward
+        dispatchFn(document, eventName, undefined, verticalHeight - clientPixel);
+    } else {
+        dispatchFn(document, eventName, clientPixel, undefined);
     }
 }

@@ -42,7 +42,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
         const options = (
             <>
                 <H5>Props</H5>
-                <Label text="Visible items" />
+                <Label>Visible items</Label>
                 <Slider
                     max={6}
                     onChange={this.handleChangeCount}

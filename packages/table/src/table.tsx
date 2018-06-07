@@ -1193,7 +1193,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
-        const areGhostColumnsVisible = enableGhostCells && this.grid.isGhostIndex(0, columnIndices.columnIndexEnd);
+        const areGhostColumnsVisible = enableGhostCells && this.grid.isGhostColumn(columnIndices.columnIndexEnd);
         const areColumnHeadersLoading = this.hasLoadingOption(
             this.props.loadingOptions,
             TableLoadingOption.COLUMN_HEADERS,

@@ -25,7 +25,8 @@ export class CardExample extends React.PureComponent<IExampleProps, ICardExample
             <>
                 <H5>Props</H5>
                 <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
-                <Label text="Elevation">
+                <Label>
+                    Elevation
                     <Slider
                         max={4}
                         showTrackFill={false}

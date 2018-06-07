@@ -22,7 +22,8 @@ export interface IIntentSelectProps {
 }
 
 export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
-    <Label text="Intent">
+    <Label>
+        Intent
         <div className={Classes.SELECT}>
             <select value={props.intent} onChange={props.onChange}>
                 {INTENTS.map((opt, i) => (

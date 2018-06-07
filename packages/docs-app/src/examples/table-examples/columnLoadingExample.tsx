@@ -45,7 +45,8 @@ export class ColumnLoadingExample extends React.PureComponent<IExampleProps, ICo
             options.push(<option key={i} value={i} label={label} />);
         }
         return (
-            <Label text="Loading column">
+            <Label>
+                Loading column
                 <div className={Classes.SELECT}>
                     <select value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
                         {options}

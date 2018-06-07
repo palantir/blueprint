@@ -12,7 +12,7 @@ import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
 import { IHotkeysProps } from "./hotkeys";
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
 
-export interface IHotkeysTarget {
+export interface IHotkeysTargetComponent extends React.Component {
     /** Components decorated with the `@HotkeysTarget` decorator must implement React's component `render` function. */
     render(): React.ReactElement<any> | null | undefined;
 
@@ -23,9 +23,7 @@ export interface IHotkeysTarget {
     renderHotkeys(): React.ReactElement<IHotkeysProps>;
 }
 
-export type IHotkeysComponent = IHotkeysTarget & React.Component<any, any> & React.ComponentLifecycle<any, any>;
-
-export function HotkeysTarget<T extends IConstructor<IHotkeysComponent>>(WrappedComponent: T) {
+export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderHotkeys)) {
         console.warn(HOTKEYS_WARN_DECORATOR_NO_METHOD);
     }

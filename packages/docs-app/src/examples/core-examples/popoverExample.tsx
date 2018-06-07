@@ -163,7 +163,8 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                         </select>
                     </div>
                 </FormGroup>
-                <Label text="Example content">
+                <Label>
+                    Example content
                     <div className={Classes.SELECT}>
                         <select value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
                             <option value="0">Text</option>
@@ -214,7 +215,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                         </select>
                     </div>
                 </Switch>
-                <Label text={undefined}>
+                <Label>
                     <AnchorButton
                         href={POPPER_DOCS}
                         fill={true}

@@ -111,7 +111,8 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         return (
             <>
                 <H5>Props</H5>
-                <Label text="Position">
+                <Label>
+                    Position
                     <div className={Classes.SELECT}>
                         <select value={position.toString()} onChange={this.handlePositionChange}>
                             <option value={Position.TOP_LEFT.toString()}>Top left</option>

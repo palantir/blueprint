@@ -6,9 +6,13 @@
 #{$icon-classes} {
   display: inline-block;
 
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
       color: $color;
+
+      .#{$ns}-dark & {
+        color: map-get($pt-dark-intent-text-colors, $intent);
+      }
     }
   }
 }
