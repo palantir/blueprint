@@ -38,6 +38,36 @@ describe("<Handle>", () => {
 
     afterEach(() => testsContainerElement.remove());
 
+    it("disabled handle never invokes event handlers", () => {
+        const eventSpy = sinon.spy();
+        const handle = mountHandle(0, { disabled: true, onChange: eventSpy, onRelease: eventSpy });
+        simulateMovement(handle, { dragTimes: 3 });
+        handle.simulate("keydown", { which: ARROW_UP });
+        assert.isTrue(eventSpy.notCalled);
+    });
+
+    describe("keyboard events", () => {
+        it("pressing arrow key down reduces value by stepSize", () => {
+            const onChange = sinon.spy();
+            mountHandle(3, { onChange, stepSize: 2 }).simulate("keydown", { which: ARROW_DOWN });
+            assert.isTrue(onChange.calledWithExactly(1));
+        });
+
+        it("pressing arrow key up increases value by stepSize", () => {
+            const onChange = sinon.spy();
+            mountHandle(3, { onChange, stepSize: 4 }).simulate("keydown", { which: ARROW_UP });
+            assert.isTrue(onChange.calledWithExactly(7));
+        });
+
+        it("releasing arrow key calls onRelease with value", () => {
+            const onRelease = sinon.spy();
+            mountHandle(3, { onRelease, stepSize: 4 })
+                .simulate("keydown", { which: ARROW_UP })
+                .simulate("keyup", { which: ARROW_UP });
+            assert.isTrue(onRelease.calledWithExactly(3));
+        });
+    });
+
     [false, true].forEach(vertical => {
         [false, true].forEach(touch => {
             describe(`${vertical ? "vertical " : ""}${touch ? "touch" : "mouse"} events`, () => {
@@ -75,36 +105,6 @@ describe("<Handle>", () => {
                 });
             });
         });
-    });
-
-    describe("keyboard events", () => {
-        it("pressing arrow key down reduces value by stepSize", () => {
-            const onChange = sinon.spy();
-            mountHandle(3, { onChange, stepSize: 2 }).simulate("keydown", { which: ARROW_DOWN });
-            assert.isTrue(onChange.calledWithExactly(1));
-        });
-
-        it("pressing arrow key up increases value by stepSize", () => {
-            const onChange = sinon.spy();
-            mountHandle(3, { onChange, stepSize: 4 }).simulate("keydown", { which: ARROW_UP });
-            assert.isTrue(onChange.calledWithExactly(7));
-        });
-
-        it("releasing arrow key calls onRelease with value", () => {
-            const onRelease = sinon.spy();
-            mountHandle(3, { onRelease, stepSize: 4 })
-                .simulate("keydown", { which: ARROW_UP })
-                .simulate("keyup", { which: ARROW_UP });
-            assert.isTrue(onRelease.calledWithExactly(3));
-        });
-    });
-
-    it("disabled handle never invokes event handlers", () => {
-        const eventSpy = sinon.spy();
-        const handle = mountHandle(0, { disabled: true, onChange: eventSpy, onRelease: eventSpy });
-        simulateMovement(handle, { dragTimes: 3 });
-        handle.simulate("keydown", { which: ARROW_UP });
-        assert.isTrue(eventSpy.notCalled);
     });
 
     function mountHandle(value: number, props: Partial<IHandleProps> = {}): HandleWrapper {
