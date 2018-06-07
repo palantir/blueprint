@@ -20,6 +20,33 @@ You should not use `EditableText` when a static always-editable `<input>` or
 
 @reactExample EditableTextExample
 
+@## Multiline mode
+
+By default, `EditableText` supports _exactly one line of text_ and will grow or shrink horizontally
+based on the length of text.
+
+Provide the `multiline` prop to create an `EditableText` field that spans multiple lines. Multiline
+mode uses a `<textarea>` instead of an `<input type="text">` to support multiple lines of text.
+
+```tsx
+<EditableText multiline minLines={3} maxLines={12} {...props} />
+```
+
+Users confirm text in multiline mode by pressing `ctrl` `enter` or `cmd` `enter` rather than
+simply `enter`. (Pressing the `enter` key by itself moves the cursor to the next line.)
+
+Additionally, in multiline mode the component's width is fixed at 100%. It grows or shrinks
+_vertically_ instead, based on the number of lines of text. You can use the `minLines` and
+`maxLines` props to constrain the vertical size of the component.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-wa`rning-sign">
+    <h4 class="@ns-heading">Multiline prop format</h4>
+    You should declare `multiline` as a valueless boolean prop, as in the example above
+    (`<EditableText multiline ...>`). This prevents you from changing the value after declaring it,
+    which would provide a sub-optimal experience for users (multiline text does not always render
+    cleanly into a single line).
+</div>
+
 @## Props
 
 `EditableText` can be used like an [`input`
@@ -30,31 +57,4 @@ The `onConfirm` and `onCancel` callbacks are invoked based on user interaction. 
 `enter` or blurs the input to confirm the current value, or presses `esc` to cancel. Canceling resets
 the field to the last confirmed value. Neither callback is invoked if the value is unchanged.
 
-By default, `EditableText` supports _exactly one line of text_ and will grow or shrink horizontally
-based on the length of text.
-
 @interface IEditableTextProps
-
-@### Multiline mode
-
-```tsx
-<EditableText multiline minLines={3} maxLines={12} {...props} />
-```
-
-Provide the `multiline` prop to create an `EditableText` field that spans multiple lines. Multiline
-mode uses a `<textarea>` instead of an `<input type="text">` to support multiple lines of text.
-
-Users confirm text in multiline mode by pressing `ctrl` `enter` or `cmd` `enter` rather than
-simply `enter`. (Pressing the `enter` key by itself moves the cursor to the next line.)
-
-Additionally, in multiline mode the component's width is fixed at 100%. It grows or shrinks
-_vertically_ instead, based on the number of lines of text. You can use the `minLines` and
-`maxLines` props to constrain the vertical size of the component.
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Multiline prop format</h4>
-    You should declare `multiline` as a valueless boolean prop, as in the example above
-    (`<EditableText multiline ...>`). This prevents you from changing the value after declaring it,
-    which would provide a sub-optimal experience for users (multiline text does not always render
-    cleanly into a single line).
-</div>
