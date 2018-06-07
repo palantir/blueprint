@@ -9,7 +9,6 @@ import * as React from "react";
 
 import { Classes, Intent } from "../../common";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import { intentClass } from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -85,7 +84,7 @@ export interface ISliderBaseProps extends IProps {
 }
 
 export interface IMultiSliderProps extends ISliderBaseProps {
-    /** Default intent of a track segment, if no handle specifies `intentBefore/After`. */
+    /** Default intent of a track segment, used only if no handle specifies `intentBefore/After`. */
     defaultTrackIntent?: Intent;
 
     /** Callback invoked when a handle value changes. Receives handle values in sorted order. */
@@ -147,8 +146,10 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
         return (
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
-                {this.renderFill()}
-                {this.maybeRenderAxis()}
+                <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)}>
+                    {this.renderTracks()}
+                </div>
+                <div className={Classes.SLIDER_AXIS}>{this.renderLabels()}</div>
                 {this.renderHandles()}
             </div>
         );
@@ -186,7 +187,8 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
         let anyInvalidChildren = false;
         React.Children.forEach(props.children, child => {
-            if (child != null && !Utils.isElementOfType(child, SliderHandle)) {
+            // allow boolean coercion to omit nulls and false values
+            if (child && !Utils.isElementOfType(child, SliderHandle)) {
                 anyInvalidChildren = true;
             }
         });
@@ -198,27 +200,23 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     private formatLabel(value: number): React.ReactChild {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
-            return undefined;
+            return null;
         } else if (Utils.isFunction(labelRenderer)) {
-            // TODO: TS 2.7 might have a type narrowing issue?
-            return (labelRenderer as (value: number) => React.ReactChild)(value);
+            return labelRenderer(value);
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
     }
 
-    private maybeRenderAxis() {
-        // explicit typedefs are required because tsc (rightly) assumes that props might be overriden with different
-        // types in subclasses
-        const max: number = this.props.max;
-        const min: number = this.props.min;
-        const labelStepSize: number = this.props.labelStepSize;
+    private renderLabels() {
         if (this.props.labelRenderer === false) {
-            return undefined;
+            return null;
         }
+        const { labelStepSize, max, min } = this.props;
 
-        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
         const labels: JSX.Element[] = [];
+        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
+        // step size lends itself naturally to a `for` loop
         // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
         for (
             let i = min, offsetRatio = 0;
@@ -228,76 +226,40 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             const offsetPercentage = formatPercentage(offsetRatio);
             const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
             labels.push(
-                <div className={`${Classes.SLIDER}-label`} key={i} style={style}>
+                <div className={Classes.SLIDER_LABEL} key={i} style={style}>
                     {this.formatLabel(i)}
                 </div>,
             );
         }
-        return <div className={`${Classes.SLIDER}-axis`}>{labels}</div>;
+        return labels;
     }
-    private renderFill() {
+
+    private renderTracks() {
         const trackStops = getSortedHandleProps(this.props);
-        trackStops.sort((left, right) => left.value - right.value);
-        if (trackStops.length === 0 || trackStops[0].value > this.props.min) {
-            trackStops.unshift({ value: this.props.min });
-        }
-        if (trackStops[trackStops.length - 1].value < this.props.max) {
-            trackStops.push({ value: this.props.max });
-        }
+        trackStops.push({ value: this.props.max });
 
-        const tracks: Array<JSX.Element | null> = [];
-
-        for (let index = 0; index < trackStops.length - 1; index++) {
-            const left = trackStops[index];
-            const right = trackStops[index + 1];
-            const fillIntentPriorities = [
-                this.props.showTrackFill ? undefined : Intent.NONE,
-                left.intentAfter,
-                right.intentBefore,
-                this.props.defaultTrackIntent,
-            ];
-            const fillIntent = fillIntentPriorities.filter(intent => intent != null)[0];
-            tracks.push(this.renderTrackFill(index, left, right, fillIntent));
+        // render from current to previous, then increment previous
+        let previous: ISliderHandleProps = { value: this.props.min };
+        const handles: JSX.Element[] = [];
+        for (let index = 0; index < trackStops.length; index++) {
+            const current = trackStops[index];
+            handles.push(this.renderTrackFill(index, previous, current));
+            previous = current;
         }
-
-        return (
-            <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)}>
-                {tracks}
-            </div>
-        );
+        return handles;
     }
 
-    private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps, intent: Intent) {
-        const { tickSizeRatio } = this.state;
-        const startValue = start.value;
-        const endValue = end.value;
-
-        let startOffsetRatio = this.getOffsetRatio(startValue, tickSizeRatio);
-        let endOffsetRatio = this.getOffsetRatio(endValue, tickSizeRatio);
-
-        if (startOffsetRatio > endOffsetRatio) {
-            const temp = endOffsetRatio;
-            endOffsetRatio = startOffsetRatio;
-            startOffsetRatio = temp;
-        }
-
-        const startOffset = formatPercentage(startOffsetRatio);
-        const endOffset = formatPercentage(1 - endOffsetRatio);
-
+    private renderTrackFill(index: number, start: ISliderHandleProps, end: ISliderHandleProps) {
+        // ensure startRatio <= endRatio
+        const [startRatio, endRatio] = [this.getOffsetRatio(start.value), this.getOffsetRatio(end.value)].sort();
+        const startOffset = formatPercentage(startRatio);
+        const endOffset = formatPercentage(1 - endRatio);
         const style: React.CSSProperties = this.props.vertical
             ? { bottom: startOffset, top: endOffset, left: 0 }
             : { left: startOffset, right: endOffset, top: 0 };
 
-        const classes = classNames(Classes.SLIDER_PROGRESS, intentClass(intent), {
-            [Classes.START]: start.type === SliderHandleType.START,
-            [Classes.END]: end.type === SliderHandleType.END,
-        });
-
+        const classes = classNames(Classes.SLIDER_PROGRESS, Classes.intentClass(this.getTrackIntent(start, end)));
         return <div key={`track-${index}`} className={classes} style={style} />;
-    }
-
-    private getOffsetRatio(value: number, tickSizeRatio: number) {
-        return Utils.clamp((value - this.props.min) * tickSizeRatio, 0, 1);
     }
 
     private renderHandles() {
@@ -414,6 +376,22 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     private getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
         // infer default label precision from stepSize because that's how much the handle moves.
         return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
+    }
+
+    private getOffsetRatio(value: number) {
+        return Utils.clamp((value - this.props.min) * this.state.tickSizeRatio, 0, 1);
+    }
+
+    private getTrackIntent(start: ISliderHandleProps, end?: ISliderHandleProps): Intent {
+        if (!this.props.showTrackFill) {
+            return Intent.NONE;
+        }
+        if (start.intentAfter !== undefined) {
+            return start.intentAfter;
+        } else if (end !== undefined && end.intentBefore !== undefined) {
+            return end.intentBefore;
+        }
+        return this.props.defaultTrackIntent;
     }
 
     private updateTickSize() {

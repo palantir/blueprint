@@ -7,6 +7,7 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -33,7 +34,10 @@ describe("<MultiSlider>", () => {
         onRelease = sinon.spy();
     });
 
-    afterEach(() => testsContainerElement.remove());
+    afterEach(() => {
+        ReactDOM.unmountComponentAtNode(testsContainerElement);
+        testsContainerElement.remove();
+    });
 
     describe("handles", () => {
         it("handle values are automatically sorted", () => {
@@ -110,6 +114,17 @@ describe("<MultiSlider>", () => {
             slider.simulate("mousedown", { clientX: STEP_SIZE * 9 });
             assert.equal(onChange.callCount, 1, "higher handle invokes onChange");
             assert.deepEqual(onChange.firstCall.args[0], [5, 5, 9], "higher handle moves");
+        });
+
+        it("values outside of bounds are clamped", () => {
+            const slider = renderSlider({ values: [-1, 5, 12] });
+            slider.find(`.${Classes.SLIDER_PROGRESS}`).forEach(progress => {
+                const { left, right } = progress.prop("style");
+                // CSS properties are percentage strings, but parsing will ignore trailing "%".
+                // percentages should be in 0-100% range.
+                assert.isAtLeast(parseFloat(left), 0);
+                assert.isAtMost(parseFloat(right), 100);
+            });
         });
     });
 
