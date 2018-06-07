@@ -13,10 +13,7 @@ Dialogs present content overlaid over other parts of the UI.
 
 @reactExample DialogExample
 
-@## JavaScript API
-
-The `Dialog` component is available in the **@blueprintjs/core** package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 There are two ways to render dialogs:
 
@@ -29,7 +26,7 @@ are rendered as contents inside the `.@ns-dialog` element.
 
 @interface IDialogProps
 
-@## CSS API
+@## CSS
 
 You can create dialogs manually using the HTML markup and `@ns-dialog-*` classes below.
 However, you should use the dialog [JavaScript APIs](#core/components/dialog.javascript-api)
