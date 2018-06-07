@@ -296,7 +296,7 @@ everything else on the page without needing to manually adjust z-indices, and Po
 
 @reactExample PopoverPortalExample
 
-@## CSS
+@## Style
 
 @### Dark theme
 
