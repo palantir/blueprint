@@ -2,16 +2,12 @@
 
 A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
 
-
 Toasts can be configured to appear at either the top or the bottom of an application window, and it is possible to
 have more than one toast onscreen at a time.
 
 @reactExample ToastExample
 
-@## JavaScript API
-
-The `Toast` and `Toaster` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 @### Toast
 
