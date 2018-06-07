@@ -18,7 +18,7 @@ import { formatPercentage } from "./sliderUtils";
  * Props for the internal <Handle> component needs some additional info from the parent Slider.
  * N.B. some properties need to be optional for spread in slider.tsx to work
  */
-export interface IInternalHandle extends IHandleProps {
+export interface IInternalHandleProps extends IHandleProps {
     label: React.ReactChild;
     max?: number;
     min?: number;
@@ -37,7 +37,7 @@ export interface IHandleState {
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
-export class Handle extends AbstractPureComponent<IInternalHandle, IHandleState> {
+export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleState> {
     public static displayName = "Blueprint2.SliderHandle";
 
     public state = {
@@ -133,7 +133,7 @@ export class Handle extends AbstractPureComponent<IInternalHandle, IHandleState>
         this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
 
-    protected validateProps(props: IInternalHandle) {
+    protected validateProps(props: IInternalHandleProps) {
         for (const prop of NUMBER_PROPS) {
             if (typeof (props as any)[prop] !== "number") {
                 throw new Error(`[Blueprint] <Handle> requires number value for ${prop} prop`);

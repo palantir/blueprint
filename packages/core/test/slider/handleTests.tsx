@@ -10,12 +10,10 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { ARROW_DOWN, ARROW_UP } from "../../src/common/keys";
-import { Handle, IHandleProps, IHandleState } from "../../src/components/slider/handle";
+import { Handle, IHandleState, IInternalHandleProps } from "../../src/components/slider/handle";
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
-type HandleWrapper = ReactWrapper<IHandleProps, IHandleState>;
-
-const HANDLE_PROPS: IHandleProps = {
+const HANDLE_PROPS: IInternalHandleProps = {
     disabled: false,
     label: "",
     max: 10,
@@ -107,7 +105,10 @@ describe("<Handle>", () => {
         });
     });
 
-    function mountHandle(value: number, props: Partial<IHandleProps> = {}): HandleWrapper {
+    function mountHandle(
+        value: number,
+        props: Partial<IInternalHandleProps> = {},
+    ): ReactWrapper<IInternalHandleProps, IHandleState> {
         return mount(<Handle {...HANDLE_PROPS} label={value} value={value} {...props} />, {
             attachTo: testsContainerElement,
         });
