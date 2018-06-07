@@ -1,21 +1,8 @@
 @# Tabs
 
-@## CSS API
+@reactExample TabsExample
 
-In addition to the [JavaScript API](#core/components/tabs.javascript-api), Blueprint also offers tab styles with the
-class `@ns-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
-`aria-hidden`) if you choose to implement tabs with CSS.
-
-`.@ns-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS.
-You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
-JavaScript component does this by default).
-
-@css tabs
-
-@## JavaScript API
-
-The `Tabs` and `Tab` components are available in the __@blueprintjs/core__
-package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Usage
 
 Tab selection is managed by `id`, much like the HTML `<select>` element respects `<option value>`. This is more reliable than using a numeric index (it's also deterministic), and
 does not require translating between numbers and tab names. It does, however, require that
@@ -36,8 +23,6 @@ import { Tab, Tabs } from "@blueprintjs/core";
     <input className="@ns-input" type="text" placeholder="Search..." />
 </Tabs>
 ```
-
-@reactExample TabsExample
 
 @### Tabs
 
@@ -64,3 +49,14 @@ safe and allows you to control exactly where the panel appears in the DOM (by re
 as needed).
 
 @interface ITabProps
+
+@## CSS
+
+Blueprint also offers tab styles with the class `@ns-tabs`. You should add the proper accessibility
+attributes (`role`, `aria-selected`, and `aria-hidden`) if you choose to implement tabs with CSS.
+
+`.@ns-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS.
+You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
+JavaScript component does this by default).
+
+@css tabs
