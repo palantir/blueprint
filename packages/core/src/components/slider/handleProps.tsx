@@ -4,11 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as React from "react";
+import { Intent, IProps } from "../../common";
 
-import { Intent } from "../../common/intent";
-
-export const SliderHandleType = {
+export const HandleType = {
     /** A full handle appears as a small square. */
     FULL: "full" as "full",
 
@@ -18,9 +16,9 @@ export const SliderHandleType = {
     /** An end handle appears as the right or bottom half of a square. */
     END: "end" as "end",
 };
-export type SliderHandleType = typeof SliderHandleType[keyof typeof SliderHandleType];
+export type HandleType = typeof HandleType[keyof typeof HandleType];
 
-export const SliderHandleInteractionKind = {
+export const HandleInteractionKind = {
     /** Locked handles prevent other handles from being dragged past then. */
     LOCK: "lock" as "lock",
 
@@ -33,11 +31,14 @@ export const SliderHandleInteractionKind = {
      */
     NONE: "none" as "none",
 };
-export type SliderHandleInteractionKind = typeof SliderHandleInteractionKind[keyof typeof SliderHandleInteractionKind];
+export type HandleInteractionKind = typeof HandleInteractionKind[keyof typeof HandleInteractionKind];
 
-export interface ISliderHandleProps {
-    /** Value of this handle. */
+export interface IHandleProps extends IProps {
+    /** Numeric value of this handle. */
     value: number;
+
+    /** Whether this handle is non-interactive. */
+    disabled?: boolean;
 
     /** Intent for the track segment immediately after this handle, taking priority over `intentBefore`. */
     intentAfter?: Intent;
@@ -46,12 +47,14 @@ export interface ISliderHandleProps {
     intentBefore?: Intent;
 
     /** How this handle interacts with other handles. */
-    interactionKind?: SliderHandleInteractionKind;
+    interactionKind?: HandleInteractionKind;
+
+    /** Callback invoked when this handle's value is changed due to a drag interaction. */
+    onChange?: (newValue: number) => void;
+
+    /** Callback invoked when this handle is released (the end of a drag interaction). */
+    onRelease?: (newValue: number) => void;
 
     /** Handle appearance type. */
-    type?: SliderHandleType;
-}
-
-export class SliderHandle extends React.PureComponent<ISliderHandleProps> {
-    public static displayName = "Blueprint2.SliderHandle";
+    type?: HandleType;
 }
