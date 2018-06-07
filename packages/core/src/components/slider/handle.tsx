@@ -104,10 +104,11 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         const handleCenterPixel = this.getHandleElementCenterPixel(this.handleElement);
         const pixelDelta = clientPixelNormalized - handleCenterPixel;
 
+        if (isNaN(pixelDelta)) {
+            return value;
+        }
         // convert pixels to range value in increments of `stepSize`
-        const valueDelta = Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
-
-        return value + valueDelta;
+        return value + Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
     }
 
     public mouseEventClientOffset(event: MouseEvent | React.MouseEvent<HTMLElement>) {
@@ -153,9 +154,9 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
     private handleMoveEndedAt = (clientPixel: number) => {
         this.removeDocumentEventListeners();
         this.setState({ isMoving: false });
-        // not using changeValue because we want to invoke the handler regardless of current prop value
+        // always invoke onRelease; changeValue may call onChange if value is different
         const { onRelease } = this.props;
-        const finalValue = this.clamp(this.clientToValue(clientPixel));
+        const finalValue = this.changeValue(this.clientToValue(clientPixel));
         safeInvoke(onRelease, finalValue);
     };
 
@@ -198,6 +199,7 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         if (!isNaN(newValue) && this.props.value !== newValue) {
             safeInvoke(callback, newValue);
         }
+        return newValue;
     }
 
     /** Clamp value between min and max props */
