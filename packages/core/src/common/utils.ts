@@ -50,13 +50,13 @@ export interface INamed {
     name?: string;
 }
 
-export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
-    return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as INamed).name || "Unknown";
+export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
+    return (ComponentClass as React.ComponentType).displayName || (ComponentClass as INamed).name || "Unknown";
 }
 
 export function isElementOfType<P = {}>(
     element: any,
-    ComponentClass: React.ComponentClass<P>,
+    ComponentClass: React.ComponentType<P>,
 ): element is React.ReactElement<P> {
     return element != null && element.type === React.createElement(ComponentClass).type;
 }
