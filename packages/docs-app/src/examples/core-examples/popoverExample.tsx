@@ -15,7 +15,6 @@ import {
     FormGroup,
     H5,
     Intent,
-    IOverlayLifecycleProps,
     Label,
     Menu,
     MenuDivider,
@@ -133,7 +132,6 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
-                        {...LIFECYCLE}
                         enforceFocus={false}
                         isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
                     >
@@ -300,10 +298,3 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
         }
     };
 }
-
-const LIFECYCLE: IOverlayLifecycleProps = {
-    onClosed: () => console.log("closed"),
-    onClosing: () => console.log("closing"),
-    onOpened: () => console.log("opened"),
-    onOpening: () => console.log("opening"),
-};

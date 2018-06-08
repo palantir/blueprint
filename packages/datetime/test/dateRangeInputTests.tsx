@@ -16,6 +16,7 @@ import {
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
+    IPopoverProps,
     Keys,
     Popover,
     Position,
@@ -355,23 +356,13 @@ describe("<DateRangeInput>", () => {
 
     describe("popoverProps", () => {
         it("accepts custom popoverProps", () => {
-            const popoverProps = {
-                onClosing: sinon.spy(),
-                onOpened: sinon.spy(),
-                onOpening: sinon.spy(),
+            const popoverProps: Partial<IPopoverProps> = {
+                backdropProps: {},
                 position: Position.TOP_LEFT,
             };
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
-
-            expect(root.find(Popover).prop("position")).to.equal(Position.TOP_LEFT);
-
-            root.setState({ isOpen: true });
-            expect(popoverProps.onOpening.calledOnce).to.be.true;
-            expect(popoverProps.onOpened.calledOnce).to.be.true;
-
-            // not testing popoverProps.onClose, because it has some setTimeout stuff to work around
-            root.setState({ isOpen: false });
-            expect(popoverProps.onClosing.calledOnce).to.be.true;
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
+            expect(popover.prop("backdropProps")).to.equal(popoverProps.backdropProps);
+            expect(popover.prop("position")).to.equal(popoverProps.position);
         });
 
         it("ignores autoFocus, enforceFocus, and content in custom popoverProps", () => {
@@ -381,10 +372,8 @@ describe("<DateRangeInput>", () => {
                 content: CUSTOM_CONTENT,
                 enforceFocus: true,
             };
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
-
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
             // this test assumes the following values will be the defaults internally
-            const popover = root.find(Popover);
             expect(popover.prop("autoFocus")).to.be.false;
             expect(popover.prop("enforceFocus")).to.be.false;
             expect(popover.prop("content")).to.not.equal(CUSTOM_CONTENT);
