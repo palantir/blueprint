@@ -2,14 +2,6 @@
 
 Spinners indicate indeterminate progress.
 
-@## CSS API
-
-You can create spinners manually by inserting their whole markup into your HTML.
-Spinners created via markup use same modifier classes as the
-[React `Spinner` component](#core/components/progress/spinner.javascript-api).
-
-@css spinner
-
 @## JavaScript API
 
 The `Spinner` component is available in the __@blueprintjs/core__ package.
@@ -31,8 +23,8 @@ are supported via the `className` prop.
     correctly because they rely on CSS animations, not transitions.
 </div>
 
+[msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
+
 @reactExample SpinnerExample
 
 @interface ISpinnerProps
-
-[msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg

@@ -4,23 +4,6 @@
 @import "../../common/variables";
 @import "../progress-bar/common";
 
-/*
-Spinners
-
-Markup:
-<svg class="#{$ns}-spinner {{.modifier}}" viewBox="0 0 100 100">
-  <path class="#{$ns}-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
-  <path class="#{$ns}-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
-</svg>
-
-.#{$ns}-small - Small spinner
-.#{$ns}-large - Large spinner
-.#{$ns}-intent-primary - All four intents are supported
-.#{$ns}-no-spin - Disable spinning animation
-
-Styleguide spinner
-*/
-
 @keyframes pt-spinner-animation {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
