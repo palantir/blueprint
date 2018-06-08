@@ -3,7 +3,6 @@
 
 @import "../../common/variables";
 @import "../progress-bar/common";
-@import "./common";
 
 /*
 Spinners
@@ -28,7 +27,6 @@ Styleguide spinner
 }
 
 .#{$ns}-spinner {
-  @include spinner-size($spinner-width-factor, $spinner-stroke-width, $spinner-speed);
   // allow paths to overflow container -- critical for edges of circles!
   overflow: visible;
   vertical-align: middle;
@@ -40,8 +38,7 @@ Styleguide spinner
   .#{$ns}-spinner-head {
     transform-origin: center;
     transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
-    animation: pt-spinner-animation $spinner-speed linear infinite;
-    animation-duration: inherit;
+    animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
     stroke: $progress-head-color;
     stroke-linecap: round;
   }
@@ -52,22 +49,6 @@ Styleguide spinner
 
   &.#{$ns}-no-spin .#{$ns}-spinner-head {
     animation: none;
-  }
-
-  &.#{$ns}-small {
-    @include spinner-size(
-      $spinner-width-factor-small,
-      $spinner-stroke-width-small,
-      $spinner-speed-small
-    );
-  }
-
-  &.#{$ns}-large {
-    @include spinner-size(
-      $spinner-width-factor-large,
-      $spinner-stroke-width-large,
-      $spinner-speed-large
-    );
   }
 }
 
