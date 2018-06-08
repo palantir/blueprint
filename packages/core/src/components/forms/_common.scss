@@ -23,6 +23,9 @@ $dark-input-background-color: rgba($black, 0.3) !default;
 $dark-input-background-color-disabled: rgba($dark-gray5, 0.5) !default;
 $dark-input-shadow-color-focus: $pt-intent-primary !default;
 
+$control-indicator-size: $pt-icon-size-standard !default;
+$control-indicator-size-large: $pt-icon-size-large !default;
+
 // avoids edge blurriness for light theme focused default input
 // second box-shadow of $pt-input-box-shadow
 $input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
