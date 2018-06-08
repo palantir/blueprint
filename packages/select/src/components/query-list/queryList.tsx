@@ -196,12 +196,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     /** wrapper around `itemRenderer` to inject props */
-    private renderItem = (item: T, index?: number) => {
+    private renderItem = (item: T, index: number) => {
         const { activeItem, query } = this.props;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
             active: activeItem === item,
-            disabled: false,
+            disabled: this.isItemDisabled(item, index),
             matchesPredicate,
         };
         return this.props.itemRenderer(item, {
@@ -267,14 +267,46 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         Utils.safeInvoke(onKeyUp, event);
     };
 
-    private moveActiveIndex(direction: number) {
+    /**
+     * Find the next index of an enabled item, moving in the given direction from the current index.
+     * The second and third parameters are used internally for recursion.
+     * @param direction amount to move in each iteration, typically +/-1
+     * @param currentIndex current index being considered
+     * @param startIndex index at which recursion began, to detect infinite loop
+     */
+    private moveActiveIndex(direction: number, currentIndex = this.getActiveIndex(), startIndex = currentIndex) {
+        const { filteredItems } = this.state;
+        if (filteredItems.length < 2) {
+            return;
+        }
+
         // indicate that the active item may need to be scrolled into view after update.
         // this is not possible with mouse hover cuz you can't hover on something off screen.
         this.shouldCheckActiveItemInViewport = true;
-        const { filteredItems } = this.state;
-        const maxIndex = Math.max(filteredItems.length - 1, 0);
-        const nextActiveIndex = Utils.clamp(this.getActiveIndex() + direction, 0, maxIndex);
-        Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
+
+        const nextActiveIndex = wrapNumber(currentIndex + direction, 0, filteredItems.length - 1);
+        if (nextActiveIndex === startIndex) {
+            // loop detected! we've returned to the start index without finding
+            // a suitable item, so terminate by doing nothing.
+        } else if (this.isItemDisabled(filteredItems[nextActiveIndex], nextActiveIndex)) {
+            // keep on moving in given direction if this item is disabled.
+            // eventually we'll find one or detect a loop.
+            this.moveActiveIndex(direction, nextActiveIndex, startIndex);
+        } else {
+            // found one! inform the parent.
+            Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
+        }
+    }
+
+    private isItemDisabled(item: T, index: number) {
+        const { itemDisabled } = this.props;
+        if (itemDisabled == null) {
+            return false;
+        } else if (Utils.isFunction(itemDisabled)) {
+            return itemDisabled(item, index);
+        } else {
+            return !!item[itemDisabled];
+        }
     }
 }
 
@@ -290,4 +322,14 @@ function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }:
         return items.filter((item, index) => itemPredicate(query, item, index));
     }
     return items;
+}
+
+/** Wrap number around min/max values: if it exceeds one bound, return the other. */
+function wrapNumber(value: number, min: number, max: number) {
+    if (value < min) {
+        return max;
+    } else if (value > max) {
+        return min;
+    }
+    return value;
 }
