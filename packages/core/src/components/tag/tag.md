@@ -32,10 +32,3 @@ element to support interaction handlers in your framework of choice.
 A simple `.@ns-tag` without the remove button can easily function as a badge.
 
 @css tag
-
-@### Minimal tags
-
-Add the `.@ns-minimal` modifier for a lighter tag appearance. The translucent background color
-will adapt to its container's background color.
-
-@css tag-minimal
