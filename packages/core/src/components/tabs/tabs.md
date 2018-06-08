@@ -2,7 +2,7 @@
 
 @reactExample TabsExample
 
-@## Usage
+@## Props
 
 Tab selection is managed by `id`, much like the HTML `<select>` element respects `<option value>`. This is more reliable than using a numeric index (it's also deterministic), and
 does not require translating between numbers and tab names. It does, however, require that
