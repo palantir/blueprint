@@ -8,8 +8,8 @@ import * as React from "react";
 
 import {
     Button,
-    Classes,
     H5,
+    Icon,
     InputGroup,
     Intent,
     Menu,
@@ -48,7 +48,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     public render() {
         const { disabled, filterValue, large, showPassword, tagValue } = this.state;
 
-        const maybeSpinner = filterValue ? <Spinner className={Classes.SMALL} /> : undefined;
+        const maybeSpinner = filterValue ? <Spinner size={Icon.SIZE_STANDARD} /> : undefined;
 
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>

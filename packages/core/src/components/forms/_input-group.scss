@@ -3,7 +3,6 @@
 
 @import "../../common/variables";
 @import "../button/common";
-@import "../spinner/common";
 
 /*
 Input groups
@@ -84,17 +83,16 @@ $input-button-height-large: $pt-button-height !default;
   // direct descendant to exclude icons in buttons
   > .#{$ns}-icon {
     @include pt-icon($pt-icon-size-standard);
-
     // bump icon up so it sits above input
     z-index: 1;
-    margin: ($pt-input-height - $pt-icon-size-standard) / 2;
     color: $pt-icon-color;
   }
 
   // adjusting the margin of spinners in input groups
   // we have to avoid targetting buttons that contain a spinner
+  > .#{$ns}-icon,
   .#{$ns}-input-action > .#{$ns}-spinner {
-    margin: ($pt-input-height - $spinner-width * $spinner-width-factor-small) / 2;
+    margin: ($pt-input-height - $pt-icon-size-standard) / 2;
   }
 
   .#{$ns}-tag {
@@ -146,7 +144,8 @@ $input-button-height-large: $pt-button-height !default;
       margin: ($pt-input-height-large - $input-button-height-large) / 2;
     }
 
-    > .#{$ns}-icon {
+    > .#{$ns}-icon,
+    .#{$ns}-input-action > .#{$ns}-spinner {
       margin: ($pt-input-height-large - $pt-icon-size-standard) / 2;
     }
 
@@ -160,10 +159,6 @@ $input-button-height-large: $pt-button-height !default;
       &:not(:last-child) {
         padding-right: $pt-button-height-large;
       }
-    }
-
-    .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $spinner-width * $spinner-width-factor-small) / 2;
     }
   }
 
