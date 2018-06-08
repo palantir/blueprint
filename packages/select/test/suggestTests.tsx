@@ -249,10 +249,10 @@ describe("Suggest", () => {
         });
 
         it("popover can be controlled with popoverProps", () => {
-            const tetherOptions = {}; // our own instance
-            const wrapper = suggest({ popoverProps: getPopoverProps(false, tetherOptions) });
-            wrapper.setProps({ popoverProps: getPopoverProps(true, tetherOptions) });
-            assert.strictEqual(wrapper.find(Popover).prop("tetherOptions"), tetherOptions);
+            const modifiers = {}; // our own instance
+            const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
+            wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
+            assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
             assert.isTrue(onOpening.calledOnce);
         });
 
