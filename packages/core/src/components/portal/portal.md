@@ -5,23 +5,6 @@ hierarchy. It is an essential piece of [`Overlay`](#core/components/overlay), re
 the overlay contents cover the application below. In most cases you do not need to use a `Portal`
 directly; this documentation is provided simply for reference.
 
-@## Props
-
-The `Portal` component functions like a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
-The children of a `Portal` component are appended to the `<body>` element.
-
-`Portal` is used inside [`Overlay`](#core/components/overlay) to actually overlay the content on the
-application.
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">A note about responsive layouts</h4>
-    For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
-    may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
-    apply `position: absolute` to the `<body>` tag.
-</div>
-
-@interface IPortalProps
-
 @## React context
 
 `Portal` supports the following options on its [React context](https://facebook.github.io/react/docs/context.html).
@@ -42,3 +25,20 @@ In a **React 15** environment, `Portal` will use `ReactDOM.unstable_renderSubtre
 1. React `context` _is_ preserved (this one's a good thing).
 
 In a **React 16+** environment, the `Portal` component will use [`ReactDOM.createPortal`](https://reactjs.org/docs/portals.html) which preserves the React tree perfectly and does not require any of the above caveats.
+
+@## Props
+
+The `Portal` component functions like a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
+The children of a `Portal` component are appended to the `<body>` element.
+
+`Portal` is used inside [`Overlay`](#core/components/overlay) to actually overlay the content on the
+application.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">A note about responsive layouts</h4>
+    For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
+    may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
+    apply `position: absolute` to the `<body>` tag.
+</div>
+
+@interface IPortalProps
