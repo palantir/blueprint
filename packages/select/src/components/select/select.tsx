@@ -138,7 +138,6 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
         const input = (
             <InputGroup
-                autoFocus={true}
                 leftIcon="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
