@@ -473,7 +473,7 @@ describe("<DateInput>", () => {
 
             assert.isTrue(onChange.calledOnce);
             assertDateEquals(onChange.args[0][0], new Date("4/27/2016"));
-            assert.isTrue(onChange.args[0][1], "expected hasUserManuallySelectedDate to be true");
+            assert.isTrue(onChange.args[0][1], "expected isUserChange to be true");
         });
 
         it("Clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
@@ -545,7 +545,7 @@ describe("<DateInput>", () => {
             assert.deepEqual(onChange.firstCall.args, [DATE, true]);
         });
 
-        it("hasUserManuallySelectedDate is false when month changes", () => {
+        it("isUserChange is false when month changes", () => {
             const onChange = sinon.spy();
             const wrapper = mount(<DateInput {...DATE_FORMAT} onChange={onChange} value={DATE} />);
             wrapper.setState({ isOpen: true });
@@ -555,7 +555,7 @@ describe("<DateInput>", () => {
                 .simulate("change", { value: Months.FEBRUARY.toString() });
 
             assert.isTrue(onChange.calledOnce);
-            assert.isFalse(onChange.args[0][1], "expected hasUserManuallySelectedDate to be false");
+            assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
         });
     });
 

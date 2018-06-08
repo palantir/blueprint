@@ -381,11 +381,11 @@ describe("<DatePicker>", () => {
 
             root.find(".DayPicker-NavButton--prev").simulate("click");
             assert.isTrue(onChange.calledOnce, "expected onChange called");
-            assert.isFalse(onChange.firstCall.args[1], "expected hasUserManuallySelectedDate to be false");
+            assert.isFalse(onChange.firstCall.args[1], "expected isUserChange to be false");
 
             months.simulate("change", { target: { value: Months.JUNE } });
             assert.isTrue(onChange.calledTwice, "expected onChange called again");
-            assert.isFalse(onChange.secondCall.args[1], "expected hasUserManuallySelectedDate to be false again");
+            assert.isFalse(onChange.secondCall.args[1], "expected isUserChange to be false again");
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
