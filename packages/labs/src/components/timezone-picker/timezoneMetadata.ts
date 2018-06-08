@@ -14,47 +14,9 @@ export interface ITimezoneMetadata {
     population: number | undefined;
 }
 
-export function getTimezoneMetadata(timezone: string, date: Date, useManualCalc: boolean): ITimezoneMetadata {
+export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMetadata {
     const zone = moment.tz.zone(timezone);
     const timestamp = date.getTime();
-    const calculateMetadata = useManualCalc ? getMetadataFromMomentManual : getMetadataFromMoment;
-    return calculateMetadata(timezone, zone, timestamp);
-}
-
-/**
- * Ignore abbreviations that are simply offsets, i.e. "+14" instead of "PST"
- * @param abbreviation
- */
-function getNonOffsetAbbreviation(abbreviation: string) {
-    return isNonOffsetAbbreviation(abbreviation) ? abbreviation : undefined;
-}
-
-function isNonOffsetAbbreviation(abbreviation: string) {
-    return abbreviation != null && abbreviation.length > 0 && abbreviation[0] !== "-" && abbreviation[0] !== "+";
-}
-
-/**
- * Use moment-timezone to parse the timestamp and provide timezone metadata
- */
-function getMetadataFromMoment(timezone: string, zone: moment.MomentZone, timestamp: number) {
-    const zonedDate = moment.tz(timestamp, timezone);
-    const offset = zonedDate.utcOffset();
-    const offsetAsString = zonedDate.format("Z");
-    const abbreviation = getNonOffsetAbbreviation(zonedDate.zoneAbbr());
-    return {
-        abbreviation,
-        offset,
-        offsetAsString,
-        population: zone.population,
-        timezone,
-    };
-}
-
-/**
- * Manually determine timezone metadata by skipping the timestamp parsing and following
- * http://momentjs.com/timezone/docs/#/data-formats/unpacked-format/
- */
-function getMetadataFromMomentManual(timezone: string, zone: moment.MomentZone, timestamp: number) {
     const { abbrs, offsets, population, untils } = zone;
     const index = findOffsetIndex(timestamp, untils);
     const abbreviation = getNonOffsetAbbreviation(abbrs[index]);
@@ -67,6 +29,18 @@ function getMetadataFromMomentManual(timezone: string, zone: moment.MomentZone, 
         population,
         timezone,
     };
+}
+
+/**
+ * Ignore abbreviations that are simply offsets, i.e. "+14" instead of "PST"
+ * @param abbreviation
+ */
+function getNonOffsetAbbreviation(abbreviation: string) {
+    return isNonOffsetAbbreviation(abbreviation) ? abbreviation : undefined;
+}
+
+function isNonOffsetAbbreviation(abbreviation: string) {
+    return abbreviation != null && abbreviation.length > 0 && abbreviation[0] !== "-" && abbreviation[0] !== "+";
 }
 
 function findOffsetIndex(timestamp: number, untils: number[]) {

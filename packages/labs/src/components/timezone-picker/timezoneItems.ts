@@ -31,8 +31,8 @@ export interface ITimezoneItem {
  * Get a list of all timezone items.
  * @param date the date to use when determining timezone offsets
  */
-export function getTimezoneItems(date: Date, useManualCalc: boolean): ITimezoneItem[] {
-    return moment.tz.names().map(timezone => toTimezoneItem(timezone, date, useManualCalc));
+export function getTimezoneItems(date: Date): ITimezoneItem[] {
+    return moment.tz.names().map(timezone => toTimezoneItem(timezone, date));
 }
 
 /**
@@ -42,13 +42,9 @@ export function getTimezoneItems(date: Date, useManualCalc: boolean): ITimezoneI
  * @param date the date to use when determining timezone offsets
  * @param includeLocalTimezone whether to include the local timezone
  */
-export function getInitialTimezoneItems(
-    date: Date,
-    includeLocalTimezone: boolean,
-    useManualCalc: boolean,
-): ITimezoneItem[] {
-    const populous = getPopulousTimezoneItems(date, useManualCalc);
-    const local = getLocalTimezoneItem(date, useManualCalc);
+export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolean): ITimezoneItem[] {
+    const populous = getPopulousTimezoneItems(date);
+    const local = getLocalTimezoneItem(date);
     return includeLocalTimezone && local !== undefined ? [local, ...populous] : populous;
 }
 
@@ -56,10 +52,10 @@ export function getInitialTimezoneItems(
  * Get the timezone item for the user's local timezone.
  * @param date the date to use when determining timezone offsets
  */
-export function getLocalTimezoneItem(date: Date, useManualCalc: boolean): ITimezoneItem | undefined {
+export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
     const timezone = getLocalTimezone();
     if (timezone !== undefined) {
-        const { offsetAsString } = getTimezoneMetadata(timezone, date, useManualCalc);
+        const { offsetAsString } = getTimezoneMetadata(timezone, date);
         return {
             iconName: "locate",
             key: `${timezone}-local`,
@@ -77,13 +73,13 @@ export function getLocalTimezoneItem(date: Date, useManualCalc: boolean): ITimez
  * than one region for the offset.
  * @param date the date to use when determining timezone offsets
  */
-function getPopulousTimezoneItems(date: Date, useManualCalc: boolean): ITimezoneItem[] {
+function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     // Filter out noisy timezones. See https://github.com/moment/moment-timezone/issues/227
     const timezones = moment.tz.names().filter(timezone => /\//.test(timezone) && !/Etc\//.test(timezone));
 
     const timezoneToMetadata: { [timezone: string]: ITimezoneMetadata } = {};
     for (const timezone of timezones) {
-        timezoneToMetadata[timezone] = getTimezoneMetadata(timezone, date, useManualCalc);
+        timezoneToMetadata[timezone] = getTimezoneMetadata(timezone, date);
     }
 
     // Order by offset ascending, population descending, timezone name ascending
@@ -108,15 +104,15 @@ function getPopulousTimezoneItems(date: Date, useManualCalc: boolean): ITimezone
     for (const timezone of timezones) {
         const curOffset = timezoneToMetadata[timezone].offset;
         if (prevOffset === undefined || prevOffset !== curOffset) {
-            initialTimezones.push(toTimezoneItem(timezone, date, useManualCalc));
+            initialTimezones.push(toTimezoneItem(timezone, date));
             prevOffset = curOffset;
         }
     }
     return initialTimezones;
 }
 
-function toTimezoneItem(timezone: string, date: Date, useManualCalc: boolean): ITimezoneItem {
-    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date, useManualCalc);
+function toTimezoneItem(timezone: string, date: Date): ITimezoneItem {
+    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
     return {
         key: timezone,
         label: offsetAsString,

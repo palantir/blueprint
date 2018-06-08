@@ -23,13 +23,12 @@ export function formatTimezone(
     timezone: string | undefined,
     date: Date,
     displayFormat: TimezoneDisplayFormat,
-    useManualCalc: boolean,
 ): string | undefined {
     if (!timezone || !moment.tz.zone(timezone)) {
         return undefined;
     }
 
-    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date, useManualCalc);
+    const { abbreviation, offsetAsString } = getTimezoneMetadata(timezone, date);
     switch (displayFormat) {
         case TimezoneDisplayFormat.ABBREVIATION:
             // Fall back to the offset when there is no abbreviation.

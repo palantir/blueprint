@@ -61,12 +61,6 @@ export interface ITimezonePickerProps extends IProps {
     showLocalTimezone?: boolean;
 
     /**
-     * Whether to use manual calculation (faster, but possibly less accurate) rather than moment-timezone to infer metadata;
-     * @default false
-     */
-    useManualCalc?: boolean;
-
-    /**
      * Format to use when displaying the selected (or default) timezone within the target element.
      * @default TimezoneDisplayFormat.OFFSET
      */
@@ -117,7 +111,6 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         placeholder: "Select timezone...",
         popoverProps: {},
         showLocalTimezone: true,
-        useManualCalc: false,
     };
 
     private timezoneItems: ITimezoneItem[];
@@ -126,12 +119,12 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     constructor(props: ITimezonePickerProps, context?: any) {
         super(props, context);
 
-        const { value, date = new Date(), useManualCalc, showLocalTimezone, inputProps = {} } = props;
+        const { value, date = new Date(), showLocalTimezone, inputProps = {} } = props;
         const query = inputProps.value !== undefined ? inputProps.value : "";
         this.state = { date, value, query };
 
-        this.timezoneItems = getTimezoneItems(date, useManualCalc);
-        this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone, useManualCalc);
+        this.timezoneItems = getTimezoneItems(date);
+        this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone);
     }
 
     public render() {
@@ -168,14 +161,14 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     }
 
     public componentWillReceiveProps(nextProps: ITimezonePickerProps) {
-        const { date: nextDate = new Date(), inputProps: nextInputProps = {}, useManualCalc } = nextProps;
+        const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = nextProps;
         const dateChanged = this.state.date.getTime() !== nextDate.getTime();
 
         if (dateChanged) {
-            this.timezoneItems = getTimezoneItems(nextDate, useManualCalc);
+            this.timezoneItems = getTimezoneItems(nextDate);
         }
         if (dateChanged || this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
-            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, nextProps.showLocalTimezone, useManualCalc);
+            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, nextProps.showLocalTimezone);
         }
 
         const nextState: ITimezonePickerState = {};
@@ -194,7 +187,6 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
     private renderButton() {
         const {
             disabled,
-            useManualCalc,
             valueDisplayFormat = TimezoneDisplayFormat.OFFSET,
             defaultValue,
             placeholder,
@@ -203,9 +195,7 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
         const { date, value } = this.state;
 
         const finalValue = value ? value : defaultValue;
-        const displayValue = finalValue
-            ? formatTimezone(finalValue, date, valueDisplayFormat, useManualCalc)
-            : undefined;
+        const displayValue = finalValue ? formatTimezone(finalValue, date, valueDisplayFormat) : undefined;
 
         return (
             <Button
@@ -222,11 +212,8 @@ export class TimezonePicker extends AbstractComponent<ITimezonePickerProps, ITim
             return items;
         }
 
-        const { useManualCalc } = this.props;
         const { date } = this.state;
-        return filterWithQueryCandidates(items, query, item =>
-            getTimezoneQueryCandidates(item.timezone, date, useManualCalc),
-        );
+        return filterWithQueryCandidates(items, query, item => getTimezoneQueryCandidates(item.timezone, date));
     };
 
     private renderItem = (itemProps: ISelectItemRendererProps<ITimezoneItem>) => {

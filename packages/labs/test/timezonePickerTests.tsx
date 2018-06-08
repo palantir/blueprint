@@ -74,7 +74,7 @@ describe("<TimezonePicker>", () => {
         const date = new Date();
         const timezonePicker = shallow(<TimezonePicker date={date} popoverProps={getPopoverProps()} />);
         const items = findSelect(timezonePicker).prop("items");
-        assert.deepEqual(items, getInitialTimezoneItems(date, true, false));
+        assert.deepEqual(items, getInitialTimezoneItems(date, true));
     });
 
     it("if inputProps.value is non-empty, all items are shown", () => {
@@ -85,7 +85,7 @@ describe("<TimezonePicker>", () => {
         );
         assert.strictEqual(timezonePicker.state("query"), query);
         const items = findSelect(timezonePicker).prop("items");
-        assert.deepEqual(items, getTimezoneItems(date, false));
+        assert.deepEqual(items, getTimezoneItems(date));
     });
 
     it("if inputProps.value is non-empty and it changes to a different non-empty value, the same items are shown", () => {
@@ -129,7 +129,7 @@ describe("<TimezonePicker>", () => {
         const items = findSelect(timezonePicker).prop("items");
         assert.isTrue(items.length > 0);
         const firstItem = items[0];
-        const expectedFirstItem = getInitialTimezoneItems(date, false, false)[0];
+        const expectedFirstItem = getInitialTimezoneItems(date, false)[0];
         assert.deepEqual(firstItem, expectedFirstItem);
     });
 
@@ -140,7 +140,7 @@ describe("<TimezonePicker>", () => {
             <TimezonePicker date={date} inputProps={{ value: query }} popoverProps={getPopoverProps()} />,
         );
         const items = findSelect(timezonePicker).prop("items");
-        const localTimezoneItem = getLocalTimezoneItem(date, false);
+        const localTimezoneItem = getLocalTimezoneItem(date);
         const itemsWithLocalTimezone = items.filter(item => item.timezone === localTimezoneItem.timezone);
         for (const item of itemsWithLocalTimezone) {
             assert.notDeepEqual(item, localTimezoneItem);
@@ -207,11 +207,6 @@ describe("<TimezonePicker>", () => {
             );
             assert.strictEqual(timezonePicker.find(Button).prop("text"), value);
         });
-    });
-
-    it("manual metadata matches moment metadata", () => {
-        const date = new Date();
-        assert.deepEqual(getTimezoneItems(date, true), getTimezoneItems(date, false));
     });
 
     it("invokes the onChange input prop", () => {
