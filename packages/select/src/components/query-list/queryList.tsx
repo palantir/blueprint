@@ -240,17 +240,15 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        switch (event.keyCode) {
-            case Keys.ARROW_UP:
-                event.preventDefault();
-                this.moveActiveIndex(-1);
-                break;
-            case Keys.ARROW_DOWN:
-                event.preventDefault();
-                this.moveActiveIndex(1);
-                break;
-            default:
-                break;
+        const { keyCode } = event;
+        if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
+            event.preventDefault();
+            const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
+            if (nextActiveItem != null) {
+                // indicate that the active item may need to be scrolled into view after update.
+                this.shouldCheckActiveItemInViewport = true;
+                Utils.safeInvoke(this.props.onActiveItemChange, nextActiveItem);
+            }
         }
         Utils.safeInvoke(this.props.onKeyDown, event);
     };
@@ -268,33 +266,32 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     /**
-     * Find the next index of an enabled item, moving in the given direction from the current index.
-     * The second and third parameters are used internally for recursion.
+     * Get the next enabled item, moving in the given direction from the current
+     * index. An `undefined` return value means no suitable item was found. The
+     * second and third parameters are used internally for recursion.
      * @param direction amount to move in each iteration, typically +/-1
      * @param currentIndex current index being considered
-     * @param startIndex index at which recursion began, to detect infinite loop
+     * @param startIndex index at which recursion began, used to detect infinite loop
      */
-    private moveActiveIndex(direction: number, currentIndex = this.getActiveIndex(), startIndex = currentIndex) {
+    private getNextActiveItem(
+        direction: number,
+        currentIndex = this.getActiveIndex(),
+        startIndex = currentIndex,
+    ): T | undefined {
         const { filteredItems } = this.state;
         if (filteredItems.length < 2) {
-            return;
+            return filteredItems[currentIndex];
         }
-
-        // indicate that the active item may need to be scrolled into view after update.
-        // this is not possible with mouse hover cuz you can't hover on something off screen.
-        this.shouldCheckActiveItemInViewport = true;
 
         const nextActiveIndex = wrapNumber(currentIndex + direction, 0, filteredItems.length - 1);
         if (nextActiveIndex === startIndex) {
-            // loop detected! we've returned to the start index without finding
-            // a suitable item, so terminate by doing nothing.
+            // loop detected! we've returned to the start without finding a suitable candidate.
+            return undefined;
         } else if (this.isItemDisabled(filteredItems[nextActiveIndex], nextActiveIndex)) {
             // keep on moving in given direction if this item is disabled.
-            // eventually we'll find one or detect a loop.
-            this.moveActiveIndex(direction, nextActiveIndex, startIndex);
+            return this.getNextActiveItem(direction, nextActiveIndex, startIndex);
         } else {
-            // found one! inform the parent.
-            Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
+            return filteredItems[nextActiveIndex];
         }
     }
 
