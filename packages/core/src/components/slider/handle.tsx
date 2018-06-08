@@ -10,24 +10,21 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
+import { IHandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
 /**
+ * Props for the internal <Handle> component needs some additional info from the parent Slider.
  * N.B. some properties need to be optional for spread in slider.tsx to work
  */
-export interface IHandleProps extends IProps {
-    disabled?: boolean;
+export interface IInternalHandleProps extends IHandleProps {
     label: React.ReactChild;
     max?: number;
     min?: number;
-    onChange?: (newValue: number) => void;
-    onRelease?: (newValue: number) => void;
     stepSize?: number;
     tickSize?: number;
     tickSizeRatio?: number;
-    value?: number;
     vertical?: boolean;
 }
 
@@ -39,7 +36,8 @@ export interface IHandleState {
 // props that require number values, for validation
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
-export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
+/** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
+export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleState> {
     public static displayName = "Blueprint2.SliderHandle";
 
     public state = {
@@ -135,7 +133,7 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
 
-    protected validateProps(props: IHandleProps) {
+    protected validateProps(props: IInternalHandleProps) {
         for (const prop of NUMBER_PROPS) {
             if (typeof (props as any)[prop] !== "number") {
                 throw new Error(`[Blueprint] <Handle> requires number value for ${prop} prop`);

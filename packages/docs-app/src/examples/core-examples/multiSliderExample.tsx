@@ -6,16 +6,7 @@
 
 import * as React from "react";
 
-import {
-    H5,
-    Intent,
-    MultiSlider,
-    Radio,
-    RadioGroup,
-    SliderHandle,
-    SliderHandleInteractionKind,
-    Switch,
-} from "@blueprintjs/core";
+import { H5, HandleInteractionKind, Intent, MultiSlider, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 interface ISliderValues {
@@ -28,7 +19,7 @@ interface ISliderValues {
 type ShownIntents = "danger" | "warning" | "both";
 
 interface IMultiSliderExampleState {
-    interactionKind: SliderHandleInteractionKind;
+    interactionKind: HandleInteractionKind;
     showTrackFill: boolean;
     shownIntents: ShownIntents;
     values: ISliderValues;
@@ -37,7 +28,7 @@ interface IMultiSliderExampleState {
 
 export class MultiSliderExample extends React.PureComponent<IExampleProps, IMultiSliderExampleState> {
     public state: IMultiSliderExampleState = {
-        interactionKind: SliderHandleInteractionKind.PUSH,
+        interactionKind: HandleInteractionKind.PUSH,
         showTrackFill: true,
         shownIntents: "both",
         // tslint:disable:object-literal-sort-keys
@@ -53,7 +44,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
 
     private toggleTrackFill = handleBooleanChange(showTrackFill => this.setState({ showTrackFill }));
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
-    private handleInteractionKindChange = handleStringChange((interactionKind: SliderHandleInteractionKind) =>
+    private handleInteractionKindChange = handleStringChange((interactionKind: HandleInteractionKind) =>
         this.setState({ interactionKind }),
     );
     private handleShownIntentsChange = handleStringChange((shownIntents: ShownIntents) =>
@@ -78,7 +69,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                 >
                     {/* up to four handles, toggle-able in pairs */}
                     {showDanger && (
-                        <SliderHandle
+                        <MultiSlider.Handle
                             type="start"
                             value={values.dangerStart}
                             intentBefore="danger"
@@ -86,7 +77,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                         />
                     )}
                     {showWarning && (
-                        <SliderHandle
+                        <MultiSlider.Handle
                             type="start"
                             value={values.warningStart}
                             intentBefore="warning"
@@ -94,7 +85,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                         />
                     )}
                     {showWarning && (
-                        <SliderHandle
+                        <MultiSlider.Handle
                             type="end"
                             value={values.warningEnd}
                             intentAfter="warning"
@@ -102,7 +93,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                         />
                     )}
                     {showDanger && (
-                        <SliderHandle
+                        <MultiSlider.Handle
                             type="end"
                             value={values.dangerEnd}
                             intentAfter="danger"
@@ -122,8 +113,8 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
                 <Switch checked={this.state.showTrackFill} label="Show track fill" onChange={this.toggleTrackFill} />
                 <H5>Handle interaction</H5>
                 <RadioGroup selectedValue={this.state.interactionKind} onChange={this.handleInteractionKindChange}>
-                    <Radio label="Lock" value={SliderHandleInteractionKind.LOCK} />
-                    <Radio label="Push" value={SliderHandleInteractionKind.PUSH} />
+                    <Radio label="Lock" value={HandleInteractionKind.LOCK} />
+                    <Radio label="Push" value={HandleInteractionKind.PUSH} />
                 </RadioGroup>
                 <H5>Example</H5>
                 <RadioGroup selectedValue={this.state.shownIntents} onChange={this.handleShownIntentsChange}>

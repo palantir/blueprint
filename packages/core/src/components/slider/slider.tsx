@@ -10,7 +10,6 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import { Intent } from "../../common/intent";
 import * as Utils from "../../common/utils";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
-import { SliderHandle } from "./sliderHandle";
 
 export interface ISliderProps extends ISliderBaseProps {
     /**
@@ -46,12 +45,12 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
         const { initialValue, value, ...props } = this.props;
         return (
             <MultiSlider {...props} onChange={this.handleChange} onRelease={this.handleRelease}>
-                <SliderHandle
+                <MultiSlider.Handle
                     value={value}
                     intentAfter={value < initialValue ? Intent.PRIMARY : undefined}
                     intentBefore={value >= initialValue ? Intent.PRIMARY : undefined}
                 />
-                <SliderHandle value={initialValue} interactionKind="none" />
+                <MultiSlider.Handle value={initialValue} interactionKind="none" />
             </MultiSlider>
         );
     }

@@ -10,7 +10,6 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Errors from "../../common/errors";
 import { Intent } from "../../common/intent";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
-import { SliderHandle } from "./sliderHandle";
 
 export type NumberRange = [number, number];
 
@@ -45,8 +44,8 @@ export class RangeSlider extends AbstractPureComponent<IRangeSliderProps> {
         const { value, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <SliderHandle value={value[RangeIndex.START]} type="start" intentAfter={Intent.PRIMARY} />
-                <SliderHandle value={value[RangeIndex.END]} type="end" />
+                <MultiSlider.Handle value={value[RangeIndex.START]} type="start" intentAfter={Intent.PRIMARY} />
+                <MultiSlider.Handle value={value[RangeIndex.END]} type="end" />
             </MultiSlider>
         );
     }
