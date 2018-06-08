@@ -19,7 +19,7 @@ export interface IListItemsProps<T> extends IProps {
      * simply provide the name of a boolean property on the item that exposes
      * its disabled state.
      */
-    itemDisabled?: keyof T | ((item: T, index?: number) => boolean);
+    itemDisabled?: keyof T | ((item: T, index: number) => boolean);
 
     /**
      * Customize querying of entire `items` array. Return new list of items.
