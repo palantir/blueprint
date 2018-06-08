@@ -268,11 +268,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         this.setState({ isOpen: false });
     };
 
-    private handleDateChange = (
-        newDate: Date | null,
-        isUserChange: boolean,
-        didSubmitWithEnter = false,
-    ) => {
+    private handleDateChange = (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
         const prevDate = this.state.value;
 
         // this change handler was triggered by a change in month, day, or (if
