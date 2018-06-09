@@ -175,7 +175,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: this.props.inputValue,
+        inputValue: this.props.inputValue || "",
         isInputFocused: false,
     };
 

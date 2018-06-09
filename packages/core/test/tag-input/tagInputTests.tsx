@@ -472,6 +472,11 @@ describe("<TagInput>", () => {
             wrapper.setProps({ inputValue: NEW_VALUE });
             expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
+
+        it("has a default empty string value", () => {
+            const input = shallow(<TagInput values={VALUES} />).find("input");
+            expect(input.prop("value")).to.equal("");
+        });
     });
 
     function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
