@@ -4,8 +4,10 @@ Menus display lists of interactive items.
 
 @## JavaScript API
 
-The `Menu`, `MenuItem`, and `MenuDivider` components are available in the **@blueprintjs/core**
-package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+The `Menu` component is available in the **@blueprintjs/core** package. The package also includes
+two small helper components: `MenuItem` and `MenuDivider`. These can be referenced by their aliases
+as well: `Menu.Item` and `Menu.Divider`, respectively. Make sure to review the
+[getting started docs for installation info](#blueprint/getting-started).
 
 The `Menu` API includes three stateless React components:
 
