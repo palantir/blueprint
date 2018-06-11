@@ -3092,5 +3092,26 @@
     "tags": "crown, hat, role, level, permission, king",
     "group": "miscellaneous",
     "content": "\\e7b4"
+  },
+  {
+    "displayName": "Globe: network",
+    "iconName": "globe-network",
+    "tags": "planet, earth, map, world, www, website",
+    "group": "miscellaneous",
+    "content": "\\e7b5"
+  },
+  {
+    "displayName": "Snowflake",
+    "iconName": "snowflake",
+    "tags": "weather, winter, freeze, ice",
+    "group": "miscellaneous",
+    "content": "\\e7b6"
+  },
+  {
+    "displayName": "Tree",
+    "iconName": "tree",
+    "tags": "forest, wood, landmark",
+    "group": "miscellaneous",
+    "content": "\\e7b6"
   }
 ]
