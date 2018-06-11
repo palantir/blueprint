@@ -5,7 +5,8 @@ $tag-default-color: $gray1 !default;
 $dark-tag-default-color: $gray5 !default;
 
 $tag-height: $pt-grid-size * 2 !default;
-$tag-padding: ($tag-height - $pt-icon-size-standard) * 3 / 2 !default;
+$tag-padding-top: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-padding: $tag-padding-top * 3 !default;
 $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
@@ -27,8 +28,9 @@ $tag-round-adjustment: 2px !default;
   box-shadow: none;
   background-color: $tag-default-color;
   min-width: $tag-height;
+  max-width: 100%;
   min-height: $tag-height;
-  padding: 0 $tag-padding;
+  padding: $tag-padding-top $tag-padding;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
@@ -154,12 +156,16 @@ $tag-round-adjustment: 2px !default;
 
 @mixin pt-tag-remove() {
   opacity: 0.5;
+  // top/bottom to allow for padding to enlarge click area,
+  // right to tuck remove button into padding space.
+  margin-top: -$tag-padding-top;
   // stylelint-disable-next-line declaration-no-important
   margin-right: -$tag-padding !important;
+  margin-bottom: -$tag-padding-top;
   border: none;
   background: none;
   cursor: pointer;
-  padding: ($tag-height - $pt-icon-size-standard) / 2;
+  padding: $tag-padding-top;
   padding-left: 0;
   color: inherit;
 
