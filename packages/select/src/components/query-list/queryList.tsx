@@ -267,32 +267,23 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /**
      * Get the next enabled item, moving in the given direction from the current
-     * index. An `undefined` return value means no suitable item was found. The
-     * second and third parameters are used internally for recursion.
+     * index. An `undefined` return value means no suitable item was found.
      * @param direction amount to move in each iteration, typically +/-1
-     * @param currentIndex current index being considered
-     * @param startIndex index at which recursion began, used to detect infinite loop
      */
-    private getNextActiveItem(
-        direction: number,
-        currentIndex = this.getActiveIndex(),
-        startIndex = currentIndex,
-    ): T | undefined {
+    private getNextActiveItem(direction: number): T | undefined {
         const { filteredItems } = this.state;
-        if (filteredItems.length < 2) {
-            return filteredItems[currentIndex];
-        }
-
-        const nextActiveIndex = wrapNumber(currentIndex + direction, 0, filteredItems.length - 1);
-        if (nextActiveIndex === startIndex) {
-            // loop detected! we've returned to the start without finding a suitable candidate.
-            return undefined;
-        } else if (this.isItemDisabled(filteredItems[nextActiveIndex], nextActiveIndex)) {
-            // keep on moving in given direction if this item is disabled.
-            return this.getNextActiveItem(direction, nextActiveIndex, startIndex);
-        } else {
-            return filteredItems[nextActiveIndex];
-        }
+        let index = this.getActiveIndex();
+        // remember where we started to prevent an infinite loop
+        const startIndex = index;
+        const maxIndex = filteredItems.length - 1;
+        do {
+            // find first non-disabled item
+            index = wrapNumber(index + direction, 0, maxIndex);
+            if (!this.isItemDisabled(filteredItems[index], index)) {
+                return filteredItems[index];
+            }
+        } while (index !== startIndex);
+        return undefined;
     }
 
     private isItemDisabled(item: T, index: number) {

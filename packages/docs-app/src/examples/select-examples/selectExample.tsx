@@ -98,7 +98,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     onChange={this.handleInitialContentChange}
                 />
                 <Switch
-                    label="Disable items from 1900s"
+                    label="Disable films before 2000"
                     checked={this.state.disableItems}
                     onChange={this.handleItemDisabledChange}
                 />
