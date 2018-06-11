@@ -9,6 +9,8 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
+import { MenuDivider } from "./menuDivider";
+import { MenuItem } from "./menuItem";
 
 export interface IMenuProps extends IProps {
     /** Whether the menu items in this menu should use a large appearance. */
@@ -20,6 +22,9 @@ export interface IMenuProps extends IProps {
 
 export class Menu extends React.Component<IMenuProps, {}> {
     public static displayName = "Blueprint2.Menu";
+
+    public static Divider = MenuDivider;
+    public static Item = MenuItem;
 
     public render() {
         const classes = classNames(Classes.MENU, { [Classes.LARGE]: this.props.large }, this.props.className);
