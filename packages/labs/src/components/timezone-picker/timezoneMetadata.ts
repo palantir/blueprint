@@ -15,17 +15,13 @@ export interface ITimezoneMetadata {
 }
 
 export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMetadata {
-    const zone = moment.tz.zone(timezone);
-    const timestamp = date.getTime();
-    const { abbrs, offsets, population, untils } = zone;
-    const index = findOffsetIndex(timestamp, untils);
-    const abbreviation = getNonOffsetAbbreviation(abbrs[index]);
+    const { abbrs, offsets, population, untils } = moment.tz.zone(timezone);
+    const index = findOffsetIndex(date.getTime(), untils);
     const offset = offsets[index] * -1;
-    const offsetAsString = getOffsetAsString(offset);
     return {
-        abbreviation,
+        abbreviation: getNonOffsetAbbreviation(abbrs[index]),
         offset,
-        offsetAsString,
+        offsetAsString: getOffsetAsString(offset),
         population,
         timezone,
     };
@@ -57,7 +53,7 @@ function getOffsetAsString(offset: number) {
     const minutes = offsetVal % 60;
     const hours = (offsetVal - minutes) / 60;
     const sign = offset >= 0 ? "+" : "-";
-    return sign + lpad(hours) + ":" + lpad(minutes);
+    return `${sign}${lpad(hours)}:${lpad(minutes)}`;
 }
 
 function lpad(num: number) {
