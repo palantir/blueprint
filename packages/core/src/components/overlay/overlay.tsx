@@ -82,26 +82,30 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
 
 export interface IOverlayLifecycleProps {
     /**
-     * Lifecycle method invoked just before the CSS _close_ transition begins.
+     * Lifecycle method invoked just before the CSS _close_ transition begins on
+     * a child. Receives the DOM element of the child being closed.
      */
-    onClosing?: () => void;
+    onClosing?: (node: HTMLElement) => void;
 
     /**
      * Lifecycle method invoked just after the CSS _close_ transition ends but
-     * before it has been removed from the DOM.
+     * before the child has been removed from the DOM. Receives the DOM element
+     * of the child being closed.
      */
-    onClosed?: () => void;
+    onClosed?: (node: HTMLElement) => void;
 
     /**
-     * Lifecycle method invoked just after mounting in the DOM but just before
-     * the CSS _open_ transition begins.
+     * Lifecycle method invoked just after mounting the child in the DOM but
+     * just before the CSS _open_ transition begins. Receives the DOM element of
+     * the child being opened.
      */
-    onOpening?: () => void;
+    onOpening?: (node: HTMLElement) => void;
 
     /**
      * Lifecycle method invoked just after the CSS _open_ transition ends.
+     * Receives the DOM element of the child being opened.
      */
-    onOpened?: () => void;
+    onOpened?: (node: HTMLElement) => void;
 }
 
 export interface IBackdropProps {
