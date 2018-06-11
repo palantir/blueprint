@@ -17,6 +17,12 @@ export interface ITextProps extends IProps {
      * @default false
      */
     ellipsize?: boolean;
+
+    /**
+     * HTML tag name to use for rendered element.
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
 }
 
 export interface ITextState {
@@ -50,14 +56,15 @@ export class Text extends React.PureComponent<ITextProps, ITextState> {
             },
             this.props.className,
         );
+        const { tagName: TagName = "div" } = this.props;
         return (
-            <div
+            <TagName
                 className={classes}
                 ref={this.refHandlers.text}
                 title={this.state.isContentOverflowing ? this.state.textContent : undefined}
             >
                 {this.props.children}
-            </div>
+            </TagName>
         );
     }
 
