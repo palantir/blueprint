@@ -43,6 +43,9 @@ type InvalidDateTestFunction = (
     otherInputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
 ) => void;
 
+// Change the default for testability
+DateRangeInput.defaultProps.popoverProps = { usePortal: false };
+
 describe("<DateRangeInput>", () => {
     const START_DAY = 22;
     const START_DATE = new Date(2017, Months.JANUARY, START_DAY);
@@ -91,7 +94,11 @@ describe("<DateRangeInput>", () => {
         const CLASS_2 = "bar";
 
         const wrapper = mount(
-            <DateRangeInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2 }} />,
+            <DateRangeInput
+                {...DATE_FORMAT}
+                className={CLASS_1}
+                popoverProps={{ className: CLASS_2, usePortal: false }}
+            />,
         );
         wrapper.setState({ isOpen: true });
 
@@ -360,6 +367,7 @@ describe("<DateRangeInput>", () => {
                 popoverWillClose: sinon.spy(),
                 popoverWillOpen: sinon.spy(),
                 position: Position.TOP_LEFT,
+                usePortal: false,
             };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
 
@@ -380,6 +388,7 @@ describe("<DateRangeInput>", () => {
                 autoFocus: true,
                 content: CUSTOM_CONTENT,
                 enforceFocus: true,
+                usePortal: false,
             };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
 

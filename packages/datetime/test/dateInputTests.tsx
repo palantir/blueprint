@@ -15,6 +15,9 @@ import { Classes, DateInput, IDateInputProps, TimePicker, TimePrecision } from "
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
+// Change the default for testability
+DateInput.defaultProps.popoverProps = { usePortal: false };
+
 describe("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
         assert.doesNotThrow(() => mount(<DateInput {...DATE_FORMAT} value={null} />));
@@ -29,7 +32,9 @@ describe("<DateInput>", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
-        const wrapper = mount(<DateInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
+        const wrapper = mount(
+            <DateInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2, usePortal: false }} />,
+        );
         wrapper.setState({ isOpen: true });
 
         const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();

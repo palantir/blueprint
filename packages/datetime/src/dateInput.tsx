@@ -205,7 +205,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         return (
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
-                usePortal={false}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}

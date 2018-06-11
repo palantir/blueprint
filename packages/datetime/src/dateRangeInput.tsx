@@ -278,7 +278,6 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             <Popover
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
-                usePortal={false}
                 {...this.props.popoverProps}
                 autoFocus={false}
                 className={popoverClassName}
