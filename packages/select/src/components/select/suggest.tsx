@@ -205,7 +205,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
         });
 
-    private handlePopoverOpened = () => {
+    private handlePopoverOpened = (node: HTMLElement) => {
         const { popoverProps = {} } = this.props;
 
         // scroll active item into view after popover transition completes and all dimensions are stable.
@@ -213,10 +213,10 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             this.queryList.scrollActiveItemIntoView();
         }
 
-        Utils.safeInvoke(popoverProps.onOpened);
+        Utils.safeInvoke(popoverProps.onOpened, node);
     };
 
-    private handlePopoverClosing = () => {
+    private handlePopoverClosing = (node: HTMLElement) => {
         const { popoverProps = {} } = this.props;
         const { selectedItem } = this.state;
 
@@ -227,7 +227,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             query: "",
         });
 
-        Utils.safeInvoke(popoverProps.onClosing);
+        Utils.safeInvoke(popoverProps.onClosing, node);
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {

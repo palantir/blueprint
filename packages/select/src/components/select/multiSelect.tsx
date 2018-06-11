@@ -183,21 +183,21 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
         });
 
-    private handlePopoverOpening = () => {
+    private handlePopoverOpening = (node: HTMLElement) => {
         const { popoverProps = {}, resetOnSelect } = this.props;
         if (resetOnSelect) {
             this.setState({ activeItem: this.props.items[0] });
         }
-        Utils.safeInvoke(popoverProps.onOpening);
+        Utils.safeInvoke(popoverProps.onOpening, node);
     };
 
-    private handlePopoverOpened = () => {
+    private handlePopoverOpened = (node: HTMLElement) => {
         const { popoverProps = {} } = this.props;
         if (this.queryList != null) {
             // scroll active item into view after popover transition completes and all dimensions are stable.
             this.queryList.scrollActiveItemIntoView();
         }
-        Utils.safeInvoke(popoverProps.onOpened);
+        Utils.safeInvoke(popoverProps.onOpened, node);
     };
 
     private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
