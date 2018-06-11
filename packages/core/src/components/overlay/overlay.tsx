@@ -81,16 +81,26 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
 }
 
 export interface IOverlayLifecycleProps {
-    /** Lifecycle method invoked when an Overlay begins to close. (Specifically, when the close transition begins.) */
+    /**
+     * Lifecycle method invoked just before the CSS _close_ transition begins.
+     */
     onClosing?: () => void;
 
-    /** Lifecycle method invoked when an Overlay has finished transitioning to the closed state. */
+    /**
+     * Lifecycle method invoked just after the CSS _close_ transition ends but
+     * before it has been removed from the DOM.
+     */
     onClosed?: () => void;
 
-    /** Lifecycle method invoked when an Overlay begins to open. */
+    /**
+     * Lifecycle method invoked just after mounting in the DOM but just before
+     * the CSS _open_ transition begins.
+     */
     onOpening?: () => void;
 
-    /** Lifecycle method invoked when an Overlay has finished transitioning to the open state. */
+    /**
+     * Lifecycle method invoked just after the CSS _open_ transition ends.
+     */
     onOpened?: () => void;
 }
 
