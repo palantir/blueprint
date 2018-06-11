@@ -15,38 +15,47 @@ export interface ITimezoneMetadata {
 }
 
 export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMetadata {
-    const timestamp = date.getTime();
-    const zone = moment.tz.zone(timezone);
-    const zonedDate = moment.tz(timestamp, timezone);
-    const offset = zonedDate.utcOffset();
-    const offsetAsString = zonedDate.format("Z");
-    const abbreviation = getAbbreviation(timezone, timestamp);
-
+    const { abbrs, offsets, population, untils } = moment.tz.zone(timezone);
+    const index = findOffsetIndex(date.getTime(), untils);
+    const offset = offsets[index] * -1;
     return {
-        abbreviation,
+        abbreviation: getNonOffsetAbbreviation(abbrs[index]),
         offset,
-        offsetAsString,
-        population: zone.population,
+        offsetAsString: getOffsetAsString(offset),
+        population,
         timezone,
     };
 }
 
 /**
- * Get the abbreviation for a timezone.
- * We need this utility because moment-timezone's `abbr` will not always give the abbreviated time zone name,
- * since it falls back to the time offsets for each region.
- * https://momentjs.com/timezone/docs/#/using-timezones/formatting/
+ * Ignore abbreviations that are simply offsets, i.e. "+14" instead of "PST"
+ * @param abbreviation
  */
-function getAbbreviation(timezone: string, timestamp: number): string | undefined {
-    const zone = moment.tz.zone(timezone);
-    if (zone) {
-        const abbreviation = zone.abbr(timestamp);
+function getNonOffsetAbbreviation(abbreviation: string) {
+    return isNonOffsetAbbreviation(abbreviation) ? abbreviation : undefined;
+}
 
-        // Only include abbreviations that are not just a repeat of the offset
-        if (abbreviation.length > 0 && abbreviation[0] !== "-" && abbreviation[0] !== "+") {
-            return abbreviation;
+function isNonOffsetAbbreviation(abbreviation: string) {
+    return abbreviation != null && abbreviation.length > 0 && abbreviation[0] !== "-" && abbreviation[0] !== "+";
+}
+
+function findOffsetIndex(timestamp: number, untils: number[]) {
+    for (let i = 0; i < untils.length; i++) {
+        if (i === untils.length - 1 || timestamp < untils[i]) {
+            return i;
         }
     }
+    return 0;
+}
 
-    return undefined;
+function getOffsetAsString(offset: number) {
+    const offsetVal = Math.abs(offset);
+    const minutes = offsetVal % 60;
+    const hours = (offsetVal - minutes) / 60;
+    const sign = offset >= 0 ? "+" : "-";
+    return `${sign}${lpad(hours)}:${lpad(minutes)}`;
+}
+
+function lpad(num: number) {
+    return num < 10 ? "0" + num : num;
 }

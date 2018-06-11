@@ -55,9 +55,7 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
 export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
     const timezone = getLocalTimezone();
     if (timezone !== undefined) {
-        const timestamp = date.getTime();
-        const zonedDate = moment.tz(timestamp, timezone);
-        const offsetAsString = zonedDate.format("Z");
+        const { offsetAsString } = getTimezoneMetadata(timezone, date);
         return {
             iconName: "locate",
             key: `${timezone}-local`,
