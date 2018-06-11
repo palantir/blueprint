@@ -6,7 +6,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LIST } from "../../common/classes";
+import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
 export interface IElementRefProps<E extends HTMLElement> {
     /** Ref handler to access the instance of the internal HTML element. */
@@ -40,8 +40,9 @@ export const H6 = htmlElement<HTMLHeadingElement>("h6", HEADING);
 export const Blockquote = htmlElement<HTMLElement>("blockquote", BLOCKQUOTE);
 export const Code = htmlElement<HTMLElement>("code", CODE);
 export const Pre = htmlElement<HTMLElement>("pre", CODE_BLOCK);
+export const Label = htmlElement<HTMLLabelElement>("label", LABEL);
 
 // these two are not linted by blueprint-html-components because there are valid
 // uses of these elements without Blueprint styles:
-export const OL = htmlElement<HTMLElement>("ol", LIST);
-export const UL = htmlElement<HTMLElement>("ul", LIST);
+export const OL = htmlElement<HTMLOListElement>("ol", LIST);
+export const UL = htmlElement<HTMLUListElement>("ul", LIST);

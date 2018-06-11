@@ -4,8 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Elevation } from "../components/card/card";
 import { Alignment } from "./alignment";
+import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 
 const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
@@ -153,6 +153,9 @@ export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
 
+export const OVERFLOW_LIST = `${NS}-overflow-list`;
+export const OVERFLOW_LIST_SPACER = `${OVERFLOW_LIST}-spacer`;
+
 export const OVERLAY = `${NS}-overlay`;
 export const OVERLAY_BACKDROP = `${OVERLAY}-backdrop`;
 export const OVERLAY_CONTENT = `${OVERLAY}-content`;
@@ -270,7 +273,7 @@ export function iconClass(iconName?: string) {
 }
 
 /** Return CSS class for intent. */
-export function intentClass(intent = Intent.NONE) {
+export function intentClass(intent?: Intent) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;
     }

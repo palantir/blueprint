@@ -47,6 +47,16 @@
   }
 }
 
+#{example("FormGroupExample")} {
+  .docs-example {
+    flex-direction: column;
+  }
+
+  .#{$ns}-form-content {
+    width: $pt-grid-size * 20;
+  }
+}
+
 #{example("TagExample")} {
   .docs-example {
     flex-direction: column;
@@ -193,6 +203,17 @@
 
 .docs-menu-example .#{$ns}-menu {
   max-width: 280px;
+}
+
+#{example("OverflowListExample")} {
+  .#{$ns}-card {
+    margin: 0;
+    min-width: $pt-grid-size * 7;
+  }
+
+  .#{$ns}-overflow-list {
+    white-space: nowrap;
+  }
 }
 
 // prettier-ignore

@@ -11,9 +11,12 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes, DateInput, IDateInputProps, TimePicker, TimePickerPrecision } from "../src/index";
+import { Classes, DateInput, IDateInputProps, TimePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
+
+// Change the default for testability
+DateInput.defaultProps.popoverProps = { usePortal: false };
 
 describe("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
@@ -29,7 +32,9 @@ describe("<DateInput>", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
-        const wrapper = mount(<DateInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
+        const wrapper = mount(
+            <DateInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2, usePortal: false }} />,
+        );
         wrapper.setState({ isOpen: true });
 
         const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
@@ -134,13 +139,13 @@ describe("<DateInput>", () => {
     });
 
     it("setting timePrecision renders a TimePicker", () => {
-        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePickerPrecision.SECOND} />).setState({
+        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePrecision.SECOND} />).setState({
             isOpen: true,
         });
         // assert TimePicker appears
         const timePicker = wrapper.find(TimePicker);
         assert.isTrue(timePicker.exists());
-        assert.strictEqual(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        assert.strictEqual(timePicker.prop("precision"), TimePrecision.SECOND);
         // assert TimePicker disappears in absence of prop
         wrapper.setProps({ timePrecision: undefined });
         assert.isFalse(wrapper.find(TimePicker).exists());
@@ -155,7 +160,7 @@ describe("<DateInput>", () => {
                 <DateInput
                     {...DATE_FORMAT}
                     maxDate={new Date(2050, 5, 4)}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                     value={new Date(2030, 4, 5)}
                 />,
             ).setState({ isOpen: true });
@@ -171,14 +176,14 @@ describe("<DateInput>", () => {
             disabled: true,
             // these will each be overridden by top-level props:
             onChange,
-            precision: TimePickerPrecision.MILLISECOND,
+            precision: TimePrecision.MILLISECOND,
             value: new Date(2017, Months.MAY, 6),
         };
 
         const wrapper = mount(
             <DateInput
                 {...DATE_FORMAT}
-                timePrecision={TimePickerPrecision.SECOND}
+                timePrecision={TimePrecision.SECOND}
                 onChange={sinon.spy()}
                 value={value}
                 timePickerProps={timePickerProps}
@@ -188,7 +193,7 @@ describe("<DateInput>", () => {
         const timePicker = wrapper.find(TimePicker);
 
         // ensure the top-level props override props by the same name in timePickerProps
-        assert.equal(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        assert.equal(timePicker.prop("precision"), TimePrecision.SECOND);
         assert.notEqual(timePicker.prop("onChange"), onChange);
         DateTestUtils.assertDatesEqual(timePicker.prop("value"), value);
 
@@ -327,11 +332,7 @@ describe("<DateInput>", () => {
         it("Popover doesn't close when time changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1, 0, 0, 0, 0);
             const wrapper = mount(
-                <DateInput
-                    {...DATE_FORMAT}
-                    defaultValue={defaultValue}
-                    timePrecision={TimePickerPrecision.MILLISECOND}
-                />,
+                <DateInput {...DATE_FORMAT} defaultValue={defaultValue} timePrecision={TimePrecision.MILLISECOND} />,
             );
             wrapper.setState({ isOpen: true });
 
@@ -431,7 +432,7 @@ describe("<DateInput>", () => {
                     canClearSelection={false}
                     defaultValue={DATE}
                     onChange={onChange}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                 />,
             );
             root.setState({ isOpen: true });
@@ -439,7 +440,7 @@ describe("<DateInput>", () => {
             getDay(DATE.getDate()).simulate("click");
 
             assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, [DATE]);
+            assert.deepEqual(onChange.firstCall.args, [DATE, true]);
         });
     });
 
@@ -477,6 +478,7 @@ describe("<DateInput>", () => {
 
             assert.isTrue(onChange.calledOnce);
             assertDateEquals(onChange.args[0][0], new Date("4/27/2016"));
+            assert.isTrue(onChange.args[0][1], "expected isUserChange to be true");
         });
 
         it("Clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
@@ -485,7 +487,7 @@ describe("<DateInput>", () => {
             root.setState({ isOpen: true });
             getDay(4).simulate("click");
             assert.equal(root.find(InputGroup).prop("value"), "4/4/2016");
-            assert.isTrue(onChange.calledWith(null));
+            assert.isTrue(onChange.calledWith(null, true));
         });
 
         it("Updating value updates the text box", () => {
@@ -519,7 +521,7 @@ describe("<DateInput>", () => {
                 <DateInput {...DATE_FORMAT} value={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.find("input").simulate("change", { target: { value: "" } });
-            assert.isTrue(onChange.calledWith(null));
+            assert.isTrue(onChange.calledWith(null, true));
         });
 
         it.skip("Formats locale-specific format strings properly", () => {
@@ -534,7 +536,7 @@ describe("<DateInput>", () => {
                     {...DATE_FORMAT}
                     canClearSelection={false}
                     onChange={onChange}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                     value={DATE}
                 />,
             );
@@ -545,7 +547,20 @@ describe("<DateInput>", () => {
                 .simulate("click");
 
             assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, [DATE]);
+            assert.deepEqual(onChange.firstCall.args, [DATE, true]);
+        });
+
+        it("isUserChange is false when month changes", () => {
+            const onChange = sinon.spy();
+            const wrapper = mount(<DateInput {...DATE_FORMAT} onChange={onChange} value={DATE} />);
+            wrapper.setState({ isOpen: true });
+
+            wrapper
+                .find(`.${Classes.DATEPICKER_MONTH_SELECT}`)
+                .simulate("change", { value: Months.FEBRUARY.toString() });
+
+            assert.isTrue(onChange.calledOnce);
+            assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
         });
     });
 

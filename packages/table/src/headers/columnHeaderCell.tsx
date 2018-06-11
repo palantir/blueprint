@@ -143,9 +143,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
 
         const nameComponent = (
             <LoadableContent loading={loading} variableLength={true}>
-                {nameRenderer == null
-                    ? defaultName
-                    : React.cloneElement(nameRenderer(name, index) as JSX.Element, { index })}
+                {nameRenderer == null ? defaultName : nameRenderer(name, index)}
             </LoadableContent>
         );
 

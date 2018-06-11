@@ -9,8 +9,9 @@ import { get12HourFrom24Hour, get24HourFrom12Hour } from "./dateUtils";
 
 /** describes a component of time. `H:MM:SS.MS` */
 export enum TimeUnit {
-    HOUR_24 = "24hour",
-    HOUR_12 = "12hour",
+    // NOTE: string enum so we can use it in Record<> type at the end of this file, which requires string keys
+    HOUR_24 = "hour24",
+    HOUR_12 = "hour12",
     MINUTE = "minute",
     SECOND = "second",
     MS = "ms",
