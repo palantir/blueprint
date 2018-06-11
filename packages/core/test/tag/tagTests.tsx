@@ -9,11 +9,16 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, Icon, Tag } from "../../src/index";
+import { Classes, Icon, Tag, Text } from "../../src/index";
 
 describe("<Tag>", () => {
     it("renders its text", () => {
-        assert.match(shallow(<Tag>Hello</Tag>).text(), /Hello/);
+        assert.strictEqual(
+            shallow(<Tag>Hello</Tag>)
+                .find(Text)
+                .prop("children"),
+            "Hello",
+        );
     });
 
     it("renders icons", () => {
