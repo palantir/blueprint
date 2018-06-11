@@ -212,6 +212,12 @@ describe("<Popover>", () => {
         assert.isNotNull(wrapper.find("article"));
     });
 
+    it("supports overlay lifecycle props", () => {
+        const onOpening = sinon.spy();
+        wrapper = renderPopover({ isOpen: true, onOpening });
+        assert.isTrue(onOpening.calledOnce);
+    });
+
     describe("openOnTargetFocus", () => {
         describe("if true (default)", () => {
             it('adds tabindex="0" to target\'s child node when interactionKind is HOVER', () => {
