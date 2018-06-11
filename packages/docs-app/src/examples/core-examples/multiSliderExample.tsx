@@ -126,9 +126,29 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
         );
     }
 
-    private handleChange = (newValues: number[]) => {
+    private handleChange = (rawValues: number[]) => {
         // newValues is always in sorted order, and handled cannot be unsorted by dragging with lock/push interactions.
+        const newValuesMap = { ...this.state.values, ...this.getUpdatedHandles(rawValues) };
+        const newValues = Object.keys(newValuesMap).map((key: keyof ISliderValues) => newValuesMap[key]);
+        newValues.sort((a, b) => a - b);
         const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
         this.setState({ values: { dangerStart, warningStart, warningEnd, dangerEnd } });
     };
+
+    private getUpdatedHandles(newValues: number[]): Partial<ISliderValues> {
+        switch (this.state.shownIntents) {
+            case "both": {
+                const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
+                return { dangerStart, warningStart, warningEnd, dangerEnd };
+            }
+            case "danger": {
+                const [dangerStart, dangerEnd] = newValues;
+                return { dangerStart, dangerEnd };
+            }
+            case "warning": {
+                const [warningStart, warningEnd] = newValues;
+                return { warningStart, warningEnd };
+            }
+        }
+    }
 }

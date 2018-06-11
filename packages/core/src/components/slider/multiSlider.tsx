@@ -275,7 +275,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
                 max={max}
                 min={min}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}
-                onRelease={this.getHandlerForIndex(index, this.props.onRelease)}
+                onRelease={this.getHandlerForIndex(index, this.handleRelease)}
                 ref={this.addHandleRef}
                 stepSize={stepSize}
                 tickSize={this.state.tickSize}
@@ -369,7 +369,19 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         const oldValues = this.handleProps.map(handle => handle.value);
         if (!Utils.arraysEqual(newValues, oldValues)) {
             Utils.safeInvoke(this.props.onChange, newValues);
+            this.handleProps.forEach((handle, index) => {
+                if (oldValues[index] !== newValues[index]) {
+                    Utils.safeInvoke(handle.onChange, newValues[index]);
+                }
+            });
         }
+    };
+
+    private handleRelease = (newValues: number[]) => {
+        Utils.safeInvoke(this.props.onRelease, newValues);
+        this.handleProps.forEach((handle, index) => {
+            Utils.safeInvoke(handle.onRelease, newValues[index]);
+        });
     };
 
     private getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
