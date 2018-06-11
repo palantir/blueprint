@@ -9,11 +9,11 @@ import * as React from "react";
 
 import { Classes, IIntentProps, IProps, Utils } from "../../common";
 import { Icon, IconName } from "../icon/icon";
+import { Text } from "../text/text";
 
 export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
     /**
      * If set to `true`, the tag will display in an active state.
-     * This is equivalent to setting `className={Classes.ACTIVE}`.
      * @default false
      */
     active?: boolean;
@@ -31,11 +31,26 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     interactive?: boolean;
 
-    /** Whether this tag should use large styles. */
+    /**
+     * Whether this tag should use large styles.
+     * @default false
+     */
     large?: boolean;
 
-    /** Whether this tag should use minimal styles. */
+    /**
+     * Whether this tag should use minimal styles.
+     * @default false
+     */
     minimal?: boolean;
+
+    /**
+     * Whether tag content should be allowed to occupy multiple lines.
+     * If false, a single line of text will be truncated with an ellipsis if
+     * it overflows. Note that icons will be vertically centered relative to
+     * multiline text.
+     * @default false
+     */
+    multiline?: boolean;
 
     /**
      * Callback invoked when the tag is clicked.
@@ -52,7 +67,10 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
     /** Name of a Blueprint UI icon (or an icon element) to render after the children. */
     rightIcon?: IconName | JSX.Element;
 
-    /** Whether this tag should have rounded ends. */
+    /**
+     * Whether this tag should have rounded ends.
+     * @default false
+     */
     round?: boolean;
 }
 
@@ -69,6 +87,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
             interactive,
             large,
             minimal,
+            multiline,
             onRemove,
             rightIcon,
             round,
@@ -98,7 +117,9 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
         return (
             <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
                 <Icon icon={icon} />
-                <span className={Classes.FILL}>{children}</span>
+                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
+                    {children}
+                </Text>
                 <Icon icon={rightIcon} />
                 {removeButton}
             </span>
