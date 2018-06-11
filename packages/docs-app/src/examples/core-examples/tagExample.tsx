@@ -53,7 +53,7 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
                     key={tag}
                     onRemove={removable && onRemove}
                     icon={icon === true ? "home" : undefined}
-                    rightIcon={rightIcon === true ? "small-tick" : undefined}
+                    rightIcon={rightIcon === true ? "map" : undefined}
                     {...tagProps}
                 >
                     {tag}
