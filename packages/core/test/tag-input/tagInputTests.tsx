@@ -13,7 +13,7 @@ import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "..
 
 const VALUES = ["one", "two", "three"];
 
-describe("<TagInput>", () => {
+describe.only("<TagInput>", () => {
     it("passes inputProps to input element", () => {
         const onBlur = sinon.spy();
         const input = shallow(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
@@ -148,6 +148,23 @@ describe("<TagInput>", () => {
                 assert.isTrue(onAdd.notCalled);
                 done();
             });
+        });
+
+        it("is invoked on paste when addOnPaste=true", () => {
+            const text = "pasted\ntext";
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+            wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+            assert.isTrue(onAdd.calledOnce);
+            assert.deepEqual(onAdd.args[0][0], text.split("\n"));
+        });
+
+        it("is not invoked on paste when addOnPaste=false", () => {
+            const text = "pasted\ntext";
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnPaste={false} onAdd={onAdd} />);
+            wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+            assert.isTrue(onAdd.notCalled);
         });
 
         it("does not clear the input if onAdd returns false", () => {

@@ -24,6 +24,7 @@ const VALUES = [
 
 export interface ITagInputExampleState {
     addOnBlur: boolean;
+    addOnPaste: boolean;
     disabled: boolean;
     fill: boolean;
     intent: boolean;
@@ -35,6 +36,7 @@ export interface ITagInputExampleState {
 export class TagInputExample extends React.PureComponent<IExampleProps, ITagInputExampleState> {
     public state: ITagInputExampleState = {
         addOnBlur: false,
+        addOnPaste: true,
         disabled: false,
         fill: false,
         intent: false,
@@ -44,6 +46,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
     };
 
     private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
+    private handleAddOnPasteChange = handleBooleanChange(addOnPaste => this.setState({ addOnPaste }));
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
@@ -51,11 +54,11 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     public render() {
-        const { addOnBlur, disabled, fill, large, values } = this.state;
+        const { minimal, values, ...props } = this.state;
 
         const clearButton = (
             <Button
-                disabled={disabled}
+                disabled={props.disabled}
                 icon={values.length > 1 ? "cross" : "refresh"}
                 minimal={true}
                 onClick={this.handleClear}
@@ -67,17 +70,14 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
         // example purposes!!
         const getTagProps = (_v: string, index: number): ITagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
-            large,
-            minimal: this.state.minimal,
+            large: props.large,
+            minimal,
         });
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <TagInput
-                    addOnBlur={addOnBlur}
-                    disabled={disabled}
-                    fill={fill}
-                    large={large}
+                    {...props}
                     leftIcon="user"
                     onChange={this.handleChange}
                     placeholder="Separate values with commas..."
@@ -93,10 +93,11 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
         return (
             <>
                 <H5>Props</H5>
-                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
+                <Switch label="Add on paste" checked={this.state.addOnPaste} onChange={this.handleAddOnPasteChange} />
+                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <H5>Tag props</H5>
                 <Switch label="Use minimal tags" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Cycle through intents" checked={this.state.intent} onChange={this.handleIntentChange} />

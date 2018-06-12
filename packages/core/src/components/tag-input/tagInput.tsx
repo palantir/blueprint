@@ -24,6 +24,13 @@ export interface ITagInputProps extends IProps {
     addOnBlur?: boolean;
 
     /**
+     * If true, `onAdd` will be invoked when the user pastes text into the
+     * input. Otherwise, pasted text will remain in the input.
+     * @default true
+     */
+    addOnPaste?: boolean;
+
+    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
      * if appropriate.
@@ -128,9 +135,9 @@ export interface ITagInputProps extends IProps {
     rightElement?: JSX.Element;
 
     /**
-     * Separator pattern used to split input text into multiple values.
+     * Separator pattern used to split input text into multiple values. Default value splits on commas and newlines.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
-     * @default ","
+     * @default /[,\n\r]/
      */
     separator?: string | RegExp | false;
 
@@ -168,9 +175,11 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     public static displayName = "Blueprint2.TagInput";
 
     public static defaultProps: Partial<ITagInputProps> & object = {
+        addOnBlur: false,
+        addOnPaste: true,
         inputProps: {},
         inputValue: "",
-        separator: ",",
+        separator: /[,\n\r]/,
         tagProps: {},
     };
 
@@ -233,6 +242,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                         onChange={this.handleInputChange}
                         onKeyDown={this.handleInputKeyDown}
                         onKeyUp={this.handleInputKeyUp}
+                        onPaste={this.handleInputPaste}
                         placeholder={resolvedPlaceholder}
                         ref={this.refHandlers.input}
                         className={classNames(Classes.INPUT_GHOST, inputProps.className)}
@@ -372,6 +382,14 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         this.invokeKeyPressCallback("onKeyUp", event, this.state.activeIndex);
+    };
+
+    private handleInputPaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+        const value = event.clipboardData.getData("text");
+        if (this.props.addOnPaste && value.length > 0) {
+            event.preventDefault();
+            this.addTags(value);
+        }
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
