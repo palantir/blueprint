@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Icon, MenuItem } from "@blueprintjs/core";
+import { Classes, Icon, MenuItem, Utils } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
@@ -14,8 +14,19 @@ import * as React from "react";
 import { eachLayoutNode } from "../common/utils";
 
 export interface INavigatorProps {
+    /** Whether navigator is open. */
     isOpen: boolean;
+
+    /** All potentially navigable items. */
     items: Array<IPageNode | IHeadingNode>;
+
+    /** Callback to determine if a given item should be excluded. */
+    itemExclude?: (node: IPageNode | IHeadingNode) => boolean;
+
+    /**
+     * Callback invoked when the navigator is closed. Navigation is performed by
+     * updating browser `location` directly.
+     */
     onClose: () => void;
 }
 
@@ -34,6 +45,10 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
+            if (Utils.safeInvoke(this.props.itemExclude, node) === true) {
+                // ignore excluded item
+                return;
+            }
             const { route, title } = node;
             const path = parents.map(p => p.title).reverse();
             const filterKey = [...path, "`" + title].join("/");
