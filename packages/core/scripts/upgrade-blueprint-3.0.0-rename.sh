@@ -165,7 +165,28 @@ echo "
 
 Renames for @blueprintjs/core"
 renameProp visual icon
-renameString "Classes\.CALLOUT_TITLE" "Classes.HEADING" 
-renameString "Classes\.DIALOG_TITLE" "Classes.HEADING" 
-renameString "Classes\.HOTKEY_GROUP" "Classes.HEADING" 
-renameString "Classes\.NON_IDEAL_STATE_TITLE" "Classes.HEADING" 
+renameProp didClose onClosed
+renameProp didOpen onOpened
+renameProp popoverDidClose onClosed
+renameProp popoverDidOpen onOpened
+renameProp popoverWillClose onClosing
+renameProp popoverWillOpen onOpening
+renameString 'requiredLabel={true}' 'labelInfo="(required)"'
+renameProp requiredLabel labelInfo
+
+# Classes constants
+renameString "Classes\.CALLOUT_TITLE" "Classes.HEADING"
+renameString "Classes\.DIALOG_TITLE" "Classes.HEADING"
+renameString "Classes\.HOTKEY_GROUP" "Classes.HEADING"
+renameString "Classes\.NON_IDEAL_STATE_TITLE" "Classes.HEADING"
+renameString "Classes\.UI_TEXT_LARGE" "Classes.UI_TEXT, Classes.TEXT_LARGE"
+renameString "Classes\.RUNNING_TEXT" "Classes.RUNNING_TEXT, Classes.TEXT_LARGE"
+renameString "Classes\.RUNNING_TEXT_SMALL" "Classes.RUNNING_TEXT"
+
+# Deleted things
+renameString "Classes\.TAG_REMOVABLE,?" ""
+renameString "Classes\.NON_IDEAL_STATE_{ACTION,DESCRIPTION,ICON},?" ""
+renameString "Classes\.SPINNER_SVG_CONTAINER,?" ""
+renameString "Classes\.SVG_SPINNER,?" ""
+warn SvgSpinner "DELETED. Spinner now supports usage in an SVG."
+warn Spinner "`small/large` replaced with single `size` prop"
