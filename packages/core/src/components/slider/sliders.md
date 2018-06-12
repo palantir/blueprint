@@ -60,4 +60,4 @@ elements, each with their own `value` and other properties.
 </MultiSlider>
 ```
 
-@interface ISliderHandleProps
+@interface IHandleProps

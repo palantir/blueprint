@@ -37,9 +37,6 @@ export interface IHandleProps extends IProps {
     /** Numeric value of this handle. */
     value: number;
 
-    /** Whether this handle is non-interactive. */
-    disabled?: boolean;
-
     /** Intent for the track segment immediately after this handle, taking priority over `intentBefore`. */
     intentAfter?: Intent;
 

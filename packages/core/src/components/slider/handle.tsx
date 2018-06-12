@@ -19,6 +19,7 @@ import { formatPercentage } from "./sliderUtils";
  * N.B. some properties need to be optional for spread in slider.tsx to work
  */
 export interface IInternalHandleProps extends IHandleProps {
+    disabled?: boolean;
     label: React.ReactChild;
     max?: number;
     min?: number;

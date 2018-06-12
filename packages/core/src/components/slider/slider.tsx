@@ -8,7 +8,6 @@ import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import { Intent } from "../../common/intent";
-import * as Utils from "../../common/utils";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 export interface ISliderProps extends ISliderBaseProps {
@@ -42,24 +41,18 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
     public static displayName = "Blueprint2.Slider";
 
     public render() {
-        const { initialValue, value, ...props } = this.props;
+        const { initialValue, value, onChange, onRelease, ...props } = this.props;
         return (
-            <MultiSlider {...props} onChange={this.handleChange} onRelease={this.handleRelease}>
+            <MultiSlider {...props}>
                 <MultiSlider.Handle
                     value={value}
                     intentAfter={value < initialValue ? Intent.PRIMARY : undefined}
                     intentBefore={value >= initialValue ? Intent.PRIMARY : undefined}
+                    onChange={onChange}
+                    onRelease={onRelease}
                 />
                 <MultiSlider.Handle value={initialValue} interactionKind="none" />
             </MultiSlider>
         );
     }
-
-    private handleChange = ([value]: number[]) => {
-        Utils.safeInvoke(this.props.onChange, value);
-    };
-
-    private handleRelease = ([value]: number[]) => {
-        Utils.safeInvoke(this.props.onRelease, value);
-    };
 }
