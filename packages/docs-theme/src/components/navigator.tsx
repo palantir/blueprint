@@ -45,7 +45,8 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
-            if (Utils.safeInvoke(this.props.itemExclude, node)) {
+            if (Utils.safeInvoke(this.props.itemExclude, node) === true) {
+                // ignore excluded item
                 return;
             }
             const { route, title } = node;
