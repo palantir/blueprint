@@ -43,15 +43,25 @@ export interface IHandleProps extends IProps {
     /** Intent for the track segment immediately before this handle. */
     intentBefore?: Intent;
 
-    /** How this handle interacts with other handles. */
+    /**
+     * How this handle interacts with other handles.
+     * @default "lock"
+     */
     interactionKind?: HandleInteractionKind;
 
-    /** Callback invoked when this handle's value is changed due to a drag interaction. */
+    /**
+     * Callback invoked when this handle's value is changed due to a drag
+     * interaction. Note that "push" interactions can cause multiple handles to
+     * update at the same time.
+     */
     onChange?: (newValue: number) => void;
 
     /** Callback invoked when this handle is released (the end of a drag interaction). */
     onRelease?: (newValue: number) => void;
 
-    /** Handle appearance type. */
+    /**
+     * Handle appearance type.
+     * @default "full"
+     */
     type?: HandleType;
 }
