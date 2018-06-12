@@ -263,7 +263,7 @@ Styleguide preformatted
   background: $pt-code-background-color;
   padding: 2px 5px;
   color: $pt-code-text-color;
-  font-size: $pt-font-size-small;
+  font-size: smaller;
 
   .#{$ns}-dark & {
     box-shadow: inset border-shadow(0.4);
