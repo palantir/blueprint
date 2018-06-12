@@ -13,7 +13,7 @@ import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "..
 
 const VALUES = ["one", "two", "three"];
 
-describe.only("<TagInput>", () => {
+describe("<TagInput>", () => {
     it("passes inputProps to input element", () => {
         const onBlur = sinon.spy();
         const input = shallow(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
