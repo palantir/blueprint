@@ -244,9 +244,8 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         );
     }
 
-    private addTag = (value: string) => {
+    private addTags = (value: string) => {
         const { onAdd, onChange, values } = this.props;
-        // enter key on non-empty string invokes onAdd
         const newValues = this.getValues(value);
         let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
         // avoid a potentially expensive computation if this prop is omitted
@@ -321,14 +320,13 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         }
     };
 
-    private handleContainerBlur = () => {
+    private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {
         requestAnimationFrame(() => {
-            // this event is attached to the container element to capture all blur events from inside.
-            // we only need to "unfocus" if the blur event is leaving the container.
+            // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
-            if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
+            if (!currentTarget.contains(document.activeElement)) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
-                    this.addTag(this.state.inputValue);
+                    this.addTags(this.state.inputValue);
                 }
                 this.setState({ activeIndex: NONE, isInputFocused: false });
             }
@@ -353,7 +351,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         let activeIndexToEmit = activeIndex;
 
         if (event.which === Keys.ENTER && value.length > 0) {
-            this.addTag(value);
+            this.addTags(value);
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
