@@ -173,53 +173,6 @@ describe("<Popover>", () => {
         warnSpy.restore();
     });
 
-    it("lifecycle methods are called appropriately", done => {
-        const popoverWillOpen = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0),
-        );
-        const popoverDidOpen = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
-        );
-        const popoverWillClose = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
-        );
-        // DOM is still present in didClose; element is removed shortly after
-        const popoverDidClose = sinon.spy();
-
-        wrapper = renderPopover({
-            interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-            popoverDidClose,
-            popoverDidOpen,
-            popoverWillClose,
-            popoverWillOpen,
-            transitionDuration: 1,
-        }).simulateTarget("click");
-        assert.isTrue(popoverWillOpen.calledOnce);
-        assert.isTrue(popoverDidOpen.calledOnce);
-        assert.isTrue(popoverWillClose.notCalled);
-        assert.isTrue(popoverDidClose.notCalled);
-
-        wrapper.simulateTarget("click");
-        setTimeout(() => {
-            assert.isTrue(popoverDidOpen.calledOnce);
-            assert.isTrue(popoverWillOpen.calledOnce);
-            assert.isTrue(popoverWillClose.calledOnce);
-            assert.isTrue(popoverDidClose.calledOnce);
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0);
-            done();
-        });
-    });
-
-    it("popoverDidOpen is called even if popoverWillOpen is not specified", () => {
-        const popoverDidOpen = sinon.spy();
-        renderPopover({
-            interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-            popoverDidOpen,
-        }).simulateTarget("click");
-
-        assert.isTrue(popoverDidOpen.calledOnce);
-    });
-
     it("inherits dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
         const { popover } = renderPopover({ isOpen: true, inheritDarkTheme: true, usePortal: true });
@@ -257,6 +210,12 @@ describe("<Popover>", () => {
     it("rootElementTag prop renders the right elements", () => {
         wrapper = renderPopover({ isOpen: true, rootElementTag: "article" });
         assert.isNotNull(wrapper.find("article"));
+    });
+
+    it("supports overlay lifecycle props", () => {
+        const onOpening = sinon.spy();
+        wrapper = renderPopover({ isOpen: true, onOpening });
+        assert.isTrue(onOpening.calledOnce);
     });
 
     describe("openOnTargetFocus", () => {

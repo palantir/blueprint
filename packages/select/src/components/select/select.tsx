@@ -138,7 +138,6 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
         const input = (
             <InputGroup
-                autoFocus={true}
                 leftIcon="search"
                 placeholder="Filter..."
                 rightElement={this.maybeRenderInputClearButton()}
@@ -161,9 +160,9 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                popoverWillOpen={this.handlePopoverWillOpen}
-                popoverDidOpen={this.handlePopoverDidOpen}
-                popoverWillClose={this.handlePopoverWillClose}
+                onOpening={this.handlePopoverOpening}
+                onOpened={this.handlePopoverOpened}
+                onClosing={this.handlePopoverClosing}
             >
                 <div
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
@@ -211,7 +210,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         Utils.safeInvoke(popoverProps.onInteraction, isOpen);
     };
 
-    private handlePopoverWillOpen = () => {
+    private handlePopoverOpening = (node: HTMLElement) => {
         const { popoverProps = {}, resetOnClose } = this.props;
         // save currently focused element before popover steals focus, so we can restore it when closing.
         this.previousFocusedElement = document.activeElement as HTMLElement;
@@ -220,10 +219,10 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             this.resetQuery();
         }
 
-        Utils.safeInvoke(popoverProps.popoverWillOpen);
+        Utils.safeInvoke(popoverProps.onOpening, node);
     };
 
-    private handlePopoverDidOpen = () => {
+    private handlePopoverOpened = (node: HTMLElement) => {
         // scroll active item into view after popover transition completes and all dimensions are stable.
         if (this.list != null) {
             this.list.scrollActiveItemIntoView();
@@ -238,10 +237,10 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         });
 
         const { popoverProps = {} } = this.props;
-        Utils.safeInvoke(popoverProps.popoverDidOpen);
+        Utils.safeInvoke(popoverProps.onOpened, node);
     };
 
-    private handlePopoverWillClose = () => {
+    private handlePopoverClosing = (node: HTMLElement) => {
         // restore focus to saved element.
         // timeout allows popover to begin closing and remove focus handlers beforehand.
         requestAnimationFrame(() => {
@@ -252,7 +251,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         });
 
         const { popoverProps = {} } = this.props;
-        Utils.safeInvoke(popoverProps.popoverWillClose);
+        Utils.safeInvoke(popoverProps.onClosing, node);
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {

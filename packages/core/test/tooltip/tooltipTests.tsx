@@ -114,6 +114,12 @@ describe("<Tooltip>", () => {
         assert.lengthOf(tooltip.find(`section.${Classes.POPOVER_WRAPPER}`), 1);
     });
 
+    it("supports overlay lifecycle props", () => {
+        const onOpening = spy();
+        renderTooltip({ isOpen: true, onOpening });
+        assert.isTrue(onOpening.calledOnce);
+    });
+
     function renderTooltip(props?: Partial<ITooltipProps>) {
         return mount(
             <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>

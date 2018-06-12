@@ -17,8 +17,9 @@ import { safeInvoke } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, IconName } from "../icon/icon";
+import { IOverlayLifecycleProps } from "../overlay/overlay";
 
-export interface IAlertProps extends IProps {
+export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     /**
      * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
@@ -110,16 +111,25 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
     public static displayName = "Blueprint2.Alert";
 
     public render() {
-        const { children, className, icon, intent, cancelButtonText, confirmButtonText } = this.props;
+        const {
+            canEscapeKeyCancel,
+            canOutsideClickCancel,
+            children,
+            className,
+            icon,
+            intent,
+            cancelButtonText,
+            confirmButtonText,
+            onClose,
+            ...overlayProps
+        } = this.props;
         return (
             <Dialog
+                {...overlayProps}
                 className={classNames(Classes.ALERT, className)}
-                canEscapeKeyClose={this.props.canEscapeKeyCancel}
-                canOutsideClickClose={this.props.canOutsideClickCancel}
-                isOpen={this.props.isOpen}
+                canEscapeKeyClose={canEscapeKeyCancel}
+                canOutsideClickClose={canOutsideClickCancel}
                 onClose={this.handleCancel}
-                style={this.props.style}
-                transitionDuration={this.props.transitionDuration}
             >
                 <div className={Classes.ALERT_BODY}>
                     <Icon icon={icon} iconSize={40} intent={intent} />

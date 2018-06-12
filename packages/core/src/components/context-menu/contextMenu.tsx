@@ -12,16 +12,12 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
+import { IOverlayLifecycleProps } from "../overlay/overlay";
 import { Popover, PopperModifiers } from "../popover/popover";
 
 export interface IOffset {
     left: number;
     top: number;
-}
-
-interface IContextMenuProps {
-    /** Callback invoked after the menu has finished transitioning to a closed state. */
-    didClose: () => void;
 }
 
 interface IContextMenuState {
@@ -38,7 +34,7 @@ const POPPER_MODIFIERS: PopperModifiers = {
 const TRANSITION_DURATION = 100;
 
 /* istanbul ignore next */
-class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
+class ContextMenu extends AbstractPureComponent<IOverlayLifecycleProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,
@@ -56,6 +52,7 @@ class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuS
         return (
             <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
                 <Popover
+                    {...this.props}
                     backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
                     content={content}
                     enforceFocus={false}
@@ -66,7 +63,6 @@ class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuS
                     onInteraction={this.handlePopoverInteraction}
                     position={Position.RIGHT_TOP}
                     popoverClassName={popoverClassName}
-                    popoverDidClose={this.props.didClose}
                     target={<div />}
                     transitionDuration={TRANSITION_DURATION}
                 />
@@ -122,7 +118,7 @@ export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, i
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
-        contextMenu = ReactDOM.render(<ContextMenu didClose={remove} />, contextMenuElement) as ContextMenu;
+        contextMenu = ReactDOM.render(<ContextMenu onClosed={remove} />, contextMenuElement) as ContextMenu;
     }
 
     contextMenu.show(menu, offset, onClose, isDarkTheme);

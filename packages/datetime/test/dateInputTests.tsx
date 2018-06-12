@@ -223,14 +223,14 @@ describe("<DateInput>", () => {
     });
 
     it("popoverProps are passed to Popover", () => {
-        const popoverWillOpen = sinon.spy();
+        const onOpening = sinon.spy();
         const wrapper = mount(
             <DateInput
                 {...DATE_FORMAT}
                 popoverProps={{
                     autoFocus: true,
                     content: "fail",
-                    popoverWillOpen,
+                    onOpening,
                     position: Position.TOP,
                     usePortal: false,
                 }}
@@ -243,7 +243,7 @@ describe("<DateInput>", () => {
         assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
         assert.strictEqual(popover.prop("position"), Position.TOP);
         assert.strictEqual(popover.prop("usePortal"), false);
-        assert.isTrue(popoverWillOpen.calledOnce);
+        assert.isTrue(onOpening.calledOnce);
     });
 
     describe("when uncontrolled", () => {
