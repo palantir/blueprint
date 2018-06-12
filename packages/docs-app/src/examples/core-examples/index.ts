@@ -24,6 +24,7 @@ export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
 export * from "./iconExample";
 export * from "./menuExample";
+export * from "./multiSliderExample";
 export * from "./navbarExample";
 export * from "./numericInputBasicExample";
 export * from "./numericInputExtendedExample";
