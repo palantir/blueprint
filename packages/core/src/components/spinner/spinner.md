@@ -7,12 +7,13 @@ operations and can also represent known progress.
 
 @## Props
 
-`Spinner` is a simple stateless component that renders HTML/SVG markup. It
-supports a `value` prop between 0 and 1 that determines how much of the track is
-filled by the head. When this prop is defined, the spinner head will not spin
-but it will smoothly animate as `value` updates. Omitting `value` will result in
-an "indeterminate" spinner where the head spins indefinitely (this is the
-default appearance).
+`Spinner` is a simple stateless component that renders SVG markup. It can be
+used safely in a DOM or SVG container as it only renders SVG elements.
+
+The `value` prop determines how much of the track is filled by the head. When
+this prop is defined, the spinner head will not spin but it will smoothly
+animate as `value` updates. Omitting `value` will result in an "indeterminate"
+spinner where the head spins indefinitely (this is the default appearance).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">IE11 compatibility note</h4>
