@@ -1,34 +1,37 @@
 @# Icon
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    See [**Icons**](#icons) for a searchable list of all available UI icons.
+    See the [**Icons package**](#icons) for a searchable list of all available UI icons.
 </div>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">SVG icons in 2.0</h4>
     Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
-    The `Icon` component now renders SVG paths and the icon classes are no longer used by any Blueprint React component.
+    The `Icon` component renders SVG paths and the icon classes are no longer used by any Blueprint React component.
     Icon font support has been preserved but should be considered a legacy feature that will be removed in a
     future major version.
 </div>
 
-This section describes two ways of using the UI icon font: via CSS or via React component.
+This section describes two ways of using the UI icon font: via React `Icon`
+component to render SVG images or via CSS classes to use the icon font.
 
-Many Blueprint components provide an `icon` prop which accepts an icon name (such as `"history"`) or
-a JSX element to use as the icon.
+Many Blueprint components provide an `icon` prop which accepts an icon name
+(such as `"history"`) or a JSX element to use as the icon.
 
 @reactExample IconExample
 
 @## Props
 
-Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon` prop is typed
-such that editors can offer autocomplete for known icon names. The optional `iconSize` prop ensures
-you'll never forget a sizing class and clarifies the expected width and height of the icon element.
-The component also accepts all valid HTML props for an `<svg>` element.
+Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
+prop is typed such that editors can offer autocomplete for known icon names. The
+optional `iconSize` prop determines the expected width and height of the icon
+element. The component also accepts all valid HTML props for an `<svg>` element.
 
-Data files in the __@blueprintjs/icons__ package provide SVG path information for Blueprint's 300+ icons
-for 16px and 20px grids. The `icon` prop dictates which SVG is rendered and `iconSize` determines
-which pixel grid is used: `iconSize >= 20` will use the 20px grid and smaller icons will use the 16px grid.
+Data files in the __@blueprintjs/icons__ package provide SVG path information
+for Blueprint's 300+ icons for 16px and 20px grids. The `icon` prop dictates
+which SVG is rendered and `iconSize` determines which pixel grid is used:
+`iconSize >= 20` will use the 20px grid and smaller icons will use the 16px
+grid.
 
 ```tsx
 import { Icon, Intent } from "@blueprintjs/core";
