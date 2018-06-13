@@ -8,12 +8,12 @@ operations and can also represent known progress.
 @## Props
 
 `Spinner` is a simple stateless component that renders SVG markup. It can be
-used safely in a DOM or SVG container as it only renders SVG elements.
+used safely in DOM and SVG containers as it only renders SVG elements.
 
 The `value` prop determines how much of the track is filled by the head. When
-this prop is defined, the spinner head will not spin but it will smoothly
-animate as `value` updates. Omitting `value` will result in an "indeterminate"
-spinner where the head spins indefinitely (this is the default appearance).
+this prop is defined, the spinner head will smoothly animate as `value`
+changes. Omitting `value` will result in an "indeterminate" spinner where the
+head spins indefinitely (this is the default appearance).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">IE11 compatibility note</h4>
@@ -25,11 +25,3 @@ spinner where the head spins indefinitely (this is the default appearance).
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
 
 @interface ISpinnerProps
-
-@## CSS
-
-You can create spinners manually by inserting their whole markup into your HTML.
-Spinners created via markup use the same modifier classes as the
-[React `Spinner` component](#core/components/progress/spinner.javascript-api).
-
-@css spinner
