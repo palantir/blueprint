@@ -181,10 +181,15 @@ a.#{$ns}-button {
 .#{$ns}-button-text {
   // default: don't grow to fill but allow shrinking as necessary
   flex: 0 1 auto;
+}
 
-  // when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
-  .#{$ns}-align-left > &,
-  .#{$ns}-align-right > & {
-    flex: 1 1 auto;
+// when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
+.#{$ns}-button,
+.#{$ns}-button-group {
+  &.#{$ns}-align-left,
+  &.#{$ns}-align-right {
+    .#{$ns}-button-text {
+      flex: 1 1 auto;
+    }
   }
 }
