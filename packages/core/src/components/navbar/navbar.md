@@ -2,27 +2,51 @@
 
 Navbars present useful navigation controls at the top of an application.
 
-The `.@ns-navbar` CSS component can have up to two groups of elements: a left-aligned group and a
-right-aligned group. These groups can contain multiple elements, which are laid out horizontally.
-
 @reactExample NavbarExample
+
+@### Fixed to viewport top
+
+Enable the `fixedToTop` prop to attach a navbar to the top of the viewport using
+`position: fixed; top: 0;`. This is so-called "sticky" behavior: the navbar
+stays at the top of the screen as the user scrolls through the document.
+
+This modifier is not illustrated here because it breaks the document flow.
+
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">Body padding required</h4>
+    The fixed navbar will lie on top of your other content unless you add padding to the top of the
+    `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable.
+</div>
+
+@### Fixed width
+
+If your application is inside a fixed-width container (instead of spanning the
+entire viewport), you can align the navbar to match by wrap your navbar groups
+in an element with your desired `width` and `margin: 0 auto;` to horizontally
+center it.
+
+@css navbar-container
 
 @## Props
 
-These components are simple wrappers around the corresponding CSS APIs. Each of
-them supports the full range of HTML props.
+The `Navbar` API includes four stateless React components:
 
-`NavbarGroup`, `NavbarHeading`, and `NavbarDivider` can be referenced by their aliases
-as well: `Navbar.Group`, `Navbar.Heading`, and `Navbar.Divider`, respectively.
+* `Navbar`
+* `NavbarGroup` (aliased as `Navbar.Group`)
+* `NavbarHeading` (aliased as `Navbar.Heading`)
+* `NavbarDivider` (aliased as `Navbar.Divider`)
+
+These components are simple containers for their children. Each of them supports
+the full range of HTML `<div>` props.
 
 ```tsx
 <Navbar>
-    <NavbarGroup align={Alignment.LEFT}>
-        <NavbarHeading>Blueprint</NavbarHeading>
-        <NavbarDivider />
+    <Navbar.Group align={Alignment.LEFT}>
+        <Navbar.Heading>Blueprint</NavbarHeading>
+        <Navbar.Divider />
         <Button className="@ns-minimal" icon="home" text="Home" />
         <Button className="@ns-minimal" icon="document" text="Files" />
-    </NavbarGroup>
+    </Navbar.Group>
 </Navbar>
 ```
 
@@ -44,28 +68,3 @@ Use the following classes to construct a navbar:
 * `.@ns-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
 
 @css navbar
-
-@### Fixed to viewport top
-
-Add the `.@ns-fixed-top` class to the `.@ns-navbar` to attach it to the top of the viewport using
-`position: fixed; top: 0;`. This is so-called "sticky" behavior: the navbar stays at the top of the
-screen as the user scrolls through the document.
-
-This modifier is not illustrated here because it breaks the documentation flow.
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Body padding required</h4>
-    The fixed navbar will lie on top of your other content unless you add padding to the top of the
-    `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable to
-    access the height of the navbar (50px).
-</div>
-
-@### Fixed width
-
-If your application is inside a fixed-width container (instead of spanning the entire viewport), you
-can align the navbar to match.
-
-Wrap your `.@ns-navbar-group`s in an element with your desired `width` and `margin: 0 auto;` to
-horizontally center it.
-
-@css navbar-container
