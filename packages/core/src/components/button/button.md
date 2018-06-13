@@ -41,18 +41,18 @@ using the `Icon` component.
 
 @## Props
 
-You can provide your own props to these components as if they were regular JSX
-HTML elements. If you specify other attributes that the component provides, such
-as a `role` for an `<AnchorButton>`, you'll overide the default value.
+The two button components each support arbitrary HTML props for their underlying
+DOM element (`<button>` and `<a>` respectively). Specifying an HTML prop will
+override the component's default for it, such as `role` on `<AnchorButton>`.
 
 @interface IButtonProps
 
 @## CSS
 
 Use the `@ns-button` class to access button styles. You should implement buttons using the
-`<button>` or `<a>` tags rather than `<div>` for the purposes of HTML accessibility and semantics.
+`<button>` or `<a>` tags rather than `<div>` for accessibility.
 
-* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
+* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
   `<form>`) and `role="button"` on `<a>` tags for accessibility.
 * Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
   focusable by default.
