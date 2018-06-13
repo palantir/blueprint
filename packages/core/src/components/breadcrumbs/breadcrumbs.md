@@ -1,6 +1,17 @@
-@# Breadcrumbs
+@# `Breadcrumb`
 
 Breadcrumbs identify the current resource in an application.
+
+@## Props
+
+The `Breadcrumb` component is available in the __@blueprintjs/core__ package.
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+
+The component renders an `a.@ns-breadcrumb`. You are responsible for constructing
+the `ul.@ns-breadcrumbs` list. [`CollapsibleList`](#core/components/collapsiblelist)
+works nicely with this component because its props are a subset of `IMenuItemProps`.
+
+@interface IBreadcrumbProps
 
 @## CSS API
 
@@ -17,16 +28,3 @@ user to that resource.
 containing breadcrumbs that are collapsed due to layout constraints.
 * When adding another element (such as a [tooltip](#core/components/tooltip) or
 [popover](#core/components/popover)) to a breadcrumb, wrap it around the contents of the `li`.
-
-@css breadcrumbs
-
-@## JavaScript API
-
-The `Breadcrumb` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-The component renders an `a.@ns-breadcrumb`. You are responsible for constructing
-the `ul.@ns-breadcrumbs` list. [`CollapsibleList`](#core/components/collapsiblelist)
-works nicely with this component because its props are a subset of `IMenuItemProps`.
-
-@interface IBreadcrumbProps

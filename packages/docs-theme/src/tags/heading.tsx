@@ -8,6 +8,7 @@ import { Classes, Icon } from "@blueprintjs/core";
 import classNames from "classnames";
 import { IHeadingTag } from "documentalist/dist/client";
 import * as React from "react";
+import { markdownCode } from "../common/utils";
 
 export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
     // use createElement so we can dynamically choose tag based on depth
@@ -18,6 +19,6 @@ export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
         <a className="docs-anchor-link" href={"#" + route} key="link">
             <Icon icon="link" />
         </a>,
-        value,
+        <span key="text" dangerouslySetInnerHTML={markdownCode(value)} />,
     );
 Heading.displayName = "Docs2.Heading";
