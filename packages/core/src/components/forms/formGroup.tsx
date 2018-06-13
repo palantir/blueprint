@@ -19,6 +19,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
     /**
      * Optional helper text. The given content will be wrapped in
      * `Classes.FORM_HELPER_TEXT` and displayed beneath `children`.
+     * Helper text color is determined by the `intent`.
      */
     helperText?: React.ReactNode;
 
