@@ -1,4 +1,4 @@
-@# Popovers
+@# Popover
 
 Popovers display floating content next to a target element.
 

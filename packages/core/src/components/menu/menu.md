@@ -1,4 +1,4 @@
-@# Menus
+@# Menu
 
 Menus display lists of interactive items.
 

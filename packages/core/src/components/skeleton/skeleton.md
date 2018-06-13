@@ -1,4 +1,4 @@
-@# Skeletons
+@# Skeleton
 
 Skeletons provide a loading state that mimics the shape of your yet-to-load content.
 

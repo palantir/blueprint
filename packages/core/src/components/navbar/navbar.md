@@ -1,4 +1,4 @@
-@# Navbars
+@# Navbar
 
 Navbars present useful navigation controls at the top of an application.
 

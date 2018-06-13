@@ -1,4 +1,4 @@
-@# Cards
+@# Card
 
 A card is a bounded unit of UI content with a solid background color.
 

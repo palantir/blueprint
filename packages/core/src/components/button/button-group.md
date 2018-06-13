@@ -1,4 +1,4 @@
-@# Button groups
+@# Button group
 
 Button groups arrange multiple buttons in a horizontal or vertical group.
 

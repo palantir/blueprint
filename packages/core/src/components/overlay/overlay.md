@@ -1,4 +1,4 @@
-@# Overlays
+@# Overlay
 
 `Overlay` is a generic low-level component for rendering content _on top of_ its
 siblings, or above the entire application.

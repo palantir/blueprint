@@ -1,4 +1,4 @@
-@# Context menus
+@# Context menu
 
 Context menus present the user with a list of actions upon right-click.
 

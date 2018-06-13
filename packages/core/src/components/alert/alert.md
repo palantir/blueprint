@@ -1,4 +1,4 @@
-@# Alerts
+@# Alert
 
 Alerts notify users of important information and force them to acknowledge the alert content before
 continuing.

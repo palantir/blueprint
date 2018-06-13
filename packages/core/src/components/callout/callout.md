@@ -1,4 +1,4 @@
-@# Callouts
+@# Callout
 
 Callouts visually highlight important content for the user. They can contain
 a title, an icon and content. Each intent has a default icon associated with it.

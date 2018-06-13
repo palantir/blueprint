@@ -1,4 +1,4 @@
-@# Trees
+@# Tree
 
 Trees display hierarchical data.
 

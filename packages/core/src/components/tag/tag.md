@@ -1,4 +1,4 @@
-@# Tags
+@# Tag
 
 Tags are great for lists of strings.
 

@@ -1,4 +1,4 @@
-@# Toasts
+@# Toast
 
 A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
 
@@ -140,7 +140,7 @@ class MyComponent extends React.PureComponent {
                     {/* "Toasted!" will appear here after clicking button. */}
                     {this.state.toasts.map(toast => <Toast {...toast} />)}
                 </Toaster>
-            </div>
+            </div
         )
     }
 

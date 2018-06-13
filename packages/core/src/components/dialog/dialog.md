@@ -1,4 +1,4 @@
-@# Dialogs
+@# Dialog
 
 Dialogs present content overlaid over other parts of the UI.
 
