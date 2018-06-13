@@ -7,7 +7,7 @@ Trees display hierarchical data.
 @## Props
 
 `Tree` is a stateless component. Its contents are dictated by the `contents` prop, which is an array
-of `ITreeNode`s (see [below](#components/tree.tree-node-interface)). The tree is multi-rooted if
+of `ITreeNode`s (see [below](#components/tree.tree-node)). The tree is multi-rooted if
 `contents` contains more than one top-level object.
 
 A variety of interaction callbacks are also exposed as props. All interaction callbacks supply a
@@ -18,9 +18,7 @@ example, `[2, 0]` represents the first child (`0`) of the third top-level node (
 
 @### Instance methods
 
-<div class="@ns-monospace-text">Tree</div>
-
-* `getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
+* `Tree.getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
   Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
   This element does not contain the children of the node, only its label and controls.
   If the node is not currently mounted, `undefined` is returned.

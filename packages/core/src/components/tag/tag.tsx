@@ -13,7 +13,7 @@ import { Text } from "../text/text";
 
 export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
     /**
-     * If set to `true`, the tag will display in an active state.
+     * Whether the tag should appear in an active state.
      * @default false
      */
     active?: boolean;
@@ -60,7 +60,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
 
     /**
      * Click handler for remove button.
-     * Button will only be rendered if this prop is defined.
+     * The remove button will only be rendered if this prop is defined.
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 

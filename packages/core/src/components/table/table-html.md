@@ -1,6 +1,6 @@
 @# Tables (HTML)
 
-This component adds Blueprint styling to native HTML tables.
+This component provides Blueprint styling to native HTML tables.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">This is not @blueprintjs/table</h4>
