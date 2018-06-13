@@ -10,15 +10,15 @@ Tags
 Markup:
 <span class="#{$ns}-tag {{.modifier}}">125</span>
 <span class="#{$ns}-tag {{.modifier}}">Done</span>
-<span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
+<span class="#{$ns}-tag {{.modifier}}">
   Tracking
   <button class="#{$ns}-tag-remove"></button>
 </span>
-<span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
+<span class="#{$ns}-tag {{.modifier}}">
   Crushed
   <button class="#{$ns}-tag-remove"></button>
 </span>
-<span class="#{$ns}-tag #{$ns}-tag-removable {{.modifier}}">
+<span class="#{$ns}-tag {{.modifier}}">
   A rather long string of text that wraps to multiple lines
   demonstrates the position of the remove button.
   <button class="#{$ns}-tag-remove"></button>

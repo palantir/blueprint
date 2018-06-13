@@ -15,7 +15,7 @@ import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
-export interface IOverlayableProps {
+export interface IOverlayableProps extends IOverlayLifecycleProps {
     /**
      * Whether the overlay should acquire application focus when it first opens.
      * @default true
@@ -72,11 +72,40 @@ export interface IOverlayableProps {
     /**
      * A callback that is invoked when user interaction causes the overlay to close, such as
      * clicking on the overlay or pressing the `esc` key (if enabled).
+     *
      * Receives the event from the user's interaction, if there was an event (generally either a
      * mouse or key event). Note that, since this component is controlled by the `isOpen` prop, it
      * will not actually close itself until that prop becomes `false`.
      */
-    onClose?(event?: React.SyntheticEvent<HTMLElement>): void;
+    onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
+}
+
+export interface IOverlayLifecycleProps {
+    /**
+     * Lifecycle method invoked just before the CSS _close_ transition begins on
+     * a child. Receives the DOM element of the child being closed.
+     */
+    onClosing?: (node: HTMLElement) => void;
+
+    /**
+     * Lifecycle method invoked just after the CSS _close_ transition ends but
+     * before the child has been removed from the DOM. Receives the DOM element
+     * of the child being closed.
+     */
+    onClosed?: (node: HTMLElement) => void;
+
+    /**
+     * Lifecycle method invoked just after mounting the child in the DOM but
+     * just before the CSS _open_ transition begins. Receives the DOM element of
+     * the child being opened.
+     */
+    onOpening?: (node: HTMLElement) => void;
+
+    /**
+     * Lifecycle method invoked just after the CSS _open_ transition ends.
+     * Receives the DOM element of the child being opened.
+     */
+    onOpened?: (node: HTMLElement) => void;
 }
 
 export interface IBackdropProps {
@@ -101,16 +130,6 @@ export interface IBackdropProps {
 }
 
 export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps {
-    /** Lifecycle callback invoked after the overlay opens and is mounted in the DOM. */
-    didOpen?: () => any;
-
-    /**
-     * Lifecycle callback invoked after a child element finishes exiting the DOM.
-     * This will be invoked for each child of the `Overlay` except for the backdrop element.
-     * The argument is the underlying HTML element that left the DOM.
-     */
-    didClose?: (node: HTMLElement) => any;
-
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -195,7 +214,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             </TransitionGroup>
         );
         if (usePortal) {
-            return <Portal onChildrenMount={this.handleContentMount}>{transitionGroup}</Portal>;
+            return <Portal>{transitionGroup}</Portal>;
         } else {
             return transitionGroup;
         }
@@ -266,9 +285,16 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             ) : (
                 <span className={Classes.OVERLAY_CONTENT}>{child}</span>
             );
-        const { transitionDuration, transitionName } = this.props;
+        const { onOpening, onOpened, onClosing, onClosed, transitionDuration, transitionName } = this.props;
         return (
-            <CSSTransition classNames={transitionName} onExited={this.props.didClose} timeout={transitionDuration}>
+            <CSSTransition
+                classNames={transitionName}
+                onEntering={onOpening}
+                onEntered={onOpened}
+                onExiting={onClosing}
+                onExited={onClosed}
+                timeout={transitionDuration}
+            >
                 {decoratedChild}
             </CSSTransition>
         );
@@ -339,9 +365,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             document.addEventListener("mousedown", this.handleDocumentClick);
         }
 
-        if (!this.props.usePortal) {
-            safeInvoke(this.props.didOpen);
-        } else if (this.props.hasBackdrop) {
+        if (this.props.hasBackdrop && this.props.usePortal) {
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
@@ -375,12 +399,6 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event
             safeInvoke(onClose, e as any);
-        }
-    };
-
-    private handleContentMount = () => {
-        if (this.props.isOpen) {
-            safeInvoke(this.props.didOpen);
         }
     };
 

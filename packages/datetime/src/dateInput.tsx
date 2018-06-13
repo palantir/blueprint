@@ -73,9 +73,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
 
     /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
-     * in the input.
+     * in the input. The second argument is true if the user clicked on a date in the
+     * calendar, changed the input value, or cleared the selection; it will be false if the date
+     * was changed by choosing a new month or year.
      */
-    onChange?: (selectedDate: Date) => void;
+    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
 
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
@@ -203,7 +205,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         return (
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
-                usePortal={false}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}
@@ -266,18 +267,14 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         this.setState({ isOpen: false });
     };
 
-    private handleDateChange = (
-        newDate: Date | null,
-        hasUserManuallySelectedDate: boolean,
-        didSubmitWithEnter = false,
-    ) => {
+    private handleDateChange = (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
         const prevDate = this.state.value;
 
         // this change handler was triggered by a change in month, day, or (if
         // enabled) time. for UX purposes, we want to close the popover only if
         // the user explicitly clicked a day within the current month.
         const isOpen =
-            !hasUserManuallySelectedDate ||
+            !isUserChange ||
             !this.props.closeOnSelection ||
             (prevDate != null && (this.hasMonthChanged(prevDate, newDate) || this.hasTimeChanged(prevDate, newDate)));
 
@@ -294,7 +291,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         } else {
             this.setState({ isInputFocused, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, newDate);
+        Utils.safeInvoke(this.props.onChange, newDate, isUserChange);
     };
 
     private hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
@@ -338,10 +335,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             } else {
                 this.setState({ valueString });
             }
-            Utils.safeInvoke(this.props.onChange, value);
+            Utils.safeInvoke(this.props.onChange, value, true);
         } else {
             if (valueString.length === 0) {
-                Utils.safeInvoke(this.props.onChange, null);
+                Utils.safeInvoke(this.props.onChange, null, true);
             }
             this.setState({ valueString });
         }
@@ -367,7 +364,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             } else if (!this.isDateInRange(date)) {
                 Utils.safeInvoke(this.props.onError, date);
             } else {
-                Utils.safeInvoke(this.props.onChange, date);
+                Utils.safeInvoke(this.props.onChange, date, true);
             }
         } else {
             if (valueString.length === 0) {

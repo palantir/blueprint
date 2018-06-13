@@ -129,6 +129,7 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers, 
     return (
         <MenuItem
             active={modifiers.active}
+            disabled={modifiers.disabled}
             label={film.year.toString()}
             key={film.rank}
             onClick={handleClick}

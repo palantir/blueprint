@@ -150,7 +150,6 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
                 interactionKind={PopoverInteractionKind.HOVER}
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
-                usePortal={false}
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}

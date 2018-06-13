@@ -150,6 +150,23 @@ describe("<TagInput>", () => {
             });
         });
 
+        it("is invoked on paste when addOnPaste=true", () => {
+            const text = "pasted\ntext";
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+            wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+            assert.isTrue(onAdd.calledOnce);
+            assert.deepEqual(onAdd.args[0][0], text.split("\n"));
+        });
+
+        it("is not invoked on paste when addOnPaste=false", () => {
+            const text = "pasted\ntext";
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnPaste={false} onAdd={onAdd} />);
+            wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+            assert.isTrue(onAdd.notCalled);
+        });
+
         it("does not clear the input if onAdd returns false", () => {
             const onAdd = sinon.stub().returns(false);
             const wrapper = mountTagInput(onAdd);
@@ -428,7 +445,7 @@ describe("<TagInput>", () => {
             "input should be disabled",
         );
         wrapper.find(Tag).forEach(tag => {
-            assert.isFalse(tag.hasClass(Classes.TAG_REMOVABLE), "tag should not have tag-removable applied");
+            assert.lengthOf(tag.find("." + Classes.TAG_REMOVE), 0, "tag should not have tag-remove button");
         });
     });
 
@@ -471,6 +488,11 @@ describe("<TagInput>", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: NEW_VALUE });
             expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
+        });
+
+        it("has a default empty string value", () => {
+            const input = shallow(<TagInput values={VALUES} />).find("input");
+            expect(input.prop("value")).to.equal("");
         });
     });
 

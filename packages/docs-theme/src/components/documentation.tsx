@@ -5,7 +5,7 @@
  */
 
 import classNames from "classnames";
-import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
+import { IHeadingNode, IPageNode, isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { Classes, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
@@ -52,6 +52,13 @@ export interface IDocumentationProps extends IProps {
      * Use `.docs-nav-title` on an element for proper padding relative to other sidebar elements.
      */
     header: React.ReactNode;
+
+    /**
+     * Callback invoked to determine if given nav node should *not* be
+     * searchable in the navigator. Returning `true` will exclude the item from
+     * the navigator search results.
+     */
+    navigatorExclude?: (node: IPageNode | IHeadingNode) => boolean;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -185,7 +192,12 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                 <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                     <TypescriptExample tag="typescript" value={activeApiMember} />
                 </Overlay>
-                <Navigator isOpen={this.state.isNavigatorOpen} items={nav} onClose={this.handleCloseNavigator} />
+                <Navigator
+                    isOpen={this.state.isNavigatorOpen}
+                    items={nav}
+                    itemExclude={this.props.navigatorExclude}
+                    onClose={this.handleCloseNavigator}
+                />
             </div>
         );
     }

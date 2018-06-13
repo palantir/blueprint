@@ -108,13 +108,13 @@ describe("<Select>", () => {
     });
 
     it("popover can be controlled with popoverProps", () => {
-        // Select defines its own popoverWillOpen so this ensures that the passthrough happens
-        const popoverWillOpen = sinon.spy();
+        // Select defines its own onOpening so this ensures that the passthrough happens
+        const onOpening = sinon.spy();
         const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { popoverWillOpen, modifiers } });
+        const wrapper = select({ popoverProps: { onOpening, modifiers } });
         wrapper.find("article").simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
-        assert.isTrue(popoverWillOpen.calledOnce);
+        assert.isTrue(onOpening.calledOnce);
     });
 
     it("returns focus to focusable target after popover closed");

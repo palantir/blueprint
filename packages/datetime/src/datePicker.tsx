@@ -45,10 +45,10 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * Called when the user selects a day.
      * If being used in an uncontrolled manner, `selectedDate` will be `null` if the user clicks the currently selected
      * day. If being used in a controlled manner, `selectedDate` will contain the day clicked no matter what.
-     * `hasUserManuallySelectedDate` is true if the user selected a day, and false if the date was automatically changed
+     * `isUserChange` is true if the user selected a day, and false if the date was automatically changed
      * by the user navigating to a new month or year rather than explicitly clicking on a date in the calendar.
      */
-    onChange?: (selectedDate: Date, hasUserManuallySelectedDate: boolean) => void;
+    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
 
     /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.

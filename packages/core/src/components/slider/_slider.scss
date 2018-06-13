@@ -41,17 +41,25 @@ $track-height: $track-size !default;
 .#{$ns}-slider-progress {
   @include slider-track-orientation($handle-size, $track-size, $vertical: false);
   position: absolute;
+}
+
+.#{$ns}-slider-track {
   border-radius: $pt-border-radius;
+  overflow: hidden;
+}
+
+.#{$ns}-slider-progress {
   background: rgba($gray1, 0.2);
 
   .#{$ns}-dark & {
     background: rgba($black, 0.5);
   }
-}
 
-.#{$ns}-slider-progress,
-.#{$ns}-dark .#{$ns}-slider-progress {
-  background: $pt-intent-primary;
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: $color;
+    }
+  }
 }
 
 .#{$ns}-slider-handle {
@@ -126,6 +134,26 @@ $track-height: $track-size !default;
       box-shadow: none;
     }
   }
+
+  &.#{$ns}-start,
+  &.#{$ns}-end {
+    width: $handle-size / 2;
+  }
+
+  &.#{$ns}-start {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.#{$ns}-end {
+    margin-left: $handle-size / 2;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    .#{$ns}-slider-label {
+      margin-left: 0;
+    }
+  }
 }
 
 .#{$ns}-slider-label {
@@ -136,31 +164,6 @@ $track-height: $track-size !default;
   vertical-align: top;
   line-height: 1;
   font-size: $pt-font-size-small;
-}
-
-.#{$ns}-range-slider {
-  .#{$ns}-slider-handle {
-    width: $handle-size / 2;
-
-    &:first-of-type {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    &:last-of-type {
-      margin-left: $handle-size / 2;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-
-      .#{$ns}-slider-label {
-        margin-left: 0;
-      }
-    }
-  }
-
-  .#{$ns}-slider-progress {
-    border-radius: 0;
-  }
 }
 
 .#{$ns}-slider.#{$ns}-vertical {
@@ -186,20 +189,15 @@ $track-height: $track-size !default;
       margin-top: -$handle-size / 2;
       margin-left: 0;
     }
-  }
-}
 
-.#{$ns}-range-slider.#{$ns}-vertical {
-  .#{$ns}-slider-handle {
-    margin-left: 0;
-    width: $handle-size;
-    height: $handle-size / 2;
-
-    .#{$ns}-slider-label {
+    &.#{$ns}-end,
+    &.#{$ns}-start {
       margin-left: 0;
+      width: $handle-size;
+      height: $handle-size / 2;
     }
 
-    &:first-of-type {
+    &.#{$ns}-start {
       border-top-left-radius: 0;
       border-bottom-right-radius: $pt-border-radius;
 
@@ -208,7 +206,7 @@ $track-height: $track-size !default;
       }
     }
 
-    &:last-of-type {
+    &.#{$ns}-end {
       margin-bottom: $handle-size / 2;
       border-top-left-radius: $pt-border-radius;
       border-bottom-left-radius: 0;

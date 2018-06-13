@@ -75,6 +75,16 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.notCalled);
     });
 
+    it("supports overlay lifecycle props", () => {
+        const onOpening = spy();
+        mount(
+            <Dialog isOpen={true} onOpening={onOpening}>
+                body
+            </Dialog>,
+        );
+        assert.isTrue(onOpening.calledOnce);
+    });
+
     describe("header", () => {
         it(`renders .${Classes.DIALOG_HEADER} if title prop is given`, () => {
             const dialog = mount(

@@ -15,6 +15,13 @@ export interface IListItemsProps<T> extends IProps {
     items: T[];
 
     /**
+     * Determine if the given item is disabled. Provide a callback function, or
+     * simply provide the name of a boolean property on the item that exposes
+     * its disabled state.
+     */
+    itemDisabled?: keyof T | ((item: T, index: number) => boolean);
+
+    /**
      * Customize querying of entire `items` array. Return new list of items.
      * This method can reorder, add, or remove items at will.
      * (Supports filter algorithms that operate on the entire set, rather than individual items.)

@@ -3,24 +3,6 @@
 
 @import "../../common/variables";
 @import "../progress-bar/common";
-@import "./common";
-
-/*
-Spinners
-
-Markup:
-<svg class="#{$ns}-spinner {{.modifier}}" viewBox="0 0 100 100">
-  <path class="#{$ns}-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
-  <path class="#{$ns}-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
-</svg>
-
-.#{$ns}-small - Small spinner
-.#{$ns}-large - Large spinner
-.#{$ns}-intent-primary - All four intents are supported
-.#{$ns}-no-spin - Disable spinning animation
-
-Styleguide spinner
-*/
 
 @keyframes pt-spinner-animation {
   from { transform: rotate(0deg); }
@@ -28,7 +10,6 @@ Styleguide spinner
 }
 
 .#{$ns}-spinner {
-  @include spinner-size($spinner-width-factor, $spinner-stroke-width, $spinner-speed);
   // allow paths to overflow container -- critical for edges of circles!
   overflow: visible;
   vertical-align: middle;
@@ -40,8 +21,7 @@ Styleguide spinner
   .#{$ns}-spinner-head {
     transform-origin: center;
     transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
-    animation: pt-spinner-animation $spinner-speed linear infinite;
-    animation-duration: inherit;
+    animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
     stroke: $progress-head-color;
     stroke-linecap: round;
   }
@@ -52,22 +32,6 @@ Styleguide spinner
 
   &.#{$ns}-no-spin .#{$ns}-spinner-head {
     animation: none;
-  }
-
-  &.#{$ns}-small {
-    @include spinner-size(
-      $spinner-width-factor-small,
-      $spinner-stroke-width-small,
-      $spinner-speed-small
-    );
-  }
-
-  &.#{$ns}-large {
-    @include spinner-size(
-      $spinner-width-factor-large,
-      $spinner-stroke-width-large,
-      $spinner-speed-large
-    );
   }
 }
 

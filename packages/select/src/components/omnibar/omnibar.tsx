@@ -7,16 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    HTMLInputProps,
-    IBackdropProps,
-    IInputGroupProps,
-    InputGroup,
-    IOverlayableProps,
-    IOverlayProps,
-    Overlay,
-    Utils,
-} from "@blueprintjs/core";
+import { HTMLInputProps, IInputGroupProps, InputGroup, IOverlayProps, Overlay, Utils } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -36,16 +27,19 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     isOpen: boolean;
 
     /**
-     * A callback that is invoked when user interaction causes the overlay to close, such as
-     * clicking on the overlay or pressing the `esc` key (if enabled).
-     * Receives the event from the user's interaction, if there was an event (generally either a
-     * mouse or key event). Note that, since this component is controlled by the `isOpen` prop, it
-     * will not actually close itself until that prop becomes `false`.
+     * A callback that is invoked when user interaction causes the omnibar to
+     * close, such as clicking on the overlay or pressing the `esc` key (if
+     * enabled). Receives the event from the user's interaction, if there was an
+     * event (generally either a mouse or key event).
+     *
+     * Note that due to controlled usage, this component will not actually close
+     * itself until the `isOpen` prop becomes `false`.
+     * .
      */
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
 
-    /** Props to spread to `Overlay`. Note that `content` cannot be changed. */
-    overlayProps?: Partial<IOverlayProps> & object;
+    /** Props to spread to `Overlay`. */
+    overlayProps?: Partial<IOverlayProps>;
 
     /**
      * Whether the filtering state should be reset to initial when an item is selected
@@ -56,7 +50,7 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     resetOnSelect?: boolean;
 }
 
-export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
+export interface IOmnibarState<T> {
     activeItem?: T;
     query: string;
 }
@@ -151,7 +145,9 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         Utils.safeInvoke(inputProps.onChange, event);
     };
 
-    private handleOverlayClose = (event: React.SyntheticEvent<HTMLElement>) => {
+    private handleOverlayClose = (event?: React.SyntheticEvent<HTMLElement>) => {
+        const { overlayProps = {} } = this.props;
+        Utils.safeInvoke(overlayProps.onClose, event);
         Utils.safeInvoke(this.props.onClose, event);
     };
 }

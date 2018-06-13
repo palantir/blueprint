@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, InputGroup, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { Classes, InputGroup, IPopoverProps, Keys, MenuItem, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -242,26 +242,26 @@ describe("Suggest", () => {
     });
 
     describe("popoverProps", () => {
-        const popoverWillOpen = sinon.spy();
+        const onOpening = sinon.spy();
 
         afterEach(() => {
-            popoverWillOpen.resetHistory();
+            onOpening.resetHistory();
         });
 
         it("popover can be controlled with popoverProps", () => {
-            const tetherOptions = {}; // our own instance
-            const wrapper = suggest({ popoverProps: getPopoverProps(false, tetherOptions) });
-            wrapper.setProps({ popoverProps: getPopoverProps(true, tetherOptions) });
-            assert.strictEqual(wrapper.find(Popover).prop("tetherOptions"), tetherOptions);
-            assert.isTrue(popoverWillOpen.calledOnce);
+            const modifiers = {}; // our own instance
+            const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
+            wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
+            assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
+            assert.isTrue(onOpening.calledOnce);
         });
 
-        function getPopoverProps(isOpen: boolean, tetherOptions: any) {
+        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<IPopoverProps> {
             return {
                 ...defaultProps.popoverProps,
                 isOpen,
-                popoverWillOpen,
-                tetherOptions,
+                modifiers,
+                onOpening,
             };
         }
     });

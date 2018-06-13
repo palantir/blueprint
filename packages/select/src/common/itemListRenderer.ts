@@ -41,7 +41,7 @@ export interface IItemListRendererProps<T> {
      * This retrieves the modifiers for the item and delegates actual rendering
      * to the owner component's `itemRenderer` prop.
      */
-    renderItem: (item: T, index?: number) => JSX.Element | null;
+    renderItem: (item: T, index: number) => JSX.Element | null;
 }
 
 /** Type alias for a function that renders the list of items. */

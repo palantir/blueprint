@@ -19,12 +19,18 @@ const SPINNER_TRACK = "M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 
 // this value is the result of `<path d={SPINNER_TRACK} />.getTotalLength()` and works in all browsers:
 const PATH_LENGTH = 280;
 
-export interface ISpinnerProps extends IProps, IIntentProps {
-    /** Whether this spinner should use large styles. */
-    large?: boolean;
+const MIN_SIZE = 10;
+const STROKE_WIDTH = 4;
+const MIN_STROKE_WIDTH = 16;
 
-    /** Whether this spinner should use small styles. */
-    small?: boolean;
+export interface ISpinnerProps extends IProps, IIntentProps {
+    /**
+     * Width and height of the spinner in pixels. The size cannot be less than
+     * 10px. Constants are available for common sizes: `Spinner.SIZE_SMALL`,
+     * `Spinner.SIZE_STANDARD`, `Spinner.SIZE_LARGE`.
+     * @default Spinner.SIZE_STANDARD = 50
+     */
+    size?: number;
 
     /**
      * A value between 0 and 1 (inclusive) representing how far along the operation is.
@@ -37,31 +43,42 @@ export interface ISpinnerProps extends IProps, IIntentProps {
 export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
     public static displayName = "Blueprint2.Spinner";
 
+    public static readonly SIZE_SMALL = 24;
+    public static readonly SIZE_STANDARD = 50;
+    public static readonly SIZE_LARGE = 100;
+
     public render() {
-        const { className, intent, large, small, value } = this.props;
+        const { className, intent, value } = this.props;
+        const size = this.getSize();
+
         const classes = classNames(
             Classes.SPINNER,
             Classes.intentClass(intent),
-            {
-                [Classes.LARGE]: large,
-                [Classes.SMALL]: small,
-                [Classes.SPINNER_NO_SPIN]: value != null,
-            },
+            { [Classes.SPINNER_NO_SPIN]: value != null },
             className,
         );
 
-        const headStyle: React.CSSProperties = {
-            strokeDasharray: `${PATH_LENGTH} ${PATH_LENGTH}`,
-            // default to quarter-circle when indeterminate
-            // IE11: CSS transitions on SVG elements are Not Supported :(
-            strokeDashoffset: PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1)),
-        };
+        // attempt to keep spinner stroke width constant at all sizes
+        const strokeWidth = Math.min(MIN_STROKE_WIDTH, STROKE_WIDTH * Spinner.SIZE_LARGE / size);
+
+        const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
 
         return (
-            <svg className={classes} viewBox="0 0 100 100">
+            <svg className={classes} height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
                 <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
-                <path className={Classes.SPINNER_HEAD} d={SPINNER_TRACK} pathLength={PATH_LENGTH} style={headStyle} />
+                <path
+                    className={Classes.SPINNER_HEAD}
+                    d={SPINNER_TRACK}
+                    pathLength={PATH_LENGTH}
+                    strokeDasharray={`${PATH_LENGTH} ${PATH_LENGTH}`}
+                    strokeDashoffset={strokeOffset}
+                />
             </svg>
         );
+    }
+
+    private getSize() {
+        const { size = Spinner.SIZE_STANDARD } = this.props;
+        return Math.max(MIN_SIZE, size);
     }
 }

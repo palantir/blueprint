@@ -10,9 +10,10 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { IIntentProps, IProps } from "../../common/props";
+import { IOverlayLifecycleProps } from "../overlay/overlay";
 import { Popover, PopoverInteractionKind, PopperModifiers } from "../popover/popover";
 
-export interface ITooltipProps extends IProps, IIntentProps {
+export interface ITooltipProps extends IProps, IIntentProps, IOverlayLifecycleProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */

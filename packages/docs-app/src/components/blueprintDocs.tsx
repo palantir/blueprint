@@ -8,7 +8,7 @@ import { Classes, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
 import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
-import { isPageNode, ITsDocBase } from "documentalist/dist/client";
+import { IHeadingNode, isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -19,6 +19,7 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
 // detect Components page and subheadings
 const COMPONENTS_PATTERN = /\/components(\.\w+)?$/;
+const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -70,6 +71,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 className={this.state.themeName}
                 footer={footer}
                 header={header}
+                navigatorExclude={isNavSection}
                 onComponentUpdate={this.handleComponentUpdate}
                 renderNavMenuItem={this.renderNavMenuItem}
                 renderViewSourceLinkText={this.renderViewSourceLinkText}
@@ -95,7 +97,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 </div>
             );
         }
-        if (COMPONENTS_PATTERN.test(route)) {
+        if (isNavSection(props.section)) {
             // non-interactive header that expands its menu
             return <div className="docs-nav-section docs-nav-expanded">{title}</div>;
         }

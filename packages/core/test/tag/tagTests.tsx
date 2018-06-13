@@ -9,11 +9,21 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, Tag } from "../../src/index";
+import { Classes, Icon, Tag, Text } from "../../src/index";
 
 describe("<Tag>", () => {
     it("renders its text", () => {
-        assert.deepEqual(shallow(<Tag>Hello</Tag>).text(), "Hello");
+        assert.strictEqual(
+            shallow(<Tag>Hello</Tag>)
+                .find(Text)
+                .prop("children"),
+            "Hello",
+        );
+    });
+
+    it("renders icons", () => {
+        const wrapper = shallow(<Tag icon="tick" rightIcon="airplane" />);
+        assert.lengthOf(wrapper.find(Icon), 2);
     });
 
     it("renders close button when onRemove is a function", () => {

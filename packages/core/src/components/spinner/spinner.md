@@ -21,9 +21,9 @@ default appearance).
     correctly because they rely on CSS animations.
 </div>
 
-@interface ISpinnerProps
-
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
+
+@interface ISpinnerProps
 
 @## CSS
 

@@ -196,12 +196,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     /** wrapper around `itemRenderer` to inject props */
-    private renderItem = (item: T, index?: number) => {
+    private renderItem = (item: T, index: number) => {
         const { activeItem, query } = this.props;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
             active: activeItem === item,
-            disabled: false,
+            disabled: this.isItemDisabled(item, index),
             matchesPredicate,
         };
         return this.props.itemRenderer(item, {
@@ -240,17 +240,15 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        switch (event.keyCode) {
-            case Keys.ARROW_UP:
-                event.preventDefault();
-                this.moveActiveIndex(-1);
-                break;
-            case Keys.ARROW_DOWN:
-                event.preventDefault();
-                this.moveActiveIndex(1);
-                break;
-            default:
-                break;
+        const { keyCode } = event;
+        if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
+            event.preventDefault();
+            const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
+            if (nextActiveItem != null) {
+                // indicate that the active item may need to be scrolled into view after update.
+                this.shouldCheckActiveItemInViewport = true;
+                Utils.safeInvoke(this.props.onActiveItemChange, nextActiveItem);
+            }
         }
         Utils.safeInvoke(this.props.onKeyDown, event);
     };
@@ -267,14 +265,36 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         Utils.safeInvoke(onKeyUp, event);
     };
 
-    private moveActiveIndex(direction: number) {
-        // indicate that the active item may need to be scrolled into view after update.
-        // this is not possible with mouse hover cuz you can't hover on something off screen.
-        this.shouldCheckActiveItemInViewport = true;
+    /**
+     * Get the next enabled item, moving in the given direction from the current
+     * index. An `undefined` return value means no suitable item was found.
+     * @param direction amount to move in each iteration, typically +/-1
+     */
+    private getNextActiveItem(direction: number): T | undefined {
         const { filteredItems } = this.state;
-        const maxIndex = Math.max(filteredItems.length - 1, 0);
-        const nextActiveIndex = Utils.clamp(this.getActiveIndex() + direction, 0, maxIndex);
-        Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
+        let index = this.getActiveIndex();
+        // remember where we started to prevent an infinite loop
+        const startIndex = index;
+        const maxIndex = filteredItems.length - 1;
+        do {
+            // find first non-disabled item
+            index = wrapNumber(index + direction, 0, maxIndex);
+            if (!this.isItemDisabled(filteredItems[index], index)) {
+                return filteredItems[index];
+            }
+        } while (index !== startIndex);
+        return undefined;
+    }
+
+    private isItemDisabled(item: T, index: number) {
+        const { itemDisabled } = this.props;
+        if (itemDisabled == null) {
+            return false;
+        } else if (Utils.isFunction(itemDisabled)) {
+            return itemDisabled(item, index);
+        } else {
+            return !!item[itemDisabled];
+        }
     }
 }
 
@@ -290,4 +310,14 @@ function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }:
         return items.filter((item, index) => itemPredicate(query, item, index));
     }
     return items;
+}
+
+/** Wrap number around min/max values: if it exceeds one bound, return the other. */
+function wrapNumber(value: number, min: number, max: number) {
+    if (value < min) {
+        return max;
+    } else if (value > max) {
+        return min;
+    }
+    return value;
 }

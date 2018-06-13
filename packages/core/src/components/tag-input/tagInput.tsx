@@ -24,6 +24,13 @@ export interface ITagInputProps extends IProps {
     addOnBlur?: boolean;
 
     /**
+     * If true, `onAdd` will be invoked when the user pastes text into the
+     * input. Otherwise, pasted text will remain in the input.
+     * @default true
+     */
+    addOnPaste?: boolean;
+
+    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
      * if appropriate.
@@ -128,9 +135,9 @@ export interface ITagInputProps extends IProps {
     rightElement?: JSX.Element;
 
     /**
-     * Separator pattern used to split input text into multiple values.
+     * Separator pattern used to split input text into multiple values. Default value splits on commas and newlines.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
-     * @default ","
+     * @default /[,\n\r]/
      */
     separator?: string | RegExp | false;
 
@@ -168,8 +175,11 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     public static displayName = "Blueprint2.TagInput";
 
     public static defaultProps: Partial<ITagInputProps> & object = {
+        addOnBlur: false,
+        addOnPaste: true,
         inputProps: {},
-        separator: ",",
+        inputValue: "",
+        separator: /[,\n\r]/,
         tagProps: {},
     };
 
@@ -232,6 +242,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                         onChange={this.handleInputChange}
                         onKeyDown={this.handleInputKeyDown}
                         onKeyUp={this.handleInputKeyUp}
+                        onPaste={this.handleInputPaste}
                         placeholder={resolvedPlaceholder}
                         ref={this.refHandlers.input}
                         className={classNames(Classes.INPUT_GHOST, inputProps.className)}
@@ -243,9 +254,8 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         );
     }
 
-    private addTag = (value: string) => {
+    private addTags = (value: string) => {
         const { onAdd, onChange, values } = this.props;
-        // enter key on non-empty string invokes onAdd
         const newValues = this.getValues(value);
         let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
         // avoid a potentially expensive computation if this prop is omitted
@@ -320,14 +330,13 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         }
     };
 
-    private handleContainerBlur = () => {
+    private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {
         requestAnimationFrame(() => {
-            // this event is attached to the container element to capture all blur events from inside.
-            // we only need to "unfocus" if the blur event is leaving the container.
+            // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
-            if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
+            if (!currentTarget.contains(document.activeElement)) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
-                    this.addTag(this.state.inputValue);
+                    this.addTags(this.state.inputValue);
                 }
                 this.setState({ activeIndex: NONE, isInputFocused: false });
             }
@@ -352,7 +361,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         let activeIndexToEmit = activeIndex;
 
         if (event.which === Keys.ENTER && value.length > 0) {
-            this.addTag(value);
+            this.addTags(value);
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
@@ -373,6 +382,14 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         this.invokeKeyPressCallback("onKeyUp", event, this.state.activeIndex);
+    };
+
+    private handleInputPaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+        const value = event.clipboardData.getData("text");
+        if (this.props.addOnPaste && value.length > 0) {
+            event.preventDefault();
+            this.addTags(value);
+        }
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {

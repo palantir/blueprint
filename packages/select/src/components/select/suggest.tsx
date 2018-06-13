@@ -125,8 +125,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                popoverDidOpen={this.handlePopoverDidOpen}
-                popoverWillClose={this.handlePopoverWillClose}
+                onOpened={this.handlePopoverOpened}
+                onClosing={this.handlePopoverClosing}
             >
                 <InputGroup
                     placeholder="Search..."
@@ -205,7 +205,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
         });
 
-    private handlePopoverDidOpen = () => {
+    private handlePopoverOpened = (node: HTMLElement) => {
         const { popoverProps = {} } = this.props;
 
         // scroll active item into view after popover transition completes and all dimensions are stable.
@@ -213,10 +213,10 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             this.queryList.scrollActiveItemIntoView();
         }
 
-        Utils.safeInvoke(popoverProps.popoverDidOpen);
+        Utils.safeInvoke(popoverProps.onOpened, node);
     };
 
-    private handlePopoverWillClose = () => {
+    private handlePopoverClosing = (node: HTMLElement) => {
         const { popoverProps = {} } = this.props;
         const { selectedItem } = this.state;
 
@@ -227,7 +227,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             query: "",
         });
 
-        Utils.safeInvoke(popoverProps.popoverDidOpen);
+        Utils.safeInvoke(popoverProps.onClosing, node);
     };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {

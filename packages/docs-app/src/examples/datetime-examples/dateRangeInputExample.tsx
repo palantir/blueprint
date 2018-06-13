@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, H5, IPopoverProps, Switch } from "@blueprintjs/core";
+import { H5, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
@@ -18,7 +18,6 @@ export interface IDateRangeInputExampleState {
     contiguousCalendarMonths: boolean;
     disabled: boolean;
     format: IDateFormatProps;
-    isPopoverOpen: boolean;
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
@@ -31,15 +30,9 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
         contiguousCalendarMonths: true,
         disabled: false,
         format: FORMATS[0],
-        isPopoverOpen: false,
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
-    };
-
-    private popoverProps: Partial<IPopoverProps> = {
-        popoverWillClose: () => this.setState({ isPopoverOpen: false }),
-        popoverWillOpen: () => this.setState({ isPopoverOpen: true }),
     };
 
     private toggleContiguous = handleBooleanChange(contiguous => {
@@ -57,13 +50,8 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
         const { format, range, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <DateRangeInput
-                    {...spreadProps}
-                    {...format}
-                    onChange={this.handleRangeChange}
-                    popoverProps={this.popoverProps}
-                />
-                <MomentDateRange className={this.state.isPopoverOpen ? Classes.INLINE : ""} range={range} />
+                <DateRangeInput {...spreadProps} {...format} onChange={this.handleRangeChange} />
+                <MomentDateRange range={range} />
             </Example>
         );
     }
