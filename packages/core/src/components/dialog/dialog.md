@@ -15,14 +15,12 @@ Dialogs present content overlaid over other parts of the UI.
 
 @## Props
 
-There are two ways to render dialogs:
+`Dialog` is a stateless React component controlled by the `isOpen` prop.
 
-* injected into a newly created element attached to `document.body` using `<Portal>`.
-  This is the default behavior.
-* in-place in the DOM tree. Set `usePortal={false}` to enable this behavior.
-
-`Dialog` is a stateless React component. The children you provide to this component
-are rendered as contents inside the `.@ns-dialog` element.
+The children you provide to this component are rendered as contents inside the
+`Classes.DIALOG` element. Typically, you will want to provide a child with
+`Classes.DIALOG_BODY` that contains the body content and a child with
+`Classes.DIALOG_FOOTER` that contains the action buttons.
 
 @interface IDialogProps
 

@@ -1,12 +1,12 @@
 @# Context menus
 
-Context menus present the user with a custom list of actions upon right-click.
+Context menus present the user with a list of actions upon right-click.
 
 You can create context menus in either of the following ways:
 
-- by adding the `@ContextMenuTarget` [decorator](#core/components/context-menu.decorator-api)
+1. Adding the `@ContextMenuTarget` [decorator](#core/components/context-menu.decorator-api)
   to a React component that implements `renderContextMenu(): JSX.Element`.
-- via the [imperative](#core/components/context-menu.imperative-api) `ContextMenu.show`
+1. Use the [imperative](#core/components/context-menu.imperative-api) `ContextMenu.show`
   and `ContextMenu.hide` API methods, ideal for non-React-based applications.
 
 @reactExample ContextMenuExample
@@ -20,9 +20,9 @@ class that meets the following requirements:
 (most likely a [`Menu`](#core/components/menu)) or `undefined`.
 - Its root element supports the `"contextmenu"` event and the `onContextMenu` prop.
 
-This is always true if the decorated class uses an intrinsic element, such as `<div>`, as its
-root. If it uses a custom element as its root, you must ensure that the prop is implemented
-correctly for that element.
+  This is always true if the decorated class uses an intrinsic element, such
+  as `<div>`, as its root. If it uses a custom element as its root, you must
+  ensure that the prop is implemented correctly for that element.
 
 When the user triggers the `"contextmenu"` event on the decorated class, `renderContextMenu()` is
 called. If `renderContextMenu()` returns an element, the browser's native [context menu][wiki-cm] is
@@ -62,20 +62,26 @@ class RightClickMe extends React.Component<{}, {}> {
 
 @## Imperative usage
 
-The imperative API provides a single static `ContextMenu` object, enforcing the principle that only
-one context menu can be open at a time.
+The imperative API provides a single static `ContextMenu` object, enforcing the
+principle that only one context menu can be open at a time. This API is ideal
+for programmatically triggered menus or for non-React apps.
 
-- `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void): void` &ndash;
-Show the given element at the given offset from the top-left corner of the viewport.
-Showing a menu closes the previously shown one automatically.
+- `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void): void`
 
-The menu appears below-right of this point, but will flip to below-left instead if there is not
-enough room onscreen. The optional callback is invoked when this menu closes.
+  Show the given element at the given offset from the top-left corner of the
+  viewport. Showing a menu closes the previously shown one automatically. The
+  menu appears below-right of this point, but will flip to below-left instead if
+  there is not enough room onscreen. The optional callback is invoked when this
+  menu closes.
 
-- `ContextMenu.hide(): void` &ndash; Hide the context menu, if it is open.
-- `ContextMenu.isOpen(): boolean` &ndash; Whether a context menu is currently visible.
+- `ContextMenu.hide(): void`
 
-This API is ideal for non-React-based apps or for programmatically triggered menus.
+  Hide the context menu, if it is open.
+
+- `ContextMenu.isOpen(): boolean`
+
+  Whether a context menu is currently visible.
+
 
 ```ts
 import { ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
