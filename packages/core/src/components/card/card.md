@@ -4,9 +4,17 @@ A card is a bounded unit of UI content with a solid background color.
 
 @reactExample CardExample
 
+@## Elevation
+
+Apply an `elevation` value to a card to apply a drop shadow that simulates
+height in the UI. Five elevations are supported, from 0 to 4.
+
+The `Classes.ELEVATION_*` constants can be used on any element (not just a
+`Card`) to apply the drop shadow.
+
 @## Props
 
-This component is a simple wrapper around the CSS API.
+This component is a simple stateless container for its children.
 
 ```tsx
 import { Button, Card, Elevation } from "@blueprintjs/core";
@@ -22,13 +30,8 @@ import { Button, Card, Elevation } from "@blueprintjs/core";
 
 @## CSS
 
-Start with `.@ns-card` and add an elevation modifier class to apply a drop
-shadow that simulates height in the UI.
-
-You can also use the `.@ns-elevation-*` classes by themselves to apply shadows
-to any arbitrary element.
-
-@### Interactive cards
+Start with `.@ns-card` and add an elevation class `.@ns-elevation-*` to apply a
+drop shadow that simulates height in the UI.
 
 Add the `.@ns-interactive` modifier class to make a `.@ns-card` respond to user
 interactions. When you hover over cards with this class applied, the mouse
