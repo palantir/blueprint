@@ -29,7 +29,7 @@ export { TimezoneDisplayFormat };
 export interface ITimezonePickerProps extends IProps {
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
-     * @see https://www.iana.org/time-zones
+     * See https://www.iana.org/time-zones for more information.
      */
     value: string | undefined;
 
