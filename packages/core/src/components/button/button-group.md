@@ -17,8 +17,9 @@ Button groups arrange multiple buttons in a horizontal or vertical group.
 some modifer props for common flexbox patterns:
 
 - Enable the `fill` prop on a button group to make all buttons expand equally to
-  fill the available space. Then add the class `Classes.FIXED` to individual
-  buttons to revert them to their original default sizes.
+  fill the available space.
+    - Buttons will expand horizontally by default, or vertically if the `vertical` prop is enabled.
+    - Add the class `Classes.FIXED` to individual buttons to revert them to their initial sizes.
 
 - Alternatively, enable the `fill` prop on specific buttons (instead of on the
   group) to expand them equally to fill the available space while other
@@ -36,12 +37,14 @@ Use the `alignText` prop to control icon and text alignment in the buttons. Set
 this prop on `ButtonGroup` to affect all buttons in the group, or set the prop
 on individual buttons directly.
 
-Vertical groups can be combined with other modifier props.
-
 @## Props
 
-This component is a simple wrapper around the CSS API.
-It exposes shorthand props for CSS modifier classes and supports the full range of HTML props.
+Most of the `ButtonGroup` props are also supported by `Button` directly; setting
+these props on `ButtonGroup` will apply the same value to all buttons in the
+group. Note that most modifiers, once enabled on the group, cannot be overridden
+on child buttons (due to the cascading nature of CSS).
+
+The component also supports all HTML `<div>` props.
 
 ```tsx
 <ButtonGroup minimal={true} onMouseEnter={...}>
