@@ -1,9 +1,10 @@
 @# Collapsible list
 
-The `CollapsibleList` React component accepts a list of menu items and a count of visible items. It
-shows precisely that many items and collapses the rest into a dropdown menu. The required
-`visibleItemRenderer` callback prop allows for customizing the appearance of visible items, using the
-props from the `MenuItem` children.
+The `CollapsibleList` component accepts a list of menu items and a count of
+visible items. It shows precisely that many items and collapses the rest into a
+dropdown menu. The required `visibleItemRenderer` callback prop allows for
+customizing the appearance of visible items, using the props from the `MenuItem`
+children.
 
 @reactExample CollapsibleListExample
 
