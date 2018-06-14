@@ -192,9 +192,9 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 }
 
 export interface IPopoverState {
-    transformOrigin?: string;
-    isOpen?: boolean;
-    hasDarkParent?: boolean;
+    transformOrigin: string;
+    isOpen: boolean;
+    hasDarkParent: boolean;
 }
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
@@ -227,6 +227,12 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     /** DOM element that contains the target. */
     public targetElement: HTMLElement;
 
+    public state: IPopoverState = {
+        hasDarkParent: false,
+        isOpen: this.getIsOpen(this.props),
+        transformOrigin: "",
+    };
+
     private cancelOpenTimeout: () => void;
 
     // a flag that lets us detect mouse movement between the target and popover,
@@ -244,14 +250,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         },
         target: (ref: HTMLElement) => (this.targetElement = ref),
     };
-
-    public constructor(props?: IPopoverProps, context?: any) {
-        super(props, context);
-        this.state = {
-            hasDarkParent: false,
-            isOpen: this.getIsOpen(props),
-        };
-    }
 
     public render() {
         const { disabled, modifiers } = this.props;
@@ -416,7 +414,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
-        const { className, isOpen, targetClassName, targetElementTag } = this.props;
+        const { className, targetClassName, targetElementTag } = this.props;
+        const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
         let targetProps: React.HTMLProps<HTMLElement>;
@@ -427,8 +426,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                 onMouseEnter: this.handleMouseEnter,
                 onMouseLeave: this.handleMouseLeave,
             };
-            // any one of the CLICK* values
         } else {
+            // any one of the CLICK* values
             targetProps = {
                 onClick: this.handleTargetClick,
             };
@@ -466,9 +465,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         };
     }
 
-    private getIsOpen(props?: IPopoverProps) {
+    private getIsOpen(props: IPopoverProps) {
         // disabled popovers should never be allowed to open.
-        if (props == null || props.disabled) {
+        if (props.disabled) {
             return false;
         } else if (props.isOpen != null) {
             return props.isOpen;
