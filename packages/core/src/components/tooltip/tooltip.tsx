@@ -96,12 +96,6 @@ export interface ITooltipProps extends IProps, IIntentProps, IOverlayLifecyclePr
     position?: Position | "auto";
 
     /**
-     * The name of the HTML tag to use when rendering the popover target wrapper element (`Classes.POPOVER_WRAPPER`).
-     * @default "span"
-     */
-    rootElementTag?: string;
-
-    /**
      * The name of the HTML tag to use when rendering the popover target element.
      * @default "div"
      */

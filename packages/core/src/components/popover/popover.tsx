@@ -155,13 +155,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     position?: Position | "auto";
 
     /**
-     * The name of the HTML tag to use when rendering the popover target wrapper
-     * element (`Classes.POPOVER_WRAPPER`).
-     * @default "span"
-     */
-    rootElementTag?: string;
-
-    /**
      * The target element to which the popover content is attached.
      * This can instead be provided as the first `children` element.
      */
@@ -212,7 +205,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         modifiers: {},
         openOnTargetFocus: true,
         position: "auto",
-        rootElementTag: "span",
         targetElementTag: "div",
         transitionDuration: 300,
         usePortal: true,
