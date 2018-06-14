@@ -20,7 +20,10 @@ const SVG_ARROW_PATH =
     "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
 
 /** Modifier helper function to compute arrow rotate() transform */
-export function getArrowAngle(placement: Placement) {
+function getArrowAngle(placement?: Placement) {
+    if (placement == null) {
+        return 0;
+    }
     // can only be top/left/bottom/right - auto is resolved internally
     switch (getPosition(placement)) {
         case "top":
@@ -35,14 +38,13 @@ export function getArrowAngle(placement: Placement) {
 }
 
 export interface IPopoverArrowProps {
-    // TODO: angle => placement, use `getArrowAngle`, remove state
-    angle: number;
     arrowProps: React.HTMLProps<HTMLElement>;
+    placement: Placement;
 }
 
-export const PopoverArrow: React.SFC<IPopoverArrowProps> = ({ angle, arrowProps }) => (
+export const PopoverArrow: React.SFC<IPopoverArrowProps> = ({ arrowProps, placement }) => (
     <div className={Classes.POPOVER_ARROW} {...arrowProps}>
-        <svg viewBox="0 0 30 30" style={{ transform: `rotate(${angle}deg)` }}>
+        <svg viewBox="0 0 30 30" style={{ transform: `rotate(${getArrowAngle(placement)}deg)` }}>
             <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
             <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
         </svg>

@@ -17,7 +17,7 @@ import { HTMLDivProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
-import { getArrowAngle, PopoverArrow } from "./arrow";
+import { PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
@@ -192,7 +192,6 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 }
 
 export interface IPopoverState {
-    arrowRotation?: number;
     transformOrigin?: string;
     isOpen?: boolean;
     hasDarkParent?: boolean;
@@ -408,7 +407,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
                 <div className={popoverClasses} style={{ transformOrigin }} {...popoverHandlers}>
                     {this.isArrowEnabled() && (
-                        <PopoverArrow arrowProps={popperProps.arrowProps} angle={this.state.arrowRotation} />
+                        <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
                     )}
                     <div className={Classes.POPOVER_CONTENT}>{content}</div>
                 </div>
@@ -599,11 +598,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
     private updatePopoverState: ModifierFn = data => {
-        // pretty sure it's safe to always set these (and let sCU determine) because they're both strings
-        this.setState({
-            arrowRotation: getArrowAngle(data.placement),
-            transformOrigin: getTransformOrigin(data),
-        });
+        // always set string; let shouldComponentUpdate determine if update is necessary
+        this.setState({ transformOrigin: getTransformOrigin(data) });
         return data;
     };
 }
