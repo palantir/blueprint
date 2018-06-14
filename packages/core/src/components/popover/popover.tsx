@@ -38,7 +38,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * The content displayed inside the popover.
-     * This can instead be provided as the second `children` element (first is `target`).
+     * This can instead be provided as the second element in `children` (first is `target`).
      */
     content?: string | JSX.Element;
 
@@ -155,21 +155,24 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     position?: Position | "auto";
 
     /**
-     * The target element to which the popover content is attached.
-     * This can instead be provided as the first `children` element.
+     * The target to which the popover content is attached. This prop is wrapped
+     * in a DOM element defined by `targetTagName` and `targetClassName` to
+     * handle interaction events.
+     *
+     * Target can instead be provided as the first element in `children`.
      */
     target?: string | JSX.Element;
 
     /**
-     * Space-delimited string of class names applied to the target.
+     * Space-delimited string of class names applied to the target element.
      */
     targetClassName?: string;
 
     /**
-     * The name of the HTML tag to use when rendering the popover target element.
+     * HTML tag name for the target element.
      * @default "div"
      */
-    targetElementTag?: keyof JSX.IntrinsicElements;
+    targetTagName?: keyof JSX.IntrinsicElements;
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
@@ -205,7 +208,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         modifiers: {},
         openOnTargetFocus: true,
         position: "auto",
-        targetElementTag: "div",
+        targetTagName: "div",
         transitionDuration: 300,
         usePortal: true,
     };
@@ -406,7 +409,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
-        const { className, targetClassName, targetElementTag } = this.props;
+        const { className, targetClassName, targetTagName } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -441,8 +444,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
             tabIndex: this.props.openOnTargetFocus && isHoverInteractionKind ? 0 : undefined,
         });
-
-        return React.createElement(targetElementTag, targetProps, targetChild);
+        return React.createElement(targetTagName, targetProps, targetChild);
     };
 
     // content and target can be specified as props or as children. this method

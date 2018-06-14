@@ -203,9 +203,9 @@ describe("<Popover>", () => {
         wrapper.assertFindClass(Classes.POPOVER_BACKDROP, false);
     });
 
-    it("targetElementTag prop renders the right elements", () => {
-        wrapper = renderPopover({ isOpen: true, targetElementTag: "article" });
-        assert.isNotNull(wrapper.find("article"));
+    it("targetTagName determines target element", () => {
+        wrapper = renderPopover({ isOpen: true, targetTagName: "article", targetClassName: "class" });
+        assert.isTrue(wrapper.find("article").hasClass("class"));
     });
 
     it("supports overlay lifecycle props", () => {
