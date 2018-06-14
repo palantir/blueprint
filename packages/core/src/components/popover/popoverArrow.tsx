@@ -6,6 +6,7 @@
 
 import { Placement } from "popper.js";
 import * as React from "react";
+import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "../../common/classes";
 import { getPosition } from "./popperUtils";
@@ -38,7 +39,7 @@ function getArrowAngle(placement?: Placement) {
 }
 
 export interface IPopoverArrowProps {
-    arrowProps: React.HTMLProps<HTMLElement>;
+    arrowProps: PopperArrowProps;
     placement: Placement;
 }
 

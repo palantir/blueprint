@@ -17,7 +17,7 @@ import { HTMLDivProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { IOverlayableProps, Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
-import { PopoverArrow } from "./arrow";
+import { PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
