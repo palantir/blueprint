@@ -1,4 +1,4 @@
-@# Selects
+@# Select (HTML)
 
 Styling HTML `<select>` tags requires a wrapper element to customize the dropdown caret.
 Put class modifiers on the wrapper and attribute modifiers directly on the `<select>`.

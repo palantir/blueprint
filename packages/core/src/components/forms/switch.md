@@ -1,4 +1,4 @@
-@# Switches
+@# Switch
 
 A switch is simply an alternate appearance for a [checkbox](#core/components/forms/checkbox) that
 simulates on/off instead of checked/unchecked.

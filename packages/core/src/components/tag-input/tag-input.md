@@ -1,4 +1,4 @@
-@# Tag inputs
+@# Tag input
 
 Tag inputs render [`Tag`](#core/components/tag)s inside an input, followed by an actual text input. The container is merely styled to look like a Blueprint input; the actual editable element appears after the last tag. Clicking anywhere on the container will focus the text input for seamless interaction.
 
