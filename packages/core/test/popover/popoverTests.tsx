@@ -7,7 +7,6 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import { Arrow, Target } from "react-popper";
 import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
@@ -15,9 +14,9 @@ import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
-import { Position } from "../../src/common/position";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
+import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { Portal } from "../../src/index";
 
@@ -129,13 +128,13 @@ describe("<Popover>", () => {
     it("propagates class names correctly", () => {
         wrapper = renderPopover({
             className: "bar",
-            interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+            isOpen: true,
             popoverClassName: "foo",
             targetClassName: "baz",
-        }).simulateTarget("click");
-        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass("foo"));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass("bar"));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass("baz"));
+        });
+        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass(wrapper.prop("popoverClassName")));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("className")));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("targetClassName")));
     });
 
     it("adds POPOVER_OPEN class to target when the popover is open", () => {
@@ -175,40 +174,37 @@ describe("<Popover>", () => {
 
     it("inherits dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        const { popover } = renderPopover({ isOpen: true, inheritDarkTheme: true, usePortal: true });
-        assert.isTrue(popover.matches(`.${Classes.DARK}`));
+        renderPopover({ inheritDarkTheme: true, isOpen: true, usePortal: true }).assertFindClass(Classes.DARK);
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        const { popover } = renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true });
-        assert.isFalse(popover.matches(`.${Classes.DARK}`));
+        renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true }).assertFindClass(Classes.DARK, false);
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("allows user to apply dark theme explicitly", () => {
-        const { popover } = renderPopover({
+        const { popoverElement } = renderPopover({
             isOpen: true,
             popoverClassName: Classes.DARK,
             usePortal: false,
         });
-        assert.isNotNull(popover.matches(`.${Classes.DARK}`));
-    });
-
-    it("hasBackdrop=false does not render backdrop element", () => {
-        const { popover } = renderPopover({ hasBackdrop: false, isOpen: true, usePortal: true });
-        assert.lengthOf(popover.parentElement.getElementsByClassName(Classes.POPOVER_BACKDROP), 0);
+        assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
     });
 
     it("hasBackdrop=true renders backdrop element", () => {
-        const { popover } = renderPopover({ hasBackdrop: true, isOpen: true, usePortal: true });
-        const expectedBackdrop = popover.parentElement.previousElementSibling;
-        assert.isTrue(expectedBackdrop.matches(`.${Classes.POPOVER_BACKDROP}`));
+        wrapper = renderPopover({ hasBackdrop: true, isOpen: true, usePortal: true });
+        wrapper.assertFindClass(Classes.POPOVER_BACKDROP, true);
     });
 
-    it("rootElementTag prop renders the right elements", () => {
-        wrapper = renderPopover({ isOpen: true, rootElementTag: "article" });
+    it("hasBackdrop=false does not render backdrop element", () => {
+        wrapper = renderPopover({ hasBackdrop: false, isOpen: true, usePortal: true });
+        wrapper.assertFindClass(Classes.POPOVER_BACKDROP, false);
+    });
+
+    it("targetElementTag prop renders the right elements", () => {
+        wrapper = renderPopover({ isOpen: true, targetElementTag: "article" });
         assert.isNotNull(wrapper.find("article"));
     });
 
@@ -601,24 +597,17 @@ describe("<Popover>", () => {
     describe("Popper.js integration", () => {
         it("renders arrow element by default", () => {
             wrapper = renderPopover({ isOpen: true });
-            assert.lengthOf(wrapper.find(Arrow), 1);
+            assert.lengthOf(wrapper.find(PopoverArrow), 1);
         });
 
         it("arrow can be disabled via modifiers", () => {
             wrapper = renderPopover({ isOpen: true, modifiers: { arrow: { enabled: false } } });
-            assert.lengthOf(wrapper.find(Arrow), 0);
+            assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 
         it("arrow can be disabled via minimal prop", () => {
             wrapper = renderPopover({ minimal: true, isOpen: true });
-            assert.lengthOf(wrapper.find(Arrow), 0);
-        });
-
-        it("computes arrow rotation", done => {
-            renderPopover({ isOpen: true, position: Position.TOP }).then(
-                () => assert.equal(wrapper.state("arrowRotation"), 90),
-                done,
-            );
+            assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 
         it("computes transformOrigin with arrow", done => {
@@ -636,7 +625,8 @@ describe("<Popover>", () => {
     });
 
     interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
-        popover: HTMLElement;
+        popoverElement: HTMLElement;
+        assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
         simulateTarget(eventName: string): this;
@@ -653,7 +643,11 @@ describe("<Popover>", () => {
             </Popover>,
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
-        wrapper.popover = (wrapper.instance() as Popover).popoverElement;
+        wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement;
+        wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
+            (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
+            return wrapper;
+        };
         wrapper.assertIsOpen = (isOpen = true) => {
             assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen, "assertIsOpen");
             return wrapper;
@@ -664,7 +658,7 @@ describe("<Popover>", () => {
         };
         wrapper.findClass = (className: string) => wrapper.find(`.${className}`).hostNodes();
         wrapper.simulateTarget = (eventName: string) => {
-            wrapper.find(Target).simulate(eventName);
+            wrapper.findClass(Classes.POPOVER_TARGET).simulate(eventName);
             return wrapper;
         };
         wrapper.sendEscapeKey = () => {
