@@ -15,7 +15,6 @@ const customProps = {
     KeyCombo: { combo: "?" },
     OverflowList: { items: [], overflowRenderer: () => null, visibleItemRenderer: () => null },
     Overlay: { lazy: false, usePortal: false },
-    SVGTooltip: tooltipContent,
     TagInput: { values: ["foo", "bar", "baz"] },
     Tooltip: tooltipContent,
     Toaster: { usePortal: false },
