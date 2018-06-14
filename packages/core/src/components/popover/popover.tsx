@@ -307,7 +307,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                         placement={positionToPlacement(this.props.position)}
                         modifiers={allModifiers}
                     >
-                        {this.renderPopper}
+                        {this.renderPopover}
                     </Popper>
                 </Overlay>
             </Manager>
@@ -378,7 +378,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     }
 
-    private renderPopper = (props: PopperChildrenProps) => {
+    private renderPopover = (popperProps: PopperChildrenProps) => {
         const content = Utils.ensureElement(this.understandChildren().content);
         const { usePortal, interactionKind } = this.props;
         const { transformOrigin } = this.state;
@@ -405,10 +405,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         );
 
         return (
-            <div className={Classes.TRANSITION_CONTAINER} ref={props.ref} style={props.style}>
+            <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
                 <div className={popoverClasses} style={{ transformOrigin }} {...popoverHandlers}>
                     {this.isArrowEnabled() && (
-                        <PopoverArrow arrowProps={props.arrowProps} angle={this.state.arrowRotation} />
+                        <PopoverArrow arrowProps={popperProps.arrowProps} angle={this.state.arrowRotation} />
                     )}
                     <div className={Classes.POPOVER_CONTENT}>{content}</div>
                 </div>
@@ -416,11 +416,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         );
     };
 
-    private renderTarget = (props: ReferenceChildrenProps) => {
+    private renderTarget = (referenceProps: ReferenceChildrenProps) => {
         const { className, isOpen, targetClassName, targetElementTag } = this.props;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
-        let targetProps: React.HTMLAttributes<HTMLElement>;
+        let targetProps: React.HTMLProps<HTMLElement>;
         if (isHoverInteractionKind) {
             targetProps = {
                 onBlur: this.handleTargetBlur,
@@ -440,19 +440,19 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             className,
             targetClassName,
         );
+        targetProps.ref = referenceProps.ref;
 
         const rawTarget = Utils.ensureElement(this.understandChildren().target);
-        const targetTabIndex = this.props.openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
-        const target: JSX.Element = React.cloneElement(rawTarget, {
+        const targetChild: JSX.Element = React.cloneElement(rawTarget, {
             className: classNames(rawTarget.props.className, {
                 [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
             }),
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
             disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
-            tabIndex: targetTabIndex,
+            tabIndex: this.props.openOnTargetFocus && isHoverInteractionKind ? 0 : undefined,
         });
 
-        return React.createElement(targetElementTag, { ...targetProps, ref: props.ref }, target);
+        return React.createElement(targetElementTag, targetProps, targetChild);
     };
 
     // content and target can be specified as props or as children. this method
