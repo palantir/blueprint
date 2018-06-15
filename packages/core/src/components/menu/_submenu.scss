@@ -6,8 +6,8 @@
 @import "./common";
 
 .#{$ns}-submenu {
-  > .#{$ns}-popover-target {
-    display: inherit;
+  > .#{$ns}-popover-wrapper {
+    display: block;
 
     &.#{$ns}-popover-open > .#{$ns}-menu-item {
       // keep a trail of hovered items as submenus are opened

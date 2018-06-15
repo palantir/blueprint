@@ -118,5 +118,6 @@ span.#{$ns}-popover-target {
   // avoid `inline` elements as they won't account for padding etc
   display: inline-block;
 
-  // this is important for span tag as it's an inline element. using div for block elements works fine.
+  // this is important for span tag as default inline display height only includes text.
+  // div tag can be used for display: block, which works fine.
 }

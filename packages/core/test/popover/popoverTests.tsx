@@ -19,6 +19,7 @@ import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from ".
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { Portal } from "../../src/index";
+import { findInPortal } from "../utils";
 
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
@@ -42,13 +43,17 @@ describe("<Popover>", () => {
     });
 
     describe("validation:", () => {
+        let warnSpy: sinon.SinonStub;
+        before(() => (warnSpy = sinon.stub(console, "warn")));
+        beforeEach(() => warnSpy.resetHistory());
+        after(() => warnSpy.restore());
+
         it("throws error if given no target", () => {
             expectPropValidationError(Popover, {}, Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {
             // use sinon.stub to prevent warnings from appearing in the test logs
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover>
                     <button />
@@ -57,18 +62,14 @@ describe("<Popover>", () => {
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
-            warnSpy.restore();
         });
 
         it("warns if given children and target prop", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(<Popover target="boom">pow</Popover>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
-            warnSpy.restore();
         });
 
         it("warns if given two children and content prop", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover content="boom">
                     {"pow"}
@@ -76,22 +77,18 @@ describe("<Popover>", () => {
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
-            warnSpy.restore();
         });
 
         it("warns if attempting to open a popover with empty content", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover content={null} isOpen={true}>
                     {"target"}
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT));
-            warnSpy.restore();
         });
 
         it("warns if backdrop enabled when rendering inline", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover hasBackdrop={true} usePortal={false}>
                     {"target"}
@@ -99,7 +96,20 @@ describe("<Popover>", () => {
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE));
-            warnSpy.restore();
+        });
+
+        it("warns and disables if given empty content", () => {
+            const popover = mount(
+                <Popover content={undefined} isOpen={true}>
+                    <button />
+                </Popover>,
+            );
+            assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for undefined content");
+            assert.equal(warnSpy.callCount, 1);
+
+            popover.setProps({ content: "    " });
+            assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for white-space string content");
+            assert.equal(warnSpy.callCount, 2);
         });
 
         describe("throws error if backdrop enabled with non-CLICK interactionKind", () => {
@@ -132,8 +142,8 @@ describe("<Popover>", () => {
             popoverClassName: "foo",
             targetClassName: "baz",
         });
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass(wrapper.prop("className")));
         assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass(wrapper.prop("popoverClassName")));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("className")));
         assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("targetClassName")));
     });
 
@@ -154,27 +164,10 @@ describe("<Popover>", () => {
         assert.lengthOf(wrapper.find(Portal), 0);
     });
 
-    it("empty content disables it and warns", () => {
-        const warnSpy = sinon.stub(console, "warn");
-        const popover = mount(
-            <Popover content={undefined} isOpen={true}>
-                <button />
-            </Popover>,
-        );
-        assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for undefined content");
-
-        assert.equal(warnSpy.callCount, 1);
-
-        popover.setProps({ content: "    " });
-        assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for white-space string content");
-
-        assert.equal(warnSpy.callCount, 2);
-        warnSpy.restore();
-    });
-
     it("inherits dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        renderPopover({ inheritDarkTheme: true, isOpen: true, usePortal: true }).assertFindClass(Classes.DARK);
+        wrapper = renderPopover({ inheritDarkTheme: true, isOpen: true, usePortal: true });
+        assert.exists(findInPortal(wrapper, `.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
@@ -194,12 +187,12 @@ describe("<Popover>", () => {
     });
 
     it("hasBackdrop=true renders backdrop element", () => {
-        wrapper = renderPopover({ hasBackdrop: true, isOpen: true, usePortal: true });
+        wrapper = renderPopover({ hasBackdrop: true, isOpen: true, usePortal: false });
         wrapper.assertFindClass(Classes.POPOVER_BACKDROP, true);
     });
 
     it("hasBackdrop=false does not render backdrop element", () => {
-        wrapper = renderPopover({ hasBackdrop: false, isOpen: true, usePortal: true });
+        wrapper = renderPopover({ hasBackdrop: false, isOpen: true, usePortal: false });
         wrapper.assertFindClass(Classes.POPOVER_BACKDROP, false);
     });
 

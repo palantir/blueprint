@@ -172,6 +172,7 @@ export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
 export const POPOVER_OPEN = `${POPOVER}-open`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
+export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
 export const TRANSITION_CONTAINER = `${NS}-transition-container`;
 
 export const PROGRESS_BAR = `${NS}-progress-bar`;

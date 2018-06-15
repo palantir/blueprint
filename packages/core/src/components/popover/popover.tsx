@@ -190,6 +190,12 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
      * @default true
      */
     usePortal?: boolean;
+
+    /**
+     * HTML tag name for the wrapper element, which also receives the `className` prop.
+     * @default "span"
+     */
+    wrapperTagName?: keyof JSX.IntrinsicElements;
 }
 
 export interface IPopoverState {
@@ -216,6 +222,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,
+        wrapperTagName: "span",
     };
 
     /**
@@ -252,12 +259,14 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     public render() {
-        const { disabled, modifiers } = this.props;
+        // rename wrapper tag to begin with uppercase letter so it's recognized
+        // as JSX component instead of intrinsic element. but because of its
+        // type, tsc actually recognizes that it is _any_ intrinsic element, so
+        // it can typecheck the HTML props!!
+        const { className, disabled, modifiers, wrapperTagName: TagName } = this.props;
         const { isOpen } = this.state;
 
-        const children = this.understandChildren();
-
-        const isContentEmpty = children.content == null;
+        const isContentEmpty = Utils.ensureElement(this.understandChildren().content) == null;
         // need to do this check in render(), because `isOpen` is derived from
         // state, and state can't necessarily be accessed in validateProps.
         if (isContentEmpty && !disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
@@ -279,34 +288,36 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         return (
             <Manager>
-                <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
-                <Overlay
-                    autoFocus={this.props.autoFocus}
-                    backdropClassName={Classes.POPOVER_BACKDROP}
-                    backdropProps={this.props.backdropProps}
-                    canEscapeKeyClose={this.props.canEscapeKeyClose}
-                    canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
-                    className={this.props.portalClassName}
-                    enforceFocus={this.props.enforceFocus}
-                    hasBackdrop={this.props.hasBackdrop}
-                    isOpen={isOpen && !isContentEmpty}
-                    onClose={this.handleOverlayClose}
-                    onClosed={this.props.onClosed}
-                    onClosing={this.props.onClosing}
-                    onOpened={this.props.onOpened}
-                    onOpening={this.props.onOpening}
-                    transitionDuration={this.props.transitionDuration}
-                    transitionName={Classes.POPOVER}
-                    usePortal={this.props.usePortal}
-                >
-                    <Popper
-                        innerRef={this.refHandlers.popover}
-                        placement={positionToPlacement(this.props.position)}
-                        modifiers={allModifiers}
+                <TagName className={classNames(Classes.POPOVER_WRAPPER, className)}>
+                    <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
+                    <Overlay
+                        autoFocus={this.props.autoFocus}
+                        backdropClassName={Classes.POPOVER_BACKDROP}
+                        backdropProps={this.props.backdropProps}
+                        canEscapeKeyClose={this.props.canEscapeKeyClose}
+                        canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
+                        className={this.props.portalClassName}
+                        enforceFocus={this.props.enforceFocus}
+                        hasBackdrop={this.props.hasBackdrop}
+                        isOpen={isOpen && !isContentEmpty}
+                        onClose={this.handleOverlayClose}
+                        onClosed={this.props.onClosed}
+                        onClosing={this.props.onClosing}
+                        onOpened={this.props.onOpened}
+                        onOpening={this.props.onOpening}
+                        transitionDuration={this.props.transitionDuration}
+                        transitionName={Classes.POPOVER}
+                        usePortal={this.props.usePortal}
                     >
-                        {this.renderPopover}
-                    </Popper>
-                </Overlay>
+                        <Popper
+                            innerRef={this.refHandlers.popover}
+                            placement={positionToPlacement(this.props.position)}
+                            modifiers={allModifiers}
+                        >
+                            {this.renderPopover}
+                        </Popper>
+                    </Overlay>
+                </TagName>
             </Manager>
         );
     }
@@ -376,7 +387,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const content = Utils.ensureElement(this.understandChildren().content);
         const { usePortal, interactionKind } = this.props;
         const { transformOrigin } = this.state;
 
@@ -407,49 +417,43 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                     {this.isArrowEnabled() && (
                         <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
                     )}
-                    <div className={Classes.POPOVER_CONTENT}>{content}</div>
+                    <div className={Classes.POPOVER_CONTENT}>{this.understandChildren().content}</div>
                 </div>
             </div>
         );
     };
 
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
-        const { className, targetClassName, targetTagName } = this.props;
+        const { targetClassName, targetTagName } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
-        let targetProps: React.HTMLProps<HTMLElement>;
-        if (isHoverInteractionKind) {
-            targetProps = {
-                onBlur: this.handleTargetBlur,
-                onFocus: this.handleTargetFocus,
-                onMouseEnter: this.handleMouseEnter,
-                onMouseLeave: this.handleMouseLeave,
-            };
-        } else {
-            // any one of the CLICK* values
-            targetProps = {
-                onClick: this.handleTargetClick,
-            };
-        }
-        targetProps.className = classNames(
-            Classes.POPOVER_TARGET,
-            { [Classes.POPOVER_OPEN]: isOpen },
-            className,
-            targetClassName,
-        );
+        const targetProps: React.HTMLProps<HTMLElement> = isHoverInteractionKind
+            ? {
+                  // HOVER handlers
+                  onBlur: this.handleTargetBlur,
+                  onFocus: this.handleTargetFocus,
+                  onMouseEnter: this.handleMouseEnter,
+                  onMouseLeave: this.handleMouseLeave,
+              }
+            : {
+                  // CLICK needs only one handler
+                  onClick: this.handleTargetClick,
+              };
+        targetProps.className = classNames(Classes.POPOVER_TARGET, { [Classes.POPOVER_OPEN]: isOpen }, targetClassName);
         targetProps.ref = referenceProps.ref;
 
         const rawTarget = Utils.ensureElement(this.understandChildren().target);
-        const targetChild: JSX.Element = React.cloneElement(rawTarget, {
+        const { tabIndex = 0 } = rawTarget.props;
+        const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
             className: classNames(rawTarget.props.className, {
                 [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
             }),
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
             disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
-            tabIndex: this.props.openOnTargetFocus && isHoverInteractionKind ? 0 : undefined,
+            tabIndex: this.props.openOnTargetFocus && isHoverInteractionKind ? tabIndex : undefined,
         });
-        return React.createElement(targetTagName, targetProps, targetChild);
+        return React.createElement(targetTagName, targetProps, clonedTarget);
     };
 
     // content and target can be specified as props or as children. this method
@@ -459,8 +463,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // #validateProps asserts that 1 <= children.length <= 2 so content is optional
         const [targetChild, contentChild] = React.Children.toArray(children);
         return {
-            content: Utils.ensureElement(contentChild == null ? contentProp : contentChild),
-            target: Utils.ensureElement(targetChild == null ? targetProp : targetChild),
+            content: contentChild == null ? contentProp : contentChild,
+            target: targetChild == null ? targetProp : targetChild,
         };
     }
 
