@@ -37,7 +37,7 @@ describe("<DateInput>", () => {
         );
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`).hostNodes();
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
