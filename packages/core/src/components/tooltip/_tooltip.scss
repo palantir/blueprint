@@ -55,11 +55,6 @@
   }
 }
 
-.#{$ns}-popover-target .#{$ns}-tooltip {
-  // inline tooltips don't get auto-sizing, so this sort of emulates it
-  white-space: nowrap;
-}
-
 .#{$ns}-tooltip-indicator {
   border-bottom: dotted 1px;
   cursor: help;

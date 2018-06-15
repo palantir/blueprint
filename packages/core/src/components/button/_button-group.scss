@@ -99,13 +99,13 @@ Styleguide button-group
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
   &:not(.#{$ns}-minimal) {
-    > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-popover-target .#{$ns}-button,
+    > .#{$ns}-popover-target:not(:first-child) .#{$ns}-button,
     > .#{$ns}-button:not(:first-child) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
-    > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
       margin-right: -$button-border-width;
       border-top-right-radius: 0;
@@ -187,17 +187,17 @@ Styleguide button-group
     }
 
     &:not(.#{$ns}-minimal) {
-      > .#{$ns}-popover-wrapper:first-child .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-target:first-child .#{$ns}-button,
       > .#{$ns}-button:first-child {
         border-radius: $pt-border-radius $pt-border-radius 0 0;
       }
 
-      > .#{$ns}-popover-wrapper:last-child .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-target:last-child .#{$ns}-button,
       > .#{$ns}-button:last-child {
         border-radius: 0 0 $pt-border-radius $pt-border-radius;
       }
 
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-bottom: -$button-border-width;
       }
@@ -215,7 +215,7 @@ Styleguide button-group
       // deeply nested selector necessary to target the appropriate popover
       // wrapper, yet ensure we only style buttons within the target.
       // stylelint-disable-next-line selector-max-compound-selectors
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-right: $button-border-width;
       }
@@ -223,7 +223,7 @@ Styleguide button-group
 
     &.#{$ns}-vertical {
       // stylelint-disable-next-line selector-max-compound-selectors
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-bottom: $button-border-width;
       }
