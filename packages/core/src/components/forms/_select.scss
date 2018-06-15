@@ -5,7 +5,7 @@
 @import "../popover/common";
 
 /*
-Selects
+HTML select
 
 Markup:
 <div class="#{$ns}-select {{.modifier}}">
@@ -19,9 +19,9 @@ Markup:
 </div>
 
 :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-select</code> for icon coloring (not shown below).
-.#{$ns}-minimal - Minimal appearance
-.#{$ns}-large - Large
 .#{$ns}-fill - Expand to fill parent container
+.#{$ns}-large - Large size
+.#{$ns}-minimal - Minimal appearance
 
 Styleguide select
 */
@@ -96,22 +96,3 @@ Styleguide select
     content: $pt-icon-double-caret-vertical;
   }
 }
-
-/*
-Inline
-
-Markup:
-<label class="#{$ns}-label {{.modifier}}">
-  Label A
-  <div class="#{$ns}-select">
-    <select>
-      <option selected>Choose an item...</option>
-      <option value="1">One</option>
-    </select>
-  </div>
-</label>
-
-.#{$ns}-inline - Inline
-
-Styleguide select-inline
-*/

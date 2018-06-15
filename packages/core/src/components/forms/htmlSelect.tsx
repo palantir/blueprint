@@ -35,7 +35,8 @@ export interface IHtmlSelectProps
 
     /**
      * Shorthand for supplying options: an array of basic types or
-     * `{ label?, value }` objects.
+     * `{ label?, value }` objects. If no `label` is supplied, `value`
+     * will be used as the label.
      */
     options?: Array<string | number | IHtmlOptionProps>;
 }
