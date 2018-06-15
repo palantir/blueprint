@@ -35,6 +35,7 @@ body.#{$ns}-overlay-open {
   }
 
   &.#{$ns}-overlay-inline {
+    display: inline;
     // inline overlays can overflow container by default (see Dialog & Popover)
     overflow: visible;
   }
