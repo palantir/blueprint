@@ -15,9 +15,9 @@ const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
 describe("<Tooltip>", () => {
-    it("renders targetElementTag", () => {
-        const tooltip = renderTooltip({ isOpen: true, targetElementTag: "section" });
-        assert.isTrue(tooltip.find(TARGET_SELECTOR).is(tooltip.prop("targetElementTag")));
+    it("renders targetTagName", () => {
+        const tooltip = renderTooltip({ isOpen: true, targetTagName: "section" });
+        assert.isTrue(tooltip.find(TARGET_SELECTOR).is(tooltip.prop("targetTagName")));
     });
 
     it("propogates class names correctly", () => {
@@ -27,7 +27,7 @@ describe("<Tooltip>", () => {
             tooltipClassName: "foo",
         });
         assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("tooltipClassName")), "tooltip");
-        assert.isTrue(tooltip.find(TARGET_SELECTOR).hasClass(tooltip.prop("className")), "target");
+        assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")), "wrapper");
     });
 
     it("supports overlay lifecycle props", () => {
