@@ -43,6 +43,7 @@ label.#{$ns}-label {
   margin-top: 0;
   margin-bottom: ($pt-grid-size * 1.5);
 
+  .#{$ns}-html-select,
   .#{$ns}-input,
   .#{$ns}-select,
   .#{$ns}-slider,
@@ -52,7 +53,8 @@ label.#{$ns}-label {
     text-transform: none;
   }
 
-  .#{$ns}-select select {
+  .#{$ns}-select select,
+  .#{$ns}-html-select select {
     width: 100%;
     vertical-align: top;
     font-weight: 400;
@@ -68,6 +70,7 @@ label.#{$ns}-label {
   &.#{$ns}-inline {
     line-height: $pt-input-height;
 
+    .#{$ns}-html-select,
     .#{$ns}-input,
     .#{$ns}-input-group,
     .#{$ns}-select,

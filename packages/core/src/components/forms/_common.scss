@@ -259,13 +259,10 @@ $control-group-stack: (
 }
 
 %pt-select-arrow {
-  @include pt-icon();
   position: absolute;
-  top: 0;
+  top: ($pt-button-height - $pt-icon-size-standard) / 2;
   right: $input-padding-horizontal * 0.7;
-  line-height: $pt-button-height;
   color: $pt-icon-color;
-  content: $pt-icon-double-caret-vertical;
   pointer-events: none;
 
   &.#{$ns}-disabled {

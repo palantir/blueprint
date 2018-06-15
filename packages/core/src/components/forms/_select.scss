@@ -26,6 +26,7 @@ Markup:
 Styleguide select
 */
 
+.#{$ns}-html-select,
 .#{$ns}-select {
   display: inline-block;
   position: relative;
@@ -45,7 +46,7 @@ Styleguide select
     }
   }
 
-  &::after {
+  .#{$ns}-icon {
     @extend %pt-select-arrow;
   }
 
@@ -54,14 +55,14 @@ Styleguide select
   }
 
   &.#{$ns}-large {
-    &::after {
-      top: 0;
-      right: $pt-grid-size * 1.2;
-      line-height: $pt-button-height-large;
-    }
-
     select {
       @extend %pt-select-large;
+    }
+
+    &::after, // CSS support
+    .#{$ns}-icon {
+      top: ($pt-button-height-large - $pt-icon-size-standard) / 2;
+      right: $pt-grid-size * 1.2;
     }
   }
 
@@ -85,6 +86,14 @@ Styleguide select
     &::after {
       color: $pt-dark-icon-color;
     }
+  }
+}
+
+.#{$ns}-select {
+  &::after {
+    @extend %pt-select-arrow;
+    @include pt-icon();
+    content: $pt-icon-double-caret-vertical;
   }
 }
 
