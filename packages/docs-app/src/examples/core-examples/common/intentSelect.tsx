@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Intent, Label } from "@blueprintjs/core";
+import { HtmlSelect, Intent, Label } from "@blueprintjs/core";
 import * as React from "react";
 
 const INTENTS = [
@@ -24,14 +24,6 @@ export interface IIntentSelectProps {
 export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
     <Label>
         Intent
-        <div className={Classes.SELECT}>
-            <select value={props.intent} onChange={props.onChange}>
-                {INTENTS.map((opt, i) => (
-                    <option key={i} value={opt.value}>
-                        {opt.label}
-                    </option>
-                ))}
-            </select>
-        </div>
+        <HtmlSelect value={props.intent} onChange={props.onChange} options={INTENTS} />
     </Label>
 );
