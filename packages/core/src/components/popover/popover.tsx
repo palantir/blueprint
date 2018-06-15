@@ -155,9 +155,7 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     position?: Position | "auto";
 
     /**
-     * The target to which the popover content is attached. This prop is wrapped
-     * in a DOM element defined by `targetTagName` and `targetClassName` to
-     * handle interaction events.
+     * The target to which the popover content is attached.
      *
      * Target can instead be provided as the first element in `children`.
      */
@@ -170,18 +168,25 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
 
     /**
      * HTML tag name for the target element.
-     * @default "div"
+     *
+     * By default, a `<span>` tag is used so popovers appear as inline-block
+     * elements and can be nested in text. Use `<div>` tag for a block element.
+     * @default "span"
      */
     targetTagName?: keyof JSX.IntrinsicElements;
 
     /**
-     * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
-     * Rendering content inside a `Portal` allows the popover content to escape the physical bounds of its
-     * parent while still being positioned correctly relative to its target.
+     * Whether the popover should be rendered inside a `Portal` attached to
+     * `document.body`.
      *
-     * Using a `Portal` is necessary if any ancestor of the target hides overflow or uses very complex positioning.
-     * Not using a `Portal` can result in smoother performance when scrolling and allows the popover content to inherit
-     * CSS styles from surrounding elements.
+     * Rendering content inside a `Portal` allows the popover content to escape
+     * the physical bounds of its parent while still being positioned correctly
+     * relative to its target. Using a `Portal` is necessary if any ancestor of
+     * the target hides overflow or uses very complex positioning.
+     *
+     * Not using a `Portal` can result in smoother performance when scrolling
+     * and allows the popover content to inherit CSS styles from surrounding
+     * elements, but it is subject to the overflow bounds of its ancestors.
      * @default true
      */
     usePortal?: boolean;
@@ -208,7 +213,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         modifiers: {},
         openOnTargetFocus: true,
         position: "auto",
-        targetTagName: "div",
+        targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,
     };
