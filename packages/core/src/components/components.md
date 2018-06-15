@@ -42,7 +42,7 @@
 @page checkbox
 @page switch
 @page radio
-@page select-forms
+@page html-select
 
 <!-- this guy's gonna go away shortly -->
 @page label
