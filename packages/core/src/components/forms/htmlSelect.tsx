@@ -10,21 +10,41 @@ import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classe
 import { IElementRefProps } from "../html/html";
 import { Icon } from "../icon/icon";
 
+export interface IHtmlOptionProps {
+    /** Optional label for this option. Defaults to `value`. */
+    label?: string;
+
+    /** Value of this option. Should be locally unique. */
+    value: string | number;
+}
+
 export interface IHtmlSelectProps
     extends React.SelectHTMLAttributes<HTMLSelectElement>,
         IElementRefProps<HTMLSelectElement> {
+    /** Whether this element is non-interactive. */
     disabled?: boolean;
+
+    /** Whether this element should fill its container. */
     fill?: boolean;
+
+    /** Whether to use large styles. */
     large?: boolean;
+
+    /** Whether to use minimal styles. */
     minimal?: boolean;
-    options?: Array<string | number | { label?: string; value: string | number }>;
+
+    /**
+     * Shorthand for supplying options: an array of basic types or
+     * `{ label?, value }` objects.
+     */
+    options?: Array<string | number | IHtmlOptionProps>;
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class HtmlSelect extends React.PureComponent<IHtmlSelectProps> {
     public render() {
-        const { className, disabled, elementRef, fill, large, minimal, options, ...htmlProps } = this.props;
+        const { className, disabled, elementRef, fill, large, minimal, options = [], ...htmlProps } = this.props;
         const classes = classNames(
             HTML_SELECT,
             {
@@ -37,7 +57,7 @@ export class HtmlSelect extends React.PureComponent<IHtmlSelectProps> {
         );
 
         const optionChildren = options.map(value => {
-            const option = typeof value === "object" ? value : { label: value.toString(), value };
+            const option = typeof value === "object" ? value : { value };
             return <option key={option.value} {...option} />;
         });
 
