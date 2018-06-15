@@ -14,6 +14,7 @@ import {
     Code,
     FormGroup,
     H5,
+    HtmlSelect,
     Intent,
     Label,
     Menu,
@@ -56,8 +57,6 @@ const VALID_POSITIONS: Array<Position | "auto"> = [
     Position.LEFT,
     Position.LEFT_BOTTOM,
 ];
-
-const POSITION_OPTIONS = VALID_POSITIONS.map(p => <option key={p} value={p} children={p} />);
 
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
@@ -157,23 +156,21 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                     label="Position when opened"
                     labelFor="position"
                 >
-                    <div className={Classes.SELECT}>
-                        <select value={this.state.position} onChange={this.handlePositionChange}>
-                            {POSITION_OPTIONS}
-                        </select>
-                    </div>
+                    <HtmlSelect
+                        value={this.state.position}
+                        onChange={this.handlePositionChange}
+                        options={VALID_POSITIONS}
+                    />
                 </FormGroup>
                 <Label>
                     Example content
-                    <div className={Classes.SELECT}>
-                        <select value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
-                            <option value="0">Text</option>
-                            <option value="1">Input</option>
-                            <option value="2">Slider</option>
-                            <option value="3">Menu</option>
-                            <option value="4">Empty</option>
-                        </select>
-                    </div>
+                    <HtmlSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
+                        <option value="0">Text</option>
+                        <option value="1">Input</option>
+                        <option value="2">Slider</option>
+                        <option value="3">Menu</option>
+                        <option value="4">Empty</option>
+                    </HtmlSelect>
                 </Label>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
@@ -203,17 +200,16 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                     onChange={this.getModifierChangeHandler("preventOverflow")}
                 >
                     <br />
-                    <div className={Classes.SELECT} style={{ marginTop: 5 }}>
-                        <select
-                            disabled={!preventOverflow.enabled}
-                            value={preventOverflow.boundariesElement.toString()}
-                            onChange={this.handleBoundaryChange}
-                        >
-                            <option value="scrollParent">scrollParent</option>
-                            <option value="viewport">viewport</option>
-                            <option value="window">window</option>
-                        </select>
-                    </div>
+                    <div style={{ marginTop: 5 }} />
+                    <HtmlSelect
+                        disabled={!preventOverflow.enabled}
+                        value={preventOverflow.boundariesElement.toString()}
+                        onChange={this.handleBoundaryChange}
+                    >
+                        <option value="scrollParent">scrollParent</option>
+                        <option value="viewport">viewport</option>
+                        <option value="window">window</option>
+                    </HtmlSelect>
                 </Switch>
                 <Label>
                     <AnchorButton

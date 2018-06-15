@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, Icon, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, HtmlSelect, Icon, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -225,16 +225,15 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             return null;
         }
         return (
-            <div className={classNames(CoreClasses.SELECT, Classes.TIMEPICKER_AMPM_SELECT)}>
-                <select
-                    value={this.state.isPm ? "pm" : "am"}
-                    onChange={this.handleAmPmChange}
-                    disabled={this.props.disabled}
-                >
-                    <option value="am">AM</option>
-                    <option value="pm">PM</option>
-                </select>
-            </div>
+            <HtmlSelect
+                className={Classes.TIMEPICKER_AMPM_SELECT}
+                disabled={this.props.disabled}
+                onChange={this.handleAmPmChange}
+                value={this.state.isPm ? "pm" : "am"}
+            >
+                <option value="am">AM</option>
+                <option value="pm">PM</option>
+            </HtmlSelect>
         );
     }
 

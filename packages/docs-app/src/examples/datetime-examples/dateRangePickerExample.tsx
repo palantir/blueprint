@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, H5, Label, Switch } from "@blueprintjs/core";
+import { Classes, H5, HtmlSelect, Label, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
 import moment from "moment";
 import * as React from "react";
@@ -22,12 +22,12 @@ export interface IDateRangePickerExampleState {
     shortcuts?: boolean;
 }
 
-interface ISelectOption {
+interface IDateOption {
     label: string;
     value?: Date;
 }
 
-const MIN_DATE_OPTIONS: ISelectOption[] = [
+const MIN_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
         label: "4 months ago",
@@ -43,7 +43,7 @@ const MIN_DATE_OPTIONS: ISelectOption[] = [
     },
 ];
 
-const MAX_DATE_OPTIONS: ISelectOption[] = [
+const MAX_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
         label: "1 month ago",
@@ -142,18 +142,15 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
     private renderSelectMenu(
         label: string,
         selectedValue: number | string,
-        options: ISelectOption[],
+        options: IDateOption[],
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
-        const optionElements = options.map((opt, i) => <option key={i} value={i} label={opt.label} />);
         return (
             <Label>
                 {label}
-                <div className={Classes.SELECT}>
-                    <select value={selectedValue} onChange={onChange}>
-                        {optionElements}
-                    </select>
-                </div>
+                <HtmlSelect value={selectedValue} onChange={onChange}>
+                    {options.map((opt, i) => <option key={i} value={i} label={opt.label} />)}
+                </HtmlSelect>
             </Label>
         );
     }

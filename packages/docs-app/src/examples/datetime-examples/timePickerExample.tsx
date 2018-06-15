@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, H5, Switch } from "@blueprintjs/core";
+import { Classes, H5, HtmlSelect, Switch } from "@blueprintjs/core";
 import { Example, handleNumberChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
@@ -73,23 +73,19 @@ export class TimePickerExample extends React.PureComponent<IExampleProps, ITimeP
                 <PrecisionSelect value={this.state.precision} onChange={this.handlePrecisionChange} />
                 <label className={Classes.LABEL}>
                     Minimum time
-                    <div className={Classes.SELECT}>
-                        <select onChange={handleNumberChange(this.changeMinHour)}>
-                            <option value={MinimumHours.NONE}>None</option>
-                            <option value={MinimumHours.SIX_PM}>6pm (18:00)</option>
-                        </select>
-                    </div>
+                    <HtmlSelect onChange={handleNumberChange(this.changeMinHour)}>
+                        <option value={MinimumHours.NONE}>None</option>
+                        <option value={MinimumHours.SIX_PM}>6pm (18:00)</option>
+                    </HtmlSelect>
                 </label>
                 <label className={Classes.LABEL}>
                     Maximum time
-                    <div className={Classes.SELECT}>
-                        <select onChange={handleNumberChange(this.changeMaxHour)}>
-                            <option value={MaximumHours.NONE}>None</option>
-                            <option value={MaximumHours.SIX_PM}>6pm (18:00)</option>
-                            <option value={MaximumHours.NINE_PM}>9pm (21:00)</option>
-                            <option value={MaximumHours.TWO_AM}>2am (02:00)</option>
-                        </select>
-                    </div>
+                    <HtmlSelect onChange={handleNumberChange(this.changeMaxHour)}>
+                        <option value={MaximumHours.NONE}>None</option>
+                        <option value={MaximumHours.SIX_PM}>6pm (18:00)</option>
+                        <option value={MaximumHours.NINE_PM}>9pm (21:00)</option>
+                        <option value={MaximumHours.TWO_AM}>2am (02:00)</option>
+                    </HtmlSelect>
                 </label>
             </>
         );
