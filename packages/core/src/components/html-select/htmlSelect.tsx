@@ -19,8 +19,8 @@ export interface IHtmlOptionProps {
 }
 
 export interface IHtmlSelectProps
-    extends React.SelectHTMLAttributes<HTMLSelectElement>,
-        IElementRefProps<HTMLSelectElement> {
+    extends IElementRefProps<HTMLSelectElement>,
+        React.SelectHTMLAttributes<HTMLSelectElement> {
     /** Whether this element is non-interactive. */
     disabled?: boolean;
 
@@ -33,12 +33,21 @@ export interface IHtmlSelectProps
     /** Whether to use minimal styles. */
     minimal?: boolean;
 
+    /** Multiple select is not supported. */
+    multiple?: never;
+
+    /** Change event handler. Use `event.currentTarget.value` to access the new value. */
+    onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+
     /**
      * Shorthand for supplying options: an array of basic types or
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
     options?: Array<string | number | IHtmlOptionProps>;
+
+    /** Controlled value of this component. */
+    value?: string | number;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -64,7 +73,7 @@ export class HtmlSelect extends React.PureComponent<IHtmlSelectProps> {
 
         return (
             <div className={classes}>
-                <select disabled={disabled} ref={elementRef} {...htmlProps}>
+                <select disabled={disabled} ref={elementRef} {...htmlProps} multiple={false}>
                     {optionChildren}
                     {htmlProps.children}
                 </select>
