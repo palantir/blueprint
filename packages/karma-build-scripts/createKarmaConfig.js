@@ -34,6 +34,7 @@ module.exports = function createKarmaConfig(
         coverageReporter: {
             check: {
                 each: {
+                    // ensure some coverage of each file, but rely mainly on overall watermarks
                     lines: COVERAGE_PERCENT,
                     statements: COVERAGE_PERCENT,
                     excludes: coverageExcludes,
@@ -41,11 +42,8 @@ module.exports = function createKarmaConfig(
                 },
             },
             includeAllSources: true,
-            reporters: [
-                { type: "html", dir: "coverage" },
-                { type: "lcov" },
-                { type: "text" },
-            ],
+            // save interim raw coverage report in memory. remapCoverage will output final report.
+            type: "in-memory",
             watermarks: {
                 lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
                 statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
@@ -73,7 +71,13 @@ module.exports = function createKarmaConfig(
         port: KARMA_SERVER_PORT,
         preprocessors: {
             [path.join(dirname, "test/**/*.ts")]: "sourcemap",
-            [path.join(dirname, "test/index.ts")]: "webpack",
+            [path.join(dirname, "test/index.ts")]: ["webpack", "sourcemap"],
+        },
+        // define where to save final remapped coverage reports
+        remapCoverageReporter: {
+            'text-summary': null,
+            html: './coverage/html',
+            cobertura: './coverage/cobertura.xml'
         },
         reporters: ["mocha"],
         singleRun: true,
@@ -112,7 +116,8 @@ module.exports = function createKarmaConfig(
     }
 
     if (coverage) {
-        config.reporters.push("coverage");
+        // enable coverage. these plugins are already configured above.
+        config.reporters.push("coverage", "remap-coverage");
     }
 
     return config;
