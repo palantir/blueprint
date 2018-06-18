@@ -1,6 +1,6 @@
 @# Context menu
 
-Context menus present the user with a list of actions upon right-click.
+Context menus present the user with a list of actions upon a right-click.
 
 You can create context menus in either of the following ways:
 
@@ -71,7 +71,7 @@ for programmatically triggered menus or for non-React apps.
   Show the given element at the given offset from the top-left corner of the
   viewport. Showing a menu closes the previously shown one automatically. The
   menu appears below-right of this point, but will flip to below-left instead if
-  there is not enough room onscreen. The optional callback is invoked when this
+  there is not enough room on-screen. The optional callback is invoked when this
   menu closes.
 
 - `ContextMenu.hide(): void`

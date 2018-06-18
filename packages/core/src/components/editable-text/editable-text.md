@@ -35,7 +35,7 @@ and adjusts _vertically_ based on length of text. Use the `minLines` and
 <EditableText multiline={true} minLines={3} maxLines={12} {...props} />
 ```
 
-Users confirm text in multiline mode by pressing `ctrl` `enter` or `cmd` `enter`
+Users confirm text in multiline mode by pressing `ctrl`+`enter` or `cmd`+`enter`
 rather than simply `enter`. (Pressing the `enter` key by itself moves the cursor
 to the next line.) This behavior can be inverted with the `confirmOnEnterKey`
 prop.
@@ -49,7 +49,7 @@ respectively. Use `onChange` to listen to ongoing updates and use `onConfirm`
 and `onCancel` to listen only to completed or canceled edits.
 
 The `onConfirm` and `onCancel` callbacks are invoked based on user interaction.
-The user presses `enter` (or `cmd` `enter` when multiline) or blurs the input to
+The user presses `enter` (or `cmd`+`enter` when multiline) or blurs the input to
 confirm the current value, or presses `esc` to cancel. Canceling resets the
 field to the last confirmed value. Neither callback is invoked if the value is
 unchanged.

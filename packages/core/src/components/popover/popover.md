@@ -237,7 +237,7 @@ The following example demonstrates the various interaction kinds (note: these Po
 @### Closing on click
 
 To enable click-to-close behavior on an element inside a popover, simply add the
-class `Classes.POPOVER_DISMISS` to that element. For example, the "Dismiss"
+class `Classes.POPOVER_DISMISS` to that element. For example, the **Dismiss**
 button in the top-level [Popover example](#core/components/popover) has this
 class. To enable this behavior on the entire popover, pass the
 `popoverClassName={Classes.POPOVER_DISMISS}` prop.
