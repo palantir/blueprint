@@ -23,6 +23,13 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     icon?: IconName | JSX.Element | null;
 
     /**
+     * Visual intent color to apply to background, title, and icon.
+     *
+     * Defining this prop also applies a default icon, if the `icon` prop is omitted.
+     */
+    intent?: Intent;
+
+    /**
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply

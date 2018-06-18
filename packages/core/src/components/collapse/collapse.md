@@ -6,10 +6,7 @@ that can be expanded and collapsed.
 
 @reactExample CollapseExample
 
-@## JavaScript API
-
-The `Collapse` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 Any content should be a child of the `Collapse` element. Content must be in the document
 flow (e.g. `position: absolute;` wouldn't work, as the parent element would inherit a height of 0).

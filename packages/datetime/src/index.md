@@ -4,7 +4,8 @@ reference: datetime
 
 @# Datetime
 
-The __@blueprintjs/datetime__ NPM package provides several components for interacting with dates and times:
+The [__@blueprintjs/datetime__ NPM package](https://www.npmjs.com/package/@blueprintjs/datetime)
+provides several components for interacting with dates and times:
 
 - [`DatePicker`](#datetime/datepicker) for selecting a single date (day, month, year).
 
@@ -21,9 +22,6 @@ The __@blueprintjs/datetime__ NPM package provides several components for intera
 
 - [`DateRangeInput`](#datetime/daterangeinput), which composes two text inputs with a `DateRangePicker` in
   a `Popover`, for use in forms.
-
-They are available in the __@blueprintjs/datetime__ package on
-[NPM](https://www.npmjs.com/package/@blueprintjs/datetime).
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 

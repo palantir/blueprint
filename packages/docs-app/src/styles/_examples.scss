@@ -57,6 +57,10 @@
   }
 }
 
+#{example("MenuExample")} .#{$ns}-menu {
+  max-width: 280px;
+}
+
 #{example("TagExample")} {
   .docs-example {
     flex-direction: column;
@@ -199,10 +203,6 @@
       }
     }
   }
-}
-
-.docs-menu-example .#{$ns}-menu {
-  max-width: 280px;
 }
 
 #{example("OverflowListExample")} {

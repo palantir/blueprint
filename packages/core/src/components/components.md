@@ -26,30 +26,26 @@
 @page text
 @page tree
 
-@## Forms
+@## Form controls
 
 @page form-group
 @page control-group
-
-<!-- ordering of these guys needs some work... what makes sense?? -->
-@page input
-@page input-group
-@page file-input
-@page numeric-input
-@page tag-input
-@page text-area
-@page sliders
+@page label
 @page checkbox
-@page switch
 @page radio
 @page select-forms
+@page sliders
+@page switch
 
-<!-- this guy's gonna go away shortly -->
-@page label
+@## Form inputs
+
+@page file-input
+@page numeric-input
+@page text-inputs
+@page tag-input
 
 @## Overlays
 
-<!-- now people will read the Overlay docs!! -->
 @page overlay
 @page portal
 @page alert
