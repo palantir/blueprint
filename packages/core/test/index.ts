@@ -32,6 +32,7 @@ import "./non-ideal-state/nonIdealStateTests";
 import "./overflow-list/overflowListTests";
 import "./overlay/overlayTests";
 import "./popover/popoverTests";
+import "./popover/popperUtilTests";
 import "./portal/portalTests";
 import "./progress/progressBarTests";
 import "./slider/handleTests";
