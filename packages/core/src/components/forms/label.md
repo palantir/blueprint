@@ -1,4 +1,4 @@
-@# Labels
+@# Label
 
 Labels enhance the usability of your forms.
 

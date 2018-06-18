@@ -1,4 +1,4 @@
-@# Checkboxes
+@# Checkbox
 
 Blueprint's custom checkboxes use an extra `.@ns-control-indicator` element after the `<input>` to
 achieve their custom styling. You should then wrap the whole thing in a `<label>` with the classes

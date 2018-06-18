@@ -32,17 +32,15 @@
 @page control-group
 
 <!-- ordering of these guys needs some work... what makes sense?? -->
-@page input
-@page input-group
 @page file-input
 @page numeric-input
-@page tag-input
-@page text-area
-@page sliders
+@page text-inputs
 @page checkbox
 @page switch
 @page radio
 @page select-forms
+@page sliders
+@page tag-input
 
 <!-- this guy's gonna go away shortly -->
 @page label
