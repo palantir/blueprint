@@ -24,7 +24,7 @@ icon buttons) because it is able to measure the content and ensure there is
 always space for it.
 
 `InputGroup` can be used just like a standard React `input` element, in
-controlled or uncontrolled fashion. In addition to its own props, it supports
+a controlled or uncontrolled fashion. In addition to its own props, it supports
 all valid props for HTML `<input>` elements and proxies them to that element in
 the DOM; the most common ones are detailed below.
 
