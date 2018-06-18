@@ -2,7 +2,6 @@
 
 <!-- Exact ordering of components in the navbar: -->
 
-@page html
 @page breadcrumbs
 @page button
 @page button-group
@@ -11,6 +10,8 @@
 @page collapse
 @page collapsible-list
 @page editable-text
+@page html
+@page html-table
 @page hotkeys
 @page icon
 @page menu
@@ -20,7 +21,6 @@
 @page progress-bar
 @page skeleton
 @page spinner
-@page table-html
 @page tabs
 @page tag
 @page text
