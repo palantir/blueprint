@@ -23,7 +23,7 @@
         "noUnusedParameters": true,
         "pretty": true,
         "removeComments": false,
-        "sourceMap": false,
+        "sourceMap": true,
         "stripInternal": true,
         "target": "es5",
         "typeRoots": ["../node_modules/@types"]
