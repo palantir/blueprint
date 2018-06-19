@@ -185,7 +185,7 @@ renameString "Classes\.RUNNING_TEXT_SMALL" "Classes.RUNNING_TEXT"
 
 # Deleted things
 renameString "Classes\.TAG_REMOVABLE,?" ""
-renameString "Classes\.NON_IDEAL_STATE_{ACTION,DESCRIPTION,ICON},?" ""
+renameString "Classes\.NON_IDEAL_STATE_(ACTION|DESCRIPTION|ICON),?" ""
 renameString "Classes\.SPINNER_SVG_CONTAINER,?" ""
 renameString "Classes\.SVG_SPINNER,?" ""
 warn SVGSpinner "DELETED. Spinner now supports usage in an SVG."
