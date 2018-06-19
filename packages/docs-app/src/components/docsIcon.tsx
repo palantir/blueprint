@@ -6,6 +6,7 @@
 
 import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
 import classNames from "classnames";
+import download from "downloadjs";
 import * as React from "react";
 import { ClickToCopy } from "./clickToCopy";
 
@@ -16,9 +17,9 @@ export interface IDocsIconProps {
     tags: string;
 }
 
-const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/develop/resources/icons";
-function openIconFile(iconName: IconName, iconSize: 16 | 20) {
-    window.open(`${GITHUB_PATH}/${iconSize}px/${iconName}.svg`);
+const GITHUB_RAW_PATH = "https://raw.githubusercontent.com/palantir/blueprint/develop/resources/icons";
+function downloadIconFile(iconName: IconName, iconSize: 16 | 20) {
+    download(`${GITHUB_RAW_PATH}/${iconSize}px/${iconName}.svg`);
 }
 
 @ContextMenuTarget
@@ -59,6 +60,6 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
         );
     }
 
-    private handleClick16 = () => openIconFile(this.props.iconName, 16);
-    private handleClick20 = () => openIconFile(this.props.iconName, 20);
+    private handleClick16 = () => downloadIconFile(this.props.iconName, 16);
+    private handleClick20 = () => downloadIconFile(this.props.iconName, 20);
 }
