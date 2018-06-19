@@ -34,7 +34,6 @@ module.exports = function createKarmaConfig(
         coverageReporter: {
             check: {
                 each: {
-                    // ensure some coverage of each file, but rely mainly on overall watermarks
                     lines: COVERAGE_PERCENT,
                     statements: COVERAGE_PERCENT,
                     excludes: coverageExcludes,
