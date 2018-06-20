@@ -1,4 +1,4 @@
-@# Numeric inputs
+@# Numeric input
 
 The `NumericInput` component provides controls for easily inputting,
 incrementing, and decrementing numeric values.

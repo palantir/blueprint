@@ -7,7 +7,7 @@ timezone metadata.
 
 @reactExample TimezonePickerExample
 
-@## JavaScript API
+@## Props
 
 This component only supports controlled usage.
 Control the selected timezone with the `value` prop.
@@ -36,22 +36,11 @@ the user's timezone.
 ```tsx
 import { TimezonePicker } from "@blueprintjs/timezone";
 
-export interface ITimezoneExampleState {
-    timezone: string;
-}
-
-export class TimezoneExample extends React.PureComponent<{}, ITimezoneExampleState> {
-    public state: ITimezoneExampleState = {
-        timezone: "",
-    };
+export class TimezoneExample extends React.PureComponent<{}, { timezone: string; }> {
+    public state = { timezone: "" };
 
     public render() {
-        return (
-            <TimezonePicker
-                value={this.state.timezone}
-                onChange={this.handleTimezoneChange}
-            />
-        );
+        return <TimezonePicker value={this.state.timezone} onChange={this.handleTimezoneChange} />;
     }
 
     private handleTimezoneChange = (timezone: string) => this.setState({ timezone });

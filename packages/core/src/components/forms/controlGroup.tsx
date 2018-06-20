@@ -12,11 +12,13 @@ import { HTMLDivProps, IProps } from "../../common/props";
 export interface IControlGroupProps extends IProps, HTMLDivProps {
     /**
      * Whether the control group should take up the full width of its container.
+     * @default false
      */
     fill?: boolean;
 
     /**
-     * Whether the button group should appear with vertical styling.
+     * Whether the control group should appear with vertical styling.
+     * @default false
      */
     vertical?: boolean;
 }

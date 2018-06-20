@@ -1,26 +1,17 @@
-@# Radios
+@# Radio
 
-Blueprint's custom radio buttons use an extra `.@ns-control-indicator` element after the `<input>`
-to achieve their custom styling. You should then wrap the whole thing in a `<label>` with the
-classes `.@ns-control.@ns-radio`.
-
-Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
-element.
+A radio button typically represents a single option in a mutually exclusive list
+(where only one item can be selected at a time). Blueprint provides `Radio` and
+`RadioGroup` components for these two layers.
 
 @reactExample RadioExample
 
-@## CSS API
+@## Props
 
-@css radio
-
-@## JavaScript API
-
-The `Radio` and `RadioGroup` components are available in the __@blueprintjs/core__ package. Make
-sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-Typically, radio buttons are used in a group to choose one option from several, similar to how a
-`<select>` tag contains several `<option>` tags. As such, you can use the `RadioGroup` component
-with a series of `Radio` children. `RadioGroup` is responsible for managing state and interaction.
+Typically, radio buttons are used in a group to choose one option from several,
+similar to how a `<select>` tag contains several `<option>` tags. As such, you
+can use the `RadioGroup` component with a series of `Radio` children.
+`RadioGroup` is responsible for managing state and interaction.
 
 ```tsx
 <RadioGroup
@@ -34,7 +25,7 @@ with a series of `Radio` children. `RadioGroup` is responsible for managing stat
 </RadioGroup>
 ```
 
-Note that this component supports the full range of props available on HTML `input` elements.
+`Radio` supports the full range of HTML `<input>` props.
 The most common options are detailed below.
 
 @interface IRadioProps
@@ -44,3 +35,14 @@ The most common options are detailed below.
 @interface IRadioGroupProps
 
 @interface IOptionProps
+
+@## CSS
+
+Blueprint's custom radio buttons use an extra `.@ns-control-indicator` element
+after the `<input>` to achieve their custom styling. You should then wrap the
+whole thing in a `<label>` with the classes `.@ns-control.@ns-radio`.
+
+Note that attribute modifiers (`:checked`, `:disabled`) are applied on the
+internal `<input>` element.
+
+@css radio

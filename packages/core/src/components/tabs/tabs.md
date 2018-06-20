@@ -1,28 +1,16 @@
 @# Tabs
 
-@## CSS API
+@reactExample TabsExample
 
-In addition to the [JavaScript API](#core/components/tabs.javascript-api), Blueprint also offers tab styles with the
-class `@ns-tabs`. You should add the proper accessibility attributes (`role`, `aria-selected`, and
-`aria-hidden`) if you choose to implement tabs with CSS.
+@## Props
 
-`.@ns-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS.
-You may also simply omit hidden tabs from your markup to improve performance (the `Tabs`
-JavaScript component does this by default).
+Tab selection is managed by `id`, much like the HTML `<select>` element respects
+`<option value>`. This is more reliable than using a numeric index as it does
+not require translating between arbitrary indices and tab names. It does,
+however, require that every `Tab` have a _locally unique `id` value_.
 
-@css tabs
-
-@## JavaScript API
-
-The `Tabs` and `Tab` components are available in the __@blueprintjs/core__
-package. Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-Tab selection is managed by `id`, much like the HTML `<select>` element respects `<option value>`. This is more reliable than using a numeric index (it's also deterministic), and
-does not require translating between numbers and tab names. It does, however, require that
-every `Tab` have a locally unique `id` prop.
-
-Arbitrary elements are supported in the tab list, and order is respected. Yes, you can even
-insert things _between_ `Tab`s.
+Arbitrary elements are supported in the tab list, and order is respected. Yes,
+you can even insert things _between_ `Tab`s.
 
 ```tsx
 import { Tab, Tabs } from "@blueprintjs/core";
@@ -37,8 +25,6 @@ import { Tab, Tabs } from "@blueprintjs/core";
 </Tabs>
 ```
 
-@reactExample TabsExample
-
 @### Tabs
 
 `Tabs` is the top-level component responsible for rendering the tab list and coordinating selection.
@@ -49,7 +35,8 @@ Children of the `Tabs` are rendered in order in the tab list, which is a flex co
 `Tab` children are managed by the component; clicking one will change selection. Arbitrary other
 children are simply rendered in order; interactions are your responsibility.
 
-Insert a `<Tabs.Expander />` between any two children to right-align all subsequent children (or bottom-align when `vertical`).
+Insert a `<Tabs.Expander />` between any two children to right-align all
+subsequent children (or bottom-align when `vertical`).
 
 @interface ITabsProps
 
@@ -59,8 +46,21 @@ Insert a `<Tabs.Expander />` between any two children to right-align all subsequ
 parent `Tabs` wrapper. Tab title text can be set either via `title` prop or via React children
 (for more complex content).
 
-The associated tab `panel` will be visible when the `Tab` is active. Omitting `panel` is perfectly
-safe and allows you to control exactly where the panel appears in the DOM (by rendering it yourself
-as needed).
+The associated tab `panel` will be visible when the `Tab` is active. Omitting
+`panel` is supported and can be useful when you want the associated panel to
+appear elsewhere in the DOM (by rendering it yourself as needed).
 
 @interface ITabProps
+
+@## CSS
+
+Blueprint offers tab styles with the class `@ns-tabs`. You should add the proper
+accessibility attributes (`role`, `aria-selected`, and `aria-hidden`) as
+necessary if you choose to implement tabs with CSS.
+
+`.@ns-tab-panel` elements with `aria-hidden="true"` are hidden automatically by
+the Blueprint CSS. You may also simply omit hidden tabs from your markup to
+improve performance (the `Tabs` JavaScript component supports this through the
+`renderActiveTabPanelOnly` prop).
+
+@css tabs

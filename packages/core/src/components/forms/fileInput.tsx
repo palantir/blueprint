@@ -36,14 +36,13 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     large?: boolean;
 
     /**
-     * Callback invoked on `input` `change` events.
+     * Callback invoked on `<input>` `change` events.
      *
      * This callback is offered as a convenience; it is equivalent to passing
      * `onChange` to `inputProps`.
      *
-     * __Note:__ If you pass `onChange` as a top-level prop, it will be passed
-     * to the wrapping `label` rather than the `input`, which may not be what
-     * you expect.
+     * __Note:__ The top-level `onChange` prop is passed to the wrapping
+     * `<label>` rather than the `<input>`, which may not be what you expect.
      */
     onInputChange?: React.FormEventHandler<HTMLInputElement>;
 

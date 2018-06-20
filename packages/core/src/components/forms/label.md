@@ -1,4 +1,4 @@
-@# Labels
+@# Label
 
 Labels enhance the usability of your forms.
 
@@ -14,7 +14,22 @@ below, clicking a label focuses its `<input>`.
     therefore we recommend using it exclusively when constructing forms.
 </div>
 
-@## CSS API
+@## Props
+
+This component supports the full range of HTML props.
+
+```tsx
+<Label
+    helperText="Helper text with details..."
+    text="Label A"
+>
+    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
+</Label>
+```
+
+@interface ILabelProps
+
+@## CSS
 
 Simple labels are useful for basic forms for a single `<input>`.
 
@@ -25,12 +40,3 @@ Similarly the respective `@ns-*` form control will need a `.@ns-disabled`
 modifier. See the examples below.
 
 @css label
-
-@## JavaScript API
-
-The `Label` component is available in the __@blueprintjs/core__ package. Make
-sure to review the [getting started docs for installation
-info](#blueprint/getting-started).
-
-The `Label` component is a trivial wrapper for the `<label>` HTML element. See
-[HTML elements](#core/components/html) for usage notes.
