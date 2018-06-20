@@ -9,7 +9,7 @@ import * as React from "react";
 import { HTML_TABLE, HTML_TABLE_BORDERED, HTML_TABLE_STRIPED, INTERACTIVE, SMALL } from "../../common/classes";
 import { IElementRefProps } from "../html/html";
 
-export interface ITableHtmlProps extends React.HTMLAttributes<HTMLTableElement>, IElementRefProps<HTMLTableElement> {
+export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>, IElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 
@@ -25,7 +25,7 @@ export interface ITableHtmlProps extends React.HTMLAttributes<HTMLTableElement>,
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class Table extends React.PureComponent<ITableHtmlProps> {
+export class HTMLTable extends React.PureComponent<IHTMLTableProps> {
     public render() {
         const { bordered, className, elementRef, interactive, small, striped, ...htmlProps } = this.props;
         const classes = classNames(
