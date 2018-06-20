@@ -175,6 +175,7 @@ renameString 'requiredLabel={true}' 'labelInfo="(required)"'
 renameProp requiredLabel labelInfo
 renameProp rootElementTag wrapperTagName
 renameProp targetElementTag targetTagName
+renameProp tooltipClassName popoverClassName
 
 # Classes constants
 renameString "Classes\.CALLOUT_TITLE" "Classes.HEADING"

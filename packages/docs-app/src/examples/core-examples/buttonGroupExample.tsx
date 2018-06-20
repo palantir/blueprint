@@ -56,7 +56,7 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
                 <ButtonGroup style={{ minWidth: 200 }} {...bgProps}>
                     <Button icon="database">{!iconOnly && "Queries"}</Button>
                     <Button icon="function">{!iconOnly && "Functions"}</Button>
-                    <AnchorButton icon="cog" rightIcon="caret-down">
+                    <AnchorButton icon="cog" rightIcon="settings">
                         {!iconOnly && "Options"}
                     </AnchorButton>
                 </ButtonGroup>

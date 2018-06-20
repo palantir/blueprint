@@ -114,24 +114,10 @@ $popover-width: $pt-grid-size * 35 !default;
   }
 }
 
-.#{$ns}-popover-wrapper {
+span.#{$ns}-popover-target {
+  // avoid `inline` elements as they won't account for padding etc
   display: inline-block;
-  position: relative;
-  vertical-align: top;
 
-  // position the transition container using CSS when it is inline
-  .#{$ns}-transition-container {
-    @include popover-inline-position();
-  }
-
-  // make sure inline overlays don't inherit from absolute positioning in cases
-  // where overlays are nested (i.e. Popover within Dialog)
-  .#{$ns}-overlay-inline {
-    position: static;
-  }
-}
-
-// fix positioning of popovers inside button groups (lots of extra nested elements)
-.#{$ns}-button-group .#{$ns}-popover-target {
-  display: block;
+  // this is important for span tag as default inline display height only includes text.
+  // div tag can be used for display: block, which works fine.
 }

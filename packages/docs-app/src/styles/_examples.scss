@@ -380,6 +380,7 @@
     $vertical-padding: $pt-grid-size * 2;
 
     display: flex;
+    align-items: flex-start;
     justify-content: center;
     // wide enough to allow scrolling, but wide enough to let the popover target
     // fully leave the viewport.
