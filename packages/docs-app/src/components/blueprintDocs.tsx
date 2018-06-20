@@ -4,11 +4,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, setHotkeysDialogProps } from "@blueprintjs/core";
+import { AnchorButton, Classes, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
-import { IHeadingNode, isPageNode, ITsDocBase } from "documentalist/dist/client";
+import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -78,6 +78,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 navigatorExclude={isNavSection}
                 onComponentUpdate={this.handleComponentUpdate}
                 renderNavMenuItem={this.renderNavMenuItem}
+                renderPageActions={this.renderPageActions}
                 renderViewSourceLinkText={this.renderViewSourceLinkText}
             />
         );
@@ -102,6 +103,18 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         }
         return <NavMenuItem {...props} />;
     };
+
+    private renderPageActions(page: IPageData) {
+        return (
+            <AnchorButton
+                href={`https://github.com/palantir/blueprint/blob/develop/${page.sourcePath}`}
+                icon="edit"
+                minimal={true}
+                target="_blank"
+                text="Edit this page"
+            />
+        );
+    }
 
     private renderViewSourceLinkText(entry: ITsDocBase) {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
