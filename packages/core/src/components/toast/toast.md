@@ -1,17 +1,13 @@
-@# Toasts
+@# Toast
 
 A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
-
 
 Toasts can be configured to appear at either the top or the bottom of an application window, and it is possible to
 have more than one toast onscreen at a time.
 
 @reactExample ToastExample
 
-@## JavaScript API
-
-The `Toast` and `Toaster` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 @### Toast
 
@@ -19,7 +15,7 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 Hovering the cursor over a toast prevents it from disappearing. When the cursor leaves the toast, the toast's timeout restarts.
 Similarly, focusing the toast (for example, by hitting the `tab` key) halts the timeout, and blurring restarts the timeout.
 
-You can add one additional action button to a toast. You might use this to undo the user's action, for example.
+You can add one additional action button to a toast. You might use this to provide an undo button, for example.
 
 You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css-api).
 
@@ -49,7 +45,7 @@ There are three ways to use the `Toaster` component:
     `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
     from accessing other parts of the application while a toast is active), and by default also
     disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
-    enable `autoFocus` for a `Toaster` via a prop, if desired.
+    enable `autoFocus` for an individual `Toaster` via a prop, if desired.
 </div>
 
 
@@ -144,7 +140,7 @@ class MyComponent extends React.PureComponent {
                     {/* "Toasted!" will appear here after clicking button. */}
                     {this.state.toasts.map(toast => <Toast {...toast} />)}
                 </Toaster>
-            </div>
+            </div
         )
     }
 

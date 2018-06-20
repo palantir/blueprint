@@ -8,23 +8,28 @@ Use this component in forms where the user must enter a date range.
 
 @reactExample DateRangeInputExample
 
-@## JavaScript API
+@## Props
 
-The `DateRangeInput` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+Use the `onChange` function to listen for changes to the selected date. Use
+`onError` to listen for invalid entered dates or date ranges.
 
-Use the `onChange` function to listen for changes to the selected date. Use `onError` to listen for
-invalid entered dates or date ranges.
+You can control the selected date by setting the `value` prop, or use the
+component in uncontrolled mode and specify an initial date by setting
+`defaultValue`.
 
-You can control the selected date by setting the `value` prop, or use the component in uncontrolled
-mode and specify an initial date by setting `defaultValue`.
+Customize the date format with the required `formatDate` and `parseDate`
+callbacks. See [date formatting](#datetime/dateinput.date-formatting) for more
+information on these props.
 
-```
+```tsx
 import { DateRangeInput } from "@blueprintjs/datetime";
 
-<DateRangeInput value={[this.state.startDate, this.state.endDate]} onChange={this.handleChange} />
+<DateRangeInput
+    formatDate={date => date.toLocaleString()}
+    onChange={this.handleRangeChange}
+    parseDate={str => new Date(str)}
+    value={[this.state.startDate, this.state.endDate]}
+/>
 ```
 
 @interface IDateRangeInputProps
-
-@interface IDateFormatter

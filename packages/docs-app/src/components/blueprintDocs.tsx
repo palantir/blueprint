@@ -18,7 +18,7 @@ const LIGHT_THEME = "";
 const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
 // detect Components page and subheadings
-const COMPONENTS_PATTERN = /\/components(\.\w+)?$/;
+const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route);
 
 /** Return the current theme className. */

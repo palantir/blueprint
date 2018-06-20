@@ -1,4 +1,4 @@
-@# Sliders
+@# Slider
 
 A slider is a numeric input for choosing numbers between lower and upper bounds.
 It also has a labeled axis that supports custom formatting.

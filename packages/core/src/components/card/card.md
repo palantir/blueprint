@@ -1,33 +1,20 @@
-@# Cards
+@# Card
 
 A card is a bounded unit of UI content with a solid background color.
 
-@## CSS API
+@reactExample CardExample
 
-Start with `.@ns-card` and add an elevation modifier class to apply a drop
-shadow that simulates height in the UI.
+@## Elevation
 
-You can also use the `.@ns-elevation-*` classes by themselves to apply shadows
-to any arbitrary element.
+Apply an `elevation` value to a card to apply a drop shadow that simulates
+height in the UI. Five elevations are supported, from 0 to 4.
 
-@css card
+The `Classes.ELEVATION_*` constants can be used on any element (not just a
+`Card`) to apply the drop shadow.
 
-@### Interactive cards
+@## Props
 
-Add the `.@ns-interactive` modifier class to make a `.@ns-card` respond to user
-interactions. When you hover over cards with this class applied, the mouse
-changes to a pointer and increases the elevation shadow on the card.
-
-Users expect an interactive card to be a single clickable unit.
-
-@css card-interactive
-
-@## JavaScript API
-
-Then `Card` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-This component is a simple wrapper around the CSS API.
+This component is a simple stateless container for its children.
 
 ```tsx
 import { Button, Card, Elevation } from "@blueprintjs/core";
@@ -39,6 +26,15 @@ import { Button, Card, Elevation } from "@blueprintjs/core";
 </Card>
 ```
 
-@reactExample CardExample
-
 @interface ICardProps
+
+@## CSS
+
+Start with `.@ns-card` and add an elevation class `.@ns-elevation-*` to apply a
+drop shadow that simulates height in the UI.
+
+Add the `.@ns-interactive` modifier class to make a `.@ns-card` respond to user
+interactions. When you hover over cards with this class applied, the mouse
+changes to a pointer and increases the elevation shadow on the card.
+
+@css card

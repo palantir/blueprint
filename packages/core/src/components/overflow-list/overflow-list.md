@@ -17,4 +17,6 @@ to watch for resizing further up in the DOM tree.
 
 @reactExample OverflowListExample
 
+@## Props
+
 @interface IOverflowListProps
