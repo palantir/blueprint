@@ -10,7 +10,7 @@ import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classe
 import { IElementRefProps } from "../html/html";
 import { Icon } from "../icon/icon";
 
-export interface IHtmlOptionProps {
+export interface IHTMLOptionProps {
     /** Optional label for this option. Defaults to `value`. */
     label?: string;
 
@@ -18,7 +18,7 @@ export interface IHtmlOptionProps {
     value: string | number;
 }
 
-export interface IHtmlSelectProps
+export interface IHTMLSelectProps
     extends IElementRefProps<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
     /** Whether this element is non-interactive. */
@@ -44,7 +44,7 @@ export interface IHtmlSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | IHtmlOptionProps>;
+    options?: Array<string | number | IHTMLOptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;
@@ -52,7 +52,7 @@ export interface IHtmlSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class HtmlSelect extends React.PureComponent<IHtmlSelectProps> {
+export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
     public render() {
         const { className, disabled, elementRef, fill, large, minimal, options = [], ...htmlProps } = this.props;
         const classes = classNames(
