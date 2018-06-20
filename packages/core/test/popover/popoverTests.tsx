@@ -196,7 +196,7 @@ describe("<Popover>", () => {
         wrapper.assertFindClass(Classes.POPOVER_BACKDROP, false);
     });
 
-    it("*TagName props render the right elements", () => {
+    it("wrapperTagName & targetTagName render the right elements", () => {
         wrapper = renderPopover({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
         assert.isTrue(wrapper.find("address").hasClass(Classes.POPOVER_TARGET));
         assert.isTrue(wrapper.find("article").hasClass(Classes.POPOVER_WRAPPER));

@@ -15,11 +15,6 @@ const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
 describe("<Tooltip>", () => {
-    it("renders targetTagName", () => {
-        const tooltip = renderTooltip({ isOpen: true, targetTagName: "section" });
-        assert.isTrue(tooltip.find(TARGET_SELECTOR).is(tooltip.prop("targetTagName")));
-    });
-
     it("propogates class names correctly", () => {
         const tooltip = renderTooltip({
             className: "bar",
@@ -30,7 +25,7 @@ describe("<Tooltip>", () => {
         assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")), "wrapper");
     });
 
-    it("*TagName props render the right elements", () => {
+    it("wrapperTagName & targetTagName render the right elements", () => {
         const tooltip = renderTooltip({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
         assert.isTrue(tooltip.find("address").hasClass(Classes.POPOVER_TARGET));
         assert.isTrue(tooltip.find("article").hasClass(Classes.POPOVER_WRAPPER));
