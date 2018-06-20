@@ -31,7 +31,8 @@ const DOCS_DATA_PATH = path.join(GENERATED_SRC_DIR, "docs.json");
         }
         await generateDocumentalistData();
     } catch (err) {
-        console.log(`[docs-data] Failed to generate JSON data:`);
+        // console.error messages get swallowed by lerna but console.log is emitted to terminal.
+        console.log(`[docs-data] ERROR when generating JSON docs data:`);
         console.log(err);
         throw err;
     }
