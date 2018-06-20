@@ -17,6 +17,10 @@ const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
 const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
+const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
+const NPM_URL = "https://www.npmjs.com/package";
+const DOCS_BANNER_URL = "http://blueprintjs.com/docs/versions/2";
+
 // detect Components page and subheadings
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route);
@@ -44,7 +48,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
     public render() {
         const banner = (
-            <Banner href="http://blueprintjs.com/docs/v2/">
+            <Banner href={DOCS_BANNER_URL}>
                 This documentation is for&nbsp;<strong>Blueprint v3.0.0</strong>, which is currently under development.
                 Click here to go to the v2.x docs.
             </Banner>
@@ -107,7 +111,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     private renderPageActions(page: IPageData) {
         return (
             <AnchorButton
-                href={`https://github.com/palantir/blueprint/blob/develop/${page.sourcePath}`}
+                href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
                 icon="edit"
                 minimal={true}
                 target="_blank"
@@ -127,7 +131,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         }
         const version = this.props.useNextVersion && pkg.nextVersion ? pkg.nextVersion : pkg.version;
         return (
-            <a className={Classes.TEXT_MUTED} href={`https://www.npmjs.com/package/${pkg.name}`} target="_blank">
+            <a className={Classes.TEXT_MUTED} href={`${NPM_URL}/${pkg.name}`} target="_blank">
                 <small>{version}</small>
             </a>
         );
