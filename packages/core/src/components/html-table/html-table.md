@@ -1,4 +1,4 @@
-@# Table (HTML)
+@# HTML table
 
 This component provides Blueprint styling to native HTML tables.
 
@@ -8,6 +8,14 @@ This component provides Blueprint styling to native HTML tables.
     It is ideal for basic static tables. If you're looking for more complex
     spreadsheet-like features, check out [**@blueprintjs/table**](#table).
 </div>
+
+@## Props
+
+The `<HTMLTable>` component provides modifier props to apply styles to an HTML
+`<table>` element. Note that you are responsible for rendering `<thead>` and
+`<tbody>` elements as children.
+
+@interface IHTMLTableProps
 
 @## CSS
 
