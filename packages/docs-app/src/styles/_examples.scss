@@ -297,7 +297,7 @@
     align-items: flex-start;
   }
 
-  .#{$ns}-popover-target {
+  .#{$ns}-popover-wrapper {
     // Add a bit of space between borders of consecutive buttons.
     margin: $pt-grid-size / 2;
   }
