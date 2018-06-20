@@ -54,6 +54,7 @@ export interface ICollapsibleListProps extends IProps {
     visibleItemCount?: number;
 }
 
+/** @deprecated use `<OverflowList>` for automatic overflow based on available space. */
 export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> {
     public static displayName = "Blueprint2.CollapsibleList";
 
