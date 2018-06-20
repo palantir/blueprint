@@ -2231,7 +2231,7 @@ dot-prop@^4.1.1:
 
 downloadjs@^1.4.7:
   version "1.4.7"
-  resolved "https://artifactory.palantir.build:443/artifactory/api/npm/all-npm/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
+  resolved "https://registry.yarnpkg.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
 
 duplexer3@^0.1.4:
   version "0.1.4"
