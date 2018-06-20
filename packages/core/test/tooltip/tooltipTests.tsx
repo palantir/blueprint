@@ -48,7 +48,7 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip({
                 className: "bar",
                 isOpen: true,
-                tooltipClassName: "foo",
+                popoverClassName: "foo",
             });
             assert.lengthOf(tooltip.find(`.${Classes.TOOLTIP}.foo`).hostNodes(), 1, "tooltip");
             assert.lengthOf(tooltip.find(`.${Classes.POPOVER_WRAPPER}.bar`).hostNodes(), 1, "popover wrapper");
@@ -109,9 +109,10 @@ describe("<Tooltip>", () => {
         });
     });
 
-    it("rootElementTag prop renders the right elements", () => {
-        const tooltip = renderTooltip({ isOpen: true, rootElementTag: "section" });
-        assert.lengthOf(tooltip.find(`section.${Classes.POPOVER_WRAPPER}`), 1);
+    it("*TagName props render the right elements", () => {
+        const tooltip = renderTooltip({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
+        assert.isTrue(tooltip.find("address").hasClass(Classes.POPOVER_TARGET));
+        assert.isTrue(tooltip.find("article").hasClass(Classes.POPOVER_WRAPPER));
     });
 
     it("supports overlay lifecycle props", () => {

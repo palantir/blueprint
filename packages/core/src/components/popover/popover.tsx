@@ -5,24 +5,21 @@
  */
 
 import classNames from "classnames";
-import { ModifierFn, Modifiers as PopperModifiers } from "popper.js";
+import { ModifierFn } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, Target } from "react-popper";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { Position } from "../../common/position";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
-import { IOverlayableProps, Overlay } from "../overlay/overlay";
+import { Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
+import { IPopoverSharedProps, PopperModifiers } from "./popoverSharedProps";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
-
-// re-export this symbol for library consumers
-export { PopperModifiers };
 
 export const PopoverInteractionKind = {
     CLICK: "click" as "click",
@@ -32,46 +29,15 @@ export const PopoverInteractionKind = {
 };
 export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
-export interface IPopoverProps extends IOverlayableProps, IProps {
+export interface IPopoverProps extends IPopoverSharedProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
     /**
-     * The content displayed inside the popover.
-     * This can instead be provided as the second `children` element (first is `target`).
+     * The content displayed inside the popover. This can instead be provided as
+     * the _second_ element in `children` (first is `target`).
      */
     content?: string | JSX.Element;
-
-    /**
-     * Initial opened state when uncontrolled.
-     * @default false
-     */
-    defaultIsOpen?: boolean;
-
-    /**
-     * The amount of time in milliseconds the popover should remain open after the
-     * user hovers off the trigger. The timer is canceled if the user mouses over the
-     * target before it expires. This option only applies when `interactionKind` is `HOVER` or
-     * `HOVER_TARGET_ONLY`.
-     * @default 300
-     */
-    hoverCloseDelay?: number;
-
-    /**
-     * The amount of time in milliseconds the popover should wait before opening after the the
-     * user hovers over the trigger. The timer is canceled if the user mouses away from the
-     * target before it expires. This option only applies when `interactionKind` is `HOVER` or
-     * `HOVER_TARGET_ONLY`.
-     * @default 150
-     */
-    hoverOpenDelay?: number;
-
-    /**
-     * Whether a popover should automatically inherit the dark theme from its parent.
-     * Note that this prop is ignored if `usePortal={false}`, as the Popover will inherit dark theme via CSS.
-     * @default true
-     */
-    inheritDarkTheme?: boolean;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -80,59 +46,22 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     interactionKind?: PopoverInteractionKind;
 
     /**
-     * Prevents the popover from appearing when `true`, even if `isOpen={true}`.
-     * @default false
-     */
-    disabled?: boolean;
-
-    /**
-     * Enables an invisible overlay beneath the popover that captures clicks and prevents
-     * interaction with the rest of the document until the popover is closed.
-     * This prop is only available when `interactionKind` is `PopoverInteractionKind.CLICK`.
-     * When popovers with backdrop are opened, they become focused.
+     * Enables an invisible overlay beneath the popover that captures clicks and
+     * prevents interaction with the rest of the document until the popover is
+     * closed. This prop is only available when `interactionKind` is
+     * `PopoverInteractionKind.CLICK`. When popovers with backdrop are opened,
+     * they become focused.
      * @default false
      */
     hasBackdrop?: boolean;
 
     /**
-     * Whether the popover is visible. Passing this prop puts the popover in
-     * controlled mode, where the only way to change visibility is by updating this property.
-     * If `disabled={true}`, this prop will be ignored, and the popover will remain closed.
-     * @default undefined
-     */
-    isOpen?: boolean;
-
-    /**
-     * Whether to apply minimal styles to this popover, which includes removing the arrow
-     * and adding `Classes.MINIMAL` to minimize and accelerate the transitions.
+     * Whether to apply minimal styles to this popover, which includes removing
+     * the arrow and adding `Classes.MINIMAL` to minimize and accelerate the
+     * transitions.
      * @default false
      */
     minimal?: boolean;
-
-    /**
-     * Popper modifier options, passed directly to internal Popper instance.
-     * See https://popper.js.org/popper-documentation.html#modifiers for complete details.
-     */
-    modifiers?: PopperModifiers;
-
-    /**
-     * Callback invoked in controlled mode when the popover open state *would* change due to
-     * user interaction based on the value of `interactionKind`.
-     */
-    onInteraction?: (nextOpenState: boolean, e?: React.SyntheticEvent<HTMLElement>) => void;
-
-    /**
-     * Whether the popover should open when its target is focused.
-     * If `true`, target will render with `tabindex="0"` to make it focusable via keyboard navigation.
-     * This prop is only available when `interactionKind` is `HOVER` or `HOVER_TARGET_ONLY`.
-     * @default true
-     */
-    openOnTargetFocus?: boolean;
-
-    /**
-     * A space-delimited string of class names applied to the popover.
-     */
-    popoverClassName?: string;
 
     /**
      * Ref supplied to the `Classes.POPOVER` element.
@@ -140,55 +69,10 @@ export interface IPopoverProps extends IOverlayableProps, IProps {
     popoverRef?: (ref: HTMLDivElement | null) => void;
 
     /**
-     * Space-delimited string of class names applied to the
-     * portal that holds the popover if `usePortal={true}`.
-     */
-    portalClassName?: string;
-
-    /**
-     * The position (relative to the target) at which the popover should appear.
-     *
-     * The default value of `"auto"` will choose the best position when opened
-     * and will allow the popover to reposition itself to remain onscreen as the
-     * user scrolls around.
-     */
-    position?: Position | "auto";
-
-    /**
-     * The name of the HTML tag to use when rendering the popover target wrapper
-     * element (`Classes.POPOVER_WRAPPER`).
-     * @default "span"
-     */
-    rootElementTag?: string;
-
-    /**
-     * The target element to which the popover content is attached.
-     * This can instead be provided as the first `children` element.
+     * The target to which the popover content is attached. This can instead be
+     * provided as the _first_ element in `children`.
      */
     target?: string | JSX.Element;
-
-    /**
-     * Space-delimited string of class names applied to the target.
-     */
-    targetClassName?: string;
-
-    /**
-     * The name of the HTML tag to use when rendering the popover target element.
-     * @default "div"
-     */
-    targetElementTag?: string;
-
-    /**
-     * Whether the popover should be rendered inside a `Portal` attached to `document.body`.
-     * Rendering content inside a `Portal` allows the popover content to escape the physical bounds of its
-     * parent while still being positioned correctly relative to its target.
-     *
-     * Using a `Portal` is necessary if any ancestor of the target hides overflow or uses very complex positioning.
-     * Not using a `Portal` can result in smoother performance when scrolling and allows the popover content to inherit
-     * CSS styles from surrounding elements.
-     * @default true
-     */
-    usePortal?: boolean;
 }
 
 export interface IPopoverState {
@@ -213,10 +97,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         modifiers: {},
         openOnTargetFocus: true,
         position: "auto",
-        rootElementTag: "span",
-        targetElementTag: "div",
+        targetTagName: "div",
         transitionDuration: 300,
         usePortal: true,
+        wrapperTagName: "span",
     };
 
     /**
@@ -255,7 +139,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     public render() {
-        const { className, disabled, targetClassName, targetElementTag } = this.props;
+        const { className, disabled, targetClassName, targetTagName, wrapperTagName } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -300,8 +184,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
 
         return (
-            <Manager tag={this.props.rootElementTag} className={classNames(Classes.POPOVER_WRAPPER, className)}>
-                <Target {...targetProps} component={targetElementTag} innerRef={this.refHandlers.target}>
+            <Manager tag={wrapperTagName} className={classNames(Classes.POPOVER_WRAPPER, className)}>
+                <Target {...targetProps} component={targetTagName} innerRef={this.refHandlers.target}>
                     {target}
                 </Target>
                 <Overlay

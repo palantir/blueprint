@@ -51,6 +51,7 @@ export * from "./overflow-list/overflowList";
 export * from "./overlay/overlay";
 export * from "./text/text";
 export * from "./popover/popover";
+export * from "./popover/popoverSharedProps";
 export * from "./portal/portal";
 export * from "./progress-bar/progressBar";
 export * from "./slider/handleProps";
