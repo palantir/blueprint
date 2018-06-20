@@ -5,6 +5,4 @@
 
 module.exports = {
     docsData: require("./generated/docs.json"),
-    releasesData: require("./generated/releases.json"),
-    versionsData: require("./generated/versions.json"),
 };
