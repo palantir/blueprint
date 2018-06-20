@@ -1,6 +1,6 @@
-@# Tables (HTML)
+@# HTML table
 
-This component adds Blueprint styling to native HTML tables.
+This component provides Blueprint styling to native HTML tables.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">This is not @blueprintjs/table</h4>
@@ -9,7 +9,15 @@ This component adds Blueprint styling to native HTML tables.
     spreadsheet-like features, check out [**@blueprintjs/table**](#table).
 </div>
 
-@## CSS API
+@## Props
+
+The `<HTMLTable>` component provides modifier props to apply styles to an HTML
+`<table>` element. Note that you are responsible for rendering `<thead>` and
+`<tbody>` elements as children.
+
+@interface IHTMLTableProps
+
+@## CSS
 
 Apply the `@ns-html-table` class to a `<table>` element. You can apply modifiers as additional classes.
 

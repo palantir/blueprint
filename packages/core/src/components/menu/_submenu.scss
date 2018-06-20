@@ -17,7 +17,7 @@
   }
 
   // horizontal padding leaves some space from parent menu item, and extends mouse zone
-  .#{$ns}-popover {
+  &.#{$ns}-popover {
     box-shadow: none;
     padding: 0 $half-grid-size;
 

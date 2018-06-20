@@ -5,7 +5,7 @@
  */
 
 import classNames from "classnames";
-import { IHeadingNode, IPageNode, isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
+import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { Classes, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
@@ -79,6 +79,12 @@ export interface IDocumentationProps extends IProps {
      * The default implementation renders a `NavMenuItem` element, which is exported from this package.
      */
     renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
+
+    /**
+     * Callback invoked to render actions for a documentation page.
+     * Actions appear in an element in the upper-right corner of the page.
+     */
+    renderPageActions?: (page: IPageData) => React.ReactNode;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
@@ -186,7 +192,11 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                         ref={this.refHandlers.content}
                         role="main"
                     >
-                        <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
+                        <Page
+                            page={pages[activePageId]}
+                            renderActions={this.props.renderPageActions}
+                            tagRenderers={this.props.tagRenderers}
+                        />
                     </main>
                 </div>
                 <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>

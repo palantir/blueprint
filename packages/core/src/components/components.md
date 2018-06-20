@@ -2,7 +2,6 @@
 
 <!-- Exact ordering of components in the navbar: -->
 
-@page html
 @page breadcrumbs
 @page button
 @page button-group
@@ -11,6 +10,8 @@
 @page collapse
 @page collapsible-list
 @page editable-text
+@page html
+@page html-table
 @page hotkeys
 @page icon
 @page menu
@@ -20,36 +21,31 @@
 @page progress-bar
 @page skeleton
 @page spinner
-@page table-html
 @page tabs
 @page tag
 @page text
 @page tree
 
-@## Forms
+@## Form controls
 
 @page form-group
 @page control-group
+@page label
+@page checkbox
+@page radio
+@page html-select
+@page sliders
+@page switch
 
-<!-- ordering of these guys needs some work... what makes sense?? -->
-@page input
-@page input-group
+@## Form inputs
+
 @page file-input
 @page numeric-input
+@page text-inputs
 @page tag-input
-@page text-area
-@page sliders
-@page checkbox
-@page switch
-@page radio
-@page select-forms
-
-<!-- this guy's gonna go away shortly -->
-@page label
 
 @## Overlays
 
-<!-- now people will read the Overlay docs!! -->
 @page overlay
 @page portal
 @page alert

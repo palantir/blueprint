@@ -17,15 +17,16 @@ import {
     Position,
     Tag,
 } from "@blueprintjs/core";
-import { IPackageInfo } from "@blueprintjs/docs-data";
 import { NavButton } from "@blueprintjs/docs-theme";
+import { INpmPackage } from "documentalist/dist/client";
 import * as React from "react";
 import { Logo } from "./logo";
 
 export interface INavHeaderProps {
     onToggleDark: (useDark: boolean) => void;
     useDarkTheme: boolean;
-    versions: IPackageInfo[];
+    useNextVersion: boolean;
+    packageData: INpmPackage;
 }
 
 @HotkeysTarget
@@ -72,26 +73,24 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
     }
 
     private renderVersionsMenu() {
-        const { versions } = this.props;
+        const { version, nextVersion, versions } = this.props.packageData;
         if (versions.length === 1) {
-            return (
-                <div className={Classes.TEXT_MUTED} key="_versions">
-                    v{versions[0].version}
-                </div>
-            );
+            return <div className={Classes.TEXT_MUTED}>v{versions[0]}</div>;
         }
 
-        const match = /docs\/v([0-9]+)/.exec(location.href);
         // default to latest release if we can't find a major version in the URL
-        const currentRelease = match == null ? versions[0].version : match[1];
-        const releaseItems = versions.map((rel, i) => <MenuItem key={i} href={rel.url} text={rel.version} />);
-        const menu = <Menu className="docs-version-list">{releaseItems}</Menu>;
-
+        const [currentRelease] = /\/versions\/([0-9]+)/.exec(location.href) || [
+            this.props.useNextVersion ? nextVersion : version,
+        ];
+        const releaseItems = versions.map(v => (
+            <MenuItem href={v === currentRelease ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />
+        ));
         return (
-            <Popover content={menu} position={Position.BOTTOM} key="_versions">
+            <Popover position={Position.BOTTOM}>
                 <Tag interactive={true} minimal={true} round={true}>
-                    v{currentRelease.split(".", 1)} <Icon icon="caret-down" />
+                    v{major(currentRelease)} <Icon icon="caret-down" />
                 </Tag>
+                <Menu className="docs-version-list">{releaseItems}</Menu>
             </Popover>
         );
     }
@@ -99,4 +98,9 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
     private handleDarkSwitchChange = () => {
         this.props.onToggleDark(!this.props.useDarkTheme);
     };
+}
+
+/** Get major component of semver string. */
+function major(version: string) {
+    return version.split(".", 1)[0];
 }

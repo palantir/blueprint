@@ -10,6 +10,7 @@ import {
     FocusStyleManager,
     H4,
     H6,
+    HTMLSelect,
     IButtonProps,
     Intent,
     Menu,
@@ -770,13 +771,11 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         const { selectedFocusStyle } = this.state;
         return (
             <label className={classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label")}>
-                {"Focus outlines"}
-                <div className={Classes.SELECT}>
-                    <select onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
-                        <option value={"tab"}>On tab</option>
-                        <option value={"tabOrClick"}>On tab or click</option>
-                    </select>
-                </div>
+                Focus outlines
+                <HTMLSelect onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
+                    <option value="tab">On tab</option>
+                    <option value="tabOrClick">On tab or click</option>
+                </HTMLSelect>
             </label>
         );
     }
@@ -813,11 +812,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         const child = (
             <label className={labelClasses}>
                 {label}
-                <div className={Classes.SELECT}>
-                    <select onChange={handleChange(stateKey)} value={selectedValue} disabled={isDisabled}>
-                        {options}
-                    </select>
-                </div>
+                <HTMLSelect disabled={isDisabled} onChange={handleChange(stateKey)} value={selectedValue}>
+                    {options}
+                </HTMLSelect>
             </label>
         );
 

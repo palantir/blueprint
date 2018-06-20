@@ -92,11 +92,20 @@ Page layout elements
 }
 
 .docs-page {
+  position: relative;
   max-width: $content-width;
   padding-top: 0;
   padding-right: $container-padding;
   padding-bottom: $content-padding * 2;
   padding-left: $content-padding * 2;
+}
+
+.docs-page-actions {
+  position: absolute;
+  top: $container-padding;
+  right: 0;
+  // above h1 heading
+  z-index: 1;
 }
 
 /*

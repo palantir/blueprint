@@ -4,11 +4,11 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, setHotkeysDialogProps } from "@blueprintjs/core";
-import { IPackageInfo } from "@blueprintjs/docs-data";
+import { AnchorButton, Classes, setHotkeysDialogProps } from "@blueprintjs/core";
+import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
-import { IHeadingNode, isPageNode, ITsDocBase } from "documentalist/dist/client";
+import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -17,8 +17,12 @@ const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
 const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
+const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
+const NPM_URL = "https://www.npmjs.com/package";
+const DOCS_BANNER_URL = "http://blueprintjs.com/docs/versions/2";
+
 // detect Components page and subheadings
-const COMPONENTS_PATTERN = /\/components(\.\w+)?$/;
+const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route);
 
 /** Return the current theme className. */
@@ -31,9 +35,12 @@ export function setTheme(themeName: string) {
     localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
 }
 
-export interface IBlueprintDocsProps extends Pick<IDocumentationProps, "defaultPageId" | "docs" | "tagRenderers"> {
-    releases: IPackageInfo[];
-    versions: IPackageInfo[];
+export interface IBlueprintDocsProps {
+    docs: IDocsCompleteData;
+    defaultPageId: IDocumentationProps["defaultPageId"];
+    tagRenderers: IDocumentationProps["tagRenderers"];
+    /** Whether to use `next` versions for packages (as opposed to `latest`). */
+    useNextVersion: boolean;
 }
 
 export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeName: string }> {
@@ -41,7 +48,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
     public render() {
         const banner = (
-            <Banner href="http://blueprintjs.com/docs/v2/">
+            <Banner href={DOCS_BANNER_URL}>
                 This documentation is for&nbsp;<strong>Blueprint v3.0.0</strong>, which is currently under development.
                 Click here to go to the v2.x docs.
             </Banner>
@@ -61,7 +68,8 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             <NavHeader
                 onToggleDark={this.handleToggleDark}
                 useDarkTheme={this.state.themeName === DARK_THEME}
-                versions={this.props.versions}
+                useNextVersion={this.props.useNextVersion}
+                packageData={this.getNpmPackage("@blueprintjs/core")}
             />
         );
         return (
@@ -74,6 +82,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 navigatorExclude={isNavSection}
                 onComponentUpdate={this.handleComponentUpdate}
                 renderNavMenuItem={this.renderNavMenuItem}
+                renderPageActions={this.renderPageActions}
                 renderViewSourceLinkText={this.renderViewSourceLinkText}
             />
         );
@@ -82,18 +91,13 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     private renderNavMenuItem = (props: INavMenuItemProps) => {
         const { route, title } = props.section;
         if (isPageNode(props.section) && props.section.level === 1) {
-            const pkg = this.props.releases.find(p => p.name === `@blueprintjs/${route}`);
             return (
                 <div className={classNames("docs-nav-package", props.className)} data-route={route}>
                     <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
                         <NavIcon route={route} />
                         <span>{title}</span>
                     </a>
-                    {pkg && (
-                        <a className={Classes.TEXT_MUTED} href={pkg.url} target="_blank">
-                            <small>{pkg.version}</small>
-                        </a>
-                    )}
+                    {this.maybeRenderPackageLink(`@blueprintjs/${route}`)}
                 </div>
             );
         }
@@ -104,8 +108,37 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return <NavMenuItem {...props} />;
     };
 
+    private renderPageActions(page: IPageData) {
+        return (
+            <AnchorButton
+                href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
+                icon="edit"
+                minimal={true}
+                target="_blank"
+                text="Edit this page"
+            />
+        );
+    }
+
     private renderViewSourceLinkText(entry: ITsDocBase) {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
+    }
+
+    private maybeRenderPackageLink(packageName: string) {
+        const pkg = this.getNpmPackage(packageName);
+        if (pkg == null) {
+            return null;
+        }
+        const version = this.props.useNextVersion && pkg.nextVersion ? pkg.nextVersion : pkg.version;
+        return (
+            <a className={Classes.TEXT_MUTED} href={`${NPM_URL}/${pkg.name}`} target="_blank">
+                <small>{version}</small>
+            </a>
+        );
+    }
+
+    private getNpmPackage(packageName: string) {
+        return this.props.docs.npm[packageName];
     }
 
     // This function is called whenever the documentation page changes and should be used to

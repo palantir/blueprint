@@ -9,35 +9,33 @@
 Button groups
 
 Markup:
-<div>
-  <div class="#{$ns}-button-group {{.modifier}}">
-    <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
-    <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
-    <a class="#{$ns}-button" tabindex="0" role="button">
-      Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
-    </a>
-  </div>
-  <br /><br /><br />
-  <div class="#{$ns}-button-group {{.modifier}}">
-    <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
-  </div>
-  <br /><br /><br />
-  <div class="#{$ns}-button-group {{.modifier}}">
-    <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
-    <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
-  </div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
+</div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
+  <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
+  <a class="#{$ns}-button" tabindex="0" role="button">
+    Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
+  </a>
+</div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
 </div>
 
+.#{$ns}-fill - Buttons expand equally to fill container
 .#{$ns}-large - Use large buttons
 .#{$ns}-minimal - Use minimal buttons
+.#{$ns}-vertical - Vertical layout
 
 Styleguide button-group
 */
@@ -142,6 +140,7 @@ Styleguide button-group
 
   &.#{$ns}-fill {
     display: flex;
+    width: 100%;
   }
 
   .#{$ns}-button.#{$ns}-fill,
@@ -178,6 +177,11 @@ Styleguide button-group
     flex-direction: column;
     align-items: stretch;
     vertical-align: top;
+
+    &.#{$ns}-fill {
+      width: unset;
+      height: 100%;
+    }
 
     .#{$ns}-button {
       // we never want that margin-right when vertical
