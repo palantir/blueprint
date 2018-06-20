@@ -11,6 +11,7 @@ import {
     Button,
     Classes,
     H5,
+    HTMLSelect,
     Intent,
     IToasterProps,
     IToastProps,
@@ -113,16 +114,14 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                 <H5>Props</H5>
                 <Label>
                     Position
-                    <div className={Classes.SELECT}>
-                        <select value={position.toString()} onChange={this.handlePositionChange}>
-                            <option value={Position.TOP_LEFT.toString()}>Top left</option>
-                            <option value={Position.TOP.toString()}>Top center</option>
-                            <option value={Position.TOP_RIGHT.toString()}>Top right</option>
-                            <option value={Position.BOTTOM_LEFT.toString()}>Bottom left</option>
-                            <option value={Position.BOTTOM.toString()}>Bottom center</option>
-                            <option value={Position.BOTTOM_RIGHT.toString()}>Bottom right</option>
-                        </select>
-                    </div>
+                    <HTMLSelect value={position} onChange={this.handlePositionChange}>
+                        <option value={Position.TOP_LEFT}>Top left</option>
+                        <option value={Position.TOP}>Top center</option>
+                        <option value={Position.TOP_RIGHT}>Top right</option>
+                        <option value={Position.BOTTOM_LEFT}>Bottom left</option>
+                        <option value={Position.BOTTOM}>Bottom center</option>
+                        <option value={Position.BOTTOM_RIGHT}>Bottom right</option>
+                    </HTMLSelect>
                 </Label>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />

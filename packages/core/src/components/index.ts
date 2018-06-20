@@ -35,6 +35,7 @@ export * from "./forms/numericInput";
 export * from "./forms/radioGroup";
 export * from "./forms/textArea";
 export * from "./html/html";
+export * from "./html-select/htmlSelect";
 export * from "./html-table/htmlTable";
 export * from "./hotkeys/hotkeys";
 export * from "./icon/icon";

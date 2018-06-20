@@ -33,7 +33,7 @@
 @page label
 @page checkbox
 @page radio
-@page select-forms
+@page html-select
 @page sliders
 @page switch
 
