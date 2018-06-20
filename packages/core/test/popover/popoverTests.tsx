@@ -207,9 +207,10 @@ describe("<Popover>", () => {
         assert.isTrue(expectedBackdrop.matches(`.${Classes.POPOVER_BACKDROP}`));
     });
 
-    it("rootElementTag prop renders the right elements", () => {
-        wrapper = renderPopover({ isOpen: true, rootElementTag: "article" });
-        assert.isNotNull(wrapper.find("article"));
+    it("*TagName props render the right elements", () => {
+        wrapper = renderPopover({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
+        assert.isTrue(wrapper.find("address").hasClass(Classes.POPOVER_TARGET));
+        assert.isTrue(wrapper.find("article").hasClass(Classes.POPOVER_WRAPPER));
     });
 
     it("supports overlay lifecycle props", () => {
