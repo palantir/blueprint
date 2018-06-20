@@ -173,6 +173,8 @@ renameProp popoverWillClose onClosing
 renameProp popoverWillOpen onOpening
 renameString 'requiredLabel={true}' 'labelInfo="(required)"'
 renameProp requiredLabel labelInfo
+renameProp rootElementTag wrapperTagName
+renameProp targetElementTag targetTagName
 
 # Classes constants
 renameString "Classes\.CALLOUT_TITLE" "Classes.HEADING"
