@@ -12,6 +12,7 @@ import { IOverlayableProps } from "../overlay/overlay";
 // re-export this symbol for library consumers
 export { PopperModifiers };
 
+/** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     /**
      * Initial opened state when uncontrolled.

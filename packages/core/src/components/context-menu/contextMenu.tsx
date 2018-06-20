@@ -13,7 +13,8 @@ import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
-import { Popover, PopperModifiers } from "../popover/popover";
+import { Popover } from "../popover/popover";
+import { PopperModifiers } from "../popover/popoverSharedProps";
 
 export interface IOffset {
     left: number;
