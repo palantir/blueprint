@@ -10,7 +10,7 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IIntentProps } from "../../common/props";
 import { Popover, PopoverInteractionKind } from "../popover/popover";
-import { IPopoverSharedProps } from "../popover/popoverProps";
+import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 
 export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
     /**

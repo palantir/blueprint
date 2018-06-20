@@ -112,7 +112,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * elements and can be nested in text. Use `<div>` tag for a block element.
      * @default "span"
      */
-    targetElementTag?: keyof JSX.IntrinsicElements;
+    targetTagName?: keyof JSX.IntrinsicElements;
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to
@@ -135,5 +135,5 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * `className` prop.
      * @default "span"
      */
-    rootElementTag?: keyof JSX.IntrinsicElements;
+    wrapperTagName?: keyof JSX.IntrinsicElements;
 }

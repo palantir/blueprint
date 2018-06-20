@@ -18,7 +18,7 @@ import { Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
 import { getArrowAngle, PopoverArrow } from "./arrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
-import { IPopoverSharedProps, PopperModifiers } from "./popoverProps";
+import { IPopoverSharedProps, PopperModifiers } from "./popoverSharedProps";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
 export const PopoverInteractionKind = {
@@ -97,10 +97,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         modifiers: {},
         openOnTargetFocus: true,
         position: "auto",
-        rootElementTag: "span",
-        targetElementTag: "div",
+        targetTagName: "div",
         transitionDuration: 300,
         usePortal: true,
+        wrapperTagName: "span",
     };
 
     /**
@@ -139,7 +139,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     public render() {
-        const { className, disabled, targetClassName, targetElementTag } = this.props;
+        const { className, disabled, targetClassName, targetTagName, wrapperTagName } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -184,8 +184,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
 
         return (
-            <Manager tag={this.props.rootElementTag} className={classNames(Classes.POPOVER_WRAPPER, className)}>
-                <Target {...targetProps} component={targetElementTag} innerRef={this.refHandlers.target}>
+            <Manager tag={wrapperTagName} className={classNames(Classes.POPOVER_WRAPPER, className)}>
+                <Target {...targetProps} component={targetTagName} innerRef={this.refHandlers.target}>
                     {target}
                 </Target>
                 <Overlay
