@@ -7,9 +7,7 @@
 import * as React from "react";
 import * as tags from "./";
 
-import { IKssPluginData, IMarkdownPluginData, ITag, ITypescriptPluginData } from "documentalist/dist/client";
-
-export interface IDocsData extends IKssPluginData, IMarkdownPluginData, ITypescriptPluginData {}
+import { ITag } from "documentalist/dist/client";
 
 export function createDefaultRenderers(): Record<string, React.ComponentType<ITag>> {
     return {
