@@ -6,8 +6,8 @@
 import * as React from "react";
 
 import {
-    HtmlSelect,
-    IHtmlOptionProps,
+    HTMLSelect,
+    IHTMLOptionProps,
     Intent,
     INumericInputProps,
     Label,
@@ -57,7 +57,6 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         max: 100,
         min: 0,
         minorStepSize: 0.1,
-        // readOnly: false,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
         stepSize: 1,
@@ -76,7 +75,6 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     private toggleLeftIcon = handleBooleanChange(leftIcon =>
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
     );
-    // private toggleReadOnly = handleBooleanChange(readOnly => this.setState({ readOnly }));
     private toggleFullWidth = handleBooleanChange(fill => this.setState({ fill }));
     private toggleLargeSize = handleBooleanChange(large => this.setState({ large }));
     private toggleNumericCharsOnly = handleBooleanChange(allowNumericCharactersOnly =>
@@ -107,7 +105,6 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
             disabled,
             fill,
             large,
-            // showReadOnly,
             leftIcon,
         } = this.state;
 
@@ -118,7 +115,6 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                 {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
                 {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
                 {this.renderSwitch("Disabled", disabled, this.toggleDisabled)}
-                {/* {this.renderSwitch("Read-only", showReadOnly, this.toggleReadOnly)} */}
                 {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
                 {this.renderSwitch("Fill container", fill, this.toggleFullWidth)}
                 {this.renderSwitch("Large", large, this.toggleLargeSize)}
@@ -142,13 +138,13 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     private renderSelectMenu(
         label: string,
         selectedValue: number | string,
-        options: IHtmlOptionProps[],
+        options: IHTMLOptionProps[],
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (
             <Label>
                 {label}
-                <HtmlSelect value={selectedValue} onChange={onChange} options={options} />
+                <HTMLSelect value={selectedValue} onChange={onChange} options={options} />
             </Label>
         );
     }

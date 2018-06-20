@@ -14,7 +14,7 @@ import {
     Code,
     FormGroup,
     H5,
-    HtmlSelect,
+    HTMLSelect,
     Intent,
     Label,
     Menu,
@@ -156,7 +156,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                     label="Position when opened"
                     labelFor="position"
                 >
-                    <HtmlSelect
+                    <HTMLSelect
                         value={this.state.position}
                         onChange={this.handlePositionChange}
                         options={VALID_POSITIONS}
@@ -164,13 +164,13 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                 </FormGroup>
                 <Label>
                     Example content
-                    <HtmlSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
+                    <HTMLSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
                         <option value="0">Text</option>
                         <option value="1">Input</option>
                         <option value="2">Slider</option>
                         <option value="3">Menu</option>
                         <option value="4">Empty</option>
-                    </HtmlSelect>
+                    </HTMLSelect>
                 </Label>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
@@ -201,7 +201,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                 >
                     <br />
                     <div style={{ marginTop: 5 }} />
-                    <HtmlSelect
+                    <HTMLSelect
                         disabled={!preventOverflow.enabled}
                         value={preventOverflow.boundariesElement.toString()}
                         onChange={this.handleBoundaryChange}
@@ -209,7 +209,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                         <option value="scrollParent">scrollParent</option>
                         <option value="viewport">viewport</option>
                         <option value="window">window</option>
-                    </HtmlSelect>
+                    </HTMLSelect>
                 </Switch>
                 <Label>
                     <AnchorButton

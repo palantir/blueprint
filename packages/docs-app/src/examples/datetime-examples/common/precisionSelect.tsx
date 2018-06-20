@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, HtmlSelect } from "@blueprintjs/core";
+import { Classes, HTMLSelect } from "@blueprintjs/core";
 import { TimePrecision } from "@blueprintjs/datetime";
 
 export interface IPrecisionSelectProps {
@@ -35,11 +35,11 @@ export interface IPrecisionSelectProps {
 export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = props => (
     <label className={Classes.LABEL}>
         {props.label || "Precision"}
-        <HtmlSelect value={props.value} onChange={props.onChange}>
+        <HTMLSelect value={props.value} onChange={props.onChange}>
             {props.allowEmpty ? <option value="-1">None</option> : undefined}
             <option value={TimePrecision.MINUTE}>Minute</option>
             <option value={TimePrecision.SECOND}>Second</option>
             <option value={TimePrecision.MILLISECOND}>Millisecond</option>
-        </HtmlSelect>
+        </HTMLSelect>
     </label>
 );

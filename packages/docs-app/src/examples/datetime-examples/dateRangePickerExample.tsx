@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, H5, HtmlSelect, Label, Switch } from "@blueprintjs/core";
+import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
 import moment from "moment";
 import * as React from "react";
@@ -148,9 +148,9 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         return (
             <Label>
                 {label}
-                <HtmlSelect value={selectedValue} onChange={onChange}>
+                <HTMLSelect value={selectedValue} onChange={onChange}>
                     {options.map((opt, i) => <option key={i} value={i} label={opt.label} />)}
-                </HtmlSelect>
+                </HTMLSelect>
             </Label>
         );
     }

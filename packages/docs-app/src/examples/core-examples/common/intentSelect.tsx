@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { HtmlSelect, Intent, Label } from "@blueprintjs/core";
+import { HTMLSelect, Intent, Label } from "@blueprintjs/core";
 import * as React from "react";
 
 const INTENTS = [
@@ -24,6 +24,6 @@ export interface IIntentSelectProps {
 export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
     <Label>
         Intent
-        <HtmlSelect value={props.intent} onChange={props.onChange} options={INTENTS} />
+        <HTMLSelect value={props.intent} onChange={props.onChange} options={INTENTS} />
     </Label>
 );

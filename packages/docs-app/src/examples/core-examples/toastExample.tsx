@@ -11,7 +11,7 @@ import {
     Button,
     Classes,
     H5,
-    HtmlSelect,
+    HTMLSelect,
     Intent,
     IToasterProps,
     IToastProps,
@@ -114,14 +114,14 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                 <H5>Props</H5>
                 <Label>
                     Position
-                    <HtmlSelect value={position} onChange={this.handlePositionChange}>
+                    <HTMLSelect value={position} onChange={this.handlePositionChange}>
                         <option value={Position.TOP_LEFT}>Top left</option>
                         <option value={Position.TOP}>Top center</option>
                         <option value={Position.TOP_RIGHT}>Top right</option>
                         <option value={Position.BOTTOM_LEFT}>Bottom left</option>
                         <option value={Position.BOTTOM}>Bottom center</option>
                         <option value={Position.BOTTOM_RIGHT}>Bottom right</option>
-                    </HtmlSelect>
+                    </HTMLSelect>
                 </Label>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />
