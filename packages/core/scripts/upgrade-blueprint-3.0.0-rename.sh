@@ -162,8 +162,9 @@ function renameString() {
 }
 
 echo "
+Blueprint 3.0.0 Upgrade Script
+"
 
-Renames for @blueprintjs/core"
 renameProp visual icon
 renameProp didClose onClosed
 renameProp didOpen onOpened
@@ -176,6 +177,11 @@ renameProp requiredLabel labelInfo
 renameProp rootElementTag wrapperTagName
 renameProp targetElementTag targetTagName
 renameProp tooltipClassName popoverClassName
+
+# String enums
+renameProp CollapseFrom Boundary
+renameProp DateRangeBoundary Boundary
+renameProp TimePickerPrecision TimePrecision
 
 # Classes constants
 renameString "Classes\.CALLOUT_TITLE" "Classes.HEADING"
