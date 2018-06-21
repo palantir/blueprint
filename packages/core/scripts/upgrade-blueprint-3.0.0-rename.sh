@@ -1,5 +1,9 @@
 #!/bin/bash
 
+DEFAULT_INCLUDE='*.{ts,tsx,scss,less}'
+DEFAULT_EXCLUDE='{dist,build,node_modules}'
+DEFAULT_PREFIX='(?!(?<=public )|(?<=protected )|(?<=abstract )|(?<=private )|(?<=this\.)|(?<=-))'
+
 function usage() {
     cat << EOF
 
@@ -26,15 +30,15 @@ Options
         The path where the recursive search begins, relative to the current
         working directory.
 
-    --include=*.{ts,tsx,scss,less}
+    --include=$DEFAULT_INCLUDE
 
         A glob string to match specific file extensions in the search path.
 
-    --exclude={dist,build,coverage,node_modules}
+    --exclude=$DEFAULT_EXCLUDE
 
         A glob string to omit specific directories from the search path.
 
-    --prefix=(?!(?<=public )|(?<=protected )|(?<=abstract )|(?<=private )|(?<=this\.))
+    --prefix=$DEFAULT_PREFIX
 
         A regexp prefix for each find/replace prop string. The default includes
         groups of non-capturing negative lookbehinds. This helps limit the
@@ -75,9 +79,9 @@ done
 
 # Default argument values
 SEARCH_PATH=${SEARCH_PATH:-'.'}
-INCLUDE_GLOB=${INCLUDE_GLOB:-'*.{ts,tsx,scss,less}'}
-EXCLUDE_GLOB=${EXCLUDE_GLOB:-'{dist,build,node_modules}'}
-PREFIX=${PREFIX:-'(?!(?<=public )|(?<=protected )|(?<=abstract )|(?<=private )|(?<=this\.))'}
+INCLUDE_GLOB=${INCLUDE_GLOB:-$DEFAULT_INCLUDE}
+EXCLUDE_GLOB=${EXCLUDE_GLOB:-$DEFAULT_EXCLUDE}
+PREFIX=${PREFIX:-$DEFAULT_PREFIX}
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -144,26 +148,27 @@ function warn() {
 
 function renameProp() {
     # Add prefix and word boundaries to search string
-    rename $1 $2 "$PREFIX\\b$1\\b"
+    rename "$1" "$2" "$PREFIX\\b$1\\b"
 }
 
 function warnProp() {
-    warn $1 $2 "$PREFIX\\b$1\\b"
+    warn "$1" "$2" "$PREFIX\\b$1\\b"
 }
 
 function renamePartialClass() {
     # Don't add word boundary so that partial css classnames rename
-    rename $1 $2 "\\b$1"
+    rename "$1" "$2" "\\b$1"
 }
 
 function renameString() {
     # Add simple word boundaries
-    rename $1 $2 "\\b$1\\b"
+    rename "$1" "$2" "\\b$1\\b"
 }
 
 echo "
+Blueprint 3.0.0 Upgrade Script
+"
 
-Renames for @blueprintjs/core"
 renameProp visual icon
 renameProp didClose onClosed
 renameProp didOpen onOpened
@@ -171,7 +176,7 @@ renameProp popoverDidClose onClosed
 renameProp popoverDidOpen onOpened
 renameProp popoverWillClose onClosing
 renameProp popoverWillOpen onOpening
-renameString 'requiredLabel={true}' 'labelInfo="(required)"'
+rename 'requiredLabel={true}' "labelInfo=\"(required)\""
 renameProp requiredLabel labelInfo
 renameProp rootElementTag wrapperTagName
 renameProp targetElementTag targetTagName
@@ -187,12 +192,17 @@ renameString "Classes\.RUNNING_TEXT" "Classes.RUNNING_TEXT, Classes.TEXT_LARGE"
 renameString "Classes\.RUNNING_TEXT_SMALL" "Classes.RUNNING_TEXT"
 
 # Deleted things
-renameString "Classes\.TAG_REMOVABLE,?" ""
-renameString "Classes\.NON_IDEAL_STATE_(ACTION|DESCRIPTION|ICON),?" ""
-renameString "Classes\.SPINNER_SVG_CONTAINER,?" ""
-renameString "Classes\.SVG_SPINNER,?" ""
-warn SVGSpinner "DELETED. Spinner now supports usage in an SVG."
-warn SVGPopover "DELETED. Set *TagName props to SVG elements."
-warn SVGTooltip "DELETED. Set *TagName props to SVG elements."
-warn Spinner "`small/large` replaced with single `size` prop"
-warn "\\bTable\\b" "@blueprintjs/core Table component renamed to HTMLTable (@blueprintjs/table package unchanged)."
+renameString "Classes\.TAG_REMOVABLE,?" ''
+renameString "Classes\.NON_IDEAL_STATE_(ACTION|DESCRIPTION|ICON),?" ''
+renameString "Classes\.SPINNER_SVG_CONTAINER,?" ''
+renameString "Classes\.SVG_SPINNER,?" ''
+warn SVGSpinner 'DELETED. Spinner now supports usage in an SVG.'
+warn SVGPopover 'DELETED. Set *TagName props to SVG elements.'
+warn SVGTooltip 'DELETED. Set *TagName props to SVG elements.'
+warn Spinner '`small/large` replaced with single `size` prop'
+warn "\\bTable\\b" '@blueprintjs/core Table component renamed to HTMLTable (@blueprintjs/table package unchanged).'
+
+# String enums
+renameProp CollapseFrom Boundary
+renameProp DateRangeBoundary Boundary
+renameProp TimePickerPrecision TimePrecision

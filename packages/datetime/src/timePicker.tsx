@@ -49,7 +49,7 @@ export interface ITimePickerProps extends IProps {
 
     /**
      * The precision of time the user can set.
-     * @default TimePickerPrecision.MINUTE
+     * @default TimePrecision.MINUTE
      */
     precision?: TimePrecision;
 
