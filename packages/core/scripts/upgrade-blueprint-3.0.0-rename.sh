@@ -144,21 +144,21 @@ function warn() {
 
 function renameProp() {
     # Add prefix and word boundaries to search string
-    rename $1 $2 "$PREFIX\\b$1\\b"
+    rename "$1" "$2" "$PREFIX\\b$1\\b"
 }
 
 function warnProp() {
-    warn $1 $2 "$PREFIX\\b$1\\b"
+    warn "$1" "$2" "$PREFIX\\b$1\\b"
 }
 
 function renamePartialClass() {
     # Don't add word boundary so that partial css classnames rename
-    rename $1 $2 "\\b$1"
+    rename "$1" "$2" "\\b$1"
 }
 
 function renameString() {
     # Add simple word boundaries
-    rename $1 $2 "\\b$1\\b"
+    rename "$1" "$2" "\\b$1\\b"
 }
 
 echo "
@@ -172,16 +172,11 @@ renameProp popoverDidClose onClosed
 renameProp popoverDidOpen onOpened
 renameProp popoverWillClose onClosing
 renameProp popoverWillOpen onOpening
-renameString 'requiredLabel={true}' 'labelInfo="(required)"'
+rename 'requiredLabel={true}' "labelInfo=\"(required)\""
 renameProp requiredLabel labelInfo
 renameProp rootElementTag wrapperTagName
 renameProp targetElementTag targetTagName
 renameProp tooltipClassName popoverClassName
-
-# String enums
-renameProp CollapseFrom Boundary
-renameProp DateRangeBoundary Boundary
-renameProp TimePickerPrecision TimePrecision
 
 # Classes constants
 renameString "Classes\.CALLOUT_TITLE" "Classes.HEADING"
@@ -193,12 +188,17 @@ renameString "Classes\.RUNNING_TEXT" "Classes.RUNNING_TEXT, Classes.TEXT_LARGE"
 renameString "Classes\.RUNNING_TEXT_SMALL" "Classes.RUNNING_TEXT"
 
 # Deleted things
-renameString "Classes\.TAG_REMOVABLE,?" ""
-renameString "Classes\.NON_IDEAL_STATE_(ACTION|DESCRIPTION|ICON),?" ""
-renameString "Classes\.SPINNER_SVG_CONTAINER,?" ""
-renameString "Classes\.SVG_SPINNER,?" ""
-warn SVGSpinner "DELETED. Spinner now supports usage in an SVG."
-warn SVGPopover "DELETED. Set *TagName props to SVG elements."
-warn SVGTooltip "DELETED. Set *TagName props to SVG elements."
-warn Spinner "`small/large` replaced with single `size` prop"
-warn "\\bTable\\b" "@blueprintjs/core Table component renamed to HTMLTable (@blueprintjs/table package unchanged)."
+renameString "Classes\.TAG_REMOVABLE,?" ''
+renameString "Classes\.NON_IDEAL_STATE_(ACTION|DESCRIPTION|ICON),?" ''
+renameString "Classes\.SPINNER_SVG_CONTAINER,?" ''
+renameString "Classes\.SVG_SPINNER,?" ''
+warn SVGSpinner 'DELETED. Spinner now supports usage in an SVG.'
+warn SVGPopover 'DELETED. Set *TagName props to SVG elements.'
+warn SVGTooltip 'DELETED. Set *TagName props to SVG elements.'
+warn Spinner '`small/large` replaced with single `size` prop'
+warn "\\bTable\\b" '@blueprintjs/core Table component renamed to HTMLTable (@blueprintjs/table package unchanged).'
+
+# String enums
+renameProp CollapseFrom Boundary
+renameProp DateRangeBoundary Boundary
+renameProp TimePickerPrecision TimePrecision
