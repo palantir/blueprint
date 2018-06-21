@@ -77,7 +77,7 @@ done
 SEARCH_PATH=${SEARCH_PATH:-'.'}
 INCLUDE_GLOB=${INCLUDE_GLOB:-'*.{ts,tsx,scss,less}'}
 EXCLUDE_GLOB=${EXCLUDE_GLOB:-'{dist,build,node_modules}'}
-PREFIX=${PREFIX:-'(?!(?<=public )|(?<=protected )|(?<=abstract )|(?<=private )|(?<=this\.))'}
+PREFIX=${PREFIX:-'(?!(?<=public )|(?<=protected )|(?<=abstract )|(?<=private )|(?<=this\.)|(?<=-))'}
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
