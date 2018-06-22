@@ -116,7 +116,11 @@ export class OverflowListExample extends React.PureComponent<IExampleProps, IOve
     private renderOverflow = (items: IMenuItemProps[]) => {
         const { collapseFrom } = this.state;
         const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
-        const menuItems = items.map((item, index) => <MenuItem {...item} key={index} />);
+        let orderedItems = items;
+        if (this.state.collapseFrom === Boundary.START) {
+            orderedItems = items.slice().reverse();
+        }
+        const menuItems = orderedItems.map((item, index) => <MenuItem {...item} key={index} />);
         return (
             <li>
                 <Popover position={position}>
