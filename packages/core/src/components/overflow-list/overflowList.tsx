@@ -30,6 +30,13 @@ export interface IOverflowListProps<T> extends IProps {
     items: T[];
 
     /**
+     * The number of visible items will never be lower than the number passed to
+     * this prop.
+     * @default 0
+     */
+    minVisibleItems?: number;
+
+    /**
      * If `true`, all parent DOM elements of the container will also be
      * observed. If changes to a parent's size is detected, the overflow will be
      * recalculated.
@@ -71,6 +78,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
 
     public static defaultProps: Partial<IOverflowListProps<any>> = {
         collapseFrom: Boundary.START,
+        minVisibleItems: 0,
     };
 
     public static ofType<T>() {
@@ -181,6 +189,9 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         } else if (this.spacer.getBoundingClientRect().width < 1) {
             // spacer has flex-shrink and width 1px so if it's any smaller then we know to shrink
             this.setState(state => {
+                if (state.visible.length <= this.props.minVisibleItems) {
+                    return null;
+                }
                 const collapseFromStart = this.props.collapseFrom === Boundary.START;
                 const visible = state.visible.slice();
                 const next = collapseFromStart ? visible.shift() : visible.pop();
