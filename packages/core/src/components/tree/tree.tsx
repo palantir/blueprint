@@ -12,7 +12,7 @@ import { IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";
 import { ITreeNode, TreeNode } from "./treeNode";
 
-export type TreeEventHandler = (node: ITreeNode, nodePath: number[], e: React.MouseEvent<HTMLElement>) => void;
+export type TreeEventHandler<T = {}> = (node: ITreeNode<T>, nodePath: number[], e: React.MouseEvent<HTMLElement>) => void;
 
 export interface ITreeProps<T = {}> extends IProps {
     /**
@@ -23,29 +23,29 @@ export interface ITreeProps<T = {}> extends IProps {
     /**
      * Invoked when a node is clicked anywhere other than the caret for expanding/collapsing the node.
      */
-    onNodeClick?: TreeEventHandler;
+    onNodeClick?: TreeEventHandler<T>;
 
     /**
      * Invoked when caret of an expanded node is clicked.
      */
-    onNodeCollapse?: TreeEventHandler;
+    onNodeCollapse?: TreeEventHandler<T>;
 
     /**
      * Invoked when a node is right-clicked or the context menu button is pressed on a focused node.
      */
-    onNodeContextMenu?: TreeEventHandler;
+    onNodeContextMenu?: TreeEventHandler<T>;
 
     /**
      * Invoked when a node is double-clicked. Be careful when using this in combination with
      * an `onNodeClick` (single-click) handler, as the way this behaves can vary between browsers.
      * See http://stackoverflow.com/q/5497073/3124288
      */
-    onNodeDoubleClick?: TreeEventHandler;
+    onNodeDoubleClick?: TreeEventHandler<T>;
 
     /**
      * Invoked when the caret of a collapsed node is clicked.
      */
-    onNodeExpand?: TreeEventHandler;
+    onNodeExpand?: TreeEventHandler<T>;
 }
 
 export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
