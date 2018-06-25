@@ -53,7 +53,7 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         return Tree as new (props: ITreeProps<T>) => Tree<T>;
     }
 
-    public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
+    public static nodeFromPath(path: number[], treeNodes: ITreeNode<T>[]): ITreeNode<T> {
         if (path.length === 1) {
             return treeNodes[path[0]];
         } else {
@@ -80,15 +80,16 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         return this.nodeRefs[nodeId];
     }
 
-    private renderNodes(treeNodes: ITreeNode[], currentPath?: number[], className?: string): JSX.Element {
+    private renderNodes(treeNodes: ITreeNode<T>[], currentPath?: number[], className?: string): JSX.Element {
         if (treeNodes == null) {
             return null;
         }
 
         const nodeItems = treeNodes.map((node, i) => {
             const elementPath = currentPath.concat(i);
+            const TypedTreeNode = TreeNode.ofType<T>();
             return (
-                <TreeNode
+                <TypedTreeNode
                     {...node}
                     key={node.id}
                     contentRef={this.handleContentRef}
@@ -101,22 +102,22 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
                     path={elementPath}
                 >
                     {this.renderNodes(node.childNodes, elementPath)}
-                </TreeNode>
+                </TypedTreeNode>
             );
         });
 
         return <ul className={classNames(Classes.TREE_NODE_LIST, className)}>{nodeItems}</ul>;
     }
 
-    private handleNodeCollapse = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
+    private handleNodeCollapse = (node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeCollapse, node, e);
     };
 
-    private handleNodeClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
+    private handleNodeClick = (node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeClick, node, e);
     };
 
-    private handleContentRef = (node: TreeNode, element: HTMLElement | null) => {
+    private handleContentRef = (node: TreeNode<T>, element: HTMLElement | null) => {
         if (element != null) {
             this.nodeRefs[node.props.id] = element;
         } else {
@@ -125,19 +126,19 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         }
     };
 
-    private handleNodeContextMenu = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
+    private handleNodeContextMenu = (node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeContextMenu, node, e);
     };
 
-    private handleNodeDoubleClick = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
+    private handleNodeDoubleClick = (node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeDoubleClick, node, e);
     };
 
-    private handleNodeExpand = (node: TreeNode, e: React.MouseEvent<HTMLElement>) => {
+    private handleNodeExpand = (node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) => {
         this.handlerHelper(this.props.onNodeExpand, node, e);
     };
 
-    private handlerHelper(handlerFromProps: TreeEventHandler, node: TreeNode, e: React.MouseEvent<HTMLElement>) {
+    private handlerHelper(handlerFromProps: TreeEventHandler, node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) {
         if (isFunction(handlerFromProps)) {
             const nodeData = Tree.nodeFromPath(node.props.path, this.props.contents);
             handlerFromProps(nodeData, node.props.path, e);
