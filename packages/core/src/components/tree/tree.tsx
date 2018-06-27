@@ -75,14 +75,6 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         );
     }
 
-    public nodeFromPath(path: number[]): ITreeNode<T> {
-        let treeNodes = this.props.contents;
-        for (let i = 0; i < path.length - 1; i++) {
-            treeNodes = treeNodes[path[i]].childNodes;
-        }
-        return treeNodes[path[path.length - 1]];
-    }
-
     /**
      * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
      * This element does not contain the children of the node, only its label and controls.
