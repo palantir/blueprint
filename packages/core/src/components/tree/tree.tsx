@@ -13,9 +13,9 @@ import { isFunction } from "../../common/utils";
 import { ITreeNode, TreeNode } from "./treeNode";
 
 export type TreeEventHandler<T = {}> = (
-  node: ITreeNode<T>,
-  nodePath: number[],
-  e: React.MouseEvent<HTMLElement>,
+    node: ITreeNode<T>,
+    nodePath: number[],
+    e: React.MouseEvent<HTMLElement>,
 ) => void;
 
 export interface ITreeProps<T = {}> extends IProps {
