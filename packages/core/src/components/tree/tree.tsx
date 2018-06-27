@@ -12,7 +12,11 @@ import { IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";
 import { ITreeNode, TreeNode } from "./treeNode";
 
-export type TreeEventHandler<T = {}> = (node: ITreeNode<T>, nodePath: number[], e: React.MouseEvent<HTMLElement>) => void;
+export type TreeEventHandler<T = {}> = (
+  node: ITreeNode<T>,
+  nodePath: number[],
+  e: React.MouseEvent<HTMLElement>,
+) => void;
 
 export interface ITreeProps<T = {}> extends IProps {
     /**
@@ -61,6 +65,8 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         }
     }
 
+    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
+
     public nodeFromPath(path: number[]): ITreeNode<T> {
         let treeNodes = this.props.contents;
         for (let _i = 0; _i < path.length - 1; _i++) {
@@ -68,8 +74,6 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         }
         return treeNodes[path[path.length - 1]];
     }
-
-    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
 
     public render() {
         return (
@@ -88,7 +92,7 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         return this.nodeRefs[nodeId];
     }
 
-    private renderNodes(treeNodes: ITreeNode<T>[], currentPath?: number[], className?: string): JSX.Element {
+    private renderNodes(treeNodes: Array<ITreeNode<T>>, currentPath?: number[], className?: string): JSX.Element {
         if (treeNodes == null) {
             return null;
         }
