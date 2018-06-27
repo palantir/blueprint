@@ -17,7 +17,7 @@ export interface ITreeNode<T = {}> extends IProps {
     /**
      * Child tree nodes of this node.
      */
-    childNodes?: ITreeNode[];
+    childNodes?: ITreeNode<T>[];
 
     /**
      * Whether the caret to expand/collapse a node should be shown.

@@ -53,12 +53,20 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
         return Tree as new (props: ITreeProps<T>) => Tree<T>;
     }
 
-    public static nodeFromPath(path: number[], treeNodes: ITreeNode<T>[]): ITreeNode<T> {
+    public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
         if (path.length === 1) {
             return treeNodes[path[0]];
         } else {
             return Tree.nodeFromPath(path.slice(1), treeNodes[path[0]].childNodes);
         }
+    }
+
+    public nodeFromPath(path: number[]): ITreeNode<T> {
+        let treeNodes = this.props.contents;
+        for (let _i = 0; _i < path.length - 1; _i++) {
+            treeNodes = treeNodes[path[_i]].childNodes;
+        }
+        return treeNodes[path[path.length - 1]];
     }
 
     private nodeRefs: { [nodeId: string]: HTMLElement } = {};
