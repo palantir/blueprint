@@ -57,7 +57,7 @@ export function renderFilteredItems(
     noResults?: React.ReactNode,
     initialContent?: React.ReactNode | null,
 ): React.ReactNode {
-    if (props.query.length === 0 && initialContent !== undefined) {
+    if (props.query.length === 0 && initialContent != null) {
         return initialContent;
     }
     const items = props.filteredItems.map(props.renderItem).filter(item => item != null);
