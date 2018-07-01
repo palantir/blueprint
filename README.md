@@ -13,6 +13,8 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
+[**Showcase ▸**](https://blueprintjs.surge.sh/)
+
 ### Bug report? Feature request? Support question?
 
 Choose the [appropriate issue type](https://github.com/palantir/blueprint/issues/new/choose) and fill out the template.
