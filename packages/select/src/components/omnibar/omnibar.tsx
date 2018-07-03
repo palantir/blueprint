@@ -100,9 +100,14 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         const { isOpen } = nextProps;
         const canClearQuery = !this.props.isOpen && isOpen && this.props.resetOnSelect;
 
+        const query =
+            nextProps.inputProps && nextProps.inputProps.value
+                ? (nextProps.inputProps.value as string)
+                : this.state.query;
+
         this.setState({
             activeItem: canClearQuery ? this.props.items[0] : this.state.activeItem,
-            query: canClearQuery ? "" : this.state.query,
+            query: canClearQuery ? "" : query,
         });
     }
 
