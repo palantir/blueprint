@@ -118,23 +118,25 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         });
     }
 
-    public componentWillMount() {
-        this.setState({ filteredItems: getFilteredItems(this.props) });
-    }
-
     public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (
-            nextProps.items !== this.props.items ||
-            nextProps.itemListPredicate !== this.props.itemListPredicate ||
-            nextProps.itemPredicate !== this.props.itemPredicate ||
-            nextProps.query !== this.props.query
-        ) {
-            this.shouldCheckActiveItemInViewport = true;
-            this.setState({ filteredItems: getFilteredItems(nextProps) });
+        if (nextProps.activeItem != null) {
+            this.setState({ activeItem: nextProps.activeItem });
+        }
+        if (nextProps.query != null) {
+            this.setQuery(nextProps.query);
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: IQueryListProps<T>) {
+        if (
+            !Utils.shallowCompareKeys(this.props, prevProps, {
+                include: ["items", "itemListPredicate", "itemPredicate"],
+            })
+        ) {
+            this.setState(state => ({ filteredItems: getFilteredItems(state.query, this.props) }));
+            this.shouldCheckActiveItemInViewport = true;
+        }
+
         if (this.shouldCheckActiveItemInViewport) {
             // update scroll position immediately before repaint so DOM is accurate
             // (latest filteredItems) and to avoid flicker.
@@ -142,6 +144,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             // reset the flag
             this.shouldCheckActiveItemInViewport = false;
         }
+
         // reset active item (in the same step) if it's no longer valid
         // Also don't fire the event if the active item is already undefined and there is nothing to pick
         const activeIndex = this.getActiveIndex();
@@ -179,6 +182,17 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
+    // TODO resetActiveItem = this.props.resetOnQuery
+    public setQuery(query: string, resetActiveItem = false) {
+        this.setState({ filteredItems: getFilteredItems(query, this.props), query }, () => {
+            // wait will state has updated so we select the first from newly filtered items
+            if (resetActiveItem) {
+                this.setActiveItem("first");
+            }
+        });
+        Utils.safeInvoke(this.props.onQueryChange, query);
+    }
+
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
@@ -188,7 +202,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index: number) => {
-        const { activeItem, query } = this.props;
+        const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
             active: activeItem === item,
@@ -211,7 +225,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private getActiveIndex() {
-        const { activeItem } = this.props;
+        const { activeItem } = this.state;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
         return activeItem == null ? -1 : this.state.filteredItems.indexOf(activeItem);
     }
@@ -228,6 +242,9 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setActiveItem(item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
+        if (this.props.resetOnSelect) {
+            this.setQuery("", true);
+        }
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -245,15 +262,22 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        const { activeItem, onItemSelect, onKeyUp } = this.props;
+        const { onKeyUp } = this.props;
+        const { activeItem } = this.state;
         // using keyup for enter to play nice with Button's keyboard clicking.
         // if we were to process enter on keydown, then Button would click itself on keyup
         // and the popvoer would re-open out of our control :(.
         if (event.keyCode === Keys.ENTER && activeItem != null) {
             event.preventDefault();
-            Utils.safeInvoke(onItemSelect, activeItem, event);
+            this.handleItemSelect(activeItem, event);
         }
         Utils.safeInvoke(onKeyUp, event);
+    };
+
+    private handleQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
+        const query = event == null ? "" : event.currentTarget.value;
+        this.setQuery(query);
+        Utils.safeInvoke(this.props.onQueryChange, query, event);
     };
 
     /**
@@ -265,9 +289,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private setActiveItem(item: T | undefined) {
-        // TODO: this will be more complex with un/controlled support (next PR)
-        Utils.safeInvoke(this.props.onActiveItemChange, item);
+    private setActiveItem(activeItem: T | "first" | undefined) {
+        if (this.props.activeItem == null) {
+            this.setState({ activeItem });
+        }
+        Utils.safeInvoke(this.props.onActiveItemChange, activeItem);
     }
 
     private setFirstActiveItem() {
@@ -279,7 +305,7 @@ function pxToNumber(value: string | null) {
     return value == null ? 0 : parseInt(value.slice(0, -2), 10);
 }
 
-function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IQueryListProps<T>) {
+function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: IQueryListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
         // note that implementations can reorder the items here
         return itemListPredicate(query, items);
@@ -318,9 +344,9 @@ function isItemDisabled<T>(item: T, index: number, itemDisabled?: IListItemsProp
  */
 export function getFirstEnabledItem<T>(
     items: T[],
-    itemDisabled: IListItemsProps<T>["itemDisabled"],
-    direction: number,
-    startIndex: number,
+    itemDisabled?: keyof T | ((item: T, index: number) => boolean),
+    direction = 1,
+    startIndex = items.length - 1,
 ): T | undefined {
     if (items.length === 0) {
         return undefined;
