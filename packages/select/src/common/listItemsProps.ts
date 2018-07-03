@@ -77,4 +77,12 @@ export interface IListItemsProps<T> extends IProps {
      * typically by clicking or pressing `enter` key.
      */
     onItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /**
+     * Whether the querying state should be reset to initial when an item is
+     * selected (immediately before `onItemSelect` is invoked). The query will
+     * become the empty string and the first item will be made active.
+     * @default false
+     */
+    resetOnSelect?: boolean;
 }

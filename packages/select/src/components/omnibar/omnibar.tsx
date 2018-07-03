@@ -43,14 +43,6 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
 
     /** The query string. */
     query?: string;
-
-    /**
-     * Whether the filtering state should be reset to initial when an item is selected
-     * (immediately before `onItemSelect` is invoked). The query will become the empty string
-     * and the first item will be made active.
-     * @default false
-     */
-    resetOnSelect?: boolean;
 }
 
 export interface IOmnibarState<T> {

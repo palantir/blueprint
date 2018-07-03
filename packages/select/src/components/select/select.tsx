@@ -47,14 +47,6 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**
-     * Whether the filtering state should be reset to initial when an item is selected
-     * (immediately before `onItemSelect` is invoked). The query will become the empty string
-     * and the first item will be made active.
-     * @default false
-     */
-    resetOnSelect?: boolean;
-
-    /**
      * Whether the filtering state should be reset to initial when the popover closes.
      * The query will become the empty string and the first item will be made active.
      * @default false

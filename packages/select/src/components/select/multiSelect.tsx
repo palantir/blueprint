@@ -32,14 +32,6 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 
-    /**
-     * Whether the filtering state should be reset to initial when an item is selected
-     * (immediately before `onItemSelect` is invoked), or when the popover closes.
-     * The query will become the empty string and the first item will be made active.
-     * @default false
-     */
-    resetOnSelect?: boolean;
-
     /** Props to spread to `TagInput`. */
     tagInputProps?: Partial<ITagInputProps> & object;
 
