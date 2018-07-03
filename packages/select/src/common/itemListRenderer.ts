@@ -9,6 +9,9 @@
  * An `itemListRenderer` receives this object as its sole argument.
  */
 export interface IItemListRendererProps<T> {
+    /** The currently focused item (for keyboard interactions). */
+    activeItem: T | undefined;
+
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.
      * See `items` for the full list of items.

@@ -11,6 +11,13 @@ import { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
+    /**
+     * The currently focused item, for keyboard interactions. If omitted, this
+     * prop will be controlled by the component. Use `onActiveItemChange` to
+     * listen for updates.
+     */
+    activeItem?: T | undefined;
+
     /** Array of items in the list. */
     items: T[];
 
@@ -73,10 +80,22 @@ export interface IListItemsProps<T> extends IProps {
     noResults?: React.ReactNode;
 
     /**
+     * Invoked when user interaction should change the active item: arrow keys move it up/down
+     * in the list, selecting an item makes it active, and changing the query may reset it to
+     * the first item in the list if it no longer matches the filter.
+     */
+    onActiveItemChange?: (activeItem: T | undefined) => void;
+
+    /**
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
     onItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /**
+     * Callback invoked when the query string changes.
+     */
+    onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * Whether the querying state should be reset to initial when an item is
@@ -85,4 +104,11 @@ export interface IListItemsProps<T> extends IProps {
      * @default false
      */
     resetOnSelect?: boolean;
+
+    /**
+     * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
+     * This value is controlled: its state must be managed externally by attaching an `onChange`
+     * handler to the relevant element in your `renderer` implementation.
+     */
+    query?: string;
 }

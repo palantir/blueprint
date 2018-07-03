@@ -11,19 +11,6 @@ import { IItemListRendererProps, IItemModifiers, IListItemsProps, renderFiltered
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {
     /**
-     * The active item is the current keyboard-focused element.
-     * Listen to `onActiveItemChange` for updates from interactions.
-     */
-    activeItem: T | undefined;
-
-    /**
-     * Invoked when user interaction should change the active item: arrow keys move it up/down
-     * in the list, selecting an item makes it active, and changing the query may reset it to
-     * the first item in the list if it no longer matches the filter.
-     */
-    onActiveItemChange: (activeItem: T | undefined) => void;
-
-    /**
      * Callback invoked when user presses a key, after processing `QueryList`'s own key events
      * (up/down to navigate active item). This callback is passed to `renderer` and (along with
      * `onKeyUp`) can be attached to arbitrary content elements to support keyboard selection.
@@ -42,25 +29,13 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * Receives an object with props that should be applied to elements as necessary.
      */
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
-
-    /**
-     * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
-     * This value is controlled: its state must be managed externally by attaching an `onChange`
-     * handler to the relevant element in your `renderer` implementation.
-     */
-    query: string;
 }
 
 /**
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
  */
-export interface IQueryListRendererProps<T> extends IProps {
-    /**
-     * Array of items filtered by `itemListPredicate` or `itemPredicate`.
-     */
-    filteredItems: T[];
-
+export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -79,15 +54,25 @@ export interface IQueryListRendererProps<T> extends IProps {
      */
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
 
+    /**
+     * Change handler for query string. Attach this to an input element to allow
+     * `QueryList` to control the query.
+     */
+    handleQueryChange: React.ChangeEventHandler<HTMLInputElement>;
+
     /** Rendered elements returned from `itemListRenderer` prop. */
     itemList: React.ReactNode;
-
-    /** The current query string. */
-    query: string;
 }
 
 export interface IQueryListState<T> {
+    /** The currently focused item (for keyboard interactions). */
+    activeItem: T | undefined;
+
+    /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
+
+    /** The current query string. */
+    query: string;
 }
 
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
