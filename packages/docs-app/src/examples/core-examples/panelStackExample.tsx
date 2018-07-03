@@ -22,10 +22,10 @@ export interface IPanelStackExampleState {
 export class PanelStackExample extends React.PureComponent {
     public initialPanel: IPanel = {
         component: PanelExample,
-        title: "Panel 1",
         props: {
             panelNumber: 1,
         },
+        title: "Panel 1",
     };
 
     public state = {

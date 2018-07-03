@@ -19,8 +19,7 @@ export class PanelView extends React.PureComponent<IPanelViewProps> {
     public render() {
         const { panel, panelProps, previousPanel } = this.props;
         const back: IBackButton | undefined =
-            previousPanel !== undefined
-                ? {
+            previousPanel !== undefined ? {
                       onClick: panelProps.closePanel,
                       title: previousPanel.title,
                   }
