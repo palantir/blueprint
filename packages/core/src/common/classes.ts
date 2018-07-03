@@ -167,6 +167,15 @@ export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;
 export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
 
+export const PANELSTACK = `${NS}-panel-stack`;
+export const PANELSTACK_CHEVRON = `${PANELSTACK}-chevron`;
+export const PANELSTACK_HEADER = `${PANELSTACK}-header`;
+export const PANELSTACK_HEADER_BACK = `${PANELSTACK}-header-back`;
+export const PANELSTACK_HEADER_SPACER = `${PANELSTACK}-header-spacer`;
+export const PANELSTACK_HEADER_TITLE = `${PANELSTACK}-header-title`;
+export const PANELSTACK_TRANSITION = `${PANELSTACK}-transition`;
+export const PANELSTACK_VIEW = `${PANELSTACK}-view`;
+
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
