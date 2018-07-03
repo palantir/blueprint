@@ -45,21 +45,12 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     query?: string;
 }
 
-export interface IOmnibarState<T> {
-    activeItem?: T;
-    query: string;
-}
-
-export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
+export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
     public static displayName = "Blueprint2.Omnibar";
 
     public static ofType<T>() {
         return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;
     }
-
-    public state: IOmnibarState<T> = {
-        query: this.props.query || "",
-    };
 
     private TypedQueryList = QueryList.ofType<T>();
     private queryList?: QueryList<T> | null;
@@ -74,31 +65,18 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         return (
             <this.TypedQueryList
                 {...restProps}
-                activeItem={this.state.activeItem}
                 initialContent={initialContent}
-                onActiveItemChange={this.handleActiveItemChange}
                 onItemSelect={this.props.onItemSelect}
-                query={this.state.query}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
             />
         );
     }
 
-    public componentWillReceiveProps(nextProps: IOmnibarProps<T>) {
-        const { isOpen } = nextProps;
-        const canClearQuery = !this.props.isOpen && isOpen && this.props.resetOnSelect;
-
-        this.setState({
-            activeItem: canClearQuery ? this.props.items[0] : this.state.activeItem,
-            query: canClearQuery ? "" : this.state.query,
-        });
-    }
-
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const handlers = isOpen && !this.isQueryEmpty() ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
+        const handlers = isOpen && listProps.query.length > 0 ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
         return (
             <Overlay
@@ -114,24 +92,14 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                         large={true}
                         leftIcon="search"
                         placeholder="Search..."
-                        value={listProps.query}
                         {...inputProps}
-                        onChange={this.handleQueryChange}
+                        onChange={listProps.handleQueryChange}
+                        value={listProps.query}
                     />
                     {listProps.itemList}
                 </div>
             </Overlay>
         );
-    };
-
-    private isQueryEmpty = () => this.state.query.length === 0;
-
-    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
-
-    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value });
-        Utils.safeInvoke(inputProps.onChange, event);
     };
 
     private handleOverlayClose = (event?: React.SyntheticEvent<HTMLElement>) => {

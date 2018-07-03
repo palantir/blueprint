@@ -48,10 +48,8 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 }
 
 export interface ISuggestState<T> {
-    activeItem?: T;
     isOpen: boolean;
     isTyping: boolean;
-    query: string;
     selectedItem?: T;
 }
 
@@ -71,7 +69,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     public state: ISuggestState<T> = {
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
         isTyping: false,
-        query: "",
     };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -93,10 +90,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         return (
             <this.TypedQueryList
                 {...restProps}
-                activeItem={this.state.activeItem}
-                onActiveItemChange={this.handleActiveItemChange}
                 onItemSelect={this.handleItemSelect}
-                query={this.state.query}
+                onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
             />
@@ -111,8 +106,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputValueRenderer, inputProps = {}, popoverProps = {} } = this.props;
-        const { isTyping, selectedItem, query } = this.state;
-        const { handleKeyDown, handleKeyUp } = listProps;
+        const { isTyping, selectedItem } = this.state;
+        const { handleKeyDown, handleKeyUp, query } = listProps;
         const inputValue: string = isTyping ? query : selectedItem ? inputValueRenderer(selectedItem) : "";
 
         return (
@@ -126,17 +121,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpened={this.handlePopoverOpened}
-                onClosing={this.handlePopoverClosing}
             >
                 <InputGroup
                     placeholder="Search..."
-                    value={inputValue}
                     {...inputProps}
                     inputRef={this.refHandlers.input}
-                    onChange={this.handleQueryChange}
+                    onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
+                    value={inputValue}
                 />
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
@@ -167,8 +161,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         Utils.safeInvoke(inputProps.onFocus, event);
     };
 
-    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
-
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         let nextOpenState: boolean;
         if (!this.props.closeOnSelect) {
@@ -187,7 +179,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         this.setState({
             isOpen: nextOpenState,
             isTyping: false,
-            query: "",
             selectedItem: item,
         });
 
@@ -217,29 +208,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         Utils.safeInvoke(popoverProps.onOpened, node);
     };
 
-    private handlePopoverClosing = (node: HTMLElement) => {
-        const { popoverProps = {} } = this.props;
-        const { selectedItem } = this.state;
-
-        // reset the query when the popover close, make sure that the list
-        // isn't filtered on when the popover opens next
-        this.setState({
-            activeItem: selectedItem ? selectedItem : this.props.items[0],
-            query: "",
-        });
-
-        Utils.safeInvoke(popoverProps.onClosing, node);
-    };
-
-    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
-
-        this.setState({
-            isTyping: true,
-            query: event.currentTarget.value,
-        });
-
-        Utils.safeInvoke(inputProps.onChange, event);
+    private handleQueryChange = (query: string, event?: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({ isTyping: true });
+        Utils.safeInvoke(this.props.onQueryChange, query, event);
     };
 
     private getTargetKeyDownHandler = (
