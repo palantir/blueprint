@@ -82,7 +82,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                 activeItem={this.state.activeItem}
                 initialContent={initialContent}
                 onActiveItemChange={this.handleActiveItemChange}
-                onItemSelect={this.handleItemSelect}
+                onItemSelect={this.props.onItemSelect}
                 query={this.state.query}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
@@ -110,10 +110,10 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                 hasBackdrop={true}
                 {...overlayProps}
                 isOpen={isOpen}
-                className={classNames(overlayProps.className, Classes.OMNIBAR_OVERLAY)}
+                className={classNames(Classes.OMNIBAR_OVERLAY, overlayProps.className)}
                 onClose={this.handleOverlayClose}
             >
-                <div className={classNames(listProps.className, Classes.OMNIBAR)} {...handlers}>
+                <div className={classNames(Classes.OMNIBAR, listProps.className)} {...handlers}>
                     <InputGroup
                         autoFocus={true}
                         large={true}
@@ -132,12 +132,6 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     private isQueryEmpty = () => this.state.query.length === 0;
 
     private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
-
-    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        if (!this.isQueryEmpty()) {
-            Utils.safeInvoke(this.props.onItemSelect, item, event);
-        }
-    };
 
     private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
         const { inputProps = {} } = this.props;
