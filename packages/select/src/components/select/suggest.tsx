@@ -28,9 +28,9 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     closeOnSelect?: boolean;
 
     /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
-     * If you want to control the filter input, you can pass `value` and `onChange` here
-     * to override `Suggest`'s own behavior.
+     * Props to spread to `InputGroup`. Use `query` and `onQueryChange` instead
+     * of `inputProps.value` and `inputProps.onChange` to control this input.
+     * Use `inputRef` instead of `ref`.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 

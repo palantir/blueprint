@@ -23,7 +23,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 
-    /** Props to spread to `TagInput`. */
+    /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
     tagInputProps?: Partial<ITagInputProps> & object;
 
     /** Custom renderer to transform an item into tag content. */

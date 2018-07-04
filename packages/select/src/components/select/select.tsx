@@ -37,9 +37,9 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     disabled?: boolean;
 
     /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
-     * If you want to control the filter input, you can pass `value` and `onChange` here
-     * to override `Select`'s own behavior.
+     * Props to spread to the query `InputGroup`. Use `query` and
+     * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
+     * to control this input. Use `inputRef` instead of `ref`.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
