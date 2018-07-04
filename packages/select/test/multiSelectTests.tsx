@@ -12,7 +12,8 @@ import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IMultiSelectProps, MultiSelect } from "../src/index";
+import { IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src/index";
+import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {
     const FilmMultiSelect = MultiSelect.ofType<IFilm>();
@@ -37,10 +38,14 @@ describe("<MultiSelect>", () => {
         };
     });
 
+    selectComponentSuite<IMultiSelectProps<IFilm>, IMultiSelectState>(props =>
+        mount(<MultiSelect {...props} popoverProps={{ isOpen: true, usePortal: false }} tagRenderer={renderTag} />),
+    );
+
     it("placeholder can be controlled with TagInput's inputProps", () => {
         const placeholder = "look here";
 
-        const input = multiselect({ tagInputProps: { inputProps: { placeholder } } }).find("input");
+        const input = multiselect({ tagInputProps: { placeholder } }).find("input");
         assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
     });
 
@@ -50,19 +55,6 @@ describe("<MultiSelect>", () => {
             tagRenderer: film => <strong>{film.title}</strong>,
         });
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
-    });
-
-    it("clicking item invokes onSelectItem with placeholder", () => {
-        const placeholder = "look here";
-
-        const wrapper = multiselect({ tagInputProps: { inputProps: { placeholder } } });
-        wrapper.setState({ activeItem: TOP_100_FILMS[4] });
-        wrapper
-            .find(MenuItem)
-            .at(4)
-            .find("a")
-            .simulate("click");
-        assert.strictEqual(handlers.onItemSelect.args[0][0], TOP_100_FILMS[4]);
     });
 
     it("selectedItems is optional", () => {
