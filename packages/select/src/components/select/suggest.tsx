@@ -69,7 +69,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     public state: ISuggestState<T> = {
-        isOpen: false,
+        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
         isTyping: false,
         query: "",
     };
