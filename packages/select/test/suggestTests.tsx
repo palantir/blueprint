@@ -140,12 +140,13 @@ describe("Suggest", () => {
     });
 
     describe("inputProps", () => {
-        it("input can be controlled with inputProps", () => {
-            const inputProps = { value: "nailed it", onChange: sinon.spy() };
-            const input = suggest({ inputProps }).find("input");
-            assert.equal(input.prop("value"), inputProps.value);
-            input.simulate("change");
-            assert.isTrue(inputProps.onChange.calledOnce);
+        it("value and onChange are ignored", () => {
+            const value = "nailed it";
+            const onChange = sinon.spy();
+
+            const input = suggest({ inputProps: { value, onChange } }).find("input");
+            assert.notStrictEqual(input.prop("onChange"), onChange);
+            assert.notStrictEqual(input.prop("value"), value);
         });
 
         it("invokes inputProps key handlers", () => {

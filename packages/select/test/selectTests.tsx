@@ -35,7 +35,7 @@ describe("<Select>", () => {
         };
     });
 
-    selectComponentSuite<ISelectProps<IFilm>, ISelectState<IFilm>>(props =>
+    selectComponentSuite<ISelectProps<IFilm>, ISelectState>(props =>
         mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
     );
 
@@ -56,12 +56,11 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
     });
 
-    it("input can be controlled with inputProps", () => {
+    it("inputProps value and onChange are ignored", () => {
         const inputProps = { value: "nailed it", onChange: sinon.spy() };
         const input = select({ inputProps }).find("input");
-        assert.equal(input.prop("value"), inputProps.value);
-        input.simulate("change");
-        assert.isTrue(inputProps.onChange.calledOnce);
+        assert.notEqual(input.prop("onChange"), inputProps.onChange);
+        assert.notEqual(input.prop("value"), inputProps.value);
     });
 
     it("popover can be controlled with popoverProps", () => {

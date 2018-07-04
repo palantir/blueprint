@@ -12,7 +12,7 @@ import * as sinon from "sinon";
 import { filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { IListItemsProps } from "../src/index";
 
-export function selectComponentSuite<P extends IListItemsProps<IFilm>, S extends { query: string; activeItem?: IFilm }>(
+export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
     findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper => wrapper.find("input"),
     findItems: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper => wrapper.find("a"),
@@ -21,69 +21,81 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S extends
         itemPredicate: filterFilm,
         itemRenderer: sinon.spy(renderFilm),
         items: TOP_100_FILMS.slice(0, 20),
+        onActiveItemChange: sinon.spy(),
         onItemSelect: sinon.spy(),
+        onQueryChange: sinon.spy(),
+        query: "19",
     };
 
     beforeEach(() => {
         testProps.itemRenderer.resetHistory();
+        testProps.onActiveItemChange.resetHistory();
         testProps.onItemSelect.resetHistory();
+        testProps.onQueryChange.resetHistory();
     });
 
     describe("common behavior", () => {
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
-            assert.equal(testProps.itemRenderer.callCount, 20);
+            assert.equal(testProps.itemRenderer.callCount, 15);
             // only filtered items re-rendered
             testProps.itemRenderer.resetHistory();
-            wrapper.setState({ query: "1999" });
+            wrapper.setProps({ query: "1999" });
             assert.equal(testProps.itemRenderer.callCount, 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {
-            const wrapper = render({ ...testProps, items: [], noResults: <address /> }).setState({ query: "19" });
+            const wrapper = render({ ...testProps, items: [], noResults: <address /> });
             assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
         });
 
         it("renders noResults when filtering returns empty list", () => {
-            const wrapper = render({ ...testProps, noResults: <address /> }).setState({
-                query: "non-existent film name",
-            });
+            const wrapper = render({ ...testProps, noResults: <address />, query: "non-existent film name" });
             assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
         });
 
         it("clicking item invokes onItemSelect and changes active item", () => {
-            const wrapper = render(testProps).setState({ query: "19" });
+            const wrapper = render(testProps);
             findItems(wrapper)
                 .at(4)
                 .simulate("click");
             assert.strictEqual(testProps.onItemSelect.args[0][0].rank, 6, "onItemSelect");
-            assert.strictEqual(wrapper.state("activeItem"), TOP_100_FILMS[5], "activeItem");
+            assert.strictEqual(testProps.onActiveItemChange.args[0][0].rank, 6, "onActiveItemChange");
+        });
+
+        it("clicking item resets state when resetOnSelect=true", () => {
+            const wrapper = render({ ...testProps, query: "19", resetOnSelect: true });
+            findItems(wrapper)
+                .at(3)
+                .simulate("click");
+            const ranks = testProps.onActiveItemChange.args.map(args => (args[0] as IFilm).rank);
+            // clicking changes to 5, then resets to 1
+            assert.deepEqual(ranks, [5, 1]);
+            assert.strictEqual(testProps.onQueryChange.lastCall.args[0], "");
         });
     });
 
     describe("keyboard", () => {
-        it("arrow down changes ativeItem to next filtered item", () => {
+        it("arrow down invokes onActiveItemChange with next filtered item", () => {
             const wrapper = render(testProps);
             findInput(wrapper)
                 .simulate("keydown", { keyCode: Keys.ARROW_DOWN })
-                .simulate("keydown", { keyCode: Keys.ARROW_DOWN })
                 .simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.equal(wrapper.state("activeItem"), TOP_100_FILMS[2]);
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 3);
         });
 
-        it("arrow up changes ativeItem to previous filtered item", () => {
+        it("arrow up invokes onActiveItemChange with previous filtered item", () => {
             const wrapper = render(testProps);
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.equal(wrapper.state("activeItem"), TOP_100_FILMS[19]);
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 20);
         });
 
         it("enter invokes onItemSelect with active item", () => {
             const wrapper = render(testProps);
-            findInput(wrapper)
-                .simulate("keydown", { keyCode: Keys.ARROW_DOWN })
-                .simulate("keyup", { keyCode: Keys.ENTER });
-            assert.equal(testProps.onItemSelect.lastCall.args[0], wrapper.state("activeItem"));
+            findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
+            const activeItem = testProps.onActiveItemChange.lastCall.args[0];
+            assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);
         });
     });
 }
