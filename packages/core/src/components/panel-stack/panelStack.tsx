@@ -4,8 +4,9 @@ import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { PanelView } from "./panelView";
 import * as Classes from "../../common/classes";
+import { IProps } from "../../common/props";
+import { PanelView } from "./panelView";
 
 /** Add this interface to your panel components props type. */
 export interface IPanelProps {
@@ -35,9 +36,7 @@ export interface IPanelOptions {
     title: string;
 }
 
-export interface IPanelStackProps {
-    /** Additional class names to add to the container element. */
-    className?: string;
+export interface IPanelStackProps extends IProps {
     /** The panel to show when initially rendering the component */
     initialPanel: IPanel;
     /**
@@ -71,10 +70,7 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
     public render() {
         const className = classNames(Classes.PANELSTACK, this.props.className);
         return (
-            <TransitionGroup
-                className={className}
-                component="div"
-            >
+            <TransitionGroup className={className} component="div">
                 {this.renderCurrentPanel()}
             </TransitionGroup>
         );
@@ -82,9 +78,6 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
 
     private renderCurrentPanel() {
         const { stack } = this.state;
-        if (stack.length === 0) {
-            return null;
-        }
         const [activePanel, previousPanel] = stack;
         return (
             <CSSTransition
@@ -97,8 +90,8 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
                 }}
             >
                 <PanelView
-                    className={this.props.className}
                     key={stack.length}
+                    panelClassName={this.props.className}
                     previousPanel={previousPanel}
                     panel={activePanel}
                     panelProps={this.getPanelProps()}

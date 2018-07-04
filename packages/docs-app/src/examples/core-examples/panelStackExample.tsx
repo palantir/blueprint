@@ -1,25 +1,19 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
 import * as React from "react";
 
-import {
-    Button,
-    Intent,
-    IPanel,
-    IPanelProps,
-    PanelStack,
-    Tag,
-} from "@blueprintjs/core";
+import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, Tag } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
     currentPanelStack: IPanel[];
 }
 
-export class PanelStackExample extends React.PureComponent {
+export class PanelStackExample extends React.PureComponent<IExampleProps> {
     public initialPanel: IPanel = {
         component: PanelExample,
         props: {
@@ -34,7 +28,7 @@ export class PanelStackExample extends React.PureComponent {
 
     public render() {
         return (
-            <div className="docs-panelstack-container">
+            <Example options={false} {...this.props}>
                 <PanelStack
                     className="docs-panelstack-example"
                     initialPanel={this.state.currentPanelStack[0]}
@@ -42,32 +36,35 @@ export class PanelStackExample extends React.PureComponent {
                     onClose={this.removeFromPanelStack}
                 />
                 <div className="docs-panelstack-tags-container">
-                    <h5> Current Panels </h5>
-                    <div className="docs-panelstack-tags">
-                        {this.state.currentPanelStack.map(this.renderPanel)}
-                    </div>
+                    <H5> Current Panel Stack </H5>
+                    <div className="docs-panelstack-tags">{this.state.currentPanelStack.map(this.renderPanel)}</div>
                 </div>
-            </div>
+            </Example>
         );
     }
 
     private renderPanel(panel: IPanel) {
-        return <Tag className="docs-panelstack-tag" key={panel.title}>{panel.title}</Tag>
+        return (
+            <Tag className="docs-panelstack-single-tag" key={panel.title}>
+                {panel.title}
+            </Tag>
+        );
     }
 
     private addToPanelStack = (newPanel: IPanel) => {
-        this.setState({ currentPanelStack: [ newPanel, ...this.state.currentPanelStack] });
-    }
+        this.setState({ currentPanelStack: [newPanel, ...this.state.currentPanelStack] });
+    };
 
     private removeFromPanelStack = () => {
         this.setState({ currentPanelStack: this.state.currentPanelStack.slice(1) });
-    }
+    };
 }
 
-export interface IPanelExampleProps {
+interface IPanelExampleProps {
     panelNumber: number;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps> {
     public render() {
         return (
@@ -81,5 +78,5 @@ class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps>
         let newPanelNumber = this.props.panelNumber;
         ++newPanelNumber;
         this.props.openPanel(PanelExample, { panelNumber: newPanelNumber }, { title: "Panel " + newPanelNumber });
-    }
+    };
 }

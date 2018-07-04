@@ -9,7 +9,7 @@ import { IPanel, IPanelProps } from "./panelStack";
 import * as Classes from "../../common/classes";
 
 export interface IPanelViewProps {
-    className?: string;
+    panelClassName?: string;
     panel: IPanel;
     panelProps: IPanelProps;
     previousPanel?: IPanel;
@@ -19,12 +19,13 @@ export class PanelView extends React.PureComponent<IPanelViewProps> {
     public render() {
         const { panel, panelProps, previousPanel } = this.props;
         const back: IBackButton | undefined =
-            previousPanel !== undefined ? {
+            previousPanel !== undefined
+                ? {
                       onClick: panelProps.closePanel,
                       title: previousPanel.title,
                   }
                 : undefined;
-        const className = classNames(Classes.PANELSTACK_VIEW, this.props.className);
+        const className = classNames(Classes.PANELSTACK_VIEW, this.props.panelClassName);
         return (
             <div className={className}>
                 <PanelHeader back={back} title={panel.title} />
