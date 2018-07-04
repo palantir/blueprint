@@ -86,7 +86,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, inputProps, popoverProps, onQueryChange, ...restProps } = this.props;
+        const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList

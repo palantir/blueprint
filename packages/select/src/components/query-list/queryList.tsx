@@ -275,7 +275,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     private handleQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
-        const query = event == null ? "" : event.currentTarget.value;
+        const query = event == null ? "" : event.target.value;
         this.setQuery(query);
         Utils.safeInvoke(this.props.onQueryChange, query, event);
     };
