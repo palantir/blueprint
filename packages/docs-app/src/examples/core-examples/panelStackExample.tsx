@@ -38,7 +38,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps> {
                     />
                 </div>
                 <div className="docs-panel-stack-tags-container">
-                    <H5> Current Panel Stack </H5>
+                    <H5> Current panel stack </H5>
                     <div className="docs-panel-stack-tags">{this.state.currentPanelStack.map(this.renderPanel)}</div>
                 </div>
             </Example>
@@ -75,7 +75,7 @@ class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps>
                     disabled={this.props.panelNumber >= 20}
                     intent={Intent.PRIMARY}
                     onClick={this.openNewPanel}
-                    text="Open New Panel"
+                    text="Open new panel"
                 />
             </div>
         );
