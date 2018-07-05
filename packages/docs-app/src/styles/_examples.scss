@@ -270,48 +270,44 @@
 }
 
 #{example("PanelStackExample")} {
-  .docs-panelstack-container {
+  .docs-panel-stack-container {
     display: flex;
     position: relative;
     height: 200px;
   }
 
-  .docs-panelstack-example {
-    width: 300px;
-    background: white;
+  .docs-panel-stack-example {
+    z-index: 10;
     box-shadow: 1px 0 0 $pt-divider-black,
                 -1px 0 0 $pt-divider-black,
                 0 1px 0 $pt-divider-black,
                 0 -1px 0 $pt-divider-black;
-
-    .co-panel-stack {
-        box-shadow: 1px 0 0 $pt-divider-black;
-    }
+    width: 300px;
   }
 
-  .docs-panelstack-contents-example {
+  .docs-panel-stack-contents-example {
     display: flex;
     flex: 1 0 auto;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     padding: 10px;
   }
 
-  .docs-panelstack-tags-container {
+  .docs-panel-stack-tags-container {
     display: flex;
+    flex: 1 0 auto;
     flex-direction: column;
     margin-left: 15px;
-    flex: 1 0 auto;
 
-    .docs-panelstack-tags {
+    .docs-panel-stack-tags {
       display: flex;
-      flex-direction: column;
       flex: 1 0 auto;
+      flex-direction: column;
       flex-wrap: wrap;
-      height: 160px;
       align-content: flex-start;
+      height: 160px;
 
-      .docs-panelstack-single-tag {
+      .docs-panel-stack-single-tag {
         margin: 5px;
         width: 75px;
       }

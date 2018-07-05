@@ -29,15 +29,17 @@ export class PanelStackExample extends React.PureComponent<IExampleProps> {
     public render() {
         return (
             <Example options={false} {...this.props}>
-                <PanelStack
-                    className="docs-panelstack-example"
-                    initialPanel={this.state.currentPanelStack[0]}
-                    onOpen={this.addToPanelStack}
-                    onClose={this.removeFromPanelStack}
-                />
-                <div className="docs-panelstack-tags-container">
+                <div className="docs-panel-stack-container">
+                    <PanelStack
+                        className="docs-panel-stack-example"
+                        initialPanel={this.state.currentPanelStack[0]}
+                        onOpen={this.addToPanelStack}
+                        onClose={this.removeFromPanelStack}
+                    />
+                </div>
+                <div className="docs-panel-stack-tags-container">
                     <H5> Current Panel Stack </H5>
-                    <div className="docs-panelstack-tags">{this.state.currentPanelStack.map(this.renderPanel)}</div>
+                    <div className="docs-panel-stack-tags">{this.state.currentPanelStack.map(this.renderPanel)}</div>
                 </div>
             </Example>
         );
@@ -45,7 +47,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps> {
 
     private renderPanel(panel: IPanel) {
         return (
-            <Tag className="docs-panelstack-single-tag" key={panel.title}>
+            <Tag className="docs-panel-stack-single-tag" key={panel.title}>
                 {panel.title}
             </Tag>
         );
@@ -68,8 +70,13 @@ interface IPanelExampleProps {
 class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps> {
     public render() {
         return (
-            <div className="docs-panelstack-contents-example">
-                <Button intent={Intent.PRIMARY} onClick={this.openNewPanel} text="Open New Panel" />
+            <div className="docs-panel-stack-contents-example">
+                <Button
+                    disabled={this.props.panelNumber >= 20}
+                    intent={Intent.PRIMARY}
+                    onClick={this.openNewPanel}
+                    text="Open New Panel"
+                />
             </div>
         );
     }

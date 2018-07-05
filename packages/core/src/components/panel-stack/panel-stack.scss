@@ -7,43 +7,38 @@
   position: relative;
   overflow: hidden;
 
-  &.#{$ns}-panel-stack-transition-enter-active,
-  &.#{$ns}-panel-stack-transition-exit-active {
-    transition: all 300ms ease-in;
-  }
-
-  .push.#{$ns}-panel-stack-transition-enter {
+  .push-#{$ns}-panel-stack-transition-enter {
     transform: translateX(100%);
   }
 
-  .push.#{$ns}-panel-stack-transition-enter-active {
+  .push-#{$ns}-panel-stack-transition-enter-active {
     transform: translateX(0%);
     transition: all 300ms ease-in;
   }
 
-  .push.#{$ns}-panel-stack-transition-exit {
+  .push-#{$ns}-panel-stack-transition-exit {
     transform: translateX(0%);
   }
 
-  .push.#{$ns}-panel-stack-transition-exit-active {
+  .push-#{$ns}-panel-stack-transition-exit-active {
     transform: translateX(-100%);
     transition: all 300ms ease-in;
   }
 
-  .pop.#{$ns}-panel-stack-transition-enter {
+  .pop-#{$ns}-panel-stack-transition-enter {
     transform: translateX(-100%);
   }
 
-  .pop.#{$ns}-panel-stack-transition-enter-active {
+  .pop-#{$ns}-panel-stack-transition-enter-active {
     transform: translateX(0%);
     transition: all 300ms ease-in;
   }
 
-  .pop.#{$ns}-panel-stack-transition-exit {
+  .pop-#{$ns}-panel-stack-transition-exit {
     transform: translateX(0%);
   }
 
-  .pop.#{$ns}-panel-stack-transition-exit-active {
+  .pop-#{$ns}-panel-stack-transition-exit-active {
     transform: translateX(100%);
     transition: all 300ms ease-in;
   }
