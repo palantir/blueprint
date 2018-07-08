@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { MenuItem, Tag } from "@blueprintjs/core";
+import { Tag } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -38,7 +38,7 @@ describe("<MultiSelect>", () => {
         };
     });
 
-    selectComponentSuite<IMultiSelectProps<IFilm>, IMultiSelectState>(props =>
+    selectComponentSuite<IMultiSelectProps<IFilm>, IMultiSelectState<IFilm>>(props =>
         mount(<MultiSelect {...props} popoverProps={{ isOpen: true, usePortal: false }} tagRenderer={renderTag} />),
     );
 

@@ -11,7 +11,6 @@ import { IItemListRendererProps, renderFilteredItems } from "../src";
 
 describe("renderFilteredItems()", () => {
     const PROPS: IItemListRendererProps<string> = {
-        activeItem: "one",
         filteredItems: ["one"],
         items: ["one", "two", "three"],
         itemsParentRef: sinon.stub(),

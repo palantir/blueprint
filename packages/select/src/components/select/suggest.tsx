@@ -159,6 +159,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
         this.selectText();
 
+        // TODO Popover.openOnTargetFocus?
         if (!openOnKeyDown) {
             this.setState({ isOpen: true });
         }

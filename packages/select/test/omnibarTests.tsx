@@ -10,5 +10,6 @@ import { Omnibar } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Omnibar>", () => {
-    selectComponentSuite(props => mount(<Omnibar {...props} isOpen={true} />));
+    // must have query to show any items
+    selectComponentSuite(props => mount(<Omnibar {...props} query=" " isOpen={true} />));
 });
