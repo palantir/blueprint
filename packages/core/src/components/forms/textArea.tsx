@@ -19,6 +19,11 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
      * Whether the text area should appear with large styling.
      */
     large?: boolean;
+
+    /**
+     * Ref handler that receives HTML `<textarea>` element backing this component.
+     */
+    inputRef?: (ref: HTMLTextAreaElement | null) => any;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -27,7 +32,7 @@ export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
     public static displayName = "Blueprint2.TextArea";
 
     public render() {
-        const { className, fill, intent, large, ...htmlProps } = this.props;
+        const { className, fill, intent, large, inputRef, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
@@ -39,6 +44,6 @@ export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
             className,
         );
 
-        return <textarea {...htmlProps} className={rootClasses} />;
+        return <textarea {...htmlProps} className={rootClasses} ref={inputRef} />;
     }
 }
