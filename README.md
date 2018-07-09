@@ -13,19 +13,15 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-### Bug report? Feature request? Support question?
+## :tada: 3.0 is almost here! :tada:
 
-Choose the [appropriate issue type](https://github.com/palantir/blueprint/issues/new/choose) and fill out the template.
+[**3.0 Changelog and migration guide ▸**](https://github.com/palantir/blueprint/wiki/3.0-Changelog)
+
+Blueprint 3.0 supports multiple major versions of Blueprint on the same page through removing global styles and deconflicting selectors by changing the namespace. It also restores support for React 15 in most packages.
 
 ### What's new in 2.0
 
 Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path).
-
-## 🚧 3.0 is in progress! 🚧
-
-Blueprint 3.0 will support multiple major versions of Blueprint on the same page through removing global styles and deconflicting selectors. It also restores support for React 15 in most packages.
-
-To make a contribution that you wish to have released in an earlier major version of any `@blueprintjs` package, please submit a PR to the `release/1.x` or `release/2.x` branch.
 
 ## Packages
 
@@ -90,11 +86,10 @@ If you were previously in a working state and have just pulled new code from `de
 
 ### Developing libraries
 
-Each library has its own dev script which you can run to watch changes to that package and run the docs application with webpack-dev-server: `yarn dev:core`, `yarn dev:datetime`, etc.
+Run `yarn dev` from the root directory to watch changes across all packages and run the docs application with webpack-dev-server.
 
-- One exception is `table`&mdash;since it has its own dev application, the `dev:table` script doesn't run the docs site.
-  - Run the table dev application using `yarn dev` in the packages/table-dev-app folder.
-- You may also choose to watch changes across all packages by running `yarn dev:all` from the root directory.
+Alternately, each library has its own dev script to run the docs app and watch changes to just that package (and its dependencies): `yarn dev:core`, `yarn dev:datetime`, etc.
+One exception is `table`: since it has its own dev application, the `dev:table` script runs `table-dev-app` instead of the docs.
 
 ### Updating dependencies
 
@@ -121,9 +116,8 @@ running any of the dev scripts.
 Looking for places to contribute to the codebase?
 [Check out the "help wanted" label](https://github.com/palantir/blueprint/labels/help%20wanted).
 
-Read about our [contribution guidelines](https://github.com/palantir/blueprint/blob/develop/CONTRIBUTING.md) and
-[development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to give your PR
-its best chance at getting merged.
+See our [contribution guidelines](https://github.com/palantir/blueprint/blob/develop/CONTRIBUTING.md) and
+[development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to get started.
 
 ## License
 
