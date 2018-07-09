@@ -10,13 +10,13 @@ It is optimized for building complex data-dense interfaces for _desktop applicat
 
 ### Install
 
+**@blueprintjs/core** is the primary Blueprint package on NPM and home to over 40 components.
+
 ```sh
 yarn add @blueprintjs/core react react-dom
 ```
 
-**@blueprintjs/core** is the primary Blueprint package and home to over 40 components.
-
-Additional components live in the **datetime**, **select**, **table**, and **timezone** packages, separated primarily by major dependencies. All have peer dependencies on **react** and **react-dom**, so these two packages must be installed alongside Blueprint.
+Additional components live in the **@blueprintjs/icons**, **@blueprintjs/datetime**, **@blueprintjs/select**, **@blueprintjs/table**, and **@blueprintjs/timezone** packages, separated primarily by major dependencies. All have peer dependencies on **react** and **react-dom**, so these two packages must be installed alongside Blueprint.
 
 ### Import
 
@@ -45,10 +45,6 @@ Don't forget to include the **main CSS file** from each Blueprint package!
 You may experience degraded visuals in IE.
 IE 10 and below are unsupported due to their lack of support for CSS Flexbox Layout.
 These browsers were deprecated by Microsoft (end of support) in [January 2016](https://www.microsoft.com/en-us/WindowsForBusiness/End-of-IE-support).
-
-## About
-
-Blueprint is an open-source
 
 @page getting-started
 @page reading-the-docs
