@@ -121,4 +121,8 @@ See our [contribution guidelines](https://github.com/palantir/blueprint/blob/dev
 
 ## License
 
-This project is made available under the [Apache-2.0 License](https://github.com/palantir/blueprint/blob/develop/LICENSE).
+This project is made available under a **modified version of the Apache-2.0 license**.
+
+The only modification is an additional section (paragraph 10) in which we ask
+that you do not pass off any derivative products as Palantir’s products, given
+that Blueprint is a design toolkit.
