@@ -4,8 +4,19 @@
 @import "common/variables";
 @import "common/mixins";
 
-// Style resets on top of Normalize.css
+// Apply a natural box layout model to all elements, but allow components to change as necessary
+html {
+  box-sizing: border-box;
+}
 
+// adjust box-sizing for every element ever
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+// Style resets on top of Normalize.css
 
 body {
   @include base-typography();
