@@ -61,6 +61,12 @@ These packages define development dependencies and contain build configuration. 
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/tslint-config.svg?label=@blueprintjs/tslint-config)](https://www.npmjs.com/package/@blueprintjs/tslint-config)
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/webpack-build-scripts.svg?label=@blueprintjs/webpack-build-scripts)](https://www.npmjs.com/package/@blueprintjs/webpack-build-scripts)
 
+## Contributing
+
+Looking for places to contribute to the codebase?
+First read the [contribution guidelines](https://github.com/palantir/blueprint/blob/develop/CONTRIBUTING.md),
+then [check out the "help wanted" label](https://github.com/palantir/blueprint/labels/help%20wanted).
+
 ## Development
 
 [Lerna](https://lernajs.io/) manages inter-package dependencies in this monorepo.
@@ -110,14 +116,6 @@ source code in this repo used to build the icons documentation. This is sufficie
 
 If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes reflected before
 running any of the dev scripts.
-
-## Contributing
-
-Looking for places to contribute to the codebase?
-[Check out the "help wanted" label](https://github.com/palantir/blueprint/labels/help%20wanted).
-
-See our [contribution guidelines](https://github.com/palantir/blueprint/blob/develop/CONTRIBUTING.md) and
-[development practices](https://github.com/palantir/blueprint/wiki/Development-Practices) to get started.
 
 ## License
 
