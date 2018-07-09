@@ -2,7 +2,7 @@
 
 #### Blueprint is a React-based UI toolkit for the web.
 
-It is optimized for building complex data-dense interfaces for _desktop applications._
+It is optimized for building complex data-dense interfaces for desktop applications.
 
 @reactDocs Welcome
 
@@ -16,7 +16,7 @@ It is optimized for building complex data-dense interfaces for _desktop applicat
 yarn add @blueprintjs/core react react-dom
 ```
 
-Additional components live in the **@blueprintjs/icons**, **@blueprintjs/datetime**, **@blueprintjs/select**, **@blueprintjs/table**, and **@blueprintjs/timezone** packages, separated primarily by major dependencies. All have peer dependencies on **react** and **react-dom**, so these two packages must be installed alongside Blueprint.
+Additional components live in the **@blueprintjs/icons**, **@blueprintjs/datetime**, **@blueprintjs/select**, **@blueprintjs/table**, and **@blueprintjs/timezone** packages, separated by use case and significant dependencies. All have peer dependencies on **react** and **react-dom**, so these two packages must be installed alongside Blueprint.
 
 ### Import
 
@@ -33,9 +33,10 @@ Don't forget to include the **main CSS file** from each Blueprint package!
 ```html
 <!-- in index.html, or however you manage your CSS files -->
 <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
-<link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+<!-- blueprint-icons.css file must be included alongside blueprint.css! -->
 <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
-<!-- NOTE: blueprint-icons.css file must be included alongside blueprint.css! -->
+<link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+<!-- add other blueprint-*.css files here -->
 ```
 
 @## Browser support
