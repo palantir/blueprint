@@ -1,0 +1,26 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+
+.blueprint-welcome {
+  @include pt-flex-container(row, $content-padding);
+  justify-content: space-between;
+  margin: ($content-padding * 2) 0;
+  text-align: center;
+
+  .#{$ns}-heading {
+    margin: $content-padding 0 0;
+    color: inherit;
+  }
+
+  .#{$ns}-icon {
+    color: $pt-icon-color;
+
+    .#{$ns}-dark & {
+      // stylelint-disable-next-line declaration-no-important
+      color: $pt-dark-icon-color !important;
+    }
+  }
+
+  .#{$ns}-dark & .#{$ns}-card {
+    background: $dark-gray3;
+  }
+}
