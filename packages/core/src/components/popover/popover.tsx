@@ -165,7 +165,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         return (
             <Manager>
-                <WrapperTagName className={classNames(Classes.POPOVER_WRAPPER, className)}>
+                <WrapperTagName
+                    className={classNames(Classes.POPOVER_WRAPPER, className)}
+                    // blur at this level captures focus leaving target _and content when usePortal=false_
+                    onBlur={this.handleTargetBlur}
+                >
                     <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
                     <Overlay
                         autoFocus={this.props.autoFocus}

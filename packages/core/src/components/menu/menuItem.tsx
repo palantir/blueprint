@@ -151,12 +151,14 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         const { disabled, popoverProps } = this.props;
         return (
             <Popover
+                autoFocus={false}
                 disabled={disabled}
                 enforceFocus={false}
                 hoverCloseDelay={0}
                 interactionKind={PopoverInteractionKind.HOVER}
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
+                usePortal={false}
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
