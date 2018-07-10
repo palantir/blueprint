@@ -7,9 +7,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
+import { SPINNER_WARN_CLASSES_SMALL, SPINNER_WARN_CLASSES_LARGE } from '../../common/errors';
 
 // see http://stackoverflow.com/a/18473154/3124288 for calculating arc path
 const SPINNER_TRACK = "M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89";
@@ -40,7 +42,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     value?: number;
 }
 
-export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
+export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
     public static displayName = "Blueprint2.Spinner";
 
     public static readonly SIZE_SMALL = 24;
@@ -75,6 +77,15 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
                 />
             </svg>
         );
+    }
+
+    protected validateProps({ className = "" }: ISpinnerProps) {
+        if (className.indexOf(Classes.SMALL) >= 0) {
+            console.warn(SPINNER_WARN_CLASSES_SMALL);
+        }
+        if (className.indexOf(Classes.LARGE) >= 0) {
+            console.warn(SPINNER_WARN_CLASSES_LARGE);
+        }
     }
 
     private getSize() {
