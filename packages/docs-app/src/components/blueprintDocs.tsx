@@ -19,7 +19,6 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
-const DOCS_BANNER_URL = "http://blueprintjs.com/docs/versions/2";
 
 // detect Components page and subheadings
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
@@ -47,12 +46,6 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     public state = { themeName: getTheme() };
 
     public render() {
-        const banner = (
-            <Banner intent="success" href={DOCS_BANNER_URL}>
-                <strong>Blueprint v3.0.0 is out now!</strong> Continue reading for 3.0 docs, or click this banner for
-                the v2.x docs.
-            </Banner>
-        );
         const footer = (
             <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
                 &copy; {new Date().getFullYear()}
@@ -75,7 +68,6 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return (
             <Documentation
                 {...this.props}
-                banner={banner}
                 className={this.state.themeName}
                 footer={footer}
                 header={header}
