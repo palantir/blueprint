@@ -7,9 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { SPINNER_WARN_CLASSES_LARGE, SPINNER_WARN_CLASSES_SMALL } from "../../common/errors";
 import { IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
@@ -42,7 +40,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     value?: number;
 }
 
-export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
+export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
     public static displayName = "Blueprint2.Spinner";
 
     public static readonly SIZE_SMALL = 24;
@@ -77,15 +75,6 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
                 />
             </svg>
         );
-    }
-
-    protected validateProps({ className = "" }: ISpinnerProps) {
-        if (className.indexOf(Classes.SMALL) >= 0) {
-            console.warn(SPINNER_WARN_CLASSES_SMALL);
-        }
-        if (className.indexOf(Classes.LARGE) >= 0) {
-            console.warn(SPINNER_WARN_CLASSES_LARGE);
-        }
     }
 
     private getSize() {

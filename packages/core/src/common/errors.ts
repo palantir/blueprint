@@ -70,9 +70,6 @@ export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be grea
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 export const MULTISLIDER_INVALID_CHILD = ns + ` <MultiSlider> children must be <SliderHandle>s or <SliderTrackStop>s`;
 
-export const SPINNER_WARN_CLASSES_SMALL = ns + ` <Spinner> SMALL class is not supported. Use <Spinner size={Spinner.SIZE_SMALL} />.`
-export const SPINNER_WARN_CLASSES_LARGE = ns + ` <Spinner> LARGE class is not supported. Use <Spinner size={Spinner.SIZE_LARGE} />.`
-
 export const TOASTER_CREATE_NULL =
     ns +
     ` Toaster.create() is not supported inside React lifecycle methods in React 16.` +
