@@ -15,6 +15,12 @@ this prop is defined, the spinner head will smoothly animate as `value`
 changes. Omitting `value` will result in an "indeterminate" spinner where the
 head spins indefinitely (this is the default appearance).
 
+The `size` prop determines the pixel width/height of the spinner. Size constants
+are provided as static properties: `Spinner.SIZE_SMALL`,
+`Spinner.SIZE_STANDARD`, `Spinner.SIZE_LARGE`. Small and large sizes can be set
+by including `Classes.LARGE` or `Classes.SMALL` in `className` instead of the
+`size` prop.
+
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">IE11 compatibility note</h4>
     IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known

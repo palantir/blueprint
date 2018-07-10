@@ -8,6 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
 import { IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
@@ -77,8 +78,23 @@ export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
         );
     }
 
+    protected validateProps({ className = "", size }: ISpinnerProps) {
+        if (size != null && (className.indexOf(Classes.SMALL) >= 0 || className.indexOf(Classes.LARGE) >= 0)) {
+            console.warn(SPINNER_WARN_CLASSES_SIZE);
+        }
+    }
+
     private getSize() {
-        const { size = Spinner.SIZE_STANDARD } = this.props;
+        const { className = "", size } = this.props;
+        if (size == null) {
+            // allow Classes constants to determine default size.
+            if (className.indexOf(Classes.SMALL) >= 0) {
+                return Spinner.SIZE_SMALL;
+            } else if (className.indexOf(Classes.LARGE) >= 0) {
+                return Spinner.SIZE_LARGE;
+            }
+            return Spinner.SIZE_STANDARD;
+        }
         return Math.max(MIN_SIZE, size);
     }
 }
