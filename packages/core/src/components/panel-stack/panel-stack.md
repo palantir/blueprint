@@ -3,7 +3,7 @@
 `Panel Stack` is a component designed to render multiple panels from a stack, but only display the
 top most panel at any given time.
 
-It will render each panel with a header and uses [`CSSTransitionGroup`](https://facebook.github.io/react/docs/animation.html)
+It will render each panel with a header and uses [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
 to seamlessly move between panels. Whenever there is more than a single panel on the stack, `Panel Stack` will display a back
 button allowing the user to easily move to the previous panel.
 
@@ -19,9 +19,6 @@ provided it is not the only panel left in the stack.
 @reactExample PanelStackExample
 
 @## Props
-
-The `Panel Stack` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [general usage docs for JS components](#blueprint.usage).
 
 @interface IPanelStackProps
 

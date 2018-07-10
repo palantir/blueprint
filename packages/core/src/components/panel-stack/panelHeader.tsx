@@ -36,7 +36,7 @@ export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
         }
         return (
             <div className={Classes.PANELSTACK_HEADER_BACK} onClick={this.props.back.onClick}>
-                <Icon className={Classes.PANELSTACK_CHEVRON} icon="chevron-left" />
+                <Icon icon="chevron-left" />
                 {this.props.back.title}
             </div>
         );

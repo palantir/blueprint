@@ -7,67 +7,67 @@
   position: relative;
   overflow: hidden;
 
-  .push-#{$ns}-panel-stack-transition-enter {
-    transform: translateX(100%);
+  .#{$ns}-panel-stack-transition-push {
+    @include react-transition-phase(
+      "#{$ns}-panel-stack-transition-push",
+      "enter",
+      (transform: translateX(100%) translate(0%)),
+      $before: "&"
+    );
+
+    @include react-transition-phase(
+      "#{$ns}-panel-stack-transition-push",
+      "exit",
+      (transform: translateX(0%) translate(-100%)),
+      $before: "&"
+    );
   }
 
-  .push-#{$ns}-panel-stack-transition-enter-active {
-    transform: translateX(0%);
-    transition: all 300ms ease-in;
-  }
+  .#{$ns}-panel-stack-transition-pop {
+    @include react-transition-phase(
+      "#{$ns}-panel-stack-transition-pop",
+      "enter",
+      (transform: translateX(-100%) translate(0%)),
+      $before: "&"
+    );
 
-  .push-#{$ns}-panel-stack-transition-exit {
-    transform: translateX(0%);
-  }
-
-  .push-#{$ns}-panel-stack-transition-exit-active {
-    transform: translateX(-100%);
-    transition: all 300ms ease-in;
-  }
-
-  .pop-#{$ns}-panel-stack-transition-enter {
-    transform: translateX(-100%);
-  }
-
-  .pop-#{$ns}-panel-stack-transition-enter-active {
-    transform: translateX(0%);
-    transition: all 300ms ease-in;
-  }
-
-  .pop-#{$ns}-panel-stack-transition-exit {
-    transform: translateX(0%);
-  }
-
-  .pop-#{$ns}-panel-stack-transition-exit-active {
-    transform: translateX(100%);
-    transition: all 300ms ease-in;
+    @include react-transition-phase(
+      "#{$ns}-panel-stack-transition-pop",
+      "exit",
+      (transform: translateX(0%) translate(100%)),
+      $before: "&"
+    );
   }
 }
 
 .#{$ns}-panel-stack-header {
   display: flex;
+  align-items: center;
   flex-shrink: 0;
   z-index: $pt-z-index-content + 2;
   box-shadow: 0 1px $pt-divider-black;
-  height: 30px;
+  height: $pt-grid-size * 3;
+
+  .#{$ns}-dark & {
+    box-shadow: 0 1px $pt-dark-divider-white;
+  }
 
   .#{$ns}-panel-stack-header-back {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 0 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
     color: $pt-text-color-muted;
-    font-size: $pt-font-size-small;
-    font-weight: 600;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
 
     &:hover {
       color: $pt-text-color;
-    }
 
-    .#{$ns}-panel-stack-chevron {
-      font-size: $pt-font-size;
+      .#{$ns}-dark & {
+        color: $pt-dark-text-color;
+      }
     }
   }
 
@@ -78,22 +78,24 @@
   }
 
   .#{$ns}-panel-stack-header-title {
-    margin: 0 10px;
-    // aligns title with back button
-    line-height: 28px;
+    margin: 0 $pt-grid-size;
     color: $pt-text-color;
     font-weight: 600;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color;
+    }
   }
 }
 
 .#{$ns}-panel-stack-view {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  @include position-all(absolute, 0);
   background-color: $white;
   overflow-y: auto;
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray4;
+  }
 }
