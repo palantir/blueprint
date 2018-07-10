@@ -48,9 +48,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
     public render() {
         const banner = (
-            <Banner href={DOCS_BANNER_URL}>
-                This documentation is for&nbsp;<strong>Blueprint v3.0.0</strong>, which is currently under development.
-                Click here to go to the v2.x docs.
+            <Banner intent="success" href={DOCS_BANNER_URL}>
+                <strong>Blueprint v3.0.0 is out now!</strong> Continue reading for 3.0 docs, or click this banner for
+                the v2.x docs.
             </Banner>
         );
         const footer = (
