@@ -58,7 +58,7 @@
     "sinon": "^4.1.4",
     "stylelint-config-palantir": "^3.0.2",
     "stylelint-scss": "^2.5.0",
-    "typescript": "~2.7.2"
+    "typescript": "~2.8.3"
   },
   "engines": {
     "node": ">=6.1"
