@@ -4,13 +4,12 @@ Blueprint 3.0 supports multiple major versions of Blueprint on the same page thr
 
 ### Highlights
 
-
 - The minimum version of React is back to 15.3 or 16.
     - `Portal` will use React 16's `React.createPortal` if available and fall back to `ReactDOM.unstable_renderSubtreeIntoContainer`.
-- 🔥 Change CSS namespace to `bp3-` to avoid conflicts with previous major versions.
-- :fire: Move styles attached to global selectors to their own CSS classes.
+- Change CSS namespace to `bp3-` to avoid conflicts with previous major versions.
+- Move styles attached to global selectors to their own CSS classes.
     - Affects `<h1>`-`<h6>`, `<blockquote>`, `<code>`, `<pre>`, `<ol>`, `<ul>`, `<hr>`, `<table>`
-    - 👍 The above elements do not require classes when used inside a container element with `Classes.RUNNING_TEXT`.
+    - The above elements do not require classes when used inside a container element with `Classes.RUNNING_TEXT`.
 - Allow string literals for enums! `<Button intent="success" />`
 - New `OverflowList` and `MultiSlider` components.
 - Complete refactor of documentation content to focus on React usage and de-emphasize CSS/HTML usage.
