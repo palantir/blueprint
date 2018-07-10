@@ -29,7 +29,8 @@
       box-shadow: $pt-popover-box-shadow;
     }
 
-    .#{$ns}-dark & {
+    .#{$ns}-dark &,
+    &.#{$ns}-dark {
       box-shadow: none;
 
       > .#{$ns}-popover-content {
