@@ -89,7 +89,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { alignText, fill, large, loading, minimal, small } = this.props;
+        const { alignText, fill, large, loading, minimal, small, tabIndex } = this.props;
         const disabled = this.props.disabled || loading;
 
         const className = classNames(
@@ -115,6 +115,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             ref: this.refHandlers.button,
+            tabIndex: disabled ? -1 : tabIndex,
         };
     }
 
