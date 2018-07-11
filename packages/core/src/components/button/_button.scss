@@ -67,11 +67,7 @@ Styleguide button
     stroke: $white;
   }
 
-  // primary modifiers
-  &.#{$ns}-minimal {
-    @include pt-button-minimal();
-  }
-
+  // size modifiers
   &.#{$ns}-large,
   .#{$ns}-large & {
     @include pt-button-height-large();
@@ -158,6 +154,11 @@ Styleguide button
       // stylelint-disable-next-line declaration-no-important
       color: inherit !important;
     }
+  }
+
+  // minimal must come last to override all default styles
+  &.#{$ns}-minimal {
+    @include pt-button-minimal();
   }
 }
 
