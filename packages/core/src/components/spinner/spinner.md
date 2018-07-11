@@ -18,8 +18,8 @@ head spins indefinitely (this is the default appearance).
 The `size` prop determines the pixel width/height of the spinner. Size constants
 are provided as static properties: `Spinner.SIZE_SMALL`,
 `Spinner.SIZE_STANDARD`, `Spinner.SIZE_LARGE`. Small and large sizes can be set
-by including `Classes.LARGE` or `Classes.SMALL` in `className` instead of the
-`size` prop.
+by including `Classes.SMALL` or `Classes.LARGE` in `className` instead of the
+`size` prop (this prevents an API break when upgrading to 3.x).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">IE11 compatibility note</h4>
