@@ -39,9 +39,7 @@ export class MenuExample extends React.PureComponent<IExampleProps, {}> {
                         <MenuItem icon="italic" text="Italic" />
                         <MenuItem icon="underline" text="Underline" />
                     </MenuItem>
-                    <MenuItem icon="asterisk" text="Miscellaneous">
-                        <MenuItem icon="badge" text="Badge" />
-                        <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
+                    <MenuItem icon="asterisk" text="Learn more">
                         <MenuItem icon="more" text="Look in here for even more items">
                             <MenuItem icon="briefcase" text="Briefcase" />
                             <MenuItem icon="calculator" text="Calculator" />
@@ -53,6 +51,9 @@ export class MenuExample extends React.PureComponent<IExampleProps, {}> {
                                 <MenuItem icon="square" text="Square" />
                             </MenuItem>
                         </MenuItem>
+                        <MenuItem icon="book" text="Set a max-width to truncate long items." />
+                        <MenuItem icon="badge" text="Submenus do not use portals." />
+                        <MenuItem icon="arrow-right" text="Try tabbing through items." />
                     </MenuItem>
                 </Menu>
             </Example>

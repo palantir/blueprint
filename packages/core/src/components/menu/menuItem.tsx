@@ -66,6 +66,12 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * @default true
      */
     shouldDismissPopover?: boolean;
+
+    /**
+     * HTML tab index. When `disabled`, `tabIndex` is always `-1`.
+     * @default 0
+     */
+    tabIndex?: number;
 }
 
 export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
@@ -74,6 +80,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         multiline: false,
         popoverProps: {},
         shouldDismissPopover: true,
+        tabIndex: 0,
         text: "",
     };
     public static displayName = "Blueprint2.MenuItem";
@@ -144,12 +151,14 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         const { disabled, popoverProps } = this.props;
         return (
             <Popover
+                autoFocus={false}
                 disabled={disabled}
                 enforceFocus={false}
                 hoverCloseDelay={0}
                 interactionKind={PopoverInteractionKind.HOVER}
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
+                usePortal={false}
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
