@@ -85,7 +85,7 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
                         <Code>AnchorButton</Code>
                     </p>
                     <AnchorButton
-                        href="./#core/components/button.javascript-api"
+                        href="#core/components/button.props"
                         icon="duplicate"
                         rightIcon="share"
                         target="_blank"

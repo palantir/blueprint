@@ -13,6 +13,6 @@ There are two ways of using Blueprint UI icons, described in more detail in the
 1. React component renders SVG paths: `<Icon icon="more" />`
 2. CSS classes use icon fonts: `<span className="@ns-icon-standard @ns-icon-more" />`
 
-Many Blueprint [components](#core/components) support an `icon` prop to control a React `<Icon>` component, which accepts both the full name `@ns-icon-projects` and the short name `projects`.
+Many Blueprint components support an `icon` prop to control a React `<Icon>` component, which accepts both the full name `@ns-icon-projects` and the short name `projects`.
 
 @reactDocs Icons
