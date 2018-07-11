@@ -79,18 +79,21 @@ export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
 
     private renderOptions(options: Array<string | number | IHTMLOptionProps>) {
         return options.map(value => {
-            const option: IHTMLOptionProps = typeof value === "object" ? this.coercePlainObj(value) : ({
-                value,
-                label: value.toString()
-            });
+            const option: IHTMLOptionProps =
+                typeof value === "object"
+                    ? this.coercePlainObj(value)
+                    : {
+                          label: value.toString(),
+                          value,
+                      };
             return <option key={option.value} children={option.label} {...option} />;
         });
     }
 
     private coercePlainObj(option: IHTMLOptionProps) {
         return {
+            label: option.label || option.value.toString(),
             value: option.value,
-            label: option.label || option.value.toString()
-        }
+        };
     }
 }
