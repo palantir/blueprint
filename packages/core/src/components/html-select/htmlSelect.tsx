@@ -66,19 +66,31 @@ export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
             className,
         );
 
-        const optionChildren = options.map(value => {
-            const option: IHTMLOptionProps = typeof value === "object" ? value : { value, label: value.toString() };
-            return <option key={option.value} {...option} />;
-        });
-
         return (
             <div className={classes}>
                 <select disabled={disabled} ref={elementRef} {...htmlProps} multiple={false}>
-                    {optionChildren}
+                    {this.renderOptions(options)}
                     {htmlProps.children}
                 </select>
                 <Icon icon="double-caret-vertical" />
             </div>
         );
+    }
+
+    private renderOptions(options: Array<string | number | IHTMLOptionProps>) {
+        return options.map(value => {
+            const option: IHTMLOptionProps = typeof value === "object" ? this.coercePlainObj(value) : ({
+                value,
+                label: value.toString()
+            });
+            return <option key={option.value} children={option.label} {...option} />;
+        });
+    }
+
+    private coercePlainObj(option: IHTMLOptionProps) {
+        return {
+            value: option.value,
+            label: option.label || option.value.toString()
+        }
     }
 }
