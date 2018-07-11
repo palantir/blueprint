@@ -3,8 +3,8 @@
 A highly interactive React `Table` component.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
-  If you are looking instead for the Blueprint-styled HTML table, see
-  [`.@ns-html-table` in **@blueprintjs/core**](#core/components/table-html).
+  If you are looking instead for the Blueprint-styled HTML `<table>`, see
+  [`HTMLTable` in **@blueprintjs/core**](#core/components/html-table).
 </div>
 
 ### Features
@@ -16,8 +16,6 @@ A highly interactive React `Table` component.
 * Resizable rows and columns
 * Editable headers and cells
 * Integrated header and context menus
-
-@## Installation
 
 ```sh
 npm install --save @blueprintjs/core @blueprintjs/table

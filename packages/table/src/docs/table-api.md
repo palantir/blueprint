@@ -63,7 +63,7 @@ interface IResizeRowsByApproximateHeightOptions {
     type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
     ```
 
-- `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target [region](#table.region) in a
+- `scrollToRegion(region: IRegion): void` &ndash; Scrolls the table to the target [region](#table/api.region) in a
    fashion appropriate to the target region's cardinality:
     - `CELLS`: Scroll the top-left cell in the target region to the top-left corner of the viewport.
     - `FULL_ROWS`: Scroll the top-most row in the target region to the top of the viewport.
@@ -130,7 +130,7 @@ A region is a rectangular group of cells in the table.
 Regions are typically used to describe boundaries for selections (via the
 `selectedRegions` prop) and custom overlays (via the `styledRegionGroups` prop).
 You may also wish to scroll directly to a region in the table via the
-[`Table.scrollToRegion`](#table.instance-methods) instance method.
+[`Table.scrollToRegion`](#table/api.instance-methods) instance method.
 
 There are four different types of regions:
 - __Cell region:__ contains a finite, rectangular group of table cells
