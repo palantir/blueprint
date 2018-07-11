@@ -43,7 +43,7 @@ the parent input.
     in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
     buttons instead.</p>
 
-    Conversely, the [`InputGroup`](#core/components/forms/input-group.javascript-api) React
+    Conversely, the [`InputGroup`](#core/components/text-inputs.input-group) React
     component _does_ support arbitrary content in its right element.
 </div>
 
