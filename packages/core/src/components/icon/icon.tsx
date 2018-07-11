@@ -96,7 +96,7 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
                 height={iconSize}
                 viewBox={viewBox}
             >
-                {title ? <title>{title}</title> : null}
+                {title && <desc>{title}</desc>}
                 {paths}
             </svg>
         );
