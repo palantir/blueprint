@@ -4,9 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Intent, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
+import { Icon, Menu, MenuItem, Popover, Position, setHotkeysDialogProps } from "@blueprintjs/core";
 import { IPackageInfo } from "@blueprintjs/docs-data";
-import { Banner, Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
+import { Documentation, IDocumentationProps } from "@blueprintjs/docs-theme";
 import { ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";
 import { NavbarActions } from "./navbarActions";
@@ -49,19 +49,14 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             />
         );
         return (
-            <div>
-                <Banner href="http://blueprintjs.com/docs/v2/" intent={Intent.SUCCESS}>
-                    A new major version of Blueprint is under development. Click here to go to the v2 docs!
-                </Banner>
-                <Documentation
-                    {...this.props}
-                    className={this.state.themeName}
-                    navbarLeft={navbarLeft}
-                    navbarRight={navbarRight}
-                    onComponentUpdate={this.handleComponentUpdate}
-                    renderViewSourceLinkText={renderViewSourceLinkText}
-                />
-            </div>
+            <Documentation
+                {...this.props}
+                className={this.state.themeName}
+                navbarLeft={navbarLeft}
+                navbarRight={navbarRight}
+                onComponentUpdate={this.handleComponentUpdate}
+                renderViewSourceLinkText={renderViewSourceLinkText}
+            />
         );
     }
 
@@ -70,7 +65,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return (
             <Popover position={Position.BOTTOM} key="_versions">
                 <button className="docs-version-selector pt-text-muted">
-                    v{versions[0].version} <span className="pt-icon-standard pt-icon-caret-down" />
+                    v{versions[0].version} <Icon iconName="caret-down" />
                 </button>
                 <Menu className="docs-version-list">
                     <MenuItem text="View latest version" href="/docs" />
