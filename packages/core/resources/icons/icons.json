@@ -3113,5 +3113,12 @@
     "tags": "forest, wood, landmark",
     "group": "miscellaneous",
     "content": "\\e7b7"
+  },
+  {
+    "name": "Notifications: updated",
+    "className": "pt-icon-notifications-updated",
+    "tags": "notifications, bell, alarm, notice, warning",
+    "group": "interface",
+    "content": "\\e7b8"
   }
 ]
