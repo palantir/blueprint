@@ -58,7 +58,11 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      */
     multiline?: boolean;
 
-    /** Props to spread to `Popover`. Note that `content` and `minimal` cannot be changed. */
+    /**
+     * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
+     * changed and `usePortal` defaults to `false` so all submenus will live in
+     * the same container.
+     */
     popoverProps?: Partial<IPopoverProps>;
 
     /**
@@ -144,12 +148,14 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         const { disabled, popoverProps } = this.props;
         return (
             <Popover
+                autoFocus={false}
                 disabled={disabled}
                 enforceFocus={false}
                 hoverCloseDelay={0}
                 interactionKind={PopoverInteractionKind.HOVER}
                 modifiers={SUBMENU_POPOVER_MODIFIERS}
                 position={Position.RIGHT_TOP}
+                usePortal={false}
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
