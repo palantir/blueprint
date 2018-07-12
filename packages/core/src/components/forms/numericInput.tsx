@@ -57,6 +57,11 @@ export interface INumericInputProps extends IIntentProps, IProps {
     fill?: boolean;
 
     /**
+     * Ref handler that receives HTML `<input>` element backing this component.
+     */
+    inputRef?: (ref: HTMLInputElement | null) => any;
+
+    /**
      * If set to `true`, the input will display with larger styling.
      * This is equivalent to setting `Classes.LARGE` via className on the
      * parent control group and on the child input group.
@@ -362,6 +367,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private inputRef = (input: HTMLInputElement) => {
         this.inputElement = input;
+        Utils.safeInvoke(this.props.inputRef, input);
     };
 
     // Callbacks - Buttons

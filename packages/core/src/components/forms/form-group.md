@@ -1,7 +1,7 @@
 @# Form group
 
-Form groups support more complex form controls than [simple labels](#core/components/forms/label.simple-labels),
-such as [control groups](#core/components/forms/control-group) or [`NumericInput`](#core/components/forms/numeric-input).
+Form groups support more complex form controls than [simple labels](#core/components/label),
+such as [control groups](#core/components/control-group) or [`NumericInput`](#core/components/numeric-input).
 They also support additional helper text to aid with user navigation.
 
 @reactExample FormGroupExample

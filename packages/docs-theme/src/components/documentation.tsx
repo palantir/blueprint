@@ -263,7 +263,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private updateHash() {
         // update state based on current hash location
-        this.handleNavigation(location.hash.slice(1));
+        const sectionId = location.hash.slice(1);
+        this.handleNavigation(sectionId === "" ? this.props.defaultPageId : sectionId);
     }
 
     private handleHashChange = () => {
