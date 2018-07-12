@@ -72,6 +72,19 @@ describe("<OverflowList>", function(this) {
         assert.lengthOf(list.find(TestItem), 1);
     });
 
+    it("shows at least minVisibleItems", () => {
+        list = renderOverflowList({ minVisibleItems: 5, style: { width: 15 } });
+        assert.lengthOf(list.find(TestItem), 5);
+    });
+
+    it("shows more after increasing minVisibleItems", () => {
+        list = renderOverflowList({ minVisibleItems: 2, style: { width: 35 } });
+        assert.lengthOf(list.find(TestItem), 3);
+        list.setProps({ minVisibleItems: 5 });
+        list.update();
+        assert.lengthOf(list.find(TestItem), 5);
+    });
+
     it("does not render the overflow if all items are displayed", () => {
         list = renderOverflowList();
         assert.lengthOf(list.find(TestOverflow), 0);
