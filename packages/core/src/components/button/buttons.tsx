@@ -39,7 +39,7 @@ export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTML
                 {...removeNonHTMLProps(this.props)}
                 {...commonProps}
                 href={commonProps.disabled ? undefined : href}
-                tabIndex={commonProps.disabled ? undefined : tabIndex}
+                tabIndex={commonProps.disabled ? -1 : tabIndex}
             >
                 {this.renderChildren()}
             </a>

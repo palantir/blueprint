@@ -48,6 +48,12 @@ class ContextMenu extends AbstractPureComponent<IOverlayLifecycleProps, IContext
         const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
         const popoverClassName = classNames({ [Classes.DARK]: this.state.isDarkTheme });
 
+        // HACKHACK: workaround until we have access to Popper#scheduleUpdate().
+        // https://github.com/palantir/blueprint/issues/692
+        // Generate key based on offset so a new Popover instance is created
+        // when offset changes, to force recomputing position.
+        const key = this.state.offset == null ? "" : `${this.state.offset.left}x${this.state.offset.top}`;
+
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
         return (
@@ -57,6 +63,7 @@ class ContextMenu extends AbstractPureComponent<IOverlayLifecycleProps, IContext
                     backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
                     content={content}
                     enforceFocus={false}
+                    key={key}
                     hasBackdrop={true}
                     isOpen={this.state.isOpen}
                     minimal={true}

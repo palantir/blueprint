@@ -52,7 +52,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   display: flex;
   align-items: flex-start;
 
-  // toasts rely on relative positioning for stacking; override inline overlay styles (#367)
+  // override inline styles (#367): toasts rely on relative positioning for stacking.
   // stylelint-disable-next-line declaration-no-important
   position: relative !important;
   margin: $toast-margin 0 0;
@@ -147,7 +147,9 @@ $toast-margin: $pt-grid-size * 2 !default;
 }
 
 .#{$ns}-toast-container {
-  display: flex;
+  // override inline overlay styles (#2626)
+  // stylelint-disable-next-line declaration-no-important
+  display: flex !important;
   flex-direction: column;
   align-items: center;
 

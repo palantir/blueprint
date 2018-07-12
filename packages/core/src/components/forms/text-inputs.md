@@ -2,10 +2,10 @@
 
 Blueprint provides two ways to create a text input:
 
-1. CSS only: apply `Classes.INPUT` to an `<input>` or `<textarea>` element to
-   style the native HTML tag.
 1. React component: use the `InputGroup` component for an advanced single-line
    input that supports an icon on the left and arbitrary content on the right.
+1. CSS only: apply `Classes.INPUT` to an `<input>` or `<textarea>` element to
+   style the native HTML tag.
 
 @## Input group
 
@@ -43,7 +43,7 @@ the parent input.
     in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
     buttons instead.</p>
 
-    Conversely, the [`InputGroup`](#core/components/forms/input-group.javascript-api) React
+    Conversely, the [`InputGroup`](#core/components/text-inputs.input-group) React
     component _does_ support arbitrary content in its right element.
 </div>
 

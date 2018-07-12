@@ -48,7 +48,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     min={0}
                     max={Spinner.SIZE_LARGE * 2}
                     showTrackFill={false}
-                    stepSize={10}
+                    stepSize={5}
                     value={size}
                     onChange={this.handleSizeChange}
                 />
