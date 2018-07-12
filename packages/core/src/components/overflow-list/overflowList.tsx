@@ -117,13 +117,21 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public componentWillReceiveProps(nextProps: IOverflowListProps<T>) {
-        const { collapseFrom, items, observeParents, overflowRenderer, visibleItemRenderer } = this.props;
+        const {
+            collapseFrom,
+            items,
+            minVisibleItems,
+            observeParents,
+            overflowRenderer,
+            visibleItemRenderer,
+        } = this.props;
         if (observeParents !== nextProps.observeParents) {
             console.warn(OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED);
         }
         if (
             collapseFrom !== nextProps.collapseFrom ||
             items !== nextProps.items ||
+            minVisibleItems !== nextProps.minVisibleItems ||
             overflowRenderer !== nextProps.overflowRenderer ||
             visibleItemRenderer !== nextProps.visibleItemRenderer
         ) {
