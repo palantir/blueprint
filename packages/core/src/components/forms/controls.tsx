@@ -194,7 +194,12 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     }
 
     public componentWillReceiveProps({ checked, indeterminate }: ICheckboxProps) {
-        this.setState({ checked, indeterminate });
+        if (checked != null) {
+            this.setState({ checked });
+        }
+        if (indeterminate != null) {
+            this.setState({ indeterminate });
+        }
     }
 
     public componentDidMount() {
@@ -206,10 +211,11 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     }
 
     private renderIndicator() {
+        const size = this.props.large ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
         if (this.state.indeterminate) {
-            return <Icon icon="small-minus" />;
+            return <Icon icon="small-minus" iconSize={size} />;
         } else if (this.state.checked) {
-            return <Icon icon="small-tick" />;
+            return <Icon icon="small-tick" iconSize={size} />;
         }
         return null;
     }

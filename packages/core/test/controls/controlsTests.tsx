@@ -50,6 +50,16 @@ describe("Controls:", () => {
                 const icon = mount(<Checkbox checked={true} indeterminate={true} />).find(Icon);
                 assert.equal(icon.prop("icon"), "small-minus");
             });
+
+            it("changes with props", () => {
+                const wrapper = mount(<Checkbox checked={false} />);
+                wrapper.setProps({ checked: true });
+                assert.equal(wrapper.find(Icon).prop("icon"), "small-tick");
+                wrapper.setProps({ checked: false, indeterminate: true });
+                assert.equal(wrapper.find(Icon).prop("icon"), "small-minus");
+                wrapper.setProps({ checked: false, indeterminate: false });
+                assert.isFalse(wrapper.find(Icon).exists());
+            });
         });
     });
 
