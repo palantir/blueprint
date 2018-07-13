@@ -211,7 +211,8 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     }
 
     private renderIndicator() {
-        const size = this.props.large ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
+        const { className = "", large } = this.props;
+        const size = large || className.indexOf(Classes.LARGE) >= 0 ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
         if (this.state.indeterminate) {
             return <Icon icon="small-minus" iconSize={size} />;
         } else if (this.state.checked) {
