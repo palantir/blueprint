@@ -188,7 +188,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 if (next === undefined) {
                     return null;
                 }
-                const overflow = collapseFromStart ? [next, ...state.overflow] : [...state.overflow, next];
+                const overflow = collapseFromStart ? [...state.overflow, next] : [next, ...state.overflow];
                 return {
                     overflow,
                     visible,
