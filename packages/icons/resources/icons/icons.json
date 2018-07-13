@@ -3112,6 +3112,13 @@
     "iconName": "tree",
     "tags": "forest, wood, landmark",
     "group": "miscellaneous",
-    "content": "\\e7b6"
+    "content": "\\e7b7"
+  },
+  {
+    "displayName": "Notifications: updated",
+    "iconName": "notifications-updated",
+    "tags": "notifications, bell, alarm, notice, warning",
+    "group": "interface",
+    "content": "\\e7b8"
   }
 ]
