@@ -9,22 +9,26 @@ import * as React from "react";
 
 export interface IAlignSelectProps {
     align: Alignment | undefined;
+    allowCenter?: boolean;
+    label?: string;
     onChange: (align: Alignment) => void;
 }
 
 export class AlignmentSelect extends React.PureComponent<IAlignSelectProps> {
     public render() {
-        const { align } = this.props;
+        const { align, allowCenter = true, label = "Align text" } = this.props;
         return (
             <div>
-                Button alignment
+                {label}
                 <ButtonGroup fill={true} style={{ marginTop: 5 }}>
                     <Button active={align === Alignment.LEFT} text="Left" onClick={this.handleAlignLeft} />
-                    <Button
-                        active={align == null || align === Alignment.CENTER}
-                        text="Center"
-                        onClick={this.handleAlignCenter}
-                    />
+                    {allowCenter && (
+                        <Button
+                            active={align == null || align === Alignment.CENTER}
+                            text="Center"
+                            onClick={this.handleAlignCenter}
+                        />
+                    )}
                     <Button active={align === Alignment.RIGHT} text="Right" onClick={this.handleAlignRight} />
                 </ButtonGroup>
             </div>
