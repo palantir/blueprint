@@ -47,7 +47,9 @@ export const UI_TEXT = `${NS}-ui-text`;
 export const RUNNING_TEXT = `${NS}-running-text`;
 export const MONOSPACE_TEXT = `${NS}-monospace-text`;
 export const TEXT_LARGE = `${NS}-text-large`;
+export const TEXT_SMALL = `${NS}-text-small`;
 export const TEXT_MUTED = `${NS}-text-muted`;
+export const TEXT_DISABLED = `${NS}-text-disabled`;
 export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
 
 // textual elements
@@ -57,6 +59,7 @@ export const CODE_BLOCK = `${NS}-code-block`;
 export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
+export const RTL = `${NS}-rtl`;
 
 // components
 export const ALERT = `${NS}-alert`;
