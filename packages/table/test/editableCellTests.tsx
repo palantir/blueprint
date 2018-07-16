@@ -126,4 +126,20 @@ describe("<EditableCell>", () => {
         elem.find("input").simulate("blur");
         expect(onChangeSpy.firstCall.args).to.deep.equal([CHANGED_VALUE, ROW_INDEX, COLUMN_INDEX]);
     });
+
+    it("defaults to no wrapText", () => {
+        const elem = mount(
+            <EditableCell />,
+        );
+
+        expect(elem.find(`.${Classes.TABLE_NO_WRAP_TEXT} div`).length).to.equal(2);
+    });
+
+    it("wraps text when wrapsText is true", () => {
+        const elem = mount(
+            <EditableCell wrapText={true} />,
+        );
+
+        expect(elem.find(`.${Classes.TABLE_NO_WRAP_TEXT} div`).length).to.equal(0);
+    });
 });
