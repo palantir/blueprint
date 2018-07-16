@@ -2,11 +2,17 @@ apt-get
 at 4pt-size
 "script-source pt-large apt-get"
                ~~~~~~~~  [msg]
+`script-source pt-large apt-get`
+               ~~~~~~~~  [msg]
+`${template} pt-large`
+             ~~~~~~~~  [msg]
 
 <Button className="my-class pt-large" />
                             ~~~~~~~~  [msg]
 
 classNames(Classes.BUTTON, "pt-intent-primary")
                             ~~~~~~~~~~~~~~~~~  [msg]
+
+<pt-popover> // angular directive
 
 [msg]: use Blueprint `Classes` constant instead of string literal
