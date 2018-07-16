@@ -56,6 +56,13 @@ export interface IDocsExampleProps extends IExampleProps {
      * This prop is mutually exclusive with and takes priority over `children`.
      */
     html?: string;
+
+    /**
+     * Whether `forceUpdate()` should be invoked after the first render, to
+     * ensure correct DOM sizing.
+     * @default true
+     */
+    forceUpdate?: boolean;
 }
 
 /**
@@ -114,6 +121,9 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
     }
 
     public componentDidMount() {
+        if (this.props.forceUpdate === false) {
+            return;
+        }
         // HACKHACK: The docs app suffers from a Flash of Unstyled Content that
         // causes some 'width: 100%' examples to mis-measure the horizontal
         // space available to them. Until that bug is squashed, we must delay
