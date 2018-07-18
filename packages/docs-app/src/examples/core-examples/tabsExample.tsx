@@ -42,7 +42,20 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
             </>
         );
 
+        const testPanel1 = () => {
+            return <div style={{height: '100px', width: '100px', backgroundColor: 'red'}}>Test</div>
+        }
+
+        const testPanel2 = () => {
+            return <div style={{height: '100px', width: '100px', backgroundColor: 'blue'}}>Test</div>
+        }
+
+        const testPanel3 = () => {
+            return <div style={{height: '100px', width: '100px', backgroundColor: 'green'}}>Test</div>
+        }
+
         return (
+            <div style={{width: '90%'}}>
             <Example className="docs-tabs-example" options={options} {...this.props}>
                 <Navbar>
                     <Navbar.Group>
@@ -52,35 +65,46 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
                         {/* controlled mode & no panels (see h1 below): */}
-                        <Tabs
-                            animate={this.state.animate}
-                            id="navbar"
-                            large={true}
-                            onChange={this.handleNavbarTabChange}
-                            selectedTabId={this.state.navbarTabId}
-                        >
-                            <Tab id="Home" title="Home" />
-                            <Tab id="Files" title="Files" />
-                            <Tab id="Builds" title="Builds" />
-                        </Tabs>
+
+                        {
+                            <Tabs
+                                animate={this.state.animate}
+                                id="navbar"
+                                large={true}
+                                overflow={true}
+                                onChange={this.handleNavbarTabChange}
+                                selectedTabId={this.state.navbarTabId}
+                            >
+                                <Tab id="Home" title="Home"/>
+                                <Tab id="Files" title="Files"/>
+                                <Tab id="Builds" title="Builds"/>
+                            </Tabs>
+                        }
                     </Navbar.Group>
                 </Navbar>
                 {/* uncontrolled mode & each Tab has a panel: */}
-                <Tabs
-                    animate={this.state.animate}
-                    id="TabsExample"
-                    key={this.state.vertical ? "vertical" : "horizontal"}
-                    renderActiveTabPanelOnly={this.state.activePanelOnly}
-                    vertical={this.state.vertical}
-                >
-                    <Tab id="rx" title="React" panel={<ReactPanel />} />
-                    <Tab id="ng" title="Angular" panel={<AngularPanel />} />
-                    <Tab id="mb" title="Ember" panel={<EmberPanel />} />
-                    <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
-                    <Tabs.Expander />
-                    <InputGroup className={Classes.FILL} type="text" placeholder="Search..." />
-                </Tabs>
+
+                {
+                    <Tabs
+                        animate={this.state.animate}
+                        id="TabsExample"
+                        key={this.state.vertical ? "vertical" : "horizontal"}
+                        renderActiveTabPanelOnly={this.state.activePanelOnly}
+                        vertical={this.state.vertical}
+                        overflow={true}
+                        overflowListProps={{collapseFrom: 'start'}}
+                    >
+                        <Tab id="rx" title="React" panel={<ReactPanel/>}/>
+                        <Tab id="ng" title="Angular" panel={<AngularPanel/>}/>
+                        <Tab id="mb" title="Ember" panel={<EmberPanel/>}/>
+                        <Tab id="bb" title="Backbone" panel={<BackbonePanel/>}/>
+                        <Tabs.Expander/>
+                        <InputGroup type="text" placeholder="Search..."/>
+                    </Tabs>
+
+                }
             </Example>
+            </div>
         );
     }
 
