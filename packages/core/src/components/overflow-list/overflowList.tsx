@@ -30,6 +30,13 @@ export interface IOverflowListProps<T> extends IProps {
     items: T[];
 
     /**
+     * The number of visible items will never be lower than the number passed to
+     * this prop.
+     * @default 0
+     */
+    minVisibleItems?: number;
+
+    /**
      * If `true`, all parent DOM elements of the container will also be
      * observed. If changes to a parent's size is detected, the overflow will be
      * recalculated.
@@ -71,6 +78,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
 
     public static defaultProps: Partial<IOverflowListProps<any>> = {
         collapseFrom: Boundary.START,
+        minVisibleItems: 0,
     };
 
     public static ofType<T>() {
@@ -109,13 +117,21 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public componentWillReceiveProps(nextProps: IOverflowListProps<T>) {
-        const { collapseFrom, items, observeParents, overflowRenderer, visibleItemRenderer } = this.props;
+        const {
+            collapseFrom,
+            items,
+            minVisibleItems,
+            observeParents,
+            overflowRenderer,
+            visibleItemRenderer,
+        } = this.props;
         if (observeParents !== nextProps.observeParents) {
             console.warn(OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED);
         }
         if (
             collapseFrom !== nextProps.collapseFrom ||
             items !== nextProps.items ||
+            minVisibleItems !== nextProps.minVisibleItems ||
             overflowRenderer !== nextProps.overflowRenderer ||
             visibleItemRenderer !== nextProps.visibleItemRenderer
         ) {
@@ -182,13 +198,16 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         } else if (this.spacer.getBoundingClientRect().width < 1) {
             // spacer has flex-shrink and width 1px so if it's any smaller then we know to shrink
             this.setState(state => {
+                if (state.visible.length <= this.props.minVisibleItems) {
+                    return null;
+                }
                 const collapseFromStart = this.props.collapseFrom === Boundary.START;
                 const visible = state.visible.slice();
                 const next = collapseFromStart ? visible.shift() : visible.pop();
                 if (next === undefined) {
                     return null;
                 }
-                const overflow = collapseFromStart ? [next, ...state.overflow] : [...state.overflow, next];
+                const overflow = collapseFromStart ? [...state.overflow, next] : [next, ...state.overflow];
                 return {
                     overflow,
                     visible,

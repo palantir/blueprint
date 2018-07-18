@@ -94,7 +94,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
     };
 
     public state = {
-        animationState: AnimationStates.OPEN,
+        animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
         height: "0px",
     };
 

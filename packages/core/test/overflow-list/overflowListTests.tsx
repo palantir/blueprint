@@ -10,10 +10,14 @@ import * as React from "react";
 
 import { IOverflowListProps, OverflowList } from "../../src/components/overflow-list/overflowList";
 
-const ITEMS = [{}, {}, {}, {}, {}, {}];
+interface ITestItem {
+    id: number;
+}
+
+const ITEMS: ITestItem[] = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
 const TestItem: React.SFC = () => <div style={{ width: 10 }} />;
-const TestOverflow: React.SFC = () => <div />;
+const TestOverflow: React.SFC<{ items: ITestItem[] }> = () => <div />;
 
 describe("<OverflowList>", function(this) {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
@@ -72,6 +76,19 @@ describe("<OverflowList>", function(this) {
         assert.lengthOf(list.find(TestItem), 1);
     });
 
+    it("shows at least minVisibleItems", () => {
+        list = renderOverflowList({ minVisibleItems: 5, style: { width: 15 } });
+        assert.lengthOf(list.find(TestItem), 5);
+    });
+
+    it("shows more after increasing minVisibleItems", () => {
+        list = renderOverflowList({ minVisibleItems: 2, style: { width: 35 } });
+        assert.lengthOf(list.find(TestItem), 3);
+        list.setProps({ minVisibleItems: 5 });
+        list.update();
+        assert.lengthOf(list.find(TestItem), 5);
+    });
+
     it("does not render the overflow if all items are displayed", () => {
         list = renderOverflowList();
         assert.lengthOf(list.find(TestOverflow), 0);
@@ -82,8 +99,24 @@ describe("<OverflowList>", function(this) {
         assert.lengthOf(list.find(TestOverflow), 1);
     });
 
-    function renderOverflow(): React.ReactNode {
-        return <TestOverflow />;
+    it("renders overflow items in the correct order (collapse from start)", () => {
+        list = renderOverflowList({ collapseFrom: "start", style: { width: 45 } });
+        const overflowItems = list.find(TestOverflow).prop("items");
+        assert.lengthOf(overflowItems, 2);
+        assert.strictEqual(overflowItems[0].id, 0);
+        assert.strictEqual(overflowItems[1].id, 1);
+    });
+
+    it("renders overflow items in the correct order (collapse from end)", () => {
+        list = renderOverflowList({ collapseFrom: "end", style: { width: 45 } });
+        const overflowItems = list.find(TestOverflow).prop("items");
+        assert.lengthOf(overflowItems, 2);
+        assert.strictEqual(overflowItems[0].id, 4);
+        assert.strictEqual(overflowItems[1].id, 5);
+    });
+
+    function renderOverflow(items: ITestItem[]): React.ReactNode {
+        return <TestOverflow items={items} />;
     }
 
     function renderItem(_props: {}, index: number) {

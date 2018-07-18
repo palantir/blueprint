@@ -270,6 +270,16 @@ Styleguide preformatted
     background: $pt-dark-code-background-color;
     color: $pt-dark-code-text-color;
   }
+
+  a > & {
+    // <code> in links. markdown: [`code`](http://url)
+    // $pt-link-color does not have good contrast with non-link <code>'s in light theme, so we use a brighter hue
+    color: $pt-intent-primary;
+
+    .#{$ns}-dark & {
+      color: inherit;
+    }
+  }
 }
 
 %code-block {

@@ -27,7 +27,7 @@ The children you provide to this component are rendered as contents inside the
 @## CSS
 
 You can create dialogs manually using the HTML markup and `@ns-dialog-*` classes below.
-However, you should use the dialog [JavaScript APIs](#core/components/dialog.javascript-api)
+However, you should use the [`Dialog` component](#core/components/dialog.props)
 whenever possible, as they automatically generate some of this markup.
 
 More examples of dialog content are shown below.

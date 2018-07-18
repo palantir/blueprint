@@ -47,10 +47,10 @@ export interface IIconProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
-     * Description string.
-     * Browsers usually render this as a tooltip on hover, whereas screen
-     * readers will use it for aural feedback.
-     * By default, this is set to the icon's name for accessibility.
+     * Description string. This string does not appear in normal browsers, but
+     * it increases accessibility. For instance, screen readers will use it for
+     * aural feedback. By default, this is set to the icon's name for
+     * accessibility.
      */
     title?: string | false | null;
 }
@@ -96,7 +96,7 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
                 height={iconSize}
                 viewBox={viewBox}
             >
-                {title ? <title>{title}</title> : null}
+                {title && <desc>{title}</desc>}
                 {paths}
             </svg>
         );

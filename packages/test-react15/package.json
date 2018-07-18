@@ -1,6 +1,6 @@
 {
   "name": "test-react15",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "React 15 dependencies for testing",
   "private": true,
   "dependencies": {
@@ -14,5 +14,5 @@
     "url": "git@github.com:palantir/blueprint.git"
   },
   "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+  "license": "SEE LICENSE IN REPO ROOT"
 }
