@@ -101,9 +101,11 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
+        const { initialContent, inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const handlers = isOpen && !this.isQueryEmpty() ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
+        // handle arrow key presses once we have a query or w/ no query if we're not displaying custom initial content
+        const shouldHandleKeys = isOpen && (initialContent == null || !this.isQueryEmpty());
+        const handlers = shouldHandleKeys ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
         return (
             <Overlay
