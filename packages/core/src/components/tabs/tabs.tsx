@@ -181,46 +181,45 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     }
 
     public overflowRenderer(items: Array<React.Component>) {
-        //Allow overwriting
-        if (this.props.overflowRenderer) return this.props.overflowRenderer(items)
+        if (this.props.overflowRenderer) {
+            return this.props.overflowRenderer(items);
+        }
 
-        //give props title, onClick, disabled, selected
         const overflowMenu = (
             <Menu>
                 {items.map((item) => {
-                    //Return tabs as menu items and other items as themselves
                     if (item.props.panel) {
-                        return (<MenuItem
-                            text={item.props.title}
-                            onClick={(e) => item.props.onClick(item.props.id, e)}
-                            disabled={item.props.disabled}
-                            active={item.props.selected}
-                        />)
+                        return (
+                            <MenuItem
+                                text={item.props.title}
+                                onClick={(e) => item.props.onClick(item.props.id, e)}
+                                disabled={item.props.disabled}
+                                active={item.props.selected}
+                            />
+                        );
                     } else {
-                        return item
+                        return item;
                     }
                 })}
             </Menu>
-        )
+        );
 
-        //
         return (
             <Popover content={overflowMenu}>
-                <span style={{lineHeight: '30px', cursor: 'pointer'}}>Overflow</span>
+                <span style={{ lineHeight: "30px", cursor: "pointer" }}>Overflow</span>
             </Popover>
-        )
+        );
     }
 
     public visibleItemsRenderer(item: React.Component) {
-        return item
+        return item;
     }
 
     public componentDidMount() {
-        //needs a second for the overflowList to render the animation correctly
+        // needs a second for the overflowList to render the animation correctly for initial mount
         setTimeout(() => {
-                this.moveSelectionIndicator()
-            }, 1
-        )
+            this.moveSelectionIndicator();
+        }, 1);
     }
 
     public componentWillReceiveProps({ selectedTabId }: ITabsProps) {
@@ -231,24 +230,24 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     }
 
     public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
-        if (this.state.selectedTabId !== prevState.selectedTabId) {
-            //needs a second for the overflowList to render the animation correctly
-            setTimeout(() => {
-                    this.moveSelectionIndicator()
-                }, 1
-            )
-        } else if (prevState.selectedTabId != null) {
-            // comparing React nodes is difficult to do with simple logic, so
-            // shallowly compare just their props as a workaround.
-            const didChildrenChange = !Utils.arraysEqual(
-                this.getTabChildrenProps(prevProps),
-                this.getTabChildrenProps(),
-                Utils.shallowCompareKeys,
-            );
-            if (didChildrenChange) {
+        // adding a one second timeout here allows the overflowList to perform it's calculation
+        // so our ref has an accurate picture of the overflow state
+        setTimeout(() => {
+            if (this.state.selectedTabId !== prevState.selectedTabId) {
                 this.moveSelectionIndicator();
+            } else if (prevState.selectedTabId != null) {
+                // comparing React nodes is difficult to do with simple logic, so
+                // shallowly compare just their props as a workaround.
+                const didChildrenChange = !Utils.arraysEqual(
+                    this.getTabChildrenProps(prevProps),
+                    this.getTabChildrenProps(),
+                    Utils.shallowCompareKeys,
+                );
+                if (didChildrenChange) {
+                    this.moveSelectionIndicator();
+                }
             }
-        }
+        }, 1);
     }
 
     private getInitialSelectedTabId() {
@@ -353,16 +352,16 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             }
         };
 
-        //Set indicator below tab or below overflowList element
+        // Set indicator below tab or below overflowList element
         if (selectedTabElement != null) {
             const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
             indicatorWrapperStyle = indicatorWrapperCreator(clientHeight, clientWidth, offsetLeft, offsetTop)
         } else if (isOverflowing && selectedTabElement === null) {
-            //Find the overflow dropdown span
+            // Find the overflow dropdown span
             const numTabChildren = this.overflowElement.element.children.length
             const collapseFrom = this.props.overflowListProps.collapseFrom || "end"
             const overflowElementChildren = this.overflowElement.element.children
-            //Find span element containing dropdown list
+            // Find span element containing dropdown list
             const overflowListElement =
                 collapseFrom === "end" ? overflowElementChildren[numTabChildren - 2] : overflowElementChildren[0]
 
