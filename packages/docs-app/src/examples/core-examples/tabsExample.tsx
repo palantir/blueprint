@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs, Slider, Label } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
@@ -14,6 +14,8 @@ export interface ITabsExampleState {
     animate: boolean;
     navbarTabId: TabId;
     vertical: boolean;
+    overflow: boolean;
+    overflowWidth: number;
 }
 
 export class TabsExample extends React.PureComponent<IExampleProps, ITabsExampleState> {
@@ -21,12 +23,15 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
         activePanelOnly: false,
         animate: true,
         navbarTabId: "Home",
+        overflow: false,
+        overflowWidth: 100,
         vertical: false,
     };
 
     private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
     private toggleAnimate = handleBooleanChange(animate => this.setState({ animate }));
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+    private toggleOverflow = handleBooleanChange(overflow => this.setState({ overflow }));
 
     public render() {
         const options = (
@@ -39,23 +44,24 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     label="Render active tab panel only"
                     onChange={this.toggleActiveOnly}
                 />
+                <Switch
+                    checked={this.state.overflow}
+                    label="Overflow"
+                    onChange={this.toggleOverflow}
+                />
+                <Label>Overflow Width</Label>
+                <Slider
+                    labelRenderer={this.renderLabel}
+                    labelStepSize={25}
+                    max={100}
+                    onChange={this.handleChangeWidth}
+                    showTrackFill={false}
+                    value={this.state.overflowWidth}
+                />
             </>
         );
 
-        const testPanel1 = () => {
-            return <div style={{height: '100px', width: '100px', backgroundColor: 'red'}}>Test</div>
-        }
-
-        const testPanel2 = () => {
-            return <div style={{height: '100px', width: '100px', backgroundColor: 'blue'}}>Test</div>
-        }
-
-        const testPanel3 = () => {
-            return <div style={{height: '100px', width: '100px', backgroundColor: 'green'}}>Test</div>
-        }
-
         return (
-            <div style={{width: '90%'}}>
             <Example className="docs-tabs-example" options={options} {...this.props}>
                 <Navbar>
                     <Navbar.Group>
@@ -65,13 +71,12 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
                         {/* controlled mode & no panels (see h1 below): */}
-
                         {
                             <Tabs
                                 animate={this.state.animate}
                                 id="navbar"
                                 large={true}
-                                overflow={true}
+                                overflow={this.state.overflow}
                                 onChange={this.handleNavbarTabChange}
                                 selectedTabId={this.state.navbarTabId}
                             >
@@ -83,31 +88,35 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     </Navbar.Group>
                 </Navbar>
                 {/* uncontrolled mode & each Tab has a panel: */}
-
                 {
-                    <Tabs
-                        animate={this.state.animate}
-                        id="TabsExample"
-                        key={this.state.vertical ? "vertical" : "horizontal"}
-                        renderActiveTabPanelOnly={this.state.activePanelOnly}
-                        vertical={this.state.vertical}
-                        overflow={true}
-                        overflowListProps={{collapseFrom: 'start'}}
-                    >
-                        <Tab id="rx" title="React" panel={<ReactPanel/>}/>
-                        <Tab id="ng" title="Angular" panel={<AngularPanel/>}/>
-                        <Tab id="mb" title="Ember" panel={<EmberPanel/>}/>
-                        <Tab id="bb" title="Backbone" panel={<BackbonePanel/>}/>
-                        <Tabs.Expander/>
-                        <InputGroup type="text" placeholder="Search..."/>
-                    </Tabs>
-
+                    <div style={{ width: `${this.state.overflowWidth}%`, marginRight: "auto" }}>
+                        <Tabs
+                            animate={this.state.animate}
+                            id="TabsExample"
+                            key={this.state.vertical ? "vertical" : "horizontal"}
+                            renderActiveTabPanelOnly={this.state.activePanelOnly}
+                            vertical={this.state.vertical}
+                            overflow={this.state.overflow}
+                            overflowListProps={{collapseFrom: "start"}}
+                        >
+                            <Tab id="rx" title="React" panel={<ReactPanel/>}/>
+                            <Tab id="ng" title="Angular" panel={<AngularPanel/>}/>
+                            <Tab id="mb" title="Ember" panel={<EmberPanel/>}/>
+                            <Tab id="bb" title="Backbone" panel={<BackbonePanel/>}/>
+                            <Tabs.Expander/>
+                            <InputGroup type="text" placeholder="Search..."/>
+                        </Tabs>
+                    </div>
                 }
             </Example>
-            </div>
         );
     }
 
+    private renderLabel(value: number) {
+        return `${value}%`;
+    }
+
+    private handleChangeWidth = (overflowWidth: number) => this.setState({ overflowWidth });
     private handleNavbarTabChange = (navbarTabId: TabId) => this.setState({ navbarTabId });
 }
 

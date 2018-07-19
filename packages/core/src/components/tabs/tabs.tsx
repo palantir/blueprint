@@ -153,7 +153,6 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             [Classes.LARGE]: this.props.large,
         });
 
-        console.log('-- RENDER', tabTitles, tabPanels)
         return (
             <div className={classes}>
                 <div
@@ -164,15 +163,17 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
                     role="tablist"
                 >
                     {tabIndicator}
-                    <OverflowList
-                        items={tabTitles}
-                        collapseFrom="end"
-                        observeParents={true}
-                        overflowRenderer={this.overflowRenderer}
-                        visibleItemRenderer={this.visibleItemsRenderer}
-                        ref={this.refHandlers.overflowList}
-                        {...this.props.overflowListProps}
-                    />
+                    {this.props.overflow ?
+                         <OverflowList
+                            items={tabTitles}
+                            collapseFrom="end"
+                            observeParents={true}
+                            overflowRenderer={this.overflowRenderer}
+                            visibleItemRenderer={this.visibleItemsRenderer}
+                            ref={this.refHandlers.overflowList}
+                            {...this.props.overflowListProps}
+                        /> : tabTitles
+                    }
                 </div>
                 {tabPanels}
             </div>
@@ -187,7 +188,6 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         const overflowMenu = (
             <Menu>
                 {items.map((item) => {
-                    console.log('-- OVERFLOW', item)
                     //Return tabs as menu items and other items as themselves
                     if (item.props.panel) {
                         return (<MenuItem
@@ -203,6 +203,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             </Menu>
         )
 
+        //
         return (
             <Popover content={overflowMenu}>
                 <span style={{lineHeight: '30px', cursor: 'pointer'}}>Overflow</span>
@@ -340,7 +341,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
         const selectedTabElement = this.tablistElement.querySelector(tabIdSelector) as HTMLElement;
         //Check if there are any overflow elementsR
-        const isOverflowing = this.overflowElement.state.overflow.length
+        const isOverflowing = this.overflowElement && this.overflowElement.state.overflow.length
         console.log('-- MOVE', selectedTabElement, isOverflowing, this.overflowElement, this.tablistElement)
 
         let indicatorWrapperStyle: React.CSSProperties = { display: 'none' };
@@ -357,14 +358,13 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
             indicatorWrapperStyle = indicatorWrapperCreator(clientHeight, clientWidth, offsetLeft, offsetTop)
         } else if (isOverflowing && selectedTabElement === null) {
-            //Find out whether or not it's beginning or end, though this should be a controllable prop so
-            //no actual discovery will need to be made here
+            //Find the overflow dropdown span
             const numTabChildren = this.overflowElement.element.children.length
-            const beginningChild = this.overflowElement.element.children[0]
-            const endingChild = this.overflowElement.element.children[numTabChildren - 2]
+            const collapseFrom = this.props.overflowListProps.collapseFrom || "end"
+            const overflowElementChildren = this.overflowElement.element.children
             //Find span element containing dropdown list
-            const overflowListElement = beginningChild.tagName === 'SPAN' ? beginningChild : endingChild
-
+            const overflowListElement =
+                collapseFrom === "end" ? overflowElementChildren[numTabChildren - 2] : overflowElementChildren[0]
 
             const { clientHeight, clientWidth, offsetLeft, offsetTop } = overflowListElement;
             indicatorWrapperStyle = indicatorWrapperCreator(clientHeight, clientWidth, offsetLeft, offsetTop)
