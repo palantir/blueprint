@@ -58,7 +58,7 @@ export interface IDocsExampleProps extends IExampleProps {
     html?: string;
 
     /**
-     * Whether `forceUpdate()` should be invoked after the first render, to
+     * Whether `forceUpdate()` should be invoked after the first render to
      * ensure correct DOM sizing.
      * @default true
      */
@@ -91,15 +91,27 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
     private hasDelayedBeforeInitialRender = false;
 
     public render() {
-        // HACKHACK: This is the other required piece. Don't let any React nodes
-        // into the DOM until the requestAnimationFrame delay has elapsed. This
-        // prevents shouldComponentUpdate snafus at lower levels.
-        if (!this.hasDelayedBeforeInitialRender) {
+        const {
+            children,
+            className,
+            data,
+            forceUpdate = true,
+            html,
+            id,
+            options,
+            showOptionsBelowExample,
+            // spread any additional props through to the root element,
+            // to support decorators that expect DOM props.
+            ...htmlProps
+        } = this.props;
+
+        // `forceUpdate` -  Don't let any React nodes into the DOM until the
+        // `requestAnimationFrame` delay has elapsed. This prevents
+        // `shouldComponentUpdate` snafus at lower levels.
+        if (forceUpdate && !this.hasDelayedBeforeInitialRender) {
             return null;
         }
 
-        // spread any additional props through to the root element, to support decorators that expect DOM props
-        const { children, className, data, html, id, options, showOptionsBelowExample, ...htmlProps } = this.props;
         const classes = classNames(
             "docs-example-frame",
             showOptionsBelowExample ? "docs-example-frame-column" : "docs-example-frame-row",
@@ -121,16 +133,15 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
     }
 
     public componentDidMount() {
-        if (this.props.forceUpdate === false) {
-            return;
+        // `forceUpdate` - The docs app suffers from a Flash of Unstyled Content
+        // that causes components to mis-measure themselves on first render.
+        // Delay initial render till the DOM loads with a requestAnimationFrame.
+        const { forceUpdate = true } = this.props;
+        if (forceUpdate) {
+            requestAnimationFrame(() => {
+                this.hasDelayedBeforeInitialRender = true;
+                this.forceUpdate();
+            });
         }
-        // HACKHACK: The docs app suffers from a Flash of Unstyled Content that
-        // causes some 'width: 100%' examples to mis-measure the horizontal
-        // space available to them. Until that bug is squashed, we must delay
-        // initial render till the DOM loads with a requestAnimationFrame.
-        requestAnimationFrame(() => {
-            this.hasDelayedBeforeInitialRender = true;
-            this.forceUpdate();
-        });
     }
 }
