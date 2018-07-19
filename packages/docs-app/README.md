@@ -9,4 +9,4 @@ From the root of the repo:
 
 1. Run `yarn`
 1. Run `yarn dev`
-1. Open your browser to http://localhost:9000/packages/site-docs/dist
+1. Open your browser to http://localhost:9000/
