@@ -62,6 +62,20 @@ describe("<RadioGroup>", () => {
         assert.isTrue(findInput(group, { value: "c" }).prop("disabled"), "radio c not disabled");
     });
 
+    it("options label defaults to value", () => {
+        const OPTIONS = [{ value: "text" }, { value: 23 }];
+        const group = mount(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="b" />);
+        OPTIONS.forEach(props => {
+            assert.strictEqual(
+                findInput(group, props)
+                    .parents()
+                    .first()
+                    .text(),
+                props.value.toString(),
+            );
+        });
+    });
+
     it("uses options if given both options and children (with conosle warning)", () => {
         const warnSpy = stub(console, "warn");
         const group = mount(
