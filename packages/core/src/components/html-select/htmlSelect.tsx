@@ -7,16 +7,9 @@
 import classNames from "classnames";
 import * as React from "react";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
+import { IOptionProps } from "../../common/props";
 import { IElementRefProps } from "../html/html";
 import { Icon } from "../icon/icon";
-
-export interface IHTMLOptionProps {
-    /** Optional label for this option. Defaults to `value`. */
-    label?: string;
-
-    /** Value of this option. Should be locally unique. */
-    value: string | number;
-}
 
 export interface IHTMLSelectProps
     extends IElementRefProps<HTMLSelectElement>,
@@ -44,7 +37,7 @@ export interface IHTMLSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | IHTMLOptionProps>;
+    options?: Array<string | number | IOptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;
@@ -67,7 +60,7 @@ export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
         );
 
         const optionChildren = options.map(option => {
-            const { value, label }: IHTMLOptionProps = typeof option === "object" ? option : { value: option };
+            const { value, label }: IOptionProps = typeof option === "object" ? option : { value: option };
             return <option key={value} value={value} children={label || value} />;
         });
 
