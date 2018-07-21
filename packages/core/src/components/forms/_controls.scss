@@ -134,6 +134,15 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     .#{$ns}-control-indicator {
       border-radius: $pt-border-radius;
       font-size: $control-indicator-size;
+
+      // pseudo-element will contain SVG image for pseudo-state.
+      // size it to scale with container so only one image is needed.
+      &::before {
+        display: block;
+        width: 100%;
+        height: 100%;
+        content: "";
+      }
     }
 
     input:indeterminate,
@@ -143,13 +152,13 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       @extend input:checked;
     }
 
-    // CSS API support
-    input:checked ~ .#{$ns}-control-indicator:empty::before {
-      content: $pt-icon-small-tick;
+    // embed SVG images for pseudo-states
+    input:checked ~ .#{$ns}-control-indicator::before {
+      background: svg("16px/small-tick.svg", (path: (fill: $white)));
     }
 
-    input:indeterminate ~ .#{$ns}-control-indicator:empty::before {
-      content: $pt-icon-small-minus;
+    input:indeterminate ~ .#{$ns}-control-indicator::before {
+      background: svg("16px/small-minus.svg", (path: (fill: $white)));
     }
   }
 
