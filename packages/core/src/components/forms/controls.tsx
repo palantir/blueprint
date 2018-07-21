@@ -159,9 +159,8 @@ export interface ICheckboxProps extends IControlProps {
     indeterminate?: boolean;
 }
 
-// checkbox stores state so it can render an icon in the indicator
 export interface ICheckboxState {
-    checked: boolean;
+    // Checkbox adds support for uncontrolled indeterminate state
     indeterminate: boolean;
 }
 
@@ -169,7 +168,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     public static displayName = "Blueprint2.Checkbox";
 
     public state: ICheckboxState = {
-        checked: this.props.checked || this.props.defaultChecked || false,
         indeterminate: this.props.indeterminate || this.props.defaultIndeterminate || false,
     };
 
@@ -189,8 +187,11 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
         );
     }
 
-    public componentWillReceiveProps({ checked, indeterminate }: ICheckboxProps) {
-        this.setState({ checked, indeterminate });
+    public componentWillReceiveProps({ indeterminate }: ICheckboxProps) {
+        // put props into state if controlled by props
+        if (indeterminate != null) {
+            this.setState({ indeterminate });
+        }
     }
 
     public componentDidMount() {
@@ -208,8 +209,12 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     }
 
     private handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        const { checked, indeterminate } = evt.target;
-        this.setState({ checked, indeterminate });
+        const { indeterminate } = evt.target;
+        // update state immediately only if uncontrolled
+        if (this.props.indeterminate == null) {
+            this.setState({ indeterminate });
+        }
+        // otherwise wait for props change. always invoke handler.
         safeInvoke(this.props.onChange, evt);
     };
 
