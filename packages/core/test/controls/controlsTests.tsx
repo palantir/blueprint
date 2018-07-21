@@ -8,7 +8,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, Icon } from "../../src";
+import { Classes } from "../../src";
 import { Checkbox, IControlProps, Radio, Switch } from "../../src/components/forms/controls";
 
 type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
@@ -27,28 +27,6 @@ describe("Controls:", () => {
             it("default prop sets element state", () => {
                 mount(<Checkbox defaultIndeterminate={true} inputRef={handleInputRef} />);
                 assert.isTrue(input.indeterminate);
-            });
-        });
-
-        describe("indicator icon", () => {
-            it("default renders nothing", () => {
-                const icon = mount(<Checkbox />).find(Icon);
-                assert.isFalse(icon.exists());
-            });
-
-            it("checked renders tick", () => {
-                const icon = mount(<Checkbox checked={true} />).find(Icon);
-                assert.equal(icon.prop("icon"), "small-tick");
-            });
-
-            it("indeterminate renders minus", () => {
-                const icon = mount(<Checkbox indeterminate={true} />).find(Icon);
-                assert.equal(icon.prop("icon"), "small-minus");
-            });
-
-            it("checked overrides indeterminate", () => {
-                const icon = mount(<Checkbox checked={true} indeterminate={true} />).find(Icon);
-                assert.equal(icon.prop("icon"), "small-minus");
             });
         });
     });

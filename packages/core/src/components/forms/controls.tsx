@@ -15,7 +15,6 @@ import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { HTMLInputProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
-import { Icon } from "../icon/icon";
 
 export interface IControlProps extends IProps, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
@@ -69,7 +68,6 @@ export interface IControlProps extends IProps, HTMLInputProps {
 
 /** Internal props for Checkbox/Radio/Switch to render correctly. */
 interface IControlInternalProps extends IControlProps {
-    indicator?: JSX.Element;
     type: "checkbox" | "radio";
     typeClassName: string;
 }
@@ -82,7 +80,6 @@ const Control: React.SFC<IControlInternalProps> = ({
     alignIndicator,
     children,
     className,
-    indicator,
     inline,
     inputRef,
     label,
@@ -107,7 +104,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     return (
         <label className={classes} style={style}>
             <input {...htmlProps} ref={inputRef} type={type} />
-            <span className={Classes.CONTROL_INDICATOR}>{indicator}</span>
+            <span className={Classes.CONTROL_INDICATOR} />
             {label}
             {labelElement}
             {children}
@@ -184,7 +181,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
         return (
             <Control
                 {...controlProps}
-                indicator={this.renderIndicator()}
                 inputRef={this.handleInputRef}
                 onChange={this.handleChange}
                 type="checkbox"
@@ -203,15 +199,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
 
     public componentDidUpdate() {
         this.updateIndeterminate();
-    }
-
-    private renderIndicator() {
-        if (this.state.indeterminate) {
-            return <Icon icon="small-minus" />;
-        } else if (this.state.checked) {
-            return <Icon icon="small-tick" />;
-        }
-        return null;
     }
 
     private updateIndeterminate() {
