@@ -15,7 +15,6 @@ import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import { HTMLInputProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
-import { Icon } from "../icon/icon";
 
 export interface IControlProps extends IProps, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
@@ -81,7 +80,6 @@ export interface IControlProps extends IProps, HTMLInputProps {
 
 /** Internal props for Checkbox/Radio/Switch to render correctly. */
 interface IControlInternalProps extends IControlProps {
-    indicator?: JSX.Element;
     type: "checkbox" | "radio";
     typeClassName: string;
 }
@@ -94,7 +92,6 @@ const Control: React.SFC<IControlInternalProps> = ({
     alignIndicator,
     children,
     className,
-    indicator,
     inline,
     inputRef,
     label,
@@ -120,7 +117,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     return (
         <TagName className={classes} style={style}>
             <input {...htmlProps} ref={inputRef} type={type} />
-            <span className={Classes.CONTROL_INDICATOR}>{indicator}</span>
+            <span className={Classes.CONTROL_INDICATOR} />
             {label}
             {labelElement}
             {children}
@@ -175,9 +172,8 @@ export interface ICheckboxProps extends IControlProps {
     indeterminate?: boolean;
 }
 
-// checkbox stores state so it can render an icon in the indicator
 export interface ICheckboxState {
-    checked: boolean;
+    // Checkbox adds support for uncontrolled indeterminate state
     indeterminate: boolean;
 }
 
@@ -185,7 +181,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     public static displayName = "Blueprint2.Checkbox";
 
     public state: ICheckboxState = {
-        checked: this.props.checked || this.props.defaultChecked || false,
         indeterminate: this.props.indeterminate || this.props.defaultIndeterminate || false,
     };
 
@@ -197,7 +192,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
         return (
             <Control
                 {...controlProps}
-                indicator={this.renderIndicator()}
                 inputRef={this.handleInputRef}
                 onChange={this.handleChange}
                 type="checkbox"
@@ -206,8 +200,11 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
         );
     }
 
-    public componentWillReceiveProps({ checked, indeterminate }: ICheckboxProps) {
-        this.setState({ checked, indeterminate });
+    public componentWillReceiveProps({ indeterminate }: ICheckboxProps) {
+        // put props into state if controlled by props
+        if (indeterminate != null) {
+            this.setState({ indeterminate });
+        }
     }
 
     public componentDidMount() {
@@ -218,15 +215,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
         this.updateIndeterminate();
     }
 
-    private renderIndicator() {
-        if (this.state.indeterminate) {
-            return <Icon icon="small-minus" />;
-        } else if (this.state.checked) {
-            return <Icon icon="small-tick" />;
-        }
-        return null;
-    }
-
     private updateIndeterminate() {
         if (this.state.indeterminate != null) {
             this.input.indeterminate = this.state.indeterminate;
@@ -234,8 +222,12 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     }
 
     private handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        const { checked, indeterminate } = evt.target;
-        this.setState({ checked, indeterminate });
+        const { indeterminate } = evt.target;
+        // update state immediately only if uncontrolled
+        if (this.props.indeterminate == null) {
+            this.setState({ indeterminate });
+        }
+        // otherwise wait for props change. always invoke handler.
         safeInvoke(this.props.onChange, evt);
     };
 
