@@ -131,8 +131,8 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   &.#{$ns}-checkbox {
     @mixin indicator-icon($icon) {
       &::before {
-      // embed SVG icon image as backgroud-image above gradient.
-      // the SVG image content is inlined into the CSS, so use this sparingly.
+        // embed SVG icon image as backgroud-image above gradient.
+        // the SVG image content is inlined into the CSS, so use this sparingly.
         background-image: svg("16px/#{$icon}.svg", (path: (fill: $white)));
       }
     }
