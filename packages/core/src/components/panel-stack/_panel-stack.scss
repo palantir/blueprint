@@ -20,39 +20,24 @@
     box-shadow: 0 1px $pt-dark-divider-white;
   }
 
-  .#{$ns}-panel-stack-header-back {
+  // two span children act as spacers to keep the title centered.
+  > span {
     display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: $pt-text-color-muted;
-
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-muted;
-    }
-
-    &:hover {
-      color: $pt-text-color;
-
-      .#{$ns}-dark & {
-        color: $pt-dark-text-color;
-      }
-    }
-  }
-
-  .#{$ns}-panel-stack-header-spacer {
-    display: flex;
-    flex: 1;
+    flex-grow: 1;
     align-items: stretch;
   }
 
-  .#{$ns}-panel-stack-header-title {
-    margin: 0 $pt-grid-size;
-    color: $pt-text-color;
-    font-weight: 600;
+  .#{$ns}-heading {
+    margin: 0;
+  }
+}
 
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color;
-    }
+.#{$ns}-button.#{$ns}-panel-stack-header-back {
+  margin-left: $pt-grid-size / 2;
+  padding-left: 0;
+
+  .#{$ns}-icon {
+    margin: 0 2px;
   }
 }
 
