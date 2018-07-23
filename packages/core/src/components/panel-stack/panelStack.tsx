@@ -66,7 +66,11 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
     };
 
     public render() {
-        const className = classNames(Classes.PANELSTACK, this.props.className);
+        const className = classNames(
+            Classes.PANELSTACK,
+            `${Classes.PANELSTACK}-${this.state.direction}`,
+            this.props.className,
+        );
         return (
             <TransitionGroup className={className} component="div">
                 {this.renderCurrentPanel()}
@@ -78,11 +82,7 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
         const { stack } = this.state;
         const [activePanel, previousPanel] = stack;
         return (
-            <CSSTransition
-                classNames={`${Classes.PANELSTACK_TRANSITION}-${this.state.direction}`}
-                key={activePanel.title + "_" + stack.length}
-                timeout={100}
-            >
+            <CSSTransition classNames={Classes.PANELSTACK} key={stack.length} timeout={500}>
                 <PanelView
                     key={stack.length}
                     previousPanel={previousPanel}

@@ -6,76 +6,6 @@
 .#{$ns}-panel-stack {
   position: relative;
   overflow: hidden;
-
-  // .#{$ns}-panel-stack-transition-push {
-  //   @include react-transition-phase(
-  //     "#{$ns}-panel-stack-transition-push",
-  //     "enter",
-  //     (transform: translateX(100%) translate(0%)),
-  //     $easing: $pt-transition-ease-bounce,
-  //     $before: "&"
-  //   );
-  //   @include react-transition-phase(
-  //     "#{$ns}-panel-stack-transition-push",
-  //     "exit",
-  //     (transform: translateX(0%) translate(-100%)),
-  //     $easing: $pt-transition-ease-bounce,
-  //     $before: "&"
-  //   );
-  // }
-
-  // .#{$ns}-panel-stack-transition-pop {
-  //   @include react-transition-phase(
-  //     "#{$ns}-panel-stack-transition-pop",
-  //     "enter",
-  //     (transform: translateX(-100%) translate(0%)),
-  //     $easing: $pt-transition-ease-bounce,
-  //     $before: "&"
-  //   );
-  //   @include react-transition-phase(
-  //     "#{$ns}-panel-stack-transition-pop",
-  //     "exit",
-  //     (transform: translateX(0%) translate(100%)),
-  //     $easing: $pt-transition-ease-bounce,
-  //     $before: "&"
-  //   );
-  // }
-
-  .#{$ns}-panel-stack-transition-push-enter {
-    transform: translateX(100%);
-  }
-
-  .#{$ns}-panel-stack-transition-push-enter-active {
-    transform: translateX(0%);
-    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
-  }
-
-  .#{$ns}-panel-stack-transition-push-exit {
-    transform: translateX(0%);
-  }
-
-  .#{$ns}-panel-stack-transition-push-exit-active {
-    transform: translateX(-100%);
-    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
-  }
-
-  .#{$ns}-panel-stack-transition-pop-enter {
-    transform: translateX(-100%);
-  }
-
-  .#{$ns}-panel-stack-transition-pop-enter-active {
-    transform: translateX(0%);
-    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
-  }
-
-  .#{$ns}-panel-stack-transition-pop-exit {
-    transform: translateX(0%);
-  }
-
-  .#{$ns}-panel-stack-transition-pop-exit-active {
-    transform: translateX(100%);
-    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
-  }
 }
 
 .#{$ns}-panel-stack-header {
@@ -136,4 +66,40 @@
   .#{$ns}-dark & {
     background-color: $dark-gray4;
   }
+}
+
+// PUSH transition: enter from right (100%), existing panel moves off left.
+.#{$ns}-panel-stack-push {
+  @include react-transition-phase(
+    "#{$ns}-panel-stack",
+    "enter",
+    (transform: translateX(100%) translate(0%)),
+    $easing: $pt-transition-ease,
+    $duration: $pt-transition-duration * 5
+  );
+  @include react-transition-phase(
+    "#{$ns}-panel-stack",
+    "exit",
+    (transform: translateX(-100%) translate(0%), opacity: (0 1)),
+    $easing: $pt-transition-ease,
+    $duration: $pt-transition-duration * 5
+  );
+}
+
+// POP transition: enter from left (-100%), existing panel moves off right.
+.#{$ns}-panel-stack-pop {
+  @include react-transition-phase(
+    "#{$ns}-panel-stack",
+    "enter",
+    (transform: translateX(-100%) translate(0%)),
+    $easing: $pt-transition-ease,
+    $duration: $pt-transition-duration * 5
+  );
+  @include react-transition-phase(
+    "#{$ns}-panel-stack",
+    "exit",
+    (transform: translateX(100%) translate(0%), opacity: (0 1)),
+    $easing: $pt-transition-ease,
+    $duration: $pt-transition-duration * 5
+  );
 }
