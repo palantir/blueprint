@@ -88,14 +88,19 @@ export interface IDocsExampleProps extends IExampleProps {
  * ```
  */
 export class Example extends React.PureComponent<IDocsExampleProps> {
-    private hasDelayedBeforeInitialRender = false;
+    public static defaultProps: Partial<IDocsExampleProps> = {
+        forceUpdate: true,
+        showOptionsBelowExample: false,
+    };
+
+    private hasDelayedInitialRender = false;
 
     public render() {
         const {
             children,
             className,
             data,
-            forceUpdate = true,
+            forceUpdate,
             html,
             id,
             options,
@@ -106,9 +111,8 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
         } = this.props;
 
         // `forceUpdate` -  Don't let any React nodes into the DOM until the
-        // `requestAnimationFrame` delay has elapsed. This prevents
-        // `shouldComponentUpdate` snafus at lower levels.
-        if (forceUpdate && !this.hasDelayedBeforeInitialRender) {
+        // `requestAnimationFrame` delay has elapsed.
+        if (forceUpdate && !this.hasDelayedInitialRender) {
             return null;
         }
 
@@ -136,10 +140,9 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
         // `forceUpdate` - The docs app suffers from a Flash of Unstyled Content
         // that causes components to mis-measure themselves on first render.
         // Delay initial render till the DOM loads with a requestAnimationFrame.
-        const { forceUpdate = true } = this.props;
-        if (forceUpdate) {
+        if (this.props.forceUpdate) {
             requestAnimationFrame(() => {
-                this.hasDelayedBeforeInitialRender = true;
+                this.hasDelayedInitialRender = true;
                 this.forceUpdate();
             });
         }
