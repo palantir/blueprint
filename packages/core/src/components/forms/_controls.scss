@@ -129,9 +129,14 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   */
 
   &.#{$ns}-checkbox {
+    @mixin indicator-icon($icon) {
+      // embed SVG icon image as backgroud-image above gradient.
+      // the SVG image content is inlined into the CSS, so use this sparingly.
+      background-image: $button-intent-gradient, svg("16px/#{$icon}.svg", (path: (fill: $white)));
+    }
+
     .#{$ns}-control-indicator {
       border-radius: $pt-border-radius;
-      font-size: $control-indicator-size;
     }
 
     input:indeterminate,
@@ -141,13 +146,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       @extend input:checked;
     }
 
-    // embed SVG images as backgroud-image above gradient
     input:checked ~ .#{$ns}-control-indicator {
-      background-image: $button-intent-gradient, svg("16px/small-tick.svg", (path: (fill: $white)));
+      @include indicator-icon("small-tick");
     }
 
     input:indeterminate ~ .#{$ns}-control-indicator {
-      background-image: $button-intent-gradient, svg("16px/small-minus.svg", (path: (fill: $white)));
+      @include indicator-icon("small-minus");
     }
   }
 
