@@ -84,6 +84,14 @@ $control-indicator-spacing: $pt-grid-size !default;
     margin-right: $pt-grid-size * 2;
   }
 
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -1; // don't let it intercept clicks
+  }
+
   .#{$ns}-control-indicator {
     display: inline-block;
     position: relative;
@@ -105,14 +113,6 @@ $control-indicator-spacing: $pt-grid-size !default;
     background-color: $control-background-color-hover;
   }
 
-  input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    z-index: -1; // don't let it intercept clicks
-  }
-
   input:not(:disabled):active ~ .#{$ns}-control-indicator {
     box-shadow: $button-box-shadow-active;
     background: $control-background-color-active;
@@ -126,6 +126,14 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   input:focus ~ .#{$ns}-control-indicator {
     @include focus-outline();
+  }
+
+  // right-aligned indicator is glued to the right side of the container
+  &.#{$ns}-align-right .#{$ns}-control-indicator {
+    float: right;
+    margin-top: 1px;
+    margin-right: 0;
+    margin-left: $control-indicator-spacing;
   }
 
   /*
@@ -356,14 +364,6 @@ $control-indicator-spacing: $pt-grid-size !default;
         background-color: $switch-checked-background-color-disabled;
       }
     }
-  }
-
-  // right-aligned indicator is glued to the right side of the container
-  &.#{$ns}-align-right .#{$ns}-control-indicator {
-    float: right;
-    margin-top: 1px;
-    margin-right: 0;
-    margin-left: $control-indicator-spacing;
   }
 
   &.#{$ns}-large {
