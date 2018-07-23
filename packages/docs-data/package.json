@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs-data",
-  "version": "3.0.0-rc.0",
+  "version": "3.0.0",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "private": true,
@@ -10,8 +10,8 @@
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.0.0-rc.0",
-    "@blueprintjs/docs-theme": "^3.0.0-rc.0",
+    "@blueprintjs/core": "^3.0.0",
+    "@blueprintjs/docs-theme": "^3.0.0",
     "documentalist": "^1.4.0",
     "glob": "^7.1.2",
     "highlights": "^3.1.1",
@@ -23,5 +23,5 @@
     "url": "git@github.com:palantir/blueprint.git"
   },
   "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+  "license": "SEE LICENSE IN REPO ROOT"
 }

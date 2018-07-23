@@ -1,7 +1,7 @@
 @# Date range input
 
-The `DateRangeInput` component is a [control group](#core/components/forms/control-group) composed of two
-[input groups](#core/components/forms/input-group). It shows a
+The `DateRangeInput` component is a [control group](#core/components/control-group) composed of two
+[input groups](#core/components/text-inputs.input-group). It shows a
 [`DateRangePicker`](#datetime/daterangepicker) in a [`Popover`](#core/components/popover) on focus.
 
 Use this component in forms where the user must enter a date range.

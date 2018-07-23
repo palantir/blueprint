@@ -8,7 +8,7 @@ import * as Lint from "tslint";
 import * as ts from "typescript";
 
 // detect "pt-" *prefix*: not preceded by letter or dash
-const PATTERN = /[^\w-]pt-[\w-]+/;
+const PATTERN = /[^\w-<]pt-[\w-]+/;
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -31,7 +31,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 function walk(ctx: Lint.WalkContext<void>): void {
     return ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
-        if (ts.isStringLiteral(node)) {
+        if (ts.isStringLiteralLike(node) || ts.isTemplateExpression(node)) {
             const match = PATTERN.exec(node.getFullText());
             if (match != null) {
                 // ignore first character of match: negated character class

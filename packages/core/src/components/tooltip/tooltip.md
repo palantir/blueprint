@@ -40,7 +40,7 @@ The content will appear in a contrasting popover when the target is hovered.
     Buttons make great tooltip targets, but the `disabled` attribute will prevent all
     events so the enclosing `Tooltip` will not know when to respond.
     Use [`AnchorButton`](#core/components/button.anchor-button) instead;
-    see the [callout here](#core/components/button.javascript-api) for more details.
+    see the [callout here](#core/components/button.props) for more details.
 </div>
 
 @interface ITooltipProps

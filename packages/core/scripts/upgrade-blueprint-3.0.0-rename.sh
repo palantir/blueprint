@@ -199,7 +199,6 @@ renameString "Classes\.SVG_SPINNER,?" ''
 warn SVGSpinner 'DELETED. Spinner now supports usage in an SVG.'
 warn SVGPopover 'DELETED. Set *TagName props to SVG elements.'
 warn SVGTooltip 'DELETED. Set *TagName props to SVG elements.'
-warn Spinner '`small/large` replaced with single `size` prop'
 warn "\\bTable\\b" '@blueprintjs/core Table component renamed to HTMLTable (@blueprintjs/table package unchanged).'
 
 # String enums

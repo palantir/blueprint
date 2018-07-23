@@ -79,7 +79,6 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleItemSelect}
                     onClose={this.handleClose}
-                    inputProps={{ onBlur: this.handleBlur }}
                 />
                 <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
             </Example>
@@ -103,8 +102,6 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
     };
 
     private handleClose = () => this.setState({ isOpen: false });
-
-    private handleBlur = () => this.setState({ isOpen: false });
 
     private handleToggle = () => this.setState({ isOpen: !this.state.isOpen });
 }

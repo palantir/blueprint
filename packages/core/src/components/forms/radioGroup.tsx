@@ -42,9 +42,9 @@ export interface IRadioGroupProps extends IProps {
     onChange: (event: React.FormEvent<HTMLInputElement>) => void;
 
     /**
-     * Array of options to render in the group.
-     * This prop is mutually exclusive with `children`: either provide an array of `IOptionProps`
-     * objects or provide `<Radio>` children elements.
+     * Array of options to render in the group. This prop is mutually exclusive
+     * with `children`: either provide an array of `IOptionProps` objects or
+     * provide `<Radio>` children elements.
      */
     options?: IOptionProps[];
 
@@ -91,19 +91,20 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
 
     private renderOptions() {
         return this.props.options.map(option => (
-            <Radio {...option} {...this.getRadioProps(option)} key={option.value} />
+            <Radio {...this.getRadioProps(option)} key={option.value} labelElement={option.label || option.value} />
         ));
     }
 
     private getRadioProps(optionProps: IOptionProps): IRadioProps {
         const { name } = this.props;
-        const { value, disabled } = optionProps;
+        const { disabled, value } = optionProps;
         return {
             checked: value === this.props.selectedValue,
             disabled: disabled || this.props.disabled,
             inline: this.props.inline,
             name: name == null ? this.autoGroupName : name,
             onChange: this.props.onChange,
+            value,
         };
     }
 }
