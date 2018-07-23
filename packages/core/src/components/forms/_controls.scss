@@ -20,7 +20,54 @@ $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
 $control-indicator-spacing: $pt-grid-size !default;
 
+@mixin checked-control($selector: ":checked") {
+  input#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: $button-intent-box-shadow;
+    background-color: $control-checked-background-color;
+    background-image: $button-intent-gradient;
+    color: $white;
+  }
+
+  &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: $button-intent-box-shadow;
+    background-color: $control-checked-background-color-hover;
+  }
+
+  input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: $button-intent-box-shadow-active;
+    background: $control-checked-background-color-active;
+  }
+
+  input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: none;
+    background: rgba($control-checked-background-color, 0.5);
+  }
+
+  .#{$ns}-dark & {
+    input#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-intent-box-shadow;
+    }
+
+    &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-intent-box-shadow;
+      background-color: $control-checked-background-color-hover;
+    }
+
+    input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-intent-box-shadow-active;
+      background-color: $control-checked-background-color-active;
+    }
+
+    input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: none;
+      background: rgba($control-checked-background-color-active, 0.5);
+    }
+  }
+}
+
 .#{$ns}-control {
+  @include checked-control();
+
   display: block;
   position: relative;
   margin-bottom: $pt-grid-size;
@@ -35,14 +82,6 @@ $control-indicator-spacing: $pt-grid-size !default;
   &.#{$ns}-inline {
     display: inline-block;
     margin-right: $pt-grid-size * 2;
-  }
-
-  input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    z-index: -1; // don't let it intercept clicks
   }
 
   .#{$ns}-control-indicator {
@@ -62,51 +101,31 @@ $control-indicator-spacing: $pt-grid-size !default;
     user-select: none;
   }
 
-  input:checked ~ .#{$ns}-control-indicator {
-    box-shadow: $button-intent-box-shadow;
-    background-color: $control-checked-background-color;
-    background-image: $button-intent-gradient;
-    color: $white;
+  &:hover .#{$ns}-control-indicator {
+    background-color: $control-background-color-hover;
   }
 
-  &:hover {
-    .#{$ns}-control-indicator {
-      background-color: $control-background-color-hover;
-    }
-
-    input:checked ~ .#{$ns}-control-indicator {
-      box-shadow: $button-intent-box-shadow;
-      background-color: $control-checked-background-color-hover;
-    }
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -1; // don't let it intercept clicks
   }
 
-  input:not(:disabled):active {
-    ~ .#{$ns}-control-indicator {
-      box-shadow: $button-box-shadow-active;
-      background: $control-background-color-active;
-    }
+  input:not(:disabled):active ~ .#{$ns}-control-indicator {
+    box-shadow: $button-box-shadow-active;
+    background: $control-background-color-active;
+  }
 
-    &:checked ~ .#{$ns}-control-indicator {
-      box-shadow: $button-intent-box-shadow-active;
-      background: $control-checked-background-color-active;
-    }
+  input:disabled ~ .#{$ns}-control-indicator {
+    box-shadow: none;
+    background: $button-background-color-disabled;
+    cursor: not-allowed;
   }
 
   input:focus ~ .#{$ns}-control-indicator {
     @include focus-outline();
-  }
-
-  input:disabled {
-    ~ .#{$ns}-control-indicator {
-      box-shadow: none;
-      background: $button-background-color-disabled;
-      cursor: not-allowed;
-    }
-
-    &:checked ~ .#{$ns}-control-indicator {
-      box-shadow: none;
-      background: rgba($control-checked-background-color, 0.5);
-    }
   }
 
   /*
@@ -130,16 +149,12 @@ $control-indicator-spacing: $pt-grid-size !default;
   */
 
   &.#{$ns}-checkbox {
+    // make :indeterminate look like :checked _for Checkbox only_
+    @include checked-control(":indeterminate");
+
     .#{$ns}-control-indicator {
       border-radius: $pt-border-radius;
       font-size: $control-indicator-size;
-    }
-
-    input:indeterminate,
-    &:hover input:indeterminate {
-      // :indeterminate should behave like :checked with different icon
-      // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
-      @extend input:checked;
     }
 
     // CSS API support
@@ -389,52 +404,27 @@ $control-indicator-spacing: $pt-grid-size !default;
       background-image: $dark-button-gradient;
     }
 
-    input:checked ~ .#{$ns}-control-indicator {
-      box-shadow: $dark-button-intent-box-shadow;
+    &:hover .#{$ns}-control-indicator {
+      background-color: $dark-control-background-color-hover;
     }
 
-    &:hover {
-      .#{$ns}-control-indicator {
-        background-color: $dark-control-background-color-hover;
-      }
+    input:not(:disabled):active ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-box-shadow-active;
+      background: $dark-control-background-color-active;
     }
 
-    input:not(:disabled):active {
-      ~ .#{$ns}-control-indicator {
-        box-shadow: $dark-button-box-shadow-active;
-        background: $dark-control-background-color-active;
-      }
-
-      &:checked ~ .#{$ns}-control-indicator {
-        box-shadow: $dark-button-intent-box-shadow-active;
-        background-color: $control-checked-background-color-active;
-      }
+    input:disabled ~ .#{$ns}-control-indicator {
+      box-shadow: none;
+      background: $dark-button-background-color-disabled;
+      cursor: not-allowed;
     }
 
-    input:disabled {
-      ~ .#{$ns}-control-indicator {
-        box-shadow: none;
-        background: $dark-button-background-color-disabled;
-        cursor: not-allowed;
-      }
-
-      &:checked ~ .#{$ns}-control-indicator {
-        box-shadow: none;
-        background: rgba($control-checked-background-color-active, 0.5);
-      }
-    }
-
-    &.#{$ns}-checkbox {
-      input:checked {
-        &:disabled ~ .#{$ns}-control-indicator::before {
+    &.#{$ns}-checkbox input:disabled {
+      &:checked,
+      &:indeterminate {
+        ~ .#{$ns}-control-indicator {
           color: $dark-button-color-disabled;
         }
-      }
-    }
-
-    &.#{$ns}-radio {
-      input:checked:disabled ~ .#{$ns}-control-indicator::before {
-        background: $dark-button-color-disabled;
       }
     }
 
