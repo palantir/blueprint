@@ -66,13 +66,13 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
     };
 
     public render() {
-        const className = classNames(
+        const classes = classNames(
             Classes.PANELSTACK,
             `${Classes.PANELSTACK}-${this.state.direction}`,
             this.props.className,
         );
         return (
-            <TransitionGroup className={className} component="div">
+            <TransitionGroup className={classes} component="div">
                 {this.renderCurrentPanel()}
             </TransitionGroup>
         );

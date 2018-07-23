@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, Tag, UL } from "@blueprintjs/core";
+import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, UL } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
@@ -74,8 +74,7 @@ class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps>
     }
 
     private openNewPanel = () => {
-        let newPanelNumber = this.props.panelNumber;
-        ++newPanelNumber;
+        const newPanelNumber = this.props.panelNumber + 1;
         this.props.openPanel(PanelExample, { panelNumber: newPanelNumber }, { title: "Panel " + newPanelNumber });
     };
 }
