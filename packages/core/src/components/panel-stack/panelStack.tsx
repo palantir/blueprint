@@ -6,6 +6,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
+import * as Utils from "../../common/utils";
 import { PanelView } from "./panelView";
 
 /** Add this interface to your panel components props type. */
@@ -59,13 +60,10 @@ export interface IPanelStackState {
 }
 
 export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStackState> {
-    public constructor(props: IPanelStackProps, context?: any) {
-        super(props, context);
-        this.state = {
-            direction: "push",
-            stack: [props.initialPanel],
-        };
-    }
+    public state: IPanelStackState = {
+        direction: "push",
+        stack: [this.props.initialPanel],
+    };
 
     public render() {
         const className = classNames(Classes.PANELSTACK, this.props.className);
@@ -82,11 +80,8 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
         return (
             <CSSTransition
                 classNames={`${Classes.PANELSTACK_TRANSITION}-${this.state.direction}`}
-                key={stack.length}
-                timeout={{
-                    enter: 400,
-                    exit: 400,
-                }}
+                key={activePanel.title + "_" + stack.length}
+                timeout={100}
             >
                 <PanelView
                     key={stack.length}
@@ -108,19 +103,14 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
     }
 
     private closePanel = (stackSize: number) => {
+        if (this.state.stack.length !== stackSize || this.state.stack.length <= 1) {
+            return;
+        }
         this.setState(state => {
-            const allowed =
-                // Make sure this function only works for the panel it was issued to,
-                // otherwise rapidly clicking the back link will close multiple panels.
-                state.stack.length === stackSize &&
-                // Prevent the last panel from being closed.
-                state.stack.length > 1;
-            if (allowed && this.props.onClose !== undefined) {
-                this.props.onClose(state.stack[0]);
-            }
+            Utils.safeInvoke(this.props.onClose, state.stack[0]);
             return {
-                direction: allowed ? "pop" : state.direction,
-                stack: allowed ? state.stack.slice(1) : state.stack,
+                direction: "pop",
+                stack: state.stack.slice(1),
             };
         });
     };

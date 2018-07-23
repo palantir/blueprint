@@ -7,34 +7,74 @@
   position: relative;
   overflow: hidden;
 
-  .#{$ns}-panel-stack-transition-push {
-    @include react-transition-phase(
-      "#{$ns}-panel-stack-transition-push",
-      "enter",
-      (transform: translateX(100%) translate(0%)),
-      $before: "&"
-    );
-    @include react-transition-phase(
-      "#{$ns}-panel-stack-transition-push",
-      "exit",
-      (transform: translateX(0%) translate(-100%)),
-      $before: "&"
-    );
+  // .#{$ns}-panel-stack-transition-push {
+  //   @include react-transition-phase(
+  //     "#{$ns}-panel-stack-transition-push",
+  //     "enter",
+  //     (transform: translateX(100%) translate(0%)),
+  //     $easing: $pt-transition-ease-bounce,
+  //     $before: "&"
+  //   );
+  //   @include react-transition-phase(
+  //     "#{$ns}-panel-stack-transition-push",
+  //     "exit",
+  //     (transform: translateX(0%) translate(-100%)),
+  //     $easing: $pt-transition-ease-bounce,
+  //     $before: "&"
+  //   );
+  // }
+
+  // .#{$ns}-panel-stack-transition-pop {
+  //   @include react-transition-phase(
+  //     "#{$ns}-panel-stack-transition-pop",
+  //     "enter",
+  //     (transform: translateX(-100%) translate(0%)),
+  //     $easing: $pt-transition-ease-bounce,
+  //     $before: "&"
+  //   );
+  //   @include react-transition-phase(
+  //     "#{$ns}-panel-stack-transition-pop",
+  //     "exit",
+  //     (transform: translateX(0%) translate(100%)),
+  //     $easing: $pt-transition-ease-bounce,
+  //     $before: "&"
+  //   );
+  // }
+
+  .#{$ns}-panel-stack-transition-push-enter {
+    transform: translateX(100%);
   }
 
-  .#{$ns}-panel-stack-transition-pop {
-    @include react-transition-phase(
-      "#{$ns}-panel-stack-transition-pop",
-      "enter",
-      (transform: translateX(-100%) translate(0%)),
-      $before: "&"
-    );
-    @include react-transition-phase(
-      "#{$ns}-panel-stack-transition-pop",
-      "exit",
-      (transform: translateX(0%) translate(100%)),
-      $before: "&"
-    );
+  .#{$ns}-panel-stack-transition-push-enter-active {
+    transform: translateX(0%);
+    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
+  }
+
+  .#{$ns}-panel-stack-transition-push-exit {
+    transform: translateX(0%);
+  }
+
+  .#{$ns}-panel-stack-transition-push-exit-active {
+    transform: translateX(-100%);
+    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
+  }
+
+  .#{$ns}-panel-stack-transition-pop-enter {
+    transform: translateX(-100%);
+  }
+
+  .#{$ns}-panel-stack-transition-pop-enter-active {
+    transform: translateX(0%);
+    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
+  }
+
+  .#{$ns}-panel-stack-transition-pop-exit {
+    transform: translateX(0%);
+  }
+
+  .#{$ns}-panel-stack-transition-pop-exit-active {
+    transform: translateX(100%);
+    transition: transform $pt-transition-duration $pt-transition-ease-bounce;
   }
 }
 

@@ -7,14 +7,16 @@ import { Text } from "../text/text";
 
 import * as Classes from "../../common/classes";
 
-export interface IBackButton {
-    title: string;
-    onClick(): void;
-}
-
 export interface IPanelHeaderProps {
-    back?: IBackButton;
-    title: string;
+    /**
+     * The name of the previous panel header in the stack. Will not render unless an onBackClick
+     * handler is defined.
+     */
+    backTitle?: string;
+    /**
+     * The handler when the back button is clicked.
+     */
+    onBackClick?(): void;
 }
 
 export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
@@ -23,7 +25,7 @@ export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
             <div className={Classes.PANELSTACK_HEADER}>
                 <div className={Classes.PANELSTACK_HEADER_SPACER}>{this.maybeRenderBack()}</div>
                 <Text className={Classes.PANELSTACK_HEADER_TITLE} ellipsize={true}>
-                    {this.props.title}
+                    {this.props.children}
                 </Text>
                 <div className={Classes.PANELSTACK_HEADER_SPACER} />
             </div>
@@ -31,14 +33,21 @@ export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
     }
 
     private maybeRenderBack() {
-        if (this.props.back === undefined) {
+        if (this.props.onBackClick === undefined) {
             return null;
         }
         return (
-            <div className={Classes.PANELSTACK_HEADER_BACK} onClick={this.props.back.onClick}>
+            <div className={Classes.PANELSTACK_HEADER_BACK} onClick={this.props.onBackClick}>
                 <Icon icon="chevron-left" />
-                {this.props.back.title}
+                {this.maybeRenderBackTitle()}
             </div>
         );
+    }
+
+    private maybeRenderBackTitle() {
+        if (this.props.backTitle === undefined) {
+            return null;
+        }
+        return this.props.backTitle;
     }
 }

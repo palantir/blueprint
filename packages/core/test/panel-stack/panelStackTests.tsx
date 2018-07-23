@@ -69,6 +69,17 @@ describe("<PanelStack>", () => {
         assert.equal(oldPanelHeader.at(1).text(), "Test Title");
     });
 
+    it("does not call the callback handler onClose when there is only a single panel on the stack", () => {
+        const onClose = spy();
+        panelStackWrapper = renderPanelStack({ initialPanel, onClose });
+
+        const closePanel = panelStackWrapper.find("#close-panel-button");
+        assert.exists(closePanel);
+
+        closePanel.simulate("click");
+        assert.equal(onClose.callCount, 0);
+    });
+
     it("calls the callback handlers onOpen and onClose", () => {
         const onOpen = spy();
         const onClose = spy();
@@ -87,15 +98,6 @@ describe("<PanelStack>", () => {
         assert.isTrue(onOpen.calledOnce);
     });
 
-    it("does not call the callback handler onClose when there is only a single panel on the stack", () => {
-        const onClose = spy();
-        panelStackWrapper = renderPanelStack({ initialPanel, onClose });
-        const closePanel = panelStackWrapper.find("#close-panel-button");
-        assert.exists(closePanel);
-        closePanel.simulate("click");
-        assert.equal(onClose.callCount, 0);
-    });
-
     it("does not have the back button when only a single panel is on the stack", () => {
         panelStackWrapper = renderPanelStack({ initialPanel });
         const backButton = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_BACK);
@@ -107,6 +109,36 @@ describe("<PanelStack>", () => {
         panelStackWrapper = renderPanelStack({ initialPanel, className: TEST_CLASS_NAME });
         const foundClasses = panelStackWrapper.findClass(TEST_CLASS_NAME);
         assert.equal(foundClasses.length, 2);
+    });
+
+    it("can render a panel without a title", () => {
+        const emptyTitleInitialPanel: IPanel = {
+            component: TestPanel,
+            props: {},
+            title: undefined,
+        };
+        panelStackWrapper = renderPanelStack({ initialPanel: emptyTitleInitialPanel });
+        assert.exists(panelStackWrapper);
+
+        const newPanelButton = panelStackWrapper.find("#new-panel-button");
+        assert.exists(newPanelButton);
+        newPanelButton.simulate("click");
+
+        const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_BACK);
+        assert.equal(backButtonWithoutTitle.text(), "chevron-left");
+
+        const newPanelButtonOnNotEmpty = panelStackWrapper
+            .find("#new-panel-button")
+            .hostNodes()
+            .at(1);
+        assert.exists(newPanelButtonOnNotEmpty);
+        newPanelButtonOnNotEmpty.simulate("click");
+
+        const backButtonWithTitle = panelStackWrapper
+            .findClass(Classes.PANELSTACK_HEADER_BACK)
+            .hostNodes()
+            .at(1);
+        assert.equal(backButtonWithTitle.text(), "chevron-left");
     });
 
     interface IPanelStackWrapper extends ReactWrapper<IPanelStackProps, any> {
