@@ -1,6 +1,5 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 
-import classNames from "classnames";
 import * as React from "react";
 
 import { PanelHeader } from "./panelHeader";
@@ -26,9 +25,8 @@ export interface IPanelViewProps {
 export class PanelView extends React.PureComponent<IPanelViewProps> {
     public render() {
         const { panel, panelProps } = this.props;
-        const className = classNames(Classes.PANELSTACK_VIEW);
         return (
-            <div className={className}>
+            <div className={Classes.PANEL_STACK_VIEW}>
                 {this.renderPanelHeader()}
                 <panel.component {...panelProps} {...panel.props} />
             </div>

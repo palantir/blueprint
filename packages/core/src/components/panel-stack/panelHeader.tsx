@@ -23,7 +23,7 @@ export interface IPanelHeaderProps {
 export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
     public render() {
         return (
-            <div className={Classes.PANELSTACK_HEADER}>
+            <div className={Classes.PANEL_STACK_HEADER}>
                 <span>{this.maybeRenderBack()}</span>
                 <Text className={Classes.HEADING} ellipsize={true}>
                     {this.props.children}
@@ -39,7 +39,7 @@ export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
         }
         return (
             <Button
-                className={Classes.PANELSTACK_HEADER_BACK}
+                className={Classes.PANEL_STACK_HEADER_BACK}
                 icon="chevron-left"
                 minimal={true}
                 small={true}
