@@ -270,19 +270,10 @@
 }
 
 #{example("PanelStackExample")} {
-  .docs-panel-stack-container {
-    display: flex;
-    position: relative;
-    height: 200px;
-  }
-
   .docs-panel-stack-example {
-    z-index: 10;
-    box-shadow: 1px 0 0 $pt-divider-black,
-                -1px 0 0 $pt-divider-black,
-                0 1px 0 $pt-divider-black,
-                0 -1px 0 $pt-divider-black;
+    box-shadow: $pt-elevation-shadow-0;
     width: 300px;
+    height: 240px;
   }
 
   .docs-panel-stack-contents-example {
@@ -293,25 +284,9 @@
     padding: 10px;
   }
 
-  .docs-panel-stack-tags-container {
-    display: flex;
-    flex: 1 0 auto;
-    flex-direction: column;
-    margin-left: 15px;
-
-    .docs-panel-stack-tags {
-      display: flex;
-      flex: 1 0 auto;
-      flex-direction: column;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      height: 160px;
-
-      .docs-panel-stack-single-tag {
-        margin: 5px;
-        width: 75px;
-      }
-    }
+  ul {
+    max-height: 240px;
+    overflow: auto;
   }
 }
 

@@ -6,14 +6,14 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, Tag } from "@blueprintjs/core";
+import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, Tag, UL } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
     currentPanelStack: IPanel[];
 }
 
-export class PanelStackExample extends React.PureComponent<IExampleProps> {
+export class PanelStackExample extends React.PureComponent<IExampleProps, IPanelStackExampleState> {
     public initialPanel: IPanel = {
         component: PanelExample,
         props: {
@@ -27,29 +27,21 @@ export class PanelStackExample extends React.PureComponent<IExampleProps> {
     };
 
     public render() {
-        return (
-            <Example options={false} {...this.props}>
-                <div className="docs-panel-stack-container">
-                    <PanelStack
-                        className="docs-panel-stack-example"
-                        initialPanel={this.state.currentPanelStack[0]}
-                        onOpen={this.addToPanelStack}
-                        onClose={this.removeFromPanelStack}
-                    />
-                </div>
-                <div className="docs-panel-stack-tags-container">
-                    <H5> Current panel stack </H5>
-                    <div className="docs-panel-stack-tags">{this.state.currentPanelStack.map(this.renderPanel)}</div>
-                </div>
-            </Example>
+        const stackList = (
+            <>
+                <H5>Current stack</H5>
+                <UL>{this.state.currentPanelStack.map(p => <li key={p.title}>{p.title}</li>)}</UL>
+            </>
         );
-    }
-
-    private renderPanel(panel: IPanel) {
         return (
-            <Tag className="docs-panel-stack-single-tag" key={panel.title}>
-                {panel.title}
-            </Tag>
+            <Example options={stackList} {...this.props}>
+                <PanelStack
+                    className="docs-panel-stack-example"
+                    initialPanel={this.state.currentPanelStack[0]}
+                    onOpen={this.addToPanelStack}
+                    onClose={this.removeFromPanelStack}
+                />
+            </Example>
         );
     }
 
