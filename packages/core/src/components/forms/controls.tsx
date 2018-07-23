@@ -65,6 +65,18 @@ export interface IControlProps extends IProps, HTMLInputProps {
 
     /** Event handler invoked when input value is changed. */
     onChange?: React.FormEventHandler<HTMLInputElement>;
+
+    /**
+     * Name of the HTML tag that wraps the checkbox.
+     *
+     * By default a `<label>` is used, which effectively enlarges the click
+     * target to include all of its children. Supply a different tag name if
+     * this behavior is undesirable or you're listening to click events from a
+     * parent element (as the label can register duplicate clicks).
+     *
+     * @default "label"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
 }
 
 /** Internal props for Checkbox/Radio/Switch to render correctly. */
@@ -91,6 +103,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     style,
     type,
     typeClassName,
+    tagName: TagName = "label",
     ...htmlProps
 }) => {
     const classes = classNames(
@@ -105,13 +118,13 @@ const Control: React.SFC<IControlInternalProps> = ({
         className,
     );
     return (
-        <label className={classes} style={style}>
+        <TagName className={classes} style={style}>
             <input {...htmlProps} ref={inputRef} type={type} />
             <span className={Classes.CONTROL_INDICATOR}>{indicator}</span>
             {label}
             {labelElement}
             {children}
-        </label>
+        </TagName>
     );
 };
 
