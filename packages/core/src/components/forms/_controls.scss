@@ -46,7 +46,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   .#{$ns}-control-indicator {
-    @include pt-icon($pt-icon-size-standard);
     position: absolute;
     top: 0;
     left: 0;
@@ -59,7 +58,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     cursor: pointer;
     width: $control-indicator-size;
     height: $control-indicator-size;
-    line-height: $control-indicator-size;
     user-select: none;
   }
 
@@ -134,15 +132,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     .#{$ns}-control-indicator {
       border-radius: $pt-border-radius;
       font-size: $control-indicator-size;
-
-      // pseudo-element will contain SVG image for pseudo-state.
-      // size it to scale with container so only one image is needed.
-      &::before {
-        display: block;
-        width: 100%;
-        height: 100%;
-        content: "";
-      }
     }
 
     input:indeterminate,
@@ -152,13 +141,13 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       @extend input:checked;
     }
 
-    // embed SVG images for pseudo-states
-    input:checked ~ .#{$ns}-control-indicator::before {
-      background: svg("16px/small-tick.svg", (path: (fill: $white)));
+    // embed SVG images as backgroud-image above gradient
+    input:checked ~ .#{$ns}-control-indicator {
+      background-image: $button-intent-gradient, svg("16px/small-tick.svg", (path: (fill: $white)));
     }
 
-    input:indeterminate ~ .#{$ns}-control-indicator::before {
-      background: svg("16px/small-minus.svg", (path: (fill: $white)));
+    input:indeterminate ~ .#{$ns}-control-indicator {
+      background-image: $button-intent-gradient, svg("16px/small-minus.svg", (path: (fill: $white)));
     }
   }
 
