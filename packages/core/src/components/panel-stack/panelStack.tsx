@@ -85,7 +85,6 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
             >
                 <PanelView
                     key={stack.length}
-                    panelClassName={this.props.className}
                     previousPanel={previousPanel}
                     panel={activePanel}
                     panelProps={this.getPanelProps()}

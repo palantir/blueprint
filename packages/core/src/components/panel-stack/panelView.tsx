@@ -10,10 +10,6 @@ import * as Classes from "../../common/classes";
 
 export interface IPanelViewProps {
     /**
-     * Optionally add a classname to the panel view.
-     */
-    panelClassName?: string;
-    /**
      * The panel to be displayed.
      */
     panel: IPanel;
@@ -30,7 +26,7 @@ export interface IPanelViewProps {
 export class PanelView extends React.PureComponent<IPanelViewProps> {
     public render() {
         const { panel, panelProps } = this.props;
-        const className = classNames(Classes.PANELSTACK_VIEW, this.props.panelClassName);
+        const className = classNames(Classes.PANELSTACK_VIEW);
         return (
             <div className={className}>
                 {this.renderPanelHeader()}
