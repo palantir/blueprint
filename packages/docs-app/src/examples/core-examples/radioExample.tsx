@@ -18,6 +18,7 @@ export class RadioExample extends CheckboxExample {
         return (
             <Example options={false} {...this.props}>
                 <RadioGroup
+                    inline={this.state.inline}
                     label="Determine lunch"
                     name="group"
                     onChange={this.handleRadioChange}

@@ -12,6 +12,7 @@ import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface ICheckboxExampleState {
     alignIndicator: Alignment;
+    inline: boolean;
     large: boolean;
     value?: string;
 }
@@ -19,6 +20,7 @@ export interface ICheckboxExampleState {
 export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckboxExampleState> {
     public state: ICheckboxExampleState = {
         alignIndicator: Alignment.LEFT,
+        inline: false,
         large: false,
     };
 
@@ -26,6 +28,7 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
         const options = (
             <>
                 <H5>Props</H5>
+                <Switch checked={this.state.inline} label="Inline" onChange={this.handleInlineChange} />
                 <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
                 <AlignmentSelect
                     align={this.state.alignIndicator}
@@ -54,7 +57,8 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
         );
     }
 
+    // tslint:disable:member-ordering
     private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
-    // tslint:disable-next-line:member-ordering
+    private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 }
