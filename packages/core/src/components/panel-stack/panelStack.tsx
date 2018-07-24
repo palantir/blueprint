@@ -11,23 +11,30 @@ import { IPanel, IPanelProps } from "./panelProps";
 import { PanelView } from "./panelView";
 
 export interface IPanelStackProps extends IProps {
-    /** The panel to show when initially rendering the component */
-    initialPanel: IPanel;
     /**
-     * Callback invoked when the user presses the back button or a panel wants to close the visible panel.
+     * The initial panel to show on mount. This panel cannot be removed from the
+     * stack and will appear when the stack is empty.
+     */
+    initialPanel: IPanel;
+
+    /**
+     * Callback invoked when the user presses the back button or the
+     * `closePanel()` injected prop method is invoked.
      * @param oldPanel The panel that was just removed from the stack.
      */
-    onClose?(oldPanel: IPanel): void;
+    onClose?: (oldPanel: IPanel) => void;
+
     /**
-     * Callback invoked when a panel wants to open a new panel.
-     * @param newPanel The panel that was just added to the stack.
+     * Callback invoked when a panel invokes the `openPanel(panel)` injected
+     * prop method.
      */
-    onOpen?(newPanel: IPanel): void;
+    onOpen?: (newPanel: IPanel) => void;
 }
 
 export interface IPanelStackState {
     /** Whether the stack is currently animating the push or pop of a panel. */
     direction: "push" | "pop";
+
     /** The current stack of panels. The first panel in the stack will be displayed. */
     stack: IPanel[];
 }
