@@ -250,11 +250,11 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      background-image: radial-gradient($white 0%, $white 28%, transparent 32%);
+      background-image: radial-gradient($white, $white 28%, transparent 32%);
     }
 
     input:checked:disabled ~ .#{$ns}-control-indicator::before {
-      background-image: radial-gradient(rgba($white, 0.5) 0%, rgba($white, 0.5) 28%, transparent 32%);
+      background-image: radial-gradient(rgba($white, 0.5), rgba($white, 0.5) 28%, transparent 32%);
     }
 
     input:focus ~ .#{$ns}-control-indicator {
@@ -309,9 +309,9 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
   &.#{$ns}-switch {
-    @mixin indicator-colors($selector, $default-color, $hover-color, $active-color, $disabled-color) {
+    @mixin indicator-colors($selector, $color, $hover-color, $active-color, $disabled-color) {
       input#{$selector} ~ .#{$ns}-control-indicator {
-        background: $default-color;
+        background: $color;
       }
 
       &:hover input#{$selector} ~ .#{$ns}-control-indicator {
