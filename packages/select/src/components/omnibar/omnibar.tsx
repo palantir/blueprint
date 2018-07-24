@@ -41,6 +41,9 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /** Props to spread to `Overlay`. */
     overlayProps?: Partial<IOverlayProps>;
 
+    /** The query string. */
+    query?: string;
+
     /**
      * Whether the filtering state should be reset to initial when an item is selected
      * (immediately before `onItemSelect` is invoked). The query will become the empty string
@@ -63,7 +66,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
     }
 
     public state: IOmnibarState<T> = {
-        query: "",
+        query: this.props.query || "",
     };
 
     private TypedQueryList = QueryList.ofType<T>();

@@ -61,7 +61,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     }
 
     public state: IMultiSelectState<T> = {
-        isOpen: false,
+        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
         query: "",
     };
 
