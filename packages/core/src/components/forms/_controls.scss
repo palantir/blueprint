@@ -401,6 +401,10 @@ $control-indicator-spacing: $pt-grid-size !default;
       font-size: $radio-indicator-font-size-large;
     }
 
+    &.#{$ns}-align-right .#{$ns}-control-indicator {
+      margin-top: 0;
+    }
+
     &.#{$ns}-switch {
       @include indicator-position($switch-width-large);
 
@@ -412,10 +416,6 @@ $control-indicator-spacing: $pt-grid-size !default;
           width: $switch-height-large - ($switch-indicator-margin * 2);
           height: $switch-height-large - ($switch-indicator-margin * 2);
         }
-      }
-
-      &.#{$ns}-align-right .#{$ns}-control-indicator {
-        margin-top: 0;
       }
 
       input:checked ~ .#{$ns}-control-indicator {
