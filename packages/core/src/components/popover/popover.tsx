@@ -284,7 +284,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         const { usePortal, interactionKind } = this.props;
         const { transformOrigin } = this.state;
 
-        // Need to update our reference to this on every render as the target node may have changed.
+        // Need to update our reference to this on every render as it will change.
         this.popperScheduleUpdate = popperProps.scheduleUpdate;
 
         const popoverHandlers: HTMLDivProps = {
