@@ -12,11 +12,10 @@ import { HTMLDivProps, IProps } from "../../common/props";
 
 export interface IButtonGroupProps extends IProps, HTMLDivProps {
     /**
-     * Text alignment of button contents.
-     * This prop only has an effect if buttons are wider than their default widths.
-     *
-     * `Alignment.LEFT` will left-align button text and push `rightIcon` to right side.
-     * `Alignment.RIGHT` right-aligns text and pushes `icon` to left side.
+     * Text alignment within button. By default, icons and text will be centered
+     * within the button. Passing `"left"` or `"right"` will align the button
+     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * `"center"` will center the text and icons together.
      */
     alignText?: Alignment;
 
