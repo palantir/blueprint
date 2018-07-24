@@ -65,8 +65,29 @@ $control-indicator-spacing: $pt-grid-size !default;
   }
 }
 
+@mixin indicator-position($size) {
+  $padding: $size + $control-indicator-spacing;
+
+  &:not(.#{$ns}-align-right) {
+    padding-left: $padding;
+
+    .#{$ns}-control-indicator {
+      margin-left: -$padding;
+    }
+  }
+
+  &.#{$ns}-align-right {
+    padding-right: $padding;
+
+    .#{$ns}-control-indicator {
+      margin-right: -$padding;
+    }
+  }
+}
+
 .#{$ns}-control {
   @include control-checked-colors();
+  @include indicator-position($control-indicator-size);
 
   display: block;
   position: relative;
@@ -132,7 +153,6 @@ $control-indicator-spacing: $pt-grid-size !default;
   &.#{$ns}-align-right .#{$ns}-control-indicator {
     float: right;
     margin-top: 1px;
-    margin-right: 0;
     margin-left: $control-indicator-spacing;
   }
 
@@ -288,6 +308,8 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
   &.#{$ns}-switch {
+    @include indicator-position($switch-width);
+
     .#{$ns}-control-indicator {
       border: none;
       border-radius: $switch-width;
@@ -367,6 +389,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   }
 
   &.#{$ns}-large {
+    @include indicator-position($control-indicator-size-large);
     font-size: $pt-font-size-large;
 
     .#{$ns}-control-indicator {
@@ -379,6 +402,8 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     &.#{$ns}-switch {
+      @include indicator-position($switch-width-large);
+
       .#{$ns}-control-indicator {
         width: $switch-width-large;
         height: $switch-height-large;
