@@ -35,19 +35,12 @@ export class PanelView extends React.PureComponent<IPanelViewProps> {
 
     private renderPanelHeader() {
         if (this.props.previousPanel === undefined) {
-            return <PanelHeader>{this.maybeRenderTitle()}</PanelHeader>;
+            return <PanelHeader>{this.props.panel.title}</PanelHeader>;
         }
         return (
             <PanelHeader backTitle={this.props.previousPanel.title} onBackClick={this.props.panelProps.closePanel}>
-                {this.maybeRenderTitle()}
+                {this.props.panel.title}
             </PanelHeader>
         );
-    }
-
-    private maybeRenderTitle() {
-        if (this.props.panel.title === undefined) {
-            return null;
-        }
-        return this.props.panel.title;
     }
 }
