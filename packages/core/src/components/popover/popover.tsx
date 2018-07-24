@@ -208,7 +208,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentDidMount() {
         this.updateDarkParent();
-        this.popperObserver = new ResizeObserver(() => this.popperScheduleUpdate && this.popperScheduleUpdate());
+        this.popperObserver = new ResizeObserver(() => Utils.safeInvoke(this.popperScheduleUpdate));
     }
 
     public componentWillReceiveProps(nextProps: IPopoverProps) {
