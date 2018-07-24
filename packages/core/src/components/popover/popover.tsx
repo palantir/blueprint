@@ -230,7 +230,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public componentDidUpdate() {
         this.updateDarkParent();
 
-        if (this.popoverElement instanceof HTMLElement) {
+        if (this.popoverElement != null) {
             // Clear active observations to avoid the list growing.
             this.popperObserver.disconnect();
 
