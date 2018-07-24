@@ -63,12 +63,7 @@ class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps>
     public render() {
         return (
             <div className="docs-panel-stack-contents-example">
-                <Button
-                    disabled={this.props.panelNumber >= 20}
-                    intent={Intent.PRIMARY}
-                    onClick={this.openNewPanel}
-                    text="Open new panel"
-                />
+                <Button intent={Intent.PRIMARY} onClick={this.openNewPanel} text="Open new panel" />
             </div>
         );
     }
