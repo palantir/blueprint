@@ -61,15 +61,15 @@ describe("<PanelStack>", () => {
         assert.exists(newPanelButton);
         newPanelButton.simulate("click");
 
-        const newPanelHeader = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_TITLE);
+        const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(newPanelHeader);
         assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
 
-        const backButton = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_BACK);
+        const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.exists(backButton);
         backButton.simulate("click");
 
-        const oldPanelHeader = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_TITLE);
+        const oldPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(oldPanelHeader);
         assert.equal(oldPanelHeader.at(1).text(), "Test Title");
     });
@@ -96,7 +96,7 @@ describe("<PanelStack>", () => {
         assert.isTrue(onOpen.calledOnce);
         assert.isFalse(onClose.calledOnce);
 
-        const backButton = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_BACK);
+        const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.exists(backButton);
         backButton.simulate("click");
         assert.isTrue(onClose.calledOnce);
@@ -105,17 +105,16 @@ describe("<PanelStack>", () => {
 
     it("does not have the back button when only a single panel is on the stack", () => {
         panelStackWrapper = renderPanelStack({ initialPanel });
-        const backButton = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_BACK);
+        const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.equal(backButton.length, 0);
     });
 
     it("assigns the class to TransitionGroup", () => {
         const TEST_CLASS_NAME = "TEST_CLASS_NAME";
         panelStackWrapper = renderPanelStack({ initialPanel, className: TEST_CLASS_NAME });
-        const foundClasses = panelStackWrapper.findClass(TEST_CLASS_NAME);
-        assert.equal(foundClasses.length, 1);
+        assert.isTrue(panelStackWrapper.hasClass(TEST_CLASS_NAME));
 
-        const transitionGroupClassName = foundClasses.props().className;
+        const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;
         assert.exists(transitionGroupClassName);
         assert.equal(transitionGroupClassName.indexOf("bp3-panel-stack"), 0);
     });
@@ -128,7 +127,7 @@ describe("<PanelStack>", () => {
         assert.exists(newPanelButton);
         newPanelButton.simulate("click");
 
-        const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANELSTACK_HEADER_BACK);
+        const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.equal(backButtonWithoutTitle.text(), "chevron-left");
 
         const newPanelButtonOnNotEmpty = panelStackWrapper
@@ -139,7 +138,7 @@ describe("<PanelStack>", () => {
         newPanelButtonOnNotEmpty.simulate("click");
 
         const backButtonWithTitle = panelStackWrapper
-            .findClass(Classes.PANELSTACK_HEADER_BACK)
+            .findClass(Classes.PANEL_STACK_HEADER_BACK)
             .hostNodes()
             .at(1);
         assert.equal(backButtonWithTitle.text(), "chevron-left");

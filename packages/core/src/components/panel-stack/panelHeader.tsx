@@ -2,17 +2,18 @@
 
 import * as React from "react";
 
-import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
+import { Button } from "..";
 import * as Classes from "../../common/classes";
 
 export interface IPanelHeaderProps {
     /**
-     * The name of the previous panel header in the stack. Will not render unless an onBackClick
-     * handler is defined.
+     * The name of the previous panel header in the stack, used as text for the
+     * back button. This prop is ignored if `onBackClick` is omitted.
      */
     backTitle?: string;
+
     /**
      * The handler when the back button is clicked.
      */
@@ -22,12 +23,12 @@ export interface IPanelHeaderProps {
 export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
     public render() {
         return (
-            <div className={Classes.PANELSTACK_HEADER}>
-                <div className={Classes.PANELSTACK_HEADER_SPACER}>{this.maybeRenderBack()}</div>
-                <Text className={Classes.PANELSTACK_HEADER_TITLE} ellipsize={true}>
+            <div className={Classes.PANEL_STACK_HEADER}>
+                <span>{this.maybeRenderBack()}</span>
+                <Text className={Classes.HEADING} ellipsize={true}>
                     {this.props.children}
                 </Text>
-                <div className={Classes.PANELSTACK_HEADER_SPACER} />
+                <span />
             </div>
         );
     }
@@ -37,17 +38,14 @@ export class PanelHeader extends React.PureComponent<IPanelHeaderProps> {
             return null;
         }
         return (
-            <div className={Classes.PANELSTACK_HEADER_BACK} onClick={this.props.onBackClick}>
-                <Icon icon="chevron-left" />
-                {this.maybeRenderBackTitle()}
-            </div>
+            <Button
+                className={Classes.PANEL_STACK_HEADER_BACK}
+                icon="chevron-left"
+                minimal={true}
+                small={true}
+                text={this.props.backTitle}
+                onClick={this.props.onBackClick}
+            />
         );
-    }
-
-    private maybeRenderBackTitle() {
-        if (this.props.backTitle === undefined) {
-            return null;
-        }
-        return this.props.backTitle;
     }
 }
