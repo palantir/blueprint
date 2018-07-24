@@ -128,10 +128,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // element on the same page.
     private lostFocusOnSamePage = true;
 
-    /** ResizeObserver instance to monitor for content size changes on the popover */
+    // ResizeObserver instance to monitor for content size changes on the popover
     private popperObserver: ResizeObserver;
 
-    /** Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted */
+    // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperUpdater: () => void;
 
     private refHandlers = {
@@ -230,7 +230,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public componentDidUpdate() {
         this.updateDarkParent();
 
-        if (this.popoverElement) {
+        if (this.popoverElement instanceof HTMLElement) {
             // Ensure our observer has an up-to-date reference to popoverElement
             this.popperObserver.observe(this.popoverElement);
         }
