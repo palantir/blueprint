@@ -33,11 +33,10 @@ export interface IDateFormatProps {
 
     /**
      * Function to render a JavaScript `Date` to a string.
-     * The special value `null` indicates the absence of a date.
      * Optional `locale` argument comes directly from the prop on this component:
      * if the prop is defined, then the argument will be too.
      */
-    formatDate(date: Date | null, locale?: string): string;
+    formatDate(date: Date, locale?: string): string;
 
     /**
      * Function to deserialize user input text to a JavaScript `Date` object.
