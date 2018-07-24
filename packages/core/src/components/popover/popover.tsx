@@ -231,7 +231,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         this.updateDarkParent();
 
         if (this.popoverElement) {
-            // Ensure our observer has an up-date-date reference to popoverElement
+            // Ensure our observer has an up-to-date reference to popoverElement
             this.popperObserver.observe(this.popoverElement);
         }
     }
