@@ -16,16 +16,63 @@ $control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !
 $control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
 $control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
 
+$control-indicator-size: $pt-icon-size-standard !default;
+$control-indicator-size-large: $pt-icon-size-large !default;
+$control-indicator-spacing: $pt-grid-size !default;
+
+@mixin control-checked-colors($selector: ":checked") {
+  input#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: $button-intent-box-shadow;
+    background-color: $control-checked-background-color;
+    background-image: $button-intent-gradient;
+    color: $white;
+  }
+
+  &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: $button-intent-box-shadow;
+    background-color: $control-checked-background-color-hover;
+  }
+
+  input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: $button-intent-box-shadow-active;
+    background: $control-checked-background-color-active;
+  }
+
+  input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+    box-shadow: none;
+    background: rgba($control-checked-background-color, 0.5);
+  }
+
+  .#{$ns}-dark & {
+    input#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-intent-box-shadow;
+    }
+
+    &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-intent-box-shadow;
+      background-color: $control-checked-background-color-hover;
+    }
+
+    input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-intent-box-shadow-active;
+      background-color: $control-checked-background-color-active;
+    }
+
+    input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+      box-shadow: none;
+      background: rgba($control-checked-background-color-active, 0.5);
+    }
+  }
+}
+
 .#{$ns}-control {
+  @include control-checked-colors();
+
   display: block;
   position: relative;
   margin-bottom: $pt-grid-size;
   cursor: pointer;
-  // controls sometimes don't have text in their <label>, so we set a minimum height
-  min-height: $control-indicator-size;
-  padding-left: $control-indicator-size + $pt-grid-size;
   text-transform: none;
-  line-height: $control-indicator-size;
 
   &.#{$ns}-disabled {
     cursor: not-allowed;
@@ -46,10 +93,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   }
 
   .#{$ns}-control-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 0;
+    display: inline-block;
+    position: relative;
+    margin-top: -3px;
+    margin-right: $control-indicator-spacing;
     border: none;
     box-shadow: $button-box-shadow;
     background-clip: padding-box;
@@ -58,54 +105,35 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     cursor: pointer;
     width: $control-indicator-size;
     height: $control-indicator-size;
+    vertical-align: middle;
     user-select: none;
   }
 
-  input:checked ~ .#{$ns}-control-indicator {
-    box-shadow: $button-intent-box-shadow;
-    background-color: $control-checked-background-color;
-    background-image: $button-intent-gradient;
-    color: $white;
+  &:hover .#{$ns}-control-indicator {
+    background-color: $control-background-color-hover;
   }
 
-  &:hover {
-    .#{$ns}-control-indicator {
-      background-color: $control-background-color-hover;
-    }
-
-    input:checked ~ .#{$ns}-control-indicator {
-      box-shadow: $button-intent-box-shadow;
-      background-color: $control-checked-background-color-hover;
-    }
+  input:not(:disabled):active ~ .#{$ns}-control-indicator {
+    box-shadow: $button-box-shadow-active;
+    background: $control-background-color-active;
   }
 
-  input:not(:disabled):active {
-    ~ .#{$ns}-control-indicator {
-      box-shadow: $button-box-shadow-active;
-      background: $control-background-color-active;
-    }
-
-    &:checked ~ .#{$ns}-control-indicator {
-      box-shadow: $button-intent-box-shadow-active;
-      background: $control-checked-background-color-active;
-    }
+  input:disabled ~ .#{$ns}-control-indicator {
+    box-shadow: none;
+    background: $button-background-color-disabled;
+    cursor: not-allowed;
   }
 
   input:focus ~ .#{$ns}-control-indicator {
     @include focus-outline();
   }
 
-  input:disabled {
-    ~ .#{$ns}-control-indicator {
-      box-shadow: none;
-      background: $button-background-color-disabled;
-      cursor: not-allowed;
-    }
-
-    &:checked ~ .#{$ns}-control-indicator {
-      box-shadow: none;
-      background: rgba($control-checked-background-color, 0.5);
-    }
+  // right-aligned indicator is glued to the right side of the container
+  &.#{$ns}-align-right .#{$ns}-control-indicator {
+    float: right;
+    margin-top: 1px;
+    margin-right: 0;
+    margin-left: $control-indicator-spacing;
   }
 
   /*
@@ -129,13 +157,16 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   */
 
   &.#{$ns}-checkbox {
-    @mixin indicator-icon($icon) {
+    @mixin indicator-inline-icon($icon) {
       &::before {
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
         background-image: svg("16px/#{$icon}.svg", (path: (fill: $white)));
       }
     }
+
+    // make :indeterminate look like :checked _for Checkbox only_
+    @include control-checked-colors(":indeterminate");
 
     .#{$ns}-control-indicator {
       border-radius: $pt-border-radius;
@@ -148,19 +179,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       }
     }
 
-    input:indeterminate,
-    &:hover input:indeterminate {
-      // :indeterminate should behave like :checked with different icon
-      // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
-      @extend input:checked;
-    }
-
     input:checked ~ .#{$ns}-control-indicator {
-      @include indicator-icon("small-tick");
+      @include indicator-inline-icon("small-tick");
     }
 
     input:indeterminate ~ .#{$ns}-control-indicator {
-      @include indicator-icon("small-minus");
+      @include indicator-inline-icon("small-minus");
     }
   }
 
@@ -264,8 +288,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
   $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
   &.#{$ns}-switch {
-    padding-left: $switch-width + $pt-grid-size;
-
     .#{$ns}-control-indicator {
       border: none;
       border-radius: $switch-width;
@@ -289,11 +311,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         content: "";
         transition: left $pt-transition-duration $pt-transition-ease;
       }
-    }
-
-    &.#{$ns}-align-right {
-      padding-right: $switch-width + $pt-grid-size;
-      padding-left: 0;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
@@ -349,38 +366,12 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
   }
 
-  // right-aligned indicator is glued to the right side of the container
-  &.#{$ns}-align-right {
-    padding-right: $control-indicator-size + $pt-grid-size;
-    padding-left: 0;
-
-    .#{$ns}-control-indicator {
-      right: 0;
-      left: auto;
-    }
-  }
-
   &.#{$ns}-large {
-    min-height: $control-indicator-size-large;
-    padding-left: $control-indicator-size-large + $pt-grid-size;
-    line-height: $control-indicator-size-large;
     font-size: $pt-font-size-large;
 
     .#{$ns}-control-indicator {
       width: $control-indicator-size-large;
       height: $control-indicator-size-large;
-      line-height: $control-indicator-size-large;
-      font-family: $icons20-family;
-      font-size: $control-indicator-size-large;
-    }
-
-    &.#{$ns}-align-right {
-      padding-right: $control-indicator-size-large + $pt-grid-size;
-      padding-left: 0;
-    }
-
-    &.#{$ns}-checkbox input:checked ~ .#{$ns}-control-indicator::before {
-      top: 1px;
     }
 
     &.#{$ns}-radio .#{$ns}-control-indicator {
@@ -388,8 +379,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
     }
 
     &.#{$ns}-switch {
-      padding-left: $switch-width-large + $pt-grid-size;
-
       .#{$ns}-control-indicator {
         width: $switch-width-large;
         height: $switch-height-large;
@@ -400,6 +389,10 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         }
       }
 
+      &.#{$ns}-align-right .#{$ns}-control-indicator {
+        margin-top: 0;
+      }
+
       input:checked ~ .#{$ns}-control-indicator {
         width: $switch-width-large;
         height: $switch-height-large;
@@ -407,11 +400,6 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
         &::before {
           left: $switch-width-large - $switch-height-large + $switch-indicator-margin;
         }
-      }
-
-      &.#{$ns}-align-right {
-        padding-right: $switch-width-large + $pt-grid-size;
-        padding-left: 0;
       }
     }
   }
@@ -429,52 +417,27 @@ $control-checked-background-color-active: nth(map-get($button-intents, "primary"
       background-image: $dark-button-gradient;
     }
 
-    input:checked ~ .#{$ns}-control-indicator {
-      box-shadow: $dark-button-intent-box-shadow;
+    &:hover .#{$ns}-control-indicator {
+      background-color: $dark-control-background-color-hover;
     }
 
-    &:hover {
-      .#{$ns}-control-indicator {
-        background-color: $dark-control-background-color-hover;
-      }
+    input:not(:disabled):active ~ .#{$ns}-control-indicator {
+      box-shadow: $dark-button-box-shadow-active;
+      background: $dark-control-background-color-active;
     }
 
-    input:not(:disabled):active {
-      ~ .#{$ns}-control-indicator {
-        box-shadow: $dark-button-box-shadow-active;
-        background: $dark-control-background-color-active;
-      }
-
-      &:checked ~ .#{$ns}-control-indicator {
-        box-shadow: $dark-button-intent-box-shadow-active;
-        background-color: $control-checked-background-color-active;
-      }
+    input:disabled ~ .#{$ns}-control-indicator {
+      box-shadow: none;
+      background: $dark-button-background-color-disabled;
+      cursor: not-allowed;
     }
 
-    input:disabled {
-      ~ .#{$ns}-control-indicator {
-        box-shadow: none;
-        background: $dark-button-background-color-disabled;
-        cursor: not-allowed;
-      }
-
-      &:checked ~ .#{$ns}-control-indicator {
-        box-shadow: none;
-        background: rgba($control-checked-background-color-active, 0.5);
-      }
-    }
-
-    &.#{$ns}-checkbox {
-      input:checked {
-        &:disabled ~ .#{$ns}-control-indicator::before {
+    &.#{$ns}-checkbox input:disabled {
+      &:checked,
+      &:indeterminate {
+        ~ .#{$ns}-control-indicator {
           color: $dark-button-color-disabled;
         }
-      }
-    }
-
-    &.#{$ns}-radio {
-      input:checked:disabled ~ .#{$ns}-control-indicator::before {
-        background: $dark-button-color-disabled;
       }
     }
 
