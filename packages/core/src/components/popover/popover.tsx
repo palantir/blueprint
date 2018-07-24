@@ -132,7 +132,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private popperObserver: ResizeObserver;
 
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
-    private popperUpdater: () => void;
+    private popperScheduleUpdate: () => void;
 
     private refHandlers = {
         popover: (ref: HTMLElement) => {
@@ -208,7 +208,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentDidMount() {
         this.updateDarkParent();
-        this.popperObserver = new ResizeObserver(() => this.popperUpdater && this.popperUpdater());
+        this.updatePopperObserver();
     }
 
     public componentWillReceiveProps(nextProps: IPopoverProps) {
@@ -231,6 +231,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         this.updateDarkParent();
 
         if (this.popoverElement instanceof HTMLElement) {
+            // Reset the the observer to avoid the list of observed elements growing
+            this.updatePopperObserver();
             // Ensure our observer has an up-to-date reference to popoverElement
             this.popperObserver.observe(this.popoverElement);
         }
@@ -238,6 +240,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentWillUnmount() {
         super.componentWillUnmount();
+        this.popperObserver.disconnect();
     }
 
     protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
@@ -276,9 +279,21 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         }
     }
 
+    private updatePopperObserver() {
+
+        if (this.popperObserver instanceof ResizeObserver) {
+            this.popperObserver.disconnect();
+        }
+
+        this.popperObserver = new ResizeObserver(() => this.popperScheduleUpdate && this.popperScheduleUpdate());
+    }
+
     private renderPopover = (popperProps: PopperChildrenProps) => {
         const { usePortal, interactionKind } = this.props;
         const { transformOrigin } = this.state;
+
+        // Need to update our reference to this on every render as the target node may have changed.
+        this.popperScheduleUpdate = popperProps.scheduleUpdate;
 
         const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
@@ -300,8 +315,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             },
             this.props.popoverClassName,
         );
-
-        this.popperUpdater = popperProps.scheduleUpdate;
 
         return (
             <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
