@@ -24,7 +24,7 @@ export class TestPanel extends React.Component<IPanelProps> {
     private openPanel = () => this.props.openPanel(TestPanel, {}, { title: "New Panel 1" });
 }
 
-describe("<PanelStack>", () => {
+describe.only("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
     let panelStackWrapper: IPanelStackWrapper;
 
@@ -104,11 +104,15 @@ describe("<PanelStack>", () => {
         assert.equal(backButton.length, 0);
     });
 
-    it("assigns the class to both the TransitionGroup and the PanelView", () => {
+    it("assigns the class to TransitionGroup", () => {
         const TEST_CLASS_NAME = "TEST_CLASS_NAME";
         panelStackWrapper = renderPanelStack({ initialPanel, className: TEST_CLASS_NAME });
         const foundClasses = panelStackWrapper.findClass(TEST_CLASS_NAME);
-        assert.equal(foundClasses.length, 2);
+        assert.equal(foundClasses.length, 1);
+
+        const transitionGroupClassName = foundClasses.props().className;
+        assert.exists(transitionGroupClassName);
+        assert.equal(transitionGroupClassName.indexOf("bp3-panel-stack"), 0);
     });
 
     it("can render a panel without a title", () => {
