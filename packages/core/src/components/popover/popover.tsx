@@ -8,6 +8,7 @@ import classNames from "classnames";
 import { ModifierFn } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
+import ResizeObserver from "resize-observer-polyfill";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -126,6 +127,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // a flag that indicates whether the target previously lost focus to another
     // element on the same page.
     private lostFocusOnSamePage = true;
+
+    // A reference to the Resize observer to prevent it getting recreated on every render
+    private popperObserver: ResizeObserver;
 
     private refHandlers = {
         popover: (ref: HTMLElement) => {
@@ -287,6 +291,12 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             },
             this.props.popoverClassName,
         );
+
+        // If the popover resizes, force popper to rerender.
+        if (this.popoverElement && !this.popperObserver) {
+            this.popperObserver = new ResizeObserver(popperProps.scheduleUpdate);
+            this.popperObserver.observe(this.popoverElement);
+        }
 
         return (
             <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
