@@ -6,7 +6,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
-import * as Utils from "../../common/utils";
+import { safeInvoke } from "../../common/utils";
 import { IPanel, IPanelProps } from "./panelProps";
 import { PanelView } from "./panelView";
 
@@ -86,7 +86,7 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
             return;
         }
         this.setState(state => {
-            Utils.safeInvoke(this.props.onClose, state.stack[0]);
+            safeInvoke(this.props.onClose, state.stack[0]);
             return {
                 direction: "pop",
                 stack: state.stack.slice(1),
@@ -100,12 +100,10 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
             component: component as any,
             props: props as any,
         };
+        safeInvoke(this.props.onOpen, panel);
         this.setState(state => ({
             direction: "push",
             stack: [panel, ...state.stack],
         }));
-        if (this.props.onOpen !== undefined) {
-            this.props.onOpen(panel);
-        }
     };
 }
