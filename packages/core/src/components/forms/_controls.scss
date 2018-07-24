@@ -166,6 +166,21 @@ $control-indicator-spacing: $pt-grid-size !default;
     margin-left: $control-indicator-spacing;
   }
 
+  &.#{$ns}-large {
+    @include indicator-position($control-indicator-size-large);
+    // larger text
+    font-size: $pt-font-size-large;
+
+    .#{$ns}-control-indicator {
+      // em-based sizing
+      font-size: $control-indicator-size-large;
+    }
+
+    &.#{$ns}-align-right .#{$ns}-control-indicator {
+      margin-top: 0;
+    }
+  }
+
   /*
   Checkbox
 
@@ -385,23 +400,6 @@ $control-indicator-spacing: $pt-grid-size !default;
         // inset shadow so it forms a dark line instead of blurring into the blue
         box-shadow: inset $dark-button-box-shadow;
       }
-    }
-  }
-
-
-
-  &.#{$ns}-large {
-    @include indicator-position($control-indicator-size-large);
-    // larger text
-    font-size: $pt-font-size-large;
-
-    .#{$ns}-control-indicator {
-      // em-based sizing
-      font-size: $control-indicator-size-large;
-    }
-
-    &.#{$ns}-align-right .#{$ns}-control-indicator {
-      margin-top: 0;
     }
   }
 
