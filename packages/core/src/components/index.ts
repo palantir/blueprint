@@ -50,6 +50,7 @@ export * from "./non-ideal-state/nonIdealState";
 export * from "./overflow-list/overflowList";
 export * from "./overlay/overlay";
 export * from "./text/text";
+export * from "./panel-stack/panelProps";
 export * from "./panel-stack/panelStack";
 export * from "./popover/popover";
 export * from "./popover/popoverSharedProps";

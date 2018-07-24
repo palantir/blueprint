@@ -30,7 +30,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
         const stackList = (
             <>
                 <H5>Current stack</H5>
-                <UL>{this.state.currentPanelStack.map(p => <li key={p.title}>{p.title}</li>)}</UL>
+                <UL>{this.state.currentPanelStack.map((p, i) => <li key={i}>{p.title}</li>)}</UL>
             </>
         );
         return (

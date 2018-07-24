@@ -2,45 +2,54 @@
 
 import * as React from "react";
 
-import { PanelHeader } from "./panelHeader";
-import { IPanel, IPanelProps } from "./panelStack";
-
-import * as Classes from "../../common/classes";
+import { Classes } from "../../common";
+import { Button } from "../button/buttons";
+import { Text } from "../text/text";
+import { IPanel, IPanelProps } from "./panelProps";
 
 export interface IPanelViewProps {
-    /**
-     * The panel to be displayed.
-     */
+    /** The panel to be displayed. */
     panel: IPanel;
-    /**
-     * Props to be passed to the panel.
-     */
+
+    /** Props to inject into the panel, in addition to its own props. */
     panelProps: IPanelProps;
-    /**
-     * The panel immediately under the current panel in the stack.
-     */
+
+    /** The previous panel in the stack, for rendering the "back" button. */
     previousPanel?: IPanel;
 }
 
 export class PanelView extends React.PureComponent<IPanelViewProps> {
     public render() {
         const { panel, panelProps } = this.props;
+        // two <span> tags in header ensure title is centered as long as
+        // possible, due to `flex: 1` magic.
         return (
             <div className={Classes.PANEL_STACK_VIEW}>
-                {this.renderPanelHeader()}
+                <div className={Classes.PANEL_STACK_HEADER}>
+                    <span>{this.maybeRenderBack()}</span>
+                    <Text className={Classes.HEADING} ellipsize={true}>
+                        {this.props.panel.title}
+                    </Text>
+                    <span />
+                </div>
                 <panel.component {...panelProps} {...panel.props} />
             </div>
         );
     }
 
-    private renderPanelHeader() {
+    private maybeRenderBack() {
         if (this.props.previousPanel === undefined) {
-            return <PanelHeader>{this.props.panel.title}</PanelHeader>;
+            return null;
         }
         return (
-            <PanelHeader backTitle={this.props.previousPanel.title} onBackClick={this.props.panelProps.closePanel}>
-                {this.props.panel.title}
-            </PanelHeader>
+            <Button
+                className={Classes.PANEL_STACK_HEADER_BACK}
+                icon="chevron-left"
+                minimal={true}
+                onClick={this.props.panelProps.closePanel}
+                small={true}
+                text={this.props.previousPanel.title}
+            />
         );
     }
 }
