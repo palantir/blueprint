@@ -280,7 +280,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     private updatePopperObserver() {
-
         if (this.popperObserver instanceof ResizeObserver) {
             this.popperObserver.disconnect();
         }
