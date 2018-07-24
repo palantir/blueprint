@@ -34,7 +34,7 @@ export interface IPanel<P = {}> extends IPanelOptions {
 
 export interface IPanelOptions {
     /** The title to be displayed above this panel. It is also used as the back button for any panel opened by this panel. */
-    title: string;
+    title?: string;
 }
 
 export interface IPanelStackProps extends IProps {

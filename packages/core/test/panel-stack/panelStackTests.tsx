@@ -24,7 +24,7 @@ export class TestPanel extends React.Component<IPanelProps> {
     private openPanel = () => this.props.openPanel(TestPanel, {}, { title: "New Panel 1" });
 }
 
-describe.only("<PanelStack>", () => {
+describe("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
     let panelStackWrapper: IPanelStackWrapper;
 
@@ -32,6 +32,11 @@ describe.only("<PanelStack>", () => {
         component: TestPanel,
         props: {},
         title: "Test Title",
+    };
+
+    const emptyTitleInitialPanel: IPanel = {
+        component: TestPanel,
+        props: {},
     };
 
     beforeEach(() => {
@@ -116,11 +121,6 @@ describe.only("<PanelStack>", () => {
     });
 
     it("can render a panel without a title", () => {
-        const emptyTitleInitialPanel: IPanel = {
-            component: TestPanel,
-            props: {},
-            title: undefined,
-        };
         panelStackWrapper = renderPanelStack({ initialPanel: emptyTitleInitialPanel });
         assert.exists(panelStackWrapper);
 
