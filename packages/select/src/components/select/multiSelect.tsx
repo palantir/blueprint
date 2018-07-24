@@ -161,8 +161,8 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     query: "",
                 });
             }
-            Utils.safeInvoke(this.props.onItemSelect, item, evt);
         }
+        Utils.safeInvoke(this.props.onItemSelect, item, evt);
     };
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
