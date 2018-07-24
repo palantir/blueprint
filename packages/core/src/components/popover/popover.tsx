@@ -128,8 +128,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // element on the same page.
     private lostFocusOnSamePage = true;
 
-    // A reference to the Resize observer to prevent it getting recreated on every render
+    /** ResizeObserver instance to monitor for content size changes on the popover */
     private popperObserver: ResizeObserver;
+
+    /** Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted */
+    private popperUpdater: () => {};
 
     private refHandlers = {
         popover: (ref: HTMLElement) => {
@@ -205,6 +208,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentDidMount() {
         this.updateDarkParent();
+        this.popperObserver = new ResizeObserver(() => this.popperUpdater && this.popperUpdater());
     }
 
     public componentWillReceiveProps(nextProps: IPopoverProps) {
@@ -225,6 +229,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentDidUpdate() {
         this.updateDarkParent();
+
+        if (this.popoverElement) {
+            // Ensure our observer has an up-date-date reference to popoverElement
+            this.popperObserver.observe(this.popoverElement);
+        }
     }
 
     public componentWillUnmount() {
@@ -292,11 +301,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             this.props.popoverClassName,
         );
 
-        // If the popover resizes, force popper to rerender.
-        if (this.popoverElement && !this.popperObserver) {
-            this.popperObserver = new ResizeObserver(popperProps.scheduleUpdate);
-            this.popperObserver.observe(this.popoverElement);
-        }
+        this.popperUpdater = popperProps.scheduleUpdate;
 
         return (
             <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
