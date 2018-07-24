@@ -266,8 +266,6 @@ $control-indicator-spacing: $pt-grid-size !default;
   */
 
   // stylelint-disable-next-line order/order
-  $switch-height: $control-indicator-size !default;
-  $switch-height-large: $pt-grid-size * 2 !default;
   $switch-width: 1.75em !default;
   $switch-indicator-margin: 2px !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
@@ -290,11 +288,9 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-checked-background-color-active: $blue5 !default;
   $dark-switch-checked-background-color-disabled: rgba($blue1, 0.5) !default;
 
-  $switch-indicator-border: border-shadow($pt-border-shadow-opacity) !default;
   $switch-indicator-background-color: $white !default;
   $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
-  $dark-switch-indicator-border: border-shadow($pt-dark-border-shadow-opacity) !default;
-  $dark-switch-indicator-background-color: $dark-gray4 !default;
+  $dark-switch-indicator-background-color: $dark-gray5 !default;
   $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
   &.#{$ns}-switch {
@@ -340,17 +336,15 @@ $control-indicator-spacing: $pt-grid-size !default;
       // stylelint-disable-next-line declaration-no-important
       box-shadow: none !important;
       width: $switch-width;
-      height: $switch-height;
       transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
         position: relative;
-        border-radius: $switch-height;
         left: 0;
         margin: $switch-indicator-margin;
+        border-radius: 50%;
         box-shadow: $button-box-shadow-overlay;
         background: $switch-indicator-background-color;
-        background-clip: padding-box;
         width: $switch-indicator-size;
         height: $switch-indicator-size;
         transition: left $pt-transition-duration $pt-transition-ease;
