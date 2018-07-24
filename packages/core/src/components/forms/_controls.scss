@@ -254,7 +254,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     input:checked:disabled ~ .#{$ns}-control-indicator::before {
-      background-image: radial-gradient(rgba($white, 0.5), rgba($white, 0.5) 28%, transparent 32%);
+      opacity: 0.5;
     }
 
     input:focus ~ .#{$ns}-control-indicator {
