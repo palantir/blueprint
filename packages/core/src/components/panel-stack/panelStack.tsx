@@ -7,35 +7,8 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
+import { IPanel, IPanelProps } from "./panelProps";
 import { PanelView } from "./panelView";
-
-/** Add this interface to your panel components props type. */
-export interface IPanelProps {
-    /**
-     * Call this method to close the current panel. It should be used sparingly as there is always a back button displayed that will call
-     * this method. If there is only one panel on the stack, it cannot be closed and this method will do nothing.
-     */
-    closePanel(): void;
-    /**
-     * Call this method to open a new panel on the top of the stack.
-     * @param component The React component of the new panel.
-     * @param props The props to be passed to the new panel.
-     * @param options Additional options for the new panel.
-     */
-    openPanel<P>(component: React.ComponentClass<P & IPanelProps>, props: P, options: IPanelOptions): void;
-}
-
-export interface IPanel<P = {}> extends IPanelOptions {
-    /** The component being rendered by this panel. */
-    component: React.ComponentClass<P & IPanelProps>;
-    /** The props passed directly to the component prop. */
-    props?: P;
-}
-
-export interface IPanelOptions {
-    /** The title to be displayed above this panel. It is also used as the back button for any panel opened by this panel. */
-    title?: string;
-}
 
 export interface IPanelStackProps extends IProps {
     /** The panel to show when initially rendering the component */

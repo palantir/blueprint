@@ -2,11 +2,10 @@
 
 import * as React from "react";
 
-import { IPanel, IPanelProps } from "./panelStack";
-
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
+import { IPanel, IPanelProps } from "./panelProps";
 
 export interface IPanelViewProps {
     /**
