@@ -128,6 +128,13 @@ $control-indicator-spacing: $pt-grid-size !default;
     height: $control-indicator-size;
     vertical-align: middle;
     user-select: none;
+
+    &::before {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      content: "";
+    }
   }
 
   &:hover .#{$ns}-control-indicator {
@@ -190,13 +197,6 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     .#{$ns}-control-indicator {
       border-radius: $pt-border-radius;
-
-      &::before {
-        display: block;
-        width: 100%;
-        height: 100%;
-        content: "";
-      }
     }
 
     input:checked ~ .#{$ns}-control-indicator {
@@ -237,16 +237,12 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      display: inline-block;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       border-radius: 50%;
       background: $white;
-      width: 1em;
-      height: 1em;
-      content: "";
     }
 
     input:checked:disabled ~ .#{$ns}-control-indicator::before {
@@ -320,7 +316,6 @@ $control-indicator-spacing: $pt-grid-size !default;
       transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
-        display: block;
         position: relative;
         top: $switch-indicator-margin;
         left: $switch-indicator-margin;
@@ -330,7 +325,6 @@ $control-indicator-spacing: $pt-grid-size !default;
         background-clip: padding-box;
         width: $switch-height - ($switch-indicator-margin * 2);
         height: $switch-height - ($switch-indicator-margin * 2);
-        content: "";
         transition: left $pt-transition-duration $pt-transition-ease;
       }
     }
