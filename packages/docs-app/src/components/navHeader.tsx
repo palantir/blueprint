@@ -79,16 +79,16 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
         }
 
         // default to latest release if we can't find a major version in the URL
-        const [currentRelease] = /\/versions\/([0-9]+)/.exec(location.href) || [
+        const [current] = /\/versions\/([0-9]+)/.exec(location.href) || [
             this.props.useNextVersion ? nextVersion : version,
         ];
-        const releaseItems = versions.map(v => (
-            <MenuItem href={v === currentRelease ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />
-        ));
+        const releaseItems = versions
+            .filter(v => +major(v) > 0)
+            .map(v => <MenuItem href={v === current ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />);
         return (
             <Popover position={Position.BOTTOM}>
                 <Tag interactive={true} minimal={true} round={true}>
-                    v{major(currentRelease)} <Icon icon="caret-down" />
+                    v{major(current)} <Icon icon="caret-down" />
                 </Tag>
                 <Menu className="docs-version-list">{releaseItems}</Menu>
             </Popover>

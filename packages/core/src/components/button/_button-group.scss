@@ -190,6 +190,10 @@ Styleguide button-group
       width: 100%;
     }
 
+    .#{$ns}-popover-target {
+      display: block;
+    }
+
     &:not(.#{$ns}-minimal) {
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-button:first-child {

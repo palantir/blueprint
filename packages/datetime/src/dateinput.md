@@ -1,6 +1,6 @@
 @# Date input
 
-The `DateInput` component is an [input group](#core/components/forms/input-group)
+The `DateInput` component is an [input group](#core/components/text-inputs.input-group)
 that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover)
 on focus. Use it in forms where the user must enter a date.
 

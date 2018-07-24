@@ -27,6 +27,15 @@ import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 type IToastDemo = IToastProps & { button: string };
 
+const POSITIONS = [
+    Position.TOP_LEFT,
+    Position.TOP,
+    Position.TOP_RIGHT,
+    Position.BOTTOM_LEFT,
+    Position.BOTTOM,
+    Position.BOTTOM_RIGHT,
+];
+
 export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IToasterProps> {
     public state: IToasterProps = {
         autoFocus: false,
@@ -114,14 +123,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                 <H5>Props</H5>
                 <Label>
                     Position
-                    <HTMLSelect value={position} onChange={this.handlePositionChange}>
-                        <option value={Position.TOP_LEFT}>Top left</option>
-                        <option value={Position.TOP}>Top center</option>
-                        <option value={Position.TOP_RIGHT}>Top right</option>
-                        <option value={Position.BOTTOM_LEFT}>Bottom left</option>
-                        <option value={Position.BOTTOM}>Bottom center</option>
-                        <option value={Position.BOTTOM_RIGHT}>Bottom right</option>
-                    </HTMLSelect>
+                    <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
                 </Label>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />

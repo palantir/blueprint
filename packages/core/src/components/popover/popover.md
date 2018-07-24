@@ -17,7 +17,7 @@ to changes in the `isOpen` state.
 Supported user interactions are dictated by the `interactionKind` prop.
 
 This component is quite powerful and has a wide range of features. Explore the
-[**Concepts**](core/components/popover.concepts) section below for more advanced
+[**Concepts**](#core/components/popover.concepts) section below for more advanced
 guides.
 
 @interface IPopoverProps
@@ -56,7 +56,11 @@ The __target__ acts as the trigger for the popover; user interaction will show t
 positioned on the page next to the target; the `position` prop determines the relative position (on
 which side of the target).
 
-Internally, the provided target is wrapped in a `span.@ns-popover-target`. This in turn is wrapped in a `span.@ns-popover-wrapper`. The extra `@ns-popover-wrapper` is present so that both the popover and target will be wrapped in a single element when rendering popovers [inline](#core/components/popover.inline-rendering).
+Internally, the provided target is wrapped in a `span.@ns-popover-target`. This
+in turn is wrapped in a `span.@ns-popover-wrapper`. The extra
+`@ns-popover-wrapper` is present so that both the popover and target will be
+wrapped in a single element when rendering
+[popovers without a portal](#core/components/popover.portal-rendering).
 
 ```tsx
 <span class="@ns-popover-wrapper">
@@ -72,7 +76,7 @@ Internally, the provided target is wrapped in a `span.@ns-popover-target`. This 
     Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
     events, which interferes with the popover functioning. If you need to disable a button that
     triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
-    See the [callout here](#core/components/button.javascript-api) for more details.
+    See the [callout here](#core/components/button.props) for more details.
 </div>
 
 ```tsx

@@ -89,7 +89,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { alignText, fill, large, loading, minimal, small } = this.props;
+        const { alignText, fill, large, loading, minimal, small, tabIndex } = this.props;
         const disabled = this.props.disabled || loading;
 
         const className = classNames(
@@ -115,6 +115,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             ref: this.refHandlers.button,
+            tabIndex: disabled ? -1 : tabIndex,
         };
     }
 
@@ -145,7 +146,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     protected renderChildren(): React.ReactNode {
         const { children, icon, loading, rightIcon, text } = this.props;
         return [
-            loading && <Spinner key="loading" className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />,
+            loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />,
             <Icon key="leftIcon" icon={icon} />,
             (text || children) && (
                 <span key="text" className={Classes.BUTTON_TEXT}>

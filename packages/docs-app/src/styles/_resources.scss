@@ -8,45 +8,38 @@ $asset-icon-size: $pt-grid-size * 6.4;
 $asset-background-color: rgba($dark-gray5, 0.1);
 $dark-asset-background-color: rgba($light-gray1, 0.1);
 
-.docs-asset {
-  display: inline-block;
+.blueprint-resource {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
   margin: $pt-grid-size ($pt-grid-size * 2) $pt-grid-size 0;
-  border-radius: $pt-border-radius * 2;
-  box-shadow: inset 0 0 0 2px rgba($gray3, 0.3);
-  background: url("#{$resources-path}/sketch-mac-icon@2x.png") no-repeat $asset-padding * 1.5 center;
-  background-size: $asset-icon-size;
-  padding: $asset-padding * 2;
-  padding-left: $asset-icon-size + $asset-padding * 3;
-  transition: background-color $pt-transition-duration $pt-transition-ease;
+  padding-left: $asset-icon-size + $asset-padding * 2;
+  white-space: nowrap;
 
-  .docs-asset-name {
+  &::before {
     display: block;
+    position: absolute;
+    top: $asset-padding;
+    left: $asset-padding;
+    background: url("#{$resources-path}/sketch-mac-icon@2x.png") no-repeat center / $asset-icon-size;
+    width: $asset-icon-size;
+    height: $asset-icon-size;
+    content: "";
+  }
+
+  span {
+    // must use inline elements inside <a> tag
+    display: block;
+    margin-bottom: 2px;
     font-weight: 700;
   }
 
-  small {
-    color: $pt-text-color-muted;
-  }
-
   &:hover {
-    background-color: $asset-background-color;
-    cursor: pointer;
     text-decoration: none;
-  }
 
-  &:active {
-    opacity: 0.5;
-    background-color: $asset-background-color;
-  }
-
-  .#{$ns}-dark & {
-    small {
-      color: $pt-dark-text-color-muted;
-    }
-
-    &:hover,
-    &:active {
-      background-color: $dark-asset-background-color;
+    span {
+      text-decoration: underline;
     }
   }
 }

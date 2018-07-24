@@ -6,7 +6,7 @@
 
 import { IProps } from "@blueprintjs/core";
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 export interface IExampleProps<T = {}> extends IProps {
     /**
@@ -56,6 +56,13 @@ export interface IDocsExampleProps extends IExampleProps {
      * This prop is mutually exclusive with and takes priority over `children`.
      */
     html?: string;
+
+    /**
+     * Whether `forceUpdate()` should be invoked after the first render to
+     * ensure correct DOM sizing.
+     * @default true
+     */
+    forceUpdate?: boolean;
 }
 
 /**
@@ -81,18 +88,34 @@ export interface IDocsExampleProps extends IExampleProps {
  * ```
  */
 export class Example extends React.PureComponent<IDocsExampleProps> {
-    private hasDelayedBeforeInitialRender = false;
+    public static defaultProps: Partial<IDocsExampleProps> = {
+        forceUpdate: true,
+        showOptionsBelowExample: false,
+    };
+
+    private hasDelayedInitialRender = false;
 
     public render() {
-        // HACKHACK: This is the other required piece. Don't let any React nodes
-        // into the DOM until the requestAnimationFrame delay has elapsed. This
-        // prevents shouldComponentUpdate snafus at lower levels.
-        if (!this.hasDelayedBeforeInitialRender) {
+        const {
+            children,
+            className,
+            data,
+            forceUpdate,
+            html,
+            id,
+            options,
+            showOptionsBelowExample,
+            // spread any additional props through to the root element,
+            // to support decorators that expect DOM props.
+            ...htmlProps
+        } = this.props;
+
+        // `forceUpdate` -  Don't let any React nodes into the DOM until the
+        // `requestAnimationFrame` delay has elapsed.
+        if (forceUpdate && !this.hasDelayedInitialRender) {
             return null;
         }
 
-        // spread any additional props through to the root element, to support decorators that expect DOM props
-        const { children, className, data, html, id, options, showOptionsBelowExample, ...htmlProps } = this.props;
         const classes = classNames(
             "docs-example-frame",
             showOptionsBelowExample ? "docs-example-frame-column" : "docs-example-frame-row",
@@ -114,13 +137,14 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
     }
 
     public componentDidMount() {
-        // HACKHACK: The docs app suffers from a Flash of Unstyled Content that
-        // causes some 'width: 100%' examples to mis-measure the horizontal
-        // space available to them. Until that bug is squashed, we must delay
-        // initial render till the DOM loads with a requestAnimationFrame.
-        requestAnimationFrame(() => {
-            this.hasDelayedBeforeInitialRender = true;
-            this.forceUpdate();
-        });
+        // `forceUpdate` - The docs app suffers from a Flash of Unstyled Content
+        // that causes components to mis-measure themselves on first render.
+        // Delay initial render till the DOM loads with a requestAnimationFrame.
+        if (this.props.forceUpdate) {
+            requestAnimationFrame(() => {
+                this.hasDelayedInitialRender = true;
+                this.forceUpdate();
+            });
+        }
     }
 }

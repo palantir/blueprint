@@ -1,6 +1,6 @@
-@# Panel Stack
+@# Panel stack
 
-`Panel Stack` is a component designed to render multiple panels from a stack, but only display the
+`PanelStack` is a component designed to render multiple panels from a stack, but only display the
 top most panel at any given time.
 
 It will render each panel with a header and uses [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
