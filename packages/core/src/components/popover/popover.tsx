@@ -208,7 +208,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentDidMount() {
         this.updateDarkParent();
-        this.updatePopperObserver();
+        this.popperObserver = new ResizeObserver(() => this.popperScheduleUpdate && this.popperScheduleUpdate());
     }
 
     public componentWillReceiveProps(nextProps: IPopoverProps) {
@@ -231,8 +231,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         this.updateDarkParent();
 
         if (this.popoverElement instanceof HTMLElement) {
-            // Reset the the observer to avoid the list of observed elements growing
-            this.updatePopperObserver();
+            // Clear active observations to avoid the list growing.
+            this.popperObserver.disconnect();
+
             // Ensure our observer has an up-to-date reference to popoverElement
             this.popperObserver.observe(this.popoverElement);
         }
@@ -277,14 +278,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             const hasDarkParent = this.targetElement != null && this.targetElement.closest(`.${Classes.DARK}`) != null;
             this.setState({ hasDarkParent });
         }
-    }
-
-    private updatePopperObserver() {
-        if (this.popperObserver instanceof ResizeObserver) {
-            this.popperObserver.disconnect();
-        }
-
-        this.popperObserver = new ResizeObserver(() => this.popperScheduleUpdate && this.popperScheduleUpdate());
     }
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
