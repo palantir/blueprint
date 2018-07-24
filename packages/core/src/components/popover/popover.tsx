@@ -132,7 +132,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private popperObserver: ResizeObserver;
 
     /** Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted */
-    private popperUpdater: () => {};
+    private popperUpdater: () => void;
 
     private refHandlers = {
         popover: (ref: HTMLElement) => {
