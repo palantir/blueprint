@@ -8,19 +8,13 @@ import { Text } from "../text/text";
 import { IPanel, IPanelProps } from "./panelProps";
 
 export interface IPanelViewProps {
-    /**
-     * The panel to be displayed.
-     */
+    /** The panel to be displayed. */
     panel: IPanel;
 
-    /**
-     * Props to be passed to the panel.
-     */
+    /** Props to inject into the panel, in addition to its own props. */
     panelProps: IPanelProps;
 
-    /**
-     * The panel immediately under the current panel in the stack.
-     */
+    /** The previous panel in the stack, for rendering the "back" button. */
     previousPanel?: IPanel;
 }
 
@@ -52,9 +46,9 @@ export class PanelView extends React.PureComponent<IPanelViewProps> {
                 className={Classes.PANEL_STACK_HEADER_BACK}
                 icon="chevron-left"
                 minimal={true}
+                onClick={this.props.panelProps.closePanel}
                 small={true}
                 text={this.props.previousPanel.title}
-                onClick={this.props.panelProps.closePanel}
             />
         );
     }
