@@ -235,16 +235,11 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: $white;
+      background-image: radial-gradient($white 0%, $white 28%, transparent 32%);
     }
 
     input:checked:disabled ~ .#{$ns}-control-indicator::before {
-      box-shadow: none;
+      background-image: radial-gradient(rgba($white, 0.5) 0%, rgba($white, 0.5) 28%, transparent 32%);
     }
 
     input:focus ~ .#{$ns}-control-indicator {
