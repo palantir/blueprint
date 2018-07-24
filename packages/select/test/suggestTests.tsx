@@ -64,8 +64,8 @@ describe("Suggest", () => {
             runEscTabKeyDownTests(Keys.TAB);
         });
 
-        xit("does not open popover on BACKSPACE, ARROW_LEFT, or ARROW_RIGHT", () => {
-            const wrapper = suggest({ openOnKeyDown: true });
+        it("does not open popover on BACKSPACE, ARROW_LEFT, or ARROW_RIGHT", () => {
+            const wrapper = suggest({ openOnKeyDown: true, popoverProps: { usePortal: false } });
             simulateFocus(wrapper);
             checkKeyDownDoesNotOpenPopover(wrapper, Keys.BACKSPACE);
             checkKeyDownDoesNotOpenPopover(wrapper, Keys.ARROW_LEFT);

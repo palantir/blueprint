@@ -21,7 +21,7 @@ describe("<QueryList>", () => {
         items: TOP_100_FILMS.slice(0, 20),
         onActiveItemChange: sinon.spy(),
         onItemSelect: sinon.spy(),
-        renderer: sinon.spy((props: IQueryListRendererProps<IFilm>) => <div>{props.itemList}</div>), // must render something,
+        renderer: sinon.spy((props: IQueryListRendererProps<IFilm>) => <div>{props.itemList}</div>),
     };
 
     beforeEach(() => {
