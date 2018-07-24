@@ -27,13 +27,14 @@
   }
 
   .#{$ns}-heading {
-    margin: 0;
+    margin: 0 ($pt-grid-size / 2);
   }
 }
 
 .#{$ns}-button.#{$ns}-panel-stack-header-back {
   margin-left: $pt-grid-size / 2;
   padding-left: 0;
+  white-space: nowrap;
 
   .#{$ns}-icon {
     // reduce margins around icon so it fits better in tight header
