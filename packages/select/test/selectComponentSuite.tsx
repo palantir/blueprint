@@ -37,7 +37,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S extends
             // only filtered items re-rendered
             testProps.itemRenderer.resetHistory();
             wrapper.setState({ query: "1999" });
-            assert.equal(testProps.itemRenderer.callCount, 4, "re-render");
+            assert.equal(testProps.itemRenderer.callCount, 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {

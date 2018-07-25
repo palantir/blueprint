@@ -154,11 +154,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
         // reset active item (in the same step) if it's no longer valid
         // Also don't fire the event if the active item is already undefined and there is nothing to pick
+        const activeIndex = this.getActiveIndex();
         if (
-            this.getActiveIndex() < 0 &&
-            (this.state.filteredItems.length !== 0 || this.props.activeItem !== undefined)
+            this.props.activeItem !== undefined &&
+            (activeIndex < 0 || isItemDisabled(this.props.activeItem, activeIndex, this.props.itemDisabled))
         ) {
-            Utils.safeInvoke(this.props.onActiveItemChange, this.state.filteredItems[0]);
+            this.setFirstActiveItem();
         }
     }
 
@@ -201,7 +202,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
             active: activeItem === item,
-            disabled: this.isItemDisabled(item, index),
+            disabled: isItemDisabled(item, index, this.props.itemDisabled),
             matchesPredicate,
         };
         return this.props.itemRenderer(item, {
@@ -235,7 +236,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        Utils.safeInvoke(this.props.onActiveItemChange, item);
+        this.setActiveItem(item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     };
 
@@ -247,7 +248,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             if (nextActiveItem != null) {
                 // indicate that the active item may need to be scrolled into view after update.
                 this.shouldCheckActiveItemInViewport = true;
-                Utils.safeInvoke(this.props.onActiveItemChange, nextActiveItem);
+                this.setActiveItem(nextActiveItem);
             }
         }
         Utils.safeInvoke(this.props.onKeyDown, event);
@@ -266,35 +267,21 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     /**
-     * Get the next enabled item, moving in the given direction from the current
+     * Get the next enabled item, moving in the given direction from the start
      * index. An `undefined` return value means no suitable item was found.
      * @param direction amount to move in each iteration, typically +/-1
      */
-    private getNextActiveItem(direction: number): T | undefined {
-        const { filteredItems } = this.state;
-        let index = this.getActiveIndex();
-        // remember where we started to prevent an infinite loop
-        const startIndex = index;
-        const maxIndex = filteredItems.length - 1;
-        do {
-            // find first non-disabled item
-            index = wrapNumber(index + direction, 0, maxIndex);
-            if (!this.isItemDisabled(filteredItems[index], index)) {
-                return filteredItems[index];
-            }
-        } while (index !== startIndex);
-        return undefined;
+    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | undefined {
+        return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private isItemDisabled(item: T, index: number) {
-        const { itemDisabled } = this.props;
-        if (itemDisabled == null) {
-            return false;
-        } else if (Utils.isFunction(itemDisabled)) {
-            return itemDisabled(item, index);
-        } else {
-            return !!item[itemDisabled];
-        }
+    private setActiveItem(item: T | undefined) {
+        // TODO: this will be more complex with un/controlled support (next PR)
+        Utils.safeInvoke(this.props.onActiveItemChange, item);
+    }
+
+    private setFirstActiveItem() {
+        this.setActiveItem(this.getNextActiveItem(1, this.state.filteredItems.length - 1));
     }
 }
 
@@ -320,4 +307,43 @@ function wrapNumber(value: number, min: number, max: number) {
         return min;
     }
     return value;
+}
+
+function isItemDisabled<T>(item: T, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
+    if (itemDisabled == null) {
+        return false;
+    } else if (Utils.isFunction(itemDisabled)) {
+        return itemDisabled(item, index);
+    }
+    return !!item[itemDisabled];
+}
+
+/**
+ * Get the next enabled item, moving in the given direction from the start
+ * index. An `undefined` return value means no suitable item was found.
+ * @param items the list of items
+ * @param isItemDisabled callback to determine if a given item is disabled
+ * @param direction amount to move in each iteration, typically +/-1
+ * @param startIndex which index to begin moving from
+ */
+export function getFirstEnabledItem<T>(
+    items: T[],
+    itemDisabled: IListItemsProps<T>["itemDisabled"],
+    direction: number,
+    startIndex: number,
+): T | undefined {
+    if (items.length === 0) {
+        return undefined;
+    }
+    // remember where we started to prevent an infinite loop
+    let index = startIndex;
+    const maxIndex = items.length - 1;
+    do {
+        // find first non-disabled item
+        index = wrapNumber(index + direction, 0, maxIndex);
+        if (!isItemDisabled(items[index], index, itemDisabled)) {
+            return items[index];
+        }
+    } while (index !== startIndex);
+    return undefined;
 }
