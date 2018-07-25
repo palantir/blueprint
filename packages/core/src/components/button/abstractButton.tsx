@@ -149,7 +149,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         return [
             loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />,
             <Icon key="leftIcon" icon={icon} />,
-            (text || children) && (
+            (text != null || children) && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
                     {children}
