@@ -184,13 +184,15 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     // TODO resetActiveItem = this.props.resetOnQuery
     public setQuery(query: string, resetActiveItem = false) {
+        if (query !== this.state.query) {
+            Utils.safeInvoke(this.props.onQueryChange, query);
+        }
         this.setState({ filteredItems: getFilteredItems(query, this.props), query }, () => {
             // wait will state has updated so we select the first from newly filtered items
             if (resetActiveItem) {
-                this.setActiveItem("first");
+                this.setFirstActiveItem();
             }
         });
-        Utils.safeInvoke(this.props.onQueryChange, query);
     }
 
     /** default `itemListRenderer` implementation */
@@ -289,7 +291,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private setActiveItem(activeItem: T | "first" | undefined) {
+    private setActiveItem(activeItem: T | undefined) {
         if (this.props.activeItem == null) {
             this.setState({ activeItem });
         }
