@@ -7,6 +7,13 @@ A highly interactive React `Table` component.
   [`HTMLTable` in **@blueprintjs/core**](#core/components/html-table).
 </div>
 
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+Do not forget to include `blueprint-table.css` on your page.
+
+```sh
+npm install --save @blueprintjs/table
+```
+
 ### Features
 
 * High-scale, data-agnostic
@@ -17,10 +24,6 @@ A highly interactive React `Table` component.
 * Editable headers and cells
 * Integrated header and context menus
 
-```sh
-npm install --save @blueprintjs/core @blueprintjs/table
-```
-
 @## Basic usage
 
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
@@ -29,6 +32,8 @@ and change the `numRows` prop on the `Table` to set the number of rows.
 For example, this code creates an empty table with three columns and five rows:
 
 ```tsx
+import { Column, Table } from "@blueprintjs/table";
+
 <Table numRows={5}>
     <Column />
     <Column />
@@ -44,6 +49,8 @@ This is useful when working with typed columnar data, like database results.
 For example, this creates a table that renders dollar values:
 
 ```tsx
+import { Cell, Column, Table } from "@blueprintjs/table";
+
 const cellRenderer = (rowIndex: number) => {
     return <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
 };

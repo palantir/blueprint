@@ -24,9 +24,10 @@ export interface IButtonProps extends IActionProps {
     active?: boolean;
 
     /**
-     * Text alignment within button. By default, icons and text will be centered within the button.
-     * Passing this prop will cause the text container to fill the button and align the text within that
-     * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
+     * Text alignment within button. By default, icons and text will be centered
+     * within the button. Passing `"left"` or `"right"` will align the button
+     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * `"center"` will center the text and icons together.
      * @default Alignment.CENTER
      */
     alignText?: Alignment;
