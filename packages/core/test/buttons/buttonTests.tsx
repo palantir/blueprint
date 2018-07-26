@@ -51,6 +51,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         it('doesn\'t render a span if text=""', () => {
             assert.equal(button({}, true, "").find("span").length, 0);
+            assert.equal(button({ text: "" }, true).find("span").length, 0);
         });
 
         it("renders a loading spinner when the loading prop is true", () => {
