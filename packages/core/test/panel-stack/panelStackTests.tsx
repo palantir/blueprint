@@ -21,7 +21,7 @@ export class TestPanel extends React.Component<IPanelProps> {
         );
     }
 
-    private openPanel = () => this.props.openPanel(TestPanel, {}, { title: "New Panel 1" });
+    private openPanel = () => this.props.openPanel({ component: TestPanel, title: "New Panel 1" });
 }
 
 describe("<PanelStack>", () => {
