@@ -269,6 +269,27 @@
   }
 }
 
+#{example("PanelStackExample")} {
+  .docs-panel-stack-example {
+    box-shadow: $pt-elevation-shadow-0;
+    width: 300px;
+    height: 240px;
+  }
+
+  .docs-panel-stack-contents-example {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  ul {
+    max-height: 240px;
+    overflow: auto;
+  }
+}
+
 .docs-popover-position-example {
   em {
     display: inline-block;
