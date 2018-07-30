@@ -2,9 +2,10 @@
 
 `PanelStack` manages a stack of panels and displays only the topmost panel.
 
-Each panel appears with a header containing a "back" button to pop the stack and
-return to the previous panel. The bottom-most `initialPanel` cannot be closed
-or removed from the stack. Panels use [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
+Each panel appears with a header containing a "back" button to return to the
+previous panel. The bottom-most `initialPanel` cannot be closed or removed from
+the stack. Panels use
+[`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
 for seamless transitions.
 
 
