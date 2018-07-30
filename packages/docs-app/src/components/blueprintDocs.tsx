@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AnchorButton, Classes, Intent, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
+import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
@@ -123,7 +123,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             return null;
         }
         return (
-            <Tag className="docs-nav-tag" minimal={true} intent={tag === "new" ? Intent.SUCCESS : "none"}>
+            <Tag className="docs-nav-tag" minimal={true} intent={tag === "new" ? "success" : "none"}>
                 {tag}
             </Tag>
         );
