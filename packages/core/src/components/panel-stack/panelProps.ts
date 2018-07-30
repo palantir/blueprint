@@ -6,10 +6,13 @@
 
 import * as React from "react";
 
+/**
+ * An object describing a panel in a `PanelStack`.
+ */
 export interface IPanel<P = {}> extends IPanelOptions {
     /**
-     * The component type to render for this panel. This is a reference to the
-     * component class or SFC, _not_ a JSX.Element, so it can be re-created
+     * The component type to render for this panel. This must be a reference to
+     * the component class or SFC, _not_ a JSX element, so it can be re-created
      * dynamically when needed.
      */
     component: React.ComponentType<P & IPanelProps>;

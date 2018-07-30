@@ -12,8 +12,15 @@ for seamless transitions.
 
 @## Panels
 
-`PanelStack` will inject its own `IPanelProps` into each panel, providing
-methods to imperatively close the panel or open a new one on top of it.
+Panels are supplied as `IPanel` objects like `{ component, props, title }`,
+where `component` and `props` are used to render the panel element and `title`
+will appear in the header and back button. This breakdown allows the component
+to avoid cloning elements. Note that each panel is only mounted when it is atop
+the stack and is unmounted when it is closed or when a panel opens above it.
+
+`PanelStack` injects its own `IPanelProps` into each panel (in addition to the
+`props` defined alongside the `component`), providing methods to imperatively
+close the current panel or open a new one on top of it.
 
 ```tsx
 import { Button, IPanelProps, PanelStack } from "@blueprintjs/core";
@@ -24,10 +31,11 @@ class MyPanel extends React.Component<IPanelProps> {
     }
 
     private openSettingsPanel() {
+        // openPanel (and closePanel) are injected by PanelStack
         this.props.openPanel({
-            component: SettingsPanel,
-            props: { enabled: true },
-            title: "Settings",
+            component: SettingsPanel, // <- class or stateless function type
+            props: { enabled: true }, // <- SettingsPanel props without IPanelProps
+            title: "Settings",        // <- appears in header and back button
         });
     }
 }
@@ -39,17 +47,14 @@ class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> 
 <PanelStack initialPanel={{ component: MyPanel, title: "Home" }} />
 ```
 
+@interface IPanel
+
 @interface IPanelProps
 
 @## Props
-
-Panels are supplied as `{ component, props, title }` objects where `component`
-and `props` are used to render the panel element and `title` will appear in the
-header and back button.
 
 The panel stack cannot be controlled but `onClose` and `onOpen` callbacks are
 available to listen for changes.
 
 @interface IPanelStackProps
 
-@interface IPanel
