@@ -37,6 +37,8 @@ export interface INonIdealStateProps extends IProps {
 }
 
 export class NonIdealState extends React.PureComponent<INonIdealStateProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
+
     public render() {
         const { action, children, className, description, title } = this.props;
         return (

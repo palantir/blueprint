@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { DISPLAYNAME_PREFIX, Intent, IProps } from "../../common";
+import { Intent, IProps } from "../../common";
 
 export const HandleType = {
     /** A full handle appears as a small square. */

@@ -74,6 +74,8 @@ export interface IHotkeyProps extends IProps {
 }
 
 export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
+
     public static defaultProps = {
         allowInInput: false,
         disabled: false,
