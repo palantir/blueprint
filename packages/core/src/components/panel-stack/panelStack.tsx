@@ -24,15 +24,14 @@ export interface IPanelStackProps extends IProps {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
-     * @param oldPanel The panel that was just removed from the stack.
      */
-    onClose?: (oldPanel: IPanel) => void;
+    onClose?: (removedPanel: IPanel) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen?: (newPanel: IPanel) => void;
+    onOpen?: (addedPanel: IPanel) => void;
 }
 
 export interface IPanelStackState {

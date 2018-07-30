@@ -32,7 +32,7 @@ export class PanelView extends React.PureComponent<IPanelViewProps> {
                 <div className={Classes.PANEL_STACK_HEADER}>
                     <span>{this.maybeRenderBack()}</span>
                     <Text className={Classes.HEADING} ellipsize={true}>
-                        {this.props.panel.title}
+                        {panel.title}
                     </Text>
                     <span />
                 </div>

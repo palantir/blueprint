@@ -49,7 +49,9 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
         this.setState({ currentPanelStack: [newPanel, ...this.state.currentPanelStack] });
     };
 
-    private removeFromPanelStack = () => {
+    private removeFromPanelStack = (_lastPanel: IPanel) => {
+        // In this example, the last panel is always the one closed.
+        // Using `this.props.closePanel()` is one way to violate this.
         this.setState({ currentPanelStack: this.state.currentPanelStack.slice(1) });
     };
 }
