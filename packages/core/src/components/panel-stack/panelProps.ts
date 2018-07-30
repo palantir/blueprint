@@ -23,40 +23,33 @@ export interface IPanel<P = {}> extends IPanelOptions {
 
 /**
  * Include this interface in your panel component's props type to access these
- * two functions which are injected by `PanelStack`:
+ * two functions which are injected by `PanelStack`.
  *
  * ```tsx
  * import { IPanelProps } from "@blueprintjs/core";
- *
- * export interface IMyProps { ... }
- * export class MyPanel extends React.Component<IMyProps & IPanelProps> {
- *     public render() {
- *         return <button onClick={this.props.closePanel} />;
- *     }
- * }
+ * export class SettingsPanel extends React.Component<IPanelProps & ISettingsPanelProps> {...}
  * ```
  */
 export interface IPanelProps {
     /**
-     * Call this method to programatically close the current panel. If there is
-     * only one panel on the stack, it cannot be closed and this method will do
-     * nothing.
+     * Call this method to programatically close this panel. If this is the only
+     * panel on the stack then this method will do nothing.
      *
-     * Remember that the panel header always contains a "back" button (unless
-     * there is only one panel on the stack) that will close the current panel
-     * on click.
+     * Remember that the panel header always contains a "back" button that
+     * closes this panel on click (unless there is only one panel on the stack).
      */
     closePanel(): void;
 
     /**
-     * Call this method to open a new panel on the top of the stack.
-     * @param component The React component of the new panel.
-     * @param props The props to be passed to the new panel.
-     * @param options Additional options for the new panel.
+     * Call this method to open a new panel on the top of the stack. Together,
+     * `component` and `props` are used to render the panel element when needed
+     * (and `IPanelProps` is injected). The `title` option is required and will
+     * appear in the panel header.
      */
     openPanel<P>(component: React.ComponentType<P & IPanelProps>, props: P, options: IPanelOptions): void;
 }
 
+/** Options for opening a new panel. */
 export interface IPanelOptions {
     /**
      * The title to be displayed above this panel. It is also used as the text

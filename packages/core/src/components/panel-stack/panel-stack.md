@@ -1,24 +1,54 @@
 @# Panel stack
 
-`PanelStack` is a component designed to render multiple panels from a stack, but only display the
-top most panel at any given time.
+`PanelStack` manages a stack of panels and displays only the topmost panel.
 
-It will render each panel with a header and uses [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
-to seamlessly move between panels. Whenever there is more than a single panel on the stack, `Panel Stack` will display a back
-button allowing the user to easily move to the previous panel.
+Each panel appears with a header containing a "back" button to pop the stack and
+return to the previous panel. The bottom-most `initialPanel` cannot be closed
+or removed from the stack. Panels use [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
+for seamless transitions.
 
-Any component can become a panel if it implements `IPanelProps`. The panel can then either open additional
-panels, adding these new components to the top of the panel stack, or it can programatically close itself
-provided it is not the only panel left in the stack.
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">A note about closing a panel</h4>
-    Try and avoid calling `closePanel()` as much as possible since there is a back button in the header.
-</div>
 
 @reactExample PanelStackExample
 
+@## Panels
+
+`PanelStack` will inject its own `IPanelProps` into each panel, providing
+methods to imperatively close the panel or open a new one on top of it.
+
+```tsx
+import { Button, IPanelProps, PanelStack } from "@blueprintjs/core";
+
+class MyPanel extends React.Component<IPanelProps> {
+    public render() {
+        return <Button onClick={this.openSettingsPanel} text="Settings" />
+    }
+
+    private openSettingsPanel() {
+        this.props.openPanel({
+            component: SettingsPanel,
+            props: { enabled: true },
+            title: "Settings",
+        });
+    }
+}
+
+class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> {
+    // ...
+}
+
+<PanelStack initialPanel={{ component: MyPanel, title: "Home" }} />
+```
+
+@interface IPanelProps
+
 @## Props
+
+Panels are supplied as `{ component, props, title }` objects where `component`
+and `props` are used to render the panel element and `title` will appear in the
+header and back button.
+
+The panel stack cannot be controlled but `onClose` and `onOpen` callbacks are
+available to listen for changes.
 
 @interface IPanelStackProps
 
