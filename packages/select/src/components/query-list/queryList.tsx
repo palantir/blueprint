@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { IProps, Keys, Menu, Utils } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
 import { IItemListRendererProps, IItemModifiers, IListItemsProps, renderFilteredItems } from "../../common";
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {
@@ -91,7 +91,7 @@ export interface IQueryListState<T> {
 }
 
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
-    public static displayName = "Blueprint3.QueryList";
+    public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static ofType<T>() {
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;

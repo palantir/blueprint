@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
-import { Classes, IIntentProps, IProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common";
 
 export { IconName };
 
@@ -56,7 +56,7 @@ export interface IIconProps extends IIntentProps, IProps {
 }
 
 export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
-    public static displayName = "Blueprint3.Icon";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
     public static readonly SIZE_LARGE = 20;

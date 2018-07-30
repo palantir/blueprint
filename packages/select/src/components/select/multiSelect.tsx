@@ -7,6 +7,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IPopoverProps,
     ITagInputProps,
@@ -54,7 +55,7 @@ export interface IMultiSelectState<T> {
 }
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState<T>> {
-    public static displayName = "Blueprint3.MultiSelect";
+    public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static ofType<T>() {
         return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;

@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
@@ -68,7 +68,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         isOpen: false,
     };
 
-    public static displayName = "Blueprint3.Dialog";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
 
     public render() {
         return (

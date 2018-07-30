@@ -8,6 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -56,7 +57,7 @@ export interface ISuggestState<T> {
 }
 
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
-    public static displayName = "Blueprint3.Suggest";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
     // Note: can't use <T> in static members, so this remains dynamically typed.
     public static defaultProps = {

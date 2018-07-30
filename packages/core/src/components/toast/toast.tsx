@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
@@ -51,7 +51,7 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
         timeout: 5000,
     };
 
-    public static displayName = "Blueprint3.Toast";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
     public render(): JSX.Element {
         const { className, icon, intent, message } = this.props;

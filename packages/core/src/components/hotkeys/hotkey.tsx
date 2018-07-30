@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps extends IProps {

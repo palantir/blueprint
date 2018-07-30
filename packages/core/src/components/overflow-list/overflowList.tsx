@@ -11,7 +11,7 @@ import ResizeObserver from "resize-observer-polyfill";
 import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { throttle } from "../../common/utils";
 
 export interface IOverflowListProps<T> extends IProps {
@@ -74,7 +74,7 @@ export interface IOverflowListState<T> {
 }
 
 export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, IOverflowListState<T>> {
-    public static displayName = "Blueprint3.OverflowList";
+    public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
     public static defaultProps: Partial<IOverflowListProps<any>> = {
         collapseFrom: Boundary.START,

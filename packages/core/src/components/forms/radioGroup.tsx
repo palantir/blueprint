@@ -9,7 +9,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IOptionProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IOptionProps, IProps } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
 import { IRadioProps, Radio } from "./controls";
 
@@ -58,7 +58,7 @@ function nextName() {
 }
 
 export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
-    public static displayName = "Blueprint3.RadioGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 
     // a unique name for this group, which can be overridden by `name` prop.
     private autoGroupName = nextName();

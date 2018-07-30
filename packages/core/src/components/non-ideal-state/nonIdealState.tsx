@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";

@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
@@ -77,6 +77,8 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
 }
 
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
+
     public static ofType<T>() {
         return TreeNode as new (props: ITreeNodeProps<T>) => TreeNode<T>;
     }
