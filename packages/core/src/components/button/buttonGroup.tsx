@@ -47,7 +47,7 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class ButtonGroup extends React.PureComponent<IButtonGroupProps, {}> {
-    public static displayName = "Blueprint2.ButtonGroup";
+    public static displayName = "Blueprint3.ButtonGroup";
 
     public render() {
         const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = this.props;

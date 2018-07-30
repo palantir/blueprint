@@ -22,7 +22,7 @@ export interface INavbarGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class NavbarGroup extends React.PureComponent<INavbarGroupProps, {}> {
-    public static displayName = "Blueprint2.NavbarGroup";
+    public static displayName = "Blueprint3.NavbarGroup";
 
     public static defaultProps: INavbarGroupProps = {
         align: Alignment.LEFT,

@@ -63,7 +63,7 @@ export class DateTimePicker extends AbstractPureComponent<IDateTimePickerProps, 
         defaultValue: new Date(),
     };
 
-    public static displayName = "Blueprint2.DateTimePicker";
+    public static displayName = "Blueprint3.DateTimePicker";
 
     public constructor(props?: IDateTimePickerProps, context?: any) {
         super(props, context);

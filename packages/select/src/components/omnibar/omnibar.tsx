@@ -59,7 +59,7 @@ export interface IOmnibarState<T> {
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
-    public static displayName = "Blueprint2.Omnibar";
+    public static displayName = "Blueprint3.Omnibar";
 
     public static ofType<T>() {
         return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;

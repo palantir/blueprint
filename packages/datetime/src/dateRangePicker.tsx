@@ -124,7 +124,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         shortcuts: true,
     };
 
-    public static displayName = "Blueprint2.DateRangePicker";
+    public static displayName = "Blueprint3.DateRangePicker";
 
     private get isControlled() {
         return this.props.value != null;

@@ -79,7 +79,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         showActionsBar: false,
     };
 
-    public static displayName = "Blueprint2.DatePicker";
+    public static displayName = "Blueprint3.DatePicker";
 
     private ignoreNextMonthChange = false;
 

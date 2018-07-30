@@ -75,7 +75,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
 }
 
 export class Tag extends React.PureComponent<ITagProps, {}> {
-    public static displayName = "Blueprint2.Tag";
+    public static displayName = "Blueprint3.Tag";
 
     public render() {
         const {

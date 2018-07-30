@@ -80,7 +80,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         shouldDismissPopover: true,
         text: "",
     };
-    public static displayName = "Blueprint2.MenuItem";
+    public static displayName = "Blueprint3.MenuItem";
 
     public render() {
         const {

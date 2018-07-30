@@ -172,7 +172,7 @@ export interface ITagInputState {
 const NONE = -1;
 
 export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
-    public static displayName = "Blueprint2.TagInput";
+    public static displayName = "Blueprint3.TagInput";
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         addOnBlur: false,

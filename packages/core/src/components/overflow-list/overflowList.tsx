@@ -74,7 +74,7 @@ export interface IOverflowListState<T> {
 }
 
 export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, IOverflowListState<T>> {
-    public static displayName = "Blueprint2.OverflowList";
+    public static displayName = "Blueprint3.OverflowList";
 
     public static defaultProps: Partial<IOverflowListProps<any>> = {
         collapseFrom: Boundary.START,

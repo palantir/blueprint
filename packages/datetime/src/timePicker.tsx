@@ -116,7 +116,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         useAmPm: false,
     };
 
-    public static displayName = "Blueprint2.TimePicker";
+    public static displayName = "Blueprint3.TimePicker";
 
     public constructor(props?: ITimePickerProps, context?: any) {
         super(props, context);

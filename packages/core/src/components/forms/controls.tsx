@@ -132,7 +132,7 @@ const Control: React.SFC<IControlInternalProps> = ({
 export interface ISwitchProps extends IControlProps {}
 
 export class Switch extends React.PureComponent<ISwitchProps> {
-    public static displayName = "Blueprint2.Switch";
+    public static displayName = "Blueprint3.Switch";
 
     public render() {
         return <Control {...this.props} type="checkbox" typeClassName={Classes.SWITCH} />;
@@ -146,7 +146,7 @@ export class Switch extends React.PureComponent<ISwitchProps> {
 export interface IRadioProps extends IControlProps {}
 
 export class Radio extends React.PureComponent<IRadioProps> {
-    public static displayName = "Blueprint2.Radio";
+    public static displayName = "Blueprint3.Radio";
 
     public render() {
         return <Control {...this.props} type="radio" typeClassName={Classes.RADIO} />;
@@ -178,7 +178,7 @@ export interface ICheckboxState {
 }
 
 export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState> {
-    public static displayName = "Blueprint2.Checkbox";
+    public static displayName = "Blueprint3.Checkbox";
 
     public state: ICheckboxState = {
         indeterminate: this.props.indeterminate || this.props.defaultIndeterminate || false,

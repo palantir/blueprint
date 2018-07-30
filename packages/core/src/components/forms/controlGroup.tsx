@@ -26,7 +26,7 @@ export interface IControlGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class ControlGroup extends React.PureComponent<IControlGroupProps, {}> {
-    public static displayName = "Blueprint2.ControlGroup";
+    public static displayName = "Blueprint3.ControlGroup";
 
     public render() {
         const { children, className, fill, vertical, ...htmlProps } = this.props;

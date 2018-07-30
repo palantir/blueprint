@@ -68,7 +68,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         isOpen: false,
     };
 
-    public static displayName = "Blueprint2.Dialog";
+    public static displayName = "Blueprint3.Dialog";
 
     public render() {
         return (

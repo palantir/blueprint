@@ -126,7 +126,7 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
-    public static displayName = "Blueprint2.DateInput";
+    public static displayName = "Blueprint3.DateInput";
 
     public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,

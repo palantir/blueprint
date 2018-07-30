@@ -46,7 +46,7 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
 }
 
 export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
-    public static displayName = "Blueprint2.Tooltip";
+    public static displayName = "Blueprint3.Tooltip";
 
     public static defaultProps: Partial<ITooltipProps> = {
         hoverCloseDelay: 0,

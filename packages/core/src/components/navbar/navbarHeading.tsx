@@ -17,7 +17,7 @@ export interface INavbarHeadingProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class NavbarHeading extends React.PureComponent<INavbarHeadingProps, {}> {
-    public static displayName = "Blueprint2.NavbarHeading";
+    public static displayName = "Blueprint3.NavbarHeading";
 
     public render() {
         const { children, className, ...htmlProps } = this.props;

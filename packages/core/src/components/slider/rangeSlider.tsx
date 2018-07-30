@@ -38,7 +38,7 @@ export class RangeSlider extends AbstractPureComponent<IRangeSliderProps> {
         value: [0, 10],
     };
 
-    public static displayName = "Blueprint2.RangeSlider";
+    public static displayName = "Blueprint3.RangeSlider";
 
     public render() {
         const { value, ...props } = this.props;

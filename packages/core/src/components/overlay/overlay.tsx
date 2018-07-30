@@ -149,7 +149,7 @@ export interface IOverlayState {
 }
 
 export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
-    public static displayName = "Blueprint2.Overlay";
+    public static displayName = "Blueprint3.Overlay";
 
     public static defaultProps: IOverlayProps = {
         autoFocus: true,

@@ -20,7 +20,7 @@ export interface IMenuDividerProps extends IProps {
 }
 
 export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
-    public static displayName = "Blueprint2.MenuDivider";
+    public static displayName = "Blueprint3.MenuDivider";
 
     public render() {
         const { className, title } = this.props;

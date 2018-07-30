@@ -75,7 +75,7 @@ export interface ISelectState<T> {
 }
 
 export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState<T>> {
-    public static displayName = "Blueprint2.Select";
+    public static displayName = "Blueprint3.Select";
 
     public static ofType<T>() {
         return Select as new (props: ISelectProps<T>) => Select<T>;

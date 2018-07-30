@@ -38,7 +38,7 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
         value: 0,
     };
 
-    public static displayName = "Blueprint2.Slider";
+    public static displayName = "Blueprint3.Slider";
 
     public render() {
         const { initialValue, value, onChange, onRelease, ...props } = this.props;

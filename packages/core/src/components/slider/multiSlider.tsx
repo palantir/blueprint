@@ -118,7 +118,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         defaultTrackIntent: Intent.NONE,
     };
 
-    public static displayName = "Blueprint2.MultiSlider";
+    public static displayName = "Blueprint3.MultiSlider";
 
     public static Handle: React.SFC<IHandleProps> = () => null;
 

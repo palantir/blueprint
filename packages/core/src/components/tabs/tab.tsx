@@ -50,7 +50,7 @@ export class Tab extends React.PureComponent<ITabProps, {}> {
         id: undefined,
     };
 
-    public static displayName = "Blueprint2.Tab";
+    public static displayName = "Blueprint3.Tab";
 
     // this component is never rendered directly; see Tabs#renderTabPanel()
     /* istanbul ignore next */

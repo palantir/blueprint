@@ -56,7 +56,7 @@ export interface ISuggestState<T> {
 }
 
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
-    public static displayName = "Blueprint2.Suggest";
+    public static displayName = "Blueprint3.Suggest";
 
     // Note: can't use <T> in static members, so this remains dynamically typed.
     public static defaultProps = {

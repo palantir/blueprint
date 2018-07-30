@@ -21,7 +21,7 @@ export interface IMenuProps extends IProps {
 }
 
 export class Menu extends React.Component<IMenuProps, {}> {
-    public static displayName = "Blueprint2.Menu";
+    public static displayName = "Blueprint3.Menu";
 
     public static Divider = MenuDivider;
     public static Item = MenuItem;

@@ -108,7 +108,7 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
         isOpen: false,
     };
 
-    public static displayName = "Blueprint2.Alert";
+    public static displayName = "Blueprint3.Alert";
 
     public render() {
         const {

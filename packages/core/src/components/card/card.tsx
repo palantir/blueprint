@@ -39,7 +39,7 @@ export interface ICardProps extends IProps, HTMLDivProps {
 }
 
 export class Card extends React.PureComponent<ICardProps, {}> {
-    public static displayName = "Blueprint2.Card";
+    public static displayName = "Blueprint3.Card";
     public static defaultProps: ICardProps = {
         elevation: Elevation.ZERO,
         interactive: false,

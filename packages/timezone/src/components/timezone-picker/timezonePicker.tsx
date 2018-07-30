@@ -97,7 +97,7 @@ export interface ITimezonePickerState {
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
-    public static displayName = "Blueprint2.TimezonePicker";
+    public static displayName = "Blueprint3.TimezonePicker";
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         date: new Date(),

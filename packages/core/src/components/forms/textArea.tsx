@@ -29,7 +29,7 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
-    public static displayName = "Blueprint2.TextArea";
+    public static displayName = "Blueprint3.TextArea";
 
     public render() {
         const { className, fill, intent, large, inputRef, ...htmlProps } = this.props;

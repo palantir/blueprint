@@ -56,7 +56,7 @@ export interface ICollapsibleListProps extends IProps {
 
 /** @deprecated use `<OverflowList>` for automatic overflow based on available space. */
 export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> {
-    public static displayName = "Blueprint2.CollapsibleList";
+    public static displayName = "Blueprint3.CollapsibleList";
 
     public static defaultProps: ICollapsibleListProps = {
         collapseFrom: Boundary.START,

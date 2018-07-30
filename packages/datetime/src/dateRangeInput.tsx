@@ -204,7 +204,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         startInputProps: {},
     };
 
-    public static displayName = "Blueprint2.DateRangeInput";
+    public static displayName = "Blueprint3.DateRangeInput";
 
     private startInputRef: HTMLInputElement;
     private endInputRef: HTMLInputElement;

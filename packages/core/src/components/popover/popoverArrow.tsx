@@ -51,4 +51,4 @@ export const PopoverArrow: React.SFC<IPopoverArrowProps> = ({ arrowProps: { ref,
         </svg>
     </div>
 );
-PopoverArrow.displayName = "Blueprint2.PopoverArrow";
+PopoverArrow.displayName = "Blueprint3.PopoverArrow";

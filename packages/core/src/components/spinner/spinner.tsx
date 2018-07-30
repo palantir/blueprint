@@ -43,7 +43,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
 }
 
 export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
-    public static displayName = "Blueprint2.Spinner";
+    public static displayName = "Blueprint3.Spinner";
 
     public static readonly SIZE_SMALL = 24;
     public static readonly SIZE_STANDARD = 50;
