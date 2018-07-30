@@ -54,7 +54,7 @@ export interface IPanelProps {
      * @param props The props to be passed to the new panel.
      * @param options Additional options for the new panel.
      */
-    openPanel<P>(component: React.ComponentType<P & IPanelProps>, props: P, options: IPanelOptions): void;
+    openPanel<P>(panel: IPanel<P>): void;
 }
 
 export interface IPanelOptions {
