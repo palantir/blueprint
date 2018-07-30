@@ -18,6 +18,7 @@
 @page navbar
 @page non-ideal-state
 @page overflow-list
+@page panel-stack
 @page progress-bar
 @page skeleton
 @page spinner

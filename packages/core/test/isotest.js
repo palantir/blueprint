@@ -15,6 +15,7 @@ const customProps = {
     KeyCombo: { combo: "?" },
     OverflowList: { items: [], overflowRenderer: () => null, visibleItemRenderer: () => null },
     Overlay: { lazy: false, usePortal: false },
+    PanelStack: { initialPanel: { component: () => null, props: {}, title: "" } },
     TagInput: { values: ["foo", "bar", "baz"] },
     Tooltip: tooltipContent,
     Toaster: { usePortal: false },
