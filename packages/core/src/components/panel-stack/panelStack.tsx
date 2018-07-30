@@ -11,7 +11,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import * as Classes from "../../common/classes";
 import { IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
-import { IPanel, IPanelProps } from "./panelProps";
+import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 
 export interface IPanelStackProps extends IProps {
@@ -63,46 +63,36 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
 
     private renderCurrentPanel() {
         const { stack } = this.state;
+        if (stack.length === 0) {
+            return null;
+        }
         const [activePanel, previousPanel] = stack;
         return (
             <CSSTransition classNames={Classes.PANEL_STACK} key={stack.length} timeout={400}>
                 <PanelView
-                    key={stack.length}
-                    previousPanel={previousPanel}
+                    onClose={this.handlePanelClose}
+                    onOpen={this.handlePanelOpen}
                     panel={activePanel}
-                    panelProps={this.getPanelProps()}
+                    previousPanel={previousPanel}
                 />
             </CSSTransition>
         );
     }
 
-    private getPanelProps(): IPanelProps {
-        const stackSize = this.state.stack.length;
-        return {
-            closePanel: () => this.closePanel(stackSize),
-            openPanel: this.openPanel,
-        };
-    }
-
-    private closePanel = (stackSize: number) => {
-        if (this.state.stack.length !== stackSize || this.state.stack.length <= 1) {
+    private handlePanelClose = (panel: IPanel) => {
+        const { stack } = this.state;
+        // only remove this panel if it is at the top and not the only one.
+        if (stack[0] !== panel || stack.length === 0) {
             return;
         }
-        this.setState(state => {
-            safeInvoke(this.props.onClose, state.stack[0]);
-            return {
-                direction: "pop",
-                stack: state.stack.slice(1),
-            };
-        });
+        safeInvoke(this.props.onClose, panel);
+        this.setState(state => ({
+            direction: "pop",
+            stack: state.stack.filter(p => p !== panel),
+        }));
     };
 
-    private openPanel: IPanelProps["openPanel"] = (component, props, options) => {
-        const panel: IPanel = {
-            ...options,
-            component: component as any,
-            props: props as any,
-        };
+    private handlePanelOpen = (panel: IPanel) => {
         safeInvoke(this.props.onOpen, panel);
         this.setState(state => ({
             direction: "push",
