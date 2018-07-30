@@ -71,7 +71,11 @@ class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps>
     }
 
     private openNewPanel = () => {
-        const newPanelNumber = this.props.panelNumber + 1;
-        this.props.openPanel(PanelExample, { panelNumber: newPanelNumber }, { title: "Panel " + newPanelNumber });
+        const panelNumber = this.props.panelNumber + 1;
+        this.props.openPanel({
+            component: PanelExample,
+            props: { panelNumber },
+            title: `Panel ${panelNumber}`,
+        });
     };
 }

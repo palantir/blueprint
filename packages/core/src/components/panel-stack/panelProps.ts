@@ -9,7 +9,7 @@ import * as React from "react";
 /**
  * An object describing a panel in a `PanelStack`.
  */
-export interface IPanel<P = {}> extends IPanelOptions {
+export interface IPanel<P = {}> {
     /**
      * The component type to render for this panel. This must be a reference to
      * the component class or SFC, _not_ a JSX element, so it can be re-created
@@ -22,6 +22,12 @@ export interface IPanel<P = {}> extends IPanelOptions {
      * in `IPanelProps` will be injected by `PanelStack`.
      */
     props?: P;
+
+    /**
+     * The title to be displayed above this panel. It is also used as the text
+     * of the back button for any panel opened by this panel.
+     */
+    title?: React.ReactNode;
 }
 
 /**
@@ -44,19 +50,7 @@ export interface IPanelProps {
     closePanel(): void;
 
     /**
-     * Call this method to open a new panel on the top of the stack. Together,
-     * `component` and `props` are used to render the panel element when needed
-     * (and `IPanelProps` is injected). The `title` option is required and will
-     * appear in the panel header.
+     * Call this method to open a new panel on the top of the stack.
      */
-    openPanel<P>(component: React.ComponentType<P & IPanelProps>, props: P, options: IPanelOptions): void;
-}
-
-/** Options for opening a new panel. */
-export interface IPanelOptions {
-    /**
-     * The title to be displayed above this panel. It is also used as the text
-     * of the back button for any panel opened by this panel.
-     */
-    title?: React.ReactNode;
+    openPanel<P>(panel: IPanel<P>): void;
 }
