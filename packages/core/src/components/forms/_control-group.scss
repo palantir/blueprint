@@ -189,6 +189,7 @@ Styleguide control-group
     border-radius: 0 $pt-border-radius $pt-border-radius 0;
   }
 
+  // round all the corners of the only child element
   > :only-child {
     margin-right: 0;
     border-radius: $pt-border-radius;
