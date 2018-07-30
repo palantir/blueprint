@@ -96,12 +96,6 @@ Styleguide control-group
     }
   }
 
-  // Add border radius inheritance to support components wrapped in a popover
-  .#{$ns}-popover-wrapper,
-  .#{$ns}-popover-target {
-    border-radius: inherit;
-  }
-
   .#{$ns}-button,
   .#{$ns}-select select {
     z-index: index($control-group-stack, "button-default");
@@ -182,6 +176,12 @@ Styleguide control-group
         margin-left: $button-border-width;
       }
     }
+  }
+
+  // Add border radius inheritance to support components wrapped in a popover
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover-target {
+    border-radius: inherit;
   }
 
   // round the left corners of the left-most element
