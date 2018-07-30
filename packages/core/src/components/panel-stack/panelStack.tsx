@@ -82,7 +82,7 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
     private handlePanelClose = (panel: IPanel) => {
         const { stack } = this.state;
         // only remove this panel if it is at the top and not the only one.
-        if (stack[0] !== panel || stack.length === 0) {
+        if (stack[0] !== panel || stack.length <= 1) {
             return;
         }
         safeInvoke(this.props.onClose, panel);
