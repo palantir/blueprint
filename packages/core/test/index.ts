@@ -36,6 +36,7 @@ import "./popover/popoverTests";
 import "./popover/popperUtilTests";
 import "./portal/portalTests";
 import "./progress/progressBarTests";
+import "./resize-sensor/resizeSensorTests";
 import "./slider/handleTests";
 import "./slider/multiSliderTests";
 import "./slider/rangeSliderTests";
