@@ -7,6 +7,8 @@
   @include pt-button-base();
   @include pt-button();
   border-radius: $pt-border-radius;
+  // fill parent container
+  width: 100%;
   height: $pt-button-height;
   padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
 
