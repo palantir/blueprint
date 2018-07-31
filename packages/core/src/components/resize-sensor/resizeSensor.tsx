@@ -33,12 +33,8 @@ export interface IResizeSensorProps {
 export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Resize`;
 
-    private observer: ResizeObserver;
-
-    constructor(props: IResizeSensorProps, context?: any) {
-        super(props, context);
-        this.observer = new ResizeObserver(this.props.onResize);
-    }
+    private element: Element | null = null;
+    private observer = new ResizeObserver(this.props.onResize);
 
     public render() {
         return React.Children.only(this.props.children);
@@ -48,10 +44,7 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
         // using findDOMNode for two reasons:
         // 1. cloning to insert a ref is unwieldy and not performant.
         // 2. ensure that we get an actual DOM node for observing.
-        const domNode = findDOMNode(this);
-        if (domNode != null) {
-            this.observeElement(domNode);
-        }
+        this.observeElement(findDOMNode(this));
     }
 
     public componentDidUpdate(prevProps: IResizeSensorProps) {
@@ -59,6 +52,7 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
         if (observeParents !== prevProps.observeParents || onResize !== prevProps.onResize) {
             console.warn("<Resize> does not support changing props.");
         }
+        this.observeElement(findDOMNode(this));
     }
 
     public componentWillUnmount() {
@@ -67,8 +61,19 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
 
     private observeElement(element: Element | null) {
         if (element == null) {
+            // stop everything if null comes in
             this.observer.disconnect();
             return;
+        }
+
+        if (element === this.element) {
+            // quit if given same element -- nothing to update
+            return;
+        } else {
+            // clear observer list if new element
+            this.observer.disconnect();
+            // remember element reference for next time
+            this.element = element;
         }
 
         // observer callback is invoked immediately when observing new elements
