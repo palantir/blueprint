@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 
 import { ITabProps, Tab, TabId } from "./tab";
@@ -95,7 +95,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         vertical: false,
     };
 
-    public static displayName = "Blueprint2.Tabs";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 
     private tablistElement: HTMLDivElement;
     private refHandlers = {

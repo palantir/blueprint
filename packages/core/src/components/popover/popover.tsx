@@ -13,7 +13,7 @@ import ResizeObserver from "resize-observer-polyfill";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { HTMLDivProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { Tooltip } from "../tooltip/tooltip";
@@ -83,7 +83,7 @@ export interface IPopoverState {
 }
 
 export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
-    public static displayName = "Blueprint2.Popover";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     public static defaultProps: IPopoverProps = {
         defaultIsOpen: false,

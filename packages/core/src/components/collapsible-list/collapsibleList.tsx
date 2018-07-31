@@ -11,7 +11,7 @@ import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
 import { Menu } from "../menu/menu";
 import { IMenuItemProps, MenuItem } from "../menu/menuItem";
@@ -56,7 +56,7 @@ export interface ICollapsibleListProps extends IProps {
 
 /** @deprecated use `<OverflowList>` for automatic overflow based on available space. */
 export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> {
-    public static displayName = "Blueprint2.CollapsibleList";
+    public static displayName = `${DISPLAYNAME_PREFIX}.CollapsibleList`;
 
     public static defaultProps: ICollapsibleListProps = {
         collapseFrom: Boundary.START,

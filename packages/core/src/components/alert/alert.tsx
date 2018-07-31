@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, Intent, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IProps } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -108,7 +108,7 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
         isOpen: false,
     };
 
-    public static displayName = "Blueprint2.Alert";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Alert`;
 
     public render() {
         const {

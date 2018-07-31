@@ -4,7 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractPureComponent, Button, Classes as CoreClasses, IProps, Utils } from "@blueprintjs/core";
+import {
+    AbstractPureComponent,
+    Button,
+    Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
+    IProps,
+    Utils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
@@ -79,7 +86,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         showActionsBar: false,
     };
 
-    public static displayName = "Blueprint2.DatePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker`;
 
     private ignoreNextMonthChange = false;
 

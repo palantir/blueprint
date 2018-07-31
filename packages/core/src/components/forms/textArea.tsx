@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
@@ -29,7 +29,7 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
-    public static displayName = "Blueprint2.TextArea";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
     public render() {
         const { className, fill, intent, large, inputRef, ...htmlProps } = this.props;

@@ -10,6 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 import { IHandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
@@ -39,7 +40,7 @@ const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
 export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleState> {
-    public static displayName = "Blueprint2.SliderHandle";
+    public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 
     public state = {
         isMoving: false,
