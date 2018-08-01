@@ -38,7 +38,7 @@ describe("<MultiSelect>", () => {
         };
     });
 
-    selectComponentSuite<IMultiSelectProps<IFilm>, IMultiSelectState<IFilm>>(props =>
+    selectComponentSuite<IMultiSelectProps<IFilm>, IMultiSelectState>(props =>
         mount(<MultiSelect {...props} popoverProps={{ isOpen: true, usePortal: false }} tagRenderer={renderTag} />),
     );
 

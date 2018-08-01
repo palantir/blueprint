@@ -11,7 +11,5 @@ import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Omnibar>", () => {
     // must have query to show any items
-    selectComponentSuite(props =>
-        mount(<Omnibar {...props} query=" " isOpen={true} overlayProps={{ usePortal: false }} />),
-    );
+    selectComponentSuite(props => mount(<Omnibar {...props} isOpen={true} overlayProps={{ usePortal: false }} />));
 });

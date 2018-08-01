@@ -16,7 +16,6 @@ import { IQueryListRendererProps, ItemListPredicate, ItemListRenderer, QueryList
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
     const testProps = {
-        activeItem: TOP_100_FILMS[0],
         itemRenderer: sinon.spy(renderFilm),
         items: TOP_100_FILMS.slice(0, 20),
         onActiveItemChange: sinon.spy(),
@@ -37,7 +36,7 @@ describe("<QueryList>", () => {
         );
 
         it("renderItem calls itemRenderer", () => {
-            const wrapper = shallow(<FilmQueryList {...testProps} query="19" itemListRenderer={itemListRenderer} />);
+            const wrapper = shallow(<FilmQueryList {...testProps} itemListRenderer={itemListRenderer} />);
             assert.lengthOf(wrapper.find("ul.foo"), 1, "should find element");
             assert.equal(testProps.itemRenderer.callCount, 20);
         });
@@ -89,7 +88,7 @@ describe("<QueryList>", () => {
             const filmQueryList = mount(<FilmQueryList {...testProps} items={[myItem]} activeItem={myItem} query="" />);
             filmQueryList.setState({ query: "query" });
             filmQueryList.setState({ activeItem: undefined });
-            assert.equal(testProps.onActiveItemChange.callCount, 0);
+            assert.equal(testProps.onActiveItemChange.callCount, 1);
         });
     });
 

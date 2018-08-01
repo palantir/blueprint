@@ -22,9 +22,9 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
-     * If you want to control the filter input, you can pass `value` and `onChange` here
-     * to override `Select`'s own behavior.
+     * Props to spread to the query `InputGroup`. Use `query` and
+     * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
+     * to control this input. Use `inputRef` instead of `ref`.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
@@ -48,34 +48,14 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
 
     /** Props to spread to `Overlay`. */
     overlayProps?: Partial<IOverlayProps>;
-
-    /** The query string. */
-    query?: string;
-
-    /**
-     * Whether the filtering state should be reset to initial when an item is selected
-     * (immediately before `onItemSelect` is invoked). The query will become the empty string
-     * and the first item will be made active.
-     * @default false
-     */
-    resetOnSelect?: boolean;
 }
 
-export interface IOmnibarState<T> {
-    activeItem?: T;
-    query: string;
-}
-
-export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
+export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
     public static ofType<T>() {
         return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;
     }
-
-    public state: IOmnibarState<T> = {
-        query: this.props.query || "",
-    };
 
     private TypedQueryList = QueryList.ofType<T>();
     private queryList?: QueryList<T> | null;
@@ -90,31 +70,18 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         return (
             <this.TypedQueryList
                 {...restProps}
-                activeItem={this.state.activeItem}
                 initialContent={initialContent}
-                onActiveItemChange={this.handleActiveItemChange}
                 onItemSelect={this.props.onItemSelect}
-                query={this.state.query}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
             />
         );
     }
 
-    public componentWillReceiveProps(nextProps: IOmnibarProps<T>) {
-        const { isOpen } = nextProps;
-        const canClearQuery = !this.props.isOpen && isOpen && this.props.resetOnSelect;
-
-        this.setState({
-            activeItem: canClearQuery ? this.props.items[0] : this.state.activeItem,
-            query: canClearQuery ? "" : this.state.query,
-        });
-    }
-
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const handlers = isOpen && !this.isQueryEmpty() ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
+        const handlers = isOpen && listProps.query.length > 0 ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
         return (
             <Overlay
@@ -130,24 +97,14 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
                         large={true}
                         leftIcon="search"
                         placeholder="Search..."
-                        value={listProps.query}
                         {...inputProps}
-                        onChange={this.handleQueryChange}
+                        onChange={listProps.handleQueryChange}
+                        value={listProps.query}
                     />
                     {listProps.itemList}
                 </div>
             </Overlay>
         );
-    };
-
-    private isQueryEmpty = () => this.state.query.length === 0;
-
-    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
-
-    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value });
-        Utils.safeInvoke(inputProps.onChange, event);
     };
 
     private handleOverlayClose = (event?: React.SyntheticEvent<HTMLElement>) => {
