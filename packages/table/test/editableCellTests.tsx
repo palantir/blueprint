@@ -129,13 +129,11 @@ describe("<EditableCell>", () => {
 
     it("defaults to no wrapText", () => {
         const elem = mount(<EditableCell />);
-
-        expect(elem.find(`.${Classes.TABLE_NO_WRAP_TEXT}`).children().length).to.equal(1);
+        expect(elem.find(`.${Classes.TABLE_NO_WRAP_TEXT}`).exists()).to.be.true;
     });
 
     it("wraps text when wrapText is true", () => {
         const elem = mount(<EditableCell wrapText={true} />);
-
-        expect(elem.find(`.${Classes.TABLE_NO_WRAP_TEXT}`).children().length).to.equal(0);
+        expect(elem.find(`.${Classes.TABLE_NO_WRAP_TEXT}`).exists()).to.be.false;
     });
 });
