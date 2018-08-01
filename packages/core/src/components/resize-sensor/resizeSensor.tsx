@@ -20,6 +20,7 @@ export interface IResizeEntry {
     target: Element;
 }
 
+/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface IResizeSensorProps {
     /**
      * Callback invoked when the wrapped element resizes.
