@@ -11,7 +11,8 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { ISuggestProps, Suggest } from "../src/components/select/suggest";
+import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
+import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
     const FilmSuggest = Suggest.ofType<IFilm>();
@@ -36,16 +37,15 @@ describe("Suggest", () => {
         };
     });
 
-    // TODO: Suggest does not use the new APIs yet as it requires more extensive refactors
-    // selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
-    //     mount(
-    //         <Suggest
-    //             {...props}
-    //             inputValueRenderer={inputValueRenderer}
-    //             popoverProps={{ isOpen: true, usePortal: false }}
-    //         />,
-    //     ),
-    // );
+    selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
+        mount(
+            <Suggest
+                {...props}
+                inputValueRenderer={inputValueRenderer}
+                popoverProps={{ isOpen: true, usePortal: false }}
+            />,
+        ),
+    );
 
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
@@ -140,12 +140,13 @@ describe("Suggest", () => {
     });
 
     describe("inputProps", () => {
-        it("input can be controlled with inputProps", () => {
-            const inputProps = { value: "nailed it", onChange: sinon.spy() };
-            const input = suggest({ inputProps }).find("input");
-            assert.equal(input.prop("value"), inputProps.value);
-            input.simulate("change");
-            assert.isTrue(inputProps.onChange.calledOnce);
+        it("value and onChange are ignored", () => {
+            const value = "nailed it";
+            const onChange = sinon.spy();
+
+            const input = suggest({ inputProps: { value, onChange } }).find("input");
+            assert.notStrictEqual(input.prop("onChange"), onChange);
+            assert.notStrictEqual(input.prop("value"), value);
         });
 
         it("invokes inputProps key handlers", () => {
