@@ -48,9 +48,6 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
 
     /** Props to spread to `Overlay`. */
     overlayProps?: Partial<IOverlayProps>;
-
-    /** The query string. */
-    query?: string;
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
