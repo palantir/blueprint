@@ -56,6 +56,7 @@ export * from "./popover/popover";
 export * from "./popover/popoverSharedProps";
 export * from "./portal/portal";
 export * from "./progress-bar/progressBar";
+export * from "./resize-sensor/resizeSensor";
 export * from "./slider/handleProps";
 export * from "./slider/multiSlider";
 export * from "./slider/rangeSlider";

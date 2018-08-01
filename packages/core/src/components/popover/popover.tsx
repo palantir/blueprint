@@ -8,7 +8,6 @@ import classNames from "classnames";
 import { ModifierFn } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
-import ResizeObserver from "resize-observer-polyfill";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -16,6 +15,7 @@ import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
+import { ResizeSensor } from "../resize-sensor/resizeSensor";
 import { Tooltip } from "../tooltip/tooltip";
 import { PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
@@ -128,9 +128,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // element on the same page.
     private lostFocusOnSamePage = true;
 
-    // ResizeObserver instance to monitor for content size changes on the popover
-    private popperObserver: ResizeObserver;
-
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate: () => void;
 
@@ -208,7 +205,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentDidMount() {
         this.updateDarkParent();
-        this.popperObserver = new ResizeObserver(() => Utils.safeInvoke(this.popperScheduleUpdate));
     }
 
     public componentWillReceiveProps(nextProps: IPopoverProps) {
@@ -229,19 +225,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     public componentDidUpdate() {
         this.updateDarkParent();
-
-        if (this.popoverElement != null) {
-            // Clear active observations to avoid the list growing.
-            this.popperObserver.disconnect();
-
-            // Ensure our observer has an up-to-date reference to popoverElement
-            this.popperObserver.observe(this.popoverElement);
-        }
-    }
-
-    public componentWillUnmount() {
-        super.componentWillUnmount();
-        this.popperObserver.disconnect();
     }
 
     protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
@@ -310,18 +293,20 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         return (
             <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                <div className={popoverClasses} style={{ transformOrigin }} {...popoverHandlers}>
-                    {this.isArrowEnabled() && (
-                        <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
-                    )}
-                    <div className={Classes.POPOVER_CONTENT}>{this.understandChildren().content}</div>
-                </div>
+                <ResizeSensor onResize={this.handlePopoverResize}>
+                    <div className={popoverClasses} style={{ transformOrigin }} {...popoverHandlers}>
+                        {this.isArrowEnabled() && (
+                            <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
+                        )}
+                        <div className={Classes.POPOVER_CONTENT}>{this.understandChildren().content}</div>
+                    </div>
+                </ResizeSensor>
             </div>
         );
     };
 
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
-        const { targetClassName, targetTagName } = this.props;
+        const { targetClassName, targetTagName: TagName } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
@@ -350,7 +335,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
             tabIndex: this.props.openOnTargetFocus && isHoverInteractionKind ? tabIndex : undefined,
         });
-        return React.createElement(targetTagName, targetProps, clonedTarget);
+        return (
+            <ResizeSensor onResize={this.handlePopoverResize}>
+                <TagName {...targetProps}>{clonedTarget}</TagName>
+            </ResizeSensor>
+        );
     };
 
     // content and target can be specified as props or as children. this method
@@ -439,6 +428,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             this.setOpenState(false, e);
         }
     };
+
+    private handlePopoverResize = () => Utils.safeInvoke(this.popperScheduleUpdate);
 
     private handleOverlayClose = (e: React.SyntheticEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
