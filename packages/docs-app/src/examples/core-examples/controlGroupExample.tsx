@@ -6,8 +6,10 @@
 
 import * as React from "react";
 
-import { Button, ControlGroup, InputGroup, Switch } from "@blueprintjs/core";
+import { Button, ControlGroup, HTMLSelect, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+
+const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
 
 export interface IControlGroupExampleState {
     fill: boolean;
@@ -39,8 +41,9 @@ export class ControlGroupExample extends React.PureComponent<IExampleProps, ICon
         return (
             <Example options={options} {...this.props}>
                 <ControlGroup style={style} {...this.state}>
-                    <Button icon="filter">Filter</Button>
+                    <HTMLSelect options={FILTER_OPTIONS} />
                     <InputGroup placeholder="Find filters..." />
+                    <Button icon="arrow-right" />
                 </ControlGroup>
             </Example>
         );

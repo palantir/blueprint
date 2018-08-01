@@ -57,6 +57,7 @@ Styleguide control-group
   // changes to change the z-index of a disabled element).
 
   .#{$ns}-button,
+  .#{$ns}-html-select,
   .#{$ns}-input,
   .#{$ns}-select {
     // create a new stacking context
@@ -97,6 +98,7 @@ Styleguide control-group
   }
 
   .#{$ns}-button,
+  .#{$ns}-html-select select,
   .#{$ns}-select select {
     z-index: index($control-group-stack, "button-default");
     // inherit radius since it's most likely to be zero
