@@ -11,7 +11,8 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { ISuggestProps, Suggest } from "../src/components/select/suggest";
+import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
+import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
     const FilmSuggest = Suggest.ofType<IFilm>();
@@ -36,16 +37,15 @@ describe("Suggest", () => {
         };
     });
 
-    // TODO: Suggest does not use the new APIs yet as it requires more extensive refactors
-    // selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
-    //     mount(
-    //         <Suggest
-    //             {...props}
-    //             inputValueRenderer={inputValueRenderer}
-    //             popoverProps={{ isOpen: true, usePortal: false }}
-    //         />,
-    //     ),
-    // );
+    selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
+        mount(
+            <Suggest
+                {...props}
+                inputValueRenderer={inputValueRenderer}
+                popoverProps={{ isOpen: true, usePortal: false }}
+            />,
+        ),
+    );
 
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
@@ -101,24 +101,17 @@ describe("Suggest", () => {
                 assert.isFalse(wrapper.state().isOpen, "should close popover");
             });
 
-            it("clears selected item if user has typed something", () => {
+            it("preserves currently selected item", () => {
                 const ITEM_INDEX = 4;
+                const expectedItem = TOP_100_FILMS[ITEM_INDEX];
                 const wrapper = suggest({ closeOnSelect: false });
                 simulateFocus(wrapper);
                 selectItem(wrapper, ITEM_INDEX);
+                simulateKeyDown(wrapper, which);
+                assert.strictEqual(wrapper.state().selectedItem, expectedItem, "before typing");
                 simulateChange(wrapper, "new query"); // type something
                 simulateKeyDown(wrapper, which);
-                assert.isUndefined(wrapper.state().selectedItem, "should clear selected item");
-            });
-
-            it("maintains the selected item if user has not typed something", () => {
-                const ITEM_INDEX = 4;
-                const wrapper = suggest({ closeOnSelect: false });
-                simulateFocus(wrapper);
-                selectItem(wrapper, ITEM_INDEX);
-                simulateKeyDown(wrapper, which);
-                const selectedItem = TOP_100_FILMS[ITEM_INDEX];
-                assert.strictEqual(wrapper.state().selectedItem, selectedItem, "should keep selected item");
+                assert.strictEqual(wrapper.state().selectedItem, expectedItem, "after typing");
             });
         }
     });
@@ -140,12 +133,13 @@ describe("Suggest", () => {
     });
 
     describe("inputProps", () => {
-        it("input can be controlled with inputProps", () => {
-            const inputProps = { value: "nailed it", onChange: sinon.spy() };
-            const input = suggest({ inputProps }).find("input");
-            assert.equal(input.prop("value"), inputProps.value);
-            input.simulate("change");
-            assert.isTrue(inputProps.onChange.calledOnce);
+        it("value and onChange are ignored", () => {
+            const value = "nailed it";
+            const onChange = sinon.spy();
+
+            const input = suggest({ inputProps: { value, onChange } }).find("input");
+            assert.notStrictEqual(input.prop("onChange"), onChange);
+            assert.notStrictEqual(input.prop("value"), value);
         });
 
         it("invokes inputProps key handlers", () => {
