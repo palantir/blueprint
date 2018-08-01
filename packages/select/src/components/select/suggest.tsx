@@ -106,6 +106,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         const { inputProps = {}, popoverProps = {} } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
+        const { placeholder = "Search..." } = inputProps;
 
         const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
         return (
@@ -121,8 +122,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 onOpened={this.handlePopoverOpened}
             >
                 <InputGroup
-                    placeholder={isOpen && selectedItemText ? selectedItemText : "Search..."}
                     {...inputProps}
+                    placeholder={isOpen && selectedItemText ? selectedItemText : placeholder}
                     inputRef={this.refHandlers.input}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
