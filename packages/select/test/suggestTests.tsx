@@ -101,24 +101,17 @@ describe("Suggest", () => {
                 assert.isFalse(wrapper.state().isOpen, "should close popover");
             });
 
-            it("clears selected item if user has typed something", () => {
+            it("preserves currently selected item", () => {
                 const ITEM_INDEX = 4;
+                const expectedItem = TOP_100_FILMS[ITEM_INDEX];
                 const wrapper = suggest({ closeOnSelect: false });
                 simulateFocus(wrapper);
                 selectItem(wrapper, ITEM_INDEX);
+                simulateKeyDown(wrapper, which);
+                assert.strictEqual(wrapper.state().selectedItem, expectedItem, "before typing");
                 simulateChange(wrapper, "new query"); // type something
                 simulateKeyDown(wrapper, which);
-                assert.isUndefined(wrapper.state().selectedItem, "should clear selected item");
-            });
-
-            it("maintains the selected item if user has not typed something", () => {
-                const ITEM_INDEX = 4;
-                const wrapper = suggest({ closeOnSelect: false });
-                simulateFocus(wrapper);
-                selectItem(wrapper, ITEM_INDEX);
-                simulateKeyDown(wrapper, which);
-                const selectedItem = TOP_100_FILMS[ITEM_INDEX];
-                assert.strictEqual(wrapper.state().selectedItem, selectedItem, "should keep selected item");
+                assert.strictEqual(wrapper.state().selectedItem, expectedItem, "after typing");
             });
         }
     });
