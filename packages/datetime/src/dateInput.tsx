@@ -99,6 +99,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     rightElement?: JSX.Element;
 
     /**
+     * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
+     * @default false
+     */
+    showActionsBar?: boolean;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
