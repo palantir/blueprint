@@ -31,19 +31,34 @@ describe("<ResizeSensor>", () => {
         const onResize = spy();
         mountResizeSensor(onResize);
         await resize({ width: 200 });
+        await resize({ width: 200 }); // this one is ignored
         await resize({ height: 100 });
         await resize({ width: 55 });
         assert.equal(onResize.callCount, 3);
         assertResizeArgs(onResize, ["200x0", "200x100", "55x100"]);
     });
 
-    it("onResize is called when size changes", async () => {
+    it("onResize is called when element changes", async () => {
         const onResize = spy();
         mountResizeSensor(onResize);
         await resize({ width: 200, id: 1 });
+        await resize({ width: 200, id: 2 }); // not ignored bc element recreated
+        await resize({ width: 55, id: 3 });
+        assertResizeArgs(onResize, ["200x0", "200x0", "55x0"]);
+    });
+
+    it("onResize can be changed", async () => {
+        const onResize1 = spy();
+        mountResizeSensor(onResize1);
+        await resize({ width: 200, id: 1 });
+
+        const onResize2 = spy();
+        wrapper.setProps({ onResize: onResize2 });
         await resize({ height: 100, id: 2 });
         await resize({ width: 55, id: 3 });
-        assertResizeArgs(onResize, ["200x0", "200x100", "55x100"]);
+
+        assert.equal(onResize1.callCount, 1);
+        assert.equal(onResize2.callCount, 2);
     });
 
     function mountResizeSensor(onResize: IResizeSensorProps["onResize"]) {
@@ -70,6 +85,7 @@ describe("<ResizeSensor>", () => {
 });
 
 interface ISizeProps {
+    /** Used as React `key`, so changing it will force a new element to be created. */
     id?: number;
     width?: number;
     height?: number;

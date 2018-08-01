@@ -9,6 +9,7 @@ import ResizeObserver from "resize-observer-polyfill";
 
 import { findDOMNode } from "react-dom";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
 
 /** A parallel type to `ResizeObserverEntry` (from resize-observer-polyfill). */
 export interface IResizeEntry {
@@ -42,9 +43,10 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Resize`;
 
     private element: Element | null = null;
-    private observer = new ResizeObserver(this.props.onResize);
+    private observer = new ResizeObserver(entries => safeInvoke(this.props.onResize, entries));
 
     public render() {
+        // pass-through render of single child
         return React.Children.only(this.props.children);
     }
 
@@ -56,26 +58,27 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
     }
 
     public componentDidUpdate(prevProps: IResizeSensorProps) {
-        const { observeParents, onResize } = this.props;
-        if (observeParents !== prevProps.observeParents || onResize !== prevProps.onResize) {
-            console.warn("<Resize> does not support changing props.");
-        }
-        this.observeElement(findDOMNode(this));
+        this.observeElement(findDOMNode(this), this.props.observeParents !== prevProps.observeParents);
     }
 
     public componentWillUnmount() {
         this.observer.disconnect();
     }
 
-    private observeElement(element: Element | null) {
+    /**
+     * Observe the given element, if defined and different from the currently
+     * observed element. Pass `force` argument to skip element checks and always
+     * re-observe.
+     */
+    private observeElement(element: Element | null, force = false) {
         if (element == null) {
-            // stop everything if null comes in
+            // stop everything if not defined
             this.observer.disconnect();
             return;
         }
 
-        if (element === this.element) {
-            // quit if given same element -- nothing to update
+        if (element === this.element && !force) {
+            // quit if given same element -- nothing to update (unless forced)
             return;
         } else {
             // clear observer list if new element
