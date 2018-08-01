@@ -18,7 +18,7 @@ describe("<ResizeSensor>", () => {
     document.documentElement.appendChild(testsContainerElement);
 
     afterEach(() => {
-        // clean up list after each test, if it was used
+        // clean up wrapper after each test, if it was used
         if (wrapper !== undefined) {
             wrapper.unmount();
             wrapper.detach();

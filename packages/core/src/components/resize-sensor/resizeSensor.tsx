@@ -24,24 +24,28 @@ export interface IResizeEntry {
 export interface IResizeSensorProps {
     /**
      * Callback invoked when the wrapped element resizes.
+     *
+     * The `entries` array contains an entry for each observed element. In the
+     * default case (no `observeParents`), the array will contain only one
+     * element: the single child of the `ResizeSensor`.
      */
     onResize: (entries: IResizeEntry[]) => void;
 
     /**
      * If `true`, all parent DOM elements of the container will also be
-     * observed. If changes to a parent's size is detected, the overflow will be
-     * recalculated.
+     * observed for size changes. The array of entries passed to `onResize`
+     * will now contain an entry for each parent element up to the root of the
+     * document.
      *
-     * Only enable this prop if the overflow should be recalculated when a
-     * parent element resizes in a way that does not also cause the
-     * `OverflowList` to resize.
+     * Only enable this prop if a parent element resizes in a way that does
+     * not also cause the child element to resize.
      * @default false
      */
     observeParents?: boolean;
 }
 
 export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Resize`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
     private element: Element | null = null;
     private observer = new ResizeObserver(entries => safeInvoke(this.props.onResize, entries));
