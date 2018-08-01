@@ -28,6 +28,9 @@ export interface IResizeSensorProps {
      * The `entries` array contains an entry for each observed element. In the
      * default case (no `observeParents`), the array will contain only one
      * element: the single child of the `ResizeSensor`.
+     *
+     * Note that this method is called _asynchronously_ after a resize is
+     * detected and typically it will be called no more than once per frame.
      */
     onResize: (entries: IResizeEntry[]) => void;
 
