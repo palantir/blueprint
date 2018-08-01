@@ -10,12 +10,20 @@ import ResizeObserver from "resize-observer-polyfill";
 import { findDOMNode } from "react-dom";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
+/** A parallel type to `ResizeObserverEntry` (from resize-observer-polyfill). */
+export interface IResizeEntry {
+    /** Measured dimensions of the target. */
+    contentRect: DOMRectReadOnly;
+
+    /** The resized element. */
+    target: Element;
+}
+
 export interface IResizeSensorProps {
     /**
      * Callback invoked when the wrapped element resizes.
-     * Resize events are throttled for performance reasons.
      */
-    onResize: ResizeObserverCallback;
+    onResize: (entries: IResizeEntry[]) => void;
 
     /**
      * If `true`, all parent DOM elements of the container will also be

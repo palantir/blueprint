@@ -11,7 +11,7 @@ import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { ResizeSensor } from "../resize-sensor/resizeSensor";
+import { IResizeEntry, ResizeSensor } from "../resize-sensor/resizeSensor";
 
 export interface IOverflowListProps<T> extends IProps {
     /**
@@ -151,7 +151,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         return this.props.overflowRenderer(overflow);
     }
 
-    private resize = (entries: ResizeObserverEntry[]) => {
+    private resize = (entries: IResizeEntry[]) => {
         // if any parent is growing, assume we have more room than before
         const growing = entries.some(entry => {
             const previousWidth = this.previousWidths.get(entry.target) || 0;
