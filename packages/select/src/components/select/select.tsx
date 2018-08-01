@@ -9,6 +9,7 @@ import * as React from "react";
 
 import {
     Button,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -59,7 +60,7 @@ export interface ISelectState {
 }
 
 export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState> {
-    public static displayName = "Blueprint2.Select";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     public static ofType<T>() {
         return Select as new (props: ISelectProps<T>) => Select<T>;

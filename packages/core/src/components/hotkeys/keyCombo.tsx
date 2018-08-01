@@ -6,7 +6,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Classes, IProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
@@ -38,6 +38,8 @@ export interface IKeyComboProps extends IProps {
 }
 
 export class KeyCombo extends React.Component<IKeyComboProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
+
     public render() {
         const { className, combo, minimal } = this.props;
         const keys = normalizeKeyCombo(combo)

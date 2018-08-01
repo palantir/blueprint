@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, IIntentProps, IProps, Utils } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, Utils } from "../../common";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -75,7 +75,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
 }
 
 export class Tag extends React.PureComponent<ITagProps, {}> {
-    public static displayName = "Blueprint2.Tag";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {
         const {

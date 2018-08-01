@@ -13,7 +13,7 @@ import * as Classes from "../../common/classes";
 import { TOASTER_CREATE_NULL, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isNodeEnv, safeInvoke } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
@@ -90,6 +90,8 @@ export interface IToasterState {
 }
 
 export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState> implements IToaster {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
+
     public static defaultProps: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,

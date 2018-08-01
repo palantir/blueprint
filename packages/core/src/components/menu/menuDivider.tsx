@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { H6 } from "../html/html";
 
 export interface IMenuDividerProps extends IProps {
@@ -20,7 +20,7 @@ export interface IMenuDividerProps extends IProps {
 }
 
 export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
-    public static displayName = "Blueprint2.MenuDivider";
+    public static displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
 
     public render() {
         const { className, title } = this.props;

@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface IButtonGroupProps extends IProps, HTMLDivProps {
     /**
@@ -47,7 +47,7 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class ButtonGroup extends React.PureComponent<IButtonGroupProps, {}> {
-    public static displayName = "Blueprint2.ButtonGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 
     public render() {
         const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = this.props;

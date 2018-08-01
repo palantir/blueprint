@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
 import { Elevation } from "../../common/elevation";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface ICardProps extends IProps, HTMLDivProps {
     /**
@@ -39,7 +39,7 @@ export interface ICardProps extends IProps, HTMLDivProps {
 }
 
 export class Card extends React.PureComponent<ICardProps, {}> {
-    public static displayName = "Blueprint2.Card";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
     public static defaultProps: ICardProps = {
         elevation: Elevation.ZERO,
         interactive: false,

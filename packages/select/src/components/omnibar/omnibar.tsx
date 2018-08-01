@@ -7,7 +7,15 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { HTMLInputProps, IInputGroupProps, InputGroup, IOverlayProps, Overlay, Utils } from "@blueprintjs/core";
+import {
+    DISPLAYNAME_PREFIX,
+    HTMLInputProps,
+    IInputGroupProps,
+    InputGroup,
+    IOverlayProps,
+    Overlay,
+    Utils,
+} from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -46,7 +54,7 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
 }
 
 export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
-    public static displayName = "Blueprint2.Omnibar";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
     public static ofType<T>() {
         return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;

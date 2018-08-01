@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, IProps, Utils } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -63,7 +63,7 @@ export class DateTimePicker extends AbstractPureComponent<IDateTimePickerProps, 
         defaultValue: new Date(),
     };
 
-    public static displayName = "Blueprint2.DateTimePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateTimePicker`;
 
     public constructor(props?: IDateTimePickerProps, context?: any) {
         super(props, context);

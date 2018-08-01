@@ -6,7 +6,16 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IPopoverProps, ITagInputProps, Keys, Popover, Position, TagInput, Utils } from "@blueprintjs/core";
+import {
+    DISPLAYNAME_PREFIX,
+    IPopoverProps,
+    ITagInputProps,
+    Keys,
+    Popover,
+    Position,
+    TagInput,
+    Utils,
+} from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
@@ -35,7 +44,7 @@ export interface IMultiSelectState {
 }
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState> {
-    public static displayName = "Blueprint2.MultiSelect";
+    public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static ofType<T>() {
         return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;

@@ -9,7 +9,7 @@ import * as ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";
 
 /** Detect if `React.createPortal()` API method does not exist. */
@@ -46,7 +46,7 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
 export class Portal extends React.Component<IPortalProps, IPortalState> {
-    public static displayName = "Blueprint2.Portal";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
     public static contextTypes = REACT_CONTEXT_TYPES;
 
     public context: IPortalContext;

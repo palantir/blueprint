@@ -10,7 +10,7 @@ import * as React from "react";
 import { Classes, Intent } from "../../common";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { HandleInteractionKind, HandleType, IHandleProps } from "./handleProps";
@@ -118,7 +118,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         defaultTrackIntent: Intent.NONE,
     };
 
-    public static displayName = "Blueprint2.MultiSlider";
+    public static displayName = `${DISPLAYNAME_PREFIX}.MultiSlider`;
 
     public static Handle: React.SFC<IHandleProps> = () => null;
 

@@ -10,7 +10,7 @@ import * as React from "react";
 import { Modifiers } from "popper.js";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
-import { IActionProps, ILinkProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
@@ -80,7 +80,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         shouldDismissPopover: true,
         text: "",
     };
-    public static displayName = "Blueprint2.MenuItem";
+    public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
     public render() {
         const {

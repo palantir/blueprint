@@ -19,9 +19,6 @@ Markup:
 Styleguide breadcrumbs
 */
 
-// shaving off 1px for perfect centering (... icon is 5px high)
-$breadcrumb-line-height: $pt-icon-size-large - 1px !default;
-
 .#{$ns}-breadcrumbs {
   display: flex;
   flex-wrap: wrap;
@@ -39,10 +36,12 @@ $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
     align-items: center;
 
     &::after {
-      @include pt-icon();
-      padding: 0 ($pt-grid-size / 2);
-      color: $pt-icon-color;
-      content: $pt-icon-chevron-right;
+      display: block;
+      margin: 0 ($pt-grid-size / 2);
+      background: svg-icon("16px/chevron-right.svg", (path: (fill: $pt-icon-color)));
+      width: $pt-icon-size-standard;
+      height: $pt-icon-size-standard;
+      content: "";
     }
 
     &:last-of-type::after {
@@ -55,7 +54,6 @@ $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
 .#{$ns}-breadcrumb-current,
 .#{$ns}-breadcrumbs-collapsed {
   display: inline-block;
-  line-height: $breadcrumb-line-height;
   font-size: $pt-font-size-large;
 }
 
@@ -92,12 +90,14 @@ $breadcrumb-line-height: $pt-icon-size-large - 1px !default;
   border-radius: $pt-border-radius;
   background: $light-gray1;
   cursor: pointer;
-  padding: 0 ($pt-grid-size / 2);
+  padding: 1px ($pt-grid-size / 2);
 
   &::before {
-    @include pt-icon($pt-icon-size-large);
-    line-height: $breadcrumb-line-height;
-    content: $pt-icon-more;
+    display: block;
+    background: svg-icon("16px/more.svg", (circle: (fill: $pt-icon-color))) center no-repeat;
+    width: $pt-icon-size-standard;
+    height: $pt-icon-size-standard;
+    content: "";
   }
 
   &:hover {

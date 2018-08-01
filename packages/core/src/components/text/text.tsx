@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface ITextProps extends IProps {
     /**
@@ -31,6 +31,8 @@ export interface ITextState {
 }
 
 export class Text extends React.PureComponent<ITextProps, ITextState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
+
     public state: ITextState = {
         isContentOverflowing: false,
         textContent: "",

@@ -10,6 +10,7 @@ import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -126,7 +127,7 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
-    public static displayName = "Blueprint2.DateInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,

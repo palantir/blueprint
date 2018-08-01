@@ -4,7 +4,16 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractPureComponent, Boundary, Classes, IProps, Menu, MenuItem, Utils } from "@blueprintjs/core";
+import {
+    AbstractPureComponent,
+    Boundary,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    IProps,
+    Menu,
+    MenuItem,
+    Utils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
@@ -124,7 +133,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         shortcuts: true,
     };
 
-    public static displayName = "Blueprint2.DateRangePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
 
     private get isControlled() {
         return this.props.value != null;

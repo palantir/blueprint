@@ -170,6 +170,11 @@ export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;
 export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
 
+export const PANEL_STACK = `${NS}-panel-stack`;
+export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
+export const PANEL_STACK_HEADER_BACK = `${PANEL_STACK}-header-back`;
+export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
+
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;

@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
-import { IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 // see http://stackoverflow.com/a/18473154/3124288 for calculating arc path
@@ -43,7 +43,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
 }
 
 export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
-    public static displayName = "Blueprint2.Spinner";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
     public static readonly SIZE_SMALL = 24;
     public static readonly SIZE_STANDARD = 50;

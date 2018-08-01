@@ -1,3 +1,7 @@
+---
+tag: new
+---
+
 @# Classes
 
 Blueprint packages provide React components in JS files and associated styles in a CSS file. Each package exports a `Classes` constants object in JavaScript that contains keys of the form `NAMED_CONSTANT` for every CSS class used. This separation allows us to change CSS classes between versions without breaking downstream users (although in practice this happens very rarely).
