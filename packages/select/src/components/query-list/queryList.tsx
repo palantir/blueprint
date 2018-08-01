@@ -66,7 +66,7 @@ export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
 
 export interface IQueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
-    activeItem: T | undefined;
+    activeItem: T | null;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
@@ -119,7 +119,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (nextProps.activeItem != null) {
+        if (nextProps.activeItem !== undefined) {
             this.setState({ activeItem: nextProps.activeItem });
         }
         if (nextProps.query != null) {
@@ -287,12 +287,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      * index. An `undefined` return value means no suitable item was found.
      * @param direction amount to move in each iteration, typically +/-1
      */
-    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | undefined {
+    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | null {
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private setActiveItem(activeItem: T | undefined) {
-        if (this.props.activeItem == null) {
+    private setActiveItem(activeItem: T | null) {
+        if (this.props.activeItem === undefined) {
             this.setState({ activeItem });
         }
         Utils.safeInvoke(this.props.onActiveItemChange, activeItem);
@@ -327,8 +327,8 @@ function wrapNumber(value: number, min: number, max: number) {
     return value;
 }
 
-function isItemDisabled<T>(item: T, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
-    if (itemDisabled == null) {
+function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
+    if (itemDisabled == null || item == null) {
         return false;
     } else if (Utils.isFunction(itemDisabled)) {
         return itemDisabled(item, index);
@@ -349,9 +349,9 @@ export function getFirstEnabledItem<T>(
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,
-): T | undefined {
+): T | null {
     if (items.length === 0) {
-        return undefined;
+        return null;
     }
     // remember where we started to prevent an infinite loop
     let index = startIndex;
@@ -363,5 +363,5 @@ export function getFirstEnabledItem<T>(
             return items[index];
         }
     } while (index !== startIndex);
-    return undefined;
+    return null;
 }
