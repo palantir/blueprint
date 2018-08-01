@@ -10,6 +10,7 @@ $navigator-width: $pt-grid-size * 40;
   .#{$ns}-menu-item small {
     // center-align text and SVG icons
     display: flex;
+    align-items: center;
   }
 
   .#{$ns}-menu-item.#{$ns}-active small {
