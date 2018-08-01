@@ -109,14 +109,11 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
-        const clearButton =
-            listProps.query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
-
         const input = (
             <InputGroup
                 leftIcon="search"
                 placeholder="Filter..."
-                rightElement={clearButton}
+                rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
                 inputRef={this.refHandlers.input}
                 onChange={listProps.handleQueryChange}
@@ -153,6 +150,10 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             </Popover>
         );
     };
+
+    private maybeRenderClearButton(query: string) {
+        return query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
+    }
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
