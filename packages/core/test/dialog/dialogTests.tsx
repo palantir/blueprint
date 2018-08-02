@@ -42,17 +42,6 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.calledOnce);
     });
 
-    it("attempts to close when dialog container element is moused down", () => {
-        const onClose = spy();
-        const dialog = mount(
-            <Dialog isOpen={true} onClose={onClose} usePortal={false}>
-                {createDialogContents()}
-            </Dialog>,
-        );
-        dialog.find(`.${Classes.DIALOG_CONTAINER}`).simulate("mousedown");
-        assert.isTrue(onClose.calledOnce);
-    });
-
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
