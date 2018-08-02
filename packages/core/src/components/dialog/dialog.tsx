@@ -98,7 +98,12 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         // this gives us a behavior as if the default value were `true`
         if (this.props.isCloseButtonShown !== false) {
             return (
-                <button aria-label="Close" className={Classes.DIALOG_CLOSE_BUTTON} onClick={this.props.onClose}>
+                <button
+                    aria-label="Close"
+                    className={Classes.DIALOG_CLOSE_BUTTON}
+                    onClick={this.props.onClose}
+                    type="button"
+                >
                     <Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />
                 </button>
             );
