@@ -1,3 +1,7 @@
+---
+tag: new
+---
+
 @# Panel stack
 
 `PanelStack` manages a stack of panels and displays only the topmost panel.
