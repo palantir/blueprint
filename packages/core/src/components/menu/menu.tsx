@@ -12,7 +12,7 @@ import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { MenuDivider } from "./menuDivider";
 import { MenuItem } from "./menuItem";
 
-export interface IMenuProps extends IProps {
+export interface IMenuProps extends IProps, React.HTMLAttributes<HTMLUListElement> {
     /** Whether the menu items in this menu should use a large appearance. */
     large?: boolean;
 
@@ -29,7 +29,7 @@ export class Menu extends React.Component<IMenuProps, {}> {
     public render() {
         const classes = classNames(Classes.MENU, { [Classes.LARGE]: this.props.large }, this.props.className);
         return (
-            <ul className={classes} ref={this.props.ulRef}>
+            <ul {...this.props} className={classes} ref={this.props.ulRef}>
                 {this.props.children}
             </ul>
         );
