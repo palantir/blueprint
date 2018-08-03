@@ -6,11 +6,14 @@
 
 import * as React from "react";
 
-import { Button, Callout, Classes, Popover } from "@blueprintjs/core";
+import { Button, Callout, Classes, Popover, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class PopoverDismissExample extends React.PureComponent<IExampleProps, { isOpen: boolean }> {
-    public state = { isOpen: true };
+export class PopoverDismissExample extends React.PureComponent<
+    IExampleProps,
+    { captureDismiss: boolean; isOpen: boolean }
+> {
+    public state = { captureDismiss: true, isOpen: true };
     private timeoutId: number;
 
     public componentWillUnmount() {
@@ -29,27 +32,23 @@ export class PopoverDismissExample extends React.PureComponent<IExampleProps, { 
                 >
                     <Button intent="primary" text="Try it out" />
                     <>
+                        {POPOVER_CONTENTS}
                         <div>
-                            <Button text="Default" />
-                            <Button className={Classes.POPOVER_DISMISS} intent="danger" text="Dismiss" />
-                            <Button
-                                className={Classes.POPOVER_DISMISS}
-                                intent="danger"
-                                text="No dismiss"
-                                disabled={true}
+                            <Switch
+                                checked={this.state.captureDismiss}
+                                inline={true}
+                                label="Capture dismiss"
+                                onChange={this.handleDismissChange}
                             />
+                            <Popover
+                                captureDismiss={this.state.captureDismiss}
+                                content={POPOVER_CONTENTS}
+                                position="right"
+                                usePortal={false}
+                            >
+                                <Button text="Nested" rightIcon="caret-right" />
+                            </Popover>
                         </div>
-                        <Callout intent="warning" className={Classes.POPOVER_DISMISS}>
-                            <p>Click callout to dismiss.</p>
-                            <div>
-                                <Button
-                                    className={Classes.POPOVER_DISMISS_OVERRIDE}
-                                    intent="success"
-                                    text="Dismiss override"
-                                />
-                                <Button disabled={true} text="Nope" />
-                            </div>
-                        </Callout>
                     </>
                 </Popover>
                 <p className="docs-reopen-message">
@@ -60,9 +59,28 @@ export class PopoverDismissExample extends React.PureComponent<IExampleProps, { 
     }
 
     private handleInteraction = (isOpen: boolean) => this.setState({ isOpen });
+    private handleDismissChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+        this.setState({ captureDismiss: event.target.checked });
 
     private reopen = () => {
         window.clearTimeout(this.timeoutId);
         this.timeoutId = window.setTimeout(() => this.setState({ isOpen: true }), 150);
     };
 }
+
+const POPOVER_CONTENTS = (
+    <>
+        <div>
+            <Button text="Default" />
+            <Button className={Classes.POPOVER_DISMISS} intent="danger" text="Dismiss" />
+            <Button className={Classes.POPOVER_DISMISS} intent="danger" text="No dismiss" disabled={true} />
+        </div>
+        <Callout intent="warning" className={Classes.POPOVER_DISMISS}>
+            <p>Click callout to dismiss.</p>
+            <div>
+                <Button className={Classes.POPOVER_DISMISS_OVERRIDE} intent="success" text="Dismiss override" />
+                <Button disabled={true} text="Nope" />
+            </div>
+        </Callout>
+    </>
+);
