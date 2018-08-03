@@ -13,15 +13,15 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-## :tada: 3.0 is almost here! :tada:
+## :tada: 3.0 is here! :tada:
 
 [**3.0 Changelog and migration guide ▸**](https://github.com/palantir/blueprint/wiki/3.0-Changelog)
 
 Blueprint 3.0 supports multiple major versions of Blueprint on the same page through removing global styles and deconflicting selectors by changing the namespace. It also restores support for React 15 in most packages.
 
-### What's new in 2.0
+### Upgrading from 1.x
 
-Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path).
+Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path), in addition to the 3.0 content above.
 
 ## Packages
 
@@ -119,7 +119,7 @@ running any of the dev scripts.
 
 ## License
 
-This project is made available under a **modified version of the Apache-2.0 license**.
+This project is made available under its own **Blueprint License**, based on Apache 2.0 License.
 
 The only modification is an additional section (paragraph 10) in which we ask
 that you do not pass off any derivative products as Palantir’s products, given
