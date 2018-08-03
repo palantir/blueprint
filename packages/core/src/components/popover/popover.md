@@ -240,16 +240,46 @@ The following example demonstrates the various interaction kinds (note: these Po
 
 @### Closing on click
 
-To enable click-to-close behavior on an element inside a popover, simply add the
-class `Classes.POPOVER_DISMISS` to that element. For example, the **Dismiss**
-button in the top-level [Popover example](#core/components/popover) has this
-class. To enable this behavior on the entire popover, pass the
-`popoverClassName={Classes.POPOVER_DISMISS}` prop.
+Sometimes it is desirable for an element inside a `Popover` to close the popover
+on click. `Popover` supports a pair of CSS classes, `Classes.POPOVER_DISMISS`
+and `Classes.POPOVER_DISMISS_OVERRIDE`, that can be attached to elements to
+describe whether click events should dismiss the enclosing popover.
+
+To mark an element (and its children) as "dismiss elements", simply add the
+class `Classes.POPOVER_DISMISS`. For example, the **Dismiss** button in the
+top-level [Popover example](#core/components/popover) has this class, and all
+`MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
+enable this behavior on the entire popover body, pass
+`popoverClassName={Classes.POPOVER_DISMISS}`.
+
+Cancel the dismiss behavior on subtrees by nesting
+`Classes.POPOVER_DISMISS_OVERRIDE` inside `Classes.POPOVER_DISMISS`. Clicks
+originating inside disabled elements (either via the `disabled` attribute or
+`Classes.DISABLED`) will never dismiss a popover.
+
+Additionally, the prop `captureDismiss` (enabled by default) will prevent click
+events from dismissing _grandparent_ popovers (not the `Popover` immediately
+containing the dismiss element). `MenuItem` disables this feature such that
+clicking any submenu item will close all submenus, which is desirable behavior
+for a menu tree.
+
+```tsx
+<div className={Classes.POPOVER_DISMISS}>
+    <button>Click me to dismiss</button>
+    <button disabled={true}>I will not dismiss</button>
+    <div className={Classes.POPOVER_DISMISS_OVERRIDE}>
+        <button>I too shall not dismiss</button>
+    </div>
+</div>
+```
+
+@reactExample PopoverDismissExample
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Dismiss elements won't have any effect in a popover with
-    `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to interact with the popover
-    content itself (the popover is dismissed the moment the user mouses away from the target).
+    `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to
+    interact with the popover content itself: the popover is dismissed the
+    moment the user mouses away from the target.
 </div>
 
 @### Backdrop

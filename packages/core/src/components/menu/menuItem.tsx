@@ -149,6 +149,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         return (
             <Popover
                 autoFocus={false}
+                captureDismiss={false}
                 disabled={disabled}
                 enforceFocus={false}
                 hoverCloseDelay={0}

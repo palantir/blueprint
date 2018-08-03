@@ -86,6 +86,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     public static defaultProps: IPopoverProps = {
+        captureDismiss: true,
         defaultIsOpen: false,
         disabled: false,
         hasBackdrop: false,
@@ -422,10 +423,15 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
-        const shouldDismiss = eventTarget.closest(`.${Classes.POPOVER_DISMISS}`) != null;
-        const overrideDismiss = eventTarget.closest(`.${Classes.POPOVER_DISMISS_OVERRIDE}`) != null;
-        if (shouldDismiss && !overrideDismiss) {
+        // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
+        const dismissElement = eventTarget.closest(`.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`);
+        const shouldDismiss = dismissElement != null && dismissElement.classList.contains(Classes.POPOVER_DISMISS);
+        const isDisabled = eventTarget.closest(`:disabled, .${Classes.DISABLED}`) != null;
+        if (shouldDismiss && !isDisabled && !e.isDefaultPrevented()) {
             this.setOpenState(false, e);
+            if (this.props.captureDismiss) {
+                e.preventDefault();
+            }
         }
     };
 
