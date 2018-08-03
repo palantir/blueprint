@@ -57,14 +57,8 @@ $dialog-padding: $pt-grid-size * 2 !default;
   justify-content: center;
   width: 100%;
   min-height: 100%;
+  pointer-events: none;
   user-select: none;
-
-  // LEGACY: override old (<= 1.24.0) dialog styles when inside a container to respect flex layout
-  .#{$ns}-dialog {
-    // stylelint-disable-next-line declaration-no-important
-    position: static !important;
-    transform: none;
-  }
 }
 
 .#{$ns}-dialog {
@@ -76,6 +70,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   background: $light-gray4;
   width: $pt-grid-size * 50;
   padding-bottom: $pt-grid-size * 2;
+  pointer-events: all;
   user-select: text;
 
   &:focus {
