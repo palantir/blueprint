@@ -27,10 +27,11 @@ export class Menu extends React.Component<IMenuProps, {}> {
     public static Item = MenuItem;
 
     public render() {
-        const classes = classNames(Classes.MENU, { [Classes.LARGE]: this.props.large }, this.props.className);
+        const { className, children, large, ulRef, ...htmlProps } = this.props;
+        const classes = classNames(Classes.MENU, { [Classes.LARGE]: large }, className);
         return (
-            <ul {...this.props} className={classes} ref={this.props.ulRef}>
-                {this.props.children}
+            <ul {...htmlProps} className={classes} ref={ulRef}>
+                {children}
             </ul>
         );
     }
