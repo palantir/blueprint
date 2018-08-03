@@ -426,7 +426,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
         const dismissElement = eventTarget.closest(`.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`);
         const shouldDismiss = dismissElement != null && dismissElement.classList.contains(Classes.POPOVER_DISMISS);
-        if (shouldDismiss && !e.isDefaultPrevented()) {
+        const isDisabled = eventTarget.closest(`:disabled, .${Classes.DISABLED}`) != null;
+        if (shouldDismiss && !isDisabled && !e.isDefaultPrevented()) {
             this.setOpenState(false, e);
             if (this.props.captureDismiss) {
                 e.preventDefault();

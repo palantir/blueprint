@@ -607,57 +607,70 @@ describe("<Popover>", () => {
     });
 
     describe("closing on click", () => {
-        it("Classes.POPOVER_DISMISS closes on click", () => {
-            wrapper = renderPopover(
-                { defaultIsOpen: true },
+        it("Classes.POPOVER_DISMISS closes on click", () =>
+            assertClickToClose(
                 <button className={Classes.POPOVER_DISMISS} id="btn">
                     Dismiss
                 </button>,
-            );
-            wrapper.find("#btn").simulate("click");
-            wrapper.assertIsOpen(false);
-        });
+                false,
+            ));
 
-        it("Classes.POPOVER_DISMISS_OVERRIDE does not close", () => {
-            wrapper = renderPopover(
-                { defaultIsOpen: true },
+        it("Classes.POPOVER_DISMISS_OVERRIDE does not close", () =>
+            assertClickToClose(
                 <span className={Classes.POPOVER_DISMISS}>
                     <button className={Classes.POPOVER_DISMISS_OVERRIDE} id="btn">
                         Dismiss
                     </button>
                 </span>,
-            );
-            wrapper.find("#btn").simulate("click");
-            wrapper.assertIsOpen(true);
-        });
+                true,
+            ));
 
-        it("inner dismiss does not close outer popover", () => {
-            wrapper = renderPopover(
-                { defaultIsOpen: true },
+        it(":disabled does not close", () =>
+            assertClickToClose(
+                <button className={Classes.POPOVER_DISMISS} disabled={true} id="btn">
+                    Dismiss
+                </button>,
+                true,
+            ));
+
+        it("Classes.DISABLED does not close", () =>
+            assertClickToClose(
+                // testing nested behavior too
+                <div className={Classes.DISABLED}>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </div>,
+                true,
+            ));
+
+        it("inner dismiss does not close outer popover", () =>
+            assertClickToClose(
                 <Popover defaultIsOpen={true} usePortal={false}>
                     <button>Target</button>
                     <button className={Classes.POPOVER_DISMISS} id="btn">
                         Dismiss
                     </button>
                 </Popover>,
-            );
-            wrapper.find("#btn").simulate("click");
-            wrapper.assertIsOpen(true);
-        });
+                true,
+            ));
 
-        it("captureDismiss={false} inner dismiss closes outer popover", () => {
-            wrapper = renderPopover(
-                { defaultIsOpen: true },
+        it("captureDismiss={false} inner dismiss closes outer popover", () =>
+            assertClickToClose(
                 <Popover captureDismiss={false} defaultIsOpen={true} usePortal={false}>
                     <button>Target</button>
                     <button className={Classes.POPOVER_DISMISS} id="btn">
                         Dismiss
                     </button>
                 </Popover>,
-            );
+                false,
+            ));
+
+        function assertClickToClose(children: React.ReactNode, expectedIsOpen: boolean) {
+            wrapper = renderPopover({ defaultIsOpen: true }, children);
             wrapper.find("#btn").simulate("click");
-            wrapper.assertIsOpen(false);
-        });
+            wrapper.assertIsOpen(expectedIsOpen);
+        }
     });
 
     interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
