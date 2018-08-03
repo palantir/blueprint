@@ -15,6 +15,17 @@ export { PopperModifiers };
 /** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     /**
+     * When enabled, `preventDefault()` is invoked on `click` events that close
+     * this popover, which will prevent those clicks from closing outer
+     * popovers. When disabled, clicking inside a `Classes.POPOVER_DISMISS`
+     * element will close the parent popover.
+     *
+     * See http://blueprintjs.com/docs/#core/components/popover.closing-on-click
+     * @default true
+     */
+    captureDismiss?: boolean;
+
+    /**
      * Initial opened state when uncontrolled.
      * @default false
      */
