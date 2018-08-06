@@ -17,7 +17,7 @@ function handleResize(entries: IResizeEntry[]) {
     console.log(entries.map(e => `${e.contentRect.width} x ${e.contentRect.height}`));
 }
 
-<ResizeSensor onChange={handleResize}>
+<ResizeSensor onResize={handleResize}>
     <div style={{ width: this.props.width }} />
 </ResizeSensor>
 ```
