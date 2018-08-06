@@ -259,7 +259,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
-        if (this.tablistElement === undefined || !this.props.animate) {
+        if (this.tablistElement == null || !this.props.animate) {
             return;
         }
 
