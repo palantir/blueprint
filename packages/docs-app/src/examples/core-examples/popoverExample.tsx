@@ -87,11 +87,11 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
         minimal: false,
         modifiers: {
             arrow: { enabled: true },
-            flip: { enabled: false },
-            keepTogether: { enabled: false },
-            preventOverflow: { enabled: false, boundariesElement: "scrollParent" },
+            flip: { enabled: true },
+            keepTogether: { enabled: true },
+            preventOverflow: { enabled: true, boundariesElement: "scrollParent" },
         },
-        position: "left",
+        position: "auto",
         sliderValue: 5,
         usePortal: true,
     };
