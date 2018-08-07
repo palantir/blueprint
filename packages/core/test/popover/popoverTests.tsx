@@ -644,9 +644,9 @@ describe("<Popover>", () => {
                 true,
             ));
 
-        it("inner dismiss does not close outer popover", () =>
+        it("captureDismiss={true} inner dismiss does not close outer popover", () =>
             assertClickToClose(
-                <Popover defaultIsOpen={true} usePortal={false}>
+                <Popover captureDismiss={true} defaultIsOpen={true} usePortal={false}>
                     <button>Target</button>
                     <button className={Classes.POPOVER_DISMISS} id="btn">
                         Dismiss
