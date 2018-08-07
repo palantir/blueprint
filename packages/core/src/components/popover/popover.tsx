@@ -86,7 +86,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     public static defaultProps: IPopoverProps = {
-        captureDismiss: true,
+        captureDismiss: false,
         defaultIsOpen: false,
         disabled: false,
         hasBackdrop: false,
