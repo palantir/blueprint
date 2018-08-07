@@ -16,6 +16,19 @@ describe("Utils", () => {
         assert.isFalse(Utils.isFunction(undefined));
     });
 
+    it("isEmptyReactNode", () => {
+        // empty nodes
+        assert.isTrue(Utils.isEmptyReactNode(undefined), "undefined");
+        assert.isTrue(Utils.isEmptyReactNode(null), "null");
+        assert.isTrue(Utils.isEmptyReactNode(""), '""');
+        assert.isTrue(Utils.isEmptyReactNode([]), "[]");
+        // not empty nodes
+        assert.isFalse(Utils.isEmptyReactNode(0), "0");
+        assert.isFalse(Utils.isEmptyReactNode("text"), "text");
+        assert.isFalse(Utils.isEmptyReactNode(<div />), "<div />");
+        assert.isFalse(Utils.isEmptyReactNode([null, <div key="div" />]), "array");
+    });
+
     it("safeInvoke", () => {
         assert.doesNotThrow(() => Utils.safeInvoke(undefined, 1, "2", true, 4));
 

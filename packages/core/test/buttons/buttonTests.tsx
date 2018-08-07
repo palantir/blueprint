@@ -37,16 +37,16 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(wrapper.text(), "some text");
         });
 
-        it("renders the button text prop when text={0}", () => {
-            const wrapper = button({ text: 0 }, true);
-            assert.equal(wrapper.text(), "0");
-        });
-
         it("wraps string children in spans", () => {
             // so text can be hidden when loading
             const wrapper = button({}, true, "raw string", <em>not a string</em>);
             assert.equal(wrapper.find("span").length, 1, "span not found");
             assert.equal(wrapper.find("em").length, 1, "em not found");
+        });
+
+        it("renders span if text={0}", () => {
+            const wrapper = button({ text: 0 }, true);
+            assert.equal(wrapper.text(), "0");
         });
 
         it('doesn\'t render a span if text=""', () => {
