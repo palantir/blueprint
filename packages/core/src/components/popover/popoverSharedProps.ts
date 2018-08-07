@@ -109,7 +109,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * user scrolls around.
      * @default "auto"
      */
-    position?: Position | "auto";
+    position?: Position | "auto" | "auto-start" | "auto-end";
 
     /**
      * Space-delimited string of class names applied to the target element.
