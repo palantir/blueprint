@@ -163,10 +163,11 @@ export function getDateBetween(dateRange: DateRange) {
     return new Date(middle);
 }
 
-export function getDateTime(date: Date, time: Date) {
-    if (date === null) {
+export function getDateTime(date: Date | null, time?: Date | null) {
+    if (date == null) {
         return null;
-    } else if (time === null) {
+    } else if (time == null) {
+        // cannot use default argument because `null` is a common value in this package.
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
     } else {
         return new Date(
