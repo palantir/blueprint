@@ -59,6 +59,22 @@ export interface IDatePickerBaseProps {
      * @default false
      */
     reverseMonthAndYearMenus?: boolean;
+
+    /**
+     * The precision of time selection that accompanies the calendar. Passing a
+     * value other than `"none"` (or providing `timePickerProps`) shows a
+     * `TimePicker` below the calendar. Time is preserved across date changes.
+     *
+     * This is shorthand for `timePickerProps.precision` and is a quick way to
+     * enable time selection.
+     * @default "none"
+     */
+    timePrecision?: TimePrecision | "none";
+
+    /**
+     * Further configure the `TimePicker` that appears beneath the calendar.
+     */
+    timePickerProps?: ITimePickerProps;
 }
 
 export const DISABLED_MODIFIER = "disabled";
