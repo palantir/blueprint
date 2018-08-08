@@ -208,26 +208,19 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         // allow toggling selected date by clicking it again (if prop enabled)
         const newValue = this.props.canClearSelection && modifiers.selected ? null : day;
 
-        if (this.props.value === undefined) {
-            // component is uncontrolled
-            if (!modifiers.disabled) {
-                const displayMonth = day.getMonth();
-                const displayYear = day.getFullYear();
-                const selectedDay = day.getDate();
+        if (!modifiers.disabled) {
+            if (this.props.value === undefined) {
+                // set now if uncontrolled, otherwise they'll be updated in `componentWillReceiveProps`
                 this.setState({
-                    displayMonth,
-                    displayYear,
-                    selectedDay,
-                    value: newValue,
+                    displayMonth: day.getMonth(),
+                    displayYear: day.getFullYear(),
+                    selectedDay: day.getDate(),
                 });
             }
-        }
-
-        if (!modifiers.disabled) {
-            Utils.safeInvoke(this.props.onChange, newValue, true);
             if (this.state.value != null && this.state.value.getMonth() !== day.getMonth()) {
                 this.ignoreNextMonthChange = true;
             }
+            this.updateValue(newValue, true);
         }
     };
 
