@@ -97,9 +97,10 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
 
     private getRadioProps(optionProps: IOptionProps): IRadioProps {
         const { name } = this.props;
-        const { disabled, value } = optionProps;
+        const { className, disabled, value } = optionProps;
         return {
             checked: value === this.props.selectedValue,
+            className,
             disabled: disabled || this.props.disabled,
             inline: this.props.inline,
             name: name == null ? this.autoGroupName : name,

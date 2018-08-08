@@ -100,6 +100,17 @@ describe("<RadioGroup>", () => {
         assert.lengthOf(group.find(Radio), 2);
     });
 
+    it("passes custom classNames to options", () => {
+        const OPTIONS = [{ className: "apple", value: "a" }, { className: "banana", value: "b" }];
+        const group = mount(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="a" />);
+        assert.strictEqual(findRadio(group, { value: "a" }).prop("className"), "apple");
+        assert.strictEqual(findRadio(group, { value: "b" }).prop("className"), "banana");
+    });
+
+    function findRadio(wrapper: ReactWrapper<any, any>, props: EnzymePropSelector) {
+        return wrapper.find(Radio).filter(props);
+    }
+
     function findInput(wrapper: ReactWrapper<any, any>, props: EnzymePropSelector) {
         return wrapper.find("input").filter(props);
     }
