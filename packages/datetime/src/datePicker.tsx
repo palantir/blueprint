@@ -162,22 +162,20 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     }
 
     public componentWillReceiveProps(nextProps: IDatePickerProps) {
-        if (nextProps.value !== this.props.value) {
-            let { displayMonth, displayYear, selectedDay } = this.state;
-            if (nextProps.value != null) {
-                displayMonth = nextProps.value.getMonth();
-                displayYear = nextProps.value.getFullYear();
-                selectedDay = nextProps.value.getDate();
-            }
-            this.setState({
-                displayMonth,
-                displayYear,
-                selectedDay,
-                value: nextProps.value,
-            });
-        }
-
         super.componentWillReceiveProps(nextProps);
+        const { value } = nextProps;
+        if (value !== this.props.value) {
+            if (value != null) {
+                this.setState({
+                    displayMonth: value.getMonth(),
+                    displayYear: value.getFullYear(),
+                    selectedDay: value.getDate(),
+                    value,
+                });
+            } else {
+                this.setState({ value });
+            }
+        }
     }
 
     protected validateProps(props: IDatePickerProps) {
@@ -230,11 +228,8 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
 
-        let newValue = day;
-
-        if (this.props.canClearSelection && modifiers.selected) {
-            newValue = null;
-        }
+        // allow toggling selected date by clicking it again (if prop enabled)
+        const newValue = this.props.canClearSelection && modifiers.selected ? null : day;
 
         if (this.props.value === undefined) {
             // component is uncontrolled
@@ -256,106 +251,74 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             if (this.state.value != null && this.state.value.getMonth() !== day.getMonth()) {
                 this.ignoreNextMonthChange = true;
             }
-        } else {
-            // rerender base component to get around bug where you can navigate past bounds by clicking days
-            this.forceUpdate();
         }
     };
 
     private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date {
         const { minDate, maxDate } = this.props;
         const maxDaysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
-        let { selectedDay } = this.state;
-
-        if (selectedDay > maxDaysInMonth) {
-            selectedDay = maxDaysInMonth;
-        }
+        const selectedDay = Math.min(this.state.selectedDay, maxDaysInMonth);
 
         // matches the underlying react-day-picker timestamp behavior
-        let value = new Date(displayYear, displayMonth, selectedDay, 12);
-
+        const value = new Date(displayYear, displayMonth, selectedDay, 12);
         if (value < minDate) {
-            value = minDate;
+            return minDate;
         } else if (value > maxDate) {
-            value = maxDate;
+            return maxDate;
         }
-
         return value;
     }
+
+    private handleClearClick = () => this.updateValue(null, true);
 
     private handleMonthChange = (newDate: Date) => {
         const displayMonth = newDate.getMonth();
         const displayYear = newDate.getFullYear();
-        let { value } = this.state;
+        this.setState({ displayMonth, displayYear });
 
-        if (value !== null) {
-            value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
-            if (this.ignoreNextMonthChange) {
-                this.ignoreNextMonthChange = false;
-            } else {
-                // if handleDayClick just got run, it means the user selected a date in a new month,
-                // so don't run onChange again
-                Utils.safeInvoke(this.props.onChange, value, false);
-            }
+        if (this.state.value !== null) {
+            const value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
+            Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
+            // if handleDayClick just got run (so this flag is set), then the
+            // user selected a date in a new month, so don't invoke onChange a
+            // second time
+            this.updateValue(value, false, this.ignoreNextMonthChange);
+            this.ignoreNextMonthChange = false;
         }
-
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-
-        this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
+        // don't change value if it's empty
     };
 
     private handleMonthSelectChange = (displayMonth: number) => {
-        let { value } = this.state;
-
-        if (value !== null) {
-            value = this.computeValidDateInSpecifiedMonthYear(value.getFullYear(), displayMonth);
-            Utils.safeInvoke(this.props.onChange, value, false);
+        this.setState({ displayMonth });
+        if (this.state.value !== null) {
+            const value = this.computeValidDateInSpecifiedMonthYear(this.state.value.getFullYear(), displayMonth);
+            Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
+            this.updateValue(value, false);
         }
-
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-
-        this.setStateWithValueIfUncontrolled({ displayMonth }, value);
     };
 
     private handleYearSelectChange = (displayYear: number) => {
-        let { displayMonth, value } = this.state;
+        let displayMonth = this.state.displayMonth;
 
-        if (value !== null) {
-            value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
-            Utils.safeInvoke(this.props.onChange, value, false);
+        if (this.state.value !== null) {
+            const value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
+            Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
+            this.updateValue(value, false);
             displayMonth = value.getMonth();
         } else {
+            // if value is empty, then we need to clamp displayMonth to valid
+            // months between min and max dates.
             const { minDate, maxDate } = this.props;
-            const minYear = minDate.getFullYear();
-            const maxYear = maxDate.getFullYear();
             const minMonth = minDate.getMonth();
             const maxMonth = maxDate.getMonth();
-
-            if (displayYear === minYear && displayMonth < minMonth) {
+            if (displayYear === minDate.getFullYear() && displayMonth < minMonth) {
                 displayMonth = minMonth;
-            } else if (displayYear === maxYear && displayMonth > maxMonth) {
+            } else if (displayYear === maxDate.getFullYear() && displayMonth > maxMonth) {
                 displayMonth = maxMonth;
             }
         }
 
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-
-        this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
-    };
-
-    private setStateWithValueIfUncontrolled(newState: IDatePickerState, value: Date) {
-        if (this.props.value === undefined) {
-            // uncontrolled mode means we track value in state
-            newState.value = value;
-        }
-        return this.setState(newState);
-    }
-
-    private handleClearClick = () => {
-        if (this.props.value === undefined) {
-            this.setState({ value: null });
-        }
-        Utils.safeInvoke(this.props.onChange, null, true);
+        this.setState({ displayMonth, displayYear });
     };
 
     private handleTodayClick = () => {
@@ -363,11 +326,19 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         const displayMonth = value.getMonth();
         const displayYear = value.getFullYear();
         const selectedDay = value.getDate();
-        if (this.props.value === undefined) {
-            this.setState({ displayMonth, displayYear, selectedDay, value });
-        } else {
-            this.setState({ displayMonth, displayYear, selectedDay });
-        }
-        Utils.safeInvoke(this.props.onChange, value, true);
+        this.setState({ displayMonth, displayYear, selectedDay });
+        this.updateValue(value, true);
     };
+
+    /**
+     * Update `value` by invoking `onChange` (always) and setting state (if uncontrolled).
+     */
+    private updateValue(value: Date, isUserChange: boolean, skipOnChange = false) {
+        if (!skipOnChange) {
+            Utils.safeInvoke(this.props.onChange, value, isUserChange);
+        }
+        if (this.props.value === undefined) {
+            this.setState({ value });
+        }
+    }
 }
