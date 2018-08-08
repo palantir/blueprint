@@ -70,10 +70,10 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
 }
 
 export interface IDatePickerState {
-    displayMonth?: number;
-    displayYear?: number;
-    selectedDay?: number;
-    value?: Date;
+    displayMonth: number;
+    displayYear: number;
+    selectedDay: number | null;
+    value: Date | null;
 }
 
 export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
@@ -90,37 +90,14 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private ignoreNextMonthChange = false;
 
-    public constructor(props?: IDatePickerProps, context?: any) {
+    public constructor(props: IDatePickerProps, context?: any) {
         super(props, context);
-
-        let value: Date = null;
-        if (props.value !== undefined) {
-            value = props.value;
-        } else if (props.defaultValue != null) {
-            value = props.defaultValue;
-        }
-
-        let selectedDay: number;
-        if (value !== null) {
-            selectedDay = value.getDate();
-        }
-
-        let initialMonth: Date;
-        const today = new Date();
-        if (props.initialMonth != null) {
-            initialMonth = props.initialMonth;
-        } else if (value != null) {
-            initialMonth = value;
-        } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
-            initialMonth = today;
-        } else {
-            initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
-        }
-
+        const value = getInitialValue(props);
+        const initialMonth = getInitialMonth(props, value);
         this.state = {
             displayMonth: initialMonth.getMonth(),
             displayYear: initialMonth.getFullYear(),
-            selectedDay,
+            selectedDay: value == null ? null : value.getDate(),
             value,
         };
     }
@@ -340,5 +317,30 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         if (this.props.value === undefined) {
             this.setState({ value });
         }
+    }
+}
+
+function getInitialValue(props: IDatePickerProps): Date | null {
+    // !== because `null` is a valid value (no date)
+    if (props.value !== undefined) {
+        return props.value;
+    }
+    if (props.defaultValue !== undefined) {
+        return props.defaultValue;
+    }
+    return null;
+}
+
+function getInitialMonth(props: IDatePickerProps, value: Date | null): Date {
+    const today = new Date();
+    // != because we must have a real `Date` to begin the calendar on.
+    if (props.initialMonth != null) {
+        return props.initialMonth;
+    } else if (value != null) {
+        return value;
+    } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
+        return today;
+    } else {
+        return DateUtils.getDateBetween([props.minDate, props.maxDate]);
     }
 }
