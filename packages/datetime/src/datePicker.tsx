@@ -236,7 +236,8 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         }
 
         // allow toggling selected date by clicking it again (if prop enabled)
-        const newValue = this.props.canClearSelection && modifiers.selected ? null : day;
+        const newValue =
+            this.props.canClearSelection && modifiers.selected ? null : DateUtils.getDateTime(day, this.state.value);
         this.updateValue(newValue, true);
     };
 
@@ -248,7 +249,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         const displayDate = selectedDay == null ? 1 : Math.min(selectedDay, maxDaysInMonth);
 
         // 12:00 matches the underlying react-day-picker timestamp behavior
-        const value = new Date(displayYear, displayMonth, displayDate, 12);
+        const value = DateUtils.getDateTime(new Date(displayYear, displayMonth, displayDate, 12), this.state.value);
         // clamp between min and max dates
         if (value < minDate) {
             return minDate;
@@ -284,7 +285,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private handleTimeChange = (time: Date) => {
         Utils.safeInvoke(this.props.timePickerProps.onChange, time);
-        const newValue = getDateTime(this.state.value || new Date(), time);
+        const newValue = DateUtils.getDateTime(this.state.value || new Date(), time);
         this.updateValue(newValue, true);
     };
 
