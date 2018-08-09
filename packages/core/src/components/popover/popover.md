@@ -257,7 +257,7 @@ Cancel the dismiss behavior on subtrees by nesting
 originating inside disabled elements (either via the `disabled` attribute or
 `Classes.DISABLED`) will never dismiss a popover.
 
-Additionally, the prop `captureDismiss` (enabled by default) will prevent click
+Additionally, the prop `captureDismiss` (disabled by default) will prevent click
 events from dismissing _grandparent_ popovers (not the `Popover` immediately
 containing the dismiss element). `MenuItem` disables this feature such that
 clicking any submenu item will close all submenus, which is desirable behavior
