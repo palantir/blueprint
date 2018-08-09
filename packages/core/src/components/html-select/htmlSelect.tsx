@@ -9,7 +9,7 @@ import * as React from "react";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { IOptionProps } from "../../common/props";
 import { IElementRefProps } from "../html/html";
-import { Icon } from "../icon/icon";
+import { Icon, IIconProps } from "../icon/icon";
 
 export interface IHTMLSelectProps
     extends IElementRefProps<HTMLSelectElement>,
@@ -19,6 +19,9 @@ export interface IHTMLSelectProps
 
     /** Whether this element should fill its container. */
     fill?: boolean;
+
+    /** Props to spread to the `<Icon>` element. */
+    iconProps?: Partial<IIconProps>;
 
     /** Whether to use large styles. */
     large?: boolean;
@@ -47,7 +50,17 @@ export interface IHTMLSelectProps
 /* istanbul ignore next */
 export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
     public render() {
-        const { className, disabled, elementRef, fill, large, minimal, options = [], ...htmlProps } = this.props;
+        const {
+            className,
+            disabled,
+            elementRef,
+            fill,
+            iconProps,
+            large,
+            minimal,
+            options = [],
+            ...htmlProps
+        } = this.props;
         const classes = classNames(
             HTML_SELECT,
             {
@@ -70,7 +83,7 @@ export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
                     {optionChildren}
                     {htmlProps.children}
                 </select>
-                <Icon icon="double-caret-vertical" />
+                <Icon icon="double-caret-vertical" {...iconProps} />
             </div>
         );
     }
