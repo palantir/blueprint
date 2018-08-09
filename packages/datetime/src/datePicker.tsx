@@ -7,13 +7,14 @@
 import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps } from "react-day-picker";
+import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { DatePickerNavbar } from "./datePickerNavbar";
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
@@ -115,6 +116,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     {...dayPickerProps}
                     canChangeMonth={true}
                     captionElement={this.renderCaption}
+                    navbarElement={this.renderNavbar}
                     disabledDays={this.getDisabledDaysModifier()}
                     fromMonth={minDate}
                     month={new Date(displayYear, displayMonth)}
@@ -183,6 +185,10 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             onYearChange={this.handleYearSelectChange}
             reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
+    );
+
+    private renderNavbar = (props: NavbarElementProps) => (
+        <DatePickerNavbar {...props} maxDate={this.props.maxDate} minDate={this.props.minDate} />
     );
 
     private renderOptionsBar() {

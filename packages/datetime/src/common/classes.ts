@@ -23,6 +23,7 @@ export const DATEPICKER_DAY_SELECTED = `${DATEPICKER_DAY}--selected`;
 export const DATEPICKER_FOOTER = `${DATEPICKER}-footer`;
 export const DATEPICKER_MONTH_SELECT = `${DATEPICKER}-month-select`;
 export const DATEPICKER_YEAR_SELECT = `${DATEPICKER}-year-select`;
+export const DATEPICKER_NAVBAR = `${DATEPICKER}-navbar`;
 
 export const DATERANGEPICKER = `${NS}-daterangepicker`;
 export const DATERANGEPICKER_CONTIGUOUS = `${DATERANGEPICKER}-contiguous`;

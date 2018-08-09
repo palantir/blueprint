@@ -51,34 +51,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
   }
 
-  .DayPicker-NavBar {
-    position: relative;
-  }
-
-  .DayPicker-NavButton {
-    @include pt-icon-colors();
-    position: absolute;
-    top: -$datepicker-header-margin;
-    cursor: pointer;
-    padding: $datepicker-header-margin + 1;
-
-    &--prev {
-      left: -$datepicker-header-margin;
-
-      &::before {
-        @include pt-icon();
-        content: $pt-icon-chevron-left;
-      }
-    }
-
-    &--next {
-      right: -$datepicker-header-margin;
-
-      &::before {
-        @include pt-icon();
-        content: $pt-icon-chevron-right;
-      }
-    }
+  .DayPicker-Caption {
+    display: table-caption;
   }
 
   .DayPicker-Weekdays {
@@ -159,6 +133,19 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     margin-bottom: -$pt-grid-size / 2;
     border-top: 1px solid $pt-divider-black;
     padding-top: $pt-grid-size / 2;
+  }
+}
+
+.#{$ns}-datepicker-navbar {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: $pt-button-height;
+
+  > :first-child {
+    margin-right: auto;
   }
 }
 

@@ -18,7 +18,7 @@ export interface IDatePickerCaptionProps extends CaptionElementProps {
     onMonthChange?: (month: number) => void;
     onYearChange?: (year: number) => void;
     /** Callback invoked when the month or year `<select>` is changed. */
-    onDateChange: (date: Date) => void;
+    onDateChange?: (date: Date) => void;
     reverseMonthAndYearMenus?: boolean;
 }
 
@@ -88,8 +88,10 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
             : [monthSelect, yearSelect];
 
         return (
-            <div className={Classes.DATEPICKER_CAPTION} ref={this.containerRefHandler}>
-                {orderedSelects}
+            <div className={this.props.classNames.caption}>
+                <div className={Classes.DATEPICKER_CAPTION} ref={ref => (this.containerElement = ref)}>
+                    {orderedSelects}
+                </div>
             </div>
         );
     }
@@ -104,7 +106,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
 
     private positionArrows() {
         // measure width of text as rendered inside our container element.
-        const monthWidth = Utils.measureTextWidth(
+        const monthWidth = measureTextWidth(
             this.displayedMonthText,
             Classes.DATEPICKER_CAPTION_MEASURE,
             this.containerElement,
