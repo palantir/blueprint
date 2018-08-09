@@ -181,8 +181,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             {...props}
             maxDate={this.props.maxDate}
             minDate={this.props.minDate}
-            onMonthChange={this.handleMonthSelectChange}
-            onYearChange={this.handleYearSelectChange}
+            onDateChange={this.handleMonthChange}
             reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
     );
@@ -243,53 +242,16 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     private handleClearClick = () => this.updateValue(null, true);
 
     private handleMonthChange = (newDate: Date) => {
-        const displayMonth = newDate.getMonth();
-        const displayYear = newDate.getFullYear();
-        this.setState({ displayMonth, displayYear });
-
+        const date = this.computeValidDateInSpecifiedMonthYear(newDate.getFullYear(), newDate.getMonth());
+        this.setState({ displayMonth: date.getMonth(), displayYear: date.getFullYear() });
         if (this.state.value !== null) {
-            const value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
-            Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
             // if handleDayClick just got run (so this flag is set), then the
             // user selected a date in a new month, so don't invoke onChange a
             // second time
-            this.updateValue(value, false, this.ignoreNextMonthChange);
+            this.updateValue(date, false, this.ignoreNextMonthChange);
             this.ignoreNextMonthChange = false;
         }
-        // don't change value if it's empty
-    };
-
-    private handleMonthSelectChange = (displayMonth: number) => {
-        this.setState({ displayMonth });
-        if (this.state.value !== null) {
-            const value = this.computeValidDateInSpecifiedMonthYear(this.state.value.getFullYear(), displayMonth);
-            Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-            this.updateValue(value, false);
-        }
-    };
-
-    private handleYearSelectChange = (displayYear: number) => {
-        let { displayMonth } = this.state;
-
-        if (this.state.value !== null) {
-            const value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
-            Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-            this.updateValue(value, false);
-            displayMonth = value.getMonth();
-        } else {
-            // if value is empty, then we need to clamp displayMonth to valid
-            // months between min and max dates.
-            const { minDate, maxDate } = this.props;
-            const minMonth = minDate.getMonth();
-            const maxMonth = maxDate.getMonth();
-            if (displayYear === minDate.getFullYear() && displayMonth < minMonth) {
-                displayMonth = minMonth;
-            } else if (displayYear === maxDate.getFullYear() && displayMonth > maxMonth) {
-                displayMonth = maxMonth;
-            }
-        }
-
-        this.setState({ displayMonth, displayYear });
+        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, date);
     };
 
     private handleTodayClick = () => {
