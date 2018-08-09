@@ -4,24 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import {
-    AbstractPureComponent,
-    Button,
-    Classes as CoreClasses,
-    DISPLAYNAME_PREFIX,
-    IProps,
-    Utils,
-} from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import ReactDayPicker from "react-day-picker";
-import { DayModifiers } from "react-day-picker/types/common";
-import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/props";
+import DayPicker, { DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
-
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 
@@ -117,7 +107,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
-                <ReactDayPicker
+                <DayPicker
                     showOutsideDays={true}
                     locale={locale}
                     localeUtils={localeUtils}
@@ -196,8 +186,8 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     private renderOptionsBar() {
         return (
             <div className={Classes.DATEPICKER_FOOTER}>
-                <Button className={CoreClasses.MINIMAL} onClick={this.handleTodayClick} text="Today" />
-                <Button className={CoreClasses.MINIMAL} onClick={this.handleClearClick} text="Clear" />
+                <Button minimal={true} onClick={this.handleTodayClick} text="Today" />
+                <Button minimal={true} onClick={this.handleClearClick} text="Clear" />
             </div>
         );
     }
