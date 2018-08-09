@@ -11,8 +11,13 @@ import moment from "moment";
 import * as React from "react";
 
 const FORMAT = "dddd, LL";
+const FORMAT_TIME = "dddd, LL LT";
 
-export const MomentDate: React.SFC<{ date: Date; format?: string }> = ({ date, format = FORMAT }) => {
+export const MomentDate: React.SFC<{ date: Date; format?: string; withTime?: boolean }> = ({
+    date,
+    withTime = false,
+    format = withTime ? FORMAT_TIME : FORMAT,
+}) => {
     const m = moment(date);
     if (m.isValid()) {
         return <Tag intent={Intent.PRIMARY}>{m.format(format)}</Tag>;
