@@ -152,62 +152,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
   }
 
-  .#{$ns}-datepicker-caption {
-    display: table-caption;
-    border-bottom: 1px solid $pt-divider-black;
-    padding: 0 $pt-grid-size;
-    text-align: center;
-
-    select {
-      margin: -$datepicker-header-margin 0 $datepicker-header-margin;
-      border: 0;
-      background: none;
-      cursor: pointer;
-      height: $pt-input-height;
-      // increase the size of the click target, clearing the caret on the right.
-      padding-right: $pt-icon-size-standard;
-      padding-left: $pt-grid-size / 2;
-      line-height: $pt-input-height;
-      color: $pt-text-color;
-      font-weight: 600;
-
-      // stylelint-disable property-no-vendor-prefix
-      -moz-appearance: none;
-      -webkit-appearance: none;
-      // stylelint-enable property-no-vendor-prefix
-
-      &:focus + .#{$ns}-datepicker-caption-caret {
-        display: inline;
-      }
-
-      &::-ms-expand {
-        // IE11 styling to hide the arrow
-        display: none;
-      }
-    }
-  }
-
-  .#{$ns}-datepicker-caption-select {
-    display: inline-block;
-    position: relative;
-
-    &:first-child {
-      margin-right: $pt-grid-size;
-    }
-
-    &:hover .#{$ns}-datepicker-caption-caret {
-      fill: $pt-icon-color-hover;
-    }
-  }
-
-  .#{$ns}-datepicker-caption-caret {
-    position: absolute;
-    top: 2px;
-    right: 0;
-    fill: $pt-icon-color;
-    pointer-events: none;
-  }
-
   .#{$ns}-datepicker-footer {
     display: flex;
     justify-content: space-between;
@@ -215,6 +159,26 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     margin-bottom: -$pt-grid-size / 2;
     border-top: 1px solid $pt-divider-black;
     padding-top: $pt-grid-size / 2;
+  }
+}
+
+.#{$ns}-datepicker-caption {
+  @include pt-flex-container(row);
+  justify-content: space-between;
+  margin-bottom: $pt-grid-size / 2;
+  border-bottom: 1px solid $pt-divider-black;
+  padding: 0 $pt-button-height-small ($pt-grid-size / 2);
+
+  // HTMLSelect overrides for a narrower appearance
+  select {
+    flex-shrink: 1;
+    padding-right: $pt-icon-size-standard;
+    padding-left: $pt-grid-size / 2;
+    font-weight: 600;
+
+    + .#{$ns}-icon {
+      right: 2px;
+    }
   }
 }
 
@@ -256,29 +220,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     &.DayPicker-Day--disabled {
       background: none;
       color: $pt-dark-text-color-disabled;
-    }
-  }
-
-  .#{$ns}-datepicker-caption {
-    border-bottom-color: $pt-dark-divider-black;
-
-    select {
-      color: $pt-dark-text-color;
-    }
-
-    option {
-      background-color: $dark-popover-background-color;
-    }
-
-    // we really need more than 4 compound selector
-    // to target the particular structure of this markup
-    // stylelint-disable-next-line
-    .#{$ns}-datepicker-caption-select:hover .#{$ns}-datepicker-caption-caret {
-      fill: $pt-dark-icon-color-hover;
-    }
-
-    .#{$ns}-datepicker-caption-caret {
-      fill: $pt-dark-icon-color;
     }
   }
 
