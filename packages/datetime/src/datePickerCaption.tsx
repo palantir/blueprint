@@ -31,6 +31,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
 
     private containerElement: HTMLElement;
     private displayedMonthText: string;
+    private monthWidthsCache: Record<string, number> = {};
 
     private handleMonthSelectChange = this.dateChangeHandler((d, month) => d.setMonth(month), this.props.onMonthChange);
     private handleYearSelectChange = this.dateChangeHandler((d, year) => d.setFullYear(year), this.props.onYearChange);
@@ -105,12 +106,13 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
     }
 
     private positionArrows() {
-        // measure width of text as rendered inside our container element.
-        const monthWidth = measureTextWidth(
-            this.displayedMonthText,
-            Classes.DATEPICKER_CAPTION_MEASURE,
-            this.containerElement,
-        );
+        const cachedWidth = this.monthWidthsCache[this.displayedMonthText];
+        // measure width of text as rendered inside our container element and cache the result.
+        const monthWidth =
+            cachedWidth != null
+                ? cachedWidth
+                : measureTextWidth(this.displayedMonthText, Classes.DATEPICKER_CAPTION_MEASURE, this.containerElement);
+        this.monthWidthsCache[this.displayedMonthText] = monthWidth;
         this.setState({ monthWidth });
     }
 
