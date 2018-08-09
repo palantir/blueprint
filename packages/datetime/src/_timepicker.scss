@@ -109,3 +109,10 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     color: $pt-dark-text-color;
   }
 }
+
+.#{$ns}-datepicker .#{$ns}-timepicker {
+  margin-top: $pt-grid-size;
+  border-top: 1px solid $pt-divider-black;
+  padding-top: $pt-grid-size;
+  text-align: center;
+}
