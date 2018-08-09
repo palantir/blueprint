@@ -13,6 +13,12 @@
     margin-right: $pt-grid-size;
   }
 
+  .DayPicker:first-of-type {
+    .#{$ns}-datepicker-navbar {
+      left: $pt-grid-size;
+    }
+  }
+
   .DayPicker-NavButton--interactionDisabled {
     display: none;
   }

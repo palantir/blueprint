@@ -141,7 +141,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   align-items: center;
   position: absolute;
   top: 0;
-  width: 100%;
+  right: 0;
+  left: 0;
   height: $pt-button-height;
 
   > :first-child {
