@@ -62,14 +62,13 @@ export interface IDatePickerBaseProps {
 
     /**
      * The precision of time selection that accompanies the calendar. Passing a
-     * value other than `"none"` (or providing `timePickerProps`) shows a
+     * `TimePrecision` value (or providing `timePickerProps`) shows a
      * `TimePicker` below the calendar. Time is preserved across date changes.
      *
      * This is shorthand for `timePickerProps.precision` and is a quick way to
      * enable time selection.
-     * @default "none"
      */
-    timePrecision?: TimePrecision | "none";
+    timePrecision?: TimePrecision;
 
     /**
      * Further configure the `TimePicker` that appears beneath the calendar.
