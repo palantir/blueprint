@@ -207,7 +207,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     selectedDay: day.getDate(),
                 });
             }
-            if (this.state.value != null && this.state.value.getMonth() !== day.getMonth()) {
+            if (this.state.value == null || this.state.value.getMonth() !== day.getMonth()) {
                 this.ignoreNextMonthChange = true;
             }
             this.updateValue(newValue, true);
@@ -216,11 +216,13 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date {
         const { minDate, maxDate } = this.props;
+        // month is 0-based, date is 1-based. date 0 is last day of previous month.
         const maxDaysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
-        const selectedDay = Math.min(this.state.selectedDay, maxDaysInMonth);
+        const selectedDay = Math.min(this.state.selectedDay, 1, maxDaysInMonth);
 
-        // matches the underlying react-day-picker timestamp behavior
+        // 12:00 matches the underlying react-day-picker timestamp behavior
         const value = new Date(displayYear, displayMonth, selectedDay, 12);
+        // clamp between min and max dates
         if (value < minDate) {
             return minDate;
         } else if (value > maxDate) {
