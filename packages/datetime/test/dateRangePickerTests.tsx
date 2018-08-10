@@ -123,10 +123,10 @@ describe("<DateRangePicker>", () => {
             };
 
             const wrapper = mount(<DateRangePicker {...blueprintProps} dayPickerProps={dayPickerProps} />);
-            const DayPicker = wrapper.find("DayPicker").first();
-            assert.equal(DayPicker.prop("locale"), dayPickerProps.locale);
-            assert.equal(DayPicker.prop("localeUtils"), dayPickerProps.localeUtils);
-            assert.equal(DayPicker.prop("modifiers"), dayPickerProps.modifiers);
+            const dayPicker = wrapper.find("DayPicker").first();
+            assert.equal(dayPicker.prop("locale"), dayPickerProps.locale);
+            assert.equal(dayPicker.prop("localeUtils"), dayPickerProps.localeUtils);
+            assert.equal(dayPicker.prop("modifiers"), dayPickerProps.modifiers);
         });
 
         describe("event handlers", () => {
