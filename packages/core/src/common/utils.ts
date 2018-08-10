@@ -29,7 +29,7 @@ export function isFunction(value: any): value is Function {
  * composed of those. If `node` is an array, only one level of the array is
  * checked, for performance reasons.
  */
-export function isEmptyReactNode(node?: React.ReactNode, skipArray = false): boolean {
+export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boolean {
     return (
         node == null ||
         node === "" ||
@@ -37,7 +37,7 @@ export function isEmptyReactNode(node?: React.ReactNode, skipArray = false): boo
         (!skipArray &&
             Array.isArray(node) &&
             // only recurse one level through arrays, for performance
-            (node.length === 0 || node.every(n => isEmptyReactNode(n, true))))
+            (node.length === 0 || node.every(n => isReactNodeEmpty(n, true))))
     );
 }
 

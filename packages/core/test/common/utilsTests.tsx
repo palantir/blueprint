@@ -22,6 +22,7 @@ describe("Utils", () => {
         assert.isTrue(Utils.isEmptyReactNode(null), "null");
         assert.isTrue(Utils.isEmptyReactNode(""), '""');
         assert.isTrue(Utils.isEmptyReactNode([]), "[]");
+        assert.isTrue(Utils.isEmptyReactNode([undefined, null, false, ""]), "array");
         // not empty nodes
         assert.isFalse(Utils.isEmptyReactNode(0), "0");
         assert.isFalse(Utils.isEmptyReactNode("text"), "text");
