@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { HTMLSelect, IOptionProps, Utils } from "@blueprintjs/core";
+import { HTMLSelect, Icon, IOptionProps, Utils } from "@blueprintjs/core";
 import * as React from "react";
 import { CaptionElementProps } from "react-day-picker/types/props";
 
@@ -31,7 +31,6 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
 
     private containerElement: HTMLElement;
     private displayedMonthText: string;
-    private monthWidthsCache: Record<string, number> = {};
 
     private handleMonthSelectChange = this.dateChangeHandler((d, month) => d.setMonth(month), this.props.onMonthChange);
     private handleYearSelectChange = this.dateChangeHandler((d, year) => d.setFullYear(year), this.props.onYearChange);
@@ -106,14 +105,19 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
     }
 
     private positionArrows() {
-        const cachedWidth = this.monthWidthsCache[this.displayedMonthText];
-        // measure width of text as rendered inside our container element and cache the result.
-        const monthWidth =
-            cachedWidth != null
-                ? cachedWidth
-                : measureTextWidth(this.displayedMonthText, Classes.DATEPICKER_CAPTION_MEASURE, this.containerElement);
-        this.monthWidthsCache[this.displayedMonthText] = monthWidth;
-        this.setState({ monthWidth });
+        // measure width of text as rendered inside our container element.
+        const monthWidth = measureTextWidth(
+            this.displayedMonthText,
+            Classes.DATEPICKER_CAPTION_MEASURE,
+            this.containerElement,
+        );
+        if (monthWidth > this.containerElement.firstElementChild.clientWidth - Icon.SIZE_STANDARD) {
+            // if it's larger than the first child (month select) then use the default styles
+            this.setState({ monthWidth: undefined });
+        } else {
+            // otherwise put icon just after the end of the month name
+            this.setState({ monthWidth });
+        }
     }
 
     private dateChangeHandler(updater: (date: Date, value: number) => void, handler?: (value: number) => void) {

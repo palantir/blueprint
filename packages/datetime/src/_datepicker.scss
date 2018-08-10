@@ -150,7 +150,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 }
 
 .#{$ns}-datepicker-caption {
-  @include pt-flex-container(row);
+  @include pt-flex-container(row, $fill: ":first-child");
   justify-content: space-between;
   margin-bottom: $datepicker-padding;
   border-bottom: 1px solid $pt-divider-black;
