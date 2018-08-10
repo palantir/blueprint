@@ -218,12 +218,13 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date {
         const { minDate, maxDate } = this.props;
+        const { selectedDay } = this.state;
         // month is 0-based, date is 1-based. date 0 is last day of previous month.
         const maxDaysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
-        const selectedDay = Math.min(this.state.selectedDay, 1, maxDaysInMonth);
+        const displayDate = selectedDay == null ? 1 : Math.min(selectedDay, maxDaysInMonth);
 
         // 12:00 matches the underlying react-day-picker timestamp behavior
-        const value = new Date(displayYear, displayMonth, selectedDay, 12);
+        const value = new Date(displayYear, displayMonth, displayDate, 12);
         // clamp between min and max dates
         if (value < minDate) {
             return minDate;
