@@ -60,9 +60,8 @@ export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
         );
 
         const optionChildren = options.map(option => {
-            const { className: optionClassName, value, label }: IOptionProps =
-                typeof option === "object" ? option : { value: option };
-            return <option className={optionClassName} key={value} value={value} children={label || value} />;
+            const props: IOptionProps = typeof option === "object" ? option : { value: option };
+            return <option {...props} key={props.value} children={props.label || props.value} />;
         });
 
         return (
