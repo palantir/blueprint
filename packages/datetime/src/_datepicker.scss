@@ -23,7 +23,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   position: relative;
   border-radius: $pt-border-radius;
   background: $datepicker-background-color;
-  padding: $pt-grid-size;
+  padding: $datepicker-padding;
   user-select: none;
 
   .DayPicker {
@@ -65,7 +65,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .DayPicker-Weekday {
     @include calendar-day();
-    padding-top: $pt-grid-size / 2;
+    padding-top: $datepicker-padding;
     font-weight: 600;
 
     // normalize.css adds an underline to abbr[title] elements, remove it here
@@ -130,9 +130,9 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     display: flex;
     justify-content: space-between;
     margin-top: $pt-grid-size;
-    margin-bottom: -$pt-grid-size / 2;
+    margin-bottom: -$datepicker-padding;
     border-top: 1px solid $pt-divider-black;
-    padding-top: $pt-grid-size / 2;
+    padding-top: $datepicker-padding;
   }
 }
 
@@ -153,7 +153,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 .#{$ns}-datepicker-caption {
   @include pt-flex-container(row);
   justify-content: space-between;
-  margin-bottom: $pt-grid-size / 2;
+  margin-bottom: $datepicker-padding;
   border-bottom: 1px solid $pt-divider-black;
   padding: 0 $pt-button-height-small ($pt-grid-size / 2);
 
@@ -161,7 +161,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   select {
     flex-shrink: 1;
     padding-right: $pt-icon-size-standard;
-    padding-left: $pt-grid-size / 2;
+    padding-left: $datepicker-padding;
     font-weight: 600;
 
     + .#{$ns}-icon {
@@ -171,7 +171,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 }
 
 .#{$ns}-datepicker-caption-measure {
-  padding-left: $pt-grid-size / 2;
+  padding-left: $datepicker-padding;
   font-weight: 600;
 }
 

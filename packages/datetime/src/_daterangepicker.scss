@@ -129,10 +129,10 @@
 
 .#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
   display: inline-block;
-  margin-top: -$pt-grid-size / 2;
-  margin-left: -$pt-grid-size / 2;
-  min-width: $pt-grid-size * 15;
+  margin-top: -$datepicker-padding;
+  margin-left: -$datepicker-padding;
+  min-width: $pt-grid-size * 12;
   padding-top: 0;
-  padding-right: $pt-grid-size / 2;
+  padding-right: $datepicker-padding;
   padding-left: 0;
 }
