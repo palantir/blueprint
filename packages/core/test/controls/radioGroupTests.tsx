@@ -52,14 +52,15 @@ describe("<RadioGroup>", () => {
 
     it("renders options as radio buttons", () => {
         const OPTIONS: IOptionProps[] = [
-            { label: "A", value: "a" },
+            { className: "foo", label: "A", value: "a" },
             { label: "B", value: "b" },
             { disabled: true, label: "C", value: "c" },
         ];
         const group = mount(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="b" />);
-        assert.lengthOf(group.find(Radio), 3);
-        assert.isTrue(findInput(group, { checked: true }).is({ value: "b" }), "radio b not checked");
-        assert.isTrue(findInput(group, { value: "c" }).prop("disabled"), "radio c not disabled");
+        const radios = group.find(Radio);
+        assert.isTrue(radios.at(0).hasClass("foo"), "className");
+        assert.isTrue(radios.at(1).is({ checked: true }), "selectedValue");
+        assert.isTrue(radios.at(2).prop("disabled"), "disabled");
     });
 
     it("options label defaults to value", () => {

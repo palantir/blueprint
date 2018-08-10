@@ -25,6 +25,7 @@ import "./editable-text/editableTextTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
 import "./hotkeys/hotkeysTests";
+import "./html-select/htmlSelectTests";
 import "./icon/iconTests";
 import "./menu/menuItemTests";
 import "./menu/menuTests";
