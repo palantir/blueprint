@@ -28,7 +28,6 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                     disabled={areSameMonth(month, minDate)}
                     icon="chevron-left"
                     minimal={true}
-                    small={true}
                     onClick={this.handlePreviousClick}
                 />
                 <Button
@@ -36,7 +35,6 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
                     disabled={areSameMonth(month, maxDate)}
                     icon="chevron-right"
                     minimal={true}
-                    small={true}
                     onClick={this.handleNextClick}
                 />
             </div>

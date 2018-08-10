@@ -39,8 +39,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   .DayPicker-Month {
     display: inline-table;
-    margin: 0 auto;
-    padding: 0 $pt-grid-size / 2;
+    margin: 0 $datepicker-padding $datepicker-padding;
     border-collapse: collapse;
     border-spacing: 0;
     user-select: none;
@@ -155,7 +154,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   justify-content: space-between;
   margin-bottom: $datepicker-padding;
   border-bottom: 1px solid $pt-divider-black;
-  padding: 0 $pt-button-height-small ($pt-grid-size / 2);
+  padding: 0 ($pt-button-height - $datepicker-padding) ($datepicker-padding);
 
   // HTMLSelect overrides for a narrower appearance
   select {
