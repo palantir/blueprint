@@ -5,31 +5,32 @@
  */
 
 import { assert } from "chai";
-import { EnzymePropSelector, mount, ReactWrapper } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 
-import { HTMLSelect, IOptionProps } from "../../src/index";
+import { IOptionProps } from "../../src/common/props";
+import { HTMLSelect } from "../../src/components/html-select/htmlSelect";
 
 describe("<HtmlSelect>", () => {
-    const emptyHandler = () => {
-        return;
-    };
+    const emptyHandler = () => true;
 
-    it("renders options without CSS classes by default", () => {
-        const OPTIONS: string[] = ["a", "b"];
-        const group = mount(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />);
-        assert.isUndefined(findOption(group, { value: "a" }).prop("className"));
-        assert.isUndefined(findOption(group, { value: "b" }).prop("className"));
+    it("renders options strings", () => {
+        const options = mount(<HTMLSelect onChange={emptyHandler} options={["a", "b"]} />).find("option");
+        assert.equal(options.at(0).text(), "a");
+        assert.equal(options.at(1).text(), "b");
     });
 
-    it("passes custom classNames to options", () => {
-        const OPTIONS: IOptionProps[] = [{ className: "apple", value: "a" }, { className: "banana", value: "b" }];
-        const group = mount(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />);
-        assert.strictEqual(findOption(group, { value: "a" }).prop("className"), "apple");
-        assert.strictEqual(findOption(group, { value: "b" }).prop("className"), "banana");
+    it("renders options props", () => {
+        const OPTIONS: IOptionProps[] = [
+            { value: "a" },
+            { value: "b", className: "foo" },
+            { value: "c", disabled: true },
+            { value: "d", label: "Dog" },
+        ];
+        const options = mount(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />).find("option");
+        assert.equal(options.at(0).text(), "a", "value");
+        assert.isTrue(options.at(1).hasClass("foo"), "className");
+        assert.isTrue(options.at(2).prop("disabled"), "disabled");
+        assert.equal(options.at(3).text(), "Dog", "label");
     });
-
-    function findOption(wrapper: ReactWrapper<any, any>, props: EnzymePropSelector) {
-        return wrapper.find("option").filter(props);
-    }
 });
