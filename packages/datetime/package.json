@@ -35,7 +35,7 @@
   "dependencies": {
     "@blueprintjs/core": "^3.1.0",
     "classnames": "^2.2",
-    "react-day-picker": "^7.0.7",
+    "react-day-picker": "^7.1.10",
     "tslib": "^1.9.0"
   },
   "devDependencies": {
