@@ -141,10 +141,8 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
             transition: isAutoHeight ? "none" : undefined,
         };
 
-        // HACKHACK: type cast because there's no single overload that supports all
-        // three ReactTypes (string | ComponentClass | StatelessComponent)
         return React.createElement(
-            this.props.component as any,
+            this.props.component,
             {
                 className: classNames(Classes.COLLAPSE, this.props.className),
                 style: containerStyle,
