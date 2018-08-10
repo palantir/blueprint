@@ -131,17 +131,19 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     public componentWillReceiveProps(nextProps: IDatePickerProps) {
         super.componentWillReceiveProps(nextProps);
         const { value } = nextProps;
-        if (value !== this.props.value) {
-            if (value != null) {
-                this.setState({
-                    displayMonth: value.getMonth(),
-                    displayYear: value.getFullYear(),
-                    selectedDay: value.getDate(),
-                    value,
-                });
-            } else {
-                this.setState({ value });
-            }
+        if (value === this.props.value) {
+            // no action needed
+            return;
+        } else if (value == null) {
+            // clear the value
+            this.setState({ value });
+        } else {
+            this.setState({
+                displayMonth: value.getMonth(),
+                displayYear: value.getFullYear(),
+                selectedDay: value.getDate(),
+                value,
+            });
         }
     }
 
@@ -194,24 +196,24 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
+        if (modifiers.disabled) {
+            return;
+        }
+        if (this.props.value === undefined) {
+            // set now if uncontrolled, otherwise they'll be updated in `componentWillReceiveProps`
+            this.setState({
+                displayMonth: day.getMonth(),
+                displayYear: day.getFullYear(),
+                selectedDay: day.getDate(),
+            });
+        }
+        if (this.state.value == null || this.state.value.getMonth() !== day.getMonth()) {
+            this.ignoreNextMonthChange = true;
+        }
 
         // allow toggling selected date by clicking it again (if prop enabled)
         const newValue = this.props.canClearSelection && modifiers.selected ? null : day;
-
-        if (!modifiers.disabled) {
-            if (this.props.value === undefined) {
-                // set now if uncontrolled, otherwise they'll be updated in `componentWillReceiveProps`
-                this.setState({
-                    displayMonth: day.getMonth(),
-                    displayYear: day.getFullYear(),
-                    selectedDay: day.getDate(),
-                });
-            }
-            if (this.state.value == null || this.state.value.getMonth() !== day.getMonth()) {
-                this.ignoreNextMonthChange = true;
-            }
-            this.updateValue(newValue, true);
-        }
+        this.updateValue(newValue, true);
     };
 
     private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date {
@@ -260,7 +262,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     };
 
     private handleYearSelectChange = (displayYear: number) => {
-        let displayMonth = this.state.displayMonth;
+        let { displayMonth } = this.state;
 
         if (this.state.value !== null) {
             const value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
