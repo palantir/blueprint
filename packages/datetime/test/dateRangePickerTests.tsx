@@ -1065,15 +1065,20 @@ describe("<DateRangePicker>", () => {
         parent: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>,
         which: "left" | "right",
     ) {
-        const picker = parent
-            .find(ReactDayPicker)
-            .find("Month")
-            .at(which === "left" ? 0 : 1);
         const harness = {
-            wrapper: picker,
-
-            monthSelect: picker.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }),
-            yearSelect: picker.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }),
+            get wrapper() {
+                // use accessor to ensure it's always the latest reference
+                return parent
+                    .find(ReactDayPicker)
+                    .find("Month")
+                    .at(which === "left" ? 0 : 1);
+            },
+            get monthSelect() {
+                return harness.wrapper.find({ className: DateClasses.DATEPICKER_MONTH_SELECT });
+            },
+            get yearSelect() {
+                return harness.wrapper.find({ className: DateClasses.DATEPICKER_YEAR_SELECT });
+            },
 
             assertMonthYear: (month: number, year?: number) => {
                 const view = parent.state(which === "left" ? "leftView" : "rightView");
@@ -1094,7 +1099,7 @@ describe("<DateRangePicker>", () => {
                     .filterWhere(day => !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE))
                     .first();
             },
-            findDays: () => picker.find(`.${DateClasses.DATEPICKER_DAY}`),
+            findDays: () => harness.wrapper.find(`.${DateClasses.DATEPICKER_DAY}`),
             mouseEnterDay: (dayNumber = 1) => {
                 harness.findDay(dayNumber).simulate("mouseenter");
                 return harness;
