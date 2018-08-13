@@ -16,18 +16,18 @@ describe("Utils", () => {
         assert.isFalse(Utils.isFunction(undefined));
     });
 
-    it("isEmptyReactNode", () => {
+    it("isReactNodeEmpty", () => {
         // empty nodes
-        assert.isTrue(Utils.isEmptyReactNode(undefined), "undefined");
-        assert.isTrue(Utils.isEmptyReactNode(null), "null");
-        assert.isTrue(Utils.isEmptyReactNode(""), '""');
-        assert.isTrue(Utils.isEmptyReactNode([]), "[]");
-        assert.isTrue(Utils.isEmptyReactNode([undefined, null, false, ""]), "array");
+        assert.isTrue(Utils.isReactNodeEmpty(undefined), "undefined");
+        assert.isTrue(Utils.isReactNodeEmpty(null), "null");
+        assert.isTrue(Utils.isReactNodeEmpty(""), '""');
+        assert.isTrue(Utils.isReactNodeEmpty([]), "[]");
+        assert.isTrue(Utils.isReactNodeEmpty([undefined, null, false, ""]), "array");
         // not empty nodes
-        assert.isFalse(Utils.isEmptyReactNode(0), "0");
-        assert.isFalse(Utils.isEmptyReactNode("text"), "text");
-        assert.isFalse(Utils.isEmptyReactNode(<div />), "<div />");
-        assert.isFalse(Utils.isEmptyReactNode([null, <div key="div" />]), "array");
+        assert.isFalse(Utils.isReactNodeEmpty(0), "0");
+        assert.isFalse(Utils.isReactNodeEmpty("text"), "text");
+        assert.isFalse(Utils.isReactNodeEmpty(<div />), "<div />");
+        assert.isFalse(Utils.isReactNodeEmpty([null, <div key="div" />]), "array");
     });
 
     it("safeInvoke", () => {
