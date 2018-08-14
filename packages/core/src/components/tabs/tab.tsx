@@ -42,6 +42,8 @@ export interface ITabProps extends IProps {
      * Can also be set via React `children`.
      */
     title?: React.ReactNode;
+    selected?: boolean;
+    onClick?(newTabId: TabId, event: React.MouseEvent<HTMLElement>): void;
 }
 
 export class Tab extends React.PureComponent<ITabProps, {}> {

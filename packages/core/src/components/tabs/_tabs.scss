@@ -86,7 +86,6 @@ $tab-indicator-width: 3px !default;
     margin-right: $pt-grid-size * 2;
   }
 
-  //is there is way to do this conditiaonlly?
   > *:not(:last-child) {
     margin-right: $pt-grid-size * 2;
   }

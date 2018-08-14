@@ -187,7 +187,6 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     };
 
     private repartition(growing: boolean) {
-        console.log('repart', growing, this.spacer.getBoundingClientRect().width )
         if (this.spacer == null) {
             return;
         }
@@ -196,7 +195,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 overflow: [],
                 visible: this.props.items,
             });
-        } else if (this.spacer.getBoundingClientRect().width < .5) {
+        } else if (this.spacer.getBoundingClientRect().width < 1) {
             // spacer has flex-shrink and width 1px so if it's any smaller then we know to shrink
             this.setState(state => {
                 if (state.visible.length <= this.props.minVisibleItems) {

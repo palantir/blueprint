@@ -4,10 +4,22 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as React from "react";
-
-import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs, Slider, Label } from "@blueprintjs/core";
+import {
+    Alignment,
+    Classes,
+    H3,
+    H5,
+    InputGroup,
+    Label,
+    Navbar,
+    Slider,
+    Switch,
+    Tab,
+    TabId,
+    Tabs,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import * as React from "react";
 
 export interface ITabsExampleState {
     activePanelOnly: boolean;
@@ -44,11 +56,7 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     label="Render active tab panel only"
                     onChange={this.toggleActiveOnly}
                 />
-                <Switch
-                    checked={this.state.overflow}
-                    label="Overflow"
-                    onChange={this.toggleOverflow}
-                />
+                <Switch checked={this.state.overflow} label="Overflow" onChange={this.toggleOverflow} />
                 <Label>Overflow Width</Label>
                 <Slider
                     labelRenderer={this.renderLabel}
@@ -71,43 +79,39 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
                         {/* controlled mode & no panels (see h1 below): */}
-                        {
-                            <Tabs
-                                animate={this.state.animate}
-                                id="navbar"
-                                large={true}
-                                overflow={this.state.overflow}
-                                onChange={this.handleNavbarTabChange}
-                                selectedTabId={this.state.navbarTabId}
-                            >
-                                <Tab id="Home" title="Home"/>
-                                <Tab id="Files" title="Files"/>
-                                <Tab id="Builds" title="Builds"/>
-                            </Tabs>
-                        }
+                        <Tabs
+                            animate={this.state.animate}
+                            id="navbar"
+                            large={true}
+                            overflow={this.state.overflow}
+                            onChange={this.handleNavbarTabChange}
+                            selectedTabId={this.state.navbarTabId}
+                        >
+                            <Tab id="Home" title="Home" />
+                            <Tab id="Files" title="Files" />
+                            <Tab id="Builds" title="Builds" />
+                        </Tabs>
                     </Navbar.Group>
                 </Navbar>
                 {/* uncontrolled mode & each Tab has a panel: */}
-                {
-                    <div style={{ width: `${this.state.overflowWidth}%`, marginRight: "auto" }}>
-                        <Tabs
-                            animate={this.state.animate}
-                            id="TabsExample"
-                            key={this.state.vertical ? "vertical" : "horizontal"}
-                            renderActiveTabPanelOnly={this.state.activePanelOnly}
-                            vertical={this.state.vertical}
-                            overflow={this.state.overflow}
-                            overflowListProps={{collapseFrom: "start"}}
-                        >
-                            <Tab id="rx" title="React" panel={<ReactPanel/>}/>
-                            <Tab id="ng" title="Angular" panel={<AngularPanel/>}/>
-                            <Tab id="mb" title="Ember" panel={<EmberPanel/>}/>
-                            <Tab id="bb" title="Backbone" panel={<BackbonePanel/>}/>
-                            <Tabs.Expander/>
-                            <InputGroup type="text" placeholder="Search..."/>
-                        </Tabs>
-                    </div>
-                }
+                <div style={{ width: `${this.state.overflowWidth}%`, marginRight: "auto" }}>
+                    <Tabs
+                        animate={this.state.animate}
+                        id="TabsExample"
+                        key={this.state.vertical ? "vertical" : "horizontal"}
+                        renderActiveTabPanelOnly={this.state.activePanelOnly}
+                        vertical={this.state.vertical}
+                        overflow={this.state.overflow}
+                        overflowListProps={{ collapseFrom: "start" }}
+                    >
+                        <Tab id="rx" title="React" panel={<ReactPanel />} />
+                        <Tab id="ng" title="Angular" panel={<AngularPanel />} />
+                        <Tab id="mb" title="Ember" panel={<EmberPanel />} />
+                        <Tab id="bb" title="Backbone" panel={<BackbonePanel />} />
+                        <Tabs.Expander />
+                        <InputGroup type="text" placeholder="Search..." />
+                    </Tabs>
+                </div>
             </Example>
         );
     }
