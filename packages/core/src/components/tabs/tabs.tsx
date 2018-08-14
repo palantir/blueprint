@@ -230,9 +230,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     }
 
     public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
-        // adding a one second timeout here allows the overflowList to perform it's calculation
-        // so our ref has an accurate picture of the overflow state
-        setTimeout(() => {
+        window.requestAnimationFrame(() => {
             if (this.state.selectedTabId !== prevState.selectedTabId) {
                 this.moveSelectionIndicator();
             } else if (prevState.selectedTabId !== null) {
@@ -247,7 +245,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
                     this.moveSelectionIndicator();
                 }
             }
-        }, 1);
+        });
     }
 
     private getInitialSelectedTabId() {
