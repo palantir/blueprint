@@ -11,6 +11,8 @@ import { IOverflowListProps, IOverflowListState, Menu, MenuItem, OverflowList, P
 import { AbstractPureComponent, IProps, Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import * as Utils from "../../common/utils";
 
 import { ITabProps, Tab, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
@@ -104,7 +106,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         vertical: false,
     };
 
-    public static displayName = "Blueprint2.Tabs";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 
     private tablistElement: HTMLDivElement;
     private overflowElement: React.Component<ITabsProps, IOverflowListState<any>>;
@@ -331,7 +333,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
-        if (this.tablistElement === undefined || !this.props.animate) {
+        if (this.tablistElement == null || !this.props.animate) {
             return;
         }
 

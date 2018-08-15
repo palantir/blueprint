@@ -87,12 +87,12 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} />);
 
         const query1 = "test query 1";
-        findInputGroup(timezonePicker).simulate("change", { currentTarget: { value: query1 } });
+        findInputGroup(timezonePicker).simulate("change", { target: { value: query1 } });
         assert.strictEqual(timezonePicker.state("query"), query1);
         const items1 = findSelect(timezonePicker).prop("items");
 
         const query2 = "test query 2";
-        findInputGroup(timezonePicker).simulate("change", { currentTarget: { value: query2 } });
+        findInputGroup(timezonePicker).simulate("change", { target: { value: query2 } });
         assert.strictEqual(timezonePicker.state("query"), query2);
         const items2 = findSelect(timezonePicker).prop("items");
 
@@ -161,15 +161,6 @@ describe("<TimezonePicker>", () => {
         clickFirstMenuItem(timezonePicker);
         assert.isTrue(onChange.calledOnce);
         assert.strictEqual(timezonePicker.find(Button).prop("text"), value);
-    });
-
-    it("invokes the onChange input prop", () => {
-        const query = "test query";
-        const onInputChange = sinon.spy();
-        const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} inputProps={{ onChange: onInputChange }} />);
-        const inputGroup = findInputGroup(timezonePicker);
-        inputGroup.simulate("change", { currentTarget: { value: query } });
-        assert.isTrue(onInputChange.calledOnce);
     });
 
     it("popover can be controlled with popover props", () => {

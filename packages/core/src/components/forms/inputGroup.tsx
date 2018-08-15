@@ -8,7 +8,14 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
+import {
+    DISPLAYNAME_PREFIX,
+    HTMLInputProps,
+    IControlledProps,
+    IIntentProps,
+    IProps,
+    removeNonHTMLProps,
+} from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
 const DEFAULT_RIGHT_ELEMENT_WIDTH = 10;
@@ -59,7 +66,7 @@ export interface IInputGroupState {
 }
 
 export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
-    public static displayName = "Blueprint2.InputGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
     public state: IInputGroupState = {
         rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH,

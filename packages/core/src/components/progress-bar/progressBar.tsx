@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 export interface IProgressBarProps extends IProps, IIntentProps {
@@ -33,7 +33,7 @@ export interface IProgressBarProps extends IProps, IIntentProps {
 }
 
 export class ProgressBar extends React.PureComponent<IProgressBarProps, {}> {
-    public static displayName = "Blueprint2.ProgressBar";
+    public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 
     public render() {
         const { animate = true, className, intent, stripes = true, value } = this.props;

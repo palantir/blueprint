@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface IFormGroupProps extends IIntentProps, IProps {
     /**
@@ -42,6 +42,8 @@ export interface IFormGroupProps extends IIntentProps, IProps {
 }
 
 export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
+
     public render() {
         const { children, helperText, label, labelFor, labelInfo } = this.props;
         return (

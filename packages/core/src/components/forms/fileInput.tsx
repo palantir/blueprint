@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, IProps {
     /**
@@ -56,7 +56,7 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
 export class FileInput extends React.PureComponent<IFileInputProps, {}> {
-    public static displayName = "Blueprint2.FileInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
     public static defaultProps: IFileInputProps = {
         inputProps: {},

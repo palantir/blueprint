@@ -27,7 +27,7 @@ describe("<DatePicker>", () => {
     it("no day is selected by default", () => {
         const { getSelectedDays, root } = wrap(<DatePicker />);
         assert.lengthOf(getSelectedDays(), 0);
-        assert.isUndefined(root.state("selectedDay"));
+        assert.isNull(root.state("selectedDay"));
     });
 
     describe("reconciliates dayPickerProps", () => {

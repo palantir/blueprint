@@ -124,7 +124,15 @@ The following example shows all supported `Position` values and how each behaves
 
 #### Automatic positioning
 
-The `position` can also be set to the string literal `"auto"` (this is actually the default value). In this mode, the Popover will continually re-position itself to the side with the most space available, adjusting its alignment intuitively as well. This is useful for guaranteeing that the Popover remains visible while scrolling within a parent container.
+The Popover's `position` can also be chosen _automatically_ via `"auto"`, `"auto-start"`, or `"auto-end"`. All of these options choose and continually update the <span class="docs-popover-position-label-side">__side__</span> for you to avoid overflowing the boundary element (when scrolling within it, for instance). The options differ in how they handle <span class="docs-popover-position-label-alignment">__alignment__</span>:
+
+- In `"auto"` mode (the default for `position`), the Popover will align itself to the center of the target as it flips sides.
+- In `"auto-start"` mode, the Popover will align itself to the `start` of the target (i.e., the top edge when the popover is on the left or right, or the left edge when the popover is on the top or bottom).
+- In `"auto-end"` mode, the Popover will align itself to the `end` of the target (i.e., the bottom edge when the popover is on the left or right, or the right edge when the popover is on the top or bottom).
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    You can also specify a specific initial position (e.g. `LEFT`, `TOP_RIGHT`) and still update the Popover's position automatically by enabling the modifiers `flip` and `preventOverflow`. [See below](#core/components/popover.modifiers) for information about modifiers.
+</div>
 
 @### Modifiers
 
@@ -240,16 +248,46 @@ The following example demonstrates the various interaction kinds (note: these Po
 
 @### Closing on click
 
-To enable click-to-close behavior on an element inside a popover, simply add the
-class `Classes.POPOVER_DISMISS` to that element. For example, the **Dismiss**
-button in the top-level [Popover example](#core/components/popover) has this
-class. To enable this behavior on the entire popover, pass the
-`popoverClassName={Classes.POPOVER_DISMISS}` prop.
+Sometimes it is desirable for an element inside a `Popover` to close the popover
+on click. `Popover` supports a pair of CSS classes, `Classes.POPOVER_DISMISS`
+and `Classes.POPOVER_DISMISS_OVERRIDE`, that can be attached to elements to
+describe whether click events should dismiss the enclosing popover.
+
+To mark an element (and its children) as "dismiss elements", simply add the
+class `Classes.POPOVER_DISMISS`. For example, the **Dismiss** button in the
+top-level [Popover example](#core/components/popover) has this class, and all
+`MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
+enable this behavior on the entire popover body, pass
+`popoverClassName={Classes.POPOVER_DISMISS}`.
+
+Cancel the dismiss behavior on subtrees by nesting
+`Classes.POPOVER_DISMISS_OVERRIDE` inside `Classes.POPOVER_DISMISS`. Clicks
+originating inside disabled elements (either via the `disabled` attribute or
+`Classes.DISABLED`) will never dismiss a popover.
+
+Additionally, the prop `captureDismiss` (disabled by default) will prevent click
+events from dismissing _grandparent_ popovers (not the `Popover` immediately
+containing the dismiss element). `MenuItem` disables this feature such that
+clicking any submenu item will close all submenus, which is desirable behavior
+for a menu tree.
+
+```tsx
+<div className={Classes.POPOVER_DISMISS}>
+    <button>Click me to dismiss</button>
+    <button disabled={true}>I will not dismiss</button>
+    <div className={Classes.POPOVER_DISMISS_OVERRIDE}>
+        <button>I too shall not dismiss</button>
+    </div>
+</div>
+```
+
+@reactExample PopoverDismissExample
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Dismiss elements won't have any effect in a popover with
-    `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to interact with the popover
-    content itself (the popover is dismissed the moment the user mouses away from the target).
+    `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to
+    interact with the popover content itself: the popover is dismissed the
+    moment the user mouses away from the target.
 </div>
 
 @### Backdrop

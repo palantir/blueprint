@@ -37,13 +37,7 @@ export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
 }
 
 export function areSameDay(date1: Date, date2: Date) {
-    return (
-        date1 != null &&
-        date2 != null &&
-        date1.getDate() === date2.getDate() &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getFullYear() === date2.getFullYear()
-    );
+    return areSameMonth(date1, date2) && date1.getDate() === date2.getDate();
 }
 
 export function areSameMonth(date1: Date, date2: Date) {
@@ -163,10 +157,11 @@ export function getDateBetween(dateRange: DateRange) {
     return new Date(middle);
 }
 
-export function getDateTime(date: Date, time: Date) {
-    if (date === null) {
+export function getDateTime(date: Date | null, time?: Date | null) {
+    if (date == null) {
         return null;
-    } else if (time === null) {
+    } else if (time == null) {
+        // cannot use default argument because `null` is a common value in this package.
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
     } else {
         return new Date(

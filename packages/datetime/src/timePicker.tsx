@@ -4,7 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, HTMLSelect, Icon, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
+    HTMLSelect,
+    Icon,
+    IProps,
+    Keys,
+    Utils as BlueprintUtils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -116,7 +124,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         useAmPm: false,
     };
 
-    public static displayName = "Blueprint2.TimePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 
     public constructor(props?: ITimePickerProps, context?: any) {
         super(props, context);

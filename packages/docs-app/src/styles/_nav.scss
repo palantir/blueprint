@@ -69,6 +69,11 @@ $dark-package-colors: (
   overflow: auto;
 }
 
+.docs-nav-tag {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .docs-nav-package-icon {
   margin-right: $pt-grid-size;
   border-radius: $pt-border-radius * 3;

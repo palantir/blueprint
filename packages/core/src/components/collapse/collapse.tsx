@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface ICollapseProps extends IProps {
     /**
@@ -84,7 +84,7 @@ export enum AnimationStates {
  * These are all animated.
  */
 export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState> {
-    public static displayName = "Blueprint2.Collapse";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: ICollapseProps = {
         component: "div",
@@ -141,10 +141,8 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
             transition: isAutoHeight ? "none" : undefined,
         };
 
-        // HACKHACK: type cast because there's no single overload that supports all
-        // three ReactTypes (string | ComponentClass | StatelessComponent)
         return React.createElement(
-            this.props.component as any,
+            this.props.component,
             {
                 className: classNames(Classes.COLLAPSE, this.props.className),
                 style: containerStyle,

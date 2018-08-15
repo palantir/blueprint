@@ -7,9 +7,9 @@ import * as React from "react";
 
 import {
     HTMLSelect,
-    IHTMLOptionProps,
     Intent,
     INumericInputProps,
+    IOptionProps,
     Label,
     NumericInput,
     Position,
@@ -138,7 +138,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     private renderSelectMenu(
         label: string,
         selectedValue: number | string,
-        options: IHTMLOptionProps[],
+        options: IOptionProps[],
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (

@@ -5,4 +5,4 @@
 
 OUTPUT="${OUTPUT:-lib/css/}"
 
-postcss $OUTPUT/*.css --use autoprefixer --use postcss-discard-comments --replace
+postcss $OUTPUT/*.css --use autoprefixer --use postcss-discard-comments --replace --map

@@ -13,6 +13,7 @@ import {
     AbstractPureComponent,
     Boundary,
     Classes,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -204,7 +205,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         startInputProps: {},
     };
 
-    public static displayName = "Blueprint2.DateRangeInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
     private startInputRef: HTMLInputElement;
     private endInputRef: HTMLInputElement;

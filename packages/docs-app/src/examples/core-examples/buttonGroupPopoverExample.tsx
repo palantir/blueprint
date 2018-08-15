@@ -37,7 +37,7 @@ export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Vertical" checked={this.state.vertical} onChange={this.handleVerticalChange} />
-                <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
+                <AlignmentSelect align={this.state.alignText} label="Align text" onChange={this.handleAlignChange} />
             </>
         );
         return (

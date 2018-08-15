@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "3.0.1",
+  "version": "3.3.0",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -19,7 +19,7 @@
     "compile": "run-p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
-    "compile:css": "sass-compile ./src",
+    "compile:css": "sass-compile ./src --functions ./scripts/sass-inline-svg.js",
     "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
     "dist": "run-s \"dist:*\"",
     "dist:bundle": "cross-env NODE_ENV=production webpack",
@@ -64,6 +64,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
+    "sass-inline-svg": "^1.1.0",
     "typescript": "~2.8.3",
     "webpack": "^3.10.0"
   },

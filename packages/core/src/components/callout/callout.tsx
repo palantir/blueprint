@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
 import { Icon } from "../../index";
 import { H4 } from "../html/html";
 import { IconName } from "../icon/icon";
@@ -41,6 +41,8 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
 }
 
 export class Callout extends React.PureComponent<ICalloutProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
+
     public render() {
         const { className, children, icon, intent, title, ...htmlProps } = this.props;
         const iconName = this.getIconName(icon, intent);

@@ -10,6 +10,7 @@ import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -98,6 +99,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     rightElement?: JSX.Element;
 
     /**
+     * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
+     * @default false
+     */
+    showActionsBar?: boolean;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
@@ -126,7 +133,7 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
-    public static displayName = "Blueprint2.DateInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,
