@@ -24,8 +24,14 @@ export interface ITagInputProps extends IProps {
     addOnBlur?: boolean;
 
     /**
-     * If true, `onAdd` will be invoked when the user pastes text into the
-     * input. Otherwise, pasted text will remain in the input.
+     * If true, `onAdd` will be invoked when the user pastes text containing the `separator`
+     * into the input. Otherwise, pasted text will remain in the input.
+     *
+     * __Note:__ For example, if `addOnPaste=true` and `separator="\n"` (new line), then:
+     * - Pasting `"hello"` will _not_ invoke `onAdd`
+     * - Pasting `"hello\n"` will invoke `onAdd` with `["hello"]`
+     * - Pasting `"hello\nworld"` will invoke `onAdd` with `["hello", "world"]`
+     *
      * @default true
      */
     addOnPaste?: boolean;
