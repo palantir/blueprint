@@ -24,8 +24,14 @@ export interface ITagInputProps extends IProps {
     addOnBlur?: boolean;
 
     /**
-     * If true, `onAdd` will be invoked when the user pastes text into the
-     * input. Otherwise, pasted text will remain in the input.
+     * If true, `onAdd` will be invoked when the user pastes text containing the `separator`
+     * into the input. Otherwise, pasted text will remain in the input.
+     *
+     * __Note:__ For example, if `addOnPaste=true` and `separator="\n"` (new line), then:
+     * - Pasting `"hello"` will _not_ invoke `onAdd`
+     * - Pasting `"hello\n"` will invoke `onAdd` with `["hello"]`
+     * - Pasting `"hello\nworld"` will invoke `onAdd` with `["hello", "world"]`
+     *
      * @default true
      */
     addOnPaste?: boolean;
@@ -385,11 +391,21 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     };
 
     private handleInputPaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+        const { separator } = this.props;
         const value = event.clipboardData.getData("text");
-        if (this.props.addOnPaste && value.length > 0) {
-            event.preventDefault();
-            this.addTags(value);
+
+        if (!this.props.addOnPaste || value.length === 0) {
+            return;
         }
+
+        // special case as a UX nicety: if the user pasted only one value with no delimiters in it, leave that value in
+        // the input field so that the user can refine it before converting it to a tag manually.
+        if (separator === false || value.split(separator).length === 1) {
+            return;
+        }
+
+        event.preventDefault();
+        this.addTags(value);
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
