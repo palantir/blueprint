@@ -119,11 +119,6 @@
 }
 
 .#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
-  display: inline-block;
-  margin-top: -$datepicker-padding;
-  margin-left: -$datepicker-padding;
   min-width: $pt-grid-size * 12;
-  padding-top: 0;
-  padding-right: $datepicker-padding;
-  padding-left: 0;
+  padding: 0;
 }

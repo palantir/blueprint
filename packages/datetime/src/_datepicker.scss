@@ -17,6 +17,17 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   line-height: 1;
 }
 
+.#{$ns}-divider {
+  margin: $datepicker-padding;
+  background: $pt-divider-black;
+  width: 1px;
+
+  &.#{$ns}-vertical {
+    width: auto;
+    height: 1px;
+  }
+}
+
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
 .#{$ns}-datepicker {
@@ -124,15 +135,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       color: $pt-text-color-disabled;
     }
   }
-
-  .#{$ns}-datepicker-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: $pt-grid-size;
-    margin-bottom: -$datepicker-padding;
-    border-top: 1px solid $pt-divider-black;
-    padding-top: $datepicker-padding;
-  }
 }
 
 .#{$ns}-datepicker-navbar {
@@ -153,8 +155,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   @include pt-flex-container(row, $fill: ":first-child");
   justify-content: space-between;
   margin-bottom: $datepicker-padding;
-  border-bottom: 1px solid $pt-divider-black;
-  padding: 0 ($pt-button-height - $datepicker-padding) ($datepicker-padding);
+  padding: 0 ($pt-button-height - $datepicker-padding);
 
   // HTMLSelect overrides for a narrower appearance
   select {
@@ -167,11 +168,20 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       right: 2px;
     }
   }
+
+  + .#{$ns}-divider {
+    margin: 0;
+  }
 }
 
 .#{$ns}-datepicker-caption-measure {
   padding-left: $datepicker-padding;
   font-weight: 600;
+}
+
+.#{$ns}-datepicker-footer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .#{$ns}-dark .#{$ns}-datepicker {

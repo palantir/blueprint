@@ -92,6 +92,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
                 <div className={Classes.DATEPICKER_CAPTION} ref={ref => (this.containerElement = ref)}>
                     {orderedSelects}
                 </div>
+                <div className="bp3-divider bp3-vertical" />
             </div>
         );
     }

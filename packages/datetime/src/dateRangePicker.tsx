@@ -255,6 +255,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             selectedDays: this.state.value,
         };
 
+        const shortcuts = this.maybeRenderShortcuts();
+
         if (contiguousCalendarMonths || isShowingOneMonth) {
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
                 [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
@@ -264,7 +266,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             // use the left DayPicker when we only need one
             return (
                 <div className={classes}>
-                    {this.maybeRenderShortcuts()}
+                    {shortcuts}
+                    {shortcuts && <div className="bp3-divider" />}
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         captionElement={this.renderSingleCaption}
@@ -281,7 +284,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             // const rightMonth = contiguousCalendarMonths ? rightView.getFullDate()
             return (
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
-                    {this.maybeRenderShortcuts()}
+                    {shortcuts}
+                    {shortcuts && <div className="bp3-divider" />}
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         canChangeMonth={true}

@@ -125,6 +125,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     selectedDays={this.state.value}
                     toMonth={maxDate}
                 />
+                {showActionsBar ? <div className="bp3-divider bp3-vertical" /> : null}
                 {showActionsBar ? this.renderOptionsBar() : null}
             </div>
         );
