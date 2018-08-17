@@ -23,11 +23,11 @@ export interface IDatePickerCaptionProps extends CaptionElementProps {
 }
 
 export interface IDatePickerCaptionState {
-    monthWidth: number;
+    monthTextWidth: number;
 }
 
 export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionProps, IDatePickerCaptionState> {
-    public state: IDatePickerCaptionState = { monthWidth: 0 };
+    public state: IDatePickerCaptionState = { monthTextWidth: 0 };
 
     private containerElement: HTMLElement;
     private displayedMonthText: string;
@@ -63,7 +63,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
 
         const monthSelect = (
             <HTMLSelect
-                iconProps={{ style: { left: this.state.monthWidth } }}
+                iconProps={{ style: { left: this.state.monthTextWidth } }}
                 className={Classes.DATEPICKER_MONTH_SELECT}
                 key="month"
                 minimal={true}
@@ -106,17 +106,18 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
 
     private positionArrows() {
         // measure width of text as rendered inside our container element.
-        const monthWidth = measureTextWidth(
+        const monthTextWidth = measureTextWidth(
             this.displayedMonthText,
             Classes.DATEPICKER_CAPTION_MEASURE,
             this.containerElement,
         );
-        if (monthWidth > this.containerElement.firstElementChild.clientWidth - Icon.SIZE_STANDARD) {
-            // if it's larger than the first child (month select) then use the default styles
-            this.setState({ monthWidth: undefined });
+        const monthSelectWidth = this.containerElement.firstElementChild.clientWidth;
+        if (monthTextWidth > monthSelectWidth - Icon.SIZE_STANDARD - 2) {
+            // if it's larger than the month select minus default icon position then fall back to CSS.
+            this.setState({ monthTextWidth: undefined });
         } else {
-            // otherwise put icon just after the end of the month name
-            this.setState({ monthWidth });
+            // otherwise position icon just after the end of the month name.
+            this.setState({ monthTextWidth });
         }
     }
 
