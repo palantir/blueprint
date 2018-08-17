@@ -124,7 +124,15 @@ The following example shows all supported `Position` values and how each behaves
 
 #### Automatic positioning
 
-The `position` can also be set to the string literal `"auto"` (this is actually the default value). In this mode, the Popover will continually re-position itself to the side with the most space available, adjusting its alignment intuitively as well. This is useful for guaranteeing that the Popover remains visible while scrolling within a parent container.
+The Popover's `position` can also be chosen _automatically_ via `"auto"`, `"auto-start"`, or `"auto-end"`. All of these options choose and continually update the <span class="docs-popover-position-label-side">__side__</span> for you to avoid overflowing the boundary element (when scrolling within it, for instance). The options differ in how they handle <span class="docs-popover-position-label-alignment">__alignment__</span>:
+
+- In `"auto"` mode (the default for `position`), the Popover will align itself to the center of the target as it flips sides.
+- In `"auto-start"` mode, the Popover will align itself to the `start` of the target (i.e., the top edge when the popover is on the left or right, or the left edge when the popover is on the top or bottom).
+- In `"auto-end"` mode, the Popover will align itself to the `end` of the target (i.e., the bottom edge when the popover is on the left or right, or the right edge when the popover is on the top or bottom).
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    You can also specify a specific initial position (e.g. `LEFT`, `TOP_RIGHT`) and still update the Popover's position automatically by enabling the modifiers `flip` and `preventOverflow`. [See below](#core/components/popover.modifiers) for information about modifiers.
+</div>
 
 @### Modifiers
 

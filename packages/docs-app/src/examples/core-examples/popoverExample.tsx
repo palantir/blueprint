@@ -42,8 +42,10 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const VALID_POSITIONS: Array<Position | "auto"> = [
+const VALID_POSITIONS: Array<Position | "auto" | "auto-start" | "auto-end"> = [
     "auto",
+    "auto-start",
+    "auto-end",
     Position.TOP_LEFT,
     Position.TOP,
     Position.TOP_RIGHT,
@@ -69,7 +71,7 @@ export interface IPopoverExampleState {
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
-    position?: Position | "auto";
+    position?: Position | "auto" | "auto-start" | "auto-end";
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -99,7 +101,9 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
-    private handlePositionChange = handleStringChange((position: Position | "auto") => this.setState({ position }));
+    private handlePositionChange = handleStringChange((position: Position | "auto" | "auto-start" | "auto-end") =>
+        this.setState({ position }),
+    );
     private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
         this.setState({
             modifiers: {

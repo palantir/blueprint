@@ -11,7 +11,7 @@ import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IActionProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { isReactNodeEmpty, safeInvoke } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
@@ -149,7 +149,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         return [
             loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />,
             <Icon key="leftIcon" icon={icon} />,
-            ((text != null && text !== "") || (children != null && children !== "")) && (
+            (!isReactNodeEmpty(text) || !isReactNodeEmpty(children)) && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
                     {children}
