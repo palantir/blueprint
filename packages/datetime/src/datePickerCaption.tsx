@@ -112,7 +112,8 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
             Classes.DATEPICKER_CAPTION_MEASURE,
             this.containerElement,
         );
-        const monthSelectWidth = this.containerElement.firstElementChild.clientWidth;
+        const monthSelectWidth =
+            this.containerElement == null ? 0 : this.containerElement.firstElementChild.clientWidth;
         const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - Icon.SIZE_STANDARD - 2);
         this.setState({ monthRightOffset: rightOffset });
     }
