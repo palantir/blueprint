@@ -16,6 +16,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
+import { DatePickerNavbar } from "../src/datePickerNavbar";
 import { IDateRangePickerState } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
@@ -1042,8 +1043,10 @@ describe("<DateRangePicker>", () => {
             },
             clickNavButton: (which: "next" | "prev", navIndex = 0) => {
                 wrapper
-                    .find(`.DayPicker-NavButton--${which}`)
+                    .find(DatePickerNavbar)
                     .at(navIndex)
+                    .find(`.DayPicker-NavButton--${which}`)
+                    .hostNodes()
                     .simulate("click");
                 return harness;
             },
@@ -1074,10 +1077,10 @@ describe("<DateRangePicker>", () => {
                     .at(which === "left" ? 0 : 1);
             },
             get monthSelect() {
-                return harness.wrapper.find({ className: DateClasses.DATEPICKER_MONTH_SELECT });
+                return harness.wrapper.find({ className: DateClasses.DATEPICKER_MONTH_SELECT }).find("select");
             },
             get yearSelect() {
-                return harness.wrapper.find({ className: DateClasses.DATEPICKER_YEAR_SELECT });
+                return harness.wrapper.find({ className: DateClasses.DATEPICKER_YEAR_SELECT }).find("select");
             },
 
             assertMonthYear: (month: number, year?: number) => {
