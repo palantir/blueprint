@@ -65,10 +65,10 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                 <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
                 <FormatSelect format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
+                    allowNone={true}
                     label="Time precision"
-                    allowEmpty={true}
-                    value={timePrecision}
                     onChange={this.toggleTimePrecision}
+                    value={timePrecision}
                 />
             </>
         );

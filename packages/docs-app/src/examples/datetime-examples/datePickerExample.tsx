@@ -56,14 +56,8 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
 
         return (
             <Example options={options} {...this.props}>
-                <DatePicker
-                    className={Classes.ELEVATION_1}
-                    maxDate={new Date("10/1/2018")}
-                    minDate={new Date("4/20/2016")}
-                    onChange={this.handleDateChange}
-                    {...props}
-                />
-                <MomentDate date={date} withTime={this.state.timePrecision !== undefined} />
+                <DatePicker className={Classes.ELEVATION_1} onChange={this.handleDateChange} {...props} />
+                <MomentDate date={date} withTime={props.timePrecision !== undefined} />
             </Example>
         );
     }
