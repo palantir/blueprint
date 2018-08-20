@@ -322,7 +322,11 @@ describe("<DateInput>", () => {
         it("Popover doesn't close when month changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1);
             const { root, changeSelect } = wrap(
-                <DateInput {...DATE_FORMAT} defaultValue={defaultValue} popoverProps={{ isOpen: true }} />,
+                <DateInput
+                    {...DATE_FORMAT}
+                    defaultValue={defaultValue}
+                    popoverProps={{ isOpen: true, usePortal: false }}
+                />,
             );
             changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
             assert.isTrue(root.find(Popover).prop("isOpen"));
@@ -552,7 +556,12 @@ describe("<DateInput>", () => {
         it("isUserChange is false when month changes", () => {
             const onChange = sinon.spy();
             wrap(
-                <DateInput {...DATE_FORMAT} onChange={onChange} popoverProps={{ isOpen: true }} value={DATE} />,
+                <DateInput
+                    {...DATE_FORMAT}
+                    onChange={onChange}
+                    popoverProps={{ isOpen: true, usePortal: false }}
+                    value={DATE}
+                />,
             ).changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
             assert.isTrue(onChange.calledOnce);
             assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
