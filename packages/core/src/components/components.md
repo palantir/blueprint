@@ -9,6 +9,7 @@
 @page card
 @page collapse
 @page collapsible-list
+@page divider
 @page editable-text
 @page html
 @page html-table

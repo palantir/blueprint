@@ -100,6 +100,8 @@ export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
 
+export const DIVIDER = `${NS}-divider`;
+
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
 export const EDITABLE_TEXT_EDITING = `${EDITABLE_TEXT}-editing`;
