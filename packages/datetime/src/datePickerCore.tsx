@@ -73,6 +73,11 @@ export interface IDatePickerBaseProps {
 
     /**
      * Further configure the `TimePicker` that appears beneath the calendar.
+     * `onChange` and `value` are ignored in favor of the corresponding
+     * top-level props on this component.
+     *
+     * Passing any defined value to this prop (even `{}`) will cause the
+     * `TimePicker` to appear.
      */
     timePickerProps?: ITimePickerProps;
 }

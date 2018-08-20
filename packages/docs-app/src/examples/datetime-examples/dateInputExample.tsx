@@ -35,8 +35,8 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
-    private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision) =>
-        this.setState({ timePrecision }),
+    private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision | "none") =>
+        this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
     public render() {
