@@ -10,22 +10,19 @@ import { Button, ButtonGroup, Divider, H5, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IDividerExampleState {
-    fill: boolean;
     vertical: boolean;
 }
 
 export class DividerExample extends React.PureComponent<IExampleProps, IDividerExampleState> {
-    public state: IDividerExampleState = { fill: false, vertical: false };
+    public state: IDividerExampleState = { vertical: false };
 
-    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {
-        const { fill, vertical } = this.state;
+        const { vertical } = this.state;
         const options = (
             <>
-                <H5>Props</H5>
-                <Switch checked={fill} label="Fill" onChange={this.handleFillChange} />
+                <H5>Example props</H5>
                 <Switch checked={vertical} label="Vertical" onChange={this.handleVerticalChange} />
             </>
         );
@@ -34,10 +31,10 @@ export class DividerExample extends React.PureComponent<IExampleProps, IDividerE
                 <ButtonGroup minimal={true} vertical={vertical}>
                     <Button text="File" />
                     <Button text="Edit" />
-                    <Divider fill={fill} />
+                    <Divider />
                     <Button text="Create" />
                     <Button text="Delete" />
-                    <Divider fill={fill} />
+                    <Divider />
                     <Button icon="add" />
                     <Button icon="remove" />
                 </ButtonGroup>
