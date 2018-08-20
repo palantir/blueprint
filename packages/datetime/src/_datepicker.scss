@@ -148,7 +148,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 
   // HTMLSelect overrides for a narrower appearance
   select {
-    flex-shrink: 1;
     padding-right: $pt-icon-size-standard;
     padding-left: $datepicker-padding;
     font-weight: 600;
@@ -161,6 +160,15 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   + .#{$ns}-divider {
     margin: 0;
   }
+}
+
+.#{$ns}-datepicker-month-select {
+  flex-shrink: 1;
+}
+
+.#{$ns}-datepicker-year-select {
+  flex-shrink: 1;
+  min-width: 60px;
 }
 
 .#{$ns}-datepicker-caption-measure {

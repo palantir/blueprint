@@ -23,11 +23,11 @@ export interface IDatePickerCaptionProps extends CaptionElementProps {
 }
 
 export interface IDatePickerCaptionState {
-    monthTextWidth: number;
+    monthRightOffset: number;
 }
 
 export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionProps, IDatePickerCaptionState> {
-    public state: IDatePickerCaptionState = { monthTextWidth: 0 };
+    public state: IDatePickerCaptionState = { monthRightOffset: 0 };
 
     private containerElement: HTMLElement;
     private displayedMonthText: string;
@@ -63,7 +63,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
 
         const monthSelect = (
             <HTMLSelect
-                iconProps={{ style: { left: this.state.monthTextWidth } }}
+                iconProps={{ style: { right: this.state.monthRightOffset } }}
                 className={Classes.DATEPICKER_MONTH_SELECT}
                 key="month"
                 minimal={true}
@@ -113,13 +113,8 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
             this.containerElement,
         );
         const monthSelectWidth = this.containerElement.firstElementChild.clientWidth;
-        if (monthTextWidth > monthSelectWidth - Icon.SIZE_STANDARD - 2) {
-            // if it's larger than the month select minus default icon position then fall back to CSS.
-            this.setState({ monthTextWidth: undefined });
-        } else {
-            // otherwise position icon just after the end of the month name.
-            this.setState({ monthTextWidth });
-        }
+        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - Icon.SIZE_STANDARD - 2);
+        this.setState({ monthRightOffset: rightOffset });
     }
 
     private dateChangeHandler(updater: (date: Date, value: number) => void, handler?: (value: number) => void) {
