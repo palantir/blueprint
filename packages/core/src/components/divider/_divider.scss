@@ -7,25 +7,13 @@ $divider-margin: $pt-grid-size / 2 !default;
 
 .#{$ns}-divider {
   margin: $divider-margin;
-  background: $pt-divider-black;
-  width: 1px;
+  // since the element is empty, it will occupy minimal space and only show
+  // the appropriate border based on direction of container.
+  border-right: 1px solid $pt-divider-black;
+  border-bottom: 1px solid $pt-divider-black;
 
-  // fill modifier removes margin on ends so line fills container
-  &.#{$ns}-fill {
-    margin: 0 $divider-margin;
-  }
-
-  .#{$ns}-vertical &,
-  &.#{$ns}-vertical {
-    width: auto;
-    height: 1px;
-
-    &.#{$ns}-fill {
-      margin: $divider-margin 0;
-    }
-  }
 
   .#{$ns}-dark & {
-    background: $pt-dark-divider-black;
+    border-color: $pt-dark-divider-black;
   }
 }
