@@ -18,6 +18,8 @@ export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement>
     tagName?: keyof JSX.IntrinsicElements;
 }
 
+// this component is simple enough that tests would be purely tautological.
+/* istanbul ignore next */
 export class Divider extends React.PureComponent<IDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 
