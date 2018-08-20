@@ -16,6 +16,7 @@ export * from "./cardExample";
 export * from "./collapsibleListExample";
 export * from "./controlGroupExample";
 export * from "./dialogExample";
+export * from "./dividerExample";
 export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
