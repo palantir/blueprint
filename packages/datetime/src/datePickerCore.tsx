@@ -6,6 +6,7 @@
 
 import { LocaleUtils } from "react-day-picker/types/utils";
 import { Months } from "./common/months";
+import { ITimePickerProps, TimePrecision } from "./timePicker";
 
 // DatePicker supports a simpler set of modifiers (for now).
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
