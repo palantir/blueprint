@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { HTMLSelect, Icon, IOptionProps, Utils } from "@blueprintjs/core";
+import { Divider, HTMLSelect, Icon, IOptionProps, Utils } from "@blueprintjs/core";
 import * as React from "react";
 import { CaptionElementProps } from "react-day-picker/types/props";
 
@@ -92,7 +92,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
                 <div className={Classes.DATEPICKER_CAPTION} ref={ref => (this.containerElement = ref)}>
                     {orderedSelects}
                 </div>
-                <div className="bp3-divider bp3-vertical" />
+                <Divider />
             </div>
         );
     }

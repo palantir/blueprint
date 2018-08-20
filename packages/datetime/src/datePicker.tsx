@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
@@ -125,8 +125,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     selectedDays={this.state.value}
                     toMonth={maxDate}
                 />
-                {showActionsBar ? <div className="bp3-divider bp3-vertical" /> : null}
-                {showActionsBar ? this.renderOptionsBar() : null}
+                {showActionsBar && this.renderOptionsBar()}
             </div>
         );
     }
@@ -192,12 +191,13 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     );
 
     private renderOptionsBar() {
-        return (
-            <div className={Classes.DATEPICKER_FOOTER}>
+        return [
+            <Divider key="div" />,
+            <div className={Classes.DATEPICKER_FOOTER} key="footer">
                 <Button minimal={true} onClick={this.handleTodayClick} text="Today" />
                 <Button minimal={true} onClick={this.handleClearClick} text="Clear" />
-            </div>
-        );
+            </div>,
+        ];
     }
 
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {

@@ -17,17 +17,6 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   line-height: 1;
 }
 
-.#{$ns}-divider {
-  margin: $datepicker-padding;
-  background: $pt-divider-black;
-  width: 1px;
-
-  &.#{$ns}-vertical {
-    width: auto;
-    height: 1px;
-  }
-}
-
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
 .#{$ns}-datepicker {

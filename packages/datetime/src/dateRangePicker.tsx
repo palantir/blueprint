@@ -9,6 +9,7 @@ import {
     Boundary,
     Classes,
     DISPLAYNAME_PREFIX,
+    Divider,
     IProps,
     Menu,
     MenuItem,
@@ -267,7 +268,6 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             return (
                 <div className={classes}>
                     {shortcuts}
-                    {shortcuts && <div className="bp3-divider" />}
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         captionElement={this.renderSingleCaption}
@@ -281,11 +281,9 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 </div>
             );
         } else {
-            // const rightMonth = contiguousCalendarMonths ? rightView.getFullDate()
             return (
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
                     {shortcuts}
-                    {shortcuts && <div className="bp3-divider" />}
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
@@ -381,7 +379,12 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             );
         });
 
-        return <Menu className={DateClasses.DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
+        return [
+            <Menu key="shortcuts" className={DateClasses.DATERANGEPICKER_SHORTCUTS}>
+                {shortcutElements}
+            </Menu>,
+            <Divider key="div" />,
+        ];
     }
 
     private renderNavbar = (navbarProps: NavbarElementProps) => (
