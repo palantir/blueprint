@@ -1,0 +1,31 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "../../common/variables";
+
+$divider-margin: $pt-grid-size / 2 !default;
+
+.#{$ns}-divider {
+  margin: $divider-margin;
+  background: $pt-divider-black;
+  width: 1px;
+
+  // fill modifier removes margin on ends so line fills container
+  &.#{$ns}-fill {
+    margin: 0 $divider-margin;
+  }
+
+  .#{$ns}-vertical &,
+  &.#{$ns}-vertical {
+    width: auto;
+    height: 1px;
+
+    &.#{$ns}-fill {
+      margin: $divider-margin 0;
+    }
+  }
+
+  .#{$ns}-dark & {
+    background: $pt-dark-divider-black;
+  }
+}
