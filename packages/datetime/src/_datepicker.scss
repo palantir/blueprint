@@ -143,8 +143,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 .#{$ns}-datepicker-caption {
   @include pt-flex-container(row, $fill: ":first-child");
   justify-content: space-between;
-  margin-bottom: $datepicker-padding;
-  padding: 0 ($pt-button-height - $datepicker-padding);
+  margin: 0 ($pt-button-height - $datepicker-padding) $datepicker-padding;
 
   // HTMLSelect overrides for a narrower appearance
   select {
