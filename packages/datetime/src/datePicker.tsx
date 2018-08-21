@@ -285,7 +285,8 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private handleTimeChange = (time: Date) => {
         Utils.safeInvoke(this.props.timePickerProps.onChange, time);
-        const newValue = DateUtils.getDateTime(this.state.value || new Date(), time);
+        const { value } = this.state;
+        const newValue = DateUtils.getDateTime(value != null ? value : new Date(), time);
         this.updateValue(newValue, true);
     };
 

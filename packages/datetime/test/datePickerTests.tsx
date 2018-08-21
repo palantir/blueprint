@@ -20,7 +20,7 @@ import { IDatePickerState } from "../src/datePicker";
 import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, TimePicker, TimePrecision } from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
-describe.only("<DatePicker>", () => {
+describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
         assert.lengthOf(wrap(<DatePicker />).root.find(`.${Classes.DATEPICKER}`), 1);
     });
