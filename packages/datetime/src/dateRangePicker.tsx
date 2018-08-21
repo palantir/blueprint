@@ -17,7 +17,6 @@ import DateRange = DateUtils.DateRange;
 
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
-
 import { DatePickerCaption } from "./datePickerCaption";
 import {
     combineModifiers,
