@@ -27,8 +27,6 @@ import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
-import { DateTimePicker } from "./dateTimePicker";
-import { ITimePickerProps, TimePrecision } from "./timePicker";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
@@ -110,19 +108,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * in the input field, pass `new Date(undefined)` to the value prop.
      */
     value?: Date | null;
-
-    /**
-     * Any props to be passed on to the `TimePicker`. `value`, `onChange`, and
-     * `timePrecision` will be ignored in favor of the corresponding top-level
-     * props on this component.
-     */
-    timePickerProps?: ITimePickerProps;
-
-    /**
-     * Adds a time chooser to the bottom of the popover.
-     * Passed to the `DateTimePicker` component.
-     */
-    timePrecision?: TimePrecision;
 }
 
 export interface IDateInputState {
@@ -144,7 +129,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
         reverseMonthAndYearMenus: false,
-        timePickerProps: {},
     };
 
     public state: IDateInputState = {
@@ -186,24 +170,17 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             },
         };
 
-        const popoverContent =
-            this.props.timePrecision === undefined ? (
+        const wrappedPopoverContent = (
+            <div ref={this.refHandlers.popoverContent}>
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
                     onChange={this.handleDateChange}
                     value={dateValue}
                 />
-            ) : (
-                <DateTimePicker
-                    canClearSelection={this.props.canClearSelection}
-                    onChange={this.handleDateChange}
-                    value={value}
-                    datePickerProps={this.props}
-                    timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
-                />
-            );
-        const wrappedPopoverContent = <div ref={this.refHandlers.popoverContent}>{popoverContent}</div>;
+            </div>
+        );
+
         // assign default empty object here to prevent mutation
         const { popoverProps = {} } = this.props;
         const inputProps = this.getInputPropsWithDefaults();

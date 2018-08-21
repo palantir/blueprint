@@ -409,7 +409,7 @@ function formatTime(time: number, unit: TimeUnit) {
 }
 
 function getStringValueFromInputEvent(e: React.SyntheticEvent<HTMLInputElement>) {
-    return (e.currentTarget as HTMLInputElement).value;
+    return (e.target as HTMLInputElement).value;
 }
 
 interface IKeyEventMap {

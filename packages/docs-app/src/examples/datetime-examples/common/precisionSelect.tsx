@@ -13,7 +13,7 @@ export interface IPrecisionSelectProps {
     /**
      * The precision-string option to display as selected.
      */
-    value: TimePrecision;
+    value: TimePrecision | "none" | undefined;
 
     /**
      * The callback to fire when the selected value changes.
@@ -21,9 +21,9 @@ export interface IPrecisionSelectProps {
     onChange: (event: React.FormEvent<HTMLElement>) => void;
 
     /**
-     * Whether or not to allow an empty option.
+     * Whether or not to allow a `"none"` option.
      */
-    allowEmpty?: boolean;
+    allowNone?: boolean;
 
     /**
      * Label to show over the dropdown of precisions.
@@ -36,7 +36,7 @@ export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = props => (
     <label className={Classes.LABEL}>
         {props.label || "Precision"}
         <HTMLSelect value={props.value} onChange={props.onChange}>
-            {props.allowEmpty ? <option value="-1">None</option> : undefined}
+            {props.allowNone && <option value="none">None</option>}
             <option value={TimePrecision.MINUTE}>Minute</option>
             <option value={TimePrecision.SECOND}>Second</option>
             <option value={TimePrecision.MILLISECOND}>Millisecond</option>

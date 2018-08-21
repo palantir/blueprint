@@ -192,8 +192,8 @@ describe("<DateInput>", () => {
 
         const timePicker = wrapper.find(TimePicker);
 
-        // ensure the top-level props override props by the same name in timePickerProps
-        assert.equal(timePicker.prop("precision"), TimePrecision.SECOND);
+        // value > timePickerProps > timePrecision
+        assert.equal(timePicker.prop("precision"), TimePrecision.MILLISECOND);
         assert.notEqual(timePicker.prop("onChange"), onChange);
         DateTestUtils.assertDatesEqual(timePicker.prop("value"), value);
 
