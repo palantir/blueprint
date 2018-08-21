@@ -9,6 +9,7 @@ import {
     Boundary,
     Classes,
     DISPLAYNAME_PREFIX,
+    Divider,
     IProps,
     Menu,
     MenuItem,
@@ -18,7 +19,7 @@ import classNames from "classnames";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import { DayModifiers } from "react-day-picker/types/common";
-import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/props";
+import { CaptionElementProps, DayPickerProps, NavbarElementProps } from "react-day-picker/types/props";
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -37,6 +38,7 @@ import {
     IDatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
+import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 
 export interface IDateRangeShortcut {
@@ -254,6 +256,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             selectedDays: this.state.value,
         };
 
+        const shortcuts = this.maybeRenderShortcuts();
+
         if (contiguousCalendarMonths || isShowingOneMonth) {
             const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
                 [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
@@ -263,10 +267,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             // use the left DayPicker when we only need one
             return (
                 <div className={classes}>
-                    {this.maybeRenderShortcuts()}
+                    {shortcuts}
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         captionElement={this.renderSingleCaption}
+                        navbarElement={this.renderNavbar}
                         fromMonth={minDate}
                         month={leftView.getFullDate()}
                         numberOfMonths={isShowingOneMonth ? 1 : 2}
@@ -276,14 +281,14 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 </div>
             );
         } else {
-            // const rightMonth = contiguousCalendarMonths ? rightView.getFullDate()
             return (
                 <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
-                    {this.maybeRenderShortcuts()}
+                    {shortcuts}
                     <ReactDayPicker
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderLeftCaption}
+                        navbarElement={this.renderNavbar}
                         fromMonth={minDate}
                         month={leftView.getFullDate()}
                         onMonthChange={this.handleLeftMonthChange}
@@ -293,6 +298,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                         {...dayPickerBaseProps}
                         canChangeMonth={true}
                         captionElement={this.renderRightCaption}
+                        navbarElement={this.renderNavbar}
                         fromMonth={DateUtils.getDateNextMonth(minDate)}
                         month={rightView.getFullDate()}
                         onMonthChange={this.handleRightMonthChange}
@@ -373,8 +379,17 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             );
         });
 
-        return <Menu className={DateClasses.DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
+        return [
+            <Menu key="shortcuts" className={DateClasses.DATERANGEPICKER_SHORTCUTS}>
+                {shortcutElements}
+            </Menu>,
+            <Divider key="div" />,
+        ];
     }
+
+    private renderNavbar = (navbarProps: NavbarElementProps) => (
+        <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate} />
+    );
 
     private renderSingleCaption = (captionProps: CaptionElementProps) => (
         <DatePickerCaption

@@ -9,6 +9,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { HTMLSelect } from "@blueprintjs/core";
 import { ClassNames } from "react-day-picker/types/common";
 import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
 import { Classes, IDatePickerLocaleUtils } from "../src/index";
@@ -42,14 +43,14 @@ describe("<DatePickerCaption>", () => {
         const onYearChange = sinon.spy();
         const { month, year } = renderDatePickerCaption({ onMonthChange, onYearChange });
 
-        assert.isTrue(onMonthChange.notCalled);
+        assert.isTrue(onMonthChange.notCalled, "onMonthChange before");
         month.simulate("change", { target: { value: 11 } });
-        assert.isTrue(onMonthChange.calledOnce);
+        assert.isTrue(onMonthChange.calledOnce, "onMonthChange after");
         assert.strictEqual(onMonthChange.args[0][0], 11);
 
-        assert.isTrue(onYearChange.notCalled);
+        assert.isTrue(onYearChange.notCalled, "onYearChange before");
         year.simulate("change", { target: { value: 2014 } });
-        assert.isTrue(onYearChange.calledOnce);
+        assert.isTrue(onYearChange.calledOnce, "onYearChange after");
         assert.strictEqual(onYearChange.args[0][0], 2014);
     });
 
@@ -87,9 +88,15 @@ describe("<DatePickerCaption>", () => {
         );
 
         return {
-            month: wrapper.find(`.${Classes.DATEPICKER_MONTH_SELECT}`),
+            month: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_MONTH_SELECT })
+                .find("select"),
             root: wrapper,
-            year: wrapper.find(`.${Classes.DATEPICKER_YEAR_SELECT}`),
+            year: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_YEAR_SELECT })
+                .find("select"),
         };
     }
 });

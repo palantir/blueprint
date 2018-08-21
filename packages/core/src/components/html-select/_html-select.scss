@@ -49,6 +49,7 @@ Styleguide select
 
   .#{$ns}-icon {
     @extend %pt-select-arrow;
+    @include pt-icon-colors();
   }
 
   &.#{$ns}-minimal select {

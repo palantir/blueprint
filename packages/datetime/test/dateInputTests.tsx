@@ -116,26 +116,26 @@ describe("<DateInput>", () => {
 
     it("Popover should not close if focus moves to month select", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
-        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper.setState({ isOpen: true });
-        wrapper
+        const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        root.setState({ isOpen: true });
+        root
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        wrapper.find(`.${Classes.DATEPICKER_MONTH_SELECT}`).simulate("change", { value: Months.FEBRUARY.toString() });
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+        assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
     it("Popover should not close if focus moves to year select", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
-        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper.setState({ isOpen: true });
-        wrapper
+        const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        root.setState({ isOpen: true });
+        root
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        wrapper.find(`.${Classes.DATEPICKER_YEAR_SELECT}`).simulate("change", { value: "2016" });
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        changeSelect(Classes.DATEPICKER_YEAR_SELECT, 2016);
+        assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
     it("setting timePrecision renders a TimePicker", () => {
@@ -321,12 +321,15 @@ describe("<DateInput>", () => {
 
         it("Popover doesn't close when month changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1);
-            const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-            wrapper.setState({ isOpen: true });
-            wrapper
-                .find(`.${Classes.DATEPICKER_MONTH_SELECT}`)
-                .simulate("change", { value: Months.FEBRUARY.toString() });
-            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+            const { root, changeSelect } = wrap(
+                <DateInput
+                    {...DATE_FORMAT}
+                    defaultValue={defaultValue}
+                    popoverProps={{ isOpen: true, usePortal: false }}
+                />,
+            );
+            changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+            assert.isTrue(root.find(Popover).prop("isOpen"));
         });
 
         it("Popover doesn't close when time changes", () => {
@@ -552,13 +555,14 @@ describe("<DateInput>", () => {
 
         it("isUserChange is false when month changes", () => {
             const onChange = sinon.spy();
-            const wrapper = mount(<DateInput {...DATE_FORMAT} onChange={onChange} value={DATE} />);
-            wrapper.setState({ isOpen: true });
-
-            wrapper
-                .find(`.${Classes.DATEPICKER_MONTH_SELECT}`)
-                .simulate("change", { value: Months.FEBRUARY.toString() });
-
+            wrap(
+                <DateInput
+                    {...DATE_FORMAT}
+                    onChange={onChange}
+                    popoverProps={{ isOpen: true, usePortal: false }}
+                    value={DATE}
+                />,
+            ).changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
             assert.isTrue(onChange.calledOnce);
             assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
         });
@@ -616,6 +620,12 @@ describe("<DateInput>", () => {
     function wrap(dateInput: JSX.Element) {
         const wrapper = mount<IDateInputProps>(dateInput);
         return {
+            changeSelect: (className: string, value: React.ReactText) => {
+                return wrapper
+                    .find(`.${className}`)
+                    .find("select")
+                    .simulate("change", { target: { value: value.toString() } });
+            },
             getDay: (dayNumber = 1) => {
                 return wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)

@@ -10,7 +10,7 @@ import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import * as sinon from "sinon";
 
-import { Button } from "@blueprintjs/core";
+import { Button, HTMLSelect } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as DateUtils from "../src/common/dateUtils";
@@ -25,8 +25,8 @@ describe("<DatePicker>", () => {
     });
 
     it("no day is selected by default", () => {
-        const { getSelectedDays, root } = wrap(<DatePicker />);
-        assert.lengthOf(getSelectedDays(), 0);
+        const { assertSelectedDays, root } = wrap(<DatePicker />);
+        assertSelectedDays();
         assert.isNull(root.state("selectedDay"));
     });
 
@@ -87,11 +87,10 @@ describe("<DatePicker>", () => {
 
         it("disables out-of-range min dates", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
-            const { getDay, root } = wrap(
+            const { getDay, clickPreviousMonth } = wrap(
                 <DatePicker defaultValue={defaultValue} minDate={new Date(2017, Months.AUGUST, 20)} />,
             );
-            const prevMonthButton = root.find(".DayPicker-NavButton--prev").first();
-            prevMonthButton.simulate("click");
+            clickPreviousMonth();
             assertDayDisabled(getDay(10));
             assertDayDisabled(getDay(21), false);
         });
@@ -160,6 +159,7 @@ describe("<DatePicker>", () => {
                 root
                     .find({ className: Classes.DATEPICKER_MONTH_SELECT })
                     .first()
+                    .find("select")
                     .simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
@@ -170,6 +170,7 @@ describe("<DatePicker>", () => {
                 root
                     .find({ className: Classes.DATEPICKER_YEAR_SELECT })
                     .first()
+                    .find("select")
                     .simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
@@ -333,37 +334,31 @@ describe("<DatePicker>", () => {
     describe("when controlled", () => {
         it("value initially selects a day", () => {
             const value = new Date(2010, Months.JANUARY, 1);
-            const { getSelectedDays } = wrap(
+            const { assertSelectedDays } = wrap(
                 <DatePicker defaultValue={new Date(2010, Months.FEBRUARY, 2)} value={value} />,
             );
-            assert.lengthOf(getSelectedDays(), 1);
-            assert.equal(
-                getSelectedDays()
-                    .at(0)
-                    .text(),
-                value.getDate().toString(),
-            );
+            assertSelectedDays(value.getDate());
         });
 
         it("selection does not update automatically", () => {
-            const { getDay, getSelectedDays } = wrap(<DatePicker value={null} />);
-            assert.lengthOf(getSelectedDays(), 0);
+            const { getDay, assertSelectedDays } = wrap(<DatePicker value={null} />);
+            assertSelectedDays();
             getDay().simulate("click");
-            assert.lengthOf(getSelectedDays(), 0);
+            assertSelectedDays();
         });
 
         it("selected day doesn't update on current month view change", () => {
             const value = new Date(2010, Months.JANUARY, 2);
-            const { months, root, getSelectedDays, years } = wrap(<DatePicker value={value} />);
-            root.find(".DayPicker-NavButton--prev").simulate("click");
+            const { assertSelectedDays, clickPreviousMonth, months, years } = wrap(<DatePicker value={value} />);
+            clickPreviousMonth();
 
-            assert.lengthOf(getSelectedDays(), 1);
+            assertSelectedDays(2);
 
             months.simulate("change", { target: { value: Months.JUNE } });
-            assert.lengthOf(getSelectedDays(), 0);
+            assertSelectedDays();
 
             years.simulate("change", { target: { value: 2014 } });
-            assert.lengthOf(getSelectedDays(), 0);
+            assertSelectedDays();
         });
 
         it("onChange fired when a day is clicked", () => {
@@ -377,9 +372,9 @@ describe("<DatePicker>", () => {
         it("onChange fired when month is changed", () => {
             const value = new Date(2010, Months.JANUARY, 2);
             const onChange = sinon.spy();
-            const { months, root } = wrap(<DatePicker onChange={onChange} value={value} />);
+            const { months, clickPreviousMonth } = wrap(<DatePicker onChange={onChange} value={value} />);
 
-            root.find(".DayPicker-NavButton--prev").simulate("click");
+            clickPreviousMonth();
             assert.isTrue(onChange.calledOnce, "expected onChange called");
             assert.isFalse(onChange.firstCall.args[1], "expected isUserChange to be false");
 
@@ -405,9 +400,8 @@ describe("<DatePicker>", () => {
     describe("when uncontrolled", () => {
         it("defaultValue initially selects a day", () => {
             const today = new Date();
-            const selectedDays = wrap(<DatePicker defaultValue={today} />).getSelectedDays();
-            assert.lengthOf(selectedDays, 1);
-            assert.equal(selectedDays.at(0).text(), today.getDate().toString());
+            const { assertSelectedDays } = wrap(<DatePicker defaultValue={today} />);
+            assertSelectedDays(today.getDate());
         });
 
         it("onChange fired when a day is clicked", () => {
@@ -419,47 +413,46 @@ describe("<DatePicker>", () => {
         });
 
         it("selected day updates are automatic", () => {
-            const { getDay, getSelectedDays } = wrap(<DatePicker />);
-            assert.lengthOf(getSelectedDays(), 0);
+            const { assertSelectedDays, getDay } = wrap(<DatePicker />);
+            assertSelectedDays();
             getDay(3).simulate("click");
-            assert.deepEqual(getSelectedDays().map(d => d.text()), ["3"]);
+            assertSelectedDays(3);
         });
 
         it("selected day is preserved when selections are changed", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
-            const { getDay, getSelectedDays, months } = wrap(<DatePicker initialMonth={initialMonth} />);
+            const { assertSelectedDays, getDay, months } = wrap(<DatePicker initialMonth={initialMonth} />);
             getDay(31).simulate("click");
             months.simulate("change", { target: { value: Months.AUGUST } });
-            assert.deepEqual(getSelectedDays().map(d => d.text()), ["31"]);
+            assertSelectedDays(31);
         });
 
         it("selected day is changed if necessary when selections are changed", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
-            const { getDay, getSelectedDays, root } = wrap(<DatePicker initialMonth={initialMonth} />);
+            const { assertSelectedDays, getDay, clickPreviousMonth } = wrap(<DatePicker initialMonth={initialMonth} />);
             getDay(31).simulate("click");
-            root.find(".DayPicker-NavButton--prev").simulate("click");
-            assert.deepEqual(getSelectedDays().map(d => d.text()), ["30"]);
+            clickPreviousMonth();
+            assertSelectedDays(30);
+            // remembers actual date that was clicked and restores if possible
+            clickPreviousMonth();
+            assertSelectedDays(31);
         });
 
         it("selected day is changed to minDate or maxDate if selections are changed outside bounds", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
             const minDate = new Date(2015, Months.MARCH, 13);
             const maxDate = new Date(2015, Months.NOVEMBER, 21);
-            const { getDay, getSelectedDays, months } = wrap(
+            const { assertSelectedDays, getDay, months } = wrap(
                 <DatePicker initialMonth={initialMonth} minDate={minDate} maxDate={maxDate} />,
             );
 
             getDay(1).simulate("click");
             months.simulate("change", { target: { value: Months.MARCH } });
-            let selectedDayElements = getSelectedDays();
-            assert.lengthOf(selectedDayElements, 1);
-            assert.equal(selectedDayElements.at(0).text(), minDate.getDate().toString());
+            assertSelectedDays(minDate.getDate());
 
             getDay(25).simulate("click");
             months.simulate("change", { target: { value: Months.NOVEMBER } });
-            selectedDayElements = getSelectedDays();
-            assert.lengthOf(selectedDayElements, 1);
-            assert.equal(selectedDayElements.at(0).text(), maxDate.getDate().toString());
+            assertSelectedDays(maxDate.getDate());
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
@@ -521,15 +514,32 @@ describe("<DatePicker>", () => {
     function wrap(datepicker: JSX.Element) {
         const wrapper = mount(datepicker);
         return {
-            getDay: (dayNumber = 1) => {
-                return wrapper
+            /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
+            assertSelectedDays: (...days: number[]) =>
+                assert.sameMembers(wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`).map(d => +d.text()), days),
+            clickNextMonth: () =>
+                wrapper
+                    .find(Button)
+                    .last()
+                    .simulate("click"),
+            clickPreviousMonth: () =>
+                wrapper
+                    .find(Button)
+                    .first()
+                    .simulate("click"),
+            getDay: (dayNumber = 1) =>
+                wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)
-                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE));
-            },
-            getSelectedDays: () => wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`),
-            months: wrapper.find(`.${Classes.DATEPICKER_MONTH_SELECT}`),
+                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE)),
+            months: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_MONTH_SELECT })
+                .find("select"),
             root: wrapper,
-            years: wrapper.find(`.${Classes.DATEPICKER_YEAR_SELECT}`),
+            years: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_YEAR_SELECT })
+                .find("select"),
         };
     }
 });
