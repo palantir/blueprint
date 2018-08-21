@@ -415,7 +415,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         this.handleNextState(nextValue);
     };
 
-    private handleNextState(nextValue: DateRange) {
+    private handleNextState = (nextValue: DateRange) => {
         const { value } = this.state;
         const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths);
 
@@ -424,7 +424,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         }
 
         Utils.safeInvoke(this.props.onChange, nextValue);
-    }
+    };
 
     private handleLeftMonthChange = (newDate: Date) => {
         const leftView = MonthAndYear.fromDate(newDate);
