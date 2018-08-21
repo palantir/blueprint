@@ -203,7 +203,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         return (
             <div className={classes}>
                 {this.maybeRenderShortcuts()}
-                {this.renderCalendars(isShowingOneMonth)}
+                <div>
+                    {this.renderCalendars(isShowingOneMonth)}
+                    {this.maybeRenderTimePickers()}
+                </div>
             </div>
         );
     }
@@ -328,6 +331,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 />,
             ];
         }
+    }
+
+    private maybeRenderTimePickers() {
+        // TODO: fill me in!
     }
 
     private renderNavbar = (navbarProps: NavbarElementProps) => (
