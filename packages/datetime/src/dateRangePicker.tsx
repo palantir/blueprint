@@ -137,10 +137,6 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
 
-    private get isControlled() {
-        return this.props.value != null;
-    }
-
     // these will get merged with the user's own
     private modifiers: IDatePickerModifiers = {
         [SELECTED_RANGE_MODIFIER]: day => {
@@ -150,9 +146,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         [`${SELECTED_RANGE_MODIFIER}-start`]: day => DateUtils.areSameDay(this.state.value[0], day),
         [`${SELECTED_RANGE_MODIFIER}-end`]: day => DateUtils.areSameDay(this.state.value[1], day),
 
-        [HOVERED_RANGE_MODIFIER]: (day: Date) => {
-            const { hoverValue, value } = this.state;
-            const [selectedStart, selectedEnd] = value;
+        [HOVERED_RANGE_MODIFIER]: day => {
+            const { hoverValue, value: [selectedStart, selectedEnd] } = this.state;
             if (selectedStart == null && selectedEnd == null) {
                 return false;
             }
@@ -161,14 +156,14 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             }
             return DateUtils.isDayInRange(day, hoverValue, true);
         },
-        [`${HOVERED_RANGE_MODIFIER}-start`]: (day: Date) => {
+        [`${HOVERED_RANGE_MODIFIER}-start`]: day => {
             const { hoverValue } = this.state;
             if (hoverValue == null || hoverValue[0] == null) {
                 return false;
             }
             return DateUtils.areSameDay(hoverValue[0], day);
         },
-        [`${HOVERED_RANGE_MODIFIER}-end`]: (day: Date) => {
+        [`${HOVERED_RANGE_MODIFIER}-end`]: day => {
             const { hoverValue } = this.state;
             if (hoverValue == null || hoverValue[1] == null) {
                 return false;
@@ -177,33 +172,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         },
     };
 
-    public constructor(props?: IDateRangePickerProps, context?: any) {
+    public constructor(props: IDateRangePickerProps, context?: any) {
         super(props, context);
-
-        let value: DateRange = [null, null];
-        if (props.value != null) {
-            value = props.value;
-        } else if (props.defaultValue != null) {
-            value = props.defaultValue;
-        }
-
-        let initialMonth: Date;
-        const today = new Date();
-
-        if (props.initialMonth != null) {
-            initialMonth = props.initialMonth;
-        } else if (value[0] != null) {
-            initialMonth = DateUtils.clone(value[0]);
-        } else if (value[1] != null) {
-            initialMonth = DateUtils.clone(value[1]);
-            if (!DateUtils.areSameMonth(initialMonth, props.minDate)) {
-                initialMonth.setMonth(initialMonth.getMonth() - 1);
-            }
-        } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
-            initialMonth = today;
-        } else {
-            initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
-        }
+        const value = getInitialValue(props);
+        const initialMonth = getInitialMonth(props, value);
 
         // if the initial month is the last month of the picker's
         // allowable range, the react-day-picker library will show
@@ -367,17 +339,15 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 ? createDefaultShortcuts(this.props.allowSingleDayRange)
                 : propsShortcuts;
 
-        const shortcutElements = shortcuts.map((s, i) => {
-            return (
-                <MenuItem
-                    className={Classes.POPOVER_DISMISS_OVERRIDE}
-                    disabled={!this.isShortcutInRange(s.dateRange)}
-                    key={i}
-                    onClick={this.getShorcutClickHandler(s.dateRange)}
-                    text={s.label}
-                />
-            );
-        });
+        const shortcutElements = shortcuts.map((s, i) => (
+            <MenuItem
+                className={Classes.POPOVER_DISMISS_OVERRIDE}
+                disabled={!this.isShortcutInRange(s.dateRange)}
+                key={i}
+                onClick={this.getShorcutClickHandler(s.dateRange)}
+                text={s.label}
+            />
+        ));
 
         return [
             <Menu key="shortcuts" className={DateClasses.DATERANGEPICKER_SHORTCUTS}>
@@ -480,7 +450,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         const { value } = this.state;
         const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths);
 
-        if (!this.isControlled) {
+        if (this.props.value == null) {
             this.setState(nextState);
         }
 
@@ -488,13 +458,13 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     }
 
     private handleLeftMonthChange = (newDate: Date) => {
-        const leftView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
+        const leftView = MonthAndYear.fromDate(newDate);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, leftView.getFullDate());
         this.updateLeftView(leftView);
     };
 
     private handleRightMonthChange = (newDate: Date) => {
-        const rightView = new MonthAndYear(newDate.getMonth(), newDate.getFullYear());
+        const rightView = MonthAndYear.fromDate(newDate);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, rightView.getFullDate());
         this.updateRightView(rightView);
     };
@@ -563,8 +533,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         const { minDate, maxDate } = this.props;
         const adjustedMinDate = DateUtils.getDateNextMonth(minDate);
 
-        const minMonthAndYear = new MonthAndYear(adjustedMinDate.getMonth(), adjustedMinDate.getFullYear());
-        const maxMonthAndYear = new MonthAndYear(maxDate.getMonth(), maxDate.getFullYear());
+        const minMonthAndYear = MonthAndYear.fromDate(adjustedMinDate);
+        const maxMonthAndYear = MonthAndYear.fromDate(maxDate);
 
         if (rightView.isBefore(minMonthAndYear)) {
             rightView = minMonthAndYear;
@@ -595,89 +565,69 @@ function getStateChange(
     state: IDateRangePickerState,
     contiguousCalendarMonths: boolean,
 ): IDateRangePickerState {
-    let returnVal: IDateRangePickerState;
-
     if (value != null && nextValue == null) {
-        returnVal = { value: [null, null] };
+        return { value: [null, null] };
     } else if (nextValue != null) {
-        const [nextValueStart, nextValueEnd] = nextValue;
-
         let leftView = state.leftView.clone();
         let rightView = state.rightView.clone();
+
+        const nextValueStartView = MonthAndYear.fromDate(nextValue[0]);
+        const nextValueEndView = MonthAndYear.fromDate(nextValue[1]);
 
         // Only end date selected.
         // If the newly selected end date isn't in either of the displayed months, then
         //   - set the right DayPicker to the month of the selected end date
         //   - ensure the left DayPicker is before the right, changing if needed
-        if (nextValueStart == null && nextValueEnd != null) {
-            const nextValueEndMonthAndYear = new MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
-
-            if (!nextValueEndMonthAndYear.isSame(leftView) && !nextValueEndMonthAndYear.isSame(rightView)) {
-                rightView = nextValueEndMonthAndYear;
+        if (nextValueStartView == null && nextValueEndView != null) {
+            if (!nextValueEndView.isSame(leftView) && !nextValueEndView.isSame(rightView)) {
+                rightView = nextValueEndView;
                 if (!leftView.isBefore(rightView)) {
                     leftView = rightView.getPreviousMonth();
                 }
             }
-        } else if (nextValueStart != null && nextValueEnd == null) {
+        } else if (nextValueStartView != null && nextValueEndView == null) {
             // Only start date selected.
             // If the newly selected start date isn't in either of the displayed months, then
             //   - set the left DayPicker to the month of the selected start date
             //   - ensure the right DayPicker is before the left, changing if needed
-            const nextValueStartMonthAndYear = new MonthAndYear(
-                nextValueStart.getMonth(),
-                nextValueStart.getFullYear(),
-            );
-
-            if (!nextValueStartMonthAndYear.isSame(leftView) && !nextValueStartMonthAndYear.isSame(rightView)) {
-                leftView = nextValueStartMonthAndYear;
+            if (!nextValueStartView.isSame(leftView) && !nextValueStartView.isSame(rightView)) {
+                leftView = nextValueStartView;
                 if (!rightView.isAfter(leftView)) {
                     rightView = leftView.getNextMonth();
                 }
             }
-        } else if (nextValueStart != null && nextValueEnd != null) {
-            // Both start date and end date selected.
-            const nextValueStartMonthAndYear = new MonthAndYear(
-                nextValueStart.getMonth(),
-                nextValueStart.getFullYear(),
-            );
-            const nextValueEndMonthAndYear = new MonthAndYear(nextValueEnd.getMonth(), nextValueEnd.getFullYear());
-
+        } else if (nextValueStartView != null && nextValueEndView != null) {
             // Both start and end date months are identical
             // If the selected month isn't in either of the displayed months, then
             //   - set the left DayPicker to be the selected month
             //   - set the right DayPicker to +1
-            if (DateUtils.areSameMonth(nextValueStart, nextValueEnd)) {
-                const potentialLeftEqualsNextValueStart = leftView.isSame(nextValueStartMonthAndYear);
-                const potentialRightEqualsNextValueStart = rightView.isSame(nextValueStartMonthAndYear);
-
-                if (potentialLeftEqualsNextValueStart || potentialRightEqualsNextValueStart) {
+            if (nextValueStartView.isSameMonth(nextValueEndView)) {
+                if (leftView.isSame(nextValueStartView) || rightView.isSame(nextValueStartView)) {
                     // do nothing
                 } else {
-                    leftView = nextValueStartMonthAndYear;
-                    rightView = nextValueStartMonthAndYear.getNextMonth();
+                    leftView = nextValueStartView;
+                    rightView = nextValueStartView.getNextMonth();
                 }
             } else {
                 // Different start and end date months, adjust display months.
-                if (!leftView.isSame(nextValueStartMonthAndYear)) {
-                    leftView = nextValueStartMonthAndYear;
-                    rightView = nextValueStartMonthAndYear.getNextMonth();
+                if (!leftView.isSame(nextValueStartView)) {
+                    leftView = nextValueStartView;
+                    rightView = nextValueStartView.getNextMonth();
                 }
-                if (contiguousCalendarMonths === false && !rightView.isSame(nextValueEndMonthAndYear)) {
-                    rightView = nextValueEndMonthAndYear;
+                if (contiguousCalendarMonths === false && !rightView.isSame(nextValueEndView)) {
+                    rightView = nextValueEndView;
                 }
             }
         }
 
-        returnVal = {
+        return {
             leftView,
             rightView,
             value: nextValue,
         };
-    } else {
-        returnVal = {};
     }
 
-    return returnVal;
+    return {};
 }
 
 function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut {
@@ -714,4 +664,34 @@ function createDefaultShortcuts(allowSingleDayRange: boolean) {
         createShortcut("Past year", [oneYearAgo, today]),
         createShortcut("Past 2 years", [twoYearsAgo, today]),
     ];
+}
+
+function getInitialValue(props: IDateRangePickerProps): DateRange | null {
+    if (props.value != null) {
+        return props.value;
+    }
+    if (props.defaultValue != null) {
+        return props.defaultValue;
+    }
+    return [null, null];
+}
+
+function getInitialMonth(props: IDateRangePickerProps, value: DateRange): Date {
+    const today = new Date();
+    // != because we must have a real `Date` to begin the calendar on.
+    if (props.initialMonth != null) {
+        return props.initialMonth;
+    } else if (value[0] != null) {
+        return DateUtils.clone(value[0]);
+    } else if (value[1] != null) {
+        const month = DateUtils.clone(value[1]);
+        if (!DateUtils.areSameMonth(month, props.minDate)) {
+            month.setMonth(month.getMonth() - 1);
+        }
+        return month;
+    } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
+        return today;
+    } else {
+        return DateUtils.getDateBetween([props.minDate, props.maxDate]);
+    }
 }
