@@ -4,20 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import {
-    AbstractPureComponent,
-    Boundary,
-    Classes,
-    DISPLAYNAME_PREFIX,
-    Divider,
-    IProps,
-    Menu,
-    MenuItem,
-    Utils,
-} from "@blueprintjs/core";
+import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import ReactDayPicker from "react-day-picker";
+import DayPicker from "react-day-picker";
 import { DayModifiers } from "react-day-picker/types/common";
 import { CaptionElementProps, DayPickerProps, NavbarElementProps } from "react-day-picker/types/props";
 
@@ -40,6 +30,7 @@ import {
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
+import { Shortcuts } from "./shortcuts";
 
 export interface IDateRangeShortcut {
     label: string;
@@ -200,85 +191,21 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     }
 
     public render() {
-        const modifiers = combineModifiers(this.modifiers, this.props.modifiers);
-        const {
-            className,
-            contiguousCalendarMonths,
-            dayPickerProps,
-            locale,
-            localeUtils,
-            maxDate,
-            minDate,
-        } = this.props;
+        const { className, contiguousCalendarMonths } = this.props;
         const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
 
-        const { leftView, rightView } = this.state;
-        const disabledDays = this.getDisabledDaysModifier();
+        const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
+            [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
+            [DateClasses.DATERANGEPICKER_SINGLE_MONTH]: isShowingOneMonth,
+        });
 
-        const dayPickerBaseProps: DayPickerProps = {
-            locale,
-            localeUtils,
-            modifiers,
-            showOutsideDays: true,
-            ...dayPickerProps,
-            disabledDays,
-            onDayClick: this.handleDayClick,
-            onDayMouseEnter: this.handleDayMouseEnter,
-            onDayMouseLeave: this.handleDayMouseLeave,
-            selectedDays: this.state.value,
-        };
-
-        const shortcuts = this.maybeRenderShortcuts();
-
-        if (contiguousCalendarMonths || isShowingOneMonth) {
-            const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
-                [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
-                [DateClasses.DATERANGEPICKER_SINGLE_MONTH]: isShowingOneMonth,
-            });
-
-            // use the left DayPicker when we only need one
-            return (
-                <div className={classes}>
-                    {shortcuts}
-                    <ReactDayPicker
-                        {...dayPickerBaseProps}
-                        captionElement={this.renderSingleCaption}
-                        navbarElement={this.renderNavbar}
-                        fromMonth={minDate}
-                        month={leftView.getFullDate()}
-                        numberOfMonths={isShowingOneMonth ? 1 : 2}
-                        onMonthChange={this.handleLeftMonthChange}
-                        toMonth={maxDate}
-                    />
-                </div>
-            );
-        } else {
-            return (
-                <div className={classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className)}>
-                    {shortcuts}
-                    <ReactDayPicker
-                        {...dayPickerBaseProps}
-                        canChangeMonth={true}
-                        captionElement={this.renderLeftCaption}
-                        navbarElement={this.renderNavbar}
-                        fromMonth={minDate}
-                        month={leftView.getFullDate()}
-                        onMonthChange={this.handleLeftMonthChange}
-                        toMonth={DateUtils.getDatePreviousMonth(maxDate)}
-                    />
-                    <ReactDayPicker
-                        {...dayPickerBaseProps}
-                        canChangeMonth={true}
-                        captionElement={this.renderRightCaption}
-                        navbarElement={this.renderNavbar}
-                        fromMonth={DateUtils.getDateNextMonth(minDate)}
-                        month={rightView.getFullDate()}
-                        onMonthChange={this.handleRightMonthChange}
-                        toMonth={maxDate}
-                    />
-                </div>
-            );
-        }
+        // use the left DayPicker when we only need one
+        return (
+            <div className={classes}>
+                {this.maybeRenderShortcuts()}
+                {this.renderCalendars(isShowingOneMonth)}
+            </div>
+        );
     }
 
     public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
@@ -329,32 +256,78 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     };
 
     private maybeRenderShortcuts() {
-        const propsShortcuts = this.props.shortcuts;
-        if (propsShortcuts == null || propsShortcuts === false) {
-            return undefined;
+        const { shortcuts } = this.props;
+        if (shortcuts == null || shortcuts === false) {
+            return null;
         }
 
-        const shortcuts =
-            typeof propsShortcuts === "boolean"
-                ? createDefaultShortcuts(this.props.allowSingleDayRange)
-                : propsShortcuts;
-
-        const shortcutElements = shortcuts.map((s, i) => (
-            <MenuItem
-                className={Classes.POPOVER_DISMISS_OVERRIDE}
-                disabled={!this.isShortcutInRange(s.dateRange)}
-                key={i}
-                onClick={this.getShorcutClickHandler(s.dateRange)}
-                text={s.label}
-            />
-        ));
-
+        const { allowSingleDayRange, maxDate, minDate } = this.props;
         return [
-            <Menu key="shortcuts" className={DateClasses.DATERANGEPICKER_SHORTCUTS}>
-                {shortcutElements}
-            </Menu>,
+            <Shortcuts
+                key="shortcuts"
+                {...{ allowSingleDayRange, maxDate, minDate, shortcuts }}
+                onShortcutClick={this.handleNextState}
+            />,
             <Divider key="div" />,
         ];
+    }
+
+    private renderCalendars(isShowingOneMonth: boolean) {
+        const { contiguousCalendarMonths, dayPickerProps, locale, localeUtils, maxDate, minDate } = this.props;
+        const dayPickerBaseProps: DayPickerProps = {
+            locale,
+            localeUtils,
+            modifiers: combineModifiers(this.modifiers, this.props.modifiers),
+            showOutsideDays: true,
+            ...dayPickerProps,
+            disabledDays: this.getDisabledDaysModifier(),
+            onDayClick: this.handleDayClick,
+            onDayMouseEnter: this.handleDayMouseEnter,
+            onDayMouseLeave: this.handleDayMouseLeave,
+            selectedDays: this.state.value,
+        };
+
+        if (contiguousCalendarMonths || isShowingOneMonth) {
+            return (
+                <DayPicker
+                    {...dayPickerBaseProps}
+                    captionElement={this.renderSingleCaption}
+                    navbarElement={this.renderNavbar}
+                    fromMonth={minDate}
+                    month={this.state.leftView.getFullDate()}
+                    numberOfMonths={isShowingOneMonth ? 1 : 2}
+                    onMonthChange={this.handleLeftMonthChange}
+                    toMonth={maxDate}
+                />
+            );
+        } else {
+            return [
+                <DayPicker
+                    key="left"
+                    {...dayPickerBaseProps}
+                    canChangeMonth={true}
+                    captionElement={this.renderLeftCaption}
+                    navbarElement={this.renderNavbar}
+                    fromMonth={minDate}
+                    month={this.state.leftView.getFullDate()}
+                    numberOfMonths={1}
+                    onMonthChange={this.handleLeftMonthChange}
+                    toMonth={DateUtils.getDatePreviousMonth(maxDate)}
+                />,
+                <DayPicker
+                    key="right"
+                    {...dayPickerBaseProps}
+                    canChangeMonth={true}
+                    captionElement={this.renderRightCaption}
+                    navbarElement={this.renderNavbar}
+                    fromMonth={DateUtils.getDateNextMonth(minDate)}
+                    month={this.state.rightView.getFullDate()}
+                    numberOfMonths={1}
+                    onMonthChange={this.handleRightMonthChange}
+                    toMonth={maxDate}
+                />,
+            ];
+        }
     }
 
     private renderNavbar = (navbarProps: NavbarElementProps) => (
@@ -442,11 +415,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         this.handleNextState(nextValue);
     };
 
-    private getShorcutClickHandler(nextValue: DateRange) {
-        return () => this.handleNextState(nextValue);
-    }
-
-    private handleNextState(nextValue: DateRange) {
+    private handleNextState = (nextValue: DateRange) => {
         const { value } = this.state;
         const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths);
 
@@ -455,7 +424,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         }
 
         Utils.safeInvoke(this.props.onChange, nextValue);
-    }
+    };
 
     private handleLeftMonthChange = (newDate: Date) => {
         const leftView = MonthAndYear.fromDate(newDate);
@@ -553,10 +522,6 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     private setViews(leftView: MonthAndYear, rightView: MonthAndYear) {
         this.setState({ leftView, rightView });
     }
-
-    private isShortcutInRange(shortcutDateRange: DateRange) {
-        return DateUtils.isDayRangeInRange(shortcutDateRange, [this.props.minDate, this.props.maxDate]);
-    }
 }
 
 function getStateChange(
@@ -628,42 +593,6 @@ function getStateChange(
     }
 
     return {};
-}
-
-function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut {
-    return { dateRange, label };
-}
-
-function createDefaultShortcuts(allowSingleDayRange: boolean) {
-    const today = new Date();
-    const makeDate = (action: (d: Date) => void) => {
-        const returnVal = DateUtils.clone(today);
-        action(returnVal);
-        returnVal.setDate(returnVal.getDate() + 1);
-        return returnVal;
-    };
-
-    const yesterday = makeDate(d => d.setDate(d.getDate() - 2));
-    const oneWeekAgo = makeDate(d => d.setDate(d.getDate() - 7));
-    const oneMonthAgo = makeDate(d => d.setMonth(d.getMonth() - 1));
-    const threeMonthsAgo = makeDate(d => d.setMonth(d.getMonth() - 3));
-    const sixMonthsAgo = makeDate(d => d.setMonth(d.getMonth() - 6));
-    const oneYearAgo = makeDate(d => d.setFullYear(d.getFullYear() - 1));
-    const twoYearsAgo = makeDate(d => d.setFullYear(d.getFullYear() - 2));
-
-    const singleDayShortcuts = allowSingleDayRange
-        ? [createShortcut("Today", [today, today]), createShortcut("Yesterday", [yesterday, yesterday])]
-        : [];
-
-    return [
-        ...singleDayShortcuts,
-        createShortcut("Past week", [oneWeekAgo, today]),
-        createShortcut("Past month", [oneMonthAgo, today]),
-        createShortcut("Past 3 months", [threeMonthsAgo, today]),
-        createShortcut("Past 6 months", [sixMonthsAgo, today]),
-        createShortcut("Past year", [oneYearAgo, today]),
-        createShortcut("Past 2 years", [twoYearsAgo, today]),
-    ];
 }
 
 function getInitialValue(props: IDateRangePickerProps): DateRange | null {
