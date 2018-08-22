@@ -7,8 +7,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IOverflowListProps, IOverflowListState, Menu, MenuItem, OverflowList, Popover } from "..";
-import { AbstractPureComponent, IProps, Utils } from "../../common";
+import { IOverflowListProps, Menu, MenuItem, OverflowList, Popover } from "..";
+import { AbstractPureComponent, Boundary, IProps, Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 
@@ -20,6 +20,8 @@ export const Expander: React.SFC<{}> = () => <div className={Classes.FLEX_EXPAND
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
+const OVERFLOW_SELECTOR = `.${Classes.OVERFLOW_LIST}`;
+const OVERFLOW_CONTENT_CLASS = "tabs-overflow-content";
 
 export interface ITabsProps extends IProps {
     /**
@@ -107,19 +109,16 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     public static displayName = "Blueprint2.Tabs";
 
     private tablistElement: HTMLDivElement;
-    private overflowElement: React.Component<ITabsProps, IOverflowListState<any>>;
+    private overflowElement: OverflowList<any>;
+
     private refHandlers = {
-        overflowList: (tabElement: React.Component<ITabsProps, IOverflowListState<any>>) =>
-            (this.overflowElement = tabElement),
+        overflowList: (tabElement: OverflowList<any>) => (this.overflowElement = tabElement),
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };
 
     constructor(props?: ITabsProps) {
         super(props);
         const selectedTabId = this.getInitialSelectedTabId();
-        this.overflowElement = null;
-
-        this.overflowRenderer = this.overflowRenderer.bind(this);
         this.state = { selectedTabId };
     }
 
@@ -158,14 +157,11 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
                     {tabIndicator}
                     {this.props.overflow ? (
                         <OverflowList
-                            // @ts-ignore
                             items={tabTitles}
-                            collapseFrom={"start"}
-                            observeParents={true}
-                            overflowRenderer={this.overflowRenderer}
                             visibleItemRenderer={this.visibleItemsRenderer}
                             ref={this.refHandlers.overflowList}
                             {...this.props.overflowListProps}
+                            overflowRenderer={this.overflowRenderer}
                         />
                     ) : (
                         tabTitles
@@ -176,10 +172,8 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         );
     }
 
-    public overflowRenderer(items: Array<React.ReactElement<ITabProps>>) {
-        if (this.props.overflowListProps.overflowRenderer) {
-            return this.props.overflowListProps.items;
-        }
+    public overflowRenderer = (items: Array<React.ReactElement<ITabProps>>) => {
+        const hasOverflowRenderer = this.props.overflowListProps && this.props.overflowListProps.overflowRenderer;
 
         const overflowMenu = (
             <Menu>
@@ -205,15 +199,21 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         );
 
         return (
-            <Popover content={overflowMenu}>
-                <span style={{ lineHeight: "30px", cursor: "pointer" }}>Overflow</span>
-            </Popover>
+            <div className={OVERFLOW_CONTENT_CLASS}>
+                {hasOverflowRenderer ? (
+                    this.props.overflowListProps.overflowRenderer
+                ) : (
+                    <Popover content={overflowMenu}>
+                        <span style={{ lineHeight: "30px", cursor: "pointer" }}>Overflow</span>
+                    </Popover>
+                )}
+            </div>
         );
-    }
+    };
 
-    public visibleItemsRenderer(item: JSX.Element) {
+    public visibleItemsRenderer = (item: React.ReactChild) => {
         return item;
-    }
+    };
 
     public componentDidMount() {
         // requires overflowList to render in order for it to figure out what elements are overflowing
@@ -230,22 +230,24 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     }
 
     public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
-        window.requestAnimationFrame(() => {
-            if (this.state.selectedTabId !== prevState.selectedTabId) {
+        if (this.state.selectedTabId !== prevState.selectedTabId) {
+            window.requestAnimationFrame(() => {
                 this.moveSelectionIndicator();
-            } else if (prevState.selectedTabId !== null) {
-                // comparing React nodes is difficult to do with simple logic, so
-                // shallowly compare just their props as a workaround.
-                const didChildrenChange = !Utils.arraysEqual(
-                    this.getTabChildrenProps(prevProps),
-                    this.getTabChildrenProps(),
-                    Utils.shallowCompareKeys,
-                );
-                if (didChildrenChange) {
+            });
+        } else if (prevState.selectedTabId !== null) {
+            // comparing React nodes is difficult to do with simple logic, so
+            // shallowly compare just their props as a workaround.
+            const didChildrenChange = !Utils.arraysEqual(
+                this.getTabChildrenProps(prevProps),
+                this.getTabChildrenProps(),
+                Utils.shallowCompareKeys,
+            );
+            if (didChildrenChange) {
+                window.requestAnimationFrame(() => {
                     this.moveSelectionIndicator();
-                }
+                });
             }
-        });
+        }
     }
 
     private getInitialSelectedTabId() {
@@ -337,8 +339,21 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
         const selectedTabElement = this.tablistElement.querySelector(tabIdSelector) as HTMLElement;
-        // Check if there are any overflow elementsR
-        const isOverflowing = this.overflowElement && this.overflowElement.state.overflow.length;
+        const overflowElement = this.tablistElement.querySelector(OVERFLOW_SELECTOR) as HTMLElement;
+        const overflowChildren = overflowElement && overflowElement.children;
+
+        // Check if there are any overflow elements
+        let isOverflowing = false;
+        if (overflowChildren) {
+            for (const element in overflowChildren) {
+                if (
+                    overflowChildren.hasOwnProperty(element) &&
+                    overflowChildren[element].className === OVERFLOW_CONTENT_CLASS
+                ) {
+                    isOverflowing = true;
+                }
+            }
+        }
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         const indicatorWrapperCreator = (
@@ -359,18 +374,17 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             const { clientHeight, clientWidth, offsetLeft, offsetTop } = selectedTabElement;
             indicatorWrapperStyle = indicatorWrapperCreator(clientHeight, clientWidth, offsetLeft, offsetTop);
         } else if (isOverflowing && selectedTabElement === null) {
-            // Find the overflow dropdown span
-            // @ts-ignore
-            const overflowHTMLElement = this.overflowElement.element;
-            const numTabChildren = overflowHTMLElement.children.length;
-            const collapseFrom = this.props.overflowListProps.collapseFrom || "end";
-            const overflowElementChildren = overflowHTMLElement.children;
-            // Find span element containing dropdown list
+            // Find the overflow drop down span in order to select it
+            const numTabChildren = overflowChildren.length;
+            // Get status of overflowProp, is this appropriate? Need to know if its default or set by overflowListProps
+            const collapseFrom = this.overflowElement.props.collapseFrom;
             const overflowListElement =
-                collapseFrom === "end" ? overflowElementChildren[numTabChildren - 2] : overflowElementChildren[0];
+                collapseFrom === Boundary.END ? overflowChildren[numTabChildren - 2] : overflowChildren[0];
 
-            const { clientHeight, clientWidth, offsetLeft, offsetTop } = overflowListElement;
-            indicatorWrapperStyle = indicatorWrapperCreator(clientHeight, clientWidth, offsetLeft, offsetTop);
+            const { clientHeight, clientWidth } = overflowListElement;
+
+            // No need for left and top offsets
+            indicatorWrapperStyle = indicatorWrapperCreator(clientHeight, clientWidth, 0, 0);
         }
         this.setState({ indicatorWrapperStyle });
     }

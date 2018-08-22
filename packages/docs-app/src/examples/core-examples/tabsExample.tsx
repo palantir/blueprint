@@ -102,7 +102,6 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                         renderActiveTabPanelOnly={this.state.activePanelOnly}
                         vertical={this.state.vertical}
                         overflow={this.state.overflow}
-                        overflowListProps={{ collapseFrom: "start" }}
                     >
                         <Tab id="rx" title="React" panel={<ReactPanel />} />
                         <Tab id="ng" title="Angular" panel={<AngularPanel />} />
