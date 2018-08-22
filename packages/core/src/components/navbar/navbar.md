@@ -42,7 +42,7 @@ the full range of HTML `<div>` props.
 ```tsx
 <Navbar>
     <Navbar.Group align={Alignment.LEFT}>
-        <Navbar.Heading>Blueprint</NavbarHeading>
+        <Navbar.Heading>Blueprint</Navbar.Heading>
         <Navbar.Divider />
         <Button className="@ns-minimal" icon="home" text="Home" />
         <Button className="@ns-minimal" icon="document" text="Files" />

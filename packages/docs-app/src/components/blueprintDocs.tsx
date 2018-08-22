@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AnchorButton, Classes, setHotkeysDialogProps } from "@blueprintjs/core";
+import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import classNames from "classnames";
@@ -82,20 +82,25 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
 
     private renderNavMenuItem = (props: INavMenuItemProps) => {
         const { route, title } = props.section;
-        if (isPageNode(props.section) && props.section.level === 1) {
-            return (
-                <div className={classNames("docs-nav-package", props.className)} data-route={route}>
-                    <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
-                        <NavIcon route={route} />
-                        <span>{title}</span>
-                    </a>
-                    {this.maybeRenderPackageLink(`@blueprintjs/${route}`)}
-                </div>
-            );
-        }
         if (isNavSection(props.section)) {
             // non-interactive header that expands its menu
             return <div className="docs-nav-section docs-nav-expanded">{title}</div>;
+        }
+        if (isPageNode(props.section)) {
+            if (props.section.level === 1) {
+                return (
+                    <div className={classNames("docs-nav-package", props.className)} data-route={route}>
+                        <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
+                            <NavIcon route={route} />
+                            <span>{title}</span>
+                        </a>
+                        {this.maybeRenderPackageLink(`@blueprintjs/${route}`)}
+                    </div>
+                );
+            } else {
+                // pages can define `tag: message` in metadata to appear next to nav item.
+                return <NavMenuItem {...props}>{this.maybeRenderPageTag(props.section.reference)}</NavMenuItem>;
+            }
         }
         return <NavMenuItem {...props} />;
     };
@@ -109,6 +114,18 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 target="_blank"
                 text="Edit this page"
             />
+        );
+    }
+
+    private maybeRenderPageTag(reference: string) {
+        const tag = this.props.docs.pages[reference].metadata.tag;
+        if (tag == null) {
+            return null;
+        }
+        return (
+            <Tag className="docs-nav-tag" minimal={true} intent={tag === "new" ? "success" : "none"}>
+                {tag}
+            </Tag>
         );
     }
 

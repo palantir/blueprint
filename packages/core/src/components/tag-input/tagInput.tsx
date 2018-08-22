@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { HTMLInputProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -172,7 +172,7 @@ export interface ITagInputState {
 const NONE = -1;
 
 export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
-    public static displayName = "Blueprint2.TagInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         addOnBlur: false,

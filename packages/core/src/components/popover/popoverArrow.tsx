@@ -9,6 +9,7 @@ import * as React from "react";
 import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "../../common/classes";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { getPosition } from "./popperUtils";
 
 // these paths come from the Core Kit Sketch file
@@ -51,4 +52,4 @@ export const PopoverArrow: React.SFC<IPopoverArrowProps> = ({ arrowProps: { ref,
         </svg>
     </div>
 );
-PopoverArrow.displayName = "Blueprint2.PopoverArrow";
+PopoverArrow.displayName = `${DISPLAYNAME_PREFIX}.PopoverArrow`;

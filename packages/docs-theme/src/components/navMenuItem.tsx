@@ -10,9 +10,6 @@ import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import * as React from "react";
 
 export interface INavMenuItemProps {
-    /** This element never receives `children`. */
-    children?: never;
-
     /** CSS classes to apply to the root element, for proper appearance in the tree. */
     className: string;
 
@@ -36,7 +33,8 @@ export const NavMenuItem: React.SFC<INavMenuItemProps> = props => {
     const { className, isActive, isExpanded, section, ...htmlProps } = props;
     return (
         <a className={classNames(Classes.MENU_ITEM, className)} {...htmlProps}>
-            <span className={Classes.FILL}>{section.title}</span>
+            <span>{section.title}</span>
+            {props.children}
         </a>
     );
 };

@@ -11,6 +11,7 @@ import {
     AbstractPureComponent,
     Button,
     Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IButtonProps,
     IInputGroupProps,
@@ -97,7 +98,7 @@ export interface ITimezonePickerState {
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
-    public static displayName = "Blueprint2.TimezonePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         date: new Date(),

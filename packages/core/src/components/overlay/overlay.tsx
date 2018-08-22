@@ -11,7 +11,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { findDOMNode } from "react-dom";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
@@ -149,7 +149,7 @@ export interface IOverlayState {
 }
 
 export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
-    public static displayName = "Blueprint2.Overlay";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
     public static defaultProps: IOverlayProps = {
         autoFocus: true,

@@ -1,3 +1,7 @@
+---
+tag: new
+---
+
 @# Slider
 
 A slider is a numeric input for choosing numbers between lower and upper bounds.

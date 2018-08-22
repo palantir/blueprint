@@ -8,6 +8,7 @@ import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import { Intent } from "../../common/intent";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 export interface ISliderProps extends ISliderBaseProps {
@@ -38,7 +39,7 @@ export class Slider extends AbstractPureComponent<ISliderProps> {
         value: 0,
     };
 
-    public static displayName = "Blueprint2.Slider";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
     public render() {
         const { initialValue, value, onChange, onRelease, ...props } = this.props;

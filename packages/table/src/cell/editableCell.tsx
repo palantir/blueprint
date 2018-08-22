@@ -136,6 +136,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         return (
             <Cell
                 {...spreadableProps}
+                wrapText={wrapText}
                 truncated={false}
                 interactive={interactive}
                 cellRef={this.refHandlers.cell}

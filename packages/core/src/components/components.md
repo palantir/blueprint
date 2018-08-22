@@ -18,7 +18,9 @@
 @page navbar
 @page non-ideal-state
 @page overflow-list
+@page panel-stack
 @page progress-bar
+@page resize-sensor
 @page skeleton
 @page spinner
 @page tabs
