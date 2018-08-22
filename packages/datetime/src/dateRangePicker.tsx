@@ -274,6 +274,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         ];
     }
 
+    private maybeRenderTimePickers() {
+        // TODO: fill me in!
+    }
+
     private renderCalendars(isShowingOneMonth: boolean) {
         const { contiguousCalendarMonths, dayPickerProps, locale, localeUtils, maxDate, minDate } = this.props;
         const dayPickerBaseProps: DayPickerProps = {
@@ -330,10 +334,6 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 />,
             ];
         }
-    }
-
-    private maybeRenderTimePickers() {
-        // TODO: fill me in!
     }
 
     private renderNavbar = (navbarProps: NavbarElementProps) => (
