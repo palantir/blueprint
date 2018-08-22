@@ -185,6 +185,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
                         return (
                             <MenuItem
+                                key={item.props.id}
                                 text={item.props.title}
                                 onClick={onClick}
                                 disabled={item.props.disabled}
