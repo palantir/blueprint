@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/table",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Scalable interactive table component",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -33,7 +33,7 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.1.0",
+    "@blueprintjs/core": "^3.4.0",
     "classnames": "^2.2",
     "prop-types": "^15.6.0",
     "tslib": "^1.9.0"
