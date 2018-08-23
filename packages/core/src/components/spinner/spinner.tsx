@@ -56,6 +56,13 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
     public static readonly SIZE_STANDARD = 50;
     public static readonly SIZE_LARGE = 100;
 
+    public componentDidUpdate(prevProps: ISpinnerProps) {
+        if (prevProps.value !== this.props.value) {
+            // IE/Edge: re-render after changing value to force SVG update
+            this.forceUpdate();
+        }
+    }
+
     public render() {
         const { className, intent, value, tagName: TagName = "div" } = this.props;
         const size = this.getSize();
