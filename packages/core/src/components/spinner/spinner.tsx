@@ -35,6 +35,13 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     size?: number;
 
     /**
+     * HTML tag for the wrapper element. If rendering a `<Spinner>` inside an
+     * `<svg>`, change this to an SVG element like `"g"`.
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
+
+    /**
      * A value between 0 and 1 (inclusive) representing how far along the operation is.
      * Values below 0 or above 1 will be interpreted as 0 or 1 respectively.
      * Omitting this prop will result in an "indeterminate" spinner where the head spins indefinitely.
@@ -50,7 +57,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
     public static readonly SIZE_LARGE = 100;
 
     public render() {
-        const { className, intent, value } = this.props;
+        const { className, intent, value, tagName: TagName = "div" } = this.props;
         const size = this.getSize();
 
         const classes = classNames(
@@ -66,16 +73,18 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
         const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
 
         return (
-            <svg className={classes} height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
-                <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
-                <path
-                    className={Classes.SPINNER_HEAD}
-                    d={SPINNER_TRACK}
-                    pathLength={PATH_LENGTH}
-                    strokeDasharray={`${PATH_LENGTH} ${PATH_LENGTH}`}
-                    strokeDashoffset={strokeOffset}
-                />
-            </svg>
+            <TagName className={classes}>
+                <svg height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
+                    <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
+                    <path
+                        className={Classes.SPINNER_HEAD}
+                        d={SPINNER_TRACK}
+                        pathLength={PATH_LENGTH}
+                        strokeDasharray={`${PATH_LENGTH} ${PATH_LENGTH}`}
+                        strokeDashoffset={strokeOffset}
+                    />
+                </svg>
+            </TagName>
         );
     }
 
