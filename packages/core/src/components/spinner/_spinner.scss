@@ -13,6 +13,11 @@
   // allow paths to overflow container -- critical for edges of circles!
   overflow: visible;
   vertical-align: middle;
+  animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
+
+  svg {
+    display: block;
+  }
 
   path {
     fill-opacity: 0;
@@ -21,7 +26,6 @@
   .#{$ns}-spinner-head {
     transform-origin: center;
     transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
-    animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
     stroke: $progress-head-color;
     stroke-linecap: round;
   }
@@ -30,7 +34,7 @@
     stroke: $progress-track-color;
   }
 
-  &.#{$ns}-no-spin .#{$ns}-spinner-head {
+  &.#{$ns}-no-spin {
     animation: none;
   }
 }
