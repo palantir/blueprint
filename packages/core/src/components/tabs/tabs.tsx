@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { IOverflowListProps, Menu, MenuItem, OverflowList, Popover } from "..";
-import { AbstractPureComponent, Boundary, IProps, Utils } from "../../common";
+import { AbstractPureComponent, Boundary } from "../../common";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
