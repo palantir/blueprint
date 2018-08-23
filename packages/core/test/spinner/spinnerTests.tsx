@@ -19,6 +19,12 @@ describe("Spinner", () => {
         assert.lengthOf(root.find("path"), 2);
     });
 
+    it("tagName determines root tag", () => {
+        const tagName = "article";
+        const root = mount(<Spinner tagName={tagName} />);
+        assert.isTrue(root.is({ tagName }));
+    });
+
     it("Classes.LARGE/SMALL determine default size", () => {
         const root = mount(<Spinner className={Classes.SMALL} />);
         assert.equal(root.find("svg").prop("height"), Spinner.SIZE_SMALL, "small");
