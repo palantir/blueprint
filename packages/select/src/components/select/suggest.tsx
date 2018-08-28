@@ -37,6 +37,12 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
+    
+    /**
+    * Optionally, if provided the selected item will be in controlled mode. 
+    * Use the onItemSelect function to monitor changes.
+    */
+    selectedItem?: T;
 
     /**
      * Whether the popover opens on key down or when the input is focused.
