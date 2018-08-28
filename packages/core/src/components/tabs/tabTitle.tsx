@@ -13,13 +13,13 @@ import { ITabProps, TabId } from "./tab";
 
 export interface ITabTitleProps extends ITabProps {
     /** Handler invoked when this tab is clicked. */
-    onClick: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;
+    onClick?: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;
 
     /** ID of the parent `Tabs` to which this tab belongs. Used to generate ID for ARIA attributes. */
-    parentId: TabId;
+    parentId?: TabId;
 
     /** Whether the tab is currently selected. */
-    selected: boolean;
+    selected?: boolean;
 }
 
 export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
@@ -46,7 +46,8 @@ export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
         );
     }
 
-    private handleClick = (e: React.MouseEvent<HTMLElement>) => this.props.onClick(this.props.id, e);
+    private handleClick = (e: React.MouseEvent<HTMLElement>) =>
+        this.props.onClick ? this.props.onClick(this.props.id, e) : null;
 }
 
 export function generateTabPanelId(parentId: TabId, tabId: TabId) {

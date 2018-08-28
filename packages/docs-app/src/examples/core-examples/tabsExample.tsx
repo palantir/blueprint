@@ -69,6 +69,13 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
             </>
         );
 
+        const overflowStyle = {
+            // need to use px value, doesn't play well with pure percentages
+            display: "inline-block",
+            marginRight: "auto",
+            width: `${this.state.overflowWidth * 2}px`,
+        };
+
         return (
             <Example className="docs-tabs-example" options={options} {...this.props}>
                 <Navbar>
@@ -79,29 +86,30 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
                         {/* controlled mode & no panels (see h1 below): */}
-                        <Tabs
-                            animate={this.state.animate}
-                            id="navbar"
-                            large={true}
-                            overflow={this.state.overflow}
-                            onChange={this.handleNavbarTabChange}
-                            selectedTabId={this.state.navbarTabId}
-                        >
-                            <Tab id="Home" title="Home" />
-                            <Tab id="Files" title="Files" />
-                            <Tab id="Builds" title="Builds" />
-                        </Tabs>
+                        <div style={overflowStyle}>
+                            <Tabs
+                                animate={this.state.animate}
+                                id="navbar"
+                                large={true}
+                                overflow={this.state.overflow}
+                                onChange={this.handleNavbarTabChange}
+                                selectedTabId={this.state.navbarTabId}
+                            >
+                                <Tab id="Home" title="Home" />
+                                <Tab id="Files" title="Files" />
+                                <Tab id="Builds" title="Builds" />
+                            </Tabs>
+                        </div>
                     </Navbar.Group>
                 </Navbar>
                 {/* uncontrolled mode & each Tab has a panel: */}
-                <div style={{ width: `${this.state.overflowWidth}%`, marginRight: "auto" }}>
+                <div>
                     <Tabs
                         animate={this.state.animate}
                         id="TabsExample"
                         key={this.state.vertical ? "vertical" : "horizontal"}
                         renderActiveTabPanelOnly={this.state.activePanelOnly}
                         vertical={this.state.vertical}
-                        overflow={this.state.overflow}
                     >
                         <Tab id="rx" title="React" panel={<ReactPanel />} />
                         <Tab id="ng" title="Angular" panel={<AngularPanel />} />

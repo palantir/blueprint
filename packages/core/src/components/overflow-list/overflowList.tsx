@@ -65,6 +65,12 @@ export interface IOverflowListProps<T> extends IProps {
      * Remember to set a `key` on the rendered element!
      */
     visibleItemRenderer: (item: T, index: number) => React.ReactChild;
+
+    /**
+     * Callback invoked when the overflowList is growing or shrinking.
+     * Passes on the overflowItems from the overflowList state
+     */
+    onOverflow?: (overflowItems: T[]) => void;
 }
 
 export interface IOverflowListState<T> {
@@ -161,6 +167,14 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         entries.forEach(entry => this.previousWidths.set(entry.target, entry.contentRect.width));
     };
 
+    private callOnOverflow = (prevState: IOverflowListState<any>) => {
+        if (prevState.overflow.length === this.state.overflow.length) {
+            window.requestAnimationFrame(() => {
+                this.props.onOverflow ? this.props.onOverflow(this.state.overflow) : null;
+            });
+        }
+    };
+
     private repartition(growing: boolean) {
         if (this.spacer == null) {
             return;
@@ -189,5 +203,9 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 };
             });
         }
+
+        // Repartition is called multiple times until all visible items needed are in the overflow list
+        // therefore we must only invoke the onOverflow prop once this process is complete
+        this.setState(this.callOnOverflow);
     }
 }
