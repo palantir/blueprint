@@ -73,8 +73,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     public state: ISuggestState<T> = {
-        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
-        selectedItem: this.props.selectedItem
+        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false
     };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -111,10 +110,12 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, popoverProps = {} } = this.props;
-        const { isOpen, selectedItem } = this.state;
+        const { isOpen } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
         const { placeholder = "Search..." } = inputProps;
 
+        // Let's support both controlled and uncontrolled.
+        const selectedItem = this.props.selectedItem || this.state.selectedItem
         const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
         return (
             <Popover
