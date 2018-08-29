@@ -97,12 +97,6 @@ Run `yarn dev` from the root directory to watch changes across all packages and 
 Alternately, each library has its own dev script to run the docs app and watch changes to just that package (and its dependencies): `yarn dev:core`, `yarn dev:datetime`, etc.
 One exception is `table`: since it has its own dev application, the `dev:table` script runs `table-dev-app` instead of the docs.
 
-### Updating dependencies
-
-1. Edit the `package.json` where you wish to change dependencies.
-1. Run `yarn` at the root to update lockfiles.
-1. Commit the result.
-
 ### Updating documentation
 
 Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).

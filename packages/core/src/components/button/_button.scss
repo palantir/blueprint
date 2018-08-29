@@ -87,10 +87,9 @@ Styleguide button
     }
 
     .#{$ns}-button-spinner {
+      // spinner appears centered within button
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      margin: 0;
     }
 
     > :not(.#{$ns}-button-spinner) {
