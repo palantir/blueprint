@@ -115,7 +115,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         const { placeholder = "Search..." } = inputProps;
 
         // Let's support both controlled and uncontrolled.
-        const selectedItem = this.props.selectedItem || this.state.selectedItem
+        const selectedItem = this.props.selectedItem || this.state.selectedItem;
         const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
         return (
             <Popover
