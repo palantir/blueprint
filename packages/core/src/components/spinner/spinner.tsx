@@ -79,6 +79,9 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
 
         const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
 
+        // multiple DOM elements around SVG are necessary to properly isolate animation:
+        // - SVG elements in IE do not support anim/trans so they must be set on a parent HTML element.
+        // - SPINNER_ANIMATION isolates svg from parent display and is always centered inside root element.
         return (
             <TagName className={classes}>
                 <span className={Classes.SPINNER_ANIMATION}>
