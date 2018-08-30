@@ -3,9 +3,22 @@
 
 @import "~@blueprintjs/icons/src/icons";
 
-#{$icon-classes} {
-  display: inline-block;
+// the SVG icon class
+.#{$ns}-icon {
+  // remove any extra inline space and ensure centering with text
+  display: inline-flex;
+  // respect dimensions exactly
+  flex: 0 0 auto;
 
+  > svg {
+    vertical-align: bottom;
+    // inherit text color by default
+    fill: currentColor;
+  }
+}
+
+// intent support for both SVG and legacy font icons
+#{$icon-classes} {
   @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
       color: $color;
@@ -17,15 +30,20 @@
   }
 }
 
+// legacy font styles
 span.#{$ns}-icon-standard {
   @include pt-icon($pt-icon-size-standard);
+  display: inline-block;
 }
 
 span.#{$ns}-icon-large {
   @include pt-icon($pt-icon-size-large);
+  display: inline-block;
 }
 
-span.#{$ns}-icon {
+// only apply icon font styles when <svg> image is not present
+span.#{$ns}-icon:empty {
+  display: inline-block;
   line-height: 1;
   font-family: $icons20-family;
   font-size: inherit;
@@ -38,15 +56,8 @@ span.#{$ns}-icon {
 }
 
 @each $name, $content in $icons {
-  .#{$ns}-icon-#{$name}::before {
+  // only insert font glyph if <svg> image is not present
+  .#{$ns}-icon-#{$name}:empty::before {
     content: $content;
   }
-}
-
-svg.#{$ns}-icon {
-  // respect dimensions exactly
-  flex: 0 0 auto;
-  vertical-align: top;
-  // inherit text color by default
-  fill: currentColor;
 }
