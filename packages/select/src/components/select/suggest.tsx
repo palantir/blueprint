@@ -37,11 +37,11 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
-    
+
     /**
-    * Optionally, if provided the selected item will be in controlled mode. 
-    * Use the onItemSelect function to monitor changes.
-    */
+     * Optionally, if provided the selected item will be in controlled mode.
+     * Use the onItemSelect function to monitor changes.
+     */
     selectedItem?: T;
 
     /**
@@ -73,7 +73,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     public state: ISuggestState<T> = {
-        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false
+        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
+        selectedItem: this.props.selectedItem,
     };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -102,6 +103,13 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         );
     }
 
+    public componentWillReceiveProps(nextProps: ISuggestProps<T>) {
+        // If the selected item prop changes, update the underlying state.
+        if (nextProps.selectedItem !== this.state.selectedItem) {
+            this.setState({ selectedItem: nextProps.selectedItem });
+        }
+    }
+
     public componentDidUpdate(_prevProps: ISuggestProps<T>, prevState: ISuggestState<T>) {
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
@@ -110,12 +118,10 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, popoverProps = {} } = this.props;
-        const { isOpen } = this.state;
+        const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
         const { placeholder = "Search..." } = inputProps;
 
-        // Let's support both controlled and uncontrolled.
-        const selectedItem = this.props.selectedItem || this.state.selectedItem;
         const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
         return (
             <Popover

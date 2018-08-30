@@ -10,6 +10,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { first } from "lodash";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
 import { selectComponentSuite } from "./selectComponentSuite";
@@ -208,6 +209,23 @@ describe("Suggest", () => {
                 onOpening,
             };
         }
+    });
+
+    describe("Controlled Mode", () => {
+        it("initialize the selectedItem with the given value", () => {
+            const selectedItem = first(TOP_100_FILMS);
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            const wrapper = suggest({ selectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem);
+        });
+        it("propagates the selectedItem with new values", () => {
+            const selectedItem = first(TOP_100_FILMS);
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            const wrapper = suggest();
+            assert.isUndefined(wrapper.state().selectedItem);
+            wrapper.setProps({ selectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem);
+        });
     });
 
     function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
