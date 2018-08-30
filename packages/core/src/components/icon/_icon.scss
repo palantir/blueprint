@@ -10,6 +10,11 @@
   // respect dimensions exactly
   flex: 0 0 auto;
 
+  &:not(:empty)::before {
+    // clear font icon when there's an <svg> image
+    content: unset;
+  }
+
   // inherit text color unless `color` prop is set
   > svg:not([fill]) {
     fill: currentColor;
@@ -56,7 +61,7 @@ span.#{$ns}-icon:empty {
 
 @each $name, $content in $icons {
   // only insert font glyph if <svg> image is not present
-  .#{$ns}-icon-#{$name}:empty::before {
+  .#{$ns}-icon-#{$name}::before {
     content: $content;
   }
 }
