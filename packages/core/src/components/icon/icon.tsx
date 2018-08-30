@@ -17,7 +17,10 @@ export interface IIconProps extends IIntentProps, IProps {
     children?: never;
 
     /**
-     * Color of icon. Equivalent to setting CSS `fill` property.
+     * Color of icon. This is used as the `fill` attribute on the `<svg>` image
+     * so it will override any CSS `color` property, including that set by
+     * `intent`. If this prop is omitted, icon color is inherited from
+     * surrounding text.
      */
     color?: string;
 
@@ -47,22 +50,37 @@ export interface IIconProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 
     /**
+     * HTML tag to use for the rendered element.
+     * @default "span"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
+
+    /**
      * Description string. This string does not appear in normal browsers, but
      * it increases accessibility. For instance, screen readers will use it for
-     * aural feedback. By default, this is set to the icon's name for
-     * accessibility.
+     * aural feedback. By default, this is set to the icon's name. Pass an
+     * explicit falsy value to disable.
      */
     title?: string | false | null;
 }
 
-export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<SVGElement>> {
+export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<HTMLElement>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
     public static readonly SIZE_LARGE = 20;
 
     public render() {
-        const { className, color, icon, iconSize = Icon.SIZE_STANDARD, intent, title = icon, ...svgProps } = this.props;
+        const {
+            className,
+            color,
+            icon,
+            iconSize = Icon.SIZE_STANDARD,
+            intent,
+            title = icon,
+            tagName: TagName = "span",
+            ...htmlprops
+        } = this.props;
 
         if (icon == null) {
             return null;
@@ -77,28 +95,16 @@ export class Icon extends React.PureComponent<IIconProps & React.SVGAttributes<S
             return null;
         }
 
-        const classes = classNames(Classes.ICON, Classes.intentClass(intent), className);
+        const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
-        // ICON class will apply a "fill" CSS style, so we need to inject an inline style to override it
-        let { style = {} } = this.props;
-        if (color != null) {
-            style = { ...style, fill: color };
-        }
-
         return (
-            <svg
-                {...svgProps}
-                className={classes}
-                style={style}
-                data-icon={icon}
-                width={iconSize}
-                height={iconSize}
-                viewBox={viewBox}
-            >
-                {title && <desc>{title}</desc>}
-                {paths}
-            </svg>
+            <TagName className={classes} {...htmlprops}>
+                <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
+                    {title && <desc>{title}</desc>}
+                    {paths}
+                </svg>
+            </TagName>
         );
     }
 
