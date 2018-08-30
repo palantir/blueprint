@@ -170,8 +170,8 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 overflow: [],
                 visible: this.props.items,
             });
-        } else if (this.spacer.getBoundingClientRect().width < 1) {
-            // spacer has flex-shrink and width 1px so if it's any smaller then we know to shrink
+        } else if (this.spacer.getBoundingClientRect().width < 0.9) {
+            // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
             this.setState(state => {
                 if (state.visible.length <= this.props.minVisibleItems) {
                     return null;
