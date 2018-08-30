@@ -208,6 +208,7 @@ export const START = `${NS}-start`;
 export const END = `${NS}-end`;
 
 export const SPINNER = `${NS}-spinner`;
+export const SPINNER_ANIMATION = `${SPINNER}-animation`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;

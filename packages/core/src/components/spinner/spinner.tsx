@@ -81,16 +81,18 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
 
         return (
             <TagName className={classes}>
-                <svg height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
-                    <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
-                    <path
-                        className={Classes.SPINNER_HEAD}
-                        d={SPINNER_TRACK}
-                        pathLength={PATH_LENGTH}
-                        strokeDasharray={`${PATH_LENGTH} ${PATH_LENGTH}`}
-                        strokeDashoffset={strokeOffset}
-                    />
-                </svg>
+                <span className={Classes.SPINNER_ANIMATION}>
+                    <svg height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
+                        <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
+                        <path
+                            className={Classes.SPINNER_HEAD}
+                            d={SPINNER_TRACK}
+                            pathLength={PATH_LENGTH}
+                            strokeDasharray={`${PATH_LENGTH} ${PATH_LENGTH}`}
+                            strokeDashoffset={strokeOffset}
+                        />
+                    </svg>
+                </span>
             </TagName>
         );
     }

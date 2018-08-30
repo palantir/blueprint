@@ -10,10 +10,14 @@
 }
 
 .#{$ns}-spinner {
+  // center animation container inside parent element to isolate layout
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   // allow paths to overflow container -- critical for edges of circles!
   overflow: visible;
   vertical-align: middle;
-  animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
 
   svg {
     display: block;
@@ -33,8 +37,13 @@
   .#{$ns}-spinner-track {
     stroke: $progress-track-color;
   }
+}
 
-  &.#{$ns}-no-spin {
+// put the animation on a child HTML element to isolate it from display of parent
+.#{$ns}-spinner-animation {
+  animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
+
+  .#{$ns}-no-spin > & {
     animation: none;
   }
 }
