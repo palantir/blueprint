@@ -10,7 +10,6 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { first } from "lodash";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
 import { selectComponentSuite } from "./selectComponentSuite";
@@ -213,18 +212,31 @@ describe("Suggest", () => {
 
     describe("Controlled Mode", () => {
         it("initialize the selectedItem with the given value", () => {
-            const selectedItem = first(TOP_100_FILMS);
+            const selectedItem = TOP_100_FILMS[0];
             assert.isNotNull(selectedItem, "The selected item we test must not be null");
             const wrapper = suggest({ selectedItem });
             assert.strictEqual(wrapper.state().selectedItem, selectedItem);
         });
         it("propagates the selectedItem with new values", () => {
-            const selectedItem = first(TOP_100_FILMS);
+            const selectedItem = TOP_100_FILMS[0];
             assert.isNotNull(selectedItem, "The selected item we test must not be null");
             const wrapper = suggest();
             assert.isUndefined(wrapper.state().selectedItem);
             wrapper.setProps({ selectedItem });
             assert.strictEqual(wrapper.state().selectedItem, selectedItem);
+        });
+        it("when new item selected, it should respect the selectedItem prop", () => {
+            const selectedItem = TOP_100_FILMS[0];
+            const ITEM_INDEX = 4;
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            const wrapper = suggest({ selectedItem });
+            simulateFocus(wrapper);
+            selectItem(wrapper, ITEM_INDEX);
+            assert.isTrue(handlers.onItemSelect.called, "should be called after selection");
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the underlying state should not change");
+            const newSelectedItem = TOP_100_FILMS[ITEM_INDEX];
+            wrapper.setProps({ selectedItem: newSelectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, newSelectedItem, "the selectedItem should be updated");
         });
     });
 

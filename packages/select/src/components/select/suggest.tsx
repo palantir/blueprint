@@ -188,11 +188,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             }
             nextOpenState = false;
         }
-
-        this.setState({
-            isOpen: nextOpenState,
-            selectedItem: item,
-        });
+        // just like EditableText, the internal state should only change when uncontrolled.
+        if (this.props.selectedItem == null) {
+            this.setState({
+                isOpen: nextOpenState,
+                selectedItem: item,
+            });
+        } else {
+            // otherwise just set the next open state.
+            this.setState({ isOpen: nextOpenState });
+        }
 
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     };
