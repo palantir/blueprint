@@ -21,27 +21,28 @@ Markup:
 Styleguide skeleton
 */
 
-@keyframes glow {
-  0%,
-  100% {
+@keyframes skeleton-glow {
+  from {
     border-color: $skeleton-color-start;
-    background-color: $skeleton-color-start;
+    background: $skeleton-color-start;
   }
 
-  50% {
+  to {
     border-color: $skeleton-color-end;
-    background-color: $skeleton-color-end;
+    background: $skeleton-color-end;
   }
 }
 
-// This class hides content with a glowing, rounded rectangle. CSS properties that should always
-// override consumer values use the "!important" rule.
+// This class hides content with a glowing, rounded rectangle.
+// CSS properties that should always override consumer values use the "!important" rule.
 /* stylelint-disable declaration-no-important */
 .#{$ns}-skeleton {
   border-color: $skeleton-color-start !important;
   border-radius: 2px;
   box-shadow: none !important;
-  background: $skeleton-color-start !important;
+
+  // do not !important this for Firefox support
+  background: $skeleton-color-start;
 
   // Prevent background color from extending to the border and overlappping
   background-clip: padding-box !important;
