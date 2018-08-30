@@ -56,10 +56,9 @@ $dark-package-colors: (
   font-weight: 600;
 
   .#{$ns}-tag {
-    display: block;
-    margin-top: 3px;
     margin-left: $pt-grid-size / 2;
     padding-left: $pt-grid-size;
+    vertical-align: middle;
   }
 }
 
