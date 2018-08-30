@@ -17,7 +17,10 @@ export interface IIconProps extends IIntentProps, IProps {
     children?: never;
 
     /**
-     * Color of icon. Equivalent to setting CSS `fill` property.
+     * Color of icon. This is used as the `fill` attribute on the `<svg>` image
+     * so it will override any CSS `color` property, including that set by
+     * `intent`. If this prop is omitted, icon color is inherited from
+     * surrounding text.
      */
     color?: string;
 
@@ -61,7 +64,7 @@ export interface IIconProps extends IIntentProps, IProps {
     title?: string | false | null;
 }
 
-export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<HTMLElement>> {
+export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<HTMLElement>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
@@ -95,15 +98,9 @@ export class Icon extends React.PureComponent<IIconProps & React.HTMLAttributes<
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
-        // ICON class will apply a "fill" CSS style, so we need to inject an inline style to override it
-        let { style = {} } = this.props;
-        if (color != null) {
-            style = { ...style, fill: color };
-        }
-
         return (
             <TagName className={classes} {...htmlprops}>
-                <svg style={style} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
+                <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
                     {title && <desc>{title}</desc>}
                     {paths}
                 </svg>

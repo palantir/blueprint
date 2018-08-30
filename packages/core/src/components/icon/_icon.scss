@@ -10,9 +10,8 @@
   // respect dimensions exactly
   flex: 0 0 auto;
 
-  > svg {
-    vertical-align: bottom;
-    // inherit text color by default
+  // inherit text color unless `color` prop is set
+  > svg:not([fill]) {
     fill: currentColor;
   }
 }
