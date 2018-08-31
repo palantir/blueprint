@@ -42,7 +42,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      * Optionally, if provided the selected item will be in controlled mode.
      * Use the onItemSelect function to monitor changes.
      */
-    selectedItem?: T;
+    selectedItem?: T | null;
 
     /**
      * Whether the popover opens on key down or when the input is focused.
@@ -56,7 +56,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
 export interface ISuggestState<T> {
     isOpen: boolean;
-    selectedItem?: T;
+    selectedItem: T | null;
 }
 
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
@@ -74,7 +74,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public state: ISuggestState<T> = {
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
-        selectedItem: this.props.selectedItem,
+        selectedItem: this.props.selectedItem !== undefined ? this.props.selectedItem : null,
     };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -105,7 +105,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public componentWillReceiveProps(nextProps: ISuggestProps<T>) {
         // If the selected item prop changes, update the underlying state.
-        if (nextProps.selectedItem !== this.state.selectedItem) {
+        if (nextProps.selectedItem !== undefined && nextProps.selectedItem !== this.state.selectedItem) {
             this.setState({ selectedItem: nextProps.selectedItem });
         }
     }
@@ -188,8 +188,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             }
             nextOpenState = false;
         }
-        // just like EditableText, the internal state should only change when uncontrolled.
-        if (this.props.selectedItem == null) {
+        // the internal state should only change when uncontrolled.
+        if (this.props.selectedItem === undefined) {
             this.setState({
                 isOpen: nextOpenState,
                 selectedItem: item,

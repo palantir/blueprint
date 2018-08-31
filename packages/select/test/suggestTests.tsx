@@ -221,7 +221,7 @@ describe("Suggest", () => {
             const selectedItem = TOP_100_FILMS[0];
             assert.isNotNull(selectedItem, "The selected item we test must not be null");
             const wrapper = suggest();
-            assert.isUndefined(wrapper.state().selectedItem);
+            assert.isNull(wrapper.state().selectedItem);
             wrapper.setProps({ selectedItem });
             assert.strictEqual(wrapper.state().selectedItem, selectedItem);
         });
@@ -232,11 +232,23 @@ describe("Suggest", () => {
             const wrapper = suggest({ selectedItem });
             simulateFocus(wrapper);
             selectItem(wrapper, ITEM_INDEX);
-            assert.isTrue(handlers.onItemSelect.called, "should be called after selection");
+            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
             assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the underlying state should not change");
             const newSelectedItem = TOP_100_FILMS[ITEM_INDEX];
             wrapper.setProps({ selectedItem: newSelectedItem });
             assert.strictEqual(wrapper.state().selectedItem, newSelectedItem, "the selectedItem should be updated");
+        });
+        it("preserves the empty selection", () => {
+            const ITEM_INDEX = 4;
+            const selectedItem = TOP_100_FILMS[0];
+            const wrapper = suggest({ selectedItem: null });
+            assert.isNull(wrapper.state().selectedItem);
+            simulateFocus(wrapper);
+            selectItem(wrapper, ITEM_INDEX);
+            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
+            assert.isNull(wrapper.state().selectedItem, "the underlying state should not change");
+            wrapper.setProps({ selectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the selectedItem should be updated");
         });
     });
 
