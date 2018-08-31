@@ -74,6 +74,28 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.deepEqual(ranks, [5, 1]);
             assert.strictEqual(testProps.onQueryChange.lastCall.args[0], "");
         });
+
+        it("querying does not reset active item when resetActiveItemOnQuery=false", () => {
+            const wrapper = render({ ...testProps, query: "19", resetActiveItemOnQuery: false });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
+
+            // querying should not select any new active item
+            findInput(wrapper).simulate("change", { target: { value: "Forrest" } });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
+        });
+
+        it("querying resets active item when resetActiveItemOnQuery=true", () => {
+            const wrapper = render({ ...testProps, query: "19", resetActiveItemOnQuery: true });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
+
+            // querying should select Forrest Gump
+            findInput(wrapper).simulate("change", { target: { value: "Forrest" } });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].title, "Forrest Gump");
+        });
     });
 
     describe("keyboard", () => {

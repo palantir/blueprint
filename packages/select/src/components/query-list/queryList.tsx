@@ -182,8 +182,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
-    // TODO resetActiveItem = this.props.resetOnQuery
-    public setQuery(query: string, resetActiveItem = false) {
+    public setQuery(query: string, resetActiveItem = this.props.resetActiveItemOnQuery) {
         if (query !== this.state.query) {
             Utils.safeInvoke(this.props.onQueryChange, query);
         }

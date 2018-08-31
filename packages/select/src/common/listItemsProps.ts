@@ -107,6 +107,13 @@ export interface IListItemsProps<T> extends IProps {
     resetOnSelect?: boolean;
 
     /**
+     * Whether the active item should be reset to first value when a query is
+     * entered. The first item will be made active.
+     * @default false
+     */
+    resetActiveItemOnQuery?: boolean;
+
+    /**
      * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
      * This value is controlled: its state must be managed externally by attaching an `onChange`
      * handler to the relevant element in your `renderer` implementation.
