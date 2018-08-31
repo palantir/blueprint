@@ -30,6 +30,7 @@ import {
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 import { Shortcuts } from "./shortcuts";
+import { TimePicker } from "./timePicker";
 
 export interface IDateRangeShortcut {
     label: string;
@@ -104,6 +105,11 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * If this prop is provided, the component acts in a controlled manner.
      */
     value?: DateRange;
+
+    /**
+     * The currently specified time
+     */
+    time?: DateRange;
 }
 
 // leftView and rightView controls the DayPicker displayed month
@@ -112,6 +118,7 @@ export interface IDateRangePickerState {
     leftView?: MonthAndYear;
     rightView?: MonthAndYear;
     value?: DateRange;
+    time?: DateRange;
 }
 
 export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps, IDateRangePickerState> {
@@ -123,6 +130,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         minDate: getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
         shortcuts: true,
+        timePickerProps: {},
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
@@ -165,6 +173,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     public constructor(props: IDateRangePickerProps, context?: any) {
         super(props, context);
         const value = getInitialValue(props);
+        const time: DateRange = this.props.time != null ? this.props.time : [null, null];
         const initialMonth = getInitialMonth(props, value);
 
         // if the initial month is the last month of the picker's
@@ -186,7 +195,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             !props.contiguousCalendarMonths && rightDate != null && !DateUtils.areSameMonth(initialMonth, rightDate)
                 ? MonthAndYear.fromDate(rightDate)
                 : leftView.getNextMonth();
-        this.state = { leftView, rightView, value, hoverValue: [null, null] };
+        this.state = { leftView, rightView, value, hoverValue: [null, null], time };
     }
 
     public render() {
@@ -202,7 +211,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         return (
             <div className={classes}>
                 {this.maybeRenderShortcuts()}
-                <div>
+                <div className={classNames(DateClasses.DATEPICKER, className)}>
                     {this.renderCalendars(isShowingOneMonth)}
                     {this.maybeRenderTimePickers()}
                 </div>
@@ -275,8 +284,52 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     }
 
     private maybeRenderTimePickers() {
-        // TODO: fill me in!
+        const { timePrecision, timePickerProps } = this.props;
+        if (timePrecision == null && timePickerProps === DateRangePicker.defaultProps.timePickerProps) {
+            return null;
+        }
+        return (
+            <div className={DateClasses.DATERANGEPICKER_TIMEPICKER}>
+                <TimePicker
+                    key="left"
+                    precision={timePrecision}
+                    {...timePickerProps}
+                    onChange={this.handleTimeChangeLeftCalendar}
+                    value={this.state.time[0]}
+                />
+                <TimePicker
+                    key="right"
+                    precision={timePrecision}
+                    {...timePickerProps}
+                    onChange={this.handleTimeChangeRightCalendar}
+                    value={this.state.time[1]}
+                />
+            </div>
+        );
     }
+
+    private handleTimeChange = (newTime: Date, dateIndex: number) => {
+        Utils.safeInvoke(this.props.timePickerProps.onChange, newTime);
+        const { value, time } = this.state;
+        const newValue = DateUtils.getDateTime(
+            value[dateIndex] != null ? new Date(value[dateIndex].getTime()) : new Date(),
+            newTime,
+        );
+        const newDateRange: DateRange = [value[0], value[1]];
+        newDateRange[dateIndex] = newValue;
+        const newTimeRange: DateRange = [time[0], time[1]];
+        newTimeRange[dateIndex] = newTime;
+        Utils.safeInvoke(this.props.onChange, newDateRange);
+        this.setState({ value: newDateRange, time: newTimeRange });
+    };
+
+    private handleTimeChangeLeftCalendar = (time: Date) => {
+        this.handleTimeChange(time, 0);
+    };
+
+    private handleTimeChangeRightCalendar = (time: Date) => {
+        this.handleTimeChange(time, 1);
+    };
 
     private renderCalendars(isShowingOneMonth: boolean) {
         const { contiguousCalendarMonths, dayPickerProps, locale, localeUtils, maxDate, minDate } = this.props;
@@ -414,6 +467,9 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             this.props.boundaryToModify,
         ).dateRange;
 
+        nextValue[0] = DateUtils.getDateTime(nextValue[0], this.state.time[0]);
+        nextValue[1] = DateUtils.getDateTime(nextValue[1], this.state.time[1]);
+
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
         this.handleDayMouseEnter(day, modifiers, e);
@@ -428,7 +484,6 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         if (this.props.value == null) {
             this.setState(nextState);
         }
-
         Utils.safeInvoke(this.props.onChange, nextValue);
     };
 

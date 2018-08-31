@@ -19,6 +19,11 @@
     padding-left: $datepicker-padding;
   }
 
+
+  .DateRange-TimePickers {
+    display: flex;
+    justify-content: space-around;
+  }
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous {
     .DayPicker {

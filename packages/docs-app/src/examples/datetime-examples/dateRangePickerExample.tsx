@@ -91,7 +91,6 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         const { minDateIndex, maxDateIndex, ...props } = this.state;
         const minDate = MIN_DATE_OPTIONS[minDateIndex].value;
         const maxDate = MAX_DATE_OPTIONS[maxDateIndex].value;
-
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <DateRangePicker

@@ -10,8 +10,8 @@ import classNames from "classnames";
 import moment from "moment";
 import * as React from "react";
 
-const FORMAT = "dddd, LL";
-const FORMAT_TIME = "dddd, LL LT";
+const FORMAT = "dddd, LL h:mm:ss";
+const FORMAT_TIME = "dddd, LL LT h:mm:ss";
 
 export const MomentDate: React.SFC<{ date: Date; format?: string; withTime?: boolean }> = ({
     date,
@@ -32,8 +32,8 @@ export const MomentDateRange: React.SFC<{ range: DateRange; format?: string } & 
     format = FORMAT,
 }) => (
     <div className={classNames("docs-date-range", className)}>
-        <MomentDate date={start} format={format} />
+        <MomentDate withTime={true} date={start} format={format} />
         <Icon icon="arrow-right" />
-        <MomentDate date={end} format={format} />
+        <MomentDate withTime={true} date={end} format={format} />
     </div>
 );
