@@ -5,8 +5,9 @@
 
 // the icon class which will contain an SVG icon
 .#{$ns}-icon {
-  // remove any extra inline space and ensure centering with text
-  display: inline-flex;
+  // ensure icons sit inline with text & isolate svg from surrounding elements
+  // (vertical alignment in flow is usually off due to svg - not an issue with flex.)
+  display: inline-block;
   // respect dimensions exactly
   flex: 0 0 auto;
 
@@ -16,9 +17,14 @@
     content: unset !important;
   }
 
-  // inherit text color unless `color` prop is set
-  > svg:not([fill]) {
-    fill: currentColor;
+  > svg {
+    // prevent extra vertical whitespace
+    display: block;
+
+    // inherit text color unless explicit fill is set
+    &:not([fill]) {
+      fill: currentColor;
+    }
   }
 }
 
@@ -51,7 +57,6 @@ span.#{$ns}-icon-large {
 
 // only apply icon font styles when <svg> image is not present
 span.#{$ns}-icon:empty {
-  display: inline-block;
   line-height: 1;
   font-family: $icons20-family;
   font-size: inherit;
