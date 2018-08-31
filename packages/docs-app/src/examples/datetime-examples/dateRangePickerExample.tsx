@@ -100,7 +100,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                     minDate={minDate}
                     onChange={this.handleDateChange}
                 />
-                <MomentDateRange range={this.state.dateRange} />
+                <MomentDateRange withTime={props.timePrecision !== undefined} range={this.state.dateRange} />
             </Example>
         );
     }
