@@ -12,7 +12,8 @@
 
   &:not(:empty)::before {
     // clear font icon when there's an <svg> image
-    content: unset;
+    // stylelint-disable-next-line declaration-no-important
+    content: unset !important;
   }
 
   // inherit text color unless `color` prop is set
