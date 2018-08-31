@@ -3,7 +3,7 @@
 
 @import "~@blueprintjs/icons/src/icons";
 
-// the SVG icon class
+// the icon class which will contain an SVG icon
 .#{$ns}-icon {
   // remove any extra inline space and ensure centering with text
   display: inline-flex;
@@ -34,7 +34,10 @@
   }
 }
 
-// legacy font styles
+//
+// LEGACY icon font styles
+//
+
 span.#{$ns}-icon-standard {
   @include pt-icon($pt-icon-size-standard);
   display: inline-block;
@@ -60,7 +63,6 @@ span.#{$ns}-icon:empty {
 }
 
 @each $name, $content in $icons {
-  // only insert font glyph if <svg> image is not present
   .#{$ns}-icon-#{$name}::before {
     content: $content;
   }
