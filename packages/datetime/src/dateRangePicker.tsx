@@ -30,7 +30,7 @@ import {
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 import { Shortcuts } from "./shortcuts";
-import { TimePicker } from "./timePicker";
+import { ITimePickerProps, TimePicker } from "./timePicker";
 
 export interface IDateRangeShortcut {
     label: string;
@@ -106,10 +106,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      */
     value?: DateRange;
 
-    /**
-     * The currently specified time
-     */
-    time?: DateRange;
+    timePickerProps?: ITimePickerProps;
 }
 
 // leftView and rightView controls the DayPicker displayed month
@@ -173,7 +170,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     public constructor(props: IDateRangePickerProps, context?: any) {
         super(props, context);
         const value = getInitialValue(props);
-        const time: DateRange = this.props.time != null ? this.props.time : [null, null];
+        const time: DateRange = value;
         const initialMonth = getInitialMonth(props, value);
 
         // if the initial month is the last month of the picker's

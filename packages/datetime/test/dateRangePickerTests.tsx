@@ -1005,55 +1005,44 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("time selection", () => {
-        const defaultValue: DateRange = [new Date(2012, 2, 5, 6, 5, 40), new Date(2012, 4, 5, 7, 8, 20)];
+        const defaultRange: DateRange = [new Date(2012, 2, 5, 6, 5, 40), new Date(2012, 4, 5, 7, 8, 20)];
 
         it("setting timePrecision shows a TimePicker", () => {
-            const { wrapper } = wrap(<DateRangePicker />);
+            const { wrapper } = render();
             assert.isFalse(wrapper.find(TimePicker).exists());
             wrapper.setProps({ timePrecision: "minute" });
             assert.isTrue(wrapper.find(TimePicker).exists());
         });
 
         it("setting timePickerProps shows a TimePicker", () => {
-            const { wrapper } = wrap(<DateRangePicker timePickerProps={{}} />);
+            const { wrapper } = render({ timePickerProps: {} });
             assert.isTrue(wrapper.find(TimePicker).exists());
         });
 
         it("onChange fired when the time is changed", () => {
-            const { wrapper } = wrap(
-                <DateRangePicker
-                    defaultValue={defaultValue}
-                    onChange={onChangeSpy}
-                    timePickerProps={{ showArrowButtons: true }}
-                />,
-            );
+            const { wrapper } = render({ timePickerProps: { showArrowButtons: true }, defaultValue: defaultRange });
             assert.isTrue(onChangeSpy.notCalled);
             wrapper
                 .find(`.${DateClasses.TIMEPICKER_ARROW_BUTTON}.${DateClasses.TIMEPICKER_HOUR}`)
                 .first()
                 .simulate("click");
-            //assert.isTrue(onChangeSpy.calledOnce);
-            const cbHour = onChangeSpy.firstCall.args[0].getHours();
-            //assert.strictEqual(cbHour, defaultValue[0].getHours() + 1);
+            assert.isTrue(onChangeSpy.calledOnce);
+            const cbHour = onChangeSpy.firstCall.args[0][0].getHours();
+            assert.strictEqual(cbHour, defaultRange[0].getHours() + 1);
         });
 
         it("changing date does not change time", () => {
-            wrap(
-                <DateRangePicker defaultValue={defaultValue} onChange={onChangeSpy} timePrecision="minute" />,
-            ).left.clickDay(16);
-            assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultValue[0]));
+            render({ timePrecision: "minute", defaultValue: defaultRange }).left.clickDay(16);
+            assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
 
         it("changing time does not change date", () => {
-            wrap(
-                <DateRangePicker defaultValue={defaultValue} onChange={onChangeSpy} timePrecision="minute" />,
-            ).left.setTimeInput("minute", 10);
-            assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, defaultValue[0]));
+            render({ timePrecision: "minute", defaultValue: defaultRange }).setTimeInput("minute", 10, "left");
+            assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
 
         it("changing time without date uses today", () => {
-            // no date set via props
-            wrap(<DateRangePicker onChange={onChangeSpy} timePrecision="minute" />).left.setTimeInput("minute", 45);
+            render({ timePrecision: "minute" }).setTimeInput("minute", 45, "left");
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
         });
     });
@@ -1116,6 +1105,11 @@ describe("<DateRangePicker>", () => {
             getDays: (className: string) => {
                 return wrapper.find(`.${className}`).filterWhere(dayNotOutside);
             },
+            setTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
+                harness.wrapper
+                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
+                    .at(which === "left" ? 0 : 1)
+                    .simulate("blur", { target: { value } }),
         };
         return harness;
     }
@@ -1163,8 +1157,6 @@ describe("<DateRangePicker>", () => {
                 harness.findDay(dayNumber).simulate("mouseenter");
                 return harness;
             },
-            setTimeInput: (precision: TimePrecision | "hour", value: number) =>
-                harness.wrapper.find(`.${DateClasses.TIMEPICKER}-${precision}`).simulate("blur", { target: { value } }),
         };
         return harness;
     }
