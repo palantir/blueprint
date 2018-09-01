@@ -60,6 +60,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     public static defaultProps = {
         closeOnSelect: true,
         openOnKeyDown: false,
+        resetOnQuery: true,
     };
 
     public static ofType<T>() {

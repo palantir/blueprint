@@ -18,8 +18,8 @@ export interface ISelectExampleState {
     filterable: boolean;
     hasInitialContent: boolean;
     minimal: boolean;
-    resetActiveItemOnQuery: boolean;
     resetOnClose: boolean;
+    resetOnQuery: boolean;
     resetOnSelect: boolean;
     disableItems: boolean;
     disabled: boolean;
@@ -33,8 +33,8 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         filterable: true,
         hasInitialContent: false,
         minimal: false,
-        resetActiveItemOnQuery: false,
         resetOnClose: false,
+        resetOnQuery: true,
         resetOnSelect: false,
     };
 
@@ -43,8 +43,8 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
     private handleItemDisabledChange = this.handleSwitchChange("disableItems");
     private handleMinimalChange = this.handleSwitchChange("minimal");
-    private handleResetOnActiveItemOnQueryChange = this.handleSwitchChange("resetActiveItemOnQuery");
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
+    private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
@@ -86,14 +86,14 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
                 <Switch label="Filterable" checked={this.state.filterable} onChange={this.handleFilterableChange} />
                 <Switch
-                    label="Reset active item on query"
-                    checked={this.state.resetActiveItemOnQuery}
-                    onChange={this.handleResetOnActiveItemOnQueryChange}
-                />
-                <Switch
                     label="Reset on close"
                     checked={this.state.resetOnClose}
                     onChange={this.handleResetOnCloseChange}
+                />
+                <Switch
+                    label="Reset on query"
+                    checked={this.state.resetOnQuery}
+                    onChange={this.handleResetOnQueryChange}
                 />
                 <Switch
                     label="Reset on select"

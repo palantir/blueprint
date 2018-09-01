@@ -36,7 +36,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
     describe("common behavior", () => {
         it("itemRenderer is called for each child", () => {
-            const wrapper = render(testProps);
+            const wrapper = render({ ...testProps, resetOnQuery: false });
             // each item is rendered once
             assert.equal(testProps.itemRenderer.callCount, 15);
             // only filtered items re-rendered
@@ -65,7 +65,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         });
 
         it("clicking item resets state when resetOnSelect=true", () => {
-            const wrapper = render({ ...testProps, query: "19", resetOnSelect: true });
+            const wrapper = render({ ...testProps, query: "19", resetOnSelect: true, resetOnQuery: false });
             findItems(wrapper)
                 .at(3)
                 .simulate("click");
@@ -75,8 +75,8 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.strictEqual(testProps.onQueryChange.lastCall.args[0], "");
         });
 
-        it("querying does not reset active item when resetActiveItemOnQuery=false", () => {
-            const wrapper = render({ ...testProps, query: "19", resetActiveItemOnQuery: false });
+        it("querying does not reset active item when resetOnQuery=false", () => {
+            const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
 
             assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
 
@@ -86,8 +86,8 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
         });
 
-        it("querying resets active item when resetActiveItemOnQuery=true", () => {
-            const wrapper = render({ ...testProps, query: "19", resetActiveItemOnQuery: true });
+        it("querying resets active item when resetOnQuery=true", () => {
+            const wrapper = render({ ...testProps, query: "19" });
 
             assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
 

@@ -68,7 +68,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+        const { openOnKeyDown, popoverProps, tagInputProps, resetOnQuery = true, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -77,6 +77,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
+                resetOnQuery={resetOnQuery}
             />
         );
     }
