@@ -30,7 +30,7 @@ import {
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 import { Shortcuts } from "./shortcuts";
-import { ITimePickerProps, TimePicker } from "./timePicker";
+import { TimePicker } from "./timePicker";
 
 export interface IDateRangeShortcut {
     label: string;
@@ -105,8 +105,6 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * If this prop is provided, the component acts in a controlled manner.
      */
     value?: DateRange;
-
-    timePickerProps?: ITimePickerProps;
 }
 
 // leftView and rightView controls the DayPicker displayed month
@@ -208,7 +206,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         return (
             <div className={classes}>
                 {this.maybeRenderShortcuts()}
-                <div className={classNames(DateClasses.DATEPICKER, className)}>
+                <div>
                     {this.renderCalendars(isShowingOneMonth)}
                     {this.maybeRenderTimePickers()}
                 </div>
@@ -286,16 +284,14 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             return null;
         }
         return (
-            <div className={DateClasses.DATERANGEPICKER_TIMEPICKER}>
+            <div className={DateClasses.DATERANGEPICKER_TIMEPICKERS}>
                 <TimePicker
-                    key="left"
                     precision={timePrecision}
                     {...timePickerProps}
                     onChange={this.handleTimeChangeLeftCalendar}
                     value={this.state.time[0]}
                 />
                 <TimePicker
-                    key="right"
                     precision={timePrecision}
                     {...timePickerProps}
                     onChange={this.handleTimeChangeRightCalendar}
@@ -309,7 +305,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         Utils.safeInvoke(this.props.timePickerProps.onChange, newTime);
         const { value, time } = this.state;
         const newValue = DateUtils.getDateTime(
-            value[dateIndex] != null ? new Date(value[dateIndex].getTime()) : new Date(),
+            value[dateIndex] != null ? DateUtils.clone(value[dateIndex]) : new Date(),
             newTime,
         );
         const newDateRange: DateRange = [value[0], value[1]];

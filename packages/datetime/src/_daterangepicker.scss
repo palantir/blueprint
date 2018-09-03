@@ -9,8 +9,19 @@
   display: flex;
   white-space: nowrap;
 
+  // indent first navbar a bit
+  .DayPicker:first-of-type .#{$ns}-datepicker-navbar {
+    left: $datepicker-padding;
+  }
+
   .DayPicker-NavButton--interactionDisabled {
     display: none;
+  }
+
+  .#{$ns}-daterangepicker-timepickers {
+    display: flex;
+    justify-content: space-around;
+    clear: both;
   }
 
   .#{$ns}-daterangepicker-shortcuts + .DayPicker {
@@ -19,11 +30,6 @@
     padding-left: $datepicker-padding;
   }
 
-
-  .DateRange-TimePickers {
-    display: flex;
-    justify-content: space-around;
-  }
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous {
     .DayPicker {
