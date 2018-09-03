@@ -20,6 +20,13 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
   padding-left: $tag-input-padding;
   line-height: inherit;
 
+  // use the conventional Blueprint input padding when empty
+  // (else when there are tags present, use a smaller, identical padding on all sides)
+  // see: https://github.com/palantir/blueprint/issues/2872
+  &.#{$ns}-tag-input-empty {
+    padding-left: $input-padding-horizontal;
+  }
+
   .#{$ns}-tag-input-icon {
     // margins to center icon in one-line input
     margin-top: $tag-input-icon-padding;

@@ -214,6 +214,10 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     public render() {
         const { className, disabled, fill, inputProps, large, leftIcon, placeholder, values } = this.props;
 
+        // use placeholder prop only if it's defined and values list is empty or contains only falsy values
+        const isSomeValueDefined = values.some(val => !!val);
+        const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps.placeholder : placeholder;
+
         const classes = classNames(
             Classes.INPUT,
             Classes.TAG_INPUT,
@@ -222,14 +226,14 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                 [Classes.DISABLED]: disabled,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
+                // add CSS class when empty so the placeholder padding can match that of an empty <InputGroup>
+                // (also, no need for this to be part of the public Classes API)
+                // see: https://github.com/palantir/blueprint/issues/2872
+                [`${Classes.TAG_INPUT}-empty`]: !isSomeValueDefined,
             },
             className,
         );
         const isLarge = classes.indexOf(Classes.LARGE) > NONE;
-
-        // use placeholder prop only if it's defined and values list is empty or contains only falsy values
-        const isSomeValueDefined = values.some(val => !!val);
-        const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps.placeholder : placeholder;
 
         return (
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
