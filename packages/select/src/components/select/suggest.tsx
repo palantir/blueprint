@@ -39,8 +39,9 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     inputValueRenderer: (item: T) => string;
 
     /**
-     * Optionally, if provided the selected item will be in controlled mode.
-     * Use the onItemSelect function to monitor changes.
+     * The currently selected item, or `null` to indicate that no item is selected. 
+     * If omitted, this prop will be uncontrolled (managed by the component's state). 
+     * Use `onItemSelect` to listen for updates.
      */
     selectedItem?: T | null;
 
