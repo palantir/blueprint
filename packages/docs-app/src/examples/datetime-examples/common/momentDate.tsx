@@ -33,8 +33,8 @@ export const MomentDateRange: React.SFC<{ range: DateRange; format?: string; wit
     format = withTime ? FORMAT_TIME : FORMAT,
 }) => (
     <div className={classNames("docs-date-range", className)}>
-        <MomentDate withTime={true} date={start} format={format} />
+        <MomentDate withTime={withTime} date={start} format={format} />
         <Icon icon="arrow-right" />
-        <MomentDate withTime={true} date={end} format={format} />
+        <MomentDate withTime={withTime} date={end} format={format} />
     </div>
 );
