@@ -1004,7 +1004,7 @@ describe("<DateRangePicker>", () => {
         });
     });
 
-    describe("time selection", () => {
+    describe.only("time selection", () => {
         const defaultRange: DateRange = [new Date(2012, 2, 5, 6, 5, 40), new Date(2012, 4, 5, 7, 8, 20)];
 
         it("setting timePrecision shows a TimePicker", () => {
@@ -1044,6 +1044,11 @@ describe("<DateRangePicker>", () => {
         it("changing time without date uses today", () => {
             render({ timePrecision: "minute" }).setTimeInput("minute", 45, "left");
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
+        });
+
+        it("clicking a shortcut doesn't change time", () => {
+            render({ timePrecision: "minute", defaultValue: defaultRange }).clickShortcut();
+            assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
     });
 

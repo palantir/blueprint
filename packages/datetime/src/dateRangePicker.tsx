@@ -460,9 +460,6 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             this.props.boundaryToModify,
         ).dateRange;
 
-        nextValue[0] = DateUtils.getDateTime(nextValue[0], this.state.time[0]);
-        nextValue[1] = DateUtils.getDateTime(nextValue[1], this.state.time[1]);
-
         // update the hovered date range after click to show the newly selected
         // state, at leasts until the mouse moves again
         this.handleDayMouseEnter(day, modifiers, e);
@@ -472,6 +469,9 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
     private handleNextState = (nextValue: DateRange) => {
         const { value } = this.state;
+        nextValue[0] = DateUtils.getDateTime(nextValue[0], this.state.time[0]);
+        nextValue[1] = DateUtils.getDateTime(nextValue[1], this.state.time[1]);
+
         const nextState = getStateChange(value, nextValue, this.state, this.props.contiguousCalendarMonths);
 
         if (this.props.value == null) {
