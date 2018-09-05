@@ -100,8 +100,7 @@ export interface IListItemsProps<T> extends IProps {
 
     /**
      * Whether the active selection should be reset when a query is entered.
-     * If you search and your current active item falls out of scope,
-     * the first matching item will become the active selection.
+     * As you query, the first matching item will become the active selection.
      * @default true
      */
     resetOnQuery?: boolean;
