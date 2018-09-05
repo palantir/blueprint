@@ -26,7 +26,7 @@ export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>,
     /** Enables hover styles on row. */
     interactive?: boolean;
 
-    /** Use small, condensed appearance for this element and all child elements. */
+    /** @deprecated Use small, condensed appearance for this element and all child elements. */
     small?: boolean;
 
     /** Use an alternate background color on odd rows. */
