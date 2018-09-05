@@ -1004,7 +1004,7 @@ describe("<DateRangePicker>", () => {
         });
     });
 
-    describe.only("time selection", () => {
+    describe("time selection", () => {
         const defaultRange: DateRange = [new Date(2012, 2, 5, 6, 5, 40), new Date(2012, 4, 5, 7, 8, 20)];
 
         it("setting timePrecision shows a TimePicker", () => {
