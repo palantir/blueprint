@@ -20,13 +20,13 @@ export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>,
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 
-    /** Use condensed appearance for just this table and tabular elements. */
+    /** Use small, condensed appearance. */
     condensed?: boolean;
 
     /** Enables hover styles on row. */
     interactive?: boolean;
 
-    /** Use small, condensed appearance. */
+    /** Use small, condensed appearance for this element and all child elements. */
     small?: boolean;
 
     /** Use an alternate background color on odd rows. */
