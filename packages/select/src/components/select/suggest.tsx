@@ -39,6 +39,13 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     inputValueRenderer: (item: T) => string;
 
     /**
+     * The currently selected item, or `null` to indicate that no item is selected.
+     * If omitted, this prop will be uncontrolled (managed by the component's state).
+     * Use `onItemSelect` to listen for updates.
+     */
+    selectedItem?: T | null;
+
+    /**
      * Whether the popover opens on key down or when the input is focused.
      * @default false
      */
@@ -50,7 +57,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
 export interface ISuggestState<T> {
     isOpen: boolean;
-    selectedItem?: T;
+    selectedItem: T | null;
 }
 
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
@@ -68,6 +75,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public state: ISuggestState<T> = {
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
+        selectedItem: this.props.selectedItem !== undefined ? this.props.selectedItem : null,
     };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -94,6 +102,13 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 renderer={this.renderQueryList}
             />
         );
+    }
+
+    public componentWillReceiveProps(nextProps: ISuggestProps<T>) {
+        // If the selected item prop changes, update the underlying state.
+        if (nextProps.selectedItem !== undefined && nextProps.selectedItem !== this.state.selectedItem) {
+            this.setState({ selectedItem: nextProps.selectedItem });
+        }
     }
 
     public componentDidUpdate(_prevProps: ISuggestProps<T>, prevState: ISuggestState<T>) {
@@ -174,11 +189,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             }
             nextOpenState = false;
         }
-
-        this.setState({
-            isOpen: nextOpenState,
-            selectedItem: item,
-        });
+        // the internal state should only change when uncontrolled.
+        if (this.props.selectedItem === undefined) {
+            this.setState({
+                isOpen: nextOpenState,
+                selectedItem: item,
+            });
+        } else {
+            // otherwise just set the next open state.
+            this.setState({ isOpen: nextOpenState });
+        }
 
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     };

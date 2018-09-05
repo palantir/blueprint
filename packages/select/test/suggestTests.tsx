@@ -210,6 +210,48 @@ describe("Suggest", () => {
         }
     });
 
+    describe("Controlled Mode", () => {
+        it("initialize the selectedItem with the given value", () => {
+            const selectedItem = TOP_100_FILMS[0];
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            const wrapper = suggest({ selectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem);
+        });
+        it("propagates the selectedItem with new values", () => {
+            const selectedItem = TOP_100_FILMS[0];
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            const wrapper = suggest();
+            assert.isNull(wrapper.state().selectedItem);
+            wrapper.setProps({ selectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem);
+        });
+        it("when new item selected, it should respect the selectedItem prop", () => {
+            const selectedItem = TOP_100_FILMS[0];
+            const ITEM_INDEX = 4;
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            const wrapper = suggest({ selectedItem });
+            simulateFocus(wrapper);
+            selectItem(wrapper, ITEM_INDEX);
+            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the underlying state should not change");
+            const newSelectedItem = TOP_100_FILMS[ITEM_INDEX];
+            wrapper.setProps({ selectedItem: newSelectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, newSelectedItem, "the selectedItem should be updated");
+        });
+        it("preserves the empty selection", () => {
+            const ITEM_INDEX = 4;
+            const selectedItem = TOP_100_FILMS[0];
+            const wrapper = suggest({ selectedItem: null });
+            assert.isNull(wrapper.state().selectedItem);
+            simulateFocus(wrapper);
+            selectItem(wrapper, ITEM_INDEX);
+            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
+            assert.isNull(wrapper.state().selectedItem, "the underlying state should not change");
+            wrapper.setProps({ selectedItem });
+            assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the selectedItem should be updated");
+        });
+    });
+
     function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
         const wrapper = mount(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
         if (query !== undefined) {
