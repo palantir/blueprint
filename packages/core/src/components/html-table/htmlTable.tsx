@@ -6,12 +6,22 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { HTML_TABLE, HTML_TABLE_BORDERED, HTML_TABLE_STRIPED, INTERACTIVE, SMALL } from "../../common/classes";
+import {
+    CONDENSED,
+    HTML_TABLE,
+    HTML_TABLE_BORDERED,
+    HTML_TABLE_STRIPED,
+    INTERACTIVE,
+    SMALL,
+} from "../../common/classes";
 import { IElementRefProps } from "../html/html";
 
 export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>, IElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
+
+    /** Use condensed appearance for just this table and tabular elements. */
+    condensed?: boolean;
 
     /** Enables hover styles on row. */
     interactive?: boolean;
@@ -27,7 +37,7 @@ export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>,
 /* istanbul ignore next */
 export class HTMLTable extends React.PureComponent<IHTMLTableProps> {
     public render() {
-        const { bordered, className, elementRef, interactive, small, striped, ...htmlProps } = this.props;
+        const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;
         const classes = classNames(
             HTML_TABLE,
             {
@@ -35,6 +45,7 @@ export class HTMLTable extends React.PureComponent<IHTMLTableProps> {
                 [HTML_TABLE_STRIPED]: striped,
                 [INTERACTIVE]: interactive,
                 [SMALL]: small,
+                [CONDENSED]: condensed,
             },
             className,
         );
