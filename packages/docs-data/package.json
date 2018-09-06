@@ -13,10 +13,13 @@
     "@blueprintjs/core": "^3.0.0",
     "@blueprintjs/docs-theme": "^3.0.0",
     "documentalist": "^1.4.0",
+    "better-handlebars": "github:wmeldon/better-handlebars",
     "glob": "^7.1.2",
     "highlights": "^3.1.1",
+    "language-less": "github:atom/language-less",
     "marked": "^0.3.6",
-    "semver": "^5.4.1"
+    "semver": "^5.4.1",
+    "tree-sitter-typescript": "^0.13.3"
   },
   "repository": {
     "type": "git",

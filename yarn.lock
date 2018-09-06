@@ -4539,10 +4539,6 @@ kss@^3.0.0-beta.18:
   version "0.34.2"
   resolved "https://codeload.github.com/atom/language-less/tar.gz/15411a47c03a8bb8244aa86207095f4fe7921911"
 
-"language-typescript@github:giladgray/language-typescript#10.1.15":
-  version "10.1.15"
-  resolved "https://codeload.github.com/giladgray/language-typescript/tar.gz/e2dcce4b32c481318096f761c5a2ce4fc70bb96f"
-
 lazy-cache@^0.2.3:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-0.2.7.tgz#7feddf2dcb6edb77d11ef1d117ab5ffdf0ab1b65"
@@ -5230,6 +5226,10 @@ nan@^2.0.7:
 nan@^2.0.9, nan@^2.3.0, nan@^2.3.2:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
+
+nan@^2.10.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.11.0.tgz#574e360e4d954ab16966ec102c0c049fd961a099"
 
 nanomatch@^1.2.5:
   version "1.2.7"
@@ -8143,6 +8143,12 @@ tough-cookie@~2.3.0, tough-cookie@~2.3.3:
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.3.3.tgz#0b618a5565b6dea90bf3425d04d55edc475a7561"
   dependencies:
     punycode "^1.4.1"
+
+tree-sitter-typescript@^0.13.3:
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/tree-sitter-typescript/-/tree-sitter-typescript-0.13.3.tgz#2a4d2eb481988c5b386948cd7346492f635b4d76"
+  dependencies:
+    nan "^2.10.0"
 
 trim-newlines@^1.0.0:
   version "1.0.0"
