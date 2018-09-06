@@ -29,6 +29,7 @@ export interface ITagInputExampleState {
     fill: boolean;
     intent: boolean;
     large: boolean;
+    leftIcon: boolean;
     minimal: boolean;
     values: React.ReactNode[];
 }
@@ -41,6 +42,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
         fill: false,
         intent: false,
         large: false,
+        leftIcon: true,
         minimal: false,
         values: VALUES,
     };
@@ -51,6 +53,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleLeftIconChange = handleBooleanChange(leftIcon => this.setState({ leftIcon }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     public render() {
@@ -78,7 +81,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
             <Example options={this.renderOptions()} {...this.props}>
                 <TagInput
                     {...props}
-                    leftIcon="user"
+                    leftIcon={this.state.leftIcon ? "user" : undefined}
                     onChange={this.handleChange}
                     placeholder="Separate values with commas..."
                     rightElement={clearButton}
@@ -95,6 +98,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
                 <H5>Props</H5>
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
+                <Switch label="Left icon" checked={this.state.leftIcon} onChange={this.handleLeftIconChange} />
                 <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
                 <Switch label="Add on paste" checked={this.state.addOnPaste} onChange={this.handleAddOnPasteChange} />
                 <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
