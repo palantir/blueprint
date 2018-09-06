@@ -144,7 +144,7 @@ jobs:
           path: packages/table-dev-app/dist
       - run:
           name: Submit Github comment with links to built artifacts
-          command: ./scripts/submit-preview-comment
+          command: node ./scripts/preview.js
 
   deploy-npm:
     <<: *setup_env
