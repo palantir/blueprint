@@ -26,7 +26,10 @@ export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>,
     /** Enables hover styles on row. */
     interactive?: boolean;
 
-    /** @deprecated Use small, condensed appearance for this element and all child elements. */
+    /**
+     * Use small, condensed appearance for this element and all child elements.
+     * @deprecated
+     */
     small?: boolean;
 
     /** Use an alternate background color on odd rows. */
@@ -41,11 +44,11 @@ export class HTMLTable extends React.PureComponent<IHTMLTableProps> {
         const classes = classNames(
             HTML_TABLE,
             {
+                [CONDENSED]: condensed,
                 [HTML_TABLE_BORDERED]: bordered,
                 [HTML_TABLE_STRIPED]: striped,
                 [INTERACTIVE]: interactive,
                 [SMALL]: small,
-                [CONDENSED]: condensed,
             },
             className,
         );
