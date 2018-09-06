@@ -6,7 +6,7 @@ const marked = require("marked");
 const Highlights = require("highlights");
 
 const DEFAULT_SCOPE = "source.tsx";
-const HIGHLIGHTS_LANGUAGES = ["better-handlebars", "language-typescript", "language-less"];
+const HIGHLIGHTS_LANGUAGES = ["better-handlebars", "language-less", "tree-sitter-typescript"];
 
 // Highlights configuration (https://github.com/atom/highlights)
 
