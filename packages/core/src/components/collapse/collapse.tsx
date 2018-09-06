@@ -50,6 +50,7 @@ export interface ICollapseState {
 
 export enum AnimationStates {
     CLOSED,
+    OPEN_START,
     OPENING,
     OPEN,
     CLOSING_START,
@@ -104,9 +105,6 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
     private height: number = 0;
 
     public componentWillReceiveProps(nextProps: ICollapseProps) {
-        if (this.contents != null && this.contents.clientHeight !== 0) {
-            this.height = this.contents.clientHeight;
-        }
         if (this.props.isOpen !== nextProps.isOpen) {
             this.clearTimeouts();
             if (this.state.animationState !== AnimationStates.CLOSED && !nextProps.isOpen) {
@@ -116,10 +114,8 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
                 });
             } else if (this.state.animationState !== AnimationStates.OPEN && nextProps.isOpen) {
                 this.setState({
-                    animationState: AnimationStates.OPENING,
-                    height: `${this.height}px`,
+                    animationState: AnimationStates.OPEN_START,
                 });
-                this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
             }
         }
     }
@@ -168,6 +164,9 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
     }
 
     public componentDidUpdate() {
+        if (this.contents != null && this.contents.clientHeight !== 0) {
+            this.height = this.contents.clientHeight;
+        }
         if (this.state.animationState === AnimationStates.CLOSING_START) {
             this.setTimeout(() =>
                 this.setState({
@@ -175,6 +174,13 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
                     height: "0px",
                 }),
             );
+            this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
+        }
+        if (this.state.animationState === AnimationStates.OPEN_START) {
+            this.setState({
+                animationState: AnimationStates.OPENING,
+                height: this.height + "px",
+            });
             this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
         }
     }
