@@ -1050,6 +1050,13 @@ describe("<DateRangePicker>", () => {
             render({ timePrecision: "minute", defaultValue: defaultRange }).clickShortcut();
             assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
+
+        it("selecting and unselecting a day doesn't change time", () => {
+            const leftDatePicker = render({ timePrecision: "minute", defaultValue: defaultRange }).left;
+            leftDatePicker.clickDay(5);
+            leftDatePicker.clickDay(5);
+            assert.isTrue(DateUtils.areSameTime(onChangeSpy.secondCall.args[0][0] as Date, defaultRange[0]));
+        });
     });
 
     function dayNotOutside(day: ReactWrapper) {
