@@ -5,12 +5,19 @@
  */
 
 import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    handleBooleanChange,
+    handleNumberChange,
+    handleStringChange,
+    IExampleProps,
+} from "@blueprintjs/docs-theme";
 import moment from "moment";
 import * as React from "react";
 
-import { DateRange, DateRangePicker } from "@blueprintjs/datetime";
+import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
 import { MomentDateRange } from "./common/momentDate";
+import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;
@@ -20,6 +27,7 @@ export interface IDateRangePickerExampleState {
     minDateIndex?: number;
     reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
+    timePrecision?: TimePrecision;
 }
 
 interface IDateOption {
@@ -66,6 +74,9 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
     private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
+    private handlePrecisionChange = handleStringChange((timePrecision: TimePrecision | undefined) =>
+        this.setState({ timePrecision }),
+    );
 
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
@@ -77,22 +88,19 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
     });
 
     public render() {
-        const minDate = MIN_DATE_OPTIONS[this.state.minDateIndex].value;
-        const maxDate = MAX_DATE_OPTIONS[this.state.maxDateIndex].value;
-
+        const { minDateIndex, maxDateIndex, ...props } = this.state;
+        const minDate = MIN_DATE_OPTIONS[minDateIndex].value;
+        const maxDate = MAX_DATE_OPTIONS[maxDateIndex].value;
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <DateRangePicker
-                    allowSingleDayRange={this.state.allowSingleDayRange}
-                    contiguousCalendarMonths={this.state.contiguousCalendarMonths}
+                    {...props}
                     className={Classes.ELEVATION_1}
                     maxDate={maxDate}
                     minDate={minDate}
                     onChange={this.handleDateChange}
-                    reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
-                    shortcuts={this.state.shortcuts}
                 />
-                <MomentDateRange range={this.state.dateRange} />
+                <MomentDateRange withTime={props.timePrecision !== undefined} range={this.state.dateRange} />
             </Example>
         );
     }
@@ -132,6 +140,14 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                         MAX_DATE_OPTIONS,
                         this.handleMaxDateIndexChange,
                     )}
+                </div>
+                <div>
+                    <PrecisionSelect
+                        allowNone={true}
+                        label="Time precision"
+                        value={this.state.timePrecision}
+                        onChange={this.handlePrecisionChange}
+                    />
                 </div>
             </>
         );

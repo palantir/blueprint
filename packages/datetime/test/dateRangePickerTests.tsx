@@ -24,6 +24,8 @@ import {
     DateRangePicker,
     IDatePickerModifiers,
     IDateRangePickerProps,
+    TimePicker,
+    TimePrecision,
 } from "../src/index";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
@@ -1002,6 +1004,61 @@ describe("<DateRangePicker>", () => {
         });
     });
 
+    describe("time selection", () => {
+        const defaultRange: DateRange = [new Date(2012, 2, 5, 6, 5, 40), new Date(2012, 4, 5, 7, 8, 20)];
+
+        it("setting timePrecision shows a TimePicker", () => {
+            const { wrapper } = render();
+            assert.isFalse(wrapper.find(TimePicker).exists());
+            wrapper.setProps({ timePrecision: "minute" });
+            assert.isTrue(wrapper.find(TimePicker).exists());
+        });
+
+        it("setting timePickerProps shows a TimePicker", () => {
+            const { wrapper } = render({ timePickerProps: {} });
+            assert.isTrue(wrapper.find(TimePicker).exists());
+        });
+
+        it("onChange fired when the time is changed", () => {
+            const { wrapper } = render({ timePickerProps: { showArrowButtons: true }, defaultValue: defaultRange });
+            assert.isTrue(onChangeSpy.notCalled);
+            wrapper
+                .find(`.${DateClasses.TIMEPICKER_ARROW_BUTTON}.${DateClasses.TIMEPICKER_HOUR}`)
+                .first()
+                .simulate("click");
+            assert.isTrue(onChangeSpy.calledOnce);
+            const cbHour = onChangeSpy.firstCall.args[0][0].getHours();
+            assert.strictEqual(cbHour, defaultRange[0].getHours() + 1);
+        });
+
+        it("changing date does not change time", () => {
+            render({ timePrecision: "minute", defaultValue: defaultRange }).left.clickDay(16);
+            assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
+        });
+
+        it("changing time does not change date", () => {
+            render({ timePrecision: "minute", defaultValue: defaultRange }).setTimeInput("minute", 10, "left");
+            assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
+        });
+
+        it("changing time without date uses today", () => {
+            render({ timePrecision: "minute" }).setTimeInput("minute", 45, "left");
+            assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
+        });
+
+        it("clicking a shortcut doesn't change time", () => {
+            render({ timePrecision: "minute", defaultValue: defaultRange }).clickShortcut();
+            assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
+        });
+
+        it("selecting and unselecting a day doesn't change time", () => {
+            const leftDatePicker = render({ timePrecision: "minute", defaultValue: defaultRange }).left;
+            leftDatePicker.clickDay(5);
+            leftDatePicker.clickDay(5);
+            assert.isTrue(DateUtils.areSameTime(onChangeSpy.secondCall.args[0][0] as Date, defaultRange[0]));
+        });
+    });
+
     function dayNotOutside(day: ReactWrapper) {
         return !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE);
     }
@@ -1060,6 +1117,11 @@ describe("<DateRangePicker>", () => {
             getDays: (className: string) => {
                 return wrapper.find(`.${className}`).filterWhere(dayNotOutside);
             },
+            setTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
+                harness.wrapper
+                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
+                    .at(which === "left" ? 0 : 1)
+                    .simulate("blur", { target: { value } }),
         };
         return harness;
     }

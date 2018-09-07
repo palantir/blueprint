@@ -18,6 +18,11 @@
     display: none;
   }
 
+  .#{$ns}-daterangepicker-timepickers {
+    display: flex;
+    justify-content: space-around;
+  }
+
   .#{$ns}-daterangepicker-shortcuts + .DayPicker {
     border-left: 1px solid $pt-divider-black;
     min-width: $datepicker-min-width + $pt-grid-size;

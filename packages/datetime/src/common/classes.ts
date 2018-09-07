@@ -31,6 +31,7 @@ export const DATERANGEPICKER_SINGLE_MONTH = `${DATERANGEPICKER}-single-month`;
 export const DATERANGEPICKER_DAY_SELECTED_RANGE = `${DATEPICKER_DAY}--selected-range`;
 export const DATERANGEPICKER_DAY_HOVERED_RANGE = `${DATEPICKER_DAY}--hovered-range`;
 export const DATERANGEPICKER_SHORTCUTS = `${DATERANGEPICKER}-shortcuts`;
+export const DATERANGEPICKER_TIMEPICKERS = `${DATERANGEPICKER}-timepickers`;
 
 export const DATETIMEPICKER = `${NS}-datetimepicker`;
 
