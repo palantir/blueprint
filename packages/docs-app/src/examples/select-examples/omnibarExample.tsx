@@ -47,11 +47,12 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
         return (
             <Hotkeys>
                 <Hotkey
-                    allowInInput={true}
                     global={true}
                     combo="shift + o"
                     label="Show Omnibar"
                     onKeyDown={this.handleToggle}
+                    // prevent typing "O" in omnibar input
+                    preventDefault={true}
                 />
             </Hotkeys>
         );
