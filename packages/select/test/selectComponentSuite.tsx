@@ -77,19 +77,21 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
         it("querying does not reset active item when resetOnQuery=false", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
+            // more specific query does not change active item.
             wrapper.setProps({ query: "199" });
-
             assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
         });
 
         it("querying resets active item when resetOnQuery=true", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: true });
+            // more specific query picks the first item.
             wrapper.setProps({ query: "199" });
             assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].rank, 1);
         });
 
         it("querying resets active item if it does not match", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
+            // a different query altogether invalidates the previous active item, so QL chooses the first.
             wrapper.setProps({ query: "Forrest" });
             assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].title, "Forrest Gump");
         });
