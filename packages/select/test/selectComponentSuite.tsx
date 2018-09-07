@@ -36,7 +36,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
     describe("common behavior", () => {
         it("itemRenderer is called for each child", () => {
-            const wrapper = render(testProps);
+            const wrapper = render({ ...testProps, resetOnQuery: false });
             // each item is rendered once
             assert.equal(testProps.itemRenderer.callCount, 15);
             // only filtered items re-rendered
@@ -65,7 +65,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         });
 
         it("clicking item resets state when resetOnSelect=true", () => {
-            const wrapper = render({ ...testProps, query: "19", resetOnSelect: true });
+            const wrapper = render({ ...testProps, query: "19", resetOnSelect: true, resetOnQuery: false });
             findItems(wrapper)
                 .at(3)
                 .simulate("click");
@@ -73,6 +73,28 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             // clicking changes to 5, then resets to 1
             assert.deepEqual(ranks, [5, 1]);
             assert.strictEqual(testProps.onQueryChange.lastCall.args[0], "");
+        });
+
+        it("querying does not reset active item when resetOnQuery=false", () => {
+            const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
+
+            // querying should not select any new active item
+            findInput(wrapper).simulate("change", { target: { value: "Forrest" } });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
+        });
+
+        it("querying resets active item when resetOnQuery=true", () => {
+            const wrapper = render({ ...testProps, query: "19" });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
+
+            // querying should select Forrest Gump
+            findInput(wrapper).simulate("change", { target: { value: "Forrest" } });
+
+            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].title, "Forrest Gump");
         });
     });
 

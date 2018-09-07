@@ -78,6 +78,10 @@ export interface IQueryListState<T> {
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
+    public static defaultProps = {
+        resetOnQuery: true,
+    };
+
     public static ofType<T>() {
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
     }
@@ -182,8 +186,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
-    // TODO resetActiveItem = this.props.resetOnQuery
-    public setQuery(query: string, resetActiveItem = false) {
+    public setQuery(query: string, resetActiveItem = this.props.resetOnQuery) {
         if (query !== this.state.query) {
             Utils.safeInvoke(this.props.onQueryChange, query);
         }
