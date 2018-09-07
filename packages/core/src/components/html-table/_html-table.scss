@@ -34,10 +34,11 @@ Markup:
   </tbody>
 </table>
 
-.#{$ns}-small - Small, condensed appearance
+.#{$ns}-condensed - Small, condensed appearance
 .#{$ns}-html-table-striped - Striped appearance
 .#{$ns}-html-table-bordered - Bordered appearance
 .#{$ns}-interactive - Enables hover styles on rows
+.#{$ns}-small - Small, condensed appearance for this element and all child elements
 
 Styleguide html-table
 */
@@ -100,6 +101,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
 table.#{$ns}-html-table {
   @extend %html-table;
 
+  &.#{$ns}-condensed,
   &.#{$ns}-small {
     $small-vertical-padding: centered-text($table-row-height-small);
 

@@ -14,6 +14,7 @@ const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
+export const CONDENSED = `${NS}-condensed`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;
 export const FILL = `${NS}-fill`;
