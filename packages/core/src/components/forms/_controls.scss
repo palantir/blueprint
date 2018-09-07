@@ -378,17 +378,17 @@ $control-indicator-spacing: $pt-grid-size !default;
     .#{$ns}-dark & {
       @include indicator-colors(
         "",
-        $switch-background-color,
-        $switch-background-color-hover,
-        $switch-background-color-active,
-        $switch-background-color-disabled
+        $dark-switch-background-color,
+        $dark-switch-background-color-hover,
+        $dark-switch-background-color-active,
+        $dark-switch-background-color-disabled
       );
       @include indicator-colors(
         ":checked",
-        $switch-checked-background-color,
-        $switch-checked-background-color-hover,
-        $switch-checked-background-color-active,
-        $switch-checked-background-color-disabled
+        $dark-switch-checked-background-color,
+        $dark-switch-checked-background-color-hover,
+        $dark-switch-checked-background-color-active,
+        $dark-switch-checked-background-color-disabled
       );
 
       .#{$ns}-control-indicator::before {
