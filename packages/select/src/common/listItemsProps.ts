@@ -106,9 +106,8 @@ export interface IListItemsProps<T> extends IProps {
     resetOnQuery?: boolean;
 
     /**
-     * Whether the querying state should be reset to initial when an item is
-     * selected (immediately before `onItemSelect` is invoked). The query will
-     * become the empty string and the first item will be made active.
+     * Whether the active item should be reset to the first matching item when
+     * an item is selected. The query will also be reset to the empty string.
      * @default false
      */
     resetOnSelect?: boolean;
