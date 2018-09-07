@@ -87,7 +87,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { filterable, inputProps, popoverProps, resetOnQuery = true, ...restProps } = this.props;
+        const { filterable, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -95,7 +95,6 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 onItemSelect={this.handleItemSelect}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
-                resetOnQuery={resetOnQuery}
             />
         );
     }

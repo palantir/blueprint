@@ -78,6 +78,10 @@ export interface IQueryListState<T> {
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
+    public static defaultProps = {
+        resetOnQuery: true,
+    };
+
     public static ofType<T>() {
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
     }

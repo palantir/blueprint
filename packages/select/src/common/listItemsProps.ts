@@ -99,8 +99,8 @@ export interface IListItemsProps<T> extends IProps {
     onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
-     * Whether the active selection should be reset when a query is entered.
-     * As you query, the first matching item will become the active selection.
+     * Whether the active item should be reset to the first matching item every
+     * time the query changes.
      * @default true
      */
     resetOnQuery?: boolean;

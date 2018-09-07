@@ -65,14 +65,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const {
-            initialContent = null,
-            isOpen,
-            inputProps,
-            overlayProps,
-            resetOnQuery = true,
-            ...restProps
-        } = this.props;
+        const { initialContent = null, isOpen, inputProps, overlayProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -81,7 +74,6 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
                 onItemSelect={this.props.onItemSelect}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
-                resetOnQuery={resetOnQuery}
             />
         );
     }
