@@ -88,7 +88,7 @@ describe("<QueryList>", () => {
             const filmQueryList = mount(<FilmQueryList {...testProps} items={[myItem]} activeItem={myItem} query="" />);
             filmQueryList.setState({ query: "query" });
             filmQueryList.setState({ activeItem: undefined });
-            assert.equal(testProps.onActiveItemChange.callCount, 1);
+            assert.equal(testProps.onActiveItemChange.callCount, 0);
         });
     });
 
