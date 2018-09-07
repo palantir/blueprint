@@ -7151,9 +7151,9 @@ sass-graph@^2.1.1, sass-graph@^2.2.4:
     scss-tokenizer "^0.2.3"
     yargs "^7.0.0"
 
-sass-inline-svg@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/sass-inline-svg/-/sass-inline-svg-1.1.0.tgz#c7233820f7bf8fd3dfc64fb3ee21c07abe514c25"
+sass-inline-svg@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/sass-inline-svg/-/sass-inline-svg-1.2.0.tgz#6a96a4f6674651dc5dd2e261862c303786eecf0e"
   dependencies:
     css-select "^1.2.0"
     deasync "^0.1.7"
