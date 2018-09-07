@@ -48,8 +48,8 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**
-     * Whether the active item should be reset to the first matching item when
-     * the popover closes. The query will also be reset to the empty string.
+     * Whether the active item should be reset to the first matching item _when
+     * the popover closes_. The query will also be reset to the empty string.
      * @default false
      */
     resetOnClose?: boolean;
