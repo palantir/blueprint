@@ -33,8 +33,10 @@ export interface ICollapseProps extends IProps {
     keepChildrenMounted?: boolean;
 
     /**
-     * The length of time the transition takes, in milliseconds. This must match the duration of the animation in CSS.
-     * Only set this prop if you override Blueprint's default transitions with new transitions of a different length.
+     * The length of time the transition takes, in milliseconds. This must match
+     * the duration of the animation in CSS. Only set this prop if you override
+     * Blueprint's default transitions with new transitions of a different
+     * length.
      * @default 200
      */
     transitionDuration?: number;
@@ -48,47 +50,51 @@ export interface ICollapseState {
     animationState: AnimationStates;
 }
 
+/**
+ * `Collapse` can be in one of six states, enumerated here.
+ * When changing the `isOpen` prop, the following happens to the states:
+ * isOpen={true}  : CLOSED -> OPEN_START -> OPENING -> OPEN
+ * isOpen={false} : OPEN -> CLOSING_START -> CLOSING -> CLOSED
+ */
 export enum AnimationStates {
-    CLOSED,
+    /**
+     * The body is re-rendered, height is set to the measured body height and
+     * the body Y is set to 0.
+     */
     OPEN_START,
+
+    /**
+     * Animation begins, height is set to auto. This is all animated, and on
+     * complete, the state changes to OPEN.
+     */
     OPENING,
+
+    /**
+     * The collapse height is set to auto, and the body Y is set to 0 (so the
+     * element can be seen as normal).
+     */
     OPEN,
+
+    /**
+     * Height has been changed from auto to the measured height of the body to
+     * prepare for the closing animation in CLOSING.
+     */
     CLOSING_START,
-    CLOSING_END,
+
+    /**
+     * Height is set to 0 and the body Y is at -height. Both of these properties
+     * are transformed, and then after the animation is complete, the state
+     * changes to CLOSED.
+     */
+    CLOSING,
+
+    /**
+     * The contents of the collapse is not rendered, the collapse height is 0,
+     * and the body Y is at -height (so that the bottom of the body is at Y=0).
+     */
+    CLOSED,
 }
 
-/*
- * A collapse can be in one of 5 states:
- * CLOSED
- * When in this state, the contents of the collapse is not rendered, the collapse height is 0,
- * and the body Y is at -height (so that the bottom of the body is at Y=0).
- *
- * OPEN
- * When in this state, the collapse height is set to auto, and the body Y is set to 0 (so the element can be seen
- * as normal).
- * 
- * OPEN START
- * When in this state, the body is re-rendered, height is set to the measured body height and the body Y is set to 0.
- *
- * OPENING
- * Animation begins, height is set to auto. This is all animated, and on complete, the state changes to OPEN.
- * 
- * CLOSING_START
- * When in this state, height has been changed from auto to the measured height of the body to prepare for the
- * closing animation in CLOSING_END.
- *
- * CLOSING_END
- * When in this state, the height is set to 0 and the body Y is at -height. Both of these properties are transformed,
- * and then after the animation is complete, the state changes to CLOSED.
- *
-
-
- *
- * When changing the isOpen prop, the following happens to the states:
- * isOpen = true : CLOSED -> OPEN_START -> OPENING -> OPEN
- * isOpen = false: OPEN -> CLOSING_START -> CLOSING_END -> CLOSED
- * These are all animated.
- */
 export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
@@ -128,7 +134,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
     public render() {
         const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
         const shouldRenderChildren = isContentVisible || this.props.keepChildrenMounted;
-        const displayWithTransform = isContentVisible && this.state.animationState !== AnimationStates.CLOSING_END;
+        const displayWithTransform = isContentVisible && this.state.animationState !== AnimationStates.CLOSING;
         const isAutoHeight = this.state.height === "auto";
 
         const containerStyle = {
@@ -175,7 +181,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
         if (this.state.animationState === AnimationStates.CLOSING_START) {
             this.setTimeout(() =>
                 this.setState({
-                    animationState: AnimationStates.CLOSING_END,
+                    animationState: AnimationStates.CLOSING,
                     height: "0px",
                 }),
             );
@@ -206,7 +212,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
             case AnimationStates.OPENING:
                 this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
                 break;
-            case AnimationStates.CLOSING_END:
+            case AnimationStates.CLOSING:
                 this.setState({ animationState: AnimationStates.CLOSED });
                 break;
             default:
