@@ -36,7 +36,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
     describe("common behavior", () => {
         it("itemRenderer is called for each child", () => {
-            const wrapper = render({ ...testProps, resetOnQuery: false });
+            const wrapper = render(testProps);
             // each item is rendered once
             assert.equal(testProps.itemRenderer.callCount, 15);
             // only filtered items re-rendered
@@ -77,23 +77,20 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
         it("querying does not reset active item when resetOnQuery=false", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
-
-            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
-
-            // querying should not select any new active item
-            findInput(wrapper).simulate("change", { target: { value: "Forrest" } });
+            wrapper.setProps({ query: "199" });
 
             assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
         });
 
         it("querying resets active item when resetOnQuery=true", () => {
-            const wrapper = render({ ...testProps, query: "19" });
+            const wrapper = render({ ...testProps, query: "19", resetOnQuery: true });
+            wrapper.setProps({ query: "199" });
+            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].rank, 1);
+        });
 
-            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
-
-            // querying should select Forrest Gump
-            findInput(wrapper).simulate("change", { target: { value: "Forrest" } });
-
+        it("querying resets active item if it does not match", () => {
+            const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
+            wrapper.setProps({ query: "Forrest" });
             assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].title, "Forrest Gump");
         });
     });
