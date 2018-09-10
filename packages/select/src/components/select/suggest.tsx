@@ -39,6 +39,12 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     inputValueRenderer: (item: T) => string;
 
     /**
+     * The default selected item, or undefined. If provided, the item will be
+     * used as uncontrolled default state.
+     */
+    defaultSelectedItem?: T;
+
+    /**
      * The currently selected item, or `null` to indicate that no item is selected.
      * If omitted, this prop will be uncontrolled (managed by the component's state).
      * Use `onItemSelect` to listen for updates.
@@ -73,11 +79,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
     }
 
-    public state: ISuggestState<T> = {
-        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
-        selectedItem: this.props.selectedItem !== undefined ? this.props.selectedItem : null,
-    };
-
     private TypedQueryList = QueryList.ofType<T>();
     private input?: HTMLInputElement | null;
     private queryList?: QueryList<T> | null;
@@ -89,6 +90,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
+
+    constructor(props: ISuggestProps<T>, context?: any) {
+        super(props, context);
+
+        // Initialize the state.
+        this.state = {
+            isOpen: false,
+            selectedItem: this.retrieveInitialSelectedItem(),
+        };
+    }
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -201,6 +212,19 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         }
 
         Utils.safeInvoke(this.props.onItemSelect, item, event);
+    };
+
+    private retrieveInitialSelectedItem = (): T | null => {
+        // First check if controlled mode is enabled ( selectedItem defined ).
+        // Otherwise check for the defaultSelectedItem ( uncontrolled mode with default value )
+        // Otherwise nothing is set, just leave null for uncontrolled mode.
+        if (this.props.selectedItem !== undefined) {
+            return this.props.selectedItem;
+        } else if (this.props.defaultSelectedItem !== undefined) {
+            return this.props.defaultSelectedItem;
+        } else {
+            return null;
+        }
     };
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
