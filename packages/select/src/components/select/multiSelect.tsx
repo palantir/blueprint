@@ -29,6 +29,12 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      */
     openOnKeyDown?: boolean;
 
+    /**
+     * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
+     * @default "Search..."
+     */
+    placeholder?: string;
+
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 
@@ -45,6 +51,10 @@ export interface IMultiSelectState {
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
+
+    public static defaultProps = {
+        placeholder: "Search...",
+    };
 
     public static ofType<T>() {
         return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;
@@ -82,7 +92,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { tagInputProps = {}, popoverProps = {}, selectedItems = [] } = this.props;
+        const { tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
 
         return (
@@ -103,7 +113,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     <TagInput
-                        placeholder="Search..."
+                        placeholder={placeholder}
                         {...tagInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
