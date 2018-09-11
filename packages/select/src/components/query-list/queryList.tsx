@@ -92,10 +92,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     /**
-     * flag indicating that we should check whether selected item is in viewport after rendering,
-     * typically because of keyboard change.
+     * Flag indicating that we should check whether selected item is in viewport
+     * after rendering, typically because of keyboard change. Set to `true` when
+     * manipulating state in a way that may cause active item to scroll away.
      */
-    private shouldCheckActiveItemInViewport: boolean = false;
+    private shouldCheckActiveItemInViewport = false;
 
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);
@@ -124,6 +125,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
         if (nextProps.activeItem !== undefined) {
+            this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem: nextProps.activeItem });
         }
         if (nextProps.query != null) {
@@ -137,8 +139,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
                 include: ["items", "itemListPredicate", "itemPredicate"],
             })
         ) {
-            this.setState(state => ({ filteredItems: getFilteredItems(state.query, this.props) }));
-            this.shouldCheckActiveItemInViewport = true;
+            this.setQuery(this.state.query);
         }
 
         if (this.shouldCheckActiveItemInViewport) {
@@ -147,16 +148,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             requestAnimationFrame(() => this.scrollActiveItemIntoView());
             // reset the flag
             this.shouldCheckActiveItemInViewport = false;
-        }
-
-        // reset active item (in the same step) if it's no longer valid
-        // Also don't fire the event if the active item is already undefined and there is nothing to pick
-        const activeIndex = this.getActiveIndex();
-        if (
-            this.props.activeItem !== undefined &&
-            (activeIndex < 0 || isItemDisabled(this.props.activeItem, activeIndex, this.props.itemDisabled))
-        ) {
-            this.setFirstActiveItem();
         }
     }
 
@@ -187,15 +178,22 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public setQuery(query: string, resetActiveItem = this.props.resetOnQuery) {
+        this.shouldCheckActiveItemInViewport = true;
         if (query !== this.state.query) {
             Utils.safeInvoke(this.props.onQueryChange, query);
         }
-        this.setState({ filteredItems: getFilteredItems(query, this.props), query }, () => {
-            // wait will state has updated so we select the first from newly filtered items
-            if (resetActiveItem) {
-                this.setFirstActiveItem();
-            }
-        });
+        const filteredItems = getFilteredItems(query, this.props);
+        this.setState({ filteredItems, query });
+
+        // always reset active item if it's now filtered or disabled
+        const activeIndex = this.getActiveIndex(filteredItems);
+        if (
+            resetActiveItem ||
+            activeIndex < 0 ||
+            isItemDisabled(this.state.activeItem, activeIndex, this.props.itemDisabled)
+        ) {
+            this.setActiveItem(getFirstEnabledItem(filteredItems, this.props.itemDisabled));
+        }
     }
 
     /** default `itemListRenderer` implementation */
@@ -229,10 +227,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return undefined;
     }
 
-    private getActiveIndex() {
+    private getActiveIndex(items = this.state.filteredItems) {
         const { activeItem } = this.state;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
-        return activeItem == null ? -1 : this.state.filteredItems.indexOf(activeItem);
+        return activeItem == null ? -1 : items.indexOf(activeItem);
     }
 
     private getItemsParentPadding() {
@@ -258,8 +256,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             event.preventDefault();
             const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
             if (nextActiveItem != null) {
-                // indicate that the active item may need to be scrolled into view after update.
-                this.shouldCheckActiveItemInViewport = true;
                 this.setActiveItem(nextActiveItem);
             }
         }
@@ -296,13 +292,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     private setActiveItem(activeItem: T | null) {
         if (this.props.activeItem === undefined) {
+            // indicate that the active item may need to be scrolled into view after update.
+            this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem });
         }
         Utils.safeInvoke(this.props.onActiveItemChange, activeItem);
-    }
-
-    private setFirstActiveItem() {
-        this.setActiveItem(this.getNextActiveItem(1, this.state.filteredItems.length - 1));
     }
 }
 
