@@ -20,9 +20,6 @@ import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
-    /* Input placeholder text that will appear when any item is selected */
-    placeholder?: string;
-
     /** Controlled selected values. */
     selectedItems?: T[];
 
@@ -31,6 +28,12 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     openOnKeyDown?: boolean;
+    
+    /**
+     * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
+     * @default "Search..."
+     */
+    placeholder?: string;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
