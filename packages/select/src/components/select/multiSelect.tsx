@@ -20,6 +20,9 @@ import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
+    /* Input placeholder text that will appear when any item is selected */
+    placeholder?: string;
+
     /** Controlled selected values. */
     selectedItems?: T[];
 
@@ -45,6 +48,10 @@ export interface IMultiSelectState {
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
+
+    public static defaultProps = {
+        placeholder: "Search...",
+    };
 
     public static ofType<T>() {
         return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;
@@ -82,7 +89,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { tagInputProps = {}, popoverProps = {}, selectedItems = [] } = this.props;
+        const { tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
 
         return (
@@ -103,7 +110,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     <TagInput
-                        placeholder="Search..."
+                        placeholder={placeholder}
                         {...tagInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}

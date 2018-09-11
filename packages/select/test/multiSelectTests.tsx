@@ -42,6 +42,13 @@ describe("<MultiSelect>", () => {
         mount(<MultiSelect {...props} popoverProps={{ isOpen: true, usePortal: false }} tagRenderer={renderTag} />),
     );
 
+    it("placeholder can be controlled with placeholder prop", () => {
+        const placeholder = "look here";
+
+        const input = multiselect({ placeholder }).find("input");
+        assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+    });
+
     it("placeholder can be controlled with TagInput's inputProps", () => {
         const placeholder = "look here";
 
