@@ -28,7 +28,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     openOnKeyDown?: boolean;
-    
+
     /**
      * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
      * @default "Search..."
