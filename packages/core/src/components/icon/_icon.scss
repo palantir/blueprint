@@ -13,8 +13,10 @@
 
   &:not(:empty)::before {
     // clear font icon when there's an <svg> image
-    // stylelint-disable-next-line declaration-no-important
+    // stylelint-disable
+    content: "" !important; // fallback for IE11
     content: unset !important;
+    // stylelint-enable
   }
 
   > svg {
