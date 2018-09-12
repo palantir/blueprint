@@ -39,6 +39,12 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     inputValueRenderer: (item: T) => string;
 
     /**
+     * The uncontrolled default selected item.
+     * This prop is ignored if `selectedItem` is used to control the state.
+     */
+    defaultSelectedItem?: T;
+
+    /**
      * The currently selected item, or `null` to indicate that no item is selected.
      * If omitted, this prop will be uncontrolled (managed by the component's state).
      * Use `onItemSelect` to listen for updates.
@@ -73,11 +79,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
     }
 
-    public state: ISuggestState<T> = {
-        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
-        selectedItem: this.props.selectedItem !== undefined ? this.props.selectedItem : null,
-    };
-
     private TypedQueryList = QueryList.ofType<T>();
     private input?: HTMLInputElement | null;
     private queryList?: QueryList<T> | null;
@@ -89,6 +90,14 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
+
+    constructor(props: ISuggestProps<T>, context?: any) {
+        super(props, context);
+        this.state = {
+            isOpen: (props.popoverProps && props.popoverProps.isOpen) || false,
+            selectedItem: this.getInitialSelectedItem(),
+        };
+    }
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -202,6 +211,17 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     };
+
+    private getInitialSelectedItem(): T | null {
+        // controlled > uncontrolled > default
+        if (this.props.selectedItem !== undefined) {
+            return this.props.selectedItem;
+        } else if (this.props.defaultSelectedItem !== undefined) {
+            return this.props.defaultSelectedItem;
+        } else {
+            return null;
+        }
+    }
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         requestAnimationFrame(() => {

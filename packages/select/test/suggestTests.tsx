@@ -210,6 +210,34 @@ describe("Suggest", () => {
         }
     });
 
+    describe("Uncontrolled Mode with default value", () => {
+        it("initialize the selectedItem with the defaultSelectedItem", () => {
+            const defaultSelectedItem = TOP_100_FILMS[0];
+            const wrapper = suggest({ defaultSelectedItem });
+            assert.strictEqual(
+                wrapper.state().selectedItem,
+                defaultSelectedItem,
+                "The selected item should be initialized",
+            );
+        });
+
+        it("when a new item is selected, it changes the selectedItem", () => {
+            const ITEM_INDEX = 4;
+            const defaultSelectedItem = TOP_100_FILMS[0];
+            const nextSelectedItem = TOP_100_FILMS[ITEM_INDEX];
+            const wrapper = suggest({ defaultSelectedItem });
+            assert.strictEqual(
+                wrapper.state().selectedItem,
+                defaultSelectedItem,
+                "The selected item should be initialized",
+            );
+            simulateFocus(wrapper);
+            selectItem(wrapper, ITEM_INDEX);
+            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
+            assert.strictEqual(wrapper.state().selectedItem, nextSelectedItem, "the selectedItem should be updated");
+        });
+    });
+
     describe("Controlled Mode", () => {
         it("initialize the selectedItem with the given value", () => {
             const selectedItem = TOP_100_FILMS[0];
