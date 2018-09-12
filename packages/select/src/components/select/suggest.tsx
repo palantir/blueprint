@@ -225,7 +225,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         } else {
             return null;
         }
-    };
+    }
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         requestAnimationFrame(() => {
