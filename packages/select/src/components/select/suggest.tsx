@@ -40,7 +40,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /**
      * The uncontrolled default selected item.
-     * This prop is ignored if selectedItem is used to control the state.
+     * This prop is ignored if `selectedItem` is used to control the state.
      */
     defaultSelectedItem?: T;
 
