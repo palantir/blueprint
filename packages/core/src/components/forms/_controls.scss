@@ -354,7 +354,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
-        position: relative;
+        position: absolute;
         left: 0;
         margin: $switch-indicator-margin;
         border-radius: 50%;
