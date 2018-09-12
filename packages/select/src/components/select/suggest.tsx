@@ -39,8 +39,8 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     inputValueRenderer: (item: T) => string;
 
     /**
-     * The default selected item, or undefined. If provided, the item will be
-     * used as uncontrolled default state.
+     * The uncontrolled default selected item.
+     * This prop is ignored if selectedItem is used to control the state.
      */
     defaultSelectedItem?: T;
 
@@ -96,8 +96,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
         // Initialize the state.
         this.state = {
-            isOpen: false,
-            selectedItem: this.retrieveInitialSelectedItem(),
+            isOpen: (props.popoverProps && props.popoverProps.isOpen) || false,
+            selectedItem: this.getInitialSelectedItem(),
         };
     }
 
@@ -214,7 +214,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     };
 
-    private retrieveInitialSelectedItem = (): T | null => {
+    private getInitialSelectedItem(): T | null {
         // First check if controlled mode is enabled ( selectedItem defined ).
         // Otherwise check for the defaultSelectedItem ( uncontrolled mode with default value )
         // Otherwise nothing is set, just leave null for uncontrolled mode.

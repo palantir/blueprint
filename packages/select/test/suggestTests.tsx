@@ -213,7 +213,6 @@ describe("Suggest", () => {
     describe("Uncontrolled Mode with default value", () => {
         it("initialize the selectedItem with the defaultSelectedItem", () => {
             const defaultSelectedItem = TOP_100_FILMS[0];
-            assert.isNotNull(defaultSelectedItem, "The selected item we test must not be null");
             const wrapper = suggest({ defaultSelectedItem });
             assert.strictEqual(
                 wrapper.state().selectedItem,
@@ -226,7 +225,6 @@ describe("Suggest", () => {
             const ITEM_INDEX = 4;
             const defaultSelectedItem = TOP_100_FILMS[0];
             const nextSelectedItem = TOP_100_FILMS[ITEM_INDEX];
-            assert.isNotNull(defaultSelectedItem, "The selected item we test must not be null");
             const wrapper = suggest({ defaultSelectedItem });
             assert.strictEqual(
                 wrapper.state().selectedItem,
