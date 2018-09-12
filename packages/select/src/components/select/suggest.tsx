@@ -93,8 +93,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     constructor(props: ISuggestProps<T>, context?: any) {
         super(props, context);
-
-        // Initialize the state.
         this.state = {
             isOpen: (props.popoverProps && props.popoverProps.isOpen) || false,
             selectedItem: this.getInitialSelectedItem(),
@@ -215,9 +213,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     };
 
     private getInitialSelectedItem(): T | null {
-        // First check if controlled mode is enabled ( selectedItem defined ).
-        // Otherwise check for the defaultSelectedItem ( uncontrolled mode with default value )
-        // Otherwise nothing is set, just leave null for uncontrolled mode.
+        // controlled > uncontrolled > default
         if (this.props.selectedItem !== undefined) {
             return this.props.selectedItem;
         } else if (this.props.defaultSelectedItem !== undefined) {
