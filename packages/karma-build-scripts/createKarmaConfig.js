@@ -64,7 +64,7 @@ module.exports = function createKarmaConfig(
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
-        frameworks: ["mocha"],
+        frameworks: ["mocha", "snapshot", "mocha-snapshot"],
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
