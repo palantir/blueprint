@@ -40,6 +40,7 @@ A typical contributor workflow looks like this:
       [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run
       `yarn lint` to be 100% safe.
     - TypeScript lint errors can often be automatically fixed by TSLint. Run lint fixes with `yarn lint-fix`.
+    - Blueprint makes use of [snapshot testing](https://jestjs.io/blog/2016/07/27/jest-14.html#why-snapshot-testing). This means that changes in component output need to be verified by updating the stored snapshots. You can accomplish this by running `UPDATE=1 yarn test` and then committing the written changes. For more information regarding snapshot testing in blueprint, refer to https://github.com/localvoid/karma-snapshot.
 1. Submit a Pull Request on GitHub and fill out the template.
 1. Team members will review your code and merge it after approvals.
     - You may be asked to make modifications to code style or to fix bugs you may have not noticed.
