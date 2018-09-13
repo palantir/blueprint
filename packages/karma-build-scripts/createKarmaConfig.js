@@ -59,6 +59,7 @@ module.exports = function createKarmaConfig(
                 pattern: path.join(dirname, "resources/**/*"),
                 watched: false,
             },
+            "**/__snapshots__/**/*.md",
             path.join(dirname, `../core/${coreManifest.style}`),
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
@@ -69,6 +70,7 @@ module.exports = function createKarmaConfig(
         },
         port: KARMA_SERVER_PORT,
         preprocessors: {
+            "**/__snapshots__/**/*.md": "snapshot",
             [path.join(dirname, "test/**/*.ts")]: "sourcemap",
             [path.join(dirname, "test/index.ts")]: ["webpack", "sourcemap"],
         },
@@ -80,6 +82,10 @@ module.exports = function createKarmaConfig(
         },
         reporters: ["mocha"],
         singleRun: true,
+        snapshot: {
+            update: !!process.env.UPDATE,
+            prune: !!process.env.PRUNE,
+        },
         webpack: Object.assign({}, webpackBuildScripts.karmaConfig, {
             entry: {
                 testIndex: [
