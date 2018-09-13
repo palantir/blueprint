@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/select",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Components related to selecting items from a list",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -33,7 +33,7 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.1.0",
+    "@blueprintjs/core": "^3.6.0",
     "classnames": "^2.2",
     "tslib": "^1.9.0"
   },
