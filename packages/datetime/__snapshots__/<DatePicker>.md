@@ -85,7 +85,7 @@
           "getMonths": [Function],
         }
       }
-      month={2018-06-30T22:00:00.000Z}
+      month={2018-07-01T00:00:00.000Z}
       navbarElement={[Function]}
       numberOfMonths={1}
       onDayClick={[Function]}
@@ -165,11 +165,11 @@
                 "getMonths": [Function],
               }
             }
-            month={2018-07-01T10:00:00.000Z}
-            nextMonth={2018-08-01T10:00:00.000Z}
+            month={2018-07-01T12:00:00.000Z}
+            nextMonth={2018-08-01T12:00:00.000Z}
             onNextClick={[Function]}
             onPreviousClick={[Function]}
-            previousMonth={2018-06-01T10:00:00.000Z}
+            previousMonth={2018-06-01T12:00:00.000Z}
             showNextButton={true}
             showPreviousButton={true}
           >
@@ -229,11 +229,11 @@
               }
               maxDate={2019-02-01T00:00:00.000Z}
               minDate={2018-02-01T00:00:00.000Z}
-              month={2018-07-01T10:00:00.000Z}
-              nextMonth={2018-08-01T10:00:00.000Z}
+              month={2018-07-01T12:00:00.000Z}
+              nextMonth={2018-08-01T12:00:00.000Z}
               onNextClick={[Function]}
               onPreviousClick={[Function]}
-              previousMonth={2018-06-01T10:00:00.000Z}
+              previousMonth={2018-06-01T12:00:00.000Z}
               showNextButton={true}
               showPreviousButton={true}
             >
@@ -401,7 +401,7 @@
                   "getMonths": [Function],
                 }
               }
-              month={2018-07-01T10:00:00.000Z}
+              month={2018-07-01T12:00:00.000Z}
               navbarElement={[Function]}
               numberOfMonths={1}
               onDayClick={[Function]}
@@ -451,7 +451,7 @@
                       "wrapper": "DayPicker-wrapper",
                     }
                   }
-                  date={2018-07-01T10:00:00.000Z}
+                  date={2018-07-01T12:00:00.000Z}
                   locale="en"
                   localeUtils={
                     Object {
@@ -500,7 +500,7 @@
                         "wrapper": "DayPicker-wrapper",
                       }
                     }
-                    date={2018-07-01T10:00:00.000Z}
+                    date={2018-07-01T12:00:00.000Z}
                     locale="en"
                     localeUtils={
                       Object {
@@ -1097,7 +1097,7 @@
                 >
                   <div
                     className="DayPicker-Week"
-                    key="1530439200000"
+                    key="1530446400000"
                     role="row"
                   >
                     <Day
@@ -1131,7 +1131,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-01T10:00:00.000Z}
+                      day={2018-07-01T12:00:00.000Z}
                       empty={false}
                       key="201861"
                       modifiers={
@@ -1188,7 +1188,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-02T10:00:00.000Z}
+                      day={2018-07-02T12:00:00.000Z}
                       empty={false}
                       key="201862"
                       modifiers={Object {}}
@@ -1241,7 +1241,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-03T10:00:00.000Z}
+                      day={2018-07-03T12:00:00.000Z}
                       empty={false}
                       key="201863"
                       modifiers={Object {}}
@@ -1294,7 +1294,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-04T10:00:00.000Z}
+                      day={2018-07-04T12:00:00.000Z}
                       empty={false}
                       key="201864"
                       modifiers={Object {}}
@@ -1347,7 +1347,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-05T10:00:00.000Z}
+                      day={2018-07-05T12:00:00.000Z}
                       empty={false}
                       key="201865"
                       modifiers={Object {}}
@@ -1400,7 +1400,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-06T10:00:00.000Z}
+                      day={2018-07-06T12:00:00.000Z}
                       empty={false}
                       key="201866"
                       modifiers={Object {}}
@@ -1453,7 +1453,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-07T10:00:00.000Z}
+                      day={2018-07-07T12:00:00.000Z}
                       empty={false}
                       key="201867"
                       modifiers={Object {}}
@@ -1478,7 +1478,7 @@
                   </div>
                   <div
                     className="DayPicker-Week"
-                    key="1531044000000"
+                    key="1531051200000"
                     role="row"
                   >
                     <Day
@@ -1512,7 +1512,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-08T10:00:00.000Z}
+                      day={2018-07-08T12:00:00.000Z}
                       empty={false}
                       key="201868"
                       modifiers={Object {}}
@@ -1565,7 +1565,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-09T10:00:00.000Z}
+                      day={2018-07-09T12:00:00.000Z}
                       empty={false}
                       key="201869"
                       modifiers={Object {}}
@@ -1618,7 +1618,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-10T10:00:00.000Z}
+                      day={2018-07-10T12:00:00.000Z}
                       empty={false}
                       key="2018610"
                       modifiers={Object {}}
@@ -1671,7 +1671,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-11T10:00:00.000Z}
+                      day={2018-07-11T12:00:00.000Z}
                       empty={false}
                       key="2018611"
                       modifiers={Object {}}
@@ -1724,7 +1724,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-12T10:00:00.000Z}
+                      day={2018-07-12T12:00:00.000Z}
                       empty={false}
                       key="2018612"
                       modifiers={Object {}}
@@ -1777,7 +1777,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-13T10:00:00.000Z}
+                      day={2018-07-13T12:00:00.000Z}
                       empty={false}
                       key="2018613"
                       modifiers={Object {}}
@@ -1830,7 +1830,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-14T10:00:00.000Z}
+                      day={2018-07-14T12:00:00.000Z}
                       empty={false}
                       key="2018614"
                       modifiers={Object {}}
@@ -1855,7 +1855,7 @@
                   </div>
                   <div
                     className="DayPicker-Week"
-                    key="1531648800000"
+                    key="1531656000000"
                     role="row"
                   >
                     <Day
@@ -1889,7 +1889,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-15T10:00:00.000Z}
+                      day={2018-07-15T12:00:00.000Z}
                       empty={false}
                       key="2018615"
                       modifiers={Object {}}
@@ -1942,7 +1942,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-16T10:00:00.000Z}
+                      day={2018-07-16T12:00:00.000Z}
                       empty={false}
                       key="2018616"
                       modifiers={Object {}}
@@ -1995,7 +1995,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-17T10:00:00.000Z}
+                      day={2018-07-17T12:00:00.000Z}
                       empty={false}
                       key="2018617"
                       modifiers={Object {}}
@@ -2048,7 +2048,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-18T10:00:00.000Z}
+                      day={2018-07-18T12:00:00.000Z}
                       empty={false}
                       key="2018618"
                       modifiers={Object {}}
@@ -2101,7 +2101,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-19T10:00:00.000Z}
+                      day={2018-07-19T12:00:00.000Z}
                       empty={false}
                       key="2018619"
                       modifiers={Object {}}
@@ -2154,7 +2154,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-20T10:00:00.000Z}
+                      day={2018-07-20T12:00:00.000Z}
                       empty={false}
                       key="2018620"
                       modifiers={Object {}}
@@ -2207,7 +2207,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-21T10:00:00.000Z}
+                      day={2018-07-21T12:00:00.000Z}
                       empty={false}
                       key="2018621"
                       modifiers={Object {}}
@@ -2232,7 +2232,7 @@
                   </div>
                   <div
                     className="DayPicker-Week"
-                    key="1532253600000"
+                    key="1532260800000"
                     role="row"
                   >
                     <Day
@@ -2266,7 +2266,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-22T10:00:00.000Z}
+                      day={2018-07-22T12:00:00.000Z}
                       empty={false}
                       key="2018622"
                       modifiers={Object {}}
@@ -2319,7 +2319,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-23T10:00:00.000Z}
+                      day={2018-07-23T12:00:00.000Z}
                       empty={false}
                       key="2018623"
                       modifiers={Object {}}
@@ -2372,7 +2372,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-24T10:00:00.000Z}
+                      day={2018-07-24T12:00:00.000Z}
                       empty={false}
                       key="2018624"
                       modifiers={Object {}}
@@ -2425,7 +2425,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-25T10:00:00.000Z}
+                      day={2018-07-25T12:00:00.000Z}
                       empty={false}
                       key="2018625"
                       modifiers={Object {}}
@@ -2478,7 +2478,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-26T10:00:00.000Z}
+                      day={2018-07-26T12:00:00.000Z}
                       empty={false}
                       key="2018626"
                       modifiers={Object {}}
@@ -2531,7 +2531,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-27T10:00:00.000Z}
+                      day={2018-07-27T12:00:00.000Z}
                       empty={false}
                       key="2018627"
                       modifiers={Object {}}
@@ -2584,7 +2584,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-28T10:00:00.000Z}
+                      day={2018-07-28T12:00:00.000Z}
                       empty={false}
                       key="2018628"
                       modifiers={Object {}}
@@ -2609,7 +2609,7 @@
                   </div>
                   <div
                     className="DayPicker-Week"
-                    key="1532858400000"
+                    key="1532865600000"
                     role="row"
                   >
                     <Day
@@ -2643,7 +2643,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-29T10:00:00.000Z}
+                      day={2018-07-29T12:00:00.000Z}
                       empty={false}
                       key="2018629"
                       modifiers={Object {}}
@@ -2696,7 +2696,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-30T10:00:00.000Z}
+                      day={2018-07-30T12:00:00.000Z}
                       empty={false}
                       key="2018630"
                       modifiers={Object {}}
@@ -2749,7 +2749,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-07-31T10:00:00.000Z}
+                      day={2018-07-31T12:00:00.000Z}
                       empty={false}
                       key="2018631"
                       modifiers={Object {}}
@@ -2802,7 +2802,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-08-01T10:00:00.000Z}
+                      day={2018-08-01T12:00:00.000Z}
                       empty={false}
                       key="outside-201871"
                       modifiers={
@@ -2859,7 +2859,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-08-02T10:00:00.000Z}
+                      day={2018-08-02T12:00:00.000Z}
                       empty={false}
                       key="outside-201872"
                       modifiers={
@@ -2916,7 +2916,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-08-03T10:00:00.000Z}
+                      day={2018-08-03T12:00:00.000Z}
                       empty={false}
                       key="outside-201873"
                       modifiers={
@@ -2973,7 +2973,7 @@
                           "wrapper": "DayPicker-wrapper",
                         }
                       }
-                      day={2018-08-04T10:00:00.000Z}
+                      day={2018-08-04T12:00:00.000Z}
                       empty={false}
                       key="outside-201874"
                       modifiers={
