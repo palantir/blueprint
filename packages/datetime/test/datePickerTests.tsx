@@ -4,8 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { assert } from "chai";
+import { assert, use } from "chai";
+import { matchSnapshot } from "chai-karma-snapshot";
 import { mount } from "enzyme";
+import toJson from "enzyme-to-json";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import * as sinon from "sinon";
@@ -17,10 +19,29 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDatePickerState } from "../src/datePicker";
-import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, TimePicker, TimePrecision } from "../src/index";
+import {
+    Classes,
+    DatePicker,
+    IDatePickerModifiers,
+    IDatePickerProps,
+    TimePicker,
+    TimePrecision
+} from "../src/index";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
+// Enable snapshot support
+use(matchSnapshot);
+
 describe("<DatePicker>", () => {
+    it('matches its snapshot', () => {
+        const defaultValue = new Date(Date.UTC(2018, 6, 1, 0, 0, 0, 0));
+        const maxDate = new Date(Date.UTC(2019, 1, 1, 0, 0, 0, 0));
+        const minDate = new Date(Date.UTC(2018, 1, 1, 0, 0, 0, 0));
+
+        const wrapper = mount(<DatePicker defaultValue={defaultValue} minDate={minDate} maxDate={maxDate} dayPickerProps={{ initialMonth: defaultValue}} />);
+        assert.matchSnapshot(toJson(wrapper));
+    });
+
     it(`renders .${Classes.DATEPICKER}`, () => {
         assert.lengthOf(wrap(<DatePicker />).root.find(`.${Classes.DATEPICKER}`), 1);
     });

@@ -15,8 +15,10 @@
     "karma-junit-reporter": "^1.2.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
+    "karma-mocha-snapshot": "^0.2.1",
     "karma-remap-coverage": "^0.1.5",
     "karma-sourcemap-loader": "^0.3.7",
+    "karma-snapshot": "^0.6.0",
     "karma-webpack": "^2.0.5",
     "mocha": "^4.1.0"
   },

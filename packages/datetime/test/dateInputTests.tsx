@@ -4,8 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { assert } from "chai";
+import { assert, use } from "chai";
+import { matchSnapshot } from "chai-karma-snapshot";
 import { mount } from "enzyme";
+import toJson from "enzyme-to-json";
 import * as React from "react";
 import * as sinon from "sinon";
 
@@ -15,10 +17,22 @@ import { Classes, DateInput, IDateInputProps, TimePicker, TimePrecision } from "
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
+// Enable snapshot support
+use(matchSnapshot);
+
 // Change the default for testability
 DateInput.defaultProps.popoverProps = { usePortal: false };
 
 describe("<DateInput>", () => {
+    it("renders", () => {
+        const date = new Date(Date.UTC(2018, 6, 1, 0, 0, 0, 0));
+        const maxDate = new Date(Date.UTC(2018, 1, 1, 0, 0, 0, 0));
+        const minDate = new Date(Date.UTC(2019, 1, 1, 0, 0, 0, 0));
+
+        const wrapper = mount(<DateInput {...DATE_FORMAT} value={date} minDate={minDate} maxDate={maxDate} />);
+        assert.matchSnapshot(toJson(wrapper));
+    });
+
     it("handles null inputs without crashing", () => {
         assert.doesNotThrow(() => mount(<DateInput {...DATE_FORMAT} value={null} />));
     });
