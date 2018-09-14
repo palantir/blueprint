@@ -154,6 +154,7 @@ $tag-round-adjustment: 2px !default;
 }
 
 @mixin pt-tag-remove() {
+  display: flex;
   opacity: 0.5;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
