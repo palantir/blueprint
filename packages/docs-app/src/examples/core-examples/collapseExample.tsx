@@ -38,7 +38,7 @@ export class CollapseExample extends React.PureComponent<IExampleProps, ICollaps
 
         return (
             <Example options={options} {...this.props}>
-                <div style={{ width: "100%" }}>
+                <div style={{ width: "100%", height: "100%", margin: 0 }}>
                     <Button onClick={this.handleClick}>{this.state.isOpen ? "Hide" : "Show"} build logs</Button>
                     <Collapse isOpen={this.state.isOpen} keepChildrenMounted={this.state.keepChildrenMounted}>
                         <Pre>
