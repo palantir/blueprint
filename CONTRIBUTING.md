@@ -27,7 +27,7 @@ A typical contributor workflow looks like this:
 
 1. Create a new feature branch. We use a format like `[your-initials]/[short-name]`:
    `bd/refactor-buttons`.
-1. Run `yarn dev` in the root to watch all the code and run the dev app at http://localhost:3000
+1. Run `yarn dev` in the root to watch all the code and run the dev app at http://localhost:9000
     - You can instead watch package subsets with `yarn dev:core`, `yarn dev:select`, etc.
 1. Write some code. :hammer: **Refer to the wiki in this repo for detailed instructions on:**
     - [Development practices](https://github.com/palantir/blueprint/wiki/Development-practices)
