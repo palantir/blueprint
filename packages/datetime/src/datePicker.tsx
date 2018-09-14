@@ -7,7 +7,7 @@
 import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElemenProps } from "react-day-picker";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -56,6 +56,18 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     showActionsBar?: boolean;
 
     /**
+     * Today action bar button title.
+     * @default "Today"
+     */
+    todayButtonText?: string;
+
+    /**
+     * Reset action bar button title.
+     * @default "Clear"
+     */
+    clearButtonText?: string;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      */
     value?: Date;
@@ -71,12 +83,14 @@ export interface IDatePickerState {
 export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
+        clearButtonText: "Clear",
         dayPickerProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
         showActionsBar: false,
         timePickerProps: {},
+        todayButtonText: "Today",
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker`;
@@ -194,11 +208,12 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     );
 
     private renderOptionsBar() {
+        const { clearButtonText, todayButtonText } = this.props;
         return [
             <Divider key="div" />,
             <div className={Classes.DATEPICKER_FOOTER} key="footer">
-                <Button minimal={true} onClick={this.handleTodayClick} text="Today" />
-                <Button minimal={true} onClick={this.handleClearClick} text="Clear" />
+                <Button minimal={true} onClick={this.handleTodayClick} text={todayButtonText} />
+                <Button minimal={true} onClick={this.handleClearClick} text={clearButtonText} />
             </div>,
         ];
     }
