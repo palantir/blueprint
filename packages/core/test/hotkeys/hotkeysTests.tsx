@@ -89,9 +89,27 @@ describe("Hotkeys", () => {
                         />
                         <Hotkey
                             {...this.props}
+                            combo="4"
+                            global={true}
+                            group="A"
+                            label="sorted 1"
+                            onKeyDown={globalKeyDownSpy}
+                            onKeyUp={globalKeyUpSpy}
+                        />
+                        <Hotkey
+                            {...this.props}
                             combo="2"
                             global={true}
                             label="global hotkey"
+                            onKeyDown={globalKeyDownSpy}
+                            onKeyUp={globalKeyUpSpy}
+                        />
+                        <Hotkey
+                            {...this.props}
+                            combo="5"
+                            global={true}
+                            group="A"
+                            label="sorted 2"
                             onKeyDown={globalKeyDownSpy}
                             onKeyUp={globalKeyUpSpy}
                         />
@@ -151,6 +169,31 @@ describe("Hotkeys", () => {
                 expect(document.querySelector("." + Classes.HOTKEY_COLUMN)).to.exist;
                 expect(document.querySelector("." + Classes.OVERLAY_OPEN).classList.contains(Classes.OVERLAY_INLINE)).to
                     .be.false;
+                hideHotkeysDialog();
+                comp.detach();
+                attachTo.remove();
+                done();
+            }, TEST_TIMEOUT_DURATION);
+        });
+
+        it("sorts hotkeys in hotkey dialog", done => {
+            const TEST_TIMEOUT_DURATION = 30;
+
+            comp = mount(<TestComponent />, { attachTo });
+            const node = ReactDOM.findDOMNode(comp.instance());
+
+            dispatchTestKeyboardEvent(node, "keydown", "/", true);
+
+            // wait for the dialog to animate in
+            setTimeout(() => {
+                const hotkeyLabels = Array.from(document.querySelectorAll("." + Classes.HOTKEY_LABEL)).map(
+                    el => el.textContent,
+                );
+
+                expect(document.querySelector("." + Classes.HOTKEY_COLUMN)).to.exist;
+                expect(document.querySelector("." + Classes.OVERLAY_OPEN).classList.contains(Classes.OVERLAY_INLINE)).to
+                    .be.false;
+                expect(hotkeyLabels).to.deep.equal(["sorted 1", "sorted 2", "global hotkey", "local hotkey"]);
                 hideHotkeysDialog();
                 comp.detach();
                 attachTo.remove();
