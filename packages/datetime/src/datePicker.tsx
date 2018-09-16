@@ -56,13 +56,13 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     showActionsBar?: boolean;
 
     /**
-     * Today action bar button title.
+     * Text for the today button in the action bar.
      * @default "Today"
      */
     todayButtonText?: string;
 
     /**
-     * Reset action bar button title.
+     * Text for the reset button in the action bar.
      * @default "Clear"
      */
     clearButtonText?: string;
