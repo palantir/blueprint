@@ -7,7 +7,6 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
