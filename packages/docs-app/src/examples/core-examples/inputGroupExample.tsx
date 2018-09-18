@@ -19,7 +19,7 @@ import {
     Spinner,
     Switch,
     Tag,
-    Tooltip,
+    Tooltip
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
@@ -39,12 +39,12 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
         large: false,
         showPassword: false,
         small: false,
-        tagValue: "",
+        tagValue: ""
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
-    private handleSmallChange = handleBooleanChange(small => this.setState({ small }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
+    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
     private handleFilterChange = handleStringChange(filterValue => this.setState({ filterValue }));
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
@@ -117,6 +117,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                 <InputGroup
                     disabled={disabled}
                     large={large}
+                    small={small}
                     placeholder="Add people or groups..."
                     rightElement={permissionsMenu}
                 />
