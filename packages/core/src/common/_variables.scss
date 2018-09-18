@@ -39,6 +39,7 @@ $pt-line-height: ($pt-grid-size * 1.8) / $pt-font-size + 0.0001 !default;
 $icons16-family: "Icons16" !default;
 $icons20-family: "Icons20" !default;
 
+$pt-icon-size-small: 12px !default;
 $pt-icon-size-standard: 16px !default;
 $pt-icon-size-large: 20px !default;
 
@@ -49,11 +50,13 @@ $pt-border-radius: floor($pt-grid-size / 3) !default;
 // Buttons
 $pt-button-height: $pt-grid-size * 3 !default;
 $pt-button-height-small: $pt-grid-size * 2.4 !default;
+$pt-button-height-smaller: $pt-grid-size * 1.8 !default;
 $pt-button-height-large: $pt-grid-size * 4 !default;
 
 // Inputs
 $pt-input-height: $pt-grid-size * 3 !default;
 $pt-input-height-large: $pt-grid-size * 4 !default;
+$pt-input-height-small: $pt-grid-size * 2.4 !default;
 
 // Others
 $pt-navbar-height: $pt-grid-size * 5 !default;

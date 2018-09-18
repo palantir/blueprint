@@ -149,6 +149,17 @@ $control-group-stack: (
   }
 }
 
+@mixin pt-input-small() {
+  height: $pt-input-height-small;
+  line-height: $pt-input-height-small;
+  font-size: $pt-font-size-small;
+
+  &[type="search"],
+  &.#{$ns}-round {
+    padding: 0 $input-padding-horizontal * 1.5;
+  }
+}
+
 @mixin pt-dark-input-disabled() {
   box-shadow: none;
   background: $dark-input-background-color-disabled;

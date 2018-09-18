@@ -42,6 +42,9 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     /** Whether this input should use large styles. */
     large?: boolean;
 
+    /** Whether this input should use small styles. */
+    small?: boolean;
+
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
 
@@ -78,13 +81,14 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
     };
 
     public render() {
-        const { className, intent, large, leftIcon, round } = this.props;
+        const { className, intent, large, small, leftIcon, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: this.props.disabled,
                 [Classes.LARGE]: large,
+                [Classes.SMALL]: small,
                 [Classes.ROUND]: round,
             },
             className,
