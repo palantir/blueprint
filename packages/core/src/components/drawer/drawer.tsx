@@ -72,7 +72,7 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
+                <div className={classNames(Classes.DRAWER, this.props.className)} style={this.props.style}>
                     {this.maybeRenderHeader()}
                     {this.props.children}
                 </div>
@@ -116,7 +116,7 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
             return undefined;
         }
         return (
-            <div className={Classes.DIALOG_HEADER}>
+            <div className={Classes.DRAWER_HEADER}>
                 <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
