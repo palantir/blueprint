@@ -35,6 +35,11 @@ Styleguide input
       margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
     }
 
+    .#{$ns}-tag {
+      @include pt-button-height($pt-button-height-smaller);
+      margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
+    }
+
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
       margin: ($pt-input-height-small - $pt-icon-size-standard) / 2;
