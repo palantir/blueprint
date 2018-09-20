@@ -29,6 +29,30 @@ Styleguide input
     @include pt-input-large();
   }
 
+  &.#{$ns}-small {
+    .#{$ns}-button {
+      @include pt-button-height($input-button-height-smaller);
+      margin: ($pt-input-height-small - $input-button-height-smaller) / 2;
+    }
+
+    > .#{$ns}-icon,
+    .#{$ns}-input-action > .#{$ns}-spinner {
+      margin: ($pt-input-height-small - $pt-icon-size-standard) / 2;
+    }
+
+    .#{$ns}-input {
+      @include pt-input-small();
+
+      &:not(:first-child) {
+        padding-left: $pt-button-height-smaller;
+      }
+
+      &:not(:last-child) {
+        padding-right: $pt-button-height-smaller;
+      }
+    }
+  }
+
   &.#{$ns}-fill {
     flex: 1 1 auto;
     width: 100%;

@@ -19,7 +19,7 @@ import {
     Spinner,
     Switch,
     Tag,
-    Tooltip
+    Tooltip,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
@@ -39,7 +39,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
         large: false,
         showPassword: false,
         small: false,
-        tagValue: ""
+        tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
@@ -89,37 +89,37 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                 <InputGroup
                     disabled={disabled}
                     large={large}
-                    small={small}
                     leftIcon="filter"
                     onChange={this.handleFilterChange}
                     placeholder="Filter histogram..."
                     rightElement={maybeSpinner}
+                    small={small}
                     value={filterValue}
                 />
                 <InputGroup
                     disabled={disabled}
                     large={large}
-                    small={small}
                     placeholder="Enter your password..."
                     rightElement={lockButton}
+                    small={small}
                     type={showPassword ? "text" : "password"}
                 />
                 <InputGroup
                     disabled={disabled}
                     large={large}
-                    small={small}
                     leftIcon="tag"
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
                     rightElement={resultsTag}
+                    small={small}
                     value={tagValue}
                 />
                 <InputGroup
                     disabled={disabled}
                     large={large}
-                    small={small}
                     placeholder="Add people or groups..."
                     rightElement={permissionsMenu}
+                    small={small}
                 />
             </Example>
         );
