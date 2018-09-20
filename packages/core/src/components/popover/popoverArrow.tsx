@@ -45,7 +45,7 @@ export interface IPopoverArrowProps {
 }
 
 export const PopoverArrow: React.SFC<IPopoverArrowProps> = ({ arrowProps: { ref, style }, placement }) => (
-    <div className={Classes.POPOVER_ARROW} ref={ref} style={isNaN(style.left) ? {} : style}>
+    <div className={Classes.POPOVER_ARROW} ref={ref} style={isNaN(+style.left) ? {} : style}>
         <svg viewBox="0 0 30 30" style={{ transform: `rotate(${getArrowAngle(placement)}deg)` }}>
             <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
             <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />

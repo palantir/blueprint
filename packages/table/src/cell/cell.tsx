@@ -148,8 +148,8 @@ export class Cell extends React.Component<ICellProps, {}> {
                 (CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat))
             ) {
                 return React.cloneElement(child as React.ReactElement<any>, {
-                    parentCellHeight: parseInt(style.height, 10),
-                    parentCellWidth: parseInt(style.width, 10),
+                    parentCellHeight: parseInt(style.height.toString(), 10),
+                    parentCellWidth: parseInt(style.width.toString(), 10),
                 });
             }
             return child;
