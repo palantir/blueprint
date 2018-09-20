@@ -167,8 +167,13 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-small {
     .#{$ns}-button {
-      @include pt-button-height($input-button-height-smaller);
-      margin: ($pt-input-height-small - $input-button-height-smaller) / 2;
+      @include pt-button-height($pt-button-height-smaller);
+      margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
+    }
+
+    .#{$ns}-tag {
+      @include pt-button-height($pt-button-height-smaller);
+      margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
     }
 
     > .#{$ns}-icon,
