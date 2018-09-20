@@ -44,15 +44,12 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
             (child: React.ReactElement<IHotkeyProps>) => child.props,
         );
 
-        // sort by group label alphabetically, globals first
+        // sort by group label alphabetically, prioritize globals
         hotkeys.sort((a, b) => {
-            if (a.global) {
-                return b.global ? 0 : -1;
+            if (a.global === b.global) {
+                return a.group.localeCompare(b.group);
             }
-            if (b.global) {
-                return 1;
-            }
-            return a.group.localeCompare(b.group);
+            return a.global ? -1 : 1;
         });
 
         let lastGroup = null as string;
