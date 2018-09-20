@@ -71,8 +71,10 @@ export interface IDocumentationContext {
  *     }
  * }
  * ```
+ *
+ * NOTE: This does not reference prop-types to avoid copious "cannot be named" errors.
  */
-export const DocumentationContextTypes: React.ValidationMap<IDocumentationContext> = {
+export const DocumentationContextTypes = {
     getDocsData: assertFunctionProp,
     renderBlock: assertFunctionProp,
     renderType: assertFunctionProp,

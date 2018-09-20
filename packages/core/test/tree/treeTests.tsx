@@ -191,7 +191,7 @@ describe("<Tree>", () => {
 
         assert.strictEqual(
             tree.getNodeContentElement(5),
-            ReactDOM.findDOMNode(tree).querySelector(`.c5 > .${Classes.TREE_NODE_CONTENT}`),
+            wrapper.getDOMNode().querySelector(`.c5 > .${Classes.TREE_NODE_CONTENT}`),
         );
         assert.isUndefined(tree.getNodeContentElement(100));
 

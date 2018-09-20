@@ -122,8 +122,8 @@ describe("<MultiSlider>", () => {
                 const { left, right } = progress.prop("style");
                 // CSS properties are percentage strings, but parsing will ignore trailing "%".
                 // percentages should be in 0-100% range.
-                assert.isAtLeast(parseFloat(left), 0);
-                assert.isAtMost(parseFloat(right), 100);
+                assert.isAtLeast(parseFloat(left.toString()), 0);
+                assert.isAtMost(parseFloat(right.toString()), 100);
             });
         });
     });

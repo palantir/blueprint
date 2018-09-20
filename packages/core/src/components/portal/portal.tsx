@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { ValidationMap } from "prop-types";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -31,7 +32,7 @@ export interface IPortalContext {
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
+const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
     blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);

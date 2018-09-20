@@ -52,8 +52,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                 if (isFunction(this.renderContextMenu)) {
                     const menu = this.renderContextMenu(e);
                     if (menu != null) {
-                        const htmlElement = ReactDOM.findDOMNode(this);
-                        const darkTheme = htmlElement != null && isDarkTheme(htmlElement);
+                        const darkTheme = isDarkTheme(ReactDOM.findDOMNode(this));
                         e.preventDefault();
                         ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, this.onContextMenuClose, darkTheme);
                     }
