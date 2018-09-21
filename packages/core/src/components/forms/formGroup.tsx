@@ -48,9 +48,11 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
         const { children, helperText, label, labelFor, labelInfo } = this.props;
         return (
             <div className={this.getClassName()}>
-                <label className={Classes.LABEL} htmlFor={labelFor}>
-                    {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
-                </label>
+                {label && (
+                    <label className={Classes.LABEL} htmlFor={labelFor}>
+                        {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
+                    </label>
+                )}
                 <div className={Classes.FORM_CONTENT}>
                     {children}
                     {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
