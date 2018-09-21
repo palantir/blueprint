@@ -36,6 +36,11 @@ describe("<FormGroup>", () => {
         assert.strictEqual(label.prop("htmlFor"), "foo");
     });
 
+    it("hides label when falsy", () => {
+        const label = shallow(<FormGroup />).find("label");
+        assert.strictEqual(label.length, 0);
+    });
+
     it("labelInfo=JSX renders JSX content in label", () => {
         const info = <em>fill me out</em>;
         const label = shallow(<FormGroup label="label" labelInfo={info} />).find("label");
