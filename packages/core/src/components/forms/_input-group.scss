@@ -185,11 +185,11 @@ $input-button-height-small: $pt-button-height-smaller !default;
       @include pt-input-small();
 
       &:not(:first-child) {
-        padding-left: $pt-button-height-smaller;
+        padding-left: 25px;
       }
 
       &:not(:last-child) {
-        padding-right: $pt-button-height-smaller;
+        padding-right: 25px;
       }
     }
   }
