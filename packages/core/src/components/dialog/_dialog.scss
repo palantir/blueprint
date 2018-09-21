@@ -93,6 +93,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   box-shadow: 0 1px 0 $pt-divider-black;
   background: $white;
   min-height: $pt-icon-size-large + $dialog-padding;
+  padding-right: $dialog-padding / 4;
   padding-left: $dialog-padding;
 
   .#{$ns}-icon-large,
@@ -121,25 +122,6 @@ $dialog-padding: $pt-grid-size * 2 !default;
     .#{$ns}-icon {
       color: $pt-dark-icon-color;
     }
-  }
-}
-
-.#{$ns}-dialog-close-button {
-  // large icon with interactive colors
-  @include pt-icon($pt-icon-size-large);
-  @include pt-icon-colors();
-  flex: 0 0 auto;
-
-  // button reset
-  border: none;
-  background: none;
-
-  cursor: pointer;
-  padding: $pt-grid-size;
-
-  .#{$ns}-icon-large,
-  .#{$ns}-icon {
-    margin: 0;
   }
 }
 
