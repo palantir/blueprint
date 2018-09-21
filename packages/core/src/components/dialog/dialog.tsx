@@ -102,7 +102,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon="small-cross"
+                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
