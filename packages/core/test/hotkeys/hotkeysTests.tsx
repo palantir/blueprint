@@ -177,9 +177,7 @@ describe("Hotkeys", () => {
             const TEST_TIMEOUT_DURATION = 30;
 
             comp = mount(<TestComponent />, { attachTo });
-            const node = ReactDOM.findDOMNode(comp.instance());
-
-            dispatchTestKeyboardEvent(node, "keydown", "/", true);
+            dispatchTestKeyboardEvent(comp.getDOMNode(), "keydown", "/", true);
 
             // wait for the dialog to animate in
             setTimeout(() => {
