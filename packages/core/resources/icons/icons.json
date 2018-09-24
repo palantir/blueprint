@@ -3120,5 +3120,47 @@
     "tags": "notifications, bell, alarm, notice, warning",
     "group": "interface",
     "content": "\\e7b8"
+  },
+    {
+    "name": "List: columns",
+    "className": "pt-icon-list-columns",
+    "tags": "layout, arrangement, four lines, table",
+    "group": "table",
+    "content": "\\e7b9"
+  },
+    {
+    "name": "Flow: linear",
+    "className": "pt-icon-flow-linear",
+    "tags": "workflow, edge, node, step",
+    "group": "data",
+    "content": "\\e7c0"
+  },
+    {
+    "name": "Flow: branch",
+    "className": "pt-icon-flow-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c1"
+  },
+    {
+    "name": "Flow: review",
+    "className": "pt-icon-flow-review",
+    "tags": "workflow, edge, node, reverse",
+    "group": "data",
+    "content": "\\e7c2"
+  },
+    {
+    "name": "Flow: review branch",
+    "className": "pt-icon-flow-review-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c3"
+  },
+    {
+    "name": "Flow: end",
+    "className": "pt-icon-flow-end",
+    "tags": "workflow, edge, node, complete, finished, final, last",
+    "group": "data",
+    "content": "\\e7c4"
   }
 ]
