@@ -5,10 +5,9 @@
  */
 
 import * as Lint from "tslint";
+import * as utils from "tsutils";
 import * as ts from "typescript";
-
-// detect "pt-" *prefix*: not preceded by letter or dash
-const PATTERN = /[^\w-<]pt-[\w-]+/;
+import { addImportToFile } from "./utils/addImportToFile";
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -19,7 +18,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         optionsDescription: "Not configurable",
         optionExamples: ["true"],
         type: "style",
-        typescriptOnly: false,
+        typescriptOnly: false
     };
 
     public static FAILURE_STRING = "use Blueprint `Classes` constant instead of string literal";
@@ -29,15 +28,144 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
 }
 
-function walk(ctx: Lint.WalkContext<void>): void {
-    return ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
+function walk(ctx: Lint.WalkContext<void>) {
+    let shouldFixImports = true;
+    return ts.forEachChild(ctx.sourceFile, callback);
+
+    function callback(node: ts.Node): void {
         if (ts.isStringLiteralLike(node) || ts.isTemplateExpression(node)) {
-            const match = PATTERN.exec(node.getFullText());
-            if (match != null) {
-                // ignore first character of match: negated character class
-                ctx.addFailureAt(node.getFullStart() + match.index + 1, match[0].length - 1, Rule.FAILURE_STRING);
+            const ptMatches: string[] = [];
+            const fullText = node.getFullText();
+            let currentMatch: RegExpExecArray | null;
+            // tslint:disable-next-line:no-conditional-assignment
+            while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(fullText)) != null) {
+                const fullBlueprintName = currentMatch[1]; // e.g. pt-breadcrumb
+                const blueprintClassName = getBlueprintClassName(fullBlueprintName); // e.g. breadcrumb
+
+                // See if we should ignore this class or not.
+                if (blueprintClassName == null || shouldIgnoreBlueprintClass(blueprintClassName)) {
+                    continue;
+                } else {
+                    ptMatches.push(fullBlueprintName);
+                }
+            }
+            if (ptMatches.length > 0) {
+                // we have to fail the entire node so that we can make multiple replacements, if necessary
+                ctx.addFailureAtNode(
+                    node,
+                    Rule.FAILURE_STRING,
+                    getReplacement(node, ptMatches, ctx.sourceFile, shouldFixImports)
+                );
+                shouldFixImports = false;
             }
         }
-        return ts.forEachChild(node, cb);
-    });
+
+        return ts.forEachChild(node, callback);
+    }
+}
+
+function getReplacement(
+    node: ts.StringLiteralLike | ts.TemplateExpression,
+    ptClassStrings: string[],
+    file: ts.SourceFile,
+    shouldFixImport: boolean
+) {
+    const replacements: Lint.Replacement[] = [];
+
+    // We may need to add a blueprint import to the top of the file. We only want to do this once per file, otherwise,
+    // we'll keep stacking imports and mess things up.
+    if (shouldFixImport) {
+        replacements.push(addImportToFile(file, ["Classes"], "@blueprintjs/core"));
+    }
+
+    if (utils.isStringLiteral(node)) {
+        let stringWithoutPtClasses = node.getText();
+        ptClassStrings.forEach(cssClass => {
+            stringWithoutPtClasses = stringWithoutPtClasses.replace(cssClass, "");
+        });
+        const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
+        // get rid of leading/ending quotes and any leading/trailing white space
+        stringWithoutPtClasses = stringWithoutPtClasses.slice(1, -1).trim();
+        if (stringWithoutPtClasses.length > 0) {
+            const replacement = `\`${templateStrings} ${stringWithoutPtClasses}\``;
+            replacements.push(
+                new Lint.Replacement(node.getStart(), node.getWidth(), wrapForParent(replacement, node, node.parent))
+            );
+        } else {
+            if (ptClassStrings.length === 1) {
+                const replacement = convertPtClassName(ptClassStrings[0]);
+                replacements.push(
+                    new Lint.Replacement(
+                        node.getStart(),
+                        node.getWidth(),
+                        wrapForParent(replacement, node, node.parent)
+                    )
+                );
+            } else {
+                const replacement = `\`${templateStrings}\``;
+                replacements.push(
+                    new Lint.Replacement(
+                        node.getStart(),
+                        node.getWidth(),
+                        wrapForParent(replacement, node, node.parent)
+                    )
+                );
+            }
+        }
+    } else if (utils.isTemplateExpression(node) || utils.isNoSubstitutionTemplateLiteral(node)) {
+        let replacementText = node.getText();
+        ptClassStrings.forEach(classString => {
+            const classReplacement = `\${${convertPtClassName(classString)}}`;
+            replacementText = replacementText.replace(classString, classReplacement);
+        });
+        replacements.push(new Lint.Replacement(node.getStart(), node.getWidth(), replacementText));
+    }
+    return replacements;
+}
+
+function wrapForParent(statement: string, node: ts.Node, parentNode: ts.Node | undefined) {
+    if (parentNode) {
+        if (utils.isJsxAttribute(parentNode)) {
+            return `{${statement}}`;
+        } else if (utils.isExpressionStatement(parentNode)) {
+            return `[${statement}]`;
+        } else if (utils.isPropertyAssignment(parentNode)) {
+            if (parentNode.getChildAt(0) === node) {
+                // If we're changing the key, we need to wrap it. Else, we're changing a value,
+                // and there's no need to wrap
+                return `[${statement}]`;
+            }
+            return statement;
+        } else {
+            return statement;
+        }
+    } else {
+        return statement;
+    }
+}
+
+function convertPtClassName(text: string) {
+    const className = text
+        .replace("pt-", "")
+        .replace(/-/g, "_")
+        .toUpperCase();
+    return `Classes.${className}`;
+}
+
+const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-[\w-]+)/g;
+
+function getBlueprintClassName(fullClassName: string): string | undefined {
+    if (fullClassName.length < 3) {
+        return undefined;
+    } else {
+        return fullClassName.slice(3);
+    }
+}
+
+function shouldIgnoreBlueprintClass(blueprintClassName: string): boolean {
+    if (blueprintClassName.startsWith("icon")) {
+        // Icon conversions happen elsewhere.
+        return true;
+    }
+    return false;
 }

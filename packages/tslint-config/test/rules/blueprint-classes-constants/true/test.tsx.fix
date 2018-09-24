@@ -1,0 +1,13 @@
+import { Classes } from "@blueprintjs/core";
+apt-get
+at 4pt-size
+`${Classes.LARGE} script-source  apt-get`
+`script-source ${Classes.LARGE} apt-get`
+`${template} ${Classes.LARGE}`
+
+<Button className=`${Classes.LARGE} my-class` />
+
+classNames(Classes.BUTTON, Classes.INTENT_PRIMARY)
+
+<pt-popover> // angular directive
+
