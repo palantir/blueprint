@@ -14,7 +14,7 @@ import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 // see http://stackoverflow.com/a/18473154/3124288 for calculating arc path
-const SPINNER_TRACK = "M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89";
+const SPINNER_TRACK = `M 50,50 m 0,-45 a 45,45 0 1 1 0,90 a 45,45 0 1 1 0,-90`;
 
 // unitless total length of SVG path, to which stroke-dash* properties are relative.
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength
