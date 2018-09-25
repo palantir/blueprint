@@ -7,7 +7,13 @@ import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
 
-import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
+    IIntentProps,
+    IProps,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
@@ -93,7 +99,9 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = () => <Cell />;
 
-export class Cell extends React.Component<ICellProps, {}> {
+export class Cell extends React.Component<ICellProps> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
+
     public static defaultProps = {
         truncated: true,
         wrapText: false,

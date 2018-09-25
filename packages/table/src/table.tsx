@@ -4,7 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    DISPLAYNAME_PREFIX,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    IProps,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -403,6 +411,8 @@ export interface ITableState {
 
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
+
     public static defaultProps: ITableProps = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
@@ -886,8 +896,10 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
-        React.Children.forEach(children, (child: React.ReactElement<any>) => {
+        React.Children.forEach(children, child => {
             if (!CoreUtils.isElementOfType(child, Column)) {
+                console.log((child as any).type.displayName);
+
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             }
         });
