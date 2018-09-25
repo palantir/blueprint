@@ -58,6 +58,15 @@ describe("Spinner", () => {
         assertStrokePercent(root, 0.35);
     });
 
+    it("viewBox adjusts based on size", () => {
+        function viewBox(size: number) {
+            return mount(<Spinner size={size} />)
+                .find("svg")
+                .prop("viewBox");
+        }
+        assert.notEqual(viewBox(Spinner.SIZE_SMALL), viewBox(Spinner.SIZE_LARGE), "expected different viewBoxes");
+    });
+
     function assertStrokePercent(wrapper: ReactWrapper<any, {}>, percent: number) {
         const head = wrapper.find(`.${Classes.SPINNER_HEAD}`);
         // NOTE: strokeDasharray is string "X X", but parseInt terminates at non-numeric character
