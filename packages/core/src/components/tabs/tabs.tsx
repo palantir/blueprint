@@ -202,7 +202,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     /** Filters children to only `<Tab>`s */
     private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(isTabChild);
+        return React.Children.toArray(props.children).filter(isTabElement);
     }
 
     /** Queries root HTML element for all tabs with optional filter selector */
@@ -293,7 +293,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     };
 
     private renderTabTitle = (child: React.ReactChild) => {
-        if (isTabChild(child)) {
+        if (isTabElement(child)) {
             const { id } = child.props;
             return (
                 <TabTitle
@@ -312,6 +312,6 @@ function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[])
     return codes.indexOf(e.which) >= 0;
 }
 
-function isTabChild(child: any): child is TabElement {
-    return child != null && child.type.__blueprintTab === true;
+function isTabElement(child: any): child is TabElement {
+    return Utils.isElementOfType(child, Tab);
 }
