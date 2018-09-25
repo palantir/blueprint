@@ -19,10 +19,11 @@ describe("Spinner", () => {
         assert.lengthOf(root.find("path"), 2);
     });
 
-    it("tagName determines root tag", () => {
+    it("tagName determines both container elements", () => {
         const tagName = "article";
         const root = mount(<Spinner tagName={tagName} />);
         assert.isTrue(root.is({ tagName }));
+        assert.lengthOf(root.find(tagName), 2);
     });
 
     it("Classes.LARGE/SMALL determine default size", () => {

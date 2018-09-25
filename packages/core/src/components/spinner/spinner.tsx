@@ -35,8 +35,8 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     size?: number;
 
     /**
-     * HTML tag for the wrapper element. If rendering a `<Spinner>` inside an
-     * `<svg>`, change this to an SVG element like `"g"`.
+     * HTML tag for the two wrapper elements. If rendering a `<Spinner>` inside
+     * an `<svg>`, change this to an SVG element like `"g"`.
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -84,7 +84,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
         // - SPINNER_ANIMATION isolates svg from parent display and is always centered inside root element.
         return (
             <TagName className={classes}>
-                <span className={Classes.SPINNER_ANIMATION}>
+                <TagName className={Classes.SPINNER_ANIMATION}>
                     <svg height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
                         <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
                         <path
@@ -95,7 +95,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
                             strokeDashoffset={strokeOffset}
                         />
                     </svg>
-                </span>
+                </TagName>
             </TagName>
         );
     }
