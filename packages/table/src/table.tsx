@@ -898,8 +898,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
         React.Children.forEach(children, child => {
             if (!CoreUtils.isElementOfType(child, Column)) {
-                console.log((child as any).type.displayName);
-
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             }
         });
