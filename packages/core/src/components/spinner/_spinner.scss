@@ -21,9 +21,6 @@
 
   svg {
     display: block;
-    // reduce effective image size a little bit to keep overflowing circle edges
-    // visible and inside the bounds of the Spinner element (no outer overflow).
-    padding: 1px;
   }
 
   path {
