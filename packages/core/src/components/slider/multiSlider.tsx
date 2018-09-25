@@ -16,6 +16,13 @@ import { Handle } from "./handle";
 import { HandleInteractionKind, HandleType, IHandleProps } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
+/**
+ * SFC used to pass slider handle props to a `MultiSlider`.
+ * This element is not rendered directly.
+ */
+const MultiSliderHandle: React.SFC<IHandleProps> = () => null;
+MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
+
 // TODO: move this to props.ts in a follow up PR
 /** A convenience type for React's optional children prop. */
 export interface IChildrenProps {
@@ -120,7 +127,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSlider`;
 
-    public static Handle: React.SFC<IHandleProps> = () => null;
+    public static Handle = MultiSliderHandle;
 
     public state: ISliderState = {
         labelPrecision: getLabelPrecision(this.props),
