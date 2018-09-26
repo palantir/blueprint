@@ -14,6 +14,13 @@ import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { IResizeEntry, ResizeSensor } from "../resize-sensor/resizeSensor";
 
+/** @internal - do not expose this type */
+export enum OverflowDirection {
+    NONE,
+    GROW,
+    SHRINK,
+}
+
 export interface IOverflowListProps<T> extends IProps {
     /**
      * Which direction the items should collapse from: start or end of the
@@ -72,7 +79,13 @@ export interface IOverflowListProps<T> extends IProps {
 }
 
 export interface IOverflowListState<T> {
-    isResizing: boolean;
+    /**
+     * Direction of current overflow operation. An overflow can take several frames to settle.
+     * @internal don't expose the type
+     */
+    direction: OverflowDirection;
+    /** Remember the last completed overflow to dedupe `onOverflow` calls during smooth resizing. */
+    lastOverflow?: T[];
     overflow: T[];
     visible: T[];
 }
@@ -90,7 +103,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public state: IOverflowListState<T> = {
-        isResizing: false,
+        direction: OverflowDirection.NONE,
         overflow: [],
         visible: this.props.items,
     };
@@ -124,7 +137,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         ) {
             // reset visible state if the above props change.
             this.setState({
-                isResizing: true,
+                direction: OverflowDirection.GROW,
                 overflow: [],
                 visible: nextProps.items,
             });
@@ -133,8 +146,14 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
 
     public componentDidUpdate(_prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
         this.repartition(false);
-        if (!this.state.isResizing && prevState.isResizing) {
-            safeInvoke(this.props.onOverflow, this.state.overflow);
+        if (this.state.direction === OverflowDirection.NONE && this.state.direction !== prevState.direction) {
+            if (
+                prevState.direction === OverflowDirection.SHRINK ||
+                this.state.lastOverflow == null ||
+                this.state.lastOverflow.some((x, i) => x !== this.state.overflow[i])
+            ) {
+                safeInvoke(this.props.onOverflow, this.state.overflow);
+            }
         }
     }
 
@@ -176,11 +195,13 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             return;
         }
         if (growing) {
-            this.setState({
-                isResizing: true,
+            this.setState(state => ({
+                direction: OverflowDirection.GROW,
+                // store last overflow if this is the beginning of a resize (for check in `update()`).
+                lastOverflow: state.direction === OverflowDirection.NONE ? state.overflow : state.lastOverflow,
                 overflow: [],
                 visible: this.props.items,
-            });
+            }));
         } else if (this.spacer.getBoundingClientRect().width < 0.9) {
             // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
             this.setState(state => {
@@ -195,13 +216,15 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 }
                 const overflow = collapseFromStart ? [...state.overflow, next] : [next, ...state.overflow];
                 return {
-                    isResizing: true,
+                    // set SHRINK mode unless a GROW is already in progress.
+                    direction: state.direction === OverflowDirection.NONE ? OverflowDirection.SHRINK : state.direction,
                     overflow,
                     visible,
                 };
             });
         } else {
-            this.setState({ isResizing: false });
+            // repartition complete!
+            this.setState({ direction: OverflowDirection.NONE });
         }
     }
 }
