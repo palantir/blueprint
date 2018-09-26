@@ -18,7 +18,7 @@ export class Rule extends Lint.Rules.AbstractRule {
         optionsDescription: "Not configurable",
         optionExamples: ["true"],
         type: "style",
-        typescriptOnly: false
+        typescriptOnly: false,
     };
 
     public static FAILURE_STRING = "use Blueprint `Classes` constant instead of string literal";
@@ -54,7 +54,7 @@ function walk(ctx: Lint.WalkContext<void>) {
                 ctx.addFailureAtNode(
                     node,
                     Rule.FAILURE_STRING,
-                    getReplacement(node, ptMatches, ctx.sourceFile, shouldFixImports)
+                    getReplacement(node, ptMatches, ctx.sourceFile, shouldFixImports),
                 );
                 shouldFixImports = false;
             }
@@ -68,7 +68,7 @@ function getReplacement(
     node: ts.StringLiteralLike | ts.TemplateExpression,
     ptClassStrings: string[],
     file: ts.SourceFile,
-    shouldFixImport: boolean
+    shouldFixImport: boolean,
 ) {
     const replacements: Lint.Replacement[] = [];
 
@@ -79,17 +79,18 @@ function getReplacement(
     }
 
     if (utils.isStringLiteral(node)) {
-        let stringWithoutPtClasses = node.getText();
-        ptClassStrings.forEach(cssClass => {
-            stringWithoutPtClasses = stringWithoutPtClasses.replace(cssClass, "");
-        });
+        // remove all illegal classnames, then slice off the quotes, and trim any remaining white space
+        const stringWithoutPtClasses = ptClassStrings
+            .reduce((value, cssClass) => {
+                return value.replace(cssClass, "");
+            }, node.getText())
+            .slice(1, -1)
+            .trim();
         const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
-        // get rid of leading/ending quotes and any leading/trailing white space
-        stringWithoutPtClasses = stringWithoutPtClasses.slice(1, -1).trim();
         if (stringWithoutPtClasses.length > 0) {
             const replacement = `\`${templateStrings} ${stringWithoutPtClasses}\``;
             replacements.push(
-                new Lint.Replacement(node.getStart(), node.getWidth(), wrapForParent(replacement, node, node.parent))
+                new Lint.Replacement(node.getStart(), node.getWidth(), wrapForParent(replacement, node, node.parent)),
             );
         } else {
             if (ptClassStrings.length === 1) {
@@ -98,8 +99,8 @@ function getReplacement(
                     new Lint.Replacement(
                         node.getStart(),
                         node.getWidth(),
-                        wrapForParent(replacement, node, node.parent)
-                    )
+                        wrapForParent(replacement, node, node.parent),
+                    ),
                 );
             } else {
                 const replacement = `\`${templateStrings}\``;
@@ -107,8 +108,8 @@ function getReplacement(
                     new Lint.Replacement(
                         node.getStart(),
                         node.getWidth(),
-                        wrapForParent(replacement, node, node.parent)
-                    )
+                        wrapForParent(replacement, node, node.parent),
+                    ),
                 );
             }
         }
@@ -124,21 +125,16 @@ function getReplacement(
 }
 
 function wrapForParent(statement: string, node: ts.Node, parentNode: ts.Node | undefined) {
-    if (parentNode) {
-        if (utils.isJsxAttribute(parentNode)) {
-            return `{${statement}}`;
-        } else if (utils.isExpressionStatement(parentNode)) {
-            return `[${statement}]`;
-        } else if (utils.isPropertyAssignment(parentNode)) {
-            if (parentNode.getChildAt(0) === node) {
-                // If we're changing the key, we need to wrap it. Else, we're changing a value,
-                // and there's no need to wrap
-                return `[${statement}]`;
-            }
-            return statement;
-        } else {
-            return statement;
-        }
+    if (parentNode === undefined) {
+        return statement;
+    } else if (utils.isJsxAttribute(parentNode)) {
+        return `{${statement}}`;
+    } else if (utils.isExpressionStatement(parentNode)) {
+        return `[${statement}]`;
+        // If we're changing the key, it will be child index 0 and we need to wrap it.
+        // Else, we're changing a value, and there's no need to wrap
+    } else if (utils.isPropertyAssignment(parentNode) && parentNode.getChildAt(0) === node) {
+        return `[${statement}]`;
     } else {
         return statement;
     }
@@ -163,9 +159,5 @@ function getBlueprintClassName(fullClassName: string): string | undefined {
 }
 
 function shouldIgnoreBlueprintClass(blueprintClassName: string): boolean {
-    if (blueprintClassName.startsWith("icon")) {
-        // Icon conversions happen elsewhere.
-        return true;
-    }
-    return false;
+    return blueprintClassName.startsWith("icon");
 }
