@@ -55,7 +55,11 @@ export interface IOverflowListProps<T> extends IProps {
      */
     observeParents?: boolean;
 
-    /** Callback invoked when the overflowed items change. */
+    /**
+     * Callback invoked when the overflowed items change. This is called once
+     * after the DOM has settled, rather that on every intermediate change. It
+     * is not invoked if resizing produces an unchanged overflow state.
+     */
     onOverflow?: (overflowItems: T[]) => void;
 
     /**
@@ -146,14 +150,17 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
 
     public componentDidUpdate(_prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
         this.repartition(false);
-        if (this.state.direction === OverflowDirection.NONE && this.state.direction !== prevState.direction) {
-            if (
-                prevState.direction === OverflowDirection.SHRINK ||
+        if (
+            // if a resize operation has just completed (transition to NONE)
+            this.state.direction === OverflowDirection.NONE &&
+            this.state.direction !== prevState.direction &&
+            // shrink operation does not require checking last items
+            (prevState.direction === OverflowDirection.SHRINK ||
+                // if current overflow is different from last completed state
                 this.state.lastOverflow == null ||
-                this.state.lastOverflow.some((x, i) => x !== this.state.overflow[i])
-            ) {
-                safeInvoke(this.props.onOverflow, this.state.overflow);
-            }
+                this.state.lastOverflow.some((x, i) => x !== this.state.overflow[i]))
+        ) {
+            safeInvoke(this.props.onOverflow, this.state.overflow);
         }
     }
 
@@ -217,6 +224,8 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 const overflow = collapseFromStart ? [...state.overflow, next] : [next, ...state.overflow];
                 return {
                     // set SHRINK mode unless a GROW is already in progress.
+                    // GROW shows all items then shrinks until it settles, so we
+                    // preserve the fact that the original trigger was a GROW.
                     direction: state.direction === OverflowDirection.NONE ? OverflowDirection.SHRINK : state.direction,
                     overflow,
                     visible,
