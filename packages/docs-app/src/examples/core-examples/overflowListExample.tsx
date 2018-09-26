@@ -38,10 +38,10 @@ const COLLAPSE_FROM_RADIOS = [
 const ITEMS: IMenuItemProps[] = [
     { href: "#", icon: "folder-close", text: "All files" },
     { href: "#", icon: "folder-close", text: "Users" },
-    { href: "#", icon: "folder-close", text: "Jane Person" },
-    { href: "#", icon: "folder-close", text: "My documents" },
-    { href: "#", icon: "folder-close", text: "Classy dayjob" },
-    { icon: "document", text: "How to crush it" },
+    { href: "#", icon: "folder-close", text: "Janet" },
+    { href: "#", icon: "folder-close", text: "Photos" },
+    { href: "#", icon: "folder-close", text: "Wednesday" },
+    { icon: "document", text: "image.jpg" },
 ];
 
 export class OverflowListExample extends React.PureComponent<IExampleProps, IOverflowListExampleState> {
