@@ -8,6 +8,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
+import { spy } from "sinon";
 import { IOverflowListProps, IOverflowListState, OverflowList } from "../../src/components/overflow-list/overflowList";
 
 type OverflowProps = IOverflowListProps<ITestItem>;
@@ -19,7 +20,7 @@ interface ITestItem {
 const IDS = [0, 1, 2, 3, 4, 5];
 const ITEMS: ITestItem[] = IDS.map(id => ({ id }));
 
-const TestItem: React.SFC<ITestItem> = () => <div style={{ width: 10 }} />;
+const TestItem: React.SFC<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
 const TestOverflow: React.SFC<{ items: ITestItem[] }> = () => <div />;
 
 describe("<OverflowList>", function(this) {
@@ -84,6 +85,32 @@ describe("<OverflowList>", function(this) {
 
     it("renders overflow items in the correct order (collapse from end)", () => {
         overflowList(45, { collapseFrom: "end" }).assertOverflowItems(4, 5);
+    });
+
+    it("onOverflow invoked once per resize", async () => {
+        const onOverflow = spy();
+        function assertArgs(ids: number[]) {
+            assert.sameMembers(onOverflow.lastCall.args[0].map((i: ITestItem) => i.id), ids);
+        }
+
+        // initial render shows all items (empty overflow)
+        const list = overflowList(200, { onOverflow });
+        await list.waitForResize();
+        assertArgs([]);
+
+        // assert that at given width, onOverflow receives given IDs
+        const tests = [
+            { width: 15, overflowIds: [0, 1, 2, 3, 4] },
+            { width: 55, overflowIds: [0] },
+            { width: 25, overflowIds: [0, 1, 2, 3] },
+            { width: 35, overflowIds: [0, 1, 2] },
+        ];
+        for (const { overflowIds, width } of tests) {
+            await list.setWidth(width).waitForResize();
+            assertArgs(overflowIds);
+        }
+        // ensure onOverflow is not called additional times: tests + initial render.
+        assert.equal(onOverflow.callCount, tests.length + 1, "should invoke once per resize");
     });
 
     function renderOverflow(items: ITestItem[]) {

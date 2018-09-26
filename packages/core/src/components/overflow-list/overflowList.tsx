@@ -11,6 +11,7 @@ import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
 import { IResizeEntry, ResizeSensor } from "../resize-sensor/resizeSensor";
 
 export interface IOverflowListProps<T> extends IProps {
@@ -47,6 +48,9 @@ export interface IOverflowListProps<T> extends IProps {
      */
     observeParents?: boolean;
 
+    /** Callback invoked when the overflowed items change. */
+    onOverflow?: (overflowItems: T[]) => void;
+
     /**
      * Callback invoked to render the overflowed items. Unlike
      * `visibleItemRenderer`, this prop is invoked once with all items that do
@@ -68,6 +72,7 @@ export interface IOverflowListProps<T> extends IProps {
 }
 
 export interface IOverflowListState<T> {
+    isResizing: boolean;
     overflow: T[];
     visible: T[];
 }
@@ -85,6 +90,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public state: IOverflowListState<T> = {
+        isResizing: false,
         overflow: [],
         visible: this.props.items,
     };
@@ -118,14 +124,18 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         ) {
             // reset visible state if the above props change.
             this.setState({
+                isResizing: true,
                 overflow: [],
                 visible: nextProps.items,
             });
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
         this.repartition(false);
+        if (!this.state.isResizing && prevState.isResizing) {
+            safeInvoke(this.props.onOverflow, this.state.overflow);
+        }
     }
 
     public render() {
@@ -167,6 +177,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         }
         if (growing) {
             this.setState({
+                isResizing: true,
                 overflow: [],
                 visible: this.props.items,
             });
@@ -184,10 +195,13 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
                 }
                 const overflow = collapseFromStart ? [...state.overflow, next] : [next, ...state.overflow];
                 return {
+                    isResizing: true,
                     overflow,
                     visible,
                 };
             });
+        } else {
+            this.setState({ isResizing: false });
         }
     }
 }
