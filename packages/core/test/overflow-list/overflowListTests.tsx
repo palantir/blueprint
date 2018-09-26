@@ -87,30 +87,47 @@ describe("<OverflowList>", function(this) {
         overflowList(45, { collapseFrom: "end" }).assertOverflowItems(4, 5);
     });
 
-    it("onOverflow invoked once per resize", async () => {
-        const onOverflow = spy();
-        function assertArgs(ids: number[]) {
-            assert.sameMembers(onOverflow.lastCall.args[0].map((i: ITestItem) => i.id), ids);
-        }
+    describe("onOverflow", () => {
+        it("invoked on initial render if has overflow", async () => {
+            const list = await overflowList(22).waitForResize();
+            list.assertLastOnOverflowArgs([0, 1, 2, 3]);
+        });
 
-        // initial render shows all items (empty overflow)
-        const list = overflowList(200, { onOverflow });
-        await list.waitForResize();
-        assertArgs([]);
+        it("not invoked on initial render if all visible", async () => {
+            const list = await overflowList(200).waitForResize();
+            assert.isTrue(list.onOverflow.notCalled, "not called");
+        });
 
-        // assert that at given width, onOverflow receives given IDs
-        const tests = [
-            { width: 15, overflowIds: [0, 1, 2, 3, 4] },
-            { width: 55, overflowIds: [0] },
-            { width: 25, overflowIds: [0, 1, 2, 3] },
-            { width: 35, overflowIds: [0, 1, 2] },
-        ];
-        for (const { overflowIds, width } of tests) {
-            await list.setWidth(width).waitForResize();
-            assertArgs(overflowIds);
-        }
-        // ensure onOverflow is not called additional times: tests + initial render.
-        assert.equal(onOverflow.callCount, tests.length + 1, "should invoke once per resize");
+        it("invoked once per resize", async () => {
+            // initial render shows all items (empty overflow)
+            const list = await overflowList(200).waitForResize();
+            // assert that at given width, onOverflow receives given IDs
+            const tests = [
+                { width: 15, overflowIds: [0, 1, 2, 3, 4] },
+                { width: 55, overflowIds: [0] },
+                { width: 25, overflowIds: [0, 1, 2, 3] },
+                { width: 35, overflowIds: [0, 1, 2] },
+            ];
+            for (const { overflowIds, width } of tests) {
+                (await list.setWidth(width).waitForResize()).assertLastOnOverflowArgs(overflowIds);
+            }
+            // ensure onOverflow is not called additional times.
+            assert.equal(list.onOverflow.callCount, tests.length, "should invoke once per resize");
+        });
+
+        it("not invoked if resize doesn't change overflow", async () => {
+            // show a few items
+            const list = await overflowList(22).waitForResize();
+            // small adjustments don't change overflow state, but it is recomputed internally.
+            // assert that the callback was not invoked because the appearance hasn't changed.
+            list.onOverflow.resetHistory();
+            await list.setWidth(25).waitForResize();
+            await list.setWidth(28).waitForResize();
+            await list.setWidth(29).waitForResize();
+            await list.setWidth(26).waitForResize();
+            await list.setWidth(22).waitForResize();
+            assert.isTrue(list.onOverflow.notCalled, "should not invoke");
+        });
     });
 
     function renderOverflow(items: ITestItem[]) {
@@ -122,9 +139,11 @@ describe("<OverflowList>", function(this) {
     }
 
     function overflowList(initialWidth = 45, props: Partial<OverflowProps> = {}) {
+        const onOverflow = spy();
         const wrapper = mount<OverflowProps, IOverflowListState<ITestItem>>(
             <OverflowList
                 items={ITEMS}
+                onOverflow={onOverflow}
                 overflowRenderer={renderOverflow}
                 visibleItemRenderer={renderVisibleItem}
                 style={{ width: initialWidth }}
@@ -140,22 +159,26 @@ describe("<OverflowList>", function(this) {
                 assert.equal(wrapper.find(TestOverflow).exists(), exists, "has overflow");
                 return harness;
             },
+            /** Asserts that the last call to `onOverflow` received the given item IDs. */
+            assertLastOnOverflowArgs(ids: number[]) {
+                assert.sameMembers(onOverflow.lastCall.args[0].map((i: ITestItem) => i.id), ids);
+            },
             /**
              * Invokes both assertions below with the expected visible and
-             * overflow ids assuming `collapseFrom="start"`.
+             * overflow IDs assuming `collapseFrom="start"`.
              */
             assertVisibleItemSplit(visibleCount: number) {
                 return harness
                     .assertOverflowItems(...IDS.slice(0, -visibleCount))
                     .assertVisibleItems(...IDS.slice(-visibleCount));
             },
-            /** Assert ordered ids of overflow items. */
+            /** Assert ordered IDs of overflow items. */
             assertOverflowItems(...ids: number[]) {
                 const overflowItems = wrapper.find(TestOverflow).prop("items");
                 assert.sameMembers(overflowItems.map(it => it.id), ids, "overflow items");
                 return harness;
             },
-            /** Assert ordered ids of visible items. */
+            /** Assert ordered IDs of visible items. */
             assertVisibleItems(...ids: number[]) {
                 const visibleItems = wrapper.find(TestItem).map(div => div.prop("id"));
                 assert.sameMembers(visibleItems, ids, "visible items");
@@ -177,6 +200,8 @@ describe("<OverflowList>", function(this) {
                     }, 30),
                 );
             },
+
+            onOverflow,
             wrapper,
         };
         return harness;
