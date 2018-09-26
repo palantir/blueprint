@@ -142,6 +142,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             // reset visible state if the above props change.
             this.setState({
                 direction: OverflowDirection.GROW,
+                lastOverflow: undefined,
                 overflow: [],
                 visible: nextProps.items,
             });
