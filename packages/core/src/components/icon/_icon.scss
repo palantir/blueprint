@@ -22,6 +22,10 @@
   > svg {
     // prevent extra vertical whitespace
     display: block;
+    // Allow width and height to be set on the span in css. This is ignored if the
+    // span does not have an explicit size set.
+    width: inherit;
+    height: inherit;
 
     // inherit text color unless explicit fill is set
     &:not([fill]) {
