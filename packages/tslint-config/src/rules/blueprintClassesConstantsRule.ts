@@ -93,25 +93,11 @@ function getReplacement(
                 new Lint.Replacement(node.getStart(), node.getWidth(), wrapForParent(replacement, node, node.parent)),
             );
         } else {
-            if (ptClassStrings.length === 1) {
-                const replacement = convertPtClassName(ptClassStrings[0]);
-                replacements.push(
-                    new Lint.Replacement(
-                        node.getStart(),
-                        node.getWidth(),
-                        wrapForParent(replacement, node, node.parent),
-                    ),
-                );
-            } else {
-                const replacement = `\`${templateStrings}\``;
-                replacements.push(
-                    new Lint.Replacement(
-                        node.getStart(),
-                        node.getWidth(),
-                        wrapForParent(replacement, node, node.parent),
-                    ),
-                );
-            }
+            const replacement =
+                ptClassStrings.length === 1 ? convertPtClassName(ptClassStrings[0]) : `\`${templateStrings}\``;
+            replacements.push(
+                new Lint.Replacement(node.getStart(), node.getWidth(), wrapForParent(replacement, node, node.parent)),
+            );
         }
     } else if (utils.isTemplateExpression(node) || utils.isNoSubstitutionTemplateLiteral(node)) {
         let replacementText = node.getText();

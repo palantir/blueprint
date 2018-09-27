@@ -1,10 +1,16 @@
+/*
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
+ */
+
 import { Replacement } from "tslint";
 import * as utils from "tsutils";
 import * as ts from "typescript";
 
 export function addImportToFile(file: ts.SourceFile, imports: string[], packageName: string) {
     const packageToModify = file.statements.find(
-        statement => utils.isImportDeclaration(statement) && statement.moduleSpecifier.getText() === `"${packageName}"`
+        statement => utils.isImportDeclaration(statement) && statement.moduleSpecifier.getText() === `"${packageName}"`,
     ) as ts.ImportDeclaration;
     if (
         packageToModify &&
@@ -15,7 +21,7 @@ export function addImportToFile(file: ts.SourceFile, imports: string[], packageN
         const existingImports = packageToModify.importClause.namedBindings.elements.map(el => el.name.getText());
         // Poor man's lodash.uniq without the dep.
         const newImports = Array.from(new Set(existingImports.concat(imports))).sort((a, b) =>
-            a.toLowerCase().localeCompare(b.toLowerCase())
+            a.toLowerCase().localeCompare(b.toLowerCase()),
         );
         const importString = `{ ${newImports.join(", ")} }`;
         return Replacement.replaceNode(packageToModify.importClause.namedBindings, importString);
@@ -32,11 +38,12 @@ export function addImportToFile(file: ts.SourceFile, imports: string[], packageN
     }
 }
 
+function isLow(value: string) {
+    return value[0] === "." || value[0] === "/";
+}
+
 // taken from tslint orderedImportRules
 function compare(a: string, b: string): 0 | 1 | -1 {
-    function isLow(value: string) {
-        return value[0] === "." || value[0] === "/";
-    }
     if (isLow(a) && !isLow(b)) {
         return 1;
     } else if (!isLow(a) && isLow(b)) {

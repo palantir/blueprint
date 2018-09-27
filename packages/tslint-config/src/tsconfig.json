@@ -1,9 +1,8 @@
 {
     "extends": "../../../config/tsconfig.base",
     "compilerOptions": {
-        "lib": ["es6"],
+        "lib": ["es6", "dom"],
         "module": "commonjs",
-        "outDir": "../lib/rules",
-        "skipLibCheck": true
+        "outDir": "../lib/rules"
     }
 }
