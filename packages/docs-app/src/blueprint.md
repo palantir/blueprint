@@ -39,7 +39,7 @@ Don't forget to include the **main CSS file** from each Blueprint package!
 <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
 <!-- blueprint-icons.css file must be included alongside blueprint.css! -->
 <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
-<link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+<link href="path/to/node_modules/@blueprintjs/core/dist/blueprint.css" rel="stylesheet" />
 <!-- add other blueprint-*.css files here -->
 ```
 
