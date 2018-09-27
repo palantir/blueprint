@@ -14,7 +14,8 @@ import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 // see http://stackoverflow.com/a/18473154/3124288 for calculating arc path
-const SPINNER_TRACK = "M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89";
+const R = 45;
+const SPINNER_TRACK = `M 50,50 m 0,-${R} a ${R},${R} 0 1 1 0,${R * 2} a ${R},${R} 0 1 1 0,-${R * 2}`;
 
 // unitless total length of SVG path, to which stroke-dash* properties are relative.
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength
@@ -35,8 +36,8 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     size?: number;
 
     /**
-     * HTML tag for the wrapper element. If rendering a `<Spinner>` inside an
-     * `<svg>`, change this to an SVG element like `"g"`.
+     * HTML tag for the two wrapper elements. If rendering a `<Spinner>` inside
+     * an `<svg>`, change this to an SVG element like `"g"`.
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -74,7 +75,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
             className,
         );
 
-        // attempt to keep spinner stroke width constant at all sizes
+        // keep spinner track width consistent at all sizes (down to about 10px).
         const strokeWidth = Math.min(MIN_STROKE_WIDTH, STROKE_WIDTH * Spinner.SIZE_LARGE / size);
 
         const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
@@ -84,8 +85,13 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
         // - SPINNER_ANIMATION isolates svg from parent display and is always centered inside root element.
         return (
             <TagName className={classes}>
-                <span className={Classes.SPINNER_ANIMATION}>
-                    <svg height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
+                <TagName className={Classes.SPINNER_ANIMATION}>
+                    <svg
+                        width={size}
+                        height={size}
+                        strokeWidth={strokeWidth.toFixed(2)}
+                        viewBox={this.getViewBox(strokeWidth)}
+                    >
                         <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
                         <path
                             className={Classes.SPINNER_HEAD}
@@ -95,7 +101,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
                             strokeDashoffset={strokeOffset}
                         />
                     </svg>
-                </span>
+                </TagName>
             </TagName>
         );
     }
@@ -106,6 +112,10 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
         }
     }
 
+    /**
+     * Resolve size to a pixel value.
+     * Size can be set by className, props, default, or minimum constant.
+     */
     private getSize() {
         const { className = "", size } = this.props;
         if (size == null) {
@@ -118,5 +128,13 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
             return Spinner.SIZE_STANDARD;
         }
         return Math.max(MIN_SIZE, size);
+    }
+
+    /** Compute viewbox such that stroked track sits exactly at edge of image frame. */
+    private getViewBox(strokeWidth: number) {
+        const radius = R + strokeWidth / 2;
+        const viewBoxX = (50 - radius).toFixed(2);
+        const viewBoxWidth = (radius * 2).toFixed(2);
+        return `${viewBoxX} ${viewBoxX} ${viewBoxWidth} ${viewBoxWidth}`;
     }
 }
