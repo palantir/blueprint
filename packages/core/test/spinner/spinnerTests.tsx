@@ -19,10 +19,11 @@ describe("Spinner", () => {
         assert.lengthOf(root.find("path"), 2);
     });
 
-    it("tagName determines root tag", () => {
+    it("tagName determines both container elements", () => {
         const tagName = "article";
         const root = mount(<Spinner tagName={tagName} />);
         assert.isTrue(root.is({ tagName }));
+        assert.lengthOf(root.find(tagName), 2);
     });
 
     it("Classes.LARGE/SMALL determine default size", () => {
@@ -55,6 +56,15 @@ describe("Spinner", () => {
             `missing class ${Classes.SPINNER_NO_SPIN}`,
         );
         assertStrokePercent(root, 0.35);
+    });
+
+    it("viewBox adjusts based on size", () => {
+        function viewBox(size: number) {
+            return mount(<Spinner size={size} />)
+                .find("svg")
+                .prop("viewBox");
+        }
+        assert.notEqual(viewBox(Spinner.SIZE_SMALL), viewBox(Spinner.SIZE_LARGE), "expected different viewBoxes");
     });
 
     function assertStrokePercent(wrapper: ReactWrapper<any, {}>, percent: number) {
