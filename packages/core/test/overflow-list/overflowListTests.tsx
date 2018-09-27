@@ -128,6 +128,15 @@ describe("<OverflowList>", function(this) {
             await list.setWidth(22).waitForResize();
             assert.isTrue(list.onOverflow.notCalled, "should not invoke");
         });
+
+        it("invoked when items change", async () => {
+            const list = await overflowList(22).waitForResize();
+            // copy of same items so overflow state should end up the same.
+            await list.setProps({ items: [...ITEMS] }).waitForResize();
+            assert.isTrue(list.onOverflow.calledTwice, "should be called twice");
+            const [one, two] = list.onOverflow.args;
+            assert.sameDeepMembers(one, two, "items should be the same");
+        });
     });
 
     function renderOverflow(items: ITestItem[]) {

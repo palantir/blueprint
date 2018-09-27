@@ -88,8 +88,8 @@ export interface IOverflowListState<T> {
      * @internal don't expose the type
      */
     direction: OverflowDirection;
-    /** Remember the last completed overflow to dedupe `onOverflow` calls during smooth resizing. */
-    lastOverflow?: T[];
+    /** Length of last overflow to dedupe `onOverflow` calls during smooth resizing. */
+    lastOverflowCount: number;
     overflow: T[];
     visible: T[];
 }
@@ -108,6 +108,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
 
     public state: IOverflowListState<T> = {
         direction: OverflowDirection.NONE,
+        lastOverflowCount: -1,
         overflow: [],
         visible: this.props.items,
     };
@@ -142,7 +143,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             // reset visible state if the above props change.
             this.setState({
                 direction: OverflowDirection.GROW,
-                lastOverflow: undefined,
+                lastOverflowCount: -1,
                 overflow: [],
                 visible: nextProps.items,
             });
@@ -151,17 +152,14 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
 
     public componentDidUpdate(_prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
         this.repartition(false);
+        const { direction, overflow, lastOverflowCount } = this.state;
         if (
             // if a resize operation has just completed (transition to NONE)
-            this.state.direction === OverflowDirection.NONE &&
-            this.state.direction !== prevState.direction &&
-            // shrink operation does not require checking last items
-            (prevState.direction === OverflowDirection.SHRINK ||
-                // if current overflow is different from last completed state
-                this.state.lastOverflow == null ||
-                this.state.lastOverflow.some((x, i) => x !== this.state.overflow[i]))
+            direction === OverflowDirection.NONE &&
+            direction !== prevState.direction &&
+            (lastOverflowCount == null || overflow.length !== lastOverflowCount)
         ) {
-            safeInvoke(this.props.onOverflow, this.state.overflow);
+            safeInvoke(this.props.onOverflow, overflow);
         }
     }
 
@@ -206,7 +204,8 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             this.setState(state => ({
                 direction: OverflowDirection.GROW,
                 // store last overflow if this is the beginning of a resize (for check in `update()`).
-                lastOverflow: state.direction === OverflowDirection.NONE ? state.overflow : state.lastOverflow,
+                lastOverflowCount:
+                    state.direction === OverflowDirection.NONE ? state.overflow.length : state.lastOverflowCount,
                 overflow: [],
                 visible: this.props.items,
             }));
