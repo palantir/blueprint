@@ -151,8 +151,8 @@ $control-group-stack: (
 
 @mixin pt-input-small() {
   height: $pt-input-height-small;
-  padding-right: 6px;
-  padding-left: 6px;
+  padding-right: $pt-grid-size * 0.6;
+  padding-left: $pt-grid-size * 0.6;
   line-height: $pt-input-height-small;
   font-size: $pt-font-size-small;
 
