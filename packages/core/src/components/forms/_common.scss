@@ -6,6 +6,7 @@
 @import "../button/common";
 
 $input-padding-horizontal: $pt-grid-size !default;
+$input-small-padding: $pt-grid-size * 0.7 !default;
 $input-font-weight: 400 !default;
 $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 
@@ -151,8 +152,8 @@ $control-group-stack: (
 
 @mixin pt-input-small() {
   height: $pt-input-height-small;
-  padding-right: $pt-grid-size * 0.6;
-  padding-left: $pt-grid-size * 0.6;
+  padding-right: $input-padding-horizontal / 2;
+  padding-left: $input-padding-horizontal / 2;
   line-height: $pt-input-height-small;
   font-size: $pt-font-size-small;
 
