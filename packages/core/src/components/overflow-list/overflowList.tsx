@@ -108,7 +108,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
 
     public state: IOverflowListState<T> = {
         direction: OverflowDirection.NONE,
-        lastOverflowCount: -1,
+        lastOverflowCount: 0,
         overflow: [],
         visible: this.props.items,
     };
@@ -143,7 +143,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             // reset visible state if the above props change.
             this.setState({
                 direction: OverflowDirection.GROW,
-                lastOverflowCount: -1,
+                lastOverflowCount: 0,
                 overflow: [],
                 visible: nextProps.items,
             });
@@ -157,7 +157,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             // if a resize operation has just completed (transition to NONE)
             direction === OverflowDirection.NONE &&
             direction !== prevState.direction &&
-            (lastOverflowCount == null || overflow.length !== lastOverflowCount)
+            overflow.length !== lastOverflowCount
         ) {
             safeInvoke(this.props.onOverflow, overflow);
         }
