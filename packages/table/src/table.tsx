@@ -1828,7 +1828,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         const { selectedRegionTransform } = this.props;
         if (selectedRegionTransform != null) {
-            // tslint:disable-next-line no-unnecessary-callback-wrapper
             newSelectionRegions.forEach(region => selectedRegionTransform(region, undefined));
         }
         this.handleSelection(newSelectionRegions);
