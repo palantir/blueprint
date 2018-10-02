@@ -1827,10 +1827,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         const { selectedRegionTransform } = this.props;
-        if (selectedRegionTransform != null) {
-            newSelectionRegions.forEach(region => selectedRegionTransform(region, undefined));
-        }
-        this.handleSelection(newSelectionRegions);
+        const transformedSelectionRegions =
+            selectedRegionTransform != null
+                ? newSelectionRegions.map(region => selectedRegionTransform(region, undefined))
+                : newSelectionRegions;
+        this.handleSelection(transformedSelectionRegions);
         this.handleFocus(newFocusedCell);
 
         // keep the focused cell in view
