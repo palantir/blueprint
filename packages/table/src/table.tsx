@@ -1829,7 +1829,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { selectedRegionTransform } = this.props;
         const transformedSelectionRegions =
             selectedRegionTransform != null
-                ? newSelectionRegions.map(region => selectedRegionTransform(region, undefined))
+                ? newSelectionRegions.map(region => selectedRegionTransform(region, e))
                 : newSelectionRegions;
         this.handleSelection(transformedSelectionRegions);
         this.handleFocus(newFocusedCell);
