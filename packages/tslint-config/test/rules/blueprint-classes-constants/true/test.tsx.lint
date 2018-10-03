@@ -1,17 +1,17 @@
 apt-get
 at 4pt-size
 "script-source pt-large apt-get"
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  [msg]
+               ~~~~~~~~  [msg]
 `script-source pt-large apt-get`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  [msg]
+               ~~~~~~~~  [msg]
 `${template} pt-large`
-~~~~~~~~~~~~~~~~~~~~~~  [msg]
+             ~~~~~~~~  [msg]
 
 <Button className="my-class pt-large" />
-                  ~~~~~~~~~~~~~~~~~~~ [msg]
+                            ~~~~~~~~ [msg]
 
 classNames(Classes.BUTTON, "pt-intent-primary")
-                           ~~~~~~~~~~~~~~~~~~~ [msg]
+                            ~~~~~~~~~~~~~~~~~ [msg]
 
 <pt-popover> // angular directive
 

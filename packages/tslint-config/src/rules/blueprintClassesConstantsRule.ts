@@ -28,13 +28,18 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
 }
 
+interface IMatchingString {
+    match: string;
+    index: number;
+}
+
 function walk(ctx: Lint.WalkContext<void>) {
     let shouldFixImports = true;
     return ts.forEachChild(ctx.sourceFile, callback);
 
     function callback(node: ts.Node): void {
         if (ts.isStringLiteralLike(node) || ts.isTemplateExpression(node)) {
-            const ptMatches: string[] = [];
+            const ptMatches: IMatchingString[] = [];
             const fullText = node.getFullText();
             let currentMatch: RegExpExecArray | null;
             // tslint:disable-next-line:no-conditional-assignment
@@ -46,15 +51,15 @@ function walk(ctx: Lint.WalkContext<void>) {
                 if (blueprintClassName == null || shouldIgnoreBlueprintClass(blueprintClassName)) {
                     continue;
                 } else {
-                    ptMatches.push(fullBlueprintName);
+                    ptMatches.push({ match: fullBlueprintName, index: currentMatch.index });
                 }
             }
             if (ptMatches.length > 0) {
-                // we have to fail the entire node so that we can make multiple replacements, if necessary
-                ctx.addFailureAtNode(
-                    node,
+                ctx.addFailureAt(
+                    node.getFullStart() + ptMatches[0].index + 1,
+                    ptMatches[0].match.length,
                     Rule.FAILURE_STRING,
-                    getReplacement(node, ptMatches, ctx.sourceFile, shouldFixImports),
+                    getReplacement(node, ptMatches.map(p => p.match), ctx.sourceFile, shouldFixImports),
                 );
                 shouldFixImports = false;
             }
