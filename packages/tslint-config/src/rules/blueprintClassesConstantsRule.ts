@@ -45,10 +45,9 @@ function walk(ctx: Lint.WalkContext<void>) {
             // tslint:disable-next-line:no-conditional-assignment
             while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(fullText)) != null) {
                 const fullBlueprintName = currentMatch[1]; // e.g. pt-breadcrumb
-                const blueprintClassName = getBlueprintClassName(fullBlueprintName); // e.g. breadcrumb
 
                 // See if we should ignore this class or not.
-                if (blueprintClassName == null || shouldIgnoreBlueprintClass(blueprintClassName)) {
+                if (fullBlueprintName == null || shouldIgnorePrefixedClass(fullBlueprintName)) {
                     continue;
                 } else {
                     ptMatches.push({ match: fullBlueprintName, index: currentMatch.index });
@@ -135,14 +134,7 @@ function convertPtClassName(text: string) {
 
 const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-[\w-]+)/g;
 
-function getBlueprintClassName(fullClassName: string): string | undefined {
-    if (fullClassName.length < 3) {
-        return undefined;
-    } else {
-        return fullClassName.slice(3);
-    }
-}
-
-function shouldIgnoreBlueprintClass(blueprintClassName: string): boolean {
-    return blueprintClassName.startsWith("icon");
+function shouldIgnorePrefixedClass(blueprintClassName: string): boolean {
+    // tslint:disable-next-line:blueprint-classes-constants
+    return blueprintClassName.startsWith("pt-icon");
 }
