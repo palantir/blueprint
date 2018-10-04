@@ -123,7 +123,6 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .#{$ns}-tree-node-secondary-label {
   padding: 0 ($pt-grid-size / 2);
-  line-height: $tree-row-height;
   user-select: none;
 
   .#{$ns}-popover-wrapper,
@@ -157,8 +156,10 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
     background-color: rgba($gray1, 0.3);
   }
 
-  #{$icon-classes} {
-    color: $pt-dark-icon-color;
+  .#{$ns}-tree {
+    #{$icon-classes} {
+      color: $pt-dark-icon-color;
+    }
   }
 
   .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
