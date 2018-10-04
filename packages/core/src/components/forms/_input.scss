@@ -91,20 +91,25 @@ Markup:
 Styleguide textarea
 */
 
-// stylelint-disable selector-no-qualifying-type
+// stylelint-disable-next-line selector-no-qualifying-type
 textarea.#{$ns}-input {
   max-width: 100%;
-  height: auto;
   padding: $input-padding-horizontal;
-  line-height: $pt-line-height;
 
-  &.#{$ns}-large {
-    line-height: $pt-line-height;
-    font-size: $pt-font-size-large;
+  &,
+  &.#{$ns}-large,
+  &.#{$ns}-small {
+    // override input styles for these modifiers.
+    // line-height is needed to center text on <input> but not on multiline <textarea>
+    height: auto;
+    line-height: inherit;
+  }
+
+  &.#{$ns}-small {
+    padding: $input-small-padding;
   }
 
   .#{$ns}-dark & {
     @include pt-dark-input();
   }
 }
-// stylelint-enable selector-no-qualifying-type
