@@ -1,0 +1,2 @@
+// Make sure that this rule doesn't modify icon classes, that's handled elsewhere.
+<span className"pt-icon pt-icon-folder-open" />
