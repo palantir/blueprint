@@ -85,25 +85,13 @@ function getReplacement(
 
     if (utils.isStringLiteral(node)) {
         // remove all illegal classnames, then slice off the quotes, and trim any remaining white space
-        const stringWithoutPtClasses = ptClassStrings
-            .reduce((value, cssClass) => {
-                return value.replace(cssClass, "");
-            }, node.getText())
-            .slice(1, -1)
-            .trim();
-        const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
-        if (stringWithoutPtClasses.length > 0) {
-            const replacement = `\`${templateStrings} ${stringWithoutPtClasses}\``;
-            replacements.push(
-                new Lint.Replacement(node.getStart(), node.getWidth(), wrapForParent(replacement, node, node.parent)),
-            );
-        } else {
-            const replacement =
-                ptClassStrings.length === 1 ? convertPtClassName(ptClassStrings[0]) : `\`${templateStrings}\``;
-            replacements.push(
-                new Lint.Replacement(node.getStart(), node.getWidth(), wrapForParent(replacement, node, node.parent)),
-            );
-        }
+        replacements.push(
+            new Lint.Replacement(
+                node.getStart(),
+                node.getWidth(),
+                wrapForParent(getLiteralReplacement(node, ptClassStrings), node),
+            ),
+        );
     } else if (utils.isTemplateExpression(node) || utils.isNoSubstitutionTemplateLiteral(node)) {
         let replacementText = node.getText();
         ptClassStrings.forEach(classString => {
@@ -115,22 +103,41 @@ function getReplacement(
     return replacements;
 }
 
-function wrapForParent(statement: string, node: ts.Node, parentNode: ts.Node | undefined) {
-    if (parentNode === undefined) {
+/** Produce replacement text for a string literal that may contain invalid classes. */
+function getLiteralReplacement(node: ts.StringLiteral, ptClassStrings: string[]) {
+    // remove all illegal classnames, then slice off the quotes, and trim any remaining white space
+    const stringWithoutPtClasses = ptClassStrings
+        .reduce((value, cssClass) => value.replace(cssClass, ""), node.getText())
+        .slice(1, -1)
+        .trim();
+    // special case: only one invalid class name.
+    if (stringWithoutPtClasses.length === 0 && ptClassStrings.length === 1) {
+        return convertPtClassName(ptClassStrings[0]);
+    }
+    // otherwise produce a `template string`
+    const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
+    return `\`${[templateStrings, stringWithoutPtClasses].join(" ").trim()}\``;
+}
+
+/** Wrap the given statement based on the type of the parent node: JSX props, expressions, etc. */
+function wrapForParent(statement: string, node: ts.Node) {
+    const parent = node.parent;
+    if (parent === undefined) {
         return statement;
-    } else if (utils.isJsxAttribute(parentNode)) {
+    } else if (utils.isJsxAttribute(parent)) {
         return `{${statement}}`;
-    } else if (utils.isExpressionStatement(parentNode)) {
+    } else if (utils.isExpressionStatement(parent)) {
         return `[${statement}]`;
         // If we're changing the key, it will be child index 0 and we need to wrap it.
         // Else, we're changing a value, and there's no need to wrap
-    } else if (utils.isPropertyAssignment(parentNode) && parentNode.getChildAt(0) === node) {
+    } else if (utils.isPropertyAssignment(parent) && parent.getChildAt(0) === node) {
         return `[${statement}]`;
     } else {
         return statement;
     }
 }
 
+/** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
         .replace("pt-", "")
