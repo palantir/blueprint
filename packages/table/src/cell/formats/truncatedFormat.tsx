@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Icon, IProps, Popover, Position } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Icon, IProps, Popover, Position } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -131,6 +131,8 @@ export interface ITruncatedFormatState {
 }
 
 export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, ITruncatedFormatState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.TruncatedFormat`;
+
     public static defaultProps: ITruncatedFormatProps = {
         detectTruncation: false,
         measureByApproxOptions: {
