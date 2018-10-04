@@ -55,13 +55,26 @@ function walk(ctx: Lint.WalkContext<void>) {
                 }
             }
             if (ptMatches.length > 0) {
+                const ptClassStrings = ptMatches.map(m => m.match);
+                const replacementText = utils.isStringLiteral(node)
+                    ? // string literal likely becomes template string so we may need to change how it is assigned
+                      wrapForParent(getLiteralReplacement(node.getText(), ptClassStrings), node)
+                    : getTemplateReplacement(node.getText(), ptClassStrings);
+
+                const replacements = [new Lint.Replacement(node.getStart(), node.getWidth(), replacementText)];
+                // We may need to add an import statement for `Classes` constants.
+                // Avoid adding the statement more than once.
+                if (shouldFixImports) {
+                    replacements.unshift(addImportToFile(ctx.sourceFile, ["Classes"], "@blueprintjs/core"));
+                    shouldFixImports = false;
+                }
+
                 ctx.addFailureAt(
                     node.getFullStart() + ptMatches[0].index + 1,
                     ptMatches[0].match.length,
                     Rule.FAILURE_STRING,
-                    getReplacement(node, ptMatches.map(p => p.match), ctx.sourceFile, shouldFixImports),
+                    replacements,
                 );
-                shouldFixImports = false;
             }
         }
 
@@ -69,54 +82,28 @@ function walk(ctx: Lint.WalkContext<void>) {
     }
 }
 
-function getReplacement(
-    node: ts.StringLiteralLike | ts.TemplateExpression,
-    ptClassStrings: string[],
-    file: ts.SourceFile,
-    shouldFixImport: boolean,
-) {
-    const replacements: Lint.Replacement[] = [];
-
-    // We may need to add a blueprint import to the top of the file. We only want to do this once per file, otherwise,
-    // we'll keep stacking imports and mess things up.
-    if (shouldFixImport) {
-        replacements.push(addImportToFile(file, ["Classes"], "@blueprintjs/core"));
-    }
-
-    if (utils.isStringLiteral(node)) {
-        // remove all illegal classnames, then slice off the quotes, and trim any remaining white space
-        replacements.push(
-            new Lint.Replacement(
-                node.getStart(),
-                node.getWidth(),
-                wrapForParent(getLiteralReplacement(node, ptClassStrings), node),
-            ),
-        );
-    } else if (utils.isTemplateExpression(node) || utils.isNoSubstitutionTemplateLiteral(node)) {
-        let replacementText = node.getText();
-        ptClassStrings.forEach(classString => {
-            const classReplacement = `\${${convertPtClassName(classString)}}`;
-            replacementText = replacementText.replace(classString, classReplacement);
-        });
-        replacements.push(new Lint.Replacement(node.getStart(), node.getWidth(), replacementText));
-    }
-    return replacements;
-}
-
-/** Produce replacement text for a string literal that may contain invalid classes. */
-function getLiteralReplacement(node: ts.StringLiteral, ptClassStrings: string[]) {
+/** Produce replacement text for a string literal that contains invalid classes. */
+function getLiteralReplacement(className: string, ptClassStrings: string[]) {
     // remove all illegal classnames, then slice off the quotes, and trim any remaining white space
     const stringWithoutPtClasses = ptClassStrings
-        .reduce((value, cssClass) => value.replace(cssClass, ""), node.getText())
+        .reduce((value, cssClass) => value.replace(cssClass, ""), className)
         .slice(1, -1)
         .trim();
-    // special case: only one invalid class name.
+    // special case: only one invalid class name
     if (stringWithoutPtClasses.length === 0 && ptClassStrings.length === 1) {
         return convertPtClassName(ptClassStrings[0]);
     }
     // otherwise produce a `template string`
     const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
     return `\`${[templateStrings, stringWithoutPtClasses].join(" ").trim()}\``;
+}
+
+/** Produce replacement text for a `template string` that contains invalid classes. */
+function getTemplateReplacement(className: string, ptClassStrings: string[]) {
+    return ptClassStrings.reduce(
+        (value, cssClass) => value.replace(cssClass, `\${${convertPtClassName(cssClass)}}`),
+        className,
+    );
 }
 
 /** Wrap the given statement based on the type of the parent node: JSX props, expressions, etc. */
