@@ -6,7 +6,7 @@
 @import "../button/common";
 
 $input-padding-horizontal: $pt-grid-size !default;
-$input-small-padding: $pt-grid-size * 0.7 !default;
+$input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;
 $input-font-weight: 400 !default;
 $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 
@@ -159,7 +159,7 @@ $control-group-stack: (
 
   &[type="search"],
   &.#{$ns}-round {
-    padding: 0 ($input-padding-horizontal * 1.5);
+    padding: 0 ($input-small-padding * 1.5);
   }
 }
 
