@@ -44,8 +44,10 @@ Styleguide tree
 $tree-row-height: $pt-grid-size * 3 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
-.#{$ns}-tree #{$icon-classes} {
-  color: $pt-icon-color;
+.#{$ns}-tree {
+  #{$icon-classes} {
+    color: $pt-icon-color;
+  }
 }
 
 .#{$ns}-tree-node-list {
@@ -92,7 +94,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   @include pt-icon-colors();
   transform: rotate(0deg);
   cursor: pointer;
-  text-align: center;
+  padding: $tree-icon-spacing;
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
 
   &.#{$ns}-tree-node-caret-open {
@@ -102,10 +104,6 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   // CSS API support
   &.#{$ns}-icon-standard::before {
     content: $pt-icon-chevron-right;
-  }
-
-  .#{$ns}-icon {
-    margin: $tree-icon-spacing;
   }
 }
 

@@ -106,6 +106,12 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
             `${Classes.TREE_NODE_CONTENT}-${this.props.depth}`,
         );
 
+        const caret = showCaret ? (
+            <Icon className={caretClasses} onClick={this.handleCaretClick} icon={"chevron-right"} />
+        ) : (
+            <span className={caretClasses} />
+        );
+
         return (
             <li className={classes}>
                 <div
@@ -115,9 +121,7 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
                     onDoubleClick={this.handleDoubleClick}
                     ref={this.handleContentRef}
                 >
-                    <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : undefined}>
-                        {showCaret && <Icon icon="chevron-right" />}
-                    </span>
+                    {caret}
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
