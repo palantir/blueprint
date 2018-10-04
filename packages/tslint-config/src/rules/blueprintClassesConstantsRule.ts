@@ -31,28 +31,15 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
 }
 
-interface IMatchingString {
-    match: string;
-    index: number;
-}
-
 function walk(ctx: Lint.WalkContext<void>) {
     let shouldFixImports = true;
     return ts.forEachChild(ctx.sourceFile, callback);
 
     function callback(node: ts.Node): void {
         if (ts.isStringLiteralLike(node) || ts.isTemplateExpression(node)) {
-            const ptMatches: IMatchingString[] = [];
-            const fullText = node.getFullText();
-
-            let currentMatch: RegExpExecArray | null;
-            // tslint:disable-next-line:no-conditional-assignment
-            while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(fullText)) != null) {
-                ptMatches.push({ match: currentMatch[1], index: currentMatch.index });
-            }
-
-            if (ptMatches.length > 0) {
-                const ptClassStrings = ptMatches.map(m => m.match);
+            const prefixMatches = getAllMatches(node.getFullText());
+            if (prefixMatches.length > 0) {
+                const ptClassStrings = prefixMatches.map(m => m.match);
                 const replacementText = utils.isStringLiteral(node)
                     ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
                       wrapForParent(getLiteralReplacement(node.getText(), ptClassStrings), node)
@@ -66,8 +53,8 @@ function walk(ctx: Lint.WalkContext<void>) {
                 }
 
                 ctx.addFailureAt(
-                    node.getFullStart() + ptMatches[0].index + 1,
-                    ptMatches[0].match.length,
+                    node.getFullStart() + prefixMatches[0].index + 1,
+                    prefixMatches[0].match.length,
                     Rule.FAILURE_STRING,
                     replacements,
                 );
@@ -76,6 +63,17 @@ function walk(ctx: Lint.WalkContext<void>) {
 
         return ts.forEachChild(node, callback);
     }
+}
+
+/** Returns array of all invalid string matches detected in the given className string. */
+function getAllMatches(className: string) {
+    const ptMatches = [];
+    let currentMatch: RegExpMatchArray | null;
+    // tslint:disable-next-line:no-conditional-assignment
+    while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
+        ptMatches.push({ match: currentMatch[1], index: currentMatch.index });
+    }
+    return ptMatches;
 }
 
 /** Produce replacement text for a string literal that contains invalid classes. */
