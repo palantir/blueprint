@@ -9,8 +9,9 @@ import * as utils from "tsutils";
 import * as ts from "typescript";
 import { addImportToFile } from "./utils/addImportToFile";
 
-// find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules)
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-(?!icon-?)[\w-]+)/g;
+// find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
+// currently support pt- and bp3- prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]((pt|bp3)-(?!icon-?)[\w-]+)/g;
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -121,7 +122,7 @@ function wrapForParent(statement: string, node: ts.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace("pt-", "")
+        .replace(/(pt|bp3)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;
