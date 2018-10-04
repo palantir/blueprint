@@ -43,28 +43,27 @@ function walk(ctx: Lint.WalkContext<void>) {
         if (ts.isStringLiteralLike(node) || ts.isTemplateExpression(node)) {
             const ptMatches: IMatchingString[] = [];
             const fullText = node.getFullText();
+
             let currentMatch: RegExpExecArray | null;
             // tslint:disable-next-line:no-conditional-assignment
             while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(fullText)) != null) {
-                const fullBlueprintName = currentMatch[1]; // e.g. pt-breadcrumb
-
-                // See if we should ignore this class or not.
-                if (fullBlueprintName == null || shouldIgnorePrefixedClass(fullBlueprintName)) {
-                    continue;
-                } else {
-                    ptMatches.push({ match: fullBlueprintName, index: currentMatch.index });
+                const classNameMatch = currentMatch[1]; // e.g. pt-breadcrumb
+                // skip icon classes as they are handled by a separate rule.
+                // tslint:disable-next-line:blueprint-classes-constants
+                if (classNameMatch != null && !classNameMatch.startsWith("pt-icon")) {
+                    ptMatches.push({ match: classNameMatch, index: currentMatch.index });
                 }
             }
+
             if (ptMatches.length > 0) {
                 const ptClassStrings = ptMatches.map(m => m.match);
                 const replacementText = utils.isStringLiteral(node)
-                    ? // string literal likely becomes template string so we may need to change how it is assigned
+                    ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
                       wrapForParent(getLiteralReplacement(node.getText(), ptClassStrings), node)
                     : getTemplateReplacement(node.getText(), ptClassStrings);
 
                 const replacements = [new Lint.Replacement(node.getStart(), node.getWidth(), replacementText)];
-                // We may need to add an import statement for `Classes` constants.
-                // Avoid adding the statement more than once.
+                // add an import statement for `Classes` constants at most once.
                 if (shouldFixImports) {
                     replacements.unshift(addImportToFile(ctx.sourceFile, ["Classes"], "@blueprintjs/core"));
                     shouldFixImports = false;
@@ -132,9 +131,4 @@ function convertPtClassName(text: string) {
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;
-}
-
-function shouldIgnorePrefixedClass(blueprintClassName: string): boolean {
-    // tslint:disable-next-line:blueprint-classes-constants
-    return blueprintClassName.startsWith("pt-icon");
 }
