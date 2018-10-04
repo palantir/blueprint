@@ -9,6 +9,8 @@ import * as utils from "tsutils";
 import * as ts from "typescript";
 import { addImportToFile } from "./utils/addImportToFile";
 
+const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-[\w-]+)/g;
+
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
         ruleName: "blueprint-classes-constants",
@@ -107,7 +109,7 @@ function getTemplateReplacement(className: string, ptClassStrings: string[]) {
 
 /** Wrap the given statement based on the type of the parent node: JSX props, expressions, etc. */
 function wrapForParent(statement: string, node: ts.Node) {
-    const parent = node.parent;
+    const { parent } = node;
     if (parent === undefined) {
         return statement;
     } else if (utils.isJsxAttribute(parent)) {
@@ -131,8 +133,6 @@ function convertPtClassName(text: string) {
         .toUpperCase();
     return `Classes.${className}`;
 }
-
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-[\w-]+)/g;
 
 function shouldIgnorePrefixedClass(blueprintClassName: string): boolean {
     // tslint:disable-next-line:blueprint-classes-constants
