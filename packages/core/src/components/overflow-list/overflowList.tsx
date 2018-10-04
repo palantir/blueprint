@@ -203,7 +203,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         if (growing) {
             this.setState(state => ({
                 direction: OverflowDirection.GROW,
-                // store last overflow if this is the beginning of a resize (for check in `update()`).
+                // store last overflow if this is the beginning of a resize (for check in componentDidUpdate).
                 lastOverflowCount:
                     state.direction === OverflowDirection.NONE ? state.overflow.length : state.lastOverflowCount,
                 overflow: [],
