@@ -84,14 +84,7 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
     }
 
     public render() {
-        const { children, className, hasCaret, icon, isExpanded, isSelected, label } = this.props;
-
-        const showCaret = hasCaret == null ? React.Children.count(children) > 0 : hasCaret;
-        const caretStateClass = isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED;
-        const caretClasses = showCaret
-            ? classNames(Classes.TREE_NODE_CARET, caretStateClass)
-            : Classes.TREE_NODE_CARET_NONE;
-
+        const { children, className, icon, isExpanded, isSelected, label } = this.props;
         const classes = classNames(
             Classes.TREE_NODE,
             {
@@ -106,12 +99,6 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
             `${Classes.TREE_NODE_CONTENT}-${this.props.depth}`,
         );
 
-        const caret = showCaret ? (
-            <Icon className={caretClasses} onClick={this.handleCaretClick} icon={"chevron-right"} />
-        ) : (
-            <span className={caretClasses} />
-        );
-
         return (
             <li className={classes}>
                 <div
@@ -121,7 +108,7 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
                     onDoubleClick={this.handleDoubleClick}
                     ref={this.handleContentRef}
                 >
-                    {caret}
+                    {this.maybeRenderCaret()}
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
@@ -129,6 +116,18 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
                 <Collapse isOpen={isExpanded}>{children}</Collapse>
             </li>
         );
+    }
+
+    private maybeRenderCaret() {
+        const { hasCaret = React.Children.count(this.props.children) > 0 } = this.props;
+        if (hasCaret) {
+            const caretClasses = classNames(
+                Classes.TREE_NODE_CARET,
+                this.props.isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED,
+            );
+            return <Icon className={caretClasses} onClick={this.handleCaretClick} icon={"chevron-right"} />;
+        }
+        return <span className={Classes.TREE_NODE_CARET_NONE} />;
     }
 
     private maybeRenderSecondaryLabel() {

@@ -84,10 +84,7 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .#{$ns}-tree-node-caret,
 .#{$ns}-tree-node-caret-none {
-  position: relative;
-  min-width: $pt-grid-size * 3;
-  // CSS API: override default icon styles, which appear first for some reason
-  line-height: $tree-row-height !important; // stylelint-disable-line declaration-no-important
+  min-width: $tree-row-height;
 }
 
 .#{$ns}-tree-node-caret {
