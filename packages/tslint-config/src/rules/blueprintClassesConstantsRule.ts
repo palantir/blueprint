@@ -79,10 +79,11 @@ function getAllMatches(className: string) {
 
 /** Produce replacement text for a string literal that contains invalid classes. */
 function getLiteralReplacement(className: string, ptClassStrings: string[]) {
-    // remove all illegal classnames, then slice off the quotes, and trim any remaining white space
+    // remove all illegal classnames, then slice off the quotes, then merge & trim any remaining white space
     const stringWithoutPtClasses = ptClassStrings
         .reduce((value, cssClass) => value.replace(cssClass, ""), className)
         .slice(1, -1)
+        .replace(/(\s)+/, "$1")
         .trim();
     // special case: only one invalid class name
     if (stringWithoutPtClasses.length === 0 && ptClassStrings.length === 1) {
