@@ -44,6 +44,12 @@ Styleguide tree
 $tree-row-height: $pt-grid-size * 3 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
+.#{$ns}-tree {
+  #{$icon-classes} {
+    color: $pt-icon-color;
+  }
+}
+
 .#{$ns}-tree-node-list {
   margin: 0;
   padding-left: 0;
@@ -78,17 +84,14 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .#{$ns}-tree-node-caret,
 .#{$ns}-tree-node-caret-none {
-  position: relative;
-  min-width: $pt-grid-size * 3;
-  // CSS API: override default icon styles, which appear first for some reason
-  line-height: $tree-row-height !important; // stylelint-disable-line declaration-no-important
+  min-width: $tree-row-height;
 }
 
 .#{$ns}-tree-node-caret {
   @include pt-icon-colors();
   transform: rotate(0deg);
   cursor: pointer;
-  text-align: center;
+  padding: $tree-icon-spacing;
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
 
   &.#{$ns}-tree-node-caret-open {
@@ -99,16 +102,11 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   &.#{$ns}-icon-standard::before {
     content: $pt-icon-chevron-right;
   }
-
-  .#{$ns}-icon {
-    margin: $tree-icon-spacing;
-  }
 }
 
 .#{$ns}-tree-node-icon {
   position: relative;
   margin-right: $tree-icon-spacing;
-  color: $pt-icon-color;
 }
 
 .#{$ns}-tree-node-label {
@@ -125,8 +123,13 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .#{$ns}-tree-node-secondary-label {
   padding: 0 ($pt-grid-size / 2);
-  line-height: $tree-row-height;
   user-select: none;
+
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover-target {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
@@ -153,8 +156,10 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
     background-color: rgba($gray1, 0.3);
   }
 
-  .#{$ns}-tree-node-icon {
-    color: $pt-dark-icon-color;
+  .#{$ns}-tree {
+    #{$icon-classes} {
+      color: $pt-dark-icon-color;
+    }
   }
 
   .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
