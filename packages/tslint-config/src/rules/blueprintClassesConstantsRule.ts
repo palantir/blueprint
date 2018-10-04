@@ -9,7 +9,8 @@ import * as utils from "tsutils";
 import * as ts from "typescript";
 import { addImportToFile } from "./utils/addImportToFile";
 
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-[\w-]+)/g;
+// find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules)
+const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-(?!icon-?)[\w-]+)/g;
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -47,12 +48,7 @@ function walk(ctx: Lint.WalkContext<void>) {
             let currentMatch: RegExpExecArray | null;
             // tslint:disable-next-line:no-conditional-assignment
             while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(fullText)) != null) {
-                const classNameMatch = currentMatch[1]; // e.g. pt-breadcrumb
-                // skip icon classes as they are handled by a separate rule.
-                // tslint:disable-next-line:blueprint-classes-constants
-                if (classNameMatch != null && !classNameMatch.startsWith("pt-icon")) {
-                    ptMatches.push({ match: classNameMatch, index: currentMatch.index });
-                }
+                ptMatches.push({ match: currentMatch[1], index: currentMatch.index });
             }
 
             if (ptMatches.length > 0) {
@@ -63,8 +59,8 @@ function walk(ctx: Lint.WalkContext<void>) {
                     : getTemplateReplacement(node.getText(), ptClassStrings);
 
                 const replacements = [new Lint.Replacement(node.getStart(), node.getWidth(), replacementText)];
-                // add an import statement for `Classes` constants at most once.
                 if (shouldFixImports) {
+                    // add an import statement for `Classes` constants at most once.
                     replacements.unshift(addImportToFile(ctx.sourceFile, ["Classes"], "@blueprintjs/core"));
                     shouldFixImports = false;
                 }
