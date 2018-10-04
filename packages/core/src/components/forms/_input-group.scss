@@ -85,10 +85,13 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   // direct descendant to exclude icons in buttons
   > .#{$ns}-icon {
-    @include pt-icon($pt-icon-size-standard);
     // bump icon up so it sits above input
     z-index: 1;
     color: $pt-icon-color;
+
+    &:empty {
+      @include pt-icon($pt-icon-size-standard);
+    }
   }
 
   // adjusting the margin of spinners in input groups
