@@ -3,6 +3,7 @@
     "compilerOptions": {
         "declaration": false,
         "lib": ["dom", "es5", "es6"],
-        "outDir": "../dist"
+        "outDir": "../dist",
+        "sourceMap": false
     }
 }

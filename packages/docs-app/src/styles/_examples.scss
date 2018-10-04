@@ -47,6 +47,26 @@
   }
 }
 
+#{example("FormGroupExample")} {
+  .docs-example {
+    flex-direction: column;
+  }
+
+  .#{$ns}-form-content {
+    width: $pt-grid-size * 20;
+  }
+}
+
+#{example("MenuExample")} .#{$ns}-menu {
+  max-width: 280px;
+}
+
+#{example("TagExample")} {
+  .docs-example {
+    flex-direction: column;
+  }
+}
+
 .docs-context-menu-example {
   .docs-example {
     flex-direction: column;
@@ -185,8 +205,15 @@
   }
 }
 
-.docs-menu-example .#{$ns}-menu {
-  max-width: 280px;
+#{example("OverflowListExample")} {
+  .#{$ns}-card {
+    margin: 0;
+    min-width: $pt-grid-size * 7;
+  }
+
+  .#{$ns}-overflow-list {
+    white-space: nowrap;
+  }
 }
 
 // prettier-ignore
@@ -239,6 +266,48 @@
     > p {
       margin-top: $pt-grid-size;
     }
+  }
+}
+
+#{example("PopoverDismissExample")} {
+  height: 220px;
+
+  .docs-reopen-message {
+    width: 240px;
+    text-align: center;
+  }
+
+  .#{$ns}-popover-content {
+    padding: $pt-grid-size * 2;
+
+    .#{$ns}-button:not(:first-child) {
+      margin-left: $pt-grid-size;
+    }
+
+    .#{$ns}-callout {
+      margin: $pt-grid-size 0;
+    }
+  }
+}
+
+#{example("PanelStackExample")} {
+  .docs-panel-stack-example {
+    box-shadow: $pt-elevation-shadow-0;
+    width: 300px;
+    height: 240px;
+  }
+
+  .docs-panel-stack-contents-example {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  ul {
+    max-height: 240px;
+    overflow: auto;
   }
 }
 
@@ -353,6 +422,7 @@
     $vertical-padding: $pt-grid-size * 2;
 
     display: flex;
+    align-items: flex-start;
     justify-content: center;
     // wide enough to allow scrolling, but wide enough to let the popover target
     // fully leave the viewport.

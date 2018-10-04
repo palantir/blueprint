@@ -92,11 +92,20 @@ Page layout elements
 }
 
 .docs-page {
+  position: relative;
   max-width: $content-width;
   padding-top: 0;
   padding-right: $container-padding;
   padding-bottom: $content-padding * 2;
   padding-left: $content-padding * 2;
+}
+
+.docs-page-actions {
+  position: absolute;
+  top: $container-padding;
+  right: 0;
+  // above h1 heading
+  z-index: 1;
 }
 
 /*
@@ -141,19 +150,6 @@ Lefthand navigation menu
   @include pt-flex-container(row);
   flex-wrap: wrap;
   align-items: center;
-}
-
-.docs-nav-section {
-  margin-top: $pt-grid-size * 2;
-  margin-bottom: $pt-grid-size;
-  text-transform: uppercase;
-  font-size: small;
-  font-weight: 600;
-
-  // dedent menu under a section title
-  + .docs-nav-menu {
-    margin-left: 0;
-  }
 }
 
 // empty state item is hidden by default...

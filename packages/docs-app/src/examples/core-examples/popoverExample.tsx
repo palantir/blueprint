@@ -14,6 +14,7 @@ import {
     Code,
     FormGroup,
     H5,
+    HTMLSelect,
     Intent,
     Label,
     Menu,
@@ -41,8 +42,10 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const VALID_POSITIONS: Array<Position | "auto"> = [
+const VALID_POSITIONS: Array<Position | "auto" | "auto-start" | "auto-end"> = [
     "auto",
+    "auto-start",
+    "auto-end",
     Position.TOP_LEFT,
     Position.TOP,
     Position.TOP_RIGHT,
@@ -57,8 +60,6 @@ const VALID_POSITIONS: Array<Position | "auto"> = [
     Position.LEFT_BOTTOM,
 ];
 
-const POSITION_OPTIONS = VALID_POSITIONS.map(p => <option key={p} value={p} children={p} />);
-
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
 export interface IPopoverExampleState {
@@ -70,7 +71,7 @@ export interface IPopoverExampleState {
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
-    position?: Position | "auto";
+    position?: Position | "auto" | "auto-start" | "auto-end";
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -100,7 +101,9 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
-    private handlePositionChange = handleStringChange((position: Position | "auto") => this.setState({ position }));
+    private handlePositionChange = handleStringChange((position: Position | "auto" | "auto-start" | "auto-end") =>
+        this.setState({ position }),
+    );
     private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
         this.setState({
             modifiers: {
@@ -157,22 +160,21 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                     label="Position when opened"
                     labelFor="position"
                 >
-                    <div className={Classes.SELECT}>
-                        <select value={this.state.position} onChange={this.handlePositionChange}>
-                            {POSITION_OPTIONS}
-                        </select>
-                    </div>
+                    <HTMLSelect
+                        value={this.state.position}
+                        onChange={this.handlePositionChange}
+                        options={VALID_POSITIONS}
+                    />
                 </FormGroup>
-                <Label text="Example content">
-                    <div className={Classes.SELECT}>
-                        <select value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
-                            <option value="0">Text</option>
-                            <option value="1">Input</option>
-                            <option value="2">Slider</option>
-                            <option value="3">Menu</option>
-                            <option value="4">Empty</option>
-                        </select>
-                    </div>
+                <Label>
+                    Example content
+                    <HTMLSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
+                        <option value="0">Text</option>
+                        <option value="1">Input</option>
+                        <option value="2">Slider</option>
+                        <option value="3">Menu</option>
+                        <option value="4">Empty</option>
+                    </HTMLSelect>
                 </Label>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
@@ -202,19 +204,18 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                     onChange={this.getModifierChangeHandler("preventOverflow")}
                 >
                     <br />
-                    <div className={Classes.SELECT} style={{ marginTop: 5 }}>
-                        <select
-                            disabled={!preventOverflow.enabled}
-                            value={preventOverflow.boundariesElement.toString()}
-                            onChange={this.handleBoundaryChange}
-                        >
-                            <option value="scrollParent">scrollParent</option>
-                            <option value="viewport">viewport</option>
-                            <option value="window">window</option>
-                        </select>
-                    </div>
+                    <div style={{ marginTop: 5 }} />
+                    <HTMLSelect
+                        disabled={!preventOverflow.enabled}
+                        value={preventOverflow.boundariesElement.toString()}
+                        onChange={this.handleBoundaryChange}
+                    >
+                        <option value="scrollParent">scrollParent</option>
+                        <option value="viewport">viewport</option>
+                        <option value="window">window</option>
+                    </HTMLSelect>
                 </Switch>
-                <Label text={undefined}>
+                <Label>
                     <AnchorButton
                         href={POPPER_DOCS}
                         fill={true}

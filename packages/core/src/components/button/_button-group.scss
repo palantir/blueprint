@@ -9,35 +9,33 @@
 Button groups
 
 Markup:
-<div>
-  <div class="#{$ns}-button-group {{.modifier}}">
-    <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
-    <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
-    <a class="#{$ns}-button" tabindex="0" role="button">
-      Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
-    </a>
-  </div>
-  <br /><br /><br />
-  <div class="#{$ns}-button-group {{.modifier}}">
-    <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
-    <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
-  </div>
-  <br /><br /><br />
-  <div class="#{$ns}-button-group {{.modifier}}">
-    <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
-    <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
-  </div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success">Save</button>
+  <button type="button" class="#{$ns}-button #{$ns}-intent-success #{$ns}-icon-caret-down"></button>
+</div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-database" tabindex="0" role="button">Queries</a>
+  <a class="#{$ns}-button #{$ns}-icon-function" tabindex="0" role="button">Functions</a>
+  <a class="#{$ns}-button" tabindex="0" role="button">
+    Options <span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
+  </a>
+</div>
+<div class="#{$ns}-button-group {{.modifier}}">
+  <a class="#{$ns}-button #{$ns}-icon-chart" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-control" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-graph" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-camera" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-map" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-code" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-th" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-time" tabindex="0" role="button"></a>
+  <a class="#{$ns}-button #{$ns}-icon-compressed" tabindex="0" role="button"></a>
 </div>
 
+.#{$ns}-fill - Buttons expand equally to fill container
 .#{$ns}-large - Use large buttons
 .#{$ns}-minimal - Use minimal buttons
+.#{$ns}-vertical - Vertical layout
 
 Styleguide button-group
 */
@@ -99,13 +97,13 @@ Styleguide button-group
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
   &:not(.#{$ns}-minimal) {
-    > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-popover-target .#{$ns}-button,
+    > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-button,
     > .#{$ns}-button:not(:first-child) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
-    > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+    > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
       margin-right: -$button-border-width;
       border-top-right-radius: 0;
@@ -142,6 +140,7 @@ Styleguide button-group
 
   &.#{$ns}-fill {
     display: flex;
+    width: 100%;
   }
 
   .#{$ns}-button.#{$ns}-fill,
@@ -179,6 +178,11 @@ Styleguide button-group
     align-items: stretch;
     vertical-align: top;
 
+    &.#{$ns}-fill {
+      width: unset;
+      height: 100%;
+    }
+
     .#{$ns}-button {
       // we never want that margin-right when vertical
       margin-right: 0 !important; // stylelint-disable-line declaration-no-important
@@ -186,18 +190,22 @@ Styleguide button-group
       width: 100%;
     }
 
+    .#{$ns}-popover-target {
+      display: block;
+    }
+
     &:not(.#{$ns}-minimal) {
-      > .#{$ns}-popover-wrapper:first-child .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-button:first-child {
         border-radius: $pt-border-radius $pt-border-radius 0 0;
       }
 
-      > .#{$ns}-popover-wrapper:last-child .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-wrapper:last-child .#{$ns}-button,
       > .#{$ns}-button:last-child {
         border-radius: 0 0 $pt-border-radius $pt-border-radius;
       }
 
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-bottom: -$button-border-width;
       }
@@ -214,16 +222,14 @@ Styleguide button-group
     &:not(.#{$ns}-minimal) {
       // deeply nested selector necessary to target the appropriate popover
       // wrapper, yet ensure we only style buttons within the target.
-      // stylelint-disable-next-line selector-max-compound-selectors
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-right: $button-border-width;
       }
     }
 
     &.#{$ns}-vertical {
-      // stylelint-disable-next-line selector-max-compound-selectors
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-popover-target .#{$ns}-button,
+      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-bottom: $button-border-width;
       }

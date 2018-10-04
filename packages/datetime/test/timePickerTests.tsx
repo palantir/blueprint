@@ -281,6 +281,42 @@ describe("<TimePicker>", () => {
             assertTimeIs(timePicker.state.value, 2, 0, 0, 0);
         });
 
+        it("can not type time greater than maxTime", () => {
+            const defaultValue = createTimeObject(10, 20);
+            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
+
+            wrapper.setProps({
+                maxTime: createTimeObject(21),
+                minTime: createTimeObject(18),
+            });
+
+            const hourInput = wrapper
+                .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
+                .getDOMNode() as HTMLInputElement;
+
+            changeInputThenBlur(hourInput, "22");
+
+            assert.strictEqual(hourInput.getAttribute("value"), "18");
+        });
+
+        it("can not type time smaller than minTime", () => {
+            const defaultValue = createTimeObject(10, 20);
+            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
+
+            wrapper.setProps({
+                maxTime: createTimeObject(21),
+                minTime: createTimeObject(18),
+            });
+
+            const hourInput = wrapper
+                .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
+                .getDOMNode() as HTMLInputElement;
+
+            changeInputThenBlur(hourInput, "16");
+
+            assert.strictEqual(hourInput.getAttribute("value"), "18");
+        });
+
         it("time can't be smaller minTime, while decrementing unit", () => {
             renderTimePicker({
                 minTime: createTimeObject(15, 32, 20, 600),

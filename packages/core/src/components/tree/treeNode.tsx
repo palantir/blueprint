@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
@@ -17,7 +17,7 @@ export interface ITreeNode<T = {}> extends IProps {
     /**
      * Child tree nodes of this node.
      */
-    childNodes?: ITreeNode[];
+    childNodes?: Array<ITreeNode<T>>;
 
     /**
      * Whether the caret to expand/collapse a node should be shown.
@@ -36,8 +36,6 @@ export interface ITreeNode<T = {}> extends IProps {
     id: string | number;
 
     /**
-     * Whether the children of this node are displayed.
-     * @default false
      */
     isExpanded?: boolean;
 
@@ -67,18 +65,20 @@ export interface ITreeNode<T = {}> extends IProps {
 
 export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     children?: React.ReactNode;
-    contentRef?: (node: TreeNode, element: HTMLDivElement | null) => void;
+    contentRef?: (node: TreeNode<T>, element: HTMLDivElement | null) => void;
     depth: number;
     key?: string | number;
-    onClick?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;
-    onCollapse?: (node: TreeNode, e: React.MouseEvent<HTMLSpanElement>) => void;
-    onContextMenu?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;
-    onDoubleClick?: (node: TreeNode, e: React.MouseEvent<HTMLDivElement>) => void;
-    onExpand?: (node: TreeNode, e: React.MouseEvent<HTMLSpanElement>) => void;
+    onClick?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
+    onCollapse?: (node: TreeNode<T>, e: React.MouseEvent<HTMLSpanElement>) => void;
+    onContextMenu?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
+    onDoubleClick?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
+    onExpand?: (node: TreeNode<T>, e: React.MouseEvent<HTMLSpanElement>) => void;
     path: number[];
 }
 
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
+
     public static ofType<T>() {
         return TreeNode as new (props: ITreeNodeProps<T>) => TreeNode<T>;
     }

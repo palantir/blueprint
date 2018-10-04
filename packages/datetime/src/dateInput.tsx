@@ -10,6 +10,7 @@ import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -26,8 +27,6 @@ import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
-import { DateTimePicker } from "./dateTimePicker";
-import { ITimePickerProps, TimePrecision } from "./timePicker";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
@@ -65,7 +64,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     defaultValue?: Date;
 
     /**
-     * Props to pass to the [input group](#core/components/forms/input-group.javascript-api).
+     * Props to pass to the [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
      */
@@ -73,9 +72,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
 
     /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
-     * in the input.
+     * in the input. The second argument is true if the user clicked on a date in the
+     * calendar, changed the input value, or cleared the selection; it will be false if the date
+     * was changed by choosing a new month or year.
      */
-    onChange?: (selectedDate: Date) => void;
+    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
 
     /**
      * Called when the user finishes typing in a new date and the date causes an error state.
@@ -96,24 +97,17 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     rightElement?: JSX.Element;
 
     /**
+     * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
+     * @default false
+     */
+    showActionsBar?: boolean;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
      */
     value?: Date | null;
-
-    /**
-     * Any props to be passed on to the `TimePicker`. `value`, `onChange`, and
-     * `timePrecision` will be ignored in favor of the corresponding top-level
-     * props on this component.
-     */
-    timePickerProps?: ITimePickerProps;
-
-    /**
-     * Adds a time chooser to the bottom of the popover.
-     * Passed to the `DateTimePicker` component.
-     */
-    timePrecision?: TimePrecision;
 }
 
 export interface IDateInputState {
@@ -124,7 +118,7 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
-    public static displayName = "Blueprint2.DateInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,
@@ -135,7 +129,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
         reverseMonthAndYearMenus: false,
-        timePickerProps: {},
     };
 
     public state: IDateInputState = {
@@ -177,24 +170,17 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             },
         };
 
-        const popoverContent =
-            this.props.timePrecision === undefined ? (
+        const wrappedPopoverContent = (
+            <div ref={this.refHandlers.popoverContent}>
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
                     onChange={this.handleDateChange}
                     value={dateValue}
                 />
-            ) : (
-                <DateTimePicker
-                    canClearSelection={this.props.canClearSelection}
-                    onChange={this.handleDateChange}
-                    value={value}
-                    datePickerProps={this.props}
-                    timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
-                />
-            );
-        const wrappedPopoverContent = <div ref={this.refHandlers.popoverContent}>{popoverContent}</div>;
+            </div>
+        );
+
         // assign default empty object here to prevent mutation
         const { popoverProps = {} } = this.props;
         const inputProps = this.getInputPropsWithDefaults();
@@ -203,7 +189,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         return (
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
-                usePortal={false}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}
@@ -266,18 +251,14 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         this.setState({ isOpen: false });
     };
 
-    private handleDateChange = (
-        newDate: Date | null,
-        hasUserManuallySelectedDate: boolean,
-        didSubmitWithEnter = false,
-    ) => {
+    private handleDateChange = (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
         const prevDate = this.state.value;
 
         // this change handler was triggered by a change in month, day, or (if
         // enabled) time. for UX purposes, we want to close the popover only if
         // the user explicitly clicked a day within the current month.
         const isOpen =
-            !hasUserManuallySelectedDate ||
+            !isUserChange ||
             !this.props.closeOnSelection ||
             (prevDate != null && (this.hasMonthChanged(prevDate, newDate) || this.hasTimeChanged(prevDate, newDate)));
 
@@ -294,7 +275,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         } else {
             this.setState({ isInputFocused, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, newDate);
+        Utils.safeInvoke(this.props.onChange, newDate, isUserChange);
     };
 
     private hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
@@ -338,10 +319,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             } else {
                 this.setState({ valueString });
             }
-            Utils.safeInvoke(this.props.onChange, value);
+            Utils.safeInvoke(this.props.onChange, value, true);
         } else {
             if (valueString.length === 0) {
-                Utils.safeInvoke(this.props.onChange, null);
+                Utils.safeInvoke(this.props.onChange, null, true);
             }
             this.setState({ valueString });
         }
@@ -367,7 +348,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             } else if (!this.isDateInRange(date)) {
                 Utils.safeInvoke(this.props.onError, date);
             } else {
-                Utils.safeInvoke(this.props.onChange, date);
+                Utils.safeInvoke(this.props.onChange, date, true);
             }
         } else {
             if (valueString.length === 0) {

@@ -5,7 +5,7 @@
  */
 
 import classNames from "classnames";
-import { isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
+import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { Classes, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
@@ -54,6 +54,13 @@ export interface IDocumentationProps extends IProps {
     header: React.ReactNode;
 
     /**
+     * Callback invoked to determine if given nav node should *not* be
+     * searchable in the navigator. Returning `true` will exclude the item from
+     * the navigator search results.
+     */
+    navigatorExclude?: (node: IPageNode | IHeadingNode) => boolean;
+
+    /**
      * Callback invoked whenever the component props or state change (specifically,
      * called in `componentDidMount` and `componentDidUpdate`).
      * Use it to run non-React code on the newly rendered sections.
@@ -72,6 +79,12 @@ export interface IDocumentationProps extends IProps {
      * The default implementation renders a `NavMenuItem` element, which is exported from this package.
      */
     renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
+
+    /**
+     * Callback invoked to render actions for a documentation page.
+     * Actions appear in an element in the upper-right corner of the page.
+     */
+    renderPageActions?: (page: IPageData) => React.ReactNode;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
@@ -179,13 +192,22 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                         ref={this.refHandlers.content}
                         role="main"
                     >
-                        <Page page={pages[activePageId]} tagRenderers={this.props.tagRenderers} />
+                        <Page
+                            page={pages[activePageId]}
+                            renderActions={this.props.renderPageActions}
+                            tagRenderers={this.props.tagRenderers}
+                        />
                     </main>
                 </div>
                 <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                     <TypescriptExample tag="typescript" value={activeApiMember} />
                 </Overlay>
-                <Navigator isOpen={this.state.isNavigatorOpen} items={nav} onClose={this.handleCloseNavigator} />
+                <Navigator
+                    isOpen={this.state.isNavigatorOpen}
+                    items={nav}
+                    itemExclude={this.props.navigatorExclude}
+                    onClose={this.handleCloseNavigator}
+                />
             </div>
         );
     }
@@ -241,7 +263,8 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private updateHash() {
         // update state based on current hash location
-        this.handleNavigation(location.hash.slice(1));
+        const sectionId = location.hash.slice(1);
+        this.handleNavigation(sectionId === "" ? this.props.defaultPageId : sectionId);
     }
 
     private handleHashChange = () => {

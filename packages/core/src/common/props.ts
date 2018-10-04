@@ -9,6 +9,8 @@ import * as React from "react";
 import { IconName } from "@blueprintjs/icons";
 import { Intent } from "./intent";
 
+export const DISPLAYNAME_PREFIX = "Blueprint3";
+
 /**
  * Alias for all valid HTML props for `<div>` element.
  * Does not include React's `ref` or `key`.
@@ -81,8 +83,8 @@ export interface IOptionProps extends IProps {
     /** Whether this option is non-interactive. */
     disabled?: boolean;
 
-    /** Label text for this option. */
-    label: string;
+    /** Label text for this option. If omitted, `value` is used as the label. */
+    label?: string;
 
     /** Value of this option. */
     value: string | number;

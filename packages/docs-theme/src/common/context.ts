@@ -9,15 +9,23 @@ import {
     IBlock,
     IKssPluginData,
     IMarkdownPluginData,
+    INpmPluginData,
     ITsDocBase,
     ITypescriptPluginData,
 } from "documentalist/dist/client";
 
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
-export type IDocsData = IMarkdownPluginData & (ITypescriptPluginData | {}) & (IKssPluginData | {});
+export type IDocsData = IMarkdownPluginData &
+    (ITypescriptPluginData | {}) &
+    (IKssPluginData | {}) &
+    (INpmPluginData | {});
 
 export function hasTypescriptData(docs: IDocsData): docs is IMarkdownPluginData & ITypescriptPluginData {
     return docs != null && (docs as ITypescriptPluginData).typescript != null;
+}
+
+export function hasNpmData(docs: IDocsData): docs is IMarkdownPluginData & INpmPluginData {
+    return docs != null && (docs as INpmPluginData).npm != null;
 }
 
 export function hasKssData(docs: IDocsData): docs is IMarkdownPluginData & IKssPluginData {
@@ -63,8 +71,10 @@ export interface IDocumentationContext {
  *     }
  * }
  * ```
+ *
+ * NOTE: This does not reference prop-types to avoid copious "cannot be named" errors.
  */
-export const DocumentationContextTypes: React.ValidationMap<IDocumentationContext> = {
+export const DocumentationContextTypes = {
     getDocsData: assertFunctionProp,
     renderBlock: assertFunctionProp,
     renderType: assertFunctionProp,

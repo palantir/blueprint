@@ -8,6 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ITabProps, TabId } from "./tab";
 
 export interface ITabTitleProps extends ITabProps {
@@ -22,7 +23,7 @@ export interface ITabTitleProps extends ITabProps {
 }
 
 export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
-    public static displayName = "Blueprint2.TabTitle";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {
         const { disabled, id, parentId, selected } = this.props;

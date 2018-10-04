@@ -7,14 +7,36 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import { Target } from "react-popper";
 import { spy, stub } from "sinon";
 
 import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src/index";
 
+const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
 describe("<Tooltip>", () => {
+    it("propogates class names correctly", () => {
+        const tooltip = renderTooltip({
+            className: "bar",
+            isOpen: true,
+            popoverClassName: "foo",
+        });
+        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")), "tooltip");
+        assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")), "wrapper");
+    });
+
+    it("wrapperTagName & targetTagName render the right elements", () => {
+        const tooltip = renderTooltip({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
+        assert.isTrue(tooltip.find("address").hasClass(Classes.POPOVER_TARGET));
+        assert.isTrue(tooltip.find("article").hasClass(Classes.POPOVER_WRAPPER));
+    });
+
+    it("supports overlay lifecycle props", () => {
+        const onOpening = spy();
+        renderTooltip({ isOpen: true, onOpening });
+        assert.isTrue(onOpening.calledOnce);
+    });
+
     describe("in uncontrolled mode", () => {
         it("defaultIsOpen determines initial open state", () => {
             assert.lengthOf(renderTooltip({ defaultIsOpen: true }).find(TOOLTIP_SELECTOR), 1);
@@ -24,7 +46,7 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip();
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
 
-            tooltip.find(Target).simulate("mouseenter");
+            tooltip.find(TARGET_SELECTOR).simulate("mouseenter");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
         });
 
@@ -32,7 +54,7 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip();
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
 
-            tooltip.find(Target).simulate("focus");
+            tooltip.find(TARGET_SELECTOR).simulate("focus");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
         });
 
@@ -42,16 +64,6 @@ describe("<Tooltip>", () => {
 
             tooltip.find(Popover).simulate("focus");
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
-        });
-
-        it("propogates class names correctly", () => {
-            const tooltip = renderTooltip({
-                className: "bar",
-                isOpen: true,
-                tooltipClassName: "foo",
-            });
-            assert.lengthOf(tooltip.find(`.${Classes.TOOLTIP}.foo`).hostNodes(), 1, "tooltip");
-            assert.lengthOf(tooltip.find(`.${Classes.POPOVER_WRAPPER}.bar`).hostNodes(), 1, "popover wrapper");
         });
 
         it("empty content disables Popover and warns", () => {
@@ -101,7 +113,7 @@ describe("<Tooltip>", () => {
             it("is invoked with `true` when closed tooltip target is hovered", () => {
                 const handleInteraction = spy();
                 renderTooltip({ isOpen: false, onInteraction: handleInteraction })
-                    .find(Target)
+                    .find(TARGET_SELECTOR)
                     .simulate("mouseenter");
                 assert.isTrue(handleInteraction.calledOnce, "called once");
                 assert.isTrue(handleInteraction.calledWith(true), "call args");
@@ -109,13 +121,8 @@ describe("<Tooltip>", () => {
         });
     });
 
-    it("rootElementTag prop renders the right elements", () => {
-        const tooltip = renderTooltip({ isOpen: true, rootElementTag: "section" });
-        assert.lengthOf(tooltip.find(`section.${Classes.POPOVER_WRAPPER}`), 1);
-    });
-
     function renderTooltip(props?: Partial<ITooltipProps>) {
-        return mount(
+        return mount<ITooltipProps>(
             <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
                 <button>Target</button>
             </Tooltip>,

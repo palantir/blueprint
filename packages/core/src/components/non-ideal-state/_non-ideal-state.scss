@@ -14,6 +14,7 @@ Markup:
   </div>
   <h4 class="#{$ns}-heading">This folder is empty</h4>
   <div>Create a new file to populate the folder.</div>
+  <button class="#{$ns}-button #{$ns}-intent-primary">Create</button>
 </div>
 
 Styleguide non-ideal-state
@@ -24,9 +25,12 @@ Styleguide non-ideal-state
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: $pt-grid-size * 40;
   height: 100%;
   text-align: center;
+
+  > * {
+    max-width: $pt-grid-size * 40;
+  }
 }
 
 .#{$ns}-non-ideal-state-visual {

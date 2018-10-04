@@ -152,6 +152,7 @@ $dark-selectable-header-menu-selected-hover-background:
 }
 
 .#{$ns}-table-th-menu {
+  position: relative;
   cursor: $action-cursor;
   width: $column-header-min-height; // create a larger, more accessible click target
   height: $column-header-min-height;

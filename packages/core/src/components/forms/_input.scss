@@ -13,6 +13,7 @@ Markup:
 :readonly - Readonly
 .#{$ns}-round - Rounded ends
 .#{$ns}-large - Larger size
+.#{$ns}-small - Small size
 .#{$ns}-intent-primary - Primary intent
 .#{$ns}-intent-success - Success intent
 .#{$ns}-intent-warning - Warning intent
@@ -27,6 +28,10 @@ Styleguide input
 
   &.#{$ns}-large {
     @include pt-input-large();
+  }
+
+  &.#{$ns}-small {
+    @include pt-input-small();
   }
 
   &.#{$ns}-fill {
@@ -64,6 +69,7 @@ Markup:
 
 :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
 .#{$ns}-large - Large
+.#{$ns}-small - Small
 
 Styleguide input-search
 */
@@ -77,6 +83,7 @@ Markup:
 :disabled - Disabled
 :readonly - Readonly
 .#{$ns}-large - Larger font size
+.#{$ns}-small - Small font size
 .#{$ns}-intent-primary - Primary intent
 .#{$ns}-intent-danger  - Danger intent
 .#{$ns}-fill  - Take up full width of parent element

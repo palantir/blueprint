@@ -11,8 +11,23 @@ import { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
+    /**
+     * The currently focused item for keyboard interactions, or `null` to
+     * indicate that no item is active. If omitted, this prop will be
+     * uncontrolled (managed by the component's state). Use `onActiveItemChange`
+     * to listen for updates.
+     */
+    activeItem?: T | null;
+
     /** Array of items in the list. */
     items: T[];
+
+    /**
+     * Determine if the given item is disabled. Provide a callback function, or
+     * simply provide the name of a boolean property on the item that exposes
+     * its disabled state.
+     */
+    itemDisabled?: keyof T | ((item: T, index: number) => boolean);
 
     /**
      * Customize querying of entire `items` array. Return new list of items.
@@ -66,8 +81,41 @@ export interface IListItemsProps<T> extends IProps {
     noResults?: React.ReactNode;
 
     /**
+     * Invoked when user interaction should change the active item: arrow keys move it up/down
+     * in the list, selecting an item makes it active, and changing the query may reset it to
+     * the first item in the list if it no longer matches the filter.
+     */
+    onActiveItemChange?: (activeItem: T | null) => void;
+
+    /**
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
     onItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /**
+     * Callback invoked when the query string changes.
+     */
+    onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
+
+    /**
+     * Whether the active item should be reset to the first matching item _every
+     * time the query changes_ (via prop or by user input).
+     * @default true
+     */
+    resetOnQuery?: boolean;
+
+    /**
+     * Whether the active item should be reset to the first matching item _when
+     * an item is selected_. The query will also be reset to the empty string.
+     * @default false
+     */
+    resetOnSelect?: boolean;
+
+    /**
+     * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
+     * This value is controlled: its state must be managed externally by attaching an `onChange`
+     * handler to the relevant element in your `renderer` implementation.
+     */
+    query?: string;
 }

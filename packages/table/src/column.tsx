@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IProps } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
 import * as React from "react";
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer } from "./headers/columnHeader";
@@ -44,7 +44,9 @@ export interface IColumnProps extends IColumnNameProps, IProps {
     columnHeaderCellRenderer?: IColumnHeaderRenderer;
 }
 
-export class Column extends React.PureComponent<IColumnProps, {}> {
+export class Column extends React.PureComponent<IColumnProps> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Column`;
+
     public static defaultProps: IColumnProps = {
         cellRenderer: emptyCellRenderer,
     };

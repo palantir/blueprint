@@ -14,6 +14,7 @@ const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
+export const CONDENSED = `${NS}-condensed`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;
 export const FILL = `${NS}-fill`;
@@ -47,7 +48,9 @@ export const UI_TEXT = `${NS}-ui-text`;
 export const RUNNING_TEXT = `${NS}-running-text`;
 export const MONOSPACE_TEXT = `${NS}-monospace-text`;
 export const TEXT_LARGE = `${NS}-text-large`;
+export const TEXT_SMALL = `${NS}-text-small`;
 export const TEXT_MUTED = `${NS}-text-muted`;
+export const TEXT_DISABLED = `${NS}-text-disabled`;
 export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
 
 // textual elements
@@ -57,6 +60,7 @@ export const CODE_BLOCK = `${NS}-code-block`;
 export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
+export const RTL = `${NS}-rtl`;
 
 // components
 export const ALERT = `${NS}-alert`;
@@ -97,6 +101,8 @@ export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
 
+export const DIVIDER = `${NS}-divider`;
+
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
 export const EDITABLE_TEXT_EDITING = `${EDITABLE_TEXT}-editing`;
@@ -104,6 +110,10 @@ export const EDITABLE_TEXT_INPUT = `${EDITABLE_TEXT}-input`;
 export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
 
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
+
+export const HTML_SELECT = `${NS}-html-select`;
+/** @deprecated prefer `<HTMLSelect>` component */
+export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
@@ -153,12 +163,20 @@ export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
 
+export const OVERFLOW_LIST = `${NS}-overflow-list`;
+export const OVERFLOW_LIST_SPACER = `${OVERFLOW_LIST}-spacer`;
+
 export const OVERLAY = `${NS}-overlay`;
 export const OVERLAY_BACKDROP = `${OVERLAY}-backdrop`;
 export const OVERLAY_CONTENT = `${OVERLAY}-content`;
 export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;
 export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
+
+export const PANEL_STACK = `${NS}-panel-stack`;
+export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
+export const PANEL_STACK_HEADER_BACK = `${PANEL_STACK}-header-back`;
+export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
 
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
@@ -179,17 +197,19 @@ export const PROGRESS_NO_ANIMATION = `${NS}-no-animation`;
 
 export const PORTAL = `${NS}-portal`;
 
-export const SELECT = `${NS}-select`;
-
 export const SKELETON = `${NS}-skeleton`;
 
 export const SLIDER = `${NS}-slider`;
+export const SLIDER_AXIS = `${SLIDER}-axis`;
 export const SLIDER_HANDLE = `${SLIDER}-handle`;
 export const SLIDER_LABEL = `${SLIDER}-label`;
+export const SLIDER_TRACK = `${SLIDER}-track`;
 export const SLIDER_PROGRESS = `${SLIDER}-progress`;
-export const RANGE_SLIDER = `${NS}-range-slider`;
+export const START = `${NS}-start`;
+export const END = `${NS}-end`;
 
 export const SPINNER = `${NS}-spinner`;
+export const SPINNER_ANIMATION = `${SPINNER}-animation`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
@@ -202,7 +222,6 @@ export const TAB_PANEL = `${TAB}-panel`;
 export const TABS = `${TAB}s`;
 
 export const TAG = `${NS}-tag`;
-export const TAG_REMOVABLE = `${TAG}-removable`;
 export const TAG_REMOVE = `${TAG}-remove`;
 
 export const TAG_INPUT = `${NS}-tag-input`;

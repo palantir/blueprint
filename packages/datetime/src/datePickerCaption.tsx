@@ -4,33 +4,36 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Icon, Utils as BlueprintUtils } from "@blueprintjs/core";
+import { Divider, HTMLSelect, Icon, IOptionProps, Utils } from "@blueprintjs/core";
 import * as React from "react";
 import { CaptionElementProps } from "react-day-picker/types/props";
 
 import * as Classes from "./common/classes";
-import * as Utils from "./common/utils";
+import { clone } from "./common/dateUtils";
+import { measureTextWidth } from "./common/utils";
 
 export interface IDatePickerCaptionProps extends CaptionElementProps {
     maxDate: Date;
     minDate: Date;
     onMonthChange?: (month: number) => void;
     onYearChange?: (year: number) => void;
+    /** Callback invoked when the month or year `<select>` is changed. */
+    onDateChange?: (date: Date) => void;
     reverseMonthAndYearMenus?: boolean;
 }
 
 export interface IDatePickerCaptionState {
-    monthWidth: number;
+    monthRightOffset: number;
 }
 
 export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionProps, IDatePickerCaptionState> {
-    public state: IDatePickerCaptionState = {
-        monthWidth: 0,
-    };
-
-    private displayedMonthText: string;
+    public state: IDatePickerCaptionState = { monthRightOffset: 0 };
 
     private containerElement: HTMLElement;
+    private displayedMonthText: string;
+
+    private handleMonthSelectChange = this.dateChangeHandler((d, month) => d.setMonth(month), this.props.onMonthChange);
+    private handleYearSelectChange = this.dateChangeHandler((d, year) => d.setFullYear(year), this.props.onYearChange);
 
     public render() {
         const { date, locale, localeUtils, minDate, maxDate } = this.props;
@@ -44,64 +47,40 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
         const startMonth = displayYear === minYear ? minDate.getMonth() : 0;
         const endMonth = displayYear === maxYear ? maxDate.getMonth() + 1 : undefined;
         const monthOptionElements = months
-            .map((name, i) => {
-                return (
-                    <option key={i} value={i.toString()}>
-                        {name}
-                    </option>
-                );
-            })
+            .map<IOptionProps>((month, i) => ({ label: month, value: i }))
             .slice(startMonth, endMonth);
 
-        const years = [minYear];
+        const years: Array<number | IOptionProps> = [minYear];
         for (let year = minYear + 1; year <= maxYear; ++year) {
             years.push(year);
         }
-        const yearOptionElements = years.map((year, i) => {
-            return (
-                <option key={i} value={year.toString()}>
-                    {year}
-                </option>
-            );
-        });
         // allow out-of-bounds years but disable the option. this handles the Dec 2016 case in #391.
         if (displayYear > maxYear) {
-            yearOptionElements.push(
-                <option key="next" disabled={true} value={displayYear.toString()}>
-                    {displayYear}
-                </option>,
-            );
+            years.push({ value: displayYear, disabled: true });
         }
 
         this.displayedMonthText = months[displayMonth];
 
         const monthSelect = (
-            <div className={Classes.DATEPICKER_CAPTION_SELECT} key="month">
-                <select
-                    className={Classes.DATEPICKER_MONTH_SELECT}
-                    onChange={this.handleMonthSelectChange}
-                    value={displayMonth.toString()}
-                >
-                    {monthOptionElements}
-                </select>
-                <Icon
-                    className={Classes.DATEPICKER_CAPTION_CARET}
-                    icon="caret-down"
-                    style={{ left: this.state.monthWidth + 5 }}
-                />
-            </div>
+            <HTMLSelect
+                iconProps={{ style: { right: this.state.monthRightOffset } }}
+                className={Classes.DATEPICKER_MONTH_SELECT}
+                key="month"
+                minimal={true}
+                onChange={this.handleMonthSelectChange}
+                value={displayMonth}
+                options={monthOptionElements}
+            />
         );
         const yearSelect = (
-            <div className={Classes.DATEPICKER_CAPTION_SELECT} key="year">
-                <select
-                    className={Classes.DATEPICKER_YEAR_SELECT}
-                    onChange={this.handleYearSelectChange}
-                    value={displayYear.toString()}
-                >
-                    {yearOptionElements}
-                </select>
-                <Icon className={Classes.DATEPICKER_CAPTION_CARET} icon="caret-down" />
-            </div>
+            <HTMLSelect
+                className={Classes.DATEPICKER_YEAR_SELECT}
+                key="year"
+                minimal={true}
+                onChange={this.handleYearSelectChange}
+                value={displayYear}
+                options={years}
+            />
         );
 
         const orderedSelects = this.props.reverseMonthAndYearMenus
@@ -109,8 +88,11 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
             : [monthSelect, yearSelect];
 
         return (
-            <div className={Classes.DATEPICKER_CAPTION} ref={this.containerRefHandler}>
-                {orderedSelects}
+            <div className={this.props.classNames.caption}>
+                <div className={Classes.DATEPICKER_CAPTION} ref={ref => (this.containerElement = ref)}>
+                    {orderedSelects}
+                </div>
+                <Divider />
             </div>
         );
     }
@@ -123,25 +105,26 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
         this.positionArrows();
     }
 
-    private containerRefHandler = (r: HTMLElement) => (this.containerElement = r);
-
     private positionArrows() {
         // measure width of text as rendered inside our container element.
-        const monthWidth = Utils.measureTextWidth(
+        const monthTextWidth = measureTextWidth(
             this.displayedMonthText,
             Classes.DATEPICKER_CAPTION_MEASURE,
             this.containerElement,
         );
-        this.setState({ monthWidth });
+        const monthSelectWidth =
+            this.containerElement == null ? 0 : this.containerElement.firstElementChild.clientWidth;
+        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - Icon.SIZE_STANDARD - 2);
+        this.setState({ monthRightOffset: rightOffset });
     }
 
-    private handleMonthSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
-        const month = parseInt((e.target as HTMLSelectElement).value, 10);
-        BlueprintUtils.safeInvoke(this.props.onMonthChange, month);
-    };
-
-    private handleYearSelectChange = (e: React.FormEvent<HTMLSelectElement>) => {
-        const year = parseInt((e.target as HTMLSelectElement).value, 10);
-        BlueprintUtils.safeInvoke(this.props.onYearChange, year);
-    };
+    private dateChangeHandler(updater: (date: Date, value: number) => void, handler?: (value: number) => void) {
+        return (e: React.FormEvent<HTMLSelectElement>) => {
+            const value = parseInt((e.target as HTMLSelectElement).value, 10);
+            const newDate = clone(this.props.date);
+            updater(newDate, value);
+            Utils.safeInvoke(this.props.onDateChange, newDate);
+            Utils.safeInvoke(handler, value);
+        };
+    }
 }

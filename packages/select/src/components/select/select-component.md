@@ -95,7 +95,7 @@ const filterFilm: ItemPredicate<IFilm> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 
-const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
     if (!modifiers.filtered) {
         return null;
     }

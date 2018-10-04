@@ -18,6 +18,7 @@ const { getPackageName } = require("./utils");
 
 // globals
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const DEV_PORT = process.env.PORT || 9000;
 const PACKAGE_NAME = getPackageName();
 
 /**
@@ -105,7 +106,7 @@ module.exports = {
             warnings: true,
             errors: true,
         },
-        port: 9000,
+        port: DEV_PORT,
     },
 
     module: {
@@ -129,6 +130,10 @@ module.exports = {
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,
                 loader: require.resolve("file-loader"),
+                options: {
+                    name: "[name].[ext]?[hash]",
+                    outputPath: "assets/",
+                },
             },
         ],
     },

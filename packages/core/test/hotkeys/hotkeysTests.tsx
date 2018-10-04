@@ -9,7 +9,6 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { SinonSpy, spy } from "sinon";
 
 import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
@@ -89,9 +88,27 @@ describe("Hotkeys", () => {
                         />
                         <Hotkey
                             {...this.props}
+                            combo="4"
+                            global={true}
+                            group="A"
+                            label="sorted 1"
+                            onKeyDown={globalKeyDownSpy}
+                            onKeyUp={globalKeyUpSpy}
+                        />
+                        <Hotkey
+                            {...this.props}
                             combo="2"
                             global={true}
                             label="global hotkey"
+                            onKeyDown={globalKeyDownSpy}
+                            onKeyUp={globalKeyUpSpy}
+                        />
+                        <Hotkey
+                            {...this.props}
+                            combo="5"
+                            global={true}
+                            group="A"
+                            label="sorted 2"
                             onKeyDown={globalKeyDownSpy}
                             onKeyUp={globalKeyUpSpy}
                         />
@@ -142,15 +159,36 @@ describe("Hotkeys", () => {
             const TEST_TIMEOUT_DURATION = 30;
 
             comp = mount(<TestComponent />, { attachTo });
-            const node = ReactDOM.findDOMNode(comp.instance());
-
-            dispatchTestKeyboardEvent(node, "keydown", "/", true);
+            dispatchTestKeyboardEvent(comp.getDOMNode(), "keydown", "/", true);
 
             // wait for the dialog to animate in
             setTimeout(() => {
                 expect(document.querySelector("." + Classes.HOTKEY_COLUMN)).to.exist;
                 expect(document.querySelector("." + Classes.OVERLAY_OPEN).classList.contains(Classes.OVERLAY_INLINE)).to
                     .be.false;
+                hideHotkeysDialog();
+                comp.detach();
+                attachTo.remove();
+                done();
+            }, TEST_TIMEOUT_DURATION);
+        });
+
+        it("sorts hotkeys in hotkey dialog", done => {
+            const TEST_TIMEOUT_DURATION = 30;
+
+            comp = mount(<TestComponent />, { attachTo });
+            dispatchTestKeyboardEvent(comp.getDOMNode(), "keydown", "/", true);
+
+            // wait for the dialog to animate in
+            setTimeout(() => {
+                const hotkeyLabels = Array.from(document.querySelectorAll("." + Classes.HOTKEY_LABEL)).map(
+                    el => el.textContent,
+                );
+
+                expect(document.querySelector("." + Classes.HOTKEY_COLUMN)).to.exist;
+                expect(document.querySelector("." + Classes.OVERLAY_OPEN).classList.contains(Classes.OVERLAY_INLINE)).to
+                    .be.false;
+                expect(hotkeyLabels).to.deep.equal(["sorted 1", "sorted 2", "global hotkey", "local hotkey"]);
                 hideHotkeysDialog();
                 comp.detach();
                 attachTo.remove();
@@ -178,11 +216,9 @@ describe("Hotkeys", () => {
             }
 
             comp = mount(<ComboComponent />, { attachTo });
-            const node = ReactDOM.findDOMNode(comp.instance());
-
             // We have to use capital X here to make the charCode == keyCode.
             // Implementors won't have to worry about this detail.
-            dispatchTestKeyboardEvent(node, "keydown", "X", true);
+            dispatchTestKeyboardEvent(comp.getDOMNode(), "keydown", "X", true);
             expect(handleKeyDown.called).to.be.true;
             const testCombo = getKeyComboString(handleKeyDown.firstCall.args[0]);
             expect(testCombo).to.equal(combo);
@@ -191,7 +227,7 @@ describe("Hotkeys", () => {
         function runHotkeySuiteForKeyEvent(eventName: "keydown" | "keyup") {
             it(`triggers local and global hotkeys on ${eventName}`, () => {
                 comp = mount(<TestComponent />, { attachTo });
-                const node = ReactDOM.findDOMNode(comp.instance());
+                const node = comp.getDOMNode();
 
                 dispatchTestKeyboardEvent(node, eventName, "1");
                 expect(getLocalSpy(eventName).called).to.be.true;
@@ -208,7 +244,7 @@ describe("Hotkeys", () => {
                     </div>,
                     { attachTo },
                 );
-                const unhotkeyed = ReactDOM.findDOMNode(comp.instance()).querySelector(".unhotkeyed");
+                const unhotkeyed = comp.getDOMNode().querySelector(".unhotkeyed");
                 (unhotkeyed as HTMLElement).focus();
 
                 dispatchTestKeyboardEvent(unhotkeyed, eventName, "1");
@@ -220,7 +256,7 @@ describe("Hotkeys", () => {
 
             it("ignores hotkeys when disabled={true}", () => {
                 comp = mount(<TestComponent disabled={true} />, { attachTo });
-                const node = ReactDOM.findDOMNode(comp.instance());
+                const node = comp.getDOMNode();
 
                 dispatchTestKeyboardEvent(node, eventName, "1");
                 expect(getLocalSpy(eventName).called).to.be.false;
@@ -231,7 +267,7 @@ describe("Hotkeys", () => {
 
             it("prevents default if preventDefault={true}", () => {
                 comp = mount(<TestComponent preventDefault={true} />, { attachTo });
-                const node = ReactDOM.findDOMNode(comp.instance());
+                const node = comp.getDOMNode();
 
                 dispatchTestKeyboardEvent(node, eventName, "1");
                 const localEvent = getLocalSpy(eventName).lastCall.args[0] as KeyboardEvent;
@@ -244,7 +280,7 @@ describe("Hotkeys", () => {
 
             it("stops propagation if stopPropagation={true}", () => {
                 comp = mount(<TestComponent stopPropagation={true} />, { attachTo });
-                const node = ReactDOM.findDOMNode(comp.instance());
+                const node = comp.getDOMNode();
 
                 // this unit test relies on a custom flag we set on the event object.
                 // the flag exists solely to make this unit test possible.
@@ -305,7 +341,7 @@ describe("Hotkeys", () => {
                 comp = mount(<TestComponent allowInInput={allowInInput} />, { attachTo });
 
                 const selector = "input[type='" + type + "']";
-                const input = ReactDOM.findDOMNode(comp.instance()).querySelector(selector);
+                const input = comp.getDOMNode().querySelector(selector);
 
                 (input as HTMLElement).focus();
 

@@ -7,32 +7,30 @@
 
 .#{$ns}-submenu {
   > .#{$ns}-popover-wrapper {
-    display: inherit;
+    display: block;
+  }
 
-    > .#{$ns}-popover-target {
-      display: inherit;
-      // override very specific selector for popovers in button groups
-      // stylelint-disable-next-line declaration-no-important
-      float: none !important;
-    }
+  .#{$ns}-popover-target {
+    display: block;
 
-    > .#{$ns}-popover-open > .#{$ns}-menu-item {
+    &.#{$ns}-popover-open > .#{$ns}-menu-item {
       // keep a trail of hovered items as submenus are opened
       // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
       @extend .#{$ns}-menu-item:hover;
     }
   }
 
-  // horizontal padding leaves some space from parent menu item, and extends mouse zone
-  .#{$ns}-popover {
+  &.#{$ns}-popover {
     box-shadow: none;
+    // horizontal padding leaves some space from parent menu item, and extends mouse zone
     padding: 0 $half-grid-size;
 
     > .#{$ns}-popover-content {
       box-shadow: $pt-popover-box-shadow;
     }
 
-    .#{$ns}-dark & {
+    .#{$ns}-dark &,
+    &.#{$ns}-dark {
       box-shadow: none;
 
       > .#{$ns}-popover-content {

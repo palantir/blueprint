@@ -10,30 +10,40 @@ Markup:
 <div>
   <label class="#{$ns}-label {{.modifier}}">
     Label A
-    <span class="#{$ns}-text-muted">(required)</span>
-    <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Text input" dir="auto" />
+    <span class="#{$ns}-text-muted">(optional)</span>
+    <input {{:modifier}} class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
   </label>
   <label class="#{$ns}-label {{.modifier}}">
     Label B
-    <span class="#{$ns}-text-muted">(optional)</span>
-    <div class="#{$ns}-input-group">
+    <div class="#{$ns}-input-group {{.modifier}}">
       <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-      <input class="#{$ns}-input" style="width: 180px;" type="text" placeholder="Input group" dir="auto" />
+      <input {{:modifier}} class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
+    </div>
+  </label>
+  <label class="#{$ns}-label {{.modifier}}">
+    Label C
+    <div class="#{$ns}-select {{.modifier}}">
+      <select {{:modifier}}>
+        <option selected>Choose an item...</option>
+        <option value="1">One</option>
+      </select>
     </div>
   </label>
 </div>
 
-.#{$ns}-inline - Inline
+:disabled - Disable the input.
+.#{$ns}-disabled - Disabled styles. Input must be disabled separately via attribute.
+.#{$ns}-inline - Label and content appear side by side.
 
 Styleguide label
 */
 
-// stylelint-disable-next-line selector-no-qualifying-type
 label.#{$ns}-label {
   display: block;
   margin-top: 0;
   margin-bottom: ($pt-grid-size * 1.5);
 
+  .#{$ns}-html-select,
   .#{$ns}-input,
   .#{$ns}-select,
   .#{$ns}-slider,
@@ -43,15 +53,24 @@ label.#{$ns}-label {
     text-transform: none;
   }
 
-  .#{$ns}-select select {
+  .#{$ns}-select select,
+  .#{$ns}-html-select select {
     width: 100%;
     vertical-align: top;
     font-weight: 400;
   }
 
+  &.#{$ns}-disabled {
+    &,
+    .#{$ns}-text-muted {
+      color: $pt-text-color-disabled;
+    }
+  }
+
   &.#{$ns}-inline {
     line-height: $pt-input-height;
 
+    .#{$ns}-html-select,
     .#{$ns}-input,
     .#{$ns}-input-group,
     .#{$ns}-select,
@@ -72,44 +91,6 @@ label.#{$ns}-label {
 
   &:not(.#{$ns}-inline) .#{$ns}-popover-target {
     display: block;
-  }
-
-  /*
-  Disabled labels
-
-  Markup:
-  <div>
-    <label class="#{$ns}-label #{$ns}-disabled">
-      Label A
-      <span class="#{$ns}-text-muted">(optional)</span>
-      <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
-    </label>
-    <label class="#{$ns}-label #{$ns}-disabled">
-      Label B
-      <div class="#{$ns}-input-group #{$ns}-disabled">
-        <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-        <input disabled class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
-      </div>
-    </label>
-    <label class="#{$ns}-label #{$ns}-disabled">
-      Label C
-      <div class="#{$ns}-select #{$ns}-disabled">
-        <select disabled>
-          <option selected>Choose an item...</option>
-          <option value="1">One</option>
-        </select>
-      </div>
-    </label>
-  </div>
-
-  Styleguide label-disabled
-  */
-
-  &.#{$ns}-disabled {
-    &,
-    .#{$ns}-text-muted {
-      color: $pt-text-color-disabled;
-    }
   }
 
   .#{$ns}-dark & {

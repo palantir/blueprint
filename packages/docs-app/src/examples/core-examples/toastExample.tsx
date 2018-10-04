@@ -11,6 +11,7 @@ import {
     Button,
     Classes,
     H5,
+    HTMLSelect,
     Intent,
     IToasterProps,
     IToastProps,
@@ -25,6 +26,15 @@ import { Example, handleBooleanChange, handleStringChange, IExampleProps } from 
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 type IToastDemo = IToastProps & { button: string };
+
+const POSITIONS = [
+    Position.TOP_LEFT,
+    Position.TOP,
+    Position.TOP_RIGHT,
+    Position.BOTTOM_LEFT,
+    Position.BOTTOM,
+    Position.BOTTOM_RIGHT,
+];
 
 export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IToasterProps> {
     public state: IToasterProps = {
@@ -111,17 +121,9 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         return (
             <>
                 <H5>Props</H5>
-                <Label text="Position">
-                    <div className={Classes.SELECT}>
-                        <select value={position.toString()} onChange={this.handlePositionChange}>
-                            <option value={Position.TOP_LEFT.toString()}>Top left</option>
-                            <option value={Position.TOP.toString()}>Top center</option>
-                            <option value={Position.TOP_RIGHT.toString()}>Top right</option>
-                            <option value={Position.BOTTOM_LEFT.toString()}>Bottom left</option>
-                            <option value={Position.BOTTOM.toString()}>Bottom center</option>
-                            <option value={Position.BOTTOM_RIGHT.toString()}>Bottom right</option>
-                        </select>
-                    </div>
+                <Label>
+                    Position
+                    <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
                 </Label>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />

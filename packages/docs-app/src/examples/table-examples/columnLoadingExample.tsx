@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, Label } from "@blueprintjs/core";
+import { HTMLSelect, Label } from "@blueprintjs/core";
 import { Example, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnLoadingOption, Table } from "@blueprintjs/table";
 
@@ -45,12 +45,11 @@ export class ColumnLoadingExample extends React.PureComponent<IExampleProps, ICo
             options.push(<option key={i} value={i} label={label} />);
         }
         return (
-            <Label text="Loading column">
-                <div className={Classes.SELECT}>
-                    <select value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
-                        {options}
-                    </select>
-                </div>
+            <Label>
+                Loading column
+                <HTMLSelect value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
+                    {options}
+                </HTMLSelect>
             </Label>
         );
     }

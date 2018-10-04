@@ -6,30 +6,34 @@
 
 import * as React from "react";
 
-import { H5, Icon, Label, Slider } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
+import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
+import { IntentSelect } from "./common/intentSelect";
 
 export interface IIconExampleState {
     icon: IconName;
     iconSize: number;
+    intent: Intent;
 }
 
 export class IconExample extends React.PureComponent<IExampleProps, IIconExampleState> {
     public state: IIconExampleState = {
         icon: "calendar",
         iconSize: Icon.SIZE_STANDARD,
+        intent: Intent.NONE,
     };
 
     public render() {
-        const { icon, iconSize } = this.state;
+        const { icon, iconSize, intent } = this.state;
 
         const options = (
             <>
                 <H5>Props</H5>
                 <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
-                <Label text="Icon size" />
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+                <Label>Icon size</Label>
                 <Slider
                     labelStepSize={MAX_ICON_SIZE / 5}
                     min={0}
@@ -43,11 +47,13 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
 
         return (
             <Example options={options} {...this.props}>
-                <Icon icon={icon} iconSize={iconSize} />
+                <Icon icon={icon} iconSize={iconSize} intent={intent} />
             </Example>
         );
     }
 
+    // tslint:disable-next-line:member-ordering
+    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 }

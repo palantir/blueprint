@@ -4,26 +4,33 @@
 $tag-default-color: $gray1 !default;
 $dark-tag-default-color: $gray5 !default;
 
-$tag-icon-spacing: 3px !default;
 $tag-height: $pt-grid-size * 2 !default;
-$tag-padding: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-padding-top: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-padding: $tag-padding-top * 3 !default;
 $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
-$tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
+$tag-padding-large: ($tag-height-large - $pt-icon-size-large) !default;
+
+$tag-icon-spacing: ($tag-height - 12px) / 2 !default;
+$tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !default;
+
+$tag-round-adjustment: 2px !default;
 
 @mixin pt-tag() {
   @include pt-tag-interactive($tag-default-color, 1);
+  @include pt-flex-container(row, $tag-icon-spacing, inline);
+  align-items: center;
 
-  display: inline-block;
   position: relative;
   border: none;
   border-radius: $pt-border-radius;
   box-shadow: none;
   background-color: $tag-default-color;
   min-width: $tag-height;
-  padding: $tag-padding ($tag-padding * 3);
-  line-height: $pt-icon-size-standard;
+  max-width: 100%;
+  min-height: $tag-height;
+  padding: $tag-padding-top $tag-padding;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
@@ -32,7 +39,10 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   }
 
   &.#{$ns}-round {
-    border-radius: $tag-height / 2;
+    border-radius: $tag-height-large;
+    // optical adjustment for rounded tags
+    padding-right: $tag-padding + $tag-round-adjustment;
+    padding-left: $tag-padding + $tag-round-adjustment;
   }
 
   .#{$ns}-dark & {
@@ -40,25 +50,28 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
     background-color: $dark-tag-default-color;
     color: $pt-text-color;
+
+    > #{$icon-classes} {
+      fill: currentColor;
+    }
   }
 
-  &.#{$ns}-tag-removable {
-    padding-right: $tag-height;
+  > #{$icon-classes} {
+    fill: $white;
   }
 }
 
 @mixin pt-tag-large() {
+  @include pt-flex-margin(row, $tag-icon-spacing-large);
   min-width: $tag-height-large;
-  padding: $tag-padding-large ($tag-padding-large * 2);
-  line-height: $pt-icon-size-large;
+  min-height: $tag-height-large;
+  padding: 0 $tag-padding-large;
   font-size: $pt-font-size;
 
   &.#{$ns}-round {
-    border-radius: $tag-height-large / 2;
-  }
-
-  &.#{$ns}-tag-removable {
-    padding-right: $tag-height-large;
+    // optical adjustment for rounded tags
+    padding-right: $tag-padding-large + $tag-round-adjustment;
+    padding-left: $tag-padding-large + $tag-round-adjustment;
   }
 }
 
@@ -70,6 +83,10 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 }
 
 @mixin pt-tag-minimal() {
+  > #{$icon-classes} {
+    fill: $pt-icon-color;
+  }
+
   &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive($tag-default-color, 0.2);
 
@@ -80,6 +97,10 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
       @include pt-tag-minimal-interactive($dark-tag-default-color, 0.2);
 
       color: $pt-dark-text-color;
+
+      > #{$icon-classes} {
+        fill: $pt-dark-icon-color;
+      }
     }
   }
 }
@@ -89,6 +110,10 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 
   background-color: rgba($background-color, 0.15);
   color: $text-color;
+
+  > #{$icon-classes} {
+    fill: $background-color;
+  }
 
   .#{$ns}-dark & {
     @include pt-tag-minimal-interactive($background-color, 0.25);
@@ -129,14 +154,19 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
 }
 
 @mixin pt-tag-remove() {
-  position: absolute;
-  top: 0;
-  right: 0;
+  display: flex;
   opacity: 0.5;
+  // top/bottom to allow for padding to enlarge click area,
+  // right to tuck remove button into padding space.
+  margin-top: -$tag-padding-top;
+  // stylelint-disable-next-line declaration-no-important
+  margin-right: -$tag-padding !important;
+  margin-bottom: -$tag-padding-top;
   border: none;
   background: none;
   cursor: pointer;
-  padding: $tag-padding;
+  padding: $tag-padding-top;
+  padding-left: 0;
   color: inherit;
 
   &:hover {
@@ -156,7 +186,10 @@ $tag-padding-large: ($tag-height-large - $pt-icon-size-large) / 2 !default;
   }
 
   .#{$ns}-large & {
-    padding: $tag-padding-large;
+    // stylelint-disable-next-line declaration-no-important
+    margin-right: -$tag-padding-large !important;
+    padding: ($tag-height-large - $pt-icon-size-large) / 2;
+    padding-left: 0;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);

@@ -6,23 +6,10 @@
 
 import * as React from "react";
 
-import { IProps, Keys, Menu, Utils } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
 import { IItemListRendererProps, IItemModifiers, IListItemsProps, renderFilteredItems } from "../../common";
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {
-    /**
-     * The active item is the current keyboard-focused element.
-     * Listen to `onActiveItemChange` for updates from interactions.
-     */
-    activeItem: T | undefined;
-
-    /**
-     * Invoked when user interaction should change the active item: arrow keys move it up/down
-     * in the list, selecting an item makes it active, and changing the query may reset it to
-     * the first item in the list if it no longer matches the filter.
-     */
-    onActiveItemChange: (activeItem: T | undefined) => void;
-
     /**
      * Callback invoked when user presses a key, after processing `QueryList`'s own key events
      * (up/down to navigate active item). This callback is passed to `renderer` and (along with
@@ -42,25 +29,13 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * Receives an object with props that should be applied to elements as necessary.
      */
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
-
-    /**
-     * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
-     * This value is controlled: its state must be managed externally by attaching an `onChange`
-     * handler to the relevant element in your `renderer` implementation.
-     */
-    query: string;
 }
 
 /**
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
  */
-export interface IQueryListRendererProps<T> extends IProps {
-    /**
-     * Array of items filtered by `itemListPredicate` or `itemPredicate`.
-     */
-    filteredItems: T[];
-
+export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -79,19 +54,33 @@ export interface IQueryListRendererProps<T> extends IProps {
      */
     handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
 
+    /**
+     * Change handler for query string. Attach this to an input element to allow
+     * `QueryList` to control the query.
+     */
+    handleQueryChange: React.ChangeEventHandler<HTMLInputElement>;
+
     /** Rendered elements returned from `itemListRenderer` prop. */
     itemList: React.ReactNode;
+}
+
+export interface IQueryListState<T> {
+    /** The currently focused item (for keyboard interactions). */
+    activeItem: T | null;
+
+    /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
+    filteredItems: T[];
 
     /** The current query string. */
     query: string;
 }
 
-export interface IQueryListState<T> {
-    filteredItems: T[];
-}
-
 export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
-    public static displayName = "Blueprint2.QueryList";
+    public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
+
+    public static defaultProps = {
+        resetOnQuery: true,
+    };
 
     public static ofType<T>() {
         return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
@@ -103,62 +92,62 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     /**
-     * flag indicating that we should check whether selected item is in viewport after rendering,
-     * typically because of keyboard change.
+     * Flag indicating that we should check whether selected item is in viewport
+     * after rendering, typically because of keyboard change. Set to `true` when
+     * manipulating state in a way that may cause active item to scroll away.
      */
-    private shouldCheckActiveItemInViewport: boolean = false;
+    private shouldCheckActiveItemInViewport = false;
+
+    public constructor(props: IQueryListProps<T>, context?: any) {
+        super(props, context);
+        const { query = "" } = this.props;
+        const filteredItems = getFilteredItems(query, this.props);
+        this.state = { activeItem: getFirstEnabledItem(filteredItems, this.props.itemDisabled), filteredItems, query };
+    }
 
     public render() {
-        const { className, items, renderer, query, itemListRenderer = this.renderItemList } = this.props;
-        const { filteredItems } = this.state;
+        const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
         return renderer({
+            ...this.state,
             className,
-            filteredItems,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
+            handleQueryChange: this.handleQueryChange,
             itemList: itemListRenderer({
-                filteredItems,
+                ...this.state,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
-                query,
                 renderItem: this.renderItem,
             }),
-            query,
         });
     }
 
-    public componentWillMount() {
-        this.setState({ filteredItems: getFilteredItems(this.props) });
-    }
-
     public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (
-            nextProps.items !== this.props.items ||
-            nextProps.itemListPredicate !== this.props.itemListPredicate ||
-            nextProps.itemPredicate !== this.props.itemPredicate ||
-            nextProps.query !== this.props.query
-        ) {
+        if (nextProps.activeItem !== undefined) {
             this.shouldCheckActiveItemInViewport = true;
-            this.setState({ filteredItems: getFilteredItems(nextProps) });
+            this.setState({ activeItem: nextProps.activeItem });
+        }
+        if (nextProps.query != null) {
+            this.setQuery(nextProps.query);
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: IQueryListProps<T>) {
+        if (
+            !Utils.shallowCompareKeys(this.props, prevProps, {
+                include: ["items", "itemListPredicate", "itemPredicate"],
+            })
+        ) {
+            this.setQuery(this.state.query);
+        }
+
         if (this.shouldCheckActiveItemInViewport) {
             // update scroll position immediately before repaint so DOM is accurate
             // (latest filteredItems) and to avoid flicker.
             requestAnimationFrame(() => this.scrollActiveItemIntoView());
             // reset the flag
             this.shouldCheckActiveItemInViewport = false;
-        }
-        // reset active item (in the same step) if it's no longer valid
-        // Also don't fire the event if the active item is already undefined and there is nothing to pick
-        if (
-            this.getActiveIndex() < 0 &&
-            (this.state.filteredItems.length !== 0 || this.props.activeItem !== undefined)
-        ) {
-            Utils.safeInvoke(this.props.onActiveItemChange, this.state.filteredItems[0]);
         }
     }
 
@@ -188,6 +177,25 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
+    public setQuery(query: string, resetActiveItem = this.props.resetOnQuery) {
+        this.shouldCheckActiveItemInViewport = true;
+        if (query !== this.state.query) {
+            Utils.safeInvoke(this.props.onQueryChange, query);
+        }
+        const filteredItems = getFilteredItems(query, this.props);
+        this.setState({ filteredItems, query });
+
+        // always reset active item if it's now filtered or disabled
+        const activeIndex = this.getActiveIndex(filteredItems);
+        if (
+            resetActiveItem ||
+            activeIndex < 0 ||
+            isItemDisabled(this.state.activeItem, activeIndex, this.props.itemDisabled)
+        ) {
+            this.setActiveItem(getFirstEnabledItem(filteredItems, this.props.itemDisabled));
+        }
+    }
+
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
@@ -196,12 +204,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     /** wrapper around `itemRenderer` to inject props */
-    private renderItem = (item: T, index?: number) => {
-        const { activeItem, query } = this.props;
+    private renderItem = (item: T, index: number) => {
+        const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
             active: activeItem === item,
-            disabled: false,
+            disabled: isItemDisabled(item, index, this.props.itemDisabled),
             matchesPredicate,
         };
         return this.props.itemRenderer(item, {
@@ -219,10 +227,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return undefined;
     }
 
-    private getActiveIndex() {
-        const { activeItem } = this.props;
+    private getActiveIndex(items = this.state.filteredItems) {
+        const { activeItem } = this.state;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
-        return activeItem == null ? -1 : this.state.filteredItems.indexOf(activeItem);
+        return activeItem == null ? -1 : items.indexOf(activeItem);
     }
 
     private getItemsParentPadding() {
@@ -235,46 +243,60 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        Utils.safeInvoke(this.props.onActiveItemChange, item);
+        this.setActiveItem(item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
+        if (this.props.resetOnSelect) {
+            this.setQuery("", true);
+        }
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        switch (event.keyCode) {
-            case Keys.ARROW_UP:
-                event.preventDefault();
-                this.moveActiveIndex(-1);
-                break;
-            case Keys.ARROW_DOWN:
-                event.preventDefault();
-                this.moveActiveIndex(1);
-                break;
-            default:
-                break;
+        const { keyCode } = event;
+        if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
+            event.preventDefault();
+            const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
+            if (nextActiveItem != null) {
+                this.setActiveItem(nextActiveItem);
+            }
         }
         Utils.safeInvoke(this.props.onKeyDown, event);
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        const { activeItem, onItemSelect, onKeyUp } = this.props;
+        const { onKeyUp } = this.props;
+        const { activeItem } = this.state;
         // using keyup for enter to play nice with Button's keyboard clicking.
         // if we were to process enter on keydown, then Button would click itself on keyup
         // and the popvoer would re-open out of our control :(.
         if (event.keyCode === Keys.ENTER && activeItem != null) {
             event.preventDefault();
-            Utils.safeInvoke(onItemSelect, activeItem, event);
+            this.handleItemSelect(activeItem, event);
         }
         Utils.safeInvoke(onKeyUp, event);
     };
 
-    private moveActiveIndex(direction: number) {
-        // indicate that the active item may need to be scrolled into view after update.
-        // this is not possible with mouse hover cuz you can't hover on something off screen.
-        this.shouldCheckActiveItemInViewport = true;
-        const { filteredItems } = this.state;
-        const maxIndex = Math.max(filteredItems.length - 1, 0);
-        const nextActiveIndex = Utils.clamp(this.getActiveIndex() + direction, 0, maxIndex);
-        Utils.safeInvoke(this.props.onActiveItemChange, filteredItems[nextActiveIndex]);
+    private handleQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
+        const query = event == null ? "" : event.target.value;
+        this.setQuery(query);
+        Utils.safeInvoke(this.props.onQueryChange, query, event);
+    };
+
+    /**
+     * Get the next enabled item, moving in the given direction from the start
+     * index. An `undefined` return value means no suitable item was found.
+     * @param direction amount to move in each iteration, typically +/-1
+     */
+    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | null {
+        return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
+    }
+
+    private setActiveItem(activeItem: T | null) {
+        if (this.props.activeItem === undefined) {
+            // indicate that the active item may need to be scrolled into view after update.
+            this.shouldCheckActiveItemInViewport = true;
+            this.setState({ activeItem });
+        }
+        Utils.safeInvoke(this.props.onActiveItemChange, activeItem);
     }
 }
 
@@ -282,7 +304,7 @@ function pxToNumber(value: string | null) {
     return value == null ? 0 : parseInt(value.slice(0, -2), 10);
 }
 
-function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }: IQueryListProps<T>) {
+function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: IQueryListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
         // note that implementations can reorder the items here
         return itemListPredicate(query, items);
@@ -290,4 +312,53 @@ function getFilteredItems<T>({ items, itemPredicate, itemListPredicate, query }:
         return items.filter((item, index) => itemPredicate(query, item, index));
     }
     return items;
+}
+
+/** Wrap number around min/max values: if it exceeds one bound, return the other. */
+function wrapNumber(value: number, min: number, max: number) {
+    if (value < min) {
+        return max;
+    } else if (value > max) {
+        return min;
+    }
+    return value;
+}
+
+function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
+    if (itemDisabled == null || item == null) {
+        return false;
+    } else if (Utils.isFunction(itemDisabled)) {
+        return itemDisabled(item, index);
+    }
+    return !!item[itemDisabled];
+}
+
+/**
+ * Get the next enabled item, moving in the given direction from the start
+ * index. An `undefined` return value means no suitable item was found.
+ * @param items the list of items
+ * @param isItemDisabled callback to determine if a given item is disabled
+ * @param direction amount to move in each iteration, typically +/-1
+ * @param startIndex which index to begin moving from
+ */
+export function getFirstEnabledItem<T>(
+    items: T[],
+    itemDisabled?: keyof T | ((item: T, index: number) => boolean),
+    direction = 1,
+    startIndex = items.length - 1,
+): T | null {
+    if (items.length === 0) {
+        return null;
+    }
+    // remember where we started to prevent an infinite loop
+    let index = startIndex;
+    const maxIndex = items.length - 1;
+    do {
+        // find first non-disabled item
+        index = wrapNumber(index + direction, 0, maxIndex);
+        if (!isItemDisabled(items[index], index, itemDisabled)) {
+            return items[index];
+        }
+    } while (index !== startIndex);
+    return null;
 }

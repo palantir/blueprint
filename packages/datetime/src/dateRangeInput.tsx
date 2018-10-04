@@ -13,6 +13,7 @@ import {
     AbstractPureComponent,
     Boundary,
     Classes,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -76,7 +77,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     disabled?: boolean;
 
     /**
-     * Props to pass to the end-date [input group](#core/components/forms/input-group.javascript-api).
+     * Props to pass to the end-date [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
@@ -128,7 +129,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
-     * Props to pass to the start-date [input group](#core/components/forms/input-group.javascript-api).
+     * Props to pass to the start-date [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
@@ -204,7 +205,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         startInputProps: {},
     };
 
-    public static displayName = "Blueprint2.DateRangeInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
     private startInputRef: HTMLInputElement;
     private endInputRef: HTMLInputElement;
@@ -278,7 +279,6 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             <Popover
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
-                usePortal={false}
                 {...this.props.popoverProps}
                 autoFocus={false}
                 className={popoverClassName}

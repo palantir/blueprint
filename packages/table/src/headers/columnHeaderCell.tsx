@@ -143,9 +143,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
 
         const nameComponent = (
             <LoadableContent loading={loading} variableLength={true}>
-                {nameRenderer == null
-                    ? defaultName
-                    : React.cloneElement(nameRenderer(name, index) as JSX.Element, { index })}
+                {nameRenderer == null ? defaultName : nameRenderer(name, index)}
             </LoadableContent>
         );
 
@@ -198,8 +196,8 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
                     position={Position.BOTTOM}
                     className={Classes.TABLE_TH_MENU}
                     modifiers={{ preventOverflow: { boundariesElement: "window" } }}
-                    popoverDidOpen={this.handlePopoverDidOpen}
-                    popoverWillClose={this.handlePopoverWillClose}
+                    onOpened={this.handlePopoverOpened}
+                    onClosing={this.handlePopoverClosing}
                 >
                     <Icon icon={menuIcon} />
                 </Popover>
@@ -207,11 +205,6 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
         );
     }
 
-    private handlePopoverDidOpen = () => {
-        this.setState({ isActive: true });
-    };
-
-    private handlePopoverWillClose = () => {
-        this.setState({ isActive: false });
-    };
+    private handlePopoverOpened = () => this.setState({ isActive: true });
+    private handlePopoverClosing = () => this.setState({ isActive: false });
 }

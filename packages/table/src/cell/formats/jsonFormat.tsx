@@ -4,6 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
@@ -28,7 +29,9 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     stringify?: (obj: any) => string;
 }
 
-export class JSONFormat extends React.Component<IJSONFormatProps, {}> {
+export class JSONFormat extends React.Component<IJSONFormatProps> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
+
     public static defaultProps: IJSONFormatProps = {
         omitQuotesOnStrings: true,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),

@@ -1,0 +1,208 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "../../common/variables";
+
+/*
+Tables
+
+Markup:
+<table class="#{$ns}-html-table {{.modifier}}">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Description</th>
+      <th>Technologies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Blueprint</td>
+      <td>CSS framework and UI toolkit</td>
+      <td>Sass, TypeScript, React</td>
+    </tr>
+    <tr>
+      <td>TSLint</td>
+      <td>Static analysis linter for TypeScript</td>
+      <td>TypeScript</td>
+    </tr>
+    <tr>
+      <td>Plottable</td>
+      <td>Composable charting library built on top of D3</td>
+      <td>SVG, TypeScript, D3</td>
+    </tr>
+  </tbody>
+</table>
+
+.#{$ns}-condensed - Small, condensed appearance
+.#{$ns}-html-table-striped - Striped appearance
+.#{$ns}-html-table-bordered - Bordered appearance
+.#{$ns}-interactive - Enables hover styles on rows
+.#{$ns}-small - Small, condensed appearance for this element and all child elements
+
+Styleguide html-table
+*/
+
+$table-row-height: $pt-grid-size * 4 !default;
+$table-row-height-small: $pt-grid-size * 3 !default;
+$table-border-width: 1px !default;
+$table-border-color: $pt-divider-black !default;
+$dark-table-border-color: $pt-dark-divider-white !default;
+
+// placeholder for extending inside running-text (see typography)
+%html-table {
+  border-spacing: 0;
+  font-size: $pt-font-size;
+
+  th,
+  td {
+    padding: centered-text($table-row-height);
+    vertical-align: top;
+    text-align: left;
+  }
+
+  th {
+    color: $pt-heading-color;
+    font-weight: 600;
+  }
+
+  td {
+    color: $pt-text-color;
+  }
+
+  tbody tr:first-child {
+    th,
+    td {
+      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+    }
+  }
+
+  // a bunch of deep compound selectors ahead, but there's not really a better way to do this right now
+  // stylelint-disable selector-max-compound-selectors
+  .#{$ns}-dark & {
+    th {
+      color: $pt-dark-heading-color;
+    }
+
+    td {
+      color: $pt-dark-text-color;
+    }
+
+    tbody tr:first-child {
+      th,
+      td {
+        box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+      }
+    }
+  }
+  // stylelint-enable selector-max-compound-selectors
+}
+
+table.#{$ns}-html-table {
+  @extend %html-table;
+
+  &.#{$ns}-condensed,
+  &.#{$ns}-small {
+    $small-vertical-padding: centered-text($table-row-height-small);
+
+    th,
+    td {
+      padding-top: $small-vertical-padding;
+      padding-bottom: $small-vertical-padding;
+    }
+  }
+
+  &.#{$ns}-html-table-striped {
+    tbody tr:nth-child(odd) td {
+      background: rgba($gray5, 0.15);
+    }
+  }
+
+  // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+  &.#{$ns}-html-table-bordered {
+    th:not(:first-child) {
+      box-shadow: inset $table-border-width 0 0 0 $table-border-color;
+    }
+
+    tbody tr td {
+      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+
+      &:not(:first-child) {
+        box-shadow: inset $table-border-width $table-border-width 0 0 $table-border-color;
+      }
+    }
+
+    &.#{$ns}-html-table-striped {
+      tbody tr:not(:first-child) td {
+        box-shadow: none;
+
+        &:not(:first-child) {
+          box-shadow: inset $table-border-width 0 0 0 $table-border-color;
+        }
+      }
+    }
+  }
+
+  &.#{$ns}-interactive {
+    tbody tr {
+      &:hover td {
+        background-color: rgba($gray5, 0.3);
+        cursor: pointer;
+      }
+
+      &:active td {
+        background-color: rgba($gray5, 0.4);
+      }
+    }
+  }
+
+  .#{$ns}-dark & {
+    // stylelint-disable selector-max-compound-selectors
+    &.#{$ns}-html-table-striped {
+      tbody tr:nth-child(odd) td {
+        background: rgba($gray1, 0.15);
+      }
+    }
+
+    // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+    &.#{$ns}-html-table-bordered {
+      th:not(:first-child) {
+        box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
+      }
+
+      tbody tr td {
+        box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+
+        &:not(:first-child) {
+          box-shadow: inset $table-border-width $table-border-width 0 0 $dark-table-border-color;
+        }
+      }
+
+      &.#{$ns}-html-table-striped {
+        tbody tr:not(:first-child) td {
+          box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
+
+          // easier than the alternative...
+          // stylelint-disable max-nesting-depth
+          &:first-child {
+            box-shadow: none;
+          }
+        }
+      }
+    }
+
+    &.#{$ns}-interactive {
+      tbody tr {
+        &:hover td {
+          background-color: rgba($gray1, 0.3);
+          cursor: pointer;
+        }
+
+        &:active td {
+          background-color: rgba($gray1, 0.4);
+        }
+      }
+    }
+    // stylelint-enable selector-max-compound-selectors
+  }
+}

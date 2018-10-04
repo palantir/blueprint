@@ -19,30 +19,36 @@ export interface ISelectExampleState {
     hasInitialContent: boolean;
     minimal: boolean;
     resetOnClose: boolean;
+    resetOnQuery: boolean;
     resetOnSelect: boolean;
+    disableItems: boolean;
     disabled: boolean;
 }
 
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
     public state: ISelectExampleState = {
+        disableItems: false,
         disabled: false,
         film: TOP_100_FILMS[0],
         filterable: true,
         hasInitialContent: false,
         minimal: false,
         resetOnClose: false,
+        resetOnQuery: true,
         resetOnSelect: false,
     };
 
+    private handleDisabledChange = this.handleSwitchChange("disabled");
     private handleFilterableChange = this.handleSwitchChange("filterable");
+    private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
+    private handleItemDisabledChange = this.handleSwitchChange("disableItems");
     private handleMinimalChange = this.handleSwitchChange("minimal");
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
+    private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
-    private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
-    private handleDisabledChange = this.handleSwitchChange("disabled");
 
     public render() {
-        const { disabled, film, minimal, ...flags } = this.state;
+        const { disabled, disableItems, film, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
@@ -56,12 +62,18 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     {...filmSelectProps}
                     {...flags}
                     disabled={disabled}
+                    itemDisabled={this.isItemDisabled}
                     initialContent={initialContent}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ minimal }}
                 >
-                    <Button rightIcon="caret-down" text={film ? film.title : "(No selection)"} disabled={disabled} />
+                    <Button
+                        icon="film"
+                        rightIcon="caret-down"
+                        text={film ? `${film.title} (${film.year})` : "(No selection)"}
+                        disabled={disabled}
+                    />
                 </FilmSelect>
             </Example>
         );
@@ -79,6 +91,11 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     onChange={this.handleResetOnCloseChange}
                 />
                 <Switch
+                    label="Reset on query"
+                    checked={this.state.resetOnQuery}
+                    onChange={this.handleResetOnQueryChange}
+                />
+                <Switch
                     label="Reset on select"
                     checked={this.state.resetOnSelect}
                     onChange={this.handleResetOnSelectChange}
@@ -87,6 +104,11 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     label="Use initial content"
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
+                />
+                <Switch
+                    label="Disable films before 2000"
+                    checked={this.state.disableItems}
+                    onChange={this.handleItemDisabledChange}
                 />
                 <H5>Popover props</H5>
                 <Switch
@@ -106,4 +128,6 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
             this.setState(state => ({ ...state, [prop]: checked }));
         };
     }
+
+    private isItemDisabled = (film: IFilm) => this.state.disableItems && film.year < 2000;
 }

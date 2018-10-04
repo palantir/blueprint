@@ -25,6 +25,23 @@ export function isFunction(value: any): value is Function {
 }
 
 /**
+ * Returns true if `node` is null/undefined, false, empty string, or an array
+ * composed of those. If `node` is an array, only one level of the array is
+ * checked, for performance reasons.
+ */
+export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boolean {
+    return (
+        node == null ||
+        node === "" ||
+        node === false ||
+        (!skipArray &&
+            Array.isArray(node) &&
+            // only recurse one level through arrays, for performance
+            (node.length === 0 || node.every(n => isReactNodeEmpty(n, true))))
+    );
+}
+
+/**
  * Converts a React child to an element: non-empty string or number or
  * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
  * are discarded.
@@ -50,15 +67,29 @@ export interface INamed {
     name?: string;
 }
 
-export function getDisplayName(ComponentClass: React.ComponentClass | INamed) {
-    return (ComponentClass as React.ComponentClass).displayName || (ComponentClass as INamed).name || "Unknown";
+export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
+    return (ComponentClass as React.ComponentType).displayName || (ComponentClass as INamed).name || "Unknown";
 }
 
+/**
+ * Returns true if the given JSX element matches the given component type.
+ *
+ * NOTE: This function only checks equality of `displayName` for performance and
+ * to tolerate multiple minor versions of a component being included in one
+ * application bundle.
+ * @param element JSX element in question
+ * @param ComponentType desired component type of element
+ */
 export function isElementOfType<P = {}>(
     element: any,
-    ComponentClass: React.ComponentClass<P>,
+    ComponentType: React.ComponentType<P>,
 ): element is React.ReactElement<P> {
-    return element != null && element.type === React.createElement(ComponentClass).type;
+    return (
+        element != null &&
+        element.type != null &&
+        element.type.displayName != null &&
+        element.type.displayName === ComponentType.displayName
+    );
 }
 
 /**
@@ -166,7 +197,7 @@ export function countDecimalPlaces(num: number) {
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
-    const throttledFunc = _throttleHelper(undefined, undefined, (event: Event) => {
+    const throttledFunc = _throttleHelper((event: Event) => {
         target.dispatchEvent(new CustomEvent(newEventName, event));
     });
     target.addEventListener(eventName, throttledFunc);
@@ -187,6 +218,7 @@ export function throttleReactEventCallback(
     options: IThrottledReactEventOptions = {},
 ) {
     const throttledFunc = _throttleHelper(
+        callback,
         (event2: React.SyntheticEvent<any>) => {
             if (options.preventDefault) {
                 event2.preventDefault();
@@ -194,15 +226,24 @@ export function throttleReactEventCallback(
         },
         // prevent React from reclaiming the event object before we reference it
         (event2: React.SyntheticEvent<any>) => event2.persist(),
-        callback,
     );
     return throttledFunc;
 }
 
-function _throttleHelper(
-    onBeforeIsRunningCheck: (...args: any[]) => void,
-    onAfterIsRunningCheck: (...args: any[]) => void,
-    onAnimationFrameRequested: (...args: any[]) => void,
+/**
+ * Throttle a method by wrapping it in a `requestAnimationFrame` call. Returns
+ * the throttled function.
+ */
+// tslint:disable-next-line:ban-types
+export function throttle<T extends Function>(method: T): T {
+    return _throttleHelper(method);
+}
+
+// tslint:disable-next-line:ban-types
+function _throttleHelper<T extends Function>(
+    onAnimationFrameRequested: T,
+    onBeforeIsRunningCheck?: T,
+    onAfterIsRunningCheck?: T,
 ) {
     let isRunning = false;
     const func = (...args: any[]) => {
@@ -222,11 +263,9 @@ function _throttleHelper(
         }
 
         requestAnimationFrame(() => {
-            if (isFunction(onAnimationFrameRequested)) {
-                onAnimationFrameRequested(...args);
-            }
+            onAnimationFrameRequested(...args);
             isRunning = false;
         });
     };
-    return func;
+    return (func as any) as T;
 }

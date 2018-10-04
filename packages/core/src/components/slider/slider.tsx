@@ -6,14 +6,15 @@
 
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
-import { clamp } from "../../common/utils";
-import { CoreSlider, formatPercentage, ICoreSliderProps } from "./coreSlider";
-import { Handle } from "./handle";
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { Intent } from "../../common/intent";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
-export interface ISliderProps extends ICoreSliderProps {
+export interface ISliderProps extends ISliderBaseProps {
     /**
-     * Initial value of the slider, determines where the fill starts from.
+     * Initial value of the slider. This determines the other end of the
+     * track fill: from `initialValue` to `value`.
      * @default 0
      */
     initialValue?: number;
@@ -31,72 +32,28 @@ export interface ISliderProps extends ICoreSliderProps {
     onRelease?(value: number): void;
 }
 
-export class Slider extends CoreSlider<ISliderProps> {
+export class Slider extends AbstractPureComponent<ISliderProps> {
     public static defaultProps: ISliderProps = {
-        disabled: false,
+        ...MultiSlider.defaultSliderProps,
         initialValue: 0,
-        labelStepSize: 1,
-        max: 10,
-        min: 0,
-        showTrackFill: true,
-        stepSize: 1,
         value: 0,
-        vertical: false,
     };
 
-    public static displayName: "Blueprint.Slider";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
-    private handle: Handle;
-
-    protected renderFill() {
-        const { tickSizeRatio } = this.state;
-        const initialValue = clamp(this.props.initialValue, this.props.min, this.props.max);
-
-        let offsetRatio = (initialValue - this.props.min) * tickSizeRatio;
-        let sizeRatio = (this.props.value - initialValue) * tickSizeRatio;
-
-        if (sizeRatio < 0) {
-            offsetRatio += sizeRatio;
-            sizeRatio = Math.abs(sizeRatio);
-        }
-
-        const offsetPercentage = formatPercentage(offsetRatio);
-        const sizePercentage = formatPercentage(sizeRatio);
-
-        const style: React.CSSProperties = this.props.vertical
-            ? { bottom: offsetPercentage, height: sizePercentage }
-            : { left: offsetPercentage, width: sizePercentage };
-
-        return <div className={`${Classes.SLIDER}-progress`} style={style} />;
-    }
-
-    protected renderHandles() {
-        // make sure to *not* pass this.props.className to handle
+    public render() {
+        const { initialValue, value, onChange, onRelease, ...props } = this.props;
         return (
-            <Handle
-                {...this.props}
-                {...this.state}
-                className=""
-                label={this.formatLabel(this.props.value)}
-                ref={this.handleHandleRef}
-            />
+            <MultiSlider {...props}>
+                <MultiSlider.Handle
+                    value={value}
+                    intentAfter={value < initialValue ? Intent.PRIMARY : undefined}
+                    intentBefore={value >= initialValue ? Intent.PRIMARY : undefined}
+                    onChange={onChange}
+                    onRelease={onRelease}
+                />
+                <MultiSlider.Handle value={initialValue} interactionKind="none" />
+            </MultiSlider>
         );
     }
-
-    protected handleTrackClick(event: React.MouseEvent<HTMLElement>) {
-        if (this.handle != null) {
-            this.handle.beginHandleMovement(event);
-        }
-    }
-
-    protected handleTrackTouch(event: React.TouchEvent<HTMLElement>) {
-        if (this.handle != null) {
-            this.handle.beginHandleTouchMovement(event);
-        }
-    }
-    // tslint:enable member-ordering
-
-    private handleHandleRef = (ref: Handle) => {
-        this.handle = ref;
-    };
 }

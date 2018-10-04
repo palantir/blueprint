@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "3.0.0-beta.1",
+  "version": "3.6.1",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -19,7 +19,7 @@
     "compile": "run-p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
-    "compile:css": "sass-compile ./src",
+    "compile:css": "sass-compile ./src --functions ./scripts/sass-inline-svg.js",
     "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
     "dist": "run-s \"dist:*\"",
     "dist:bundle": "cross-env NODE_ENV=production webpack",
@@ -38,14 +38,15 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/icons": "^3.0.0-beta.0",
+    "@blueprintjs/icons": "^3.0.0",
     "@types/dom4": "^2.0.0",
     "classnames": "^2.2",
     "dom4": "^2.0.1",
     "normalize.css": "^8.0.0",
     "popper.js": "^1.14.1",
-    "react-popper": "^0.8.2",
+    "react-popper": "^1.0.0",
     "react-transition-group": "^2.2.1",
+    "resize-observer-polyfill": "^1.5.0",
     "tslib": "^1.9.0"
   },
   "peerDependencies": {
@@ -53,9 +54,9 @@
     "react-dom": "^15.3.0 || 16"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "^0.6.1",
-    "@blueprintjs/node-build-scripts": "^0.6.1",
-    "@blueprintjs/test-commons": "^0.6.0",
+    "@blueprintjs/karma-build-scripts": "^0.8.0",
+    "@blueprintjs/node-build-scripts": "^0.7.0",
+    "@blueprintjs/test-commons": "^0.8.0",
     "enzyme": "^3.3.0",
     "karma": "^1.7.1",
     "mocha": "^4.1.0",
@@ -63,7 +64,8 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
-    "typescript": "~2.7.2",
+    "sass-inline-svg": "^1.2.0",
+    "typescript": "~2.8.3",
     "webpack": "^3.10.0"
   },
   "repository": {
@@ -79,5 +81,5 @@
     "ui"
   ],
   "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+  "license": "SEE LICENSE IN LICENSE"
 }

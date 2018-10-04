@@ -1,4 +1,4 @@
-@# Numeric inputs
+@# Numeric input
 
 The `NumericInput` component provides controls for easily inputting,
 incrementing, and decrementing numeric values.
@@ -60,7 +60,7 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 @### Responsive numeric inputs
 
 `NumericInput` can be styled with the same set of CSS classes that modify
-regular [control groups](#core/components/forms/control-group). The most appropriate
+regular [control groups](#core/components/control-group). The most appropriate
 such modifier for `NumericInput` is `@ns-fill`, which when passed as a
 `className` will make the component expand to fill all available width.
 

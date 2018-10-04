@@ -9,6 +9,9 @@
  * An `itemListRenderer` receives this object as its sole argument.
  */
 export interface IItemListRendererProps<T> {
+    /** The currently focused item (for keyboard interactions). */
+    activeItem: T | null;
+
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.
      * See `items` for the full list of items.
@@ -41,7 +44,7 @@ export interface IItemListRendererProps<T> {
      * This retrieves the modifiers for the item and delegates actual rendering
      * to the owner component's `itemRenderer` prop.
      */
-    renderItem: (item: T, index?: number) => JSX.Element | null;
+    renderItem: (item: T, index: number) => JSX.Element | null;
 }
 
 /** Type alias for a function that renders the list of items. */

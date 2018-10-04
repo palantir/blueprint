@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { Utils } from "../../common";
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, IProps {
     /**
@@ -36,14 +36,13 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     large?: boolean;
 
     /**
-     * Callback invoked on `input` `change` events.
+     * Callback invoked on `<input>` `change` events.
      *
      * This callback is offered as a convenience; it is equivalent to passing
      * `onChange` to `inputProps`.
      *
-     * __Note:__ If you pass `onChange` as a top-level prop, it will be passed
-     * to the wrapping `label` rather than the `input`, which may not be what
-     * you expect.
+     * __Note:__ The top-level `onChange` prop is passed to the wrapping
+     * `<label>` rather than the `<input>`, which may not be what you expect.
      */
     onInputChange?: React.FormEventHandler<HTMLInputElement>;
 
@@ -57,7 +56,7 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
 export class FileInput extends React.PureComponent<IFileInputProps, {}> {
-    public static displayName = "Blueprint2.FileInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
     public static defaultProps: IFileInputProps = {
         inputProps: {},

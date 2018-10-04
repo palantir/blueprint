@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/datetime",
-  "version": "3.0.0-beta.0",
+  "version": "3.2.0",
   "description": "Components for interacting with dates and times",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -33,15 +33,15 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.0.0-beta.0",
+    "@blueprintjs/core": "^3.6.0",
     "classnames": "^2.2",
-    "react-day-picker": "^7.0.7",
+    "react-day-picker": "^7.1.10",
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "^0.6.1",
-    "@blueprintjs/node-build-scripts": "^0.6.1",
-    "@blueprintjs/test-commons": "^0.6.0",
+    "@blueprintjs/karma-build-scripts": "^0.8.0",
+    "@blueprintjs/node-build-scripts": "^0.7.0",
+    "@blueprintjs/test-commons": "^0.8.0",
     "enzyme": "^3.3.0",
     "karma": "^1.7.1",
     "mocha": "^4.1.0",
@@ -49,7 +49,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
-    "typescript": "~2.7.2",
+    "typescript": "~2.8.3",
     "webpack": "^3.10.0"
   },
   "repository": {
@@ -67,5 +67,5 @@
     "time"
   ],
   "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+  "license": "SEE LICENSE IN LICENSE"
 }

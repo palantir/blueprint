@@ -42,17 +42,6 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.calledOnce);
     });
 
-    it("attempts to close when dialog container element is moused down", () => {
-        const onClose = spy();
-        const dialog = mount(
-            <Dialog isOpen={true} onClose={onClose} usePortal={false}>
-                {createDialogContents()}
-            </Dialog>,
-        );
-        dialog.find(`.${Classes.DIALOG_CONTAINER}`).simulate("mousedown");
-        assert.isTrue(onClose.calledOnce);
-    });
-
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
@@ -75,6 +64,16 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.notCalled);
     });
 
+    it("supports overlay lifecycle props", () => {
+        const onOpening = spy();
+        mount(
+            <Dialog isOpen={true} onOpening={onOpening}>
+                body
+            </Dialog>,
+        );
+        assert.isTrue(onOpening.calledOnce);
+    });
+
     describe("header", () => {
         it(`renders .${Classes.DIALOG_HEADER} if title prop is given`, () => {
             const dialog = mount(
@@ -91,10 +90,10 @@ describe("<Dialog>", () => {
                     dialog body
                 </Dialog>,
             );
-            assert.lengthOf(dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`), 1);
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button), 1);
 
             dialog.setProps({ isCloseButtonShown: false });
-            assert.lengthOf(dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`), 0);
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button), 0);
         });
 
         it("clicking close button triggers onClose", () => {
@@ -104,7 +103,10 @@ describe("<Dialog>", () => {
                     dialog body
                 </Dialog>,
             );
-            dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`).simulate("click");
+            dialog
+                .find(`.${Classes.DIALOG_HEADER}`)
+                .find(Button)
+                .simulate("click");
             assert.isTrue(onClose.calledOnce, "onClose not called");
         });
     });

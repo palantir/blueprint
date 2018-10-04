@@ -1,11 +1,8 @@
 @# Date input
 
-The `DateInput` component is an [input group](#core/components/forms/input-group) that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover) on focus. Use it in forms where the user must enter a date.
-
-Customize the date format with `formatDate` and `parseDate` callbacks.
-Attach an `onChange` handler to listen for changes to the selected date.
-Use `onError` to listen for invalid entered dates.
-Control the selected date by setting the `value` prop, or use the component in uncontrolled mode and specify an initial date with `defaultValue`.
+The `DateInput` component is an [input group](#core/components/text-inputs.input-group)
+that shows a [`DatePicker`](#datetime/datepicker) in a [`Popover`](#core/components/popover)
+on focus. Use it in forms where the user must enter a date.
 
 @reactExample DateInputExample
 
@@ -51,11 +48,17 @@ function getMomentFormatter(format: string): IDateFormatProps {
 <DateInput {...getMomentFormatter("LL")} locale="de" />
 ```
 
+@## Props
 
-@## JavaScript API
+Use the `onChange` function to listen for changes to the selected date. Use
+`onError` to listen for invalid entered dates.
 
-The `DateInput` component is available in the __@blueprintjs/datetime__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+You can control the selected date by setting the `value` prop, or use the
+component in uncontrolled mode and specify an initial date by setting
+`defaultValue`.
+
+Customize the date format with the required `formatDate` and `parseDate`
+callbacks.
 
 ```tsx
 import { DateInput } from "@blueprintjs/datetime";
@@ -70,5 +73,3 @@ import { DateInput } from "@blueprintjs/datetime";
 ```
 
 @interface IDateInputProps
-
-@interface IDateFormatter

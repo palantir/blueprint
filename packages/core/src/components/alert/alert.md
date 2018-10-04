@@ -1,21 +1,20 @@
-@# Alerts
+@# Alert
 
 Alerts notify users of important information and force them to acknowledge the alert content before
 continuing.
 
-Although similar to [dialogs](#core/components/dialog), alerts are more restrictive and should only be
-used for important information. The user can only exit the alert by clicking one of the
-confirmation buttons—clicking the overlay or pressing the `esc` key will not close the alert.
-
-You can only use this component in controlled mode. Use the `onClick` handlers in the primary and
-secondary action props to handle closing the `Alert`. Optionally, display an icon next to the body
-to show the type of the alert.
+Although similar to [dialogs](#core/components/dialog), alerts are more
+restrictive and should only be used for important information. By default, the
+user can only exit the alert by clicking one of the confirmation
+buttons—clicking the overlay or pressing the `esc` key will not close the alert.
+These interactions can be enabled via props.
 
 @reactExample AlertExample
 
-@## JavaScript API
+@## Props
 
-The `Alert` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+`Alert` only supports controlled usage through the `isOpen` prop. Use the
+`onConfirm` and `onCancel` props to respond to those interactions separately, or
+use `onClose` to handle both at the same time.
 
 @interface IAlertProps

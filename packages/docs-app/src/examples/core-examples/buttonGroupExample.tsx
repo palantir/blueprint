@@ -49,16 +49,14 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
                 <Switch checked={this.state.iconOnly} label="Icons only" onChange={this.handleIconOnlyChange} />
             </>
         );
-        // have the container take up the full-width if `fill` is true;
-        // otherwise, disable full-width styles to keep a vertical button group
-        // from taking up the full width.
-        const style: React.CSSProperties = { minWidth: 200, flexGrow: this.state.fill ? 1 : undefined };
+
         return (
             <Example options={options} {...this.props}>
-                <ButtonGroup style={style} {...bgProps}>
+                {/* set `minWidth` so `alignText` will have an effect when vertical */}
+                <ButtonGroup style={{ minWidth: 200 }} {...bgProps}>
                     <Button icon="database">{!iconOnly && "Queries"}</Button>
                     <Button icon="function">{!iconOnly && "Functions"}</Button>
-                    <AnchorButton icon="cog" rightIcon="caret-down">
+                    <AnchorButton icon="cog" rightIcon="settings">
                         {!iconOnly && "Options"}
                     </AnchorButton>
                 </ButtonGroup>

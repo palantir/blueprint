@@ -12,16 +12,13 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
-import { Popover, PopperModifiers } from "../popover/popover";
+import { IOverlayLifecycleProps } from "../overlay/overlay";
+import { Popover } from "../popover/popover";
+import { PopperModifiers } from "../popover/popoverSharedProps";
 
 export interface IOffset {
     left: number;
     top: number;
-}
-
-interface IContextMenuProps {
-    /** Callback invoked after the menu has finished transitioning to a closed state. */
-    didClose: () => void;
 }
 
 interface IContextMenuState {
@@ -38,7 +35,7 @@ const POPPER_MODIFIERS: PopperModifiers = {
 const TRANSITION_DURATION = 100;
 
 /* istanbul ignore next */
-class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
+class ContextMenu extends AbstractPureComponent<IOverlayLifecycleProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,
@@ -51,14 +48,22 @@ class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuS
         const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
         const popoverClassName = classNames({ [Classes.DARK]: this.state.isDarkTheme });
 
+        // HACKHACK: workaround until we have access to Popper#scheduleUpdate().
+        // https://github.com/palantir/blueprint/issues/692
+        // Generate key based on offset so a new Popover instance is created
+        // when offset changes, to force recomputing position.
+        const key = this.state.offset == null ? "" : `${this.state.offset.left}x${this.state.offset.top}`;
+
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
         return (
             <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
                 <Popover
+                    {...this.props}
                     backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
                     content={content}
                     enforceFocus={false}
+                    key={key}
                     hasBackdrop={true}
                     isOpen={this.state.isOpen}
                     minimal={true}
@@ -66,7 +71,6 @@ class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuS
                     onInteraction={this.handlePopoverInteraction}
                     position={Position.RIGHT_TOP}
                     popoverClassName={popoverClassName}
-                    popoverDidClose={this.props.didClose}
                     target={<div />}
                     transitionDuration={TRANSITION_DURATION}
                 />
@@ -122,7 +126,7 @@ export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, i
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
-        contextMenu = ReactDOM.render(<ContextMenu didClose={remove} />, contextMenuElement) as ContextMenu;
+        contextMenu = ReactDOM.render(<ContextMenu onClosed={remove} />, contextMenuElement) as ContextMenu;
     }
 
     contextMenu.show(menu, offset, onClose, isDarkTheme);

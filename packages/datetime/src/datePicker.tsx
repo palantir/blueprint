@@ -4,19 +4,18 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractPureComponent, Button, Classes as CoreClasses, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import ReactDayPicker from "react-day-picker";
-import { DayModifiers } from "react-day-picker/types/common";
-import { CaptionElementProps, DayPickerProps } from "react-day-picker/types/props";
+import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
-
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { DatePickerNavbar } from "./datePickerNavbar";
+import { TimePicker } from "./timePicker";
 
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
@@ -45,10 +44,10 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * Called when the user selects a day.
      * If being used in an uncontrolled manner, `selectedDate` will be `null` if the user clicks the currently selected
      * day. If being used in a controlled manner, `selectedDate` will contain the day clicked no matter what.
-     * `hasUserManuallySelectedDate` is true if the user selected a day, and false if the date was automatically changed
+     * `isUserChange` is true if the user selected a day, and false if the date was automatically changed
      * by the user navigating to a new month or year rather than explicitly clicking on a date in the calendar.
      */
-    onChange?: (selectedDate: Date, hasUserManuallySelectedDate: boolean) => void;
+    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
 
     /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.
@@ -57,63 +56,55 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     showActionsBar?: boolean;
 
     /**
+     * Text for the today button in the action bar.
+     * @default "Today"
+     */
+    todayButtonText?: string;
+
+    /**
+     * Text for the reset button in the action bar.
+     * @default "Clear"
+     */
+    clearButtonText?: string;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      */
     value?: Date;
 }
 
 export interface IDatePickerState {
-    displayMonth?: number;
-    displayYear?: number;
-    selectedDay?: number;
-    value?: Date;
+    displayMonth: number;
+    displayYear: number;
+    selectedDay: number | null;
+    value: Date | null;
 }
 
 export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
+        clearButtonText: "Clear",
         dayPickerProps: {},
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
         showActionsBar: false,
+        timePickerProps: {},
+        todayButtonText: "Today",
     };
 
-    public static displayName = "Blueprint2.DatePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker`;
 
     private ignoreNextMonthChange = false;
 
-    public constructor(props?: IDatePickerProps, context?: any) {
+    public constructor(props: IDatePickerProps, context?: any) {
         super(props, context);
-
-        let value: Date = null;
-        if (props.value !== undefined) {
-            value = props.value;
-        } else if (props.defaultValue != null) {
-            value = props.defaultValue;
-        }
-
-        let selectedDay: number;
-        if (value !== null) {
-            selectedDay = value.getDate();
-        }
-
-        let initialMonth: Date;
-        const today = new Date();
-        if (props.initialMonth != null) {
-            initialMonth = props.initialMonth;
-        } else if (value != null) {
-            initialMonth = value;
-        } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
-            initialMonth = today;
-        } else {
-            initialMonth = DateUtils.getDateBetween([props.minDate, props.maxDate]);
-        }
-
+        const value = getInitialValue(props);
+        const initialMonth = getInitialMonth(props, value);
         this.state = {
             displayMonth: initialMonth.getMonth(),
             displayYear: initialMonth.getFullYear(),
-            selectedDay,
+            selectedDay: value == null ? null : value.getDate(),
             value,
         };
     }
@@ -133,7 +124,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
         return (
             <div className={classNames(Classes.DATEPICKER, className)}>
-                <ReactDayPicker
+                <DayPicker
                     showOutsideDays={true}
                     locale={locale}
                     localeUtils={localeUtils}
@@ -141,6 +132,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     {...dayPickerProps}
                     canChangeMonth={true}
                     captionElement={this.renderCaption}
+                    navbarElement={this.renderNavbar}
                     disabledDays={this.getDisabledDaysModifier()}
                     fromMonth={minDate}
                     month={new Date(displayYear, displayMonth)}
@@ -149,28 +141,29 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     selectedDays={this.state.value}
                     toMonth={maxDate}
                 />
-                {showActionsBar ? this.renderOptionsBar() : null}
+                {this.maybeRenderTimePicker()}
+                {showActionsBar && this.renderOptionsBar()}
             </div>
         );
     }
 
     public componentWillReceiveProps(nextProps: IDatePickerProps) {
-        if (nextProps.value !== this.props.value) {
-            let { displayMonth, displayYear, selectedDay } = this.state;
-            if (nextProps.value != null) {
-                displayMonth = nextProps.value.getMonth();
-                displayYear = nextProps.value.getFullYear();
-                selectedDay = nextProps.value.getDate();
-            }
+        super.componentWillReceiveProps(nextProps);
+        const { value } = nextProps;
+        if (value === this.props.value) {
+            // no action needed
+            return;
+        } else if (value == null) {
+            // clear the value
+            this.setState({ value });
+        } else {
             this.setState({
-                displayMonth,
-                displayYear,
-                selectedDay,
-                value: nextProps.value,
+                displayMonth: value.getMonth(),
+                displayYear: value.getFullYear(),
+                selectedDay: value.getDate(),
+                value,
             });
         }
-
-        super.componentWillReceiveProps(nextProps);
     }
 
     protected validateProps(props: IDatePickerProps) {
@@ -205,150 +198,95 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             {...props}
             maxDate={this.props.maxDate}
             minDate={this.props.minDate}
-            onMonthChange={this.handleMonthSelectChange}
-            onYearChange={this.handleYearSelectChange}
+            onDateChange={this.handleMonthChange}
             reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
         />
     );
 
+    private renderNavbar = (props: NavbarElementProps) => (
+        <DatePickerNavbar {...props} maxDate={this.props.maxDate} minDate={this.props.minDate} />
+    );
+
     private renderOptionsBar() {
+        const { clearButtonText, todayButtonText } = this.props;
+        return [
+            <Divider key="div" />,
+            <div className={Classes.DATEPICKER_FOOTER} key="footer">
+                <Button minimal={true} onClick={this.handleTodayClick} text={todayButtonText} />
+                <Button minimal={true} onClick={this.handleClearClick} text={clearButtonText} />
+            </div>,
+        ];
+    }
+
+    private maybeRenderTimePicker() {
+        const { timePrecision, timePickerProps } = this.props;
+        if (timePrecision == null && timePickerProps === DatePicker.defaultProps.timePickerProps) {
+            return null;
+        }
         return (
-            <div className={Classes.DATEPICKER_FOOTER}>
-                <Button className={CoreClasses.MINIMAL} onClick={this.handleTodayClick} text="Today" />
-                <Button className={CoreClasses.MINIMAL} onClick={this.handleClearClick} text="Clear" />
-            </div>
+            <TimePicker
+                precision={timePrecision}
+                {...timePickerProps}
+                onChange={this.handleTimeChange}
+                value={this.state.value}
+            />
         );
     }
 
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
         Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
-
-        let newValue = day;
-
-        if (this.props.canClearSelection && modifiers.selected) {
-            newValue = null;
+        if (modifiers.disabled) {
+            return;
         }
-
         if (this.props.value === undefined) {
-            // component is uncontrolled
-            if (!modifiers.disabled) {
-                const displayMonth = day.getMonth();
-                const displayYear = day.getFullYear();
-                const selectedDay = day.getDate();
-                this.setState({
-                    displayMonth,
-                    displayYear,
-                    selectedDay,
-                    value: newValue,
-                });
-            }
+            // set now if uncontrolled, otherwise they'll be updated in `componentWillReceiveProps`
+            this.setState({
+                displayMonth: day.getMonth(),
+                displayYear: day.getFullYear(),
+                selectedDay: day.getDate(),
+            });
+        }
+        if (this.state.value == null || this.state.value.getMonth() !== day.getMonth()) {
+            this.ignoreNextMonthChange = true;
         }
 
-        if (!modifiers.disabled) {
-            Utils.safeInvoke(this.props.onChange, newValue, true);
-            if (this.state.value != null && this.state.value.getMonth() !== day.getMonth()) {
-                this.ignoreNextMonthChange = true;
-            }
-        } else {
-            // rerender base component to get around bug where you can navigate past bounds by clicking days
-            this.forceUpdate();
-        }
+        // allow toggling selected date by clicking it again (if prop enabled)
+        const newValue =
+            this.props.canClearSelection && modifiers.selected ? null : DateUtils.getDateTime(day, this.state.value);
+        this.updateValue(newValue, true);
     };
 
     private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date {
         const { minDate, maxDate } = this.props;
+        const { selectedDay } = this.state;
+        // month is 0-based, date is 1-based. date 0 is last day of previous month.
         const maxDaysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
-        let { selectedDay } = this.state;
+        const displayDate = selectedDay == null ? 1 : Math.min(selectedDay, maxDaysInMonth);
 
-        if (selectedDay > maxDaysInMonth) {
-            selectedDay = maxDaysInMonth;
-        }
-
-        // matches the underlying react-day-picker timestamp behavior
-        let value = new Date(displayYear, displayMonth, selectedDay, 12);
-
+        // 12:00 matches the underlying react-day-picker timestamp behavior
+        const value = DateUtils.getDateTime(new Date(displayYear, displayMonth, displayDate, 12), this.state.value);
+        // clamp between min and max dates
         if (value < minDate) {
-            value = minDate;
+            return minDate;
         } else if (value > maxDate) {
-            value = maxDate;
+            return maxDate;
         }
-
         return value;
     }
 
+    private handleClearClick = () => this.updateValue(null, true);
+
     private handleMonthChange = (newDate: Date) => {
-        const displayMonth = newDate.getMonth();
-        const displayYear = newDate.getFullYear();
-        let { value } = this.state;
-
-        if (value !== null) {
-            value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
-            if (this.ignoreNextMonthChange) {
-                this.ignoreNextMonthChange = false;
-            } else {
-                // if handleDayClick just got run, it means the user selected a date in a new month,
-                // so don't run onChange again
-                Utils.safeInvoke(this.props.onChange, value, false);
-            }
+        const date = this.computeValidDateInSpecifiedMonthYear(newDate.getFullYear(), newDate.getMonth());
+        this.setState({ displayMonth: date.getMonth(), displayYear: date.getFullYear() });
+        if (this.state.value !== null) {
+            // if handleDayClick just got run (so this flag is set), then the
+            // user selected a date in a new month, so don't invoke onChange a
+            // second time
+            this.updateValue(date, false, this.ignoreNextMonthChange);
+            this.ignoreNextMonthChange = false;
         }
-
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-
-        this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
-    };
-
-    private handleMonthSelectChange = (displayMonth: number) => {
-        let { value } = this.state;
-
-        if (value !== null) {
-            value = this.computeValidDateInSpecifiedMonthYear(value.getFullYear(), displayMonth);
-            Utils.safeInvoke(this.props.onChange, value, false);
-        }
-
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-
-        this.setStateWithValueIfUncontrolled({ displayMonth }, value);
-    };
-
-    private handleYearSelectChange = (displayYear: number) => {
-        let { displayMonth, value } = this.state;
-
-        if (value !== null) {
-            value = this.computeValidDateInSpecifiedMonthYear(displayYear, displayMonth);
-            Utils.safeInvoke(this.props.onChange, value, false);
-            displayMonth = value.getMonth();
-        } else {
-            const { minDate, maxDate } = this.props;
-            const minYear = minDate.getFullYear();
-            const maxYear = maxDate.getFullYear();
-            const minMonth = minDate.getMonth();
-            const maxMonth = maxDate.getMonth();
-
-            if (displayYear === minYear && displayMonth < minMonth) {
-                displayMonth = minMonth;
-            } else if (displayYear === maxYear && displayMonth > maxMonth) {
-                displayMonth = maxMonth;
-            }
-        }
-
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, value);
-
-        this.setStateWithValueIfUncontrolled({ displayMonth, displayYear }, value);
-    };
-
-    private setStateWithValueIfUncontrolled(newState: IDatePickerState, value: Date) {
-        if (this.props.value === undefined) {
-            // uncontrolled mode means we track value in state
-            newState.value = value;
-        }
-        return this.setState(newState);
-    }
-
-    private handleClearClick = () => {
-        if (this.props.value === undefined) {
-            this.setState({ value: null });
-        }
-        Utils.safeInvoke(this.props.onChange, null, true);
+        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, date);
     };
 
     private handleTodayClick = () => {
@@ -356,11 +294,51 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         const displayMonth = value.getMonth();
         const displayYear = value.getFullYear();
         const selectedDay = value.getDate();
-        if (this.props.value === undefined) {
-            this.setState({ displayMonth, displayYear, selectedDay, value });
-        } else {
-            this.setState({ displayMonth, displayYear, selectedDay });
-        }
-        Utils.safeInvoke(this.props.onChange, value, true);
+        this.setState({ displayMonth, displayYear, selectedDay });
+        this.updateValue(value, true);
     };
+
+    private handleTimeChange = (time: Date) => {
+        Utils.safeInvoke(this.props.timePickerProps.onChange, time);
+        const { value } = this.state;
+        const newValue = DateUtils.getDateTime(value != null ? value : new Date(), time);
+        this.updateValue(newValue, true);
+    };
+
+    /**
+     * Update `value` by invoking `onChange` (always) and setting state (if uncontrolled).
+     */
+    private updateValue(value: Date, isUserChange: boolean, skipOnChange = false) {
+        if (!skipOnChange) {
+            Utils.safeInvoke(this.props.onChange, value, isUserChange);
+        }
+        if (this.props.value === undefined) {
+            this.setState({ value });
+        }
+    }
+}
+
+function getInitialValue(props: IDatePickerProps): Date | null {
+    // !== because `null` is a valid value (no date)
+    if (props.value !== undefined) {
+        return props.value;
+    }
+    if (props.defaultValue !== undefined) {
+        return props.defaultValue;
+    }
+    return null;
+}
+
+function getInitialMonth(props: IDatePickerProps, value: Date | null): Date {
+    const today = new Date();
+    // != because we must have a real `Date` to begin the calendar on.
+    if (props.initialMonth != null) {
+        return props.initialMonth;
+    } else if (value != null) {
+        return value;
+    } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
+        return today;
+    } else {
+        return DateUtils.getDateBetween([props.minDate, props.maxDate]);
+    }
 }

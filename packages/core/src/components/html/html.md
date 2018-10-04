@@ -1,5 +1,6 @@
 ---
 reference: html
+tag: new
 ---
 
 @# HTML elements
@@ -18,6 +19,7 @@ The following elements should be used in this manner:
 | `H1` - `H6` | `h1` - `h6` | `HEADING` |
 | `Blockquote` | `blockquote` | `BLOCKQUOTE` |
 | `Code` | `code` | `CODE` |
+| `Label` | `label` | `LABEL` - see [Labels](#core/components/label) |
 | `Pre` | `pre` | `CODE_BLOCK` |
 | `OL` | `ol` | `LIST` |
 | `UL` | `ul` | `LIST` |

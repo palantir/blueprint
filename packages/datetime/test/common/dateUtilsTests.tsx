@@ -11,7 +11,7 @@ import * as DateUtils from "../../src/common/dateUtils";
 import { Months } from "../../src/common/months";
 import { assertTimeIs, createTimeObject } from "./dateTestUtils";
 
-describe("dateUtils", () => {
+describe("DateUtils", () => {
     describe("areRangesEqual", () => {
         const DATE_1 = new Date(2017, Months.JANUARY, 1);
         const DATE_2 = new Date(2017, Months.JANUARY, 2);
@@ -323,5 +323,29 @@ describe("dateUtils", () => {
             expect(() => DateUtils.get24HourFrom12Hour(1, true)).to.not.throw();
             expect(() => DateUtils.get24HourFrom12Hour(12, true)).to.not.throw();
         });
+    });
+
+    describe("getDateTime", () => {
+        const DATE = new Date("July 1 1999 4:30");
+
+        it("null date returns null", () => expect(DateUtils.getDateTime(null)).to.be.null);
+
+        it("clears time if time arg omitted", () => {
+            assertDateTime(DateUtils.getDateTime(DATE));
+        });
+
+        it("null time arg clears time", () => {
+            assertDateTime(DateUtils.getDateTime(DATE, null));
+        });
+
+        it("sets time if given", () => {
+            const time = createTimeObject(12, 12, 12, 12);
+            assertDateTime(DateUtils.getDateTime(DATE, time), time);
+        });
+
+        function assertDateTime(date: Date, time: Date = createTimeObject(0)) {
+            expect(date.toDateString()).to.equal(DATE.toDateString(), "date not preserved");
+            expect(date.toTimeString()).to.equal(time.toTimeString());
+        }
     });
 });

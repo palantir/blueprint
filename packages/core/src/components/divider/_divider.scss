@@ -1,0 +1,19 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "../../common/variables";
+
+$divider-margin: $pt-grid-size / 2 !default;
+
+.#{$ns}-divider {
+  margin: $divider-margin;
+  // since the element is empty, it will occupy minimal space and only show
+  // the appropriate border based on direction of container.
+  border-right: 1px solid $pt-divider-black;
+  border-bottom: 1px solid $pt-divider-black;
+
+
+  .#{$ns}-dark & {
+    border-color: $pt-dark-divider-black;
+  }
+}

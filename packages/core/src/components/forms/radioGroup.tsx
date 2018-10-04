@@ -9,7 +9,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IOptionProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IOptionProps, IProps } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
 import { IRadioProps, Radio } from "./controls";
 
@@ -42,9 +42,9 @@ export interface IRadioGroupProps extends IProps {
     onChange: (event: React.FormEvent<HTMLInputElement>) => void;
 
     /**
-     * Array of options to render in the group.
-     * This prop is mutually exclusive with `children`: either provide an array of `IOptionProps`
-     * objects or provide `<Radio>` children elements.
+     * Array of options to render in the group. This prop is mutually exclusive
+     * with `children`: either provide an array of `IOptionProps` objects or
+     * provide `<Radio>` children elements.
      */
     options?: IOptionProps[];
 
@@ -58,7 +58,7 @@ function nextName() {
 }
 
 export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
-    public static displayName = "Blueprint2.RadioGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 
     // a unique name for this group, which can be overridden by `name` prop.
     private autoGroupName = nextName();
@@ -91,19 +91,21 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
 
     private renderOptions() {
         return this.props.options.map(option => (
-            <Radio {...option} {...this.getRadioProps(option)} key={option.value} />
+            <Radio {...this.getRadioProps(option)} key={option.value} labelElement={option.label || option.value} />
         ));
     }
 
     private getRadioProps(optionProps: IOptionProps): IRadioProps {
         const { name } = this.props;
-        const { value, disabled } = optionProps;
+        const { className, disabled, value } = optionProps;
         return {
             checked: value === this.props.selectedValue,
+            className,
             disabled: disabled || this.props.disabled,
             inline: this.props.inline,
             name: name == null ? this.autoGroupName : name,
             onChange: this.props.onChange,
+            value,
         };
     }
 }

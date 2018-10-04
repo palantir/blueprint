@@ -11,6 +11,7 @@ import { IconName } from "@blueprintjs/icons";
 import {
     AbstractPureComponent,
     Classes,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IIntentProps,
     IProps,
@@ -55,6 +56,11 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /** Whether the numeric input should take up the full width of its container. */
     fill?: boolean;
+
+    /**
+     * Ref handler that receives HTML `<input>` element backing this component.
+     */
+    inputRef?: (ref: HTMLInputElement | null) => any;
 
     /**
      * If set to `true`, the input will display with larger styling.
@@ -134,7 +140,7 @@ enum IncrementDirection {
 }
 
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
-    public static displayName = "Blueprint2.NumericInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";
     public static VALUE_ZERO = "0";
@@ -362,6 +368,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private inputRef = (input: HTMLInputElement) => {
         this.inputElement = input;
+        Utils.safeInvoke(this.props.inputRef, input);
     };
 
     // Callbacks - Buttons

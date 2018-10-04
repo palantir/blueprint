@@ -3092,5 +3092,75 @@
     "tags": "crown, hat, role, level, permission, king",
     "group": "miscellaneous",
     "content": "\\e7b4"
+  },
+  {
+    "displayName": "Globe: network",
+    "iconName": "globe-network",
+    "tags": "planet, earth, map, world, www, website",
+    "group": "miscellaneous",
+    "content": "\\e7b5"
+  },
+  {
+    "displayName": "Snowflake",
+    "iconName": "snowflake",
+    "tags": "weather, winter, freeze, ice",
+    "group": "miscellaneous",
+    "content": "\\e7b6"
+  },
+  {
+    "displayName": "Tree",
+    "iconName": "tree",
+    "tags": "forest, wood, landmark",
+    "group": "miscellaneous",
+    "content": "\\e7b7"
+  },
+  {
+    "displayName": "Notifications: updated",
+    "iconName": "notifications-updated",
+    "tags": "notifications, bell, alarm, notice, warning",
+    "group": "interface",
+    "content": "\\e7b8"
+  },
+  {
+    "displayName": "List: columns",
+    "iconName": "list-columns",
+    "tags": "layout, arrangement, four lines, table",
+    "group": "table",
+    "content": "\\e7b9"
+  },
+    {
+    "displayName": "Flow: linear",
+    "iconName": "flow-linear",
+    "tags": "workflow, edge, node, step",
+    "group": "data",
+    "content": "\\e7c0"
+  },
+    {
+    "displayName": "Flow: branch",
+    "iconName": "flow-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c1"
+  },
+    {
+    "displayName": "Flow: review",
+    "iconName": "flow-review",
+    "tags": "workflow, edge, node, reverse",
+    "group": "data",
+    "content": "\\e7c2"
+  },
+    {
+    "displayName": "Flow: review branch",
+    "iconName": "flow-review-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c3"
+  },
+    {
+    "displayName": "Flow: end",
+    "iconName": "flow-end",
+    "tags": "workflow, edge, node, complete, finished, final, last",
+    "group": "data",
+    "content": "\\e7c4"
   }
 ]

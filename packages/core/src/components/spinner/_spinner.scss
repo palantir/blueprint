@@ -3,24 +3,6 @@
 
 @import "../../common/variables";
 @import "../progress-bar/common";
-@import "./common";
-
-/*
-Spinners
-
-Markup:
-<svg class="#{$ns}-spinner {{.modifier}}" viewBox="0 0 100 100">
-  <path class="#{$ns}-spinner-track" d="M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89"></path>
-  <path class="#{$ns}-spinner-head" d="M 94.5 50 A 44.5 44.5 0 0 0 50 5.5"></path>
-</svg>
-
-.#{$ns}-small - Small spinner
-.#{$ns}-large - Large spinner
-.#{$ns}-intent-primary - All four intents are supported
-.#{$ns}-no-spin - Disable spinning animation
-
-Styleguide spinner
-*/
 
 @keyframes pt-spinner-animation {
   from { transform: rotate(0deg); }
@@ -28,10 +10,18 @@ Styleguide spinner
 }
 
 .#{$ns}-spinner {
-  @include spinner-size($spinner-width-factor, $spinner-stroke-width, $spinner-speed);
+  // center animation container inside parent element to isolate layout
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   // allow paths to overflow container -- critical for edges of circles!
   overflow: visible;
   vertical-align: middle;
+
+  svg {
+    display: block;
+  }
 
   path {
     fill-opacity: 0;
@@ -40,8 +30,6 @@ Styleguide spinner
   .#{$ns}-spinner-head {
     transform-origin: center;
     transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
-    animation: pt-spinner-animation $spinner-speed linear infinite;
-    animation-duration: inherit;
     stroke: $progress-head-color;
     stroke-linecap: round;
   }
@@ -49,25 +37,14 @@ Styleguide spinner
   .#{$ns}-spinner-track {
     stroke: $progress-track-color;
   }
+}
 
-  &.#{$ns}-no-spin .#{$ns}-spinner-head {
+// put the animation on a child HTML element to isolate it from display of parent
+.#{$ns}-spinner-animation {
+  animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
+
+  .#{$ns}-no-spin > & {
     animation: none;
-  }
-
-  &.#{$ns}-small {
-    @include spinner-size(
-      $spinner-width-factor-small,
-      $spinner-stroke-width-small,
-      $spinner-speed-small
-    );
-  }
-
-  &.#{$ns}-large {
-    @include spinner-size(
-      $spinner-width-factor-large,
-      $spinner-stroke-width-large,
-      $spinner-speed-large
-    );
   }
 }
 

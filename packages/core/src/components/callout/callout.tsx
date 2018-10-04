@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
 import { Icon } from "../../index";
 import { H4 } from "../html/html";
 import { IconName } from "../icon/icon";
@@ -23,6 +23,13 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     icon?: IconName | JSX.Element | null;
 
     /**
+     * Visual intent color to apply to background, title, and icon.
+     *
+     * Defining this prop also applies a default icon, if the `icon` prop is omitted.
+     */
+    intent?: Intent;
+
+    /**
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply
@@ -34,6 +41,8 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
 }
 
 export class Callout extends React.PureComponent<ICalloutProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
+
     public render() {
         const { className, children, icon, intent, title, ...htmlProps } = this.props;
         const iconName = this.getIconName(icon, intent);

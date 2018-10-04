@@ -7,16 +7,19 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, IIntentProps, IProps, Utils } from "../../common";
-import { Icon } from "../icon/icon";
+import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, Utils } from "../../common";
+import { Icon, IconName } from "../icon/icon";
+import { Text } from "../text/text";
 
 export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
     /**
-     * If set to `true`, the tag will display in an active state.
-     * This is equivalent to setting `className={Classes.ACTIVE}`.
+     * Whether the tag should appear in an active state.
      * @default false
      */
     active?: boolean;
+
+    /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
+    icon?: IconName | JSX.Element;
 
     /**
      * Whether the tag should visually respond to user interactions. If set
@@ -28,11 +31,26 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     interactive?: boolean;
 
-    /** Whether this tag should use large styles. */
+    /**
+     * Whether this tag should use large styles.
+     * @default false
+     */
     large?: boolean;
 
-    /** Whether this tag should use minimal styles. */
+    /**
+     * Whether this tag should use minimal styles.
+     * @default false
+     */
     minimal?: boolean;
+
+    /**
+     * Whether tag content should be allowed to occupy multiple lines.
+     * If false, a single line of text will be truncated with an ellipsis if
+     * it overflows. Note that icons will be vertically centered relative to
+     * multiline text.
+     * @default false
+     */
+    multiline?: boolean;
 
     /**
      * Callback invoked when the tag is clicked.
@@ -42,27 +60,36 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
 
     /**
      * Click handler for remove button.
-     * Button will only be rendered if this prop is defined.
+     * The remove button will only be rendered if this prop is defined.
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 
-    /** Whether this tag should have rounded ends. */
+    /** Name of a Blueprint UI icon (or an icon element) to render after the children. */
+    rightIcon?: IconName | JSX.Element;
+
+    /**
+     * Whether this tag should have rounded ends.
+     * @default false
+     */
     round?: boolean;
 }
 
 export class Tag extends React.PureComponent<ITagProps, {}> {
-    public static displayName = "Blueprint2.Tag";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {
         const {
             active,
             children,
             className,
+            icon,
             intent,
             interactive,
             large,
             minimal,
+            multiline,
             onRemove,
+            rightIcon,
             round,
             tabIndex = 0,
             ...htmlProps
@@ -72,7 +99,6 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
             Classes.TAG,
             Classes.intentClass(intent),
             {
-                [Classes.TAG_REMOVABLE]: isRemovable,
                 [Classes.ACTIVE]: active,
                 [Classes.INTERACTIVE]: interactive,
                 [Classes.LARGE]: large,
@@ -90,7 +116,11 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
 
         return (
             <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
-                {children}
+                <Icon icon={icon} />
+                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
+                    {children}
+                </Text>
+                <Icon icon={rightIcon} />
                 {removeButton}
             </span>
         );

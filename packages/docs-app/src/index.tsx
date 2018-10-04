@@ -10,22 +10,12 @@ import "dom4";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { docsData as docs, IPackageInfo, releasesData, versionsData } from "@blueprintjs/docs-data";
+import { docsData } from "@blueprintjs/docs-data";
 import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs-theme";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
-
-const releases: IPackageInfo[] = releasesData.map(pkg => ({
-    ...pkg,
-    url: `https://www.npmjs.com/package/${pkg.name}`,
-}));
-
-const versions: IPackageInfo[] = Object.keys(versionsData).map(majorVersion => ({
-    url: `https://palantir.github.io/blueprint/docs/v${majorVersion}`,
-    version: versionsData[majorVersion],
-}));
 
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);
@@ -37,6 +27,6 @@ const tagRenderers = {
 };
 
 ReactDOM.render(
-    <BlueprintDocs {...{ docs, tagRenderers, releases, versions }} defaultPageId="blueprint" />,
+    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,
     document.querySelector("#blueprint-documentation"),
 );

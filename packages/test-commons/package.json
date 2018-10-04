@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/test-commons",
-  "version": "0.6.0",
+  "version": "0.8.0",
   "description": "Common utilities for tests in @blueprintjs packages",
   "main": "lib/cjs/index.js",
   "typings": "lib/cjs/index.d.ts",
@@ -23,12 +23,12 @@
   },
   "devDependencies": {
     "react": "^16.2.0",
-    "typescript": "~2.7.2"
+    "typescript": "~2.8.3"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:palantir/blueprint.git"
   },
   "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+  "license": "SEE LICENSE IN LICENSE"
 }

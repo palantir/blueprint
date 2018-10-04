@@ -1,0 +1,52 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "../forms/common";
+
+%pt-select {
+  @include pt-button-base();
+  @include pt-button();
+  border-radius: $pt-border-radius;
+  // fill parent container
+  width: 100%;
+  height: $pt-button-height;
+  padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
+
+  // stylelint-disable property-no-vendor-prefix
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  // stylelint-enable property-no-vendor-prefix
+}
+
+%pt-select-minimal {
+  @include pt-button-minimal();
+}
+
+%pt-select-large {
+  height: $pt-button-height-large;
+  padding-right: $input-padding-horizontal * 3.5;
+  font-size: $pt-font-size-large;
+}
+
+%pt-dark-select {
+  @include pt-dark-button();
+}
+
+%pt-select-disabled {
+  box-shadow: none;
+  background-color: $button-background-color-disabled;
+  cursor: not-allowed;
+  color: $button-color-disabled;
+}
+
+%pt-select-arrow {
+  position: absolute;
+  top: ($pt-button-height - $pt-icon-size-standard) / 2;
+  right: $input-padding-horizontal * 0.7;
+  color: $pt-icon-color;
+  pointer-events: none;
+
+  &.#{$ns}-disabled {
+    color: $pt-icon-color-disabled;
+  }
+}

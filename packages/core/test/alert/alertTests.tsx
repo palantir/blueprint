@@ -46,6 +46,19 @@ describe("<Alert>", () => {
         assert.lengthOf(wrapper.find(Icon), 1);
     });
 
+    it("supports overlay lifecycle props", () => {
+        const onOpening = spy();
+        const wrapper = mount(
+            <Alert isOpen={true} onOpening={onOpening}>
+                Alert
+                <p>Are you sure you want to delete this file?</p>
+                <p>There is no going back.</p>
+            </Alert>,
+        );
+        assert.isTrue(onOpening.calledOnce);
+        wrapper.unmount();
+    });
+
     describe("confirm button", () => {
         const onConfirm = spy();
         const onClose = spy();

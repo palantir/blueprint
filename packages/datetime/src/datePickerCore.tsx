@@ -6,6 +6,7 @@
 
 import { LocaleUtils } from "react-day-picker/types/utils";
 import { Months } from "./common/months";
+import { ITimePickerProps, TimePrecision } from "./timePicker";
 
 // DatePicker supports a simpler set of modifiers (for now).
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
@@ -59,6 +60,26 @@ export interface IDatePickerBaseProps {
      * @default false
      */
     reverseMonthAndYearMenus?: boolean;
+
+    /**
+     * The precision of time selection that accompanies the calendar. Passing a
+     * `TimePrecision` value (or providing `timePickerProps`) shows a
+     * `TimePicker` below the calendar. Time is preserved across date changes.
+     *
+     * This is shorthand for `timePickerProps.precision` and is a quick way to
+     * enable time selection.
+     */
+    timePrecision?: TimePrecision;
+
+    /**
+     * Further configure the `TimePicker` that appears beneath the calendar.
+     * `onChange` and `value` are ignored in favor of the corresponding
+     * top-level props on this component.
+     *
+     * Passing any defined value to this prop (even `{}`) will cause the
+     * `TimePicker` to appear.
+     */
+    timePickerProps?: ITimePickerProps;
 }
 
 export const DISABLED_MODIFIER = "disabled";

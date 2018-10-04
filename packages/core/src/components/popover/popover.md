@@ -1,4 +1,4 @@
-@# Popovers
+@# Popover
 
 Popovers display floating content next to a target element.
 
@@ -6,15 +6,19 @@ Popovers display floating content next to a target element.
 Popper.js is a small (~6kb) library that offers a powerful, customizable
 positioning engine and operates at blazing speed (~60fps).
 
-The example below demonstrates some of the capabilities of our Popper.js-powered
-`Popover`.
-
 @reactExample PopoverExample
 
-@## JavaScript API
+@## Props
 
-The `Popover` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+`Popover` supports controlled and uncontrolled usage through `isOpen` and
+`defaultIsOpen`, respectively. Use `onInteraction` in controlled mode to respond
+to changes in the `isOpen` state.
+
+Supported user interactions are dictated by the `interactionKind` prop.
+
+This component is quite powerful and has a wide range of features. Explore the
+[**Concepts**](#core/components/popover.concepts) section below for more advanced
+guides.
 
 @interface IPopoverProps
 
@@ -52,7 +56,11 @@ The __target__ acts as the trigger for the popover; user interaction will show t
 positioned on the page next to the target; the `position` prop determines the relative position (on
 which side of the target).
 
-Internally, the provided target is wrapped in a `span.@ns-popover-target`. This in turn is wrapped in a `span.@ns-popover-wrapper`. The extra `@ns-popover-wrapper` is present so that both the popover and target will be wrapped in a single element when rendering popovers [inline](#core/components/popover.inline-rendering).
+Internally, the provided target is wrapped in a `span.@ns-popover-target`. This
+in turn is wrapped in a `span.@ns-popover-wrapper`. The extra
+`@ns-popover-wrapper` is present so that both the popover and target will be
+wrapped in a single element when rendering
+[popovers without a portal](#core/components/popover.portal-rendering).
 
 ```tsx
 <span class="@ns-popover-wrapper">
@@ -68,7 +76,7 @@ Internally, the provided target is wrapped in a `span.@ns-popover-target`. This 
     Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
     events, which interferes with the popover functioning. If you need to disable a button that
     triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
-    See the [callout here](#core/components/button.javascript-api) for more details.
+    See the [callout here](#core/components/button.props) for more details.
 </div>
 
 ```tsx
@@ -99,7 +107,7 @@ export class PopoverExample extends React.Component {
 
 @### Position
 
-The `position` prop controls the Popover's position relative to the target. There are two attributes to consider:
+The `position` prop controls the Popover's position relative to the target. The `Position` enumeration defines the full set of supported values. There are two attributes of positioning to consider:
 
 - Which <span class="docs-popover-position-label-side">__side__</span> of the target the popover should render on.
 - The popover's <span class="docs-popover-position-label-alignment">__alignment__</span> relative to the target.
@@ -110,21 +118,26 @@ These two attributes can be expressed with a single value having the following s
     <span class="docs-popover-position-label-side">[SIDE]</span>_<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span>
 </pre>
 
-The __@blueprintjs/core__ package exports a `Position` enumeration that contains the full set of supported side/alignment combinations.
-
-#### Example
-
-The following example shows all supported `Position`s and how each behaves in practice. Note that if <strong><code>_<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted, the popover will align to the __center__ of the target.
+The following example shows all supported `Position` values and how each behaves in practice. Note that if <strong><code>_<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted, the popover will align to the __center__ of the target.
 
 @reactExample PopoverPositionExample
 
 #### Automatic positioning
 
-The `position` can also be set to the string literal `"auto"`, the default setting. In this mode, the Popover will continually re-position itself to the side with the most space available, adjusting its alignment intuitively as well. This is useful for guaranteeing that the Popover remains visible while scrolling within a parent container.
+The Popover's `position` can also be chosen _automatically_ via `"auto"`, `"auto-start"`, or `"auto-end"`. All of these options choose and continually update the <span class="docs-popover-position-label-side">__side__</span> for you to avoid overflowing the boundary element (when scrolling within it, for instance). The options differ in how they handle <span class="docs-popover-position-label-alignment">__alignment__</span>:
+
+- In `"auto"` mode (the default for `position`), the Popover will align itself to the center of the target as it flips sides.
+- In `"auto-start"` mode, the Popover will align itself to the `start` of the target (i.e., the top edge when the popover is on the left or right, or the left edge when the popover is on the top or bottom).
+- In `"auto-end"` mode, the Popover will align itself to the `end` of the target (i.e., the bottom edge when the popover is on the left or right, or the right edge when the popover is on the top or bottom).
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    You can also specify a specific initial position (e.g. `LEFT`, `TOP_RIGHT`) and still update the Popover's position automatically by enabling the modifiers `flip` and `preventOverflow`. [See below](#core/components/popover.modifiers) for information about modifiers.
+</div>
 
 @### Modifiers
 
 Modifiers are the tools through which you customize Popper.js's behavior. Popper.js defines several of its own modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow. `Popover` defines a few additional modifiers to support itself. You can even define your own modifiers, and customize the Popper.js defaults, through the `modifiers` prop. (Note: it is not currently possible to configure `Popover`'s modifiers through the `modifiers` prop, nor can you define your own with the same name.)
+
 
 **Popper.js modifiers that can be customized via the `modifiers` prop:**
 
@@ -144,14 +157,15 @@ Modifiers are the tools through which you customize Popper.js's behavior. Popper
 - `updatePopoverState` saves off some popper data to `Popover` React state for fancy things
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    To understand all the Popper.js modifiers available to you, you'll want to read [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers).
+    See [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers)
+    for more details on all the available modifiers.
 </div>
 
 @### Controlled mode
 
 If you prefer to have more control over your popover's behavior, you can specify the `isOpen`
 property to use the component in __controlled mode__. You are now in charge of the component's
-state.
+open state.
 
 Providing a non-null value for `isOpen` disables all automatic interaction and instead invokes
 the `onInteraction` callback prop any time the opened state _would have changed_ in response to
@@ -165,7 +179,7 @@ if the `nextOpenState` is not the same as the `Popover`'s current state).
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Disabling controlled popovers</h4>
     <p>If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
-    The popover will re-open when `disabled` is set to `false.</p>
+    The popover will re-open when `disabled` is set to `false`.</p>
 </div>
 
 #### Example controlled usage
@@ -204,9 +218,7 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
 }
 ```
 
-@### Opening and closing
-
-#### Interaction kinds
+@### Interactions
 
 The `interactionKind` prop governs how the popover should open and close in response to user interactions.
 The supported values are:
@@ -228,28 +240,54 @@ The following example demonstrates the various interaction kinds (note: these Po
 
 @reactExample PopoverInteractionKindExample
 
-The __@blueprintjs/core__ package exports the above values in the `PopoverInteractionKind` enumeration.
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    Refer to the top-level [Popover example](#core/components/popover) to experiment with the various `PopoverInteractionKind`s.
-</div>
-
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Conditionally styling popover targets</h4>
-    When a popover is open, the target has a <code>.@ns-popover-open</code> class applied to it.
+    When a popover is open, `Classes.POPOVER_OPEN` is applied to the target.
     You can use this to style the target differently when the popover is open.
 </div>
 
-#### Click-to-close elements
+@### Closing on click
 
-To enable click-to-close behavior on an element inside a popover, simply add the class
-`@ns-popover-dismiss` to that element. For example, the "Dismiss" button in the top-level [Popover example](#core/components/popover) has this class. To enable this behavior on the entire popover, pass the
-`popoverClassName="@ns-popover-dismiss"` prop.
+Sometimes it is desirable for an element inside a `Popover` to close the popover
+on click. `Popover` supports a pair of CSS classes, `Classes.POPOVER_DISMISS`
+and `Classes.POPOVER_DISMISS_OVERRIDE`, that can be attached to elements to
+describe whether click events should dismiss the enclosing popover.
+
+To mark an element (and its children) as "dismiss elements", simply add the
+class `Classes.POPOVER_DISMISS`. For example, the **Dismiss** button in the
+top-level [Popover example](#core/components/popover) has this class, and all
+`MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
+enable this behavior on the entire popover body, pass
+`popoverClassName={Classes.POPOVER_DISMISS}`.
+
+Cancel the dismiss behavior on subtrees by nesting
+`Classes.POPOVER_DISMISS_OVERRIDE` inside `Classes.POPOVER_DISMISS`. Clicks
+originating inside disabled elements (either via the `disabled` attribute or
+`Classes.DISABLED`) will never dismiss a popover.
+
+Additionally, the prop `captureDismiss` (disabled by default) will prevent click
+events from dismissing _grandparent_ popovers (not the `Popover` immediately
+containing the dismiss element). `MenuItem` disables this feature such that
+clicking any submenu item will close all submenus, which is desirable behavior
+for a menu tree.
+
+```tsx
+<div className={Classes.POPOVER_DISMISS}>
+    <button>Click me to dismiss</button>
+    <button disabled={true}>I will not dismiss</button>
+    <div className={Classes.POPOVER_DISMISS_OVERRIDE}>
+        <button>I too shall not dismiss</button>
+    </div>
+</div>
+```
+
+@reactExample PopoverDismissExample
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     Dismiss elements won't have any effect in a popover with
-    `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to interact with the popover
-    content itself (the popover is dismissed the moment the user mouses away from the target).
+    `PopoverInteractionKind.HOVER_TARGET_ONLY`, because there is no way to
+    interact with the popover content itself: the popover is dismissed the
+    moment the user mouses away from the target.
 </div>
 
 @### Backdrop

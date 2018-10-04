@@ -58,6 +58,10 @@ export class MonthAndYear {
     public isSame(monthAndYear: MonthAndYear): boolean {
         return compareMonthAndYear(this, monthAndYear) === 0;
     }
+
+    public isSameMonth(monthAndYear: MonthAndYear): boolean {
+        return this.getMonth() === monthAndYear.getMonth();
+    }
 }
 
 // returns negative if left < right

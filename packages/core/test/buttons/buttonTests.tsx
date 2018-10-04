@@ -44,8 +44,14 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(wrapper.find("em").length, 1, "em not found");
         });
 
+        it("renders span if text={0}", () => {
+            const wrapper = button({ text: 0 }, true);
+            assert.equal(wrapper.text(), "0");
+        });
+
         it('doesn\'t render a span if text=""', () => {
             assert.equal(button({}, true, "").find("span").length, 0);
+            assert.equal(button({ text: "" }, true).find("span").length, 0);
         });
 
         it("renders a loading spinner when the loading prop is true", () => {

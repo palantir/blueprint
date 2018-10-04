@@ -8,11 +8,10 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
-    IBackdropProps,
     IInputGroupProps,
     InputGroup,
-    IOverlayableProps,
     IOverlayProps,
     Overlay,
     Utils,
@@ -23,9 +22,9 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
-     * Props to spread to `InputGroup`. All props are supported except `ref` (use `inputRef` instead).
-     * If you want to control the filter input, you can pass `value` and `onChange` here
-     * to override `Select`'s own behavior.
+     * Props to spread to the query `InputGroup`. Use `query` and
+     * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
+     * to control this input. Use `inputRef` instead of `ref`.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
@@ -36,41 +35,27 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     isOpen: boolean;
 
     /**
-     * A callback that is invoked when user interaction causes the overlay to close, such as
-     * clicking on the overlay or pressing the `esc` key (if enabled).
-     * Receives the event from the user's interaction, if there was an event (generally either a
-     * mouse or key event). Note that, since this component is controlled by the `isOpen` prop, it
-     * will not actually close itself until that prop becomes `false`.
+     * A callback that is invoked when user interaction causes the omnibar to
+     * close, such as clicking on the overlay or pressing the `esc` key (if
+     * enabled). Receives the event from the user's interaction, if there was an
+     * event (generally either a mouse or key event).
+     *
+     * Note that due to controlled usage, this component will not actually close
+     * itself until the `isOpen` prop becomes `false`.
+     * .
      */
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
 
-    /** Props to spread to `Overlay`. Note that `content` cannot be changed. */
-    overlayProps?: Partial<IOverlayProps> & object;
-
-    /**
-     * Whether the filtering state should be reset to initial when an item is selected
-     * (immediately before `onItemSelect` is invoked). The query will become the empty string
-     * and the first item will be made active.
-     * @default false
-     */
-    resetOnSelect?: boolean;
+    /** Props to spread to `Overlay`. */
+    overlayProps?: Partial<IOverlayProps>;
 }
 
-export interface IOmnibarState<T> extends IOverlayableProps, IBackdropProps {
-    activeItem?: T;
-    query: string;
-}
-
-export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarState<T>> {
-    public static displayName = "Blueprint2.Omnibar";
+export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
     public static ofType<T>() {
         return Omnibar as new (props: IOmnibarProps<T>) => Omnibar<T>;
     }
-
-    public state: IOmnibarState<T> = {
-        query: "",
-    };
 
     private TypedQueryList = QueryList.ofType<T>();
     private queryList?: QueryList<T> | null;
@@ -85,49 +70,36 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         return (
             <this.TypedQueryList
                 {...restProps}
-                activeItem={this.state.activeItem}
                 initialContent={initialContent}
-                onActiveItemChange={this.handleActiveItemChange}
-                onItemSelect={this.handleItemSelect}
-                query={this.state.query}
+                onItemSelect={this.props.onItemSelect}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
             />
         );
     }
 
-    public componentWillReceiveProps(nextProps: IOmnibarProps<T>) {
-        const { isOpen } = nextProps;
-        const canClearQuery = !this.props.isOpen && isOpen && this.props.resetOnSelect;
-
-        this.setState({
-            activeItem: canClearQuery ? this.props.items[0] : this.state.activeItem,
-            query: canClearQuery ? "" : this.state.query,
-        });
-    }
-
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const handlers = isOpen && !this.isQueryEmpty() ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
+        const handlers = isOpen && listProps.query.length > 0 ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
         return (
             <Overlay
                 hasBackdrop={true}
                 {...overlayProps}
                 isOpen={isOpen}
-                className={classNames(overlayProps.className, Classes.OMNIBAR_OVERLAY)}
+                className={classNames(Classes.OMNIBAR_OVERLAY, overlayProps.className)}
                 onClose={this.handleOverlayClose}
             >
-                <div className={classNames(listProps.className, Classes.OMNIBAR)} {...handlers}>
+                <div className={classNames(Classes.OMNIBAR, listProps.className)} {...handlers}>
                     <InputGroup
                         autoFocus={true}
                         large={true}
                         leftIcon="search"
                         placeholder="Search..."
-                        value={listProps.query}
                         {...inputProps}
-                        onChange={this.handleQueryChange}
+                        onChange={listProps.handleQueryChange}
+                        value={listProps.query}
                     />
                     {listProps.itemList}
                 </div>
@@ -135,23 +107,9 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>, IOmnibarSt
         );
     };
 
-    private isQueryEmpty = () => this.state.query.length === 0;
-
-    private handleActiveItemChange = (activeItem?: T) => this.setState({ activeItem });
-
-    private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        if (!this.isQueryEmpty()) {
-            Utils.safeInvoke(this.props.onItemSelect, item, event);
-        }
-    };
-
-    private handleQueryChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const { inputProps = {} } = this.props;
-        this.setState({ query: event.currentTarget.value });
-        Utils.safeInvoke(inputProps.onChange, event);
-    };
-
-    private handleOverlayClose = (event: React.SyntheticEvent<HTMLElement>) => {
+    private handleOverlayClose = (event?: React.SyntheticEvent<HTMLElement>) => {
+        const { overlayProps = {} } = this.props;
+        Utils.safeInvoke(overlayProps.onClose, event);
         Utils.safeInvoke(this.props.onClose, event);
     };
 }

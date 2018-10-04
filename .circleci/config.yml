@@ -92,7 +92,6 @@ jobs:
       - restore_cache: *restore_cache
       - run: yarn dist:libs
       - run: yarn dist:apps
-      # skip dist:docs because we do not publish GitHub Pages from CI
       - persist_to_workspace: *persist_to_workspace
 
   test-react-16: &test-react
@@ -134,8 +133,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
-      - store_artifacts:
-          path: docs
+      - restore_cache: *restore_cache
       - store_artifacts:
           path: packages/docs-app/dist
       - store_artifacts:
@@ -144,7 +142,7 @@ jobs:
           path: packages/table-dev-app/dist
       - run:
           name: Submit Github comment with links to built artifacts
-          command: ./scripts/submit-preview-comment
+          command: node ./scripts/preview.js
 
   deploy-npm:
     <<: *setup_env

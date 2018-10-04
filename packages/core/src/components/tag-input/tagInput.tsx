@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { HTMLInputProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -22,6 +22,19 @@ export interface ITagInputProps extends IProps {
      * @default false
      */
     addOnBlur?: boolean;
+
+    /**
+     * If true, `onAdd` will be invoked when the user pastes text containing the `separator`
+     * into the input. Otherwise, pasted text will remain in the input.
+     *
+     * __Note:__ For example, if `addOnPaste=true` and `separator="\n"` (new line), then:
+     * - Pasting `"hello"` will _not_ invoke `onAdd`
+     * - Pasting `"hello\n"` will invoke `onAdd` with `["hello"]`
+     * - Pasting `"hello\nworld"` will invoke `onAdd` with `["hello", "world"]`
+     *
+     * @default true
+     */
+    addOnPaste?: boolean;
 
     /**
      * Whether the component is non-interactive.
@@ -128,9 +141,9 @@ export interface ITagInputProps extends IProps {
     rightElement?: JSX.Element;
 
     /**
-     * Separator pattern used to split input text into multiple values.
+     * Separator pattern used to split input text into multiple values. Default value splits on commas and newlines.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
-     * @default ","
+     * @default /[,\n\r]/
      */
     separator?: string | RegExp | false;
 
@@ -165,11 +178,14 @@ export interface ITagInputState {
 const NONE = -1;
 
 export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
-    public static displayName = "Blueprint2.TagInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> & object = {
+        addOnBlur: false,
+        addOnPaste: true,
         inputProps: {},
-        separator: ",",
+        inputValue: "",
+        separator: /[,\n\r]/,
         tagProps: {},
     };
 
@@ -232,6 +248,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                         onChange={this.handleInputChange}
                         onKeyDown={this.handleInputKeyDown}
                         onKeyUp={this.handleInputKeyUp}
+                        onPaste={this.handleInputPaste}
                         placeholder={resolvedPlaceholder}
                         ref={this.refHandlers.input}
                         className={classNames(Classes.INPUT_GHOST, inputProps.className)}
@@ -243,9 +260,8 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         );
     }
 
-    private addTag = (value: string) => {
+    private addTags = (value: string) => {
         const { onAdd, onChange, values } = this.props;
-        // enter key on non-empty string invokes onAdd
         const newValues = this.getValues(value);
         let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
         // avoid a potentially expensive computation if this prop is omitted
@@ -320,14 +336,13 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         }
     };
 
-    private handleContainerBlur = () => {
+    private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {
         requestAnimationFrame(() => {
-            // this event is attached to the container element to capture all blur events from inside.
-            // we only need to "unfocus" if the blur event is leaving the container.
+            // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
-            if (this.inputElement != null && !this.inputElement.parentElement.contains(document.activeElement)) {
+            if (!currentTarget.contains(document.activeElement)) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
-                    this.addTag(this.state.inputValue);
+                    this.addTags(this.state.inputValue);
                 }
                 this.setState({ activeIndex: NONE, isInputFocused: false });
             }
@@ -352,7 +367,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         let activeIndexToEmit = activeIndex;
 
         if (event.which === Keys.ENTER && value.length > 0) {
-            this.addTag(value);
+            this.addTags(value);
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
@@ -373,6 +388,24 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
 
     private handleInputKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         this.invokeKeyPressCallback("onKeyUp", event, this.state.activeIndex);
+    };
+
+    private handleInputPaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+        const { separator } = this.props;
+        const value = event.clipboardData.getData("text");
+
+        if (!this.props.addOnPaste || value.length === 0) {
+            return;
+        }
+
+        // special case as a UX nicety: if the user pasted only one value with no delimiters in it, leave that value in
+        // the input field so that the user can refine it before converting it to a tag manually.
+        if (separator === false || value.split(separator).length === 1) {
+            return;
+        }
+
+        event.preventDefault();
+        this.addTags(value);
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {

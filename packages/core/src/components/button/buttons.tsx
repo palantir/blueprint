@@ -9,13 +9,13 @@
 
 import * as React from "react";
 
-import { removeNonHTMLProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { AbstractButton, IButtonProps } from "./abstractButton";
 
 export { IButtonProps };
 
 export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
-    public static displayName = "Blueprint2.Button";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
     public render() {
         return (
@@ -27,7 +27,7 @@ export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButton
 }
 
 export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTMLAnchorElement>> {
-    public static displayName = "Blueprint2.AnchorButton";
+    public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 
     public render() {
         const { href, tabIndex = 0 } = this.props;
@@ -39,7 +39,7 @@ export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTML
                 {...removeNonHTMLProps(this.props)}
                 {...commonProps}
                 href={commonProps.disabled ? undefined : href}
-                tabIndex={commonProps.disabled ? undefined : tabIndex}
+                tabIndex={commonProps.disabled ? -1 : tabIndex}
             >
                 {this.renderChildren()}
             </a>

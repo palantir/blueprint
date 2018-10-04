@@ -9,18 +9,24 @@
   display: flex;
   white-space: nowrap;
 
-  .DayPicker:not(:last-child) {
-    margin-right: $pt-grid-size;
+  // indent first navbar a bit
+  .DayPicker:first-of-type .#{$ns}-datepicker-navbar {
+    left: $datepicker-padding;
   }
 
   .DayPicker-NavButton--interactionDisabled {
     display: none;
   }
 
+  .#{$ns}-daterangepicker-timepickers {
+    display: flex;
+    justify-content: space-around;
+  }
+
   .#{$ns}-daterangepicker-shortcuts + .DayPicker {
     border-left: 1px solid $pt-divider-black;
     min-width: $datepicker-min-width + $pt-grid-size;
-    padding-left: $pt-grid-size;
+    padding-left: $datepicker-padding;
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
@@ -31,10 +37,6 @@
 
     .#{$ns}-daterangepicker-shortcuts + .DayPicker {
       min-width: ($datepicker-min-width + $pt-grid-size) * 2;
-    }
-
-    .DayPicker-Month:not(:last-child) {
-      margin-right: $pt-grid-size;
     }
   }
 
@@ -122,11 +124,6 @@
 }
 
 .#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
-  display: inline-block;
-  margin-top: -$pt-grid-size / 2;
-  margin-left: -$pt-grid-size / 2;
-  min-width: $pt-grid-size * 15;
-  padding-top: 0;
-  padding-right: $pt-grid-size / 2;
-  padding-left: 0;
+  min-width: $pt-grid-size * 12;
+  padding: 0;
 }

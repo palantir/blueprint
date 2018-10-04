@@ -3,8 +3,9 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-.#{$ns}-key-combo .#{$ns}-key:not(:last-child) {
-  margin-right: $pt-grid-size / 2;
+.#{$ns}-key-combo {
+  @include pt-flex-container(row, $pt-grid-size / 2);
+  align-items: center;
 }
 
 .#{$ns}-hotkey-dialog {
