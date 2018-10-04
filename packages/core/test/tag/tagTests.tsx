@@ -21,6 +21,14 @@ describe("<Tag>", () => {
         );
     });
 
+    it("text is not rendered if omitted", () => {
+        assert.isFalse(
+            shallow(<Tag icon="tick" />)
+                .find(Text)
+                .exists(),
+        );
+    });
+
     it("renders icons", () => {
         const wrapper = shallow(<Tag icon="tick" rightIcon="airplane" />);
         assert.lengthOf(wrapper.find(Icon), 2);
