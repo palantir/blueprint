@@ -9,7 +9,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import { Classes, ITreeNode, ITreeProps, Tree } from "../../src/index";
 
 describe("<Tree>", () => {
@@ -46,18 +46,18 @@ describe("<Tree>", () => {
         contents[2].hasCaret = contents[3].hasCaret = false;
 
         const tree = renderTree({ contents });
-        assert.lengthOf(tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`), 1);
-        assert.lengthOf(tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`), 1);
-        assert.lengthOf(tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_NONE}`), 1);
-        assert.lengthOf(tree.find(`.c3 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_NONE}`), 1);
+        assertNodeHasCaret(tree, "c0", true);
+        assertNodeHasCaret(tree, "c1", true);
+        assertNodeHasCaret(tree, "c2", false);
+        assertNodeHasCaret(tree, "c3", false);
     });
 
     it("if not specified, caret visibility is determined by the presence of children", () => {
         const tree = renderTree();
-        assert.lengthOf(tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_NONE}`), 1);
-        assert.lengthOf(tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`), 1);
-        assert.lengthOf(tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_NONE}`), 1);
-        assert.lengthOf(tree.find(`.c3 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`), 1);
+        assertNodeHasCaret(tree, "c0", false);
+        assertNodeHasCaret(tree, "c1", true);
+        assertNodeHasCaret(tree, "c2", false);
+        assertNodeHasCaret(tree, "c3", true);
     });
 
     it("caret direction is determined by node expansion", () => {
@@ -84,10 +84,10 @@ describe("<Tree>", () => {
         ];
 
         const tree = renderTree({ contents });
-        assert.lengthOf(tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_CLOSED}`), 1);
-        assert.lengthOf(tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_OPEN}`), 1);
-        assert.lengthOf(tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_CLOSED}`), 1);
-        assert.lengthOf(tree.find(`.c3 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET_OPEN}`), 1);
+        assertNodeHasClass(tree, "c0", Classes.TREE_NODE_CARET_CLOSED);
+        assertNodeHasClass(tree, "c1", Classes.TREE_NODE_CARET_OPEN);
+        assertNodeHasClass(tree, "c2", Classes.TREE_NODE_CARET_CLOSED);
+        assertNodeHasClass(tree, "c3", Classes.TREE_NODE_CARET_OPEN);
     });
 
     it("event callbacks are fired correctly", () => {
@@ -113,7 +113,7 @@ describe("<Tree>", () => {
         assert.isTrue(onNodeClick.calledOnce);
         assert.deepEqual(onNodeClick.args[0][1], [0]);
 
-        tree.find(`.c1 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`).simulate("click");
+        findNodeClass(tree, "c1", Classes.TREE_NODE_CARET).simulate("click");
         assert.isTrue(onNodeExpand.calledOnce);
         assert.deepEqual(onNodeExpand.args[0][1], [1]);
         // make sure that onNodeClick isn't fired again, only onNodeExpand should be
@@ -123,7 +123,7 @@ describe("<Tree>", () => {
         assert.isTrue(onNodeDoubleClick.calledOnce);
         assert.deepEqual(onNodeDoubleClick.args[0][1], [3, 0]);
 
-        tree.find(`.c3 > .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_CARET}`).simulate("click");
+        findNodeClass(tree, "c3", Classes.TREE_NODE_CARET).simulate("click");
         assert.isTrue(onNodeCollapse.calledOnce);
         assert.deepEqual(onNodeCollapse.args[0][1], [3]);
 
@@ -138,10 +138,9 @@ describe("<Tree>", () => {
         contents[2].icon = "document";
 
         const tree = renderTree({ contents });
-        const iconSelector = `.${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_ICON}`;
-        assert.lengthOf(tree.find(`.c0 > ${iconSelector}`).hostNodes(), 0, "c0");
-        assert.lengthOf(tree.find(`.c1 > ${iconSelector}`).hostNodes(), 1, "c1");
-        assert.lengthOf(tree.find(`.c2 > ${iconSelector}`).hostNodes(), 1, "c2");
+        assertNodeHasClass(tree, "c0", Classes.TREE_NODE_ICON, false);
+        assertNodeHasClass(tree, "c1", Classes.TREE_NODE_ICON);
+        assertNodeHasClass(tree, "c2", Classes.TREE_NODE_ICON);
     });
 
     it("isExpanded controls node expansion", () => {
@@ -175,11 +174,9 @@ describe("<Tree>", () => {
         contents[2].secondaryLabel = <p>Paragraph</p>;
 
         const tree = renderTree({ contents }).find("li");
-
-        const secondaryLabelSelector = `> .${Classes.TREE_NODE_CONTENT} .${Classes.TREE_NODE_SECONDARY_LABEL}`;
-        assert.lengthOf(tree.find(`.c0 ${secondaryLabelSelector}`), 0);
-        assert.strictEqual(tree.find(`.c1 ${secondaryLabelSelector}`).text(), "Secondary");
-        assert.strictEqual(tree.find(`.c2 ${secondaryLabelSelector}`).text(), "Paragraph");
+        assertNodeHasClass(tree, "c0", Classes.TREE_NODE_SECONDARY_LABEL, false);
+        assert.strictEqual(findNodeClass(tree, "c1", Classes.TREE_NODE_SECONDARY_LABEL).text(), "Secondary");
+        assert.strictEqual(findNodeClass(tree, "c2", Classes.TREE_NODE_SECONDARY_LABEL).text(), "Paragraph");
     });
 
     it("getNodeContentElement returns references to underlying node elements", done => {
@@ -211,6 +208,18 @@ describe("<Tree>", () => {
         const smallerContents = createDefaultContents().slice(0, -1);
         assert.doesNotThrow(() => renderTree({ contents: smallerContents }));
     });
+
+    function findNodeClass(tree: ReactWrapper, nodeClass: string, childClass: string) {
+        return tree.find(`.${nodeClass} > .${Classes.TREE_NODE_CONTENT} .${childClass}`).hostNodes();
+    }
+
+    function assertNodeHasClass(tree: ReactWrapper, nodeClass: string, childClass: string, expected = true) {
+        assert.equal(findNodeClass(tree, nodeClass, childClass).exists(), expected);
+    }
+
+    function assertNodeHasCaret(tree: ReactWrapper, nodeClass: string, hasCaret: boolean) {
+        return assertNodeHasClass(tree, nodeClass, hasCaret ? Classes.TREE_NODE_CARET : Classes.TREE_NODE_CARET_NONE);
+    }
 
     function renderTree(props?: Partial<ITreeProps>) {
         return mount(<Tree contents={createDefaultContents()} {...props} />);
