@@ -9,8 +9,9 @@ import * as utils from "tsutils";
 import * as ts from "typescript";
 import { addImportToFile } from "./utils/addImportToFile";
 
-// find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules)
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.](pt-(?!icon-?)[\w-]+)/g;
+// find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
+// currently support pt- and bp3- prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]((pt|bp3)-(?!icon-?)[\w-]+)/g;
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -78,10 +79,11 @@ function getAllMatches(className: string) {
 
 /** Produce replacement text for a string literal that contains invalid classes. */
 function getLiteralReplacement(className: string, ptClassStrings: string[]) {
-    // remove all illegal classnames, then slice off the quotes, and trim any remaining white space
+    // remove all illegal classnames, then slice off the quotes, then merge & trim any remaining white space
     const stringWithoutPtClasses = ptClassStrings
         .reduce((value, cssClass) => value.replace(cssClass, ""), className)
         .slice(1, -1)
+        .replace(/(\s)+/, "$1")
         .trim();
     // special case: only one invalid class name
     if (stringWithoutPtClasses.length === 0 && ptClassStrings.length === 1) {
@@ -121,7 +123,7 @@ function wrapForParent(statement: string, node: ts.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace("pt-", "")
+        .replace(/(pt|bp3)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;
