@@ -343,13 +343,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 this.setState({ isInputFocused: false });
             }
 
-            if (isNaN(date.valueOf())) {
-                Utils.safeInvoke(this.props.onError, new Date(undefined));
-            } else if (!this.isDateInRange(date)) {
-                Utils.safeInvoke(this.props.onError, date);
-            } else {
-                Utils.safeInvoke(this.props.onChange, date, true);
-            }
+            this.invokeDateChangeListener(date);
         } else {
             if (valueString.length === 0) {
                 this.setState({ isInputFocused: false, value: null, valueString: null });
@@ -422,6 +416,16 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             this.lastElementInPopover.removeEventListener("blur", this.handlePopoverBlur);
         }
     };
+
+    private invokeDateChangeListener(date: Date) {
+        if (isNaN(date.valueOf())) {
+            Utils.safeInvoke(this.props.onError, new Date(undefined));
+        } else if (!this.isDateInRange(date)) {
+            Utils.safeInvoke(this.props.onError, date);
+        } else {
+            Utils.safeInvoke(this.props.onChange, date, true);
+        }
+    }
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
     private safeInvokeInputProp(name: keyof HTMLInputProps, e: React.SyntheticEvent<HTMLElement>) {
