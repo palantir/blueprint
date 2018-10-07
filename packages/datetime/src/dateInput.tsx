@@ -275,7 +275,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         } else {
             this.setState({ isInputFocused, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, newDate, isUserChange);
+        this.invokeDateChangeListener(newDate, isUserChange);
     };
 
     private hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
@@ -343,7 +343,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                 this.setState({ isInputFocused: false });
             }
 
-            this.invokeDateChangeListener(date);
+            this.invokeDateChangeListener(date, true);
         } else {
             if (valueString.length === 0) {
                 this.setState({ isInputFocused: false, value: null, valueString: null });
@@ -417,13 +417,13 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         }
     };
 
-    private invokeDateChangeListener(date: Date) {
+    private invokeDateChangeListener(date: Date, isUserChange: boolean) {
         if (isNaN(date.valueOf())) {
             Utils.safeInvoke(this.props.onError, new Date(undefined));
         } else if (!this.isDateInRange(date)) {
             Utils.safeInvoke(this.props.onError, date);
         } else {
-            Utils.safeInvoke(this.props.onChange, date, true);
+            Utils.safeInvoke(this.props.onChange, date, isUserChange);
         }
     }
 
