@@ -415,10 +415,10 @@ describe("<DateInput>", () => {
                     outOfRangeMessage={rangeMessage}
                 />,
             );
-            const value = "2/1/2030";
+            const outOfRangeDate = "2/1/2030";
             wrapper
                 .find("input")
-                .simulate("change", { target: { value } })
+                .simulate("change", { target: { outOfRangeDate } })
                 .simulate("keydown", { which: Keys.ENTER });
 
             assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.DANGER);
@@ -437,14 +437,14 @@ describe("<DateInput>", () => {
                     outOfRangeMessage={rangeMessage}
                 />,
             );
-            const value = "2/1/2030";
+            const outOfRangeDate = "2/1/2030";
             wrapper
                 .find("input")
-                .simulate("change", { target: { value } })
+                .simulate("change", { target: { outOfRangeDate } })
                 .simulate("keydown", { which: Keys.ENTER });
 
             assert.isTrue(onError.calledOnce);
-            assertDateEquals(onError.args[0][0], new Date(value));
+            assertDateEquals(onError.args[0][0], new Date(outOfRangeDate));
         });
 
         it("Typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
