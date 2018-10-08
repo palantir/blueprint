@@ -403,7 +403,7 @@ describe("<DateInput>", () => {
             assertDateEquals(onError.args[0][0], new Date(value));
         });
 
-        it("typing in a date out of range and pressing enter displays the error message", () => {
+        it("typing in a date out of range and pressing enter displays the error message and calls onError with invalid date", () => {
             const rangeMessage = "RANGE ERROR";
             const onError = sinon.spy();
             const wrapper = mount(
@@ -423,25 +423,6 @@ describe("<DateInput>", () => {
 
             assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.DANGER);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
-        });
-
-        it("typing in a date out of range and pressing enter calls onError with invalid date", () => {
-            const rangeMessage = "RANGE ERROR";
-            const onError = sinon.spy();
-            const wrapper = mount(
-                <DateInput
-                    {...DATE_FORMAT}
-                    defaultValue={new Date(2015, Months.MAY, 1)}
-                    minDate={new Date(2015, Months.MARCH, 1)}
-                    onError={onError}
-                    outOfRangeMessage={rangeMessage}
-                />,
-            );
-            const outOfRangeDate = "2/1/2030";
-            wrapper
-                .find("input")
-                .simulate("change", { target: { outOfRangeDate } })
-                .simulate("keydown", { which: Keys.ENTER });
 
             assert.isTrue(onError.calledOnce);
             assertDateEquals(onError.args[0][0], new Date(outOfRangeDate));
