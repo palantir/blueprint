@@ -14,8 +14,6 @@ import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
 
-type GroupedIcons = Record<string, IIcon[]>;
-
 export interface IIconsState {
     filter: string;
 }
@@ -38,19 +36,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
         filter: "",
     };
 
-    private iconGroups: GroupedIcons;
-
-    public constructor(props?: IIconsProps, context?: any) {
-        super(props, context);
-
-        this.iconGroups = props.icons.reduce<GroupedIcons>((groups, icon: IIcon) => {
-            if (groups[icon.group] == null) {
-                groups[icon.group] = [];
-            }
-            groups[icon.group].push(icon);
-            return groups;
-        }, {});
-    }
+    private iconGroups = initIconGroups(this.props.icons);
 
     public render() {
         const groupElements = Object.keys(this.iconGroups)
@@ -73,28 +59,35 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
     }
 
     private maybeRenderIconGroup(groupName: string, index: number) {
-        const icons = this.iconGroups[groupName];
-        const { iconFilter, iconRenderer } = this.props;
-        const iconElements = icons.filter(icon => iconFilter(this.state.filter, icon)).map(iconRenderer);
-
-        if (iconElements.length > 0) {
-            let padIndex = icons.length;
-            while (iconElements.length % ICONS_PER_ROW > 0) {
-                iconElements.push(<div className="docs-placeholder" key={padIndex++} />);
-            }
-            return (
-                <div className="docs-icon-group" key={index}>
-                    <H3>{groupName}</H3>
-                    {iconElements}
-                </div>
-            );
+        const { iconRenderer } = this.props;
+        const iconElements = this.getFilteredIcons(groupName).map(iconRenderer);
+        if (iconElements.length === 0) {
+            return null;
         }
 
-        return undefined;
+        let padIndex = iconElements.length;
+        while (iconElements.length % ICONS_PER_ROW > 0) {
+            iconElements.push(<div className="docs-placeholder" key={`pad-${padIndex++}`} />);
+        }
+        return (
+            <div className="docs-icon-group" key={index}>
+                <H3>{groupName}</H3>
+                {iconElements}
+            </div>
+        );
     }
 
     private renderZeroState() {
         return <NonIdealState className={Classes.TEXT_MUTED} icon="zoom-out" description="No icons found" />;
+    }
+
+    private getFilteredIcons(groupName: string) {
+        const icons = this.iconGroups[groupName];
+        if (this.state.filter === "") {
+            return icons;
+        }
+        const { iconFilter } = this.props;
+        return icons.filter(icon => iconFilter(this.state.filter, icon));
     }
 
     private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -109,4 +102,20 @@ function isIconFiltered(query: string, icon: IIcon) {
 
 function renderIcon(icon: IIcon, index: number) {
     return <DocsIcon {...icon} key={index} />;
+}
+
+function initIconGroups(icons: IIcon[]) {
+    const groups: Record<string, IIcon[]> = {};
+    // group icons by group name
+    for (const icon of icons) {
+        if (groups[icon.group] == null) {
+            groups[icon.group] = [];
+        }
+        groups[icon.group].push(icon);
+    }
+    // sort each group
+    for (const group of Object.keys(groups)) {
+        groups[group].sort((a, b) => a.iconName.localeCompare(b.iconName));
+    }
+    return groups;
 }
