@@ -21,6 +21,19 @@ body.#{$ns}-overlay-open {
     pointer-events: none;
   }
 
+  &.#{$ns}-overlay-container {
+    // container covers the entire viewport
+    position: fixed;
+    overflow: hidden;
+
+    &.#{$ns}-overlay-inline {
+      // when rendered inline, we want the overlay to position itself relative to
+      // its parent container, not relative to the whole window. thus, we change
+      // to position:absolute.
+      position: absolute;
+    }
+  }
+
   &.#{$ns}-overlay-scroll-container {
     // scroll container covers the entire viewport
     position: fixed;

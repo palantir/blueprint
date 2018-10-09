@@ -11,6 +11,7 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
@@ -59,20 +60,34 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
+
+    /**
+     * Whether the drawer should appear with vertical styling.
+     * @default false
+     */
+    vertical?: boolean;
 }
 
 export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        vertical: false,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 
     public render() {
+        const classes = classNames(
+            Classes.DRAWER,
+            {
+                [Classes.VERTICAL]: this.props.vertical,
+            },
+            this.props.className,
+        );
         return (
-            <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={classNames(Classes.DRAWER, this.props.className)} style={this.props.style}>
+            <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER} hasBackdrop={true}>
+                <div className={classes} style={this.props.style}>
                     {this.maybeRenderHeader()}
                     {this.props.children}
                 </div>
@@ -96,14 +111,13 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
         // this gives us a behavior as if the default value were `true`
         if (this.props.isCloseButtonShown !== false) {
             return (
-                <button
+                <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
+                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
+                    minimal={true}
                     onClick={this.props.onClose}
-                    type="button"
-                >
-                    <Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />
-                </button>
+                />
             );
         } else {
             return undefined;

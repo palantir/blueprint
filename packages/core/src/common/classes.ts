@@ -173,6 +173,7 @@ export const OVERFLOW_LIST_SPACER = `${OVERFLOW_LIST}-spacer`;
 
 export const OVERLAY = `${NS}-overlay`;
 export const OVERLAY_BACKDROP = `${OVERLAY}-backdrop`;
+export const OVERLAY_CONTAINER = `${OVERLAY}-container`;
 export const OVERLAY_CONTENT = `${OVERLAY}-content`;
 export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;

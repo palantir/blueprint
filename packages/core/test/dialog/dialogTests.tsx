@@ -90,10 +90,10 @@ describe("<Dialog>", () => {
                     dialog body
                 </Dialog>,
             );
-            assert.lengthOf(dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`), 1);
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button), 1);
 
             dialog.setProps({ isCloseButtonShown: false });
-            assert.lengthOf(dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`), 0);
+            assert.lengthOf(dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button), 0);
         });
 
         it("clicking close button triggers onClose", () => {
@@ -103,7 +103,10 @@ describe("<Dialog>", () => {
                     dialog body
                 </Dialog>,
             );
-            dialog.find(`.${Classes.DIALOG_CLOSE_BUTTON}`).simulate("click");
+            dialog
+                .find(`.${Classes.DIALOG_HEADER}`)
+                .find(Button)
+                .simulate("click");
             assert.isTrue(onClose.calledOnce, "onClose not called");
         });
     });

@@ -11,6 +11,7 @@ import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
@@ -98,14 +99,13 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         // this gives us a behavior as if the default value were `true`
         if (this.props.isCloseButtonShown !== false) {
             return (
-                <button
+                <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
+                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
+                    minimal={true}
                     onClick={this.props.onClose}
-                    type="button"
-                >
-                    <Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />
-                </button>
+                />
             );
         } else {
             return undefined;
