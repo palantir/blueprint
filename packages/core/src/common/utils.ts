@@ -146,7 +146,7 @@ export function safeInvokeOrValue(funcOrValue: Function | any | undefined, ...ar
 }
 
 export function elementIsOrContains(element: HTMLElement, testElement: HTMLElement) {
-    return element === testElement || element.contains(testElement);
+    return element != null && (element === testElement || element.contains(testElement));
 }
 
 /**
