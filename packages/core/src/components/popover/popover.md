@@ -76,7 +76,7 @@ wrapped in a single element when rendering
     Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
     events, which interferes with the popover functioning. If you need to disable a button that
     triggers a popover, you should use [`AnchorButton`](#core/components/button.anchor-button) instead.
-    See the [callout here](#core/components/button.props) for more details.
+    See the [callout here](#core/components/button) for more details.
 </div>
 
 ```tsx
@@ -104,6 +104,35 @@ export class PopoverExample extends React.Component {
     }
 }
 ```
+
+@#### Target object
+
+Instead of providing a JSX element for the target, you can instead provide an
+object describing a rectangular area in the document to use as the target. This
+object is essentially a fake element, and looks a lot like one by design.
+
+This target object is a great fit for canvas applications that don't have access
+to actual DOM elements or it can be configured to reuse a single `Popover`
+instance.
+
+```tsx
+<Popover
+    content="The target is an object"
+    target={{ clientHeight: 40, clientWidth: 100, getBoundingClientRect: () => ...}}>
+/>
+```
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    The feature provides access to the [`referenceObject` option in Popper.js](https://popper.js.org/popper-documentation.html#referenceObject).
+</div>
+
+The example below lets you control the dimensions of this fake element to see
+how the `Popover` responds. The pink box is merely a visualization of the
+target's position and area.
+
+@reactExample PopoverTargetObjectExample
+
+@interface ReferenceObject
 
 @### Position
 
