@@ -5,7 +5,7 @@
  */
 
 import classNames from "classnames";
-import { ModifierFn } from "popper.js";
+import { ModifierFn, ReferenceObject } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
@@ -20,7 +20,7 @@ import { Tooltip } from "../tooltip/tooltip";
 import { PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { IPopoverSharedProps, PopperModifiers } from "./popoverSharedProps";
-import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
+import { arrowOffsetModifier, getTransformOrigin, isReferenceObject } from "./popperUtils";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as "click",
@@ -73,7 +73,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
      * The target to which the popover content is attached. This can instead be
      * provided as the _first_ element in `children`.
      */
-    target?: string | JSX.Element;
+    target?: string | JSX.Element | ReferenceObject;
 }
 
 export interface IPopoverState {
@@ -145,7 +145,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // as JSX component instead of intrinsic element. but because of its
         // type, tsc actually recognizes that it is _any_ intrinsic element, so
         // it can typecheck the HTML props!!
-        const { className, disabled, modifiers, wrapperTagName: WrapperTagName } = this.props;
+        const { className, disabled, modifiers, target, wrapperTagName: WrapperTagName } = this.props;
         const { isOpen } = this.state;
 
         const isContentEmpty = Utils.ensureElement(this.understandChildren().content) == null;
@@ -192,12 +192,12 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                         usePortal={this.props.usePortal}
                     >
                         <Popper
+                            children={this.renderPopover}
                             innerRef={this.refHandlers.popover}
                             placement={positionToPlacement(this.props.position)}
                             modifiers={allModifiers}
-                        >
-                            {this.renderPopover}
-                        </Popper>
+                            {...(isReferenceObject(target) ? { referenceElement: target } : {})}
+                        />
                     </Overlay>
                 </WrapperTagName>
             </Manager>
@@ -307,6 +307,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
+        const rawTarget = Utils.ensureElement(this.understandChildren().target);
+        if (rawTarget == null) {
+            return null;
+        }
+
         const { targetClassName, targetTagName: TagName } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
@@ -326,7 +331,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         targetProps.className = classNames(Classes.POPOVER_TARGET, { [Classes.POPOVER_OPEN]: isOpen }, targetClassName);
         targetProps.ref = referenceProps.ref;
 
-        const rawTarget = Utils.ensureElement(this.understandChildren().target);
         const { tabIndex = 0 } = rawTarget.props;
         const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
             className: classNames(rawTarget.props.className, {
@@ -351,7 +355,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         const [targetChild, contentChild] = React.Children.toArray(children);
         return {
             content: contentChild == null ? contentProp : contentChild,
-            target: targetChild == null ? targetProp : targetChild,
+            target: targetChild == null ? (isReferenceObject(targetProp) ? undefined : targetProp) : targetChild,
         };
     }
 

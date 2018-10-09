@@ -4,7 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import PopperJS from "popper.js";
+import PopperJS, { ReferenceObject } from "popper.js";
+import { isFunction } from "../../common/utils";
+
+/** Type guard for Popper's reference object syntax. */
+export function isReferenceObject(target: any): target is ReferenceObject {
+    return target != null && isFunction((target as ReferenceObject).getBoundingClientRect);
+}
 
 // Popper placement utils
 // ======================
