@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, IPopoverProps, Popover, Position } from "@blueprintjs/core";
+import { Button, IPopoverProps, Popover, Position, TargetRenderer } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { FileMenu } from "./common/fileMenu";
 
@@ -16,13 +16,17 @@ export class PopoverMinimalExample extends React.PureComponent<IExampleProps> {
 
         return (
             <Example options={false} {...this.props}>
-                <Popover {...baseProps} minimal={true}>
-                    <Button intent={Intent.PRIMARY}>Minimal</Button>
-                </Popover>
-                <Popover {...baseProps}>
-                    <Button>Default</Button>
-                </Popover>
+                <Popover {...baseProps} minimal={true} target={this.renderLeftButton} />
+                <Popover {...baseProps} target={this.renderRightButton} />
             </Example>
         );
     }
+
+    private renderLeftButton: TargetRenderer = (props, ref, isOpen) => {
+        return <Button active={isOpen} intent="primary" text="Minimal" elementRef={ref} {...props} />;
+    };
+
+    private renderRightButton: TargetRenderer = (props, ref, isOpen) => {
+        return <Button active={isOpen} text="Default" elementRef={ref} {...props} />;
+    };
 }
