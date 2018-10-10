@@ -33,7 +33,7 @@ $drawer-padding: $pt-grid-size * 2 !default;
   margin: 0;
   box-shadow: $pt-elevation-shadow-4;
   background: $white;
-  width: 50vw;
+  width: 50%;
   padding: 0;
 
   &:focus {
@@ -59,8 +59,8 @@ $drawer-padding: $pt-grid-size * 2 !default;
     top: auto;
     bottom: 0;
     left: 0;
-    width: 100vw;
-    height: 50vh;
+    width: 100%;
+    height: 50%;
   }
 
   &.#{$ns}-dark,
