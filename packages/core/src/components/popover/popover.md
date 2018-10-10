@@ -24,52 +24,39 @@ guides.
 
 @## Concepts
 
-@### Structure
+@### Target and content
 
-When creating a popover, you must specify both its __content__ and its __target__.
-This can be done a few ways:
+The `target` acts as the trigger for the popover; user interaction will show the
+popover based on `interactionKind` (e.g. click or hover). The `content` appears
+in the body of the popover. The popover is positioned relative to the `target`
+using the `position` prop to determine the side and alignment. (See
+[Position](#core/components/popover.position) below for more information.)
 
-1. Provide both the `content` and `target` props, which accept a string or a JSX element.
-  Omitting the `target` prop will produce an error.
+When creating a popover, you must specify both its `content` and its `target`.
+Omitting one or the other will produce an error. There are a few equivalent ways
+to do this:
+
+1. Provide the `content` prop and exactly one React child as the target.
+  (The `target` prop is ignored when using `children` and will produce a warning.)
   ```tsx
-  <Popover content={<Content />} target={<Button text="Open" />} />
+  <Popover content={<Content />}>
+      <Button text="target" />
+  </Popover>
   ```
 
-1. Provide one or two `children`. Omitting a `target` element will produce an error.
+1. Provide exactly two `children`. The first child is the `target`, the second is
+   `content`.
   ```tsx
   <Popover>
-      <Button text="Open" />
+      <Button text="target" />
       <Content />
   </Popover>
   ```
 
-1. It is possible to mix the two: provide the `content` prop and one React child as the target.
-  (Using the `target` prop with `children` is not supported and will produce a warning.)
+1. Provide both the `content` and `target` props and zero children.
   ```tsx
-  <Popover content={<Content />}>
-      <Button text="Open" />
-  </Popover>
+  <Popover content={<Content />} target={<Button text="target" />} />
   ```
-
-The __target__ acts as the trigger for the popover; user interaction will show the popover based on
-`interactionKind`. The __content__ will be shown in the popover itself. The popover's will always be
-positioned on the page next to the target; the `position` prop determines the relative position (on
-which side of the target).
-
-Internally, the provided target is wrapped in a `span.@ns-popover-target`. This
-in turn is wrapped in a `span.@ns-popover-wrapper`. The extra
-`@ns-popover-wrapper` is present so that both the popover and target will be
-wrapped in a single element when rendering
-[popovers without a portal](#core/components/popover.portal-rendering).
-
-```tsx
-<span class="@ns-popover-wrapper">
-    <span class="@ns-popover-target">
-        <Button text="My target" />
-    </span>
-    <!-- inline Popover would render here -->
-</span>
-```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Button targets</h4>
@@ -79,30 +66,57 @@ wrapped in a single element when rendering
     See the [callout here](#core/components/button.props) for more details.
 </div>
 
-```tsx
-const { Button, Intent, Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
+@### Advanced structure
 
-export class PopoverExample extends React.Component {
-    public render() {
-        // popover content gets no padding by default; add the "@ns-popover-content-sizing"
-        // class to the popover to set nice padding between its border and content,
-        // and a default width when inline.
-        return (
-            <Popover
-                interactionKind={PopoverInteractionKind.CLICK}
-                popoverClassName="@ns-popover-content-sizing"
-                position={Position.RIGHT}
-            >
-                <Button intent={Intent.PRIMARY}>Popover target</Button>
-                <div>
-                    <h5>Popover title</h5>
-                    <p>...</p>
-                    <Button className="@ns-popover-dismiss">Dismiss</Button>
-                </div>
-            </Popover>
-        );
-    }
-}
+Internally, the provided `target` is wrapped in a `span.@ns-popover-target` so
+that `Popover` has a reliable place to attach DOM event handlers for layout and
+interactions. This in turn is wrapped in a `span.@ns-popover-wrapper` so there
+is a single parent element when rendering [without a portal](#core/components/popover.portal-rendering),
+in order to support React 15.
+
+A typical `Popover` might look like this:
+
+```tsx
+import { Button, Popover } from "@blueprintjs/core";
+
+<Popover content={<em>Hello!</em>} target={<Button text="My target" />} />
+```
+
+The above code renders the following psuedo-markup:
+
+```html
+<span class="@ns-popover-wrapper">
+    <span class="@ns-popover-target">
+        <Button text="My target" />
+    </span>
+</span>
+```
+
+In certain cases, these wrapper elements are undesirable. To avoid the
+additional `.@ns-popover-target` wrapper, define a `TargetRenderer` function as
+the `target` and attach the DOM handlers and `ref` yourself. This also means
+that the popover will be positioned relative to the element you render, instead
+of relative to the target wrapper element that `Popover` has to render in the
+above scenario.
+
+For example:
+
+```tsx
+import { Button, Popover, TargetRenderer } from "@blueprintjs/core";
+
+const ButtonTarget: TargetRenderer = (props, ref, isOpen) => (
+    // always spread props and attach ref handler!
+    <Button {...props} active={isOpen} elementRef={ref} text="Custom target" />
+);
+<Popover content={<em>Hello!</em>} target={ButtonTarget} />
+```
+
+The above code now renders the following psuedo-markup:
+
+```html
+<span class="@ns-popover-wrapper">
+    <Button class="@ns-popover-target @ns-active" text="Custom target" />
+</span>
 ```
 
 @### Position
@@ -352,6 +366,10 @@ from this behavior.
 This behavior can be disabled (if the `Popover` uses a `Portal`) via the `inheritDarkTheme` prop.
 
 @### Sizing
+
+Popover content gets no padding by default; add
+`popoverClassName={Classes.POPOVER_CONTENT_SIZING}` to a `Popover` to set nice
+padding between its border and content, and a default width when inline.
 
 Popovers by default have a `max-width` but no `max-height`. To constrain the height of a popover
 and make its content scrollable, add a custom class to your popover content element and attach
