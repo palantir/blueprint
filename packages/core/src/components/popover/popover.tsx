@@ -30,6 +30,32 @@ export const PopoverInteractionKind = {
 };
 export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
+/**
+ * Provide a function to the `Popover` (or `Tooltip`) `target` prop to render
+ * the target element yourself. This is advanced usage that avoids rendering
+ * the `Classes.POPOVER_TARGET`
+ *
+ * **Always spread the given `props` and attach the `ref` handler to an element
+ * that supports HTML props**. Failure to do this will break the positioning and
+ * all built-in interactions.
+ *
+ * ```tsx
+ * import { Button, Popover, TargetRenderer } from "@blueprintjs/core";
+ *
+ * const ButtonTarget: TargetRenderer = (props, ref, isOpen) => (
+ *     // always spread props and attach ref handler!
+ *     <Button {...props} elementRef={ref} intent="primary" text="Custom button target" />
+ * );
+ *
+ * <Popover content={<em>Hello!</em>} target={ButtonTarget} />
+ * ```
+ */
+export type TargetRenderer = (
+    props: React.HTMLAttributes<HTMLElement>,
+    ref: (ref: HTMLElement) => void,
+    isOpen: boolean,
+) => JSX.Element;
+
 export interface IPopoverProps extends IPopoverSharedProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
@@ -70,10 +96,15 @@ export interface IPopoverProps extends IPopoverSharedProps {
     popoverRef?: (ref: HTMLDivElement | null) => void;
 
     /**
-     * The target to which the popover content is attached. This can instead be
-     * provided as the _first_ element in `children`.
+     * The target to which the popover content is attached. Instead of this
+     * prop, a target element (not `TargetRenderer`) can be passed as the first
+     * element in `children`.
+     *
+     * Providing a `TargetRenderer` function will invoke that function with a
+     * bag of `props` and a `ref` handler that must both be attached to a DOM
+     * element.
      */
-    target?: string | JSX.Element;
+    target?: string | JSX.Element | TargetRenderer;
 }
 
 export interface IPopoverState {
@@ -171,7 +202,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         return (
             <Manager>
                 <WrapperTagName className={classNames(Classes.POPOVER_WRAPPER, className)}>
-                    <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
+                    <ResizeSensor onResize={this.handlePopoverResize}>
+                        <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
+                    </ResizeSensor>
                     <Overlay
                         autoFocus={this.props.autoFocus}
                         backdropClassName={Classes.POPOVER_BACKDROP}
@@ -324,9 +357,13 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                   onClick: this.handleTargetClick,
               };
         targetProps.className = classNames(Classes.POPOVER_TARGET, { [Classes.POPOVER_OPEN]: isOpen }, targetClassName);
-        targetProps.ref = referenceProps.ref;
 
-        const rawTarget = Utils.ensureElement(this.understandChildren().target);
+        const { target } = this.understandChildren();
+        if (Utils.isFunction(target)) {
+            return target(targetProps, referenceProps.ref, isOpen);
+        }
+
+        const rawTarget = Utils.ensureElement(target);
         const { tabIndex = 0 } = rawTarget.props;
         const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
             className: classNames(rawTarget.props.className, {
@@ -337,9 +374,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             tabIndex: this.props.openOnTargetFocus && isHoverInteractionKind ? tabIndex : undefined,
         });
         return (
-            <ResizeSensor onResize={this.handlePopoverResize}>
-                <TagName {...targetProps}>{clonedTarget}</TagName>
-            </ResizeSensor>
+            <TagName {...targetProps} ref={referenceProps.ref}>
+                {clonedTarget}
+            </TagName>
         );
     };
 
