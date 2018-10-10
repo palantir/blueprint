@@ -8,6 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, Utils } from "../../common";
+import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -117,9 +118,11 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
         return (
             <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
                 <Icon icon={icon} />
-                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
-                    {children}
-                </Text>
+                {!isReactNodeEmpty(children) && (
+                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
+                        {children}
+                    </Text>
+                )}
                 <Icon icon={rightIcon} />
                 {removeButton}
             </span>

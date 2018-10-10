@@ -59,6 +59,12 @@ export enum CellContent {
     LARGE_JSON = "large-json",
 }
 
+export enum SelectedRegionTransformPreset {
+    CELL = "cell",
+    ROW = "row",
+    COLUMN = "column",
+}
+
 type IMutableStateUpdateCallback = (
     stateKey: keyof IMutableTableState,
 ) => ((event: React.FormEvent<HTMLElement>) => void);
@@ -76,6 +82,12 @@ const REGION_CARDINALITIES: RegionCardinality[] = [
 ];
 
 const RENDER_MODES: RenderMode[] = [RenderMode.BATCH_ON_UPDATE, RenderMode.BATCH, RenderMode.NONE];
+
+const SELECTION_MODES: SelectedRegionTransformPreset[] = [
+    SelectedRegionTransformPreset.CELL,
+    SelectedRegionTransformPreset.ROW,
+    SelectedRegionTransformPreset.COLUMN,
+];
 
 const CELL_CONTENTS: CellContent[] = [
     CellContent.EMPTY,
@@ -183,6 +195,16 @@ function contains(arr: any[], value: any) {
     return arr.indexOf(value) >= 0;
 }
 
+function enforceWholeColumnSelection(region: IRegion) {
+    delete region.rows;
+    return region;
+}
+
+function enforceWholeRowSelection(region: IRegion) {
+    delete region.cols;
+    return region;
+}
+
 export interface IMutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
@@ -214,6 +236,7 @@ export interface IMutableTableState {
     scrollToRegionType?: RegionCardinality;
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
+    selectedRegionTransformPreset?: SelectedRegionTransformPreset;
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -259,6 +282,7 @@ const DEFAULT_STATE: IMutableTableState = {
     scrollToRegionType: RegionCardinality.CELLS,
     scrollToRowIndex: 0,
     selectedFocusStyle: FocusStyle.TAB,
+    selectedRegionTransformPreset: SelectedRegionTransformPreset.CELL,
     showCallbackLogs: true,
     showCellsLoading: false,
     showColumnHeadersLoading: false,
@@ -377,6 +401,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 ref={this.refHandlers.table}
                 renderMode={this.state.renderMode}
                 rowHeaderCellRenderer={this.renderRowHeader}
+                selectedRegionTransform={this.getSelectedRegionTransform()}
                 selectionModes={this.getEnabledSelectionModes()}
                 styledRegionGroups={this.getStyledRegionGroups()}
             >
@@ -577,6 +602,13 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             this.toRenderModeLabel,
             this.handleNumberStateChange,
         );
+        const selectedRegionTransformPresetMenu = this.renderSelectMenu(
+            "Selection",
+            "selectedRegionTransformPreset",
+            SELECTION_MODES,
+            this.toSelectedRegionTransformPresetLabel,
+            this.handleSelectedRegionTransformPresetChange,
+        );
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
@@ -617,6 +649,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Callback logs", "showCallbackLogs")}
                 {this.renderSwitch("Full-table selection", "enableFullTableSelection")}
                 {this.renderSwitch("Multi-selection", "enableMultiSelection")}
+                {selectedRegionTransformPresetMenu}
                 <H6>Scroll to</H6>
                 {this.renderScrollToSection()}
 
@@ -855,6 +888,19 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
+    private toSelectedRegionTransformPresetLabel(selectedRegionTransformPreset: SelectedRegionTransformPreset) {
+        switch (selectedRegionTransformPreset) {
+            case SelectedRegionTransformPreset.CELL:
+                return "Unconstrained";
+            case SelectedRegionTransformPreset.ROW:
+                return "Whole rows only";
+            case SelectedRegionTransformPreset.COLUMN:
+                return "Whole columns only";
+            default:
+                return "None";
+        }
+    }
+
     private toCellContentLabel(cellContent: CellContent) {
         switch (cellContent) {
             case CellContent.CELL_NAMES:
@@ -1043,6 +1089,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return handleNumberChange(value => this.setState({ [stateKey]: value }));
     };
 
+    private handleSelectedRegionTransformPresetChange = (stateKey: keyof IMutableTableState) => {
+        return handleStringChange(value => this.setState({ [stateKey]: value }));
+    };
+
     private updateFocusStyleState = () => {
         return handleStringChange((value: string) => {
             const selectedFocusStyle = value === "tab" ? FocusStyle.TAB : FocusStyle.TAB_OR_CLICK;
@@ -1093,6 +1143,22 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             loadingOptions.push(TableLoadingOption.CELLS);
         }
         return loadingOptions;
+    }
+
+    private getSelectedRegionTransform() {
+        switch (this.state.selectedRegionTransformPreset) {
+            case SelectedRegionTransformPreset.CELL:
+                return undefined;
+
+            case SelectedRegionTransformPreset.ROW:
+                return enforceWholeRowSelection;
+
+            case SelectedRegionTransformPreset.COLUMN:
+                return enforceWholeColumnSelection;
+
+            default:
+                return undefined;
+        }
     }
 
     private getStyledRegionGroups() {

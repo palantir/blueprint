@@ -31,7 +31,6 @@ export interface INavigatorProps {
 }
 
 export interface INavigationSection {
-    filterKey: string;
     path: string[];
     route: string;
     title: string;
@@ -52,8 +51,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
             }
             const { route, title } = node;
             const path = parents.map(p => p.title).reverse();
-            const filterKey = [...path, "`" + title].join("/");
-            this.sections.push({ filterKey, path, route, title });
+            this.sections.push({ path, route, title });
         });
     }
 
@@ -77,7 +75,13 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     }
 
     private filterMatches: ItemListPredicate<INavigationSection> = (query, items) =>
-        filter(items, query, { key: "filterKey", isPath: true, maxResults: 10, useExtensionBonus: true });
+        filter(items, query, {
+            key: "route",
+            maxInners: items.length / 5,
+            maxResults: 10,
+            pathSeparator: "/",
+            usePathScoring: true,
+        });
 
     private renderItem: ItemRenderer<INavigationSection> = (section, props) => {
         if (!props.modifiers.matchesPredicate) {
@@ -86,7 +90,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
 
         // insert caret-right between each path element
         const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
-            elems.push(el, <Icon icon="caret-right" />);
+            elems.push(el, <Icon key={el} icon="caret-right" />);
             return elems;
         }, []);
         pathElements.pop();

@@ -49,11 +49,13 @@ $pt-border-radius: floor($pt-grid-size / 3) !default;
 // Buttons
 $pt-button-height: $pt-grid-size * 3 !default;
 $pt-button-height-small: $pt-grid-size * 2.4 !default;
+$pt-button-height-smaller: $pt-grid-size * 2 !default;
 $pt-button-height-large: $pt-grid-size * 4 !default;
 
 // Inputs
 $pt-input-height: $pt-grid-size * 3 !default;
 $pt-input-height-large: $pt-grid-size * 4 !default;
+$pt-input-height-small: $pt-grid-size * 2.4 !default;
 
 // Others
 $pt-navbar-height: $pt-grid-size * 5 !default;

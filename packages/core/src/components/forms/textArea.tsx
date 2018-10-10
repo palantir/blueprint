@@ -21,6 +21,11 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
     large?: boolean;
 
     /**
+     * Whether the text area should appear with small styling.
+     */
+    small?: boolean;
+
+    /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
     inputRef?: (ref: HTMLTextAreaElement | null) => any;
@@ -32,7 +37,7 @@ export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
     public render() {
-        const { className, fill, intent, large, inputRef, ...htmlProps } = this.props;
+        const { className, fill, inputRef, intent, large, small, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,
@@ -40,6 +45,7 @@ export class TextArea extends React.PureComponent<ITextAreaProps, {}> {
             {
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
+                [Classes.SMALL]: small,
             },
             className,
         );

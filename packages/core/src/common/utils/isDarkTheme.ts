@@ -6,6 +6,6 @@
 
 import { Classes } from "../";
 
-export function isDarkTheme(element: Element): boolean {
-    return element.closest(`.${Classes.DARK}`) != null;
+export function isDarkTheme(element: Element | Text | null): boolean {
+    return element instanceof Element && element.closest(`.${Classes.DARK}`) != null;
 }

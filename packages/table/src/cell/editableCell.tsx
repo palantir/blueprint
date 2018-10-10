@@ -6,7 +6,14 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { EditableText, Hotkey, Hotkeys, HotkeysTarget, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    DISPLAYNAME_PREFIX,
+    EditableText,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
@@ -58,6 +65,8 @@ export interface IEditableCellState {
 
 @HotkeysTarget
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
+
     public static defaultProps = {
         truncated: true,
         wrapText: false,

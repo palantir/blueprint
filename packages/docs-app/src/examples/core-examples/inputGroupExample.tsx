@@ -27,6 +27,7 @@ export interface IInputGroupExampleState {
     disabled: boolean;
     filterValue: string;
     large: boolean;
+    small: boolean;
     showPassword: boolean;
     tagValue: string;
 }
@@ -37,16 +38,18 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
         filterValue: "",
         large: false,
         showPassword: false,
+        small: false,
         tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
+    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
     private handleFilterChange = handleStringChange(filterValue => this.setState({ filterValue }));
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
-        const { disabled, filterValue, large, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner size={Icon.SIZE_STANDARD} /> : undefined;
 
@@ -90,6 +93,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     onChange={this.handleFilterChange}
                     placeholder="Filter histogram..."
                     rightElement={maybeSpinner}
+                    small={small}
                     value={filterValue}
                 />
                 <InputGroup
@@ -97,6 +101,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     large={large}
                     placeholder="Enter your password..."
                     rightElement={lockButton}
+                    small={small}
                     type={showPassword ? "text" : "password"}
                 />
                 <InputGroup
@@ -106,6 +111,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
                     rightElement={resultsTag}
+                    small={small}
                     value={tagValue}
                 />
                 <InputGroup
@@ -113,18 +119,20 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     large={large}
                     placeholder="Add people or groups..."
                     rightElement={permissionsMenu}
+                    small={small}
                 />
             </Example>
         );
     }
 
     private renderOptions() {
-        const { disabled, large } = this.state;
+        const { disabled, large, small } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
+                <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
             </>
         );
     }

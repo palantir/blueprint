@@ -5,10 +5,13 @@
  */
 
 import * as Lint from "tslint";
+import * as utils from "tsutils";
 import * as ts from "typescript";
+import { addImportToFile } from "./utils/addImportToFile";
 
-// detect "pt-" *prefix*: not preceded by letter or dash
-const PATTERN = /[^\w-<]pt-[\w-]+/;
+// find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
+// currently support pt- and bp3- prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]((pt|bp3)-(?!icon-?)[\w-]+)/g;
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -29,15 +32,99 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
 }
 
-function walk(ctx: Lint.WalkContext<void>): void {
-    return ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
+function walk(ctx: Lint.WalkContext<void>) {
+    let shouldFixImports = true;
+    return ts.forEachChild(ctx.sourceFile, callback);
+
+    function callback(node: ts.Node): void {
         if (ts.isStringLiteralLike(node) || ts.isTemplateExpression(node)) {
-            const match = PATTERN.exec(node.getFullText());
-            if (match != null) {
-                // ignore first character of match: negated character class
-                ctx.addFailureAt(node.getFullStart() + match.index + 1, match[0].length - 1, Rule.FAILURE_STRING);
+            const prefixMatches = getAllMatches(node.getFullText());
+            if (prefixMatches.length > 0) {
+                const ptClassStrings = prefixMatches.map(m => m.match);
+                const replacementText = utils.isStringLiteral(node)
+                    ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
+                      wrapForParent(getLiteralReplacement(node.getText(), ptClassStrings), node)
+                    : getTemplateReplacement(node.getText(), ptClassStrings);
+
+                const replacements = [new Lint.Replacement(node.getStart(), node.getWidth(), replacementText)];
+                if (shouldFixImports) {
+                    // add an import statement for `Classes` constants at most once.
+                    replacements.unshift(addImportToFile(ctx.sourceFile, ["Classes"], "@blueprintjs/core"));
+                    shouldFixImports = false;
+                }
+
+                ctx.addFailureAt(
+                    node.getFullStart() + prefixMatches[0].index + 1,
+                    prefixMatches[0].match.length,
+                    Rule.FAILURE_STRING,
+                    replacements,
+                );
             }
         }
-        return ts.forEachChild(node, cb);
-    });
+
+        return ts.forEachChild(node, callback);
+    }
+}
+
+/** Returns array of all invalid string matches detected in the given className string. */
+function getAllMatches(className: string) {
+    const ptMatches = [];
+    let currentMatch: RegExpMatchArray | null;
+    // tslint:disable-next-line:no-conditional-assignment
+    while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
+        ptMatches.push({ match: currentMatch[1], index: currentMatch.index });
+    }
+    return ptMatches;
+}
+
+/** Produce replacement text for a string literal that contains invalid classes. */
+function getLiteralReplacement(className: string, ptClassStrings: string[]) {
+    // remove all illegal classnames, then slice off the quotes, then merge & trim any remaining white space
+    const stringWithoutPtClasses = ptClassStrings
+        .reduce((value, cssClass) => value.replace(cssClass, ""), className)
+        .slice(1, -1)
+        .replace(/(\s)+/, "$1")
+        .trim();
+    // special case: only one invalid class name
+    if (stringWithoutPtClasses.length === 0 && ptClassStrings.length === 1) {
+        return convertPtClassName(ptClassStrings[0]);
+    }
+    // otherwise produce a `template string`
+    const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
+    return `\`${[templateStrings, stringWithoutPtClasses].join(" ").trim()}\``;
+}
+
+/** Produce replacement text for a `template string` that contains invalid classes. */
+function getTemplateReplacement(className: string, ptClassStrings: string[]) {
+    return ptClassStrings.reduce(
+        (value, cssClass) => value.replace(cssClass, `\${${convertPtClassName(cssClass)}}`),
+        className,
+    );
+}
+
+/** Wrap the given statement based on the type of the parent node: JSX props, expressions, etc. */
+function wrapForParent(statement: string, node: ts.Node) {
+    const { parent } = node;
+    if (parent === undefined) {
+        return statement;
+    } else if (utils.isJsxAttribute(parent)) {
+        return `{${statement}}`;
+    } else if (utils.isExpressionStatement(parent)) {
+        return `[${statement}]`;
+        // If we're changing the key, it will be child index 0 and we need to wrap it.
+        // Else, we're changing a value, and there's no need to wrap
+    } else if (utils.isPropertyAssignment(parent) && parent.getChildAt(0) === node) {
+        return `[${statement}]`;
+    } else {
+        return statement;
+    }
+}
+
+/** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
+function convertPtClassName(text: string) {
+    const className = text
+        .replace(/(pt|bp3)-/, "")
+        .replace(/-/g, "_")
+        .toUpperCase();
+    return `Classes.${className}`;
 }

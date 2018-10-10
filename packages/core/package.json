@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "3.6.1",
+  "version": "3.7.0",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -38,7 +38,7 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/icons": "^3.0.0",
+    "@blueprintjs/icons": "^3.2.0",
     "@types/dom4": "^2.0.0",
     "classnames": "^2.2",
     "dom4": "^2.0.1",

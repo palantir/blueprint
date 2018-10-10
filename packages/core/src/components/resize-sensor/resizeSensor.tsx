@@ -78,8 +78,8 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
      * observed element. Pass `force` argument to skip element checks and always
      * re-observe.
      */
-    private observeElement(element: Element | null, force = false) {
-        if (element == null) {
+    private observeElement(element: Element | Text | null, force = false) {
+        if (!(element instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
             return;

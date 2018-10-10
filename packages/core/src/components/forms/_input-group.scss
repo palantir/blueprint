@@ -25,6 +25,7 @@ Markup:
 :disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
 .#{$ns}-round - Rounded caps. Button will also be rounded.
 .#{$ns}-large - Large group. Children will adjust size accordingly.
+.#{$ns}-small - Small group. Children will adjust size accordingly.
 .#{$ns}-intent-primary - Primary intent. (All 4 intents are supported.)
 .#{$ns}-fill - Take up full width of parent element.
 
@@ -32,9 +33,11 @@ Styleguide input-group
 */
 
 // 3px space between small button and regular input
-$input-button-height: $pt-button-height - 6px !default;
+$input-button-height: $pt-button-height-small !default;
 // 5px space between regular button and large input
 $input-button-height-large: $pt-button-height !default;
+// 1px space between regular button and small input
+$input-button-height-small: $pt-button-height-smaller !default;
 
 .#{$ns}-input-group {
   display: block;
@@ -82,10 +85,13 @@ $input-button-height-large: $pt-button-height !default;
 
   // direct descendant to exclude icons in buttons
   > .#{$ns}-icon {
-    @include pt-icon($pt-icon-size-standard);
     // bump icon up so it sits above input
     z-index: 1;
     color: $pt-icon-color;
+
+    &:empty {
+      @include pt-icon($pt-icon-size-standard);
+    }
   }
 
   // adjusting the margin of spinners in input groups
@@ -158,6 +164,35 @@ $input-button-height-large: $pt-button-height !default;
 
       &:not(:last-child) {
         padding-right: $pt-button-height-large;
+      }
+    }
+  }
+
+  &.#{$ns}-small {
+    .#{$ns}-button {
+      @include pt-button-height($pt-button-height-smaller);
+      margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
+    }
+
+    .#{$ns}-tag {
+      @include pt-button-height($pt-button-height-smaller);
+      margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
+    }
+
+    > .#{$ns}-icon,
+    .#{$ns}-input-action > .#{$ns}-spinner {
+      margin: ($pt-input-height-small - $pt-icon-size-standard) / 2;
+    }
+
+    .#{$ns}-input {
+      @include pt-input-small();
+
+      &:not(:first-child) {
+        padding-left: $pt-icon-size-standard + $input-small-padding;
+      }
+
+      &:not(:last-child) {
+        padding-right: $pt-icon-size-standard + $input-small-padding;
       }
     }
   }

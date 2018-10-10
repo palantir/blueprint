@@ -910,9 +910,9 @@
     "content": "\\e669"
   },
   {
-    "displayName": "Radial",
+    "displayName": "Circle",
     "iconName": "circle",
-    "tags": "circle, empty, area, radius, selection",
+    "tags": "radial, empty, area, radius, selection",
     "group": "action",
     "content": "\\e66a"
   },
@@ -3120,5 +3120,47 @@
     "tags": "notifications, bell, alarm, notice, warning",
     "group": "interface",
     "content": "\\e7b8"
+  },
+  {
+    "displayName": "List: columns",
+    "iconName": "list-columns",
+    "tags": "layout, arrangement, four lines, table",
+    "group": "table",
+    "content": "\\e7b9"
+  },
+    {
+    "displayName": "Flow: linear",
+    "iconName": "flow-linear",
+    "tags": "workflow, edge, node, step",
+    "group": "data",
+    "content": "\\e7c0"
+  },
+    {
+    "displayName": "Flow: branch",
+    "iconName": "flow-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c1"
+  },
+    {
+    "displayName": "Flow: review",
+    "iconName": "flow-review",
+    "tags": "workflow, edge, node, reverse",
+    "group": "data",
+    "content": "\\e7c2"
+  },
+    {
+    "displayName": "Flow: review branch",
+    "iconName": "flow-review-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c3"
+  },
+    {
+    "displayName": "Flow: end",
+    "iconName": "flow-end",
+    "tags": "workflow, edge, node, complete, finished, final, last",
+    "group": "data",
+    "content": "\\e7c4"
   }
 ]

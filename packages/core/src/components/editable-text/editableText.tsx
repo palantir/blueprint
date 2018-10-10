@@ -284,14 +284,13 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         if (!this.state.isEditing) {
             return undefined;
         }
-        const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
+        const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
             placeholder,
-            ref: this.refHandlers.input,
             style: {
                 height: this.state.inputHeight,
                 lineHeight: !multiline && this.state.inputHeight != null ? `${this.state.inputHeight}px` : null,
@@ -299,7 +298,11 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
             },
             value,
         };
-        return multiline ? <textarea {...props} /> : <input type="text" {...props} />;
+        return multiline ? (
+            <textarea ref={this.refHandlers.input} {...props} />
+        ) : (
+            <input ref={this.refHandlers.input} type="text" {...props} />
+        );
     }
 
     private updateInputDimensions() {

@@ -111,10 +111,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     public render() {
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabTitles = React.Children.map(
-            this.props.children,
-            child => (Utils.isElementOfType(child, Tab) ? this.renderTabTitle(child as TabElement) : child),
-        );
+        const tabTitles = React.Children.map(this.props.children, this.renderTabTitle);
 
         const tabPanels = this.getTabChildren()
             .filter(this.props.renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
@@ -205,9 +202,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     /** Filters children to only `<Tab>`s */
     private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(child => {
-            return Utils.isElementOfType(child, Tab);
-        }) as TabElement[];
+        return React.Children.toArray(props.children).filter(isTabElement);
     }
 
     /** Queries root HTML element for all tabs with optional filter selector */
@@ -297,19 +292,26 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         );
     };
 
-    private renderTabTitle = (tab: TabElement) => {
-        const { id } = tab.props;
-        return (
-            <TabTitle
-                {...tab.props}
-                parentId={this.props.id}
-                onClick={this.handleTabClick}
-                selected={id === this.state.selectedTabId}
-            />
-        );
+    private renderTabTitle = (child: React.ReactChild) => {
+        if (isTabElement(child)) {
+            const { id } = child.props;
+            return (
+                <TabTitle
+                    {...child.props}
+                    parentId={this.props.id}
+                    onClick={this.handleTabClick}
+                    selected={id === this.state.selectedTabId}
+                />
+            );
+        }
+        return child;
     };
 }
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
     return codes.indexOf(e.which) >= 0;
+}
+
+function isTabElement(child: any): child is TabElement {
+    return Utils.isElementOfType(child, Tab);
 }
