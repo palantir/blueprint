@@ -37,22 +37,28 @@ export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof 
  *
  * **Always spread the given `props` and attach the `ref` handler to an element
  * that supports HTML props**. Failure to do this will break the positioning and
- * all built-in interactions.
+ * all built-in interactions!
  *
  * ```tsx
  * import { Button, Popover, TargetRenderer } from "@blueprintjs/core";
  *
  * const ButtonTarget: TargetRenderer = (props, ref, isOpen) => (
  *     // always spread props and attach ref handler!
- *     <Button {...props} elementRef={ref} intent="primary" text="Custom button target" />
+ *     <Button {...props} elementRef={ref} intent="primary" text="Custom target" />
  * );
  *
  * <Popover content={<em>Hello!</em>} target={ButtonTarget} />
  * ```
  */
 export type TargetRenderer = (
+    /**
+     * Props such as `className` and event handlers to attach to the target
+     * element, for `Popover` interactions.
+     */
     props: React.HTMLAttributes<HTMLElement>,
+    /** Ref handler required to position popover relative to target element. */
     ref: (ref: HTMLElement) => void,
+    /** Whether the popover is currently open. */
     isOpen: boolean,
 ) => JSX.Element;
 
@@ -97,12 +103,8 @@ export interface IPopoverProps extends IPopoverSharedProps {
 
     /**
      * The target to which the popover content is attached. Instead of this
-     * prop, a target element (not `TargetRenderer`) can be passed as the first
-     * element in `children`.
-     *
-     * Providing a `TargetRenderer` function will invoke that function with a
-     * bag of `props` and a `ref` handler that must both be attached to a DOM
-     * element.
+     * prop, a target element (not a `TargetRenderer`) can be passed as the
+     * first element in `children`.
      */
     target?: string | JSX.Element | TargetRenderer;
 }
