@@ -11,11 +11,18 @@ import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
+import { isFunction } from "util";
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Overlay } from "../../src/components/overlay/overlay";
-import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
+import {
+    IPopoverProps,
+    IPopoverState,
+    Popover,
+    PopoverInteractionKind,
+    TargetRenderer,
+} from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { Portal } from "../../src/index";
@@ -208,6 +215,32 @@ describe("<Popover>", () => {
         assert.isTrue(onOpening.calledOnce);
     });
 
+    describe("target renderer", () => {
+        const targetRenderer: TargetRenderer = (props, ref) => <button ref={ref} {...props} />;
+
+        it("receives (props, ref, isOpen)", () => {
+            const target = sinon.spy(targetRenderer);
+            wrapper = mountPopover(<Popover content="content" target={target} />);
+            assertTargetRendererArgs(target, false);
+            wrapper.setProps({ isOpen: true });
+            assertTargetRendererArgs(target, true);
+            wrapper.setProps({ interactionKind: "hover" });
+            assertTargetRendererArgs(target, true);
+        });
+
+        it("renders target element", () => {
+            wrapper = mountPopover(<Popover content="content" target={targetRenderer} />).assertFindClass(
+                Classes.POPOVER_TARGET,
+            );
+        });
+
+        function assertTargetRendererArgs(targetSpy: sinon.SinonSpy, expectedIsOpen: boolean) {
+            const [props, ref, isOpen] = targetSpy.lastCall.args;
+            assert.isTrue(isFunction(props.onClick) || isFunction(props.onMouseEnter), `interaction props`);
+            assert.isTrue(isFunction(ref), `ref is function`);
+            assert.equal(isOpen, expectedIsOpen, `isOpen`);
+        }
+    });
     describe("openOnTargetFocus", () => {
         describe("if true (default)", () => {
             it('adds tabindex="0" to target\'s child node when interactionKind is HOVER', () => {
@@ -685,13 +718,16 @@ describe("<Popover>", () => {
     }
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
-        wrapper = mount(
+        return mountPopover(
             <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
                 <div>Text {content}</div>
             </Popover>,
-            { attachTo: testsContainerElement },
-        ) as IPopoverWrapper;
+        );
+    }
+
+    function mountPopover(popover: JSX.Element) {
+        wrapper = mount(popover, { attachTo: testsContainerElement }) as IPopoverWrapper;
         wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
