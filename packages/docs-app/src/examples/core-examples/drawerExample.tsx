@@ -16,6 +16,8 @@ export interface IDrawerExampleState {
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
     isOpen: boolean;
+    large: boolean;
+    small: boolean;
     usePortal: boolean;
     vertical: boolean;
 }
@@ -26,6 +28,8 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         canOutsideClickClose: true,
         enforceFocus: true,
         isOpen: false,
+        large: false,
+        small: false,
         usePortal: true,
         vertical: false,
     };
@@ -36,6 +40,8 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
+    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
 
     public render() {
         return (
@@ -101,6 +107,8 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
+                <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
+                <Switch checked={this.state.small} label="Small" onChange={this.handleSmallChange} />
             </>
         );
     }

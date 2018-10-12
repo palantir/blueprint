@@ -66,12 +66,20 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * @default false
      */
     vertical?: boolean;
+
+    /** Whether this drawer should use large styles. */
+    large?: boolean;
+
+    /** Whether this drawer should use small styles. */
+    small?: boolean;
 }
 
 export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        large: false,
+        small: false,
         vertical: false,
     };
 
@@ -81,10 +89,23 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
         const classes = classNames(
             Classes.DRAWER,
             {
+                [Classes.LARGE]: this.props.large,
+                [Classes.SMALL]: this.props.small,
                 [Classes.VERTICAL]: this.props.vertical,
             },
             this.props.className,
         );
+        // small drawer should not use a backdrop
+        if (this.props.small !== false) {
+            return (
+                <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER} hasBackdrop={false}>
+                    <div className={classes} style={this.props.style}>
+                        {this.maybeRenderHeader()}
+                        {this.props.children}
+                    </div>
+                </Overlay>
+            );
+        }
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER} hasBackdrop={true}>
                 <div className={classes} style={this.props.style}>

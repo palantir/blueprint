@@ -61,6 +61,24 @@ $drawer-padding: $pt-grid-size * 2 !default;
     left: 0;
     width: 100%;
     height: 50%;
+
+    &.#{$ns}-large {
+      width: 100%;
+      height: 90%;
+    }
+
+    &.#{$ns}-small {
+      width: 100%;
+      max-height: 300px;
+    }
+  }
+
+  &.#{$ns}-large {
+    width: 90%;
+  }
+
+  &.#{$ns}-small {
+    width: 400px;
   }
 
   &.#{$ns}-dark,
