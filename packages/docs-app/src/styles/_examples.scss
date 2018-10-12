@@ -424,12 +424,38 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+
+    // make it a scroll parent so it traps un-portaled popover!
+    position: relative;
+
     // wide enough to allow scrolling, but wide enough to let the popover target
     // fully leave the viewport.
     width: 200%;
     height: $assumed-height-of-target-plus-popover + (2 * $vertical-padding);
     padding-top: $vertical-padding;
   }
+}
+
+.docs-popover-target-example .docs-example {
+  align-items: flex-start;
+  position: relative;
+}
+
+.docs-popover-target-controls {
+  display: grid;
+  grid-column-gap: $pt-icon-size-standard;
+  grid-row-gap: $pt-grid-size;
+  grid-template-columns: min-content 1fr;
+}
+
+.docs-popover-target-visualizer {
+  position: absolute;
+  // opacity: 0.5;
+  z-index: $pt-z-index-overlay;
+  margin: 0;
+  border: 1px solid $white;
+  background: rgba($rose4, 0.3);
+  pointer-events: none;
 }
 
 .docs-popover-portal-example-popover {

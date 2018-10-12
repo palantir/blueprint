@@ -161,9 +161,10 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                     labelFor="position"
                 >
                     <HTMLSelect
-                        value={this.state.position}
+                        fill={true}
                         onChange={this.handlePositionChange}
                         options={VALID_POSITIONS}
+                        value={this.state.position}
                     />
                 </FormGroup>
                 <Label>

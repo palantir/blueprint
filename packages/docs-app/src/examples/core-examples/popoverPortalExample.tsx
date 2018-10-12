@@ -71,7 +71,8 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
                     </div>
                 </div>
                 <em style={{ textAlign: "center", width: "100%" }}>
-                    Scroll either container and notice what happens when the <Code>Popover</Code> tries to leave.
+                    The containers above have <Code>position: relative</Code>.<br />
+                    Notice what happens to each <Code>Popover</Code> when it tries to leave.
                 </em>
             </Example>
         );
