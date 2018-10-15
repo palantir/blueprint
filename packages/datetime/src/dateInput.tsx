@@ -37,6 +37,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     canClearSelection?: boolean;
 
     /**
+     * Text for the reset button in the date picker action bar.
+     * Passed to `DatePicker` component.
+     * @default "Clear"
+     */
+    clearButtonText?: string;
+
+    /**
      * Whether the calendar popover should close when a date is selected.
      * @default true
      */
@@ -108,6 +115,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * in the input field, pass `new Date(undefined)` to the value prop.
      */
     value?: Date | null;
+
+    /**
+     * Text for the today button in the date picker action bar.
+     * Passed to `DatePicker` component.
+     * @default "Today"
+     */
+    todayButtonText?: string;
 }
 
 export interface IDateInputState {
