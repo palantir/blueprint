@@ -379,10 +379,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         if (e.which === Keys.ENTER) {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
-        } else if (e.which === Keys.TAB && e.shiftKey) {
-            // close the popover if focus will move to the previous element on
-            // the page. tabbing forward should *not* close the popover, because
-            // focus will be moving into the popover itself.
+        } else if (e.which === Keys.TAB) {
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
