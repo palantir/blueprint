@@ -31,6 +31,26 @@ describe("<Dialog>", () => {
         });
     });
 
+    it("renders contents to specified container correctly", () => {
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        mount(
+            <Dialog isOpen={true} container={container}>
+                {createDialogContents()}
+            </Dialog>,
+        );
+        [
+            Classes.DIALOG,
+            Classes.DIALOG_BODY,
+            Classes.DIALOG_FOOTER,
+            Classes.DIALOG_FOOTER_ACTIONS,
+            Classes.DIALOG_HEADER,
+            Classes.OVERLAY_BACKDROP,
+        ].forEach(className => {
+            assert.lengthOf(container.getElementsByClassName(className), 1, `missing ${className}`);
+        });
+    });
+
     it("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
