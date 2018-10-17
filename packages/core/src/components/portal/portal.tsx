@@ -25,7 +25,7 @@ export interface IPortalProps extends IProps {
     /**
      * The document object that children exists.
      */
-    document?: Document,
+    document?: Document;
 }
 
 export interface IPortalState {
@@ -55,7 +55,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
     public static contextTypes = REACT_CONTEXT_TYPES;
     public static defaultProps: IPortalProps = {
-        document: document,
+        document,
     };
 
     public context: IPortalContext;
