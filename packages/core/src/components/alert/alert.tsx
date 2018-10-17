@@ -76,6 +76,13 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     transitionDuration?: number;
 
     /**
+     * The container that the Alert renders to.
+     * This prop only available when `usePortal` is set to `true`
+     * @default document.body
+     */
+    container?: HTMLElement;
+
+    /**
      * Handler invoked when the alert is canceled. Alerts can be **canceled** in the following ways:
      * - clicking the cancel button (if `cancelButtonText` is defined)
      * - pressing the escape key (if `canEscapeKeyCancel` is enabled)
@@ -130,6 +137,7 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
                 canEscapeKeyClose={canEscapeKeyCancel}
                 canOutsideClickClose={canOutsideClickCancel}
                 onClose={this.handleCancel}
+                container={this.props.container}
             >
                 <div className={Classes.ALERT_BODY}>
                     <Icon icon={icon} iconSize={40} intent={intent} />
