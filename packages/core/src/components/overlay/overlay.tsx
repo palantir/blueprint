@@ -175,9 +175,9 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         container: (ref: React.ReactInstance) => (this.containerElement = findDOMNode(ref) as HTMLElement),
         mountpoint: (ref: React.ReactInstance) => {
             if (findDOMNode(ref)) {
-                this.setState({ document: (findDOMNode(ref) as HTMLElement).ownerDocument })
+                this.setState({ document: (findDOMNode(ref) as HTMLElement).ownerDocument });
             }
-        }
+        },
     };
 
     public constructor(props?: IOverlayProps, context?: any) {
@@ -221,7 +221,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         );
         if (usePortal) {
             if (!this.state.document) {
-                return <div ref={this.refHandlers.mountpoint} />
+                return <div ref={this.refHandlers.mountpoint} />;
             } else {
                 return <Portal document={this.state.document}>{transitionGroup}</Portal>;
             }
