@@ -164,6 +164,7 @@ describe("<Popover>", () => {
         document.body.appendChild(container);
         wrapper = renderPopover({ isOpen: true, usePortal: true, container });
         assert.lengthOf(container.getElementsByClassName(Classes.POPOVER_CONTENT), 1);
+        document.body.removeChild(container);
     });
 
     it("does not render Portal when usePortal=false", () => {

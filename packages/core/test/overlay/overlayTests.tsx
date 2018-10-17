@@ -68,6 +68,7 @@ describe("<Overlay>", () => {
             </Overlay>,
         );
         assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
+        document.body.removeChild(container);
     });
 
     it("renders Portal after first opened", () => {

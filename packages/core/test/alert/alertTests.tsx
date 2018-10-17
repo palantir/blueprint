@@ -48,6 +48,7 @@ describe("<Alert>", () => {
         assert.lengthOf(container.getElementsByClassName(Classes.ALERT_BODY), 1);
         assert.lengthOf(container.getElementsByClassName(Classes.ALERT_CONTENTS), 1);
         assert.lengthOf(container.getElementsByClassName(Classes.ALERT_FOOTER), 1);
+        document.body.removeChild(container);
     });
 
     it("renders the icon correctly", () => {

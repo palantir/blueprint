@@ -49,6 +49,7 @@ describe("<Dialog>", () => {
         ].forEach(className => {
             assert.lengthOf(container.getElementsByClassName(className), 1, `missing ${className}`);
         });
+        document.body.removeChild(container);
     });
 
     it("attempts to close when overlay backdrop element is moused down", () => {
