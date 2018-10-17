@@ -23,7 +23,7 @@ export interface IPortalProps extends IProps {
     onChildrenMount?: () => void;
 
     /**
-     * The document object that children exists.
+     * The document object of DOM that children will be mounted to. Default value is `window.document`.
      */
     document?: Document;
 }
