@@ -57,7 +57,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
 
     /**
      * Whether the overlay should be wrapped in a `Portal`, which renders its contents in a new
-     * element attached to `document.body`.
+     * element attached to `container` prop.
      *
      * This prop essentially determines which element is covered by the backdrop: if `false`,
      * then only its parent is covered; otherwise, the entire page is covered (because the parent
@@ -68,6 +68,13 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * @default true
      */
     usePortal?: boolean;
+
+    /**
+     * The container that the overlay renders its contents to.
+     * This prop only available when `usePortal` is set to `true`
+     * @default document.body
+     */
+    container?: HTMLElement;
 
     /**
      * A callback that is invoked when user interaction causes the overlay to close, such as
@@ -185,7 +192,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             return null;
         }
 
-        const { children, className, usePortal, isOpen } = this.props;
+        const { children, className, usePortal, container, isOpen } = this.props;
 
         // TransitionGroup types require single array of children; does not support nested arrays.
         // So we must collapse backdrop and children into one array, and every item must be wrapped in a
@@ -213,7 +220,9 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
                 {childrenWithTransitions}
             </TransitionGroup>
         );
-        if (usePortal) {
+        if (usePortal && container) {
+            return <Portal container={container}>{transitionGroup}</Portal>;
+        } else if (usePortal) {
             return <Portal>{transitionGroup}</Portal>;
         } else {
             return transitionGroup;
