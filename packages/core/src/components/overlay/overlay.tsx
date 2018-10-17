@@ -146,6 +146,7 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
 
 export interface IOverlayState {
     hasEverOpened?: boolean;
+    document?: Document;
 }
 
 export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
@@ -172,6 +173,11 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     public containerElement: HTMLElement;
     private refHandlers = {
         container: (ref: React.ReactInstance) => (this.containerElement = findDOMNode(ref) as HTMLElement),
+        mountpoint: (ref: React.ReactInstance) => {
+            if (findDOMNode(ref)) {
+                this.setState({ document: (findDOMNode(ref) as HTMLElement).ownerDocument });
+            }
+        },
     };
 
     public constructor(props?: IOverlayProps, context?: any) {
@@ -214,7 +220,11 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             </TransitionGroup>
         );
         if (usePortal) {
-            return <Portal>{transitionGroup}</Portal>;
+            if (!this.state.document) {
+                return <div ref={this.refHandlers.mountpoint} />;
+            } else {
+                return <Portal document={this.state.document}>{transitionGroup}</Portal>;
+            }
         } else {
             return transitionGroup;
         }
