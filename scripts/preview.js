@@ -12,6 +12,6 @@ const links = [
 ].join(" | ");
 
 bot.comment(`
-<h3>${bot.env.commitMessage}</h3>
-Previews: <strong>${links}</strong>
+    <h3> ${bot.env.commitMessage} </h3>
+    Previews: <strong> ${links} </strong>
 `);
