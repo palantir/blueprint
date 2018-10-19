@@ -7,12 +7,13 @@ Navbars present useful navigation controls at the top of an application.
 @### Fixed to viewport top
 
 Enable the `fixedToTop` prop to attach a navbar to the top of the viewport using
-`position: fixed; top: 0;`. This is so-called "sticky" behavior: the navbar
-stays at the top of the screen as the user scrolls through the document.
+`position: fixed; top: 0;`. The navbar stays at the top of the screen and above
+other elements as the user scrolls through the document.
 
-Enable the `stickyToTop` prop to attach a navbar to the top of the viewport using
-`position: sticky; top: 0;`. Similar to `fixedToTop` but attaches to parent element
-vs the viewport.
+Enable the `stickyToTop` prop to attach a navbar to the top of its parent container using
+`position: sticky; top: 0;`. If navbar is placed below the top of the viewport, it will
+move as the user scrolls through the document, attaching itself to the top of the viewport
+once it is reached. IE11 does not support this feature.
 
 These modifiers are not illustrated here because they break the document flow.
 

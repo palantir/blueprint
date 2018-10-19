@@ -22,7 +22,7 @@ export interface INavbarProps extends IProps, HTMLDivProps {
     fixedToTop?: boolean;
 
     /**
-     * Whether this navbar should be fixed to the top of the viewport (using CSS `position: sticky`).
+     * Whether this navbar should be attached to the top of its parent container (using CSS `position: sticky`).
      */
     stickyToTop?: boolean;
 }

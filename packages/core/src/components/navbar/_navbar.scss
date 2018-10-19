@@ -56,19 +56,19 @@ $dark-navbar-background-color: $dark-gray5 !default;
     box-shadow: $pt-dark-elevation-shadow-1;
   }
 
-    &.#{$ns}-fixed-top {
-      position: fixed;
-      top: 0;
-      right: 0;
-      left: 0;
-    }
+  &.#{$ns}-fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
 
-    &.#{$ns}-sticky-top {
-      position: sticky;
-      top: 0;
-      right: 0;
-      left: 0;
-    }
+  &.#{$ns}-sticky-top {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
 
   .#{$ns}-logo {
     // logo must be centered in 50px square
