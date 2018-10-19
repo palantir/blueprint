@@ -39,15 +39,12 @@ describe("<Alert>", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mount(
-            <Alert isOpen={true} container={container}>
+            <Alert isOpen={true} portalContainer={container}>
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
         );
         assert.lengthOf(container.getElementsByClassName(Classes.ALERT), 1);
-        assert.lengthOf(container.getElementsByClassName(Classes.ALERT_BODY), 1);
-        assert.lengthOf(container.getElementsByClassName(Classes.ALERT_CONTENTS), 1);
-        assert.lengthOf(container.getElementsByClassName(Classes.ALERT_FOOTER), 1);
         document.body.removeChild(container);
     });
 

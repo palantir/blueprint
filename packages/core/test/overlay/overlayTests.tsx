@@ -63,7 +63,7 @@ describe("<Overlay>", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mountWrapper(
-            <Overlay isOpen={true} container={container}>
+            <Overlay isOpen={true} portalContainer={container}>
                 <p className={CLASS_TO_TEST}>test</p>
             </Overlay>,
         );

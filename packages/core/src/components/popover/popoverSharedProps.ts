@@ -128,7 +128,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to
-     * `container` prop.
+     * `portalContainer` prop.
      *
      * Rendering content inside a `Portal` allows the popover content to escape
      * the physical bounds of its parent while still being positioned correctly
@@ -141,13 +141,6 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * @default true
      */
     usePortal?: boolean;
-
-    /**
-     * The container that the popover renders its contents to.
-     * This prop only available when `usePortal` is set to `true`
-     * @default document.body
-     */
-    container?: HTMLElement;
 
     /**
      * HTML tag name for the wrapper element, which also receives the

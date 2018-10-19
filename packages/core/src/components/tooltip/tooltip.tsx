@@ -67,7 +67,7 @@ export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
                 popoverClassName={classes}
-                container={this.props.container}
+                portalContainer={this.props.portalContainer}
             >
                 {children}
             </Popover>

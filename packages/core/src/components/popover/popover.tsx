@@ -190,7 +190,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                         transitionDuration={this.props.transitionDuration}
                         transitionName={Classes.POPOVER}
                         usePortal={this.props.usePortal}
-                        container={this.props.container}
+                        portalContainer={this.props.portalContainer}
                     >
                         <Popper
                             innerRef={this.refHandlers.popover}

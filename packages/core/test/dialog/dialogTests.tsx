@@ -35,20 +35,11 @@ describe("<Dialog>", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mount(
-            <Dialog isOpen={true} container={container}>
+            <Dialog isOpen={true} portalContainer={container}>
                 {createDialogContents()}
             </Dialog>,
         );
-        [
-            Classes.DIALOG,
-            Classes.DIALOG_BODY,
-            Classes.DIALOG_FOOTER,
-            Classes.DIALOG_FOOTER_ACTIONS,
-            Classes.DIALOG_HEADER,
-            Classes.OVERLAY_BACKDROP,
-        ].forEach(className => {
-            assert.lengthOf(container.getElementsByClassName(className), 1, `missing ${className}`);
-        });
+        assert.lengthOf(container.getElementsByClassName(Classes.DIALOG), 1, `missing ${Classes.DIALOG}`);
         document.body.removeChild(container);
     });
 

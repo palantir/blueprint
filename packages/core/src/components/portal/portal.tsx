@@ -23,7 +23,8 @@ export interface IPortalProps extends IProps {
     onChildrenMount?: () => void;
 
     /**
-     * The HTML element that children will be mounted to. Default value is `document.body`.
+     * The HTML element that children will be mounted to.
+     * @default document.body
      */
     container?: HTMLElement;
 }
