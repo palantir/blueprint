@@ -28,6 +28,7 @@ export const MINIMAL = `${NS}-minimal`;
 export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
 export const SMALL = `${NS}-small`;
+export const STICKY_TOP = `${NS}-sticky-top`;
 export const VERTICAL = `${NS}-vertical`;
 
 export const ELEVATION_0 = elevationClass(Elevation.ZERO);

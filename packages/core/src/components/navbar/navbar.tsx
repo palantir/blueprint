@@ -20,6 +20,11 @@ export interface INavbarProps extends IProps, HTMLDivProps {
      * Whether this navbar should be fixed to the top of the viewport (using CSS `position: fixed`).
      */
     fixedToTop?: boolean;
+
+    /**
+     * Whether this navbar should be fixed to the top of the viewport (using CSS `position: sticky`).
+     */
+    stickyToTop?: boolean;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -32,8 +37,11 @@ export class Navbar extends React.PureComponent<INavbarProps, {}> {
     public static Heading = NavbarHeading;
 
     public render() {
-        const { children, className, fixedToTop, ...htmlProps } = this.props;
-        const classes = classNames(Classes.NAVBAR, { [Classes.FIXED_TOP]: fixedToTop }, className);
+        const { children, className, fixedToTop, stickyToTop, ...htmlProps } = this.props;
+        const classes = classNames(Classes.NAVBAR, {
+            [Classes.FIXED_TOP]: fixedToTop,
+            [Classes.FIXED_TOP]: stickyToTop
+        }, className);
         return (
             <div className={classes} {...htmlProps}>
                 {children}

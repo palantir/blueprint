@@ -10,7 +10,11 @@ Enable the `fixedToTop` prop to attach a navbar to the top of the viewport using
 `position: fixed; top: 0;`. This is so-called "sticky" behavior: the navbar
 stays at the top of the screen as the user scrolls through the document.
 
-This modifier is not illustrated here because it breaks the document flow.
+Enable the `stickyToTop` prop to attach a navbar to the top of the viewport using
+`position: sticky; top: 0;`. Similar to `fixedToTop` but attaches to parent element
+vs the viewport.
+
+These modifiers are not illustrated here because they break the document flow.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
     <h4 class="@ns-heading">Body padding required</h4>
