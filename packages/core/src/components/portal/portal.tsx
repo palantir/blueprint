@@ -75,6 +75,9 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     public componentDidMount() {
+        if (!this.props.container) {
+            return;
+        }
         this.portalElement = this.createContainerElement();
         this.props.container.appendChild(this.portalElement);
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
