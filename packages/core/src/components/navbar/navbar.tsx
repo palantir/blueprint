@@ -38,10 +38,13 @@ export class Navbar extends React.PureComponent<INavbarProps, {}> {
 
     public render() {
         const { children, className, fixedToTop, stickyToTop, ...htmlProps } = this.props;
-        const classes = classNames(Classes.NAVBAR, {
-            [Classes.FIXED_TOP]: fixedToTop,
-            [Classes.FIXED_TOP]: stickyToTop
-        }, className);
+        const classes = classNames(Classes.NAVBAR,
+            {
+                [Classes.FIXED_TOP]: fixedToTop,
+                [Classes.FIXED_TOP]: stickyToTop
+            },
+            className
+        );
         return (
             <div className={classes} {...htmlProps}>
                 {children}
