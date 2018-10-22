@@ -421,6 +421,9 @@ describe("<DateInput>", () => {
                 .simulate("change", { target: { outOfRangeDate } })
                 .simulate("keydown", { which: Keys.ENTER });
 
+            // tslint:disable-next-line:no-console
+            console.log(wrapper.find(InputGroup));
+
             assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.DANGER);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
 

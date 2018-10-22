@@ -417,13 +417,15 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         }
     };
 
-    private invokeDateChangeListener(date: Date, isUserChange: boolean) {
-        if (isNaN(date.valueOf())) {
+    private invokeDateChangeListener(newDate: Date | null, isUserChange: boolean) {
+        if (newDate === null) {
+            Utils.safeInvoke(this.props.onError, newDate);
+        } else if (isNaN(newDate.valueOf())) {
             Utils.safeInvoke(this.props.onError, new Date(undefined));
-        } else if (!this.isDateInRange(date)) {
-            Utils.safeInvoke(this.props.onError, date);
+        } else if (!this.isDateInRange(newDate)) {
+            Utils.safeInvoke(this.props.onError, newDate);
         } else {
-            Utils.safeInvoke(this.props.onChange, date, isUserChange);
+            Utils.safeInvoke(this.props.onChange, newDate, isUserChange);
         }
     }
 
