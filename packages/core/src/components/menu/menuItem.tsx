@@ -70,6 +70,14 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * @default true
      */
     shouldDismissPopover?: boolean;
+
+    /**
+     * Name of the HTML tag that wraps the MenuItem.
+     *
+     * By default a `<a>` is used
+     * @default "a"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
 }
 
 export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
@@ -78,6 +86,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         multiline: false,
         popoverProps: {},
         shouldDismissPopover: true,
+        tagName: "a",
         text: "",
     };
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
@@ -95,6 +104,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
             popoverProps,
             shouldDismissPopover,
             text,
+            tagName: TagName = "a",
             ...htmlProps
         } = this.props;
         const hasSubmenu = children != null;
@@ -114,14 +124,14 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         );
 
         const target = (
-            <a {...htmlProps} {...(disabled ? DISABLED_PROPS : {})} className={anchorClasses}>
+            <TagName {...htmlProps} {...(disabled ? DISABLED_PROPS : {})} className={anchorClasses}>
                 <Icon icon={icon} />
                 <Text className={Classes.FILL} ellipsize={!multiline}>
                     {text}
                 </Text>
                 {this.maybeRenderLabel(labelElement)}
                 {hasSubmenu && <Icon icon="caret-right" />}
-            </a>
+            </TagName>
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
