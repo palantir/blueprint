@@ -33,7 +33,8 @@ $drawer-padding: $pt-grid-size * 2 !default;
   margin: 0;
   box-shadow: $pt-elevation-shadow-4;
   background: $white;
-  width: 50%;
+  width: 95%;
+  max-width: 800px;
   padding: 0;
 
   &:focus {
@@ -60,25 +61,33 @@ $drawer-padding: $pt-grid-size * 2 !default;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 50%;
+    max-width: 100%;
+    height: 95%;
+    max-height: 600px;
 
     &.#{$ns}-large {
       width: 100%;
-      height: 90%;
+      max-width: 100%;
+      height: 95%;
+      max-height: 900px;
     }
 
     &.#{$ns}-small {
       width: 100%;
+      max-width: 100%;
+      height: 95%;
       max-height: 300px;
     }
   }
 
   &.#{$ns}-large {
-    width: 90%;
+    width: 95%;
+    max-width: 1200px;
   }
 
   &.#{$ns}-small {
-    width: 400px;
+    width: 95%;
+    max-width: 400px;
   }
 
   &.#{$ns}-dark,
