@@ -4,7 +4,7 @@
 
 Blueprint is a React-based UI toolkit for the web.
 
-It is optimized for building complex, data-dense web interfaces for _desktop applications_.
+It is  a very optimized for building complex, data-dense web interfaces for _desktop applications_.
 If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
 
 

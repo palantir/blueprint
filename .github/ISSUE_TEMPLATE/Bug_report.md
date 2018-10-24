@@ -11,7 +11,7 @@ about: Something not working as expected?
 - __Browser and OS versions__: <!-- fill this out -->
 
 #### Steps to reproduce
-
+1. <!-- fill this out -->
 1. <!-- fill this out -->
 1. <!-- fill this out -->
 1. <!-- fill this out -->
