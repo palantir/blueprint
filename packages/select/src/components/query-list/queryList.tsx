@@ -189,12 +189,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
         // always reset active item if it's now filtered or disabled
         const activeIndex = this.getActiveIndex(filteredItems);
-        if (
-            hasQueryChanged &&
-            (resetActiveItem ||
-                activeIndex < 0 ||
-                isItemDisabled(this.state.activeItem, activeIndex, this.props.itemDisabled))
-        ) {
+        const shouldUpdateActiveItem =
+            resetActiveItem ||
+            activeIndex < 0 ||
+            isItemDisabled(this.state.activeItem, activeIndex, this.props.itemDisabled);
+
+        if (hasQueryChanged && shouldUpdateActiveItem) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, this.props.itemDisabled));
         }
     }
