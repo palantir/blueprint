@@ -66,3 +66,7 @@ The end result should look like so:
     ![image](https://cloud.githubusercontent.com/assets/464822/22609529/6845d7e6-ea16-11e6-8a8e-444057bc4687.png)
 1. When a build passes, a comment will be automatically posted to your PR that links to the
 generated artifacts containing your changes.
+Name: "Kannnan"  
+   Place: "kerala"  
+   Github: [kannanvg10](https://github.com/kannanvg10)  
+
