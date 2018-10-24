@@ -179,18 +179,21 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public setQuery(query: string, resetActiveItem = this.props.resetOnQuery) {
         this.shouldCheckActiveItemInViewport = true;
-        if (query !== this.state.query) {
+        const hasQueryChanged = query !== this.state.query;
+        if (hasQueryChanged) {
             Utils.safeInvoke(this.props.onQueryChange, query);
         }
+
         const filteredItems = getFilteredItems(query, this.props);
         this.setState({ filteredItems, query });
 
         // always reset active item if it's now filtered or disabled
         const activeIndex = this.getActiveIndex(filteredItems);
         if (
-            resetActiveItem ||
-            activeIndex < 0 ||
-            isItemDisabled(this.state.activeItem, activeIndex, this.props.itemDisabled)
+            hasQueryChanged &&
+            (resetActiveItem ||
+                activeIndex < 0 ||
+                isItemDisabled(this.state.activeItem, activeIndex, this.props.itemDisabled))
         ) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, this.props.itemDisabled));
         }
