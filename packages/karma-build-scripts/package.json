@@ -6,7 +6,7 @@
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/webpack-build-scripts": "^0.7.0",
+    "@blueprintjs/webpack-build-scripts": "*",
     "istanbul-instrumenter-loader": "^3.0.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
