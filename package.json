@@ -61,6 +61,9 @@
   "engines": {
     "node": ">=6.1"
   },
+  "resolutions": {
+    "node-gyp": "^3.6.3"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:palantir/blueprint.git"
