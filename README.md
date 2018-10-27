@@ -2,19 +2,19 @@
 
 # [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/workflows/blueprint)
 
-Blueprint is a React-based UI toolkit for the web.
+Blueprint is a React-based UI(User Interface) toolkit for web.
 
-It is optimized for building complex, data-dense web interfaces for _desktop applications_.
-If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
+It is optimized for building complex or data-dense web interfaces for _desktop applications_.
+If you rely mostly on mobile interactions and are looking for a mobile-first UI toolkit, this may not be the choice for you.
 
 
-[**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
+[**Read the Introductory blog post here ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
-[**View the full documentation ▸**](http://blueprintjs.com/docs)
+[**View the full documentation here ▸**](http://blueprintjs.com/docs)
 
 [**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/rypm429574)
 
-[**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
+[**Read our FAQ on the Wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
 ## :tada: 3.0 is here! :tada:
 
@@ -32,7 +32,7 @@ This repository contains multiple projects in the `packages/` directory that fal
 
 ### Libraries
 
-These are the component libraries we publish to NPM.
+These are the component libraries we publish to NPM(Node Package Manager).
 
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components.
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Components for interacting with dates and times.
@@ -44,7 +44,7 @@ These are the component libraries we publish to NPM.
 
 ### Applications
 
-These are hosted on GitHub Pages as static web applications:
+These are hosted on GitHub pages as static web applications:
 
 - `docs-app` &ndash; Documentation site at blueprintjs.com/docs
 - `landing-app` &ndash; Landing page at blueprintjs.com
@@ -68,7 +68,7 @@ These packages define development dependencies and contain build configuration. 
 
 Looking for places to contribute to the codebase?
 First read the [contribution guidelines](https://github.com/palantir/blueprint/blob/develop/CONTRIBUTING.md),
-then [check out the "help wanted" label](https://github.com/palantir/blueprint/labels/help%20wanted).
+then [check out the "help wanted" label](https://github.com/palantir/blueprint/labels/help%20wanted) and then you can start contributing to the codebase :D
 
 ## Development
 
