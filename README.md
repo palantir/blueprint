@@ -84,40 +84,43 @@ After cloning this repo, run:
 1. `yarn` to install all dependencies.
 1. `yarn verify` to ensure you have all the build tooling working properly.
 
-### Incorporating upstream changes
 
-If you were previously in a working state and have just pulled new code from `develop`:
 
-- If there were package dependency changes, run `yarn` at the root.
-  - This command is very quick if there are no new things to install.
-- Run `yarn compile` to get the latest built versions of the library packages in this repo.
-  - This command is quicker than `yarn verify` since it doesn't build the application packages (`docs-app`, `landing-app`, etc.) or run tests
 
-### Developing libraries
+### Incorporando cambios en sentido ascendente
 
-Run `yarn dev` from the root directory to watch changes across all packages and run the docs application with webpack-dev-server.
+Si anteriormente estaba en un estado de trabajo y acaba de extraer un nuevo código de `develop`:
 
-Alternately, each library has its own dev script to run the docs app and watch changes to just that package (and its dependencies): `yarn dev:core`, `yarn dev:datetime`, etc.
-One exception is `table`: since it has its own dev application, the `dev:table` script runs `table-dev-app` instead of the docs.
+- Si hubo cambios en la dependencia del paquete, ejecute `yarn` en la raíz.
+  - Este comando es muy rápido si no hay cosas nuevas para instalar.
+- Ejecute `yarn compile` para obtener las últimas versiones construidas de los paquetes de la biblioteca en este repositorio.
+  - Este comando es más rápido que `yarn Verify` ya que no compila los paquetes de la aplicación (` docs-app`, `landing-app`, etc.) ni ejecuta pruebas
 
-### Updating documentation
+### Desarrollando bibliotecas
 
-Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
+Ejecute `yarn dev` desde el directorio raíz para ver los cambios en todos los paquetes y ejecute la aplicación docs con webpack-dev-server.
 
-If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
+Alternativamente, cada biblioteca tiene su propio script dev para ejecutar la aplicación docs y ver los cambios en ese paquete (y sus dependencias): `yarn dev: core`,` yarn dev: datetime`, etc.
+Una excepción es `table`: ya que tiene su propia aplicación dev, el script` dev: table` ejecuta `table-dev-app` en lugar de los documentos.
 
-### Updating icons
+### Actualización de la documentación
 
-The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should produce the generated
-source code in this repo used to build the icons documentation. This is sufficient for most development workflows.
+Gran parte de la documentación de Blueprint se encuentra dentro del código fuente, como lo comenta JSDoc en los archivos `.tsx` y el marcado KSS en los archivos` .scss`. Esta documentación se extrae y se convierte en datos JSON estáticos utilizando [documentalista] (https://github.com/palantir/documentalist/).
 
-If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes reflected before
-running any of the dev scripts.
+Si está actualizando las fuentes de documentación (_no_ el código de la interfaz de usuario de los documentos que se encuentra en `packages / docs-app` o el tema de documentos en` packages / docs-theme`), deberá ejecutar `yarn compile` desde` packages / docs-data` para ver los cambios reflejados en la aplicación. Para simplificar, existe un script de alias `yarn docs-data` en la raíz para minimizar el salto de directorio.
 
-## License
+### Actualizando iconos
 
-This project is made available under its own **Blueprint License**, based on Apache 2.0 License.
+Los pasos [Configuración única] (# # configuración única) y [Incorporación de cambios en sentido ascendente] (# incorporando cambios en sentido ascendente) deben generar los pasos generados.
+Código fuente en este repositorio utilizado para construir la documentación de los iconos. Esto es suficiente para la mayoría de los flujos de trabajo de desarrollo.
 
-The only modification is an additional section (paragraph 10) in which we ask
-that you do not pass off any derivative products as Palantir’s products, given
-that Blueprint is a design toolkit.
+Si está actualizando íconos o agregando nuevos, deberá ejecutar `yarn compile` en` packages / icons` para ver los cambios reflejados antes
+ejecutando cualquiera de los scripts de desarrollo.
+
+## licencia
+
+Este proyecto está disponible bajo su propia ** Blueprint License **, basada en la licencia Apache 2.0.
+
+La única modificación es una sección adicional (párrafo 10) en la que pedimos
+que no pasa ningún producto derivado como los productos de Palantir, dado que
+que Blueprint es un conjunto de herramientas de diseño.
