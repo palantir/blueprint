@@ -75,7 +75,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 [Lerna](https://lernajs.io/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-__Prerequisites__: Node.js v8+, Yarn v1.10+
+__Prerequisites__: Node.js v8+, Yarn v1.10+.
 
 ### One-time setup
 
@@ -111,8 +111,7 @@ If you are updating documentation sources (_not_ the docs UI code which lives in
 The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should produce the generated
 source code in this repo used to build the icons documentation. This is sufficient for most development workflows.
 
-If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes reflected before
-running any of the dev scripts.
+If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes reflected before running any of the dev scripts.
 
 ## License
 
