@@ -9,8 +9,9 @@ import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
+import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
 
@@ -50,7 +51,7 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
         timeout: 5000,
     };
 
-    public static displayName = "Blueprint2.Toast";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
     public render(): JSX.Element {
         const { className, icon, intent, message } = this.props;
@@ -65,10 +66,10 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
             >
                 <Icon icon={icon} />
                 <span className={Classes.TOAST_MESSAGE}>{message}</span>
-                <div className={classNames(Classes.BUTTON_GROUP, Classes.MINIMAL)}>
+                <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
                     <Button icon="cross" onClick={this.handleCloseClick} />
-                </div>
+                </ButtonGroup>
             </div>
         );
     }

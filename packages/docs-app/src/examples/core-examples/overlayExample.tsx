@@ -6,8 +6,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, Intent, Overlay, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Button, Classes, Code, H3, H5, Intent, Overlay, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 
@@ -21,7 +22,7 @@ export interface IOverlayExampleState {
     usePortal: boolean;
 }
 
-export class OverlayExample extends BaseExample<IOverlayExampleState> {
+export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IOverlayExampleState> {
     public state: IOverlayExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
@@ -44,15 +45,15 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
-    protected renderExample() {
-        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, this.props.themeName);
+    public render() {
+        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, this.props.data.themeName);
 
         return (
-            <div className="docs-dialog-example">
+            <Example options={this.renderOptions()} {...this.props}>
                 <Button elementRef={this.refHandlers.button} onClick={this.handleOpen} text="Show overlay" />
                 <Overlay onClose={this.handleClose} className={Classes.OVERLAY_SCROLL_CONTAINER} {...this.state}>
                     <div className={classes}>
-                        <h3>I'm an Overlay!</h3>
+                        <H3>I'm an Overlay!</H3>
                         <p>
                             This is a simple container with some inline styles to position it on the screen. Its CSS
                             transitions are customized for this example only to demonstrate how easily custom
@@ -61,7 +62,7 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                         <p>
                             Click the right button below to transfer focus to the "Show overlay" trigger button outside
                             of this overlay. If persistent focus is enabled, focus will be constrained to the overlay.
-                            Use the <code>tab</code> key to move to the next focusable element to illustrate this
+                            Use the <Code>tab</Code> key to move to the next focusable element to illustrate this
                             effect.
                         </p>
                         <br />
@@ -73,55 +74,33 @@ export class OverlayExample extends BaseExample<IOverlayExampleState> {
                         </Button>
                     </div>
                 </Overlay>
-            </div>
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        const { hasBackdrop, usePortal } = this.state;
-        return [
-            [
+    private renderOptions() {
+        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, hasBackdrop, usePortal } = this.state;
+        return (
+            <>
+                <H5>Props</H5>
+                <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
+                <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
+                <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
+                    Use <Code>Portal</Code>
+                </Switch>
                 <Switch
-                    checked={this.state.autoFocus}
-                    key="autoFocus"
-                    label="Auto focus"
-                    onChange={this.handleAutoFocusChange}
-                />,
-                <Switch
-                    checked={this.state.enforceFocus}
-                    key="enforceFocus"
-                    label="Enforce focus"
-                    onChange={this.handleEnforceFocusChange}
-                />,
-                <Switch checked={usePortal} key="portal" onChange={this.handleUsePortalChange}>
-                    Use <code>Portal</code>
-                </Switch>,
-            ],
-            [
-                <Switch
-                    checked={this.state.canOutsideClickClose}
-                    key="click"
+                    checked={canOutsideClickClose}
                     label="Click outside to close"
                     onChange={this.handleOutsideClickChange}
-                />,
-                <Switch
-                    checked={this.state.canEscapeKeyClose}
-                    key="escape"
-                    label="Escape key to close"
-                    onChange={this.handleEscapeKeyChange}
-                />,
-                <Switch
-                    checked={hasBackdrop}
-                    key="backdrop"
-                    label="Has backdrop"
-                    onChange={this.handleBackdropChange}
-                />,
-            ],
-        ];
+                />
+                <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
+                <Switch checked={hasBackdrop} label="Has backdrop" onChange={this.handleBackdropChange} />
+            </>
+        );
     }
 
-    protected handleOpen = () => this.setState({ isOpen: true });
-    protected handleClose = () => this.setState({ isOpen: false });
+    private handleOpen = () => this.setState({ isOpen: true });
+    private handleClose = () => this.setState({ isOpen: false });
 
     private focusButton = () => this.button.focus();
 }

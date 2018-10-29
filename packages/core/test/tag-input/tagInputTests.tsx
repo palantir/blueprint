@@ -30,7 +30,12 @@ describe("<TagInput>", () => {
     });
 
     it("values can be valid JSX nodes", () => {
-        const values = [<strong>Albert</strong>, undefined, ["Bar", <em key="thol">thol</em>, "omew"], "Casper"];
+        const values = [
+            <strong key="al">Albert</strong>,
+            undefined,
+            ["Bar", <em key="thol">thol</em>, "omew"],
+            "Casper",
+        ];
         const wrapper = mount(<TagInput values={values} />);
         // undefined does not produce a tag
         assert.lengthOf(wrapper.find(Tag), values.length - 1);
@@ -143,6 +148,42 @@ describe("<TagInput>", () => {
                 assert.isTrue(onAdd.notCalled);
                 done();
             });
+        });
+
+        describe("when addOnPaste=true", () => {
+            it("is invoked on paste if the text contains a delimiter between values", () => {
+                const text = "pasted\ntext";
+                const onAdd = sinon.stub();
+                const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+                wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+                assert.isTrue(onAdd.calledOnce);
+                assert.deepEqual(onAdd.args[0][0], ["pasted", "text"]);
+            });
+
+            it("is invoked on paste if the text contains a trailing delimiter", () => {
+                const text = "pasted\n";
+                const onAdd = sinon.stub();
+                const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+                wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+                assert.isTrue(onAdd.calledOnce);
+                assert.deepEqual(onAdd.args[0][0], ["pasted"]);
+            });
+
+            it("is not invoked on paste if the text does not include a delimiter", () => {
+                const text = "pasted";
+                const onAdd = sinon.stub();
+                const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+                wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+                assert.isTrue(onAdd.notCalled);
+            });
+        });
+
+        it("is not invoked on paste when addOnPaste=false", () => {
+            const text = "pasted\ntext";
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnPaste={false} onAdd={onAdd} />);
+            wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+            assert.isTrue(onAdd.notCalled);
         });
 
         it("does not clear the input if onAdd returns false", () => {
@@ -376,7 +417,7 @@ describe("<TagInput>", () => {
     it("arrow key interactions ignore falsy values", () => {
         const MIXED_VALUES = [
             undefined,
-            <strong>Albert</strong>,
+            <strong key="al">Albert</strong>,
             false,
             ["Bar", <em key="thol">thol</em>, "omew"],
             null,
@@ -413,17 +454,17 @@ describe("<TagInput>", () => {
         assert.isTrue(
             // the wrapper is a React element; the first child is rendered <div>.
             wrapper.childAt(0).hasClass(Classes.DISABLED),
-            `.${Classes.DISABLED} should be applied to .pt-tag-input`,
+            `.${Classes.DISABLED} should be applied to tag-input`,
         );
         assert.isTrue(
             wrapper
-                .find(".pt-input-ghost")
+                .find(`.${Classes.INPUT_GHOST}`)
                 .first()
                 .prop("disabled"),
-            ".pt-input-ghost should have a 'disabled' attribute",
+            "input should be disabled",
         );
         wrapper.find(Tag).forEach(tag => {
-            assert.isFalse(tag.hasClass("pt-tag-removeable"), ".pt-tag should not have .pt-tag-removable applied");
+            assert.lengthOf(tag.find("." + Classes.TAG_REMOVE), 0, "tag should not have tag-remove button");
         });
     });
 
@@ -466,6 +507,11 @@ describe("<TagInput>", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: NEW_VALUE });
             expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
+        });
+
+        it("has a default empty string value", () => {
+            const input = shallow(<TagInput values={VALUES} />).find("input");
+            expect(input.prop("value")).to.equal("");
         });
     });
 

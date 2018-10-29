@@ -1,0 +1,7 @@
+<Button icon={<TickIcon />} />
+             ~~~~~~~~~~~~~~    [err % ('"tick"')]
+
+<Button icon="tick" />
+<InputGroup rightElement={<Button />} />
+
+[err]: Replace icon component with literal: %s

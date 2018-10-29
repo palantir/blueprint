@@ -8,15 +8,14 @@ import classNames from "classnames";
 import * as React from "react";
 import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface IButtonGroupProps extends IProps, HTMLDivProps {
     /**
-     * Text alignment of button contents.
-     * This prop only has an effect if buttons are wider than their default widths.
-     *
-     * `align={Alignment.LEFT}` will left-align button text and push `rightIcon` to right side.
-     * `align={Alignment.RIGHT}` right-aligns text and pushes `icon` to left side.
+     * Text alignment within button. By default, icons and text will be centered
+     * within the button. Passing `"left"` or `"right"` will align the button
+     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * `"center"` will center the text and icons together.
      */
     alignText?: Alignment;
 
@@ -48,7 +47,7 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class ButtonGroup extends React.PureComponent<IButtonGroupProps, {}> {
-    public static displayName = "Blueprint2.ButtonGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 
     public render() {
         const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = this.props;

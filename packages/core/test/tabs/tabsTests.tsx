@@ -6,7 +6,6 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
 import * as Classes from "../../src/common/classes";
@@ -79,12 +78,12 @@ describe("<Tabs>", () => {
         }
     });
 
-    it("renders without `pt-large` when by default", () => {
+    it(`renders without ${Classes.LARGE} when by default`, () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 0);
     });
 
-    it("renders using `pt-large` when large={true}", () => {
+    it(`renders using ${Classes.LARGE} when large={true}`, () => {
         const wrapper = mount(
             <Tabs id={ID} large={true}>
                 {getTabsContents()}
@@ -202,7 +201,7 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         assert.isUndefined(wrapper.state().indicatorWrapperStyle);
-        assert.equal(wrapper.find(".pt-tab-indicator").length, 0);
+        assert.equal(wrapper.find("." + Classes.TAB_INDICATOR).length, 0);
     });
 
     it("removes indicator element when selected tab is removed", () => {
@@ -354,7 +353,7 @@ describe("<Tabs>", () => {
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabId: string) {
         const style = wrapper.state().indicatorWrapperStyle;
         assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
-        const node = ReactDOM.findDOMNode(wrapper.instance());
+        const node = wrapper.getDOMNode();
         const expected = (node.querySelector(`${TAB}[data-tab-id='${selectedTabId}']`) as HTMLLIElement).offsetLeft;
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }

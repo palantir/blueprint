@@ -1,23 +1,14 @@
-@# Checkboxes
+@# Checkbox
 
-Blueprint's custom checkboxes use an extra `.pt-control-indicator` element after the `<input>` to
-achieve their custom styling. You should then wrap the whole thing in a `<label>` with the classes
-`.pt-control.pt-checkbox`.
-
-Note that attribute modifiers (`:checked`, `:disabled`) are applied on the internal `<input>`
-element. Further note that `:indeterminate` can only be set via JavaScript (the `Checkbox` React
-component supports it handily with a prop).
+A checkbox allows the user to toggle between checked, unchecked, and (rarely)
+indeterminate states.
 
 @reactExample CheckboxExample
 
-@## CSS API
+@## Props
 
-@css pt-checkbox
-
-@## JavaScript API
-
-The `Checkbox` component is available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+Use the `checked` prop instead of `value` in controlled mode to avoid typings
+issues. Enable the `indeterminate` prop for a third in-between state.
 
 ```tsx
 // simple usage for string labels
@@ -25,24 +16,24 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 
 // advanced usage for JSX content
 <Checkbox checked={this.state.isEnabled} onChange={this.handleEnabledChange}>
-<span className="pt-icon-standard pt-icon-user" />
-Gilad Gray
+    <Icon icon="user" />
+    Gilad <strong>Gray</strong>
 </Checkbox>
 ```
 
-Note that this component supports the full range of props available on HTML `input` elements.
-Use `checked` instead of `value` in controlled mode to avoid typings issues.
-The most common options are detailed below.
+This component supports the full range of HTML `<input>` props. The most common
+options are detailed below.
 
 @interface ICheckboxProps
 
-@## Inline controls
+@## CSS
 
-Checkboxes, radios, and switches all support the `.pt-inline` modifier to make them `display:
-inline-block`. Note that this modifier functions slightly differently on these elements than it
-does on `.pt-label`. On `.pt-label`, it only adjusts the layout of text _within_ the label and not
-the display of the label itself.
+Blueprint's custom checkboxes use an extra `.@ns-control-indicator` element
+after the `<input>` to achieve their custom styling. You should then wrap the
+whole thing in a `<label>` with the classes `.@ns-control.@ns-checkbox`.
 
-Here's an example of how you might group together some controls and label them.
+Note that attribute modifiers (`:checked`, `:disabled`) are applied on the
+internal `<input>` element. Further note that `:indeterminate` can only be set
+via JavaScript (the `Checkbox` React component supports it handily with a prop).
 
-@css pt-checkbox.pt-inline
+@css checkbox

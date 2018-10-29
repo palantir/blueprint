@@ -8,6 +8,7 @@ import * as React from "react";
 
 import {
     Button,
+    H5,
     Hotkey,
     Hotkeys,
     HotkeysTarget,
@@ -17,7 +18,7 @@ import {
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import { filmSelectProps, IFilm } from "./films";
 
@@ -29,7 +30,7 @@ export interface IOmnibarExampleState {
 }
 
 @HotkeysTarget
-export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
+export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarExampleState> {
     public state: IOmnibarExampleState = {
         isOpen: false,
         resetOnSelect: true,
@@ -46,48 +47,43 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
         return (
             <Hotkeys>
                 <Hotkey
-                    allowInInput={true}
                     global={true}
-                    combo="meta + k"
+                    combo="shift + o"
                     label="Show Omnibar"
                     onKeyDown={this.handleToggle}
+                    // prevent typing "O" in omnibar input
+                    preventDefault={true}
                 />
             </Hotkeys>
         );
     }
 
-    protected renderExample() {
+    public render() {
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch label="Reset on select" checked={this.state.resetOnSelect} onChange={this.handleResetChange} />
+            </>
+        );
+
         return (
-            <div>
+            <Example options={options} {...this.props}>
+                <span>
+                    <Button text="Click to show Omnibar" onClick={this.handleClick} />
+                    {" or press "}
+                    <KeyCombo combo="shift + o" />
+                </span>
+
                 <FilmOmnibar
                     {...filmSelectProps}
                     {...this.state}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleItemSelect}
                     onClose={this.handleClose}
-                    inputProps={{ onBlur: this.handleBlur }}
                 />
                 <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
-                <span>
-                    <Button text="Click to show Omnibar" onClick={this.handleClick} />
-                    {" or press "}
-                    <KeyCombo combo="meta + k" />
-                </span>
-            </div>
+            </Example>
         );
-    }
-
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    key="reset"
-                    label="Reset on select"
-                    checked={this.state.resetOnSelect}
-                    onChange={this.handleResetChange}
-                />,
-            ],
-        ];
     }
 
     private handleClick = (_event: React.MouseEvent<HTMLElement>) => {
@@ -107,8 +103,6 @@ export class OmnibarExample extends BaseExample<IOmnibarExampleState> {
     };
 
     private handleClose = () => this.setState({ isOpen: false });
-
-    private handleBlur = () => this.setState({ isOpen: false });
 
     private handleToggle = () => this.setState({ isOpen: !this.state.isOpen });
 }

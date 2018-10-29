@@ -3,51 +3,41 @@
 
 @import "../../common/variables";
 @import "../../common/mixins";
-@import "~@blueprintjs/icons/src/icons";
 
 /*
 Non-ideal state
 
 Markup:
-<div class="pt-non-ideal-state">
-  <div class="pt-non-ideal-state-visual pt-non-ideal-state-icon">
-    <span class="pt-icon pt-icon-folder-open"></span>
+<div class="#{$ns}-non-ideal-state">
+  <div class="#{$ns}-non-ideal-state-visual">
+    <span class="#{$ns}-icon #{$ns}-icon-folder-open"></span>
   </div>
-  <h4 class="pt-non-ideal-state-title">This folder is empty</h4>
-  <div class="pt-non-ideal-state-description">
-    Create a new file to populate the folder.
-  </div>
+  <h4 class="#{$ns}-heading">This folder is empty</h4>
+  <div>Create a new file to populate the folder.</div>
+  <button class="#{$ns}-button #{$ns}-intent-primary">Create</button>
 </div>
 
-Styleguide pt-non-ideal-state
+Styleguide non-ideal-state
 */
 
-.pt-non-ideal-state {
-  display: flex;
-  flex-direction: column;
+.#{$ns}-non-ideal-state {
+  @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
   width: 100%;
-  max-width: $pt-grid-size * 40;
   height: 100%;
-}
+  text-align: center;
 
-.pt-non-ideal-state > :not(:last-child) {
-  margin-bottom: $pt-grid-size * 2;
-}
-
-.pt-non-ideal-state-icon .pt-icon {
-  color: $pt-icon-color-disabled;
-  font-size: $pt-icon-size-large * 3;
-
-  .pt-dark & {
-    color: $pt-dark-icon-color-disabled;
+  > * {
+    max-width: $pt-grid-size * 40;
   }
 }
 
-.pt-non-ideal-state-title,
-.pt-non-ideal-state-description {
-  max-width: 100%; // for Internet Explorer (https://github.com/palantir/blueprint/issues/1193)
-  text-align: center;
+.#{$ns}-non-ideal-state-visual {
+  color: $pt-icon-color-disabled;
+  font-size: $pt-icon-size-large * 3;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-icon-color-disabled;
+  }
 }

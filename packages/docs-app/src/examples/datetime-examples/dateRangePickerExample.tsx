@@ -4,13 +4,20 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
+import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
+import {
+    Example,
+    handleBooleanChange,
+    handleNumberChange,
+    handleStringChange,
+    IExampleProps,
+} from "@blueprintjs/docs-theme";
 import moment from "moment";
 import * as React from "react";
 
-import { DateRange, DateRangePicker } from "@blueprintjs/datetime";
+import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
 import { MomentDateRange } from "./common/momentDate";
+import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;
@@ -20,14 +27,15 @@ export interface IDateRangePickerExampleState {
     minDateIndex?: number;
     reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
+    timePrecision?: TimePrecision;
 }
 
-interface ISelectOption {
+interface IDateOption {
     label: string;
     value?: Date;
 }
 
-const MIN_DATE_OPTIONS: ISelectOption[] = [
+const MIN_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
         label: "4 months ago",
@@ -43,7 +51,7 @@ const MIN_DATE_OPTIONS: ISelectOption[] = [
     },
 ];
 
-const MAX_DATE_OPTIONS: ISelectOption[] = [
+const MAX_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
         label: "1 month ago",
@@ -53,7 +61,7 @@ const MAX_DATE_OPTIONS: ISelectOption[] = [
     },
 ];
 
-export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleState> {
+export class DateRangePickerExample extends React.PureComponent<IExampleProps, IDateRangePickerExampleState> {
     public state: IDateRangePickerExampleState = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
@@ -66,6 +74,9 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
     private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
+    private handlePrecisionChange = handleStringChange((timePrecision: TimePrecision | undefined) =>
+        this.setState({ timePrecision }),
+    );
 
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
@@ -76,72 +87,70 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
         this.setState({ contiguousCalendarMonths });
     });
 
-    protected renderExample() {
-        const minDate = MIN_DATE_OPTIONS[this.state.minDateIndex].value;
-        const maxDate = MAX_DATE_OPTIONS[this.state.maxDateIndex].value;
-
+    public render() {
+        const { minDateIndex, maxDateIndex, ...props } = this.state;
+        const minDate = MIN_DATE_OPTIONS[minDateIndex].value;
+        const maxDate = MAX_DATE_OPTIONS[maxDateIndex].value;
         return (
-            <div className="docs-datetime-example">
+            <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
                 <DateRangePicker
-                    allowSingleDayRange={this.state.allowSingleDayRange}
-                    contiguousCalendarMonths={this.state.contiguousCalendarMonths}
+                    {...props}
                     className={Classes.ELEVATION_1}
                     maxDate={maxDate}
                     minDate={minDate}
                     onChange={this.handleDateChange}
-                    reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
-                    shortcuts={this.state.shortcuts}
                 />
-                <MomentDateRange range={this.state.dateRange} />
-            </div>
+                <MomentDateRange withTime={props.timePrecision !== undefined} range={this.state.dateRange} />
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.allowSingleDayRange}
-                    key="SingleDay"
-                    label="Allow single day range"
-                    onChange={this.toggleSingleDay}
-                />,
-                <Switch
-                    checked={this.state.contiguousCalendarMonths}
-                    key="Contiguous"
-                    label="Constrain to contiguous months"
-                    onChange={this.toggleContiguousCalendarMonths}
-                />,
-                <Switch
-                    checked={this.state.shortcuts}
-                    key="Shortcuts"
-                    label="Show shortcuts"
-                    onChange={this.toggleShortcuts}
-                />,
-                <Switch
-                    checked={this.state.reverseMonthAndYearMenus}
-                    label="Reverse month and year menus"
-                    key="Reverse month and year menus"
-                    onChange={this.toggleReverseMonthAndYearMenus}
-                />,
-            ],
-            [
-                this.renderSelectMenu(
-                    "Minimum date",
-                    this.state.minDateIndex,
-                    MIN_DATE_OPTIONS,
-                    this.handleMinDateIndexChange,
-                ),
-            ],
-            [
-                this.renderSelectMenu(
-                    "Maximum date",
-                    this.state.maxDateIndex,
-                    MAX_DATE_OPTIONS,
-                    this.handleMaxDateIndexChange,
-                ),
-            ],
-        ];
+    private renderOptions() {
+        return (
+            <>
+                <div>
+                    <H5>Props</H5>
+                    <Switch
+                        checked={this.state.allowSingleDayRange}
+                        label="Allow single day range"
+                        onChange={this.toggleSingleDay}
+                    />
+                    <Switch
+                        checked={this.state.contiguousCalendarMonths}
+                        label="Constrain to contiguous months"
+                        onChange={this.toggleContiguousCalendarMonths}
+                    />
+                    <Switch checked={this.state.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
+                    <Switch
+                        checked={this.state.reverseMonthAndYearMenus}
+                        label="Reverse month and year menus"
+                        onChange={this.toggleReverseMonthAndYearMenus}
+                    />
+                </div>
+                <div>
+                    {this.renderSelectMenu(
+                        "Minimum date",
+                        this.state.minDateIndex,
+                        MIN_DATE_OPTIONS,
+                        this.handleMinDateIndexChange,
+                    )}
+                    {this.renderSelectMenu(
+                        "Maximum date",
+                        this.state.maxDateIndex,
+                        MAX_DATE_OPTIONS,
+                        this.handleMaxDateIndexChange,
+                    )}
+                </div>
+                <div>
+                    <PrecisionSelect
+                        allowNone={true}
+                        label="Time precision"
+                        value={this.state.timePrecision}
+                        onChange={this.handlePrecisionChange}
+                    />
+                </div>
+            </>
+        );
     }
 
     private handleDateChange = (dateRange: DateRange) => this.setState({ dateRange });
@@ -149,28 +158,16 @@ export class DateRangePickerExample extends BaseExample<IDateRangePickerExampleS
     private renderSelectMenu(
         label: string,
         selectedValue: number | string,
-        options: ISelectOption[],
+        options: IDateOption[],
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (
-            <label className={Classes.LABEL} key={label}>
+            <Label>
                 {label}
-                <div className={Classes.SELECT}>
-                    <select value={selectedValue} onChange={onChange}>
-                        {this.renderSelectMenuOptions(options)}
-                    </select>
-                </div>
-            </label>
+                <HTMLSelect value={selectedValue} onChange={onChange}>
+                    {options.map((opt, i) => <option key={i} value={i} label={opt.label} />)}
+                </HTMLSelect>
+            </Label>
         );
-    }
-
-    private renderSelectMenuOptions(options: ISelectOption[]) {
-        return options.map((option, index) => {
-            return (
-                <option key={index} value={index}>
-                    {option.label}
-                </option>
-            );
-        });
     }
 }

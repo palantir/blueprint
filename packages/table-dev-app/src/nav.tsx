@@ -8,24 +8,23 @@ import * as React from "react";
 import { Alignment, AnchorButton, Classes, Navbar, Switch } from "@blueprintjs/core";
 
 export interface INavProps {
-    selected?: string;
+    selected: "index" | "features";
 }
 
-export class Nav extends React.Component<INavProps, {}> {
+export class Nav extends React.PureComponent<INavProps> {
     public render() {
-        const darkThemeToggleStyles = {
-            marginBottom: 0,
-            marginTop: "3px",
-        };
+        const darkThemeToggleStyles = { marginBottom: 0 };
+        const isIndex = this.props.selected === "index";
 
         return (
-            <Navbar className="pt-dark pt-fixed-top">
+            <Navbar className={Classes.DARK} fixedToTop={true}>
                 <Navbar.Group align={Alignment.LEFT}>
                     <Navbar.Heading>Blueprint Table</Navbar.Heading>
                 </Navbar.Group>
                 <Navbar.Group align={Alignment.RIGHT}>
-                    <AnchorButton className={Classes.MINIMAL} href="index.html" text="Home" />
-                    <AnchorButton className={Classes.MINIMAL} href="features.html" text="Features (Legacy)" />
+                    <AnchorButton active={isIndex} href="index.html" minimal={true} text="Home" />
+                    <Navbar.Divider />
+                    <AnchorButton active={!isIndex} href="features.html" minimal={true} text="Features (Legacy)" />
                     <Navbar.Divider />
                     <Switch style={darkThemeToggleStyles} label="Dark theme" onChange={this.handleToggleDarkTheme} />
                 </Navbar.Group>
@@ -34,6 +33,6 @@ export class Nav extends React.Component<INavProps, {}> {
     }
 
     private handleToggleDarkTheme() {
-        document.body.classList.toggle("pt-dark");
+        document.body.classList.toggle(Classes.DARK);
     }
 }

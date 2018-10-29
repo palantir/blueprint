@@ -4,9 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, MenuItem } from "@blueprintjs/core";
+import { MenuItem } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
-import classNames from "classnames";
 import * as React from "react";
 
 export interface IFilm {
@@ -126,14 +125,11 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers, 
     if (!modifiers.matchesPredicate) {
         return null;
     }
-    const classes = classNames({
-        [Classes.ACTIVE]: modifiers.active,
-        [Classes.INTENT_PRIMARY]: modifiers.active,
-    });
     const text = `${film.rank}. ${film.title}`;
     return (
         <MenuItem
-            className={classes}
+            active={modifiers.active}
+            disabled={modifiers.disabled}
             label={film.year.toString()}
             key={film.rank}
             onClick={handleClick}

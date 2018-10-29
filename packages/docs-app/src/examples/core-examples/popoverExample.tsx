@@ -4,16 +4,19 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import PopperJS from "popper.js";
 import * as React from "react";
 
 import {
+    AnchorButton,
     Button,
     Classes,
+    Code,
     FormGroup,
-    Icon,
+    H5,
+    HTMLSelect,
     Intent,
+    Label,
     Menu,
     MenuDivider,
     MenuItem,
@@ -24,7 +27,13 @@ import {
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleNumberChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    handleBooleanChange,
+    handleNumberChange,
+    handleStringChange,
+    IExampleProps,
+} from "@blueprintjs/docs-theme";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
@@ -33,8 +42,10 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const VALID_POSITIONS: Array<Position | "auto"> = [
+const VALID_POSITIONS: Array<Position | "auto" | "auto-start" | "auto-end"> = [
     "auto",
+    "auto-start",
+    "auto-end",
     Position.TOP_LEFT,
     Position.TOP,
     Position.TOP_RIGHT,
@@ -49,8 +60,6 @@ const VALID_POSITIONS: Array<Position | "auto"> = [
     Position.LEFT_BOTTOM,
 ];
 
-const POSITION_OPTIONS = VALID_POSITIONS.map(p => <option key={p} value={p} children={p} />);
-
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
 export interface IPopoverExampleState {
@@ -62,12 +71,12 @@ export interface IPopoverExampleState {
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
-    position?: Position | "auto";
+    position?: Position | "auto" | "auto-start" | "auto-end";
     sliderValue?: number;
     usePortal?: boolean;
 }
 
-export class PopoverExample extends BaseExample<IPopoverExampleState> {
+export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverExampleState> {
     public state: IPopoverExampleState = {
         canEscapeKeyClose: true,
         exampleIndex: 0,
@@ -87,14 +96,14 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         usePortal: true,
     };
 
-    protected className = "docs-popover-example";
-
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
     private handleInteractionChange = handleStringChange((interactionKind: PopoverInteractionKind) => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
-    private handlePositionChange = handleStringChange((position: Position | "auto") => this.setState({ position }));
+    private handlePositionChange = handleStringChange((position: Position | "auto" | "auto-start" | "auto-end") =>
+        this.setState({ position }),
+    );
     private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
         this.setState({
             modifiers: {
@@ -117,139 +126,116 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
         this.setState({ usePortal });
     });
 
-    protected renderExample() {
+    public render() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
-        const popoverClassName = classNames(this.className, {
-            "pt-popover-content-sizing": exampleIndex <= 2,
-        });
         return (
-            <div className="docs-popover-example-scroll" ref={this.centerScroll}>
-                <Popover
-                    popoverClassName={popoverClassName}
-                    portalClassName="foo"
-                    {...popoverProps}
-                    enforceFocus={false}
-                    isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
-                >
-                    <Button intent={Intent.PRIMARY} text="Popover target" />
-                    {this.getContents(exampleIndex)}
-                </Popover>
-                <p>
-                    Scroll around this container to experiment<br />
-                    with <code>flip</code> and <code>preventOverflow</code> modifiers.
-                </p>
-            </div>
+            <Example options={this.renderOptions()} {...this.props}>
+                <div className="docs-popover-example-scroll" ref={this.centerScroll}>
+                    <Popover
+                        popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
+                        portalClassName="foo"
+                        {...popoverProps}
+                        enforceFocus={false}
+                        isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
+                    >
+                        <Button intent={Intent.PRIMARY} text="Popover target" />
+                        {this.getContents(exampleIndex)}
+                    </Popover>
+                    <p>
+                        Scroll around this container to experiment<br />
+                        with <Code>flip</Code> and <Code>preventOverflow</Code> modifiers.
+                    </p>
+                </div>
+            </Example>
         );
     }
 
-    protected renderOptions() {
+    private renderOptions() {
         const { arrow, flip, preventOverflow } = this.state.modifiers;
-        return [
-            [
-                <h5 key="app">Appearance</h5>,
+        return (
+            <>
+                <H5>Appearance</H5>
                 <FormGroup
                     helperText="May be overridden to prevent overflow"
-                    key="position"
                     label="Position when opened"
                     labelFor="position"
                 >
-                    <div className={Classes.SELECT}>
-                        <select value={this.state.position} onChange={this.handlePositionChange}>
-                            {POSITION_OPTIONS}
-                        </select>
-                    </div>
-                </FormGroup>,
-                <label className={Classes.LABEL} key="example">
+                    <HTMLSelect
+                        value={this.state.position}
+                        onChange={this.handlePositionChange}
+                        options={VALID_POSITIONS}
+                    />
+                </FormGroup>
+                <Label>
                     Example content
-                    <div className={Classes.SELECT}>
-                        <select value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
-                            <option value="0">Text</option>
-                            <option value="1">Input</option>
-                            <option value="2">Slider</option>
-                            <option value="3">Menu</option>
-                            <option value="4">Popover Example</option>
-                            <option value="5">Empty</option>
-                        </select>
-                    </div>
-                </label>,
-                <Switch checked={this.state.usePortal} key="portal" onChange={this.toggleUsePortal}>
-                    Use <code>Portal</code>
-                </Switch>,
-                <Switch
-                    checked={this.state.minimal}
-                    label="Minimal appearance"
-                    key="minimal"
-                    onChange={this.toggleMinimal}
-                />,
-                <Switch
-                    checked={this.state.isOpen}
-                    label="Open (controlled mode)"
-                    key="open"
-                    onChange={this.toggleIsOpen}
-                />,
-            ],
-            [
-                <h5 key="int">Interactions</h5>,
+                    <HTMLSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
+                        <option value="0">Text</option>
+                        <option value="1">Input</option>
+                        <option value="2">Slider</option>
+                        <option value="3">Menu</option>
+                        <option value="4">Empty</option>
+                    </HTMLSelect>
+                </Label>
+                <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
+                    Use <Code>Portal</Code>
+                </Switch>
+                <Switch checked={this.state.minimal} label="Minimal appearance" onChange={this.toggleMinimal} />
+                <Switch checked={this.state.isOpen} label="Open (controlled mode)" onChange={this.toggleIsOpen} />
+
+                <H5>Interactions</H5>
                 <RadioGroup
-                    key="interaction"
                     label="Interaction kind"
                     selectedValue={this.state.interactionKind.toString()}
                     options={INTERACTION_KINDS}
                     onChange={this.handleInteractionChange}
-                />,
+                />
                 <Switch
                     checked={this.state.canEscapeKeyClose}
                     label="Can escape key close"
-                    key="escape"
                     onChange={this.toggleEscapeKey}
-                />,
-                <br key="break" />,
-            ],
-            [
-                <h5 key="mod">Modifiers</h5>,
-                <Switch
-                    checked={arrow.enabled}
-                    label="Arrow"
-                    key="arrow"
-                    onChange={this.getModifierChangeHandler("arrow")}
-                />,
-                <Switch
-                    checked={flip.enabled}
-                    label="Flip"
-                    key="flip"
-                    onChange={this.getModifierChangeHandler("flip")}
-                />,
+                />
+
+                <H5>Modifiers</H5>
+                <Switch checked={arrow.enabled} label="Arrow" onChange={this.getModifierChangeHandler("arrow")} />
+                <Switch checked={flip.enabled} label="Flip" onChange={this.getModifierChangeHandler("flip")} />
                 <Switch
                     checked={preventOverflow.enabled}
                     label="Prevent overflow"
-                    key="preventOverflow"
                     onChange={this.getModifierChangeHandler("preventOverflow")}
                 >
-                    <div className={Classes.SELECT} style={{ marginTop: 5 }}>
-                        <select
-                            disabled={!preventOverflow.enabled}
-                            value={preventOverflow.boundariesElement.toString()}
-                            onChange={this.handleBoundaryChange}
-                        >
-                            <option value="scrollParent">scrollParent</option>
-                            <option value="viewport">viewport</option>
-                            <option value="window">window</option>
-                        </select>
-                    </div>
-                </Switch>,
-                <p key="docs-link">
-                    <a href={POPPER_DOCS} target="_blank">
-                        Popper.js docs <Icon icon="share" />
-                    </a>
-                </p>,
-            ],
-        ];
+                    <br />
+                    <div style={{ marginTop: 5 }} />
+                    <HTMLSelect
+                        disabled={!preventOverflow.enabled}
+                        value={preventOverflow.boundariesElement.toString()}
+                        onChange={this.handleBoundaryChange}
+                    >
+                        <option value="scrollParent">scrollParent</option>
+                        <option value="viewport">viewport</option>
+                        <option value="window">window</option>
+                    </HTMLSelect>
+                </Switch>
+                <Label>
+                    <AnchorButton
+                        href={POPPER_DOCS}
+                        fill={true}
+                        intent={Intent.PRIMARY}
+                        minimal={true}
+                        rightIcon="share"
+                        target="_blank"
+                        style={{ marginTop: 20 }}
+                    >
+                        Visit Popper.js docs
+                    </AnchorButton>
+                </Label>
+            </>
+        );
     }
 
-    private getContents(index: number) {
+    private getContents(index: number): JSX.Element {
         return [
-            <div>
-                <h5>Confirm deletion</h5>
+            <div key="text">
+                <H5>Confirm deletion</H5>
                 <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
                     <Button className={Classes.POPOVER_DISMISS} style={{ marginRight: 10 }}>
@@ -260,14 +246,14 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     </Button>
                 </div>
             </div>,
-            <div>
+            <div key="input">
                 <label className={Classes.LABEL}>
                     Enter some text
                     <input autoFocus={true} className={Classes.INPUT} type="text" />
                 </label>
             </div>,
-            <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
-            <Menu>
+            <Slider key="slider" min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
+            <Menu key="menu">
                 <MenuDivider title="Edit" />
                 <MenuItem icon="cut" text="Cut" label="⌘X" />
                 <MenuItem icon="duplicate" text="Copy" label="⌘C" />
@@ -285,7 +271,6 @@ export class PopoverExample extends BaseExample<IPopoverExampleState> {
                     <MenuItem icon="underline" text="Underline" />
                 </MenuItem>
             </Menu>,
-            <PopoverExample {...this.props} />,
         ][index];
     }
 

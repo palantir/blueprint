@@ -10,22 +10,23 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
+import { IHandleProps } from "./handleProps";
+import { formatPercentage } from "./sliderUtils";
 
 /**
+ * Props for the internal <Handle> component needs some additional info from the parent Slider.
  * N.B. some properties need to be optional for spread in slider.tsx to work
  */
-export interface IHandleProps extends IProps {
+export interface IInternalHandleProps extends IHandleProps {
     disabled?: boolean;
     label: React.ReactChild;
     max?: number;
     min?: number;
-    onChange?: (newValue: number) => void;
-    onRelease?: (newValue: number) => void;
     stepSize?: number;
     tickSize?: number;
-    value?: number;
+    tickSizeRatio?: number;
     vertical?: boolean;
 }
 
@@ -37,8 +38,9 @@ export interface IHandleState {
 // props that require number values, for validation
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
-export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
-    public static displayName = "Blueprint2.SliderHandle";
+/** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
+export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 
     public state = {
         isMoving: false,
@@ -49,13 +51,25 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         handle: (el: HTMLSpanElement) => (this.handleElement = el),
     };
 
+    public componentDidMount() {
+        // The first time this component renders, it has no ref to the handle and thus incorrectly centers the handle.
+        // Therefore, on the first mount, force a re-render to center the handle with the ref'd component.
+        this.forceUpdate();
+    }
+
     public render() {
-        const { className, disabled, label, min, tickSize, value, vertical } = this.props;
+        const { className, disabled, label, min, tickSizeRatio, value, vertical } = this.props;
         const { isMoving } = this.state;
 
+        // The handle midpoint of RangeSlider is actually shifted by a margin to
+        // be on the edge of the visible handle element. Because the midpoint
+        // calculation does not take this margin into account, we instead
+        // measure the long side (which is equal to the short side plus the
+        // margin).
         const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
-        const offset = Math.round((value - min) * tickSize - handleMidpoint);
-        const style: React.CSSProperties = vertical ? { bottom: offset } : { left: offset };
+        const offsetRatio = (value - min) * tickSizeRatio;
+        const offsetCalc = `calc(${formatPercentage(offsetRatio)} - ${handleMidpoint}px)`;
+        const style: React.CSSProperties = vertical ? { bottom: offsetCalc } : { left: offsetCalc };
 
         return (
             <span
@@ -90,10 +104,11 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         const handleCenterPixel = this.getHandleElementCenterPixel(this.handleElement);
         const pixelDelta = clientPixelNormalized - handleCenterPixel;
 
+        if (isNaN(pixelDelta)) {
+            return value;
+        }
         // convert pixels to range value in increments of `stepSize`
-        const valueDelta = Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
-
-        return value + valueDelta;
+        return value + Math.round(pixelDelta / (tickSize * stepSize)) * stepSize;
     }
 
     public mouseEventClientOffset(event: MouseEvent | React.MouseEvent<HTMLElement>) {
@@ -120,7 +135,7 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
 
-    protected validateProps(props: IHandleProps) {
+    protected validateProps(props: IInternalHandleProps) {
         for (const prop of NUMBER_PROPS) {
             if (typeof (props as any)[prop] !== "number") {
                 throw new Error(`[Blueprint] <Handle> requires number value for ${prop} prop`);
@@ -139,9 +154,9 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
     private handleMoveEndedAt = (clientPixel: number) => {
         this.removeDocumentEventListeners();
         this.setState({ isMoving: false });
-        // not using changeValue because we want to invoke the handler regardless of current prop value
+        // always invoke onRelease; changeValue may call onChange if value is different
         const { onRelease } = this.props;
-        const finalValue = this.clamp(this.clientToValue(clientPixel));
+        const finalValue = this.changeValue(this.clientToValue(clientPixel));
         safeInvoke(onRelease, finalValue);
     };
 
@@ -184,6 +199,7 @@ export class Handle extends AbstractPureComponent<IHandleProps, IHandleState> {
         if (!isNaN(newValue) && this.props.value !== newValue) {
             safeInvoke(callback, newValue);
         }
+        return newValue;
     }
 
     /** Clamp value between min and max props */

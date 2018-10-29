@@ -10,8 +10,9 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { Button } from "../button/buttons";
+import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
@@ -29,8 +30,9 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     hasBackdrop?: boolean;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render in the dialog's header.
-     * Note that the header will only be rendered if `title` is provided.
+     * Name of a Blueprint UI icon (or an icon element) to render in the
+     * dialog's header. Note that the header will only be rendered if `title` is
+     * provided.
      */
     icon?: IconName | JSX.Element;
 
@@ -48,15 +50,14 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     style?: React.CSSProperties;
 
     /**
-     * Title of the dialog.
-     * If provided, a `.pt-dialog-header` element will be rendered inside the dialog
-     * before any children elements.
+     * Title of the dialog. If provided, an element with `Classes.DIALOG_HEADER`
+     * will be rendered inside the dialog before any children elements.
      */
     title?: React.ReactNode;
 
     /**
-     * Name of the transition for internal `CSSTransition`.
-     * Providing your own name here will require defining new CSS transition properties.
+     * Name of the transition for internal `CSSTransition`. Providing your own
+     * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
 }
@@ -67,12 +68,12 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         isOpen: false,
     };
 
-    public static displayName = "Blueprint2.Dialog";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
 
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={Classes.DIALOG_CONTAINER} onMouseDown={this.handleContainerMouseDown}>
+                <div className={Classes.DIALOG_CONTAINER}>
                     <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
                         {this.maybeRenderHeader()}
                         {this.props.children}
@@ -98,9 +99,13 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         // this gives us a behavior as if the default value were `true`
         if (this.props.isCloseButtonShown !== false) {
             return (
-                <button aria-label="Close" className={Classes.DIALOG_CLOSE_BUTTON} onClick={this.props.onClose}>
-                    <Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />
-                </button>
+                <Button
+                    aria-label="Close"
+                    className={Classes.DIALOG_CLOSE_BUTTON}
+                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
+                    minimal={true}
+                    onClick={this.props.onClose}
+                />
             );
         } else {
             return undefined;
@@ -115,17 +120,9 @@ export class Dialog extends AbstractPureComponent<IDialogProps, {}> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
-                <h4 className={Classes.DIALOG_HEADER_TITLE}>{title}</h4>
+                <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>
         );
     }
-
-    private handleContainerMouseDown = (evt: React.MouseEvent<HTMLDivElement>) => {
-        // quick re-implementation of canOutsideClickClose because .pt-dialog-container covers the backdrop
-        const isClickOutsideDialog = (evt.target as HTMLElement).closest(`.${Classes.DIALOG}`) == null;
-        if (isClickOutsideDialog && this.props.canOutsideClickClose) {
-            safeInvoke(this.props.onClose, evt);
-        }
-    };
 }

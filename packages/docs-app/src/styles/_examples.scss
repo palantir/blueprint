@@ -4,117 +4,80 @@
 @import "~@blueprintjs/icons/src/icons";
 @import "~@blueprintjs/core/src/common/react-transition";
 
-// Specific Example Customizations
+// Generate a selector for a page ID by reference
+@function page($ref, $comparator: "$=") {
+  @return '[data-page-id#{$comparator}"#{$ref}"]';
+}
 
-.docs-example-wrapper {
-  .pt-slider:not(:last-child) {
-    margin-bottom: $options-margin;
-  }
+// Generate a selector for a React example by name
+@function example($NameExample, $comparator: "=") {
+  @return '[data-example-id#{$comparator}"#{$NameExample}"]';
+}
 
-  .pt-callout {
-    margin: 0;
+// Specific example customizations
+
+//
+// CORE
+//
+
+@keyframes docs-wiggle-rotate {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+  100% { transform: rotate(0); }
+}
+
+#{page("tree")} .#{$ns}-tree {
+  width: $pt-grid-size * 35;
+}
+
+#{example("ButtonsExample")} {
+  .docs-wiggle {
+    animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
 }
 
-.docs-card-example {
-  display: flex;
-  justify-content: space-between;
-
-  .pt-card {
-    width: floor(($content-width - $pt-grid-size * 10) / 3);
-
-    &:hover a {
-      text-decoration: underline;
-    }
-
-    p {
-      margin: 0;
-    }
+#{example("EditableTextExample")} {
+  .docs-example {
+    display: block;
   }
-}
-
-.docs-datetime-example {
-  > .pt-datepicker {
-    margin-bottom: $pt-grid-size * 2;
-  }
-
-  > .pt-datetimepicker {
-    display: inline-block;
-    margin-bottom: $pt-grid-size * 2;
-  }
-
-  .pt-icon-arrow-right {
-    margin: 0 ($pt-grid-size / 2);
-  }
-}
-
-.docs-dialog-example {
-  display: flex;
-  align-items: center;
-  height: $pt-grid-size * 6;
-
-  .pt-button + .pt-button {
-    margin-left: $pt-grid-size;
-  }
-}
-
-.docs-editable-text-example {
-  width: 100%;
 
   h1 {
     margin-bottom: $pt-grid-size * 3;
   }
 }
 
-.docs-overlay-example-transition {
-  $overlay-example-width: $pt-grid-size * 40;
-  $enter: (
-    transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
-  );
-  $leave: (
-    transform: (translateY(150vh) rotate(-20deg), translateY(0) rotate(0deg))
-  );
+#{example("FormGroupExample")} {
+  .docs-example {
+    flex-direction: column;
+  }
 
-  @include react-transition-phase(
-    "pt-overlay",
-    "enter",
-    $enter,
-    $pt-transition-duration * 3,
-    $pt-transition-ease-bounce,
-    $before: "&"
-  );
-  @include react-transition-phase(
-    "pt-overlay",
-    "exit",
-    $leave,
-    $pt-transition-duration * 5,
-    $before: "&"
-  );
-  top: 0;
-  left: calc(50% - #{$overlay-example-width / 2});
-  margin: 10vh 0;
-  width: $overlay-example-width;
+  .#{$ns}-form-content {
+    width: $pt-grid-size * 20;
+  }
+}
+
+#{example("MenuExample")} .#{$ns}-menu {
+  max-width: 280px;
+}
+
+#{example("TagExample")} {
+  .docs-example {
+    flex-direction: column;
+  }
 }
 
 .docs-context-menu-example {
-  $node-size: $pt-grid-size * 8;
-  $icon-size: $pt-icon-size-standard * 2;
-  $node-border-width: 4px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: $pt-border-radius;
-  background: $light-gray3;
-  padding: $options-margin;
-
-  .pt-dark & {
-    background: $dark-gray5;
+  .docs-example {
+    flex-direction: column;
+    height: $pt-grid-size * 25;
   }
 
   .context-menu-node {
+    $node-size: $pt-grid-size * 8;
+    $icon-size: $pt-icon-size-standard * 2;
+    $node-border-width: 4px;
+
     border: $node-border-width solid $white;
     border-radius: 50%;
     box-shadow: $pt-elevation-shadow-2;
@@ -138,68 +101,158 @@
   }
 }
 
-.docs-input-group-example {
-  .docs-flex-column {
-    margin-right: $options-margin;
+.docs-hotkey-piano-example {
+  opacity: 0.4;
+  transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
+
+  &:hover {
+    opacity: 0.6;
+    cursor: pointer;
   }
 
-  .pt-input-group {
-    width: $pt-grid-size * 30;
+  &:focus {
+    opacity: 1;
+    cursor: default;
+  }
 
-    &:first-child {
-      margin-bottom: $options-margin;
+  > :first-child {
+    margin-bottom: $pt-grid-size * 2;
+  }
+
+  .piano-key {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+
+    > div {
+      margin-right: $pt-grid-size/2;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      background-color: $white;
+      width: $pt-grid-size * 8;
+      height: $pt-grid-size * 24;
+      color: $black;
+    }
+  }
+
+  .piano-key-sharp {
+    z-index: 2;
+    width: 0;
+    overflow: visible;
+    vertical-align: top;
+
+    > div {
+      position: absolute;
+      top: 0;
+      left: $pt-grid-size * -4;
+      background-color: $black;
+      height: $pt-grid-size * 16;
+      color: $white;
+    }
+  }
+
+  .piano-key-pressed > div {
+    background-color: $pt-intent-primary;
+    color: $white;
+  }
+
+  .piano-key-text {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    left: 0;
+    text-align: center;
+  }
+
+  .piano-key-note {
+    opacity: 0.5;
+  }
+}
+
+#{example("HotkeyTester")} {
+  .docs-hotkey-tester {
+    @include pt-flex-container(column, $pt-grid-size);
+    flex: 1 1;
+    align-items: center;
+    justify-content: space-around;
+    opacity: 0.4;
+    border: 2px solid rgba($gray3, 0.8);
+    border-radius: $pt-border-radius * 2;
+    background: rgba($gray3, 0.2);
+    max-width: 70%;
+    min-height: $pt-grid-size * 12;
+    padding: $pt-grid-size * 2;
+    transition: all $pt-transition-duration $pt-transition-ease;
+
+    &:hover {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+
+    &:focus {
+      opacity: 1;
+      border: 2px solid rgba($blue3, 0.6);
+      background: rgba($blue3, 0.1);
+      cursor: default;
+      color: map-get($pt-intent-text-colors, "primary");
+
+      .#{$ns}-dark & {
+        border: 2px solid rgba($blue4, 0.6);
+        background: rgba($blue4, 0.1);
+        color: map-get($pt-dark-intent-text-colors, "primary");
+      }
     }
   }
 }
 
-.docs-progress-example {
-  .docs-react-example {
-    flex-direction: column;
+#{example("OverflowListExample")} {
+  .#{$ns}-card {
+    margin: 0;
+    min-width: $pt-grid-size * 7;
+  }
+
+  .#{$ns}-overflow-list {
+    white-space: nowrap;
   }
 }
 
-.docs-slider-example {
-  width: 100%;
+// prettier-ignore
+.docs-overlay-example-transition {
+  $overlay-example-width: $pt-grid-size * 40;
+  $enter: (
+    transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
+  );
+  $leave: (
+    transform: (translateY(150vh) rotate(-20deg), translateY(0) rotate(0deg))
+  );
 
-  &.docs-slider-example-vertical {
-    display: flex;
+  @include react-transition-phase(
+    "#{$ns}-overlay",
+    "enter",
+    $enter,
+    $pt-transition-duration * 3,
+    $pt-transition-ease-bounce,
+    $before: "&"
+  );
+  @include react-transition-phase(
+    "#{$ns}-overlay",
+    "exit",
+    $leave,
+    $pt-transition-duration * 5,
+    $before: "&"
+  );
 
-    .pt-slider {
-      margin-right: $pt-grid-size * 10;
-      margin-bottom: 0;
-    }
-  }
+  top: 0;
+  left: calc(50% - #{$overlay-example-width / 2});
+  margin: 10vh 0;
+  width: $overlay-example-width;
 }
 
-.docs-tabs-example .pt-navbar .pt-tab {
-  line-height: $pt-navbar-height;
-}
-
-.docs-example-wrapper .pt-navbar {
-  position: static;
-  width: 100%;
-}
-
-.docs-tag-example .pt-tag:not(:last-child) {
-  margin-right: $pt-grid-size * 0.5;
-}
-
-.pt-progress-bar.docs-toast-progress {
-  margin-top: $pt-grid-size / 2;
-  margin-bottom: 0;
-}
-
-.docs-popover-example {
-  .docs-react-example {
-    border-radius: $pt-border-radius;
-    background: $light-gray3;
-    width: 100%;
-    height: 350px;
+#{example("PopoverExample")} {
+  .docs-example {
+    display: block;
+    max-height: 700px;
     overflow: scroll;
-
-    .pt-dark & {
-      background: $dark-gray5;
-    }
   }
 
   .docs-popover-example-scroll {
@@ -207,55 +260,91 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 200%;
-    min-height: 200%;
+    width: 1000px;
+    height: 1500px;
+
+    > p {
+      margin-top: $pt-grid-size;
+    }
+  }
+}
+
+#{example("PopoverDismissExample")} {
+  height: 220px;
+
+  .docs-reopen-message {
+    width: 240px;
+    text-align: center;
   }
 
-  .pt-popover & {
-    padding: $pt-grid-size;
+  .#{$ns}-popover-content {
+    padding: $pt-grid-size * 2;
+
+    .#{$ns}-button:not(:first-child) {
+      margin-left: $pt-grid-size;
+    }
+
+    .#{$ns}-callout {
+      margin: $pt-grid-size 0;
+    }
+  }
+}
+
+#{example("PanelStackExample")} {
+  .docs-panel-stack-example {
+    box-shadow: $pt-elevation-shadow-0;
+    width: 300px;
+    height: 240px;
+  }
+
+  .docs-panel-stack-contents-example {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  ul {
+    max-height: 240px;
+    overflow: auto;
   }
 }
 
 .docs-popover-position-example {
-  .docs-popover-position-example-instructions {
+  em {
     display: inline-block;
     max-width: 25 * $pt-grid-size;
     color: $pt-text-color-muted;
     font-style: italic;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;
     }
   }
 
-  .docs-popover-position-example-button {
-    font-family: $pt-font-family-monospace;
-  }
-
-  .docs-popover-position-example-table {
-    margin: 0 auto;
-  }
-
-  .docs-popover-position-example-cell-right,
-  .docs-popover-position-example-cell-left {
+  td:nth-child(1) {
     display: flex;
     flex-direction: column;
-  }
-
-  .docs-popover-position-example-cell-center {
-    text-align: center;
-  }
-
-  .docs-popover-position-example-cell-left {
     align-items: flex-end;
   }
 
-  .pt-popover-wrapper {
+  td:nth-child(2) {
+    text-align: center;
+  }
+
+  td:nth-child(3) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .#{$ns}-popover-wrapper {
     // Add a bit of space between borders of consecutive buttons.
     margin: $pt-grid-size / 2;
   }
 
-  .pt-popover-content {
+  .#{$ns}-popover-content {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -264,9 +353,7 @@
     height: 7 * $pt-grid-size;
     padding: $pt-grid-size * 2;
     text-align: center;
-    // increase line height to leave room between stacked <code> blocks.
-    line-height: $pt-line-height * 1.1;
-    white-space: nowrap;
+    line-height: 2;
 
     code {
       font-weight: 600;
@@ -274,53 +361,60 @@
   }
 }
 
+.docs-popover-position-value-code-block {
+  text-align: center;
+  font-size: $pt-font-size-large;
+  font-weight: 600;
+}
+
+.docs-popover-position-label-side {
+  color: $cobalt3;
+
+  .#{$ns}-dark & {
+    color: $cobalt5;
+  }
+}
+
+.docs-popover-position-label-alignment {
+  color: $forest3;
+
+  .#{$ns}-dark & {
+    color: $forest5;
+  }
+}
+
 .docs-popover-minimal-example {
-  .pt-button:first-child {
+  .#{$ns}-button:first-child {
     margin-right: $pt-grid-size;
   }
 }
 
 .docs-popover-interaction-kind-example {
-  .pt-button {
+  .#{$ns}-button {
     margin-right: $pt-grid-size;
     font-family: $pt-font-family-monospace;
   }
 }
 
 .docs-popover-sizing-example {
-  .pt-popover-content {
-    max-height: $pt-grid-size * 15;
-    overflow-y: auto;
-  }
+  max-height: $pt-grid-size * 15;
+  overflow-y: auto;
 }
 
-.docs-popover-inline-example {
-  .docs-popover-inline-example-content {
-    display: flex;
-    flex: 1 1 auto;
-  }
-
-  .docs-popover-inline-example-scroll-container {
+.docs-popover-portal-example {
+  .docs-popover-portal-example-scroll-container {
     flex: 1 1 auto;
     border-radius: $pt-border-radius;
     background: $light-gray3;
     overflow-x: scroll;
     overflow-y: hidden;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       background: $dark-gray5;
-    }
-
-    &:first-child {
-      margin-right: $pt-grid-size;
-    }
-
-    &:last-child {
-      margin-left: $pt-grid-size;
     }
   }
 
-  .docs-popover-inline-example-scroll-content {
+  .docs-popover-portal-example-scroll-content {
     // can't compute this height easily using SCSS variables. instead of using
     // JS to measure, just hardcode it since we have full control of all the
     // example code.
@@ -328,6 +422,7 @@
     $vertical-padding: $pt-grid-size * 2;
 
     display: flex;
+    align-items: flex-start;
     justify-content: center;
     // wide enough to allow scrolling, but wide enough to let the popover target
     // fully leave the viewport.
@@ -337,27 +432,42 @@
   }
 }
 
-.docs-popover-inline-example-popover {
-  .pt-popover-content {
+.docs-popover-portal-example-popover {
+  .#{$ns}-popover-content {
     padding: $pt-grid-size;
     white-space: nowrap;
   }
 }
 
-.docs-tooltip-example {
-  > div {
-    margin-bottom: $pt-grid-size;
+.#{$ns}-progress-bar.docs-toast-progress {
+  margin-top: $pt-grid-size / 2;
+  margin-bottom: 0;
+}
+
+.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
+  line-height: $pt-navbar-height;
+}
+
+#{example("TooltipExample")} {
+  .docs-example {
+    flex-direction: column;
+
+    > * {
+      margin: $pt-grid-size / 2;
+    }
   }
 }
 
-.docs-icon-example {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+//
+// DATETIME
+//
 
-.docs-menu-example .pt-menu {
-  max-width: 280px;
+// all datetime examples show component followed by date tags, so arrange them in a nice column
+#{page("datetime", "^=")} {
+  .docs-example {
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .docs-date-range {
@@ -365,18 +475,19 @@
   align-items: center;
 }
 
-// only for date input and date range input examples
-.pt-popover-wrapper + .docs-date-range {
-  margin-left: $pt-grid-size * 2;
-}
+//
+// TABLE
+//
 
-.docs-wiggle {
-  animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
-}
+#{page("table", "^=")} {
+  // make all tables the same width & height
+  .#{$ns}-table-container {
+    width: 100%;
+    height: $pt-grid-size * 36;
+  }
 
-@keyframes docs-wiggle-rotate {
-  0% { transform: rotate(0); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
-  100% { transform: rotate(0); }
+  // reduce example container padding
+  .docs-example {
+    padding: 0;
+  }
 }

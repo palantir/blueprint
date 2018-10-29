@@ -2,8 +2,8 @@
 
 Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#labs/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">Disabling a Select</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-heading">Disabling a Select</h4>
     <p>Disabling the component requires setting the `disabled` prop to `true`
     and separately disabling the component's children as appropriate (because `Select` accepts arbitrary children).</p>
     <p>For example, `<Select ... disabled={true}><Button ... disabled={true} /></Select>`</p>
@@ -95,13 +95,13 @@ const filterFilm: ItemPredicate<IFilm> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 
-const renderFilm: ItemRenderer<Film> = (item, { handleClick, modifiers }) => {
+const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
     if (!modifiers.filtered) {
         return null;
     }
     return (
         <MenuItem
-            className={modifiers.active ? Classes.ACTIVE : ""}
+            active={modifiers.active}
             key={film.title}
             label={film.year}
             onClick={handleClick}

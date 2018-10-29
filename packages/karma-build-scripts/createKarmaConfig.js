@@ -12,14 +12,19 @@ const COVERAGE_PERCENT_HIGH = 90;
 const KARMA_SERVER_PORT = 9876;
 
 /**
- * @param dirname string
- * @param coverageExcludes string[]
- * @param coverageOverrides { [glob: string]: object }
+ * @typedef {Object} KarmaOptions
+ * @property {string} dirname
+ * @property {boolean} coverage
+ * @property {string[]} coverageExcludes
+ * @property {{ [glob: string]: object }} coverageOverrides
  */
-module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverageOverrides }) {
+
+module.exports = function createKarmaConfig(
+    /** @type {KarmaOptions} */ { coverage = true, dirname, coverageExcludes, coverageOverrides }
+) {
     const packageManifest = require(`${dirname}/package.json`);
 
-    return {
+    const config = {
         basePath: dirname,
         browserNoActivityTimeout: 100000,
         browsers: ["ChromeHeadless"],
@@ -36,11 +41,8 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
                 },
             },
             includeAllSources: true,
-            reporters: [
-                { type: "html", dir: "coverage" },
-                { type: "lcov" },
-                { type: "text" },
-            ],
+            // save interim raw coverage report in memory. remapCoverage will output final report.
+            type: "in-memory",
             watermarks: {
                 lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
                 statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
@@ -61,16 +63,22 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
-        frameworks: ["mocha", "chai", "sinon"],
+        frameworks: ["mocha"],
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
         port: KARMA_SERVER_PORT,
         preprocessors: {
             [path.join(dirname, "test/**/*.ts")]: "sourcemap",
-            [path.join(dirname, "test/index.ts")]: "webpack",
+            [path.join(dirname, "test/index.ts")]: ["webpack", "sourcemap"],
         },
-        reporters: ["mocha", "coverage"],
+        // define where to save final remapped coverage reports
+        remapCoverageReporter: {
+            'text-summary': null,
+            html: './coverage/html',
+            cobertura: './coverage/cobertura.xml'
+        },
+        reporters: ["mocha"],
         singleRun: true,
         webpack: Object.assign({}, webpackBuildScripts.karmaConfig, {
             entry: {
@@ -87,5 +95,30 @@ module.exports = function createKarmaConfig({ dirname, coverageExcludes, coverag
             },
         },
     };
+
+    // enable JUnit reporter only if env variable is set (such as on Circle)
+    if (process.env.JUNIT_REPORT_PATH) {
+        const outputDir = path.join(
+            __dirname,
+            "../..",
+            process.env.JUNIT_REPORT_PATH,
+            path.basename(dirname),
+        );
+        console.info(`Karma report will appear in ${outputDir}`);
+        // disable mocha reporter on circle for HUGE performance increase
+        config.reporters = ["dots", "junit"];
+        config.junitReporter = {
+            outputDir: outputDir,
+            outputFile: "report.xml",
+            useBrowserName: false,
+        };
+    }
+
+    if (coverage) {
+        // enable coverage. these plugins are already configured above.
+        config.reporters.push("coverage", "remap-coverage");
+    }
+
+    return config;
 };
 

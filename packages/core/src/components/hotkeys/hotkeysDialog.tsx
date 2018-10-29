@@ -101,7 +101,7 @@ class HotkeysDialog {
         return (
             <Dialog
                 {...this.componentProps}
-                className={classNames(this.componentProps.className, "pt-hotkey-dialog")}
+                className={classNames(Classes.HOTKEY_DIALOG, this.componentProps.className)}
                 isOpen={this.isDialogShowing}
                 onClose={this.hide}
             >

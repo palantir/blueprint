@@ -1,4 +1,4 @@
-@# Numeric inputs
+@# Numeric input
 
 The `NumericInput` component provides controls for easily inputting,
 incrementing, and decrementing numeric values.
@@ -42,7 +42,7 @@ custom `onKeyDown` callback) and when the field loses focus (via a custom
 `onBlur` callback). If the input is invalid when either of these callbacks is
 trigged, the field will be cleared.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     This example contains non-core functionality that is meant to demonstrate
     the extensibility of the `NumericInput` component. The correctness of the
     custom evaluation code has not been tested robustly.
@@ -60,8 +60,8 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 @### Responsive numeric inputs
 
 `NumericInput` can be styled with the same set of CSS classes that modify
-regular [control groups](#core/components/forms/control-group). The most appropriate
-such modifier for `NumericInput` is `pt-fill`, which when passed as a
+regular [control groups](#core/components/control-group). The most appropriate
+such modifier for `NumericInput` is `@ns-fill`, which when passed as a
 `className` will make the component expand to fill all available width.
 
 @### Uncontrolled mode

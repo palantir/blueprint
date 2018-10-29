@@ -5,6 +5,6 @@
 @import "~@blueprintjs/core/src/components/forms/common";
 @import "~@blueprintjs/core/src/components/tag/common";
 
-.pt-timezone-picker-popover {
+.#{$ns}-timezone-picker-popover {
   min-width: 370px;
 }

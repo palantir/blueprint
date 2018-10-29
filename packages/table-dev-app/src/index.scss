@@ -22,7 +22,7 @@ body {
   background-color: #F5F8FA;
 }
 
-body.pt-dark {
+body.#{$ns}-dark {
   background-color: #293742;
 }
 
@@ -90,7 +90,7 @@ body.pt-dark {
   z-index: 3;
 }
 
-.pt-dark .sidebar {
+.#{$ns}-dark .sidebar {
   background-color: #202B33;
   box-shadow: 0 0 0 1px #182026; /* override pt-elevation-0 styles */
   z-index: 1;
@@ -117,12 +117,12 @@ body.pt-dark {
   padding: 10px 0 3px;
 }
 
-.pt-dark .sidebar h4 {
+.#{$ns}-dark .sidebar h4 {
   border-top-color:#182026;
   color: #A7B6C2;
 }
 
-.pt-dark .sidebar h6 {
+.#{$ns}-dark .sidebar h6 {
   color: #A7B6C2;
 }
 
@@ -130,7 +130,7 @@ body.pt-dark {
   margin-left: 15px;
 }
 
-.sidebar > .pt-button + .pt-button {
+.sidebar > .#{$ns}-button + .#{$ns}-button {
   margin-top: 3px;
 }
 
@@ -139,7 +139,7 @@ label.tbl-select-label {
   margin-bottom: 7px;
 }
 
-.tbl-select-label .pt-select {
+.tbl-select-label .#{$ns}-select {
   float: right;
 }
 
@@ -162,7 +162,7 @@ label.tbl-select-label {
   background-color: rgba(219, 55, 55, 0.1);
 }
 
-.tbl-select-label.pt-disabled {
+.tbl-select-label.#{$ns}-disabled {
   cursor: not-allowed;
 }
 
@@ -182,6 +182,6 @@ label.tbl-select-label {
   margin-top: 3px;
 }
 
-.pt-dark .tbl-custom-column-header-type {
+.#{$ns}-dark .tbl-custom-column-header-type {
   color: #BFCCD6; /* $gray5 */
 }

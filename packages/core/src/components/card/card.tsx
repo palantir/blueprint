@@ -7,7 +7,8 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { Elevation } from "../../common/elevation";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface ICardProps extends IProps, HTMLDivProps {
     /**
@@ -37,24 +38,8 @@ export interface ICardProps extends IProps, HTMLDivProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export enum Elevation {
-    ZERO = 0,
-    ONE = 1,
-    TWO = 2,
-    THREE = 3,
-    FOUR = 4,
-}
-
-const ELEVATION_CLASSES = [
-    Classes.ELEVATION_0,
-    Classes.ELEVATION_1,
-    Classes.ELEVATION_2,
-    Classes.ELEVATION_3,
-    Classes.ELEVATION_4,
-];
-
 export class Card extends React.PureComponent<ICardProps, {}> {
-    public static displayName = "Blueprint2.Card";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
     public static defaultProps: ICardProps = {
         elevation: Elevation.ZERO,
         interactive: false,
@@ -65,7 +50,7 @@ export class Card extends React.PureComponent<ICardProps, {}> {
         const classes = classNames(
             Classes.CARD,
             { [Classes.INTERACTIVE]: interactive },
-            ELEVATION_CLASSES[elevation],
+            Classes.elevationClass(elevation),
             className,
         );
         return <div className={classes} {...htmlProps} />;

@@ -1,0 +1,98 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "../../common/variables";
+@import "common";
+
+/*
+Progress bars
+
+Markup:
+<div class="#{$ns}-progress-bar {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 25%"></div>
+</div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-primary {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 50%"></div>
+</div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-success {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 75%"></div>
+</div>
+<div class="#{$ns}-progress-bar #{$ns}-intent-danger {{.modifier}}">
+  <div class="#{$ns}-progress-meter" style="width: 100%"></div>
+</div>
+
+.#{$ns}-no-stripes   - No stripes
+.#{$ns}-no-animation - No animation
+
+Styleguide progress-bar
+*/
+
+$progress-bar-stripes-color: rgba($white, 0.2) !default;
+
+$progress-bar-height: round($pt-grid-size * 0.8) !default;
+$progress-bar-stripes-size: $pt-grid-size * 3 !default;
+$progress-bar-border-radius: $pt-grid-size * 4 !default;
+
+$progress-bar-gradient: linear-gradient(
+  -45deg,
+  $progress-bar-stripes-color 25%,
+  transparent 25%,
+  transparent 50%,
+  $progress-bar-stripes-color 50%,
+  $progress-bar-stripes-color 75%,
+  transparent 75%
+) !default;
+
+@keyframes linear-progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: $progress-bar-stripes-size 0;
+  }
+}
+
+.#{$ns}-progress-bar {
+  display: block;
+  position: relative;
+  border-radius: $progress-bar-border-radius;
+  background: $progress-track-color;
+  width: 100%;
+  height: $progress-bar-height;
+  overflow: hidden;
+
+  .#{$ns}-progress-meter {
+    position: absolute;
+    border-radius: $progress-bar-border-radius;
+    background: $progress-bar-gradient;
+    background-color: $progress-head-color;
+    background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
+    // initial state is a full bar, a la "indeterminate"
+    width: 100%;
+    height: 100%;
+    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
+  }
+
+  &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {
+    animation: linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse;
+  }
+
+  &.#{$ns}-no-stripes .#{$ns}-progress-meter {
+    background-image: none;
+  }
+}
+
+.#{$ns}-dark .#{$ns}-progress-bar {
+  background: $dark-progress-track-color;
+
+  .#{$ns}-progress-meter {
+    background-color: $dark-progress-head-color;
+  }
+}
+
+@each $intent, $color in $pt-intent-colors {
+  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
+    background-color: $color;
+  }
+}

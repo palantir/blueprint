@@ -7,16 +7,18 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface IControlGroupProps extends IProps, HTMLDivProps {
     /**
      * Whether the control group should take up the full width of its container.
+     * @default false
      */
     fill?: boolean;
 
     /**
-     * Whether the button group should appear with vertical styling.
+     * Whether the control group should appear with vertical styling.
+     * @default false
      */
     vertical?: boolean;
 }
@@ -24,7 +26,7 @@ export interface IControlGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class ControlGroup extends React.PureComponent<IControlGroupProps, {}> {
-    public static displayName = "Blueprint2.ControlGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
 
     public render() {
         const { children, className, fill, vertical, ...htmlProps } = this.props;

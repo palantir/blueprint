@@ -10,9 +10,9 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
-
 import * as Keys from "../../src/common/keys";
 import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src/index";
+import { findInPortal } from "../utils";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
@@ -53,7 +53,7 @@ describe("<Overlay>", () => {
                 {createOverlayContents()}
             </Overlay>,
         );
-        assert.lengthOf(overlay.find("h1"), 1);
+        assert.lengthOf(overlay.find("strong"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 1);
         overlay.unmount();
     });
@@ -81,35 +81,9 @@ describe("<Overlay>", () => {
                 {createOverlayContents()}
             </Overlay>,
         );
-        assert.lengthOf(overlay.find("h1"), 1);
+        assert.lengthOf(overlay.find("strong"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 0);
         overlay.unmount();
-    });
-
-    it("invokes didOpen when Overlay is opened", () => {
-        const didOpen = spy();
-        mountWrapper(
-            <Overlay didOpen={didOpen} isOpen={false}>
-                {createOverlayContents()}
-            </Overlay>,
-        );
-        assert.isTrue(didOpen.notCalled, "didOpen invoked when overlay closed");
-
-        wrapper.setProps({ isOpen: true });
-        assert.isTrue(didOpen.calledOnce, "didOpen not invoked when overlay open");
-    });
-
-    it("invokes didOpen when inline Overlay is opened", () => {
-        const didOpen = spy();
-        mountWrapper(
-            <Overlay didOpen={didOpen} isOpen={false} usePortal={false}>
-                {createOverlayContents()}
-            </Overlay>,
-        );
-        assert.isTrue(didOpen.notCalled, "didOpen invoked when overlay closed");
-
-        wrapper.setProps({ isOpen: true });
-        assert.isTrue(didOpen.calledOnce, "didOpen not invoked when overlay open");
     });
 
     it("renders portal attached to body when not inline after first opened", () => {
@@ -179,7 +153,7 @@ describe("<Overlay>", () => {
             const onClose = spy();
             mountWrapper(
                 <Overlay isOpen={true} onClose={onClose}>
-                    <div>
+                    <div id="outer-element">
                         {createOverlayContents()}
                         <Overlay isOpen={true}>
                             <div id="inner-element">{createOverlayContents()}</div>
@@ -187,7 +161,8 @@ describe("<Overlay>", () => {
                     </div>
                 </Overlay>,
             );
-            wrapper.find("#inner-element").simulate("mousedown");
+            // this hackery is necessary for React 15 support, where Portals break trees.
+            findInPortal(findInPortal(wrapper, "#outer-element"), "#inner-element").simulate("mousedown");
             assert.isTrue(onClose.notCalled);
         });
 
@@ -222,7 +197,7 @@ describe("<Overlay>", () => {
             );
             const portal = overlay.find(Portal);
             assert.isTrue(portal.exists(), "missing Portal");
-            assert.lengthOf(portal.find("h1"), 1, "missing h1");
+            assert.lengthOf(portal.find("strong"), 1, "missing h1");
             overlay.unmount();
         });
     });
@@ -235,7 +210,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             assertFocus(() => {
-                const backdrops = Array.from(document.querySelectorAll(".pt-overlay-backdrop"));
+                const backdrops = Array.from(document.querySelectorAll("." + Classes.OVERLAY_BACKDROP));
                 assert.include(backdrops, document.activeElement);
             }, done);
         });
@@ -289,7 +264,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assertFocus(`h1.${Classes.OVERLAY_CONTENT}`, done);
+            assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
@@ -440,8 +415,45 @@ describe("<Overlay>", () => {
         }
     });
 
+    it("lifecycle methods called as expected", done => {
+        // these lifecycles are passed directly to CSSTransition from react-transition-group
+        // so we do not need to test these extensively. one integration test should do.
+        const onClosed = spy();
+        const onClosing = spy();
+        const onOpened = spy();
+        const onOpening = spy();
+        wrapper = mountWrapper(
+            <Overlay
+                {...{ onClosed, onClosing, onOpened, onOpening }}
+                isOpen={true}
+                usePortal={false}
+                // transition duration shorter than timeout below to ensure it's done
+                transitionDuration={8}
+            >
+                {createOverlayContents()}
+            </Overlay>,
+        );
+        assert.isTrue(onOpening.calledOnce, "onOpening");
+        assert.isFalse(onOpened.calledOnce, "onOpened not called yet");
+
+        setTimeout(() => {
+            // on*ed called after transition completes
+            assert.isTrue(onOpened.calledOnce, "onOpened");
+
+            wrapper.setProps({ isOpen: false });
+            // on*ing called immediately when prop changes
+            assert.isTrue(onClosing.calledOnce, "onClosing");
+            assert.isFalse(onClosed.calledOnce, "onClosed not called yet");
+
+            setTimeout(() => {
+                assert.isTrue(onClosed.calledOnce, "onOpened");
+                done();
+            }, 10);
+        }, 10);
+    });
+
     let index = 0;
     function createOverlayContents() {
-        return <h1 id={`overlay-${index++}`}>Overlay content!</h1>;
+        return <strong id={`overlay-${index++}`}>Overlay content!</strong>;
     }
 });

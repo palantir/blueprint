@@ -9,11 +9,29 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, Tag } from "../../src/index";
+import { Classes, Icon, Tag, Text } from "../../src/index";
 
 describe("<Tag>", () => {
     it("renders its text", () => {
-        assert.deepEqual(shallow(<Tag>Hello</Tag>).text(), "Hello");
+        assert.strictEqual(
+            shallow(<Tag>Hello</Tag>)
+                .find(Text)
+                .prop("children"),
+            "Hello",
+        );
+    });
+
+    it("text is not rendered if omitted", () => {
+        assert.isFalse(
+            shallow(<Tag icon="tick" />)
+                .find(Text)
+                .exists(),
+        );
+    });
+
+    it("renders icons", () => {
+        const wrapper = shallow(<Tag icon="tick" rightIcon="airplane" />);
+        assert.lengthOf(wrapper.find(Icon), 2);
     });
 
     it("renders close button when onRemove is a function", () => {
@@ -29,8 +47,8 @@ describe("<Tag>", () => {
         assert.isTrue(handleRemove.calledOnce);
     });
 
-    it("passes other props onto .pt-tag element", () => {
-        const element = shallow(<Tag title="baz qux">Hello</Tag>).find(".pt-tag");
+    it(`passes other props onto .${Classes.TAG} element`, () => {
+        const element = shallow(<Tag title="baz qux">Hello</Tag>).find("." + Classes.TAG);
         assert.deepEqual(element.prop("title"), "baz qux");
     });
 

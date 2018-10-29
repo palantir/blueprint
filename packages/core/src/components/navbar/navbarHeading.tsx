@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../../common/classes";
-import { HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
 export interface INavbarHeadingProps extends IProps, HTMLDivProps {
@@ -17,7 +17,7 @@ export interface INavbarHeadingProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 export class NavbarHeading extends React.PureComponent<INavbarHeadingProps, {}> {
-    public static displayName = "Blueprint2.NavbarHeading";
+    public static displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
 
     public render() {
         const { children, className, ...htmlProps } = this.props;

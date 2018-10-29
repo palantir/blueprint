@@ -11,6 +11,7 @@ import { IconName } from "@blueprintjs/icons";
 import {
     AbstractPureComponent,
     Classes,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IIntentProps,
     IProps,
@@ -21,6 +22,7 @@ import {
 } from "../../common";
 import * as Errors from "../../common/errors";
 
+import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 import { InputGroup } from "./inputGroup";
 
@@ -36,7 +38,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * The position of the buttons with respect to the input field.
      * @default Position.RIGHT
      */
-    buttonPosition?: Position.LEFT | Position.RIGHT | "none";
+    buttonPosition?: typeof Position.LEFT | typeof Position.RIGHT | "none";
 
     /**
      * Whether the value should be clamped to `[min, max]` on blur.
@@ -52,10 +54,18 @@ export interface INumericInputProps extends IIntentProps, IProps {
      */
     disabled?: boolean;
 
+    /** Whether the numeric input should take up the full width of its container. */
+    fill?: boolean;
+
+    /**
+     * Ref handler that receives HTML `<input>` element backing this component.
+     */
+    inputRef?: (ref: HTMLInputElement | null) => any;
+
     /**
      * If set to `true`, the input will display with larger styling.
-     * This is equivalent to setting `pt-large` via className on the
-     * parent `.pt-control-group` and on the child `.pt-input-group`.
+     * This is equivalent to setting `Classes.LARGE` via className on the
+     * parent control group and on the child input group.
      * @default false
      */
     large?: boolean;
@@ -69,7 +79,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     placeholder?: string;
 
     /**
-     * The increment between successive values when <kbd class="pt-key">shift</kbd> is held.
+     * The increment between successive values when <kbd>shift</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
      * @default 10
      */
@@ -82,7 +92,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     min?: number;
 
     /**
-     * The increment between successive values when <kbd class="pt-key">alt</kbd> is held.
+     * The increment between successive values when <kbd>alt</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
      * @default 0.1
      */
@@ -130,7 +140,7 @@ enum IncrementDirection {
 }
 
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
-    public static displayName = "Blueprint2.NumericInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";
     public static VALUE_ZERO = "0";
@@ -213,7 +223,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     }
 
     public render() {
-        const { buttonPosition, className, large } = this.props;
+        const { buttonPosition, className, fill, large } = this.props;
 
         const inputGroupHtmlProps = removeNonHTMLProps(
             this.props,
@@ -238,10 +248,10 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             <InputGroup
                 autoComplete="off"
                 {...inputGroupHtmlProps}
-                className={classNames({ [Classes.LARGE]: large })}
                 intent={this.props.intent}
                 inputRef={this.inputRef}
                 key="input-group"
+                large={large}
                 leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
@@ -278,10 +288,10 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             );
 
             const buttonGroup = (
-                <div key="button-group" className={classNames(Classes.BUTTON_GROUP, Classes.VERTICAL, Classes.FIXED)}>
+                <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                     {incrementButton}
                     {decrementButton}
-                </div>
+                </ButtonGroup>
             );
 
             const inputElems = buttonPosition === Position.LEFT ? [buttonGroup, inputGroup] : [inputGroup, buttonGroup];
@@ -290,6 +300,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 Classes.NUMERIC_INPUT,
                 Classes.CONTROL_GROUP,
                 {
+                    [Classes.FILL]: fill,
                     [Classes.LARGE]: large,
                 },
                 className,
@@ -357,6 +368,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private inputRef = (input: HTMLInputElement) => {
         this.inputElement = input;
+        Utils.safeInvoke(this.props.inputRef, input);
     };
 
     // Callbacks - Buttons

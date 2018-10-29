@@ -4,17 +4,16 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Text } from "@blueprintjs/core";
-import { BaseExample, handleStringChange } from "@blueprintjs/docs-theme";
+import { Text, TextArea } from "@blueprintjs/core";
+import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITextExampleState {
     textContent: string;
 }
 
-export class TextExample extends BaseExample<ITextExampleState> {
+export class TextExample extends React.PureComponent<IExampleProps, ITextExampleState> {
     public state: ITextExampleState = {
         textContent:
             "You can change the text in the input below. Hover to see full text. " +
@@ -24,20 +23,15 @@ export class TextExample extends BaseExample<ITextExampleState> {
 
     private onInputChange = handleStringChange((textContent: string) => this.setState({ textContent }));
 
-    protected renderExample() {
+    public render() {
         return (
-            <div style={{ width: "100%" }}>
+            <Example options={false} {...this.props}>
                 <Text ellipsize={true}>
                     {this.state.textContent}
                     &nbsp;
                 </Text>
-                <textarea
-                    className={classNames(Classes.INPUT, Classes.FILL)}
-                    onChange={this.onInputChange}
-                    style={{ marginTop: 20 }}
-                    value={this.state.textContent}
-                />
-            </div>
+                <TextArea fill={true} onChange={this.onInputChange} value={this.state.textContent} />
+            </Example>
         );
     }
 }

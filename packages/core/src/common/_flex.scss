@@ -5,7 +5,7 @@
 // supply `$margin` to put space between each child.
 // supply `$inline: inline` to use `display: flex-inline`.
 // customize `flex: 1 1` child selector with $fill.
-@mixin pt-flex-container($direction: row, $margin: none, $inline: none, $fill: ".pt-fill") {
+@mixin pt-flex-container($direction: row, $margin: none, $inline: none, $fill: ".#{$ns}-fill") {
   @if $inline == inline or $inline == true {
     display: inline-flex;
   } @else {

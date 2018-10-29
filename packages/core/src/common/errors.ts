@@ -40,6 +40,9 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires stepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NULL = ns + ` <NumericInput> requires stepSize to be defined.`;
 
+export const OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED =
+    ns + ` <OverflowList> does not support changing observeParents after mounting.`;
+
 // TODO (clewis): Migrate old Popover validation errors to the component formerly known as Popover2.
 // See: https://github.com/palantir/blueprint/issues/1940
 export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
@@ -65,7 +68,14 @@ export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
 export const SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than zero.`;
 export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
+export const MULTISLIDER_INVALID_CHILD = ns + ` <MultiSlider> children must be <SliderHandle>s or <SliderTrackStop>s`;
 
+export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE are ignored if size prop is set.`;
+
+export const TOASTER_CREATE_NULL =
+    ns +
+    ` Toaster.create() is not supported inside React lifecycle methods in React 16.` +
+    ` See usage example on the docs site.`;
 export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop as it always creates a new element.`;
 
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;

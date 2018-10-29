@@ -7,7 +7,13 @@ import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
 
-import { Classes as CoreClasses, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
+    IIntentProps,
+    IProps,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 
 import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
@@ -93,7 +99,9 @@ export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.Rea
 
 export const emptyCellRenderer = () => <Cell />;
 
-export class Cell extends React.Component<ICellProps, {}> {
+export class Cell extends React.Component<ICellProps> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
+
     public static defaultProps = {
         truncated: true,
         wrapText: false,
@@ -143,25 +151,14 @@ export class Cell extends React.Component<ICellProps, {}> {
         // add width and height to the children, for use in shouldComponentUpdate in truncatedFormat
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
         const modifiedChildren = React.Children.map(this.props.children, child => {
-            if (style != null && React.isValidElement(child)) {
-                const childType = child.type;
-                // can't get prototype of "string" child, so treat those separately
-                if (typeof child === "string" || typeof childType === "string") {
-                    return child;
-                } else {
-                    const isTruncatedFormat =
-                        childType.prototype === TruncatedFormat.prototype ||
-                        TruncatedFormat.prototype.isPrototypeOf(childType) ||
-                        childType.prototype === JSONFormat.prototype ||
-                        JSONFormat.prototype.isPrototypeOf(childType);
-                    // only add props if child is truncated format
-                    if (isTruncatedFormat) {
-                        return React.cloneElement(child as React.ReactElement<any>, {
-                            parentCellHeight: parseInt(style.height, 10),
-                            parentCellWidth: parseInt(style.width, 10),
-                        });
-                    }
-                }
+            if (
+                (style != null && React.isValidElement(child)) ||
+                (CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat))
+            ) {
+                return React.cloneElement(child as React.ReactElement<any>, {
+                    parentCellHeight: parseInt(style.height.toString(), 10),
+                    parentCellWidth: parseInt(style.width.toString(), 10),
+                });
             }
             return child;
         });

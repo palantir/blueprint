@@ -11,28 +11,35 @@ import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { IActionProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { isReactNodeEmpty, safeInvoke } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
 export interface IButtonProps extends IActionProps {
     /**
      * If set to `true`, the button will display in an active state.
-     * This is equivalent to setting `className="pt-active"`.
+     * This is equivalent to setting `className={Classes.ACTIVE}`.
      * @default false
      */
     active?: boolean;
 
     /**
-     * Text alignment within button. By default, icons and text will be centered within the button.
-     * Passing this prop will cause the text container to fill the button and align the text within that
-     * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
+     * Text alignment within button. By default, icons and text will be centered
+     * within the button. Passing `"left"` or `"right"` will align the button
+     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * `"center"` will center the text and icons together.
      * @default Alignment.CENTER
      */
     alignText?: Alignment;
 
     /** A ref handler that receives the native HTML element backing this component. */
     elementRef?: (ref: HTMLElement | null) => any;
+
+    /** Whether this button should expand to fill its container. */
+    fill?: boolean;
+
+    /** Whether this button should use large styles. */
+    large?: boolean;
 
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.
@@ -41,8 +48,14 @@ export interface IButtonProps extends IActionProps {
      */
     loading?: boolean;
 
+    /** Whether this button should use minimal styles. */
+    minimal?: boolean;
+
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | JSX.Element;
+
+    /** Whether this button should use small styles. */
+    small?: boolean;
 
     /**
      * HTML `type` attribute of button. Common values are `"button"` and `"submit"`.
@@ -77,7 +90,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { alignText, loading } = this.props;
+        const { alignText, fill, large, loading, minimal, small, tabIndex } = this.props;
         const disabled = this.props.disabled || loading;
 
         const className = classNames(
@@ -85,7 +98,11 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             {
                 [Classes.ACTIVE]: this.state.isActive || this.props.active,
                 [Classes.DISABLED]: disabled,
+                [Classes.FILL]: fill,
+                [Classes.LARGE]: large,
                 [Classes.LOADING]: loading,
+                [Classes.MINIMAL]: minimal,
+                [Classes.SMALL]: small,
             },
             Classes.alignmentClass(alignText),
             Classes.intentClass(this.props.intent),
@@ -99,6 +116,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             ref: this.refHandlers.button,
+            tabIndex: disabled ? -1 : tabIndex,
         };
     }
 
@@ -128,19 +146,17 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
 
     protected renderChildren(): React.ReactNode {
         const { children, icon, loading, rightIcon, text } = this.props;
-        return (
-            <>
-                {loading && <Spinner className={classNames(Classes.SMALL, Classes.BUTTON_SPINNER)} />}
-                <Icon icon={icon} />
-                {(text || children) && (
-                    <span className={Classes.BUTTON_TEXT}>
-                        {text}
-                        {children}
-                    </span>
-                )}
-                <Icon icon={rightIcon} />
-            </>
-        );
+        return [
+            loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />,
+            <Icon key="leftIcon" icon={icon} />,
+            (!isReactNodeEmpty(text) || !isReactNodeEmpty(children)) && (
+                <span key="text" className={Classes.BUTTON_TEXT}>
+                    {text}
+                    {children}
+                </span>
+            ),
+            <Icon key="rightIcon" icon={rightIcon} />,
+        ];
     }
 }
 

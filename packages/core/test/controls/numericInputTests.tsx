@@ -13,6 +13,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 import * as Errors from "../../src/common/errors";
 import {
     Button,
+    ButtonGroup,
     Classes,
     HTMLInputProps,
     Icon,
@@ -69,32 +70,30 @@ describe("<NumericInput>", () => {
     });
 
     describe("Button position", () => {
-        const BUTTON_GROUP_SELECTOR = `.${Classes.BUTTON_GROUP}`;
-
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const component = mount(<NumericInput buttonPosition={Position.RIGHT} />);
             const buttonGroup = component.children().childAt(1);
-            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
+            expect(buttonGroup.is(ButtonGroup)).to.be.true;
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
             const component = mount(<NumericInput buttonPosition={Position.LEFT} />);
             const buttonGroup = component.children().childAt(0);
-            expect(buttonGroup.is(BUTTON_GROUP_SELECTOR)).to.be.true;
+            expect(buttonGroup.is(ButtonGroup)).to.be.true;
         });
 
         it('does not render the buttons when buttonPosition == "none"', () => {
             const component = mount(<NumericInput buttonPosition="none" />);
-            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
+            expect(component.find(ButtonGroup).exists()).to.be.false;
         });
 
         it("does not render the buttons when buttonPosition is null", () => {
             const component = mount(<NumericInput buttonPosition={null} />);
-            expect(component.find(BUTTON_GROUP_SELECTOR).exists()).to.be.false;
+            expect(component.find(ButtonGroup).exists()).to.be.false;
         });
 
         it(`renders the children in a ${Classes.CONTROL_GROUP} when buttons are visible`, () => {
-            // if the input is put into a .pt-control-group by itself, it'll have squared border radii
+            // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
             const component = mount(<NumericInput />);
 
@@ -105,7 +104,7 @@ describe("<NumericInput>", () => {
         });
 
         it(`does not render the children in a ${Classes.CONTROL_GROUP} when buttons are hidden`, () => {
-            // if the input is put into a .pt-control-group by itself, it'll have squared border radii
+            // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
             const component = mount(<NumericInput buttonPosition={null} />);
 

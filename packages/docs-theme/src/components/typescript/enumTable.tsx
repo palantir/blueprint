@@ -41,14 +41,14 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
 
     private renderPropRow = (entry: ITsEnumMember) => {
         const { renderBlock } = this.context;
-        const { flags: { isDeprecated, isExternal, isOptional }, name } = entry;
+        const { flags: { isDeprecated, isExternal }, name } = entry;
 
         const classes = classNames("docs-prop-name", {
             "docs-prop-is-deprecated": !!isDeprecated,
             "docs-prop-is-internal": !isExternal,
-            "docs-prop-is-required": !isOptional,
         });
 
+        // tslint:disable:blueprint-html-components - this is inside RUNNING_TEXT
         return (
             <tr key={name}>
                 <td className={classes}>
@@ -56,14 +56,14 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
                 </td>
                 <td className="docs-prop-details">
                     <code className="docs-prop-type">
-                        <strong>{entry.name}</strong>
-                        <em className="docs-prop-default pt-text-muted">{entry.defaultValue}</em>
+                        <strong>{entry.defaultValue}</strong>
                     </code>
                     <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
-                    <p className="docs-prop-tags">{this.renderTags(entry)}</p>
+                    <div className="docs-prop-tags">{this.renderTags(entry)}</div>
                 </td>
             </tr>
         );
+        // tslint:enable:blueprint-html-components
     };
 
     private renderTags(entry: ITsEnumMember) {

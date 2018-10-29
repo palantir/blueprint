@@ -17,28 +17,28 @@ for all borders with minimal duplication. See the bottom of this file.
   $inset-border-right-frozen: inset (-$frozen-border-width) 0 0 $border-color;
   $inset-border-bottom-frozen: inset 0 (-$frozen-border-width) 0 $border-color;
 
-  .pt-table-container {
+  .#{$ns}-table-container {
     box-shadow: 0 0 0 $border-width $border-color;
   }
 
-  .pt-table-menu {
+  .#{$ns}-table-menu {
     box-shadow: $border-bottom-default, $border-right-default;
   }
 
-  .pt-table-header {
+  .#{$ns}-table-header {
     box-shadow: $border-bottom-default;
   }
 
-  .pt-table-cell {
+  .#{$ns}-table-cell {
     box-shadow: $inset-border-bottom-default, $inset-border-right-default;
   }
 
-  .pt-table-horizontal-cell-divider {
+  .#{$ns}-table-horizontal-cell-divider {
     box-shadow: inset 0 $border-width 0 $border-color;
     height: $border-width;
   }
 
-  .pt-table-column-headers .pt-table-header {
+  .#{$ns}-table-column-headers .#{$ns}-table-header {
     box-shadow: $border-bottom-default, $inset-border-right-default;
 
     &::before {
@@ -48,7 +48,7 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .pt-table-row-headers .pt-table-header {
+  .#{$ns}-table-row-headers .#{$ns}-table-header {
     box-shadow: $inset-border-bottom-default, $border-right-default;
 
     &::before {
@@ -58,37 +58,37 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .pt-table-body {
-    .pt-table-last-in-row {
+  .#{$ns}-table-body {
+    .#{$ns}-table-last-in-row {
       box-shadow: $inset-border-bottom-default, $border-right-default;
     }
 
-    .pt-table-last-in-column {
+    .#{$ns}-table-last-in-column {
       box-shadow: $border-bottom-default, $inset-border-right-default;
     }
 
-    .pt-table-last-in-row.pt-table-last-in-column {
+    .#{$ns}-table-last-in-row.#{$ns}-table-last-in-column {
       box-shadow: $border-bottom-default, $border-right-default;
     }
   }
 
-  .pt-table-quadrant-top-left {
-    .pt-table-cell {
-      &.pt-table-last-in-row {
+  .#{$ns}-table-quadrant-top-left {
+    .#{$ns}-table-cell {
+      &.#{$ns}-table-last-in-row {
         box-shadow: $inset-border-bottom-default, $inset-border-right-frozen;
       }
 
-      &.pt-table-last-in-column {
+      &.#{$ns}-table-last-in-column {
         box-shadow: $inset-border-bottom-frozen, $inset-border-right-default;
       }
 
-      &.pt-table-last-in-column.pt-table-last-in-row {
+      &.#{$ns}-table-last-in-column.#{$ns}-table-last-in-row {
         box-shadow: $inset-border-bottom-frozen, $inset-border-right-frozen;
       }
     }
 
-    .pt-table-header {
-      &.pt-table-last-in-row {
+    .#{$ns}-table-header {
+      &.#{$ns}-table-last-in-row {
         box-shadow: $border-bottom-default, $inset-border-right-frozen;
 
         &::before {
@@ -98,7 +98,7 @@ for all borders with minimal duplication. See the bottom of this file.
         }
       }
 
-      &.pt-table-last-in-column {
+      &.#{$ns}-table-last-in-column {
         box-shadow: $inset-border-bottom-frozen, $border-right-default;
 
         &::before {
@@ -110,18 +110,18 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .pt-table-quadrant-left .pt-table-cell.pt-table-last-in-row {
+  .#{$ns}-table-quadrant-left .#{$ns}-table-cell.#{$ns}-table-last-in-row {
     box-shadow: $inset-border-bottom-default, $inset-border-right-frozen;
   }
 
-  .pt-table-quadrant-top .pt-table-cell.pt-table-last-in-column {
+  .#{$ns}-table-quadrant-top .#{$ns}-table-cell.#{$ns}-table-last-in-column {
     box-shadow: $inset-border-bottom-frozen, $inset-border-right-default;
   }
 }
 
 @include pt-table-borders-mixin($cell-border-width, $frozen-cell-border-width, $cell-border-color);
 
-.pt-dark {
+.#{$ns}-dark {
   @include pt-table-borders-mixin(
     $cell-border-width,
     $frozen-cell-border-width,

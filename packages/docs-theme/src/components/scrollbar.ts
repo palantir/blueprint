@@ -4,6 +4,8 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Classes } from "@blueprintjs/core";
+
 /**
  * Inject some CSS style rules into a new `<style>` element to add padding equal to the
  * width of the scrollbar when an `Overlay` is open, such that page content will not
@@ -12,8 +14,9 @@
 export function addScrollbarStyle() {
     const width = getScrollbarWidth();
     const stylesheet = createStyleSheet();
-    stylesheet.insertRule(`.pt-overlay-open .docs-root { padding-right: ${width}px }`);
-    stylesheet.insertRule(`.pt-overlay-open .docs-banner { padding-right: ${20 + width}px; }`);
+    const NS = Classes.getClassNamespace();
+    stylesheet.insertRule(`.${NS}-overlay-open .docs-banner { padding-right: ${20 + width}px; }`, 0);
+    stylesheet.insertRule(`.${NS}-overlay-open .docs-root { padding-right: ${width}px }`, 0);
 }
 
 function createStyleSheet() {

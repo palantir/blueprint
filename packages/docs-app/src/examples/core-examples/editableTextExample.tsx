@@ -4,11 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, EditableText, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -22,7 +21,7 @@ export interface IEditableTextExampleState {
     selectAllOnFocus?: boolean;
 }
 
-export class EditableTextExample extends BaseExample<IEditableTextExampleState> {
+export class EditableTextExample extends React.PureComponent<IExampleProps, IEditableTextExampleState> {
     public state: IEditableTextExampleState = {
         confirmOnEnterKey: false,
         report: "",
@@ -33,67 +32,60 @@ export class EditableTextExample extends BaseExample<IEditableTextExampleState> 
     private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
     private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
 
-    protected renderExample() {
+    public render() {
         return (
-            <div className="docs-editable-text-example">
-                <h1>
+            <Example options={this.renderOptions()} {...this.props}>
+                <H1>
                     <EditableText
                         intent={this.state.intent}
                         maxLength={this.state.maxLength}
                         placeholder="Edit title..."
                         selectAllOnFocus={this.state.selectAllOnFocus}
                     />
-                </h1>
+                </H1>
                 <EditableText
                     intent={this.state.intent}
                     maxLength={this.state.maxLength}
                     maxLines={12}
                     minLines={3}
                     multiline={true}
-                    placeholder="Edit report... (controlled)"
+                    placeholder="Edit report... (controlled, multiline)"
                     selectAllOnFocus={this.state.selectAllOnFocus}
                     confirmOnEnterKey={this.state.confirmOnEnterKey}
                     value={this.state.report}
                     onChange={this.handleReportChange}
                 />
-            </div>
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        return [
-            [
-                <IntentSelect intent={this.state.intent} key="intent" onChange={this.handleIntentChange} />,
-                <div className={Classes.FORM_GROUP} key="maxlength">
-                    <label className={Classes.LABEL} htmlFor={INPUT_ID}>
-                        Max length
-                    </label>
+    private renderOptions() {
+        return (
+            <>
+                <H5>Props</H5>
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+                <FormGroup label="Max length" labelFor={INPUT_ID}>
                     <NumericInput
+                        className={Classes.FORM_CONTENT}
+                        fill={true}
                         id={INPUT_ID}
-                        className={classNames(Classes.FORM_CONTENT, Classes.FILL)}
-                        min={0}
                         max={300}
+                        min={0}
                         onValueChange={this.handleMaxLengthChange}
                         placeholder="Unlimited"
                         value={this.state.maxLength || ""}
                     />
-                </div>,
-            ],
-            [
+                </FormGroup>
                 <Switch
                     checked={this.state.selectAllOnFocus}
                     label="Select all on focus"
-                    key="focus"
                     onChange={this.toggleSelectAll}
-                />,
-                <Switch
-                    checked={this.state.confirmOnEnterKey}
-                    label="Swap keypress for confirm and newline (multiline only)"
-                    key="swap"
-                    onChange={this.toggleSwap}
-                />,
-            ],
-        ];
+                />
+                <Switch checked={this.state.confirmOnEnterKey} onChange={this.toggleSwap}>
+                    Swap keypress for confirm and newline (multiline only)
+                </Switch>
+            </>
+        );
     }
 
     private handleReportChange = (report: string) => this.setState({ report });

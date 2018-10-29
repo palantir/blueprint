@@ -4,7 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    DISPLAYNAME_PREFIX,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    IProps,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -410,6 +418,8 @@ export interface ITableState {
 
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
+
     public static defaultProps: ITableProps = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
@@ -738,6 +748,15 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             shouldInvalidateGrid = true;
         }
 
+        if (
+            !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
+            !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
+        ) {
+            // grid invalidation is required after changing this flag,
+            // which happens at the end of this method.
+            this.didUpdateColumnOrRowSizes = true;
+        }
+
         let newSelectedRegions = selectedRegions;
         if (forceRerenderOnSelectionChange && newSelectedRegions !== this.props.selectedRegions) {
             shouldInvalidateGrid = true;
@@ -912,20 +931,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
-        React.Children.forEach(children, (child: React.ReactElement<any>) => {
-            // save as a variable so that union type narrowing works
-            const childType = child.type;
-
-            // the second part of this conditional will never be true, but it
-            // informs the TS compiler that we won't be invoking
-            // childType.prototype on a "string" element.
-            if (typeof child === "string" || typeof childType === "string") {
+        React.Children.forEach(children, child => {
+            if (!CoreUtils.isElementOfType(child, Column)) {
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
-            } else {
-                const isColumn = childType.prototype === Column.prototype || Column.prototype.isPrototypeOf(childType);
-                if (!isColumn) {
-                    throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
-                }
             }
         });
 
@@ -1230,7 +1238,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
-        const areGhostColumnsVisible = enableGhostCells && this.grid.isGhostIndex(0, columnIndices.columnIndexEnd);
+        const areGhostColumnsVisible = enableGhostCells && this.grid.isGhostColumn(columnIndices.columnIndexEnd);
         const areColumnHeadersLoading = this.hasLoadingOption(
             this.props.loadingOptions,
             TableLoadingOption.COLUMN_HEADERS,
@@ -1863,7 +1871,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
-        this.handleSelection(newSelectionRegions);
+        const { selectedRegionTransform } = this.props;
+        const transformedSelectionRegions =
+            selectedRegionTransform != null
+                ? newSelectionRegions.map(region => selectedRegionTransform(region, e))
+                : newSelectionRegions;
+        this.handleSelection(transformedSelectionRegions);
         this.handleFocus(newFocusedCell);
 
         // keep the focused cell in view

@@ -10,11 +10,13 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import {
+    Boundary,
     Classes as CoreClasses,
     HTMLDivProps,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
+    IPopoverProps,
     Keys,
     Popover,
     Position,
@@ -22,7 +24,7 @@ import {
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeBoundary, DateRangeInput, DateRangePicker } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -33,14 +35,17 @@ type WrappedComponentDayElement = ReactWrapper<HTMLDivProps, any>;
 type OutOfRangeTestFunction = (
     inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
     inputString: string,
-    boundary?: DateRangeBoundary,
+    boundary?: Boundary,
 ) => void;
 
 type InvalidDateTestFunction = (
     inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-    boundary: DateRangeBoundary,
+    boundary: Boundary,
     otherInputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
 ) => void;
+
+// Change the default for testability
+DateRangeInput.defaultProps.popoverProps = { usePortal: false };
 
 describe("<DateRangeInput>", () => {
     const START_DAY = 22;
@@ -90,7 +95,11 @@ describe("<DateRangeInput>", () => {
         const CLASS_2 = "bar";
 
         const wrapper = mount(
-            <DateRangeInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2 }} />,
+            <DateRangeInput
+                {...DATE_FORMAT}
+                className={CLASS_1}
+                popoverProps={{ className: CLASS_2, usePortal: false }}
+            />,
         );
         wrapper.setState({ isOpen: true });
 
@@ -354,23 +363,14 @@ describe("<DateRangeInput>", () => {
 
     describe("popoverProps", () => {
         it("accepts custom popoverProps", () => {
-            const popoverProps = {
-                popoverDidOpen: sinon.spy(),
-                popoverWillClose: sinon.spy(),
-                popoverWillOpen: sinon.spy(),
+            const popoverProps: Partial<IPopoverProps> = {
+                backdropProps: {},
                 position: Position.TOP_LEFT,
+                usePortal: false,
             };
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
-
-            expect(root.find(Popover).prop("position")).to.equal(Position.TOP_LEFT);
-
-            root.setState({ isOpen: true });
-            expect(popoverProps.popoverWillOpen.calledOnce).to.be.true;
-            expect(popoverProps.popoverDidOpen.calledOnce).to.be.true;
-
-            // not testing popoverProps.onClose, because it has some setTimeout stuff to work around
-            root.setState({ isOpen: false });
-            expect(popoverProps.popoverWillClose.calledOnce).to.be.true;
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
+            expect(popover.prop("backdropProps")).to.equal(popoverProps.backdropProps);
+            expect(popover.prop("position")).to.equal(popoverProps.position);
         });
 
         it("ignores autoFocus, enforceFocus, and content in custom popoverProps", () => {
@@ -379,11 +379,10 @@ describe("<DateRangeInput>", () => {
                 autoFocus: true,
                 content: CUSTOM_CONTENT,
                 enforceFocus: true,
+                usePortal: false,
             };
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />);
-
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
             // this test assumes the following values will be the defaults internally
-            const popover = root.find(Popover);
             expect(popover.prop("autoFocus")).to.be.false;
             expect(popover.prop("enforceFocus")).to.be.false;
             expect(popover.prop("content")).to.not.equal(CUSTOM_CONTENT);
@@ -554,8 +553,7 @@ describe("<DateRangeInput>", () => {
 
             describe("calls onError with invalid date on blur", () => {
                 runTestForEachScenario((inputGetterFn, inputString, boundary) => {
-                    const expectedRange =
-                        boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
+                    const expectedRange = boundary === Boundary.START ? [inputString, null] : [null, inputString];
                     inputGetterFn(root).simulate("focus");
                     changeInputText(inputGetterFn(root), inputString);
                     expect(onError.called).to.be.false;
@@ -589,7 +587,7 @@ describe("<DateRangeInput>", () => {
             });
 
             function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
-                const { START, END } = DateRangeBoundary; // deconstruct to keep line lengths under threshold
+                const { START, END } = Boundary; // deconstruct to keep line lengths under threshold
                 it("if start < minDate", () => runTestFn(getStartInput, OUT_OF_RANGE_START_STR, START));
                 it("if start > maxDate", () => runTestFn(getStartInput, OUT_OF_RANGE_END_STR, START));
                 it("if end < minDate", () => runTestFn(getEndInput, OUT_OF_RANGE_START_STR, END));
@@ -651,7 +649,7 @@ describe("<DateRangeInput>", () => {
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
-                    const dateIndex = boundary === DateRangeBoundary.START ? 0 : 1;
+                    const dateIndex = boundary === Boundary.START ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
                 });
             });
@@ -697,17 +695,15 @@ describe("<DateRangeInput>", () => {
 
                     const actualRange = onChange.getCall(0).args[0];
                     const expectedRange =
-                        boundary === DateRangeBoundary.START
-                            ? [VALID_STR, UNDEFINED_DATE_STR]
-                            : [UNDEFINED_DATE_STR, VALID_STR];
+                        boundary === Boundary.START ? [VALID_STR, UNDEFINED_DATE_STR] : [UNDEFINED_DATE_STR, VALID_STR];
 
                     assertDateRangesEqual(actualRange, expectedRange);
                 });
             });
 
             function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
-                it("in start field", () => runTestFn(getStartInput, DateRangeBoundary.START, getEndInput));
-                it("in end field", () => runTestFn(getEndInput, DateRangeBoundary.END, getStartInput));
+                it("in start field", () => runTestFn(getStartInput, Boundary.START, getEndInput));
+                it("in end field", () => runTestFn(getEndInput, Boundary.END, getStartInput));
             }
         });
 
@@ -2207,8 +2203,7 @@ describe("<DateRangeInput>", () => {
 
             describe("calls onError with invalid date on blur", () => {
                 runTestForEachScenario((inputGetterFn, inputString, boundary) => {
-                    const expectedRange =
-                        boundary === DateRangeBoundary.START ? [inputString, null] : [null, inputString];
+                    const expectedRange = boundary === Boundary.START ? [inputString, null] : [null, inputString];
                     inputGetterFn(root).simulate("focus");
                     changeInputText(inputGetterFn(root), inputString);
                     expect(onError.called).to.be.false;
@@ -2229,7 +2224,7 @@ describe("<DateRangeInput>", () => {
             });
 
             function runTestForEachScenario(runTestFn: OutOfRangeTestFunction) {
-                const { START, END } = DateRangeBoundary;
+                const { START, END } = Boundary;
                 it("if start < minDate", () => runTestFn(getStartInput, OUT_OF_RANGE_START_STR, START));
                 it("if start > maxDate", () => runTestFn(getStartInput, OUT_OF_RANGE_END_STR, START));
                 it("if end < minDate", () => runTestFn(getEndInput, OUT_OF_RANGE_START_STR, END));
@@ -2270,7 +2265,7 @@ describe("<DateRangeInput>", () => {
                     expect(onError.calledOnce).to.be.true;
 
                     const dateRange = onError.getCall(0).args[0];
-                    const dateIndex = boundary === DateRangeBoundary.START ? 0 : 1;
+                    const dateIndex = boundary === Boundary.START ? 0 : 1;
                     expect((dateRange[dateIndex] as Date).valueOf()).to.be.NaN;
                 });
             });
@@ -2286,8 +2281,8 @@ describe("<DateRangeInput>", () => {
             });
 
             function runTestForEachScenario(runTestFn: InvalidDateTestFunction) {
-                it("in start field", () => runTestFn(getStartInput, DateRangeBoundary.START, getEndInput));
-                it("in end field", () => runTestFn(getEndInput, DateRangeBoundary.END, getStartInput));
+                it("in start field", () => runTestFn(getStartInput, Boundary.START, getEndInput));
+                it("in end field", () => runTestFn(getEndInput, Boundary.END, getStartInput));
             }
         });
 

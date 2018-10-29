@@ -10,11 +10,12 @@ import { initializeSVGs } from "./svgs";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
+// tslint:disable:blueprint-classes-constants
 initializeLogo(
     document.getElementById("pt-logo") as HTMLCanvasElement,
     document.getElementById("pt-logo-background") as HTMLCanvasElement,
 );
 
-initializeSVGs(document.querySelector(".pt-wireframes") as HTMLElement);
+initializeSVGs(document.querySelector(".landing-wireframes") as HTMLElement);
 
 document.getElementById("copyright").innerHTML = `© 2014–${new Date().getFullYear()} Palantir Technologies`;

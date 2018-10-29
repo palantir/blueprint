@@ -4,62 +4,62 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Classes, H5, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
-import { DatePicker } from "@blueprintjs/datetime";
+import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
 import { MomentDate } from "./common/momentDate";
+import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDatePickerExampleState {
-    date?: Date;
-    reverseMonthAndYearMenus?: boolean;
-    showActionsBar?: boolean;
+    date: Date | null;
+    reverseMonthAndYearMenus: boolean;
+    showActionsBar: boolean;
+    timePrecision: TimePrecision | undefined;
 }
 
-export class DatePickerExample extends BaseExample<IDatePickerExampleState> {
+export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
     public state: IDatePickerExampleState = {
         date: null,
         reverseMonthAndYearMenus: false,
         showActionsBar: false,
+        timePrecision: undefined,
     };
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
-    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
-        this.setState({ reverseMonthAndYearMenus }),
+    private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
+    private handlePrecisionChange = handleStringChange((p: TimePrecision | "none") =>
+        this.setState({ timePrecision: p === "none" ? undefined : p }),
     );
 
-    protected renderExample() {
-        return (
-            <div className="docs-datetime-example">
-                <DatePicker
-                    className={Classes.ELEVATION_1}
-                    onChange={this.handleDateChange}
-                    reverseMonthAndYearMenus={this.state.reverseMonthAndYearMenus}
-                    showActionsBar={this.state.showActionsBar}
-                />
-                <MomentDate date={this.state.date} />
-            </div>
-        );
-    }
+    public render() {
+        const { date, ...props } = this.state;
 
-    protected renderOptions() {
-        return [
-            [
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch checked={props.showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
                 <Switch
-                    checked={this.state.showActionsBar}
-                    label="Show actions bar"
-                    key="Actions"
-                    onChange={this.toggleActionsBar}
-                />,
-                <Switch
-                    checked={this.state.reverseMonthAndYearMenus}
+                    checked={props.reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
-                    key="Reverse month and year menus"
-                    onChange={this.toggleReverseMonthAndYearMenus}
-                />,
-            ],
-        ];
+                    onChange={this.toggleReverseMenus}
+                />
+                <PrecisionSelect
+                    allowNone={true}
+                    label="Time precision"
+                    value={props.timePrecision}
+                    onChange={this.handlePrecisionChange}
+                />
+            </>
+        );
+
+        return (
+            <Example options={options} {...this.props}>
+                <DatePicker className={Classes.ELEVATION_1} onChange={this.handleDateChange} {...props} />
+                <MomentDate date={date} withTime={props.timePrecision !== undefined} />
+            </Example>
+        );
     }
 
     private handleDateChange = (date: Date) => this.setState({ date });

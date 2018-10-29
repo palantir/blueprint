@@ -1,86 +1,63 @@
-@# Buttons
+@# Button
 
 Buttons trigger actions when clicked.
 
-@## CSS API
+@reactExample ButtonsExample
 
-Use the `pt-button` class to access button styles. You should implement buttons using the
-`<button>` or `<a>` tags rather than `<div>` for the purposes of HTML accessibility and semantics.
+### `AnchorButton`
 
-* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` when used in a
+```tsx
+<AnchorButton text="Click" />
+// renders:
+<a class="@ns-button" role="button" tabIndex={0}>Click</a>
+```
+
+### `Button`
+
+```tsx
+<Button icon="refresh" />
+// renders:
+<button class="@ns-button" type="button"><svg class="@ns-icon">...</svg></button>
+```
+
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">Disabled `Button` prevents all interaction</h4>
+    Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
+
+    `Button` uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
+    `AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
+    attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
+    when disabled but permit other events.
+
+</div>
+
+@## Adding icons
+
+`Button` and `AnchorButton` support `icon` and `rightIcon` props to place an
+icon on either end of their children. Icons can also be supplied as children
+using the `Icon` component.
+
+@reactExample ButtonsIconsExample
+
+@## Props
+
+The two button components each support arbitrary HTML props for their underlying
+DOM element (`<button>` and `<a>` respectively). Specifying an HTML prop will
+override the component's default for it, such as `role` on `<AnchorButton>`.
+
+@interface IButtonProps
+
+@## CSS
+
+Use the `@ns-button` class to access button styles. You should implement buttons using the
+`<button>` or `<a>` tags rather than `<div>` for accessibility.
+
+* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
   `<form>`) and `role="button"` on `<a>` tags for accessibility.
 * Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
   focusable by default.
 * For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-  user from focusing them by pressing <kbd class="pt-key">tab</kbd> on the keyboard.
-* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.pt-disabled` instead.
+  user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
+* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
-@css pt-button
-
-@### Buttons with icons
-
-Add an icon before the button text with `pt-icon-*` classes.
-You _do not_ need to include an icon sizing class.
-
-@css pt-button.pt-icon
-
-@### Advanced icon layout
-
-You can use a `pt-icon-*` class on a button to add a single icon before the button
-text, but for more advanced icon layouts, use `<span>` tags inside the button.
-Add multiple icons to the same button, or move icons after the text.
-
-To adjust margins on right-aligned icons, add the class `pt-align-right` to the icon.
-
-@css pt-button.pt-icon-advanced
-
-@### Minimal buttons
-
-For a subtler button that appears to fade into the UI, add the `.pt-minimal` modifier
-to any `.pt-button`. `pt-minimal` is compatible with all other button modifiers,
-except for `.pt-fill` (due to lack of visual affordances).
-
-@css pt-button.pt-minimal
-
-@## JavaScript API
-
-The `Button` and `AnchorButton` components are available in the **@blueprintjs/core** package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-Button components render buttons with Blueprint classes and attributes.
-See the [Buttons CSS docs](#core/components/button.css-api) for styling options.
-
-You can provide your own props to these components as if they were regular JSX HTML elements. If you
-provide a `className` prop, the class names you provide will be added alongside of the default
-Blueprint class name. If you specify other attributes that the component provides, such as a `role`
-for an `<AnchorButton>`, you'll overide the default value.
-
-<div class="pt-callout pt-intent-danger pt-icon-error">
-    <h4 class="pt-callout-title">Interactions with disabled buttons</h4>
-    Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
-    This is because `Button` and `AnchorButton` handle the `disabled` prop differently: `Button` uses
-    the native `disabled` attribute on the `<button>` tag so the browser disables all interactions,
-    but `AnchorButton` uses the class `.pt-disabled` because `<a>` tags do not support the `disabled`
-    attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
-    when disabled but permit other events.
-</div>
-
-@reactExample ButtonsExample
-
-@### Anchor button
-
-```jsx
-<AnchorButton text="Click" />
-// renders:
-<a class="pt-button" role="button" tabIndex={0}>Click</a>
-```
-
-@### Button
-
-```jsx
-<Button icon="refresh" />
-// renders:
-<button class="pt-button pt-icon-refresh" type="button"></button>
-```
-
-@interface IButtonProps
+@css button

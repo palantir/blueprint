@@ -11,6 +11,7 @@
           "dom",
           "dom.iterable",
           "es5",
+          "es2015.collection",
           "es2015.iterable"
         ],
         "module": "es2015",
@@ -22,8 +23,9 @@
         "noUnusedParameters": true,
         "pretty": true,
         "removeComments": false,
-        "sourceMap": false,
+        "sourceMap": true,
         "stripInternal": true,
-        "target": "es5"
+        "target": "es5",
+        "typeRoots": ["../node_modules/@types"]
     }
 }

@@ -8,9 +8,9 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Classes, Menu, MenuDivider, MenuItem } from "../../src/index";
+import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src/index";
 
-describe("MenuDivider", () => {
+describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {
         const divider = shallow(<MenuDivider />);
         assert.isTrue(divider.hasClass(Classes.MENU_DIVIDER));
@@ -20,11 +20,11 @@ describe("MenuDivider", () => {
         const divider = shallow(<MenuDivider title="Subject" />);
         assert.isFalse(divider.hasClass(Classes.MENU_DIVIDER));
         assert.isTrue(divider.hasClass(Classes.MENU_HEADER));
-        assert.strictEqual(divider.text(), "Subject");
+        assert.isTrue(divider.find(H6).exists());
     });
 });
 
-describe("Menu", () => {
+describe("<Menu>", () => {
     it("React renders Menu with children", () => {
         const menu = shallow(
             <Menu>

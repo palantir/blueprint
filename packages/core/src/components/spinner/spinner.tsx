@@ -7,19 +7,41 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { IIntentProps, IProps } from "../../common/props";
+import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 // see http://stackoverflow.com/a/18473154/3124288 for calculating arc path
-const SPINNER_TRACK = "M 50,50 m 0,-44.5 a 44.5,44.5 0 1 1 0,89 a 44.5,44.5 0 1 1 0,-89";
+const R = 45;
+const SPINNER_TRACK = `M 50,50 m 0,-${R} a ${R},${R} 0 1 1 0,${R * 2} a ${R},${R} 0 1 1 0,-${R * 2}`;
 
 // unitless total length of SVG path, to which stroke-dash* properties are relative.
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength
 // this value is the result of `<path d={SPINNER_TRACK} />.getTotalLength()` and works in all browsers:
 const PATH_LENGTH = 280;
 
+const MIN_SIZE = 10;
+const STROKE_WIDTH = 4;
+const MIN_STROKE_WIDTH = 16;
+
 export interface ISpinnerProps extends IProps, IIntentProps {
+    /**
+     * Width and height of the spinner in pixels. The size cannot be less than
+     * 10px. Constants are available for common sizes: `Spinner.SIZE_SMALL`,
+     * `Spinner.SIZE_STANDARD`, `Spinner.SIZE_LARGE`.
+     * @default Spinner.SIZE_STANDARD = 50
+     */
+    size?: number;
+
+    /**
+     * HTML tag for the two wrapper elements. If rendering a `<Spinner>` inside
+     * an `<svg>`, change this to an SVG element like `"g"`.
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
+
     /**
      * A value between 0 and 1 (inclusive) representing how far along the operation is.
      * Values below 0 or above 1 will be interpreted as 0 or 1 respectively.
@@ -28,50 +50,91 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     value?: number;
 }
 
-export class Spinner extends React.PureComponent<ISpinnerProps, {}> {
-    public static displayName = "Blueprint2.Spinner";
+export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
+
+    public static readonly SIZE_SMALL = 24;
+    public static readonly SIZE_STANDARD = 50;
+    public static readonly SIZE_LARGE = 100;
+
+    public componentDidUpdate(prevProps: ISpinnerProps) {
+        if (prevProps.value !== this.props.value) {
+            // IE/Edge: re-render after changing value to force SVG update
+            this.forceUpdate();
+        }
+    }
 
     public render() {
-        const { className, intent, value } = this.props;
+        const { className, intent, value, tagName: TagName = "div" } = this.props;
+        const size = this.getSize();
+
         const classes = classNames(
             Classes.SPINNER,
             Classes.intentClass(intent),
-            {
-                "pt-no-spin": value != null,
-            },
+            { [Classes.SPINNER_NO_SPIN]: value != null },
             className,
         );
 
-        const style: React.CSSProperties = {
-            strokeDasharray: `${PATH_LENGTH} ${PATH_LENGTH}`,
-            // default to quarter-circle when indeterminate
-            // IE11: CSS transitions on SVG elements are Not Supported :(
-            strokeDashoffset: PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1)),
-        };
+        // keep spinner track width consistent at all sizes (down to about 10px).
+        const strokeWidth = Math.min(MIN_STROKE_WIDTH, STROKE_WIDTH * Spinner.SIZE_LARGE / size);
 
-        // HACKHACK to squash error regarding React.SVGProps missing prop pathLength
-        const svgPathAttributes: React.DOMAttributes<SVGPathElement> = {
-            className: "pt-spinner-head",
-            d: SPINNER_TRACK,
-            pathLength: PATH_LENGTH,
-            style,
-        } as any;
+        const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
 
-        return this.renderContainer(
-            classes,
-            <svg viewBox={classes.indexOf(Classes.SMALL) >= 0 ? "-15 -15 130 130" : "0 0 100 100"}>
-                <path className="pt-spinner-track" d={SPINNER_TRACK} />
-                <path {...svgPathAttributes} />
-            </svg>,
+        // multiple DOM elements around SVG are necessary to properly isolate animation:
+        // - SVG elements in IE do not support anim/trans so they must be set on a parent HTML element.
+        // - SPINNER_ANIMATION isolates svg from parent display and is always centered inside root element.
+        return (
+            <TagName className={classes}>
+                <TagName className={Classes.SPINNER_ANIMATION}>
+                    <svg
+                        width={size}
+                        height={size}
+                        strokeWidth={strokeWidth.toFixed(2)}
+                        viewBox={this.getViewBox(strokeWidth)}
+                    >
+                        <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
+                        <path
+                            className={Classes.SPINNER_HEAD}
+                            d={SPINNER_TRACK}
+                            pathLength={PATH_LENGTH}
+                            strokeDasharray={`${PATH_LENGTH} ${PATH_LENGTH}`}
+                            strokeDashoffset={strokeOffset}
+                        />
+                    </svg>
+                </TagName>
+            </TagName>
         );
     }
 
-    // abstract away the container elements so SVGSpinner can do its own thing
-    protected renderContainer(classes: string, content: JSX.Element) {
-        return (
-            <div className={classes}>
-                <div className="pt-spinner-svg-container">{content}</div>
-            </div>
-        );
+    protected validateProps({ className = "", size }: ISpinnerProps) {
+        if (size != null && (className.indexOf(Classes.SMALL) >= 0 || className.indexOf(Classes.LARGE) >= 0)) {
+            console.warn(SPINNER_WARN_CLASSES_SIZE);
+        }
+    }
+
+    /**
+     * Resolve size to a pixel value.
+     * Size can be set by className, props, default, or minimum constant.
+     */
+    private getSize() {
+        const { className = "", size } = this.props;
+        if (size == null) {
+            // allow Classes constants to determine default size.
+            if (className.indexOf(Classes.SMALL) >= 0) {
+                return Spinner.SIZE_SMALL;
+            } else if (className.indexOf(Classes.LARGE) >= 0) {
+                return Spinner.SIZE_LARGE;
+            }
+            return Spinner.SIZE_STANDARD;
+        }
+        return Math.max(MIN_SIZE, size);
+    }
+
+    /** Compute viewbox such that stroked track sits exactly at edge of image frame. */
+    private getViewBox(strokeWidth: number) {
+        const radius = R + strokeWidth / 2;
+        const viewBoxX = (50 - radius).toFixed(2);
+        const viewBoxWidth = (radius * 2).toFixed(2);
+        return `${viewBoxX} ${viewBoxX} ${viewBoxWidth} ${viewBoxWidth}`;
     }
 }

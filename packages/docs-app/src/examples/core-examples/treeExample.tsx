@@ -6,31 +6,29 @@
 
 import * as React from "react";
 
-import { Classes, Icon, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Classes, Icon, ITreeNode, Position, Tooltip, Tree } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
 }
 
-export class TreeExample extends BaseExample<ITreeExampleState> {
+// use Component so it re-renders everytime: `nodes` are not a primitive type
+// and therefore aren't included in shallow prop comparison
+export class TreeExample extends React.Component<IExampleProps, ITreeExampleState> {
     public state: ITreeExampleState = { nodes: INITIAL_STATE };
 
-    // override @PureRender because nodes are not a primitive type and therefore aren't included in
-    // shallow prop comparison
-    public shouldComponentUpdate() {
-        return true;
-    }
-
-    protected renderExample() {
+    public render() {
         return (
-            <Tree
-                contents={this.state.nodes}
-                onNodeClick={this.handleNodeClick}
-                onNodeCollapse={this.handleNodeCollapse}
-                onNodeExpand={this.handleNodeExpand}
-                className={Classes.ELEVATION_0}
-            />
+            <Example options={false} {...this.props}>
+                <Tree
+                    contents={this.state.nodes}
+                    onNodeClick={this.handleNodeClick}
+                    onNodeCollapse={this.handleNodeCollapse}
+                    onNodeExpand={this.handleNodeExpand}
+                    className={Classes.ELEVATION_0}
+                />
+            </Example>
         );
     }
 
@@ -77,7 +75,11 @@ const INITIAL_STATE: ITreeNode[] = [
         id: 1,
         icon: "folder-close",
         isExpanded: true,
-        label: <Tooltip content="I'm a folder <3">Folder 1</Tooltip>,
+        label: (
+            <Tooltip content="I'm a folder <3" position={Position.RIGHT}>
+                Folder 1
+            </Tooltip>
+        ),
         childNodes: [
             {
                 id: 2,
@@ -98,7 +100,11 @@ const INITIAL_STATE: ITreeNode[] = [
                 id: 4,
                 hasCaret: true,
                 icon: "folder-close",
-                label: <Tooltip content="foo">Folder 2</Tooltip>,
+                label: (
+                    <Tooltip content="foo" position={Position.RIGHT}>
+                        Folder 2
+                    </Tooltip>
+                ),
                 childNodes: [
                     { id: 5, label: "No-Icon Item" },
                     { id: 6, icon: "tag", label: "Item 1" },

@@ -45,7 +45,7 @@ export const NavMenu: React.SFC<INavMenuProps> = props => {
             </li>
         );
     });
-    const classes = classNames("docs-nav-menu", "pt-list-unstyled", props.className);
+    const classes = classNames("docs-nav-menu", Classes.LIST_UNSTYLED, props.className);
     return <ul className={classes}>{menu}</ul>;
 };
 NavMenu.displayName = "Docs2.NavMenu";

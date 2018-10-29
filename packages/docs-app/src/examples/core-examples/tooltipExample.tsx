@@ -6,15 +6,15 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Button, Classes, H1, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
+export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen: boolean }> {
     public state = {
         isOpen: false,
     };
 
-    protected renderExample() {
+    public render() {
         // using JSX instead of strings for all content so the tooltips will re-render
         // with every update for dark theme inheritance.
         const lotsOfText = (
@@ -29,10 +29,10 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
             </em>
         );
         return (
-            <div className="docs-tooltip2-example">
+            <Example options={false} {...this.props}>
                 <div>
                     Inline text can have{" "}
-                    <Tooltip className="pt-tooltip-indicator" content={jsxContent}>
+                    <Tooltip className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>
                         a tooltip.
                     </Tooltip>
                 </div>
@@ -41,14 +41,14 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                 </div>
                 <div>
                     This line's tooltip{" "}
-                    <Tooltip className="pt-tooltip-indicator" content={<span>disabled</span>} disabled={true}>
+                    <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>disabled</span>} disabled={true}>
                         is disabled.
                     </Tooltip>
                 </div>
                 <div>
                     This line's tooltip{" "}
                     <Tooltip
-                        className="pt-tooltip-indicator"
+                        className={Classes.TOOLTIP_INDICATOR}
                         content={<span>BRRAAAIINS</span>}
                         isOpen={this.state.isOpen}
                     >
@@ -63,7 +63,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                 </div>
                 <div>
                     <Tooltip
-                        className="pt-tooltip-indicator"
+                        className={Classes.TOOLTIP_INDICATOR}
                         content="Intent.PRIMARY"
                         intent={Intent.PRIMARY}
                         position={Position.LEFT}
@@ -72,7 +72,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         Available
                     </Tooltip>{" "}
                     <Tooltip
-                        className="pt-tooltip-indicator"
+                        className={Classes.TOOLTIP_INDICATOR}
                         content="Intent.SUCCESS"
                         intent={Intent.SUCCESS}
                         position={Position.TOP}
@@ -81,7 +81,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         in the full
                     </Tooltip>{" "}
                     <Tooltip
-                        className="pt-tooltip-indicator"
+                        className={Classes.TOOLTIP_INDICATOR}
                         content="Intent.WARNING"
                         intent={Intent.WARNING}
                         position={Position.BOTTOM}
@@ -90,7 +90,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         range of
                     </Tooltip>{" "}
                     <Tooltip
-                        className="pt-tooltip-indicator"
+                        className={Classes.TOOLTIP_INDICATOR}
                         content="Intent.DANGER"
                         intent={Intent.DANGER}
                         position={Position.RIGHT}
@@ -101,9 +101,9 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                 </div>
                 <br />
                 <Popover
-                    content={<h1>Popover!</h1>}
+                    content={<H1>Popover!</H1>}
                     position={Position.RIGHT}
-                    popoverClassName="pt-popover-content-sizing"
+                    popoverClassName={Classes.POPOVER_CONTENT_SIZING}
                 >
                     <Tooltip
                         content={<span>This button also has a popover!</span>}
@@ -113,7 +113,7 @@ export class TooltipExample extends BaseExample<{ isOpen: boolean }> {
                         <Button intent={Intent.SUCCESS} text="Hover and click me" />
                     </Tooltip>
                 </Popover>
-            </div>
+            </Example>
         );
     }
 

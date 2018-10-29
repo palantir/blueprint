@@ -4,11 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
 
@@ -17,16 +16,16 @@ const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface IMultiSelectExampleState {
-    films?: IFilm[];
-    hasInitialContent?: boolean;
-    intent?: boolean;
-    openOnKeyDown?: boolean;
-    popoverMinimal?: boolean;
-    resetOnSelect?: boolean;
-    tagMinimal?: boolean;
+    films: IFilm[];
+    hasInitialContent: boolean;
+    intent: boolean;
+    openOnKeyDown: boolean;
+    popoverMinimal: boolean;
+    resetOnSelect: boolean;
+    tagMinimal: boolean;
 }
 
-export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
+export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         films: [],
         hasInitialContent: false,
@@ -44,95 +43,90 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
     private handleIntentChange = this.handleSwitchChange("intent");
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
-    protected renderExample() {
+    public render() {
         const { films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
         const getTagProps = (_value: string, index: number): ITagProps => ({
-            className: tagMinimal ? Classes.MINIMAL : "",
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
+            minimal: tagMinimal,
         });
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
         ) : (
+            // explicit undefined (not null) for default behavior (show full list)
             undefined
         );
 
+        const clearButton = films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : null;
+
         return (
-            <FilmMultiSelect
-                {...filmSelectProps}
-                {...flags}
-                initialContent={initialContent}
-                itemRenderer={this.renderFilm}
-                noResults={<MenuItem disabled={true} text="No results." />}
-                onItemSelect={this.handleFilmSelect}
-                popoverProps={{ popoverClassName: popoverMinimal ? Classes.MINIMAL : "" }}
-                tagRenderer={this.renderTag}
-                tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove }}
-                selectedItems={this.state.films}
-            />
+            <Example options={this.renderOptions()} {...this.props}>
+                <FilmMultiSelect
+                    {...filmSelectProps}
+                    {...flags}
+                    initialContent={initialContent}
+                    itemRenderer={this.renderFilm}
+                    noResults={<MenuItem disabled={true} text="No results." />}
+                    onItemSelect={this.handleFilmSelect}
+                    popoverProps={{ minimal: popoverMinimal }}
+                    tagRenderer={this.renderTag}
+                    tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
+                    selectedItems={this.state.films}
+                />
+            </Example>
         );
     }
 
     protected renderOptions() {
-        return [
-            [
+        return (
+            <>
+                <H5>Props</H5>
                 <Switch
-                    key="focus"
                     label="Open popover on key down"
                     checked={this.state.openOnKeyDown}
                     onChange={this.handleKeyDownChange}
-                />,
+                />
                 <Switch
-                    key="reset"
                     label="Reset query on select"
                     checked={this.state.resetOnSelect}
                     onChange={this.handleResetChange}
-                />,
+                />
                 <Switch
-                    key="hasInitialContent"
                     label="Use initial content"
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
-                />,
-            ],
-            [
+                />
+                <H5>Tag props</H5>
                 <Switch
-                    key="minimal-tag"
                     label="Minimal tag style"
                     checked={this.state.tagMinimal}
                     onChange={this.handleTagMinimalChange}
-                />,
+                />
                 <Switch
-                    key="intent"
                     label="Cycle through tag intents"
                     checked={this.state.intent}
                     onChange={this.handleIntentChange}
-                />,
+                />
+                <H5>Popover props</H5>
                 <Switch
-                    key="minimal-popover"
                     label="Minimal popover style"
                     checked={this.state.popoverMinimal}
                     onChange={this.handlePopoverMinimalChange}
-                />,
-            ],
-        ];
+                />
+            </>
+        );
     }
 
     private renderTag = (film: IFilm) => film.title;
 
+    // NOTE: not using Films.itemRenderer here so we can set icons.
     private renderFilm: ItemRenderer<IFilm> = (film, { modifiers, handleClick }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        // NOTE: not using Films.itemRenderer here so we can set icons.
-        const classes = classNames({
-            [Classes.ACTIVE]: modifiers.active,
-            [Classes.INTENT_PRIMARY]: modifiers.active,
-        });
-
         return (
             <MenuItem
-                className={classes}
+                active={modifiers.active}
                 icon={this.isFilmSelected(film) ? "tick" : "blank"}
                 key={film.rank}
                 label={film.year.toString()}
@@ -173,7 +167,10 @@ export class MultiSelectExample extends BaseExample<IMultiSelectExampleState> {
 
     private handleSwitchChange(prop: keyof IMultiSelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
-            this.setState({ [prop]: event.currentTarget.checked });
+            const checked = event.currentTarget.checked;
+            this.setState(state => ({ ...state, [prop]: checked }));
         };
     }
+
+    private handleClear = () => this.setState({ films: [] });
 }

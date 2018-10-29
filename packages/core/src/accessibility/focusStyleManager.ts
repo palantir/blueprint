@@ -4,10 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { FOCUS_DISABLED } from "../common/classes";
 import { InteractionModeEngine } from "../common/interactionMode";
 
-export const FOCUS_DISABLED_CLASS = "pt-focus-disabled";
-
+/* istanbul ignore next */
 const fakeFocusEngine = {
     isActive: () => true,
     start: () => true,
@@ -16,7 +16,7 @@ const fakeFocusEngine = {
 
 const focusEngine =
     typeof document !== "undefined"
-        ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED_CLASS)
+        ? new InteractionModeEngine(document.documentElement, FOCUS_DISABLED)
         : fakeFocusEngine;
 
 export const FocusStyleManager = {

@@ -6,21 +6,24 @@
 
 import * as React from "react";
 
-import { Classes, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Code, Label, Switch } from "@blueprintjs/core";
+import { CheckboxExample } from "./checkboxExample";
 
-export class SwitchExample extends BaseExample<{}> {
+export class SwitchExample extends CheckboxExample {
+    // See CheckboxExample for options
     protected renderExample() {
         return (
-            <div>
-                <label className={Classes.LABEL}>Privacy setting</label>
-                <Switch labelElement={<strong>Enabled</strong>} />
-                <Switch labelElement={<em>Public</em>} />
-                <Switch labelElement={<u>Cooperative</u>} defaultChecked={true} />
-                <small>
-                    This example uses <code>labelElement</code> to demonstrate JSX labels.
+            <>
+                <div>
+                    <Label>Privacy setting</Label>
+                    <Switch {...this.state} labelElement={<strong>Enabled</strong>} />
+                    <Switch {...this.state} labelElement={<em>Public</em>} />
+                    <Switch {...this.state} labelElement={<u>Cooperative</u>} defaultChecked={true} />
+                </div>
+                <small style={{ width: "100%", textAlign: "center" }}>
+                    This example uses <Code>labelElement</Code> to demonstrate JSX labels.
                 </small>
-            </div>
+            </>
         );
     }
 }

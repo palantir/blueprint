@@ -11,9 +11,12 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes, DateInput, IDateInputProps, TimePicker, TimePickerPrecision } from "../src/index";
+import { Classes, DateInput, DatePicker, IDateInputProps, TimePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
+
+// Change the default for testability
+DateInput.defaultProps.popoverProps = { usePortal: false };
 
 describe("<DateInput>", () => {
     it("handles null inputs without crashing", () => {
@@ -29,7 +32,9 @@ describe("<DateInput>", () => {
         const CLASS_1 = "foo";
         const CLASS_2 = "bar";
 
-        const wrapper = mount(<DateInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2 }} />);
+        const wrapper = mount(
+            <DateInput {...DATE_FORMAT} className={CLASS_1} popoverProps={{ className: CLASS_2, usePortal: false }} />,
+        );
         wrapper.setState({ isOpen: true });
 
         const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
@@ -111,36 +116,36 @@ describe("<DateInput>", () => {
 
     it("Popover should not close if focus moves to month select", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
-        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper.setState({ isOpen: true });
-        wrapper
+        const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        root.setState({ isOpen: true });
+        root
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+        assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
     it("Popover should not close if focus moves to year select", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
-        const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper.setState({ isOpen: true });
-        wrapper
+        const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
+        root.setState({ isOpen: true });
+        root
             .find("input")
             .simulate("focus")
             .simulate("blur");
-        wrapper.find(".pt-datepicker-year-select").simulate("change", { value: "2016" });
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        changeSelect(Classes.DATEPICKER_YEAR_SELECT, 2016);
+        assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
     it("setting timePrecision renders a TimePicker", () => {
-        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePickerPrecision.SECOND} />).setState({
+        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePrecision.SECOND} />).setState({
             isOpen: true,
         });
         // assert TimePicker appears
         const timePicker = wrapper.find(TimePicker);
         assert.isTrue(timePicker.exists());
-        assert.strictEqual(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        assert.strictEqual(timePicker.prop("precision"), TimePrecision.SECOND);
         // assert TimePicker disappears in absence of prop
         wrapper.setProps({ timePrecision: undefined });
         assert.isFalse(wrapper.find(TimePicker).exists());
@@ -155,7 +160,7 @@ describe("<DateInput>", () => {
                 <DateInput
                     {...DATE_FORMAT}
                     maxDate={new Date(2050, 5, 4)}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                     value={new Date(2030, 4, 5)}
                 />,
             ).setState({ isOpen: true });
@@ -171,14 +176,14 @@ describe("<DateInput>", () => {
             disabled: true,
             // these will each be overridden by top-level props:
             onChange,
-            precision: TimePickerPrecision.MILLISECOND,
+            precision: TimePrecision.MILLISECOND,
             value: new Date(2017, Months.MAY, 6),
         };
 
         const wrapper = mount(
             <DateInput
                 {...DATE_FORMAT}
-                timePrecision={TimePickerPrecision.SECOND}
+                timePrecision={TimePrecision.SECOND}
                 onChange={sinon.spy()}
                 value={value}
                 timePickerProps={timePickerProps}
@@ -187,13 +192,28 @@ describe("<DateInput>", () => {
 
         const timePicker = wrapper.find(TimePicker);
 
-        // ensure the top-level props override props by the same name in timePickerProps
-        assert.equal(timePicker.prop("precision"), TimePickerPrecision.SECOND);
+        // value > timePickerProps > timePrecision
+        assert.equal(timePicker.prop("precision"), TimePrecision.MILLISECOND);
         assert.notEqual(timePicker.prop("onChange"), onChange);
         DateTestUtils.assertDatesEqual(timePicker.prop("value"), value);
 
         // ensure this additional prop was passed through undeterred.
         assert.equal(timePicker.prop("disabled"), true);
+    });
+
+    it("clearButtonText and todayButtonText props are passed to DatePicker", () => {
+        const datePickerProps = {
+            clearButtonText: "clear",
+            todayButtonText: "today",
+        };
+
+        const wrapper = mount(<DateInput {...DATE_FORMAT} {...datePickerProps} />).setState({
+            isOpen: true,
+        });
+        const datePicker = wrapper.find(DatePicker);
+
+        assert.equal(datePicker.prop("clearButtonText"), "clear");
+        assert.equal(datePicker.prop("todayButtonText"), "today");
     });
 
     it("inputProps are passed to InputGroup", () => {
@@ -218,14 +238,14 @@ describe("<DateInput>", () => {
     });
 
     it("popoverProps are passed to Popover", () => {
-        const popoverWillOpen = sinon.spy();
+        const onOpening = sinon.spy();
         const wrapper = mount(
             <DateInput
                 {...DATE_FORMAT}
                 popoverProps={{
                     autoFocus: true,
                     content: "fail",
-                    popoverWillOpen,
+                    onOpening,
                     position: Position.TOP,
                     usePortal: false,
                 }}
@@ -238,7 +258,7 @@ describe("<DateInput>", () => {
         assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
         assert.strictEqual(popover.prop("position"), Position.TOP);
         assert.strictEqual(popover.prop("usePortal"), false);
-        assert.isTrue(popoverWillOpen.calledOnce);
+        assert.isTrue(onOpening.calledOnce);
     });
 
     describe("when uncontrolled", () => {
@@ -316,29 +336,30 @@ describe("<DateInput>", () => {
 
         it("Popover doesn't close when month changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1);
-            const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-            wrapper.setState({ isOpen: true });
-            wrapper.find(".pt-datepicker-month-select").simulate("change", { value: Months.FEBRUARY.toString() });
-            assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+            const { root, changeSelect } = wrap(
+                <DateInput
+                    {...DATE_FORMAT}
+                    defaultValue={defaultValue}
+                    popoverProps={{ isOpen: true, usePortal: false }}
+                />,
+            );
+            changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+            assert.isTrue(root.find(Popover).prop("isOpen"));
         });
 
         it("Popover doesn't close when time changes", () => {
             const defaultValue = new Date(2017, Months.JANUARY, 1, 0, 0, 0, 0);
             const wrapper = mount(
-                <DateInput
-                    {...DATE_FORMAT}
-                    defaultValue={defaultValue}
-                    timePrecision={TimePickerPrecision.MILLISECOND}
-                />,
+                <DateInput {...DATE_FORMAT} defaultValue={defaultValue} timePrecision={TimePrecision.MILLISECOND} />,
             );
             wrapper.setState({ isOpen: true });
 
             // try typing a new time
-            wrapper.find(".pt-timepicker-millisecond").simulate("change", { target: { value: "1" } });
+            wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("change", { target: { value: "1" } });
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
 
             // try keyboard-incrementing to a new time
-            wrapper.find(".pt-timepicker-millisecond").simulate("keydown", { which: Keys.ARROW_UP });
+            wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("keydown", { which: Keys.ARROW_UP });
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 
@@ -429,7 +450,7 @@ describe("<DateInput>", () => {
                     canClearSelection={false}
                     defaultValue={DATE}
                     onChange={onChange}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                 />,
             );
             root.setState({ isOpen: true });
@@ -437,7 +458,7 @@ describe("<DateInput>", () => {
             getDay(DATE.getDate()).simulate("click");
 
             assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, [DATE]);
+            assert.deepEqual(onChange.firstCall.args, [DATE, true]);
         });
     });
 
@@ -475,6 +496,7 @@ describe("<DateInput>", () => {
 
             assert.isTrue(onChange.calledOnce);
             assertDateEquals(onChange.args[0][0], new Date("4/27/2016"));
+            assert.isTrue(onChange.args[0][1], "expected isUserChange to be true");
         });
 
         it("Clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
@@ -483,7 +505,7 @@ describe("<DateInput>", () => {
             root.setState({ isOpen: true });
             getDay(4).simulate("click");
             assert.equal(root.find(InputGroup).prop("value"), "4/4/2016");
-            assert.isTrue(onChange.calledWith(null));
+            assert.isTrue(onChange.calledWith(null, true));
         });
 
         it("Updating value updates the text box", () => {
@@ -517,7 +539,7 @@ describe("<DateInput>", () => {
                 <DateInput {...DATE_FORMAT} value={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.find("input").simulate("change", { target: { value: "" } });
-            assert.isTrue(onChange.calledWith(null));
+            assert.isTrue(onChange.calledWith(null, true));
         });
 
         it.skip("Formats locale-specific format strings properly", () => {
@@ -532,7 +554,7 @@ describe("<DateInput>", () => {
                     {...DATE_FORMAT}
                     canClearSelection={false}
                     onChange={onChange}
-                    timePrecision={TimePickerPrecision.SECOND}
+                    timePrecision={TimePrecision.SECOND}
                     value={DATE}
                 />,
             );
@@ -543,7 +565,21 @@ describe("<DateInput>", () => {
                 .simulate("click");
 
             assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, [DATE]);
+            assert.deepEqual(onChange.firstCall.args, [DATE, true]);
+        });
+
+        it("isUserChange is false when month changes", () => {
+            const onChange = sinon.spy();
+            wrap(
+                <DateInput
+                    {...DATE_FORMAT}
+                    onChange={onChange}
+                    popoverProps={{ isOpen: true, usePortal: false }}
+                    value={DATE}
+                />,
+            ).changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+            assert.isTrue(onChange.calledOnce);
+            assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
         });
     });
 
@@ -599,6 +635,12 @@ describe("<DateInput>", () => {
     function wrap(dateInput: JSX.Element) {
         const wrapper = mount<IDateInputProps>(dateInput);
         return {
+            changeSelect: (className: string, value: React.ReactText) => {
+                return wrapper
+                    .find(`.${className}`)
+                    .find("select")
+                    .simulate("change", { target: { value: value.toString() } });
+            },
             getDay: (dayNumber = 1) => {
                 return wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)

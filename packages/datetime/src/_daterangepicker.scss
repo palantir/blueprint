@@ -1,50 +1,51 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the terms of the LICENSE file distributed with this project.
 
-@import "../../core/src/common/variables";
-@import "../../datetime/src/common";
+@import "./common";
 
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
-.pt-daterangepicker {
+.#{$ns}-daterangepicker {
   display: flex;
   white-space: nowrap;
 
-  .DayPicker:not(:last-child) {
-    margin-right: $pt-grid-size;
+  // indent first navbar a bit
+  .DayPicker:first-of-type .#{$ns}-datepicker-navbar {
+    left: $datepicker-padding;
   }
 
   .DayPicker-NavButton--interactionDisabled {
     display: none;
   }
 
-  .pt-daterangepicker-shortcuts + .DayPicker {
+  .#{$ns}-daterangepicker-timepickers {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .#{$ns}-daterangepicker-shortcuts + .DayPicker {
     border-left: 1px solid $pt-divider-black;
     min-width: $datepicker-min-width + $pt-grid-size;
-    padding-left: $pt-grid-size;
+    padding-left: $datepicker-padding;
   }
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
-  &.pt-daterangepicker-contiguous {
+  &.#{$ns}-daterangepicker-contiguous {
     .DayPicker {
       min-width: ($datepicker-min-width * 2) + $pt-grid-size;
     }
 
-    .pt-daterangepicker-shortcuts + .DayPicker {
+    .#{$ns}-daterangepicker-shortcuts + .DayPicker {
       min-width: ($datepicker-min-width + $pt-grid-size) * 2;
-    }
-
-    .DayPicker-Month:not(:last-child) {
-      margin-right: $pt-grid-size;
     }
   }
 
-  &.pt-daterangepicker-single-month {
+  &.#{$ns}-daterangepicker-single-month {
     .DayPicker {
       min-width: $datepicker-min-width;
     }
 
-    .pt-daterangepicker-shortcuts + .DayPicker {
+    .#{$ns}-daterangepicker-shortcuts + .DayPicker {
       min-width: $datepicker-min-width + $pt-grid-size;
     }
   }
@@ -100,7 +101,7 @@
     }
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     .DayPicker-Day {
       &--hovered-range {
         // same for dark theme
@@ -122,12 +123,7 @@
   }
 }
 
-.pt-menu.pt-daterangepicker-shortcuts {
-  display: inline-block;
-  margin-top: -$pt-grid-size / 2;
-  margin-left: -$pt-grid-size / 2;
-  min-width: $pt-grid-size * 15;
-  padding-top: 0;
-  padding-right: $pt-grid-size / 2;
-  padding-left: 0;
+.#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
+  min-width: $pt-grid-size * 12;
+  padding: 0;
 }

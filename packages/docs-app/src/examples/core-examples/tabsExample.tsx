@@ -4,21 +4,19 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITabsExampleState {
-    activeTabId?: TabId;
-    activePanelOnly?: boolean;
-    animate?: boolean;
-    navbarTabId?: TabId;
-    vertical?: boolean;
+    activePanelOnly: boolean;
+    animate: boolean;
+    navbarTabId: TabId;
+    vertical: boolean;
 }
 
-export class TabsExample extends BaseExample<ITabsExampleState> {
+export class TabsExample extends React.PureComponent<IExampleProps, ITabsExampleState> {
     public state: ITabsExampleState = {
         activePanelOnly: false,
         animate: true,
@@ -30,19 +28,34 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
     private toggleAnimate = handleBooleanChange(animate => this.setState({ animate }));
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
-    protected renderExample() {
+    public render() {
+        const options = (
+            <>
+                <H5>Props</H5>
+                <Switch checked={this.state.animate} label="Animate indicator" onChange={this.toggleAnimate} />
+                <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
+                <Switch
+                    checked={this.state.activePanelOnly}
+                    label="Render active tab panel only"
+                    onChange={this.toggleActiveOnly}
+                />
+            </>
+        );
+
         return (
-            <div className="docs-tabs-example">
-                <div className={Classes.NAVBAR}>
-                    <div className={classNames(Classes.NAVBAR_GROUP, Classes.ALIGN_LEFT)}>
-                        <div className={Classes.NAVBAR_HEADING}>Tabs Example</div>
-                    </div>
-                    <div className={classNames(Classes.NAVBAR_GROUP, Classes.ALIGN_LEFT)}>
+            <Example className="docs-tabs-example" options={options} {...this.props}>
+                <Navbar>
+                    <Navbar.Group>
+                        <Navbar.Heading>
+                            Current page: <strong>{this.state.navbarTabId}</strong>
+                        </Navbar.Heading>
+                    </Navbar.Group>
+                    <Navbar.Group align={Alignment.RIGHT}>
                         {/* controlled mode & no panels (see h1 below): */}
                         <Tabs
                             animate={this.state.animate}
-                            className={Classes.LARGE}
                             id="navbar"
+                            large={true}
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
                         >
@@ -50,15 +63,13 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
                             <Tab id="Files" title="Files" />
                             <Tab id="Builds" title="Builds" />
                         </Tabs>
-                    </div>
-                </div>
-                <h1 style={{ marginTop: 30, marginBottom: 30 }}>{this.state.navbarTabId}</h1>
+                    </Navbar.Group>
+                </Navbar>
                 {/* uncontrolled mode & each Tab has a panel: */}
                 <Tabs
                     animate={this.state.animate}
                     id="TabsExample"
                     key={this.state.vertical ? "vertical" : "horizontal"}
-                    onChange={this.handleTabChange}
                     renderActiveTabPanelOnly={this.state.activePanelOnly}
                     vertical={this.state.vertical}
                 >
@@ -67,45 +78,19 @@ export class TabsExample extends BaseExample<ITabsExampleState> {
                     <Tab id="mb" title="Ember" panel={<EmberPanel />} />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
                     <Tabs.Expander />
-                    <input className="pt-input" type="text" placeholder="Search..." />
+                    <InputGroup className={Classes.FILL} type="text" placeholder="Search..." />
                 </Tabs>
-            </div>
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.animate}
-                    label="Animate indicator"
-                    key="animate"
-                    onChange={this.toggleAnimate}
-                />,
-                <Switch
-                    checked={this.state.vertical}
-                    label="Use vertical tabs"
-                    key="vertical"
-                    onChange={this.toggleVertical}
-                />,
-                <Switch
-                    checked={this.state.activePanelOnly}
-                    label="Render active tab panel only"
-                    key="active"
-                    onChange={this.toggleActiveOnly}
-                />,
-            ],
-        ];
-    }
-
     private handleNavbarTabChange = (navbarTabId: TabId) => this.setState({ navbarTabId });
-    private handleTabChange = (activeTabId: TabId) => this.setState({ activeTabId });
 }
 
 const ReactPanel: React.SFC<{}> = () => (
     <div>
-        <h3>Example panel: React</h3>
-        <p className="pt-running-text">
+        <H3>Example panel: React</H3>
+        <p className={Classes.RUNNING_TEXT}>
             Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology
             stack, it's easy to try it out on a small feature in an existing project.
         </p>
@@ -114,8 +99,8 @@ const ReactPanel: React.SFC<{}> = () => (
 
 const AngularPanel: React.SFC<{}> = () => (
     <div>
-        <h3>Example panel: Angular</h3>
-        <p className="pt-running-text">
+        <H3>Example panel: Angular</H3>
+        <p className={Classes.RUNNING_TEXT}>
             HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic
             views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting
             environment is extraordinarily expressive, readable, and quick to develop.
@@ -125,18 +110,18 @@ const AngularPanel: React.SFC<{}> = () => (
 
 const EmberPanel: React.SFC<{}> = () => (
     <div>
-        <h3>Example panel: Ember</h3>
-        <p className="pt-running-text">
+        <H3>Example panel: Ember</H3>
+        <p className={Classes.RUNNING_TEXT}>
             Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC)
             pattern. It allows developers to create scalable single-page web applications by incorporating common idioms
             and best practices into the framework. What is your favorite JS framework?
         </p>
-        <input className="pt-input" type="text" />
+        <input className={Classes.INPUT} type="text" />
     </div>
 );
 
 const BackbonePanel: React.SFC<{}> = () => (
     <div>
-        <h3>Backbone</h3>
+        <H3>Backbone</H3>
     </div>
 );

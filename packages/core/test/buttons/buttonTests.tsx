@@ -28,8 +28,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         it('icon="style" renders Icon as first child', () => {
             const wrapper = button({ icon: "style" });
-            const firstChild = wrapper.children().childAt(0);
-            assert.isTrue(firstChild.is(Icon));
+            const firstChild = wrapper.find(Icon).at(0);
+            assert.strictEqual(firstChild.prop("icon"), "style");
         });
 
         it("renders the button text prop", () => {
@@ -44,8 +44,14 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(wrapper.find("em").length, 1, "em not found");
         });
 
+        it("renders span if text={0}", () => {
+            const wrapper = button({ text: 0 }, true);
+            assert.equal(wrapper.text(), "0");
+        });
+
         it('doesn\'t render a span if text=""', () => {
             assert.equal(button({}, true, "").find("span").length, 0);
+            assert.equal(button({ text: "" }, true).find("span").length, 0);
         });
 
         it("renders a loading spinner when the loading prop is true", () => {

@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
@@ -85,7 +85,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     onConfirm?(value: string): void;
 
     /** Callback invoked after the user enters edit mode. */
-    onEdit?(): void;
+    onEdit?(value: string): void;
 }
 
 export interface IEditableTextState {
@@ -105,6 +105,8 @@ const BUFFER_WIDTH_EDGE = 5;
 const BUFFER_WIDTH_IE = 30;
 
 export class EditableText extends AbstractPureComponent<IEditableTextProps, IEditableTextState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
+
     public static defaultProps: IEditableTextProps = {
         confirmOnEnterKey: false,
         defaultValue: "",
@@ -156,9 +158,9 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
             Classes.intentClass(this.props.intent),
             {
                 [Classes.DISABLED]: disabled,
-                "pt-editable-editing": this.state.isEditing,
-                "pt-editable-placeholder": !hasValue,
-                "pt-multiline": multiline,
+                [Classes.EDITABLE_TEXT_EDITING]: this.state.isEditing,
+                [Classes.EDITABLE_TEXT_PLACEHOLDER]: !hasValue,
+                [Classes.MULTILINE]: multiline,
             },
             this.props.className,
         );
@@ -183,7 +185,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         return (
             <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
                 {this.maybeRenderInput(value)}
-                <span className="pt-editable-content" ref={this.refHandlers.content} style={contentStyle}>
+                <span className={Classes.EDITABLE_TEXT_CONTENT} ref={this.refHandlers.content} style={contentStyle}>
                     {hasValue ? value : this.props.placeholder}
                 </span>
             </div>
@@ -196,7 +198,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
 
     public componentDidUpdate(_: IEditableTextProps, prevState: IEditableTextState) {
         if (this.state.isEditing && !prevState.isEditing) {
-            safeInvoke(this.props.onEdit);
+            safeInvoke(this.props.onEdit, this.state.value);
         }
         this.updateInputDimensions();
     }
@@ -278,17 +280,17 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
     };
 
     private maybeRenderInput(value: string) {
-        const { maxLength, multiline } = this.props;
+        const { maxLength, multiline, placeholder } = this.props;
         if (!this.state.isEditing) {
             return undefined;
         }
-        const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
-            className: "pt-editable-input",
+        const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
+            className: Classes.EDITABLE_TEXT_INPUT,
             maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
-            ref: this.refHandlers.input,
+            placeholder,
             style: {
                 height: this.state.inputHeight,
                 lineHeight: !multiline && this.state.inputHeight != null ? `${this.state.inputHeight}px` : null,
@@ -296,7 +298,11 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
             },
             value,
         };
-        return multiline ? <textarea {...props} /> : <input type="text" {...props} />;
+        return multiline ? (
+            <textarea ref={this.refHandlers.input} {...props} />
+        ) : (
+            <input ref={this.refHandlers.input} type="text" {...props} />
+        );
     }
 
     private updateInputDimensions() {

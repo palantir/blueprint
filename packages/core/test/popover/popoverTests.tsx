@@ -7,7 +7,6 @@
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import { Arrow, Target } from "react-popper";
 import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
@@ -15,11 +14,12 @@ import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
-import { Position } from "../../src/common/position";
 import { Overlay } from "../../src/components/overlay/overlay";
 import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
+import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { Portal } from "../../src/index";
+import { findInPortal } from "../utils";
 
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
@@ -43,33 +43,33 @@ describe("<Popover>", () => {
     });
 
     describe("validation:", () => {
+        let warnSpy: sinon.SinonStub;
+        before(() => (warnSpy = sinon.stub(console, "warn")));
+        beforeEach(() => warnSpy.resetHistory());
+        after(() => warnSpy.restore());
+
         it("throws error if given no target", () => {
             expectPropValidationError(Popover, {}, Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 2 target elements", () => {
             // use sinon.stub to prevent warnings from appearing in the test logs
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover>
-                    <h1 />
-                    <h2 />
+                    <button />
+                    <article />
                     {"h3"}
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
-            warnSpy.restore();
         });
 
         it("warns if given children and target prop", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(<Popover target="boom">pow</Popover>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
-            warnSpy.restore();
         });
 
         it("warns if given two children and content prop", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover content="boom">
                     {"pow"}
@@ -77,22 +77,18 @@ describe("<Popover>", () => {
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
-            warnSpy.restore();
         });
 
         it("warns if attempting to open a popover with empty content", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover content={null} isOpen={true}>
                     {"target"}
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT));
-            warnSpy.restore();
         });
 
         it("warns if backdrop enabled when rendering inline", () => {
-            const warnSpy = sinon.stub(console, "warn");
             shallow(
                 <Popover hasBackdrop={true} usePortal={false}>
                     {"target"}
@@ -100,7 +96,20 @@ describe("<Popover>", () => {
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE));
-            warnSpy.restore();
+        });
+
+        it("warns and disables if given empty content", () => {
+            const popover = mount(
+                <Popover content={undefined} isOpen={true}>
+                    <button />
+                </Popover>,
+            );
+            assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for undefined content");
+            assert.equal(warnSpy.callCount, 1);
+
+            popover.setProps({ content: "    " });
+            assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for white-space string content");
+            assert.equal(warnSpy.callCount, 2);
         });
 
         describe("throws error if backdrop enabled with non-CLICK interactionKind", () => {
@@ -129,16 +138,16 @@ describe("<Popover>", () => {
     it("propagates class names correctly", () => {
         wrapper = renderPopover({
             className: "bar",
-            interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
+            isOpen: true,
             popoverClassName: "foo",
             targetClassName: "baz",
-        }).simulateTarget("click");
-        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass("foo"));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass("bar"));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass("baz"));
+        });
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass(wrapper.prop("className")));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass(wrapper.prop("popoverClassName")));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("targetClassName")));
     });
 
-    it("adds .pt-popover-open class to target when the popover is open", () => {
+    it("adds POPOVER_OPEN class to target when the popover is open", () => {
         wrapper = renderPopover();
         assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
         wrapper.setState({ isOpen: true });
@@ -147,106 +156,56 @@ describe("<Popover>", () => {
 
     it("renders Portal when usePortal=true", () => {
         wrapper = renderPopover({ isOpen: true, usePortal: true });
-        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 1);
+        assert.lengthOf(wrapper.find(Portal), 1);
     });
 
     it("does not render Portal when usePortal=false", () => {
         wrapper = renderPopover({ isOpen: true, usePortal: false });
-        assert.lengthOf(wrapper.find(Portal).find(`.${Classes.POPOVER}`), 0);
+        assert.lengthOf(wrapper.find(Portal), 0);
     });
 
-    it("empty content disables it and warns", () => {
-        const warnSpy = sinon.stub(console, "warn");
-        const popover = mount(
-            <Popover content={undefined} isOpen={true}>
-                <button />
-            </Popover>,
-        );
-        assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for undefined content");
-
-        assert.equal(warnSpy.callCount, 1);
-
-        popover.setProps({ content: "    " });
-        assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for white-space string content");
-
-        assert.equal(warnSpy.callCount, 2);
-        warnSpy.restore();
-    });
-
-    it("lifecycle methods are called appropriately", () => {
-        const popoverWillOpen = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 0),
-        );
-        const popoverDidOpen = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
-        );
-        const popoverWillClose = sinon.spy(() =>
-            assert.lengthOf(testsContainerElement.getElementsByClassName(Classes.POPOVER), 1),
-        );
-
-        wrapper = renderPopover({
-            interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-            popoverDidOpen,
-            popoverWillClose,
-            popoverWillOpen,
-        }).simulateTarget("click");
-        assert.isTrue(popoverWillOpen.calledOnce);
-        assert.isTrue(popoverDidOpen.calledOnce);
-        assert.isTrue(popoverWillClose.notCalled);
-
-        wrapper.simulateTarget("click");
-        assert.isTrue(popoverDidOpen.calledOnce);
-        assert.isTrue(popoverWillOpen.calledOnce);
-        assert.isTrue(popoverWillClose.calledOnce);
-    });
-
-    it("popoverDidOpen is called even if popoverWillOpen is not specified", () => {
-        const popoverDidOpen = sinon.spy();
-        renderPopover({
-            interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-            popoverDidOpen,
-        }).simulateTarget("click");
-
-        assert.isTrue(popoverDidOpen.calledOnce);
-    });
-
-    it("inherits .pt-dark from trigger ancestor", () => {
+    it("inherits dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        const { popover } = renderPopover({ isOpen: true, inheritDarkTheme: true, usePortal: true });
-        assert.isTrue(popover.matches(`.${Classes.DARK}`));
+        wrapper = renderPopover({ inheritDarkTheme: true, isOpen: true, usePortal: true });
+        assert.exists(findInPortal(wrapper, `.${Classes.DARK}`));
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
-    it("inheritDarkTheme=false disables inheriting .pt-dark from trigger ancestor", () => {
+    it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
         testsContainerElement.classList.add(Classes.DARK);
-        const { popover } = renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true });
-        assert.isFalse(popover.matches(`.${Classes.DARK}`));
+        renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true }).assertFindClass(Classes.DARK, false);
         testsContainerElement.classList.remove(Classes.DARK);
     });
 
     it("allows user to apply dark theme explicitly", () => {
-        const { popover } = renderPopover({
+        const { popoverElement } = renderPopover({
             isOpen: true,
             popoverClassName: Classes.DARK,
             usePortal: false,
         });
-        assert.isNotNull(popover.matches(`.${Classes.DARK}`));
-    });
-
-    it("hasBackdrop=false does not render backdrop element", () => {
-        const { popover } = renderPopover({ hasBackdrop: false, isOpen: true, usePortal: true });
-        assert.lengthOf(popover.parentElement.getElementsByClassName(Classes.POPOVER_BACKDROP), 0);
+        assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
     });
 
     it("hasBackdrop=true renders backdrop element", () => {
-        const { popover } = renderPopover({ hasBackdrop: true, isOpen: true, usePortal: true });
-        const expectedBackdrop = popover.parentElement.previousElementSibling;
-        assert.isTrue(expectedBackdrop.matches(`.${Classes.POPOVER_BACKDROP}`));
+        wrapper = renderPopover({ hasBackdrop: true, isOpen: true, usePortal: false });
+        wrapper.assertFindClass(Classes.POPOVER_BACKDROP, true);
     });
 
-    it("rootElementTag prop renders the right elements", () => {
-        wrapper = renderPopover({ isOpen: true, rootElementTag: "article" });
-        assert.isNotNull(wrapper.find("article"));
+    it("hasBackdrop=false does not render backdrop element", () => {
+        wrapper = renderPopover({ hasBackdrop: false, isOpen: true, usePortal: false });
+        wrapper.assertFindClass(Classes.POPOVER_BACKDROP, false);
+    });
+
+    it("wrapperTagName & targetTagName render the right elements", () => {
+        wrapper = renderPopover({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
+        assert.isTrue(wrapper.find("address").hasClass(Classes.POPOVER_TARGET));
+        assert.isTrue(wrapper.find("article").hasClass(Classes.POPOVER_WRAPPER));
+    });
+
+    it("supports overlay lifecycle props", () => {
+        const onOpening = sinon.spy();
+        wrapper = renderPopover({ isOpen: true, onOpening });
+        assert.isTrue(onOpening.calledOnce);
     });
 
     describe("openOnTargetFocus", () => {
@@ -461,8 +420,11 @@ describe("<Popover>", () => {
                 assert.isTrue(onInteraction.calledWith(false), "B");
             });
 
-            it("is invoked with `false` when clicking .pt-popover-dismiss", () => {
-                renderPopover({ isOpen: true, onInteraction }, <button className="pt-popover-dismiss">Dismiss</button>)
+            it("is invoked with `false` when clicking POPOVER_DISMISS", () => {
+                renderPopover(
+                    { isOpen: true, onInteraction },
+                    <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
+                )
                     .findClass(Classes.POPOVER_DISMISS)
                     .simulate("click");
                 assert.isTrue(onInteraction.calledOnce);
@@ -532,32 +494,20 @@ describe("<Popover>", () => {
             wrapper.then(() => wrapper.assertIsOpen(false), done);
         });
 
-        it("clicking .pt-popover-dismiss closes popover when usePortal=true", () => {
+        it("clicking POPOVER_DISMISS closes popover when usePortal=true", () => {
             wrapper = renderPopover(
-                {
-                    interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                    usePortal: true,
-                },
-                <button className="pt-popover-dismiss">Dismiss</button>,
+                { defaultIsOpen: true, usePortal: true },
+                <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
             );
-
-            wrapper.simulateTarget("click").assertIsOpen();
-
-            dispatchMouseEvent(document.getElementsByClassName(Classes.POPOVER_DISMISS)[0], "click");
+            findInPortal(wrapper, `.${Classes.POPOVER_DISMISS}`).simulate("click");
             wrapper.update().assertIsOpen(false);
         });
 
-        it("clicking .pt-popover-dismiss closes popover when usePortal=false", () => {
+        it("clicking POPOVER_DISMISS closes popover when usePortal=false", () => {
             wrapper = renderPopover(
-                {
-                    interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                    usePortal: false,
-                },
-                <button className="pt-popover-dismiss">Dismiss</button>,
+                { defaultIsOpen: true, usePortal: false },
+                <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
             );
-
-            wrapper.simulateTarget("click").assertIsOpen();
-
             wrapper.findClass(Classes.POPOVER_DISMISS).simulate("click");
             wrapper.assertIsOpen(false);
         });
@@ -629,24 +579,17 @@ describe("<Popover>", () => {
     describe("Popper.js integration", () => {
         it("renders arrow element by default", () => {
             wrapper = renderPopover({ isOpen: true });
-            assert.lengthOf(wrapper.find(Arrow), 1);
+            assert.lengthOf(wrapper.find(PopoverArrow), 1);
         });
 
         it("arrow can be disabled via modifiers", () => {
             wrapper = renderPopover({ isOpen: true, modifiers: { arrow: { enabled: false } } });
-            assert.lengthOf(wrapper.find(Arrow), 0);
+            assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 
         it("arrow can be disabled via minimal prop", () => {
             wrapper = renderPopover({ minimal: true, isOpen: true });
-            assert.lengthOf(wrapper.find(Arrow), 0);
-        });
-
-        it("computes arrow rotation", done => {
-            renderPopover({ isOpen: true, position: Position.TOP }).then(
-                () => assert.equal(wrapper.state("arrowRotation"), 90),
-                done,
-            );
+            assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 
         it("computes transformOrigin with arrow", done => {
@@ -663,8 +606,76 @@ describe("<Popover>", () => {
         });
     });
 
+    describe("closing on click", () => {
+        it("Classes.POPOVER_DISMISS closes on click", () =>
+            assertClickToClose(
+                <button className={Classes.POPOVER_DISMISS} id="btn">
+                    Dismiss
+                </button>,
+                false,
+            ));
+
+        it("Classes.POPOVER_DISMISS_OVERRIDE does not close", () =>
+            assertClickToClose(
+                <span className={Classes.POPOVER_DISMISS}>
+                    <button className={Classes.POPOVER_DISMISS_OVERRIDE} id="btn">
+                        Dismiss
+                    </button>
+                </span>,
+                true,
+            ));
+
+        it(":disabled does not close", () =>
+            assertClickToClose(
+                <button className={Classes.POPOVER_DISMISS} disabled={true} id="btn">
+                    Dismiss
+                </button>,
+                true,
+            ));
+
+        it("Classes.DISABLED does not close", () =>
+            assertClickToClose(
+                // testing nested behavior too
+                <div className={Classes.DISABLED}>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </div>,
+                true,
+            ));
+
+        it("captureDismiss={true} inner dismiss does not close outer popover", () =>
+            assertClickToClose(
+                <Popover captureDismiss={true} defaultIsOpen={true} usePortal={false}>
+                    <button>Target</button>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </Popover>,
+                true,
+            ));
+
+        it("captureDismiss={false} inner dismiss closes outer popover", () =>
+            assertClickToClose(
+                <Popover captureDismiss={false} defaultIsOpen={true} usePortal={false}>
+                    <button>Target</button>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </Popover>,
+                false,
+            ));
+
+        function assertClickToClose(children: React.ReactNode, expectedIsOpen: boolean) {
+            wrapper = renderPopover({ defaultIsOpen: true }, children);
+            wrapper.find("#btn").simulate("click");
+            wrapper.assertIsOpen(expectedIsOpen);
+        }
+    });
+
     interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
-        popover: HTMLElement;
+        popoverElement: HTMLElement;
+        assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
         simulateTarget(eventName: string): this;
@@ -677,13 +688,18 @@ describe("<Popover>", () => {
         wrapper = mount(
             <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
-                <p>Text {content}</p>
+                <div>Text {content}</div>
             </Popover>,
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
-        wrapper.popover = (wrapper.instance() as Popover).popoverElement;
-        wrapper.assertIsOpen = (isOpen = true) => {
-            assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen, "assertIsOpen");
+        wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement;
+        wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
+            (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
+            return wrapper;
+        };
+        wrapper.assertIsOpen = (isOpen = true, index = 0) => {
+            const overlay = wrapper.find(Overlay).at(index);
+            assert.equal(overlay.prop("isOpen"), isOpen, "assertIsOpen");
             return wrapper;
         };
         wrapper.assertOnInteractionCalled = (called = true) => {
@@ -692,7 +708,7 @@ describe("<Popover>", () => {
         };
         wrapper.findClass = (className: string) => wrapper.find(`.${className}`).hostNodes();
         wrapper.simulateTarget = (eventName: string) => {
-            wrapper.find(Target).simulate(eventName);
+            wrapper.findClass(Classes.POPOVER_TARGET).simulate(eventName);
             return wrapper;
         };
         wrapper.sendEscapeKey = () => {

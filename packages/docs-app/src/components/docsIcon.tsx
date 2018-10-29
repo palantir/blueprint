@@ -4,10 +4,10 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
+import classNames from "classnames";
+import download from "downloadjs";
 import * as React from "react";
-
-import { ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
-
 import { ClickToCopy } from "./clickToCopy";
 
 export interface IDocsIconProps {
@@ -17,9 +17,9 @@ export interface IDocsIconProps {
     tags: string;
 }
 
-const GITHUB_PATH = "https://github.com/palantir/blueprint/blob/develop/resources/icons";
-function openIconFile(iconName: IconName, iconSize: 16 | 20) {
-    window.open(`${GITHUB_PATH}/${iconSize}px/${iconName}.svg`);
+const GITHUB_RAW_PATH = "https://raw.githubusercontent.com/palantir/blueprint/develop/resources/icons";
+function downloadIconFile(iconName: IconName, iconSize: 16 | 20) {
+    download(`${GITHUB_RAW_PATH}/${iconSize}px/${iconName}.svg`);
 }
 
 @ContextMenuTarget
@@ -32,8 +32,11 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
                 <div className="docs-icon-name">{displayName}</div>
                 <div className="docs-icon-detail">
                     <p className="docs-code">{iconName}</p>
-                    <div className="pt-text-muted">Right-click to download</div>
-                    <div className="docs-clipboard-message pt-text-muted" data-hover-message="Click to copy name" />
+                    <div className={Classes.TEXT_MUTED}>Right-click to download</div>
+                    <div
+                        className={classNames("docs-clipboard-message", Classes.TEXT_MUTED)}
+                        data-hover-message="Click to copy name"
+                    />
                 </div>
             </ClickToCopy>
         );
@@ -57,6 +60,6 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
         );
     }
 
-    private handleClick16 = () => openIconFile(this.props.iconName, 16);
-    private handleClick20 = () => openIconFile(this.props.iconName, 20);
+    private handleClick16 = () => downloadIconFile(this.props.iconName, 16);
+    private handleClick20 = () => downloadIconFile(this.props.iconName, 20);
 }

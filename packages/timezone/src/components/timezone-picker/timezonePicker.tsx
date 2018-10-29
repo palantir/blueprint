@@ -11,6 +11,7 @@ import {
     AbstractPureComponent,
     Button,
     Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IButtonProps,
     IInputGroupProps,
@@ -29,7 +30,7 @@ export { TimezoneDisplayFormat };
 export interface ITimezonePickerProps extends IProps {
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
-     * @see https://www.iana.org/time-zones
+     * See https://www.iana.org/time-zones for more information.
      */
     value: string | undefined;
 
@@ -97,7 +98,7 @@ export interface ITimezonePickerState {
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
 export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
-    public static displayName = "Blueprint2.TimezonePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
         date: new Date(),
@@ -187,16 +188,10 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         if (!modifiers.matchesPredicate) {
             return null;
         }
-
-        const classes = classNames(CoreClasses.MENU_ITEM, CoreClasses.intentClass(), {
-            [CoreClasses.ACTIVE]: modifiers.active,
-            [CoreClasses.INTENT_PRIMARY]: modifiers.active,
-        });
-
         return (
             <MenuItem
                 key={item.key}
-                className={classes}
+                active={modifiers.active}
                 icon={item.iconName}
                 text={item.text}
                 label={item.label}

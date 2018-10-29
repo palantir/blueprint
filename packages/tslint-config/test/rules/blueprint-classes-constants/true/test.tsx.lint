@@ -1,0 +1,26 @@
+apt-get
+at 4pt-size
+
+"script-source pt-large apt-get"
+               ~~~~~~~~  [msg]
+`script-source pt-large apt-get`
+               ~~~~~~~~  [msg]
+`${template} pt-large`
+             ~~~~~~~~  [msg]
+`${template} pt-vertical bp3-fill`
+             ~~~~~~~~~~~  [msg]
+
+<Button className="my-class pt-large" />
+                            ~~~~~~~~ [msg]
+<Button className="bp3-minimal" />
+                   ~~~~~~~~~~~ [msg]
+
+classNames(Classes.BUTTON, "pt-intent-primary")
+                            ~~~~~~~~~~~~~~~~~ [msg]
+classNames("bp3-button", "bp3-minimal")
+            ~~~~~~~~~~ [msg]
+                          ~~~~~~~~~~~ [msg]
+
+<pt-popover> // angular directive
+
+[msg]: use Blueprint `Classes` constant instead of string literal

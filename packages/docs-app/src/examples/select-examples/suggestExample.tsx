@@ -6,69 +6,86 @@
 
 import * as React from "react";
 
-import { Classes, MenuItem, Switch } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { H5, MenuItem, Switch } from "@blueprintjs/core";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Suggest } from "@blueprintjs/select";
 import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
 
 const FilmSuggest = Suggest.ofType<IFilm>();
 
 export interface ISuggestExampleState {
-    closeOnSelect?: boolean;
-    film?: IFilm;
-    minimal?: boolean;
-    openOnKeyDown?: boolean;
+    closeOnSelect: boolean;
+    film: IFilm;
+    minimal: boolean;
+    openOnKeyDown: boolean;
+    resetOnSelect: boolean;
+    resetOnQuery: boolean;
 }
 
-export class SuggestExample extends BaseExample<ISuggestExampleState> {
+export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestExampleState> {
     public state: ISuggestExampleState = {
         closeOnSelect: true,
         film: TOP_100_FILMS[0],
         minimal: true,
         openOnKeyDown: false,
+        resetOnQuery: true,
+        resetOnSelect: false,
     };
 
     private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
     private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
     private handleMinimalChange = this.handleSwitchChange("minimal");
+    private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
+    private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
-    protected renderExample() {
+    public render() {
         const { film, minimal, ...flags } = this.state;
         return (
-            <FilmSuggest
-                {...filmSelectProps}
-                {...flags}
-                inputValueRenderer={this.renderInputValue}
-                noResults={<MenuItem disabled={true} text="No results." />}
-                onItemSelect={this.handleValueChange}
-                popoverProps={{ popoverClassName: minimal ? Classes.MINIMAL : "" }}
-            />
+            <Example options={this.renderOptions()} {...this.props}>
+                <FilmSuggest
+                    {...filmSelectProps}
+                    {...flags}
+                    inputValueRenderer={this.renderInputValue}
+                    noResults={<MenuItem disabled={true} text="No results." />}
+                    onItemSelect={this.handleValueChange}
+                    popoverProps={{ minimal }}
+                />
+            </Example>
         );
     }
 
     protected renderOptions() {
-        return [
-            [
+        return (
+            <>
+                <H5>Props</H5>
                 <Switch
-                    key="closeOnSelect"
                     label="Close on select"
                     checked={this.state.closeOnSelect}
                     onChange={this.handleCloseOnSelectChange}
-                />,
+                />
                 <Switch
-                    key="openOnKeyDown"
                     label="Open popover on key down"
                     checked={this.state.openOnKeyDown}
                     onChange={this.handleOpenOnKeyDownChange}
-                />,
+                />
                 <Switch
-                    key="minimal"
+                    label="Reset on query"
+                    checked={this.state.resetOnQuery}
+                    onChange={this.handleResetOnQueryChange}
+                />
+                <Switch
+                    label="Reset on select"
+                    checked={this.state.resetOnSelect}
+                    onChange={this.handleResetOnSelectChange}
+                />
+                <H5>Popover props</H5>
+                <Switch
                     label="Minimal popover style"
                     checked={this.state.minimal}
                     onChange={this.handleMinimalChange}
-                />,
-            ],
-        ];
+                />
+            </>
+        );
     }
 
     private renderInputValue = (film: IFilm) => film.title;
@@ -77,7 +94,8 @@ export class SuggestExample extends BaseExample<ISuggestExampleState> {
 
     private handleSwitchChange(prop: keyof ISuggestExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
-            this.setState({ [prop]: event.currentTarget.checked });
+            const checked = event.currentTarget.checked;
+            this.setState(state => ({ ...state, [prop]: checked }));
         };
     }
 }

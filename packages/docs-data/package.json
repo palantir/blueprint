@@ -1,26 +1,30 @@
 {
   "name": "@blueprintjs/docs-data",
-  "version": "2.0.0-rc.2",
+  "version": "3.0.0",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "private": true,
   "scripts": {
     "clean": "rm -rf src/generated/*",
-    "compile": "node ./compile-docs-data",
+    "compile": "node ./compile-docs-data.js",
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/docs-theme": "^2.0.0-rc.2",
-    "documentalist": "^1.2.0",
+    "@blueprintjs/core": "^3.0.0",
+    "@blueprintjs/docs-theme": "^3.0.0",
+    "documentalist": "^1.4.0",
+    "better-handlebars": "github:wmeldon/better-handlebars",
     "glob": "^7.1.2",
     "highlights": "^3.1.1",
+    "language-less": "github:atom/language-less",
     "marked": "^0.3.6",
-    "semver": "^5.4.1"
+    "semver": "^5.4.1",
+    "tree-sitter-typescript": "^0.13.3"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:palantir/blueprint.git"
   },
   "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+  "license": "SEE LICENSE IN REPO ROOT"
 }

@@ -44,23 +44,21 @@ $pt-dark-intent-text-colors: (
 
 @mixin running-typography() {
   line-height: 1.5;
-  font-size: $pt-font-size-large;
-}
-
-@mixin running-typography-small() {
-  line-height: 1.5;
   font-size: $pt-font-size;
 }
 
-@mixin header-typography() {
+@mixin heading-typography() {
   color: $pt-heading-color;
   font-weight: 600;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-heading-color;
+  }
 }
 
 @mixin monospace-typography() {
   text-transform: none;
   font-family: $pt-font-family-monospace;
-  font-size: smaller;
 }
 
 @mixin overflow-ellipsis() {
@@ -71,9 +69,29 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin focus-outline($offset: 2px) {
-  outline: rgba($blue3, 0.5) auto 2px;
+  outline: $pt-outline-color auto 2px;
   outline-offset: $offset;
   -moz-outline-radius: 6px;
+}
+
+@function border-shadow($alpha, $color: $black, $size: 1px) {
+  @return 0 0 0 $size rgba($color, $alpha);
+}
+
+// returns the padding necessary to center text in a container of the given height.
+// default line-height is that of base typography, 18px assuming 14px font-size.
+@function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
+  @return floor(($height - $line-height) / 2);
+}
+
+// Removes the unit from a Sass numeric value (if present): `strip-unit(12px) => 12`
+// @see https://css-tricks.com/snippets/sass/strip-unit-function/
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
 }
 
 @mixin force-hardware-acceleration() {
@@ -102,24 +120,4 @@ $pt-dark-intent-text-colors: (
 @mixin new-render-layer() {
   // a semantic rename of the mixin above for when you just want to isolate z-indices
   @include force-hardware-acceleration();
-}
-
-@function border-shadow($alpha, $color: $black, $size: 1px) {
-  @return 0 0 0 $size rgba($color, $alpha);
-}
-
-// returns the padding necessary to center text in a container of the given height.
-// default line-height is that of base typography, 18px assuming 14px font-size.
-@function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
-  @return floor(($height - $line-height) / 2);
-}
-
-// Removes the unit from a Sass numeric value (if present): `strip-unit(12px) => 12`
-// @see https://css-tricks.com/snippets/sass/strip-unit-function/
-@function strip-unit($number) {
-  @if type-of($number) == "number" and not unitless($number) {
-    @return $number / ($number * 0 + 1);
-  }
-
-  @return $number;
 }

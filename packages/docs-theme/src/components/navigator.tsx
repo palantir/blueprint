@@ -4,10 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Icon, MenuItem } from "@blueprintjs/core";
+import { Classes, Icon, IInputGroupProps, MenuItem, Utils } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
-import classNames from "classnames";
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
@@ -15,19 +14,30 @@ import * as React from "react";
 import { eachLayoutNode } from "../common/utils";
 
 export interface INavigatorProps {
+    /** Whether navigator is open. */
     isOpen: boolean;
+
+    /** All potentially navigable items. */
     items: Array<IPageNode | IHeadingNode>;
+
+    /** Callback to determine if a given item should be excluded. */
+    itemExclude?: (node: IPageNode | IHeadingNode) => boolean;
+
+    /**
+     * Callback invoked when the navigator is closed. Navigation is performed by
+     * updating browser `location` directly.
+     */
     onClose: () => void;
 }
 
 export interface INavigationSection {
-    filterKey: string;
     path: string[];
     route: string;
     title: string;
 }
 
 const NavOmnibar = Omnibar.ofType<INavigationSection>();
+const INPUT_PROPS: IInputGroupProps = { placeholder: "Fuzzy search headings..." };
 
 export class Navigator extends React.PureComponent<INavigatorProps> {
     private sections: INavigationSection[];
@@ -35,10 +45,13 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
+            if (Utils.safeInvoke(this.props.itemExclude, node) === true) {
+                // ignore excluded item
+                return;
+            }
             const { route, title } = node;
             const path = parents.map(p => p.title).reverse();
-            const filterKey = [...path, "`" + title].join("/");
-            this.sections.push({ filterKey, path, route, title });
+            this.sections.push({ path, route, title });
         });
     }
 
@@ -49,6 +62,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         return (
             <NavOmnibar
                 className="docs-navigator-menu"
+                inputProps={INPUT_PROPS}
                 itemListPredicate={this.filterMatches}
                 isOpen={this.props.isOpen}
                 items={this.sections}
@@ -61,21 +75,22 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     }
 
     private filterMatches: ItemListPredicate<INavigationSection> = (query, items) =>
-        filter(items, query, { key: "filterKey", isPath: true });
+        filter(items, query, {
+            key: "route",
+            maxInners: items.length / 5,
+            maxResults: 10,
+            pathSeparator: "/",
+            usePathScoring: true,
+        });
 
     private renderItem: ItemRenderer<INavigationSection> = (section, props) => {
         if (!props.modifiers.matchesPredicate) {
             return null;
         }
 
-        const classes = classNames({
-            [Classes.ACTIVE]: props.modifiers.active,
-            [Classes.INTENT_PRIMARY]: props.modifiers.active,
-        });
-
         // insert caret-right between each path element
         const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
-            elems.push(el, <Icon icon="caret-right" />);
+            elems.push(el, <Icon key={el} icon="caret-right" />);
             return elems;
         }, []);
         pathElements.pop();
@@ -88,7 +103,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         );
         return (
             <MenuItem
-                className={classes}
+                active={props.modifiers.active}
                 href={"#" + section.route}
                 key={section.route}
                 multiline={true}

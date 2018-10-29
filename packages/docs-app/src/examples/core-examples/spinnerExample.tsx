@@ -6,40 +6,70 @@
 
 import * as React from "react";
 
-import { Classes, Spinner } from "@blueprintjs/core";
-import { handleStringChange } from "@blueprintjs/docs-theme";
-import { ProgressExample } from "./progressExample";
+import { H5, Intent, Label, Slider, Spinner, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { IntentSelect } from "./common/intentSelect";
 
-const SIZES = [
-    { label: "Default", value: "" },
-    { label: "Small", value: Classes.SMALL },
-    { label: "Large", value: Classes.LARGE },
-];
+export interface ISpinnerExampleState {
+    hasValue: boolean;
+    intent?: Intent;
+    size: number;
+    value: number;
+}
 
-export class SpinnerExample extends ProgressExample {
-    private handleSizeChange = handleStringChange(className => this.setState({ className }));
+export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerExampleState> {
+    public state: ISpinnerExampleState = {
+        hasValue: false,
+        size: Spinner.SIZE_STANDARD,
+        value: 0.7,
+    };
 
-    protected renderExample() {
-        const { className, hasValue, intent, value } = this.state;
-        return <Spinner className={className} intent={intent} value={hasValue ? value : null} />;
-    }
+    private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
+    private handleModifierChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 
-    protected renderOptions() {
-        const options = super.renderOptions();
-        options[0].push(
-            <label className={Classes.LABEL} key="size">
-                Size (via <code>className</code>)
-                <div className={Classes.SELECT}>
-                    <select value={this.state.className} onChange={this.handleSizeChange}>
-                        {SIZES.map((opt, i) => (
-                            <option key={i} {...opt}>
-                                {opt.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </label>,
+    public render() {
+        const { size, hasValue, intent, value } = this.state;
+        return (
+            <Example options={this.renderOptions()} {...this.props}>
+                <Spinner intent={intent} size={size} value={hasValue ? value : null} />
+            </Example>
         );
-        return options;
     }
+
+    private renderOptions() {
+        const { size, hasValue, intent, value } = this.state;
+        return (
+            <>
+                <H5>Props</H5>
+                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
+                <Label>Size</Label>
+                <Slider
+                    labelStepSize={50}
+                    min={0}
+                    max={Spinner.SIZE_LARGE * 2}
+                    showTrackFill={false}
+                    stepSize={5}
+                    value={size}
+                    onChange={this.handleSizeChange}
+                />
+                <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
+                <Slider
+                    disabled={!hasValue}
+                    labelStepSize={1}
+                    min={0}
+                    max={1}
+                    onChange={this.handleValueChange}
+                    labelRenderer={this.renderLabel}
+                    stepSize={0.1}
+                    showTrackFill={false}
+                    value={value}
+                />
+            </>
+        );
+    }
+
+    private renderLabel = (value: number) => value.toFixed(1);
+
+    private handleValueChange = (value: number) => this.setState({ value });
+    private handleSizeChange = (size: number) => this.setState({ size });
 }

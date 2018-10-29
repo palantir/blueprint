@@ -3,74 +3,43 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-$kbd-key-size: 25px !default;
-$modifier-key-padding: 3px 8px 3px 6px !default;
-
-.pt-key {
-  display: inline-block;
-  border-radius: $pt-border-radius - 1;
-  box-shadow: $pt-elevation-shadow-2;
-  background: $white;
-  min-width: $kbd-key-size;
-  height: $kbd-key-size;
-  padding: 3px 5px;
-  vertical-align: middle;
-  text-align: center;
-  line-height: $pt-grid-size * 2;
-  color: $pt-text-color-muted;
-  font-family: inherit;
-  font-size: $pt-font-size-small;
-
-  &.pt-modifier-key {
-    padding: $modifier-key-padding;
-  }
-
-  .pt-dark & {
-    box-shadow: $pt-dark-elevation-shadow-2,
-                inset 0 1px 0 rgba($white, 0.05);
-    background: $dark-gray5;
-    color: $pt-dark-text-color-muted;
-  }
+.#{$ns}-key-combo {
+  @include pt-flex-container(row, $pt-grid-size / 2);
+  align-items: center;
 }
 
-.pt-key-combo .pt-key:not(:last-child) {
-  margin-right: $pt-grid-size / 2;
-}
-
-.pt-hotkey-dialog {
+.#{$ns}-hotkey-dialog {
   top: $pt-grid-size * 4;
   padding-bottom: 0;
 
-  .pt-dialog-body {
+  .#{$ns}-dialog-body {
     margin: 0;
     padding: 0;
   }
 
-  .pt-key-combo {
-    flex: 1 0 auto;
-    width: $pt-grid-size * 16;
-    text-align: right;
+  .#{$ns}-hotkey-label {
+    flex-grow: 1;
   }
 }
 
-.pt-hotkey-column {
+.#{$ns}-hotkey-column {
   margin: auto;
   max-height: 80vh;
   overflow-y: auto;
   padding: $pt-grid-size * 3;
 
-  .pt-hotkey-group {
-    margin-bottom: $pt-grid-size * 3;
+  .#{$ns}-heading {
+    margin-bottom: $pt-grid-size * 2;
 
     &:not(:first-child) {
-      margin-top: $pt-grid-size * 5;
+      margin-top: $pt-grid-size * 4;
     }
   }
 }
 
-.pt-hotkey {
+.#{$ns}-hotkey {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-right: 0;
   margin-left: 0;

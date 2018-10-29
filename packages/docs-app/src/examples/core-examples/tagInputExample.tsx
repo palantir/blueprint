@@ -4,17 +4,16 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
-import { BaseExample, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Button, H5, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 const VALUES = [
     // supports single JSX elements
-    <strong>Albert</strong>,
+    <strong key="al">Albert</strong>,
     // supports JSX "fragments" (don't forget `key` on elements in arrays!)
     ["Bar", <em key="thol">thol</em>, "omew"],
     // and supports simple strings
@@ -24,46 +23,47 @@ const VALUES = [
 ];
 
 export interface ITagInputExampleState {
-    addOnBlur?: boolean;
-    disabled?: boolean;
-    fill?: boolean;
-    intent?: boolean;
-    large?: boolean;
-    minimal?: boolean;
-    values?: React.ReactNode[];
+    addOnBlur: boolean;
+    addOnPaste: boolean;
+    disabled: boolean;
+    fill: boolean;
+    intent: boolean;
+    large: boolean;
+    leftIcon: boolean;
+    minimal: boolean;
+    values: React.ReactNode[];
 }
 
-export class TagInputExample extends BaseExample<ITagInputExampleState> {
+export class TagInputExample extends React.PureComponent<IExampleProps, ITagInputExampleState> {
     public state: ITagInputExampleState = {
         addOnBlur: false,
+        addOnPaste: true,
         disabled: false,
         fill: false,
         intent: false,
         large: false,
+        leftIcon: true,
         minimal: false,
         values: VALUES,
     };
 
     private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
+    private handleAddOnPasteChange = handleBooleanChange(addOnPaste => this.setState({ addOnPaste }));
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIntentChange = handleBooleanChange(intent => this.setState({ intent }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleLeftIconChange = handleBooleanChange(leftIcon => this.setState({ leftIcon }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
-    protected renderExample() {
-        const { addOnBlur, disabled, fill, large, values } = this.state;
-
-        const classes = classNames({
-            [Classes.FILL]: fill,
-            [Classes.LARGE]: large,
-        });
+    public render() {
+        const { minimal, values, ...props } = this.state;
 
         const clearButton = (
             <Button
-                className={Classes.MINIMAL}
-                disabled={disabled}
+                disabled={props.disabled}
                 icon={values.length > 1 ? "cross" : "refresh"}
+                minimal={true}
                 onClick={this.handleClear}
             />
         );
@@ -72,66 +72,41 @@ export class TagInputExample extends BaseExample<ITagInputExampleState> {
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
         // example purposes!!
         const getTagProps = (_v: string, index: number): ITagProps => ({
-            className: this.state.minimal ? Classes.MINIMAL : "",
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
+            large: props.large,
+            minimal,
         });
 
         return (
-            <TagInput
-                className={classes}
-                disabled={disabled}
-                rightElement={clearButton}
-                leftIcon="user"
-                onChange={this.handleChange}
-                placeholder="Separate values with commas..."
-                tagProps={getTagProps}
-                values={values}
-                addOnBlur={addOnBlur}
-            />
+            <Example options={this.renderOptions()} {...this.props}>
+                <TagInput
+                    {...props}
+                    leftIcon={this.state.leftIcon ? "user" : undefined}
+                    onChange={this.handleChange}
+                    placeholder="Separate values with commas..."
+                    rightElement={clearButton}
+                    tagProps={getTagProps}
+                    values={values}
+                />
+            </Example>
         );
     }
 
-    protected renderOptions() {
-        return [
-            [
-                <Switch
-                    checked={this.state.fill}
-                    label="Fill container width"
-                    key="fill"
-                    onChange={this.handleFillChange}
-                />,
-                <Switch checked={this.state.large} label="Large" key="large" onChange={this.handleLargeChange} />,
-                <Switch
-                    checked={this.state.disabled}
-                    label="Disabled"
-                    key="disabled"
-                    onChange={this.handleDisabledChange}
-                />,
-                <Switch
-                    checked={this.state.addOnBlur}
-                    label="Add on blur"
-                    key="addOnBlur"
-                    onChange={this.handleAddOnBlurChange}
-                />,
-            ],
-            [
-                <label key="heading" className={Classes.LABEL}>
-                    Tag props
-                </label>,
-                <Switch
-                    checked={this.state.minimal}
-                    label="Use minimal tags"
-                    key="minimal"
-                    onChange={this.handleMinimalChange}
-                />,
-                <Switch
-                    checked={this.state.intent}
-                    label="Cycle through intents"
-                    key="intent"
-                    onChange={this.handleIntentChange}
-                />,
-            ],
-        ];
+    private renderOptions() {
+        return (
+            <>
+                <H5>Props</H5>
+                <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
+                <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
+                <Switch label="Left icon" checked={this.state.leftIcon} onChange={this.handleLeftIconChange} />
+                <Switch label="Add on blur" checked={this.state.addOnBlur} onChange={this.handleAddOnBlurChange} />
+                <Switch label="Add on paste" checked={this.state.addOnPaste} onChange={this.handleAddOnPasteChange} />
+                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
+                <H5>Tag props</H5>
+                <Switch label="Use minimal tags" checked={this.state.minimal} onChange={this.handleMinimalChange} />
+                <Switch label="Cycle through intents" checked={this.state.intent} onChange={this.handleIntentChange} />
+            </>
+        );
     }
 
     private handleChange = (values: React.ReactNode[]) => {

@@ -1,32 +1,17 @@
-@# Callouts
+@# Callout
 
-Callouts visually highlight important content for the user.
+Callouts visually highlight important content for the user. They can contain
+a title, an icon and content. Each intent has a default icon associated with it.
 
 @reactExample CalloutExample
 
-@## CSS API
-
-Callouts use the same visual intent modifier classes as buttons. If you need a
-heading, use the `<h4>` element with a `.pt-callout-title` class.
-
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    Note that the title is entirely optional.
-</div>
-
-@css pt-callout
-
-@## JavaScript API
-
-The `Callout` component is available in the **@blueprintjs/core** package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
-
-The component is a simple wrapper around the CSS API that provides props for modifiers and the optional title
-element. Any additional HTML props will be spread to the rendered `<div>` element. It provides two additional
-useful features:
-
-1. Providing an `intent` will set use a default icon per intent, which can be overridden by supplying
-   your own `icon`.
-1. The React component renders an SVG `Icon` element for the `icon` prop, instead of the `.pt-icon-*`
-   CSS class.
+@## Props
 
 @interface ICalloutProps
+
+@## CSS
+
+Callouts use the same visual intent modifier classes as buttons. If you need a
+heading, use the `<h4>` element with a `.@ns-heading` class.
+
+@css callout

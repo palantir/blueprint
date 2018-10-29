@@ -10,7 +10,7 @@ import * as React from "react";
 import { Modifiers } from "popper.js";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
-import { IActionProps, ILinkProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
@@ -20,6 +20,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */
     text: React.ReactNode;
+
+    /** Whether this menu item should appear with an active state. */
+    active?: boolean;
 
     /**
      * Children of this component will be rendered in a __submenu__ that appears when hovering or
@@ -55,7 +58,11 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      */
     multiline?: boolean;
 
-    /** Props to spread to `Popover`. Note that `content` and `minimal` cannot be changed. */
+    /**
+     * Props to spread to `Popover`. Note that `content` and `minimal` cannot be
+     * changed and `usePortal` defaults to `false` so all submenus will live in
+     * the same container.
+     */
     popoverProps?: Partial<IPopoverProps>;
 
     /**
@@ -73,10 +80,11 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         shouldDismissPopover: true,
         text: "",
     };
-    public static displayName = "Blueprint2.MenuItem";
+    public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
     public render() {
         const {
+            active,
             className,
             children,
             disabled,
@@ -91,10 +99,13 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         } = this.props;
         const hasSubmenu = children != null;
 
+        const intentClass = Classes.intentClass(intent);
         const anchorClasses = classNames(
             Classes.MENU_ITEM,
-            Classes.intentClass(intent),
+            intentClass,
             {
+                [Classes.ACTIVE]: active,
+                [Classes.INTENT_PRIMARY]: active && intentClass == null,
                 [Classes.DISABLED]: disabled,
                 // prevent popover from closing when clicking on submenu trigger or disabled item
                 [Classes.POPOVER_DISMISS]: shouldDismissPopover && !disabled && !hasSubmenu,
@@ -137,6 +148,8 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         const { disabled, popoverProps } = this.props;
         return (
             <Popover
+                autoFocus={false}
+                captureDismiss={false}
                 disabled={disabled}
                 enforceFocus={false}
                 hoverCloseDelay={0}

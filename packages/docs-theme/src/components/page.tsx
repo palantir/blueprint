@@ -13,14 +13,16 @@ import { renderBlock } from "./block";
 
 export interface IPageProps {
     page: IPageData;
+    renderActions: (page: IPageData) => React.ReactNode;
     tagRenderers: ITagRendererMap;
 }
 
-export const Page: React.SFC<IPageProps> = ({ tagRenderers, page }) => {
+export const Page: React.SFC<IPageProps> = ({ page, renderActions, tagRenderers }) => {
     // apply running text styles to blocks in pages (but not on blocks in examples)
-    const pageContents = renderBlock(page, tagRenderers, Classes.RUNNING_TEXT);
+    const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
     return (
-        <div className="docs-page" data-page-id={page.reference}>
+        <div className="docs-page" data-page-id={page.route}>
+            {renderActions && <div className="docs-page-actions">{renderActions(page)}</div>}
             {pageContents}
         </div>
     );

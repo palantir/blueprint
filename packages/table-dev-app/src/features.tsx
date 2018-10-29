@@ -9,7 +9,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Button, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
 import {
     Cell,
@@ -31,7 +31,7 @@ import {
 } from "@blueprintjs/table/src";
 
 import { Nav } from "./nav";
-ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
+ReactDOM.render(<Nav selected="features" />, document.getElementById("nav"));
 
 function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
     // combine table overrides
@@ -363,7 +363,7 @@ class RowSelectableTable extends React.Component<{}, {}> {
 
 ReactDOM.render(<RowSelectableTable />, document.getElementById("table-select-rows"));
 
-document.getElementById("table-ledger").classList.add("pt-table-striped");
+document.getElementById("table-ledger").classList.add(Classes.HTML_TABLE_STRIPED);
 
 ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
 
@@ -523,7 +523,7 @@ ReactDOM.render(
                         name={`${alpha} Column with a substantially long header name`}
                         menuRenderer={renderTestMenu}
                     >
-                        <h4>Header {alpha}</h4>
+                        <H4>Header {alpha}</H4>
                         <p>Whatever interactive header content goes here lorem ipsum.</p>
                     </ColumnHeaderCell>
                 );

@@ -8,8 +8,17 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
+import {
+    DISPLAYNAME_PREFIX,
+    HTMLInputProps,
+    IControlledProps,
+    IIntentProps,
+    IProps,
+    removeNonHTMLProps,
+} from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
+
+const DEFAULT_RIGHT_ELEMENT_WIDTH = 10;
 
 // NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
 // Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
@@ -30,6 +39,12 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      */
     leftIcon?: IconName | JSX.Element;
 
+    /** Whether this input should use large styles. */
+    large?: boolean;
+
+    /** Whether this input should use small styles. */
+    small?: boolean;
+
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
 
@@ -39,6 +54,9 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      */
     rightElement?: JSX.Element;
 
+    /** Whether the input (and any buttons) should appear with rounded caps. */
+    round?: boolean;
+
     /**
      * HTML `input` type attribute.
      * @default "text"
@@ -47,14 +65,14 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 }
 
 export interface IInputGroupState {
-    rightElementWidth?: number;
+    rightElementWidth: number;
 }
 
 export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
-    public static displayName = "Blueprint2.InputGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
     public state: IInputGroupState = {
-        rightElementWidth: 30,
+        rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH,
     };
 
     private rightElement: HTMLElement;
@@ -63,12 +81,15 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
     };
 
     public render() {
-        const { className, intent, leftIcon } = this.props;
+        const { className, intent, large, small, leftIcon, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: this.props.disabled,
+                [Classes.LARGE]: large,
+                [Classes.SMALL]: small,
+                [Classes.ROUND]: round,
             },
             className,
         );
@@ -103,7 +124,7 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
             return undefined;
         }
         return (
-            <span className="pt-input-action" ref={this.refHandlers.rightElement}>
+            <span className={Classes.INPUT_ACTION} ref={this.refHandlers.rightElement}>
                 {rightElement}
             </span>
         );
@@ -117,7 +138,7 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
                 this.setState({ rightElementWidth: clientWidth });
             }
         } else {
-            this.setState({ rightElementWidth: 0 });
+            this.setState({ rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH });
         }
     }
 }

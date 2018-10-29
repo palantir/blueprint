@@ -21,6 +21,7 @@ describe("Props", () => {
                 elementRef: true,
                 icon: true,
                 intent: true,
+                round: true,
                 text: true,
             };
         });
@@ -40,6 +41,7 @@ describe("Props", () => {
                 elementRef: true,
                 icon: true,
                 intent: true,
+                round: true,
                 text: true,
             });
         });

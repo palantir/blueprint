@@ -7,14 +7,15 @@
 import * as React from "react";
 
 import classNames from "classnames";
-import { AbstractPureComponent, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType } from "../../common/utils";
+import { H4 } from "../html/html";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 
 export { Hotkey, IHotkeyProps } from "./hotkey";
 export { KeyCombo, IKeyComboProps } from "./keyCombo";
-export { HotkeysTarget, IHotkeysTarget } from "./hotkeysTarget";
+export { HotkeysTarget, IHotkeysTargetComponent } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";
 
@@ -31,6 +32,8 @@ export interface IHotkeysProps extends IProps {
 }
 
 export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;
+
     public static defaultProps = {
         tabIndex: 0,
     };
@@ -41,15 +44,12 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
             (child: React.ReactElement<IHotkeyProps>) => child.props,
         );
 
-        // sort by group label alphabetically, globals first
+        // sort by group label alphabetically, prioritize globals
         hotkeys.sort((a, b) => {
-            if (a.global) {
-                return b.global ? 0 : -1;
+            if (a.global === b.global) {
+                return a.group.localeCompare(b.group);
             }
-            if (b.global) {
-                return 1;
-            }
-            return a.group.localeCompare(b.group);
+            return a.global ? -1 : 1;
         });
 
         let lastGroup = null as string;
@@ -57,16 +57,12 @@ export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
         for (const hotkey of hotkeys) {
             const groupLabel = hotkey.group;
             if (groupLabel !== lastGroup) {
-                elems.push(
-                    <h4 key={`group-${elems.length}`} className="pt-hotkey-group">
-                        {groupLabel}
-                    </h4>,
-                );
+                elems.push(<H4 key={`group-${elems.length}`}>{groupLabel}</H4>);
                 lastGroup = groupLabel;
             }
             elems.push(<Hotkey key={elems.length} {...hotkey} />);
         }
-        const rootClasses = classNames("pt-hotkey-column", this.props.className);
+        const rootClasses = classNames(Classes.HOTKEY_COLUMN, this.props.className);
         return <div className={rootClasses}>{elems}</div>;
     }
 

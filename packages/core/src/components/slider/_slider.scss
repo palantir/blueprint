@@ -12,7 +12,7 @@ $label-offset: $handle-size + 4px !default;
 $handle-height: $handle-size !default;
 $track-height: $track-size !default;
 
-.pt-slider {
+.#{$ns}-slider {
   @include slider-orientation($pt-input-height-large, $vertical: false);
   position: relative;
   outline: none;
@@ -27,34 +27,42 @@ $track-height: $track-size !default;
     cursor: grabbing;
   }
 
-  &.pt-disabled {
+  &.#{$ns}-disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 
-  &.pt-slider-unlabeled {
+  &.#{$ns}-slider-unlabeled {
     height: $handle-size;
   }
 }
 
-.pt-slider-track,
-.pt-slider-progress {
+.#{$ns}-slider-track,
+.#{$ns}-slider-progress {
   @include slider-track-orientation($handle-size, $track-size, $vertical: false);
   position: absolute;
+}
+
+.#{$ns}-slider-track {
   border-radius: $pt-border-radius;
+  overflow: hidden;
+}
+
+.#{$ns}-slider-progress {
   background: rgba($gray1, 0.2);
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background: rgba($black, 0.5);
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: $color;
+    }
   }
 }
 
-.pt-slider-progress,
-.pt-dark .pt-slider-progress {
-  background: $pt-intent-primary;
-}
-
-.pt-slider-handle {
+.#{$ns}-slider-handle {
   @include pt-button();
   position: absolute;
   top: 0;
@@ -77,20 +85,20 @@ $track-height: $track-size !default;
     cursor: grab;
   }
 
-  &.pt-active {
+  &.#{$ns}-active {
     @include pt-button-active();
     box-shadow: $button-box-shadow-overlay-active;
     cursor: grabbing;
   }
 
-  .pt-disabled & {
+  .#{$ns}-disabled & {
     box-shadow: none;
     background: $gray5;
     // easy way to avoid lots of special cases to ignore mouse states when disabled:
     pointer-events: none;
   }
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     @include pt-dark-button();
 
     &,
@@ -98,37 +106,57 @@ $track-height: $track-size !default;
       background-color: $dark-gray5;
     }
 
-    &.pt-active {
+    &.#{$ns}-active {
       background-color: $dark-gray3;
     }
   }
 
-  .pt-dark .pt-disabled & {
+  .#{$ns}-dark .#{$ns}-disabled & {
     border-color: $gray1;
     box-shadow: none;
     background: $gray1;
   }
 
-  .pt-slider-label {
+  .#{$ns}-slider-label {
     margin-left: $handle-size / 2;
     border-radius: $pt-border-radius;
     box-shadow: $pt-tooltip-box-shadow;
     background: $tooltip-background-color;
     color: $tooltip-text-color;
 
-    .pt-dark & {
+    .#{$ns}-dark & {
       box-shadow: $pt-dark-tooltip-box-shadow;
       background: $dark-tooltip-background-color;
       color: $dark-tooltip-text-color;
     }
 
-    .pt-disabled & {
+    .#{$ns}-disabled & {
       box-shadow: none;
+    }
+  }
+
+  &.#{$ns}-start,
+  &.#{$ns}-end {
+    width: $handle-size / 2;
+  }
+
+  &.#{$ns}-start {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.#{$ns}-end {
+    margin-left: $handle-size / 2;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    .#{$ns}-slider-label {
+      margin-left: 0;
     }
   }
 }
 
-.pt-slider-label {
+.#{$ns}-slider-label {
   @include slider-label-orientation($label-offset);
   display: inline-block;
   position: absolute;
@@ -138,77 +166,47 @@ $track-height: $track-size !default;
   font-size: $pt-font-size-small;
 }
 
-.pt-range-slider {
-  .pt-slider-handle {
-    width: $handle-size / 2;
-
-    &:first-of-type {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    &:last-of-type {
-      margin-left: $handle-size / 2;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-
-      .pt-slider-label {
-        margin-left: 0;
-      }
-    }
-  }
-
-  .pt-slider-progress {
-    border-radius: 0;
-  }
-}
-
-.pt-slider.pt-vertical {
+.#{$ns}-slider.#{$ns}-vertical {
   @include slider-orientation($pt-input-height-large, $vertical: true);
 
-  .pt-slider-track,
-  .pt-slider-progress {
+  .#{$ns}-slider-track,
+  .#{$ns}-slider-progress {
     @include slider-track-orientation($handle-size, $track-size, $vertical: true);
   }
 
-  .pt-slider-progress {
+  .#{$ns}-slider-progress {
     top: auto;
   }
 
-  .pt-slider-label {
+  .#{$ns}-slider-label {
     @include slider-label-orientation($label-offset, $vertical: true);
   }
 
-  .pt-slider-handle {
+  .#{$ns}-slider-handle {
     top: auto;
 
-    .pt-slider-label {
+    .#{$ns}-slider-label {
       margin-top: -$handle-size / 2;
       margin-left: 0;
     }
-  }
-}
 
-.pt-range-slider.pt-vertical {
-  .pt-slider-handle {
-    margin-left: 0;
-    width: $handle-size;
-    height: $handle-size / 2;
-
-    .pt-slider-label {
+    &.#{$ns}-end,
+    &.#{$ns}-start {
       margin-left: 0;
+      width: $handle-size;
+      height: $handle-size / 2;
     }
 
-    &:first-of-type {
+    &.#{$ns}-start {
       border-top-left-radius: 0;
       border-bottom-right-radius: $pt-border-radius;
 
-      .pt-slider-label {
+      .#{$ns}-slider-label {
         transform: translate($label-offset);
       }
     }
 
-    &:last-of-type {
+    &.#{$ns}-end {
       margin-bottom: $handle-size / 2;
       border-top-left-radius: $pt-border-radius;
       border-bottom-left-radius: 0;

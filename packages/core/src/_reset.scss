@@ -1,0 +1,42 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "common/variables";
+@import "common/mixins";
+
+// Apply a natural box layout model to all elements, but allow components to change as necessary
+html {
+  box-sizing: border-box;
+}
+
+// adjust box-sizing for every element ever
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+// Style resets on top of Normalize.css
+
+body {
+  @include base-typography();
+  color: $pt-text-color;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: $pt-grid-size;
+}
+
+small {
+  font-size: $pt-font-size-small;
+}
+
+strong {
+  font-weight: 600;
+}
+
+// consistent cross-browser text selection
+::selection {
+  background: $pt-text-selection-color;
+}

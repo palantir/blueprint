@@ -9,13 +9,15 @@ $nav-divider-offset: $pt-grid-size * 5;
 @mixin divider-gradient($color, $dark-color) {
   background-image: linear-gradient(to right, rgba($color, 0) 0%, $color 40%);
 
-  .pt-dark & {
+  .#{$ns}-dark & {
     background-image: linear-gradient(to right, rgba($dark-color, 0) 0%, $dark-color 40%);
   }
 }
 
 .docs-nav-button {
   @include pt-flex-container(row, $pt-grid-size + 4px);
+  align-items: center;
+
   margin-left: -$nav-divider-offset;
   cursor: pointer;
   padding: $pt-grid-size $sidebar-padding;

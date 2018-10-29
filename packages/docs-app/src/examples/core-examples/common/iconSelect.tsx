@@ -4,10 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Button, Classes, MenuItem } from "@blueprintjs/core";
+import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
 import { IconName, IconNames } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
-import classNames from "classnames";
 import * as React from "react";
 
 export interface IIconSelectProps {
@@ -27,7 +26,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         const { iconName } = this.props;
         return (
             <label className={Classes.LABEL}>
-                Icon name
+                Icon
                 <TypedSelect
                     items={ICON_NAMES}
                     itemPredicate={this.filterIconName}
@@ -37,7 +36,9 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
                     popoverProps={{ minimal: true }}
                 >
                     <Button
+                        alignText={Alignment.LEFT}
                         className={Classes.TEXT_OVERFLOW_ELLIPSIS}
+                        fill={true}
                         icon={iconName}
                         text={iconName || NONE}
                         rightIcon="caret-down"
@@ -51,11 +52,7 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        const classes = classNames({
-            [Classes.ACTIVE]: modifiers.active,
-            [Classes.INTENT_PRIMARY]: modifiers.active,
-        });
-        return <MenuItem className={classes} icon={icon} key={icon} onClick={handleClick} text={icon} />;
+        return <MenuItem active={modifiers.active} icon={icon} key={icon} onClick={handleClick} text={icon} />;
     };
 
     private filterIconName = (query: string, iconName: IconName | typeof NONE) => {

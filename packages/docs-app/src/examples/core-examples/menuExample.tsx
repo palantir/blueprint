@@ -7,14 +7,13 @@
 import * as React from "react";
 
 import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { BaseExample } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-export class MenuExample extends BaseExample<{}> {
-    public className = "docs-menu-example";
-    protected renderExample() {
+export class MenuExample extends React.PureComponent<IExampleProps, {}> {
+    public render() {
         return (
-            <div>
-                <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
+            <Example className="docs-menu-example" options={false} {...this.props}>
+                <Menu className={Classes.ELEVATION_1}>
                     <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
                     <MenuDivider />
                     <MenuItem icon="new-text-box" text="New text box" />
@@ -23,7 +22,7 @@ export class MenuExample extends BaseExample<{}> {
                     <MenuDivider />
                     <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." />
                 </Menu>
-                <Menu className={`docs-inline-example ${Classes.ELEVATION_1}`}>
+                <Menu className={Classes.ELEVATION_1}>
                     <MenuDivider title="Edit" />
                     <MenuItem icon="cut" text="Cut" label="⌘X" />
                     <MenuItem icon="duplicate" text="Copy" label="⌘C" />
@@ -56,7 +55,7 @@ export class MenuExample extends BaseExample<{}> {
                         </MenuItem>
                     </MenuItem>
                 </Menu>
-            </div>
+            </Example>
         );
     }
 }

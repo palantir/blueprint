@@ -1,17 +1,13 @@
-@# Toasts
+@# Toast
 
 A toast is a lightweight, ephemeral notice from an application in direct response to a user's action.
-
 
 Toasts can be configured to appear at either the top or the bottom of an application window, and it is possible to
 have more than one toast onscreen at a time.
 
 @reactExample ToastExample
 
-@## JavaScript API
-
-The `Toast` and `Toaster` components are available in the __@blueprintjs/core__ package.
-Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+@## Props
 
 @### Toast
 
@@ -19,9 +15,9 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 Hovering the cursor over a toast prevents it from disappearing. When the cursor leaves the toast, the toast's timeout restarts.
 Similarly, focusing the toast (for example, by hitting the `tab` key) halts the timeout, and blurring restarts the timeout.
 
-You can add one additional action button to a toast. You might use this to undo the user's action, for example.
+You can add one additional action button to a toast. You might use this to provide an undo button, for example.
 
-You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css-api).
+You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css).
 
 @interface IToastProps
 
@@ -38,18 +34,18 @@ There are three ways to use the `Toaster` component:
 1. `<Toaster><Toast />...</Toaster>`: Render a `<Toaster>` element with React `children`.
 1. `<Toaster ref={ref => ref.show({ ...toast })} />`: Render a `<Toaster>` element and use the `ref` prop to access its instance methods.
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">Working with multiple toasters</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-heading">Working with multiple toasters</h4>
     You can have multiple toasters in a single application, but you must ensure that each has a unique
     `position` to prevent overlap.
 </div>
 
-<div class="pt-callout pt-intent-primary pt-icon-info-sign">
-    <h4 class="pt-callout-title">Toaster focus</h4>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-heading">Toaster focus</h4>
     `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
     from accessing other parts of the application while a toast is active), and by default also
     disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
-    enable `autoFocus` for a `Toaster` via a prop, if desired.
+    enable `autoFocus` for an individual `Toaster` via a prop, if desired.
 </div>
 
 
@@ -65,12 +61,18 @@ has a collection of methods to show and hide toasts in its given container.
 Toaster.create(props?: IToasterProps, container = document.body): IToaster
 ```
 
-
-The `Toaster` will be rendered into a new element appended to the given `container`. The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them to use the entire viewport.
+The `Toaster` will be rendered into a new element appended to the given `container`.
+The `container` determines which element toasts are positioned relative to; the default value of `<body>` allows them to use the entire viewport.
 
 Note that the return type is `IToaster`, which is a minimal interface that exposes only the instance
 methods detailed below. It can be thought of as `Toaster` minus the `React.Component` methods,
 because the `Toaster` should not be treated as a normal React component.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">React 16 usage</h4>
+    `Toaster.create()` will throw an error if invoked inside a component lifecycle method in React 16, as `ReactDOM.render()` will return
+    `null` resulting in an inaccessible toaster instance. See the second bullet point on the [React 16 release notes](https://reactjs.org/blog/2017/09/26/react-v16.0.html#breaking-changes) for more information.
+</div>
 
 @interface IToaster
 
@@ -138,7 +140,7 @@ class MyComponent extends React.PureComponent {
                     {/* "Toasted!" will appear here after clicking button. */}
                     {this.state.toasts.map(toast => <Toast {...toast} />)}
                 </Toaster>
-            </div>
+            </div
         )
     }
 
