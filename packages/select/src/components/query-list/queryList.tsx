@@ -152,6 +152,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public scrollActiveItemIntoView() {
+        if (this.props.scrollToActiveItem === false) {
+            return;
+        }
+
         const activeElement = this.getActiveElement();
         if (this.itemsParentRef != null && activeElement != null) {
             const { offsetTop: activeTop, offsetHeight: activeHeight } = activeElement;
