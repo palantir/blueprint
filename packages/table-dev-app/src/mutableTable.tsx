@@ -236,8 +236,8 @@ export interface IMutableTableState {
     scrollToRegionType?: RegionCardinality;
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
-    selectedRegions?: IRegion[];
     selectedRegionTransformPreset?: SelectedRegionTransformPreset;
+    selectedRegions?: IRegion[];
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -283,8 +283,8 @@ const DEFAULT_STATE: IMutableTableState = {
     scrollToRegionType: RegionCardinality.CELLS,
     scrollToRowIndex: 0,
     selectedFocusStyle: FocusStyle.TAB,
-    selectedRegions: [],
     selectedRegionTransformPreset: SelectedRegionTransformPreset.CELL,
+    selectedRegions: [],
     showCallbackLogs: true,
     showCellsLoading: false,
     showColumnHeadersLoading: false,
