@@ -31,6 +31,7 @@ $tag-round-adjustment: 2px !default;
   max-width: 100%;
   min-height: $tag-height;
   padding: $tag-padding-top $tag-padding;
+  line-height: $pt-line-height;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
