@@ -21,11 +21,11 @@ This component supports the full range of HTML props.
 ```tsx
 <Label>
     Label A
-    <input className="bp3-input" id="text-input" placeholder="Placeholder text" />
+    <input className={Classes.INPUT} id="text-input" placeholder="Placeholder text" />
 </Label>
 
 <Label htmlFor="text-input">Label A</Label>
-<input className="bp3-input" id="text-input" placeholder="Placeholder text" />
+<input className={Classes.INPUT} id="text-input" placeholder="Placeholder text" />
 ```
 
 @interface ILabelProps
