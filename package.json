@@ -18,6 +18,7 @@
     "dev:docs": "lerna run dev --parallel --scope \"@blueprintjs/{core,docs-app,docs-theme}\"",
     "dev:datetime": "lerna run dev --parallel --scope \"@blueprintjs/{core,datetime,timezone,docs-app}\"",
     "dev:labs": "lerna run dev --parallel --scope \"@blueprintjs/{core,labs,select,docs-app}\"",
+    
     "dev:landing": "lerna run dev --parallel --scope \"@blueprintjs/{core,landing-app}\"",
     "dev:select": "lerna run dev --parallel --scope \"@blueprintjs/{core,select,docs-app}\"",
     "dev:table": "lerna run dev --parallel --scope \"@blueprintjs/table-dev-app\"",
