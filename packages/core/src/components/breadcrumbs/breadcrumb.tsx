@@ -11,7 +11,7 @@ import * as Classes from "../../common/classes";
 import { IActionProps, ILinkProps } from "../../common/props";
 
 export interface IBreadcrumbProps extends IActionProps, ILinkProps {
-    /** This breadcrumb is the current breadcrumb. */
+    /** Whether this breadcrumb is the current breadcrumb. */
     current?: boolean;
 }
 
