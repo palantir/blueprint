@@ -33,6 +33,7 @@ export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
             target={breadcrumbProps.target}
         >
             {breadcrumbProps.text}
+            {breadcrumbProps.children}
         </a>
     );
 };
