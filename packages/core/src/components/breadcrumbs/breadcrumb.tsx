@@ -10,12 +10,16 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { IActionProps, ILinkProps } from "../../common/props";
 
-export interface IBreadcrumbProps extends IActionProps, ILinkProps {}
+export interface IBreadcrumbProps extends IActionProps, ILinkProps {
+    /** This breadcrumb is the current breadcrumb. */
+    current?: boolean;
+}
 
 export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
     const classes = classNames(
         Classes.BREADCRUMB,
         {
+            [Classes.BREADCRUMB_CURRENT]: breadcrumbProps.current,
             [Classes.DISABLED]: breadcrumbProps.disabled,
         },
         breadcrumbProps.className,
