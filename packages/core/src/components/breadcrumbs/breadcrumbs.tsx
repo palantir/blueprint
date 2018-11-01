@@ -14,7 +14,7 @@ import { IProps } from "../../common/props";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { IOverflowListProps, OverflowList } from "../overflow-list/overflowList";
-import { Popover } from "../popover/popover";
+import { IPopoverProps, Popover } from "../popover/popover";
 import { Breadcrumb, IBreadcrumbProps } from "./breadcrumb";
 
 export interface IBreadcrumbsProps extends IProps {
@@ -60,9 +60,18 @@ export interface IBreadcrumbsProps extends IProps {
      * `overflowRenderer`, and `visibleItemRenderer` cannot be changed.
      */
     overflowListProps?: Partial<IOverflowListProps<IBreadcrumbProps>>;
+
+    /**
+     * Props to spread to the `Popover` showing the overflow menu.
+     */
+    popoverProps?: IPopoverProps;
 }
 
 export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
+    public static defaultProps: Partial<IBreadcrumbsProps> = {
+        collapseFrom: Boundary.START,
+    };
+
     public render() {
         const { className, collapseFrom, items, minVisibleItems, overflowListProps = {} } = this.props;
         return (
@@ -88,7 +97,7 @@ export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
         }
         return (
             <li>
-                <Popover position={position}>
+                <Popover position={position} {...this.props.popoverProps}>
                     <span className={Classes.BREADCRUMBS_COLLAPSED} />
                     <Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>
                 </Popover>

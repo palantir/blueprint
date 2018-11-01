@@ -6,6 +6,7 @@
 import "@blueprintjs/test-commons/bootstrap";
 
 import "./alert/alertTests";
+import "./breadcrumbs/breadcrumbsTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./buttons/buttonTests";
 import "./callout/calloutTests";
