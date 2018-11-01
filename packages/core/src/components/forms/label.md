@@ -19,12 +19,13 @@ below, clicking a label focuses its `<input>`.
 This component supports the full range of HTML props.
 
 ```tsx
-<Label
-    helperText="Helper text with details..."
-    text="Label A"
->
-    <input className="@ns-input" id="text-input" placeholder="Placeholder text" />
+<Label>
+    Label A
+    <input className={Classes.INPUT} placeholder="Placeholder text" />
 </Label>
+
+<Label htmlFor="input-b">Label B</Label>
+<input className={Classes.INPUT} id="input-b" placeholder="Placeholder text" />
 ```
 
 @interface ILabelProps
