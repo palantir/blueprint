@@ -62,7 +62,7 @@ export class Callout extends React.PureComponent<ICalloutProps, {}> {
         );
     }
 
-    private getIconName(icon?: ICalloutProps["icon"], intent?: Intent): JSX.Element | IconName | undefined {
+    private getIconName(icon?: ICalloutProps["icon"], intent?: Intent): IconName | OptionalElement {
         // 1. no icon
         if (icon === null) {
             return undefined;

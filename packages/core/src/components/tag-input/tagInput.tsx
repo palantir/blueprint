@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps, OptionalElement } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -63,7 +63,7 @@ export interface ITagInputProps extends IProps {
     large?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
-    leftIcon?: IconName | JSX.Element;
+    leftIcon?: IconName | OptionalElement;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
