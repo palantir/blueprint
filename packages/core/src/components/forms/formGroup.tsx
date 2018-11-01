@@ -45,15 +45,18 @@ export interface IFormGroupProps extends IIntentProps, IProps {
      * Optional secondary text that appears after the label.
      */
     labelInfo?: React.ReactNode;
+
+    /** CSS properties to apply to the root element. */
+    style?: React.CSSProperties;
 }
 
 export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 
     public render() {
-        const { children, contentClassName, helperText, label, labelFor, labelInfo } = this.props;
+        const { children, contentClassName, helperText, label, labelFor, labelInfo, style } = this.props;
         return (
-            <div className={this.getClassName()}>
+            <div className={this.getClassName()} style={style}>
                 {label && (
                     <label className={Classes.LABEL} htmlFor={labelFor}>
                         {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
