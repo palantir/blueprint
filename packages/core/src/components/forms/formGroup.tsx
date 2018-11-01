@@ -11,6 +11,12 @@ import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface IFormGroupProps extends IIntentProps, IProps {
     /**
+     * A space-delimited list of class names to pass along to the
+     * `Classes.FORM_CONTENT` element that contains `children`.
+     */
+    contentClassName?: string;
+
+    /**
      * Whether form group should appear as non-interactive.
      * Remember that `input` elements must be disabled separately.
      */
@@ -45,7 +51,7 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 
     public render() {
-        const { children, helperText, label, labelFor, labelInfo } = this.props;
+        const { children, contentClassName, helperText, label, labelFor, labelInfo } = this.props;
         return (
             <div className={this.getClassName()}>
                 {label && (
@@ -53,7 +59,7 @@ export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
                         {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
                     </label>
                 )}
-                <div className={Classes.FORM_CONTENT}>
+                <div className={classNames(Classes.FORM_CONTENT, contentClassName)}>
                     {children}
                     {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
                 </div>
