@@ -133,7 +133,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     user-select: none;
 
     &::before {
-      display: inline-block;
+      display: block;
       width: 1em;
       height: 1em;
       content: "";
