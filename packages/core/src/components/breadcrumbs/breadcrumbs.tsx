@@ -65,15 +65,19 @@ export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
         if (collapseFrom === Boundary.START) {
             orderedItems = items.slice().reverse();
         }
-        const menuItems = orderedItems.map((item, index) => <MenuItem {...item} text={item.text} key={index} />);
         return (
             <li>
                 <Popover position={position}>
                     <span className={Classes.BREADCRUMBS_COLLAPSED} />
-                    <Menu>{menuItems}</Menu>
+                    <Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>
                 </Popover>
             </li>
         );
+    };
+
+    private renderOverflowBreadcrumb = (props: IBreadcrumbProps, index: number) => {
+        const isClickable = props.href != null || props.onClick != null;
+        return <MenuItem disabled={!isClickable} {...props} text={props.text} key={index} />;
     };
 
     private renderBreadcrumbWrapper = (props: IBreadcrumbProps, index: number) => {
