@@ -18,10 +18,10 @@ import { Popover } from "../popover/popover";
 import { Breadcrumb, IBreadcrumbProps } from "./breadcrumb";
 
 export interface IBreadcrumbsProps extends IProps {
+    breadcrumbRenderer?: (props: IBreadcrumbProps) => React.ReactNode;
+    currentBreadcrumbRenderer?: (props: IBreadcrumbProps) => React.ReactNode;
     items: IBreadcrumbProps[];
     collapseFrom?: Boundary;
-    breadcrumbRenderer?(props: IBreadcrumbProps): React.ReactNode;
-    currentBreadcrumbRenderer?(props: IBreadcrumbProps): React.ReactNode;
 }
 
 export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
