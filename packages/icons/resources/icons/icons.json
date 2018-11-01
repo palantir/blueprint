@@ -3162,5 +3162,12 @@
     "tags": "workflow, edge, node, complete, finished, final, last",
     "group": "data",
     "content": "\\e7c4"
+  },
+    {
+    "displayName": "Clean",
+    "iconName": "clean",
+    "tags": "correct, cleanse, clear, purify, stars",
+    "group": "action",
+    "content": "\\e7c5"
   }
 ]
