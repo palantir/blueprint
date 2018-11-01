@@ -21,6 +21,12 @@ export interface IPortalProps extends IProps {
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */
     onChildrenMount?: () => void;
+
+    /**
+     * The HTML element that children will be mounted to.
+     * @default document.body
+     */
+    container?: HTMLElement;
 }
 
 export interface IPortalState {
@@ -49,6 +55,9 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
 export class Portal extends React.Component<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
     public static contextTypes = REACT_CONTEXT_TYPES;
+    public static defaultProps: IPortalProps = {
+        container: typeof document !== "undefined" ? document.body : null,
+    };
 
     public context: IPortalContext;
     public state: IPortalState = { hasMounted: false };
@@ -67,8 +76,11 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     public componentDidMount() {
+        if (!this.props.container) {
+            return;
+        }
         this.portalElement = this.createContainerElement();
-        document.body.appendChild(this.portalElement);
+        this.props.container.appendChild(this.portalElement);
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();

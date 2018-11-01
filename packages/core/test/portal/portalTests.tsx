@@ -30,6 +30,19 @@ describe("<Portal>", () => {
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
 
+    it("attaches contents to specified container", () => {
+        const CLASS_TO_TEST = "bp-test-content";
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        portal = mount(
+            <Portal container={container}>
+                <p className={CLASS_TO_TEST}>test</p>
+            </Portal>,
+        );
+        assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
+        document.body.removeChild(container);
+    });
+
     it("propagates className to portal element", () => {
         const CLASS_TO_TEST = "bp-test-klass";
         portal = mount(
