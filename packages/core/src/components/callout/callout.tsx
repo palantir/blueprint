@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, DISPLAYNAME_PREFIX, HTMLDivProps, IIntentProps, Intent, IProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, HTMLDivProps, IIntentProps, Intent, IProps, OptionalElement } from "../../common";
 import { Icon } from "../../index";
 import { H4 } from "../html/html";
 import { IconName } from "../icon/icon";
@@ -20,7 +20,7 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
      * If this prop is omitted or `undefined`, the `intent` prop will determine a default icon.
      * If this prop is explicitly `null`, no icon will be displayed (regardless of `intent`).
      */
-    icon?: IconName | JSX.Element | null;
+    icon?: IconName | OptionalElement;
 
     /**
      * Visual intent color to apply to background, title, and icon.
