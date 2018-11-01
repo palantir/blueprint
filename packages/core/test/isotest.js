@@ -10,6 +10,7 @@ const Core = require("../lib/cjs");
 
 const tooltipContent = { content: React.createElement("h1", {}, "content") };
 const customProps = {
+    Breadcrumbs: { items: [] },
     Hotkey: { combo: "mod+s", global: true, label: "save" },
     Icon: { iconName: "build" },
     KeyCombo: { combo: "?" },

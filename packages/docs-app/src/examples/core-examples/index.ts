@@ -5,6 +5,7 @@
  */
 
 export * from "./alertExample";
+export * from "./breadcrumbsExample";
 export * from "./buttonsExample";
 export * from "./buttonsIconsExample";
 export * from "./buttonGroupExample";
@@ -31,7 +32,6 @@ export * from "./navbarExample";
 export * from "./numericInputBasicExample";
 export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
-export * from "./overflowListExample";
 export * from "./overlayExample";
 export * from "./panelStackExample";
 export * from "./popoverDismissExample";

@@ -19,7 +19,7 @@ to watch for resizing further up in the DOM tree.
 
 [resizeobserver]: https://developers.google.com/web/updates/2016/10/resizeobserver
 
-@reactExample OverflowListExample
+@reactExample BreadcrumbsExample
 
 @## Props
 

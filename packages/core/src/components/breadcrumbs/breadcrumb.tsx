@@ -24,6 +24,14 @@ export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
         },
         breadcrumbProps.className,
     );
+    if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
+        return (
+            <span className={classes}>
+                {breadcrumbProps.text}
+                {breadcrumbProps.children}
+            </span>
+        );
+    }
     return (
         <a
             className={classes}

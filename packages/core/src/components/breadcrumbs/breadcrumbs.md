@@ -2,7 +2,7 @@
 
 Breadcrumbs identify the current resource in an application.
 
-@css breadcrumbs
+@reactExample BreadcrumbsExample
 
 @## Props
 
@@ -27,3 +27,5 @@ user to that resource.
 containing breadcrumbs that are collapsed due to layout constraints.
 * When adding another element (such as a [tooltip](#core/components/tooltip) or
 [popover](#core/components/popover)) to a breadcrumb, wrap it around the contents of the `li`.
+
+@css breadcrumbs
