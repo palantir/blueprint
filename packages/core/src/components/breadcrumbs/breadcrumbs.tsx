@@ -69,6 +69,7 @@ export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
             <OverflowList
                 collapseFrom={collapseFrom}
                 minVisibleItems={minVisibleItems}
+                tagName="ul"
                 {...overflowListProps}
                 className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
                 items={items}

@@ -76,6 +76,12 @@ export interface IOverflowListProps<T> extends IProps {
     style?: React.CSSProperties;
 
     /**
+     * HTML tag name for the container element.
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
+
+    /**
      * Callback invoked to render each visible item.
      * Remember to set a `key` on the rendered element!
      */
@@ -164,16 +170,23 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public render() {
-        const { className, collapseFrom, observeParents, style, visibleItemRenderer } = this.props;
+        const {
+            className,
+            collapseFrom,
+            observeParents,
+            style,
+            tagName: TagName = "div",
+            visibleItemRenderer,
+        } = this.props;
         const overflow = this.maybeRenderOverflow();
         return (
             <ResizeSensor onResize={this.resize} observeParents={observeParents}>
-                <div className={classNames(Classes.OVERFLOW_LIST, className)} style={style}>
+                <TagName className={classNames(Classes.OVERFLOW_LIST, className)} style={style}>
                     {collapseFrom === Boundary.START ? overflow : null}
                     {this.state.visible.map(visibleItemRenderer)}
                     {collapseFrom === Boundary.END ? overflow : null}
                     <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />
-                </div>
+                </TagName>
             </ResizeSensor>
         );
     }
