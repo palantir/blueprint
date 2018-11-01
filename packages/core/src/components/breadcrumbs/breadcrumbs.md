@@ -6,9 +6,10 @@ Breadcrumbs identify the current resource in an application.
 
 @## Props
 
-The component renders an `a.@ns-breadcrumb`. You are responsible for constructing
-the `ul.@ns-breadcrumbs` list. [`CollapsibleList`](#core/components/collapsible-list)
-works nicely with this component because its props are a subset of `IMenuItemProps`.
+The component renders an `a.@ns-breadcrumb` (or a `span.@ns-breadcrumb` if there is no `href` or
+`onClick` handler). You are responsible for constructing the `ul.@ns-breadcrumbs` list.
+[`CollapsibleList`](#core/components/collapsible-list) works nicely with this component because its
+props are a subset of `IMenuItemProps`.
 
 @interface IBreadcrumbProps
 
