@@ -13,24 +13,45 @@ import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
-import { OverflowList } from "../overflow-list/overflowList";
+import { IOverflowListProps, OverflowList } from "../overflow-list/overflowList";
 import { Popover } from "../popover/popover";
 import { Breadcrumb, IBreadcrumbProps } from "./breadcrumb";
 
 export interface IBreadcrumbsProps extends IProps {
     breadcrumbRenderer?: (props: IBreadcrumbProps) => React.ReactNode;
     currentBreadcrumbRenderer?: (props: IBreadcrumbProps) => React.ReactNode;
-    items: IBreadcrumbProps[];
+
+    /**
+     * Which direction the breadcrumbs should collapse from: start or end.
+     * @default Boundary.START
+     */
     collapseFrom?: Boundary;
+    items: IBreadcrumbProps[];
+
+    /**
+     * The number of visible breadcrumbs will never be lower than the number
+     * passed to this prop.
+     * @default 0
+     */
+    minVisibleItems?: number;
+
+    /**
+     * Props to spread to `OverflowList`. Note that `items`,
+     * `overflowRenderer`, and `visibleItemRenderer` cannot be changed.
+     */
+    overflowListProps?: Partial<IOverflowListProps<IBreadcrumbProps>>;
 }
 
 export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
     public render() {
+        const { className, collapseFrom, items, minVisibleItems, overflowListProps = {} } = this.props;
         return (
             <OverflowList
-                className={classNames(this.props.className, Classes.BREADCRUMBS)}
-                collapseFrom={this.props.collapseFrom}
-                items={this.props.items}
+                collapseFrom={collapseFrom}
+                minVisibleItems={minVisibleItems}
+                {...overflowListProps}
+                className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
+                items={items}
                 overflowRenderer={this.renderOverflow}
                 visibleItemRenderer={this.renderBreadcrumbWrapper}
             />
