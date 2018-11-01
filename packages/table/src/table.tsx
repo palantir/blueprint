@@ -176,9 +176,9 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     focusedCell?: IFocusedCellCoordinates;
 
     /**
-     * If `false`, prevents rerendering of all visible cells when the selection
-     * state changes. Rerendering will still occur if any other relevant props change.
-     * @default true
+     * If `true`, selection state changes will cause the component to re-render.
+     * If `false`, selection state is ignored when deciding to re-render.
+     * @default false
      */
     forceRerenderOnSelectionChange?: boolean;
 
@@ -427,7 +427,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         enableGhostCells: false,
         enableMultipleSelection: true,
         enableRowHeader: true,
-        forceRerenderOnSelectionChange: true,
+        forceRerenderOnSelectionChange: false,
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
