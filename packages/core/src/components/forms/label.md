@@ -24,8 +24,8 @@ This component supports the full range of HTML props.
     <input className={Classes.INPUT} placeholder="Placeholder text" />
 </Label>
 
-<Label htmlFor="text-input">Label A</Label>
-<input className={Classes.INPUT} id="text-input" placeholder="Placeholder text" />
+<Label htmlFor="input-b">Label B</Label>
+<input className={Classes.INPUT} id="input-b" placeholder="Placeholder text" />
 ```
 
 @interface ILabelProps
