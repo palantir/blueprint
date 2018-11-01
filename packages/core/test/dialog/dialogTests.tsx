@@ -31,6 +31,18 @@ describe("<Dialog>", () => {
         });
     });
 
+    it("renders contents to specified container correctly", () => {
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        mount(
+            <Dialog isOpen={true} portalContainer={container}>
+                {createDialogContents()}
+            </Dialog>,
+        );
+        assert.lengthOf(container.getElementsByClassName(Classes.DIALOG), 1, `missing ${Classes.DIALOG}`);
+        document.body.removeChild(container);
+    });
+
     it("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(

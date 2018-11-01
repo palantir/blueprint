@@ -35,6 +35,19 @@ describe("<Alert>", () => {
         assert.lengthOf(wrapper.find(`.${Classes.ALERT_FOOTER}`), 1);
     });
 
+    it("renders contents to specified container correctly", () => {
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        mount(
+            <Alert isOpen={true} portalContainer={container}>
+                <p>Are you sure you want to delete this file?</p>
+                <p>There is no going back.</p>
+            </Alert>,
+        );
+        assert.lengthOf(container.getElementsByClassName(Classes.ALERT), 1);
+        document.body.removeChild(container);
+    });
+
     it("renders the icon correctly", () => {
         const wrapper = shallow(
             <Alert icon="warning-sign" isOpen={true} confirmButtonText="Delete">

@@ -17,9 +17,8 @@ describe("DateTime isomorphic rendering", () => {
     generateIsomorphicTests(
         DateTime,
         {
-            "DateInput": formatProps,
-            "DateRangeInput": formatProps,
-        },
-        {}
+            DateInput: { props: formatProps },
+            DateRangeInput: { props: formatProps },
+        }
     );
 });
