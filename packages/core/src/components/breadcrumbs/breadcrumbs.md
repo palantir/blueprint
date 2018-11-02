@@ -11,6 +11,31 @@ Breadcrumbs identify the current resource in an application.
 The `Breadcrumbs` component renders an [`OverflowList`](#core/components/overflow-list) with all
 the supplied `Breadcrumb`s inside.
 
+```tsx
+const { Breadcrumbs, IBreadcrumbProps, Icon } = "@blueprintjs/core";
+
+const BREADCRUMBS: IBreadcrumbProps[] = [
+    { href: "/users", icon: "folder-close", text: "Users" },
+    { href: "/users/janet", icon: "folder-close", text: "Janet" },
+    { icon: "document", text: "image.jpg" },
+];
+
+export class BreadcrumbsExample extends React.Component {
+    public render() {
+        return (
+            <Breadcrumbs
+                currentBreadcrumbRenderer={this.renderCurrentBreadcrumb}
+                items={BREADCRUMBS}
+             />
+        );
+    }
+    private renderCurrentBreadcrumb = (props: IBreadcrumbProps) => {
+        const { text, ...restProps } = props;
+        return <Breadcrumb {...restProps}>{text} <Icon icon="star" /></Breadcrumb>;
+    };
+}
+```
+
 @interface IBreadcrumbsProps
 
 @### Breadcrumb

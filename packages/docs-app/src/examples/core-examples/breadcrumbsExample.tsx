@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Boundary, Breadcrumbs, Card, H5, IMenuItemProps, Label, RadioGroup, Slider } from "@blueprintjs/core";
+import { Boundary, Breadcrumbs, Card, H5, IBreadcrumbProps, Label, RadioGroup, Slider } from "@blueprintjs/core";
 import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IBreadcrumbsExampleState {
@@ -19,7 +19,7 @@ const COLLAPSE_FROM_RADIOS = [
     { label: "End", value: Boundary.END.toString() },
 ];
 
-const ITEMS: IMenuItemProps[] = [
+const ITEMS: IBreadcrumbProps[] = [
     { icon: "folder-close", text: "All files" },
     { icon: "folder-close", text: "Users" },
     { icon: "folder-close", text: "Janet" },
