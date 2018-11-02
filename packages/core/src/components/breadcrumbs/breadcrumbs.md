@@ -14,8 +14,8 @@ The component renders an `OverflowList` with all the supplied `Breadcrumb`s insi
 
 @### Breadcrumb
 
-The component renders an `a.@ns-breadcrumb` (or a `span.@ns-breadcrumb` if there is no `href` or
-`onClick` handler).
+The `Breadcrumb` component renders an `a.@ns-breadcrumb` if given an `href` or `onClick` and a
+`span.@ns-breadcrumb` otherwise.
 
 @interface IBreadcrumbProps
 
