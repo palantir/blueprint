@@ -22,8 +22,7 @@ export interface IBreadcrumbsProps extends IProps {
      * Callback invoked to render visible breadcrumbs. If
      * `currentBreadcrumbRenderer` is also supplied, that callback will be used
      * for the current breadcrumb instead.
-     *
-     * If this callback is not supplied, a `Breadcrumb` will be rendered.
+     * @default Breadcrumb
      */
     breadcrumbRenderer?: (props: IBreadcrumbProps) => JSX.Element;
 
