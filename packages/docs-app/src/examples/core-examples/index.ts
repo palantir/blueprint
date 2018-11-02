@@ -32,6 +32,7 @@ export * from "./navbarExample";
 export * from "./numericInputBasicExample";
 export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
+export * from "./overflowListExample";
 export * from "./overlayExample";
 export * from "./panelStackExample";
 export * from "./popoverDismissExample";
