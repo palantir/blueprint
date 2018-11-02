@@ -92,6 +92,10 @@ export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
         const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
         let orderedItems = items;
         if (collapseFrom === Boundary.START) {
+            // If we're collapsing from the start, the menu should be read from the bottom to the
+            // top, continuing with the breadcrumbs to the right. Since this means the first
+            // breadcrumb in the props must be the last in the menu, we need to reverse the overlow
+            // order.
             orderedItems = items.slice().reverse();
         }
         return (
