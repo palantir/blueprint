@@ -8,7 +8,8 @@ Breadcrumbs identify the current resource in an application.
 
 @### Breadcrumbs
 
-The component renders an `OverflowList` with all the supplied `Breadcrumb`s inside.
+The `Breadcrumbs` component renders an [`OverflowList`](#core/components/overflow-list) with all
+the supplied `Breadcrumb`s inside.
 
 @interface IBreadcrumbsProps
 
