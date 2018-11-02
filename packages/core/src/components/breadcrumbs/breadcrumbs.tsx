@@ -19,9 +19,9 @@ import { Breadcrumb, IBreadcrumbProps } from "./breadcrumb";
 
 export interface IBreadcrumbsProps extends IProps {
     /**
-     * Callback invoked to render visible breadcrumbs. If
-     * `currentBreadcrumbRenderer` is also supplied, that callback will be used
-     * for the current breadcrumb instead.
+     * Callback invoked to render visible breadcrumbs. Best practice is to
+     * render a `<Breadcrumb>` element. If `currentBreadcrumbRenderer` is also
+     * supplied, that callback will be used for the current breadcrumb instead.
      * @default Breadcrumb
      */
     breadcrumbRenderer?: (props: IBreadcrumbProps) => JSX.Element;
@@ -48,8 +48,8 @@ export interface IBreadcrumbsProps extends IProps {
     items: IBreadcrumbProps[];
 
     /**
-     * The number of visible breadcrumbs will never be lower than the number
-     * passed to this prop.
+     * The minimum number of visible breadcrumbs that should never collapse into
+     * the overflow menu, regardless of DOM dimensions.
      * @default 0
      */
     minVisibleItems?: number;

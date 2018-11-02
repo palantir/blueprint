@@ -37,8 +37,8 @@ export interface IOverflowListProps<T> extends IProps {
     items: T[];
 
     /**
-     * The number of visible items will never be lower than the number passed to
-     * this prop.
+     * The minimum number of visible items that should never collapse into the
+     * overflow menu, regardless of DOM dimensions.
      * @default 0
      */
     minVisibleItems?: number;

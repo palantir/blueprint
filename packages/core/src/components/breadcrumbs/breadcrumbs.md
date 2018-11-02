@@ -1,6 +1,6 @@
 @# Breadcrumbs
 
-Breadcrumbs identify the current resource in an application.
+Breadcrumbs identify the path to the current resource in an application.
 
 @reactExample BreadcrumbsExample
 
@@ -8,8 +8,10 @@ Breadcrumbs identify the current resource in an application.
 
 @### Breadcrumbs
 
-The `Breadcrumbs` component renders an [`OverflowList`](#core/components/overflow-list) with all
-the supplied `Breadcrumb`s inside.
+The `Breadcrumbs` component requires an `items` array of
+[breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them in
+an [`OverflowList`](#core/components/overflow-list) to automatically collapse
+breadcrumbs that do not fit in the available space.
 
 ```tsx
 const { Breadcrumbs, IBreadcrumbProps, Icon } = "@blueprintjs/core";
@@ -29,8 +31,8 @@ export class BreadcrumbsExample extends React.Component {
              />
         );
     }
-    private renderCurrentBreadcrumb = (props: IBreadcrumbProps) => {
-        const { text, ...restProps } = props;
+    private renderCurrentBreadcrumb = ({ text, ...restProps }: IBreadcrumbProps) => {
+        // customize rendering of last breadcrumb
         return <Breadcrumb {...restProps}>{text} <Icon icon="star" /></Breadcrumb>;
     };
 }
@@ -40,8 +42,10 @@ export class BreadcrumbsExample extends React.Component {
 
 @### Breadcrumb
 
-The `Breadcrumb` component renders an `a.@ns-breadcrumb` if given an `href` or `onClick` and a
-`span.@ns-breadcrumb` otherwise.
+The `Breadcrumb` component renders an `a.@ns-breadcrumb` if given an `href` or
+`onClick` and a `span.@ns-breadcrumb` otherwise. Typically you will supply an
+array of `IBreadcrumbProps` to the `<Breadcrumbs items>` prop and only render
+this component directly when defining a custom `breadcrumbRenderer`.
 
 @interface IBreadcrumbProps
 
