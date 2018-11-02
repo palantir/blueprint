@@ -34,7 +34,7 @@ export interface IBreadcrumbsProps extends IProps {
     collapseFrom?: Boundary;
 
     /**
-     * Callback invoked to render to current breadcrumb, which is the last
+     * Callback invoked to render the current breadcrumb, which is the last
      * element in the `items` array.
      *
      * If this callback is not supplied, the `breadcrumbRenderer` will be
