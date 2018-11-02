@@ -37,7 +37,7 @@ export interface IBreadcrumbsProps extends IProps {
      * Callback invoked to render the current breadcrumb, which is the last
      * element in the `items` array.
      *
-     * If this callback is not supplied, the `breadcrumbRenderer` will be
+     * If this prop is omitted, `breadcrumbRenderer` will be
      * invoked for the current breadcrumb instead.
      */
     currentBreadcrumbRenderer?: (props: IBreadcrumbProps) => JSX.Element;
