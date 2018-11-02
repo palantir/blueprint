@@ -62,12 +62,6 @@ $dark-navbar-background-color: $dark-gray5 !default;
     right: 0;
     left: 0;
   }
-
-  .#{$ns}-logo {
-    // logo must be centered in 50px square
-    margin-right: $navbar-padding;
-    width: $pt-navbar-height - $navbar-padding * 2;
-  }
 }
 
 .#{$ns}-navbar-heading {
