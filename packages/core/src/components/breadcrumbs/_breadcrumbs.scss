@@ -91,6 +91,7 @@ Styleguide breadcrumbs
   background: $light-gray1;
   cursor: pointer;
   padding: 1px ($pt-grid-size / 2);
+  vertical-align: text-bottom;
 
   &::before {
     display: block;

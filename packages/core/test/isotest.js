@@ -16,6 +16,9 @@ describe("Core isomorphic rendering", () => {
         Alert: {
             props: { isOpen: true, usePortal: false },
         },
+        Breadcrumbs: {
+            props: { items: [] },
+        },
         Dialog: {
             props: { isOpen: true, usePortal: false },
         },

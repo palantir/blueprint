@@ -1,14 +1,51 @@
 @# Breadcrumbs
 
-Breadcrumbs identify the current resource in an application.
+Breadcrumbs identify the path to the current resource in an application.
 
-@css breadcrumbs
+@reactExample BreadcrumbsExample
 
 @## Props
 
-The component renders an `a.@ns-breadcrumb`. You are responsible for constructing
-the `ul.@ns-breadcrumbs` list. [`CollapsibleList`](#core/components/collapsible-list)
-works nicely with this component because its props are a subset of `IMenuItemProps`.
+@### Breadcrumbs
+
+The `Breadcrumbs` component requires an `items` array of
+[breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them in
+an [`OverflowList`](#core/components/overflow-list) to automatically collapse
+breadcrumbs that do not fit in the available space.
+
+```tsx
+const { Breadcrumbs, IBreadcrumbProps, Icon } = "@blueprintjs/core";
+
+const BREADCRUMBS: IBreadcrumbProps[] = [
+    { href: "/users", icon: "folder-close", text: "Users" },
+    { href: "/users/janet", icon: "folder-close", text: "Janet" },
+    { icon: "document", text: "image.jpg" },
+];
+
+export class BreadcrumbsExample extends React.Component {
+    public render() {
+        return (
+            <Breadcrumbs
+                currentBreadcrumbRenderer={this.renderCurrentBreadcrumb}
+                items={BREADCRUMBS}
+             />
+        );
+    }
+    private renderCurrentBreadcrumb = ({ text, ...restProps }: IBreadcrumbProps) => {
+        // customize rendering of last breadcrumb
+        return <Breadcrumb {...restProps}>{text} <Icon icon="star" /></Breadcrumb>;
+    };
+}
+```
+
+@interface IBreadcrumbsProps
+
+@### Breadcrumb
+
+The `Breadcrumb` component renders an `a.@ns-breadcrumb` if given an `href` or
+`onClick` and a `span.@ns-breadcrumb` otherwise. Typically you will supply an
+array of `IBreadcrumbProps` to the `<Breadcrumbs items>` prop and only render
+this component directly when defining a custom `breadcrumbRenderer`.
 
 @interface IBreadcrumbProps
 
@@ -27,3 +64,5 @@ user to that resource.
 containing breadcrumbs that are collapsed due to layout constraints.
 * When adding another element (such as a [tooltip](#core/components/tooltip) or
 [popover](#core/components/popover)) to a breadcrumb, wrap it around the contents of the `li`.
+
+@css breadcrumbs
