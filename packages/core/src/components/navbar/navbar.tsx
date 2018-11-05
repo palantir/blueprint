@@ -23,6 +23,7 @@ export interface INavbarProps extends IProps, HTMLDivProps {
 
     /**
      * Whether this navbar should be attached to the top of its parent container (using CSS `position: sticky`).
+     * IE11 does not support this feature.
      */
     stickyToTop?: boolean;
 }
@@ -42,7 +43,7 @@ export class Navbar extends React.PureComponent<INavbarProps, {}> {
             Classes.NAVBAR,
             {
                 [Classes.FIXED_TOP]: fixedToTop,
-                [Classes.FIXED_TOP]: stickyToTop,
+                [Classes.STICKY_TOP]: stickyToTop,
             },
             className,
         );
