@@ -25,7 +25,7 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "@blueprintjs/webpack-build-scripts": "^0.6.0",
+    "@blueprintjs/webpack-build-scripts": "*",
     "npm-run-all": "^4.1.2",
     "stylelint": "~8.4.0",
     "webpack": "^3.10.0",

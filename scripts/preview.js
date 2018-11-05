@@ -3,6 +3,11 @@
 // Submits a comment to the change PR or commit with links to artifacts that
 // show the results of the code change being applied.
 
+if (!process.env.GH_AUTH_TOKEN) {
+    console.error("Missing GH_AUTH_TOKEN env var, refusing to run.");
+    process.exit();
+}
+
 const bot = require("circle-github-bot").create();
 
 const links = [

@@ -30,4 +30,14 @@ describe("Breadcrumb", () => {
         shallow(<Breadcrumb disabled={true} onClick={onClick} text="Hello" />).simulate("click");
         assert.isTrue(onClick.notCalled, "onClick called");
     });
+
+    it("renders an a tag if it's clickable", () => {
+        assert.lengthOf(shallow(<Breadcrumb href="test" />).find("a"), 1);
+        assert.lengthOf(shallow(<Breadcrumb href="test" />).find("span"), 0);
+    });
+
+    it("renders a span tag if it's not clickable", () => {
+        assert.lengthOf(shallow(<Breadcrumb />).find("a"), 0);
+        assert.lengthOf(shallow(<Breadcrumb />).find("span"), 1);
+    });
 });

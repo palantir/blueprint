@@ -8,35 +8,27 @@ const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Select = require("../lib/cjs");
 
-const customChildren = {
-};
-
-const customProps = {
-    MultiSelect: {
-        items: [],
-        query: "",
-        selectedItems: [],
-        tagRenderer: () => null,
-    },
-    QueryList: {
-        // needs at least one handler or it returns undefined
-        renderer: () => null
-    },
-    Select: {
-        items: [],
-    },
-    Suggest: {
-        items: [],
-    },
-    Omnibar: {
-        items: [],
-    }
-};
-
-const skipList = [
-    "QueryList", // doesn't render any DOM itself
-]
-
 describe("Select isomorphic rendering", () => {
-    generateIsomorphicTests(Select, customProps, customChildren, skipList);
+    generateIsomorphicTests(Select, {
+        MultiSelect: {
+            props: { items: [], query: "", selectedItems: [], tagRenderer: () => null },
+        },
+        QueryList: {
+            // needs at least one handler or it returns undefined
+            props: { renderer: () => null },
+            skip: true,
+        },
+        Select: {
+            props: { items: [] },
+        },
+        Suggest: {
+            props: { items: [] },
+        },
+        Omnibar: {
+            props: { items: [], isOpen: true, overlayProps: { usePortal: false } },
+        },
+        QueryList: {
+            skip: true,
+        }
+    });
 });

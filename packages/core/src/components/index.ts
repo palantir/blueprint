@@ -17,6 +17,7 @@ export const ContextMenu = contextMenu;
 
 export * from "./alert/alert";
 export * from "./breadcrumbs/breadcrumb";
+export * from "./breadcrumbs/breadcrumbs";
 export * from "./button/buttons";
 export * from "./button/buttonGroup";
 export * from "./callout/callout";

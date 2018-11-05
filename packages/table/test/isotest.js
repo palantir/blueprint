@@ -8,25 +8,15 @@ const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Table = require("../lib/cjs");
 
-const customProps = {
-    ResizeHandle: {
-        // needs at least one handler or it returns undefined
-        onDoubleClick: () => undefined,
-    },
-};
-
-const skipList = [
-    // Pass-through renders
-    "DragSelectable",
-    "Draggable",
-]
-
-
 describe("Table isomorphic rendering", () => {
     generateIsomorphicTests(
         Table,
-        customProps,
-        {},
-        skipList
+        {
+            // Pass-through renders
+            DragSelectable: { skip: true },
+            Draggable: { skip: true },
+            // needs at least one handler or it returns undefined
+            ResizeHandle: { props: { onDoubleClick: () => undefined } },
+        }
     );
 });

@@ -159,6 +159,14 @@ describe("<Popover>", () => {
         assert.lengthOf(wrapper.find(Portal), 1);
     });
 
+    it("renders to specified container correctly", () => {
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        wrapper = renderPopover({ isOpen: true, usePortal: true, portalContainer: container });
+        assert.lengthOf(container.getElementsByClassName(Classes.POPOVER_CONTENT), 1);
+        document.body.removeChild(container);
+    });
+
     it("does not render Portal when usePortal=false", () => {
         wrapper = renderPopover({ isOpen: true, usePortal: false });
         assert.lengthOf(wrapper.find(Portal), 0);

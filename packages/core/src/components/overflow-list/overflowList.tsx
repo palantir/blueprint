@@ -37,8 +37,8 @@ export interface IOverflowListProps<T> extends IProps {
     items: T[];
 
     /**
-     * The number of visible items will never be lower than the number passed to
-     * this prop.
+     * The minimum number of visible items that should never collapse into the
+     * overflow menu, regardless of DOM dimensions.
      * @default 0
      */
     minVisibleItems?: number;
@@ -74,6 +74,12 @@ export interface IOverflowListProps<T> extends IProps {
 
     /** CSS properties to apply to the root element. */
     style?: React.CSSProperties;
+
+    /**
+     * HTML tag name for the container element.
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
 
     /**
      * Callback invoked to render each visible item.
@@ -164,16 +170,23 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
     }
 
     public render() {
-        const { className, collapseFrom, observeParents, style, visibleItemRenderer } = this.props;
+        const {
+            className,
+            collapseFrom,
+            observeParents,
+            style,
+            tagName: TagName = "div",
+            visibleItemRenderer,
+        } = this.props;
         const overflow = this.maybeRenderOverflow();
         return (
             <ResizeSensor onResize={this.resize} observeParents={observeParents}>
-                <div className={classNames(Classes.OVERFLOW_LIST, className)} style={style}>
+                <TagName className={classNames(Classes.OVERFLOW_LIST, className)} style={style}>
                     {collapseFrom === Boundary.START ? overflow : null}
                     {this.state.visible.map(visibleItemRenderer)}
                     {collapseFrom === Boundary.END ? overflow : null}
                     <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />
-                </div>
+                </TagName>
             </ResizeSensor>
         );
     }

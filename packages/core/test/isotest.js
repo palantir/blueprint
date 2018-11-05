@@ -8,29 +8,67 @@ const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Core = require("../lib/cjs");
 
-const tooltipContent = { content: React.createElement("h1", {}, "content") };
-const customProps = {
-    Hotkey: { combo: "mod+s", global: true, label: "save" },
-    Icon: { iconName: "build" },
-    KeyCombo: { combo: "?" },
-    OverflowList: { items: [], overflowRenderer: () => null, visibleItemRenderer: () => null },
-    Overlay: { lazy: false, usePortal: false },
-    PanelStack: { initialPanel: { component: () => null, props: {}, title: "" } },
-    TagInput: { values: ["foo", "bar", "baz"] },
-    Tooltip: tooltipContent,
-    Toaster: { usePortal: false },
-};
-
 const requiredChild = React.createElement("button");
-const customChildren = {
-    Hotkeys: React.createElement(Core.Hotkey, customProps.Hotkey),
-    Popover: requiredChild,
-    ResizeSensor: requiredChild,
-    Tabs: React.createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
-    Tooltip: requiredChild,
-    Toaster: React.createElement(Core.Toast, { message: "Toast" }),
-};
+const hotkeyProps = { combo: "mod+s", global: true, label: "save" };
 
 describe("Core isomorphic rendering", () => {
-    generateIsomorphicTests(Core, customProps, customChildren);
+    generateIsomorphicTests(Core, {
+        Alert: {
+            props: { isOpen: true, usePortal: false },
+        },
+        Breadcrumbs: {
+            props: { items: [] },
+        },
+        Dialog: {
+            props: { isOpen: true, usePortal: false },
+        },
+        Hotkey: {
+            props: hotkeyProps,
+        },
+        Hotkeys: {
+            children: React.createElement(Core.Hotkey, hotkeyProps),
+        },
+        Icon: {
+            props: { icon: "build" },
+        },
+        KeyCombo: {
+            props: { combo: "?" },
+        },
+        OverflowList: {
+            props: { items: [], overflowRenderer: () => null, visibleItemRenderer: () => null },
+        },
+        Overlay: {
+            props: { lazy: false, usePortal: false },
+        },
+        PanelStack: {
+            props: {
+                initialPanel: { component: () => null, props: {}, title: "" }
+            },
+            children: ""
+        },
+        Portal: {
+            className: false, // only renders in browser (`document`)
+        },
+        Popover: {
+            children: requiredChild,
+        },
+        ResizeSensor: {
+            children: requiredChild,
+            className: false,
+        },
+        Tabs: {
+            children: React.createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
+        },
+        TagInput: {
+            props: { values: ["foo", "bar", "baz"] },
+        },
+        Tooltip: {
+            props: { content: React.createElement("h1", {}, "content") },
+            children: requiredChild
+        },
+        Toaster: {
+            props: { usePortal: false },
+            children: React.createElement(Core.Toast, { message: "Toast" })
+        },
+    });
 });

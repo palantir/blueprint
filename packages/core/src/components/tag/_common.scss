@@ -5,12 +5,14 @@ $tag-default-color: $gray1 !default;
 $dark-tag-default-color: $gray5 !default;
 
 $tag-height: $pt-grid-size * 2 !default;
-$tag-padding-top: ($tag-height - $pt-icon-size-standard) / 2 !default;
+$tag-line-height: $pt-icon-size-standard !default;
+$tag-padding-top: ($tag-height - $tag-line-height) / 2 !default;
 $tag-padding: $tag-padding-top * 3 !default;
 $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
-$tag-padding-large: ($tag-height-large - $pt-icon-size-large) !default;
+$tag-line-height-large: $pt-icon-size-large !default;
+$tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 
 $tag-icon-spacing: ($tag-height - 12px) / 2 !default;
 $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !default;
@@ -31,6 +33,7 @@ $tag-round-adjustment: 2px !default;
   max-width: 100%;
   min-height: $tag-height;
   padding: $tag-padding-top $tag-padding;
+  line-height: $tag-line-height;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
 
@@ -66,6 +69,7 @@ $tag-round-adjustment: 2px !default;
   min-width: $tag-height-large;
   min-height: $tag-height-large;
   padding: 0 $tag-padding-large;
+  line-height: $tag-line-height-large;
   font-size: $pt-font-size;
 
   &.#{$ns}-round {

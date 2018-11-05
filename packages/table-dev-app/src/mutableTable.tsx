@@ -237,6 +237,7 @@ export interface IMutableTableState {
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
     selectedRegionTransformPreset?: SelectedRegionTransformPreset;
+    selectedRegions?: IRegion[];
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -283,6 +284,7 @@ const DEFAULT_STATE: IMutableTableState = {
     scrollToRowIndex: 0,
     selectedFocusStyle: FocusStyle.TAB,
     selectedRegionTransformPreset: SelectedRegionTransformPreset.CELL,
+    selectedRegions: [],
     showCallbackLogs: true,
     showCellsLoading: false,
     showColumnHeadersLoading: false,
@@ -403,6 +405,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 rowHeaderCellRenderer={this.renderRowHeader}
                 selectedRegionTransform={this.getSelectedRegionTransform()}
                 selectionModes={this.getEnabledSelectionModes()}
+                selectedRegions={this.state.selectedRegions}
                 styledRegionGroups={this.getStyledRegionGroups()}
             >
                 {this.renderColumns()}
@@ -944,6 +947,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private onSelection = (selectedRegions: IRegion[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
+        this.setState({ selectedRegions });
     };
 
     private onColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
