@@ -73,8 +73,6 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 
     /**
      * Name of the HTML tag that wraps the MenuItem.
-     *
-     * By default a `<a>` is used
      * @default "a"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -86,7 +84,6 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         multiline: false,
         popoverProps: {},
         shouldDismissPopover: true,
-        tagName: "a",
         text: "",
     };
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
