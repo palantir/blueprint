@@ -13,7 +13,8 @@ other elements as the user scrolls through the document.
 Enable the `stickyToTop` prop to attach a navbar to the top of its parent container using
 `position: sticky; top: 0;`. If navbar is placed below the top of the viewport, it will
 move as the user scrolls through the document, attaching itself to the top of the viewport
-once it is reached. **IE11 does not support this feature.**
+once it is reached. **This feature is not supported on IE11** due to lack of support for 
+`position: sticky`.
 
 These modifiers are not illustrated here because they break the document flow.
 
