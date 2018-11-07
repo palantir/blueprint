@@ -98,6 +98,13 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      */
     private shouldCheckActiveItemInViewport = false;
 
+    /**
+     * The item that we expect to be the next selected active item (based on click
+     * or key interactions). When scrollToActiveItem = false, used to detect if
+     * an unexpected external change to the active item has been made.
+     */
+    private expectedNextActiveItem: T | null = null;
+
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);
         const { query = "" } = this.props;
@@ -152,7 +159,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public scrollActiveItemIntoView() {
-        if (this.props.scrollToActiveItem === false) {
+        const scrollToActiveItem = this.props.scrollToActiveItem !== false;
+        const externalChangeToActiveItem = this.expectedNextActiveItem !== this.props.activeItem;
+        this.expectedNextActiveItem = null;
+
+        if (!scrollToActiveItem && externalChangeToActiveItem) {
             return;
         }
 
@@ -298,6 +309,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private setActiveItem(activeItem: T | null) {
+        this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
             this.shouldCheckActiveItemInViewport = true;
