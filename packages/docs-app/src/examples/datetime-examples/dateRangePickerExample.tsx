@@ -65,13 +65,13 @@ const MAX_DATE_OPTIONS: IDateOption[] = [
 export class DateRangePickerExample extends React.PureComponent<IExampleProps, IDateRangePickerExampleState> {
     public state: IDateRangePickerExampleState = {
         allowSingleDayRange: false,
-        singleMonthOnly: false,
         contiguousCalendarMonths: true,
         dateRange: [null, null],
         maxDateIndex: 0,
         minDateIndex: 0,
         reverseMonthAndYearMenus: false,
         shortcuts: true,
+        singleMonthOnly: false,
     };
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
