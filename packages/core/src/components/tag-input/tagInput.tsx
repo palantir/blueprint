@@ -184,14 +184,13 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         addOnBlur: false,
         addOnPaste: true,
         inputProps: {},
-        inputValue: "",
         separator: /[,\n\r]/,
         tagProps: {},
     };
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: this.props.inputValue,
+        inputValue: this.props.inputValue || "",
         isInputFocused: false,
     };
 
@@ -207,7 +206,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         super.componentWillReceiveProps(nextProps);
 
         if (nextProps.inputValue !== this.props.inputValue) {
-            this.setState({ inputValue: nextProps.inputValue });
+            this.setState({ inputValue: nextProps.inputValue || "" });
         }
     }
 
@@ -261,15 +260,16 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     }
 
     private addTags = (value: string) => {
-        const { onAdd, onChange, values } = this.props;
+        const { inputValue, onAdd, onChange, values } = this.props;
         const newValues = this.getValues(value);
-        let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
+        let shouldClearInput = inputValue === undefined;
+        shouldClearInput = Utils.safeInvoke(onAdd, newValues) !== false && shouldClearInput;
         // avoid a potentially expensive computation if this prop is omitted
         if (Utils.isFunction(onChange)) {
-            shouldClearInput = shouldClearInput || onChange([...values, ...newValues]);
+            shouldClearInput = onChange([...values, ...newValues]) !== false && shouldClearInput;
         }
         // only explicit return false cancels text clearing
-        if (shouldClearInput !== false) {
+        if (shouldClearInput) {
             this.setState({ inputValue: "" });
         }
     };
