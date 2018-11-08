@@ -101,9 +101,9 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
-     * Whether the start and end dates of the range can be the same day.
-     * If `true`, clicking a selected date will create a one-day range.
-     * If `false`, clicking a selected date will clear the selection.
+     * Whether to show only a single month calendar
+     * If `true`, will only show a single month calendar
+     * If `false`, will show two sequential calendars side-by-side
      * @default false
      */
     singleMonthOnly?: boolean;
