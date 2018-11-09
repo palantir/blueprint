@@ -118,8 +118,7 @@ describe("<DateInput>", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         root.setState({ isOpen: true });
-        root
-            .find("input")
+        root.find("input")
             .simulate("focus")
             .simulate("blur");
         changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
@@ -130,8 +129,7 @@ describe("<DateInput>", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         root.setState({ isOpen: true });
-        root
-            .find("input")
+        root.find("input")
             .simulate("focus")
             .simulate("blur");
         changeSelect(Classes.DATEPICKER_YEAR_SELECT, 2016);

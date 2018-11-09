@@ -25,7 +25,9 @@ export class FormatSelect extends React.PureComponent<IFormatSelectProps> {
         const value = FORMATS.indexOf(this.props.format);
         return (
             <RadioGroup label="Date format" onChange={this.handleChange} selectedValue={value}>
-                {FORMATS.map((format, index) => <Radio key={index} label={format.placeholder} value={index} />)}
+                {FORMATS.map((format, index) => (
+                    <Radio key={index} label={format.placeholder} value={index} />
+                ))}
             </RadioGroup>
         );
     }

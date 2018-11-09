@@ -41,7 +41,10 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
 
     private renderPropRow = (entry: ITsEnumMember) => {
         const { renderBlock } = this.context;
-        const { flags: { isDeprecated, isExternal }, name } = entry;
+        const {
+            flags: { isDeprecated, isExternal },
+            name,
+        } = entry;
 
         const classes = classNames("docs-prop-name", {
             "docs-prop-is-deprecated": !!isDeprecated,
@@ -67,7 +70,9 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
     };
 
     private renderTags(entry: ITsEnumMember) {
-        const { flags: { isDeprecated } } = entry;
+        const {
+            flags: { isDeprecated },
+        } = entry;
         return <DeprecatedTag isDeprecated={isDeprecated} />;
     }
 }

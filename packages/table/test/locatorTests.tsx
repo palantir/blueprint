@@ -125,8 +125,8 @@ describe("Locator", () => {
                 originalScrollTop = bodyElement.scrollTop;
 
                 // make the table smaller, then scroll it one column and one row over
-                bodyElement.style.height = `${N_ROWS / 2 * ROW_HEIGHT}px`;
-                bodyElement.style.width = `${N_COLS / 2 * COL_WIDTH}px`;
+                bodyElement.style.height = `${(N_ROWS / 2) * ROW_HEIGHT}px`;
+                bodyElement.style.width = `${(N_COLS / 2) * COL_WIDTH}px`;
                 bodyElement.style.overflow = "auto";
                 bodyElement.scrollLeft = NUM_COLUMNS_SCROLLED_OUT_OF_VIEW * COL_WIDTH;
                 bodyElement.scrollTop = NUM_ROWS_SCROLLED_OUT_OF_VIEW * ROW_HEIGHT;
