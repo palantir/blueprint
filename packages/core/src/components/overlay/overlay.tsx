@@ -70,6 +70,12 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
     usePortal?: boolean;
 
     /**
+     * Space-delimited string of class names applied to the `Portal` element if
+     * `usePortal={true}`.
+     */
+    portalClassName?: string;
+
+    /**
      * The container element into which the overlay renders its contents, when `usePortal` is `true`.
      * This prop is ignored if `usePortal` is `false`.
      * @default document.body
@@ -192,7 +198,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             return null;
         }
 
-        const { children, className, usePortal, portalContainer, isOpen } = this.props;
+        const { children, className, usePortal, isOpen } = this.props;
 
         // TransitionGroup types require single array of children; does not support nested arrays.
         // So we must collapse backdrop and children into one array, and every item must be wrapped in a
@@ -221,7 +227,11 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             </TransitionGroup>
         );
         if (usePortal) {
-            return <Portal container={portalContainer}>{transitionGroup}</Portal>;
+            return (
+                <Portal className={this.props.portalClassName} container={this.props.portalContainer}>
+                    {transitionGroup}
+                </Portal>
+            );
         } else {
             return transitionGroup;
         }
