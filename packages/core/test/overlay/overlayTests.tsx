@@ -78,7 +78,8 @@ describe("<Overlay>", () => {
                 <p>test</p>
             </Overlay>,
         );
-        assert.isTrue(testsContainerElement.querySelector(`.${CLASS_TO_TEST}`).matches(`.${Classes.PORTAL}`));
+        // search document for portal container element.
+        assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`));
     });
 
     it("renders Portal after first opened", () => {
