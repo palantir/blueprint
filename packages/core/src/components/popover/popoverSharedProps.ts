@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Modifiers as PopperModifiers } from "popper.js";
+import { Boundary, Modifiers as PopperModifiers } from "popper.js";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import { IOverlayableProps } from "../overlay/overlay";
@@ -14,6 +14,13 @@ export { PopperModifiers };
 
 /** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends IOverlayableProps, IProps {
+    /**
+     * Determines the boundary element used by Popper for its `flip` and
+     * `preventOverflow` modifiers.
+     * @default "viewport"
+     */
+    boundariesElement?: Boundary;
+
     /**
      * When enabled, `preventDefault()` is invoked on `click` events that close
      * this popover, which will prevent those clicks from closing outer

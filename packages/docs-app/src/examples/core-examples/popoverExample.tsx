@@ -63,6 +63,7 @@ const VALID_POSITIONS: Array<Position | "auto" | "auto-start" | "auto-end"> = [
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
 export interface IPopoverExampleState {
+    boundariesElement?: PopperJS.Boundary;
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
     hasBackdrop?: boolean;
@@ -78,6 +79,7 @@ export interface IPopoverExampleState {
 
 export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverExampleState> {
     public state: IPopoverExampleState = {
+        boundariesElement: "viewport",
         canEscapeKeyClose: true,
         exampleIndex: 0,
         hasBackdrop: false,
@@ -104,16 +106,8 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
     private handlePositionChange = handleStringChange((position: Position | "auto" | "auto-start" | "auto-end") =>
         this.setState({ position }),
     );
-    private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
-        this.setState({
-            modifiers: {
-                ...this.state.modifiers,
-                preventOverflow: {
-                    boundariesElement: boundary,
-                    enabled: boundary.length > 0,
-                },
-            },
-        }),
+    private handleBoundaryChange = handleStringChange((boundariesElement: PopperJS.Boundary) =>
+        this.setState({ boundariesElement }),
     );
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
@@ -207,7 +201,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                     <div style={{ marginTop: 5 }} />
                     <HTMLSelect
                         disabled={!preventOverflow.enabled}
-                        value={preventOverflow.boundariesElement.toString()}
+                        value={this.state.boundariesElement}
                         onChange={this.handleBoundaryChange}
                     >
                         <option value="scrollParent">scrollParent</option>
