@@ -33,12 +33,13 @@ describe("<Dialog>", () => {
 
     it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
-        mount(
+        const dialog = mount(
             <Dialog isOpen={true} portalClassName={TEST_CLASS}>
                 {createDialogContents()}
             </Dialog>,
         );
         assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`));
+        dialog.unmount();
     });
 
     it("renders contents to specified container correctly", () => {
