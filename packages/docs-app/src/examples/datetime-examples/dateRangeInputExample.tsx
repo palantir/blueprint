@@ -73,7 +73,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                 />
                 <Switch
                     checked={this.state.singleMonthOnly}
-                    label="Show single month only"
+                    label="Single month only"
                     onChange={this.toggleSingleMonth}
                 />
                 <Switch checked={this.state.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />

@@ -120,7 +120,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                     />
                     <Switch
                         checked={this.state.singleMonthOnly}
-                        label="Show single month only"
+                        label="Single month only"
                         onChange={this.toggleSingleMonth}
                     />
                     <Switch

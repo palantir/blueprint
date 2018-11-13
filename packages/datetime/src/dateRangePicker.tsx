@@ -101,9 +101,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
-     * Whether to show only a single month calendar
-     * If `true`, will only show a single month calendar
-     * If `false`, will show two sequential calendars side-by-side
+     * Whether to show only a single month calendar.
      * @default false
      */
     singleMonthOnly?: boolean;
