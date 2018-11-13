@@ -18,18 +18,6 @@ import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
 export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps {
     /**
-     * Toggles the visibility of the overlay and its children.
-     * This prop is required because the component is controlled.
-     */
-    isOpen: boolean;
-
-    /**
-     * Drawer always has a backdrop so this prop is excluded from the public API.
-     * @internal
-     */
-    hasBackdrop?: boolean;
-
-    /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * dialog's header. Note that the header will only be rendered if `title` is
      * provided.
@@ -42,6 +30,18 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * @default true
      */
     isCloseButtonShown?: boolean;
+
+    /**
+     * Toggles the visibility of the overlay and its children.
+     * This prop is required because the component is controlled.
+     */
+    isOpen: boolean;
+
+    /** Whether this drawer should use large styles. */
+    large?: boolean;
+
+    /** Whether this drawer should use small styles. */
+    small?: boolean;
 
     /**
      * CSS styles to apply to the dialog.
@@ -66,12 +66,6 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * @default false
      */
     vertical?: boolean;
-
-    /** Whether this drawer should use large styles. */
-    large?: boolean;
-
-    /** Whether this drawer should use small styles. */
-    small?: boolean;
 }
 
 export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
@@ -96,18 +90,12 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
             this.props.className,
         );
         // small drawer should not use a backdrop
-        if (this.props.small !== false) {
-            return (
-                <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER} hasBackdrop={false}>
-                    <div className={classes} style={this.props.style}>
-                        {this.maybeRenderHeader()}
-                        {this.props.children}
-                    </div>
-                </Overlay>
-            );
-        }
         return (
-            <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER} hasBackdrop={true}>
+            <Overlay
+                {...this.props}
+                className={Classes.OVERLAY_CONTAINER}
+                hasBackdrop={this.props.hasBackdrop || !this.props.small}
+            >
                 <div className={classes} style={this.props.style}>
                     {this.maybeRenderHeader()}
                     {this.props.children}

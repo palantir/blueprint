@@ -1,6 +1,10 @@
+---
+tag: new
+---
+
 @# Drawer
 
-[description]
+Drawers overlay content over existing parts of the UI and are anchored to the edge of the screen.
 
 @reactExample DrawerExample
 
