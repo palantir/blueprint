@@ -57,6 +57,10 @@ Styleguide callout
     margin-top: 0;
     margin-bottom: $pt-grid-size / 2;
     line-height: $pt-icon-size-large;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .#{$ns}-dark & {
