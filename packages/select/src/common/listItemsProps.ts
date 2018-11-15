@@ -116,7 +116,8 @@ export interface IListItemsProps<T> extends IProps {
      * When `activeItem` is controlled, whether the active item should _always_
      * be scrolled into view when the prop changes. If `false`, only changes
      * that result from built-in interactions (clicking, querying, or using
-     * arrow keys) will scroll the active item into view.
+     * arrow keys) will scroll the active item into view. Ignored if the
+     * `activeItem` prop is omitted (uncontrolled behavior).
      * @default true
      */
     scrollToActiveItem?: boolean;
