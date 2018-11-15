@@ -113,9 +113,10 @@ export interface IListItemsProps<T> extends IProps {
     resetOnSelect?: boolean;
 
     /**
-     * When the active item is controlled, whether the active item should be scrolled into view when
-     * an external change to the active item is made. External changes do not include selecting an item
-     * in the list, searching for an item, or changing the selection via up and down arrow keys.
+     * When `activeItem` is controlled, whether the active item should _always_
+     * be scrolled into view when the prop changes. If `false`, only changes
+     * that result from built-in interactions (clicking, querying, or using
+     * arrow keys) will scroll the active item into view.
      * @default true
      */
     scrollToActiveItem?: boolean;
