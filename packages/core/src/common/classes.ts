@@ -14,7 +14,6 @@ const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
-export const CONDENSED = `${NS}-condensed`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;
 export const FILL = `${NS}-fill`;
@@ -116,8 +115,9 @@ export const HTML_SELECT = `${NS}-html-select`;
 export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
-export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
+export const HTML_TABLE_CONDENSED = `${HTML_TABLE}-condensed`;
+export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 
 export const INPUT = `${NS}-input`;
 export const INPUT_GHOST = `${INPUT}-ghost`;
