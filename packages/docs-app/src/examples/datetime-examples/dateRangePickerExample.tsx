@@ -21,6 +21,7 @@ import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDateRangePickerExampleState {
     allowSingleDayRange?: boolean;
+    singleMonthOnly?: boolean;
     contiguousCalendarMonths?: boolean;
     dateRange?: DateRange;
     maxDateIndex?: number;
@@ -70,6 +71,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         minDateIndex: 0,
         reverseMonthAndYearMenus: false,
         shortcuts: true,
+        singleMonthOnly: false,
     };
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
@@ -82,6 +84,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         this.setState({ reverseMonthAndYearMenus }),
     );
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
+    private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
     private toggleContiguousCalendarMonths = handleBooleanChange(contiguousCalendarMonths => {
         this.setState({ contiguousCalendarMonths });
@@ -114,6 +117,11 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                         checked={this.state.allowSingleDayRange}
                         label="Allow single day range"
                         onChange={this.toggleSingleDay}
+                    />
+                    <Switch
+                        checked={this.state.singleMonthOnly}
+                        label="Single month only"
+                        onChange={this.toggleSingleMonth}
                     />
                     <Switch
                         checked={this.state.contiguousCalendarMonths}
