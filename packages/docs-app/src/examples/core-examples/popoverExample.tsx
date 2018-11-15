@@ -22,7 +22,7 @@ import {
     MenuItem,
     Popover,
     PopoverInteractionKind,
-    Position,
+    PopoverPosition,
     RadioGroup,
     Slider,
     Switch,
@@ -42,22 +42,22 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
 ];
 
-const VALID_POSITIONS: Array<Position | "auto" | "auto-start" | "auto-end"> = [
-    "auto",
-    "auto-start",
-    "auto-end",
-    Position.TOP_LEFT,
-    Position.TOP,
-    Position.TOP_RIGHT,
-    Position.RIGHT_TOP,
-    Position.RIGHT,
-    Position.RIGHT_BOTTOM,
-    Position.BOTTOM_LEFT,
-    Position.BOTTOM,
-    Position.BOTTOM_RIGHT,
-    Position.LEFT_TOP,
-    Position.LEFT,
-    Position.LEFT_BOTTOM,
+const VALID_POSITIONS: PopoverPosition[] = [
+    PopoverPosition.AUTO,
+    PopoverPosition.AUTO_START,
+    PopoverPosition.AUTO_END,
+    PopoverPosition.TOP_LEFT,
+    PopoverPosition.TOP,
+    PopoverPosition.TOP_RIGHT,
+    PopoverPosition.RIGHT_TOP,
+    PopoverPosition.RIGHT,
+    PopoverPosition.RIGHT_BOTTOM,
+    PopoverPosition.BOTTOM_LEFT,
+    PopoverPosition.BOTTOM,
+    PopoverPosition.BOTTOM_RIGHT,
+    PopoverPosition.LEFT_TOP,
+    PopoverPosition.LEFT,
+    PopoverPosition.LEFT_BOTTOM,
 ];
 
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
@@ -71,7 +71,7 @@ export interface IPopoverExampleState {
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperJS.Modifiers;
-    position?: Position | "auto" | "auto-start" | "auto-end";
+    position?: PopoverPosition;
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -101,9 +101,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
-    private handlePositionChange = handleStringChange((position: Position | "auto" | "auto-start" | "auto-end") =>
-        this.setState({ position }),
-    );
+    private handlePositionChange = handleStringChange((position: PopoverPosition) => this.setState({ position }));
     private handleBoundaryChange = handleStringChange((boundary: PopperJS.Boundary) =>
         this.setState({
             modifiers: {
