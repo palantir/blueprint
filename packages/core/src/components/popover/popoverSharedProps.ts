@@ -96,12 +96,6 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     popoverClassName?: string;
 
     /**
-     * Space-delimited string of class names applied to the `Portal` element if
-     * `usePortal={true}`.
-     */
-    portalClassName?: string;
-
-    /**
      * The position (relative to the target) at which the popover should appear.
      *
      * The default value of `"auto"` will choose the best position when opened
