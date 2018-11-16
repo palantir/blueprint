@@ -109,7 +109,7 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
 
 const POPOVER_PROPS: IPopoverProps = {
     autoFocus: false,
-    boundariesElement: "window",
+    boundary: "window",
     enforceFocus: false,
     popoverClassName: "docs-popover-portal-example-popover",
     position: Position.BOTTOM,
