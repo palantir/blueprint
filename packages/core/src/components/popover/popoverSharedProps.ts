@@ -12,6 +12,15 @@ import { IOverlayableProps } from "../overlay/overlay";
 // re-export this symbol for library consumers
 export { PopperModifiers };
 
+/** `Position` with `"auto"` values, used by `Popover` and `Tooltip`. */
+export const PopoverPosition = {
+    ...Position,
+    AUTO: "auto" as "auto",
+    AUTO_END: "auto-end" as "auto-end",
+    AUTO_START: "auto-start" as "auto-start",
+};
+export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
+
 /** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     /**
@@ -103,12 +112,6 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     popoverClassName?: string;
 
     /**
-     * Space-delimited string of class names applied to the `Portal` element if
-     * `usePortal={true}`.
-     */
-    portalClassName?: string;
-
-    /**
      * The position (relative to the target) at which the popover should appear.
      *
      * The default value of `"auto"` will choose the best position when opened
@@ -116,7 +119,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * user scrolls around.
      * @default "auto"
      */
-    position?: Position | "auto" | "auto-start" | "auto-end";
+    position?: PopoverPosition;
 
     /**
      * Space-delimited string of class names applied to the target element.

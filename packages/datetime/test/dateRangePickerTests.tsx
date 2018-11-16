@@ -355,6 +355,11 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(wrapper.find(Button).every({ disabled: true }));
         });
 
+        it("only shows one calendar when singleMonthOnly is set", () => {
+            const { right } = render({ singleMonthOnly: true });
+            assert.isFalse(right.wrapper.exists());
+        });
+
         it("left calendar is bound between minDate and (maxDate - 1 month)", () => {
             const minDate = new Date(2015, Months.JANUARY, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);

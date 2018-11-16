@@ -156,7 +156,10 @@ Styleguide control-group
 
   // keep the select-menu carets on top of everything always (particularly when
   // .#{$ns}-selects are focused).
-  .#{$ns}-select::after {
+  .#{$ns}-select::after,
+  .#{$ns}-html-select::after,
+  .#{$ns}-select > .#{$ns}-icon,
+  .#{$ns}-html-select > .#{$ns}-icon {
     z-index: index($control-group-stack, "select-caret");
   }
 

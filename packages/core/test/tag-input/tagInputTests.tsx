@@ -210,6 +210,12 @@ describe("<TagInput>", () => {
             assert.strictEqual(wrapper.state().inputValue, "");
         });
 
+        it("does not clear the input if the input is controlled", () => {
+            const wrapper = mountTagInput(undefined, { inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
+        });
+
         it("splits input value on separator RegExp", () => {
             const onAdd = sinon.stub();
             // this is actually the defaultProps value, but reproducing here for explicitness
@@ -355,6 +361,13 @@ describe("<TagInput>", () => {
             wrapper.setState({ inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, "");
+        });
+
+        it("does not clear the input if the input is controlled", () => {
+            const onChange = sinon.stub();
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} inputValue={NEW_VALUE} />);
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
     });
 

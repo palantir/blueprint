@@ -129,6 +129,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
+     * Whether to show only a single month calendar.
+     * @default false
+     */
+    singleMonthOnly?: boolean;
+
+    /**
      * Props to pass to the start-date [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
@@ -202,6 +208,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         popoverProps: {},
         selectAllOnFocus: false,
         shortcuts: true,
+        singleMonthOnly: false,
         startInputProps: {},
     };
 
