@@ -72,7 +72,7 @@ function getAllMatches(className: string) {
     let currentMatch: RegExpMatchArray | null;
     // tslint:disable-next-line:no-conditional-assignment
     while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
-        ptMatches.push({ match: currentMatch[1], index: currentMatch.index });
+        ptMatches.push({ match: currentMatch[1], index: currentMatch.index || 0 });
     }
     return ptMatches;
 }

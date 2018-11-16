@@ -45,15 +45,19 @@ function walk(ctx: Lint.WalkContext<string>): void {
         if (ts.isJsxAttribute(node) && node.name.text === "icon") {
             const { initializer } = node;
             const option = ctx.options;
-            if (ts.isStringLiteral(initializer) && option === OPTION_COMPONENT) {
+            if (initializer === undefined) {
+                // no-op
+            } else if (ts.isStringLiteral(initializer) && option === OPTION_COMPONENT) {
                 // "tick" -> <TickIcon />
                 const iconName = `<${pascalCase(initializer.text)}Icon />`;
                 addFailure(ctx, node, Rule.componentMessage(iconName), `{${iconName}}`);
             } else if (ts.isJsxExpression(initializer) && option === OPTION_LITERAL) {
                 // <TickIcon /> -> "tick"
                 const match = /<(\w+)Icon /.exec(initializer.getText());
-                const literal = match == null ? undefined : `"${dashCase(match[1])}"`;
-                addFailure(ctx, node, Rule.literalMessage(literal), literal);
+                if (match != null) {
+                    const message = Rule.literalMessage(`"${dashCase(match[1])}"`);
+                    addFailure(ctx, node, message, message);
+                }
             }
         }
         return ts.forEachChild(node, cb);

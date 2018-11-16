@@ -1,11 +1,12 @@
-import { H3, Pre } from "@blueprintjs/core";
-<H3>Subtitle</H3>
-<Pre>block</Pre>
-
-<h1>Title</h1>
- ~~             [err % ("H1")]
+<h5>Subtitle</h5>
+ ~~             [err % ("H5")]
+<pre>block</pre>
+ ~~~            [err % ("Pre")]
+<h2>Title</h2>
+ ~~             [err % ("H2")]
 <code>code element</code>
  ~~~~           [err % ("Code")]
 <blockquote />
  ~~~~~~~~~~     [err % ("Blockquote")]
+
 [err]: use Blueprint <%s> component instead of JSX intrinsic element.
