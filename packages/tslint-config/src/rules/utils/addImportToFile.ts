@@ -20,9 +20,7 @@ export function addImportToFile(file: ts.SourceFile, imports: string[], packageN
     ) {
         const existingImports = packageToModify.importClause.namedBindings.elements.map(el => el.name.getText());
         // Poor man's lodash.uniq without the dep.
-        const newImports = Array.from(new Set(existingImports.concat(imports))).sort((a, b) =>
-            a.toLowerCase().localeCompare(b.toLowerCase()),
-        );
+        const newImports = Array.from(new Set(existingImports.concat(imports))).sort();
         const importString = `{ ${newImports.join(", ")} }`;
         return Replacement.replaceNode(packageToModify.importClause.namedBindings, importString);
     } else {
@@ -34,7 +32,7 @@ export function addImportToFile(file: ts.SourceFile, imports: string[], packageN
             return compare(imp.moduleSpecifier.getText().slice(1, -1), packageName) === 1;
         });
         const startIndex = newImportIndex === -1 ? 0 : allImports[newImportIndex].getStart();
-        return Replacement.appendText(startIndex, `import { ${imports.join(", ")} } from "${packageName}";\n`);
+        return Replacement.appendText(startIndex, `import { ${imports.sort().join(", ")} } from "${packageName}";\n`);
     }
 }
 
