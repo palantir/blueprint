@@ -4,13 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Boundary, Modifiers as PopperModifiers } from "popper.js";
+import { Boundary as PopperBoundary, Modifiers as PopperModifiers } from "popper.js";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import { IOverlayableProps } from "../overlay/overlay";
 
-// re-export this symbol for library consumers
-export { PopperModifiers };
+// re-export symbols for library consumers
+export { PopperBoundary, PopperModifiers };
 
 /** `Position` with `"auto"` values, used by `Popover` and `Tooltip`. */
 export const PopoverPosition = {
@@ -25,10 +25,11 @@ export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPositio
 export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     /**
      * Determines the boundary element used by Popper for its `flip` and
-     * `preventOverflow` modifiers.
+     * `preventOverflow` modifiers. Three shorthand keywords are supported;
+     * Popper will find the correct DOM element itself.
      * @default "scrollParent"
      */
-    boundary?: Boundary;
+    boundary?: PopperBoundary;
 
     /**
      * When enabled, `preventDefault()` is invoked on `click` events that close
