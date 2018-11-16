@@ -1,10 +1,8 @@
-import { Blockquote, Code, H1 } from "@blueprintjs/core";
-<H1>Title</H1>
-
-<Code>code element</Code>
-
-<Blockquote />
+import { Blockquote, Code, H1, H3, Pre } from "@blueprintjs/core";
 
 <H3>Subtitle</H3>
 <Pre>block</Pre>
 
+<H1>Title</H1>
+<Code>code element</Code>
+<Blockquote />
