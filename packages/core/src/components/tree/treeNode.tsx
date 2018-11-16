@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
@@ -28,7 +28,7 @@ export interface ITreeNode<T = {}> extends IProps {
     /**
      * The name of a Blueprint icon (or an icon element) to render next to the node's label.
      */
-    icon?: IconName | JSX.Element;
+    icon?: IconName | MaybeElement;
 
     /**
      * A unique identifier for the node.
@@ -53,7 +53,7 @@ export interface ITreeNode<T = {}> extends IProps {
     /**
      * A secondary label/component that is displayed at the right side of the node.
      */
-    secondaryLabel?: string | JSX.Element;
+    secondaryLabel?: string | MaybeElement;
 
     /**
      * An optional custom user object to associate with the node.

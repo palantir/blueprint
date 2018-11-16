@@ -10,7 +10,7 @@ import * as React from "react";
 import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IActionProps } from "../../common/props";
+import { IActionProps, MaybeElement } from "../../common/props";
 import { isReactNodeEmpty, safeInvoke } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
@@ -52,7 +52,7 @@ export interface IButtonProps extends IActionProps {
     minimal?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
-    rightIcon?: IconName | JSX.Element;
+    rightIcon?: IconName | MaybeElement;
 
     /** Whether this button should use small styles. */
     small?: boolean;

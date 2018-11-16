@@ -4,12 +4,9 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import * as React from "react";
-
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
-
-import classNames from "classnames";
+import * as React from "react";
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
@@ -46,7 +43,9 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
         return (
             <div className="docs-icons">
                 <InputGroup
-                    className={classNames(Classes.LARGE, Classes.FILL)}
+                    autoFocus={true}
+                    className={Classes.FILL}
+                    large={true}
                     leftIcon="search"
                     placeholder="Search for icons..."
                     onChange={this.handleFilterChange}
