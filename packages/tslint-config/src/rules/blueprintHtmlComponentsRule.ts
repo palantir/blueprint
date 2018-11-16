@@ -7,6 +7,7 @@
 import * as Lint from "tslint";
 import * as ts from "typescript";
 import { addImportToFile } from "./utils/addImportToFile";
+import { replaceTagName } from "./utils/replaceTagName";
 
 const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
 
@@ -70,8 +71,4 @@ function walk(ctx: Lint.WalkContext<void>): void {
     tagFailures.forEach(({ jsxTag, newTagName, replacements }) =>
         ctx.addFailureAt(jsxTag.getFullStart(), jsxTag.getFullWidth(), Rule.getFailure(newTagName), replacements),
     );
-}
-
-function replaceTagName(tagName: ts.JsxTagNameExpression, newTagName: string) {
-    return new Lint.Replacement(tagName.getFullStart(), tagName.getFullWidth(), newTagName);
 }
