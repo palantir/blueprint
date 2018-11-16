@@ -32,37 +32,46 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 
 function walk(ctx: Lint.WalkContext<void>): void {
-    const matches: Array<{
-        tagName: ts.JsxTagNameExpression;
+    const tagFailures: Array<{
+        jsxTag: ts.JsxTagNameExpression;
         newTagName: string;
-        closingTag?: ts.JsxTagNameExpression;
+        replacements: Lint.Replacement[];
     }> = [];
+
+    // walk file and build up array of failures
     ts.forEachChild(ctx.sourceFile, function cb(node: ts.Node): void {
         if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
-            // const closingTag = ts.isJsxOpeningElement(node) ? node.parent!.getChildren()
             const match = PATTERN.exec(node.tagName.getFullText());
             if (match != null) {
-                let closingTag;
-                if (ts.isJsxOpeningElement(node)) {
-                    const siblings = node.parent!.getChildren();
-                    closingTag = (siblings[siblings.length - 1] as ts.JsxClosingElement).tagName;
-                }
                 const newTagName = match[1].charAt(0).toUpperCase() + match[1].slice(1);
-                matches.push({ tagName: node.tagName, newTagName, closingTag });
+                const replacements = [replaceTagName(node.tagName, newTagName)];
+
+                if (ts.isJsxOpeningElement(node)) {
+                    // find closing tag after this opening tag to replace both in one failure
+                    const [closingNode] = node.parent!.getChildren().filter(ts.isJsxClosingElement);
+                    replacements.push(replaceTagName(closingNode.tagName, newTagName));
+                }
+
+                tagFailures.push({ jsxTag: node.tagName, newTagName, replacements });
             }
         }
         return ts.forEachChild(node, cb);
     });
 
-    const importsToAdd = addImportToFile(ctx.sourceFile, matches.map(m => m.newTagName), "@blueprintjs/core");
-    matches.forEach(({ tagName, newTagName, closingTag }, i) => {
-        const replacements = [new Lint.Replacement(tagName.getFullStart(), tagName.getFullWidth(), newTagName)];
-        if (closingTag) {
-            replacements.push(new Lint.Replacement(closingTag.getFullStart(), closingTag.getFullWidth(), newTagName));
-        }
-        if (i === 0) {
-            replacements.push(importsToAdd);
-        }
-        ctx.addFailureAt(tagName.getFullStart(), tagName.getFullWidth(), Rule.getFailure(newTagName), replacements);
-    });
+    if (tagFailures.length === 0) {
+        return;
+    }
+
+    // collect all potential new imports into one replacement (in first failure), after processing entire file.
+    const importsToAdd = addImportToFile(ctx.sourceFile, tagFailures.map(m => m.newTagName), "@blueprintjs/core");
+    tagFailures[0].replacements.push(importsToAdd);
+
+    // add all failures at the end
+    tagFailures.forEach(({ jsxTag, newTagName, replacements }) =>
+        ctx.addFailureAt(jsxTag.getFullStart(), jsxTag.getFullWidth(), Rule.getFailure(newTagName), replacements),
+    );
+}
+
+function replaceTagName(tagName: ts.JsxTagNameExpression, newTagName: string) {
+    return new Lint.Replacement(tagName.getFullStart(), tagName.getFullWidth(), newTagName);
 }
