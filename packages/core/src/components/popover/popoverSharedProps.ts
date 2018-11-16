@@ -26,9 +26,9 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     /**
      * Determines the boundary element used by Popper for its `flip` and
      * `preventOverflow` modifiers.
-     * @default "viewport"
+     * @default "scrollParent"
      */
-    boundariesElement?: Boundary;
+    boundary?: Boundary;
 
     /**
      * When enabled, `preventDefault()` is invoked on `click` events that close

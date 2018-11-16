@@ -86,7 +86,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     public static defaultProps: IPopoverProps = {
-        boundariesElement: "scrollParent",
+        boundary: "scrollParent",
         captureDismiss: false,
         defaultIsOpen: false,
         disabled: false,
@@ -356,7 +356,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     private getPopperModifiers(): PopperModifiers {
-        const { boundariesElement, modifiers } = this.props;
+        const { boundary, modifiers } = this.props;
         const { flip = {}, preventOverflow = {} } = modifiers;
         return {
             ...modifiers,
@@ -365,8 +365,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                 fn: arrowOffsetModifier,
                 order: 510,
             },
-            flip: { boundariesElement, ...flip },
-            preventOverflow: { boundariesElement, ...preventOverflow },
+            flip: { boundariesElement: boundary, ...flip },
+            preventOverflow: { boundariesElement: boundary, ...preventOverflow },
             updatePopoverState: {
                 enabled: true,
                 fn: this.updatePopoverState,
