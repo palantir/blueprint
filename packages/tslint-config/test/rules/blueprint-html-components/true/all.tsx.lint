@@ -1,9 +1,9 @@
-<h3>Subtitle</h3>
- ~~             [err % ("H3")]
+<h5>Subtitle</h5>
+ ~~             [err % ("H5")]
 <pre>block</pre>
  ~~~            [err % ("Pre")]
-<h1>Title</h1>
- ~~             [err % ("H1")]
+<h2>Title</h2>
+ ~~             [err % ("H2")]
 <code>code element</code>
  ~~~~           [err % ("Code")]
 <blockquote />
