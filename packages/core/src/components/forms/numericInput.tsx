@@ -16,7 +16,7 @@ import {
     IIntentProps,
     IProps,
     Keys,
-    OptionalElement,
+    MaybeElement,
     Position,
     removeNonHTMLProps,
     Utils,
@@ -74,7 +74,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side of input.
      */
-    leftIcon?: IconName | OptionalElement;
+    leftIcon?: IconName | MaybeElement;
 
     /** The placeholder text in the absence of any value. */
     placeholder?: string;

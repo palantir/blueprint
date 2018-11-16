@@ -28,7 +28,7 @@ export type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
  *
  * In React, `boolean`, `null`, and `undefined` do not produce any output.
  */
-export type OptionalElement = JSX.Element | boolean | null | undefined;
+export type MaybeElement = JSX.Element | false | null | undefined;
 
 /**
  * A shared base interface for all Blueprint component props.
@@ -52,7 +52,7 @@ export interface IActionProps extends IIntentProps, IProps {
     disabled?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the text. */
-    icon?: IconName | OptionalElement;
+    icon?: IconName | MaybeElement;
 
     /** Click event handler. */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;

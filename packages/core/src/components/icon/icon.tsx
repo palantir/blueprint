@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
-import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, OptionalElement } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
 
 export { IconName };
 
@@ -40,7 +40,7 @@ export interface IIconProps extends IIntentProps, IProps {
      *   should avoid using `<Icon icon={<Element />}` directly; simply render
      *   `<Element />` instead.
      */
-    icon: IconName | OptionalElement;
+    icon: IconName | MaybeElement;
 
     /**
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon

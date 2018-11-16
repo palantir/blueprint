@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IProps, OptionalElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IProps, MaybeElement } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -48,7 +48,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     confirmButtonText?: string;
 
     /** Name of a Blueprint UI icon (or an icon element) to display on the left side. */
-    icon?: IconName | OptionalElement;
+    icon?: IconName | MaybeElement;
 
     /**
      * The intent to be applied to the confirm (right-most) button.
