@@ -109,10 +109,8 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
 
 const POPOVER_PROPS: IPopoverProps = {
     autoFocus: false,
+    boundary: "window",
     enforceFocus: false,
-    // not relevant to this example, but required in order for default
-    // modifiers to work (e.g. `hide`).
-    modifiers: { preventOverflow: { boundariesElement: "window" } },
     popoverClassName: "docs-popover-portal-example-popover",
     position: Position.BOTTOM,
 };
