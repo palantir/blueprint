@@ -65,7 +65,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { initialContent = null, isOpen, inputProps, overlayProps, ...restProps } = this.props;
+        const { initialContent, isOpen, inputProps, overlayProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList

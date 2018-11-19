@@ -43,6 +43,15 @@ describe("<QueryList>", () => {
         });
     });
 
+    describe("rendering", () => {
+        it("items are rendered by default if there is no query", () => {
+            const itemRenderer = sinon.spy(() => <li className="foo">foo</li>);
+            const wrapper = shallow(<FilmQueryList {...testProps} itemRenderer={itemRenderer} />);
+            assert.lengthOf(wrapper.find("li.foo"), 20, "should find elements");
+            assert.equal(itemRenderer.callCount, 20);
+        });
+    });
+
     describe("filtering", () => {
         it("itemPredicate filters each item by query", () => {
             const predicate = sinon.spy((query: string, film: IFilm) => film.year === +query);

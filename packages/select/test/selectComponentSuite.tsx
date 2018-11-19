@@ -35,6 +35,11 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     });
 
     describe("common behavior", () => {
+        it("renders all items when given an empty query and no initialContent", () => {
+            render({ ...testProps, query: "" });
+            assert.equal(testProps.itemRenderer.callCount, 20);
+        });
+
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
