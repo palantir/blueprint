@@ -130,18 +130,14 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         });
     }
 
-    public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (nextProps.activeItem !== undefined) {
-            this.shouldCheckActiveItemInViewport = true;
-            this.setState({ activeItem: nextProps.activeItem });
-        }
-        if (nextProps.query != null) {
-            this.setQuery(nextProps.query, nextProps.resetOnQuery, nextProps);
-        }
-    }
-
     public componentDidUpdate(prevProps: IQueryListProps<T>) {
-        if (
+        if (this.props.activeItem !== undefined) {
+            this.shouldCheckActiveItemInViewport = true;
+            this.setState({ activeItem: this.props.activeItem });
+        }
+        if (this.props.query != null) {
+            this.setQuery(this.props.query);
+        } else if (
             !Utils.shallowCompareKeys(this.props, prevProps, {
                 include: ["items", "itemListPredicate", "itemPredicate"],
             })
