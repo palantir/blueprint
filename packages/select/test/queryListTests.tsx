@@ -8,9 +8,9 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "@blueprintjs/docs-app";
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IQueryListProps } from "@blueprintjs/select";
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { IQueryListRendererProps, IQueryListState, ItemListPredicate, ItemListRenderer, QueryList } from "../src/index";
 
 describe("<QueryList>", () => {
