@@ -339,7 +339,7 @@ describe("<DateRangePicker>", () => {
         });
     });
 
-    describe("left/right calendar when not sequential", () => {
+    describe("left/right calendar", () => {
         function assertFirstLastMonths(monthSelect: ReactWrapper, first: Months, last: Months) {
             const options = monthSelect.find("option");
             assert.equal(options.first().prop("value"), first);
@@ -374,6 +374,94 @@ describe("<DateRangePicker>", () => {
             assertFirstLastMonths(monthSelect, Months.FEBRUARY, Months.DECEMBER);
         });
 
+        it("right calendar shows the month containing the selected end date", () => {
+            const startDate = new Date(2017, Months.MAY, 5);
+            const endDate = new Date(2017, Months.JULY, 5);
+            render({ contiguousCalendarMonths: false, value: [startDate, endDate] }).right.assertMonthYear(Months.JULY);
+        });
+
+        it("right calendar shows the month immediately after the left view if startDate === endDate month", () => {
+            const startDate = new Date(2017, Months.MAY, 5);
+            const endDate = new Date(2017, Months.MAY, 15);
+            render({ contiguousCalendarMonths: false, value: [startDate, endDate] }).right.assertMonthYear(Months.JUNE);
+        });
+    });
+
+    describe("left/right calendar when contiguous", () => {
+        it("changing left calendar with month dropdown shifts left to the selected month", () => {
+            const initialMonth = new Date(2015, Months.MAY, 5);
+
+            const { left, right } = render({ initialMonth });
+            left.assertMonthYear(Months.MAY);
+            right.assertMonthYear(Months.JUNE);
+            left.monthSelect.simulate("change", { target: { value: Months.AUGUST } });
+            left.assertMonthYear(Months.AUGUST);
+            right.assertMonthYear(Months.SEPTEMBER);
+        });
+
+        it("changing right calendar with month dropdown shifts right to the selected month", () => {
+            const initialMonth = new Date(2015, Months.MAY, 5);
+
+            const { left, right } = render({ initialMonth });
+            left.assertMonthYear(Months.MAY);
+            right.assertMonthYear(Months.JUNE);
+            right.monthSelect.simulate("change", { target: { value: Months.AUGUST } });
+            left.assertMonthYear(Months.JULY);
+            right.assertMonthYear(Months.AUGUST);
+        });
+
+        it("changing left calendar with year dropdown shifts left to the selected year", () => {
+            const initialMonth = new Date(2015, Months.MAY, 5);
+            const NEW_YEAR = 2012;
+
+            const { left, right } = render({ initialMonth });
+            left.assertMonthYear(Months.MAY);
+            right.assertMonthYear(Months.JUNE);
+            left.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
+            left.assertMonthYear(Months.MAY, NEW_YEAR);
+            right.assertMonthYear(Months.JUNE, NEW_YEAR);
+        });
+
+        it("changing right calendar with year dropdown shifts right to the selected year", () => {
+            const initialMonth = new Date(2015, Months.MAY, 5);
+            const NEW_YEAR = 2012;
+
+            const { left, right } = render({ initialMonth });
+            left.assertMonthYear(Months.MAY);
+            right.assertMonthYear(Months.JUNE);
+            right.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
+            left.assertMonthYear(Months.MAY, NEW_YEAR);
+            right.assertMonthYear(Months.JUNE, NEW_YEAR);
+        });
+
+        it("when calendar is between December and January, changing left calendar with year dropdown shifts left to the selected year", () => {
+            const INITIAL_YEAR = 2015;
+            const initialMonth = new Date(INITIAL_YEAR, Months.DECEMBER, 5);
+            const NEW_YEAR = 2012;
+
+            const { left, right } = render({ initialMonth });
+            left.assertMonthYear(Months.DECEMBER, INITIAL_YEAR);
+            right.assertMonthYear(Months.JANUARY, INITIAL_YEAR + 1);
+            left.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
+            left.assertMonthYear(Months.DECEMBER, NEW_YEAR);
+            right.assertMonthYear(Months.JANUARY, NEW_YEAR + 1);
+        });
+
+        it("when calendar is between December and January, changing right calendar with year dropdown shifts right to the selected year", () => {
+            const INITIAL_YEAR = 2015;
+            const initialMonth = new Date(INITIAL_YEAR, Months.DECEMBER, 5);
+            const NEW_YEAR = 2012;
+
+            const { left, right } = render({ initialMonth });
+            left.assertMonthYear(Months.DECEMBER, INITIAL_YEAR);
+            right.assertMonthYear(Months.JANUARY, INITIAL_YEAR + 1);
+            right.yearSelect.simulate("change", { target: { value: NEW_YEAR } });
+            left.assertMonthYear(Months.DECEMBER, NEW_YEAR - 1);
+            right.assertMonthYear(Months.JANUARY, NEW_YEAR);
+        });
+    });
+
+    describe("left/right calendar when not contiguous", () => {
         it("left calendar can be altered independently of right calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
             const { left, clickNavButton } = render({ initialMonth, contiguousCalendarMonths: false });
@@ -453,18 +541,6 @@ describe("<DateRangePicker>", () => {
             clickNavButton("prev", 1);
             left.assertMonthYear(Months.APRIL);
             right.assertMonthYear(Months.MAY);
-        });
-
-        it("right calendar shows the month containing the selected end date", () => {
-            const startDate = new Date(2017, Months.MAY, 5);
-            const endDate = new Date(2017, Months.JULY, 5);
-            render({ contiguousCalendarMonths: false, value: [startDate, endDate] }).right.assertMonthYear(Months.JULY);
-        });
-
-        it("right calendar shows the month immediately after the left view if startDate === endDate month", () => {
-            const startDate = new Date(2017, Months.MAY, 5);
-            const endDate = new Date(2017, Months.MAY, 15);
-            render({ contiguousCalendarMonths: false, value: [startDate, endDate] }).right.assertMonthYear(Months.JUNE);
         });
     });
 
