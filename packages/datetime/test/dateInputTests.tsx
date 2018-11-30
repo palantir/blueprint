@@ -42,13 +42,19 @@ describe("<DateInput>", () => {
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
 
-    it("supports custom input style", () => {
-        const wrapper = mount(<DateInput {...DATE_FORMAT} inputProps={{ style: { background: "yellow" } }} />);
-        const inputElement = wrapper
-            .find("input")
-            .first()
-            .getDOMNode() as HTMLElement;
+    it("supports custom input props", () => {
+        const wrapper = mount(
+            <DateInput {...DATE_FORMAT} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
+        );
+        const inputElement = wrapper.find("input").getDOMNode() as HTMLInputElement;
         assert.equal(inputElement.style.background, "yellow");
+        assert.equal(inputElement.tabIndex, 4);
+    });
+
+    it("supports inputProps.inputRef", () => {
+        let input: HTMLInputElement | null = null;
+        mount(<DateInput {...DATE_FORMAT} inputProps={{ inputRef: ref => (input = ref) }} />);
+        assert.instanceOf(input, HTMLInputElement);
     });
 
     it("Popover opens on input focus", () => {

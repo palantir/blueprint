@@ -22,6 +22,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
+import { safeInvoke } from "../../core/lib/esm/common/utils";
 import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
@@ -152,17 +153,9 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         valueString: null,
     };
 
-    private inputEl: HTMLInputElement = null;
-    private popoverContentEl: HTMLElement = null;
-    private lastElementInPopover: HTMLElement = null;
-    private refHandlers = {
-        input: (el: HTMLInputElement) => {
-            this.inputEl = el;
-        },
-        popoverContent: (el: HTMLElement) => {
-            this.popoverContentEl = el;
-        },
-    };
+    private inputEl: HTMLInputElement | null = null;
+    private popoverContentEl: HTMLElement | null = null;
+    private lastElementInPopover: HTMLElement | null = null;
 
     public componentWillUnmount() {
         super.componentWillUnmount();
@@ -185,7 +178,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         };
 
         const wrappedPopoverContent = (
-            <div ref={this.refHandlers.popoverContent}>
+            <div ref={ref => (this.popoverContentEl = ref)}>
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
@@ -196,10 +189,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         );
 
         // assign default empty object here to prevent mutation
-        const { popoverProps = {} } = this.props;
-        const inputProps = this.getInputPropsWithDefaults();
+        const { inputProps = {}, popoverProps = {} } = this.props;
         const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
-
         return (
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
@@ -216,14 +207,15 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     intent={isErrorState ? Intent.DANGER : Intent.NONE}
                     placeholder={this.props.placeholder}
                     rightElement={this.props.rightElement}
+                    type="text"
                     {...inputProps}
                     disabled={this.props.disabled}
+                    inputRef={this.inputRef}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.handleInputKeyDown}
-                    type="text"
                     value={dateString}
                 />
             </Popover>
@@ -237,23 +229,11 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         }
     }
 
-    private getInputPropsWithDefaults() {
+    private inputRef = (ref: HTMLInputElement | null) => {
+        this.inputEl = ref;
         const { inputProps = {} } = this.props;
-        if (Utils.isFunction(inputProps.inputRef)) {
-            return {
-                ...inputProps,
-                inputRef: (el: HTMLInputElement) => {
-                    this.refHandlers.input(el);
-                    inputProps.inputRef(el);
-                },
-            };
-        } else {
-            return {
-                ...inputProps,
-                inputRef: this.refHandlers.input,
-            };
-        }
-    }
+        safeInvoke(inputProps.inputRef, ref);
+    };
 
     private isDateInRange(value: Date) {
         return isDayInRange(value, [this.props.minDate, this.props.maxDate]);
