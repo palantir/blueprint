@@ -156,7 +156,7 @@ const NON_HTML_PROPS = [
     "stepSize",
 ];
 
-type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onKeyUp" | "onMouseDown">>;
+type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
 
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
@@ -347,7 +347,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                     this.handleButtonClick(evt, direction);
                 }
             },
-            onKeyUp: evt => this.handleButtonKeyUp(evt, direction, this.handleDecrementButtonClick),
             onMouseDown: evt => {
                 this.handleButtonClick(evt, direction);
                 this.startContinuousChange();
@@ -367,32 +366,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private handleButtonBlur = () => {
         this.setState({ isButtonGroupFocused: false });
-    };
-
-    private handleButtonKeyUp = (
-        e: React.KeyboardEvent,
-        direction: IncrementDirection,
-        onClick: React.MouseEventHandler,
-    ) => {
-        this.updateDelta(direction, e);
-        // respond explicitly on key *up*, because onKeyDown triggers multiple
-        // times and doesn't always receive modifier-key flags, leading to an
-        // unintuitive/out-of-control incrementing experience.
-        if (Keys.isKeyboardClick(e.keyCode)) {
-            // prevent the page from scrolling (this is the default browser
-            // behavior for shift + space or alt + space).
-            e.preventDefault();
-
-            // trigger a click event to update the input value appropriately,
-            // based on the active modifier keys.
-            const fakeClickEvent = {
-                altKey: e.altKey,
-                currentTarget: e.currentTarget,
-                shiftKey: e.shiftKey,
-                target: e.target,
-            };
-            onClick(fakeClickEvent as React.MouseEvent);
-        }
     };
 
     private startContinuousChange() {
