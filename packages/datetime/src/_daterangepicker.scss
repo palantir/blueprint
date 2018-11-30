@@ -23,31 +23,13 @@
     justify-content: space-around;
   }
 
-  .#{$ns}-daterangepicker-shortcuts + .DayPicker {
-    border-left: 1px solid $pt-divider-black;
-    min-width: $datepicker-min-width + $pt-grid-size;
-    padding-left: $datepicker-padding;
-  }
-
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
-  &.#{$ns}-daterangepicker-contiguous {
-    .DayPicker {
-      min-width: ($datepicker-min-width * 2) + $pt-grid-size;
-    }
-
-    .#{$ns}-daterangepicker-shortcuts + .DayPicker {
-      min-width: ($datepicker-min-width + $pt-grid-size) * 2;
-    }
+  &.#{$ns}-daterangepicker-contiguous .DayPicker {
+    min-width: ($datepicker-min-width * 2) + $pt-grid-size;
   }
 
-  &.#{$ns}-daterangepicker-single-month {
-    .DayPicker {
-      min-width: $datepicker-min-width;
-    }
-
-    .#{$ns}-daterangepicker-shortcuts + .DayPicker {
-      min-width: $datepicker-min-width + $pt-grid-size;
-    }
+  &.#{$ns}-daterangepicker-single-month .DayPicker {
+    min-width: $datepicker-min-width;
   }
 
   .DayPicker-Day {
