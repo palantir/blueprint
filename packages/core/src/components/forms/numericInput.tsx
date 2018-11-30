@@ -25,6 +25,7 @@ import * as Errors from "../../common/errors";
 
 import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
+import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 
 export interface INumericInputProps extends IIntentProps, IProps {
@@ -140,6 +141,21 @@ enum IncrementDirection {
     UP = +1,
 }
 
+const NON_HTML_PROPS = [
+    "allowNumericCharactersOnly",
+    "buttonPosition",
+    "clampValueOnBlur",
+    "className",
+    "large",
+    "majorStepSize",
+    "minorStepSize",
+    "onButtonClick",
+    "onValueChange",
+    "selectAllOnFocus",
+    "selectAllOnIncrement",
+    "stepSize",
+];
+
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
@@ -158,12 +174,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         stepSize: 1,
         value: NumericInput.VALUE_EMPTY,
     };
-
-    private static DECREMENT_KEY = "decrement";
-    private static INCREMENT_KEY = "increment";
-
-    private static DECREMENT_ICON_NAME: IconName = "chevron-down";
-    private static INCREMENT_ICON_NAME: IconName = "chevron-up";
 
     /**
      * A regex that matches a string of length 1 (i.e. a standalone character)
@@ -225,90 +235,15 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     public render() {
         const { buttonPosition, className, fill, large } = this.props;
-
-        const inputGroupHtmlProps = removeNonHTMLProps(
-            this.props,
-            [
-                "allowNumericCharactersOnly",
-                "buttonPosition",
-                "clampValueOnBlur",
-                "className",
-                "large",
-                "majorStepSize",
-                "minorStepSize",
-                "onButtonClick",
-                "onValueChange",
-                "selectAllOnFocus",
-                "selectAllOnIncrement",
-                "stepSize",
-            ],
-            true,
+        const containerClasses = classNames(Classes.NUMERIC_INPUT, { [Classes.LARGE]: large }, className);
+        const buttons = this.renderButtons();
+        return (
+            <ControlGroup className={containerClasses} fill={fill}>
+                {buttonPosition === Position.LEFT && buttons}
+                {this.renderInput()}
+                {buttonPosition === Position.RIGHT && buttons}
+            </ControlGroup>
         );
-
-        const inputGroup = (
-            <InputGroup
-                autoComplete="off"
-                {...inputGroupHtmlProps}
-                intent={this.props.intent}
-                inputRef={this.inputRef}
-                key="input-group"
-                large={large}
-                leftIcon={this.props.leftIcon}
-                onFocus={this.handleInputFocus}
-                onBlur={this.handleInputBlur}
-                onChange={this.handleInputChange}
-                onKeyDown={this.handleInputKeyDown}
-                onKeyPress={this.handleInputKeyPress}
-                onPaste={this.handleInputPaste}
-                value={this.state.value}
-            />
-        );
-
-        // the strict null check here is intentional; an undefined value should
-        // fall back to the default button position on the right side.
-        if (buttonPosition === "none" || buttonPosition === null) {
-            // If there are no buttons, then the control group will render the
-            // text field with squared border-radii on the left side, causing it
-            // to look weird. This problem goes away if we simply don't nest within
-            // a control group.
-            return <div className={className}>{inputGroup}</div>;
-        } else {
-            const incrementButton = this.renderButton(
-                NumericInput.INCREMENT_KEY,
-                NumericInput.INCREMENT_ICON_NAME,
-                this.handleIncrementButtonMouseDown,
-                this.handleIncrementButtonKeyDown,
-                this.handleIncrementButtonKeyUp,
-            );
-            const decrementButton = this.renderButton(
-                NumericInput.DECREMENT_KEY,
-                NumericInput.DECREMENT_ICON_NAME,
-                this.handleDecrementButtonMouseDown,
-                this.handleDecrementButtonKeyDown,
-                this.handleDecrementButtonKeyUp,
-            );
-
-            const buttonGroup = (
-                <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
-                    {incrementButton}
-                    {decrementButton}
-                </ButtonGroup>
-            );
-
-            const inputElems = buttonPosition === Position.LEFT ? [buttonGroup, inputGroup] : [inputGroup, buttonGroup];
-
-            const classes = classNames(
-                Classes.NUMERIC_INPUT,
-                Classes.CONTROL_GROUP,
-                {
-                    [Classes.FILL]: fill,
-                    [Classes.LARGE]: large,
-                },
-                className,
-            );
-
-            return <div className={classes}>{inputElems}</div>;
-        }
     }
 
     public componentDidUpdate() {
@@ -345,24 +280,48 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     // Render Helpers
     // ==============
 
-    private renderButton(
-        key: string,
-        iconName: IconName,
-        onMouseDown: React.MouseEventHandler<HTMLElement>,
-        onKeyDown: React.KeyboardEventHandler<HTMLElement>,
-        onKeyUp: React.KeyboardEventHandler<HTMLElement>,
-    ) {
+    private renderButtons() {
+        const { intent } = this.props;
+        const disabled = this.props.disabled || this.props.readOnly;
         return (
-            <Button
-                disabled={this.props.disabled || this.props.readOnly}
-                icon={iconName}
+            <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
+                <Button
+                    disabled={disabled}
+                    icon="chevron-up"
+                    intent={intent}
+                    onBlur={this.handleButtonBlur}
+                    onFocus={this.handleButtonFocus}
+                    {...this.incrementButtonHandlers}
+                />
+                <Button
+                    disabled={disabled}
+                    icon="chevron-down"
+                    intent={intent}
+                    onBlur={this.handleButtonBlur}
+                    onFocus={this.handleButtonFocus}
+                    {...this.decrementButtonHandlers}
+                />
+            </ButtonGroup>
+        );
+    }
+
+    private renderInput() {
+        const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
+        return (
+            <InputGroup
+                autoComplete="off"
+                {...inputGroupHtmlProps}
                 intent={this.props.intent}
-                key={key}
-                onBlur={this.handleButtonBlur}
-                onMouseDown={onMouseDown}
-                onFocus={this.handleButtonFocus}
-                onKeyDown={onKeyDown}
-                onKeyUp={onKeyUp}
+                inputRef={this.inputRef}
+                large={this.props.large}
+                leftIcon={this.props.leftIcon}
+                onFocus={this.handleInputFocus}
+                onBlur={this.handleInputBlur}
+                onChange={this.handleInputChange}
+                onKeyDown={this.handleInputKeyDown}
+                onKeyPress={this.handleInputKeyPress}
+                onPaste={this.handleInputPaste}
+                value={this.state.value}
             />
         );
     }
