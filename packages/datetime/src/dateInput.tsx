@@ -22,7 +22,6 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { safeInvoke } from "../../core/lib/esm/common/utils";
 import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
@@ -232,7 +231,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     private inputRef = (ref: HTMLInputElement | null) => {
         this.inputEl = ref;
         const { inputProps = {} } = this.props;
-        safeInvoke(inputProps.inputRef, ref);
+        Utils.safeInvoke(inputProps.inputRef, ref);
     };
 
     private isDateInRange(value: Date) {
