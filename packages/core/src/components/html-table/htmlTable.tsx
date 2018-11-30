@@ -16,7 +16,9 @@ import {
 } from "../../common/classes";
 import { IElementRefProps } from "../html/html";
 
-export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>, IElementRefProps<HTMLTableElement> {
+export interface IHTMLTableProps
+    extends React.TableHTMLAttributes<HTMLTableElement>,
+        IElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 
