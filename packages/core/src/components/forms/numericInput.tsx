@@ -432,7 +432,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         // respond explicitly on key *up*, because onKeyDown triggers multiple
         // times and doesn't always receive modifier-key flags, leading to an
         // unintuitive/out-of-control incrementing experience.
-        if (e.keyCode === Keys.SPACE || e.keyCode === Keys.ENTER) {
+        if (Keys.isKeyboardClick(e.keyCode)) {
             // prevent the page from scrolling (this is the default browser
             // behavior for shift + space or alt + space).
             e.preventDefault();
