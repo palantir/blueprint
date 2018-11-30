@@ -32,11 +32,11 @@
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous {
     .DayPicker {
-      min-width: ($datepicker-min-width * 2) + $pt-grid-size;
+      min-width: $datepicker-min-width + $pt-grid-size;
     }
 
     .#{$ns}-daterangepicker-shortcuts + .DayPicker {
-      min-width: ($datepicker-min-width + $pt-grid-size) * 2;
+      min-width: $datepicker-min-width + $pt-grid-size;
     }
   }
 

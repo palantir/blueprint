@@ -332,7 +332,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     };
 
     private renderCalendars(isShowingOneMonth: boolean) {
-        const { contiguousCalendarMonths, dayPickerProps, locale, localeUtils, maxDate, minDate } = this.props;
+        const { dayPickerProps, locale, localeUtils, maxDate, minDate } = this.props;
         const dayPickerBaseProps: DayPickerProps = {
             locale,
             localeUtils,
@@ -346,15 +346,15 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             selectedDays: this.state.value,
         };
 
-        if (contiguousCalendarMonths || isShowingOneMonth) {
+        if (isShowingOneMonth) {
             return (
                 <DayPicker
                     {...dayPickerBaseProps}
                     captionElement={this.renderSingleCaption}
-                    navbarElement={this.renderNavbar}
+                    navbarElement={this.renderSingleNavbar}
                     fromMonth={minDate}
                     month={this.state.leftView.getFullDate()}
-                    numberOfMonths={isShowingOneMonth ? 1 : 2}
+                    numberOfMonths={1}
                     onMonthChange={this.handleLeftMonthChange}
                     toMonth={maxDate}
                 />
@@ -366,7 +366,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                     {...dayPickerBaseProps}
                     canChangeMonth={true}
                     captionElement={this.renderLeftCaption}
-                    navbarElement={this.renderNavbar}
+                    navbarElement={this.renderLeftNavbar}
                     fromMonth={minDate}
                     month={this.state.leftView.getFullDate()}
                     numberOfMonths={1}
@@ -378,7 +378,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                     {...dayPickerBaseProps}
                     canChangeMonth={true}
                     captionElement={this.renderRightCaption}
-                    navbarElement={this.renderNavbar}
+                    navbarElement={this.renderRightNavbar}
                     fromMonth={DateUtils.getDateNextMonth(minDate)}
                     month={this.state.rightView.getFullDate()}
                     numberOfMonths={1}
@@ -389,8 +389,26 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         }
     }
 
-    private renderNavbar = (navbarProps: NavbarElementProps) => (
+    private renderSingleNavbar = (navbarProps: NavbarElementProps) => (
         <DatePickerNavbar {...navbarProps} maxDate={this.props.maxDate} minDate={this.props.minDate} />
+    );
+
+    private renderLeftNavbar = (navbarProps: NavbarElementProps) => (
+        <DatePickerNavbar
+            {...navbarProps}
+            hideRightNavButton={this.props.contiguousCalendarMonths}
+            maxDate={this.props.maxDate}
+            minDate={this.props.minDate}
+        />
+    );
+
+    private renderRightNavbar = (navbarProps: NavbarElementProps) => (
+        <DatePickerNavbar
+            {...navbarProps}
+            hideLeftNavButton={this.props.contiguousCalendarMonths}
+            maxDate={this.props.maxDate}
+            minDate={this.props.minDate}
+        />
     );
 
     private renderSingleCaption = (captionProps: CaptionElementProps) => (
@@ -513,7 +531,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
     private updateLeftView(leftView: MonthAndYear) {
         let rightView = this.state.rightView.clone();
-        if (!leftView.isBefore(rightView)) {
+        if (!leftView.isBefore(rightView) || this.props.contiguousCalendarMonths) {
             rightView = leftView.getNextMonth();
         }
         this.setViews(leftView, rightView);
@@ -521,7 +539,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
 
     private updateRightView(rightView: MonthAndYear) {
         let leftView = this.state.leftView.clone();
-        if (!rightView.isAfter(leftView)) {
+        if (!rightView.isAfter(leftView) || this.props.contiguousCalendarMonths) {
             leftView = rightView.getPreviousMonth();
         }
         this.setViews(leftView, rightView);
@@ -550,7 +568,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         }
 
         let rightView = this.state.rightView.clone();
-        if (!leftView.isBefore(rightView)) {
+        if (!leftView.isBefore(rightView) || this.props.contiguousCalendarMonths) {
             rightView = leftView.getNextMonth();
         }
 
@@ -573,7 +591,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         }
 
         let leftView = this.state.leftView.clone();
-        if (!rightView.isAfter(leftView)) {
+        if (!rightView.isAfter(leftView) || this.props.contiguousCalendarMonths) {
             leftView = rightView.getPreviousMonth();
         }
 
