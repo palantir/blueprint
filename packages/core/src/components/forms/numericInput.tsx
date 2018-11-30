@@ -181,7 +181,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     private static CONTINUOUS_CHANGE_DELAY = 300;
     private static CONTINUOUS_CHANGE_INTERVAL = 100;
 
-    private inputElement: HTMLInputElement;
+    private inputElement: HTMLInputElement | null;
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
@@ -367,7 +367,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         );
     }
 
-    private inputRef = (input: HTMLInputElement) => {
+    private inputRef = (input: HTMLInputElement | null) => {
         this.inputElement = input;
         Utils.safeInvoke(this.props.inputRef, input);
     };
