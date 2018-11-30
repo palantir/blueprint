@@ -4,6 +4,7 @@
 <!-- fill this section out if necessary, remove it otherwise -->
 
 - [ ] [Enable CircleCI for your fork](https://circleci.com/add-projects)
+- [ ] [Enable preview comments on CircleCI](https://github.com/palantir/blueprint/blob/develop/CONTRIBUTING.md#enable-preview-comments)
 - [ ] Include tests
 - [ ] Update documentation
 
