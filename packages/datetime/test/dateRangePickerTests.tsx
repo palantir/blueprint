@@ -61,9 +61,21 @@ describe("<DateRangePicker>", () => {
         it("hides unnecessary nav buttons in contiguous months mode", () => {
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
             const wrapper = mount(<DateRangePicker defaultValue={defaultValue} />);
-            assert.isTrue(wrapper.find(DatePickerNavbar).at(0).find(".DayPicker-NavButton--next").isEmpty());
-            assert.isTrue(wrapper.find(DatePickerNavbar).at(1).find(".DayPicker-NavButton--prev").isEmpty());
-        })
+            assert.isTrue(
+                wrapper
+                    .find(DatePickerNavbar)
+                    .at(0)
+                    .find(".DayPicker-NavButton--next")
+                    .isEmpty(),
+            );
+            assert.isTrue(
+                wrapper
+                    .find(DatePickerNavbar)
+                    .at(1)
+                    .find(".DayPicker-NavButton--prev")
+                    .isEmpty(),
+            );
+        });
 
         it("disables days according to custom modifiers in addition to default modifiers", () => {
             const disableFridays = { daysOfWeek: [5] };
