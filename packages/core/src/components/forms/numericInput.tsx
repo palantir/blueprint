@@ -156,6 +156,8 @@ const NON_HTML_PROPS = [
     "stepSize",
 ];
 
+type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onKeyUp" | "onMouseDown">>;
+
 export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
@@ -198,6 +200,9 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     private shouldSelectAfterUpdate = false;
     private delta = 0;
     private intervalId: number | null = null;
+
+    private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
+    private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
 
     public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
         super(props, context);
@@ -334,39 +339,21 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     // Callbacks - Buttons
     // ===================
 
-    private handleDecrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.handleButtonClick(e, IncrementDirection.DOWN);
-    };
-
-    private handleDecrementButtonMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.handleButtonClick(e, IncrementDirection.DOWN);
-        this.startContinuousChange();
-    };
-
-    private handleDecrementButtonKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        this.updateDelta(IncrementDirection.DOWN, e);
-    };
-
-    private handleDecrementButtonKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        this.handleButtonKeyUp(e, IncrementDirection.DOWN, this.handleDecrementButtonClick);
-    };
-
-    private handleIncrementButtonClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.handleButtonClick(e, IncrementDirection.UP);
-    };
-
-    private handleIncrementButtonMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
-        this.handleButtonClick(e, IncrementDirection.UP);
-        this.startContinuousChange();
-    };
-
-    private handleIncrementButtonKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        this.updateDelta(IncrementDirection.UP, e);
-    };
-
-    private handleIncrementButtonKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        this.handleButtonKeyUp(e, IncrementDirection.UP, this.handleIncrementButtonClick);
-    };
+    private getButtonEventHandlers(direction: IncrementDirection): ButtonEventHandlers {
+        return {
+            // keydown is fired repeatedly when held so it's implicitly continuous
+            onKeyDown: evt => {
+                if (Keys.isKeyboardClick(evt.keyCode)) {
+                    this.handleButtonClick(evt, direction);
+                }
+            },
+            onKeyUp: evt => this.handleButtonKeyUp(evt, direction, this.handleDecrementButtonClick),
+            onMouseDown: evt => {
+                this.handleButtonClick(evt, direction);
+                this.startContinuousChange();
+            },
+        };
+    }
 
     private handleButtonClick = (e: React.MouseEvent | React.KeyboardEvent, direction: IncrementDirection) => {
         const delta = this.updateDelta(direction, e);
