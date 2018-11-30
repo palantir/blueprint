@@ -409,7 +409,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         this.handleButtonKeyUp(e, IncrementDirection.UP, this.handleIncrementButtonClick);
     };
 
-    private handleButtonClick = (e: React.MouseEvent<HTMLInputElement>, direction: IncrementDirection) => {
+    private handleButtonClick = (e: React.MouseEvent | React.KeyboardEvent, direction: IncrementDirection) => {
         const delta = this.updateDelta(direction, e);
         const nextValue = this.incrementValue(delta);
         this.invokeValueCallback(nextValue, this.props.onButtonClick);
@@ -424,9 +424,9 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     };
 
     private handleButtonKeyUp = (
-        e: React.KeyboardEvent<HTMLInputElement>,
+        e: React.KeyboardEvent,
         direction: IncrementDirection,
-        onClick: React.MouseEventHandler<HTMLInputElement>,
+        onClick: React.MouseEventHandler,
     ) => {
         this.updateDelta(direction, e);
         // respond explicitly on key *up*, because onKeyDown triggers multiple
@@ -445,7 +445,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 shiftKey: e.shiftKey,
                 target: e.target,
             };
-            onClick(fakeClickEvent as React.MouseEvent<HTMLInputElement>);
+            onClick(fakeClickEvent as React.MouseEvent);
         }
     };
 
@@ -477,7 +477,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     // Callbacks - Input
     // =================
 
-    private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    private handleInputFocus = (e: React.FocusEvent) => {
         this.shouldSelectAfterUpdate = this.props.selectAllOnFocus;
         this.setState({ isInputGroupFocused: true });
         Utils.safeInvoke(this.props.onFocus, e);
@@ -503,7 +503,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         Utils.safeInvoke(this.props.onBlur, e);
     };
 
-    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private handleInputKeyDown = (e: React.KeyboardEvent) => {
         if (this.props.disabled || this.props.readOnly) {
             return;
         }
@@ -533,7 +533,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         Utils.safeInvoke(this.props.onKeyDown, e);
     };
 
-    private handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private handleInputKeyPress = (e: React.KeyboardEvent) => {
         // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
         // e.key is not trustworthy in onKeyDown in all browsers.
         if (this.props.allowNumericCharactersOnly && this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
@@ -543,12 +543,12 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         Utils.safeInvoke(this.props.onKeyPress, e);
     };
 
-    private handleInputPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    private handleInputPaste = (e: React.ClipboardEvent) => {
         this.didPasteEventJustOccur = true;
         Utils.safeInvoke(this.props.onPaste, e);
     };
 
-    private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    private handleInputChange = (e: React.FormEvent) => {
         const value = (e.target as HTMLInputElement).value;
 
         let nextValue: string;
@@ -629,7 +629,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         return value != null && (value as any) - parseFloat(value) + 1 >= 0;
     }
 
-    private isKeyboardEventDisabledForBasicNumericEntry(e: React.KeyboardEvent<HTMLInputElement>) {
+    private isKeyboardEventDisabledForBasicNumericEntry(e: React.KeyboardEvent) {
         // unit tests may not include e.key. don't bother disabling those events.
         if (e.key == null) {
             return false;
