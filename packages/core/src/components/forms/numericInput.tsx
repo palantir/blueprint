@@ -186,6 +186,12 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     private static CONTINUOUS_CHANGE_DELAY = 300;
     private static CONTINUOUS_CHANGE_INTERVAL = 100;
 
+    public state: INumericInputState = {
+        shouldSelectAfterUpdate: false,
+        stepMaxPrecision: this.getStepMaxPrecision(this.props),
+        value: getValueOrEmptyValue(this.props.value),
+    };
+
     private inputElement: HTMLInputElement | null;
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
@@ -195,15 +201,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
-
-    public constructor(props?: HTMLInputProps & INumericInputProps, context?: any) {
-        super(props, context);
-        this.state = {
-            shouldSelectAfterUpdate: false,
-            stepMaxPrecision: this.getStepMaxPrecision(props),
-            value: getValueOrEmptyValue(props.value),
-        };
-    }
 
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
         super.componentWillReceiveProps(nextProps);
@@ -378,7 +375,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         this.setState({ shouldSelectAfterUpdate: false });
 
         if (this.props.clampValueOnBlur) {
-            const value = (e.target as HTMLInputElement).value;
+            const { value } = e.target as HTMLInputElement;
             const sanitizedValue = this.getSanitizedValue(value);
             this.setState({ value: sanitizedValue });
             if (value !== sanitizedValue) {
@@ -435,19 +432,17 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     };
 
     private handleInputChange = (e: React.FormEvent) => {
-        const value = (e.target as HTMLInputElement).value;
+        const { value } = e.target as HTMLInputElement;
 
-        let nextValue: string;
-
+        let nextValue = value;
         if (this.props.allowNumericCharactersOnly && this.didPasteEventJustOccur) {
             this.didPasteEventJustOccur = false;
             const valueChars = value.split("");
             const sanitizedValueChars = valueChars.filter(isFloatingPointNumericCharacter);
             const sanitizedValue = sanitizedValueChars.join("");
             nextValue = sanitizedValue;
-        } else {
-            nextValue = value;
         }
+
         this.setState({ value: nextValue });
         this.invokeValueCallback(nextValue, this.props.onValueChange);
     };
