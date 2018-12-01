@@ -192,11 +192,10 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         value: getValueOrEmptyValue(this.props.value),
     };
 
-    private inputElement: HTMLInputElement | null;
-
     // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
     private delta = 0;
+    private inputElement: HTMLInputElement | null = null;
     private intervalId: number | null = null;
 
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
