@@ -129,9 +129,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
 }
 
 export interface INumericInputState {
-    stepMaxPrecision?: number;
-    value?: string;
     shouldSelectAfterUpdate: boolean;
+    stepMaxPrecision: number;
+    value: string;
 }
 
 enum IncrementDirection {
@@ -564,10 +564,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         return Math.round(value * scaleFactor) / scaleFactor;
     }
 
-    private updateDelta(
-        direction: IncrementDirection,
-        e: React.MouseEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>,
-    ) {
+    private updateDelta(direction: IncrementDirection, e: React.MouseEvent | React.KeyboardEvent) {
         this.delta = this.getIncrementDelta(direction, e.shiftKey, e.altKey);
         return this.delta;
     }
