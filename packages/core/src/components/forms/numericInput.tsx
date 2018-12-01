@@ -130,7 +130,6 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
 export interface INumericInputState {
     isInputGroupFocused?: boolean;
-    isButtonGroupFocused?: boolean;
     shouldSelectAfterUpdate?: boolean;
     stepMaxPrecision?: number;
     value?: string;
@@ -290,22 +289,8 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         const disabled = this.props.disabled || this.props.readOnly;
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
-                <Button
-                    disabled={disabled}
-                    icon="chevron-up"
-                    intent={intent}
-                    onBlur={this.handleButtonBlur}
-                    onFocus={this.handleButtonFocus}
-                    {...this.incrementButtonHandlers}
-                />
-                <Button
-                    disabled={disabled}
-                    icon="chevron-down"
-                    intent={intent}
-                    onBlur={this.handleButtonBlur}
-                    onFocus={this.handleButtonFocus}
-                    {...this.decrementButtonHandlers}
-                />
+                <Button disabled={disabled} icon="chevron-up" intent={intent} {...this.incrementButtonHandlers} />
+                <Button disabled={disabled} icon="chevron-down" intent={intent} {...this.decrementButtonHandlers} />
             </ButtonGroup>
         );
     }
@@ -358,14 +343,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         const delta = this.updateDelta(direction, e);
         const nextValue = this.incrementValue(delta);
         this.invokeValueCallback(nextValue, this.props.onButtonClick);
-    };
-
-    private handleButtonFocus = () => {
-        this.setState({ isButtonGroupFocused: true });
-    };
-
-    private handleButtonBlur = () => {
-        this.setState({ isButtonGroupFocused: false });
     };
 
     private startContinuousChange() {
