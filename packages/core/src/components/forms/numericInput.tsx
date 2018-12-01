@@ -442,7 +442,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
             nextValue = sanitizedValue;
         }
 
-        this.setState({ value: nextValue });
+        this.setState({ shouldSelectAfterUpdate: false, value: nextValue });
         this.invokeValueCallback(nextValue, this.props.onValueChange);
     };
 
