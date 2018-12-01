@@ -236,7 +236,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
-        if (targetTabElement != null && Keys.isKeyboardClick(e.keyCode)) {
+        if (targetTabElement != null && Keys.isKeyboardClick(e.which)) {
             e.preventDefault();
             targetTabElement.click();
         }
