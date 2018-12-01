@@ -12,7 +12,7 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
-[**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/rypm429574)
+[**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/nko3k41y60)
 
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
