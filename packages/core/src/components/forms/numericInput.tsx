@@ -27,6 +27,14 @@ import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
+import {
+    clampValue,
+    getValueOrEmptyValue,
+    isFloatingPointNumericCharacter,
+    isValidNumericKeyboardEvent,
+    isValueNumeric,
+    toMaxPrecision,
+} from "./numericInputUtils";
 
 export interface INumericInputProps extends IIntentProps, IProps {
     /**
@@ -175,19 +183,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         value: NumericInput.VALUE_EMPTY,
     };
 
-    /**
-     * A regex that matches a string of length 1 (i.e. a standalone character)
-     * if and only if it is a floating-point number character as defined by W3C:
-     * https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
-     *
-     * Floating-point number characters are the only characters that can be
-     * printed within a default input[type="number"]. This component should
-     * behave the same way when this.props.allowNumericCharactersOnly = true.
-     * See here for the input[type="number"].value spec:
-     * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
-     */
-    private static FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
-
     private static CONTINUOUS_CHANGE_DELAY = 300;
     private static CONTINUOUS_CHANGE_INTERVAL = 100;
 
@@ -206,14 +201,14 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         this.state = {
             shouldSelectAfterUpdate: false,
             stepMaxPrecision: this.getStepMaxPrecision(props),
-            value: this.getValueOrEmptyValue(props.value),
+            value: getValueOrEmptyValue(props.value),
         };
     }
 
     public componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
         super.componentWillReceiveProps(nextProps);
 
-        const value = this.getValueOrEmptyValue(nextProps.value);
+        const value = getValueOrEmptyValue(nextProps.value);
 
         const didMinChange = nextProps.min !== this.props.min;
         const didMaxChange = nextProps.max !== this.props.max;
@@ -427,7 +422,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     private handleInputKeyPress = (e: React.KeyboardEvent) => {
         // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
         // e.key is not trustworthy in onKeyDown in all browsers.
-        if (this.props.allowNumericCharactersOnly && this.isKeyboardEventDisabledForBasicNumericEntry(e)) {
+        if (this.props.allowNumericCharactersOnly && !isValidNumericKeyboardEvent(e)) {
             e.preventDefault();
         }
 
@@ -447,7 +442,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         if (this.props.allowNumericCharactersOnly && this.didPasteEventJustOccur) {
             this.didPasteEventJustOccur = false;
             const valueChars = value.split("");
-            const sanitizedValueChars = valueChars.filter(this.isFloatingPointNumericCharacter);
+            const sanitizedValueChars = valueChars.filter(isFloatingPointNumericCharacter);
             const sanitizedValue = sanitizedValueChars.join("");
             nextValue = sanitizedValue;
         } else {
@@ -488,64 +483,11 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     }
 
     private getSanitizedValue(value: string, delta = 0, min = this.props.min, max = this.props.max) {
-        if (!this.isValueNumeric(value)) {
+        if (!isValueNumeric(value)) {
             return NumericInput.VALUE_EMPTY;
         }
-
-        let nextValue = this.toMaxPrecision(parseFloat(value) + delta);
-
-        // defaultProps won't work if the user passes in null, so just default
-        // to +/- infinity here instead, as a catch-all.
-        const adjustedMin = min != null ? min : -Infinity;
-        const adjustedMax = max != null ? max : Infinity;
-        nextValue = Utils.clamp(nextValue, adjustedMin, adjustedMax);
-
-        return nextValue.toString();
-    }
-
-    private getValueOrEmptyValue(value: number | string) {
-        return value != null ? value.toString() : NumericInput.VALUE_EMPTY;
-    }
-
-    private isValueNumeric(value: string) {
-        // checking if a string is numeric in Typescript is a big pain, because
-        // we can't simply toss a string parameter to isFinite. below is the
-        // essential approach that jQuery uses, which involves subtracting a
-        // parsed numeric value from the string representation of the value. we
-        // need to cast the value to the `any` type to allow this operation
-        // between dissimilar types.
-        return value != null && (value as any) - parseFloat(value) + 1 >= 0;
-    }
-
-    private isKeyboardEventDisabledForBasicNumericEntry(e: React.KeyboardEvent) {
-        // unit tests may not include e.key. don't bother disabling those events.
-        if (e.key == null) {
-            return false;
-        }
-
-        // allow modified key strokes that may involve letters and other
-        // non-numeric/invalid characters (Cmd + A, Cmd + C, Cmd + V, Cmd + X).
-        if (e.ctrlKey || e.altKey || e.metaKey) {
-            return false;
-        }
-
-        // keys that print a single character when pressed have a `key` name of
-        // length 1. every other key has a longer `key` name (e.g. "Backspace",
-        // "ArrowUp", "Shift"). since none of those keys can print a character
-        // to the field--and since they may have important native behaviors
-        // beyond printing a character--we don't want to disable their effects.
-        const isSingleCharKey = e.key.length === 1;
-        if (!isSingleCharKey) {
-            return false;
-        }
-
-        // now we can simply check that the single character that wants to be printed
-        // is a floating-point number character that we're allowed to print.
-        return !this.isFloatingPointNumericCharacter(e.key);
-    }
-
-    private isFloatingPointNumericCharacter(character: string) {
-        return NumericInput.FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(character);
+        const nextValue = toMaxPrecision(parseFloat(value) + delta, this.state.stepMaxPrecision);
+        return clampValue(nextValue, min, max).toString();
     }
 
     private getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {
@@ -554,14 +496,6 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         } else {
             return Utils.countDecimalPlaces(props.stepSize);
         }
-    }
-
-    private toMaxPrecision(value: number) {
-        // round the value to have the specified maximum precision (toFixed is the wrong choice,
-        // because it would show trailing zeros in the decimal part out to the specified precision)
-        // source: http://stackoverflow.com/a/18358056/5199574
-        const scaleFactor = Math.pow(10, this.state.stepMaxPrecision);
-        return Math.round(value * scaleFactor) / scaleFactor;
     }
 
     private updateDelta(direction: IncrementDirection, e: React.MouseEvent | React.KeyboardEvent) {
