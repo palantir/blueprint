@@ -11,7 +11,7 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
 import { Months } from "../src/common/months";
-import { Classes, DateInput, IDateInputProps, TimePicker, TimePrecision } from "../src/index";
+import { Classes, DateInput, DatePicker, IDateInputProps, TimePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -42,13 +42,19 @@ describe("<DateInput>", () => {
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
 
-    it("supports custom input style", () => {
-        const wrapper = mount(<DateInput {...DATE_FORMAT} inputProps={{ style: { background: "yellow" } }} />);
-        const inputElement = wrapper
-            .find("input")
-            .first()
-            .getDOMNode() as HTMLElement;
+    it("supports custom input props", () => {
+        const wrapper = mount(
+            <DateInput {...DATE_FORMAT} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
+        );
+        const inputElement = wrapper.find("input").getDOMNode() as HTMLInputElement;
         assert.equal(inputElement.style.background, "yellow");
+        assert.equal(inputElement.tabIndex, 4);
+    });
+
+    it("supports inputProps.inputRef", () => {
+        let input: HTMLInputElement | null = null;
+        mount(<DateInput {...DATE_FORMAT} inputProps={{ inputRef: ref => (input = ref) }} />);
+        assert.instanceOf(input, HTMLInputElement);
     });
 
     it("Popover opens on input focus", () => {
@@ -199,6 +205,21 @@ describe("<DateInput>", () => {
 
         // ensure this additional prop was passed through undeterred.
         assert.equal(timePicker.prop("disabled"), true);
+    });
+
+    it("clearButtonText and todayButtonText props are passed to DatePicker", () => {
+        const datePickerProps = {
+            clearButtonText: "clear",
+            todayButtonText: "today",
+        };
+
+        const wrapper = mount(<DateInput {...DATE_FORMAT} {...datePickerProps} />).setState({
+            isOpen: true,
+        });
+        const datePicker = wrapper.find(DatePicker);
+
+        assert.equal(datePicker.prop("clearButtonText"), "clear");
+        assert.equal(datePicker.prop("todayButtonText"), "today");
     });
 
     it("inputProps are passed to InputGroup", () => {

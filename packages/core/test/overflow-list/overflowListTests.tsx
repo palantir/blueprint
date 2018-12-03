@@ -38,6 +38,10 @@ describe("<OverflowList>", function(this) {
         );
     });
 
+    it("uses custom tagName", () => {
+        assert.lengthOf(overflowList(undefined, { tagName: "section" }).wrapper.find("section"), 1);
+    });
+
     it("overflows correctly on initial mount", () => {
         overflowList().assertVisibleItemSplit(4);
     });

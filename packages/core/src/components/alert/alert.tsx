@@ -7,7 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IProps, MaybeElement } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -48,7 +48,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     confirmButtonText?: string;
 
     /** Name of a Blueprint UI icon (or an icon element) to display on the left side. */
-    icon?: IconName | JSX.Element;
+    icon?: IconName | MaybeElement;
 
     /**
      * The intent to be applied to the confirm (right-most) button.
@@ -74,6 +74,13 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
      * @default 300
      */
     transitionDuration?: number;
+
+    /**
+     * The container element into which the overlay renders its contents, when `usePortal` is `true`.
+     * This prop is ignored if `usePortal` is `false`.
+     * @default document.body
+     */
+    portalContainer?: HTMLElement;
 
     /**
      * Handler invoked when the alert is canceled. Alerts can be **canceled** in the following ways:
@@ -130,6 +137,7 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
                 canEscapeKeyClose={canEscapeKeyCancel}
                 canOutsideClickClose={canOutsideClickCancel}
                 onClose={this.handleCancel}
+                portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.ALERT_BODY}>
                     <Icon icon={icon} iconSize={40} intent={intent} />

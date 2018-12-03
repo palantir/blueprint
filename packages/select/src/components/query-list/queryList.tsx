@@ -98,6 +98,13 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      */
     private shouldCheckActiveItemInViewport = false;
 
+    /**
+     * The item that we expect to be the next selected active item (based on click
+     * or key interactions). When scrollToActiveItem = false, used to detect if
+     * an unexpected external change to the active item has been made.
+     */
+    private expectedNextActiveItem: T | null = null;
+
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);
         const { query = "" } = this.props;
@@ -129,7 +136,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.setState({ activeItem: nextProps.activeItem });
         }
         if (nextProps.query != null) {
-            this.setQuery(nextProps.query);
+            this.setQuery(nextProps.query, nextProps.resetOnQuery, nextProps);
         }
     }
 
@@ -152,6 +159,14 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public scrollActiveItemIntoView() {
+        const scrollToActiveItem = this.props.scrollToActiveItem !== false;
+        const externalChangeToActiveItem = this.expectedNextActiveItem !== this.props.activeItem;
+        this.expectedNextActiveItem = null;
+
+        if (!scrollToActiveItem && externalChangeToActiveItem) {
+            return;
+        }
+
         const activeElement = this.getActiveElement();
         if (this.itemsParentRef != null && activeElement != null) {
             const { offsetTop: activeTop, offsetHeight: activeHeight } = activeElement;
@@ -177,22 +192,25 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
-    public setQuery(query: string, resetActiveItem = this.props.resetOnQuery) {
+    public setQuery(query: string, resetActiveItem = this.props.resetOnQuery, props = this.props) {
         this.shouldCheckActiveItemInViewport = true;
-        if (query !== this.state.query) {
-            Utils.safeInvoke(this.props.onQueryChange, query);
+        const hasQueryChanged = query !== this.state.query;
+        if (hasQueryChanged) {
+            Utils.safeInvoke(props.onQueryChange, query);
         }
-        const filteredItems = getFilteredItems(query, this.props);
+
+        const filteredItems = getFilteredItems(query, props);
         this.setState({ filteredItems, query });
 
         // always reset active item if it's now filtered or disabled
         const activeIndex = this.getActiveIndex(filteredItems);
-        if (
+        const shouldUpdateActiveItem =
             resetActiveItem ||
             activeIndex < 0 ||
-            isItemDisabled(this.state.activeItem, activeIndex, this.props.itemDisabled)
-        ) {
-            this.setActiveItem(getFirstEnabledItem(filteredItems, this.props.itemDisabled));
+            isItemDisabled(this.state.activeItem, activeIndex, props.itemDisabled);
+
+        if (hasQueryChanged && shouldUpdateActiveItem) {
+            this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
         }
     }
 
@@ -291,6 +309,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private setActiveItem(activeItem: T | null) {
+        this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
             this.shouldCheckActiveItemInViewport = true;

@@ -12,7 +12,7 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
-[**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/rypm429574)
+[**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/nko3k41y60)
 
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
@@ -75,7 +75,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 [Lerna](https://lernajs.io/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-__Prerequisites__: Node.js v8+, Yarn v1.0+
+__Prerequisites__: Node.js v8+, Yarn v1.10+
 
 ### One-time setup
 

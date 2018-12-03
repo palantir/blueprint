@@ -36,8 +36,8 @@
 
   // CSS API support
   &::before,
-  // space after all children
   > * {
+    // space after all children
     #{$margin-prop}: $margin;
   }
 

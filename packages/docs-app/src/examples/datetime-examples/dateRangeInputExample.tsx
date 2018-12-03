@@ -21,6 +21,8 @@ export interface IDateRangeInputExampleState {
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
+    shortcuts: boolean;
+    singleMonthOnly: boolean;
 }
 
 export class DateRangeInputExample extends React.PureComponent<IExampleProps, IDateRangeInputExampleState> {
@@ -33,6 +35,8 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
+        shortcuts: true,
+        singleMonthOnly: false,
     };
 
     private toggleContiguous = handleBooleanChange(contiguous => {
@@ -45,6 +49,8 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
     private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
+    private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
+    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 
     public render() {
         const { format, range, ...spreadProps } = this.state;
@@ -65,6 +71,12 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                     label="Allow single day range"
                     onChange={this.toggleSingleDay}
                 />
+                <Switch
+                    checked={this.state.singleMonthOnly}
+                    label="Single month only"
+                    onChange={this.toggleSingleMonth}
+                />
+                <Switch checked={this.state.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
                 <Switch
                     checked={this.state.closeOnSelection}
                     label="Close on selection"

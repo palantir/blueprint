@@ -9,9 +9,5 @@ const React = require("react");
 const Icons = require("../lib/cjs");
 
 describe("Icons isomorphic rendering", () => {
-    generateIsomorphicTests(
-        Icons,
-        {},
-        {}
-    );
+    generateIsomorphicTests(Icons);
 });

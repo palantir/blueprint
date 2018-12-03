@@ -10,7 +10,7 @@
  * Note that the enum values are numbers (with January as `0`) so they can be
  * easily compared to `date.getMonth()`.
  */
-export const enum Months {
+export enum Months {
     JANUARY = 0,
     FEBRUARY = 1,
     MARCH = 2,

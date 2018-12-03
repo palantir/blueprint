@@ -270,6 +270,12 @@ describe("<DateRangeInput>", () => {
         expect(root.find(DateRangePicker).prop("contiguousCalendarMonths")).to.be.false;
     });
 
+    it("accepts singleMonthOnly prop and passes it to the date range picker", () => {
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} singleMonthOnly={false} />);
+        root.setState({ isOpen: true });
+        expect(root.find(DateRangePicker).prop("singleMonthOnly")).to.be.false;
+    });
+
     it("accepts shortcuts prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} shortcuts={false} />);
         root.setState({ isOpen: true });

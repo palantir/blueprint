@@ -10,6 +10,8 @@
   display: inline-block;
   // respect dimensions exactly
   flex: 0 0 auto;
+  // sit nicely with inline text
+  vertical-align: text-bottom;
 
   &:not(:empty)::before {
     // clear font icon when there's an <svg> image

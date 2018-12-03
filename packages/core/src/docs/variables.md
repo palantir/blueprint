@@ -104,6 +104,25 @@ dark theme components.
 - `$pt-dark-popover-box-shadow`
 - `$pt-dark-tooltip-box-shadow`
 
+@## Elevation drop shadows
+
+Use these when you need to apply a drop shadow to custom UI components to simulate height.
+These elevations correspond to those of the [Card](#core/components/card.elevation) component.
+
+- `$pt-elevation-shadow-0`
+- `$pt-elevation-shadow-1`
+- `$pt-elevation-shadow-2`
+- `$pt-elevation-shadow-3`
+- `$pt-elevation-shadow-4`
+
+Use these for drop shadows in dark theme.
+
+- `$pt-dark-elevation-shadow-0`
+- `$pt-dark-elevation-shadow-1`
+- `$pt-dark-elevation-shadow-2`
+- `$pt-dark-elevation-shadow-3`
+- `$pt-dark-elevation-shadow-4`
+
 @## Color aliases
 
 These variables are semantic aliases of our [colors](#core/colors).

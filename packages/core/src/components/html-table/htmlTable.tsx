@@ -7,16 +7,18 @@
 import classNames from "classnames";
 import * as React from "react";
 import {
-    CONDENSED,
     HTML_TABLE,
     HTML_TABLE_BORDERED,
+    HTML_TABLE_CONDENSED,
     HTML_TABLE_STRIPED,
     INTERACTIVE,
     SMALL,
 } from "../../common/classes";
 import { IElementRefProps } from "../html/html";
 
-export interface IHTMLTableProps extends React.HTMLAttributes<HTMLTableElement>, IElementRefProps<HTMLTableElement> {
+export interface IHTMLTableProps
+    extends React.TableHTMLAttributes<HTMLTableElement>,
+        IElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 
@@ -44,8 +46,8 @@ export class HTMLTable extends React.PureComponent<IHTMLTableProps> {
         const classes = classNames(
             HTML_TABLE,
             {
-                [CONDENSED]: condensed,
                 [HTML_TABLE_BORDERED]: bordered,
+                [HTML_TABLE_CONDENSED]: condensed,
                 [HTML_TABLE_STRIPED]: striped,
                 [INTERACTIVE]: interactive,
                 [SMALL]: small,

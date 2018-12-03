@@ -3,15 +3,15 @@
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-
 import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
+import { IQueryListProps } from "@blueprintjs/select";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IQueryListRendererProps, ItemListPredicate, ItemListRenderer, QueryList } from "../src/index";
+import { IQueryListRendererProps, IQueryListState, ItemListPredicate, ItemListRenderer, QueryList } from "../src/index";
 
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
@@ -89,6 +89,36 @@ describe("<QueryList>", () => {
             filmQueryList.setState({ query: "query" });
             filmQueryList.setState({ activeItem: undefined });
             assert.equal(testProps.onActiveItemChange.callCount, 0);
+        });
+
+        it("ensure onActiveItemChange is not called updating props and query doesn't change", () => {
+            const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                activeItem: myItem,
+                items: [myItem],
+                query: "",
+            };
+            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>> = mount(<FilmQueryList {...props} />);
+            filmQueryList.setProps(props);
+            assert.equal(testProps.onActiveItemChange.callCount, 0);
+        });
+
+        it("ensure activeItem changes on query change", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                items: [TOP_100_FILMS[0]],
+                query: "abc",
+            };
+            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
+                <FilmQueryList {...props} />,
+            );
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
+            filmQueryList.setProps({
+                items: [TOP_100_FILMS[1]],
+                query: "123",
+            });
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
         });
     });
 

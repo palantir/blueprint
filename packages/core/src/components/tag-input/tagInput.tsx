@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps, MaybeElement } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -63,7 +63,7 @@ export interface ITagInputProps extends IProps {
     large?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
-    leftIcon?: IconName | JSX.Element;
+    leftIcon?: IconName | MaybeElement;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
@@ -169,9 +169,9 @@ export interface ITagInputProps extends IProps {
 }
 
 export interface ITagInputState {
-    activeIndex?: number;
-    inputValue?: string;
-    isInputFocused?: boolean;
+    activeIndex: number;
+    inputValue: string;
+    isInputFocused: boolean;
 }
 
 /** special value for absence of active tag */
@@ -184,14 +184,13 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         addOnBlur: false,
         addOnPaste: true,
         inputProps: {},
-        inputValue: "",
         separator: /[,\n\r]/,
         tagProps: {},
     };
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: this.props.inputValue,
+        inputValue: this.props.inputValue || "",
         isInputFocused: false,
     };
 
@@ -207,7 +206,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         super.componentWillReceiveProps(nextProps);
 
         if (nextProps.inputValue !== this.props.inputValue) {
-            this.setState({ inputValue: nextProps.inputValue });
+            this.setState({ inputValue: nextProps.inputValue || "" });
         }
     }
 
@@ -261,15 +260,15 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     }
 
     private addTags = (value: string) => {
-        const { onAdd, onChange, values } = this.props;
+        const { inputValue, onAdd, onChange, values } = this.props;
         const newValues = this.getValues(value);
-        let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
+        let shouldClearInput = Utils.safeInvoke(onAdd, newValues) !== false && inputValue === undefined;
         // avoid a potentially expensive computation if this prop is omitted
         if (Utils.isFunction(onChange)) {
-            shouldClearInput = shouldClearInput || onChange([...values, ...newValues]);
+            shouldClearInput = onChange([...values, ...newValues]) !== false && shouldClearInput;
         }
         // only explicit return false cancels text clearing
-        if (shouldClearInput !== false) {
+        if (shouldClearInput) {
             this.setState({ inputValue: "" });
         }
     };

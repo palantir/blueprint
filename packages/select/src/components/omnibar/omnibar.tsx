@@ -24,7 +24,7 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
-     * to control this input. Use `inputRef` instead of `ref`.
+     * to control this input.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 
@@ -81,7 +81,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const handlers = isOpen && listProps.query.length > 0 ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
+        const handlers = isOpen ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
         return (
             <Overlay

@@ -57,7 +57,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
 
     /**
      * Whether the overlay should be wrapped in a `Portal`, which renders its contents in a new
-     * element attached to `document.body`.
+     * element attached to `portalContainer` prop.
      *
      * This prop essentially determines which element is covered by the backdrop: if `false`,
      * then only its parent is covered; otherwise, the entire page is covered (because the parent
@@ -68,6 +68,19 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * @default true
      */
     usePortal?: boolean;
+
+    /**
+     * Space-delimited string of class names applied to the `Portal` element if
+     * `usePortal={true}`.
+     */
+    portalClassName?: string;
+
+    /**
+     * The container element into which the overlay renders its contents, when `usePortal` is `true`.
+     * This prop is ignored if `usePortal` is `false`.
+     * @default document.body
+     */
+    portalContainer?: HTMLElement;
 
     /**
      * A callback that is invoked when user interaction causes the overlay to close, such as
@@ -214,7 +227,11 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             </TransitionGroup>
         );
         if (usePortal) {
-            return <Portal>{transitionGroup}</Portal>;
+            return (
+                <Portal className={this.props.portalClassName} container={this.props.portalContainer}>
+                    {transitionGroup}
+                </Portal>
+            );
         } else {
             return transitionGroup;
         }

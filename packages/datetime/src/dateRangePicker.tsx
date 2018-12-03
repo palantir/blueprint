@@ -101,6 +101,12 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
+     * Whether to show only a single month calendar.
+     * @default false
+     */
+    singleMonthOnly?: boolean;
+
+    /**
      * The currently selected `DateRange`.
      * If this prop is provided, the component acts in a controlled manner.
      */
@@ -125,6 +131,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         minDate: getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
         shortcuts: true,
+        singleMonthOnly: false,
         timePickerProps: {},
     };
 
@@ -194,8 +201,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     }
 
     public render() {
-        const { className, contiguousCalendarMonths } = this.props;
-        const isShowingOneMonth = DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
+        const { className, contiguousCalendarMonths, singleMonthOnly } = this.props;
+        const isShowingOneMonth = singleMonthOnly || DateUtils.areSameMonth(this.props.minDate, this.props.maxDate);
 
         const classes = classNames(DateClasses.DATEPICKER, DateClasses.DATERANGEPICKER, className, {
             [DateClasses.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,

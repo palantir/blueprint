@@ -14,6 +14,7 @@ import {
     IControlledProps,
     IIntentProps,
     IProps,
+    MaybeElement,
     removeNonHTMLProps,
 } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
@@ -37,7 +38,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      * Name of a Blueprint UI icon (or an icon element) to render on the left side of the input group,
      * before the user's cursor.
      */
-    leftIcon?: IconName | JSX.Element;
+    leftIcon?: IconName | MaybeElement;
 
     /** Whether this input should use large styles. */
     large?: boolean;

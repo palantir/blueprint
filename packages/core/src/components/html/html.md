@@ -23,7 +23,7 @@ The following elements should be used in this manner:
 | `Pre` | `pre` | `CODE_BLOCK` |
 | `OL` | `ol` | `LIST` |
 | `UL` | `ul` | `LIST` |
-| `Table` | `table` | `HTML_TABLE` - see [Table (HTML)](#core/components/table-html) |
+| `HTMLTable` | `table` | `HTML_TABLE` - see [HTML Table](#core/components/html-table) |
 
 The React components listed above each support the full set of relevant HTML attributes **and an
 optional `elementRef` prop** to access the instance of the HTML element itself
