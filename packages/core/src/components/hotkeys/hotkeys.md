@@ -2,7 +2,7 @@
 
 Hotkeys enable you to create interactions based on user keyboard events.
 
-To add hotkeys to your React component, use the `@HotkeyTarget` class decorator
+To add hotkeys to your React component, use the `@HotkeysTarget` class decorator
 and add a `renderHotkeys()` method. The decorator will call `renderHotkeys()`
 and attach the appropriate key listeners.
 
