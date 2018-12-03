@@ -24,7 +24,7 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
-     * to control this input. Use `inputRef` instead of `ref`.
+     * to control this input.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
 

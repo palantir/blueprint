@@ -73,9 +73,9 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
     public static readonly SIZE_STANDARD = 16;
     public static readonly SIZE_LARGE = 20;
 
-    public render() {
+    public render(): JSX.Element | null {
         const { icon } = this.props;
-        if (icon == null) {
+        if (icon == null || typeof icon === "boolean") {
             return null;
         } else if (typeof icon !== "string") {
             return icon;

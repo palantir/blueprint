@@ -125,7 +125,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     // argument because it is not a supertype of candidate
     // 'KeyboardEvent<HTMLElement>'."
     protected handleKeyDown = (e: React.KeyboardEvent<any>) => {
-        if (isKeyboardClick(e.which)) {
+        if (Keys.isKeyboardClick(e.which)) {
             e.preventDefault();
             if (e.which !== this.currentKeyDown) {
                 this.setState({ isActive: true });
@@ -136,7 +136,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     };
 
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
-        if (isKeyboardClick(e.which)) {
+        if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
             this.buttonRef.click();
         }
@@ -158,8 +158,4 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             <Icon key="rightIcon" icon={rightIcon} />,
         ];
     }
-}
-
-function isKeyboardClick(keyCode: number) {
-    return keyCode === Keys.ENTER || keyCode === Keys.SPACE;
 }
