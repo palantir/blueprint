@@ -71,7 +71,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
   width: $pt-grid-size * 50;
   padding-bottom: $pt-grid-size * 2;
   pointer-events: all;
-  user-select: text;
+  user-select: initial;
 
   &:focus {
     outline: 0;
