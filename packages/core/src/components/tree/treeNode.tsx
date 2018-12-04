@@ -73,6 +73,8 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     onContextMenu?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
     onDoubleClick?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
     onExpand?: (node: TreeNode<T>, e: React.MouseEvent<HTMLSpanElement>) => void;
+    onMouseEnter?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
+    onMouseLeave?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
     path: number[];
 }
 
@@ -106,6 +108,8 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
                     onClick={this.handleClick}
                     onContextMenu={this.handleContextMenu}
                     onDoubleClick={this.handleDoubleClick}
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}
                     ref={this.handleContentRef}
                 >
                     {this.maybeRenderCaret()}
@@ -158,5 +162,13 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
 
     private handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onDoubleClick, this, e);
+    };
+
+    private handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        safeInvoke(this.props.onMouseEnter, this, e);
+    };
+
+    private handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        safeInvoke(this.props.onMouseLeave, this, e);
     };
 }

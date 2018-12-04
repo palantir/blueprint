@@ -96,6 +96,8 @@ describe("<Tree>", () => {
         const onNodeContextMenu = spy();
         const onNodeDoubleClick = spy();
         const onNodeExpand = spy();
+        const onNodeMouseEnter = spy();
+        const onNodeMouseLeave = spy();
 
         const contents = createDefaultContents();
         contents[3].isExpanded = true;
@@ -107,6 +109,8 @@ describe("<Tree>", () => {
             onNodeContextMenu,
             onNodeDoubleClick,
             onNodeExpand,
+            onNodeMouseEnter,
+            onNodeMouseLeave,
         });
 
         tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT}`).simulate("click");
@@ -130,6 +134,14 @@ describe("<Tree>", () => {
         tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT}`).simulate("contextmenu");
         assert.isTrue(onNodeContextMenu.calledOnce);
         assert.deepEqual(onNodeContextMenu.args[0][1], [0]);
+
+        tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT}`).simulate("mouseenter");
+        assert.isTrue(onNodeMouseEnter.calledOnce);
+        assert.deepEqual(onNodeMouseEnter.args[0][1], [2]);
+
+        tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT}`).simulate("mouseleave");
+        assert.isTrue(onNodeMouseLeave.calledOnce);
+        assert.deepEqual(onNodeMouseLeave.args[0][1], [2]);
     });
 
     it("icons are rendered correctly if present", () => {
