@@ -129,7 +129,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
 
     /**
      * HTML props to spread to target element. Use `targetTagName` to change
-     * the type of element rendered.
+     * the type of element rendered. Note that `ref` is not supported.
      */
     targetProps?: React.HTMLAttributes<HTMLElement>;
 
