@@ -302,7 +302,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         const finalTargetProps: React.HTMLProps<HTMLElement> = isHoverInteractionKind
             ? {
-                  ...targetProps,
                   // HOVER handlers
                   onBlur: this.handleTargetBlur,
                   onFocus: this.handleTargetFocus,
@@ -310,7 +309,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                   onMouseLeave: this.handleMouseLeave,
               }
             : {
-                  ...targetProps,
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
               };
@@ -336,7 +334,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
         return (
             <ResizeSensor onResize={this.handlePopoverResize}>
-                <TagName {...finalTargetProps}>{clonedTarget}</TagName>
+                <TagName {...targetProps} {...finalTargetProps}>
+                    {clonedTarget}
+                </TagName>
             </ResizeSensor>
         );
     };
