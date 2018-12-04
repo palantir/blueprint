@@ -19,7 +19,7 @@ import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
-     * dialog's header. Note that the header will only be rendered if `title` is
+     * drawer's header. Note that the header will only be rendered if `title` is
      * provided.
      */
     icon?: IconName | JSX.Element;
@@ -37,11 +37,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      */
     isOpen: boolean;
 
-    /** Whether this drawer should use large styles. */
-    large?: boolean;
-
-    /** Whether this drawer should use small styles. */
-    small?: boolean;
+    size?: number | string;
 
     /**
      * CSS styles to apply to the dialog.
@@ -69,34 +65,27 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 }
 
 export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
+        isCloseButtonShown: true,
         isOpen: false,
-        large: false,
-        small: false,
+        style: {},
         vertical: false,
     };
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
+    public static readonly SIZE_SMALL = 300;
+    public static readonly SIZE_STANDARD = "50%";
+    public static readonly SIZE_LARGE = "75%";
 
     public render() {
-        const classes = classNames(
-            Classes.DRAWER,
-            {
-                [Classes.LARGE]: this.props.large,
-                [Classes.SMALL]: this.props.small,
-                [Classes.VERTICAL]: this.props.vertical,
-            },
-            this.props.className,
-        );
+        const { size, style, vertical } = this.props;
+        const classes = classNames(Classes.DRAWER, { [Classes.VERTICAL]: vertical }, this.props.className);
+        const styleProp = size == null ? style : { ...style, [vertical ? "height" : "width"]: size };
         // small drawer should not use a backdrop
         return (
-            <Overlay
-                {...this.props}
-                className={Classes.OVERLAY_CONTAINER}
-                hasBackdrop={this.props.hasBackdrop || !this.props.small}
-            >
-                <div className={classes} style={this.props.style}>
+            <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
+                <div className={classes} style={styleProp}>
                     {this.maybeRenderHeader()}
                     {this.props.children}
                 </div>
@@ -116,9 +105,7 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     }
 
     private maybeRenderCloseButton() {
-        // show close button if prop is undefined or null
-        // this gives us a behavior as if the default value were `true`
-        if (this.props.isCloseButtonShown !== false) {
+        if (this.props.isCloseButtonShown) {
             return (
                 <Button
                     aria-label="Close"
@@ -129,14 +116,14 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
                 />
             );
         } else {
-            return undefined;
+            return null;
         }
     }
 
     private maybeRenderHeader() {
         const { icon, title } = this.props;
         if (title == null) {
-            return undefined;
+            return null;
         }
         return (
             <div className={Classes.DRAWER_HEADER}>

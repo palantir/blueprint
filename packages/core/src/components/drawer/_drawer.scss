@@ -10,35 +10,38 @@ $drawer-margin: ($pt-grid-size * 3) 0 !default;
 $drawer-padding: $pt-grid-size * 2 !default;
 
 .#{$ns}-drawer {
-  @include react-transition-phase(
-    "#{$ns}-overlay",
-    "enter",
-    (transform: (translateX(100%), translateX(0))),
-    $pt-transition-duration * 2,
-    $pt-transition-ease,
-    $before: "&"
-  );
-  @include react-transition-phase(
-    "#{$ns}-overlay",
-    "exit",
-    (transform: (translateX(100%), translateX(0))),
-    $pt-transition-duration,
-    $before: "&"
-  );
   display: flex;
   flex-direction: column;
-  top: 0;
-  right: 0;
-  bottom: 0;
   margin: 0;
   box-shadow: $pt-elevation-shadow-4;
   background: $white;
-  width: 95%;
-  max-width: 800px;
   padding: 0;
 
   &:focus {
     outline: 0;
+  }
+
+  &:not(.#{$ns}-vertical) {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 25%;
   }
 
   &.#{$ns}-vertical {
@@ -57,37 +60,11 @@ $drawer-padding: $pt-grid-size * 2 !default;
       $pt-transition-duration,
       $before: "&"
     );
-    top: auto;
+
+    right: 0;
     bottom: 0;
     left: 0;
-    width: 100%;
-    max-width: 100%;
-    height: 95%;
-    max-height: 600px;
-
-    &.#{$ns}-large {
-      width: 100%;
-      max-width: 100%;
-      height: 95%;
-      max-height: 900px;
-    }
-
-    &.#{$ns}-small {
-      width: 100%;
-      max-width: 100%;
-      height: 95%;
-      max-height: 300px;
-    }
-  }
-
-  &.#{$ns}-large {
-    width: 95%;
-    max-width: 1200px;
-  }
-
-  &.#{$ns}-small {
-    width: 95%;
-    max-width: 400px;
+    height: 25%;
   }
 
   &.#{$ns}-dark,
