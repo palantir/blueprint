@@ -1305,10 +1305,10 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-circle-github-bot@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/circle-github-bot/-/circle-github-bot-1.0.0.tgz#ed86b3a8003c3f9a4ef0e7c4311f6c4e58fdafdb"
-  integrity sha512-O03FawVUz4px4Pky+lcUbLv1PFkH0LLJMMzyj2/8oQ9IF2XrktYj9jM+R5lK/2nZJXj7A+DSrv5cakr3UlOaDA==
+circle-github-bot@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/circle-github-bot/-/circle-github-bot-2.0.1.tgz#feefa4c7f788ce842307e00d290d264728689f69"
+  integrity sha512-uTEX8RIjUVdvtILxEG3AXI2G9X0wZYrN/Y67IIvrosjM/nt/QBdogpDXbkVsNQmhmQYqqFguWUgt50z6UMIoXw==
 
 circular-dependency-plugin@^4.3.0:
   version "4.4.0"
