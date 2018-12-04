@@ -224,7 +224,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
         super.componentWillReceiveProps(nextProps);
 
-        if (!DateUtils.areRangesEqual(this.props.value, nextProps.value)) {
+        if (
+            !DateUtils.areRangesEqual(this.props.value, nextProps.value) ||
+            this.props.contiguousCalendarMonths !== nextProps.contiguousCalendarMonths
+        ) {
             const nextState = getStateChange(
                 this.props.value,
                 nextProps.value,
@@ -669,6 +672,13 @@ function getStateChange(
             rightView,
             value: nextValue,
         };
+    } else if (contiguousCalendarMonths === true) {
+        // contiguousCalendarMonths is toggled on.
+        // If the previous leftView and rightView are not contiguous, then set the right DayPicker to left + 1
+        if (!state.leftView.getNextMonth().isSameMonth(state.rightView)) {
+            const nextRightView = state.leftView.getNextMonth();
+            return { rightView: nextRightView };
+        }
     }
 
     return {};
