@@ -6,8 +6,8 @@
 
 import * as React from "react";
 
-import { Button, Classes, Code, Drawer, H5, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Classes, Code, Divider, Drawer, H5, HTMLSelect, IOptionProps, Label, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 export interface IDrawerExampleState {
@@ -16,8 +16,7 @@ export interface IDrawerExampleState {
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
     isOpen: boolean;
-    large: boolean;
-    small: boolean;
+    size: string;
     usePortal: boolean;
     vertical: boolean;
 }
@@ -27,9 +26,8 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
-        isOpen: false,
-        large: false,
-        small: false,
+        isOpen: true,
+        size: undefined,
         usePortal: true,
         vertical: false,
     };
@@ -40,8 +38,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
-    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
+    private handleSizeChange = handleStringChange(size => this.setState({ size }));
 
     public render() {
         return (
@@ -95,6 +92,12 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         return (
             <>
                 <H5>Props</H5>
+                <Label>
+                    Size
+                    <HTMLSelect options={SIZES} onChange={this.handleSizeChange} />
+                </Label>
+                <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
+                <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
                 <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
@@ -106,9 +109,6 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                     onChange={this.handleOutsideClickChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
-                <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
-                <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
-                <Switch checked={this.state.small} label="Small" onChange={this.handleSmallChange} />
             </>
         );
     }
@@ -116,3 +116,12 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleOpen = () => this.setState({ isOpen: true });
     private handleClose = () => this.setState({ isOpen: false });
 }
+
+const SIZES: Array<string | IOptionProps> = [
+    { label: "Default", value: undefined },
+    { label: "Small", value: Drawer.SIZE_SMALL },
+    { label: "Standard", value: Drawer.SIZE_STANDARD },
+    { label: "Large", value: Drawer.SIZE_LARGE },
+    "37%",
+    "444px",
+];
