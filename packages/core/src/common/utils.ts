@@ -9,6 +9,7 @@ import * as React from "react";
 import { CLAMP_MIN_MAX } from "./errors";
 
 export * from "./utils/compareUtils";
+export * from "./utils/safeInvokeMember";
 
 // only accessible within this file, so use `Utils.isNodeEnv(env)` from the outside.
 declare var process: { env: any };
