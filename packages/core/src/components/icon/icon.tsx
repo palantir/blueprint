@@ -65,6 +65,12 @@ export interface IIconProps extends IIntentProps, IProps {
      * explicit falsy value to disable.
      */
     title?: string | false | null;
+
+    /**
+     * String for the title attribute on the rendered element, which will appear
+     * as a tooltip in the browser.
+     */
+    htmlTitle?: string;
 }
 
 export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<HTMLElement>> {
@@ -88,6 +94,7 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
             intent,
             title = icon,
             tagName: TagName = "span",
+            htmlTitle,
             ...htmlprops
         } = this.props;
 
@@ -100,7 +107,7 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
         return (
-            <TagName {...htmlprops} className={classes}>
+            <TagName {...htmlprops} className={classes} title={htmlTitle}>
                 <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
                     {title && <desc>{title}</desc>}
                     {paths}
