@@ -296,11 +296,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
-        const { openOnTargetFocus, targetClassName, targetTagName: TagName } = this.props;
+        const { openOnTargetFocus, targetClassName, targetProps = {}, targetTagName: TagName } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
-        const targetProps: React.HTMLProps<HTMLElement> = isHoverInteractionKind
+        const finalTargetProps: React.HTMLProps<HTMLElement> = isHoverInteractionKind
             ? {
                   // HOVER handlers
                   onBlur: this.handleTargetBlur,
@@ -312,8 +312,13 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
               };
-        targetProps.className = classNames(Classes.POPOVER_TARGET, { [Classes.POPOVER_OPEN]: isOpen }, targetClassName);
-        targetProps.ref = referenceProps.ref;
+        finalTargetProps.className = classNames(
+            Classes.POPOVER_TARGET,
+            { [Classes.POPOVER_OPEN]: isOpen },
+            targetProps.className,
+            targetClassName,
+        );
+        finalTargetProps.ref = referenceProps.ref;
 
         const rawTarget = Utils.ensureElement(this.understandChildren().target);
         const rawTabIndex = rawTarget.props.tabIndex;
@@ -329,7 +334,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         });
         return (
             <ResizeSensor onResize={this.handlePopoverResize}>
-                <TagName {...targetProps}>{clonedTarget}</TagName>
+                <TagName {...targetProps} {...finalTargetProps}>
+                    {clonedTarget}
+                </TagName>
             </ResizeSensor>
         );
     };
@@ -386,6 +393,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             }
             this.handleMouseEnter(e);
         }
+        Utils.safeInvokeMember(this.props.targetProps, "onFocus", e);
     };
 
     private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
@@ -397,6 +405,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;
+        Utils.safeInvokeMember(this.props.targetProps, "onBlur", e);
     };
 
     private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -415,6 +424,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
+        Utils.safeInvokeMember(this.props.targetProps, "onMouseEnter", e);
     };
 
     private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -430,6 +440,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             // user-configurable closing delay is helpful when moving mouse from target to popover
             this.setOpenState(false, e, this.props.hoverCloseDelay);
         });
+        Utils.safeInvokeMember(this.props.targetProps, "onMouseLeave", e);
     };
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -465,6 +476,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
                 this.setOpenState(!this.props.isOpen, e);
             }
         }
+        Utils.safeInvokeMember(this.props.targetProps, "onClick", e);
     };
 
     // a wrapper around setState({isOpen}) that will call props.onInteraction instead when in controlled mode.
