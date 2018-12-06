@@ -25,6 +25,12 @@ export interface IIconProps extends IIntentProps, IProps {
     color?: string;
 
     /**
+     * String for the `title` attribute on the rendered element, which will appear
+     * as a native browser tooltip.
+     */
+    htmlTitle?: string;
+
+    /**
      * Name of a Blueprint UI icon, or an icon element, to render. This prop is
      * required because it determines the content of the component, but it can
      * be explicitly set to falsy values to render nothing.
@@ -65,12 +71,6 @@ export interface IIconProps extends IIntentProps, IProps {
      * explicit falsy value to disable.
      */
     title?: string | false | null;
-
-    /**
-     * String for the title attribute on the rendered element, which will appear
-     * as a tooltip in the browser.
-     */
-    htmlTitle?: string;
 }
 
 export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<HTMLElement>> {
@@ -90,11 +90,11 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
         const {
             className,
             color,
+            htmlTitle,
             iconSize = Icon.SIZE_STANDARD,
             intent,
             title = icon,
             tagName: TagName = "span",
-            htmlTitle,
             ...htmlprops
         } = this.props;
 
