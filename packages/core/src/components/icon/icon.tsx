@@ -25,6 +25,12 @@ export interface IIconProps extends IIntentProps, IProps {
     color?: string;
 
     /**
+     * String for the `title` attribute on the rendered element, which will appear
+     * on hover as a native browser tooltip.
+     */
+    htmlTitle?: string;
+
+    /**
      * Name of a Blueprint UI icon, or an icon element, to render. This prop is
      * required because it determines the content of the component, but it can
      * be explicitly set to falsy values to render nothing.
@@ -84,6 +90,7 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
         const {
             className,
             color,
+            htmlTitle,
             iconSize = Icon.SIZE_STANDARD,
             intent,
             title = icon,
@@ -100,7 +107,7 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
         return (
-            <TagName {...htmlprops} className={classes}>
+            <TagName {...htmlprops} className={classes} title={htmlTitle}>
                 <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
                     {title && <desc>{title}</desc>}
                     {paths}
