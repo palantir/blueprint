@@ -31,7 +31,6 @@
   "dependencies": {
     "@blueprintjs/core": "^1.36.1",
     "classnames": "^2.2",
-    "es6-shim": "^0.35",
     "pure-render-decorator": "^1.1",
     "tslib": "^1.5.0"
   },
