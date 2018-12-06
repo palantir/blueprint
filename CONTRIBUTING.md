@@ -41,9 +41,9 @@ A typical contributor workflow looks like this:
       `yarn lint` to be 100% safe.
     - TypeScript lint errors can often be automatically fixed by TSLint. Run lint fixes with `yarn lint-fix`.
 1. Submit a Pull Request on GitHub and fill out the template.
-    - :warning: __DO NOT enable CircleCI for your fork of Blueprint.__ Our build
-      will run on your fork when you open a PR. You can run relevant parts of
-      the build locally by inspecting the config or
+    - ⚠️ __DO NOT enable CircleCI for your fork of Blueprint.__ Our build
+      will run on your fork when you open a PR. You can run NPM scripts locally
+      to validate before pushing code.
 1. Team members will review your code and merge it after approvals.
     - You may be asked to make modifications to code style or to fix bugs you may have not noticed.
     - Please respond to comments in a timely fashion (even if to tell us you need more time).
