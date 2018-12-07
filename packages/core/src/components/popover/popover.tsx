@@ -217,6 +217,16 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         this.updateDarkParent();
     }
 
+    /**
+     * Instance method to instruct the `Popover` to recompute its position.
+     *
+     * This method should only be used if you are updating the target in a way
+     * that does not cause it to re-render, such as changing its _position_
+     * without changing its _size_ (since `Popover` already repositions when it
+     * detects a resize).
+     */
+    public reposition = () => Utils.safeInvoke(this.popperScheduleUpdate);
+
     protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
@@ -283,7 +293,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
         return (
             <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                <ResizeSensor onResize={this.handlePopoverResize}>
+                <ResizeSensor onResize={this.reposition}>
                     <div className={popoverClasses} style={{ transformOrigin }} {...popoverHandlers}>
                         {this.isArrowEnabled() && (
                             <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
@@ -333,7 +343,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             tabIndex,
         });
         return (
-            <ResizeSensor onResize={this.handlePopoverResize}>
+            <ResizeSensor onResize={this.reposition}>
                 <TagName {...targetProps} {...finalTargetProps}>
                     {clonedTarget}
                 </TagName>
@@ -456,8 +466,6 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             }
         }
     };
-
-    private handlePopoverResize = () => Utils.safeInvoke(this.popperScheduleUpdate);
 
     private handleOverlayClose = (e: React.SyntheticEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
