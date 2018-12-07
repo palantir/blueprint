@@ -135,8 +135,12 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   left: 0;
   height: $pt-button-height;
 
-  > :first-child {
+  > .DayPicker-NavButton--prev {
     margin-right: auto;
+  }
+
+  > .DayPicker-NavButton--next {
+    margin-left: auto;
   }
 }
 
