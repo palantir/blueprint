@@ -1147,9 +1147,26 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
         });
 
-        it("clicking a shortcut doesn't change time", () => {
+        it("clicking a shortcut with shouldChangeTime=false doesn't change time", () => {
             render({ timePrecision: "minute", defaultValue: defaultRange }).clickShortcut();
             assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
+        });
+
+        it("clicking a shortcut with shouldChangeTime=true changes time", () => {
+            const endTime = defaultRange[1];
+            const startTime = new Date(defaultRange[1].getTime());
+            startTime.setHours(startTime.getHours() - 2);
+
+            const shortcuts = [
+                {
+                    dateRange: [startTime, endTime] as DateRange,
+                    label: "custom shortcut",
+                    shouldChangeTime: true,
+                },
+            ];
+
+            render({ timePrecision: "minute", defaultValue: defaultRange, shortcuts }).clickShortcut();
+            assert.equal(onChangeSpy.firstCall.args[0][0] as Date, startTime);
         });
 
         it("selecting and unselecting a day doesn't change time", () => {

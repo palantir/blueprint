@@ -12,6 +12,7 @@ import { clone, DateRange, isDayRangeInRange } from "./common/dateUtils";
 export interface IDateRangeShortcut {
     label: string;
     dateRange: DateRange;
+    shouldChangeTime?: boolean;
 }
 
 export interface IShortcutsProps {
@@ -19,7 +20,7 @@ export interface IShortcutsProps {
     minDate: Date;
     maxDate: Date;
     shortcuts: IDateRangeShortcut[] | true;
-    onShortcutClick: (shortcut: DateRange) => void;
+    onShortcutClick: (shortcut: IDateRangeShortcut) => void;
 }
 
 export class Shortcuts extends React.PureComponent<IShortcutsProps> {
@@ -34,7 +35,7 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
                 className={Classes.POPOVER_DISMISS_OVERRIDE}
                 disabled={!this.isShortcutInRange(s.dateRange)}
                 key={i}
-                onClick={this.getShorcutClickHandler(s.dateRange)}
+                onClick={this.getShorcutClickHandler(s)}
                 text={s.label}
             />
         ));
@@ -42,8 +43,8 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
         return <Menu className={DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
     }
 
-    private getShorcutClickHandler(nextValue: DateRange) {
-        return () => this.props.onShortcutClick(nextValue);
+    private getShorcutClickHandler(shortcut: IDateRangeShortcut) {
+        return () => this.props.onShortcutClick(shortcut);
     }
 
     private isShortcutInRange(shortcutDateRange: DateRange) {

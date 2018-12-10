@@ -35,6 +35,14 @@ import { TimePicker } from "./timePicker";
 export interface IDateRangeShortcut {
     label: string;
     dateRange: DateRange;
+
+    /**
+     * By default, clicking a shortcut does not change the time of the date range picker, but instead
+     * takes the date components of the `dateRange` and combines it with the currently selected time.
+     * Setting `shouldChangeTime` to `true` will override this behavior and allow shortcuts to change
+     * the selected time as well.
+     */
+    shouldChangeTime?: boolean;
 }
 
 export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
@@ -282,7 +290,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             <Shortcuts
                 key="shortcuts"
                 {...{ allowSingleDayRange, maxDate, minDate, shortcuts }}
-                onShortcutClick={this.handleNextState}
+                onShortcutClick={this.handleShortcutClick}
             />,
             <Divider key="div" />,
         ];
@@ -493,6 +501,18 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         this.handleDayMouseEnter(day, modifiers, e);
 
         this.handleNextState(nextValue);
+    };
+
+    private handleShortcutClick = (shortcut: IDateRangeShortcut) => {
+        const { dateRange, shouldChangeTime } = shortcut;
+        if (shouldChangeTime) {
+            const newDateRange: DateRange = [dateRange[0], dateRange[1]];
+            const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
+            Utils.safeInvoke(this.props.onChange, newDateRange);
+            this.setState({ value: newDateRange, time: newTimeRange });
+        } else {
+            this.handleNextState(dateRange);
+        }
     };
 
     private handleNextState = (nextValue: DateRange) => {
