@@ -41,6 +41,7 @@ export interface IDateRangeShortcut {
      * takes the date components of the `dateRange` and combines it with the currently selected time.
      * Setting `shouldChangeTime` to `true` will override this behavior and allow shortcuts to change
      * the selected time as well.
+     * @default false
      */
     shouldChangeTime?: boolean;
 }
@@ -508,8 +509,14 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         if (shouldChangeTime) {
             const newDateRange: DateRange = [dateRange[0], dateRange[1]];
             const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
+            const nextState = getStateChange(
+                this.state.value,
+                dateRange,
+                this.state,
+                this.props.contiguousCalendarMonths,
+            );
+            this.setState({ ...nextState, time: newTimeRange });
             Utils.safeInvoke(this.props.onChange, newDateRange);
-            this.setState({ value: newDateRange, time: newTimeRange });
         } else {
             this.handleNextState(dateRange);
         }

@@ -904,47 +904,74 @@ describe("<DateRangePicker>", () => {
         });
 
         it("custom shortcuts set the displayed months correctly when start month changes", () => {
-            const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
-            const { left, right } = render({
-                initialMonth: new Date(2015, Months.JANUARY, 1),
-                shortcuts: [{ label: "custom shortcut", dateRange }],
-            }).clickShortcut();
-            assert.isTrue(onChangeSpy.calledOnce);
-            left.assertMonthYear(Months.JANUARY, 2016);
-            right.assertMonthYear(Months.FEBRUARY, 2016);
+            const dateRange = [
+                new Date(2016, Months.JANUARY, 1, 10, 20, 30),
+                new Date(2016, Months.DECEMBER, 31, 10, 20, 30),
+            ] as DateRange;
+
+            const test = (shouldChangeTime: boolean) => {
+                const { left, right } = render({
+                    initialMonth: new Date(2015, Months.JANUARY, 1),
+                    shortcuts: [{ label: "custom shortcut", dateRange, shouldChangeTime }],
+                }).clickShortcut();
+                assert.isTrue(onChangeSpy.calledOnce);
+                left.assertMonthYear(Months.JANUARY, 2016);
+                right.assertMonthYear(Months.FEBRUARY, 2016);
+            };
+
+            test(true);
+            test(false);
         });
 
         it(
             "custom shortcuts set the displayed months correctly when start month changes " +
                 "and contiguousCalendarMonths is false",
             () => {
-                const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
-                const { left, right } = render({
-                    contiguousCalendarMonths: false,
-                    initialMonth: new Date(2015, Months.JANUARY, 1),
-                    shortcuts: [{ label: "custom shortcut", dateRange }],
-                }).clickShortcut();
-                assert.isTrue(onChangeSpy.calledOnce);
-                left.assertMonthYear(Months.JANUARY, 2016);
-                right.assertMonthYear(Months.DECEMBER, 2016);
+                const dateRange = [
+                    new Date(2016, Months.JANUARY, 1, 10, 20, 30),
+                    new Date(2016, Months.DECEMBER, 31, 10, 20, 30),
+                ] as DateRange;
+
+                const test = (shouldChangeTime: boolean) => {
+                    const { left, right } = render({
+                        contiguousCalendarMonths: false,
+                        initialMonth: new Date(2015, Months.JANUARY, 1),
+                        shortcuts: [{ label: "custom shortcut", dateRange, shouldChangeTime }],
+                    }).clickShortcut();
+                    assert.isTrue(onChangeSpy.calledOnce);
+                    left.assertMonthYear(Months.JANUARY, 2016);
+                    right.assertMonthYear(Months.DECEMBER, 2016);
+                };
+
+                test(true);
+                test(false);
             },
         );
 
         it("custom shortcuts set the displayed months correctly when start month stays the same", () => {
-            const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
-            const { clickShortcut, left, right } = render({
-                initialMonth: new Date(2016, Months.JANUARY, 1),
-                shortcuts: [{ label: "custom shortcut", dateRange }],
-            });
+            const dateRange = [
+                new Date(2016, Months.JANUARY, 1, 10, 20, 30),
+                new Date(2016, Months.DECEMBER, 31, 10, 20, 30)
+            ] as DateRange;
 
-            clickShortcut();
-            assert.isTrue(onChangeSpy.calledOnce);
-            left.assertMonthYear(Months.JANUARY, 2016);
-            right.assertMonthYear(Months.FEBRUARY, 2016);
+            const test = (shouldChangeTime: boolean) => {
+                const { clickShortcut, left, right } = render({
+                    initialMonth: new Date(2016, Months.JANUARY, 1),
+                    shortcuts: [{ label: "custom shortcut", dateRange, shouldChangeTime }],
+                });
 
-            clickShortcut();
-            left.assertMonthYear(Months.JANUARY, 2016);
-            right.assertMonthYear(Months.FEBRUARY, 2016);
+                clickShortcut();
+                assert.isTrue(onChangeSpy.calledOnce);
+                left.assertMonthYear(Months.JANUARY, 2016);
+                right.assertMonthYear(Months.FEBRUARY, 2016);
+
+                clickShortcut();
+                left.assertMonthYear(Months.JANUARY, 2016);
+                right.assertMonthYear(Months.FEBRUARY, 2016);
+            };
+
+            test(true);
+            test(false);
         });
     });
 
