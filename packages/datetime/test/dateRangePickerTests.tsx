@@ -951,7 +951,7 @@ describe("<DateRangePicker>", () => {
         it("custom shortcuts set the displayed months correctly when start month stays the same", () => {
             const dateRange = [
                 new Date(2016, Months.JANUARY, 1, 10, 20, 30),
-                new Date(2016, Months.DECEMBER, 31, 10, 20, 30)
+                new Date(2016, Months.DECEMBER, 31, 10, 20, 30),
             ] as DateRange;
 
             const test = (shouldChangeTime: boolean) => {
