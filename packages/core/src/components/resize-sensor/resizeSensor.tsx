@@ -59,14 +59,11 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
     }
 
     public componentDidMount() {
-        // using findDOMNode for two reasons:
-        // 1. cloning to insert a ref is unwieldy and not performant.
-        // 2. ensure that we get an actual DOM node for observing.
-        this.observeElement(findDOMNode(this));
+        this.observeElement();
     }
 
     public componentDidUpdate(prevProps: IResizeSensorProps) {
-        this.observeElement(findDOMNode(this), this.props.observeParents !== prevProps.observeParents);
+        this.observeElement(this.props.observeParents !== prevProps.observeParents);
     }
 
     public componentWillUnmount() {
@@ -74,11 +71,12 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
     }
 
     /**
-     * Observe the given element, if defined and different from the currently
+     * Observe the DOM element, if defined and different from the currently
      * observed element. Pass `force` argument to skip element checks and always
      * re-observe.
      */
-    private observeElement(element: Element | Text | null, force = false) {
+    private observeElement(force = false) {
+        const element = this.getElement();
         if (!(element instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
@@ -104,6 +102,18 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
                 this.observer.observe(parent);
                 parent = parent.parentElement;
             }
+        }
+    }
+
+    private getElement() {
+        try {
+            // using findDOMNode for two reasons:
+            // 1. cloning to insert a ref is unwieldy and not performant.
+            // 2. ensure that we resolve to an actual DOM node (instead of any JSX ref instance).
+            return findDOMNode(this);
+        } catch {
+            // swallow error if findDOMNode is run on unmounted component.
+            return null;
         }
     }
 }
