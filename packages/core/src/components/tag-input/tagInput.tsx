@@ -10,12 +10,12 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
 
-export interface ITagInputProps extends IProps {
+export interface ITagInputProps extends IIntentProps, IProps {
     /**
      * If true, `onAdd` will be invoked when the input loses focus.
      * Otherwise, `onAdd` is only invoked when `enter` is pressed.
@@ -211,7 +211,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     }
 
     public render() {
-        const { className, disabled, fill, inputProps, large, leftIcon, placeholder, values } = this.props;
+        const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
 
         const classes = classNames(
             Classes.INPUT,
@@ -222,6 +222,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
             },
+            Classes.intentClass(intent),
             className,
         );
         const isLarge = classes.indexOf(Classes.LARGE) > NONE;
