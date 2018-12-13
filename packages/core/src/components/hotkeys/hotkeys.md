@@ -59,7 +59,7 @@ Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 <Hotkeys>
     <Hotkey label="Quit" combo="ctrl+q" global onKeyDown={handleQuit} />
     <Hotkey label="Save" combo="ctrl+s" group="File" onKeyDown={handleSave} />
-</Hotkey>
+</Hotkeys>
 ```
 
 @interface IHotkeysProps
