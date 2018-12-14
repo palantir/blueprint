@@ -80,11 +80,12 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
 
     public componentDidUpdate(prevProps: IToastProps) {
         if (prevProps.timeout !== this.props.timeout && this.props.timeout > 0) {
+            this.clearTimeouts();
             this.startTimeout();
         } else if (prevProps.timeout <= 0 && this.props.timeout > 0) {
             this.startTimeout();
         } else if (prevProps.timeout > 0 && this.props.timeout <= 0) {
-            this.clearTimeouts();
+            this.triggerDismiss(false);
         }
     }
 
