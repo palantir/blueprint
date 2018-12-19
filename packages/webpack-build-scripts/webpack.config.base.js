@@ -9,7 +9,7 @@ const webpack = require("webpack");
 // webpack plugins
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const WebpackNotifierPlugin = require("webpack-notifier");
@@ -38,13 +38,6 @@ const plugins = [
 ];
 if (IS_PRODUCTION) {
     plugins.push(
-        // Define JS globals when running the build
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production"),
-            },
-        }),
-
         // Some loaders accept configuration through webpack internals
         new webpack.LoaderOptionsPlugin({
             debug: false,
@@ -52,13 +45,7 @@ if (IS_PRODUCTION) {
         }),
 
         // Only extract CSS to a file for production because it is slow
-        new ExtractTextPlugin("[name].css"),
-
-        // Minify JS
-        new UglifyJsPlugin(),
-
-        // Use scope hoisting to reduce the number of closures in the bundle script
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        new MiniCssExtractPlugin({ filename: "[name].css" }),
 
         // add production plugins here
     );
@@ -77,7 +64,6 @@ if (IS_PRODUCTION) {
 const scssLoaders = [
     {
         loader: require.resolve("css-loader"),
-        options: { minimize: IS_PRODUCTION },
     },
     {
         loader: require.resolve("postcss-loader"),
@@ -109,6 +95,8 @@ module.exports = {
         port: DEV_PORT,
     },
 
+    mode: IS_PRODUCTION ? "production" : "development",
+
     module: {
         rules: [
             {
@@ -121,10 +109,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: IS_PRODUCTION
-                    ? ExtractTextPlugin.extract({
-                            fallback: require.resolve("style-loader"),
-                            use: scssLoaders
-                        })
+                    ? [ MiniCssExtractPlugin.loader, ...scssLoaders ]
                     : [ require.resolve("style-loader"), ...scssLoaders ],
             },
             {

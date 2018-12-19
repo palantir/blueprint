@@ -8,9 +8,7 @@ const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        core: [
-            "./src/index.ts"
-        ],
+        core: "./src/index.ts",
     },
 
     externals: COMMON_EXTERNALS,
