@@ -52,6 +52,11 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     labelElement?: React.ReactNode;
 
     /**
+     * Classname for the right-aligned label wrapper element.
+     */
+    labelClassName?: string;
+
+    /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
      * @default false
@@ -136,12 +141,12 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
     }
 
     private maybeRenderLabel(labelElement?: React.ReactNode) {
-        const { label } = this.props;
+        const { label, labelClassName } = this.props;
         if (label == null && labelElement == null) {
             return null;
         }
         return (
-            <span className={Classes.MENU_ITEM_LABEL}>
+            <span className={classNames(Classes.MENU_ITEM_LABEL, labelClassName)}>
                 {label}
                 {labelElement}
             </span>
