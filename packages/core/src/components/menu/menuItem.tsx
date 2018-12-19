@@ -21,6 +21,9 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
+    /** Classname for text wrapper element. */
+    textClassName?: string;
+
     /** Whether this menu item should appear with an active state. */
     active?: boolean;
 
@@ -106,6 +109,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
             popoverProps,
             shouldDismissPopover,
             text,
+            textClassName,
             tagName: TagName = "a",
             ...htmlProps
         } = this.props;
@@ -128,7 +132,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
         const target = (
             <TagName {...htmlProps} {...(disabled ? DISABLED_PROPS : {})} className={anchorClasses}>
                 <Icon icon={icon} />
-                <Text className={Classes.FILL} ellipsize={!multiline}>
+                <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline}>
                     {text}
                 </Text>
                 {this.maybeRenderLabel(labelElement)}
