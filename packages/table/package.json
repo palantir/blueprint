@@ -50,8 +50,8 @@
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "typescript": "~2.8.3",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack": "^4.27.1",
+    "webpack-dev-server": "^3.1.0"
   },
   "repository": {
     "type": "git",
