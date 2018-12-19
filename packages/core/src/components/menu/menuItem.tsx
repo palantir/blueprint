@@ -21,9 +21,6 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
-    /** Classname for text wrapper element. */
-    textClassName?: string;
-
     /** Whether this menu item should appear with an active state. */
     active?: boolean;
 
@@ -50,14 +47,14 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     label?: string;
 
     /**
+     * A space-delimited list of class names to pass along to the right-aligned label wrapper element.
+     */
+    labelClassName?: string;
+
+    /**
      * Right-aligned label content, useful for displaying hotkeys.
      */
     labelElement?: React.ReactNode;
-
-    /**
-     * Classname for the right-aligned label wrapper element.
-     */
-    labelClassName?: string;
 
     /**
      * Whether the text should be allowed to wrap to multiple lines.
@@ -84,6 +81,11 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * @default "a"
      */
     tagName?: keyof JSX.IntrinsicElements;
+
+    /**
+     * A space-delimited list of class names to pass along to the text wrapper element.
+     */
+    textClassName?: string;
 }
 
 export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
