@@ -2,8 +2,8 @@
 import { css } from "docz-plugin-css"
 export default {
     title: "Blueprint",
-    theme: "src/index",
-    // wrapper: "src/wrapper",
+    theme: "@blueprintjs/docz-theme",
+    // theme: "src/index", // for local development
     typescript: true,
     propsParser: false,
     plugins: [

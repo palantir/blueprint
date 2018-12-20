@@ -14,4 +14,48 @@ data from markdown files and documented source code.
 npm install --save @blueprintjs/docz-theme
 ```
 
+## Usage
+
+**`doczrc.js`**
+```js
+import doczrc from "@blueprintjs/docz-theme/doczrc";
+
+export default {
+    ...doczrc,
+    // change these to your needs
+    title: "Blueprint",
+    theme: "@blueprintjs/docz-theme",
+    wrapper: "src/wrapper",
+};
+```
+
+**`src/wrapper.tsx`**
+
+```tsx
+// your stylesheet for your styles
+import "./index.scss";
+
+import { Wrapper } from "@blueprintjs/docz-theme";
+import React from "react";
+
+interface IAppState {
+    // add app state fields here
+}
+
+// Docz requires that this be a default export.
+// tslint:disable-next-line:no-default-export
+export default class extends React.Component<{}, IAppState> {
+    public render() {
+        return (
+            <Wrapper
+                {...this.props}
+                docs={ yourDocumentalistData }
+                // lots more options in here...
+            />
+        );
+    }
+}
+
+```
+
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

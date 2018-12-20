@@ -21,7 +21,7 @@ $nav-divider-offset: $pt-grid-size * 5;
   margin-left: -$nav-divider-offset;
   cursor: pointer;
   padding: $pt-grid-size $sidebar-padding;
-  padding-left: $nav-divider-offset + 4px;
+  padding-left: $nav-divider-offset;
 
   &:hover {
     @include divider-gradient($content-background-color, $dark-content-background-color);
