@@ -6,30 +6,24 @@
 
 import "./index.scss";
 
-import { AnchorButton } from "@blueprintjs/core";
-import { BlueprintDoczConfig, IThemeConfig } from "@blueprintjs/docz-theme";
+import { docsData } from "@blueprintjs/docs-data";
+import { Wrapper } from "@blueprintjs/docz-theme";
 import React from "react";
-import { NavFooter } from "./components/navFooter";
-import { NavHeader } from "./components/navHeader";
 
-const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app";
-
-const config: IThemeConfig = {
-    renderFooter: () => <NavFooter />,
-    renderHeader: title => <NavHeader onToggleDark={null} title={title} useDarkTheme={false} useNextVersion={false} />,
-    renderPageActions: page => (
-        <AnchorButton
-            href={`${GITHUB_SOURCE_URL}/${page.filepath}`}
-            icon="edit"
-            minimal={true}
-            target="_blank"
-            text="Edit this page"
-        />
-    ),
-};
-
-const Wrapper: React.SFC = ({ children }) => <BlueprintDoczConfig value={config}>{children}</BlueprintDoczConfig>;
+interface IAppState {
+    // add app state fields here
+}
 
 // Docz requires that this be a default export.
 // tslint:disable-next-line:no-default-export
-export default Wrapper;
+export default class extends React.Component<{}, IAppState> {
+    public render() {
+        return (
+            <Wrapper
+                {...this.props}
+                docs={docsData}
+                // lots more options in here...
+            />
+        );
+    }
+}
