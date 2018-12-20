@@ -1,0 +1,63 @@
+{
+  "name": "@blueprintjs/docz-theme",
+  "version": "3.0.3",
+  "description": "Blueprint theme for Docz using Documentalist data",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/esm/index.d.ts",
+  "style": "lib/css/docz-theme.css",
+  "unpkg": "dist/docz-theme.bundle.js",
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist/* && rm -rf lib/*",
+    "compile": "run-p \"compile:*\"",
+    "compile:esm": "tsc -p ./src",
+    "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
+    "compile:css": "sass-compile ./src",
+    "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+    "dist": "run-s \"dist:*\"",
+    "dist:bundle": "cross-env NODE_ENV=production webpack",
+    "dist:css": "css-dist lib/css/*.css",
+    "dist:verify": "assert-package-layout",
+    "lint": "run-p lint:scss lint:ts",
+    "lint:scss": "sass-lint",
+    "lint:ts": "ts-lint",
+    "lint-fix": "ts-lint --fix",
+    "verify": "npm-run-all compile -p dist lint"
+  },
+  "dependencies": {
+    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/icons": "^3.4.0",
+    "@blueprintjs/select": "^3.4.0",
+    "classnames": "^2.2.6",
+    "documentalist": "^1.5.0",
+    "docz": "^0.12.13",
+    "docz-plugin-css": "^0.11.0",
+    "fuzzaldrin-plus": "^0.6.0"
+  },
+  "devDependencies": {
+    "@blueprintjs/node-build-scripts": "*",
+    "@types/fuzzaldrin-plus": "^0.6.0",
+    "@types/react-router-dom": "^4.3.1",
+    "npm-run-all": "^4.1.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "typescript": "3.0.x",
+    "webpack-cli": "^3.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:palantir/blueprint.git"
+  },
+  "keywords": [
+    "palantir",
+    "blueprint",
+    "docs",
+    "theme",
+    "documentalist"
+  ],
+  "author": "Palantir Technologies",
+  "license": "SEE LICENSE IN LICENSE"
+}
