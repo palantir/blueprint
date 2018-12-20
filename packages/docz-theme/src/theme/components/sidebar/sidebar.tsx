@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Utils } from "@blueprintjs/core";
+import { H1, Utils } from "@blueprintjs/core";
 import { Entry } from "docz";
 import React from "react";
 import { withConfig } from "../../../config";
@@ -17,7 +17,7 @@ export interface ISidebarProps {
 }
 
 export const Sidebar = withConfig<ISidebarProps>(
-    ({ currentPage, onSearchClick, title, renderHeader = (t: string) => t, renderFooter }) => (
+    ({ currentPage, onSearchClick, title, renderHeader = defaultRenderHeader, renderFooter }) => (
         <div className="docs-nav-wrapper">
             <div className="docs-nav">
                 {renderHeader(title)}
@@ -30,3 +30,7 @@ export const Sidebar = withConfig<ISidebarProps>(
         </div>
     ),
 );
+
+function defaultRenderHeader(title: string) {
+    return <H1 className="docs-title">{title}</H1>;
+}
