@@ -1,0 +1,139 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+// Base styles for all examples
+
+$example-frame-spacing: $pt-grid-size;
+$example-frame-border-radius: $pt-border-radius * 2;
+$example-spacing: $pt-grid-size * 4;
+
+$example-background-color: $white;
+$code-background-color: $light-gray4;
+$options-background-color: $light-gray4;
+
+$dark-example-background-color: $dark-gray3;
+$dark-code-background-color: $dark-gray5;
+$dark-options-background-color: $dark-gray5;
+
+// full-bleed wrapper for example
+.docs-example-frame {
+  position: relative;
+  margin-top: $content-padding * 2;
+  width: 100%;
+}
+
+// options to the right of example in same row
+.docs-example-frame-row {
+  @include pt-flex-container(row, $pt-grid-size, $fill: ".docs-example");
+
+  // option elements arranged vertically. use headings for grouping.
+  .docs-example-options {
+    @include pt-flex-container(column, $pt-grid-size);
+    max-width: $pt-grid-size * 30;
+  }
+}
+
+// options below example in its own row.
+.docs-example-frame-column {
+  @include pt-flex-container(column, $pt-grid-size, $fill: ".docs-example");
+
+  // option elements arranged horizontally. group controls into columns.
+  .docs-example-options {
+    @include pt-flex-container(row, $pt-grid-size * 4);
+    justify-content: center;
+    max-width: unset;
+  }
+}
+
+.docs-example {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: $example-frame-border-radius;
+  background: $example-background-color;
+  // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
+  min-width: 0;
+  max-width: 100%;
+  padding: $example-spacing / 2;
+
+  .#{$ns}-dark & {
+    background: $dark-example-background-color;
+  }
+
+  > * {
+    margin: $example-spacing / 2;
+  }
+}
+
+.docs-example-options {
+  flex: 0 0 auto;
+  border-radius: $example-frame-border-radius;
+  background-color: $options-background-color;
+  padding: $pt-grid-size * 2;
+  text-align: left;
+
+  .#{$ns}-heading:not(:first-child) {
+    margin-top: $pt-grid-size;
+  }
+
+  .docs-prop-description {
+    font-size: $pt-font-size-small;
+  }
+
+  .#{$ns}-control:last-child,
+  .#{$ns}-form-group:last-child,
+  .#{$ns}-label:last-child {
+    margin-bottom: 0;
+  }
+
+  .#{$ns}-dark & {
+    background-color: $dark-options-background-color;
+  }
+}
+
+.docs-example-markup {
+  margin-top: $example-frame-spacing;
+
+  .editor {
+    margin: 0;
+    border-radius: $example-frame-border-radius;
+    box-shadow: none;
+    background: $code-background-color;
+
+    .#{$ns}-dark & {
+      box-shadow: none;
+      background: $dark-code-background-color;
+    }
+  }
+}
+
+.docs-example-view-source {
+  display: block;
+  margin-top: $example-frame-spacing;
+  margin-bottom: $pt-grid-size * 4;
+  border-radius: $example-frame-border-radius;
+
+  &.#{$ns}-button {
+    height: $pt-button-height-large;
+    transition: background-color $pt-transition-duration $pt-transition-ease;
+  }
+
+  &:not(:hover):not(:active) {
+    background-color: $code-background-color;
+
+    .#{$ns}-dark & {
+      background-color: $dark-code-background-color;
+    }
+  }
+}
+
+// colors for CSS modifiers
+.#{$ns}-code[data-modifier^=":"] {
+  color: $attribute-modifier-color;
+}
+
+.#{$ns}-code[data-modifier^="."] {
+  color: $class-modifier-color;
+}

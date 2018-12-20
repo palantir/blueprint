@@ -1,0 +1,128 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+.docs-prop-details code {
+  // stylelint-disable declaration-no-important
+  box-shadow: none !important;
+  background: none !important;
+  padding: 0;
+  color: inherit !important;
+  font-size: small;
+  font-weight: 600;
+  // stylelint-enable declaration-no-important
+}
+
+.docs-prop-default {
+  font-weight: 400;
+
+  &:empty { display: none; }
+
+  &::before {
+    display: inline-block;
+    margin: 0 ($pt-grid-size / 2);
+    content: "=";
+  }
+}
+
+.docs-prop-description {
+  margin-top: $pt-grid-size / 2;
+
+  p:last-child {
+    margin: 0;
+  }
+}
+
+.docs-prop-tags {
+  &:empty { display: none; }
+
+  .#{$ns}-tag {
+    margin-top: $pt-grid-size / 2;
+    margin-right: $pt-grid-size;
+  }
+}
+
+.docs-prop-name code::after {
+  @include pt-icon();
+  margin-left: $pt-grid-size / 2;
+  vertical-align: middle;
+  line-height: small;
+}
+
+.docs-prop-is-deprecated code {
+  color: $red3;
+
+  &::after {
+    content: $pt-icon-small-cross;
+  }
+}
+
+.docs-prop-is-required code {
+  color: $green3;
+
+  .#{$ns}-dark & {
+    color: $green4;
+  }
+
+  &::after {
+    content: $pt-icon-small-tick;
+  }
+}
+
+.docs-interface-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  box-shadow: 0 1px 0 $pt-divider-black;
+  padding: $pt-grid-size 0;
+  font-family: $pt-font-family-monospace;
+  font-size: $pt-font-size-large;
+  font-weight: 600;
+
+  // optional interface description
+  + .docs-section {
+    display: flex;
+    flex-direction: column;
+    margin-top: $pt-grid-size;
+    box-shadow: 0 1px 0 $pt-divider-black;
+  }
+
+  .#{$ns}-dark & {
+    box-shadow: 0 1px 0 $pt-dark-divider-white;
+
+    + .docs-section {
+      box-shadow: 0 1px 0 $pt-dark-divider-white;
+    }
+  }
+}
+
+.docs-package-name {
+  // adjusts text baseline with interface name
+  margin-top: $pt-font-size-large - $pt-font-size;
+}
+
+.docs-type-alias {
+  overflow: auto;
+  padding: $pt-grid-size ($pt-grid-size * 2);
+}
+
+.docs-modifiers-table {
+  .docs-section & .#{$ns}-html-table {
+    margin-top: $pt-grid-size;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+
+  tr:last-child td {
+    padding-bottom: 0;
+  }
+}
+
+// modifiers table parent
+.docs-modifiers {
+  margin-top: $heading-margin / 2;
+  margin-bottom: $heading-margin;
+}

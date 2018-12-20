@@ -1,0 +1,175 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "variables";
+@import "../../../core/src/components/forms/common";
+
+$nav-item-indent: $pt-grid-size * 2;
+
+$nav-item-color-hover: $minimal-button-background-color-hover;
+$nav-item-color-active: $minimal-button-background-color-active;
+$dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
+$dark-nav-item-color-active: $dark-minimal-button-background-color-active;
+
+body {
+  // vertical scrollbar is always visible for the `.#{$ns}-overlay-open` padding (from `scrollbar.ts`)
+  overflow-y: scroll;
+}
+
+/*
+Flex utils
+*/
+
+.docs-flex-row {
+  @include pt-flex-container(row);
+}
+
+.docs-flex-column {
+  @include pt-flex-container(column);
+}
+
+/*
+Page layout elements
+*/
+
+.docs-root {
+  background-color: $content-background-color;
+
+  &.#{$ns}-dark {
+    background-color: $dark-content-background-color;
+  }
+}
+
+.docs-app {
+  @include pt-flex-container(row);
+  margin: auto;
+  max-width: $container-width;
+  min-height: 100vh;
+}
+
+.docs-nav-wrapper {
+  flex-basis: $sidebar-width;
+  position: relative;
+  z-index: $pt-z-index-content;
+}
+
+.docs-nav {
+  $background-shift: 999px;
+
+  position: fixed;
+  box-shadow: 1px 0 0 $pt-divider-black;
+  background-color: $sidebar-background-color;
+  width: $sidebar-width + $background-shift;
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: $sidebar-padding * 2;
+
+  // these rules allow the nav background-color to cover all area to the left
+  // stylelint-disable-next-line order/properties-order
+  margin-left: -$background-shift;
+  padding-left: $background-shift + $container-padding;
+
+  .#{$ns}-dark & {
+    box-shadow: 1px 0 0 $pt-dark-divider-black;
+    background-color: $dark-sidebar-background-color;
+  }
+
+  > * {
+    padding: $sidebar-padding;
+    padding-left: 0;
+  }
+}
+
+.docs-content-wrapper {
+  flex-basis: $content-width;
+  align-items: flex-start;
+  outline: none;
+  background-color: $content-background-color;
+
+  .#{$ns}-dark & {
+    background-color: $dark-content-background-color;
+  }
+}
+
+.docs-page {
+  position: relative;
+  max-width: $content-width;
+  padding-top: 0;
+  padding-right: $container-padding;
+  padding-bottom: $content-padding * 2;
+  padding-left: $content-padding * 2;
+}
+
+.docs-page-actions {
+  position: absolute;
+  top: $container-padding;
+  right: 0;
+  // above h1 heading
+  z-index: 1;
+}
+
+/*
+Lefthand navigation menu
+*/
+
+.docs-nav-menu {
+  .#{$ns}-menu-item {
+    align-items: center;
+    padding-right: $pt-grid-size;
+    padding-left: 0;
+    white-space: initial;
+
+    &:hover,
+    &.#{$ns}-active,
+    &.docs-nav-expanded {
+      // bold text instead of background color
+      background-color: transparent !important; // stylelint-disable-line declaration-no-important
+      font-weight: 600;
+    }
+
+    @each $depth in (1, 2, 3, 4, 5) {
+      &.depth-#{$depth} {
+        padding-left: $nav-item-indent * $depth;
+      }
+    }
+  }
+
+  .docs-nav-menu {
+    // nested menus are hidden by default
+    display: none;
+    // nested menus indent automatically
+    margin-left: $nav-item-indent;
+  }
+
+  .docs-nav-expanded + & {
+    display: block;
+  }
+}
+
+.docs-nav-title {
+  @include pt-flex-container(row);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+// empty state item is hidden by default...
+.docs-empty-state {
+  display: none;
+}
+
+// ...and appears when the actual menu is empty
+.docs-nav-menu:empty + .docs-empty-state {
+  display: block;
+}
+
+// hides all documentation content, to focus on live examples
+// trigger this behavior by adding ?examples to URL immediately after the path (before #route):
+// http://blueprintjs.com/docs/?examples
+.docs-examples-only {
+  .docs-markup,
+  .docs-modifiers,
+  .docs-title,
+  .docs-section > .#{$ns}-running-text {
+    display: none;
+  }
+}

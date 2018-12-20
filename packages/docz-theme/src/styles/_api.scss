@@ -1,0 +1,74 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "~@blueprintjs/core/src/common/react-transition";
+@import "variables";
+
+.docs-api-overlay {
+  .docs-modifiers {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    box-shadow: $pt-elevation-shadow-4;
+    background: $sidebar-background-color;
+    width: 50vw;
+    min-width: $pt-grid-size * 50;
+    max-width: $pt-grid-size * 80;
+    padding: 0;
+  }
+
+  .docs-interface-header {
+    flex: 0 0 auto;
+    padding: $pt-grid-size ($pt-grid-size * 2);
+
+    + .docs-section {
+      flex-shrink: 0;
+      padding-right: $pt-grid-size * 2;
+      padding-left: $pt-grid-size * 2;
+    }
+  }
+
+  .docs-modifiers-table {
+    overflow: auto;
+    padding-bottom: $pt-grid-size * 2;
+
+    th:first-child,
+    td:first-child {
+      padding-left: $pt-grid-size * 2;
+    }
+
+    td:last-child {
+      padding-right: $pt-grid-size * 2;
+    }
+  }
+
+  &.#{$ns}-dark {
+    .docs-modifiers {
+      box-shadow: $pt-dark-elevation-shadow-4;
+      background-color: $dark-sidebar-background-color;
+    }
+  }
+}
+
+.docs-code {
+  font-family: $pt-font-family-monospace;
+  font-weight: 600;
+}

@@ -1,0 +1,102 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "variables";
+
+$syntax-background-color: $white;
+$syntax-text-color: $dark-gray1;
+$syntax-token-colors: (
+  "brace": $dark-gray3,
+  "support": $turquoise3,
+  "entity.attribute-name": $orange3,
+  "entity.function": $blue3,
+  "entity.id": $gold2,
+  "entity.pseudo-class": $rose2,
+  "entity.pseudo-element": $forest3,
+  "entity.tag": $forest3,
+  "class.component": $forest3,
+  "keyword": $violet4,
+  "numeric": $rose2,
+  "operator": $violet4,
+  "punctuation": $dark-gray3,
+  "storage": $violet4,
+  "string": $lime2,
+  "type": $gold2,
+  "variable": $turquoise2,
+  "comment": $gray2,
+);
+
+$dark-syntax-background-color: $dark-gray2;
+$dark-syntax-text-color: $gray5;
+$dark-syntax-token-colors: (
+  "brace": $light-gray5,
+  "support": $turquoise5,
+  "entity.attribute-name": $orange4,
+  "entity.function": $blue4,
+  "entity.id": $gold5,
+  "entity.pseudo-class": $rose3,
+  "entity.pseudo-element": $forest3,
+  "entity.tag": $forest3,
+  "class.component": $forest3,
+  "keyword": $violet4,
+  "numeric": $rose4,
+  "operator": $violet5,
+  "punctuation": $light-gray5,
+  "storage": $violet4,
+  "string": $lime4,
+  "type": $gold4,
+  "variable": $turquoise3,
+  "comment": $gray2,
+);
+
+// given a map of TextMate tokens to colors
+@mixin syntax($colors) {
+  // this one is a very special case and must come before @each for specificity
+  .entity.name,
+  .entity.inherited-class,
+  .meta.name,
+  .support.type {
+    color: map-get($colors, "type");
+  }
+
+  @each $scope, $color in $colors {
+    @if $scope != "type" {
+      .#{$scope} { color: $color; }
+    }
+  }
+
+  .variable.property,
+  .support.type.scss,
+  .punctuation.definition.css {
+    color: inherit;
+  }
+
+  .variable.constant,
+  .variable.language {
+    color: map-get($colors, "support");
+  }
+
+  // JSX ={prop} punctuation
+  .punctuation.section.embedded {
+    color: map-get($colors, "operator");
+  }
+}
+
+// actually generate the two themes:
+.editor-colors {
+  @include syntax($syntax-token-colors);
+  background: $syntax-background-color;
+  color: $syntax-text-color;
+
+  // italicize all type information
+  .meta.type {
+    font-style: italic;
+  }
+
+  .#{$ns}-dark & {
+    @include syntax($dark-syntax-token-colors);
+    background: $dark-syntax-background-color;
+    color: $dark-syntax-text-color;
+  }
+}
+

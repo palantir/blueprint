@@ -1,0 +1,64 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "~@blueprintjs/core/src/common/variables";
+@import "~@blueprintjs/core/src/components/button/common";
+
+$banner-height: $pt-grid-size * 4;
+
+// banner along top of screen linking to v2 docs
+.docs-banner {
+  @include pt-flex-container(row);
+  @include overflow-ellipsis();
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $pt-z-index-overlay - 1;
+
+  box-shadow: inset 0 -1px 0 $pt-divider-black;
+  min-height: $banner-height;
+  padding: $pt-grid-size $pt-grid-size * 2;
+  text-align: center;
+  // stylelint-disable declaration-no-important
+  color: $white !important;
+
+  @each $intent, $colors in $button-intents {
+    &.#{$ns}-intent-#{$intent} {
+      background: nth($colors, 1);
+
+      &:hover {
+        background: nth($colors, 2);
+      }
+
+      &:active {
+        background: nth($colors, 3);
+      }
+    }
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  .#{$ns}-dark & {
+    box-shadow: 0 1px 0 $pt-divider-black;
+  }
+
+  + .docs-app {
+    padding-top: $banner-height;
+
+    .docs-nav {
+      height: calc(100vh - #{$banner-height});
+    }
+
+    .docs-anchor {
+      // shift anchors down by $banner-height pixels
+      margin-top: -$content-padding * 2 - $banner-height;
+    }
+  }
+}

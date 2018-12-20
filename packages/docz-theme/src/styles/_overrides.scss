@@ -1,0 +1,15 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+table {
+  width: 100%;
+}
+
+// override normalize.css
+input[type="search"] {
+  box-sizing: border-box;
+}
+
+.#{$ns}-callout p:last-child {
+  margin: 0;
+}

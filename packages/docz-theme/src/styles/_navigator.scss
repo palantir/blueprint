@@ -1,0 +1,19 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+$navigator-width: $pt-grid-size * 40;
+
+.docs-navigator-menu {
+  left: calc(50% - #{$navigator-width / 2});
+  width: $navigator-width;
+
+  .#{$ns}-menu-item small {
+    // center-align text and SVG icons
+    display: flex;
+    align-items: center;
+  }
+
+  .#{$ns}-menu-item.#{$ns}-active small {
+    color: rgba($white, 0.7);
+  }
+}
