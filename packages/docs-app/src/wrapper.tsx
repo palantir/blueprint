@@ -4,14 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-// tslint:disable
-import "normalize.css";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/docs-theme/lib/css/docs-theme.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import "@blueprintjs/select/lib/css/blueprint-select.css";
-// tslint:enable
-
 import "./index.scss";
 
 import { AnchorButton } from "@blueprintjs/core";
