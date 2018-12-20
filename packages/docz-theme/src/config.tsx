@@ -4,14 +4,34 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { IProps } from "@blueprintjs/core";
 import { ITsDocBase } from "documentalist/dist/client";
 import { Entry, MenuItem, ThemeConfig } from "docz";
 import React from "react";
 import { IDocsData } from "./theme/common/context";
 import { NavItemRenderer } from "./theme/components/sidebar/navMenu";
 
-export interface IThemeConfig {
+export interface IThemeConfig extends IProps {
     docs?: IDocsData;
+
+    /**
+     * An element to place above the documentation, along the top of the viewport.
+     * For best results, use a `Banner` from this package.
+     */
+    banner?: JSX.Element;
+
+    /**
+     * Elements to render on the top of the sidebar, above the search box.
+     * This typically contains logo, title and navigation links.
+     * Use `.docs-nav-title` on an element for proper padding relative to other sidebar elements.
+     */
+    header?: React.ReactNode;
+
+    /**
+     * Elements to render on the bottom of the sidebar, below the nav menu.
+     * This typically contains copyright information.
+     */
+    footer?: React.ReactNode;
 
     /**
      * Callback invoked to determine if given nav node should *not* be
@@ -19,25 +39,6 @@ export interface IThemeConfig {
      * the navigator search results.
      */
     navigatorExclude?: (menu: MenuItem) => boolean;
-
-    /**
-     * Elements to render on the top of the sidebar, above the search box.
-     * This typically contains logo, title and navigation links.
-     * Use `.docs-nav-title` on an element for proper padding relative to other sidebar elements.
-     */
-    renderHeader?: (title: string) => React.ReactNode;
-
-    /**
-     * An element to place above the documentation, along the top of the viewport.
-     * For best results, use a `Banner` from this package.
-     */
-    renderBanner?: () => JSX.Element;
-
-    /**
-     * Elements to render on the bottom of the sidebar, below the nav menu.
-     * This typically contains copyright information.
-     */
-    renderFooter?: () => React.ReactNode;
 
     /**
      * Callback invoked to render "View source" links in Typescript interfaces.

@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { PageProps } from "docz";
 import * as React from "react";
 
-import { Classes, FocusStyleManager, Hotkey, Hotkeys, IProps, Overlay, Utils } from "@blueprintjs/core";
+import { Classes, FocusStyleManager, Hotkey, Hotkeys, IProps, Overlay } from "@blueprintjs/core";
 
 import { IThemeConfig, withConfig } from "../../config";
 import { DocumentalistProvider } from "../common/context";
@@ -64,7 +64,7 @@ class DocumentationCmp extends React.PureComponent<IDocumentationProps & IThemeC
             <DocumentalistProvider value={this.props.docs}>
                 <div className={rootClasses}>
                     <div className="docs-app">
-                        {Utils.safeInvoke(this.props.renderBanner)}
+                        {this.props.banner}
                         <Sidebar currentPage={this.props.doc} onSearchClick={this.handleOpenNavigator} />
                         <main
                             className={classNames("docs-content-wrapper", Classes.FILL)}
@@ -171,7 +171,7 @@ function getScrolledReference(offset: number, scrollContainer: HTMLElement = doc
         const element = headings.pop() as HTMLElement;
         if (element.offsetTop < scrollContainer.scrollTop + offset) {
             // relying on DOM structure to get reference
-            return element.querySelector("[data-route]").getAttribute("data-route");
+            return element.querySelector(".docs-anchor").getAttribute("id");
         }
     }
     return undefined;
