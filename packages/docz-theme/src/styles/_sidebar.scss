@@ -1,0 +1,77 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "variables";
+@import "../../../core/src/components/forms/common";
+
+$nav-item-indent: $pt-grid-size * 2;
+
+$nav-item-color-hover: $minimal-button-background-color-hover;
+$nav-item-color-active: $minimal-button-background-color-active;
+$dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
+$dark-nav-item-color-active: $dark-minimal-button-background-color-active;
+
+.docs-nav-menu {
+  .#{$ns}-menu-item {
+    align-items: center;
+    padding-right: $pt-grid-size;
+    white-space: initial;
+
+    &:hover,
+    &.#{$ns}-active,
+    &.docs-nav-expanded {
+      // bold text instead of background color
+      // stylelint-disable-next-line declaration-no-important
+      background-color: transparent !important;
+      font-weight: 600;
+    }
+
+    &.depth-1 {
+      padding-left: $pt-grid-size / 2;
+    }
+
+    @each $depth in (1, 2, 3, 4, 5) {
+      &.depth-#{$depth} {
+        padding-left: $nav-item-indent * ($depth - 1);
+      }
+    }
+  }
+
+  & & {
+    // nested menus are hidden by default
+    display: none;
+    padding: 0;
+  }
+
+  .docs-nav-expanded + & {
+    display: block;
+  }
+}
+
+.docs-nav-heading {
+  margin-top: $pt-grid-size * 2;
+  margin-bottom: $pt-grid-size;
+  text-transform: uppercase;
+  font-size: small;
+  font-weight: 700;
+
+  + .docs-nav-menu {
+    margin-bottom: $pt-grid-size * 2;
+  }
+}
+
+.docs-nav-title {
+  @include pt-flex-container(row);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+// empty state item is hidden by default...
+.docs-empty-state {
+  display: none;
+}
+
+// ...and appears when the actual menu is empty
+.docs-nav-menu:empty + .docs-empty-state {
+  display: block;
+}

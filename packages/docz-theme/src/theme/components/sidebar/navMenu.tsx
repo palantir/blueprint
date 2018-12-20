@@ -26,7 +26,10 @@ export class NavMenu extends React.PureComponent<INavMenuProps> {
     }
 
     private renderMenu = (menu: DoczMenuItem[] | null): JSX.Element => {
-        const { currentPage: { headings, route }, renderMenuItem = NavMenuItem } = this.props;
+        const {
+            currentPage: { headings, route },
+            renderMenuItem = NavMenuItem,
+        } = this.props;
         if (menu == null) {
             return null;
         }
@@ -34,7 +37,7 @@ export class NavMenu extends React.PureComponent<INavMenuProps> {
         const items = menu.map(item => (
             <li key={item.id}>
                 {renderMenuItem({
-                    depth: 0,
+                    depth: 1,
                     expanded: item.route == null || (item.route + "/").indexOf(route + "/") === 0,
                     name: item.name,
                     route: item.route,
@@ -54,7 +57,7 @@ export class NavMenu extends React.PureComponent<INavMenuProps> {
         const items = headings.map(h => (
             <li key={h.slug}>
                 {renderMenuItem({
-                    depth: h.depth - 2,
+                    depth: h.depth,
                     expanded: false,
                     name: h.value,
                     route: `${this.props.currentPage.route}#${h.slug}`,

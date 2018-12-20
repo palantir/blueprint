@@ -4,13 +4,6 @@
 @import "variables";
 @import "../../../core/src/components/forms/common";
 
-$nav-item-indent: $pt-grid-size * 2;
-
-$nav-item-color-hover: $minimal-button-background-color-hover;
-$nav-item-color-active: $minimal-button-background-color-active;
-$dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
-$dark-nav-item-color-active: $dark-minimal-button-background-color-active;
-
 body {
   // vertical scrollbar is always visible for the `.#{$ns}-overlay-open` padding (from `scrollbar.ts`)
   overflow-y: scroll;
@@ -106,60 +99,6 @@ Page layout elements
   right: 0;
   // above h1 heading
   z-index: 1;
-}
-
-/*
-Lefthand navigation menu
-*/
-
-.docs-nav-menu {
-  .#{$ns}-menu-item {
-    align-items: center;
-    padding-right: $pt-grid-size;
-    padding-left: 0;
-    white-space: initial;
-
-    &:hover,
-    &.#{$ns}-active,
-    &.docs-nav-expanded {
-      // bold text instead of background color
-      background-color: transparent !important; // stylelint-disable-line declaration-no-important
-      font-weight: 600;
-    }
-
-    @each $depth in (1, 2, 3, 4, 5) {
-      &.depth-#{$depth} {
-        padding-left: $nav-item-indent * $depth;
-      }
-    }
-  }
-
-  .docs-nav-menu {
-    // nested menus are hidden by default
-    display: none;
-    // nested menus indent automatically
-    margin-left: $nav-item-indent;
-  }
-
-  .docs-nav-expanded + & {
-    display: block;
-  }
-}
-
-.docs-nav-title {
-  @include pt-flex-container(row);
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-// empty state item is hidden by default...
-.docs-empty-state {
-  display: none;
-}
-
-// ...and appears when the actual menu is empty
-.docs-nav-menu:empty + .docs-empty-state {
-  display: block;
 }
 
 // hides all documentation content, to focus on live examples
