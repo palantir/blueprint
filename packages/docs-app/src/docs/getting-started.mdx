@@ -1,8 +1,15 @@
-@# Getting started
+---
+menu: Guides
+route: /guides/getting-started
+---
 
-@## Installing Blueprint
+import { Callout } from "@blueprintjs/core";
 
-@### NPM packages
+# Getting started
+
+## Installing Blueprint
+
+### NPM packages
 
 Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
 Each package appears at the top level of the sidebar, along with its current version.
@@ -63,7 +70,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
     @import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
     ```
 
-@### CDN consumption
+### CDN consumption
 
 Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package provides a UMD
 `dist/[name].bundle.js` file containing the bundled source code. The UMD wrapper exposes each
@@ -107,9 +114,9 @@ These bundles _do not include_ external dependencies; your application will need
 </html>
 ```
 
-@## JS environment
+## JS environment
 
-@### Language features
+### Language features
 
 Note that since the minimum supported version of React is [v16](https://reactjs.org/blog/2017/09/26/react-v16.0.html),
 all of its [JavaScript Environment Requirements](https://reactjs.org/docs/javascript-environment-requirements.html) apply to
@@ -123,13 +130,13 @@ Blueprint as well. Blueprint components require the following ES2015 features:
 We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
 [core-js](https://github.com/zloirock/core-js).
 
-@### DOM4
+### DOM4
 
 Blueprint relies on a handful of DOM Level 4 API methods: `el.closest()` and `el.contains()`.
 `@blueprintjs/core` depends on a [polyfill library called `dom4`](https://webreflection.github.io/dom4/) to ensure
 these methods are available. This module is conditionally loaded if Blueprint is used in a browser environment.
 
-@## TypeScript
+## TypeScript
 
 Blueprint is written in TypeScript and therefore its own `.d.ts` type definitions are distributed in
 the NPM package and should be resolved automatically by the compiler. However, you'll need to
@@ -145,11 +152,11 @@ npm install --save @types/moment-timezone
 
 Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<Callout intent="primary">
   For more information, see [Understanding TypeScript](#blueprint/reading-the-docs.understanding-typescript).
-</div>
+</Callout>
 
-@## Vanilla JS APIs
+## Vanilla JS APIs
 
 JS components are built using React, but that does not limit their usage to just React applications.
 You can render any component in any JavaScript application with `ReactDOM.render`. Think of it like
@@ -189,3 +196,47 @@ npm install --save @blueprintjs/core react react-dom react-transition-group
 
 Import components from the `@blueprintjs/core` module into your project.
 Don't forget to include the main CSS stylesheet too!
+
+## Reading the documentation
+
+### Understanding TypeScript
+
+Blueprint is written in [TypeScript](https://www.typescriptlang.org/), a statically typed superset
+of JavaScript that compiles to plain JavaScript. All the code samples throughout this site and
+all interactive examples are also written in TypeScript. TypeScript code looks exactly like ES2015+
+code with the addition of type signatures, which typically appear after colons and are _italicized_
+in our syntax theme.
+
+```ts
+// variables
+const variableName: varType;
+const name: string;
+const disabled: boolean;
+
+// functions (and function variables)
+function funcName(arg1: argType, arg2: argType): returnType {}
+const funcName: (arg1: argType) => returnType;
+function split(str: string, delim: string): string[] {}
+function map<T, U>(array: T[], iterator: (item: T, index: number) => U): U[];
+
+// interfaces describe plain objects
+// (we use the convention that interfaces begin with "I")
+interface IOption {
+    label: string;
+    value: string;
+}
+const option: IOption = { label: "Name", value: "Gilad" };
+```
+
+**You do not need to use TypeScript to consume Blueprint** (but major "props" if you do).
+Simply ignoring the type annotations (any italics in code blocks) will produce valid ES2015 code.
+Familiarity with the syntax is suggested so you can follow our examples source code.
+
+<Callout intent="primary">
+  For more information, see the TypeScript Handbook for [basic types][basic-types]
+  and [consuming declaration files][decl-files].
+</Callout>
+
+[basic-types]: https://www.typescriptlang.org/docs/handbook/basic-types.html
+[decl-files]: https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html
+
