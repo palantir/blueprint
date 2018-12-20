@@ -10,7 +10,6 @@ const webpack = require("webpack");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
@@ -36,6 +35,7 @@ const plugins = [
     //     failOnError: true,
     // }),
 ];
+
 if (IS_PRODUCTION) {
     plugins.push(
         // Some loaders accept configuration through webpack internals
@@ -44,7 +44,7 @@ if (IS_PRODUCTION) {
             minimize: true,
         }),
 
-        // Only extract CSS to a file for production because it is slow
+        // Only extract CSS to a file in production because it is slow
         new MiniCssExtractPlugin({ filename: "[name].css" }),
 
         // add production plugins here
@@ -62,13 +62,17 @@ if (IS_PRODUCTION) {
 
 // Module loaders for .scss files, used in reverse order (compile Sass, apply PostCSS, interpret CSS as modules)
 const scssLoaders = [
+    IS_PRODUCTION ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
     {
         loader: require.resolve("css-loader"),
     },
     {
         loader: require.resolve("postcss-loader"),
         options: {
-            plugins: [require("autoprefixer"), require("postcss-discard-comments")]
+            plugins: [
+                require("autoprefixer"),
+                require("cssnano")({ preset: "default" }),
+            ],
         },
     },
     require.resolve("sass-loader"),
@@ -108,9 +112,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: IS_PRODUCTION
-                    ? [ MiniCssExtractPlugin.loader, ...scssLoaders ]
-                    : [ require.resolve("style-loader"), ...scssLoaders ],
+                use: scssLoaders,
             },
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,
