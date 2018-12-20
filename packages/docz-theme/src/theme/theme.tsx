@@ -4,9 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-// import "./style/index.scss"
-// import "./theme/docs-theme.scss"
-
 import { Code, H4, H5, H6, Pre } from "@blueprintjs/core";
 import { DocPreview, theme } from "docz";
 import { ComponentsMap } from "docz/dist/components/DocPreview";

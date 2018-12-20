@@ -23,7 +23,9 @@ export class ApiHeader extends React.PureComponent<{ entry: ITsDocBase } & IDocu
                 <small className="docs-package-name">
                     <a href={entry.sourceUrl} target="_blank">
                         <ThemeConfig>
-                            {({ renderViewSourceLinkText }: IThemeConfig) => renderViewSourceLinkText(entry)}
+                            {({ renderViewSourceLinkText = e => e.name }: IThemeConfig) =>
+                                renderViewSourceLinkText(entry)
+                            }
                         </ThemeConfig>
                     </a>
                 </small>

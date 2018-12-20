@@ -23,8 +23,8 @@ export interface INavItemProps extends IProps {
 export const NavMenuItem: React.SFC<INavItemProps> = ({ className, depth, expanded, name, route }) => {
     const classes = classNames(
         route ? Classes.MENU_ITEM : "docs-nav-heading",
-        `depth-${depth}`,
         { "docs-nav-expanded": expanded },
+        `depth-${depth}`,
         className,
     );
     return route ? (

@@ -51,7 +51,10 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps & I
 
     private renderPropRow = (entry: ITsProperty | ITsMethod) => {
         const { renderBlock, renderType } = this.props;
-        const { flags: { isDeprecated, isExternal, isOptional }, name } = entry;
+        const {
+            flags: { isDeprecated, isExternal, isOptional },
+            name,
+        } = entry;
         const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0];
 
         // ignore props marked with `@internal` tag (this tag is in contents instead of in flags)
@@ -117,7 +120,10 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps & I
 
     private renderTags(entry: ITsProperty | ITsMethod) {
         const { renderType } = this.props;
-        const { flags: { isDeprecated, isOptional }, inheritedFrom } = entry;
+        const {
+            flags: { isDeprecated, isOptional },
+            inheritedFrom,
+        } = entry;
         return (
             <>
                 {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
