@@ -10,6 +10,7 @@ import { DayPickerProps } from "react-day-picker/types/props";
 
 import {
     AbstractPureComponent,
+    DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
@@ -26,8 +27,6 @@ import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
-import { DateTimePicker } from "./dateTimePicker";
-import { ITimePickerProps, TimePrecision } from "./timePicker";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
@@ -36,6 +35,13 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * @default true
      */
     canClearSelection?: boolean;
+
+    /**
+     * Text for the reset button in the date picker action bar.
+     * Passed to `DatePicker` component.
+     * @default "Clear"
+     */
+    clearButtonText?: string;
 
     /**
      * Whether the calendar popover should close when a date is selected.
@@ -98,6 +104,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     rightElement?: JSX.Element;
 
     /**
+     * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
+     * @default false
+     */
+    showActionsBar?: boolean;
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
@@ -105,17 +117,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     value?: Date | null;
 
     /**
-     * Any props to be passed on to the `TimePicker`. `value`, `onChange`, and
-     * `timePrecision` will be ignored in favor of the corresponding top-level
-     * props on this component.
+     * Text for the today button in the date picker action bar.
+     * Passed to `DatePicker` component.
+     * @default "Today"
      */
-    timePickerProps?: ITimePickerProps;
-
-    /**
-     * Adds a time chooser to the bottom of the popover.
-     * Passed to the `DateTimePicker` component.
-     */
-    timePrecision?: TimePrecision;
+    todayButtonText?: string;
 }
 
 export interface IDateInputState {
@@ -126,7 +132,7 @@ export interface IDateInputState {
 }
 
 export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
-    public static displayName = "Blueprint2.DateInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {
         closeOnSelection: true,
@@ -137,7 +143,6 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         minDate: getDefaultMinDate(),
         outOfRangeMessage: "Out of range",
         reverseMonthAndYearMenus: false,
-        timePickerProps: {},
     };
 
     public state: IDateInputState = {
@@ -147,17 +152,9 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         valueString: null,
     };
 
-    private inputEl: HTMLInputElement = null;
-    private popoverContentEl: HTMLElement = null;
-    private lastElementInPopover: HTMLElement = null;
-    private refHandlers = {
-        input: (el: HTMLInputElement) => {
-            this.inputEl = el;
-        },
-        popoverContent: (el: HTMLElement) => {
-            this.popoverContentEl = el;
-        },
-    };
+    private inputEl: HTMLInputElement | null = null;
+    private popoverContentEl: HTMLElement | null = null;
+    private lastElementInPopover: HTMLElement | null = null;
 
     public componentWillUnmount() {
         super.componentWillUnmount();
@@ -179,29 +176,20 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
             },
         };
 
-        const popoverContent =
-            this.props.timePrecision === undefined ? (
+        const wrappedPopoverContent = (
+            <div ref={ref => (this.popoverContentEl = ref)}>
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
                     onChange={this.handleDateChange}
                     value={dateValue}
                 />
-            ) : (
-                <DateTimePicker
-                    canClearSelection={this.props.canClearSelection}
-                    onChange={this.handleDateChange}
-                    value={value}
-                    datePickerProps={this.props}
-                    timePickerProps={{ ...this.props.timePickerProps, precision: this.props.timePrecision }}
-                />
-            );
-        const wrappedPopoverContent = <div ref={this.refHandlers.popoverContent}>{popoverContent}</div>;
-        // assign default empty object here to prevent mutation
-        const { popoverProps = {} } = this.props;
-        const inputProps = this.getInputPropsWithDefaults();
-        const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
+            </div>
+        );
 
+        // assign default empty object here to prevent mutation
+        const { inputProps = {}, popoverProps = {} } = this.props;
+        const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
         return (
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
@@ -218,14 +206,15 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     intent={isErrorState ? Intent.DANGER : Intent.NONE}
                     placeholder={this.props.placeholder}
                     rightElement={this.props.rightElement}
+                    type="text"
                     {...inputProps}
                     disabled={this.props.disabled}
+                    inputRef={this.inputRef}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.handleInputKeyDown}
-                    type="text"
                     value={dateString}
                 />
             </Popover>
@@ -239,23 +228,11 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         }
     }
 
-    private getInputPropsWithDefaults() {
+    private inputRef = (ref: HTMLInputElement | null) => {
+        this.inputEl = ref;
         const { inputProps = {} } = this.props;
-        if (Utils.isFunction(inputProps.inputRef)) {
-            return {
-                ...inputProps,
-                inputRef: (el: HTMLInputElement) => {
-                    this.refHandlers.input(el);
-                    inputProps.inputRef(el);
-                },
-            };
-        } else {
-            return {
-                ...inputProps,
-                inputRef: this.refHandlers.input,
-            };
-        }
-    }
+        Utils.safeInvoke(inputProps.inputRef, ref);
+    };
 
     private isDateInRange(value: Date) {
         return isDayInRange(value, [this.props.minDate, this.props.maxDate]);
@@ -381,10 +358,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         if (e.which === Keys.ENTER) {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
-        } else if (e.which === Keys.TAB && e.shiftKey) {
-            // close the popover if focus will move to the previous element on
-            // the page. tabbing forward should *not* close the popover, because
-            // focus will be moving into the popover itself.
+        } else if (e.which === Keys.TAB) {
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });

@@ -8,7 +8,15 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { HTMLInputProps, IControlledProps, IIntentProps, IProps, removeNonHTMLProps } from "../../common/props";
+import {
+    DISPLAYNAME_PREFIX,
+    HTMLInputProps,
+    IControlledProps,
+    IIntentProps,
+    IProps,
+    MaybeElement,
+    removeNonHTMLProps,
+} from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
 const DEFAULT_RIGHT_ELEMENT_WIDTH = 10;
@@ -30,10 +38,13 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      * Name of a Blueprint UI icon (or an icon element) to render on the left side of the input group,
      * before the user's cursor.
      */
-    leftIcon?: IconName | JSX.Element;
+    leftIcon?: IconName | MaybeElement;
 
     /** Whether this input should use large styles. */
     large?: boolean;
+
+    /** Whether this input should use small styles. */
+    small?: boolean;
 
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
@@ -59,7 +70,7 @@ export interface IInputGroupState {
 }
 
 export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
-    public static displayName = "Blueprint2.InputGroup";
+    public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
     public state: IInputGroupState = {
         rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH,
@@ -71,13 +82,14 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
     };
 
     public render() {
-        const { className, intent, large, leftIcon, round } = this.props;
+        const { className, intent, large, small, leftIcon, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: this.props.disabled,
                 [Classes.LARGE]: large,
+                [Classes.SMALL]: small,
                 [Classes.ROUND]: round,
             },
             className,

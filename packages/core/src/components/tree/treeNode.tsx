@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
@@ -28,7 +28,7 @@ export interface ITreeNode<T = {}> extends IProps {
     /**
      * The name of a Blueprint icon (or an icon element) to render next to the node's label.
      */
-    icon?: IconName | JSX.Element;
+    icon?: IconName | MaybeElement;
 
     /**
      * A unique identifier for the node.
@@ -53,7 +53,7 @@ export interface ITreeNode<T = {}> extends IProps {
     /**
      * A secondary label/component that is displayed at the right side of the node.
      */
-    secondaryLabel?: string | JSX.Element;
+    secondaryLabel?: string | MaybeElement;
 
     /**
      * An optional custom user object to associate with the node.
@@ -73,23 +73,20 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     onContextMenu?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
     onDoubleClick?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
     onExpand?: (node: TreeNode<T>, e: React.MouseEvent<HTMLSpanElement>) => void;
+    onMouseEnter?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
+    onMouseLeave?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
     path: number[];
 }
 
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
+
     public static ofType<T>() {
         return TreeNode as new (props: ITreeNodeProps<T>) => TreeNode<T>;
     }
 
     public render() {
-        const { children, className, hasCaret, icon, isExpanded, isSelected, label } = this.props;
-
-        const showCaret = hasCaret == null ? React.Children.count(children) > 0 : hasCaret;
-        const caretStateClass = isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED;
-        const caretClasses = showCaret
-            ? classNames(Classes.TREE_NODE_CARET, caretStateClass)
-            : Classes.TREE_NODE_CARET_NONE;
-
+        const { children, className, icon, isExpanded, isSelected, label } = this.props;
         const classes = classNames(
             Classes.TREE_NODE,
             {
@@ -111,11 +108,11 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
                     onClick={this.handleClick}
                     onContextMenu={this.handleContextMenu}
                     onDoubleClick={this.handleDoubleClick}
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}
                     ref={this.handleContentRef}
                 >
-                    <span className={caretClasses} onClick={showCaret ? this.handleCaretClick : undefined}>
-                        {showCaret && <Icon icon="caret-right" />}
-                    </span>
+                    {this.maybeRenderCaret()}
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
@@ -123,6 +120,18 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
                 <Collapse isOpen={isExpanded}>{children}</Collapse>
             </li>
         );
+    }
+
+    private maybeRenderCaret() {
+        const { hasCaret = React.Children.count(this.props.children) > 0 } = this.props;
+        if (hasCaret) {
+            const caretClasses = classNames(
+                Classes.TREE_NODE_CARET,
+                this.props.isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED,
+            );
+            return <Icon className={caretClasses} onClick={this.handleCaretClick} icon={"chevron-right"} />;
+        }
+        return <span className={Classes.TREE_NODE_CARET_NONE} />;
     }
 
     private maybeRenderSecondaryLabel() {
@@ -153,5 +162,13 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
 
     private handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         safeInvoke(this.props.onDoubleClick, this, e);
+    };
+
+    private handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        safeInvoke(this.props.onMouseEnter, this, e);
+    };
+
+    private handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        safeInvoke(this.props.onMouseLeave, this, e);
     };
 }

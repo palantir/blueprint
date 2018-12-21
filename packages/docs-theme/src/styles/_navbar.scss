@@ -16,6 +16,8 @@ $nav-divider-offset: $pt-grid-size * 5;
 
 .docs-nav-button {
   @include pt-flex-container(row, $pt-grid-size + 4px);
+  align-items: center;
+
   margin-left: -$nav-divider-offset;
   cursor: pointer;
   padding: $pt-grid-size $sidebar-padding;

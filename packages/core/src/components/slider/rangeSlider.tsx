@@ -9,6 +9,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Errors from "../../common/errors";
 import { Intent } from "../../common/intent";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 export type NumberRange = [number, number];
@@ -38,7 +39,7 @@ export class RangeSlider extends AbstractPureComponent<IRangeSliderProps> {
         value: [0, 10],
     };
 
-    public static displayName = "Blueprint2.RangeSlider";
+    public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
 
     public render() {
         const { value, ...props } = this.props;

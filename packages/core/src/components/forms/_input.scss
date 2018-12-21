@@ -13,6 +13,7 @@ Markup:
 :readonly - Readonly
 .#{$ns}-round - Rounded ends
 .#{$ns}-large - Larger size
+.#{$ns}-small - Small size
 .#{$ns}-intent-primary - Primary intent
 .#{$ns}-intent-success - Success intent
 .#{$ns}-intent-warning - Warning intent
@@ -27,6 +28,10 @@ Styleguide input
 
   &.#{$ns}-large {
     @include pt-input-large();
+  }
+
+  &.#{$ns}-small {
+    @include pt-input-small();
   }
 
   &.#{$ns}-fill {
@@ -64,6 +69,7 @@ Markup:
 
 :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
 .#{$ns}-large - Large
+.#{$ns}-small - Small
 
 Styleguide input-search
 */
@@ -77,6 +83,7 @@ Markup:
 :disabled - Disabled
 :readonly - Readonly
 .#{$ns}-large - Larger font size
+.#{$ns}-small - Small font size
 .#{$ns}-intent-primary - Primary intent
 .#{$ns}-intent-danger  - Danger intent
 .#{$ns}-fill  - Take up full width of parent element
@@ -84,20 +91,25 @@ Markup:
 Styleguide textarea
 */
 
-// stylelint-disable selector-no-qualifying-type
+// stylelint-disable-next-line selector-no-qualifying-type
 textarea.#{$ns}-input {
   max-width: 100%;
-  height: auto;
   padding: $input-padding-horizontal;
-  line-height: $pt-line-height;
 
-  &.#{$ns}-large {
-    line-height: $pt-line-height;
-    font-size: $pt-font-size-large;
+  &,
+  &.#{$ns}-large,
+  &.#{$ns}-small {
+    // override input styles for these modifiers.
+    // line-height is needed to center text on <input> but not on multiline <textarea>
+    height: auto;
+    line-height: inherit;
+  }
+
+  &.#{$ns}-small {
+    padding: $input-small-padding;
   }
 
   .#{$ns}-dark & {
     @include pt-dark-input();
   }
 }
-// stylelint-enable selector-no-qualifying-type

@@ -6,12 +6,13 @@
 
 import { Placement } from "popper.js";
 import { Position } from "../../common/position";
+import { PopoverPosition } from "./popoverSharedProps";
 
 /**
  * Convert a position to a placement.
  * @param position the position to convert
  */
-export function positionToPlacement(position: Position | "auto"): Placement {
+export function positionToPlacement(position: PopoverPosition): Placement {
     /* istanbul ignore next */
     switch (position) {
         case Position.TOP_LEFT:
@@ -39,7 +40,10 @@ export function positionToPlacement(position: Position | "auto"): Placement {
         case Position.LEFT_TOP:
             return "left-start";
         case "auto":
-            return "auto";
+        case "auto-start":
+        case "auto-end":
+            // Return the string unchanged.
+            return position;
         default:
             return assertNever(position);
     }

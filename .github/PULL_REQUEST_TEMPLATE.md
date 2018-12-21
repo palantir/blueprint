@@ -1,20 +1,20 @@
 #### Fixes #0000
 
 #### Checklist
-<!-- fill this section out if necessary, remove it otherwise -->
 
-- [ ] [Enable CircleCI for your fork](https://circleci.com/add-projects)
-- [ ] Include tests
+- [ ] Includes tests
 - [ ] Update documentation
+
+<!-- DO NOT enable CircleCI for your fork. Our build will run when you open this PR. -->
 
 #### Changes proposed in this pull request:
 
-<!-- fill this out -->
+<!-- Fill this out. -->
 
 #### Reviewers should focus on:
 
-<!-- fill this out -->
+<!-- Fill this out. -->
 
 #### Screenshot
 
-<!-- include an image of the most relevant user-facing change, if any -->
+<!-- Include an image of the most relevant user-facing change, if any. -->

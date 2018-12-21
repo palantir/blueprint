@@ -29,7 +29,7 @@ run({
     config: configFile,
     exclude: [],
     files: ["{src,test}/**/*.tsx"],
-    fix: "--fix" in process.argv,
+    fix: process.argv.includes("--fix"),
     format,
     out,
 }, {

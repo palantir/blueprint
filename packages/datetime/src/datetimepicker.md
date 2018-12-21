@@ -3,6 +3,13 @@
 `DateTimePicker` composes a [`DatePicker`](#datetime/datepicker)
 and a [`TimePicker`](#datetime/timepicker) into one container.
 
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">Deprecated: use [Date picker](#datetime/datepicker)</h4>
+    This component is **deprecated since @blueprintjs/datetime v3.2.0** with the addition
+    of `<DatePicker>` `timePrecision` and `timePickerProps` props to trivially
+    compose time selection with the existing date selection.
+</div>
+
 @reactExample DateTimePickerExample
 
 @## Props

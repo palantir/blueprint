@@ -7,7 +7,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, IIntentProps, IProps, Utils } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement, Utils } from "../../common";
+import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -19,7 +20,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
     active?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
-    icon?: IconName | JSX.Element;
+    icon?: IconName | MaybeElement;
 
     /**
      * Whether the tag should visually respond to user interactions. If set
@@ -65,7 +66,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the children. */
-    rightIcon?: IconName | JSX.Element;
+    rightIcon?: IconName | MaybeElement;
 
     /**
      * Whether this tag should have rounded ends.
@@ -75,7 +76,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
 }
 
 export class Tag extends React.PureComponent<ITagProps, {}> {
-    public static displayName = "Blueprint2.Tag";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {
         const {
@@ -117,9 +118,11 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
         return (
             <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
                 <Icon icon={icon} />
-                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
-                    {children}
-                </Text>
+                {!isReactNodeEmpty(children) && (
+                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
+                        {children}
+                    </Text>
+                )}
                 <Icon icon={rightIcon} />
                 {removeButton}
             </span>

@@ -9,7 +9,6 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    Icon,
     Menu,
     MenuItem,
     NavbarHeading,
@@ -87,8 +86,8 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
             .map(v => <MenuItem href={v === current ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />);
         return (
             <Popover position={Position.BOTTOM}>
-                <Tag interactive={true} minimal={true} round={true}>
-                    v{major(current)} <Icon icon="caret-down" />
+                <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
+                    v{major(current)}
                 </Tag>
                 <Menu className="docs-version-list">{releaseItems}</Menu>
             </Popover>

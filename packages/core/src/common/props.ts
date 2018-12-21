@@ -9,6 +9,8 @@ import * as React from "react";
 import { IconName } from "@blueprintjs/icons";
 import { Intent } from "./intent";
 
+export const DISPLAYNAME_PREFIX = "Blueprint3";
+
 /**
  * Alias for all valid HTML props for `<div>` element.
  * Does not include React's `ref` or `key`.
@@ -20,6 +22,13 @@ export type HTMLDivProps = React.HTMLAttributes<HTMLDivElement>;
  * Does not include React's `ref` or `key`.
  */
 export type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
+
+/**
+ * Alias for a `JSX.Element` or a value that renders nothing.
+ *
+ * In React, `boolean`, `null`, and `undefined` do not produce any output.
+ */
+export type MaybeElement = JSX.Element | false | null | undefined;
 
 /**
  * A shared base interface for all Blueprint component props.
@@ -43,7 +52,7 @@ export interface IActionProps extends IIntentProps, IProps {
     disabled?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the text. */
-    icon?: IconName | JSX.Element;
+    icon?: IconName | MaybeElement;
 
     /** Click event handler. */
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
@@ -81,8 +90,8 @@ export interface IOptionProps extends IProps {
     /** Whether this option is non-interactive. */
     disabled?: boolean;
 
-    /** Label text for this option. */
-    label: string;
+    /** Label text for this option. If omitted, `value` is used as the label. */
+    label?: string;
 
     /** Value of this option. */
     value: string | number;

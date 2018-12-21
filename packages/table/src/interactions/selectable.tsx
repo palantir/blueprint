@@ -15,7 +15,11 @@ import { IRegion, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
 import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
 
-export type ISelectedRegionTransform = (region: IRegion, event: MouseEvent, coords?: ICoordinateData) => IRegion;
+export type ISelectedRegionTransform = (
+    region: IRegion,
+    event: MouseEvent | KeyboardEvent,
+    coords?: ICoordinateData,
+) => IRegion;
 
 export interface ISelectableProps {
     /**

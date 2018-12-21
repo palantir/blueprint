@@ -19,6 +19,7 @@ export interface ISelectExampleState {
     hasInitialContent: boolean;
     minimal: boolean;
     resetOnClose: boolean;
+    resetOnQuery: boolean;
     resetOnSelect: boolean;
     disableItems: boolean;
     disabled: boolean;
@@ -33,6 +34,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         hasInitialContent: false,
         minimal: false,
         resetOnClose: false,
+        resetOnQuery: true,
         resetOnSelect: false,
     };
 
@@ -42,6 +44,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     private handleItemDisabledChange = this.handleSwitchChange("disableItems");
     private handleMinimalChange = this.handleSwitchChange("minimal");
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
+    private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
@@ -86,6 +89,11 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     label="Reset on close"
                     checked={this.state.resetOnClose}
                     onChange={this.handleResetOnCloseChange}
+                />
+                <Switch
+                    label="Reset on query"
+                    checked={this.state.resetOnQuery}
+                    onChange={this.handleResetOnQueryChange}
                 />
                 <Switch
                     label="Reset on select"

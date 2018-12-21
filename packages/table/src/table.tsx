@@ -4,7 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { AbstractComponent, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    DISPLAYNAME_PREFIX,
+    Hotkey,
+    Hotkeys,
+    HotkeysTarget,
+    IProps,
+    Utils as CoreUtils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -166,6 +174,13 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * setting the focus in response to events in the `onFocusedCell` callback.
      */
     focusedCell?: IFocusedCellCoordinates;
+
+    /**
+     * If `true`, selection state changes will cause the component to re-render.
+     * If `false`, selection state is ignored when deciding to re-render.
+     * @default false
+     */
+    forceRerenderOnSelectionChange?: boolean;
 
     /**
      * If defined, this callback will be invoked for each cell when the user
@@ -403,6 +418,8 @@ export interface ITableState {
 
 @HotkeysTarget
 export class Table extends AbstractComponent<ITableProps, ITableState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
+
     public static defaultProps: ITableProps = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
@@ -410,6 +427,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         enableGhostCells: false,
         enableMultipleSelection: true,
         enableRowHeader: true,
+        forceRerenderOnSelectionChange: false,
         loadingOptions: [],
         minColumnWidth: 50,
         minRowHeight: 20,
@@ -681,34 +699,54 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             defaultRowHeight,
             enableFocusedCell,
             focusedCell,
+            forceRerenderOnSelectionChange,
             numRows,
             rowHeights,
             selectedRegions,
             selectionModes,
         } = nextProps;
 
-        const newChildArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const didChildrenChange = this.props.children !== nextProps.children;
+        const newChildArray = didChildrenChange
+            ? (React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>)
+            : this.childrenArray;
         const numCols = newChildArray.length;
 
-        // Try to maintain widths of columns by looking up the width of the
-        // column that had the same `ID` prop. If none is found, use the
-        // previous width at the same index.
-        const previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
-            const mappedIndex = this.columnIdToIndex[child.props.id];
-            return this.state.columnWidths[mappedIndex != null ? mappedIndex : index];
-        });
-
-        // Make sure the width/height arrays have the correct length, but keep
-        // as many existing widths/heights when possible. Also, apply the
-        // sparse width/heights from props.
+        let shouldInvalidateGrid = false;
         let newColumnWidths = this.state.columnWidths;
-        newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
-        newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
-        newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
+        if (
+            defaultColumnWidth !== this.props.defaultColumnWidth ||
+            columnWidths !== this.props.columnWidths ||
+            didChildrenChange
+        ) {
+            // Try to maintain widths of columns by looking up the width of the
+            // column that had the same `ID` prop. If none is found, use the
+            // previous width at the same index.
+            const previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
+                const mappedIndex = this.columnIdToIndex[child.props.id];
+                return this.state.columnWidths[mappedIndex != null ? mappedIndex : index];
+            });
+
+            // Make sure the width/height arrays have the correct length, but keep
+            // as many existing widths/heights as possible. Also, apply the
+            // sparse width/heights from props.
+            newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
+            newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
+            newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
+
+            shouldInvalidateGrid = true;
+        }
 
         let newRowHeights = this.state.rowHeights;
-        newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
-        newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
+        if (
+            defaultRowHeight !== this.props.defaultRowHeight ||
+            rowHeights !== this.props.rowHeights ||
+            numRows !== this.props.numRows
+        ) {
+            newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
+            newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
+            shouldInvalidateGrid = true;
+        }
 
         if (
             !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
@@ -720,6 +758,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         }
 
         let newSelectedRegions = selectedRegions;
+        if (forceRerenderOnSelectionChange && newSelectedRegions !== this.props.selectedRegions) {
+            shouldInvalidateGrid = true;
+        }
         if (selectedRegions == null) {
             // if we're in uncontrolled mode, filter out all selected regions that don't
             // fit in the current new table dimensions
@@ -739,9 +780,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
             newSelectedRegions,
         );
 
-        this.childrenArray = newChildArray;
-        this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
-        this.invalidateGrid();
+        if (didChildrenChange) {
+            this.childrenArray = newChildArray;
+            this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
+        }
+        if (shouldInvalidateGrid) {
+            this.invalidateGrid();
+        }
         this.setState({
             columnWidths: newColumnWidths,
             focusedCell: newFocusedCell,
@@ -886,7 +931,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
-        React.Children.forEach(children, (child: React.ReactElement<any>) => {
+        React.Children.forEach(children, child => {
             if (!CoreUtils.isElementOfType(child, Column)) {
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             }
@@ -1826,7 +1871,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
-        this.handleSelection(newSelectionRegions);
+        const { selectedRegionTransform } = this.props;
+        const transformedSelectionRegions =
+            selectedRegionTransform != null
+                ? newSelectionRegions.map(region => selectedRegionTransform(region, e))
+                : newSelectionRegions;
+        this.handleSelection(transformedSelectionRegions);
         this.handleFocus(newFocusedCell);
 
         // keep the focused cell in view

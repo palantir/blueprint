@@ -159,6 +159,14 @@ describe("<Popover>", () => {
         assert.lengthOf(wrapper.find(Portal), 1);
     });
 
+    it("renders to specified container correctly", () => {
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        wrapper = renderPopover({ isOpen: true, usePortal: true, portalContainer: container });
+        assert.lengthOf(container.getElementsByClassName(Classes.POPOVER_CONTENT), 1);
+        document.body.removeChild(container);
+    });
+
     it("does not render Portal when usePortal=false", () => {
         wrapper = renderPopover({ isOpen: true, usePortal: false });
         assert.lengthOf(wrapper.find(Portal), 0);
@@ -206,6 +214,35 @@ describe("<Popover>", () => {
         const onOpening = sinon.spy();
         wrapper = renderPopover({ isOpen: true, onOpening });
         assert.isTrue(onOpening.calledOnce);
+    });
+
+    describe("targetProps", () => {
+        const spy = sinon.spy();
+        const targetProps: React.HTMLAttributes<HTMLElement> = {
+            className: "test-test",
+            // hover & click events & onKeyDown for fun
+            onClick: spy,
+            onKeyDown: spy,
+            onMouseEnter: spy,
+            onMouseLeave: spy,
+            tabIndex: 400,
+        };
+        function targetPropsTest(interactionKind: PopoverInteractionKind) {
+            spy.resetHistory();
+            wrapper = renderPopover({ interactionKind, targetTagName: "address", targetProps })
+                .simulateTarget("click")
+                .simulateTarget("keydown")
+                .simulateTarget("mouseenter")
+                .simulateTarget("mouseleave");
+            const target = wrapper.find("address");
+            assert.isTrue(target.prop("className").indexOf(Classes.POPOVER_TARGET) >= 0);
+            assert.isTrue(target.prop("className").indexOf(targetProps.className) >= 0);
+            assert.equal(target.prop("tabIndex"), targetProps.tabIndex);
+            assert.equal(spy.callCount, 4);
+        }
+
+        it("passed to target element (click)", () => targetPropsTest("click"));
+        it("passed to target element (hover)", () => targetPropsTest("hover"));
     });
 
     describe("openOnTargetFocus", () => {
@@ -496,30 +533,18 @@ describe("<Popover>", () => {
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=true", () => {
             wrapper = renderPopover(
-                {
-                    interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                    usePortal: true,
-                },
+                { defaultIsOpen: true, usePortal: true },
                 <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
             );
-
-            wrapper.simulateTarget("click").assertIsOpen();
-
-            dispatchMouseEvent(document.getElementsByClassName(Classes.POPOVER_DISMISS)[0], "click");
+            findInPortal(wrapper, `.${Classes.POPOVER_DISMISS}`).simulate("click");
             wrapper.update().assertIsOpen(false);
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=false", () => {
             wrapper = renderPopover(
-                {
-                    interactionKind: PopoverInteractionKind.CLICK_TARGET_ONLY,
-                    usePortal: false,
-                },
+                { defaultIsOpen: true, usePortal: false },
                 <button className={Classes.POPOVER_DISMISS}>Dismiss</button>,
             );
-
-            wrapper.simulateTarget("click").assertIsOpen();
-
             wrapper.findClass(Classes.POPOVER_DISMISS).simulate("click");
             wrapper.assertIsOpen(false);
         });
@@ -618,6 +643,73 @@ describe("<Popover>", () => {
         });
     });
 
+    describe("closing on click", () => {
+        it("Classes.POPOVER_DISMISS closes on click", () =>
+            assertClickToClose(
+                <button className={Classes.POPOVER_DISMISS} id="btn">
+                    Dismiss
+                </button>,
+                false,
+            ));
+
+        it("Classes.POPOVER_DISMISS_OVERRIDE does not close", () =>
+            assertClickToClose(
+                <span className={Classes.POPOVER_DISMISS}>
+                    <button className={Classes.POPOVER_DISMISS_OVERRIDE} id="btn">
+                        Dismiss
+                    </button>
+                </span>,
+                true,
+            ));
+
+        it(":disabled does not close", () =>
+            assertClickToClose(
+                <button className={Classes.POPOVER_DISMISS} disabled={true} id="btn">
+                    Dismiss
+                </button>,
+                true,
+            ));
+
+        it("Classes.DISABLED does not close", () =>
+            assertClickToClose(
+                // testing nested behavior too
+                <div className={Classes.DISABLED}>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </div>,
+                true,
+            ));
+
+        it("captureDismiss={true} inner dismiss does not close outer popover", () =>
+            assertClickToClose(
+                <Popover captureDismiss={true} defaultIsOpen={true} usePortal={false}>
+                    <button>Target</button>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </Popover>,
+                true,
+            ));
+
+        it("captureDismiss={false} inner dismiss closes outer popover", () =>
+            assertClickToClose(
+                <Popover captureDismiss={false} defaultIsOpen={true} usePortal={false}>
+                    <button>Target</button>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </Popover>,
+                false,
+            ));
+
+        function assertClickToClose(children: React.ReactNode, expectedIsOpen: boolean) {
+            wrapper = renderPopover({ defaultIsOpen: true }, children);
+            wrapper.find("#btn").simulate("click");
+            wrapper.assertIsOpen(expectedIsOpen);
+        }
+    });
+
     interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
         popoverElement: HTMLElement;
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
@@ -633,7 +725,7 @@ describe("<Popover>", () => {
         wrapper = mount(
             <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
-                <p>Text {content}</p>
+                <div>Text {content}</div>
             </Popover>,
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
@@ -642,8 +734,9 @@ describe("<Popover>", () => {
             (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
             return wrapper;
         };
-        wrapper.assertIsOpen = (isOpen = true) => {
-            assert.equal(wrapper.find(Overlay).prop("isOpen"), isOpen, "assertIsOpen");
+        wrapper.assertIsOpen = (isOpen = true, index = 0) => {
+            const overlay = wrapper.find(Overlay).at(index);
+            assert.equal(overlay.prop("isOpen"), isOpen, "assertIsOpen");
             return wrapper;
         };
         wrapper.assertOnInteractionCalled = (called = true) => {

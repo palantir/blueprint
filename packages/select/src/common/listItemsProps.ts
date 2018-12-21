@@ -11,6 +11,14 @@ import { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
+    /**
+     * The currently focused item for keyboard interactions, or `null` to
+     * indicate that no item is active. If omitted, this prop will be
+     * uncontrolled (managed by the component's state). Use `onActiveItemChange`
+     * to listen for updates.
+     */
+    activeItem?: T | null;
+
     /** Array of items in the list. */
     items: T[];
 
@@ -73,8 +81,51 @@ export interface IListItemsProps<T> extends IProps {
     noResults?: React.ReactNode;
 
     /**
+     * Invoked when user interaction should change the active item: arrow keys move it up/down
+     * in the list, selecting an item makes it active, and changing the query may reset it to
+     * the first item in the list if it no longer matches the filter.
+     */
+    onActiveItemChange?: (activeItem: T | null) => void;
+
+    /**
      * Callback invoked when an item from the list is selected,
      * typically by clicking or pressing `enter` key.
      */
     onItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /**
+     * Callback invoked when the query string changes.
+     */
+    onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
+
+    /**
+     * Whether the active item should be reset to the first matching item _every
+     * time the query changes_ (via prop or by user input).
+     * @default true
+     */
+    resetOnQuery?: boolean;
+
+    /**
+     * Whether the active item should be reset to the first matching item _when
+     * an item is selected_. The query will also be reset to the empty string.
+     * @default false
+     */
+    resetOnSelect?: boolean;
+
+    /**
+     * When `activeItem` is controlled, whether the active item should _always_
+     * be scrolled into view when the prop changes. If `false`, only changes
+     * that result from built-in interactions (clicking, querying, or using
+     * arrow keys) will scroll the active item into view. Ignored if the
+     * `activeItem` prop is omitted (uncontrolled behavior).
+     * @default true
+     */
+    scrollToActiveItem?: boolean;
+
+    /**
+     * Query string passed to `itemListPredicate` or `itemPredicate` to filter items.
+     * This value is controlled: its state must be managed externally by attaching an `onChange`
+     * handler to the relevant element in your `renderer` implementation.
+     */
+    query?: string;
 }

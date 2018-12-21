@@ -4,12 +4,13 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+import { ValidationMap } from "prop-types";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";
 
 /** Detect if `React.createPortal()` API method does not exist. */
@@ -20,6 +21,12 @@ export interface IPortalProps extends IProps {
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */
     onChildrenMount?: () => void;
+
+    /**
+     * The HTML element that children will be mounted to.
+     * @default document.body
+     */
+    container?: HTMLElement;
 }
 
 export interface IPortalState {
@@ -31,7 +38,7 @@ export interface IPortalContext {
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
+const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
     blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
@@ -46,8 +53,11 @@ const REACT_CONTEXT_TYPES: React.ValidationMap<IPortalContext> = {
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
 export class Portal extends React.Component<IPortalProps, IPortalState> {
-    public static displayName = "Blueprint2.Portal";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
     public static contextTypes = REACT_CONTEXT_TYPES;
+    public static defaultProps: IPortalProps = {
+        container: typeof document !== "undefined" ? document.body : null,
+    };
 
     public context: IPortalContext;
     public state: IPortalState = { hasMounted: false };
@@ -66,8 +76,11 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     public componentDidMount() {
+        if (!this.props.container) {
+            return;
+        }
         this.portalElement = this.createContainerElement();
-        document.body.appendChild(this.portalElement);
+        this.props.container.appendChild(this.portalElement);
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();

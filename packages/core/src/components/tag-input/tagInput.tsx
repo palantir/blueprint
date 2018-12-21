@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { HTMLInputProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps, MaybeElement } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -24,8 +24,14 @@ export interface ITagInputProps extends IProps {
     addOnBlur?: boolean;
 
     /**
-     * If true, `onAdd` will be invoked when the user pastes text into the
-     * input. Otherwise, pasted text will remain in the input.
+     * If true, `onAdd` will be invoked when the user pastes text containing the `separator`
+     * into the input. Otherwise, pasted text will remain in the input.
+     *
+     * __Note:__ For example, if `addOnPaste=true` and `separator="\n"` (new line), then:
+     * - Pasting `"hello"` will _not_ invoke `onAdd`
+     * - Pasting `"hello\n"` will invoke `onAdd` with `["hello"]`
+     * - Pasting `"hello\nworld"` will invoke `onAdd` with `["hello", "world"]`
+     *
      * @default true
      */
     addOnPaste?: boolean;
@@ -57,7 +63,7 @@ export interface ITagInputProps extends IProps {
     large?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
-    leftIcon?: IconName | JSX.Element;
+    leftIcon?: IconName | MaybeElement;
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.
@@ -163,29 +169,28 @@ export interface ITagInputProps extends IProps {
 }
 
 export interface ITagInputState {
-    activeIndex?: number;
-    inputValue?: string;
-    isInputFocused?: boolean;
+    activeIndex: number;
+    inputValue: string;
+    isInputFocused: boolean;
 }
 
 /** special value for absence of active tag */
 const NONE = -1;
 
 export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
-    public static displayName = "Blueprint2.TagInput";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> & object = {
         addOnBlur: false,
         addOnPaste: true,
         inputProps: {},
-        inputValue: "",
         separator: /[,\n\r]/,
         tagProps: {},
     };
 
     public state: ITagInputState = {
         activeIndex: NONE,
-        inputValue: this.props.inputValue,
+        inputValue: this.props.inputValue || "",
         isInputFocused: false,
     };
 
@@ -201,7 +206,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         super.componentWillReceiveProps(nextProps);
 
         if (nextProps.inputValue !== this.props.inputValue) {
-            this.setState({ inputValue: nextProps.inputValue });
+            this.setState({ inputValue: nextProps.inputValue || "" });
         }
     }
 
@@ -255,15 +260,15 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     }
 
     private addTags = (value: string) => {
-        const { onAdd, onChange, values } = this.props;
+        const { inputValue, onAdd, onChange, values } = this.props;
         const newValues = this.getValues(value);
-        let shouldClearInput = Utils.safeInvoke(onAdd, newValues);
+        let shouldClearInput = Utils.safeInvoke(onAdd, newValues) !== false && inputValue === undefined;
         // avoid a potentially expensive computation if this prop is omitted
         if (Utils.isFunction(onChange)) {
-            shouldClearInput = shouldClearInput || onChange([...values, ...newValues]);
+            shouldClearInput = onChange([...values, ...newValues]) !== false && shouldClearInput;
         }
         // only explicit return false cancels text clearing
-        if (shouldClearInput !== false) {
+        if (shouldClearInput) {
             this.setState({ inputValue: "" });
         }
     };
@@ -385,11 +390,21 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
     };
 
     private handleInputPaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+        const { separator } = this.props;
         const value = event.clipboardData.getData("text");
-        if (this.props.addOnPaste && value.length > 0) {
-            event.preventDefault();
-            this.addTags(value);
+
+        if (!this.props.addOnPaste || value.length === 0) {
+            return;
         }
+
+        // special case as a UX nicety: if the user pasted only one value with no delimiters in it, leave that value in
+        // the input field so that the user can refine it before converting it to a tag manually.
+        if (separator === false || value.split(separator).length === 1) {
+            return;
+        }
+
+        event.preventDefault();
+        this.addTags(value);
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {

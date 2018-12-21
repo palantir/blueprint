@@ -57,6 +57,7 @@ Styleguide control-group
   // changes to change the z-index of a disabled element).
 
   .#{$ns}-button,
+  .#{$ns}-html-select,
   .#{$ns}-input,
   .#{$ns}-select {
     // create a new stacking context
@@ -97,6 +98,7 @@ Styleguide control-group
   }
 
   .#{$ns}-button,
+  .#{$ns}-html-select select,
   .#{$ns}-select select {
     z-index: index($control-group-stack, "button-default");
     // inherit radius since it's most likely to be zero
@@ -154,7 +156,10 @@ Styleguide control-group
 
   // keep the select-menu carets on top of everything always (particularly when
   // .#{$ns}-selects are focused).
-  .#{$ns}-select::after {
+  .#{$ns}-select::after,
+  .#{$ns}-html-select::after,
+  .#{$ns}-select > .#{$ns}-icon,
+  .#{$ns}-html-select > .#{$ns}-icon {
     z-index: index($control-group-stack, "select-caret");
   }
 
@@ -178,6 +183,12 @@ Styleguide control-group
     }
   }
 
+  // Add border radius inheritance to support components wrapped in a popover
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover-target {
+    border-radius: inherit;
+  }
+
   // round the left corners of the left-most element
   > :first-child {
     border-radius: $pt-border-radius 0 0 $pt-border-radius;
@@ -187,6 +198,12 @@ Styleguide control-group
   > :last-child {
     margin-right: 0;
     border-radius: 0 $pt-border-radius $pt-border-radius 0;
+  }
+
+  // round all the corners of the only child element
+  > :only-child {
+    margin-right: 0;
+    border-radius: $pt-border-radius;
   }
 
   // bring back border radius on these buttons

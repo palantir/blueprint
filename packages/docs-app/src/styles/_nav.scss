@@ -56,10 +56,9 @@ $dark-package-colors: (
   font-weight: 600;
 
   .#{$ns}-tag {
-    display: block;
-    margin-top: 3px;
     margin-left: $pt-grid-size / 2;
     padding-left: $pt-grid-size;
+    vertical-align: middle;
   }
 }
 
@@ -67,6 +66,11 @@ $dark-package-colors: (
   min-width: $pt-grid-size * 12;
   max-height: $pt-grid-size * 20;
   overflow: auto;
+}
+
+.docs-nav-tag {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .docs-nav-package-icon {

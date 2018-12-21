@@ -37,6 +37,13 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
     margin-top: $tag-input-padding;
     margin-right: $tag-input-icon-padding;
 
+    // use the larger, conventional input padding when there are no tags and no left icon present.
+    // see: https://github.com/palantir/blueprint/issues/2872
+    &:first-child .#{$ns}-input-ghost:first-child {
+      // recall that some padding-left is already applied on the root component.
+      padding-left: $input-padding-horizontal - $tag-input-padding;
+    }
+
     > * {
       margin-bottom: $tag-input-padding;
     }

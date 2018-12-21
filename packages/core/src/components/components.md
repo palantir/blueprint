@@ -9,6 +9,7 @@
 @page card
 @page collapse
 @page collapsible-list
+@page divider
 @page editable-text
 @page html
 @page html-table
@@ -18,7 +19,9 @@
 @page navbar
 @page non-ideal-state
 @page overflow-list
+@page panel-stack
 @page progress-bar
+@page resize-sensor
 @page skeleton
 @page spinner
 @page tabs

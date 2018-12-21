@@ -10,8 +10,8 @@ import * as React from "react";
 import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IActionProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { IActionProps, MaybeElement } from "../../common/props";
+import { isReactNodeEmpty, safeInvoke } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
@@ -24,9 +24,10 @@ export interface IButtonProps extends IActionProps {
     active?: boolean;
 
     /**
-     * Text alignment within button. By default, icons and text will be centered within the button.
-     * Passing this prop will cause the text container to fill the button and align the text within that
-     * to the appropriate side. `icon` and `rightIcon` will be pushed to either side.
+     * Text alignment within button. By default, icons and text will be centered
+     * within the button. Passing `"left"` or `"right"` will align the button
+     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * `"center"` will center the text and icons together.
      * @default Alignment.CENTER
      */
     alignText?: Alignment;
@@ -51,7 +52,7 @@ export interface IButtonProps extends IActionProps {
     minimal?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
-    rightIcon?: IconName | JSX.Element;
+    rightIcon?: IconName | MaybeElement;
 
     /** Whether this button should use small styles. */
     small?: boolean;
@@ -124,7 +125,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     // argument because it is not a supertype of candidate
     // 'KeyboardEvent<HTMLElement>'."
     protected handleKeyDown = (e: React.KeyboardEvent<any>) => {
-        if (isKeyboardClick(e.which)) {
+        if (Keys.isKeyboardClick(e.which)) {
             e.preventDefault();
             if (e.which !== this.currentKeyDown) {
                 this.setState({ isActive: true });
@@ -135,7 +136,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     };
 
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
-        if (isKeyboardClick(e.which)) {
+        if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
             this.buttonRef.click();
         }
@@ -148,7 +149,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         return [
             loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />,
             <Icon key="leftIcon" icon={icon} />,
-            (text || children) && (
+            (!isReactNodeEmpty(text) || !isReactNodeEmpty(children)) && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
                     {children}
@@ -157,8 +158,4 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             <Icon key="rightIcon" icon={rightIcon} />,
         ];
     }
-}
-
-function isKeyboardClick(keyCode: number) {
-    return keyCode === Keys.ENTER || keyCode === Keys.SPACE;
 }

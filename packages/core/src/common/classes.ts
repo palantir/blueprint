@@ -47,7 +47,9 @@ export const UI_TEXT = `${NS}-ui-text`;
 export const RUNNING_TEXT = `${NS}-running-text`;
 export const MONOSPACE_TEXT = `${NS}-monospace-text`;
 export const TEXT_LARGE = `${NS}-text-large`;
+export const TEXT_SMALL = `${NS}-text-small`;
 export const TEXT_MUTED = `${NS}-text-muted`;
+export const TEXT_DISABLED = `${NS}-text-disabled`;
 export const TEXT_OVERFLOW_ELLIPSIS = `${NS}-text-overflow-ellipsis`;
 
 // textual elements
@@ -57,6 +59,7 @@ export const CODE_BLOCK = `${NS}-code-block`;
 export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
+export const RTL = `${NS}-rtl`;
 
 // components
 export const ALERT = `${NS}-alert`;
@@ -97,6 +100,8 @@ export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
 
+export const DIVIDER = `${NS}-divider`;
+
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
 export const EDITABLE_TEXT_EDITING = `${EDITABLE_TEXT}-editing`;
@@ -110,8 +115,9 @@ export const HTML_SELECT = `${NS}-html-select`;
 export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
-export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
+export const HTML_TABLE_CONDENSED = `${HTML_TABLE}-condensed`;
+export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 
 export const INPUT = `${NS}-input`;
 export const INPUT_GHOST = `${INPUT}-ghost`;
@@ -167,6 +173,11 @@ export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;
 export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
 
+export const PANEL_STACK = `${NS}-panel-stack`;
+export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
+export const PANEL_STACK_HEADER_BACK = `${PANEL_STACK}-header-back`;
+export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
+
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
@@ -198,6 +209,7 @@ export const START = `${NS}-start`;
 export const END = `${NS}-end`;
 
 export const SPINNER = `${NS}-spinner`;
+export const SPINNER_ANIMATION = `${SPINNER}-animation`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;

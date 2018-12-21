@@ -7,16 +7,9 @@
 import classNames from "classnames";
 import * as React from "react";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
+import { IOptionProps } from "../../common/props";
 import { IElementRefProps } from "../html/html";
-import { Icon } from "../icon/icon";
-
-export interface IHTMLOptionProps {
-    /** Optional label for this option. Defaults to `value`. */
-    label?: string;
-
-    /** Value of this option. Should be locally unique. */
-    value: string | number;
-}
+import { Icon, IIconProps } from "../icon/icon";
 
 export interface IHTMLSelectProps
     extends IElementRefProps<HTMLSelectElement>,
@@ -26,6 +19,9 @@ export interface IHTMLSelectProps
 
     /** Whether this element should fill its container. */
     fill?: boolean;
+
+    /** Props to spread to the `<Icon>` element. */
+    iconProps?: Partial<IIconProps>;
 
     /** Whether to use large styles. */
     large?: boolean;
@@ -44,7 +40,7 @@ export interface IHTMLSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | IHTMLOptionProps>;
+    options?: Array<string | number | IOptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;
@@ -54,7 +50,17 @@ export interface IHTMLSelectProps
 /* istanbul ignore next */
 export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
     public render() {
-        const { className, disabled, elementRef, fill, large, minimal, options = [], ...htmlProps } = this.props;
+        const {
+            className,
+            disabled,
+            elementRef,
+            fill,
+            iconProps,
+            large,
+            minimal,
+            options = [],
+            ...htmlProps
+        } = this.props;
         const classes = classNames(
             HTML_SELECT,
             {
@@ -67,8 +73,8 @@ export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
         );
 
         const optionChildren = options.map(option => {
-            const { value, label }: IHTMLOptionProps = typeof option === "object" ? option : { value: option };
-            return <option key={value} value={value} children={label || value} />;
+            const props: IOptionProps = typeof option === "object" ? option : { value: option };
+            return <option {...props} key={props.value} children={props.label || props.value} />;
         });
 
         return (
@@ -77,7 +83,7 @@ export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
                     {optionChildren}
                     {htmlProps.children}
                 </select>
-                <Icon icon="double-caret-vertical" />
+                <Icon icon="double-caret-vertical" {...iconProps} />
             </div>
         );
     }

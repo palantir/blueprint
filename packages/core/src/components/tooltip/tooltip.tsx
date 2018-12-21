@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IIntentProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 
@@ -46,13 +46,15 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
 }
 
 export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
-    public static displayName = "Blueprint2.Tooltip";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
     public static defaultProps: Partial<ITooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         transitionDuration: 100,
     };
+
+    private popover: Popover | null = null;
 
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
@@ -67,9 +69,17 @@ export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
                 popoverClassName={classes}
+                portalContainer={this.props.portalContainer}
+                ref={ref => (this.popover = ref)}
             >
                 {children}
             </Popover>
         );
+    }
+
+    public reposition() {
+        if (this.popover != null) {
+            this.popover.reposition();
+        }
     }
 }

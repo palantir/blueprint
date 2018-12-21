@@ -1384,7 +1384,7 @@ describe("<Table>", function(this) {
             const prevViewportRect = locator.getViewportRect();
 
             // get native DOM nodes
-            const tableNode = ReactDOM.findDOMNode(table.instance());
+            const tableNode = table.getDOMNode();
             const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 

@@ -6,6 +6,7 @@
 @import "../button/common";
 
 $input-padding-horizontal: $pt-grid-size !default;
+$input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;
 $input-font-weight: 400 !default;
 $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 
@@ -145,7 +146,20 @@ $control-group-stack: (
 
   &[type="search"],
   &.#{$ns}-round {
-    padding: 0 $input-padding-horizontal * 1.5;
+    padding: 0 ($input-padding-horizontal * 1.5);
+  }
+}
+
+@mixin pt-input-small() {
+  height: $pt-input-height-small;
+  padding-right: $input-small-padding;
+  padding-left: $input-small-padding;
+  line-height: $pt-input-height-small;
+  font-size: $pt-font-size-small;
+
+  &[type="search"],
+  &.#{$ns}-round {
+    padding: 0 ($input-small-padding * 1.5);
   }
 }
 

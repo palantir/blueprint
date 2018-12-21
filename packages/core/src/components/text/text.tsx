@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface ITextProps extends IProps {
     /**
@@ -31,15 +31,14 @@ export interface ITextState {
 }
 
 export class Text extends React.PureComponent<ITextProps, ITextState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
+
     public state: ITextState = {
         isContentOverflowing: false,
         textContent: "",
     };
 
-    private textRef: HTMLDivElement;
-    private refHandlers = {
-        text: (overflowElement: HTMLDivElement) => (this.textRef = overflowElement),
-    };
+    private textRef: HTMLElement | null = null;
 
     public componentDidMount() {
         this.update();
@@ -60,7 +59,7 @@ export class Text extends React.PureComponent<ITextProps, ITextState> {
         return (
             <TagName
                 className={classes}
-                ref={this.refHandlers.text}
+                ref={(ref: HTMLElement | null) => (this.textRef = ref)}
                 title={this.state.isContentOverflowing ? this.state.textContent : undefined}
             >
                 {this.props.children}
@@ -69,6 +68,9 @@ export class Text extends React.PureComponent<ITextProps, ITextState> {
     }
 
     private update() {
+        if (this.textRef == null) {
+            return;
+        }
         const newState = {
             isContentOverflowing: this.props.ellipsize && this.textRef.scrollWidth > this.textRef.clientWidth,
             textContent: this.textRef.textContent,

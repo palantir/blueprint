@@ -4,6 +4,8 @@
 @import "~@blueprintjs/core/src/common/variables";
 @import "~@blueprintjs/icons/src/icons";
 
+$datepicker-padding: $pt-grid-size / 2 !default;
+
 $datepicker-min-width: $pt-grid-size * 21 !default;
 $datepicker-day-size: $pt-grid-size * 3 !default;
 $datepicker-header-height: $pt-grid-size * 4 !default;

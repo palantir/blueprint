@@ -1,0 +1,3 @@
+// Make sure that this rule doesn't modify icon classes, that's handled elsewhere.
+<span className"pt-icon pt-icon-folder-open" />
+<span className"bp3-icon bp3-icon-folder-open" />

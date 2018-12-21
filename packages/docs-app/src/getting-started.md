@@ -12,20 +12,20 @@ The `main` module exports all symbols from all modules so you don't have to impo
 (though you can if you want to). The JavaScript components are stable and their APIs adhere to
 [semantic versioning](http://semver.org/).
 
-1. Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant
-   dependencies:
+1.  Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant
+    dependencies:
 
     ```sh
     yarn add @blueprintjs/core
     ```
 
-1. If you see `UNMET PEER DEPENDENCY` errors, you should manually install React (v15.3 or greater):
+1.  If you see `UNMET PEER DEPENDENCY` errors, you should manually install React (v15.3 or greater):
 
     ```sh
     yarn add react react-dom
     ```
 
-1. After installation, you'll be able to import the React components in your application:
+1.  After installation, you'll be able to import the React components in your application:
 
     ```tsx
     import { Button, Intent, Spinner } from "@blueprintjs/core";
@@ -37,8 +37,8 @@ The `main` module exports all symbols from all modules so you don't have to impo
     const myButton = React.createElement(Button, { intent: Intent.SUCCESS }, "button content");
     ```
 
-1. Don't forget to include the main CSS file from each Blueprint package! Additionally, the
-   `resources/` directory contains supporting media such as fonts and images.
+1.  Don't forget to include the main CSS file from each Blueprint package! Additionally, the
+    `resources/` directory contains supporting media such as fonts and images.
 
     ```html
     <!-- in plain old HTML -->
@@ -81,8 +81,8 @@ These bundles _do not include_ external dependencies; your application will need
     <meta name="viewport" content="width=device-width">
     <title>Blueprint Starter Kit</title>
     <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/core@^2.0.0/lib/css/blueprint.css" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/icons@^2.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/core@^3.0.0/lib/css/blueprint.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/icons@^3.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
   </head>
   <body>
     <script src="https://unpkg.com/classnames@^2.2"></script>
@@ -90,10 +90,10 @@ These bundles _do not include_ external dependencies; your application will need
     <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
-    <script src="https://unpkg.com/popper.js@^1.12.6/dist/umd/popper.js"></script>
-    <script src="https://unpkg.com/react-popper@~0.7.4/dist/react-popper.min.js"></script>
-    <script src="https://unpkg.com/@blueprintjs/core@^2.0.0"></script>
-    <script src="https://unpkg.com/@blueprintjs/icons@^2.0.0"></script>
+    <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
+    <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
+    <script src="https://unpkg.com/@blueprintjs/core@^3.0.0"></script>
+    <script src="https://unpkg.com/@blueprintjs/icons@^3.0.0"></script>
 
     <div id="btn"></div>
     <script>
@@ -115,10 +115,10 @@ Note that since the minimum supported version of React is [v16](https://reactjs.
 all of its [JavaScript Environment Requirements](https://reactjs.org/docs/javascript-environment-requirements.html) apply to
 Blueprint as well. Blueprint components require the following ES2015 features:
 
-  * `Map`
-  * `Set`
-  * `Array.fill`
-  * `Array.from`
+-   `Map`
+-   `Set`
+-   `Array.fill`
+-   `Array.from`
 
 We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
 [core-js](https://github.com/zloirock/core-js).
@@ -167,9 +167,9 @@ ReactDOM.render(<Spinner className={Classes.SMALL} intent={Intent.PRIMARY} />, m
 ReactDOM.render(
     React.createElement(Spinner, {
         className: Classes.SMALL,
-        intent: Intent.PRIMARY,
+        intent: Intent.PRIMARY
     }),
-    myContainerElement,
+    myContainerElement
 );
 ```
 

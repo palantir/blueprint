@@ -7,21 +7,24 @@ Blueprint is a React-based UI toolkit for the web.
 It is optimized for building complex, data-dense web interfaces for _desktop applications_.
 If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
 
+
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
+[**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/nko3k41y60)
+
 [**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-## :tada: 3.0 is almost here! :tada:
+## :tada: 3.0 is here! :tada:
 
 [**3.0 Changelog and migration guide ▸**](https://github.com/palantir/blueprint/wiki/3.0-Changelog)
 
 Blueprint 3.0 supports multiple major versions of Blueprint on the same page through removing global styles and deconflicting selectors by changing the namespace. It also restores support for React 15 in most packages.
 
-### What's new in 2.0
+### Upgrading from 1.x
 
-Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path).
+Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path), in addition to the 3.0 content above.
 
 ## Packages
 
@@ -72,7 +75,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 [Lerna](https://lernajs.io/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-__Prerequisites__: Node.js v8+, Yarn v1.0+
+__Prerequisites__: Node.js v8+, Yarn v1.10+
 
 ### One-time setup
 
@@ -97,12 +100,6 @@ Run `yarn dev` from the root directory to watch changes across all packages and 
 Alternately, each library has its own dev script to run the docs app and watch changes to just that package (and its dependencies): `yarn dev:core`, `yarn dev:datetime`, etc.
 One exception is `table`: since it has its own dev application, the `dev:table` script runs `table-dev-app` instead of the docs.
 
-### Updating dependencies
-
-1. Edit the `package.json` where you wish to change dependencies.
-1. Run `yarn` at the root to update lockfiles.
-1. Commit the result.
-
 ### Updating documentation
 
 Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/).
@@ -119,7 +116,7 @@ running any of the dev scripts.
 
 ## License
 
-This project is made available under a **modified version of the Apache-2.0 license**.
+This project is made available under its own **Blueprint License**, based on Apache 2.0 License.
 
 The only modification is an additional section (paragraph 10) in which we ask
 that you do not pass off any derivative products as Palantir’s products, given

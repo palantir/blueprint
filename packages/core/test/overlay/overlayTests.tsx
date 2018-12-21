@@ -58,6 +58,30 @@ describe("<Overlay>", () => {
         overlay.unmount();
     });
 
+    it("renders contents to specified container correctly", () => {
+        const CLASS_TO_TEST = "bp-test-content";
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        mountWrapper(
+            <Overlay isOpen={true} portalContainer={container}>
+                <p className={CLASS_TO_TEST}>test</p>
+            </Overlay>,
+        );
+        assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
+        document.body.removeChild(container);
+    });
+
+    it("portalClassName appears on Portal", () => {
+        const CLASS_TO_TEST = "bp-test-content";
+        mountWrapper(
+            <Overlay isOpen={true} portalClassName={CLASS_TO_TEST}>
+                <p>test</p>
+            </Overlay>,
+        );
+        // search document for portal container element.
+        assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`));
+    });
+
     it("renders Portal after first opened", () => {
         mountWrapper(<Overlay isOpen={false}>{createOverlayContents()}</Overlay>);
         assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");

@@ -9,6 +9,7 @@ import * as React from "react";
 import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "../../common/classes";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { getPosition } from "./popperUtils";
 
 // these paths come from the Core Kit Sketch file
@@ -44,11 +45,11 @@ export interface IPopoverArrowProps {
 }
 
 export const PopoverArrow: React.SFC<IPopoverArrowProps> = ({ arrowProps: { ref, style }, placement }) => (
-    <div className={Classes.POPOVER_ARROW} ref={ref} style={isNaN(style.left) ? {} : style}>
+    <div className={Classes.POPOVER_ARROW} ref={ref} style={isNaN(+style.left) ? {} : style}>
         <svg viewBox="0 0 30 30" style={{ transform: `rotate(${getArrowAngle(placement)}deg)` }}>
             <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
             <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
         </svg>
     </div>
 );
-PopoverArrow.displayName = "Blueprint2.PopoverArrow";
+PopoverArrow.displayName = `${DISPLAYNAME_PREFIX}.PopoverArrow`;

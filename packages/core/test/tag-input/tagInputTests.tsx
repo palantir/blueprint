@@ -150,13 +150,32 @@ describe("<TagInput>", () => {
             });
         });
 
-        it("is invoked on paste when addOnPaste=true", () => {
-            const text = "pasted\ntext";
-            const onAdd = sinon.stub();
-            const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
-            wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
-            assert.isTrue(onAdd.calledOnce);
-            assert.deepEqual(onAdd.args[0][0], text.split("\n"));
+        describe("when addOnPaste=true", () => {
+            it("is invoked on paste if the text contains a delimiter between values", () => {
+                const text = "pasted\ntext";
+                const onAdd = sinon.stub();
+                const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+                wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+                assert.isTrue(onAdd.calledOnce);
+                assert.deepEqual(onAdd.args[0][0], ["pasted", "text"]);
+            });
+
+            it("is invoked on paste if the text contains a trailing delimiter", () => {
+                const text = "pasted\n";
+                const onAdd = sinon.stub();
+                const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+                wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+                assert.isTrue(onAdd.calledOnce);
+                assert.deepEqual(onAdd.args[0][0], ["pasted"]);
+            });
+
+            it("is not invoked on paste if the text does not include a delimiter", () => {
+                const text = "pasted";
+                const onAdd = sinon.stub();
+                const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
+                wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
+                assert.isTrue(onAdd.notCalled);
+            });
         });
 
         it("is not invoked on paste when addOnPaste=false", () => {
@@ -189,6 +208,12 @@ describe("<TagInput>", () => {
             wrapper.setState({ inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, "");
+        });
+
+        it("does not clear the input if the input is controlled", () => {
+            const wrapper = mountTagInput(undefined, { inputValue: NEW_VALUE });
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
 
         it("splits input value on separator RegExp", () => {
@@ -336,6 +361,13 @@ describe("<TagInput>", () => {
             wrapper.setState({ inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, "");
+        });
+
+        it("does not clear the input if the input is controlled", () => {
+            const onChange = sinon.stub();
+            const wrapper = shallow(<TagInput onChange={onChange} values={VALUES} inputValue={NEW_VALUE} />);
+            pressEnterInInput(wrapper, NEW_VALUE);
+            assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
     });
 

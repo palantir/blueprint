@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 
 import { ITabProps, Tab, TabId } from "./tab";
@@ -95,7 +95,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         vertical: false,
     };
 
-    public static displayName = "Blueprint2.Tabs";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 
     private tablistElement: HTMLDivElement;
     private refHandlers = {
@@ -111,10 +111,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     public render() {
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabTitles = React.Children.map(
-            this.props.children,
-            child => (Utils.isElementOfType(child, Tab) ? this.renderTabTitle(child as TabElement) : child),
-        );
+        const tabTitles = React.Children.map(this.props.children, this.renderTabTitle);
 
         const tabPanels = this.getTabChildren()
             .filter(this.props.renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
@@ -205,9 +202,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     /** Filters children to only `<Tab>`s */
     private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(child => {
-            return Utils.isElementOfType(child, Tab);
-        }) as TabElement[];
+        return React.Children.toArray(props.children).filter(isTabElement);
     }
 
     /** Queries root HTML element for all tabs with optional filter selector */
@@ -241,7 +236,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
-        if (targetTabElement != null && isEventKeyCode(e, Keys.SPACE, Keys.ENTER)) {
+        if (targetTabElement != null && Keys.isKeyboardClick(e.which)) {
             e.preventDefault();
             targetTabElement.click();
         }
@@ -259,7 +254,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
      * Store the CSS values so the transition animation can start.
      */
     private moveSelectionIndicator() {
-        if (this.tablistElement === undefined || !this.props.animate) {
+        if (this.tablistElement == null || !this.props.animate) {
             return;
         }
 
@@ -297,19 +292,26 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         );
     };
 
-    private renderTabTitle = (tab: TabElement) => {
-        const { id } = tab.props;
-        return (
-            <TabTitle
-                {...tab.props}
-                parentId={this.props.id}
-                onClick={this.handleTabClick}
-                selected={id === this.state.selectedTabId}
-            />
-        );
+    private renderTabTitle = (child: React.ReactChild) => {
+        if (isTabElement(child)) {
+            const { id } = child.props;
+            return (
+                <TabTitle
+                    {...child.props}
+                    parentId={this.props.id}
+                    onClick={this.handleTabClick}
+                    selected={id === this.state.selectedTabId}
+                />
+            );
+        }
+        return child;
     };
 }
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
     return codes.indexOf(e.which) >= 0;
+}
+
+function isTabElement(child: any): child is TabElement {
+    return Utils.isElementOfType(child, Tab);
 }

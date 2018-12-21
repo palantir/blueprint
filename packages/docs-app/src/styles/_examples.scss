@@ -269,6 +269,48 @@
   }
 }
 
+#{example("PopoverDismissExample")} {
+  height: 220px;
+
+  .docs-reopen-message {
+    width: 240px;
+    text-align: center;
+  }
+
+  .#{$ns}-popover-content {
+    padding: $pt-grid-size * 2;
+
+    .#{$ns}-button:not(:first-child) {
+      margin-left: $pt-grid-size;
+    }
+
+    .#{$ns}-callout {
+      margin: $pt-grid-size 0;
+    }
+  }
+}
+
+#{example("PanelStackExample")} {
+  .docs-panel-stack-example {
+    box-shadow: $pt-elevation-shadow-0;
+    width: 300px;
+    height: 240px;
+  }
+
+  .docs-panel-stack-contents-example {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  ul {
+    max-height: 240px;
+    overflow: auto;
+  }
+}
+
 .docs-popover-position-example {
   em {
     display: inline-block;

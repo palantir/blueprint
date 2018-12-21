@@ -5,6 +5,7 @@
  */
 
 export * from "./alertExample";
+export * from "./breadcrumbsExample";
 export * from "./buttonsExample";
 export * from "./buttonsIconsExample";
 export * from "./buttonGroupExample";
@@ -16,6 +17,7 @@ export * from "./cardExample";
 export * from "./collapsibleListExample";
 export * from "./controlGroupExample";
 export * from "./dialogExample";
+export * from "./dividerExample";
 export * from "./contextMenuExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
@@ -32,6 +34,8 @@ export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
 export * from "./overflowListExample";
 export * from "./overlayExample";
+export * from "./panelStackExample";
+export * from "./popoverDismissExample";
 export * from "./popoverExample";
 export * from "./popoverInteractionKindExample";
 export * from "./popoverMinimalExample";

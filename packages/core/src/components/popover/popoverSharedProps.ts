@@ -4,16 +4,44 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Modifiers as PopperModifiers } from "popper.js";
+import { Boundary as PopperBoundary, Modifiers as PopperModifiers } from "popper.js";
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import { IOverlayableProps } from "../overlay/overlay";
 
-// re-export this symbol for library consumers
-export { PopperModifiers };
+// re-export symbols for library consumers
+export { PopperBoundary, PopperModifiers };
+
+/** `Position` with `"auto"` values, used by `Popover` and `Tooltip`. */
+export const PopoverPosition = {
+    ...Position,
+    AUTO: "auto" as "auto",
+    AUTO_END: "auto-end" as "auto-end",
+    AUTO_START: "auto-start" as "auto-start",
+};
+export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
 
 /** Props shared between `Popover` and `Tooltip`. */
 export interface IPopoverSharedProps extends IOverlayableProps, IProps {
+    /**
+     * Determines the boundary element used by Popper for its `flip` and
+     * `preventOverflow` modifiers. Three shorthand keywords are supported;
+     * Popper will find the correct DOM element itself.
+     * @default "scrollParent"
+     */
+    boundary?: PopperBoundary;
+
+    /**
+     * When enabled, `preventDefault()` is invoked on `click` events that close
+     * this popover, which will prevent those clicks from closing outer
+     * popovers. When disabled, clicking inside a `Classes.POPOVER_DISMISS`
+     * element will close the parent popover.
+     *
+     * See http://blueprintjs.com/docs/#core/components/popover.closing-on-click
+     * @default false
+     */
+    captureDismiss?: boolean;
+
     /**
      * Initial opened state when uncontrolled.
      * @default false
@@ -85,12 +113,6 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     popoverClassName?: string;
 
     /**
-     * Space-delimited string of class names applied to the `Portal` element if
-     * `usePortal={true}`.
-     */
-    portalClassName?: string;
-
-    /**
      * The position (relative to the target) at which the popover should appear.
      *
      * The default value of `"auto"` will choose the best position when opened
@@ -98,12 +120,18 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * user scrolls around.
      * @default "auto"
      */
-    position?: Position | "auto";
+    position?: PopoverPosition;
 
     /**
      * Space-delimited string of class names applied to the target element.
      */
     targetClassName?: string;
+
+    /**
+     * HTML props to spread to target element. Use `targetTagName` to change
+     * the type of element rendered. Note that `ref` is not supported.
+     */
+    targetProps?: React.HTMLAttributes<HTMLElement>;
 
     /**
      * HTML tag name for the target element. This must be an HTML element to
@@ -117,7 +145,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to
-     * `document.body`.
+     * `portalContainer` prop.
      *
      * Rendering content inside a `Portal` allows the popover content to escape
      * the physical bounds of its parent while still being positioned correctly

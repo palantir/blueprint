@@ -910,9 +910,9 @@
     "content": "\\e669"
   },
   {
-    "displayName": "Radial",
+    "displayName": "Circle",
     "iconName": "circle",
-    "tags": "circle, empty, area, radius, selection",
+    "tags": "radial, empty, area, radius, selection",
     "group": "action",
     "content": "\\e66a"
   },
@@ -3112,6 +3112,97 @@
     "iconName": "tree",
     "tags": "forest, wood, landmark",
     "group": "miscellaneous",
-    "content": "\\e7b6"
+    "content": "\\e7b7"
+  },
+  {
+    "displayName": "Notifications: updated",
+    "iconName": "notifications-updated",
+    "tags": "notifications, bell, alarm, notice, warning",
+    "group": "interface",
+    "content": "\\e7b8"
+  },
+  {
+    "displayName": "List: columns",
+    "iconName": "list-columns",
+    "tags": "layout, arrangement, four lines, table",
+    "group": "table",
+    "content": "\\e7b9"
+  },
+    {
+    "displayName": "Flow: linear",
+    "iconName": "flow-linear",
+    "tags": "workflow, edge, node, step",
+    "group": "data",
+    "content": "\\e7c0"
+  },
+    {
+    "displayName": "Flow: branch",
+    "iconName": "flow-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c1"
+  },
+    {
+    "displayName": "Flow: review",
+    "iconName": "flow-review",
+    "tags": "workflow, edge, node, reverse",
+    "group": "data",
+    "content": "\\e7c2"
+  },
+    {
+    "displayName": "Flow: review branch",
+    "iconName": "flow-review-branch",
+    "tags": "workflow, edge, node, fork",
+    "group": "data",
+    "content": "\\e7c3"
+  },
+    {
+    "displayName": "Flow: end",
+    "iconName": "flow-end",
+    "tags": "workflow, edge, node, complete, finished, final, last",
+    "group": "data",
+    "content": "\\e7c4"
+  },
+    {
+    "displayName": "Clean",
+    "iconName": "clean",
+    "tags": "correct, cleanse, clear, purify, stars",
+    "group": "action",
+    "content": "\\e7c5"
+  },
+    {
+    "displayName": "Table: filtered",
+    "iconName": "th-filtered",
+    "tags": "index, rows, columns, agenda, list, spreadsheet, filtering, funnel",
+    "group": "table",
+    "content": "\\e7c6"
+  },
+    {
+    "displayName": "Lifesaver",
+    "iconName": "lifesaver",
+    "tags": "help, support, aid, advice",
+    "group": "miscellaneous",
+    "content": "\\e7c7"
+  },
+    {
+    "displayName": "Cube",
+    "iconName": "cube",
+    "tags": "shape, 3d, object",
+    "group": "miscellaneous",
+    "content": "\\e7c8"
+  },
+    {
+    "displayName": "Cube: add",
+    "iconName": "cube-add",
+    "tags": "shape, 3d, object",
+    "group": "miscellaneous",
+    "content": "\\e7c9"
+  },
+    {
+    "displayName": "Cube: remove",
+    "iconName": "cube-remove",
+    "tags": "shape, 3d, object",
+    "group": "miscellaneous",
+    "content": "\\e7d0"
   }
 ]

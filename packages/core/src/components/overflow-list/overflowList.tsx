@@ -6,13 +6,20 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import ResizeObserver from "resize-observer-polyfill";
 
 import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
-import { IProps } from "../../common/props";
-import { throttle } from "../../common/utils";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { safeInvoke } from "../../common/utils";
+import { IResizeEntry, ResizeSensor } from "../resize-sensor/resizeSensor";
+
+/** @internal - do not expose this type */
+export enum OverflowDirection {
+    NONE,
+    GROW,
+    SHRINK,
+}
 
 export interface IOverflowListProps<T> extends IProps {
     /**
@@ -30,6 +37,13 @@ export interface IOverflowListProps<T> extends IProps {
     items: T[];
 
     /**
+     * The minimum number of visible items that should never collapse into the
+     * overflow menu, regardless of DOM dimensions.
+     * @default 0
+     */
+    minVisibleItems?: number;
+
+    /**
      * If `true`, all parent DOM elements of the container will also be
      * observed. If changes to a parent's size is detected, the overflow will be
      * recalculated.
@@ -40,6 +54,13 @@ export interface IOverflowListProps<T> extends IProps {
      * @default false
      */
     observeParents?: boolean;
+
+    /**
+     * Callback invoked when the overflowed items change. This is called once
+     * after the DOM has settled, rather that on every intermediate change. It
+     * is not invoked if resizing produces an unchanged overflow state.
+     */
+    onOverflow?: (overflowItems: T[]) => void;
 
     /**
      * Callback invoked to render the overflowed items. Unlike
@@ -55,6 +76,12 @@ export interface IOverflowListProps<T> extends IProps {
     style?: React.CSSProperties;
 
     /**
+     * HTML tag name for the container element.
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
+
+    /**
      * Callback invoked to render each visible item.
      * Remember to set a `key` on the rendered element!
      */
@@ -62,93 +89,105 @@ export interface IOverflowListProps<T> extends IProps {
 }
 
 export interface IOverflowListState<T> {
+    /**
+     * Direction of current overflow operation. An overflow can take several frames to settle.
+     * @internal don't expose the type
+     */
+    direction: OverflowDirection;
+    /** Length of last overflow to dedupe `onOverflow` calls during smooth resizing. */
+    lastOverflowCount: number;
     overflow: T[];
     visible: T[];
 }
 
 export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, IOverflowListState<T>> {
-    public static displayName = "Blueprint2.OverflowList";
+    public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
     public static defaultProps: Partial<IOverflowListProps<any>> = {
         collapseFrom: Boundary.START,
+        minVisibleItems: 0,
     };
 
     public static ofType<T>() {
         return OverflowList as new (props: IOverflowListProps<T>) => OverflowList<T>;
     }
 
-    private element: Element | null = null;
-    private spacer: Element | null = null;
-    private observer: ResizeObserver;
+    public state: IOverflowListState<T> = {
+        direction: OverflowDirection.NONE,
+        lastOverflowCount: 0,
+        overflow: [],
+        visible: this.props.items,
+    };
 
     /** A cache containing the widths of all elements being observed to detect growing/shrinking */
     private previousWidths = new Map<Element, number>();
-
-    public constructor(props: IOverflowListProps<T>, context?: any) {
-        super(props, context);
-
-        // constructor is necessary to ensure observer is defined
-        this.observer = new ResizeObserver(throttle(this.resize));
-        this.state = {
-            overflow: [],
-            visible: props.items,
-        };
-    }
+    private spacer: Element | null = null;
 
     public componentDidMount() {
-        if (this.element != null) {
-            // observer callback is invoked immediately when observing new elements
-            this.observer.observe(this.element);
-            if (this.props.observeParents) {
-                for (let element: Element | null = this.element; element != null; element = element.parentElement) {
-                    this.observer.observe(element);
-                }
-            }
-            this.repartition(false);
-        }
+        this.repartition(false);
     }
 
     public componentWillReceiveProps(nextProps: IOverflowListProps<T>) {
-        const { collapseFrom, items, observeParents, overflowRenderer, visibleItemRenderer } = this.props;
+        const {
+            collapseFrom,
+            items,
+            minVisibleItems,
+            observeParents,
+            overflowRenderer,
+            visibleItemRenderer,
+        } = this.props;
         if (observeParents !== nextProps.observeParents) {
             console.warn(OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED);
         }
         if (
             collapseFrom !== nextProps.collapseFrom ||
             items !== nextProps.items ||
+            minVisibleItems !== nextProps.minVisibleItems ||
             overflowRenderer !== nextProps.overflowRenderer ||
             visibleItemRenderer !== nextProps.visibleItemRenderer
         ) {
             // reset visible state if the above props change.
             this.setState({
+                direction: OverflowDirection.GROW,
+                lastOverflowCount: 0,
                 overflow: [],
                 visible: nextProps.items,
             });
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
         this.repartition(false);
-    }
-
-    public componentWillUnmount() {
-        this.observer.disconnect();
+        const { direction, overflow, lastOverflowCount } = this.state;
+        if (
+            // if a resize operation has just completed (transition to NONE)
+            direction === OverflowDirection.NONE &&
+            direction !== prevState.direction &&
+            overflow.length !== lastOverflowCount
+        ) {
+            safeInvoke(this.props.onOverflow, overflow);
+        }
     }
 
     public render() {
-        const { className, collapseFrom, style, visibleItemRenderer } = this.props;
+        const {
+            className,
+            collapseFrom,
+            observeParents,
+            style,
+            tagName: TagName = "div",
+            visibleItemRenderer,
+        } = this.props;
         const overflow = this.maybeRenderOverflow();
         return (
-            <div
-                className={classNames(Classes.OVERFLOW_LIST, className)}
-                ref={ref => (this.element = ref)}
-                style={style}
-            >
-                {collapseFrom === Boundary.START ? overflow : null}
-                {this.state.visible.map(visibleItemRenderer)}
-                {collapseFrom === Boundary.END ? overflow : null}
-                <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />
-            </div>
+            <ResizeSensor onResize={this.resize} observeParents={observeParents}>
+                <TagName className={classNames(Classes.OVERFLOW_LIST, className)} style={style}>
+                    {collapseFrom === Boundary.START ? overflow : null}
+                    {this.state.visible.map(visibleItemRenderer)}
+                    {collapseFrom === Boundary.END ? overflow : null}
+                    <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />
+                </TagName>
+            </ResizeSensor>
         );
     }
 
@@ -160,7 +199,7 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
         return this.props.overflowRenderer(overflow);
     }
 
-    private resize = (entries: ResizeObserverEntry[]) => {
+    private resize = (entries: IResizeEntry[]) => {
         // if any parent is growing, assume we have more room than before
         const growing = entries.some(entry => {
             const previousWidth = this.previousWidths.get(entry.target) || 0;
@@ -175,25 +214,39 @@ export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, 
             return;
         }
         if (growing) {
-            this.setState({
+            this.setState(state => ({
+                direction: OverflowDirection.GROW,
+                // store last overflow if this is the beginning of a resize (for check in componentDidUpdate).
+                lastOverflowCount:
+                    state.direction === OverflowDirection.NONE ? state.overflow.length : state.lastOverflowCount,
                 overflow: [],
                 visible: this.props.items,
-            });
-        } else if (this.spacer.getBoundingClientRect().width < 1) {
-            // spacer has flex-shrink and width 1px so if it's any smaller then we know to shrink
+            }));
+        } else if (this.spacer.getBoundingClientRect().width < 0.9) {
+            // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
             this.setState(state => {
+                if (state.visible.length <= this.props.minVisibleItems) {
+                    return null;
+                }
                 const collapseFromStart = this.props.collapseFrom === Boundary.START;
                 const visible = state.visible.slice();
                 const next = collapseFromStart ? visible.shift() : visible.pop();
                 if (next === undefined) {
                     return null;
                 }
-                const overflow = collapseFromStart ? [next, ...state.overflow] : [...state.overflow, next];
+                const overflow = collapseFromStart ? [...state.overflow, next] : [next, ...state.overflow];
                 return {
+                    // set SHRINK mode unless a GROW is already in progress.
+                    // GROW shows all items then shrinks until it settles, so we
+                    // preserve the fact that the original trigger was a GROW.
+                    direction: state.direction === OverflowDirection.NONE ? OverflowDirection.SHRINK : state.direction,
                     overflow,
                     visible,
                 };
             });
+        } else {
+            // repartition complete!
+            this.setState({ direction: OverflowDirection.NONE });
         }
     }
 }

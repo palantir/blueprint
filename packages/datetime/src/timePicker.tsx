@@ -4,7 +4,15 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes as CoreClasses, HTMLSelect, Icon, IProps, Keys, Utils as BlueprintUtils } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    DISPLAYNAME_PREFIX,
+    HTMLSelect,
+    Icon,
+    IProps,
+    Keys,
+    Utils as BlueprintUtils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -116,7 +124,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         useAmPm: false,
     };
 
-    public static displayName = "Blueprint2.TimePicker";
+    public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 
     public constructor(props?: ITimePickerProps, context?: any) {
         super(props, context);
@@ -346,11 +354,10 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             setTimeUnit(unit, time, newValue, this.state.isPm);
             if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
                 this.updateState({ value: newValue });
-            } else if (!DateUtils.areSameTime(this.state.value, this.props.minTime)) {
-                this.updateState(this.getFullStateFromValue(newValue, this.props.useAmPm));
+            } else {
+                this.updateState(this.getFullStateFromValue(this.state.value, this.props.useAmPm));
             }
         } else {
-            // reset to last known good state
             this.updateState(this.getFullStateFromValue(this.state.value, this.props.useAmPm));
         }
     }
@@ -401,7 +408,7 @@ function formatTime(time: number, unit: TimeUnit) {
 }
 
 function getStringValueFromInputEvent(e: React.SyntheticEvent<HTMLInputElement>) {
-    return (e.currentTarget as HTMLInputElement).value;
+    return (e.target as HTMLInputElement).value;
 }
 
 interface IKeyEventMap {

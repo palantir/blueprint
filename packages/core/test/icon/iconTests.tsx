@@ -13,6 +13,12 @@ import { IconName } from "@blueprintjs/icons";
 import { Classes, Icon, IIconProps, Intent } from "../../src/index";
 
 describe("<Icon>", () => {
+    it("tagName dictates HTML tag", () => {
+        const icon = shallow(<Icon icon="calendar" />);
+        assert.isTrue(icon.is("span"));
+        assert.isTrue(icon.setProps({ tagName: "article" }).is("article"));
+    });
+
     it("iconSize=16 renders standard size", () =>
         assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
 
@@ -24,17 +30,20 @@ describe("<Icon>", () => {
 
     it("renders icon name", () => assertIcon(<Icon icon="calendar" />, "calendar"));
 
+    it("renders icon without color", () => assertIconColor(<Icon icon="add" />));
     it("renders icon color", () => assertIconColor(<Icon icon="add" color="red" />, "red"));
 
-    it("prefixed icon renders nothing", () => {
-        // @ts-ignore invalid icon
-        const icon = shallow(<Icon icon={Classes.iconClass("airplane")} />);
-        assert.isTrue(icon.isEmptyRender());
+    it("unknown icon name renders blank icon", () => {
+        assert.lengthOf(shallow(<Icon icon={"unknown" as any} />).find("path"), 0);
     });
 
-    it("passes through icon element unchanged", () => {
-        // this is supported to simplify usage of this component in other Blueprint components
-        // which accept `icon?: IconName | JSX.Element`.
+    it("prefixed icon renders blank icon", () => {
+        assert.lengthOf(shallow(<Icon icon={Classes.iconClass("airplane") as any} />).find("path"), 0);
+    });
+
+    it("icon element passes through unchanged", () => {
+        // NOTE: This is supported to simplify usage of this component in other
+        // Blueprint components which accept `icon?: IconName | JSX.Element`.
         const onClick = () => true;
         const icon = shallow(<Icon icon={<article onClick={onClick} />} />);
         assert.isTrue(icon.is("article"));
@@ -58,18 +67,21 @@ describe("<Icon>", () => {
 
     /** Asserts that rendered icon has given className. */
     function assertIcon(icon: React.ReactElement<IIconProps>, iconName: IconName) {
-        assert.strictEqual(shallow(icon).text(), iconName);
+        const wrapper = shallow(icon);
+        assert.strictEqual(wrapper.text(), iconName);
+        assert.isNotEmpty(wrapper.find("path"), "should find path elements");
     }
 
     /** Asserts that rendered icon has width/height equal to size. */
     function assertIconSize(icon: React.ReactElement<IIconProps>, size: number) {
-        const wrapper = shallow(icon);
-        assert.strictEqual(wrapper.prop("width"), size);
-        assert.strictEqual(wrapper.prop("height"), size);
+        const svg = shallow(icon).find("svg");
+        assert.strictEqual(svg.prop("width"), size);
+        assert.strictEqual(svg.prop("height"), size);
     }
 
     /** Asserts that rendered icon has color equal to color. */
-    function assertIconColor(icon: React.ReactElement<IIconProps>, color: string) {
-        assert.deepEqual(shallow(icon).prop("style"), { fill: color });
+    function assertIconColor(icon: React.ReactElement<IIconProps>, color?: string) {
+        const svg = shallow(icon).find("svg");
+        assert.deepEqual(svg.prop("fill"), color);
     }
 });

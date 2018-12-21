@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
-import { IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
@@ -72,6 +72,11 @@ export interface IEditableTextProps extends IIntentProps, IProps {
      */
     selectAllOnFocus?: boolean;
 
+    /**
+     * The type of input that should be shown, when not `multiline`.
+     */
+    type?: string;
+
     /** Text value of controlled input. */
     value?: string;
 
@@ -105,6 +110,8 @@ const BUFFER_WIDTH_EDGE = 5;
 const BUFFER_WIDTH_IE = 30;
 
 export class EditableText extends AbstractPureComponent<IEditableTextProps, IEditableTextState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
+
     public static defaultProps: IEditableTextProps = {
         confirmOnEnterKey: false,
         defaultValue: "",
@@ -114,6 +121,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         minWidth: 80,
         multiline: false,
         placeholder: "Click to Edit",
+        type: "text",
     };
 
     private valueElement: HTMLSpanElement;
@@ -278,18 +286,17 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
     };
 
     private maybeRenderInput(value: string) {
-        const { maxLength, multiline, placeholder } = this.props;
+        const { maxLength, multiline, type, placeholder } = this.props;
         if (!this.state.isEditing) {
             return undefined;
         }
-        const props: React.HTMLProps<HTMLInputElement | HTMLTextAreaElement> = {
+        const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
             placeholder,
-            ref: this.refHandlers.input,
             style: {
                 height: this.state.inputHeight,
                 lineHeight: !multiline && this.state.inputHeight != null ? `${this.state.inputHeight}px` : null,
@@ -297,7 +304,11 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
             },
             value,
         };
-        return multiline ? <textarea {...props} /> : <input type="text" {...props} />;
+        return multiline ? (
+            <textarea ref={this.refHandlers.input} {...props} />
+        ) : (
+            <input ref={this.refHandlers.input} type={type} {...props} />
+        );
     }
 
     private updateInputDimensions() {

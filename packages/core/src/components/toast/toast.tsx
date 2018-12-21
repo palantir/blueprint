@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
-import { IActionProps, IIntentProps, ILinkProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
@@ -25,10 +25,10 @@ export interface IToastProps extends IProps, IIntentProps {
     action?: IActionProps & ILinkProps;
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
-    icon?: IconName | JSX.Element;
+    icon?: IconName | MaybeElement;
 
     /** Message to display in the body of the toast. */
-    message: string | JSX.Element;
+    message: React.ReactNode;
 
     /**
      * Callback invoked when the toast is dismissed, either by the user or by the timeout.
@@ -51,7 +51,7 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
         timeout: 5000,
     };
 
-    public static displayName = "Blueprint2.Toast";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
     public render(): JSX.Element {
         const { className, icon, intent, message } = this.props;
@@ -79,7 +79,9 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
     }
 
     public componentDidUpdate(prevProps: IToastProps) {
-        if (prevProps.timeout <= 0 && this.props.timeout > 0) {
+        if (prevProps.timeout !== this.props.timeout && this.props.timeout > 0) {
+            this.startTimeout();
+        } else if (prevProps.timeout <= 0 && this.props.timeout > 0) {
             this.startTimeout();
         } else if (prevProps.timeout > 0 && this.props.timeout <= 0) {
             this.clearTimeouts();

@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Icon, MenuItem, Utils } from "@blueprintjs/core";
+import { Classes, Icon, IInputGroupProps, MenuItem, Utils } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { IHeadingNode, IPageNode } from "documentalist/dist/client";
@@ -31,13 +31,13 @@ export interface INavigatorProps {
 }
 
 export interface INavigationSection {
-    filterKey: string;
     path: string[];
     route: string;
     title: string;
 }
 
 const NavOmnibar = Omnibar.ofType<INavigationSection>();
+const INPUT_PROPS: IInputGroupProps = { placeholder: "Fuzzy search headings..." };
 
 export class Navigator extends React.PureComponent<INavigatorProps> {
     private sections: INavigationSection[];
@@ -51,8 +51,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
             }
             const { route, title } = node;
             const path = parents.map(p => p.title).reverse();
-            const filterKey = [...path, "`" + title].join("/");
-            this.sections.push({ filterKey, path, route, title });
+            this.sections.push({ path, route, title });
         });
     }
 
@@ -63,6 +62,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         return (
             <NavOmnibar
                 className="docs-navigator-menu"
+                inputProps={INPUT_PROPS}
                 itemListPredicate={this.filterMatches}
                 isOpen={this.props.isOpen}
                 items={this.sections}
@@ -75,7 +75,13 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     }
 
     private filterMatches: ItemListPredicate<INavigationSection> = (query, items) =>
-        filter(items, query, { key: "filterKey", isPath: true });
+        filter(items, query, {
+            key: "route",
+            maxInners: items.length / 5,
+            maxResults: 10,
+            pathSeparator: "/",
+            usePathScoring: true,
+        });
 
     private renderItem: ItemRenderer<INavigationSection> = (section, props) => {
         if (!props.modifiers.matchesPredicate) {
@@ -84,7 +90,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
 
         // insert caret-right between each path element
         const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
-            elems.push(el, <Icon icon="caret-right" />);
+            elems.push(el, <Icon key={el} icon="caret-right" />);
             return elems;
         }, []);
         pathElements.pop();

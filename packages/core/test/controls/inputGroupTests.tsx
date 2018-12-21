@@ -18,13 +18,11 @@ describe("<InputGroup>", () => {
         assert.isTrue(input.childAt(1).hasClass(Classes.INPUT));
     });
 
-    it("supports custom style", () => {
-        const input = mount(<InputGroup leftIcon="star" style={{ background: "yellow" }} />);
-        const inputElement = input
-            .find("input")
-            .first()
-            .getDOMNode() as HTMLElement;
+    it("supports custom props", () => {
+        const input = mount(<InputGroup leftIcon="star" style={{ background: "yellow" }} tabIndex={4} />);
+        const inputElement = input.find("input").getDOMNode() as HTMLElement;
         assert.equal(inputElement.style.background, "yellow");
+        assert.equal(inputElement.tabIndex, 4);
     });
 
     it(`renders right element inside .${Classes.INPUT_ACTION} after input`, () => {
@@ -51,5 +49,12 @@ describe("<InputGroup>", () => {
 
         group.setProps({ type: "password" });
         assert.strictEqual(group.find("input").prop("type"), "password");
+    });
+
+    it("supports inputRef", () => {
+        let input: HTMLInputElement | null = null;
+        // tslint:disable-next-line:jsx-no-lambda
+        mount(<InputGroup inputRef={ref => (input = ref)} />);
+        assert.instanceOf(input, HTMLInputElement);
     });
 });

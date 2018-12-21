@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export type TabId = string | number;
 
@@ -50,7 +50,7 @@ export class Tab extends React.PureComponent<ITabProps, {}> {
         id: undefined,
     };
 
-    public static displayName = "Blueprint2.Tab";
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tab`;
 
     // this component is never rendered directly; see Tabs#renderTabPanel()
     /* istanbul ignore next */

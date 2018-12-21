@@ -10,11 +10,18 @@ import * as React from "react";
 import { Classes, Intent } from "../../common";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { HandleInteractionKind, HandleType, IHandleProps } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
+
+/**
+ * SFC used to pass slider handle props to a `MultiSlider`.
+ * This element is not rendered directly.
+ */
+const MultiSliderHandle: React.SFC<IHandleProps> = () => null;
+MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
 // TODO: move this to props.ts in a follow up PR
 /** A convenience type for React's optional children prop. */
@@ -118,9 +125,9 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         defaultTrackIntent: Intent.NONE,
     };
 
-    public static displayName = "Blueprint2.MultiSlider";
+    public static displayName = `${DISPLAYNAME_PREFIX}.MultiSlider`;
 
-    public static Handle: React.SFC<IHandleProps> = () => null;
+    public static Handle = MultiSliderHandle;
 
     public state: ISliderState = {
         labelPrecision: getLabelPrecision(this.props),

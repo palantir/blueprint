@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/webpack-build-scripts",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Webpack build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
@@ -29,5 +29,5 @@
     "url": "git@github.com:palantir/blueprint.git"
   },
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE FILE"
+  "license": "SEE LICENSE IN LICENSE"
 }
