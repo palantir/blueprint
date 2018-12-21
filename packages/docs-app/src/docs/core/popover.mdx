@@ -3,13 +3,14 @@ menu: Core
 route: /core/components/popover
 ---
 
+import { Callout } from "@blueprintjs/core";
 import { CssExample, Interface } from "@blueprintjs/docz-theme";
 import { PopoverExample } from "./examples/popoverExample";
 import { PopoverDismissExample } from "./examples/popoverDismissExample";
 import { PopoverInteractionKindExample } from "./examples/popoverInteractionKindExample";
 import { PopoverMinimalExample } from "./examples/popoverMinimalExample";
 import { PopoverPortalExample } from "./examples/popoverPortalExample";
-import { PopoverPositionExample } from "./examples/popoverPositionExample";
+import { PopoverPositionExample, SideLabel, AlignmentLabel } from "./examples/popoverPositionExample";
 import { PopoverSizingExample } from "./examples/popoverSizingExample";
 
 # Popover
@@ -122,22 +123,27 @@ export class PopoverExample extends React.Component {
 
 The `position` prop controls the Popover's position relative to the target. The `Position` enumeration defines the full set of supported values. There are two attributes of positioning to consider:
 
-- Which <span className="docs-popover-position-label-side">__side__</span> of the target the popover should render on.
-- The popover's <span className="docs-popover-position-label-alignment">__alignment__</span> relative to the target.
+- Which <SideLabel /> of the target the popover should render on.
+- The popover's <AlignmentLabel /> relative to the target.
 
 These two attributes can be expressed with a single value having the following structure:
 
 <pre className="docs-popover-position-value-code-block">
-    <span className="docs-popover-position-label-side">[SIDE]</span>_<span className="docs-popover-position-label-alignment">[ALIGNMENT]</span>
+    <SideLabel />_<AlignmentLabel />
 </pre>
 
-The following example shows all supported `Position` values and how each behaves in practice. Note that if <strong><code>_<span className="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted, the popover will align to the __center__ of the target.
+The following example shows all supported `Position` values and how each behaves
+in practice. Note that if <AlignmentLabel />
+is ommitted, the popover will align to the __center__ of the target.
 
 <PopoverPositionExample />
 
 #### Automatic positioning
 
-The Popover's `position` can also be chosen _automatically_ via `"auto"`, `"auto-start"`, or `"auto-end"`. All of these options choose and continually update the <span className="docs-popover-position-label-side">__side__</span> for you to avoid overflowing the boundary element (when scrolling within it, for instance). The options differ in how they handle <span className="docs-popover-position-label-alignment">__alignment__</span>:
+The Popover's `position` can also be chosen _automatically_ via `"auto"`,
+`"auto-start"`, or `"auto-end"`. All of these options choose and continually
+update the <SideLabel /> for you to avoid overflowing the boundary element (when
+scrolling within it, for instance). The options differ in how they handle <AlignmentLabel />:
 
 - In `"auto"` mode (the default for `position`), the Popover will align itself to the center of the target as it flips sides.
 - In `"auto-start"` mode, the Popover will align itself to the `start` of the target (i.e., the top edge when the popover is on the left or right, or the left edge when the popover is on the top or bottom).
