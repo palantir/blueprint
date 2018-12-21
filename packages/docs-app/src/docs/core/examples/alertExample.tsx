@@ -52,7 +52,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
                 <Button onClick={this.handleErrorOpen} text="Open file error alert" />
                 <Alert
                     {...alertProps}
-                    className={this.props.data.themeName}
+                    // className={this.props.data.themeName}
                     confirmButtonText="Okay"
                     isOpen={isOpenError}
                     onClose={this.handleErrorClose}
@@ -66,7 +66,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
                 <Button onClick={this.handleMoveOpen} text="Open file deletion alert" />
                 <Alert
                     {...alertProps}
-                    className={this.props.data.themeName}
+                    // className={this.props.data.themeName}
                     cancelButtonText="Cancel"
                     confirmButtonText="Move to Trash"
                     icon="trash"
@@ -92,7 +92,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
     private handleMoveOpen = () => this.setState({ isOpen: true });
     private handleMoveConfirm = () => {
         this.setState({ isOpen: false });
-        this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
+        this.toaster.show({ message: TOAST_MESSAGE });
     };
     private handleMoveCancel = () => this.setState({ isOpen: false });
 }

@@ -46,7 +46,7 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, this.props.data.themeName);
+        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS);
 
         return (
             <Example options={this.renderOptions()} {...this.props}>

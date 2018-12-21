@@ -138,7 +138,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
 
     private renderProgress(amount: number): IToastProps {
         return {
-            className: this.props.data.themeName,
+            // className: this.props.data.themeName,
             icon: "cloud-upload",
             message: (
                 <ProgressBar
