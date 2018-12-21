@@ -9,11 +9,6 @@
   @return '[data-page-id#{$comparator}"#{$ref}"]';
 }
 
-// Generate a selector for a React example by name
-@function example($NameExample, $comparator: "=") {
-  @return '[data-example-id#{$comparator}"#{$NameExample}"]';
-}
-
 // Specific example customizations
 
 //
@@ -27,17 +22,15 @@
   100% { transform: rotate(0); }
 }
 
+.docs-wiggle {
+  animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
+}
+
 #{page("tree")} .#{$ns}-tree {
   width: $pt-grid-size * 35;
 }
 
-#{example("ButtonsExample")} {
-  .docs-wiggle {
-    animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
-  }
-}
-
-#{example("EditableTextExample")} {
+.docs-editable-text-example {
   .docs-example {
     display: block;
   }
@@ -47,11 +40,7 @@
   }
 }
 
-#{example("FormGroupExample")} {
-  .docs-example {
-    flex-direction: column;
-  }
-
+.docs-form-group-example {
   .#{$ns}-form-content {
     width: $pt-grid-size * 20;
   }
@@ -59,12 +48,6 @@
 
 #{example("MenuExample")} .#{$ns}-menu {
   max-width: 280px;
-}
-
-#{example("TagExample")} {
-  .docs-example {
-    flex-direction: column;
-  }
 }
 
 .docs-context-menu-example {
@@ -169,50 +152,37 @@
   }
 }
 
-#{example("HotkeyTester")} {
-  .docs-hotkey-tester {
-    @include pt-flex-container(column, $pt-grid-size);
-    flex: 1 1;
-    align-items: center;
-    justify-content: space-around;
-    opacity: 0.4;
-    border: 2px solid rgba($gray3, 0.8);
-    border-radius: $pt-border-radius * 2;
-    background: rgba($gray3, 0.2);
-    max-width: 70%;
-    min-height: $pt-grid-size * 12;
-    padding: $pt-grid-size * 2;
-    transition: all $pt-transition-duration $pt-transition-ease;
+.docs-hotkey-tester {
+  @include pt-flex-container(column, $pt-grid-size);
+  flex: 1 1;
+  align-items: center;
+  justify-content: space-around;
+  opacity: 0.4;
+  border: 2px solid rgba($gray3, 0.8);
+  border-radius: $pt-border-radius * 2;
+  background: rgba($gray3, 0.2);
+  max-width: 70%;
+  min-height: $pt-grid-size * 12;
+  padding: $pt-grid-size * 2;
+  transition: all $pt-transition-duration $pt-transition-ease;
 
-    &:hover {
-      opacity: 0.6;
-      cursor: pointer;
-    }
-
-    &:focus {
-      opacity: 1;
-      border: 2px solid rgba($blue3, 0.6);
-      background: rgba($blue3, 0.1);
-      cursor: default;
-      color: map-get($pt-intent-text-colors, "primary");
-
-      .#{$ns}-dark & {
-        border: 2px solid rgba($blue4, 0.6);
-        background: rgba($blue4, 0.1);
-        color: map-get($pt-dark-intent-text-colors, "primary");
-      }
-    }
-  }
-}
-
-#{example("OverflowListExample")} {
-  .#{$ns}-card {
-    margin: 0;
-    min-width: $pt-grid-size * 7;
+  &:hover {
+    opacity: 0.6;
+    cursor: pointer;
   }
 
-  .#{$ns}-overflow-list {
-    white-space: nowrap;
+  &:focus {
+    opacity: 1;
+    border: 2px solid rgba($blue3, 0.6);
+    background: rgba($blue3, 0.1);
+    cursor: default;
+    color: map-get($pt-intent-text-colors, "primary");
+
+    .#{$ns}-dark & {
+      border: 2px solid rgba($blue4, 0.6);
+      background: rgba($blue4, 0.1);
+      color: map-get($pt-dark-intent-text-colors, "primary");
+    }
   }
 }
 
@@ -248,28 +218,26 @@
   width: $overlay-example-width;
 }
 
-#{example("PopoverExample")} {
-  .docs-example {
-    display: block;
-    max-height: 700px;
-    overflow: scroll;
-  }
+.docs-popover-example .docs-example {
+  display: block;
+  max-height: 700px;
+  overflow: scroll;
+}
 
-  .docs-popover-example-scroll {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 1000px;
-    height: 1500px;
+.docs-popover-example-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 1000px;
+  height: 1500px;
 
-    > p {
-      margin-top: $pt-grid-size;
-    }
+  > p {
+    margin-top: $pt-grid-size;
   }
 }
 
-#{example("PopoverDismissExample")} {
+.docs-popover-dismiss-example {
   height: 220px;
 
   .docs-reopen-message {
@@ -290,25 +258,18 @@
   }
 }
 
-#{example("PanelStackExample")} {
-  .docs-panel-stack-example {
-    box-shadow: $pt-elevation-shadow-0;
-    width: 300px;
-    height: 240px;
-  }
+.docs-panel-stack-example {
+  box-shadow: $pt-elevation-shadow-0;
+  width: 300px;
+  height: 240px;
+}
 
-  .docs-panel-stack-contents-example {
-    display: flex;
-    flex: 1 0 auto;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-  }
-
-  ul {
-    max-height: 240px;
-    overflow: auto;
-  }
+.docs-panel-stack-contents-example {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
 }
 
 .docs-popover-position-example {
@@ -448,7 +409,7 @@
   line-height: $pt-navbar-height;
 }
 
-#{example("TooltipExample")} {
+.docs-tooltip-example {
   .docs-example {
     flex-direction: column;
 

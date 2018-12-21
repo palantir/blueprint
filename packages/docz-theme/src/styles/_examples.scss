@@ -67,12 +67,20 @@ $dark-options-background-color: $dark-gray5;
   }
 }
 
+.docs-example-column {
+  flex-direction: column;
+}
+
 .docs-example-options {
   flex: 0 0 auto;
   border-radius: $example-frame-border-radius;
   background-color: $options-background-color;
   padding: $pt-grid-size * 2;
   text-align: left;
+
+  .#{$ns}-heading:first-child {
+    margin-top: 0;
+  }
 
   .#{$ns}-heading:not(:first-child) {
     margin-top: $pt-grid-size;
