@@ -1,6 +1,12 @@
-# Tabs
+---
+menu: Core
+route: /core/components/tabs
+---
 
-import { TabsExample } from "./examples/TabsExample";
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { TabsExample } from "./examples/tabsExample";
+
+# Tabs
 
 <TabsExample />
 
@@ -40,7 +46,7 @@ children are simply rendered in order; interactions are your responsibility.
 Insert a `<Tabs.Expander />` between any two children to right-align all
 subsequent children (or bottom-align when `vertical`).
 
-@interface ITabsProps
+<Interface name="ITabsProps" />
 
 ### Tab
 
@@ -52,7 +58,7 @@ The associated tab `panel` will be visible when the `Tab` is active. Omitting
 `panel` is supported and can be useful when you want the associated panel to
 appear elsewhere in the DOM (by rendering it yourself as needed).
 
-@interface ITabProps
+<Interface name="ITabProps" />
 
 ## CSS
 
@@ -65,4 +71,4 @@ the Blueprint CSS. You may also simply omit hidden tabs from your markup to
 improve performance (the `Tabs` JavaScript component supports this through the
 `renderActiveTabPanelOnly` prop).
 
-@css tabs
+<CssExample name="tabs" />

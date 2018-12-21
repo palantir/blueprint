@@ -1,6 +1,10 @@
 ---
-parent: components
+menu: Core
+route: /core/components/nonIdealState
 ---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { NonIdealStateExample } from "./examples/nonIdealStateExample";
 
 # Non-ideal state
 
@@ -15,8 +19,6 @@ non-ideal states, including:
   In this case, a good practice is to add a call to action directing the user
   what to do next.
 
-import { NonIdealStateExample } from "./examples/NonIdealStateExample";
-
 <NonIdealStateExample />
 
 ## Props
@@ -30,7 +32,7 @@ spacing between each child:
 1. `action`
 1. `children`
 
-@interface INonIdealStateProps
+<Interface name="INonIdealStateProps" />
 
 ## CSS
 
@@ -39,4 +41,4 @@ to the icon element. The container should only have direct element children (all
 text should be wrapped in an enclosing element) for proper spacing between each
 child.
 
-@css non-ideal-state
+<CssExample name="non-ideal-state" />

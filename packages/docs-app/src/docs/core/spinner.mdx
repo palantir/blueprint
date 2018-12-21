@@ -1,9 +1,16 @@
+---
+menu: Core
+route: /core/components/spinner
+---
+
+import { Callout } from "@blueprintjs/core";
+import { Interface } from "@blueprintjs/docz-theme";
+import { SpinnerExample } from "./examples/spinnerExample";
+
 # Spinner
 
 Spinners indicate progress in a circular fashion. They're great for ongoing
 operations and can also represent known progress.
-
-import { SpinnerExample } from "./examples/SpinnerExample";
 
 <SpinnerExample />
 
@@ -23,13 +30,12 @@ are provided as static properties: `Spinner.SIZE_SMALL`,
 by including `Classes.SMALL` or `Classes.LARGE` in `className` instead of the
 `size` prop (this prevents an API break when upgrading to 3.x).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">IE11 compatibility note</h4>
+<Callout intent="warning" title="IE11 compatibility note">
     IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
     `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
     correctly because they rely on CSS animations.
-</div>
+</Callout>
 
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
 
-@interface ISpinnerProps
+<Interface name="ISpinnerProps" />

@@ -1,3 +1,12 @@
+---
+menu: Core
+route: /core/components/numericInput
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { NumericInputBasicExample } from "./examples/numericInputBasicExample";
+import { NumericInputExtendedExample } from "./examples/numericInputExtendedExample";
+
 # Numeric input
 
 The `NumericInput` component provides controls for easily inputting,
@@ -25,8 +34,6 @@ This example shows how `NumericInput` works out of the box. It supports the
 basic keyboard and mouse interactions listed above, as well as basic keyboard
 entry:
 
-import { NumericInputBasicExample } from "./examples/NumericInputBasicExample";
-
 <NumericInputBasicExample />
 
 ## Extended example
@@ -44,13 +51,11 @@ custom `onKeyDown` callback) and when the field loses focus (via a custom
 `onBlur` callback). If the input is invalid when either of these callbacks is
 trigged, the field will be cleared.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<Callout intent="primary">
     This example contains non-core functionality that is meant to demonstrate
     the extensibility of the `NumericInput` component. The correctness of the
     custom evaluation code has not been tested robustly.
-</div>
-
-import { NumericInputExtendedExample } from "./examples/NumericInputExtendedExample";
+</Callout>
 
 <NumericInputExtendedExample />
 
@@ -59,7 +64,7 @@ import { NumericInputExtendedExample } from "./examples/NumericInputExtendedExam
 The `NumericInput` component is available in the __@blueprintjs/core__ package.
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
-@interface INumericInputProps
+<Interface name="INumericInputProps" />
 
 ### Responsive numeric inputs
 

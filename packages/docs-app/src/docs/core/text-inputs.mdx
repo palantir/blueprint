@@ -1,3 +1,11 @@
+---
+menu: Core
+route: /core/components/textInputs
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { InputGroupExample } from "./examples/inputGroupExample";
+
 # Text inputs
 
 Blueprint provides two ways to create a text input:
@@ -12,8 +20,6 @@ Blueprint provides two ways to create a text input:
 An input group allows you to add icons and buttons _within_ a text input to expand its
 functionality. For example, you might use an input group to build a visibility toggle for a password
 field.
-
-import { InputGroupExample } from "./examples/InputGroupExample";
 
 <InputGroupExample />
 
@@ -30,7 +36,7 @@ a controlled or uncontrolled fashion. In addition to its own props, it supports
 all valid props for HTML `<input>` elements and proxies them to that element in
 the DOM; the most common ones are detailed below.
 
-@interface IInputGroupProps
+<Interface name="IInputGroupProps" />
 
 ### CSS
 
@@ -39,17 +45,16 @@ dictated by the HTML markup: an element specified before the `input` appears on 
 vice versa. You do not need to apply sizing classes to the children&mdash;they inherit the size of
 the parent input.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Icons only</h4>
+<Callout intent="warning" title="Icons only">
     <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
     in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
     buttons instead.</p>
 
     Conversely, the [`InputGroup`](#core/components/text-inputs.input-group) React
     component _does_ support arbitrary content in its right element.
-</div>
+</Callout>
 
-@css input-group
+<CssExample name="input-group" />
 
 ## HTML input
 
@@ -57,7 +62,7 @@ Apply `Classes.INPUT` on an `input[type="text"]`. You should also specify `dir="
 [to better support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto)
 (in all browsers except Internet Explorer).
 
-@css input
+<CssExample name="input" />
 
 ## Text area
 
@@ -72,9 +77,9 @@ Apply `Classes.INPUT` on a `<textarea>`, or use the `TextArea` React component.
 />
 ```
 
-@css textarea
+<CssExample name="textarea" />
 
-@interface ITextAreaProps
+<Interface name="ITextAreaProps" />
 
 ## Search field
 
@@ -84,4 +89,4 @@ is applied automatically for `[type="search"]` inputs.
 
 Note that some browsers also implement a handler for the `esc` key to clear the text in a search field.
 
-@css input-search
+<CssExample name="input-search" />

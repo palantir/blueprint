@@ -1,11 +1,18 @@
+---
+menu: Core
+route: /core/components/controlGroup
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { ControlGroupExample } from "./examples/controlGroupExample";
+
 # Control group
 
 A control group renders several distinct form controls as one unit, squaring the
 borders between them. It supports any number of buttons, text inputs, input
 groups, and HTML selects as direct children.
 
-<div class="@ns-callout @ns-intent-success @ns-icon-comparison">
-    <h4 class="@ns-heading">Control group vs. input group</h4>
+<Callout intent="success" title="Control group vs. input group">
     <p>Both components group multiple elements into a single unit, but their usage patterns are
     quite different.</p>
     <p>Think of `ControlGroup` as a parent with multiple children, with each one a separate
@@ -13,9 +20,7 @@ groups, and HTML selects as direct children.
     <p>Conversely, an `InputGroup` is a single control, and should function like so. A
     button inside of an input group should only affect that input; if its reach is further, then it
     should be promoted to live in a control group.</p>
-</div>
-
-import { ControlGroupExample } from "./examples/ControlGroupExample";
+</Callout>
 
 <ControlGroupExample />
 
@@ -48,7 +53,7 @@ HTML `<div>` props, in addition to those listed below.
 </ControlGroup>
 ```
 
-@interface IControlGroupProps
+<Interface name="IControlGroupProps" />
 
 ## CSS
 
@@ -59,5 +64,5 @@ elements as direct children.
 Note that `.@ns-control-group` does not cascade any modifiers to its children. For example, each
 child must be marked individually as `.@ns-large` for uniform large appearance.
 
-@css control-group
+<CssExample name="control-group" />
 

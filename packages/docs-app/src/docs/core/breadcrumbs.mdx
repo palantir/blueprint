@@ -1,8 +1,14 @@
+---
+menu: Core
+route: /core/components/breadcrumbs
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { BreadcrumbsExample } from "./examples/breadcrumbsExample";
+
 # Breadcrumbs
 
 Breadcrumbs identify the path to the current resource in an application.
-
-import { BreadcrumbsExample } from "./examples/BreadcrumbsExample";
 
 <BreadcrumbsExample />
 
@@ -40,7 +46,7 @@ export class BreadcrumbsExample extends React.Component {
 }
 ```
 
-@interface IBreadcrumbsProps
+<Interface name="IBreadcrumbsProps" />
 
 ### Breadcrumb
 
@@ -49,7 +55,7 @@ The `Breadcrumb` component renders an `a.@ns-breadcrumb` if given an `href` or
 array of `IBreadcrumbProps` to the `<Breadcrumbs items>` prop and only render
 this component directly when defining a custom `breadcrumbRenderer`.
 
-@interface IBreadcrumbProps
+<Interface name="IBreadcrumbProps" />
 
 ## CSS
 
@@ -67,4 +73,4 @@ containing breadcrumbs that are collapsed due to layout constraints.
 * When adding another element (such as a [tooltip](#core/components/tooltip) or
 [popover](#core/components/popover)) to a breadcrumb, wrap it around the contents of the `li`.
 
-@css breadcrumbs
+<CssExample name="breadcrumbs" />

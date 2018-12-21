@@ -1,3 +1,12 @@
+---
+menu: Core
+route: /core/components/overlay
+---
+
+import { Callout } from "@blueprintjs/core";
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { OverlayExample } from "./examples/overlayExample";
+
 # Overlay
 
 `Overlay` is a generic low-level component for rendering content _on top of_ its
@@ -15,8 +24,6 @@ behind it.
 `Overlay` is the backbone of all the components listed in the **Overlays** group
 in the sidebar. Using `Overlay` directly should be rare in your app; it should
 only be necessary if no existing component meets your needs.
-
-import { OverlayExample } from "./examples/OverlayExample";
 
 <OverlayExample />
 
@@ -44,11 +51,10 @@ The `onClose` callback prop is invoked when user interaction causes the overlay
 to close, but your application is responsible for updating the state that
 actually closes the overlay.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">A note about overlay content positioning</h4>
+<Callout intent="primary" title="A note about overlay content positioning">
     When rendered inline, content will automatically be set to `position: absolute` to respect
     document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
-</div>
+</Callout>
 
 ```tsx
 <div>
@@ -56,7 +62,7 @@ actually closes the overlay.
     <Overlay isOpen={this.state.isOpen} onClose={this.toggleOverlay}>
         Overlaid contents...
     </Overlay>
-</div>
+</Callout>
 ```
 
-@interface IOverlayProps
+<Interface name="IOverlayProps" />

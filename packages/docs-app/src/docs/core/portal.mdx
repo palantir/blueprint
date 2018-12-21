@@ -1,3 +1,10 @@
+---
+menu: Core
+route: /core/components/portal
+---
+
+import { Interface } from "@blueprintjs/docz-theme";
+
 # Portal
 
 The `Portal` component renders its children into a new "subtree" outside of the current component
@@ -20,11 +27,11 @@ In a **React 16+** environment, the `Portal` component will use [`ReactDOM.creat
 `Portal` supports the following options on its [React context](https://facebook.github.io/react/docs/context.html).
 To use them, supply a child context to a subtree that contains the Portals you want to customize.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    Blueprint uses the React 15-compatible `getChildContext()` API instead of the newer React 16.3 `React.createContext()` API.
-</div>
+<Callout intent="primary">
+    Blueprint uses the React 15-compatible <code>getChildContext()</code> API instead of the newer React 16.3 <code>React.createContext()</code> API.
+</Callout>
 
-@interface IPortalContext
+<Interface name="IPortalContext" />
 
 ## Props
 
@@ -35,11 +42,12 @@ child of the `<body>`.
 `Portal` is used inside [`Overlay`](#core/components/overlay) to actually overlay the content on the
 application.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">A note about responsive layouts</h4>
-    For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
-    may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
-    apply `position: absolute` to the `<body>` tag.
-</div>
+<Callout intent="warning" title="A note about responsive layouts">
+    For a single-page app, if the <code>&lt;body></code> is styled with
+    <code>width: 100%</code> and <code>height: 100%</code>, a
+    <code>Portal</code> may take up extra whitespace and cause the window to
+    undesirably scroll. To fix this, instead apply <code>position:
+    absolute</code> to the <code>&lt;body></code> tag.
+</Callout>
 
-@interface IPortalProps
+<Interface name="IPortalProps" />

@@ -1,8 +1,15 @@
+---
+menu: Core
+route: /core/components/button
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { ButtonsExample } from "./examples/buttonsExample";
+import { ButtonsIconsExample } from "./examples/buttonsIconsExample";
+
 # Button
 
 Buttons trigger actions when clicked.
-
-import { ButtonsExample } from "./examples/ButtonsExample";
 
 <ButtonsExample />
 
@@ -22,24 +29,20 @@ import { ButtonsExample } from "./examples/ButtonsExample";
 <button class="@ns-button" type="button"><svg class="@ns-icon">...</svg></button>
 ```
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Disabled `Button` prevents all interaction</h4>
+<Callout intent="danger" title="Disabled `Button` prevents all interaction">
     Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
 
-    `Button` uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
-    `AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
+    `Button` uses the native `disabled` attribute on the `&lt;button>` tag so the browser disables all interactions.
+    `AnchorButton` uses the class `.@ns-disabled` because `&lt;a>` tags do not support the `disabled`
     attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
     when disabled but permit other events.
-
-</div>
+</Callout>
 
 ## Adding icons
 
 `Button` and `AnchorButton` support `icon` and `rightIcon` props to place an
 icon on either end of their children. Icons can also be supplied as children
 using the `Icon` component.
-
-import { ButtonsIconsExample } from "./examples/ButtonsIconsExample";
 
 <ButtonsIconsExample />
 
@@ -49,7 +52,7 @@ The two button components each support arbitrary HTML props for their underlying
 DOM element (`<button>` and `<a>` respectively). Specifying an HTML prop will
 override the component's default for it, such as `role` on `<AnchorButton>`.
 
-@interface IButtonProps
+<Interface name="IButtonProps" />
 
 ## CSS
 
@@ -64,4 +67,4 @@ Use the `@ns-button` class to access button styles. You should implement buttons
   user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
 * Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
-@css button
+<CssExample name="button" />

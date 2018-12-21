@@ -1,10 +1,16 @@
+---
+menu: Core
+route: /core/components/radio
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { RadioExample } from "./examples/radioExample";
+
 # Radio
 
 A radio button typically represents a single option in a mutually exclusive list
 (where only one item can be selected at a time). Blueprint provides `Radio` and
 `RadioGroup` components for these two layers.
-
-import { RadioExample } from "./examples/RadioExample";
 
 <RadioExample />
 
@@ -30,13 +36,13 @@ can use the `RadioGroup` component with a series of `Radio` children.
 `Radio` supports the full range of HTML `<input>` props.
 The most common options are detailed below.
 
-@interface IRadioProps
+<Interface name="IRadioProps" />
 
 ### RadioGroup
 
-@interface IRadioGroupProps
+<Interface name="IRadioGroupProps" />
 
-@interface IOptionProps
+<Interface name="IOptionProps" />
 
 ## CSS
 
@@ -47,4 +53,4 @@ whole thing in a `<label>` with the classes `.@ns-control.@ns-radio`.
 Note that attribute modifiers (`:checked`, `:disabled`) are applied on the
 internal `<input>` element.
 
-@css radio
+<CssExample name="radio" />

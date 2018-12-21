@@ -1,6 +1,13 @@
 ---
+menu: Core
+route: /core/components/slider
 tag: new
 ---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { SliderExample } from "./examples/sliderExample";
+import { RangeSliderExample } from "./examples/rangeSliderExample";
+import { MultiSliderExample } from "./examples/multiSliderExample";
 
 # Slider
 
@@ -21,11 +28,9 @@ component, so the `value` prop determines its current appearance. Provide an
 `onChange` handler to receive updates and an `onRelease` handler to determine
 when the user has stopped interacting with the slider.
 
-import { SliderExample } from "./examples/SliderExample";
-
 <SliderExample />
 
-@interface ISliderProps
+<Interface name="ISliderProps" />
 
 ## Range slider
 
@@ -39,11 +44,9 @@ current appearance. Provide an `onChange` handler to receive updates and an
 `onRelease` handler to determine when the user has stopped interacting with the
 slider.
 
-import { RangeSliderExample } from "./examples/RangeSliderExample";
-
 <RangeSliderExample />
 
-@interface IRangeSliderProps
+<Interface name="IRangeSliderProps" />
 
 ## Multi slider
 
@@ -51,11 +54,9 @@ import { RangeSliderExample } from "./examples/RangeSliderExample";
 line. It powers both `Slider` and `RangeSlider` internally and can be used for
 implementing more advanced use cases than one or two numbers.
 
-import { MultiSliderExample } from "./examples/MultiSliderExample";
-
 <MultiSliderExample />
 
-@interface IMultiSliderProps
+<Interface name="IMultiSliderProps" />
 
 ### Handle
 
@@ -70,4 +71,4 @@ elements, each with their own `value` and other properties.
 </MultiSlider>
 ```
 
-@interface IHandleProps
+<Interface name="IHandleProps" />

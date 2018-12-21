@@ -1,3 +1,11 @@
+---
+menu: Core
+route: /core/components/collapsibleList
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { CollapsibleListExample } from "./examples/collapsibleListExample";
+
 # Collapsible list
 
 The `CollapsibleList` component accepts a list of menu items and a count of
@@ -6,8 +14,7 @@ dropdown menu. The required `visibleItemRenderer` callback prop allows for
 customizing the appearance of visible items, using the props from the `MenuItem`
 children.
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Deprecated: use [Overflow list](#core/components/overflow-list)</h4>
+<Callout intent="danger" title="Deprecated: use [Overflow list](#core/components/overflow-list)">
     This component is **deprecated since 3.0.0** with the introduction of
     [`OverflowList`](#core/components/overflow-list) which provides a similar
     experience with two distinct advantages:
@@ -15,13 +22,11 @@ children.
         <li>Items collapse automatically based on available space in the container.</li>
         <li>
             `OverflowList` accepts a generic array of items (instead of explicit
-            `<MenuItem>` children) with custom renderers for both visible and overflowed
+            `&lt;MenuItem>` children) with custom renderers for both visible and overflowed
             items, allowing for _any_ UI, not just a dropdown menu.
         </li>
     </ol>
-</div>
-
-import { CollapsibleListExample } from "./examples/CollapsibleListExample";
+</Callout>
 
 <CollapsibleListExample />
 
@@ -51,4 +56,4 @@ Children of the `CollapsibleList` component _must_ be `MenuItem`s so they can be
 in the dropdown. Define a `visibleItemRenderer` callback to customize the appearance of visible
 items using their [`IMenuItemProps`](#core/components/menu.menu-item).
 
-@interface ICollapsibleListProps
+<Interface name="ICollapsibleListProps" />

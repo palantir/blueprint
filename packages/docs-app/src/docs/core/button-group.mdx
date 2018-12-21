@@ -1,8 +1,15 @@
+---
+menu: Core
+route: /core/components/buttonGroup
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { ButtonGroupExample } from "./examples/buttonGroupExample";
+import { ButtonGroupPopoverExample } from "./examples/buttonGroupPopoverExample";
+
 # Button group
 
 Button groups arrange multiple buttons in a horizontal or vertical group.
-
-import { ButtonGroupExample } from "./examples/ButtonGroupExample";
 
 <ButtonGroupExample />
 
@@ -10,8 +17,6 @@ import { ButtonGroupExample } from "./examples/ButtonGroupExample";
 
 `Button`s inside a `ButtonGroup` can trivially be wrapped with a
 [`Popover`](#core/components/popover) to create complex toolbars.
-
-import { ButtonGroupPopoverExample } from "./examples/ButtonGroupPopoverExample";
 
 <ButtonGroupPopoverExample />
 
@@ -58,7 +63,7 @@ The component also supports all HTML `<div>` props.
 </ButtonGroup>
 ```
 
-@interface IButtonGroupProps
+<Interface name="IButtonGroupProps" />
 
 ## CSS
 
@@ -67,4 +72,4 @@ You can apply sizing directly on the button group container element.
 
 You should implement interactive segmented controls as button groups.
 
-@css button-group
+<CssExample name="button-group" />

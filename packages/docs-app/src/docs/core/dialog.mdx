@@ -1,17 +1,22 @@
+---
+menu: Core
+route: /core/components/dialog
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { DialogExample } from "./examples/dialogExample";
+
 # Dialog
 
 Dialogs present content overlaid over other parts of the UI.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">Terminology note</h4>
+<Callout intent="primary" title="Terminology note">
     The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
     _Modal_ is an adjective that describes parts of a UI.
     An element is considered modal if it
     [blocks interaction with the rest of the application](https://en.wikipedia.org/wiki/Modal_window).
     We use the term "dialog" to avoid confusion with the adjective.
-</div>
-
-import { DialogExample } from "./examples/DialogExample";
+</Callout>
 
 <DialogExample />
 
@@ -24,7 +29,7 @@ The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG_BODY` that contains the body content and a child with
 `Classes.DIALOG_FOOTER` that contains the action buttons.
 
-@interface IDialogProps
+<Interface name="IDialogProps" />
 
 ## CSS
 
@@ -34,4 +39,4 @@ whenever possible, as they automatically generate some of this markup.
 
 More examples of dialog content are shown below.
 
-@css dialog
+<CssExample name="dialog" />

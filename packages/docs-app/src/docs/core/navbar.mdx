@@ -1,8 +1,14 @@
+---
+menu: Core
+route: /core/components/navbar
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { NavbarExample } from "./examples/navbarExample";
+
 # Navbar
 
 Navbars present useful navigation controls at the top of an application.
-
-import { NavbarExample } from "./examples/NavbarExample";
 
 <NavbarExample />
 
@@ -14,11 +20,10 @@ stays at the top of the screen as the user scrolls through the document.
 
 This modifier is not illustrated here because it breaks the document flow.
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Body padding required</h4>
+<Callout intent="danger" title="Body padding required">
     The fixed navbar will lie on top of your other content unless you add padding to the top of the
-    `<body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable.
-</div>
+    `&lt;body>` element equal to the height of the navbar. Use the `$pt-navbar-height` Sass variable.
+</Callout>
 
 ### Fixed width
 
@@ -27,7 +32,7 @@ entire viewport), you can align the navbar to match by wrap your navbar groups
 in an element with your desired `width` and `margin: 0 auto;` to horizontally
 center it.
 
-@css navbar-container
+<CssExample name="navbar-container" />
 
 ## Props
 
@@ -52,13 +57,13 @@ the full range of HTML `<div>` props.
 </Navbar>
 ```
 
-@interface INavbarProps
+<Interface name="INavbarProps" />
 
-@interface INavbarGroupProps
+<Interface name="INavbarGroupProps" />
 
-@interface INavbarHeadingProps
+<Interface name="INavbarHeadingProps" />
 
-@interface INavbarDividerProps
+<Interface name="INavbarDividerProps" />
 
 ## CSS
 
@@ -69,4 +74,4 @@ Use the following classes to construct a navbar:
 * `.@ns-navbar-heading` &ndash; Larger text for your application title.
 * `.@ns-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
 
-@css navbar
+<CssExample name="navbar" />

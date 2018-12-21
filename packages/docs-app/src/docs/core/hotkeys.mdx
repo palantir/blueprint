@@ -1,3 +1,12 @@
+---
+menu: Core
+route: /core/components/hotkeys
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { HotkeyPiano } from "./examples/hotkeyPiano";
+import { HotkeyTester } from "./examples/hotkeyTester";
+
 # Hotkeys
 
 Hotkeys enable you to create interactions based on user keyboard events.
@@ -6,7 +15,7 @@ To add hotkeys to your React component, use the `@HotkeysTarget` class decorator
 and add a `renderHotkeys()` method. The decorator will call `renderHotkeys()`
 and attach the appropriate key listeners.
 
-@reactExample HotkeyPiano
+<HotkeyPiano />
 
 ## Usage
 
@@ -49,7 +58,7 @@ The `@HotkeysTarget` decorator allows you to easily add global and local
 hotkeys to any React component. Add the decorator to the top of the class and
 make sure to implement the `renderHotkeys` method.
 
-@interface IHotkeysTarget
+<Interface name="IHotkeysTarget" />
 
 ### Props
 
@@ -62,9 +71,9 @@ Wrap your `Hotkey`s in the `Hotkeys` element. For example:
 </Hotkeys>
 ```
 
-@interface IHotkeysProps
+<Interface name="IHotkeysProps" />
 
-@interface IHotkeyProps
+<Interface name="IHotkeyProps" />
 
 ## Scope
 
@@ -146,4 +155,4 @@ Below is a little widget to quickly help you try out hotkey combos and see how
 they will look in the dialog. See the key combos section above for more about
 specifying key combo props.
 
-@reactExample HotkeyTester
+<HotkeyTester />

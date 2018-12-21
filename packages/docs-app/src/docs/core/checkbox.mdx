@@ -1,9 +1,16 @@
+---
+menu: Core
+route: /core/components/checkbox
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { CheckboxExample } from "./examples/checkboxExample";
+
+
 # Checkbox
 
 A checkbox allows the user to toggle between checked, unchecked, and (rarely)
 indeterminate states.
-
-import { CheckboxExample } from "./examples/CheckboxExample";
 
 <CheckboxExample />
 
@@ -26,7 +33,7 @@ issues. Enable the `indeterminate` prop for a third in-between state.
 This component supports the full range of HTML `<input>` props. The most common
 options are detailed below.
 
-@interface ICheckboxProps
+<Interface name="ICheckboxProps" />
 
 ## CSS
 
@@ -38,4 +45,4 @@ Note that attribute modifiers (`:checked`, `:disabled`) are applied on the
 internal `<input>` element. Further note that `:indeterminate` can only be set
 via JavaScript (the `Checkbox` React component supports it handily with a prop).
 
-@css checkbox
+<CssExample name="checkbox" />

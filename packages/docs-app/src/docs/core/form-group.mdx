@@ -1,10 +1,16 @@
+---
+menu: Core
+route: /core/components/formGroup
+---
+
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+import { FormGroupExample } from "./examples/formGroupExample";
+
 # Form group
 
 Form groups support more complex form controls than [simple labels](#core/components/label),
 such as [control groups](#core/components/control-group) or [`NumericInput`](#core/components/numeric-input).
 They also support additional helper text to aid with user navigation.
-
-import { FormGroupExample } from "./examples/FormGroupExample";
 
 <FormGroupExample />
 
@@ -24,7 +30,7 @@ label above and helper text below.
 </FormGroup>
 ```
 
-@interface IFormGroupProps
+<Interface name="IFormGroupProps" />
 
 ## CSS
 
@@ -38,4 +44,4 @@ Similar to labels, nested controls need to be styled separately.
 
 - Add `.@ns-large` to `.@ns-form-group` to align the label when used with large inline Blueprint controls.
 
-@css form-group
+<CssExample name="form-group" />

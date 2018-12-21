@@ -1,3 +1,11 @@
+---
+menu: Core
+route: /core/components/fileInput
+---
+
+import { Callout } from "@blueprintjs/core";
+import { CssExample, Interface } from "@blueprintjs/docz-theme";
+
 # File input
 
 Use the standard `input type="file"` along with a `span` with class `@ns-file-upload-input`.
@@ -10,18 +18,17 @@ which contain an `<input type="file">`. It supports the full range of HTML `<lab
 
 Use `inputProps` to apply props to the `<input>` element.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Static file name</h4>
+<Callout intent="warning" title="Static file name">
     File name does not update on file selection. To get this behavior,
     you must implement it separately in JS.
-</div>
+</Callout>
 
 ```tsx
 <FileInput disabled={true} text="Choose file..." onInputChange={...} />
 ```
 
-@interface IFileInputProps
+<Interface name="IFileInputProps" />
 
 ## CSS
 
-@css file-input
+<CssExample name="file-input" />

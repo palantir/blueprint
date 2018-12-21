@@ -1,6 +1,11 @@
 ---
+menu: Core
+route: /core/components/panelStack
 tag: new
 ---
+
+import { Interface } from "@blueprintjs/docz-theme";
+import { PanelStackExample } from "./examples/panelStackExample";
 
 # Panel stack
 
@@ -11,9 +16,6 @@ previous panel. The bottom-most `initialPanel` cannot be closed or removed from
 the stack. Panels use
 [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
 for seamless transitions.
-
-
-import { PanelStackExample } from "./examples/PanelStackExample";
 
 <PanelStackExample />
 
@@ -54,14 +56,14 @@ class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> 
 <PanelStack initialPanel={{ component: MyPanel, title: "Home" }} />
 ```
 
-@interface IPanel
+<Interface name="IPanel" />
 
-@interface IPanelProps
+<Interface name="IPanelProps" />
 
 ## Props
 
 The panel stack cannot be controlled but `onClose` and `onOpen` callbacks are
 available to listen for changes.
 
-@interface IPanelStackProps
+<Interface name="IPanelStackProps" />
 

@@ -1,3 +1,11 @@
+---
+menu: Core
+route: /core/components/alert
+---
+
+import { Interface } from "@blueprintjs/docz-theme";
+import { AlertExample } from "./examples/alertExample";
+
 # Alert
 
 Alerts notify users of important information and force them to acknowledge the alert content before
@@ -9,8 +17,6 @@ user can only exit the alert by clicking one of the confirmation
 buttons—clicking the overlay or pressing the `esc` key will not close the alert.
 These interactions can be enabled via props.
 
-import { AlertExample } from "./examples/AlertExample";
-
 <AlertExample />
 
 ## Props
@@ -19,4 +25,4 @@ import { AlertExample } from "./examples/AlertExample";
 `onConfirm` and `onCancel` props to respond to those interactions separately, or
 use `onClose` to handle both at the same time.
 
-@interface IAlertProps
+<Interface name="IAlertProps" />
