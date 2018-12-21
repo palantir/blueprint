@@ -7,12 +7,19 @@
 import * as React from "react";
 
 import { Button, Classes, Code, Popover, Position } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 
 const EXAMPLE_CLASS = "docs-popover-position-example";
 
 const SIDE_LABEL_CLASS = "docs-popover-position-label-side";
 const ALIGNMENT_LABEL_CLASS = "docs-popover-position-label-alignment";
+
+export const SideLabel: React.SFC<{ text?: string }> = ({ text = "side" }) => (
+    <strong className={SIDE_LABEL_CLASS}>{text}</strong>
+);
+export const AlignmentLabel: React.SFC<{ text?: string }> = ({ text = "alignment" }) => (
+    <strong className={ALIGNMENT_LABEL_CLASS}>{text}</strong>
+);
 
 export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
     public render() {
@@ -63,14 +70,14 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
     }
 
     private renderPopover(position: "auto" | Position, sideLabel: string, alignmentLabel?: string) {
-        const sideSpan = <span className={SIDE_LABEL_CLASS}>{sideLabel}</span>;
+        const sideSpan = <SideLabel text={sideLabel} />;
 
         const buttonLabel =
             alignmentLabel === undefined ? (
                 <>{sideSpan}</>
             ) : (
                 <>
-                    {sideSpan}_{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
+                    {sideSpan}_{<AlignmentLabel text={alignmentLabel} />}
                 </>
             );
 

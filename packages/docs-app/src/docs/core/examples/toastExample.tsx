@@ -22,7 +22,7 @@ import {
     Toaster,
     ToasterPosition,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 type IToastDemo = IToastProps & { button: string };

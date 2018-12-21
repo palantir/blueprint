@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, Classes, H1, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 
 export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen: boolean }> {
     public state = {
@@ -29,7 +29,7 @@ export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen:
             </em>
         );
         return (
-            <Example options={false} {...this.props}>
+            <Example className="docs-tooltip-example" options={false} {...this.props}>
                 <div>
                     Inline text can have{" "}
                     <Tooltip className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>

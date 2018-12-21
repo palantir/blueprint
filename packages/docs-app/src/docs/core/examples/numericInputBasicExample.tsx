@@ -21,7 +21,7 @@ import {
     handleNumberChange,
     handleStringChange,
     IExampleProps,
-} from "@blueprintjs/docs-theme";
+} from "@blueprintjs/docz-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 

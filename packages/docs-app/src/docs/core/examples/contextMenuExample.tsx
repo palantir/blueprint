@@ -10,7 +10,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 
 /**
  * This component uses the imperative ContextMenu API.

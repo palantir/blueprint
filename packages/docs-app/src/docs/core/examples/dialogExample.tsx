@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 export interface IDialogExampleState {

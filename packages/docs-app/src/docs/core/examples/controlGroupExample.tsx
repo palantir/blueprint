@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, ControlGroup, HTMLSelect, InputGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docz-theme";
 
 const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
 

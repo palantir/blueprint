@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Classes, Icon, ITreeNode, Position, Tooltip, Tree } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];

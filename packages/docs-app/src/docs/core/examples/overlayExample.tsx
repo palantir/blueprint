@@ -7,7 +7,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Button, Classes, Code, H3, H5, Intent, Overlay, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";

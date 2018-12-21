@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, UL } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 
 export interface IPanelStackExampleState {
     currentPanelStack: IPanel[];
@@ -30,7 +30,11 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
         const stackList = (
             <>
                 <H5>Current stack</H5>
-                <UL>{this.state.currentPanelStack.map((p, i) => <li key={i}>{p.title}</li>)}</UL>
+                <UL>
+                    {this.state.currentPanelStack.map((p, i) => (
+                        <li key={i}>{p.title}</li>
+                    ))}
+                </UL>
             </>
         );
         return (

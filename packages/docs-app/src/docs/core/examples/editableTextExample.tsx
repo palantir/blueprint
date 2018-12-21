@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docz-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -34,7 +34,7 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
 
     public render() {
         return (
-            <Example options={this.renderOptions()} {...this.props}>
+            <Example className="docs-editable-text-example" options={this.renderOptions()} {...this.props}>
                 <H1>
                     <EditableText
                         intent={this.state.intent}

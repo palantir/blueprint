@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
-import { Example, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, handleStringChange } from "@blueprintjs/docz-theme";
 import { CheckboxExample } from "./checkboxExample";
 
 export class RadioExample extends CheckboxExample {

@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { FormGroup, H5, InputGroup, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IFormGroupExampleState {
@@ -52,7 +52,7 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
         );
 
         return (
-            <Example options={options} {...this.props}>
+            <Example className="docs-form-group-example" column={true} options={options} {...this.props}>
                 <FormGroup
                     disabled={disabled}
                     helperText={helperText && "Helper text with details..."}

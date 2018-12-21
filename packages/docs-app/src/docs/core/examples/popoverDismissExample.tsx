@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, Callout, Classes, Popover, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 
 export class PopoverDismissExample extends React.PureComponent<
     IExampleProps,
@@ -22,7 +22,7 @@ export class PopoverDismissExample extends React.PureComponent<
 
     public render() {
         return (
-            <Example options={false} {...this.props}>
+            <Example className="docs-popover-dismiss-example" options={false} {...this.props}>
                 <Popover
                     isOpen={this.state.isOpen}
                     onInteraction={this.handleInteraction}

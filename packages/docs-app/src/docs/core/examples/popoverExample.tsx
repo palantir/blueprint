@@ -34,7 +34,7 @@ import {
     handleNumberChange,
     handleStringChange,
     IExampleProps,
-} from "@blueprintjs/docs-theme";
+} from "@blueprintjs/docz-theme";
 
 const INTERACTION_KINDS = [
     { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
@@ -120,7 +120,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
     public render() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
         return (
-            <Example options={this.renderOptions()} {...this.props}>
+            <Example className="docs-popover-example" options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
                     <Popover
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
@@ -133,7 +133,8 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                         {this.getContents(exampleIndex)}
                     </Popover>
                     <p>
-                        Scroll around this container to experiment<br />
+                        Scroll around this container to experiment
+                        <br />
                         with <Code>flip</Code> and <Code>preventOverflow</Code> modifiers.
                     </p>
                 </div>

@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ITagExampleState {
@@ -61,7 +61,7 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
             );
         });
         return (
-            <Example options={this.renderOptions()} {...this.props}>
+            <Example column={true} options={this.renderOptions()} {...this.props}>
                 {tagElements}
             </Example>
         );
