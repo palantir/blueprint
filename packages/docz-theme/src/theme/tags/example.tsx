@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { IProps } from "@blueprintjs/core";
+import { Classes, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -63,6 +63,9 @@ export interface IDocsExampleProps extends IExampleProps {
      * @default true
      */
     forceUpdate?: boolean;
+
+    /** Whether to use `flex-direction: column` to lay out children. */
+    column?: boolean;
 }
 
 /**
@@ -99,6 +102,7 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
         const {
             children,
             className,
+            column,
             data,
             forceUpdate,
             html,
@@ -119,15 +123,15 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
         const classes = classNames(
             "docs-example-frame",
             showOptionsBelowExample ? "docs-example-frame-column" : "docs-example-frame-row",
+            Classes.UI_TEXT,
             className,
         );
-        const example =
-            html == null ? (
-                <div className="docs-example">{children}</div>
-            ) : (
-                <div className="docs-example" dangerouslySetInnerHTML={{ __html: html }} />
-            );
-
+        const example = (
+            <div
+                className={classNames("docs-example", { ["docs-example-column"]: column })}
+                {...(html == null ? { children } : { dangerouslySetInnerHTML: { __html: html } })}
+            />
+        );
         return (
             <div className={classes} data-example-id={id} {...htmlProps}>
                 {example}

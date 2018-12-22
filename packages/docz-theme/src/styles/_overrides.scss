@@ -13,3 +13,16 @@ input[type="search"] {
 .#{$ns}-callout p:last-child {
   margin: 0;
 }
+
+// the layout relies on nesting ui-text examples inside
+// a runnning-text document, so we must reset margins.
+.#{$ns}-running-text .#{$ns}-ui-text {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0 0 $pt-grid-size;
+  }
+}
