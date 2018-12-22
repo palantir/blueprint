@@ -9,10 +9,11 @@ import { ITsDocBase } from "documentalist/dist/client";
 import { Entry, MenuItem, ThemeConfig } from "docz";
 import React from "react";
 import { IDocsData } from "./theme/common/context";
-import { NavItemRenderer } from "./theme/components/sidebar/navMenu";
+import { NavItemRenderer } from "./theme/components/sidebar/navMenuItem";
 
 export interface IThemeConfig extends IProps {
-    docs?: IDocsData;
+    /** Data file from Documentalist. */
+    documentalist?: IDocsData;
 
     /**
      * An element to place above the documentation, along the top of the viewport.

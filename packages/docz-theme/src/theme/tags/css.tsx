@@ -21,7 +21,7 @@ export class CssExample extends React.PureComponent<IInterfaceProps & IDocumenta
     public state: ICssExampleState = { modifiers: new Set<string>() };
 
     public render() {
-        const { name, docs } = this.props;
+        const { name, documentalist: docs } = this.props;
         if (!hasKssData(docs)) {
             return <Pre>{name}: No CSS data available.</Pre>;
         }

@@ -17,10 +17,10 @@ export interface IInterfaceProps extends IProps {
 }
 
 export const Interface: React.SFC<IInterfaceProps & IDocumentationContext> = ({ name, ...props }) => {
-    if (!hasTypescriptData(props.docs)) {
+    if (!hasTypescriptData(props.documentalist)) {
         return <Pre>{name}: No typescript data available.</Pre>;
     }
-    const { typescript } = props.docs;
+    const { typescript } = props.documentalist;
     if (typescript == null || typescript[name] == null) {
         return null;
     }
