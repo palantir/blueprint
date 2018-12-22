@@ -5,16 +5,14 @@
  */
 
 import { isTsClass, isTsInterface, ITsDocBase } from "documentalist/dist/client";
-import { ThemeConfig } from "docz";
 import * as React from "react";
-import { IThemeConfig } from "../../../config";
 import { IDocumentationContext } from "../../common/context";
 
 export class ApiHeader extends React.PureComponent<{ entry: ITsDocBase } & IDocumentationContext> {
     public static displayName = "Docs2.ApiHeader";
 
     public render() {
-        const { entry } = this.props;
+        const { entry, renderViewSourceLinkText = defaultRenderViewSourceLinkText } = this.props;
         return (
             <div className="docs-interface-header">
                 <div className="docs-interface-name">
@@ -22,11 +20,7 @@ export class ApiHeader extends React.PureComponent<{ entry: ITsDocBase } & IDocu
                 </div>
                 <small className="docs-package-name">
                     <a href={entry.sourceUrl} target="_blank">
-                        <ThemeConfig>
-                            {({ renderViewSourceLinkText = e => e.name }: IThemeConfig) =>
-                                renderViewSourceLinkText(entry)
-                            }
-                        </ThemeConfig>
+                        {renderViewSourceLinkText(entry)}
                     </a>
                 </small>
                 {this.props.children}
@@ -49,4 +43,8 @@ function maybeJoinArray(title: string, array: string[] | undefined): string {
         return "";
     }
     return `${title} ${array.join(", ")}`;
+}
+
+function defaultRenderViewSourceLinkText(entry: ITsDocBase) {
+    return entry.name;
 }

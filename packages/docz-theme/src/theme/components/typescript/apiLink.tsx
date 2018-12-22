@@ -20,7 +20,7 @@ export class ApiLink extends React.PureComponent<IApiLinkProps> {
     public render() {
         const { className, name } = this.props;
         return (
-            <a className={className} href={`#api/${name}`} onClick={this.handleClick}>
+            <a className={className} onClick={this.handleClick}>
                 {name}
             </a>
         );

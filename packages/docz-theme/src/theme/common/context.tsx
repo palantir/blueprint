@@ -13,6 +13,7 @@ import {
     linkify,
 } from "documentalist/dist/client";
 import React from "react";
+import { IThemeConfig, withConfig } from "../../config";
 import { renderBlock } from "../components/block";
 import { ApiLink } from "../components/typescript/apiLink";
 
@@ -34,29 +35,22 @@ export function hasKssData(docs: IDocsData): docs is IMarkdownPluginData & IKssP
     return docs != null && (docs as IKssPluginData).css != null;
 }
 
-const { Consumer: DocumentalistConsumer, Provider: DocumentalistProvider } = React.createContext<IDocsData>({
-    nav: [],
-    pages: {},
-});
-export { DocumentalistProvider };
-
 export function withDocumentalist<P>(Type: React.ComponentType<P & IDocumentationContext>) {
-    return (props: P) => {
-        function render(docs: IDocsData) {
-            const context: IDocumentationContext = {
-                docs,
-                renderBlock: block => renderBlock(block, {}),
-                renderType: hasTypescriptData(docs)
-                    ? type =>
-                          linkify(type, docs.typescript, (name, _d, idx) => (
-                              <ApiLink key={`${name}-${idx}`} name={name} onClick={null} />
-                          ))
-                    : type => type,
-            };
-            return <Type {...context} {...props} />;
-        }
-        return <DocumentalistConsumer>{render}</DocumentalistConsumer>;
-    };
+    return withConfig<P>(props => {
+        const { documentalist } = props;
+        const context: IDocumentationContext = {
+            documentalist,
+            renderBlock: block => renderBlock(block, {}),
+            renderType: hasTypescriptData(documentalist)
+                ? type =>
+                      linkify(type, documentalist.typescript, (name, _d, idx) => (
+                          <ApiLink key={`${name}-${idx}`} name={name} onClick={null} />
+                      ))
+                : type => type,
+            renderViewSourceLinkText: props.renderViewSourceLinkText ? props.renderViewSourceLinkText : e => e.name,
+        };
+        return <Type {...context} {...props} />;
+    });
 }
 
 /**
@@ -65,9 +59,8 @@ export function withDocumentalist<P>(Type: React.ComponentType<P & IDocumentatio
  * `Documentation` component is exposed to its children so those in the know can speak
  * directly to their parent.
  */
-export interface IDocumentationContext {
-    docs: IDocsData;
-
+export interface IDocumentationContext
+    extends Required<Pick<IThemeConfig, "documentalist" | "renderViewSourceLinkText">> {
     /** Render a block of Documentalist documentation to a React node. */
     renderBlock(block: IBlock): React.ReactNode;
 
