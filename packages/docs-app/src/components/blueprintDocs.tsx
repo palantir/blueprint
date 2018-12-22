@@ -6,7 +6,7 @@
 
 import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docz-theme";
 import classNames from "classnames";
 import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "documentalist/dist/client";
 import * as React from "react";

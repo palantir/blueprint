@@ -5,7 +5,7 @@
  */
 
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
-import { smartSearch } from "@blueprintjs/docs-theme";
+import { smartSearch } from "@blueprintjs/docz-theme";
 import * as React from "react";
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 

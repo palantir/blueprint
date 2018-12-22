@@ -1,15 +1,18 @@
 /*
-* Copyright 2018 Palantir Technologies, Inc. All rights reserved.
-*
-* Licensed under the terms of the LICENSE file distributed with this project.
-*/
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
+ */
 
-import React from "react";
+import * as React from "react";
 
-export const NavIcon: React.SFC<{ route: string }> = ({ route }) => {
+export const NavIcon: React.SFC<{ name: string }> = ({ name }) => {
+    if (name == null) {
+        return null;
+    }
     return (
         <svg className="docs-nav-package-icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-            {ICON_CONTENTS[route]}
+            {ICON_CONTENTS[name.toLowerCase()]}
         </svg>
     );
 };

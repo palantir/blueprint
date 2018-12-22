@@ -16,17 +16,16 @@ import {
     Position,
     Tag,
 } from "@blueprintjs/core";
-import { NavButton } from "@blueprintjs/docs-theme";
+import { NavButton } from "@blueprintjs/docz-theme";
 import { INpmPackage } from "documentalist/dist/client";
 import * as React from "react";
 import { Logo } from "./logo";
 
 export interface INavHeaderProps {
-    title: string;
     onToggleDark: (useDark: boolean) => void;
     useDarkTheme: boolean;
     useNextVersion: boolean;
-    packageData?: INpmPackage;
+    packageData: INpmPackage;
 }
 
 @HotkeysTarget
@@ -41,7 +40,7 @@ export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
                     </a>
                     <div>
                         <NavbarHeading className="docs-heading">
-                            <span>{this.props.title}</span> {this.props.packageData && this.renderVersionsMenu()}
+                            <span>Blueprint</span> {this.renderVersionsMenu()}
                         </NavbarHeading>
                         <a className={Classes.TEXT_MUTED} href="https://github.com/palantir/blueprint" target="_blank">
                             <small>View on GitHub</small>

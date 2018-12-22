@@ -6,7 +6,7 @@
 
 import { Classes } from "@blueprintjs/core";
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 
 export const NavFooter: React.SFC = () => (
     <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
