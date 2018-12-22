@@ -6,7 +6,7 @@
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
 import { IDateFormatProps } from "@blueprintjs/datetime";
-import { handleNumberChange } from "@blueprintjs/docs-theme";
+import { handleNumberChange } from "@blueprintjs/docz-theme";
 import moment from "moment";
 import * as React from "react";
 

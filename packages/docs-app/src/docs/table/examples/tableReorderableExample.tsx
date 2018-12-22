@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IBaseExampleProps, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IBaseExampleProps, IExampleProps } from "@blueprintjs/docz-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
 
 export interface ITableReorderableExampleState {

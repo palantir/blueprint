@@ -11,7 +11,7 @@ import {
     handleNumberChange,
     handleStringChange,
     IExampleProps,
-} from "@blueprintjs/docs-theme";
+} from "@blueprintjs/docz-theme";
 import moment from "moment";
 import * as React from "react";
 

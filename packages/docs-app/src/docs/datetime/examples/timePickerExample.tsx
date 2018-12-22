@@ -5,7 +5,7 @@
  */
 
 import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
-import { Example, handleNumberChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleNumberChange, handleStringChange, IExampleProps } from "@blueprintjs/docz-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 

@@ -6,7 +6,7 @@
 import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "@blueprintjs/table";
 
 interface IBigSpaceRock {

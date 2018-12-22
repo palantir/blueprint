@@ -6,7 +6,7 @@
 
 import { H5, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docz-theme";
 import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";

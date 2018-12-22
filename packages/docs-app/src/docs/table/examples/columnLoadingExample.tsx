@@ -7,7 +7,7 @@
 import * as React from "react";
 
 import { HTMLSelect, Label } from "@blueprintjs/core";
-import { Example, handleNumberChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleNumberChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { Cell, Column, ColumnLoadingOption, Table } from "@blueprintjs/table";
 
 interface IBigSpaceRock {

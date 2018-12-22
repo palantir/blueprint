@@ -5,7 +5,7 @@
  */
 
 import { Classes, H5, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docz-theme";
 import * as React from "react";
 
 import { DatePicker, TimePrecision } from "@blueprintjs/datetime";

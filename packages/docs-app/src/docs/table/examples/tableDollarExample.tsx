@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 import { Cell, Column, Table } from "@blueprintjs/table";
 
 export class TableDollarExample extends React.PureComponent<IExampleProps> {

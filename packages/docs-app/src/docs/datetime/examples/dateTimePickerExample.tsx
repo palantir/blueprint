@@ -5,7 +5,7 @@
  */
 
 import { Classes } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 import * as React from "react";
 
 import { DateTimePicker } from "@blueprintjs/datetime";

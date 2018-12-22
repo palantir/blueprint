@@ -9,7 +9,7 @@
 import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, IExampleProps } from "@blueprintjs/docz-theme";
 import {
     Cell,
     Column,

@@ -18,7 +18,7 @@ import {
     Switch,
     Toaster,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docz-theme";
 import { Omnibar } from "@blueprintjs/select";
 import { filmSelectProps, IFilm } from "./films";
 
