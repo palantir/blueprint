@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, IProps } from "@blueprintjs/core";
+import { Classes, IconName, IProps, MaybeElement } from "@blueprintjs/core";
 import classNames from "classnames";
 import { Link } from "docz";
 import React from "react";
@@ -14,13 +14,17 @@ export interface INavItemProps extends IProps {
     depth: number;
     /** Whether this item is expanded: either it or a child is the active route. */
     expanded: boolean;
+    /** Icon. */
+    icon?: IconName | MaybeElement;
     /** Name of item. */
     name: string;
     /** Navigation route. Use `Link` from `docz` to render links. */
     route?: string;
 }
 
-export const NavMenuItem: React.SFC<INavItemProps> = ({ className, depth, expanded, name, route }) => {
+export type NavItemRenderer = (item: INavItemProps) => JSX.Element;
+
+export const NavMenuItem: React.SFC<INavItemProps> = ({ children, className, depth, expanded, icon, name, route }) => {
     const classes = classNames(
         route ? Classes.MENU_ITEM : "docs-nav-heading",
         { "docs-nav-expanded": expanded },
@@ -28,8 +32,10 @@ export const NavMenuItem: React.SFC<INavItemProps> = ({ className, depth, expand
         className,
     );
     return route ? (
-        <Link activeClassName={Classes.ACTIVE} className={classes} to={route}>
+        <Link activeClassName={Classes.ACTIVE} className={classes} id={route} to={route}>
+            {icon}
             <span>{name}</span>
+            {children}
         </Link>
     ) : (
         <div className={classes}>{name}</div>

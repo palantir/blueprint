@@ -4,14 +4,14 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Menu } from "@blueprintjs/core";
-import * as React from "react";
-
+import { Classes } from "@blueprintjs/core";
+import classNames from "classnames";
 import { Entry, Menu as DoczMenu, MenuItem as DoczMenuItem } from "docz";
 import { Heading } from "docz/dist/state";
-import { INavItemProps, NavMenuItem } from "./navMenuItem";
+import * as React from "react";
+import { NavItemRenderer, NavMenuItem } from "./navMenuItem";
 
-export type NavItemRenderer = (item: INavItemProps) => JSX.Element;
+const listClasses = classNames("docs-nav-menu", Classes.LIST_UNSTYLED);
 
 interface INavMenuProps {
     currentPage: Entry;
@@ -25,7 +25,9 @@ export class NavMenu extends React.PureComponent<INavMenuProps> {
         return <DoczMenu>{this.renderMenu}</DoczMenu>;
     }
 
-    private renderMenu = (menu: DoczMenuItem[] | null): JSX.Element => {
+    private renderMenu = (menu: DoczMenuItem[] | null, depth = 1): JSX.Element => {
+        console.log(menu);
+
         const {
             currentPage: { headings, route },
             renderMenuItem = NavMenuItem,
@@ -37,19 +39,19 @@ export class NavMenu extends React.PureComponent<INavMenuProps> {
         const items = menu.map(item => (
             <li key={item.id}>
                 {renderMenuItem({
-                    depth: 1,
+                    depth,
                     expanded: item.route == null || (item.route + "/").indexOf(route + "/") === 0,
                     name: item.name,
                     route: item.route,
                 })}
-                {this.renderMenu(item.menu)}
-                {route === item.route && this.renderHeadings(headings)}
+                {this.renderMenu(item.menu, depth + 1)}
+                {route === item.route && this.renderHeadings(headings, depth)}
             </li>
         ));
-        return <Menu className="docs-nav-menu">{items}</Menu>;
+        return <ol className={listClasses}>{items}</ol>;
     };
 
-    private renderHeadings(headings: Heading[] | null) {
+    private renderHeadings(headings: Heading[] | null, depth: number) {
         if (headings == null) {
             return null;
         }
@@ -57,7 +59,7 @@ export class NavMenu extends React.PureComponent<INavMenuProps> {
         const items = headings.map(h => (
             <li key={h.slug}>
                 {renderMenuItem({
-                    depth: h.depth,
+                    depth: h.depth + depth - 1,
                     expanded: false,
                     name: h.value,
                     route: `${this.props.currentPage.route}#${h.slug}`,
@@ -65,6 +67,6 @@ export class NavMenu extends React.PureComponent<INavMenuProps> {
             </li>
         ));
         items.shift(); // remove first heading == page title
-        return <Menu className="docs-nav-menu">{items}</Menu>;
+        return <ol className={listClasses}>{items}</ol>;
     }
 }
