@@ -48,7 +48,6 @@ function generateDocumentalistData() {
         // must mark our @Decorator APIs as reserved so we can use them in code samples
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
     })
-        .use(".md", new dm.MarkdownPlugin({ navPage: NAV_PAGE_NAME }))
         .use(
             /\.tsx?$/,
             new dm.TypescriptPlugin({
@@ -59,7 +58,7 @@ function generateDocumentalistData() {
         )
         .use(".scss", new dm.KssPlugin())
         .use("package.json", new dm.NpmPlugin())
-        .documentGlobs("../*/src/**/*.{scss,md}", "../*/src/index.{ts,tsx}", "../*/package.json")
+        .documentGlobs("../*/src/**/*.scss", "../*/src/index.{ts,tsx}", "../*/package.json")
         .then(docs => JSON.stringify(docs, transformDocumentalistData, 2))
         .then(content => fs.writeFileSync(DOCS_DATA_PATH, content));
 }
