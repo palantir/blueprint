@@ -1,10 +1,24 @@
 ---
-reference: features
+menu: Components/Table
+name: Examples
+route: /table/examples
+order: 2
 ---
 
-@# Table features
+import {
+  TableSortableExample,
+  TableEditableExample,
+  TableReorderableExample,
+  TableLoadingExample,
+  ColumnLoadingExample,
+  CellLoadingExample,
+  TableFormatsExample,
+  TableFreezingExample,
+} from "./examples";
 
-@## Sorting
+# Table examples
+
+## Sorting
 
 Because the table is **data-agnostic**, you can display complex data in the
 table and perform arbitrary operations on it.
@@ -17,9 +31,9 @@ In the table below, try:
 * Sorting with the menu in each column header
 * Selecting cells and copying with the right-click context menu
 
-@reactExample TableSortableExample
+<TableSortableExample />
 
-@## Editing
+## Editing
 
 To make your table editable, use the `EditableCell` and
 `EditableName` components to create editable table cells and column names.
@@ -34,9 +48,9 @@ this example, the editable values are validated against an alpha character-only
 regular expression (`[a-zA-Z]`). If the content is invalid, a
 `Intent.DANGER` style is applied to the cell.
 
-@reactExample TableEditableExample
+<TableEditableExample />
 
-@## Reordering
+## Reordering
 
 The table supports drag-reordering of columns and rows via the `enableColumnReordering` and `enableRowReordering`
 props, respectively.
@@ -84,9 +98,9 @@ that the following props must be set for row reordering to work:
 
 ### Example
 
-@reactExample TableReorderableExample
+<TableReorderableExample />
 
-@## Loading states
+## Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The table components
 provide fine-grain loading control of loading row headers, column headers, or individual cells.
@@ -97,29 +111,29 @@ it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The 
 display a table of the largest potentially hazardous asteroid (based on absolute magnitude)
 discovered in a given year.
 
-@### Table loading states
+### Table loading states
 
 `Table` exposes a `loadingOptions` prop that allows you to control the loading state behavior of all
 column header, row header, and body cells. Try toggling the different options.
 
-@reactExample TableLoadingExample
+<TableLoadingExample />
 
-@### Column loading states
+### Column loading states
 
 `Column` exposes a `loadingOptions` prop that allows you to control the loading state behavior of an
 individual column's header and body cells. Try selecting a different column in the dropdown below.
 
-@reactExample ColumnLoadingExample
+<ColumnLoadingExample />
 
-@### Cells
+### Cells
 
 `Cell`, `EditableCell`, `ColumnHeaderCell`, and `RowHeaderCell` expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 
-@reactExample CellLoadingExample
+<CellLoadingExample />
 
-@## Formatting
+## Formatting
 
 To display long strings or native JavaScript objects, we provide
 `<TruncatedFormat>` and `<JSONFormat>` components, which are designed to be used
@@ -129,9 +143,9 @@ Below is a table of timezones including the local time when this page was
 rendered. It uses a `<TruncatedFormat>` component to show the long date string
 and a `<JSONFormat>` component to show the timezone info object.
 
-@reactExample TableFormatsExample
+<TableFormatsExample />
 
-@## Freezing
+## Freezing
 
 The table supports column and row freezing via the `numFrozenColumns` and `numFrozenRows` props,
 respectively. Passing `numFrozenColumns={n}` will freeze the `n` leftmost columns in place, while
@@ -140,4 +154,4 @@ topmost rows in place, while all other rows remain scrollable.
 
 Here's an example of a table with 1 frozen columns and 2 frozen rows:
 
-@reactExample TableFreezingExample
+<TableFreezingExample />

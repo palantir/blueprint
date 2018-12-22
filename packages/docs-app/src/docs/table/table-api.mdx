@@ -1,20 +1,25 @@
 ---
-reference: api
+menu: Components/Table
+name: API
+route: /table/api
+order: 1
 ---
 
-@# JavaScript API
+import { Interface } from "@blueprintjs/docz-theme";
+
+# JavaScript API
 
 The `Table`, `Column`, `Cell`, `ColumnHeaderCell`, `EditableName`, and `EditableCell`
 components are available in the __@blueprintjs/table__ package.
 
-@## Table
+## Table
 
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
-@interface ITableProps
+<Interface name="ITableProps" />
 
-@### Instance methods
+### Instance methods
 
 - `resizeRowsByTallestCell(columnIndices?: number | number[]): void` &ndash; Resizes all rows in the
     table to the height of the tallest visible cell in the specified columns. If no indices are
@@ -33,28 +38,28 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
     `Table` font styles. Here are the available options:
 
     ```tsx
-interface IResizeRowsByApproximateHeightOptions {
-    /**
-     * Approximate width (in pixels) of an average character of text.
-     */
-    getApproximateCharWidth?: number | ICellMapper<number>;
+    interface IResizeRowsByApproximateHeightOptions {
+        /**
+        * Approximate width (in pixels) of an average character of text.
+        */
+        getApproximateCharWidth?: number | ICellMapper<number>;
 
-    /**
-     * Approximate height (in pixels) of an average line of text.
-     */
-    getApproximateLineHeight?: number | ICellMapper<number>;
+        /**
+        * Approximate height (in pixels) of an average line of text.
+        */
+        getApproximateLineHeight?: number | ICellMapper<number>;
 
-    /**
-     * Sum of horizontal paddings (in pixels) from the left __and__ right sides
-     * of the cell.
-     */
-    getCellHorizontalPadding?: number | ICellMapper<number>;
+        /**
+        * Sum of horizontal paddings (in pixels) from the left __and__ right sides
+        * of the cell.
+        */
+        getCellHorizontalPadding?: number | ICellMapper<number>;
 
-    /**
-     * Number of extra lines to add in case the calculation is imperfect.
-     */
-    getNumBufferLines?: number | ICellMapper<number>;
-}
+        /**
+        * Number of extra lines to add in case the calculation is imperfect.
+        */
+        getNumBufferLines?: number | ICellMapper<number>;
+    }
     ```
 
     `ICellMapper` is just a function that takes a cell-coordinate and returns a generic type:
@@ -77,7 +82,7 @@ interface IResizeRowsByApproximateHeightOptions {
   scroll the target region as close to the top-left as possible until the bottom-right corner is
   reached.
 
-@## Column
+## Column
 
 `Column` contains props for defining how the header and cells of that column
 are rendered.
@@ -88,16 +93,16 @@ Because of this, the table's children are a list of `Column` components.
 
 Use the `rowHeaderCellRenderer` prop of `Table` to define row headers.
 
-@interface IColumnProps
+<Interface name="IColumnProps" />
 
-@## Cell
+## Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
 returned from the `cellRenderer` method of each `Column`.
 
-@interface ICellProps
+<Interface name="ICellProps" />
 
-@## ColumnHeaderCell
+## ColumnHeaderCell
 
 Customize how each column header is displayed.
 
@@ -106,24 +111,24 @@ The `columnHeaderCellRenderer` method on each `Column` should return a
 the name of the column. If you want to override the render behavior of the
 name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
 
-@interface IColumnHeaderCellProps
+<Interface name="IColumnHeaderCellProps" />
 
-@## EditableName
+## EditableName
 
 Return a `EditableName` component from the `nameRenderer` prop on a
 `ColumnHeaderCell` to enable click-to-edit functionality in the column
 header.
 
-@interface IEditableNameProps
+<Interface name="IEditableNameProps" />
 
-@## EditableCell
+## EditableCell
 
 Return a `EditableCell` component from the `cellRenderer` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
-@interface IEditableCellProps
+<Interface name="IEditableCellProps" />
 
-@## Region
+## Region
 
 A region is a rectangular group of cells in the table.
 
@@ -140,7 +145,7 @@ There are four different types of regions:
 
 Regions are defined in code according to the `IRegion` interface:
 
-@interface IRegion
+<Interface name="IRegion" />
 
 You can construct region objects manually according to this interface, but we
 recommend using our exported __factory methods__ to help you construct the
@@ -216,7 +221,7 @@ const cardinalities = [
 ```
 
 
-@## TruncatedFormat
+## TruncatedFormat
 
 Wrap your cell contents with a `TruncatedFormat` component like so:
 
@@ -225,9 +230,9 @@ const content = "A very long string...";
 return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 ```
 
-@interface ITruncatedFormatProps
+<Interface name="ITruncatedFormatProps" />
 
-@## JSONFormat
+## JSONFormat
 
 Wrap your JavaScript object cell contents with a `JSONFormat` component like so:
 
@@ -236,4 +241,4 @@ const content = { any: "javascript variable", even: [null, "is", "okay", "too"] 
 return <Cell><JSONFormat>{content}</JSONFormat></Cell>
 ```
 
-@interface IJSONFormatProps
+<Interface name="IJSONFormatProps" />
