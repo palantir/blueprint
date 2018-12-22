@@ -7,7 +7,7 @@
 import React from "react";
 import { BlueprintDoczConfig, IThemeConfig } from "../config";
 
-export class Wrapper extends React.PureComponent<IThemeConfig> {
+export class Wrapper extends React.Component<IThemeConfig> {
     public render() {
         const { children, ...value } = this.props;
         return <BlueprintDoczConfig value={value}>{children}</BlueprintDoczConfig>;
