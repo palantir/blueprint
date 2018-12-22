@@ -18,7 +18,7 @@ export default {
     ],
     order: "ascending",
     hashRouter: true,
-    base: "./",
+    base: "/",
     modifyBabelRc: (config) => {
         // legacy decorator support for babel + typescript
         config.plugins.push(["@babel/plugin-proposal-decorators", { legacy: true }]);
