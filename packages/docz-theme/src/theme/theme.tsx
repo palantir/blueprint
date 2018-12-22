@@ -4,7 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Code, H4, H5, H6, Pre } from "@blueprintjs/core";
 import { DocPreview, theme } from "docz";
 import { ComponentsMap } from "docz/dist/components/DocPreview";
 import * as React from "react";
@@ -14,17 +13,14 @@ import { Heading } from "./components/heading";
 import { Loading } from "./components/loading";
 
 const themeComponents: ComponentsMap = {
-    loading: Loading,
-    page: Documentation,
     h1: props => <Heading level={1} {...props} />,
     h2: props => <Heading level={2} {...props} />,
     h3: props => <Heading level={3} {...props} />,
-    h4: H4,
-    h5: H5,
-    h6: H6,
-    pre: Pre,
-    inlineCode: Code,
-    code: Code,
+    h4: props => <Heading level={4} {...props} />,
+    h5: props => <Heading level={5} {...props} />,
+    h6: props => <Heading level={6} {...props} />,
+    loading: Loading,
+    page: Documentation,
 };
 
 export const BlueprintDoczTheme: React.ComponentType<any> = theme({})(() => (

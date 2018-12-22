@@ -77,6 +77,10 @@ Page layout elements
   }
 }
 
+.docs-loading {
+  height: 100vh;
+}
+
 .docs-content-wrapper {
   flex-basis: $content-width;
   align-items: flex-start;
