@@ -8,10 +8,9 @@ import classNames from "classnames";
 import { PageProps } from "docz";
 import * as React from "react";
 
-import { Classes, FocusStyleManager, Hotkey, Hotkeys, IProps, Overlay } from "@blueprintjs/core";
+import { Classes, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay } from "@blueprintjs/core";
 
 import { IThemeConfig, withConfig } from "../../config";
-import { DocumentalistProvider } from "../common/context";
 import { Interface } from "../tags";
 import { Navigator } from "./navigator";
 import { addScrollbarStyle } from "./scrollbar";
@@ -37,8 +36,8 @@ export interface IDocumentationState {
     isNavigatorOpen: boolean;
 }
 
-//
-class DocumentationCmp extends React.PureComponent<IDocumentationProps & IThemeConfig, IDocumentationState> {
+@HotkeysTarget
+class DocumentationCmp extends React.Component<IDocumentationProps & IThemeConfig, IDocumentationState> {
     public static displayName = "Docs.Documentation";
 
     public state: IDocumentationState = {
@@ -60,31 +59,33 @@ class DocumentationCmp extends React.PureComponent<IDocumentationProps & IThemeC
             this.props.className,
         );
         const apiClasses = classNames("docs-api-overlay", this.props.className);
+        const mainClasses = classNames("docs-content-wrapper", Classes.FILL, Classes.RUNNING_TEXT, Classes.TEXT_LARGE);
         return (
-            <DocumentalistProvider value={this.props.docs}>
-                <div className={rootClasses}>
-                    <div className="docs-app">
-                        {this.props.banner}
-                        <Sidebar currentPage={this.props.doc} onSearchClick={this.handleOpenNavigator} />
-                        <main
-                            className={classNames("docs-content-wrapper", Classes.FILL)}
-                            ref={ref => (this.contentElement = ref)}
-                            role="main"
-                        >
-                            <div className="docs-page">
-                                {renderPageActions && (
-                                    <div className="docs-page-actions">{renderPageActions(this.props.doc)}</div>
-                                )}
-                                {this.props.children}
-                            </div>
-                        </main>
-                    </div>
-                    <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
-                        <Interface name={activeApiMember} />
-                    </Overlay>
-                    <Navigator isOpen={this.state.isNavigatorOpen} onClose={this.handleCloseNavigator} />
+            <div className={rootClasses}>
+                <div className="docs-app">
+                    {this.props.banner}
+                    <Sidebar currentPage={this.props.doc} onSearchClick={this.handleOpenNavigator} />
+                    <main
+                        className={mainClasses}
+                        ref={ref => (this.contentElement = ref)}
+                        role="main"
+                        data-page-id={this.props.doc.route}
+                    >
+                        <div className="docs-page">
+                            {renderPageActions && (
+                                <div className="docs-page-actions">{renderPageActions(this.props.doc)}</div>
+                            )}
+                            {this.props.children}
+                        </div>
+                    </main>
                 </div>
-            </DocumentalistProvider>
+
+                <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                    <Interface name={activeApiMember} />
+                </Overlay>
+
+                <Navigator isOpen={this.state.isNavigatorOpen} onClose={this.handleCloseNavigator} />
+            </div>
         );
     }
 
