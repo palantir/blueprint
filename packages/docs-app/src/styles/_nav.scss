@@ -27,6 +27,14 @@ $dark-package-colors: (
   "resources": ($orange5, $orange5),
 );
 
+@mixin dark-theme($prop, $light, $dark) {
+  #{$prop}: $light;
+
+  .#{$ns}-dark & {
+    #{$prop}: $dark;
+  }
+}
+
 .docs-logo {
   display: block;
   opacity: 0.8;
@@ -74,20 +82,15 @@ $dark-package-colors: (
 }
 
 .docs-nav-package-icon {
-  margin-right: $pt-grid-size;
   border-radius: $pt-border-radius * 3;
 }
 
 .docs-nav-package {
-  @include pt-flex-container(row);
+  @include pt-flex-container(row, $pt-grid-size);
   align-items: center;
-
-  .#{$ns}-menu-item {
-    flex: 1 1 auto;
-    background-color: transparent;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
+  margin: $pt-grid-size 0 ($pt-grid-size / 2);
+  text-transform: uppercase;
+  font-weight: 600;
 
   @each $package-name in map-keys($package-colors) {
     $color: nth(map-get($package-colors, $package-name), 1);
@@ -95,7 +98,7 @@ $dark-package-colors: (
     $text-color: nth(map-get($package-colors, $package-name), 2);
     $dark-text-color: nth(map-get($dark-package-colors, $package-name), 2);
 
-    &[data-route="#{$package-name}"] {
+    &[data-package="#{$package-name}"] {
       .docs-nav-package-icon {
         background-color: rgba($color, 0.1);
         fill: $color;
@@ -106,36 +109,30 @@ $dark-package-colors: (
         }
       }
 
-      // stylelint-disable max-nesting-depth
-      &:hover,
-      &.docs-nav-expanded {
-        .#{$ns}-menu-item,
-        + .docs-nav-menu .#{$ns}-menu-item.#{$ns}-active {
-          color: $text-color;
+      &,
+      + .docs-nav-menu a {
+        &:hover,
+        &.docs-nav-expanded {
+          @include dark-theme(color, $text-color, $dark-text-color);
 
-          .#{$ns}-dark & {
-            color: $dark-text-color;
-          }
-        }
-
-        .docs-nav-package-icon {
-          background-color: rgba($color, 0.8);
-          fill: $white;
-
-          .#{$ns}-dark & {
-            background-color: rgba($dark-color, 0.8);
-          }
-        }
-
-        &:active .docs-nav-package-icon {
-          background-color: $color;
-
-          .#{$ns}-dark & {
-            background-color: $dark-color;
+          // stylelint-disable-next-line max-nesting-depth
+          + .docs-nav-menu {
+            @include dark-theme(border-color, rgba($text-color, 0.8), rgba($dark-text-color, 0.8));
           }
         }
       }
-      // stylelint-enable max-nesting-depth
+
+      &:hover,
+      &.docs-nav-expanded {
+        .docs-nav-package-icon {
+          @include dark-theme(background-color, rgba($color, 0.8), rgba($dark-color, 0.8));
+          fill: $white;
+        }
+
+        &:active .docs-nav-package-icon {
+          @include dark-theme(background-color, $color, $dark-color);
+        }
+      }
     }
   }
 
@@ -147,6 +144,11 @@ $dark-package-colors: (
       display: none;
     }
   }
+}
+
+[aria-current] + .docs-nav-menu {
+  margin-left: 1px;
+  border-left: 2px solid currentColor;
 }
 
 .docs-nav-section {
