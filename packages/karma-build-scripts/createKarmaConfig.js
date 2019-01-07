@@ -69,7 +69,7 @@ module.exports = function createKarmaConfig(
         },
         port: KARMA_SERVER_PORT,
         preprocessors: {
-            [path.join(dirname, "test/**/*.ts")]: "sourcemap",
+            [path.join(dirname, "test/**/*.ts")]: ["sourcemap"],
             [path.join(dirname, "test/index.ts")]: ["webpack", "sourcemap"],
         },
         // define where to save final remapped coverage reports
@@ -80,13 +80,7 @@ module.exports = function createKarmaConfig(
         },
         reporters: ["mocha"],
         singleRun: true,
-        webpack: Object.assign({}, webpackBuildScripts.karmaConfig, {
-            entry: {
-                testIndex: [
-                    path.resolve(dirname, "test/index.ts"),
-                ],
-            },
-        }),
+        webpack: webpackBuildScripts.karmaConfig,
         webpackMiddleware: {
             noInfo: true,
             stats: {
