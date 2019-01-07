@@ -38,12 +38,6 @@ const plugins = [
 
 if (IS_PRODUCTION) {
     plugins.push(
-        // Some loaders accept configuration through webpack internals
-        new webpack.LoaderOptionsPlugin({
-            debug: false,
-            minimize: true,
-        }),
-
         // Only extract CSS to a file in production because it is slow
         new MiniCssExtractPlugin({ filename: "[name].css" }),
 
@@ -65,6 +59,10 @@ const scssLoaders = [
     IS_PRODUCTION ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
     {
         loader: require.resolve("css-loader"),
+        options: {
+            // necessary to minify @import-ed files using cssnano
+            importLoaders: 1,
+        },
     },
     {
         loader: require.resolve("postcss-loader"),
