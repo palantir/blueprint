@@ -8,9 +8,8 @@ const webpack = require("webpack");
 
 // webpack plugins
 const { CheckerPlugin } = require("awesome-typescript-loader");
-const CircularDependencyPlugin = require("circular-dependency-plugin");
+// const CircularDependencyPlugin = require("circular-dependency-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
 const { getPackageName } = require("./utils");
@@ -28,6 +27,9 @@ const plugins = [
     // Can remove after https://github.com/webpack/webpack/issues/3460 resolved
     new CheckerPlugin(),
 
+    // CSS extraction is only enabled in production (see scssLoaders below).
+    new MiniCssExtractPlugin({ filename: "[name].css" }),
+
     // TODO: enable this
     // Zero tolereance for circular depenendencies
     // new CircularDependencyPlugin({
@@ -36,26 +38,17 @@ const plugins = [
     // }),
 ];
 
-if (IS_PRODUCTION) {
+if (!IS_PRODUCTION) {
     plugins.push(
-        // Only extract CSS to a file in production because it is slow
-        new MiniCssExtractPlugin({ filename: "[name].css" }),
-
-        // add production plugins here
-    );
-} else {
-    plugins.push(
-        // Trigger an OS notification when the build succeeds
-        new WebpackNotifierPlugin({
-            title: PACKAGE_NAME,
-        })
-
-        // add dev plugins here
+        // Trigger an OS notification when the build succeeds in dev mode.
+        new WebpackNotifierPlugin({ title: PACKAGE_NAME })
     );
 }
 
-// Module loaders for .scss files, used in reverse order (compile Sass, apply PostCSS, interpret CSS as modules)
+// Module loaders for .scss files, used in reverse order:
+// compile Sass, apply PostCSS, interpret CSS as modules.
 const scssLoaders = [
+    // Only extract CSS to separate file in production mode.
     IS_PRODUCTION ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
     {
         loader: require.resolve("css-loader"),
