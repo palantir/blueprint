@@ -16,7 +16,7 @@ Markup:
     <div class="#{$ns}-dialog-header">
       <span class="#{$ns}-icon-large #{$ns}-icon-inbox"></span>
       <h4 class="#{$ns}-heading">Dialog header</h4>
-      <button aria-label="Close" class="#{$ns}-dialog-close-button #{$ns}-icon-small-cross"></button>
+      <button aria-label="Close" class="#{$ns}-dialog-close-button #{$ns}-button #{$ns}-minimal #{$ns}-icon-cross"></button>
     </div>
     <div class="#{$ns}-dialog-body">
       This dialog hasn't been wired up with any open or close interactions.
