@@ -9,7 +9,6 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
-import { expandFocusedRegion } from "../src/common/internal/focusedCellUtils";
 import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
 import { DragSelectable, IDragSelectableProps } from "../src/interactions/selectable";
 import { IRegion, Regions } from "../src/regions";
@@ -20,8 +19,6 @@ const REGION_2 = Regions.cell(1, 1);
 const REGION_3 = Regions.cell(2, 2);
 const TRANSFORMED_REGION = Regions.row(0);
 const TRANSFORMED_REGION_2 = Regions.row(1);
-
-console.log(FocusedCellUtils);
 
 describe("DragSelectable", () => {
     const harness = new ReactHarness();
@@ -364,13 +361,13 @@ describe("DragSelectable", () => {
             let expandSpy: sinon.SinonSpy;
 
             beforeEach(() => {
-                expandFocusedSpy = sinon.spy(expandFocusedRegion);
+                expandFocusedSpy = sinon.spy(FocusedCellUtils, "expandFocusedRegion");
                 expandSpy = sinon.spy(Regions, "expandRegion");
                 locateDrag.returns(REGION_3);
             });
 
             afterEach(() => {
-                // (FocusedCellUtils.expandFocusedRegion as sinon.SinonSpy).restore();
+                (FocusedCellUtils.expandFocusedRegion as sinon.SinonSpy).restore();
                 (Regions.expandRegion as sinon.SinonSpy).restore();
             });
 
