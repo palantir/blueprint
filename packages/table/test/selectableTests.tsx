@@ -5,8 +5,8 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
@@ -152,9 +152,7 @@ describe("DragSelectable", () => {
             });
         });
 
-        // cannot spy on members of ESM namespace imports. this is a severe limitation of sinon.
-        // https://github.com/sinonjs/sinon/issues/1711
-        describe.skip("if SHIFT key was depressed", () => {
+        describe("if SHIFT key was depressed", () => {
             beforeEach(() => {
                 locateClick.returns(REGION_2);
             });
@@ -354,9 +352,7 @@ describe("DragSelectable", () => {
             locateClick.returns(REGION_2);
         });
 
-        // cannot spy on members of ESM namespace imports. this is a severe limitation of sinon.
-        // https://github.com/sinonjs/sinon/issues/1711
-        describe.skip("if SHIFT depressed", () => {
+        describe("if SHIFT depressed", () => {
             let expandFocusedSpy: sinon.SinonSpy;
             let expandSpy: sinon.SinonSpy;
 

@@ -124,7 +124,7 @@ describe("TableBody", () => {
             runTestSuite(simulateAction);
         });
 
-        // triggering onContextMenu via ctrl+click doesn't work in Phantom :/
+        // triggering onContextMenu via ctrl+click doesn't work in HeadlessChrome
         describe.skip("on ctrl+click", () => {
             // ctrl+click should also triggers the context menu and should behave in the exact same way
             const simulateAction = (tableBody: ReactWrapper<any, any>) => {
