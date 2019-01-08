@@ -22,8 +22,8 @@ set to true, clicking out of the component will also trigger the callback to add
 new items. A `separator` prop is supported to allow multiple items to be added
 at once; the default splits on commas and newlines.
 
-**Tags can be removed** by clicking their <span class="@ns-icon-standard
-@ns-icon-cross"></span> buttons, or by pressing <kbd>backspace</kbd> repeatedly.
+**Tags can be removed** by clicking their <span class="@ns-icon-standard @ns-icon-cross"></span>
+buttons, or by pressing <kbd>backspace</kbd> repeatedly.
 Arrow keys can also be used to focus on a particular tag before removing it. The
 cursor must be at the beginning of the text input for these interactions.
 
