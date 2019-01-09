@@ -79,12 +79,12 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
     }
 
     public componentDidUpdate(prevProps: IToastProps) {
-        if (prevProps.timeout !== this.props.timeout && this.props.timeout > 0) {
-            this.startTimeout();
-        } else if (prevProps.timeout <= 0 && this.props.timeout > 0) {
-            this.startTimeout();
-        } else if (prevProps.timeout > 0 && this.props.timeout <= 0) {
-            this.clearTimeouts();
+        if (prevProps.timeout !== this.props.timeout) {
+            if (this.props.timeout > 0) {
+                this.startTimeout();
+            } else {
+                this.clearTimeouts();
+            }
         }
     }
 
@@ -109,11 +109,12 @@ export class Toast extends AbstractPureComponent<IToastProps, {}> {
     private handleCloseClick = () => this.triggerDismiss(false);
 
     private triggerDismiss(didTimeoutExpire: boolean) {
-        safeInvoke(this.props.onDismiss, didTimeoutExpire);
         this.clearTimeouts();
+        safeInvoke(this.props.onDismiss, didTimeoutExpire);
     }
 
     private startTimeout = () => {
+        this.clearTimeouts();
         if (this.props.timeout > 0) {
             this.setTimeout(() => this.triggerDismiss(true), this.props.timeout);
         }
