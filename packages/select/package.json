@@ -43,14 +43,14 @@
     "@blueprintjs/karma-build-scripts": "*",
     "@blueprintjs/node-build-scripts": "*",
     "enzyme": "^3.3.0",
-    "karma": "^1.7.1",
+    "karma": "^3.1.4",
     "mocha": "^4.1.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "typescript": "~2.8.3",
-    "webpack": "^3.10.0"
+    "webpack-cli": "^3.1.2"
   },
   "repository": {
     "type": "git",

@@ -1,8 +1,8 @@
 {
-    "extends": "../../../config/tsconfig.base",
+    "extends": "../src/tsconfig",
     "compilerOptions": {
-        "lib": ["dom", "es5", "es6"],
         "declaration": false,
+        "module": "commonjs",
         "noEmit": true
     }
 }

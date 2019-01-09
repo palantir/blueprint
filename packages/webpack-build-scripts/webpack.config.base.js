@@ -8,10 +8,8 @@ const webpack = require("webpack");
 
 // webpack plugins
 const { CheckerPlugin } = require("awesome-typescript-loader");
-const CircularDependencyPlugin = require("circular-dependency-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+// const CircularDependencyPlugin = require("circular-dependency-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
 const { getPackageName } = require("./utils");
@@ -29,6 +27,9 @@ const plugins = [
     // Can remove after https://github.com/webpack/webpack/issues/3460 resolved
     new CheckerPlugin(),
 
+    // CSS extraction is only enabled in production (see scssLoaders below).
+    new MiniCssExtractPlugin({ filename: "[name].css" }),
+
     // TODO: enable this
     // Zero tolereance for circular depenendencies
     // new CircularDependencyPlugin({
@@ -36,53 +37,33 @@ const plugins = [
     //     failOnError: true,
     // }),
 ];
-if (IS_PRODUCTION) {
+
+if (!IS_PRODUCTION) {
     plugins.push(
-        // Define JS globals when running the build
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production"),
-            },
-        }),
-
-        // Some loaders accept configuration through webpack internals
-        new webpack.LoaderOptionsPlugin({
-            debug: false,
-            minimize: true,
-        }),
-
-        // Only extract CSS to a file for production because it is slow
-        new ExtractTextPlugin("[name].css"),
-
-        // Minify JS
-        new UglifyJsPlugin(),
-
-        // Use scope hoisting to reduce the number of closures in the bundle script
-        new webpack.optimize.ModuleConcatenationPlugin(),
-
-        // add production plugins here
-    );
-} else {
-    plugins.push(
-        // Trigger an OS notification when the build succeeds
-        new WebpackNotifierPlugin({
-            title: PACKAGE_NAME,
-        })
-
-        // add dev plugins here
+        // Trigger an OS notification when the build succeeds in dev mode.
+        new WebpackNotifierPlugin({ title: PACKAGE_NAME })
     );
 }
 
-// Module loaders for .scss files, used in reverse order (compile Sass, apply PostCSS, interpret CSS as modules)
+// Module loaders for .scss files, used in reverse order:
+// compile Sass, apply PostCSS, interpret CSS as modules.
 const scssLoaders = [
+    // Only extract CSS to separate file in production mode.
+    IS_PRODUCTION ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
     {
         loader: require.resolve("css-loader"),
-        options: { minimize: IS_PRODUCTION },
+        options: {
+            // necessary to minify @import-ed files using cssnano
+            importLoaders: 1,
+        },
     },
     {
         loader: require.resolve("postcss-loader"),
         options: {
-            plugins: [require("autoprefixer"), require("postcss-discard-comments")]
+            plugins: [
+                require("autoprefixer"),
+                require("cssnano")({ preset: "default" }),
+            ],
         },
     },
     require.resolve("sass-loader"),
@@ -109,6 +90,8 @@ module.exports = {
         port: DEV_PORT,
     },
 
+    mode: IS_PRODUCTION ? "production" : "development",
+
     module: {
         rules: [
             {
@@ -120,12 +103,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: IS_PRODUCTION
-                    ? ExtractTextPlugin.extract({
-                            fallback: require.resolve("style-loader"),
-                            use: scssLoaders
-                        })
-                    : [ require.resolve("style-loader"), ...scssLoaders ],
+                use: scssLoaders,
             },
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,

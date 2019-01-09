@@ -23,11 +23,11 @@
   },
   "devDependencies": {
     "@blueprintjs/webpack-build-scripts": "*",
-    "copy-webpack-plugin": "^4.2.0",
+    "copy-webpack-plugin": "^4.6.0",
     "npm-run-all": "^4.1.2",
-    "raw-loader": "^0.5.1",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "raw-loader": "^1.0.0",
+    "webpack": "^4.27.1",
+    "webpack-dev-server": "^3.1.0"
   },
   "repository": {
     "type": "git",
