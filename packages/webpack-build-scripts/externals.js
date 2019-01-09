@@ -16,11 +16,14 @@ module.exports = externalize({
     "jquery": "$",
     "moment": "moment",
     "moment-timezone": "moment",
+    "popper.js": "Popper",
     "react": "React",
-    "react-transition-group": "ReactTransitionGroup",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
-    "tslib": "tslib",
+    "react-popper": "ReactPopper",
+    "react-transition-group": "ReactTransitionGroup",
+    "resize-observer-polyfill": "ResizeObserver",
+    "tslib": "window",
 });
 
 /**
