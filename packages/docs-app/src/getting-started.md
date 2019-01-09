@@ -131,15 +131,6 @@ ReactDOM.unmountComponentAtNode(myContainerElement);
 
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
 
-You'll need to install React v15.3 or greater alongside Blueprint.
-
-```sh
-npm install --save @blueprintjs/core react react-dom react-transition-group
-```
-
-Import components from the `@blueprintjs/core` module into your project.
-Don't forget to include the main CSS stylesheet too!
-
 @## CDN consumption
 
 Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package provides a UMD
