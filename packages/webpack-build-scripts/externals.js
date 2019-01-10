@@ -13,7 +13,6 @@ module.exports = externalize({
     "@blueprintjs/timezone": ["Blueprint", "Timezone"],
     "classnames": "classNames",
     "dom4": "window",
-    "jquery": "$",
     "moment": "moment",
     "moment-timezone": "moment",
     "popper.js": "Popper",
