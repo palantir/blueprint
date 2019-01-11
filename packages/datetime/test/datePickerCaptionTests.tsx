@@ -73,7 +73,20 @@ describe("<DatePickerCaption>", () => {
     });
 
     it("renders localized month labels when supplied", () => {
-        const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+        const months = [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre"
+        ] as any
         const { month } = renderDatePickerCaption({ months });
         const options = month.find("option");
         assert.deepEqual(options.map(mo => mo.text()), months);

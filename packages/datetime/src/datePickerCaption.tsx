@@ -12,7 +12,10 @@ import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
 import { measureTextWidth } from "./common/utils";
 
-export interface IDatePickerCaptionProps extends CaptionElementProps {
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+type ICaptionElementProps = Omit<CaptionElementProps, "months">
+
+export interface IDatePickerCaptionProps extends ICaptionElementProps {
     maxDate: Date;
     minDate: Date;
     onMonthChange?: (month: number) => void;
@@ -20,6 +23,20 @@ export interface IDatePickerCaptionProps extends CaptionElementProps {
     /** Callback invoked when the month or year `<select>` is changed. */
     onDateChange?: (date: Date) => void;
     reverseMonthAndYearMenus?: boolean;
+    months: [
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string
+    ]
 }
 
 export interface IDatePickerCaptionState {
