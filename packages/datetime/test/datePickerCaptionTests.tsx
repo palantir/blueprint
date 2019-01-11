@@ -72,6 +72,13 @@ describe("<DatePickerCaption>", () => {
         assert.isTrue(options.last().prop("disabled"), "2017 is not disabled");
     });
 
+    it("renders localized month labels when supplied", () => {
+        const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+        const { month } = renderDatePickerCaption({ months });
+        const options = month.find("option");
+        assert.deepEqual(options.map(mo => mo.text()), months);
+    });
+
     function renderDatePickerCaption(props?: Partial<IDatePickerCaptionProps>) {
         const wrapper = mount(
             <DatePickerCaption
