@@ -85,8 +85,8 @@ describe("<DatePickerCaption>", () => {
             "Septembre",
             "Octobre",
             "Novembre",
-            "Décembre"
-        ] as any
+            "Décembre",
+        ] as any;
         const { month } = renderDatePickerCaption({ months });
         const options = month.find("option");
         assert.deepEqual(options.map(mo => mo.text()), months);

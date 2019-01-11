@@ -12,8 +12,8 @@ import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
 import { measureTextWidth } from "./common/utils";
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-type ICaptionElementProps = Omit<CaptionElementProps, "months">
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type ICaptionElementProps = Omit<CaptionElementProps, "months">;
 
 export interface IDatePickerCaptionProps extends ICaptionElementProps {
     maxDate: Date;
@@ -23,20 +23,7 @@ export interface IDatePickerCaptionProps extends ICaptionElementProps {
     /** Callback invoked when the month or year `<select>` is changed. */
     onDateChange?: (date: Date) => void;
     reverseMonthAndYearMenus?: boolean;
-    months: [
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string
-    ]
+    months: [string, string, string, string, string, string, string, string, string, string, string, string];
 }
 
 export interface IDatePickerCaptionState {
