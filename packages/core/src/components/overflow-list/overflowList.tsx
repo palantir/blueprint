@@ -156,6 +156,10 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         }
     }
 
+    public shouldComponentUpdate(_nextProps: IOverflowListProps<T>, nextState: IOverflowListState<T>) {
+        return !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
+    }
+
     public componentDidUpdate(_prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
         if (!shallowCompareKeys(prevState, this.state)) {
             this.repartition(false);
