@@ -36,17 +36,17 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
     private handleYearSelectChange = this.dateChangeHandler((d, year) => d.setFullYear(year), this.props.onYearChange);
 
     public render() {
-        const { date, locale, localeUtils, minDate, maxDate } = this.props;
+        const { date, locale, localeUtils, minDate, maxDate, months } = this.props;
         const minYear = minDate.getFullYear();
         const maxYear = maxDate.getFullYear();
         const displayMonth = date.getMonth();
         const displayYear = date.getFullYear();
 
         // build the list of available months, limiting based on minDate and maxDate as necessary
-        const months = localeUtils.getMonths(locale);
+        const monthsLabels = months ? months : localeUtils.getMonths(locale);
         const startMonth = displayYear === minYear ? minDate.getMonth() : 0;
         const endMonth = displayYear === maxYear ? maxDate.getMonth() + 1 : undefined;
-        const monthOptionElements = months
+        const monthOptionElements = monthsLabels
             .map<IOptionProps>((month, i) => ({ label: month, value: i }))
             .slice(startMonth, endMonth);
 
@@ -59,7 +59,7 @@ export class DatePickerCaption extends React.PureComponent<IDatePickerCaptionPro
             years.push({ value: displayYear, disabled: true });
         }
 
-        this.displayedMonthText = months[displayMonth];
+        this.displayedMonthText = monthsLabels[displayMonth];
 
         const monthSelect = (
             <HTMLSelect
