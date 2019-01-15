@@ -41,9 +41,7 @@
   },
   "dependencies": {
     "@blueprintjs/icons": "^3.5.0",
-    "@types/dom4": "^2.0.0",
     "classnames": "^2.2",
-    "dom4": "^2.0.1",
     "normalize.css": "^8.0.0",
     "popper.js": "^1.14.1",
     "react-popper": "^1.0.0",

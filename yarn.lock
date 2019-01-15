@@ -45,11 +45,6 @@
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.3.tgz#3f0ff6873da793870e20a260cada55982f38a9e5"
   integrity sha512-x15/Io+JdzrkM9gnX6SWUs/EmqQzd65TD9tcZIAQ1VIdb93XErNuYmB7Yho8JUCE189ipUSESsWvGvYXRRIvYA==
 
-"@types/dom4@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@types/dom4/-/dom4-2.0.0.tgz#00dc42fed6b36a7a6dabb8f7a9c9e678ee644e05"
-  integrity sha512-8daxuqQvjHC2EaOfEC99ayfoiaaAVW+Mmm+3Uf0NDi9c5yarbFLXAU/BgSXLJgnbExSIokpvGDAZsYW82kg5Dg==
-
 "@types/downloadjs@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@types/downloadjs/-/downloadjs-1.4.0.tgz#d356ccdbea1c3622f233aebff7e58cc6598309ed"
@@ -2787,11 +2782,6 @@ dom-serializer@0, dom-serializer@^0.1.0, dom-serializer@~0.1.0:
   dependencies:
     domelementtype "~1.1.1"
     entities "~1.1.1"
-
-dom4@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/dom4/-/dom4-2.0.1.tgz#03000cbea1ec33b3dde8cfd7a0cf77587d27e9d5"
-  integrity sha512-pfO0omEczRlJAjJHV1iViFt10jN70cfkqlBjZ4D9mLvv4CvK3aypYAmIHjxlcZtu3gTQu/PtMz+vzezUM/W0pg==
 
 domain-browser@^1.1.1:
   version "1.1.7"

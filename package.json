@@ -36,7 +36,6 @@
   "dependencies": {
     "@types/chai": "^4.1.0",
     "@types/classnames": "^2.2.3",
-    "@types/dom4": "^2.0.0",
     "@types/enzyme": "^3.1.6",
     "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/mocha": "^2.2.46",
