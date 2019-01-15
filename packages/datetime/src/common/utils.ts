@@ -4,14 +4,6 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-function removeElement(childNode: Node) {
-    // Remark: IE11 does not support childNode.remove()
-    const parent = childNode.parentNode;
-    if (parent !== null) {
-        parent.removeChild(childNode);
-    }
-}
-
 /**
  * Measure width in pixels of a string displayed with styles provided by `className`.
  * Should only be used if measuring can't be done with existing DOM elements.
@@ -26,7 +18,7 @@ export function measureTextWidth(text: string, className = "", containerElement 
 
     containerElement.appendChild(span);
     const spanWidth = span.offsetWidth;
-    removeElement(span);
+    containerElement.removeChild(span);
 
     return spanWidth;
 }
