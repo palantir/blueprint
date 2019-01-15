@@ -15,7 +15,6 @@ import { safeInvoke } from "../../common/utils";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
 import { Popover } from "../popover/popover";
 import { PopperModifiers } from "../popover/popoverSharedProps";
-import { removeElement } from '../../common/browserSupport';
 
 export interface IOffset {
     left: number;
@@ -148,7 +147,7 @@ export function isOpen() {
 function remove() {
     if (contextMenuElement != null) {
         ReactDOM.unmountComponentAtNode(contextMenuElement);
-        removeElement(contextMenuElement);
+        document.body.removeChild(contextMenuElement);
         contextMenuElement = null;
         contextMenu = null;
     }
