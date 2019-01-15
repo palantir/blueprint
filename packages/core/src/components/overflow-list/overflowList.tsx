@@ -157,6 +157,11 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
     }
 
     public shouldComponentUpdate(_nextProps: IOverflowListProps<T>, nextState: IOverflowListState<T>) {
+        // We want this component to always re-render, even when props haven't changed, so that
+        // changes in the renderers' behavior can be reflected.
+        // The following statement prevents re-rendering only in the case where the state changes
+        // identity (i.e. setState was called), but the state is still the same when
+        // shallow-compared to the previous state.
         return !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
     }
 
