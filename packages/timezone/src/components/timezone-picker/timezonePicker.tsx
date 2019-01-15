@@ -22,6 +22,7 @@ import {
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
 
@@ -38,12 +39,6 @@ export interface ITimezonePickerProps extends IProps {
      * Callback invoked when the user selects a timezone.
      */
     onChange: (timezone: string) => void;
-
-    /**
-     * This component does not support children.
-     * Use `value`, `valueDisplayFormat` and `buttonProps` to customize the button child.
-     */
-    children?: never;
 
     /**
      * The date to use when formatting timezone offsets.
@@ -66,6 +61,7 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Format to use when displaying the selected (or default) timezone within the target element.
+     * This prop will be ignored if a custom child is provided.
      * @default TimezoneDisplayFormat.OFFSET
      */
     valueDisplayFormat?: TimezoneDisplayFormat;
@@ -76,7 +72,10 @@ export interface ITimezonePickerProps extends IProps {
      */
     placeholder?: string;
 
-    /** Props to spread to the target `Button`. */
+    /**
+     * Props to spread to the target `Button`.
+     * This prop will be ignored if a custom child is provided.
+     */
     buttonProps?: Partial<IButtonProps>;
 
     /**
@@ -124,7 +123,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
     }
 
     public render() {
-        const { className, disabled, inputProps, popoverProps } = this.props;
+        const { children, className, disabled, inputProps, popoverProps } = this.props;
         const { query } = this.state;
 
         const finalInputProps: IInputGroupProps & HTMLInputProps = {
@@ -151,7 +150,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
-                {this.renderButton()}
+                {children != null ? children : this.renderButton()}
             </TypedSelect>
         );
     }
@@ -164,6 +163,13 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         }
         if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
             this.setState({ query: nextInputProps.value });
+        }
+    }
+
+    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+        const childrenCount = React.Children.count(props.children);
+        if (childrenCount > 1) {
+            console.warn(Errors.TIMEZONE_PICKER_WARN_TOO_MANY_CHILDREN);
         }
     }
 
