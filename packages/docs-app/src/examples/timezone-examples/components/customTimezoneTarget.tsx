@@ -9,18 +9,21 @@ import { IconNames } from "@blueprintjs/icons";
 import { getTimezoneMetadata } from "@blueprintjs/timezone";
 import React from "react";
 
-export interface ICustomTimezoneTargetProps {
+export interface ICustomTimezonePickerTargetProps {
     timezone: string;
 }
 
-export interface ICustomTimezoneTargetState {
+export interface ICustomTimezonePickerTargetState {
     isHovering: boolean;
 }
 
 // This is a little component that isn't meant to see the light of day outside
 // the TimezonePickerExample. Coding style is thus a *little* scrappy.
-export class CustomTimezoneTarget extends React.PureComponent<ICustomTimezoneTargetProps, ICustomTimezoneTargetState> {
-    public state: ICustomTimezoneTargetState = {
+export class CustomTimezonePickerTarget extends React.PureComponent<
+    ICustomTimezonePickerTargetProps,
+    ICustomTimezonePickerTargetState
+> {
+    public state: ICustomTimezonePickerTargetState = {
         isHovering: false,
     };
 
