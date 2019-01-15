@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-function removeElement(childNode: ChildNode) {
+function removeElement(childNode: Node) {
     // Remark: IE11 does not support childNode.remove()
     const parent = childNode.parentNode;
     if (parent !== null) {
