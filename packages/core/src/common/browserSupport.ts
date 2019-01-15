@@ -14,7 +14,7 @@ export function addDomTokenListItems(classList: DOMTokenList, classes: string[])
     }
 }
 
-export function removeElement(childNode: ChildNode) {
+export function removeElement(childNode: Node) {
     // Remark: IE11 does not support childNode.remove()
     const parent = childNode.parentNode;
     if (parent !== null) {
