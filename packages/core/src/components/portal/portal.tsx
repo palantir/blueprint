@@ -11,6 +11,7 @@ import * as ReactDOM from "react-dom";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { addDomTokenListItems, removeElement } from "../../common/browserSupport";
 import { isFunction } from "../../common/utils";
 
 /** Detect if `React.createPortal()` API method does not exist. */
@@ -103,7 +104,8 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             if (cannotCreatePortal) {
                 ReactDOM.unmountComponentAtNode(this.portalElement);
             }
-            this.portalElement.remove();
+
+            removeElement(this.portalElement);
         }
     }
 
@@ -128,6 +130,6 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
 
 function maybeAddClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
-        classList.add(...className.split(" "));
+        addDomTokenListItems(classList, className.split(" "));
     }
 }

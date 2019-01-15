@@ -7,11 +7,12 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
 import { Classes } from "../../common";
+import { removeElement } from '../../common/browserSupport';
 import { Dialog, IDialogProps } from "../../components";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
+
 
 export interface IHotkeysDialogProps extends IDialogProps {
     /**
@@ -48,7 +49,7 @@ class HotkeysDialog {
     public unmount() {
         if (this.container != null) {
             ReactDOM.unmountComponentAtNode(this.container);
-            this.container.remove();
+            removeElement(this.container);
             delete this.container;
         }
     }
