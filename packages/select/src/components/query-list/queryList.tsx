@@ -66,7 +66,7 @@ export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
 
 export interface IQueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
-    activeItem: T | null;
+    activeItem: T | undefined;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
@@ -103,7 +103,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      * or key interactions). When scrollToActiveItem = false, used to detect if
      * an unexpected external change to the active item has been made.
      */
-    private expectedNextActiveItem: T | null = null;
+    private expectedNextActiveItem: T | undefined = undefined;
 
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);
@@ -131,7 +131,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (nextProps.activeItem !== undefined) {
+        // Presence of `activeItem` means that it is controlled, so we must update state.
+        // NOTE: Cannot simply compare to `undefined` here because `undefined` can be
+        //       explicitly provided as a controlled value to indicate no active item.
+        if ("activeItem" in nextProps) {
             this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem: nextProps.activeItem });
         }
@@ -160,8 +163,8 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public scrollActiveItemIntoView() {
         const scrollToActiveItem = this.props.scrollToActiveItem !== false;
-        const externalChangeToActiveItem = this.expectedNextActiveItem !== this.props.activeItem;
-        this.expectedNextActiveItem = null;
+        const externalChangeToActiveItem = !this.areValuesEqual(this.expectedNextActiveItem, this.props.activeItem);
+        this.expectedNextActiveItem = undefined;
 
         if (!scrollToActiveItem && externalChangeToActiveItem) {
             return;
@@ -207,11 +210,28 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const shouldUpdateActiveItem =
             resetActiveItem ||
             activeIndex < 0 ||
-            isItemDisabled(this.state.activeItem, activeIndex, props.itemDisabled);
+            // non-null assertion is safe because activeItem exists and was found in filteredItems
+            // (guaranteed because activeIndex >=0 here)
+            isItemDisabled(this.state.activeItem!, activeIndex, props.itemDisabled);
 
         if (hasQueryChanged && shouldUpdateActiveItem) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
         }
+    }
+
+    /**
+     * Tests if two item values are equal, taking into account undefined values and
+     * making use of the `areValuesEqual` prop, if present.
+     * @param valueA - A value.
+     * @param valueB - Another value.
+     * @return True if the two values are equivalent.
+     */
+    private areValuesEqual(valueA: T | undefined, valueB: T | undefined): boolean {
+        if (valueA === undefined || valueB === undefined) {
+            return valueA === valueB;
+        }
+
+        return this.props.areValuesEqual ? this.props.areValuesEqual(valueA, valueB) : valueA === valueB;
     }
 
     /** default `itemListRenderer` implementation */
@@ -226,7 +246,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
-            active: activeItem === item,
+            active: this.areValuesEqual(activeItem, item),
             disabled: isItemDisabled(item, index, this.props.itemDisabled),
             matchesPredicate,
         };
@@ -248,7 +268,13 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private getActiveIndex(items = this.state.filteredItems) {
         const { activeItem } = this.state;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
-        return activeItem == null ? -1 : items.indexOf(activeItem);
+        // TODO: Why wasn't I allowed to use Array.prototype.findIndex?
+        for (let i = 0; i < items.length; ++i) {
+            if (this.areValuesEqual(items[i], activeItem)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private getItemsParentPadding() {
@@ -273,7 +299,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
             event.preventDefault();
             const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
-            if (nextActiveItem != null) {
+            if (nextActiveItem !== undefined) {
                 this.setActiveItem(nextActiveItem);
             }
         }
@@ -286,7 +312,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         // using keyup for enter to play nice with Button's keyboard clicking.
         // if we were to process enter on keydown, then Button would click itself on keyup
         // and the popvoer would re-open out of our control :(.
-        if (event.keyCode === Keys.ENTER && activeItem != null) {
+        if (event.keyCode === Keys.ENTER && activeItem !== undefined) {
             event.preventDefault();
             this.handleItemSelect(activeItem, event);
         }
@@ -304,11 +330,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      * index. An `undefined` return value means no suitable item was found.
      * @param direction amount to move in each iteration, typically +/-1
      */
-    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | null {
+    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | undefined {
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private setActiveItem(activeItem: T | null) {
+    private setActiveItem(activeItem: T | undefined) {
         this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
@@ -343,13 +369,14 @@ function wrapNumber(value: number, min: number, max: number) {
     return value;
 }
 
-function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
-    if (itemDisabled == null || item == null) {
+function isItemDisabled<T>(item: T, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
+    if (itemDisabled == null) {
         return false;
     } else if (Utils.isFunction(itemDisabled)) {
         return itemDisabled(item, index);
     }
-    return !!item[itemDisabled];
+    // This null check is necessary to handle the possibility that type T includes type `null`.
+    return item !== null && !!item[itemDisabled];
 }
 
 /**
@@ -365,9 +392,9 @@ export function getFirstEnabledItem<T>(
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,
-): T | null {
+): T | undefined {
     if (items.length === 0) {
-        return null;
+        return undefined;
     }
     // remember where we started to prevent an infinite loop
     let index = startIndex;
@@ -379,5 +406,5 @@ export function getFirstEnabledItem<T>(
             return items[index];
         }
     } while (index !== startIndex);
-    return null;
+    return undefined;
 }

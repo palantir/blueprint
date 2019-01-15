@@ -45,11 +45,11 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     defaultSelectedItem?: T;
 
     /**
-     * The currently selected item, or `null` to indicate that no item is selected.
+     * The currently selected item, or `undefined` to indicate that no item is selected.
      * If omitted, this prop will be uncontrolled (managed by the component's state).
      * Use `onItemSelect` to listen for updates.
      */
-    selectedItem?: T | null;
+    selectedItem?: T | undefined;
 
     /**
      * Whether the popover opens on key down or when the input is focused.
@@ -63,7 +63,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
 export interface ISuggestState<T> {
     isOpen: boolean;
-    selectedItem: T | null;
+    selectedItem: T | undefined;
 }
 
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
@@ -115,7 +115,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public componentWillReceiveProps(nextProps: ISuggestProps<T>) {
         // If the selected item prop changes, update the underlying state.
-        if (nextProps.selectedItem !== undefined && nextProps.selectedItem !== this.state.selectedItem) {
+        // NOTE: Cannot simply compare to `undefined` here because `undefined` can be
+        //       explicitly provided as a controlled value to indicate no selected item.
+        if ("selectedItem" in nextProps && nextProps.selectedItem !== this.state.selectedItem) {
             this.setState({ selectedItem: nextProps.selectedItem });
         }
     }
@@ -199,7 +201,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             nextOpenState = false;
         }
         // the internal state should only change when uncontrolled.
-        if (this.props.selectedItem === undefined) {
+        // NOTE: Cannot simply compare to `undefined` here because `undefined` can be
+        //       explicitly provided as a controlled value to indicate no selected item.
+        if (!("selectedItem" in this.props)) {
             this.setState({
                 isOpen: nextOpenState,
                 selectedItem: item,
@@ -212,14 +216,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         Utils.safeInvoke(this.props.onItemSelect, item, event);
     };
 
-    private getInitialSelectedItem(): T | null {
+    private getInitialSelectedItem(): T | undefined {
         // controlled > uncontrolled > default
-        if (this.props.selectedItem !== undefined) {
+        // NOTE: Cannot simply compare to `undefined` here because `undefined` can be
+        //       explicitly provided as a controlled value to indicate no selected item.
+        if ("selectedItem" in this.props) {
             return this.props.selectedItem;
         } else if (this.props.defaultSelectedItem !== undefined) {
             return this.props.defaultSelectedItem;
         } else {
-            return null;
+            return undefined;
         }
     }
 

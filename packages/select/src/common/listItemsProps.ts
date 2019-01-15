@@ -12,12 +12,21 @@ import { ItemListPredicate, ItemPredicate } from "./predicate";
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
     /**
-     * The currently focused item for keyboard interactions, or `null` to
+     * The currently focused item for keyboard interactions, or `undefined` to
      * indicate that no item is active. If omitted, this prop will be
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
-    activeItem?: T | null;
+    activeItem?: T;
+
+    /**
+     * Equality test implementation to determine if two values are representative of the same item.
+     * If not specified, then simple strict equality is used by default.
+     * @param valueA - A value.
+     * @param valueB - Another value.
+     * @return true if the two values are equivalent.
+     */
+    areValuesEqual?: (valueA: T, valueB: T) => boolean;
 
     /** Array of items in the list. */
     items: T[];
@@ -85,7 +94,7 @@ export interface IListItemsProps<T> extends IProps {
      * in the list, selecting an item makes it active, and changing the query may reset it to
      * the first item in the list if it no longer matches the filter.
      */
-    onActiveItemChange?: (activeItem: T | null) => void;
+    onActiveItemChange?: (activeItem: T | undefined) => void;
 
     /**
      * Callback invoked when an item from the list is selected,
