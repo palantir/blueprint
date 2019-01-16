@@ -49,6 +49,7 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Whether this component is non-interactive.
+     * This prop will be ignored if a custom child is provided.
      * @default false
      */
     disabled?: boolean;
@@ -68,6 +69,7 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Text to show when no timezone has been selected (`value === undefined`).
+     * This prop will be ignored if a custom child is provided.
      * @default "Select timezone..."
      */
     placeholder?: string;
