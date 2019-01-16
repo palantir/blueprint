@@ -241,27 +241,22 @@ describe("Suggest", () => {
     describe("Controlled Mode", () => {
         it("initialize the selectedItem with the given value", () => {
             const selectedItem = TOP_100_FILMS[0];
-            assert.isDefined(selectedItem, "The selected item we test must not be undefined");
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
             const wrapper = suggest({ selectedItem });
             assert.strictEqual(wrapper.state().selectedItem, selectedItem);
         });
         it("propagates the selectedItem with new values", () => {
             const selectedItem = TOP_100_FILMS[0];
-            assert.isDefined(selectedItem, "The selected item we test must not be undefined");
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
             const wrapper = suggest();
-            assert.isUndefined(wrapper.state().selectedItem);
+            assert.isNull(wrapper.state().selectedItem);
             wrapper.setProps({ selectedItem });
             assert.strictEqual(wrapper.state().selectedItem, selectedItem);
-
-            // controlled prop value of `undefined` is handled as controlled prop instead of
-            // misunderstood as absent optional prop triggering uncontrolled mode
-            wrapper.setProps({ selectedItem: undefined });
-            assert.strictEqual(wrapper.state().selectedItem, undefined);
         });
         it("when new item selected, it should respect the selectedItem prop", () => {
             const selectedItem = TOP_100_FILMS[0];
             const ITEM_INDEX = 4;
-            assert.isDefined(selectedItem, "The selected item we test must not be undefined");
+            assert.isNotNull(selectedItem, "The selected item we test must not be null");
             const wrapper = suggest({ selectedItem });
             simulateFocus(wrapper);
             selectItem(wrapper, ITEM_INDEX);
@@ -274,12 +269,12 @@ describe("Suggest", () => {
         it("preserves the empty selection", () => {
             const ITEM_INDEX = 4;
             const selectedItem = TOP_100_FILMS[0];
-            const wrapper = suggest({ selectedItem: undefined });
-            assert.isUndefined(wrapper.state().selectedItem);
+            const wrapper = suggest({ selectedItem: null });
+            assert.isNull(wrapper.state().selectedItem);
             simulateFocus(wrapper);
             selectItem(wrapper, ITEM_INDEX);
             assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
-            assert.isUndefined(wrapper.state().selectedItem, "the underlying state should not change");
+            assert.isNull(wrapper.state().selectedItem, "the underlying state should not change");
             wrapper.setProps({ selectedItem });
             assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the selectedItem should be updated");
         });
