@@ -22,6 +22,7 @@ import {
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
 import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
 
@@ -40,12 +41,6 @@ export interface ITimezonePickerProps extends IProps {
     onChange: (timezone: string) => void;
 
     /**
-     * This component does not support children.
-     * Use `value`, `valueDisplayFormat` and `buttonProps` to customize the button child.
-     */
-    children?: never;
-
-    /**
      * The date to use when formatting timezone offsets.
      * An offset date is necessary to account for DST, but typically the default value of `now` will be sufficient.
      * @default now
@@ -54,6 +49,7 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Whether this component is non-interactive.
+     * This prop will be ignored if `children` is provided.
      * @default false
      */
     disabled?: boolean;
@@ -66,17 +62,22 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Format to use when displaying the selected (or default) timezone within the target element.
+     * This prop will be ignored if `children` is provided.
      * @default TimezoneDisplayFormat.OFFSET
      */
     valueDisplayFormat?: TimezoneDisplayFormat;
 
     /**
      * Text to show when no timezone has been selected (`value === undefined`).
+     * This prop will be ignored if `children` is provided.
      * @default "Select timezone..."
      */
     placeholder?: string;
 
-    /** Props to spread to the target `Button`. */
+    /**
+     * Props to spread to the target `Button`.
+     * This prop will be ignored if `children` is provided.
+     */
     buttonProps?: Partial<IButtonProps>;
 
     /**
@@ -124,7 +125,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
     }
 
     public render() {
-        const { className, disabled, inputProps, popoverProps } = this.props;
+        const { children, className, disabled, inputProps, popoverProps } = this.props;
         const { query } = this.state;
 
         const finalInputProps: IInputGroupProps & HTMLInputProps = {
@@ -151,7 +152,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
-                {this.renderButton()}
+                {children != null ? children : this.renderButton()}
             </TypedSelect>
         );
     }
@@ -164,6 +165,13 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         }
         if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
             this.setState({ query: nextInputProps.value });
+        }
+    }
+
+    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+        const childrenCount = React.Children.count(props.children);
+        if (childrenCount > 1) {
+            console.warn(Errors.TIMEZONE_PICKER_WARN_TOO_MANY_CHILDREN);
         }
     }
 
