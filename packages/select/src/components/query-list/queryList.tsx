@@ -7,7 +7,13 @@
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
-import { IItemListRendererProps, IItemModifiers, IListItemsProps, renderFilteredItems } from "../../common";
+import {
+    executeItemsEqual,
+    IItemListRendererProps,
+    IItemModifiers,
+    IListItemsProps,
+    renderFilteredItems,
+} from "../../common";
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {
     /**
@@ -160,7 +166,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public scrollActiveItemIntoView() {
         const scrollToActiveItem = this.props.scrollToActiveItem !== false;
-        const externalChangeToActiveItem = !this.areItemsEqual(this.expectedNextActiveItem, this.props.activeItem);
+        const externalChangeToActiveItem = !executeItemsEqual(
+            this.props.itemsEqual,
+            this.expectedNextActiveItem,
+            this.props.activeItem,
+        );
         this.expectedNextActiveItem = null;
 
         if (!scrollToActiveItem && externalChangeToActiveItem) {
@@ -216,19 +226,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     }
 
-    /**
-     * Tests if two item values are equal, taking into account null/undefined values and
-     * making use of the `itemsEqual` prop, if present.
-     * @return True if the two items are equivalent.
-     */
-    private areItemsEqual(itemA: T | null | undefined, itemB: T | null | undefined): boolean {
-        if (itemA == null || itemB == null) {
-            return itemA === itemB;
-        }
-
-        return this.props.itemsEqual ? this.props.itemsEqual(itemA, itemB) : itemA === itemB;
-    }
-
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
@@ -241,7 +238,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
-            active: this.areItemsEqual(activeItem, item),
+            active: executeItemsEqual(this.props.itemsEqual, activeItem, item),
             disabled: isItemDisabled(item, index, this.props.itemDisabled),
             matchesPredicate,
         };
@@ -264,7 +261,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { activeItem } = this.state;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
         for (let i = 0; i < items.length; ++i) {
-            if (this.areItemsEqual(items[i], activeItem)) {
+            if (executeItemsEqual(this.props.itemsEqual, items[i], activeItem)) {
                 return i;
             }
         }

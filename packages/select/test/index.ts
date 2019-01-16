@@ -4,6 +4,7 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
+import "./listItemsProps";
 import "./multiSelectTests";
 import "./omnibarTests";
 import "./queryListTests";
