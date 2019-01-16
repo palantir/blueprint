@@ -219,8 +219,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     /**
      * Tests if two item values are equal, taking into account null/undefined values and
      * making use of the `areValuesEqual` prop, if present.
-     * @param valueA - A value.
-     * @param valueB - Another value.
      * @return True if the two values are equivalent.
      */
     private areValuesEqual(valueA: T | null | undefined, valueB: T | null | undefined): boolean {
