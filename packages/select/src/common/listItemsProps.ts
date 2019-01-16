@@ -19,17 +19,15 @@ export interface IListItemsProps<T> extends IProps {
      */
     activeItem?: T | null;
 
-    /**
-     * Equality test implementation to determine if two values are representative of the same item.
-     * If not specified, then simple strict equality is used by default.
-     * @param valueA - A value.
-     * @param valueB - Another value.
-     * @return true if the two values are equivalent.
-     */
-    areValuesEqual?: (valueA: T, valueB: T) => boolean;
-
     /** Array of items in the list. */
     items: T[];
+
+    /**
+     * Equality test implementation to determine if two items are equivalent.
+     * If not specified, then simple strict equality is used by default.
+     * @return true if the two items are equivalent.
+     */
+    itemsEqual?: (itemA: T, itemB: T) => boolean;
 
     /**
      * Determine if the given item is disabled. Provide a callback function, or
