@@ -265,7 +265,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private getActiveIndex(items = this.state.filteredItems) {
         const { activeItem } = this.state;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
-        // TODO: Why wasn't I allowed to use Array.prototype.findIndex?
+        // TODO: Array.prototype.findIndex would be preferable here, if available.
         for (let i = 0; i < items.length; ++i) {
             if (this.areValuesEqual(items[i], activeItem)) {
                 return i;
@@ -296,7 +296,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
             event.preventDefault();
             const nextActiveItem = this.getNextActiveItem(keyCode === Keys.ARROW_UP ? -1 : 1);
-            if (nextActiveItem !== null) {
+            if (nextActiveItem != null) {
                 this.setActiveItem(nextActiveItem);
             }
         }
@@ -309,7 +309,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         // using keyup for enter to play nice with Button's keyboard clicking.
         // if we were to process enter on keydown, then Button would click itself on keyup
         // and the popvoer would re-open out of our control :(.
-        if (event.keyCode === Keys.ENTER && activeItem !== null) {
+        if (event.keyCode === Keys.ENTER && activeItem != null) {
             event.preventDefault();
             this.handleItemSelect(activeItem, event);
         }
