@@ -34,12 +34,12 @@ export interface IListItemsProps<T> extends IProps {
     items: T[];
 
     /**
-     * Specifies how to test if two items values are equivalent.
+     * Specifies how to test if two item values are equivalent.
      *
      * If omitted or `undefined`, then simple strict equality is used by default.
      *
      * Provide an equality comparator function (that returns true if the two params are equivalent), or
-     * simply provide the name of a property on the item that exposes whose value
+     * simply provide the name of a property on the item whose value
      * can be compared with strict equality to determine equivalence (e.g., a string/number ID property)
      *
      * If a equality comparator function is provided, its params values will never be `null` or `undefined`.
