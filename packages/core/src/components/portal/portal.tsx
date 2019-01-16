@@ -8,10 +8,10 @@ import { ValidationMap } from "prop-types";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { addDomTokenListItems } from "../../common/browserSupport";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { addDomTokenListItems, removeElement } from "../../common/browserSupport";
 import { isFunction } from "../../common/utils";
 
 /** Detect if `React.createPortal()` API method does not exist. */
@@ -105,7 +105,9 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
                 ReactDOM.unmountComponentAtNode(this.portalElement);
             }
 
-            removeElement(this.portalElement);
+            if (this.props.container) {
+                this.props.container.removeChild(this.portalElement);
+            }
         }
     }
 
