@@ -265,7 +265,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private getActiveIndex(items = this.state.filteredItems) {
         const { activeItem } = this.state;
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
-        // TODO: Array.prototype.findIndex would be preferable here, if available.
         for (let i = 0; i < items.length; ++i) {
             if (this.areValuesEqual(items[i], activeItem)) {
                 return i;
