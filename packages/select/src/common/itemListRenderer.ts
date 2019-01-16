@@ -11,7 +11,7 @@
 export interface IItemListRendererProps<T> {
     /**
      * The currently focused item (for keyboard interactions), or `null` to
-     * indicate that no item is active
+     * indicate that no item is active.
      */
     activeItem: T | null;
 
