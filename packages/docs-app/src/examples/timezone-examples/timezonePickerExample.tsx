@@ -43,7 +43,6 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
                 <H5>Props</H5>
                 <Switch checked={showLocalTimezone} label="Show local timezone" onChange={this.handleShowLocalChange} />
                 <Switch checked={disabled} label="Disabled" onChange={this.handleDisabledChange} />
-                <Switch checked={showCustomTarget} label="Custom target" onChange={this.handleCustomChildChange} />
                 <RadioGroup
                     label="Display format"
                     onChange={this.handleFormatChange}
@@ -54,6 +53,8 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
                     <Radio label="Name" value={TimezoneDisplayFormat.NAME} />
                     <Radio label="Offset" value={TimezoneDisplayFormat.OFFSET} />
                 </RadioGroup>
+                <H5>Example</H5>
+                <Switch checked={showCustomTarget} label="Custom target" onChange={this.handleCustomChildChange} />
             </>
         );
 

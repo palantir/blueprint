@@ -27,7 +27,7 @@ the user's timezone.
 By default, the component will show a clickable button target,
 which will display the selected timezone formatted according to `valueDisplayFormat`.
 The button can also be managed via `disabled`, `placeholder`, and more generally via `buttonProps`.
-You can show a custom element instead the default button by passing a child; in this case,
+You can show a custom element instead of the default button by passing a single-element child; in this case,
 all button-specific props will be ignored:
 
 ```tsx

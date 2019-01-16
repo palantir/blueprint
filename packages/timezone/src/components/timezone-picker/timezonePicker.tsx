@@ -49,7 +49,7 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Whether this component is non-interactive.
-     * This prop will be ignored if a custom child is provided.
+     * This prop will be ignored if `children` is provided.
      * @default false
      */
     disabled?: boolean;
@@ -62,21 +62,21 @@ export interface ITimezonePickerProps extends IProps {
 
     /**
      * Format to use when displaying the selected (or default) timezone within the target element.
-     * This prop will be ignored if a custom child is provided.
+     * This prop will be ignored if `children` is provided.
      * @default TimezoneDisplayFormat.OFFSET
      */
     valueDisplayFormat?: TimezoneDisplayFormat;
 
     /**
      * Text to show when no timezone has been selected (`value === undefined`).
-     * This prop will be ignored if a custom child is provided.
+     * This prop will be ignored if `children` is provided.
      * @default "Select timezone..."
      */
     placeholder?: string;
 
     /**
      * Props to spread to the target `Button`.
-     * This prop will be ignored if a custom child is provided.
+     * This prop will be ignored if `children` is provided.
      */
     buttonProps?: Partial<IButtonProps>;
 
