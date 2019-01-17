@@ -28,6 +28,9 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      */
     closeOnSelect?: boolean;
 
+    /** Whether the input field should be disabled. */
+    disabled?: boolean;
+
     /**
      * Props to spread to the query `InputGroup`. To control this input, use
      * `query` and `onQueryChange` instead of `inputProps.value` and
@@ -108,7 +111,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { inputProps, popoverProps, ...restProps } = this.props;
+        const { disabled, inputProps, popoverProps, ...restProps } = this.props;
 
         return (
             <this.TypedQueryList
@@ -162,13 +165,14 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 onOpened={this.handlePopoverOpened}
             >
                 <InputGroup
+                    disabled={this.props.disabled}
                     {...inputProps}
-                    placeholder={inputPlaceholder}
                     inputRef={this.refHandlers.input}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
+                    placeholder={inputPlaceholder}
                     value={inputValue}
                 />
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
