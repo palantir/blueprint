@@ -59,6 +59,13 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
+
+    /**
+     * Whether the active item should be reset to the first matching item _when
+     * the popover closes_. The query will also be reset to the empty string.
+     * @default false
+     */
+    resetOnClose?: boolean;
 }
 
 export interface ISuggestState<T> {
@@ -69,10 +76,10 @@ export interface ISuggestState<T> {
 export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
-    // Note: can't use <T> in static members, so this remains dynamically typed.
-    public static defaultProps = {
+    public static defaultProps: Partial<ISuggestProps<any>> = {
         closeOnSelect: true,
         openOnKeyDown: false,
+        resetOnClose: false,
     };
 
     public static ofType<T>() {
@@ -136,7 +143,10 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         // placeholder shows selected item while open.
         const inputPlaceholder = isOpen && selectedItemText ? selectedItemText : placeholder;
         // value shows query when open, and query remains when closed if nothing is selected.
-        const inputValue = isOpen ? listProps.query : selectedItemText || listProps.query;
+        // if resetOnClose is enabled, then hide query when not open. (see handlePopoverOpening)
+        const inputValue = isOpen
+            ? listProps.query
+            : selectedItemText || (this.props.resetOnClose ? "" : listProps.query);
 
         return (
             <Popover
@@ -148,6 +158,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
             >
                 <InputGroup
@@ -239,6 +250,18 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
             Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
         });
+
+    private handlePopoverOpening = (node: HTMLElement) => {
+        const { popoverProps = {}, resetOnClose } = this.props;
+
+        // reset query before opening instead of when closing to prevent flash of unfiltered items.
+        // this is a limitation of the interactions between QueryList state and Popover transitions.
+        if (resetOnClose && this.queryList) {
+            this.queryList.setQuery("", true);
+        }
+
+        Utils.safeInvoke(popoverProps.onOpening, node);
+    };
 
     private handlePopoverOpened = (node: HTMLElement) => {
         const { popoverProps = {} } = this.props;
