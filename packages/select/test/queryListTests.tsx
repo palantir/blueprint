@@ -156,7 +156,7 @@ describe("<QueryList>", () => {
         it("initializes to controlled activeItem prop (non-null)", () => {
             const props: IQueryListProps<IFilm> = {
                 ...testProps,
-                // List is not filtered, amd item at index 11 is explicitly chosen as activeItem
+                // List is not filtered, and item at index 11 is explicitly chosen as activeItem
                 activeItem: TOP_100_FILMS[11],
             };
 
