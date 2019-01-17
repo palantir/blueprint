@@ -80,8 +80,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     private TypedQueryList = QueryList.ofType<T>();
-    private input?: HTMLInputElement | null;
-    private queryList?: QueryList<T> | null;
+    private input: HTMLInputElement | null = null;
+    private queryList: QueryList<T> | null = null;
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
@@ -133,6 +133,11 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         const { placeholder = "Search..." } = inputProps;
 
         const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
+        // placeholder shows selected item while open.
+        const inputPlaceholder = isOpen && selectedItemText ? selectedItemText : placeholder;
+        // value shows query when open, and query remains when closed if nothing is selected.
+        const inputValue = isOpen ? listProps.query : selectedItemText || listProps.query;
+
         return (
             <Popover
                 autoFocus={false}
@@ -147,13 +152,13 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             >
                 <InputGroup
                     {...inputProps}
-                    placeholder={isOpen && selectedItemText ? selectedItemText : placeholder}
+                    placeholder={inputPlaceholder}
                     inputRef={this.refHandlers.input}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
-                    value={isOpen ? listProps.query : selectedItemText}
+                    value={inputValue}
                 />
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
