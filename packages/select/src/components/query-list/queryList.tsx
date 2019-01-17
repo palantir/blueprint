@@ -109,7 +109,14 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         super(props, context);
         const { query = "" } = this.props;
         const filteredItems = getFilteredItems(query, this.props);
-        this.state = { activeItem: getFirstEnabledItem(filteredItems, this.props.itemDisabled), filteredItems, query };
+        this.state = {
+            activeItem:
+                props.activeItem !== undefined
+                    ? props.activeItem
+                    : getFirstEnabledItem(filteredItems, this.props.itemDisabled),
+            filteredItems,
+            query,
+        };
     }
 
     public render() {

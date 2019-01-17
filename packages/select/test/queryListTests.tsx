@@ -11,7 +11,13 @@ import * as sinon from "sinon";
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IQueryListProps } from "@blueprintjs/select";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IQueryListRendererProps, IQueryListState, ItemListPredicate, ItemListRenderer, QueryList } from "../src/index";
+import {
+    IQueryListRendererProps,
+    IQueryListState,
+    ItemListPredicate,
+    ItemListRenderer,
+    QueryList
+} from "../src/index";
 
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
@@ -89,6 +95,8 @@ describe("<QueryList>", () => {
             filmQueryList.setState({ query: "query" });
             filmQueryList.setState({ activeItem: undefined });
             assert.equal(testProps.onActiveItemChange.callCount, 0);
+
+            filmQueryList.unmount();
         });
 
         it("ensure onActiveItemChange is not called updating props and query doesn't change", () => {
@@ -102,6 +110,8 @@ describe("<QueryList>", () => {
             const filmQueryList: ReactWrapper<IQueryListProps<IFilm>> = mount(<FilmQueryList {...props} />);
             filmQueryList.setProps(props);
             assert.equal(testProps.onActiveItemChange.callCount, 0);
+
+            filmQueryList.unmount();
         });
 
         it("ensure activeItem changes on query change", () => {
@@ -119,6 +129,59 @@ describe("<QueryList>", () => {
                 query: "123",
             });
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
+
+            filmQueryList.unmount();
+        });
+    });
+
+    describe("activeItem state initialization", () => {
+        it("initializes to first filtered item when uncontrolled", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                // Filter down to only item at index 11, so item at index 11 should be
+                // chosen as default activeItem
+                itemPredicate: (_query, item) => item === TOP_100_FILMS[11],
+                query: "123",
+            };
+
+            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
+                <FilmQueryList {...props} />,
+            );
+
+            assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
+
+            filmQueryList.unmount();
+        });
+
+        it("initializes to controlled activeItem prop (non-null)", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                // List is not filtered, amd item at index 11 is explicitly chosen as activeItem
+                activeItem: TOP_100_FILMS[11],
+            };
+
+            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
+                <FilmQueryList {...props} />,
+            );
+
+            assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
+
+            filmQueryList.unmount();
+        });
+
+        it("initializes to controlled activeItem prop (null)", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                activeItem: null,
+            };
+
+            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
+                <FilmQueryList {...props} />,
+            );
+
+            assert(filmQueryList.state().activeItem === null);
+
+            filmQueryList.unmount();
         });
     });
 
