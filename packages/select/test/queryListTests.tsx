@@ -11,13 +11,9 @@ import * as sinon from "sinon";
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IQueryListProps } from "@blueprintjs/select";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import {
-    IQueryListRendererProps,
-    IQueryListState,
-    ItemListPredicate,
-    ItemListRenderer,
-    QueryList
-} from "../src/index";
+import { IQueryListRendererProps, IQueryListState, ItemListPredicate, ItemListRenderer, QueryList } from "../src/index";
+
+type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
 
 describe("<QueryList>", () => {
     const FilmQueryList = QueryList.ofType<IFilm>();
@@ -95,8 +91,6 @@ describe("<QueryList>", () => {
             filmQueryList.setState({ query: "query" });
             filmQueryList.setState({ activeItem: undefined });
             assert.equal(testProps.onActiveItemChange.callCount, 0);
-
-            filmQueryList.unmount();
         });
 
         it("ensure onActiveItemChange is not called updating props and query doesn't change", () => {
@@ -107,11 +101,9 @@ describe("<QueryList>", () => {
                 items: [myItem],
                 query: "",
             };
-            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>> = mount(<FilmQueryList {...props} />);
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
             filmQueryList.setProps(props);
             assert.equal(testProps.onActiveItemChange.callCount, 0);
-
-            filmQueryList.unmount();
         });
 
         it("ensure activeItem changes on query change", () => {
@@ -120,17 +112,13 @@ describe("<QueryList>", () => {
                 items: [TOP_100_FILMS[0]],
                 query: "abc",
             };
-            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
-                <FilmQueryList {...props} />,
-            );
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
                 query: "123",
             });
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
-
-            filmQueryList.unmount();
         });
     });
 
@@ -143,14 +131,8 @@ describe("<QueryList>", () => {
                 itemPredicate: (_query, item) => item === TOP_100_FILMS[11],
                 query: "123",
             };
-
-            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
-                <FilmQueryList {...props} />,
-            );
-
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
             assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
-
-            filmQueryList.unmount();
         });
 
         it("initializes to controlled activeItem prop (non-null)", () => {
@@ -159,14 +141,8 @@ describe("<QueryList>", () => {
                 // List is not filtered, and item at index 11 is explicitly chosen as activeItem
                 activeItem: TOP_100_FILMS[11],
             };
-
-            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
-                <FilmQueryList {...props} />,
-            );
-
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
             assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
-
-            filmQueryList.unmount();
         });
 
         it("initializes to controlled activeItem prop (null)", () => {
@@ -174,14 +150,8 @@ describe("<QueryList>", () => {
                 ...testProps,
                 activeItem: null,
             };
-
-            const filmQueryList: ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>> = mount(
-                <FilmQueryList {...props} />,
-            );
-
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
             assert(filmQueryList.state().activeItem === null);
-
-            filmQueryList.unmount();
         });
     });
 
