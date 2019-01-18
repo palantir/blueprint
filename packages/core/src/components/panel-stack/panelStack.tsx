@@ -19,7 +19,7 @@ export interface IPanelStackProps extends IProps {
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
      */
-    initialPanel: IPanel;
+    initialPanel: IPanel<any>;
 
     /**
      * Callback invoked when the user presses the back button or a panel invokes

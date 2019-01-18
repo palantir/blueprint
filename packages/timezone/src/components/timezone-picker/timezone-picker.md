@@ -24,6 +24,18 @@ using the most populous location for each offset.
 Moment Timezone uses a similar [heuristic for guessing](http://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
 the user's timezone.
 
+By default, the component will show a clickable button target,
+which will display the selected timezone formatted according to `valueDisplayFormat`.
+The button can also be managed via `disabled`, `placeholder`, and more generally via `buttonProps`.
+You can show a custom element instead of the default button by passing a single-element child; in this case,
+all button-specific props will be ignored:
+
+```tsx
+<TimezonePicker value={...} onChange={...}>
+    <Icon icon="globe" />
+</TimezontPicker>
+```
+
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Local timezone detection</h4>
     We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.

@@ -17,7 +17,7 @@ export interface ITimezoneMetadata {
     population: number | undefined;
 }
 
-export function getTimezoneMetadata(timezone: string, date: Date): ITimezoneMetadata {
+export function getTimezoneMetadata(timezone: string, date: Date = new Date()): ITimezoneMetadata {
     const timestamp = date.getTime();
     const zone = moment.tz.zone(timezone);
     const zonedDate = moment.tz(timestamp, timezone);

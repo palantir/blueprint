@@ -50,6 +50,11 @@ Styleguide tag
     }
   }
 
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+
   &.#{$ns}-minimal {
     @include pt-tag-minimal();
 
