@@ -1,6 +1,6 @@
 @# Select
 
-Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#labs/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
+Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#core/components/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Disabling a Select</h4>
