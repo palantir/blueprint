@@ -9,11 +9,12 @@ import * as React from "react";
 import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
-import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
+import { createFilm, filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
 
 const FilmSelect = Select.ofType<IFilm>();
 
 export interface ISelectExampleState {
+    allowCreate: boolean;
     film: IFilm;
     filterable: boolean;
     hasInitialContent: boolean;
@@ -27,6 +28,7 @@ export interface ISelectExampleState {
 
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
     public state: ISelectExampleState = {
+        allowCreate: false,
         disableItems: false,
         disabled: false,
         film: TOP_100_FILMS[0],
@@ -38,6 +40,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         resetOnSelect: false,
     };
 
+    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
     private handleDisabledChange = this.handleSwitchChange("disabled");
     private handleFilterableChange = this.handleSwitchChange("filterable");
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
@@ -55,12 +58,16 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         ) : (
             undefined
         );
+        const maybeCreateItemFromQuery = this.state.allowCreate ? createFilm : undefined;
+        const maybeCreateItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmSelect
                     {...filmSelectProps}
                     {...flags}
+                    createItemFromQuery={maybeCreateItemFromQuery}
+                    createItemRenderer={maybeCreateItemRenderer}
                     disabled={disabled}
                     itemDisabled={this.isItemDisabled}
                     initialContent={initialContent}
@@ -110,6 +117,11 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     checked={this.state.disableItems}
                     onChange={this.handleItemDisabledChange}
                 />
+                <Switch
+                    label="Allow creating new items"
+                    checked={this.state.allowCreate}
+                    onChange={this.handleAllowCreateChange}
+                />
                 <H5>Popover props</H5>
                 <Switch
                     label="Minimal popover style"
@@ -119,6 +131,10 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
             </>
         );
     }
+
+    private renderCreateFilmOption = (query: string, handleClick: React.MouseEventHandler<HTMLElement>) => (
+        <MenuItem icon="add" text={`Create "${query}"`} onClick={handleClick} shouldDismissPopover={false} />
+    );
 
     private handleValueChange = (film: IFilm) => this.setState({ film });
 

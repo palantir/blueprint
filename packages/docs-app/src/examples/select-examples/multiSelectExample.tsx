@@ -19,15 +19,16 @@ export interface IMultiSelectExampleState {
     films: IFilm[];
     hasInitialContent: boolean;
     intent: boolean;
+    allowCreate: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
     resetOnSelect: boolean;
     tagMinimal: boolean;
-    allowCreate: boolean;
 }
 
 export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
+        allowCreate: false,
         films: [],
         hasInitialContent: false,
         intent: false,
@@ -35,7 +36,6 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         popoverMinimal: true,
         resetOnSelect: true,
         tagMinimal: false,
-        allowCreate: false,
     };
 
     private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
@@ -53,15 +53,14 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             minimal: tagMinimal,
         });
 
-        const maybeCreateItemFromQuery = this.state.allowCreate ? createFilm : undefined;
-        const maybeCreateItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
-
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
         ) : (
             // explicit undefined (not null) for default behavior (show full list)
             undefined
         );
+        const maybeCreateItemFromQuery = this.state.allowCreate ? createFilm : undefined;
+        const maybeCreateItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
 
         const clearButton = films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : null;
 
@@ -105,7 +104,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     onChange={this.handleInitialContentChange}
                 />
                 <Switch
-                    label="Allow creating new items"
+                    label="Allow creating new films"
                     checked={this.state.allowCreate}
                     onChange={this.handleAllowCreateChange}
                 />

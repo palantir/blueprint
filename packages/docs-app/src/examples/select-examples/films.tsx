@@ -185,8 +185,8 @@ export const filmSelectProps = {
 
 export function createFilm(title: string): IFilm {
     return {
+        rank: 100 + Math.floor(Math.random() * 100 + 1),
         title,
         year: new Date().getFullYear(),
-        rank: 100 + Math.floor(Math.random() * 100 + 1),
     };
 }

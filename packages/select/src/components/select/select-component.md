@@ -82,6 +82,12 @@ This controlled usage allows you to implement all sorts of advanced behavior on
 top of the basic `Select` interactions, such as windowed filtering for large
 data sets.
 
+@## Creating new items
+
+Use the `createItemFromQuery` prop to allow `Select<T>` to create new items. `createItemFromQuery` specifies how to turn a
+user-entered query string into an item of type `<T>` that `Select` understands. You should also provide the `createItemRenderer`
+prop to render a custom `MenuItem` to indicate that users can create new items.
+
 @## JavaScript API
 
 @interface ISelectProps

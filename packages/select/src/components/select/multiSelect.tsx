@@ -79,6 +79,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     public render() {
         // omit props specific to this component, spread the rest.
         const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+
         return (
             <this.TypedQueryList
                 {...restProps}
