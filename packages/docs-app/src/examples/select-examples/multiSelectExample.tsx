@@ -150,10 +150,11 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         );
     };
 
-    private renderCreateFilmOption = (query: string) => (
+    private renderCreateFilmOption = (query: string, handleClick: React.MouseEventHandler<HTMLElement>) => (
         <MenuItem
             icon={"add"}
             text={`Create "${query}"`}
+            onClick={handleClick}
             shouldDismissPopover={false}
         />
     );

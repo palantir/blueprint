@@ -33,7 +33,7 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
     /**
      * Any additional view rendered at the end of the query list.
      */
-    additionalElementRenderer?: (query: string) => JSX.Element;
+    additionalElementRenderer?: (query: string) => JSX.Element | undefined;
 }
 
 /**

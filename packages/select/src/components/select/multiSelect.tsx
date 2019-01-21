@@ -56,7 +56,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * If `noResults` is also defined, this props takes priority and the other will be ignored.
      * Ignored if `createItemFromQuery` is omitted.
      */
-    createItemRenderer?: (query: string) => JSX.Element;
+    createItemRenderer?: (query: string, handleClick: React.MouseEventHandler<HTMLElement>) => JSX.Element;
 }
 
 export interface IMultiSelectState {
@@ -112,7 +112,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
-                additionalElementRenderer={creatable ? createItemRenderer : undefined}
+                additionalElementRenderer={creatable ? this.renderCreateItemMenuItem : undefined}
             />
         );
     }
@@ -164,6 +164,13 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         );
     };
 
+    private renderCreateItemMenuItem = (query: string) => {
+        const handleClick: React.MouseEventHandler<HTMLElement> = (evt) => {
+            this.handleItemCreate([query], evt);
+        }
+        return Utils.safeInvoke(this.props.createItemRenderer, query, handleClick);
+    }
+
     private handleItemSelect = (item: T, evt?: React.SyntheticEvent<HTMLElement>) => {
         if (this.input != null) {
             this.input.focus();
@@ -171,7 +178,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         Utils.safeInvoke(this.props.onItemSelect, item, evt);
     };
 
-    private handleItemCreate = (queries: string[]) => {
+    private handleItemCreate = (queries: string[], evt?: React.SyntheticEvent<HTMLElement>) => {
         const { createItemFromQuery } = this.props;
         if (createItemFromQuery == null) {
             return;
@@ -179,8 +186,9 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
         queries.forEach(query => {
             const item = createItemFromQuery(query);
-            Utils.safeInvoke(this.props.onItemSelect, item, undefined);
+            Utils.safeInvoke(this.props.onItemSelect, item, evt);
         });
+        this.resetQuery();
     }
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {
@@ -232,4 +240,6 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             }
         };
     };
+
+    private resetQuery = () => this.queryList && this.queryList.setQuery("", true);
 }
