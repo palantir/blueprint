@@ -99,6 +99,18 @@ export interface IListItemsProps<T> extends IProps {
     onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
+     * If provided, allows new items to be created with the current query string.
+     * This is invoked when user interaction causes a new item to be created, either by pressing the `enter` key or
+     * by clicking on the "Create Item" option. It transforms a query string into an item type.
+     */
+    createItemFromQuery?: (query: string) => T;
+
+    /**
+     * Custom renderer to transform the current query string into a selectable "Create Item" option.
+     */
+    createItemRenderer?: (query: string, handleClick: React.MouseEventHandler<HTMLElement>) => JSX.Element | undefined;
+
+    /**
      * Whether the active item should be reset to the first matching item _every
      * time the query changes_ (via prop or by user input).
      * @default true

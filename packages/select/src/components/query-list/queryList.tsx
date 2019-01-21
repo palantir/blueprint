@@ -29,11 +29,6 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * Receives an object with props that should be applied to elements as necessary.
      */
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
-
-    /**
-     * Any additional view rendered at the end of the query list.
-     */
-    additionalElementRenderer?: (query: string) => JSX.Element | undefined;
 }
 
 /**
@@ -221,10 +216,13 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
-        const { initialContent, noResults, additionalElementRenderer } = this.props;
-        const menuContent = renderFilteredItems(listProps, noResults, initialContent);
-        const additionalElement = Utils.safeInvoke(additionalElementRenderer, this.state.query);
-        return <Menu ulRef={listProps.itemsParentRef}>{menuContent}{additionalElement}</Menu>;
+        const { initialContent, noResults, createItemFromQuery, createItemRenderer } = this.props;
+
+        // omit noResults if createItemFromQuery and createItemRenderer are both supplied
+        const maybeNoResults = (createItemFromQuery && createItemRenderer) ? undefined : noResults;
+        const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
+        const createItemView = this.renderCreateItemMenuItem(this.state.query);
+        return <Menu ulRef={listProps.itemsParentRef}>{menuContent}{createItemView}</Menu>;
     };
 
     /** wrapper around `itemRenderer` to inject props */
@@ -243,6 +241,13 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             query,
         });
     };
+
+    private renderCreateItemMenuItem = (query: string) => {
+        const handleClick: React.MouseEventHandler<HTMLElement> = (evt) => {
+            this.handleItemCreate(query, evt);
+        }
+        return Utils.safeInvoke(this.props.createItemRenderer, query, handleClick);
+    }
 
     private getActiveElement() {
         if (this.itemsParentRef != null) {
@@ -264,6 +269,14 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             paddingBottom: pxToNumber(paddingBottom),
             paddingTop: pxToNumber(paddingTop),
         };
+    }
+
+    private handleItemCreate = (query: string, evt?: React.SyntheticEvent<HTMLElement>) => {
+        const item = Utils.safeInvoke(this.props.createItemFromQuery, query);
+        if (item != null) {
+            Utils.safeInvoke(this.props.onItemSelect, item, evt);
+            this.setQuery("", true);
+        }
     }
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
@@ -292,9 +305,13 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         // using keyup for enter to play nice with Button's keyboard clicking.
         // if we were to process enter on keydown, then Button would click itself on keyup
         // and the popvoer would re-open out of our control :(.
-        if (event.keyCode === Keys.ENTER && activeItem != null) {
+        if (event.keyCode === Keys.ENTER) {
             event.preventDefault();
-            this.handleItemSelect(activeItem, event);
+            if (activeItem == null) {
+                this.handleItemCreate(this.state.query, event);
+            } else {
+                this.handleItemSelect(activeItem, event);
+            }
         }
         Utils.safeInvoke(onKeyUp, event);
     };
