@@ -56,7 +56,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/datetime"
   },
   "keywords": [
     "palantir",
