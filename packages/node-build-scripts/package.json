@@ -30,7 +30,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/node-build-scripts"
   },
   "author": "Palantir Technologies",
   "license": "SEE LICENSE IN LICENSE"
