@@ -27,7 +27,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/test-commons"
   },
   "author": "Palantir Technologies",
   "license": "SEE LICENSE IN LICENSE"
