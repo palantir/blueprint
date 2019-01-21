@@ -58,7 +58,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
     }
 
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList?: QueryList<T> | null;
+    private queryList: QueryList<T> | null = null;
     private refHandlers = {
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
@@ -107,8 +107,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
     };
 
     private handleOverlayClose = (event?: React.SyntheticEvent<HTMLElement>) => {
-        const { overlayProps = {} } = this.props;
-        Utils.safeInvoke(overlayProps.onClose, event);
+        Utils.safeInvokeMember(this.props.overlayProps, "onClose", event);
         Utils.safeInvoke(this.props.onClose, event);
     };
 }
