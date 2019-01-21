@@ -9,7 +9,7 @@ import * as React from "react";
 import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
-import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
+import { createFilm, filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
 
 const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 
@@ -53,7 +53,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             minimal: tagMinimal,
         });
 
-        const maybeCreateItemFromQuery = this.state.allowCreate ? this.handleCreateFilmFromQuery : undefined;
+        const maybeCreateItemFromQuery = this.state.allowCreate ? createFilm : undefined;
         const maybeCreateItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
 
         const initialContent = this.state.hasInitialContent ? (
@@ -151,12 +151,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     };
 
     private renderCreateFilmOption = (query: string, handleClick: React.MouseEventHandler<HTMLElement>) => (
-        <MenuItem
-            icon={"add"}
-            text={`Create "${query}"`}
-            onClick={handleClick}
-            shouldDismissPopover={false}
-        />
+        <MenuItem icon="add" text={`Create "${query}"`} onClick={handleClick} shouldDismissPopover={false} />
     );
 
     private handleTagRemove = (_tag: string, index: number) => {
@@ -195,12 +190,4 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private handleClear = () => this.setState({ films: [] });
-
-    private handleCreateFilmFromQuery(query: string): IFilm {
-        return {
-            title: query,
-            year: new Date().getFullYear(),
-            rank: 100 + Math.floor(Math.random() * 100 + 1),
-        };
-    }
 }

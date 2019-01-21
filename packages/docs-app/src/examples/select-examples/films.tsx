@@ -182,3 +182,11 @@ export const filmSelectProps = {
     itemRenderer: renderFilm,
     items: TOP_100_FILMS,
 };
+
+export function createFilm(title: string): IFilm {
+    return {
+        title,
+        year: new Date().getFullYear(),
+        rank: 100 + Math.floor(Math.random() * 100 + 1),
+    };
+}

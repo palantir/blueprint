@@ -218,11 +218,17 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults, createItemFromQuery, createItemRenderer } = this.props;
 
-        // omit noResults if createItemFromQuery and createItemRenderer are both supplied
-        const maybeNoResults = (createItemFromQuery && createItemRenderer) ? undefined : noResults;
+        // omit noResults if createItemFromQuery and createItemRenderer are both supplied, and query is not empty
+        const maybeNoResults =
+            createItemFromQuery && createItemRenderer && this.state.query !== "" ? undefined : noResults;
         const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
-        const createItemView = this.renderCreateItemMenuItem(this.state.query);
-        return <Menu ulRef={listProps.itemsParentRef}>{menuContent}{createItemView}</Menu>;
+        const createItemView = this.state.query !== "" ? this.renderCreateItemMenuItem(this.state.query) : null;
+        return (
+            <Menu ulRef={listProps.itemsParentRef}>
+                {menuContent}
+                {createItemView}
+            </Menu>
+        );
     };
 
     /** wrapper around `itemRenderer` to inject props */
@@ -243,11 +249,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     private renderCreateItemMenuItem = (query: string) => {
-        const handleClick: React.MouseEventHandler<HTMLElement> = (evt) => {
+        const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
             this.handleItemCreate(query, evt);
-        }
+        };
         return Utils.safeInvoke(this.props.createItemRenderer, query, handleClick);
-    }
+    };
 
     private getActiveElement() {
         if (this.itemsParentRef != null) {
@@ -277,7 +283,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             Utils.safeInvoke(this.props.onItemSelect, item, evt);
             this.setQuery("", true);
         }
-    }
+    };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setActiveItem(item);

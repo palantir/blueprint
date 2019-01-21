@@ -119,4 +119,34 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);
         });
     });
+
+    describe("create", () => {
+        const testCreateProps = {
+            ...testProps,
+            createItemFromQuery: sinon.spy(),
+            createItemRenderer: () => <textarea />,
+        };
+
+        it("renders create item if filtering returns empty list", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                items: [],
+                noResults: <address />,
+                query: "non-existent film name",
+            });
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(wrapper.find(`textarea`), 1, "should find createItem");
+        });
+
+        it("enter invokes createItemFromQuery", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                items: [],
+                noResults: <address />,
+                query: "non-existent film name",
+            });
+            findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
+            assert.equal(testCreateProps.createItemFromQuery.args[0][0], "non-existent film name");
+        });
+    });
 }
