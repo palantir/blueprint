@@ -29,6 +29,11 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * Receives an object with props that should be applied to elements as necessary.
      */
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
+
+    /**
+     * Any additional view rendered at the end of the query list.
+     */
+    additionalElementRenderer?: (query: string) => JSX.Element;
 }
 
 /**
@@ -216,9 +221,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
-        const { initialContent, noResults } = this.props;
+        const { initialContent, noResults, additionalElementRenderer } = this.props;
         const menuContent = renderFilteredItems(listProps, noResults, initialContent);
-        return <Menu ulRef={listProps.itemsParentRef}>{menuContent}</Menu>;
+        const additionalElement = Utils.safeInvoke(additionalElementRenderer, this.state.query);
+        return <Menu ulRef={listProps.itemsParentRef}>{menuContent}{additionalElement}</Menu>;
     };
 
     /** wrapper around `itemRenderer` to inject props */

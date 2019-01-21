@@ -23,6 +23,7 @@ export interface IMultiSelectExampleState {
     popoverMinimal: boolean;
     resetOnSelect: boolean;
     tagMinimal: boolean;
+    allowCreate: boolean;
 }
 
 export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
@@ -34,6 +35,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         popoverMinimal: true,
         resetOnSelect: true,
         tagMinimal: false,
+        allowCreate: false,
     };
 
     private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
@@ -42,6 +44,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
     private handleIntentChange = this.handleSwitchChange("intent");
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
+    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
     public render() {
         const { films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
@@ -49,6 +52,9 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
         });
+
+        const maybeCreateItemFromQuery = this.state.allowCreate ? this.handleCreateFilmFromQuery : undefined;
+        const maybeCreateItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
@@ -72,6 +78,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     tagRenderer={this.renderTag}
                     tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
                     selectedItems={this.state.films}
+                    createItemFromQuery={maybeCreateItemFromQuery}
+                    createItemRenderer={maybeCreateItemRenderer}
                 />
             </Example>
         );
@@ -95,6 +103,11 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     label="Use initial content"
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
+                />
+                <Switch
+                    label="Allow creating new items"
+                    checked={this.state.allowCreate}
+                    onChange={this.handleAllowCreateChange}
                 />
                 <H5>Tag props</H5>
                 <Switch
@@ -137,6 +150,14 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         );
     };
 
+    private renderCreateFilmOption = (query: string) => (
+        <MenuItem
+            icon={"add"}
+            text={`Create "${query}"`}
+            shouldDismissPopover={false}
+        />
+    );
+
     private handleTagRemove = (_tag: string, index: number) => {
         this.deselectFilm(index);
     };
@@ -173,4 +194,12 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private handleClear = () => this.setState({ films: [] });
+
+    private handleCreateFilmFromQuery(query: string): IFilm {
+        return {
+            title: query,
+            year: new Date().getFullYear(),
+            rank: 100 + Math.floor(Math.random() * 100 + 1),
+        };
+    }
 }

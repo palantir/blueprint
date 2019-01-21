@@ -43,6 +43,20 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
+
+    /**
+     * If provided, allows new items to be created with the current query string in `MultiSelect`.
+     * This is invoked when user interaction causes a new item to be created, either by pressing the `enter` key or
+     * by clicking on the "Create Item" option. It transforms a query string into an item type.
+     */
+    createItemFromQuery?: (query: string) => T;
+
+    /**
+     * Custom renderer to transform the current query string into a selectable "Create Item" option.
+     * If `noResults` is also defined, this props takes priority and the other will be ignored.
+     * Ignored if `createItemFromQuery` is omitted.
+     */
+    createItemRenderer?: (query: string) => JSX.Element;
 }
 
 export interface IMultiSelectState {
@@ -78,21 +92,42 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
-
+        // omit noResults if createItemFromQuery and createItemRenderer are both supplied
+        const {
+            createItemFromQuery,
+            createItemRenderer,
+            noResults,
+            openOnKeyDown,
+            popoverProps,
+            tagInputProps,
+            ...restProps
+        } = this.props;
+        const creatable = createItemFromQuery != null;
+        const maybeNoResults = (creatable && createItemRenderer) ? undefined : noResults;
         return (
             <this.TypedQueryList
                 {...restProps}
+                noResults={maybeNoResults}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
+                additionalElementRenderer={creatable ? createItemRenderer : undefined}
             />
         );
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
+        const {
+            popoverProps = {},
+            selectedItems = [],
+            placeholder,
+            createItemFromQuery,
+        } = this.props;
+        const tagInputProps: Partial<ITagInputProps> & object = {
+            onAdd: createItemFromQuery != null ? this.handleItemCreate : undefined,
+            ...this.props.tagInputProps,
+        };
         const { handleKeyDown, handleKeyUp } = listProps;
 
         return (
@@ -135,6 +170,18 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         }
         Utils.safeInvoke(this.props.onItemSelect, item, evt);
     };
+
+    private handleItemCreate = (queries: string[]) => {
+        const { createItemFromQuery } = this.props;
+        if (createItemFromQuery == null) {
+            return;
+        }
+
+        queries.forEach(query => {
+            const item = createItemFromQuery(query);
+            Utils.safeInvoke(this.props.onItemSelect, item, undefined);
+        });
+    }
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ isOpen: query.length > 0 || !this.props.openOnKeyDown });
