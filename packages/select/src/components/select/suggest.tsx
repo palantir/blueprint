@@ -49,7 +49,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /**
      * The currently selected item, or `null` to indicate that no item is selected.
-     * If omitted, this prop will be uncontrolled (managed by the component's state).
+     * If omitted or `undefined`, this prop will be uncontrolled (managed by the component's state).
      * Use `onItemSelect` to listen for updates.
      */
     selectedItem?: T | null;
