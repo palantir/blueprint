@@ -90,7 +90,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     public state: ISuggestState<T> = {
-        isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
+        isOpen: (this.props.popoverProps != null && this.props.popoverProps.isOpen) || false,
         selectedItem: this.getInitialSelectedItem(),
     };
 

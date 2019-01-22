@@ -20,7 +20,7 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
-import { IQueryListProps, ISelectProps, QueryList, Select } from "@blueprintjs/select";
+import { QueryList, Select } from "@blueprintjs/select";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
@@ -214,13 +214,13 @@ describe("<TimezonePicker>", () => {
     });
 
     function findSelect(timezonePicker: TimezonePickerShallowWrapper) {
-        return timezonePicker.find<ISelectProps<ITimezoneItem>>(Select);
+        return timezonePicker.find(Select.ofType<ITimezoneItem>());
     }
 
     function findQueryList(timezonePicker: TimezonePickerShallowWrapper) {
         return findSelect(timezonePicker)
             .shallow()
-            .find<IQueryListProps<ITimezoneItem>>(QueryList);
+            .find(QueryList.ofType<ITimezoneItem>());
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {
