@@ -66,24 +66,19 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         return Select as new (props: ISelectProps<T>) => Select<T>;
     }
 
+    public state: ISelectState = { isOpen: false };
+
     private TypedQueryList = QueryList.ofType<T>();
-    private input?: HTMLInputElement | null;
-    private list?: QueryList<T> | null;
+    private input: HTMLInputElement | null = null;
+    private queryList: QueryList<T> | null = null;
     private previousFocusedElement: HTMLElement | undefined;
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
-
-            const { inputProps = {} } = this.props;
-            Utils.safeInvoke(inputProps.inputRef, ref);
+            Utils.safeInvokeMember(this.props.inputProps, "inputRef", ref);
         },
-        queryList: (ref: QueryList<T> | null) => (this.list = ref),
+        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
-
-    constructor(props: ISelectProps<T>, context?: any) {
-        super(props, context);
-        this.state = { isOpen: false };
-    }
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -100,8 +95,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     }
 
     public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState) {
-        if (this.state.isOpen && !prevState.isOpen && this.list != null) {
-            this.list.scrollActiveItemIntoView();
+        if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
+            this.queryList.scrollActiveItemIntoView();
         }
     }
 
@@ -170,27 +165,24 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private handlePopoverInteraction = (isOpen: boolean) => {
         this.setState({ isOpen });
-
-        const { popoverProps = {} } = this.props;
-        Utils.safeInvoke(popoverProps.onInteraction, isOpen);
+        Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", isOpen);
     };
 
     private handlePopoverOpening = (node: HTMLElement) => {
-        const { popoverProps = {}, resetOnClose } = this.props;
         // save currently focused element before popover steals focus, so we can restore it when closing.
         this.previousFocusedElement = document.activeElement as HTMLElement;
 
-        if (resetOnClose) {
+        if (this.props.resetOnClose) {
             this.resetQuery();
         }
 
-        Utils.safeInvoke(popoverProps.onOpening, node);
+        Utils.safeInvokeMember(this.props.popoverProps, "onOpening", node);
     };
 
     private handlePopoverOpened = (node: HTMLElement) => {
         // scroll active item into view after popover transition completes and all dimensions are stable.
-        if (this.list != null) {
-            this.list.scrollActiveItemIntoView();
+        if (this.queryList != null) {
+            this.queryList.scrollActiveItemIntoView();
         }
 
         requestAnimationFrame(() => {
@@ -201,8 +193,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             }
         });
 
-        const { popoverProps = {} } = this.props;
-        Utils.safeInvoke(popoverProps.onOpened, node);
+        Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
     };
 
     private handlePopoverClosing = (node: HTMLElement) => {
@@ -215,9 +206,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             }
         });
 
-        const { popoverProps = {} } = this.props;
-        Utils.safeInvoke(popoverProps.onClosing, node);
+        Utils.safeInvokeMember(this.props.popoverProps, "onClosing", node);
     };
 
-    private resetQuery = () => this.list && this.list.setQuery("", true);
+    private resetQuery = () => this.queryList && this.queryList.setQuery("", true);
 }

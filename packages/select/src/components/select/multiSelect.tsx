@@ -65,13 +65,12 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private input?: HTMLInputElement | null;
-    private queryList?: QueryList<T> | null;
+    private input: HTMLInputElement | null = null;
+    private queryList: QueryList<T> | null = null;
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
-            const { tagInputProps = {} } = this.props;
-            Utils.safeInvoke(tagInputProps.inputRef, ref);
+            Utils.safeInvokeMember(this.props.tagInputProps, "inputRef", ref);
         },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
@@ -142,9 +141,8 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     };
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
+        // deferring to rAF to get properly updated document.activeElement
         requestAnimationFrame(() => {
-            // deferring to rAF to get properly updated activeElement
-            const { popoverProps = {} } = this.props;
             if (this.input != null && this.input !== document.activeElement) {
                 // the input is no longer focused so we can close the popover
                 this.setState({ isOpen: false });
@@ -152,16 +150,15 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 // open the popover when focusing the tag input
                 this.setState({ isOpen: true });
             }
-            Utils.safeInvoke(popoverProps.onInteraction, nextOpenState);
+            Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", nextOpenState);
         });
 
     private handlePopoverOpened = (node: HTMLElement) => {
-        const { popoverProps = {} } = this.props;
         if (this.queryList != null) {
             // scroll active item into view after popover transition completes and all dimensions are stable.
             this.queryList.scrollActiveItemIntoView();
         }
-        Utils.safeInvoke(popoverProps.onOpened, node);
+        Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
     };
 
     private getTargetKeyDownHandler = (
