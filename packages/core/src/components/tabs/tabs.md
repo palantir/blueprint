@@ -10,7 +10,7 @@ not require translating between arbitrary indices and tab names. It does,
 however, require that every `Tab` have a _locally unique `id` value_.
 
 Arbitrary elements are supported in the tab list, and order is respected. Yes,
-you can even insert things _between_ `Tab`s.
+you can even insert things _between_ `Tabs`.
 
 ```tsx
 import { Tab, Tabs } from "@blueprintjs/core";
