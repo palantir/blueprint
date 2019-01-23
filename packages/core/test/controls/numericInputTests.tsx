@@ -674,6 +674,25 @@ describe("<NumericInput>", () => {
             });
         });
 
+        describe("if min === max", () => {
+            it("never changes value", () => {
+                const onValueChangeSpy = spy();
+                const component = mount(<NumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
+                // repeated interactions, no change in state
+                component
+                    .find(Button)
+                    .first()
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown");
+                expect(component.state().value).to.equal("2");
+                expect(onValueChangeSpy.callCount).to.equal(5);
+                expect(onValueChangeSpy.args[0]).to.deep.equal([2, "2"]);
+            });
+        });
+
         describe("clampValueOnBlur", () => {
             it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
                 // should be false by default
