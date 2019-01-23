@@ -839,10 +839,9 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const leftIcon = mount(<NumericInput leftIcon="variable" />)
-                .find(Icon)
-                .first();
-            expect(leftIcon.text()).to.equal("variable");
+            const component = mount(<NumericInput leftIcon="variable" />);
+            const icon = component.find(InputGroup).find(Icon);
+            expect(icon.prop("icon")).to.equal("variable");
         });
 
         it("shows placeholder text if provided", () => {
@@ -852,6 +851,11 @@ describe("<NumericInput>", () => {
             const placeholderText = inputField.props().placeholder;
 
             expect(placeholderText).to.equal("Enter a number...");
+        });
+
+        it("shows right element if provided", () => {
+            const component = mount(<NumericInput rightElement={<Button />} />);
+            expect(component.find(InputGroup).find(Button)).to.exist;
         });
 
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
