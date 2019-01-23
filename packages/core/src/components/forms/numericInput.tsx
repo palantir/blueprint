@@ -248,7 +248,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
-        if (min != null && max != null && min >= max) {
+        if (min != null && max != null && min > max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize == null) {
