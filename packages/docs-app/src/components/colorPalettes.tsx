@@ -58,7 +58,9 @@ const ColorSwatch: React.SFC<{ colorName: string; hexCode: string }> = ({ colorN
 // vertical list of swatches for each color
 const ColorPalette: React.SFC<{ colors: string[] }> = ({ colors }) => (
     <div className={classNames("docs-color-palette", { "docs-color-palette-single": colors.length === 1 })}>
-        {colors.map((name, i) => <ColorSwatch colorName={name} hexCode={getHexCode(name)} key={i} />)}
+        {colors.map((name, i) => (
+            <ColorSwatch colorName={name} hexCode={getHexCode(name)} key={i} />
+        ))}
     </div>
 );
 
@@ -92,7 +94,9 @@ export const ColorBar: React.SFC<{ colors: string[] }> = ({ colors }) => {
 function createPaletteBook(palettes: string[][], className?: string): React.SFC<{}> {
     return () => (
         <section className={classNames("docs-color-book", className)}>
-            {palettes.map((palette, index) => <ColorPalette colors={palette} key={index} />)}
+            {palettes.map((palette, index) => (
+                <ColorPalette colors={palette} key={index} />
+            ))}
         </section>
     );
 }

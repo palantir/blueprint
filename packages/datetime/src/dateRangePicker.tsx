@@ -144,7 +144,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         [`${SELECTED_RANGE_MODIFIER}-end`]: day => DateUtils.areSameDay(this.state.value[1], day),
 
         [HOVERED_RANGE_MODIFIER]: day => {
-            const { hoverValue, value: [selectedStart, selectedEnd] } = this.state;
+            const {
+                hoverValue,
+                value: [selectedStart, selectedEnd],
+            } = this.state;
             if (selectedStart == null && selectedEnd == null) {
                 return false;
             }
@@ -263,7 +266,9 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
 
     private getDisabledDaysModifier = () => {
-        const { dayPickerProps: { disabledDays } } = this.props;
+        const {
+            dayPickerProps: { disabledDays },
+        } = this.props;
 
         return disabledDays instanceof Array ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
@@ -564,12 +569,12 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     }
 
     /*
-    * The min / max months are offset by one because we are showing two months.
-    * We do a comparison check to see if
-    *   a) the proposed [Month, Year] change throws the two calendars out of order
-    *   b) the proposed [Month, Year] goes beyond the min / max months
-    * and rectify appropriately.
-    */
+     * The min / max months are offset by one because we are showing two months.
+     * We do a comparison check to see if
+     *   a) the proposed [Month, Year] change throws the two calendars out of order
+     *   b) the proposed [Month, Year] goes beyond the min / max months
+     * and rectify appropriately.
+     */
     private handleLeftYearSelectChange = (leftDisplayYear: number) => {
         let leftView = new MonthAndYear(this.state.leftView.getMonth(), leftDisplayYear);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, leftView.getFullDate());

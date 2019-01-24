@@ -67,7 +67,7 @@ export enum SelectedRegionTransformPreset {
 
 type IMutableStateUpdateCallback = (
     stateKey: keyof IMutableTableState,
-) => ((event: React.FormEvent<HTMLElement>) => void);
+) => (event: React.FormEvent<HTMLElement>) => void;
 
 const COLUMN_COUNTS = [0, 1, 5, 20, 100, 1000];
 const ROW_COUNTS = [0, 1, 5, 20, 100, 1000, 100000];

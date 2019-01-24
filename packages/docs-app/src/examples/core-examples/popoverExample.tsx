@@ -133,7 +133,8 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                         {this.getContents(exampleIndex)}
                     </Popover>
                     <p>
-                        Scroll around this container to experiment<br />
+                        Scroll around this container to experiment
+                        <br />
                         with <Code>flip</Code> and <Code>preventOverflow</Code> modifiers.
                     </p>
                 </div>

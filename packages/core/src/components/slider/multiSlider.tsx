@@ -432,9 +432,8 @@ function getSortedInteractiveHandleProps(props: IChildrenProps): IHandleProps[] 
 }
 
 function getSortedHandleProps({ children }: IChildrenProps, predicate: (props: IHandleProps) => boolean = () => true) {
-    const maybeHandles = React.Children.map(
-        children,
-        child => (Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null),
+    const maybeHandles = React.Children.map(children, child =>
+        Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null,
     );
     let handles = maybeHandles != null ? maybeHandles : [];
     handles = handles.filter(handle => handle !== null);

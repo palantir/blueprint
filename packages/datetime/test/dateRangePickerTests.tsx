@@ -714,8 +714,7 @@ describe("<DateRangePicker>", () => {
         describe("when only end date is defined", () => {
             it("should show a hovered range of [end, day] if day > end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .clickDay(14) // deselect start date
                     .mouseEnterDay(22);
@@ -724,8 +723,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [null, null] if day === end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .clickDay(14)
                     .mouseEnterDay(18);
@@ -734,8 +732,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, end] if day < end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .clickDay(14)
                     .mouseEnterDay(14);
@@ -746,8 +743,7 @@ describe("<DateRangePicker>", () => {
         describe("when both start and end date are defined", () => {
             it("should show a hovered range of [null, end] if day === start", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(14);
                 assertHoveredDays(null, 18);
@@ -755,8 +751,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [start, null] if day === end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(18);
                 assertHoveredDays(14, null);
@@ -764,8 +759,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, null] if start < day < end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(16);
                 assertHoveredDays(16, null);
@@ -773,8 +767,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, null] if day < start", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(10);
                 assertHoveredDays(10, null);
@@ -782,8 +775,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, null] if day > end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(22);
                 assertHoveredDays(22, null);
@@ -791,8 +783,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [null, null] if start === day === end", () => {
                 const { left, assertHoveredDays } = render({ allowSingleDayRange: true });
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(14)
                     .mouseEnterDay(14);
                 assertHoveredDays(null, null);
@@ -984,8 +975,7 @@ describe("<DateRangePicker>", () => {
         it("onHoverChange fired with `undefined` on mouseleave within a day", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
             assert.isTrue(onHoverChangeSpy.notCalled);
-            left
-                .clickDay(1)
+            left.clickDay(1)
                 .findDay(5)
                 .simulate("mouseleave");
             assert.isTrue(onHoverChangeSpy.calledTwice);
@@ -1028,8 +1018,7 @@ describe("<DateRangePicker>", () => {
 
         it("deselects endpoint when an endpoint of the current selection is clicked", () => {
             const { assertSelectedDays, left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
-            left
-                .clickDay(10)
+            left.clickDay(10)
                 .clickDay(14)
                 .clickDay(10);
             assertSelectedDays(14);

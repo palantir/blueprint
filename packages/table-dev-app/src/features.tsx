@@ -589,7 +589,8 @@ ReactDOM.render(
         </Table>
         <div className="stack-fill">
             <br />
-            <br />after
+            <br />
+            after
         </div>
     </div>,
     document.getElementById("table-9"),
