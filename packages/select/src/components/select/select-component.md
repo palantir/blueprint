@@ -90,8 +90,7 @@ data sets.
 
 `Select`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
 to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
-`modifiers.filtered` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item,
-or face React's console wrath!
+`modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
@@ -104,7 +103,7 @@ const filterFilm: ItemPredicate<IFilm> = (query, film) => {
 };
 
 const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
-    if (!modifiers.filtered) {
+    if (!modifiers.matchesPredicate) {
         return null;
     }
     return (
