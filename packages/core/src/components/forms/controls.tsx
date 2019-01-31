@@ -132,8 +132,15 @@ const Control: React.SFC<IControlInternalProps> = ({
 //
 
 export interface ISwitchProps extends IControlProps {
-    activeText?: string;
-    inactiveText?: string;
+    /**
+     * String to display within the switch control component when the switch is active ("on").
+     */
+    internalTextActive?: string;
+
+    /**
+     * String to display within the switch control component when the switch is inactive ("off").
+     */
+    internalTextInactive?: string;
 }
 
 export class Switch extends React.PureComponent<ISwitchProps> {
@@ -143,13 +150,13 @@ export class Switch extends React.PureComponent<ISwitchProps> {
             key={`${Classes.SWITCH}-active-text`}
             className={classNames(`${Classes.CONTROL_INDICATOR}-child`, `${Classes.SWITCH}-active-text`)}
         >
-            {this.props.activeText}
+            {this.props.internalTextActive}
         </div>,
         <div
             key={`${Classes.SWITCH}-inactive-text`}
             className={classNames(`${Classes.CONTROL_INDICATOR}-child`, `${Classes.SWITCH}-inactive-text`)}
         >
-            {this.props.inactiveText}
+            {this.props.internalTextInactive}
         </div>,
     ];
     public render() {

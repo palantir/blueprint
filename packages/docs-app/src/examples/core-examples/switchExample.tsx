@@ -22,8 +22,8 @@ export class SwitchExample extends CheckboxExample {
                     <Switch
                         {...this.state}
                         labelElement={"Containing Text"}
-                        activeText="activeText"
-                        inactiveText="inactiveText"
+                        internalTextActive="activeText"
+                        internalTextInactive="inactiveText"
                     />
 
                 </div>

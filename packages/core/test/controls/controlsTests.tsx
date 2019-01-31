@@ -33,7 +33,9 @@ describe("Controls:", () => {
 
     controlsTests(Switch, "checkbox", Classes.SWITCH, () => {
         describe("internal text", () => {
-            const switchWithText = mount(<Switch activeText="Active Text" inactiveText="Inactive Text" />);
+            const switchWithText = mount(
+                <Switch internalTextActive="Active Text" internalTextInactive="Inactive Text" />,
+            );
             it("renders internal text", () => {
                 assert.equal(switchWithText.find(`.${Classes.SWITCH}-active-text`).text(), "Active Text");
             });
