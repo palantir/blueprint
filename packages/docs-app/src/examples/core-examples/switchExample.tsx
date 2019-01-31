@@ -25,7 +25,6 @@ export class SwitchExample extends CheckboxExample {
                         internalTextActive="activeText"
                         internalTextInactive="inactiveText"
                     />
-
                 </div>
                 <small style={{ width: "100%", textAlign: "center" }}>
                     This example uses <Code>labelElement</Code> to demonstrate JSX labels.

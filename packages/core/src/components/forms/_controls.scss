@@ -285,9 +285,9 @@ $control-indicator-spacing: $pt-grid-size !default;
   $switch-indicator-margin: 2px !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
 
-  $switch-indicator-text-font-size: .6em; //@KEVINNG MAKE THIS RIGHT
+  $switch-indicator-text-font-size: 0.6em; //@KEVINNG MAKE THIS RIGHT
   $switch-indicator-text-line-height: 1.7em; //@KEVINNG MAKE THIS RIGHT
-  $switch-indicator-text-outside-margin: .75em; //@KEVINNG MAKE THIS RIGHT
+  $switch-indicator-text-outside-margin: 0.75em; //@KEVINNG MAKE THIS RIGHT
   $switch-indicator-text-inside-margin: 1.75em; //@KEVINNG MAKE THIS RIGHT
 
   $switch-background-color: rgba($gray4, 0.5) !default;
@@ -355,8 +355,8 @@ $control-indicator-spacing: $pt-grid-size !default;
       // override default button styles, never have a box-shadow here.
       // stylelint-disable-next-line declaration-no-important
       box-shadow: none !important;
-      min-width: $switch-width;
       width: auto;
+      min-width: $switch-width;
       transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
@@ -373,8 +373,8 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      left: auto;
       right: 0;
+      left: auto;
     }
 
     &.#{$ns}-large {
@@ -409,20 +409,20 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     .#{$ns}-control-indicator-child {
-      font-size: $switch-indicator-text-font-size;
       text-align: center;
+      font-size: $switch-indicator-text-font-size;
 
       &.#{$ns}-switch-active-text {
-        margin-left: $switch-indicator-text-outside-margin;
-        margin-right: $switch-indicator-text-inside-margin;
         visibility: hidden;
+        margin-right: $switch-indicator-text-inside-margin;
+        margin-left: $switch-indicator-text-outside-margin;
         line-height: 0;
       }
 
       &.#{$ns}-switch-inactive-text {
-        margin-left: $switch-indicator-text-inside-margin;
-        margin-right: $switch-indicator-text-outside-margin;
         visibility: visible;
+        margin-right: $switch-indicator-text-outside-margin;
+        margin-left: $switch-indicator-text-inside-margin;
         line-height: $switch-indicator-text-line-height;
       }
     }
@@ -432,6 +432,7 @@ $control-indicator-spacing: $pt-grid-size !default;
         visibility: visible;
         line-height: $switch-indicator-text-line-height;
       }
+
       .#{$ns}-switch-inactive-text {
         visibility: hidden;
         line-height: 0;
