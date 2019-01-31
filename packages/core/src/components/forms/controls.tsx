@@ -82,6 +82,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
 interface IControlInternalProps extends IControlProps {
     type: "checkbox" | "radio";
     typeClassName: string;
+    indicatorChildren?: React.ReactNode[];
 }
 
 /**
@@ -92,6 +93,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     alignIndicator,
     children,
     className,
+    indicatorChildren,
     inline,
     inputRef,
     label,
@@ -117,7 +119,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     return (
         <TagName className={classes} style={style}>
             <input {...htmlProps} ref={inputRef} type={type} />
-            <span className={Classes.CONTROL_INDICATOR} />
+            <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>
             {label}
             {labelElement}
             {children}
@@ -129,13 +131,36 @@ const Control: React.SFC<IControlInternalProps> = ({
 // Switch
 //
 
-export interface ISwitchProps extends IControlProps {}
+export interface ISwitchProps extends IControlProps {
+    activeText?: string;
+    inactiveText?: string;
+}
 
 export class Switch extends React.PureComponent<ISwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
-
+    private switchText = [
+        <div
+            key={`${Classes.SWITCH}-active-text`}
+            className={classNames(`${Classes.CONTROL_INDICATOR}-child`, `${Classes.SWITCH}-active-text`)}
+        >
+            {this.props.activeText}
+        </div>,
+        <div
+            key={`${Classes.SWITCH}-inactive-text`}
+            className={classNames(`${Classes.CONTROL_INDICATOR}-child`, `${Classes.SWITCH}-inactive-text`)}
+        >
+            {this.props.inactiveText}
+        </div>,
+    ];
     public render() {
-        return <Control {...this.props} type="checkbox" typeClassName={Classes.SWITCH} />;
+        return (
+            <Control
+                {...this.props}
+                type="checkbox"
+                typeClassName={Classes.SWITCH}
+                indicatorChildren={this.switchText}
+            />
+        );
     }
 }
 

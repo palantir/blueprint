@@ -350,7 +350,8 @@ $control-indicator-spacing: $pt-grid-size !default;
       // override default button styles, never have a box-shadow here.
       // stylelint-disable-next-line declaration-no-important
       box-shadow: none !important;
-      width: $switch-width;
+      min-width: $switch-width;
+      width: auto; //$switch-width;
       transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
@@ -367,8 +368,8 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      // 1em is size of indicator
-      left: $switch-width - 1em;
+      left: auto;
+      right: 0;
     }
 
     &.#{$ns}-large {
@@ -399,6 +400,35 @@ $control-indicator-spacing: $pt-grid-size !default;
       input:checked ~ .#{$ns}-control-indicator::before {
         // inset shadow so it forms a dark line instead of blurring into the blue
         box-shadow: inset $dark-button-box-shadow;
+      }
+    }
+
+    .#{$ns}-control-indicator-child {
+      font-size: 0.75em;
+
+      &.#{$ns}-switch-active-text {
+        padding-left: 0.5em;
+        padding-right: 1.5em;
+        visibility: hidden;
+        line-height: 0;
+      }
+
+      &.#{$ns}-switch-inactive-text {
+        padding-left: 1.5em;
+        padding-right:.5em;
+        visibility: visible;
+        line-height: 1.25em;
+      }
+    }
+
+    input:checked ~ .#{$ns}-control-indicator {
+      .#{$ns}-switch-active-text {
+        visibility: visible;
+        line-height: 1.25em;
+      }
+      .#{$ns}-switch-inactive-text {
+        visibility: hidden;
+        line-height: 0;
       }
     }
   }
