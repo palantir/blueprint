@@ -284,6 +284,8 @@ $control-indicator-spacing: $pt-grid-size !default;
   $switch-width: 1.75em !default;
   $switch-indicator-margin: 2px !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
+  $switch-indicator-text-font-size: .6em; //@KEVINNG MAKE THIS RIGHT
+  $switch-indicator-text-line-height: 1.7em; //@KEVINNG MAKE THIS RIGHT
 
   $switch-background-color: rgba($gray4, 0.5) !default;
   $switch-background-color-hover: rgba($gray2, 0.5) !default;
@@ -351,7 +353,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       // stylelint-disable-next-line declaration-no-important
       box-shadow: none !important;
       min-width: $switch-width;
-      width: auto; //$switch-width;
+      width: auto;
       transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
@@ -404,7 +406,8 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     .#{$ns}-control-indicator-child {
-      font-size: 0.75em;
+      font-size: $switch-indicator-text-font-size;
+      text-align: center;
 
       &.#{$ns}-switch-active-text {
         padding-left: 0.5em;
@@ -415,16 +418,16 @@ $control-indicator-spacing: $pt-grid-size !default;
 
       &.#{$ns}-switch-inactive-text {
         padding-left: 1.5em;
-        padding-right:.5em;
+        padding-right: 0.5em;
         visibility: visible;
-        line-height: 1.25em;
+        line-height: $switch-indicator-text-line-height;
       }
     }
 
     input:checked ~ .#{$ns}-control-indicator {
       .#{$ns}-switch-active-text {
         visibility: visible;
-        line-height: 1.25em;
+        line-height: $switch-indicator-text-line-height;
       }
       .#{$ns}-switch-inactive-text {
         visibility: hidden;
