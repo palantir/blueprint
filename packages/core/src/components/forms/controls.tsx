@@ -150,16 +150,21 @@ export class Switch extends React.PureComponent<ISwitchProps> {
 
     public render() {
         const { innerLabelChecked, innerLabel, ...controlProps } = this.props;
-        const switchText = [
+        const switchLabels = [
             <div key={`${Classes.SWITCH}-checked-text`} className={this.childClassName}>
-                <div className={this.textClassName}> {innerLabelChecked || innerLabel} </div>
+                <div className={this.textClassName}> {innerLabelChecked ? innerLabelChecked : innerLabel} </div>
             </div>,
             <div key={`${Classes.SWITCH}-unchecked-text`} className={this.childClassName}>
                 <div className={this.textClassName}> {innerLabel} </div>
             </div>,
         ];
         return (
-            <Control {...controlProps} type="checkbox" typeClassName={Classes.SWITCH} indicatorChildren={switchText} />
+            <Control
+                {...controlProps}
+                type="checkbox"
+                typeClassName={Classes.SWITCH}
+                indicatorChildren={switchLabels}
+            />
         );
     }
 }

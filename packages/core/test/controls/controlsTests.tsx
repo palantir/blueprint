@@ -36,8 +36,9 @@ describe("Controls:", () => {
             const switchWithText = mount(<Switch innerLabelChecked="Checked text" innerLabel="Unchecked text" />);
             it("renders internal text", () => {
                 const innerTextNodes = switchWithText.find(`.${Classes.SWITCH}-inner-text`);
-                assert.equal(innerTextNodes.first().text(), "Checked text");
-                assert.equal(innerTextNodes.last().text(), "Unchecked text");
+                assert.lengthOf(innerTextNodes, 2);
+                const uncheckedText = innerTextNodes.last().text();
+                assert.equal(uncheckedText.trim(), "Unchecked text");
             });
         });
     });
@@ -60,7 +61,7 @@ describe("Controls:", () => {
             it("supports JSX children", () => {
                 const control = mountControl({}, <span className="jsx-child" key="jsx" />, "Label Text");
                 assert.lengthOf(control.find(".jsx-child"), 1);
-                assert.equal(control.text(), "Label Text");
+                assert.equal(control.text().trim(), "Label Text");
             });
 
             it("supports JSX labelElement", () => {
@@ -69,7 +70,7 @@ describe("Controls:", () => {
 
                 const control = mountControl({ labelElement: <strong>boom</strong> });
                 assert.lengthOf(control.find("strong"), 1);
-                assert.equal(control.text(), "boom");
+                assert.equal(control.text().trim(), "boom");
             });
 
             if (moreTests != null) {
