@@ -285,10 +285,12 @@ $control-indicator-spacing: $pt-grid-size !default;
   $switch-indicator-margin: 2px !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
 
-  $switch-indicator-text-font-size: 0.6em; //@KEVINNG MAKE THIS RIGHT
-  $switch-indicator-text-line-height: 1.7em; //@KEVINNG MAKE THIS RIGHT
-  $switch-indicator-text-outside-margin: 0.75em; //@KEVINNG MAKE THIS RIGHT
-  $switch-indicator-text-inside-margin: 1.75em; //@KEVINNG MAKE THIS RIGHT
+  $switch-indicator-child-height: 1em;
+  $switch-indicator-child-outside-margin: 0.5em;
+  $switch-indicator-child-inside-margin: 1.2em;
+
+  $switch-indicator-text-font-size: 0.5em;
+  $switch-indicator-text-line-height: 2em; //to match height of parent
 
   $switch-background-color: rgba($gray4, 0.5) !default;
   $switch-background-color-hover: rgba($gray2, 0.5) !default;
@@ -374,7 +376,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     input:checked ~ .#{$ns}-control-indicator::before {
       right: 0;
-      left: auto;
+      left: calc(100% - 1em);
     }
 
     &.#{$ns}-large {
@@ -408,34 +410,37 @@ $control-indicator-spacing: $pt-grid-size !default;
       }
     }
 
-    .#{$ns}-control-indicator-child {
+    .#{$ns}-switch-inner-text {
       text-align: center;
+      line-height: $switch-indicator-text-line-height;
       font-size: $switch-indicator-text-font-size;
+    }
 
-      &.#{$ns}-switch-active-text {
+    .#{$ns}-control-indicator-child {
+      &:first-child {
         visibility: hidden;
-        margin-right: $switch-indicator-text-inside-margin;
-        margin-left: $switch-indicator-text-outside-margin;
-        line-height: 0;
+        margin-right: $switch-indicator-child-inside-margin;
+        margin-left: $switch-indicator-child-outside-margin;
+        height: 0;
       }
 
-      &.#{$ns}-switch-inactive-text {
+      &:last-child {
         visibility: visible;
-        margin-right: $switch-indicator-text-outside-margin;
-        margin-left: $switch-indicator-text-inside-margin;
-        line-height: $switch-indicator-text-line-height;
+        margin-right: $switch-indicator-child-outside-margin;
+        margin-left: $switch-indicator-child-inside-margin;
+        height: $switch-indicator-child-height;
       }
     }
 
-    input:checked ~ .#{$ns}-control-indicator {
-      .#{$ns}-switch-active-text {
+    input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child {
+      &:first-child {
         visibility: visible;
-        line-height: $switch-indicator-text-line-height;
+        height: $switch-indicator-child-height;
       }
 
-      .#{$ns}-switch-inactive-text {
+      &:last-child {
         visibility: hidden;
-        line-height: 0;
+        height: 0;
       }
     }
   }

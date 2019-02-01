@@ -82,7 +82,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
 interface IControlInternalProps extends IControlProps {
     type: "checkbox" | "radio";
     typeClassName: string;
-    indicatorChildren?: React.ReactNode[];
+    indicatorChildren?: React.ReactNode;
 }
 
 /**
@@ -133,40 +133,33 @@ const Control: React.SFC<IControlInternalProps> = ({
 
 export interface ISwitchProps extends IControlProps {
     /**
-     * String to display within the switch control component when the switch is active ("on").
+     * String to display within the switch control component when the switch is checked/on. Defaults to innerLabel.
      */
-    internalTextActive?: string;
+    innerLabelChecked?: string;
 
     /**
-     * String to display within the switch control component when the switch is inactive ("off").
+     * String to display within the switch control component when the switch is unchecked/off. Defaults to "".
      */
-    internalTextInactive?: string;
+    innerLabel?: string;
 }
 
 export class Switch extends React.PureComponent<ISwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
-    private switchText = [
-        <div
-            key={`${Classes.SWITCH}-active-text`}
-            className={classNames(`${Classes.CONTROL_INDICATOR}-child`, `${Classes.SWITCH}-active-text`)}
-        >
-            {this.props.internalTextActive}
-        </div>,
-        <div
-            key={`${Classes.SWITCH}-inactive-text`}
-            className={classNames(`${Classes.CONTROL_INDICATOR}-child`, `${Classes.SWITCH}-inactive-text`)}
-        >
-            {this.props.internalTextInactive}
-        </div>,
-    ];
+    private childClassName = `${Classes.CONTROL_INDICATOR}-child`;
+    private textClassName = `${Classes.SWITCH}-inner-text`;
+
     public render() {
+        const { innerLabelChecked, innerLabel, ...controlProps } = this.props;
+        const switchText = [
+            <div key={`${Classes.SWITCH}-checked-text`} className={this.childClassName}>
+                <div className={this.textClassName}> {innerLabelChecked || innerLabel} </div>
+            </div>,
+            <div key={`${Classes.SWITCH}-unchecked-text`} className={this.childClassName}>
+                <div className={this.textClassName}> {innerLabel} </div>
+            </div>,
+        ];
         return (
-            <Control
-                {...this.props}
-                type="checkbox"
-                typeClassName={Classes.SWITCH}
-                indicatorChildren={this.switchText}
-            />
+            <Control {...controlProps} type="checkbox" typeClassName={Classes.SWITCH} indicatorChildren={switchText} />
         );
     }
 }

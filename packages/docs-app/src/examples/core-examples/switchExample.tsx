@@ -22,8 +22,8 @@ export class SwitchExample extends CheckboxExample {
                     <Switch
                         {...this.state}
                         labelElement={"Containing Text"}
-                        internalTextActive="activeText"
-                        internalTextInactive="inactiveText"
+                        innerLabelChecked="checked"
+                        innerLabel="unchecked"
                     />
                 </div>
                 <small style={{ width: "100%", textAlign: "center" }}>
