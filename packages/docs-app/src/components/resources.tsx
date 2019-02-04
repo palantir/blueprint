@@ -8,7 +8,7 @@ import { Card } from "@blueprintjs/core";
 import download from "downloadjs";
 import * as React from "react";
 
-const URL_BASE = "https://github.palantir.build/design/blueprint/blob/develop/resources/sketch";
+const URL_BASE = "https://github.palantir.build/design/blueprint/raw/develop/resources/sketch";
 
 const RESOURCES: IResourceProps[] = [
     { fileName: "Core Kit.sketch", lastUpdated: "August 22, 2018" },
