@@ -16,11 +16,7 @@ const RESOURCES: IResourceProps[] = [
 ];
 
 export const Resources: React.SFC = () => (
-    <>
-        {RESOURCES.map(resource => (
-            <ResourceCard key={resource.fileName} {...resource} />
-        ))}
-    </>
+    <>{RESOURCES.map(resource => <ResourceCard key={resource.fileName} {...resource} />)}</>
 );
 
 interface IResourceProps {
