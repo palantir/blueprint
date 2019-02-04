@@ -31,7 +31,9 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
   span {
     // must use inline elements inside <a> tag
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: $pt-grid-size / 2;
+    color: $pt-link-color;
+    font-size: $pt-font-size-large;
     font-weight: 700;
   }
 
