@@ -36,7 +36,7 @@ class ResourceCard extends React.PureComponent<IResourceProps> {
     public render() {
         return (
             <Card className="blueprint-resource" interactive={true} onClick={this.handleClick}>
-                <span>{this.props.fileName}</span>
+                <div className="blueprint-resource-title">{this.props.fileName}</div>
                 <small>Last updated {this.props.lastUpdated}</small>
             </Card>
         );
