@@ -3204,5 +3204,33 @@
     "tags": "shape, 3d, object",
     "group": "miscellaneous",
     "content": "\\e7d0"
+  },
+  {
+    "displayName": "Inbox: filtered",
+    "iconName": "inbox-filtered",
+    "tags": "folder, mail, file, message, funnel",
+    "group": "file",
+    "content": "\\e7d1"
+  },
+  {
+    "displayName": "Inbox: geo",
+    "iconName": "inbox-geo",
+    "tags": "folder, mail, file, message, geography, location, area, globe",
+    "group": "file",
+    "content": "\\e7d2"
+  },
+  {
+    "displayName": "Inbox: search",
+    "iconName": "inbox-search",
+    "tags": "folder, mail, file, message, inspection, exploration, magnifying glass",
+    "group": "file",
+    "content": "\\e7d3"
+  },
+  {
+    "displayName": "Inbox: update",
+    "iconName": "inbox-update",
+    "tags": "folder, mail, file, message, notifications, warning",
+    "group": "file",
+    "content": "\\e7d4"
   }
 ]
