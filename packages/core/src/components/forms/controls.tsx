@@ -133,31 +133,38 @@ const Control: React.SFC<IControlInternalProps> = ({
 
 export interface ISwitchProps extends IControlProps {
     /**
-     * String to display within the switch control component when the switch is checked/on. Defaults to innerLabel.
+     * String to display within the switch control component when the switch is checked/on.
+     *
+     * @default ${innerLabel}
      */
     innerLabelChecked?: string;
 
     /**
-     * String to display within the switch control component when the switch is unchecked/off. Defaults to "".
+     * String to display within the switch control component when the switch is unchecked/off.
+     *
+     * @default null
      */
     innerLabel?: string;
 }
 
 export class Switch extends React.PureComponent<ISwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
-    private childClassName = `${Classes.CONTROL_INDICATOR}-child`;
-    private textClassName = `${Classes.SWITCH}-inner-text`;
 
     public render() {
         const { innerLabelChecked, innerLabel, ...controlProps } = this.props;
-        const switchLabels = [
-            <div key={`${Classes.SWITCH}-checked-text`} className={this.childClassName}>
-                <div className={this.textClassName}> {innerLabelChecked ? innerLabelChecked : innerLabel} </div>
-            </div>,
-            <div key={`${Classes.SWITCH}-unchecked-text`} className={this.childClassName}>
-                <div className={this.textClassName}> {innerLabel} </div>
-            </div>,
-        ];
+        const switchLabels =
+            innerLabel || innerLabelChecked
+                ? [
+                      <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                          <div className={Classes.SWITCH_INNER_TEXT}>
+                              {innerLabelChecked ? innerLabelChecked : innerLabel}
+                          </div>
+                      </div>,
+                      <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                          <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
+                      </div>,
+                  ]
+                : null;
         return (
             <Control
                 {...controlProps}
