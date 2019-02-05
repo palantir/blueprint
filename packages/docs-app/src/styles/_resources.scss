@@ -3,10 +3,16 @@
 $resources-path: "./assets";
 
 $asset-padding: $pt-grid-size;
+$asset-margin: $pt-grid-size * 2;
 $asset-icon-size: $pt-grid-size * 6.4;
 
 $asset-background-color: rgba($dark-gray5, 0.1);
 $dark-asset-background-color: rgba($light-gray1, 0.1);
+
+.blueprint-resources {
+  @include pt-flex-container(row, $asset-margin);
+  margin-bottom: $asset-margin;
+}
 
 .blueprint-resource {
   display: inline-flex;

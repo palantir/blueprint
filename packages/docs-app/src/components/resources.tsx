@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Card } from "@blueprintjs/core";
+import { Callout, Card } from "@blueprintjs/core";
 import download from "downloadjs";
 import * as React from "react";
 
@@ -16,7 +16,15 @@ const RESOURCES: IResourceProps[] = [
 ];
 
 export const Resources: React.SFC = () => (
-    <>{RESOURCES.map(resource => <ResourceCard key={resource.fileName} {...resource} />)}</>
+    <>
+        <div className="blueprint-resources">
+            {RESOURCES.map(resource => <ResourceCard key={resource.fileName} {...resource} />)}
+        </div>
+        <Callout title="Missing fonts?" intent="warning">
+            Download Apple's San Francisco font directly from the source:{" "}
+            <a href="https://developer.apple.com/fonts/" target="_blank" rel="noopener noreferrer">https://developer.apple.com/fonts/</a>
+        </Callout>
+    </>
 );
 
 interface IResourceProps {
