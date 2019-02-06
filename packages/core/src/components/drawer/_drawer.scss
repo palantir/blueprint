@@ -9,6 +9,8 @@
 $drawer-margin: ($pt-grid-size * 3) 0 !default;
 $drawer-padding: $pt-grid-size * 2 !default;
 
+$drawer-default-size: 50%;
+
 .#{$ns}-drawer {
   display: flex;
   flex-direction: column;
@@ -41,7 +43,7 @@ $drawer-padding: $pt-grid-size * 2 !default;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 25%;
+    width: $drawer-default-size;
   }
 
   &.#{$ns}-vertical {
@@ -64,7 +66,7 @@ $drawer-padding: $pt-grid-size * 2 !default;
     right: 0;
     bottom: 0;
     left: 0;
-    height: 25%;
+    height: $drawer-default-size;
   }
 
   &.#{$ns}-dark,
@@ -83,7 +85,7 @@ $drawer-padding: $pt-grid-size * 2 !default;
   border-radius: 0;
   box-shadow: 0 1px 0 $pt-divider-black;
   min-height: $pt-icon-size-large + $dialog-padding;
-  padding-right: $dialog-padding / 4;
+  padding: $dialog-padding / 4;
   padding-left: $dialog-padding;
 
   .#{$ns}-icon-large,

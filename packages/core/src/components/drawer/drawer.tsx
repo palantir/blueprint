@@ -74,15 +74,14 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
         vertical: false,
     };
 
-    public static readonly SIZE_SMALL = 300;
+    public static readonly SIZE_SMALL = "360px";
     public static readonly SIZE_STANDARD = "50%";
-    public static readonly SIZE_LARGE = "75%";
+    public static readonly SIZE_LARGE = "90%";
 
     public render() {
         const { size, style, vertical } = this.props;
         const classes = classNames(Classes.DRAWER, { [Classes.VERTICAL]: vertical }, this.props.className);
         const styleProp = size == null ? style : { ...style, [vertical ? "height" : "width"]: size };
-        // small drawer should not use a backdrop
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
                 <div className={classes} style={styleProp}>
