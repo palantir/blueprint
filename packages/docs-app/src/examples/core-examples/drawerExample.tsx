@@ -15,6 +15,7 @@ export interface IDrawerExampleState {
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
     enforceFocus: boolean;
+    hasBackdrop: boolean;
     isOpen: boolean;
     size: string;
     usePortal: boolean;
@@ -26,13 +27,15 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
-        isOpen: true,
+        hasBackdrop: true,
+        isOpen: false,
         size: undefined,
         usePortal: true,
         vertical: false,
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+    private handleBackdropChange = handleBooleanChange(hasBackdrop => this.setState({ hasBackdrop }));
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
@@ -88,7 +91,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal } = this.state;
+        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, hasBackdrop, usePortal } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -100,6 +103,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                 <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
+                <Switch checked={hasBackdrop} label="Has backdrop" onChange={this.handleBackdropChange} />
                 <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
                     Use <Code>Portal</Code>
                 </Switch>
@@ -122,6 +126,6 @@ const SIZES: Array<string | IOptionProps> = [
     { label: "Small", value: Drawer.SIZE_SMALL },
     { label: "Standard", value: Drawer.SIZE_STANDARD },
     { label: "Large", value: Drawer.SIZE_LARGE },
-    "37%",
-    "444px",
+    "72%",
+    "560px",
 ];
