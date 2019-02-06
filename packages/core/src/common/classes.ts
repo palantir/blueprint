@@ -126,9 +126,11 @@ export const INPUT_ACTION = `${INPUT}-action`;
 
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
+export const CONTROL_INDICATOR_CHILD = `${CONTROL_INDICATOR}-child`;
 export const CHECKBOX = `${NS}-checkbox`;
 export const RADIO = `${NS}-radio`;
 export const SWITCH = `${NS}-switch`;
+export const SWITCH_INNER_TEXT = `${SWITCH}-inner-text`;
 export const FILE_INPUT = `${NS}-file-input`;
 export const FILE_UPLOAD_INPUT = `${NS}-file-upload-input`;
 

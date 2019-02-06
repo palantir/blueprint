@@ -285,6 +285,12 @@ $control-indicator-spacing: $pt-grid-size !default;
   $switch-indicator-margin: 2px !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
 
+  $switch-indicator-child-height: 1em;
+  $switch-indicator-child-outside-margin: 0.5em;
+  $switch-indicator-child-inside-margin: 1.2em;
+
+  $switch-indicator-text-font-size: 0.7em;
+
   $switch-background-color: rgba($gray4, 0.5) !default;
   $switch-background-color-hover: rgba($gray2, 0.5) !default;
   $switch-background-color-active: rgba($gray1, 0.5) !default;
@@ -350,7 +356,8 @@ $control-indicator-spacing: $pt-grid-size !default;
       // override default button styles, never have a box-shadow here.
       // stylelint-disable-next-line declaration-no-important
       box-shadow: none !important;
-      width: $switch-width;
+      width: auto;
+      min-width: $switch-width;
       transition: background-color $pt-transition-duration $pt-transition-ease;
 
       &::before {
@@ -368,7 +375,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     input:checked ~ .#{$ns}-control-indicator::before {
       // 1em is size of indicator
-      left: $switch-width - 1em;
+      left: calc(100% - 1em);
     }
 
     &.#{$ns}-large {
@@ -399,6 +406,39 @@ $control-indicator-spacing: $pt-grid-size !default;
       input:checked ~ .#{$ns}-control-indicator::before {
         // inset shadow so it forms a dark line instead of blurring into the blue
         box-shadow: inset $dark-button-box-shadow;
+      }
+    }
+
+    .#{$ns}-switch-inner-text {
+      text-align: center;
+      font-size: $switch-indicator-text-font-size;
+    }
+
+    .#{$ns}-control-indicator-child {
+      &:first-child {
+        visibility: hidden;
+        margin-right: $switch-indicator-child-inside-margin;
+        margin-left: $switch-indicator-child-outside-margin;
+        line-height: 0;
+      }
+
+      &:last-child {
+        visibility: visible;
+        margin-right: $switch-indicator-child-outside-margin;
+        margin-left: $switch-indicator-child-inside-margin;
+        line-height: $switch-indicator-child-height;
+      }
+    }
+
+    input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child {
+      &:first-child {
+        visibility: visible;
+        line-height: $switch-indicator-child-height;
+      }
+
+      &:last-child {
+        visibility: hidden;
+        line-height: 0;
       }
     }
   }
