@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
-import { Classes, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Overlay, Utils } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
@@ -160,7 +160,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             { "docs-examples-only": location.search === "?examples" },
             this.props.className,
         );
-        const apiClasses = classNames("docs-api-overlay", this.props.className);
+        const apiClasses = classNames("docs-api-drawer", this.props.className);
         return (
             <div className={rootClasses}>
                 {this.props.banner}
@@ -199,9 +199,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                         />
                     </main>
                 </div>
-                <Overlay className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                     <TypescriptExample tag="typescript" value={activeApiMember} />
-                </Overlay>
+                </Drawer>
                 <Navigator
                     isOpen={this.state.isNavigatorOpen}
                     items={nav}

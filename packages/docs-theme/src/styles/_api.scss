@@ -4,35 +4,11 @@
 @import "~@blueprintjs/core/src/common/react-transition";
 @import "variables";
 
-.docs-api-overlay {
+.docs-api-drawer {
   .docs-modifiers {
-    @include react-transition-phase(
-      "#{$ns}-overlay",
-      "enter",
-      (transform: (translateX(100%), translateX(0))),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
-      $before: "&"
-    );
-    @include react-transition-phase(
-      "#{$ns}-overlay",
-      "exit",
-      (transform: (translateX(100%), translateX(0))),
-      $pt-transition-duration,
-      $before: "&"
-    );
     display: flex;
     flex-direction: column;
-    top: 0;
-    right: 0;
-    bottom: 0;
     margin: 0;
-    box-shadow: $pt-elevation-shadow-4;
-    background: $sidebar-background-color;
-    width: 50vw;
-    min-width: $pt-grid-size * 50;
-    max-width: $pt-grid-size * 80;
-    padding: 0;
   }
 
   .docs-interface-header {
