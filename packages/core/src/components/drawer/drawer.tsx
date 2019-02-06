@@ -10,7 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
@@ -22,7 +22,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * drawer's header. Note that the header will only be rendered if `title` is
      * provided.
      */
-    icon?: IconName | JSX.Element;
+    icon?: IconName | MaybeElement;
 
     /**
      * Whether to show the close button in the dialog's header.
@@ -37,6 +37,17 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      */
     isOpen: boolean;
 
+    /**
+     * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
+     * and `height` otherwise.
+     *
+     * Constants are available for common sizes:
+     * - `Drawer.SIZE_SMALL = 360px`
+     * - `Drawer.SIZE_STANDARD = 50%`
+     * - `Drawer.SIZE_LARGE = 90%`
+     *
+     * @default Drawer.SIZE_STANDARD = "50%"
+     */
     size?: number | string;
 
     /**
