@@ -5,7 +5,7 @@
 */
 
 import { IProps } from "@blueprintjs/core";
-import { ItemListRenderer } from "./itemListRenderer";
+import { IQueryListActiveItem, ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
 import { ItemListPredicate, ItemPredicate } from "./predicate";
 
@@ -17,7 +17,7 @@ export interface IListItemsProps<T> extends IProps {
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
-    activeItem?: T | null;
+    activeItem?: IQueryListActiveItem<T> | null;
 
     /** Array of items in the list. */
     items: T[];
@@ -85,7 +85,7 @@ export interface IListItemsProps<T> extends IProps {
      * in the list, selecting an item makes it active, and changing the query may reset it to
      * the first item in the list if it no longer matches the filter.
      */
-    onActiveItemChange?: (activeItem: T | null) => void;
+    onActiveItemChange?: (activeItem: IQueryListActiveItem<T> | null) => void;
 
     /**
      * Callback invoked when an item from the list is selected,
@@ -108,7 +108,11 @@ export interface IListItemsProps<T> extends IProps {
     /**
      * Custom renderer to transform the current query string into a selectable "Create Item" option.
      */
-    createItemRenderer?: (query: string, handleClick: React.MouseEventHandler<HTMLElement>) => JSX.Element | undefined;
+    createItemRenderer?: (
+        query: string,
+        active: boolean,
+        handleClick: React.MouseEventHandler<HTMLElement>,
+    ) => JSX.Element | undefined;
 
     /**
      * Whether the active item should be reset to the first matching item _every

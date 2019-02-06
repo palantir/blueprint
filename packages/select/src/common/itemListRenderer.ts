@@ -4,13 +4,23 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
+export enum QueryListActiveItemType {
+    CREATE = "create",
+    ITEM = "item",
+}
+
+export interface IQueryListActiveItem<T> {
+    type: QueryListActiveItemType;
+    item: T | null;
+}
+
 /**
  * An object describing how to render the list of items.
  * An `itemListRenderer` receives this object as its sole argument.
  */
 export interface IItemListRendererProps<T> {
     /** The currently focused item (for keyboard interactions). */
-    activeItem: T | null;
+    activeItem: IQueryListActiveItem<T> | null;
 
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.

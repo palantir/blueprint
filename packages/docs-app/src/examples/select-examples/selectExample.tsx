@@ -132,8 +132,18 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         );
     }
 
-    private renderCreateFilmOption = (query: string, handleClick: React.MouseEventHandler<HTMLElement>) => (
-        <MenuItem icon="add" text={`Create "${query}"`} onClick={handleClick} shouldDismissPopover={false} />
+    private renderCreateFilmOption = (
+        query: string,
+        active: boolean,
+        handleClick: React.MouseEventHandler<HTMLElement>,
+    ) => (
+        <MenuItem
+            icon="add"
+            text={`Create "${query}"`}
+            active={active}
+            onClick={handleClick}
+            shouldDismissPopover={false}
+        />
     );
 
     private handleValueChange = (film: IFilm) => this.setState({ film });
