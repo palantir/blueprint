@@ -35,6 +35,13 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
     hoverOpenDelay?: number;
 
     /**
+     * The kind of hover interaction that triggers the display of the tooltip.
+     * Tooltips do not support click interactions.
+     * @default PopoverInteractionKind.HOVER_TARGET_ONLY
+     */
+    interactionKind?: typeof PopoverInteractionKind.HOVER | typeof PopoverInteractionKind.HOVER_TARGET_ONLY;
+
+    /**
      * Indicates how long (in milliseconds) the tooltip's appear/disappear
      * transition takes. This is used by React `CSSTransition` to know when a
      * transition completes and must match the duration of the animation in CSS.
@@ -54,23 +61,32 @@ export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
         transitionDuration: 100,
     };
 
+    private popover: Popover | null = null;
+
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName);
 
         return (
             <Popover
+                interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 enforceFocus={false}
-                interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
                 popoverClassName={classes}
                 portalContainer={this.props.portalContainer}
+                ref={ref => (this.popover = ref)}
             >
                 {children}
             </Popover>
         );
+    }
+
+    public reposition() {
+        if (this.popover != null) {
+            this.popover.reposition();
+        }
     }
 }

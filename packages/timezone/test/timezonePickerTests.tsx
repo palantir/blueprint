@@ -20,7 +20,7 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
-import { IQueryListProps, ISelectProps, QueryList, Select } from "@blueprintjs/select";
+import { QueryList, Select } from "@blueprintjs/select";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
@@ -201,14 +201,26 @@ describe("<TimezonePicker>", () => {
         }
     });
 
+    it("renders a custom target via <children>", () => {
+        const timezonePicker = shallow(
+            <TimezonePicker {...DEFAULT_PROPS}>
+                <span className="foo">Hello world</span>
+            </TimezonePicker>,
+        );
+        const button = timezonePicker.find(Button);
+        const span = timezonePicker.find(".foo");
+        assert.lengthOf(button, 0, "expected no button");
+        assert.lengthOf(span, 1, "expected custom target with class '.foo'");
+    });
+
     function findSelect(timezonePicker: TimezonePickerShallowWrapper) {
-        return timezonePicker.find<ISelectProps<ITimezoneItem>>(Select);
+        return timezonePicker.find(Select.ofType<ITimezoneItem>());
     }
 
     function findQueryList(timezonePicker: TimezonePickerShallowWrapper) {
         return findSelect(timezonePicker)
             .shallow()
-            .find<IQueryListProps<ITimezoneItem>>(QueryList);
+            .find(QueryList.ofType<ITimezoneItem>());
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {

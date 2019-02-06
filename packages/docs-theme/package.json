@@ -1,9 +1,10 @@
 {
   "name": "@blueprintjs/docs-theme",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Blueprint theme for documentalist",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
+  "esnext": "lib/esnext/index.js",
   "typings": "lib/esm/index.d.ts",
   "style": "lib/css/docs-theme.css",
   "unpkg": "dist/docs-theme.bundle.js",
@@ -14,7 +15,8 @@
     "clean": "rm -rf dist/* && rm -rf lib/*",
     "compile": "run-p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
-    "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
+    "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+    "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
     "compile:css": "sass-compile ./src",
     "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
     "dist": "run-s \"dist:*\"",
@@ -28,25 +30,26 @@
     "verify": "npm-run-all compile -p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.0.0",
-    "@blueprintjs/select": "^3.0.0",
+    "@blueprintjs/core": "^3.12.0",
+    "@blueprintjs/select": "^3.6.0",
     "classnames": "^2.2",
     "documentalist": "^1.4.0",
     "fuzzaldrin-plus": "^0.6.0",
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "*",
+    "@blueprintjs/node-build-scripts": "^0.8.1",
     "@types/fuzzaldrin-plus": "^0.6.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "typescript": "~2.8.3",
-    "webpack": "^3.10.0"
+    "webpack-cli": "^3.1.2"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/docs-theme"
   },
   "keywords": [
     "palantir",

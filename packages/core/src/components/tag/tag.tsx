@@ -19,6 +19,12 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     active?: boolean;
 
+    /**
+     * Whether the tag should take up the full width of its container.
+     * @default false
+     */
+    fill?: boolean;
+
     /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
     icon?: IconName | MaybeElement;
 
@@ -83,6 +89,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
             active,
             children,
             className,
+            fill,
             icon,
             intent,
             interactive,
@@ -101,6 +108,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
             Classes.intentClass(intent),
             {
                 [Classes.ACTIVE]: active,
+                [Classes.FILL]: fill,
                 [Classes.INTERACTIVE]: interactive,
                 [Classes.LARGE]: large,
                 [Classes.MINIMAL]: minimal,

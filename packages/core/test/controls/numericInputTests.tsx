@@ -674,6 +674,25 @@ describe("<NumericInput>", () => {
             });
         });
 
+        describe("if min === max", () => {
+            it("never changes value", () => {
+                const onValueChangeSpy = spy();
+                const component = mount(<NumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
+                // repeated interactions, no change in state
+                component
+                    .find(Button)
+                    .first()
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown");
+                expect(component.state().value).to.equal("2");
+                expect(onValueChangeSpy.callCount).to.equal(5);
+                expect(onValueChangeSpy.args[0]).to.deep.equal([2, "2"]);
+            });
+        });
+
         describe("clampValueOnBlur", () => {
             it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
                 // should be false by default
@@ -820,10 +839,9 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const leftIcon = mount(<NumericInput leftIcon="variable" />)
-                .find(Icon)
-                .first();
-            expect(leftIcon.text()).to.equal("variable");
+            const component = mount(<NumericInput leftIcon="variable" />);
+            const icon = component.find(InputGroup).find(Icon);
+            expect(icon.prop("icon")).to.equal("variable");
         });
 
         it("shows placeholder text if provided", () => {
@@ -833,6 +851,11 @@ describe("<NumericInput>", () => {
             const placeholderText = inputField.props().placeholder;
 
             expect(placeholderText).to.equal("Enter a number...");
+        });
+
+        it("shows right element if provided", () => {
+            const component = mount(<NumericInput rightElement={<Button />} />);
+            expect(component.find(InputGroup).find(Button)).to.exist;
         });
 
         it("changes max precision of displayed value to that of the smallest step size defined", () => {

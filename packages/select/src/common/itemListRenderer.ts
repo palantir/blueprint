@@ -9,7 +9,10 @@
  * An `itemListRenderer` receives this object as its sole argument.
  */
 export interface IItemListRendererProps<T> {
-    /** The currently focused item (for keyboard interactions). */
+    /**
+     * The currently focused item (for keyboard interactions), or `null` to
+     * indicate that no item is active.
+     */
     activeItem: T | null;
 
     /**

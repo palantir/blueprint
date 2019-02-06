@@ -3169,5 +3169,68 @@
     "tags": "correct, cleanse, clear, purify, stars",
     "group": "action",
     "content": "\\e7c5"
+  },
+    {
+    "displayName": "Table: filtered",
+    "iconName": "th-filtered",
+    "tags": "index, rows, columns, agenda, list, spreadsheet, filtering, funnel",
+    "group": "table",
+    "content": "\\e7c6"
+  },
+    {
+    "displayName": "Lifesaver",
+    "iconName": "lifesaver",
+    "tags": "help, support, aid, advice",
+    "group": "miscellaneous",
+    "content": "\\e7c7"
+  },
+    {
+    "displayName": "Cube",
+    "iconName": "cube",
+    "tags": "shape, 3d, object",
+    "group": "miscellaneous",
+    "content": "\\e7c8"
+  },
+    {
+    "displayName": "Cube: add",
+    "iconName": "cube-add",
+    "tags": "shape, 3d, object",
+    "group": "miscellaneous",
+    "content": "\\e7c9"
+  },
+    {
+    "displayName": "Cube: remove",
+    "iconName": "cube-remove",
+    "tags": "shape, 3d, object",
+    "group": "miscellaneous",
+    "content": "\\e7d0"
+  },
+  {
+    "displayName": "Inbox: filtered",
+    "iconName": "inbox-filtered",
+    "tags": "folder, mail, file, message, funnel",
+    "group": "file",
+    "content": "\\e7d1"
+  },
+  {
+    "displayName": "Inbox: geo",
+    "iconName": "inbox-geo",
+    "tags": "folder, mail, file, message, geography, location, area, globe",
+    "group": "file",
+    "content": "\\e7d2"
+  },
+  {
+    "displayName": "Inbox: search",
+    "iconName": "inbox-search",
+    "tags": "folder, mail, file, message, inspection, exploration, magnifying glass",
+    "group": "file",
+    "content": "\\e7d3"
+  },
+  {
+    "displayName": "Inbox: update",
+    "iconName": "inbox-update",
+    "tags": "folder, mail, file, message, notifications, warning",
+    "group": "file",
+    "content": "\\e7d4"
   }
 ]

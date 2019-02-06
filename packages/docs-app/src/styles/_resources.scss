@@ -3,43 +3,50 @@
 $resources-path: "./assets";
 
 $asset-padding: $pt-grid-size;
+$asset-margin: $pt-grid-size * 2;
 $asset-icon-size: $pt-grid-size * 6.4;
 
 $asset-background-color: rgba($dark-gray5, 0.1);
 $dark-asset-background-color: rgba($light-gray1, 0.1);
 
+.blueprint-resources {
+  @include pt-flex-container(row, $asset-margin);
+  margin-bottom: $asset-margin;
+}
+
 .blueprint-resource {
-  display: inline-flex;
+  display: flex;
+  flex: 1 1 0%;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  margin: $pt-grid-size ($pt-grid-size * 2) $pt-grid-size 0;
   padding-left: $asset-icon-size + $asset-padding * 2;
   white-space: nowrap;
 
   &::before {
     display: block;
     position: absolute;
-    top: $asset-padding;
+    top: 50%;
     left: $asset-padding;
+    transform: translateY(-50%);
+
     background: url("#{$resources-path}/sketch-mac-icon@2x.png") no-repeat center / $asset-icon-size;
     width: $asset-icon-size;
     height: $asset-icon-size;
     content: "";
   }
 
-  span {
-    // must use inline elements inside <a> tag
-    display: block;
-    margin-bottom: 2px;
-    font-weight: 700;
-  }
-
-  &:hover {
-    text-decoration: none;
-
-    span {
-      text-decoration: underline;
-    }
+  &:hover .blueprint-resource-title {
+    text-decoration: underline;
   }
 }
+
+.blueprint-resource-title {
+  // must use inline elements inside <a> tag
+  display: block;
+  margin-bottom: $pt-grid-size / 2;
+  color: $pt-link-color;
+  font-size: $pt-font-size-large;
+  font-weight: 700;
+}
+

@@ -18,8 +18,9 @@ export interface ISuggestExampleState {
     film: IFilm;
     minimal: boolean;
     openOnKeyDown: boolean;
-    resetOnSelect: boolean;
+    resetOnClose: boolean;
     resetOnQuery: boolean;
+    resetOnSelect: boolean;
 }
 
 export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestExampleState> {
@@ -28,6 +29,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         film: TOP_100_FILMS[0],
         minimal: true,
         openOnKeyDown: false,
+        resetOnClose: false,
         resetOnQuery: true,
         resetOnSelect: false,
     };
@@ -35,6 +37,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
     private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
     private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
     private handleMinimalChange = this.handleSwitchChange("minimal");
+    private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
     private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
@@ -67,6 +70,11 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     label="Open popover on key down"
                     checked={this.state.openOnKeyDown}
                     onChange={this.handleOpenOnKeyDownChange}
+                />
+                <Switch
+                    label="Reset on close"
+                    checked={this.state.resetOnClose}
+                    onChange={this.handleResetOnCloseChange}
                 />
                 <Switch
                     label="Reset on query"

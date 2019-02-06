@@ -4,16 +4,27 @@
 * Licensed under the terms of the LICENSE file distributed with this project.
 */
 
-import { IProps } from "@blueprintjs/core";
+import { IProps, Utils } from "@blueprintjs/core";
 import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
 import { ItemListPredicate, ItemPredicate } from "./predicate";
+
+/**
+ * Equality test comparator to determine if two {@link IListItemsProps} items are equivalent.
+ * @return `true` if the two items are equivalent.
+ */
+export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
+
+/**
+ * Union of all possible types for {@link IListItemsProps#itemsEqual}.
+ */
+export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
 export interface IListItemsProps<T> extends IProps {
     /**
      * The currently focused item for keyboard interactions, or `null` to
-     * indicate that no item is active. If omitted, this prop will be
+     * indicate that no item is active. If omitted or `undefined`, this prop will be
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
@@ -21,6 +32,21 @@ export interface IListItemsProps<T> extends IProps {
 
     /** Array of items in the list. */
     items: T[];
+
+    /**
+     * Specifies how to test if two items are equal. By default, simple strict
+     * equality (`===`) is used to compare two items.
+     *
+     * If your items have a unique identifier field, simply provide the name of
+     * a property on the item that can be compared with strict equality to
+     * determine equivalence: `itemsEqual="id"` will check `a.id === b.id`.
+     *
+     * If more complex comparison logic is required, provide an equality
+     * comparator function that returns `true` if the two items are equal. The
+     * arguments to this function will never be `null` or `undefined`, as those
+     * values are handled before calling the function.
+     */
+    itemsEqual?: ItemsEqualProp<T>;
 
     /**
      * Determine if the given item is disabled. Provide a callback function, or
@@ -128,4 +154,33 @@ export interface IListItemsProps<T> extends IProps {
      * handler to the relevant element in your `renderer` implementation.
      */
     query?: string;
+}
+
+/**
+ * Utility function for executing the {@link IListItemsProps#itemsEqual} prop to test
+ * for equality between two items.
+ * @return `true` if the two items are equivalent according to `itemsEqualProp`.
+ */
+export function executeItemsEqual<T>(
+    itemsEqualProp: ItemsEqualProp<T> | undefined,
+    itemA: T | null | undefined,
+    itemB: T | null | undefined,
+): boolean {
+    // Use strict equality if:
+    // A) Default equality check is necessary because itemsEqualProp is undefined.
+    // OR
+    // B) Either item is null/undefined. Note that null represents "no item", while
+    //    undefined represents an uncontrolled prop. This strict equality check ensures
+    //    nothing will ever be considered equivalent to an uncontrolled prop.
+    if (itemsEqualProp === undefined || itemA == null || itemB == null) {
+        return itemA === itemB;
+    }
+
+    if (Utils.isFunction(itemsEqualProp)) {
+        // itemsEqualProp is an equality comparator function, so use it
+        return itemsEqualProp(itemA, itemB);
+    } else {
+        // itemsEqualProp is a property name, so strictly compare the values of the property.
+        return itemA[itemsEqualProp] === itemB[itemsEqualProp];
+    }
 }

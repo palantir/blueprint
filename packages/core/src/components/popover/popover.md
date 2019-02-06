@@ -397,12 +397,12 @@ documentation.
 #### Animation delays
 
 `Popover` can be difficult to test because it uses `Portal` to inject its contents elsewhere in the
-DOM (outside the usual flow); this can be simplified by using `inline` Popovers in tests.
+DOM (outside the usual flow); this can be simplified by setting `usePortal={false}` in tests.
 Hover interactions can also be tricky due to delays and transitions; this can be resolved by
 zeroing the default hover delays.
 
 ```tsx
-<Popover inline {...yourProps} hoverCloseDelay={0} hoverOpenDelay={0}>
+<Popover {...yourProps} usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0}>
     {yourTarget}
 </Popover>
 ```
@@ -439,7 +439,7 @@ setTimeout(() => {
 
 #### Element refs
 
-If `inline` rendering is not an option, `Popover` instances expose `popoverElement` and
+If `usePortal={false}` rendering is not an option, `Popover` instances expose `popoverElement` and
 `targetElement` refs of the actual DOM elements. Importantly, `popoverElement` points to the
 `.@ns-popover` element inside the `Portal` so you can use it to easily query popover contents without
 knowing precisely where they are in the DOM. These properties exist primarily to simplify testing;

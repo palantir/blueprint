@@ -57,11 +57,11 @@ describe("<OverflowList>", function(this) {
             .waitForResize()).assertVisibleItems(...IDS);
     });
 
-    it("shows fewer after shrinking", () => {
-        overflowList(45)
+    it("shows fewer after shrinking", async () => {
+        (await overflowList(45)
             .assertVisibleItemSplit(4)
             .setWidth(15)
-            .assertVisibleItemSplit(1);
+            .waitForResize()).assertVisibleItemSplit(1);
     });
 
     it("shows at least minVisibleItems", () => {
