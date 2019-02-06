@@ -52,7 +52,6 @@ describe("Controls:", () => {
                 const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
                 const checkedText = innerTextNodes.last().text();
                 const uncheckedText = innerTextNodes.first().text();
-                assert.lengthOf(innerTextNodes, 2);
                 assert.equal(checkedText.trim(), "onlyInnerLabel");
                 assert.equal(checkedText.trim(), uncheckedText.trim());
             });
@@ -61,7 +60,6 @@ describe("Controls:", () => {
                 const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
                 const checked = innerTextNodes.first().text();
                 const uncheckedText = innerTextNodes.last().text();
-                assert.lengthOf(innerTextNodes, 2);
                 assert.equal(checked.trim(), "onlyChecked");
                 assert.equal(uncheckedText.trim(), "");
             });
