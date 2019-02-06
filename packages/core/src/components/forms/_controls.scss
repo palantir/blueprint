@@ -289,8 +289,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   $switch-indicator-child-outside-margin: 0.5em;
   $switch-indicator-child-inside-margin: 1.2em;
 
-  $switch-indicator-text-font-size: 0.5em;
-  $switch-indicator-text-line-height: 2em; //to match height of parent
+  $switch-indicator-text-font-size: 0.7em;
 
   $switch-background-color: rgba($gray4, 0.5) !default;
   $switch-background-color-hover: rgba($gray2, 0.5) !default;
@@ -412,7 +411,6 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     .#{$ns}-switch-inner-text {
       text-align: center;
-      line-height: $switch-indicator-text-line-height;
       font-size: $switch-indicator-text-font-size;
     }
 
@@ -421,26 +419,26 @@ $control-indicator-spacing: $pt-grid-size !default;
         visibility: hidden;
         margin-right: $switch-indicator-child-inside-margin;
         margin-left: $switch-indicator-child-outside-margin;
-        height: 0;
+        line-height: 0;
       }
 
       &:last-child {
         visibility: visible;
         margin-right: $switch-indicator-child-outside-margin;
         margin-left: $switch-indicator-child-inside-margin;
-        height: $switch-indicator-child-height;
+        line-height: $switch-indicator-child-height;
       }
     }
 
     input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child {
       &:first-child {
         visibility: visible;
-        height: $switch-indicator-child-height;
+        line-height: $switch-indicator-child-height;
       }
 
       &:last-child {
         visibility: hidden;
-        height: 0;
+        line-height: 0;
       }
     }
   }
