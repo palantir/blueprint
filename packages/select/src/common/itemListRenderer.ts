@@ -14,6 +14,13 @@ export interface IQueryListActiveItem<T> {
     item: T | null;
 }
 
+export function getActiveItem<T>(activeItem: IQueryListActiveItem<T> | null | undefined): T | null {
+    if (activeItem && activeItem.type === QueryListActiveItemType.ITEM) {
+        return activeItem.item;
+    }
+    return null;
+}
+
 /**
  * An object describing how to render the list of items.
  * An `itemListRenderer` receives this object as its sole argument.

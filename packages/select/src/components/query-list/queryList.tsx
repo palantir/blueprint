@@ -9,6 +9,7 @@ import * as React from "react";
 import { DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
 import {
     executeItemsEqual,
+    getActiveItem,
     IItemListRendererProps,
     IItemModifiers,
     IListItemsProps,
@@ -177,8 +178,8 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const scrollToActiveItem = this.props.scrollToActiveItem !== false;
         const externalChangeToActiveItem = !executeItemsEqual(
             this.props.itemsEqual,
-            this.expectedNextActiveItem ? this.expectedNextActiveItem.item : null,
-            this.props.activeItem ? this.props.activeItem.item : null,
+            getActiveItem(this.expectedNextActiveItem),
+            getActiveItem(this.props.activeItem),
         );
         this.expectedNextActiveItem = null;
 
@@ -223,13 +224,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
         // always reset active item if it's now filtered or disabled
         const activeIndex = this.getActiveIndex(filteredItems);
-        const maybeActiveItem = this.state.activeItem ? this.state.activeItem.item : null;
         const shouldUpdateActiveItem =
             resetActiveItem ||
             activeIndex < 0 ||
-            // non-null assertion is safe because activeItem exists and was found in filteredItems
-            // (guaranteed because activeIndex >=0 here)
-            isItemDisabled(maybeActiveItem, activeIndex, props.itemDisabled);
+            isItemDisabled(getActiveItem(this.state.activeItem), activeIndex, props.itemDisabled);
 
         if (hasQueryChanged && shouldUpdateActiveItem) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
@@ -257,11 +255,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
-            active: executeItemsEqual(
-                this.props.itemsEqual,
-                activeItem && activeItem.type === QueryListActiveItemType.ITEM ? activeItem.item : undefined,
-                item,
-            ),
+            active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
             disabled: isItemDisabled(item, index, this.props.itemDisabled),
             matchesPredicate,
         };
