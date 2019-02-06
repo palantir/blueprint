@@ -374,7 +374,6 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      right: 0;
       left: calc(100% - 1em);
     }
 
