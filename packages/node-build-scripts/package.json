@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/node-build-scripts",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Node.js build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
@@ -30,7 +30,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/node-build-scripts"
   },
   "author": "Palantir Technologies",
   "license": "SEE LICENSE IN LICENSE"

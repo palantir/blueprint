@@ -17,7 +17,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { DatePickerNavbar } from "../src/datePickerNavbar";
-import { IDateRangePickerState } from "../src/dateRangePicker";
+import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
     DateRange,
@@ -904,74 +904,47 @@ describe("<DateRangePicker>", () => {
         });
 
         it("custom shortcuts set the displayed months correctly when start month changes", () => {
-            const dateRange = [
-                new Date(2016, Months.JANUARY, 1, 10, 20, 30),
-                new Date(2016, Months.DECEMBER, 31, 10, 20, 30),
-            ] as DateRange;
-
-            const test = (shouldChangeTime: boolean) => {
-                const { left, right } = render({
-                    initialMonth: new Date(2015, Months.JANUARY, 1),
-                    shortcuts: [{ label: "custom shortcut", dateRange, shouldChangeTime }],
-                }).clickShortcut();
-                assert.isTrue(onChangeSpy.calledOnce);
-                left.assertMonthYear(Months.JANUARY, 2016);
-                right.assertMonthYear(Months.FEBRUARY, 2016);
-            };
-
-            test(true);
-            test(false);
+            const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
+            const { left, right } = render({
+                initialMonth: new Date(2015, Months.JANUARY, 1),
+                shortcuts: [{ label: "custom shortcut", dateRange }],
+            }).clickShortcut();
+            assert.isTrue(onChangeSpy.calledOnce);
+            left.assertMonthYear(Months.JANUARY, 2016);
+            right.assertMonthYear(Months.FEBRUARY, 2016);
         });
 
         it(
             "custom shortcuts set the displayed months correctly when start month changes " +
                 "and contiguousCalendarMonths is false",
             () => {
-                const dateRange = [
-                    new Date(2016, Months.JANUARY, 1, 10, 20, 30),
-                    new Date(2016, Months.DECEMBER, 31, 10, 20, 30),
-                ] as DateRange;
-
-                const test = (shouldChangeTime: boolean) => {
-                    const { left, right } = render({
-                        contiguousCalendarMonths: false,
-                        initialMonth: new Date(2015, Months.JANUARY, 1),
-                        shortcuts: [{ label: "custom shortcut", dateRange, shouldChangeTime }],
-                    }).clickShortcut();
-                    assert.isTrue(onChangeSpy.calledOnce);
-                    left.assertMonthYear(Months.JANUARY, 2016);
-                    right.assertMonthYear(Months.DECEMBER, 2016);
-                };
-
-                test(true);
-                test(false);
+                const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
+                const { left, right } = render({
+                    contiguousCalendarMonths: false,
+                    initialMonth: new Date(2015, Months.JANUARY, 1),
+                    shortcuts: [{ label: "custom shortcut", dateRange }],
+                }).clickShortcut();
+                assert.isTrue(onChangeSpy.calledOnce);
+                left.assertMonthYear(Months.JANUARY, 2016);
+                right.assertMonthYear(Months.DECEMBER, 2016);
             },
         );
 
         it("custom shortcuts set the displayed months correctly when start month stays the same", () => {
-            const dateRange = [
-                new Date(2016, Months.JANUARY, 1, 10, 20, 30),
-                new Date(2016, Months.DECEMBER, 31, 10, 20, 30),
-            ] as DateRange;
+            const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
+            const { clickShortcut, left, right } = render({
+                initialMonth: new Date(2016, Months.JANUARY, 1),
+                shortcuts: [{ label: "custom shortcut", dateRange }],
+            });
 
-            const test = (shouldChangeTime: boolean) => {
-                const { clickShortcut, left, right } = render({
-                    initialMonth: new Date(2016, Months.JANUARY, 1),
-                    shortcuts: [{ label: "custom shortcut", dateRange, shouldChangeTime }],
-                });
+            clickShortcut();
+            assert.isTrue(onChangeSpy.calledOnce);
+            left.assertMonthYear(Months.JANUARY, 2016);
+            right.assertMonthYear(Months.FEBRUARY, 2016);
 
-                clickShortcut();
-                assert.isTrue(onChangeSpy.calledOnce);
-                left.assertMonthYear(Months.JANUARY, 2016);
-                right.assertMonthYear(Months.FEBRUARY, 2016);
-
-                clickShortcut();
-                left.assertMonthYear(Months.JANUARY, 2016);
-                right.assertMonthYear(Months.FEBRUARY, 2016);
-            };
-
-            test(true);
-            test(false);
+            clickShortcut();
+            left.assertMonthYear(Months.JANUARY, 2016);
+            right.assertMonthYear(Months.FEBRUARY, 2016);
         });
     });
 
@@ -1174,21 +1147,21 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
         });
 
-        it("clicking a shortcut with shouldChangeTime=false doesn't change time", () => {
+        it("clicking a shortcut with includeTime=false doesn't change time", () => {
             render({ timePrecision: "minute", defaultValue: defaultRange }).clickShortcut();
             assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
 
-        it("clicking a shortcut with shouldChangeTime=true changes time", () => {
+        it("clicking a shortcut with includeTime=true changes time", () => {
             const endTime = defaultRange[1];
             const startTime = new Date(defaultRange[1].getTime());
             startTime.setHours(startTime.getHours() - 2);
 
-            const shortcuts = [
+            const shortcuts: IDateRangeShortcut[] = [
                 {
                     dateRange: [startTime, endTime] as DateRange,
-                    label: "custom shortcut",
-                    shouldChangeTime: true,
+                    includeTime: true,
+                    label: "shortcut with time",
                 },
             ];
 

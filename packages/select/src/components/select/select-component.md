@@ -1,6 +1,6 @@
 @# Select
 
-Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#labs/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
+Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#core/components/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Disabling a Select</h4>
@@ -96,8 +96,7 @@ prop to render a custom `MenuItem` to indicate that users can create new items.
 
 `Select`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
 to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
-`modifiers.filtered` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item,
-or face React's console wrath!
+`modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
@@ -110,7 +109,7 @@ const filterFilm: ItemPredicate<IFilm> = (query, film) => {
 };
 
 const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
-    if (!modifiers.filtered) {
+    if (!modifiers.matchesPredicate) {
         return null;
     }
     return (

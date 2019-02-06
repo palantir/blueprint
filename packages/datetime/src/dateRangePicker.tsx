@@ -29,22 +29,10 @@ import {
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
-import { Shortcuts } from "./shortcuts";
+import { IDateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-export interface IDateRangeShortcut {
-    label: string;
-    dateRange: DateRange;
-
-    /**
-     * By default, clicking a shortcut does not change the time of the date range picker, but instead
-     * takes the date components of the `dateRange` and combines it with the currently selected time.
-     * Setting `shouldChangeTime` to `true` will override this behavior and allow shortcuts to change
-     * the selected time as well.
-     * @default false
-     */
-    shouldChangeTime?: boolean;
-}
+export { IDateRangeShortcut };
 
 export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     /**
@@ -505,8 +493,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     };
 
     private handleShortcutClick = (shortcut: IDateRangeShortcut) => {
-        const { dateRange, shouldChangeTime } = shortcut;
-        if (shouldChangeTime) {
+        const { dateRange, includeTime } = shortcut;
+        if (includeTime) {
             const newDateRange: DateRange = [dateRange[0], dateRange[1]];
             const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
             const nextState = getStateChange(

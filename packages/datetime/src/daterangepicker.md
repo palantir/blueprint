@@ -15,6 +15,28 @@ Semantically:
 * `[someDate, null]` represents a date range where a single endpoint is known.
 * `[someDate, someOtherDate]` represents a full date range where both endpoints are known.
 
+@## Shortcuts
+
+The menu on the left of the calendars provides "shortcuts" that allow users to
+quickly select common date ranges. The items in this menu are controlled through
+the `shortcuts` prop: `true` to show presets (default), `false` to hide, or an
+array of `IDateRangeShortcut` objects to define custom shortcuts.
+
+The **preset shortcuts** can be seen in the example above. They are as follows:
+
+- Today (only appears if `allowSingleDayRange={true}`)
+- Yesterday (only appears if `allowSingleDayRange={true}`)
+- Past week
+- Past month
+- Past 3 months
+- Past 6 months
+- Past year
+- Past 2 years
+
+**Custom shortcuts** use the following interface:
+
+@interface IDateRangeShortcut
+
 @## Props
 
 Use the `onChange` prop to listen for changes to the set date range. You can

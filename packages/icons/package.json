@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/icons",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "Components, fonts, icons, and css files for creating and displaying icons.",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -39,8 +39,8 @@
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "*",
-    "@blueprintjs/test-commons": "^0.8.0",
+    "@blueprintjs/node-build-scripts": "^0.8.1",
+    "@blueprintjs/test-commons": "^0.8.1",
     "enzyme": "^3.3.0",
     "mocha": "^4.1.0",
     "npm-run-all": "^4.1.2",
@@ -52,7 +52,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/icons"
   },
   "keywords": [
     "palantir",

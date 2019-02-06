@@ -8,6 +8,7 @@ import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
 import {
+    executeItemsEqual,
     IItemListRendererProps,
     IItemModifiers,
     IListItemsProps,
@@ -117,7 +118,10 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { query = "" } = this.props;
         const filteredItems = getFilteredItems(query, this.props);
         this.state = {
-            activeItem: getFirstEnabledItem(filteredItems, this.props.itemDisabled),
+            activeItem:
+                this.props.activeItem !== undefined
+                    ? this.props.activeItem
+                    : getFirstEnabledItem(filteredItems, this.props.itemDisabled),
             filteredItems,
             query,
         };
@@ -171,7 +175,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public scrollActiveItemIntoView() {
         const scrollToActiveItem = this.props.scrollToActiveItem !== false;
-        const externalChangeToActiveItem = this.expectedNextActiveItem !== this.props.activeItem;
+        const externalChangeToActiveItem = !executeItemsEqual(
+            this.props.itemsEqual,
+            this.expectedNextActiveItem ? this.expectedNextActiveItem.item : null,
+            this.props.activeItem ? this.props.activeItem.item : null,
+        );
         this.expectedNextActiveItem = null;
 
         if (!scrollToActiveItem && externalChangeToActiveItem) {
@@ -217,7 +225,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const activeIndex = this.getActiveIndex(filteredItems);
         const maybeActiveItem = this.state.activeItem ? this.state.activeItem.item : null;
         const shouldUpdateActiveItem =
-            resetActiveItem || activeIndex < 0 || isItemDisabled(maybeActiveItem, activeIndex, props.itemDisabled);
+            resetActiveItem ||
+            activeIndex < 0 ||
+            // non-null assertion is safe because activeItem exists and was found in filteredItems
+            // (guaranteed because activeIndex >=0 here)
+            isItemDisabled(maybeActiveItem, activeIndex, props.itemDisabled);
 
         if (hasQueryChanged && shouldUpdateActiveItem) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
@@ -245,7 +257,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
-            active: activeItem ? activeItem.type === QueryListActiveItemType.ITEM && activeItem.item === item : false,
+            active: executeItemsEqual(this.props.itemsEqual, activeItem && activeItem.type === QueryListActiveItemType.ITEM ? activeItem.item : undefined, item),
             disabled: isItemDisabled(item, index, this.props.itemDisabled),
             matchesPredicate,
         };
@@ -288,7 +300,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             return -1;
         }
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
-        return items.indexOf(activeItem.item);
+        for (let i = 0; i < items.length; ++i) {
+            if (executeItemsEqual(this.props.itemsEqual, items[i], activeItem.item)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private getItemsParentPadding() {
@@ -356,7 +373,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /**
      * Get the next enabled item, moving in the given direction from the start
-     * index. An `undefined` return value means no suitable item was found.
+     * index. A `null` return value means no suitable item was found.
      * @param direction amount to move in each iteration, typically +/-1
      */
     private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): IQueryListActiveItem<T> | null {
@@ -434,7 +451,7 @@ function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListIt
 
 /**
  * Get the next enabled item, moving in the given direction from the start
- * index. An `undefined` return value means no suitable item was found.
+ * index. A `null` return value means no suitable item was found.
  * @param items the list of items
  * @param isItemDisabled callback to determine if a given item is disabled
  * @param direction amount to move in each iteration, typically +/-1

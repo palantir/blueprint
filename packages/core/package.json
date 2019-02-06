@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "3.11.0",
+  "version": "3.12.0",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -40,7 +40,7 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/icons": "^3.5.0",
+    "@blueprintjs/icons": "^3.5.1",
     "@types/dom4": "^2.0.0",
     "classnames": "^2.2",
     "dom4": "^2.0.1",
@@ -56,9 +56,9 @@
     "react-dom": "^15.3.0 || 16"
   },
   "devDependencies": {
-    "@blueprintjs/karma-build-scripts": "*",
-    "@blueprintjs/node-build-scripts": "*",
-    "@blueprintjs/test-commons": "^0.8.0",
+    "@blueprintjs/karma-build-scripts": "^0.9.1",
+    "@blueprintjs/node-build-scripts": "^0.8.1",
+    "@blueprintjs/test-commons": "^0.8.1",
     "enzyme": "^3.3.0",
     "karma": "^3.1.4",
     "mocha": "^4.1.0",
@@ -72,7 +72,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/core"
   },
   "keywords": [
     "palantir",

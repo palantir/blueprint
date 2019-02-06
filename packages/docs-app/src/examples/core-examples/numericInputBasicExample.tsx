@@ -6,6 +6,7 @@
 import * as React from "react";
 
 import {
+    H5,
     HTMLSelect,
     Intent,
     INumericInputProps,
@@ -29,7 +30,7 @@ const MIN_VALUES = [
     { label: "None", value: -Infinity },
     { label: "-10", value: -10 },
     { label: "0", value: 0 },
-    { label: "10", value: 10 },
+    { label: "20", value: 20 },
 ];
 
 const MAX_VALUES = [
@@ -66,7 +67,6 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     private handleMaxChange = handleNumberChange(max => this.setState({ max }));
     private handleMinChange = handleNumberChange(min => this.setState({ min }));
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
-
     private handleButtonPositionChange = handleStringChange((buttonPosition: INumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),
     );
@@ -110,14 +110,14 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
 
         return (
             <>
-                <Label>Modifiers</Label>
+                <H5>Props</H5>
+                {this.renderSwitch("Disabled", disabled, this.toggleDisabled)}
+                {this.renderSwitch("Fill", fill, this.toggleFullWidth)}
+                {this.renderSwitch("Large", large, this.toggleLargeSize)}
+                {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
                 {this.renderSwitch("Numeric characters only", allowNumericCharactersOnly, this.toggleNumericCharsOnly)}
                 {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
                 {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
-                {this.renderSwitch("Disabled", disabled, this.toggleDisabled)}
-                {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
-                {this.renderSwitch("Fill container", fill, this.toggleFullWidth)}
-                {this.renderSwitch("Large", large, this.toggleLargeSize)}
                 {this.renderSelectMenu("Minimum value", min, MIN_VALUES, this.handleMinChange)}
                 {this.renderSelectMenu("Maximum value", max, MAX_VALUES, this.handleMaxChange)}
                 {this.renderSelectMenu(
@@ -137,19 +137,17 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
 
     private renderSelectMenu(
         label: string,
-        selectedValue: number | string,
+        value: number | string,
         options: IOptionProps[],
-        onChange: React.FormEventHandler<HTMLElement>,
+        onChange: React.FormEventHandler,
     ) {
         return (
             <Label>
                 {label}
-                <HTMLSelect value={selectedValue} onChange={onChange} options={options} />
+                <HTMLSelect {...{ value, onChange, options }} />
             </Label>
         );
     }
 
-    private handleValueChange = (_valueAsNumber: number, valueAsString: string) => {
-        this.setState({ value: valueAsString });
-    };
+    private handleValueChange = (_v: number, value: string) => this.setState({ value });
 }

@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/table",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Scalable interactive table component",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -35,14 +35,14 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.11.0",
+    "@blueprintjs/core": "^3.12.0",
     "classnames": "^2.2",
     "prop-types": "^15.6.0",
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "*",
-    "@blueprintjs/test-commons": "^0.8.0",
+    "@blueprintjs/node-build-scripts": "^0.8.1",
+    "@blueprintjs/test-commons": "^0.8.1",
     "enzyme": "^3.3.0",
     "karma": "^3.1.4",
     "lodash": "^4.17.4",
@@ -57,7 +57,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/table"
   },
   "keywords": [
     "palantir",

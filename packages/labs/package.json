@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/labs",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "description": "Incubator for unstable and in-development Blueprint components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -34,15 +34,15 @@
     "verify": "npm-run-all compile -p dist test lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.0.0",
-    "@blueprintjs/select": "^3.0.0",
-    "@blueprintjs/timezone": "^3.0.0",
+    "@blueprintjs/core": "^3.12.0",
+    "@blueprintjs/select": "^3.6.0",
+    "@blueprintjs/timezone": "^3.3.0",
     "classnames": "^2.2",
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "*",
-    "@blueprintjs/test-commons": "^0.8.0",
+    "@blueprintjs/node-build-scripts": "^0.8.1",
+    "@blueprintjs/test-commons": "^0.8.1",
     "enzyme": "^3.3.0",
     "karma": "^3.1.4",
     "npm-run-all": "^4.1.2",
@@ -54,7 +54,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/labs"
   },
   "keywords": [
     "palantir",
