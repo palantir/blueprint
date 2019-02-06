@@ -257,7 +257,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
-            active: executeItemsEqual(this.props.itemsEqual, activeItem && activeItem.type === QueryListActiveItemType.ITEM ? activeItem.item : undefined, item),
+            active: executeItemsEqual(
+                this.props.itemsEqual,
+                activeItem && activeItem.type === QueryListActiveItemType.ITEM ? activeItem.item : undefined,
+                item,
+            ),
             disabled: isItemDisabled(item, index, this.props.itemDisabled),
             matchesPredicate,
         };
@@ -388,17 +392,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
                 };
             }
         }
-
-        const firstEnabledItem = getFirstEnabledItem(
-            this.state.filteredItems,
-            this.props.itemDisabled,
-            direction,
-            startIndex,
-        );
-        if (firstEnabledItem != null) {
-            return firstEnabledItem;
-        }
-        return null;
+        return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
     private setActiveItem(activeItem: IQueryListActiveItem<T> | null) {
@@ -468,9 +462,10 @@ export function getFirstEnabledItem<T>(
     }
     // remember where we started to prevent an infinite loop
     let index = startIndex;
+    const maxIndex = items.length - 1;
     do {
         // find first non-disabled item
-        index = wrapNumber(index + direction, 0, items.length - 1);
+        index = wrapNumber(index + direction, 0, maxIndex);
         if (!isItemDisabled(items[index], index, itemDisabled)) {
             return {
                 item: items[index],
