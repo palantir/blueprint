@@ -133,14 +133,15 @@ const Control: React.SFC<IControlInternalProps> = ({
 
 export interface ISwitchProps extends IControlProps {
     /**
-     * String to display within the switch control component when the switch is checked/on.
-     * @default ${innerLabel}
+     * Text to display inside the switch indicator when checked.
+     * If `innerLabel` is provided and this prop is omitted, then `innerLabel`
+     * will be used for both states.
+     * @default innerLabel
      */
     innerLabelChecked?: string;
 
     /**
-     * String to display within the switch control component when the switch is unchecked/off.
-     * @default null
+     * Text to display inside the switch indicator when unchecked.
      */
     innerLabel?: string;
 }
