@@ -22,6 +22,9 @@ describe("Core isomorphic rendering", () => {
         Dialog: {
             props: { isOpen: true, usePortal: false },
         },
+        Drawer: {
+            props: { isOpen: true, usePortal: false },
+        },
         Hotkey: {
             props: hotkeyProps,
         },
