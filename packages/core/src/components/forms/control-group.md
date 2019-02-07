@@ -8,11 +8,11 @@ groups, and HTML selects as direct children.
     <h4 class="@ns-heading">Control group vs. input group</h4>
     <p>Both components group multiple elements into a single unit, but their usage patterns are
     quite different.</p>
-    <p>Think of `ControlGroup` as a parent with multiple children, with each one a separate
+    <p>Think of an `InputGroup` as a parent with multiple children, with each one a separate
     control.</p>
-    <p>Conversely, an `InputGroup` is a single control, and should function like so. A
-    button inside of an input group should only affect that input; if its reach is further, then it
-    should be promoted to live in a control group.</p>
+    <p>Conversely, a `ControlGroup` is a single control, and should function like so. A
+    button inside of an control group should only affect that input; if its reach is further, then it
+    should be promoted to live in an input group.</p>
 </div>
 
 @reactExample ControlGroupExample
