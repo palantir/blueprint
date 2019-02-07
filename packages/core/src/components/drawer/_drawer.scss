@@ -1,0 +1,134 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the terms of the LICENSE file distributed with this project.
+
+@import "~@blueprintjs/icons/src/icons";
+@import "../../common/mixins";
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+$drawer-margin: ($pt-grid-size * 3) 0 !default;
+$drawer-padding: $pt-grid-size * 2 !default;
+
+$drawer-default-size: 50%;
+
+.#{$ns}-drawer {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  box-shadow: $pt-elevation-shadow-4;
+  background: $white;
+  padding: 0;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:not(.#{$ns}-vertical) {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (transform: (translateX(100%), translateX(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: $drawer-default-size;
+  }
+
+  &.#{$ns}-vertical {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (transform: (translateY(100%), translateY(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (transform: (translateY(100%), translateY(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: $drawer-default-size;
+  }
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow: $pt-dark-dialog-box-shadow;
+    background: $dark-gray4;
+    color: $pt-dark-text-color;
+  }
+}
+
+.#{$ns}-drawer-header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  position: relative;
+  border-radius: 0;
+  box-shadow: 0 1px 0 $pt-divider-black;
+  min-height: $pt-icon-size-large + $dialog-padding;
+  padding: $dialog-padding / 4;
+  padding-left: $dialog-padding;
+
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
+    flex: 0 0 auto;
+    margin-right: $dialog-padding / 2;
+    color: $pt-icon-color;
+  }
+
+  .#{$ns}-heading {
+    @include overflow-ellipsis();
+    flex: 1 1 auto;
+    margin: 0;
+    line-height: inherit;
+
+    &:last-child {
+      margin-right: $dialog-padding;
+    }
+  }
+
+  .#{$ns}-dark & {
+    box-shadow: 0 1px 0 $pt-dark-divider-black;
+
+    .#{$ns}-icon-large,
+    .#{$ns}-icon {
+      color: $pt-dark-icon-color;
+    }
+  }
+}
+
+.#{$ns}-drawer-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  line-height: $pt-grid-size * 1.8;
+}
+
+.#{$ns}-drawer-footer {
+  flex: 0 0 auto;
+  position: relative;
+  box-shadow: inset 0 1px 0 $pt-divider-black;
+  padding: $dialog-padding/2 $dialog-padding;
+
+  .#{$ns}-dark & {
+    box-shadow: inset 0 1px 0 $pt-dark-divider-black;
+  }
+}
