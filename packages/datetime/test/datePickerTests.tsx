@@ -413,6 +413,16 @@ describe("<DatePicker>", () => {
             assert.isTrue(onChange.calledOnce);
         });
 
+        it("onChange fired when month is changed", () => {
+            const onChange = sinon.spy();
+            const { getDay, clickNextMonth } = wrap(<DatePicker onChange={onChange} />);
+            assert.isTrue(onChange.notCalled);
+            getDay().simulate("click");
+            assert.isTrue(onChange.calledOnce, "expected onChange called");
+            clickNextMonth();
+            assert.isTrue(onChange.calledTwice, "expected onChange called again");
+        });
+
         it("selected day updates are automatic", () => {
             const { assertSelectedDays, getDay } = wrap(<DatePicker />);
             assertSelectedDays();
