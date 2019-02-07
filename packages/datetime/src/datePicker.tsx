@@ -246,7 +246,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                 selectedDay: day.getDate(),
             });
         }
-        if (this.state.value == null || this.state.value.getMonth() !== day.getMonth()) {
+        if (this.state.value != null && this.state.value.getMonth() !== day.getMonth()) {
             this.ignoreNextMonthChange = true;
         }
 
