@@ -10,7 +10,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import * as Keys from "../../src/common/keys";
-import { Button, Classes, Drawer, H4, Icon } from "../../src/index";
+import { Button, Classes, Drawer } from "../../src/index";
 
 describe("<Drawer>", () => {
     it("renders its content correctly", () => {
@@ -19,15 +19,36 @@ describe("<Drawer>", () => {
                 {createDrawerContents()}
             </Drawer>,
         );
-        [
-            Classes.DRAWER,
-            Classes.DRAWER_BODY,
-            Classes.DRAWER_FOOTER,
-            Classes.DRAWER_HEADER,
-            Classes.OVERLAY_BACKDROP,
-        ].forEach(className => {
+        [Classes.DRAWER, Classes.DRAWER_BODY, Classes.DRAWER_FOOTER, Classes.OVERLAY_BACKDROP].forEach(className => {
             assert.lengthOf(drawer.find(`.${className}`), 1, `missing ${className}`);
         });
+    });
+
+    it("size becomes width", () => {
+        const drawer = mount(
+            <Drawer isOpen={true} usePortal={false} size={100}>
+                {createDrawerContents()}
+            </Drawer>,
+        );
+        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").width, 100);
+    });
+
+    it("vertical size becomes height", () => {
+        const drawer = mount(
+            <Drawer isOpen={true} usePortal={false} size={100} vertical={true}>
+                {createDrawerContents()}
+            </Drawer>,
+        );
+        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").height, 100);
+    });
+
+    it("vertical adds class", () => {
+        const drawer = mount(
+            <Drawer isOpen={true} usePortal={false} vertical={true}>
+                {createDrawerContents()}
+            </Drawer>,
+        );
+        assert.isTrue(drawer.find(`.${Classes.VERTICAL}`).exists());
     });
 
     it("portalClassName appears on Portal", () => {
@@ -93,6 +114,15 @@ describe("<Drawer>", () => {
     });
 
     describe("header", () => {
+        it(`does not render .${Classes.DRAWER_HEADER} if title omitted`, () => {
+            const drawer = mount(
+                <Drawer isOpen={true} usePortal={false}>
+                    drawer body
+                </Drawer>,
+            );
+            assert.isFalse(drawer.find(`.${Classes.DRAWER_HEADER}`).exists());
+        });
+
         it(`renders .${Classes.DRAWER_HEADER} if title prop is given`, () => {
             const drawer = mount(
                 <Drawer isOpen={true} title="Hello!" usePortal={false}>
@@ -138,10 +168,6 @@ describe("<Drawer>", () => {
 
     function createDrawerContents(): JSX.Element[] {
         return [
-            <div className={Classes.DRAWER_HEADER} key={0}>
-                <Icon icon="inbox" iconSize={Icon.SIZE_LARGE} />
-                <H4>Drawer header</H4>
-            </div>,
             <div className={Classes.DRAWER_BODY} key={1}>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
