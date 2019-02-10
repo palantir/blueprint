@@ -60,7 +60,7 @@ export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps
         const rightIconName: IconName = vertical ? "caret-right" : "caret-down";
         const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
         return (
-            <Popover content={<FileMenu />} position={position} usePortal={false}>
+            <Popover content={<FileMenu />} position={position}>
                 <Button rightIcon={rightIconName} icon={iconName} text={text} />
             </Popover>
         );
