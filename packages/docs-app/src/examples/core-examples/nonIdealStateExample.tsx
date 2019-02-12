@@ -39,7 +39,9 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
         const action = <InputGroup className={Classes.ROUND} leftIcon="search" placeholder="Search..." />;
         const description = (
             <>
-                Your search didn't match any files.<br />Try searching for something else.
+                Your search didn't match any files.
+                <br />
+                Try searching for something else.
             </>
         );
 

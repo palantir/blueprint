@@ -223,8 +223,12 @@ export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleS
         const handleRect = handleElement.getBoundingClientRect();
 
         const sizeKey = vertical
-            ? useOppositeDimension ? "width" : "height"
-            : useOppositeDimension ? "height" : "width";
+            ? useOppositeDimension
+                ? "width"
+                : "height"
+            : useOppositeDimension
+            ? "height"
+            : "width";
 
         // "bottom" value seems to be consistently incorrect, so explicitly
         // calculate it using the window offset instead.

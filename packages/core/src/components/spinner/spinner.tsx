@@ -81,7 +81,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
         );
 
         // keep spinner track width consistent at all sizes (down to about 10px).
-        const strokeWidth = Math.min(MIN_STROKE_WIDTH, STROKE_WIDTH * Spinner.SIZE_LARGE / size);
+        const strokeWidth = Math.min(MIN_STROKE_WIDTH, (STROKE_WIDTH * Spinner.SIZE_LARGE) / size);
 
         const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
 

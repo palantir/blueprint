@@ -25,7 +25,7 @@
     "stylelint": "~8.4.0",
     "stylelint-junit-formatter": "^0.2.0",
     "svgo": "^1.0.3",
-    "tslint": "^5.9.1",
+    "tslint": "^5.12.1",
     "typescript": "~2.8.3"
   },
   "repository": {
