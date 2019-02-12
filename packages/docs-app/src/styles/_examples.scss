@@ -458,6 +458,13 @@
   }
 }
 
+#{example("ButtonGroupExample")},
+#{example("ButtonGroupPopoverExample")} {
+  .docs-example > * {
+    margin: 0;
+  }
+}
+
 //
 // DATETIME
 //
