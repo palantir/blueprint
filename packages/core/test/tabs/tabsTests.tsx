@@ -101,7 +101,7 @@ describe("<Tabs>", () => {
                 <Tab id="third" title="Third" className={tabClassName} panel={<Panel title="third" />} />,
             </Tabs>,
         );
-        assert.lengthOf(wrapper.find(`.${tabClassName}`), 6);
+        assert.lengthOf(wrapper.find(`.${tabClassName}`), 9);
     });
 
     it("attaches panelClassName to panel container if set", () => {
