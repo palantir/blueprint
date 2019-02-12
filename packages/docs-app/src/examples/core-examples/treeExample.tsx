@@ -122,5 +122,12 @@ const INITIAL_STATE: ITreeNode[] = [
             },
         ],
     },
+    {
+        id: 2,
+        hasCaret: true,
+        icon: "folder-close",
+        label: "Super secret files",
+        disabled: true,
+    },
 ];
 /* tslint:enable:object-literal-sort-keys */
