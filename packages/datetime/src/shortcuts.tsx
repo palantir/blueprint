@@ -5,7 +5,7 @@
  */
 
 import { Classes, Menu, MenuItem } from "@blueprintjs/core";
-import React from "react";
+import * as React from "react";
 import { DATERANGEPICKER_SHORTCUTS } from "./common/classes";
 import { clone, DateRange, isDayRangeInRange } from "./common/dateUtils";
 
