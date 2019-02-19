@@ -75,7 +75,7 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
                 >
                     <Tab id="rx" title="React" panel={<ReactPanel />} />
                     <Tab id="ng" title="Angular" panel={<AngularPanel />} />
-                    <Tab id="mb" title="Ember" panel={<EmberPanel />} />
+                    <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
                     <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
                     <Tabs.Expander />
                     <InputGroup className={Classes.FILL} type="text" placeholder="Search..." />
