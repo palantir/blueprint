@@ -18,11 +18,15 @@ const RESOURCES: IResourceProps[] = [
 export const Resources: React.SFC = () => (
     <>
         <div className="blueprint-resources">
-            {RESOURCES.map(resource => <ResourceCard key={resource.fileName} {...resource} />)}
+            {RESOURCES.map(resource => (
+                <ResourceCard key={resource.fileName} {...resource} />
+            ))}
         </div>
         <Callout title="Missing fonts?" intent="warning">
             Download Apple's San Francisco font directly from the source:{" "}
-            <a href="https://developer.apple.com/fonts/" target="_blank" rel="noopener noreferrer">https://developer.apple.com/fonts/</a>
+            <a href="https://developer.apple.com/fonts/" target="_blank" rel="noopener noreferrer">
+                https://developer.apple.com/fonts/
+            </a>
         </Callout>
     </>
 );
