@@ -328,7 +328,7 @@ describe("scrollUtils", () => {
         });
 
         function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
-            return ReactDOM.render(
+            return ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
                 <div style={parentStyle}>
                     <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />
                 </div>,
