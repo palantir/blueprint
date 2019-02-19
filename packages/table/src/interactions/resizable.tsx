@@ -96,7 +96,8 @@ export class Resizable extends React.PureComponent<IResizableProps, IResizeableS
     }
 
     public render() {
-        const child = React.Children.only(this.props.children);
+        // this component is private to this package, so we can do this cast because we know all the uses are internal
+        const child = React.Children.only(this.props.children) as React.ReactElement;
         const style = { ...child.props.style, ...this.getStyle() };
 
         if (this.props.isResizable === false) {
