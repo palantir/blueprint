@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@blueprintjs/icons": "^3.6.0",
-    "@types/dom4": "^2.0.0",
+    "@types/dom4": "^2.0.1",
     "classnames": "^2.2",
     "dom4": "^2.0.1",
     "normalize.css": "^8.0.0",
@@ -61,7 +61,7 @@
     "@blueprintjs/test-commons": "^0.8.1",
     "enzyme": "^3.3.0",
     "karma": "^3.1.4",
-    "mocha": "^4.1.0",
+    "mocha": "^5.2.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
