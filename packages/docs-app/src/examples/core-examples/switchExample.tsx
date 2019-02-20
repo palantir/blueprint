@@ -19,6 +19,7 @@ export class SwitchExample extends CheckboxExample {
                     <Switch {...this.state} labelElement={<strong>Enabled</strong>} />
                     <Switch {...this.state} labelElement={<em>Public</em>} />
                     <Switch {...this.state} labelElement={<u>Cooperative</u>} defaultChecked={true} />
+                    <Switch {...this.state} labelElement={"Containing Text"} innerLabelChecked="on" innerLabel="off" />
                 </div>
                 <small style={{ width: "100%", textAlign: "center" }}>
                     This example uses <Code>labelElement</Code> to demonstrate JSX labels.

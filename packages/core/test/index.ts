@@ -22,6 +22,7 @@ import "./controls/inputGroupTests";
 import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
+import "./drawer/drawerTests";
 import "./editable-text/editableTextTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";

@@ -173,7 +173,9 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
             <Label>
                 {label}
                 <HTMLSelect value={selectedValue} onChange={onChange}>
-                    {options.map((opt, i) => <option key={i} value={i} label={opt.label} />)}
+                    {options.map((opt, i) => (
+                        <option key={i} value={i} label={opt.label} />
+                    ))}
                 </HTMLSelect>
             </Label>
         );

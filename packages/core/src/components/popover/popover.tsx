@@ -507,7 +507,10 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     }
 
     private isArrowEnabled() {
-        const { minimal, modifiers: { arrow } } = this.props;
+        const {
+            minimal,
+            modifiers: { arrow },
+        } = this.props;
         // omitting `arrow` from `modifiers` uses Popper default, which does show an arrow.
         return !minimal && (arrow == null || arrow.enabled);
     }

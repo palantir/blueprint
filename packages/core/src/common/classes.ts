@@ -102,6 +102,11 @@ export const DIALOG_HEADER = `${DIALOG}-header`;
 
 export const DIVIDER = `${NS}-divider`;
 
+export const DRAWER = `${NS}-drawer`;
+export const DRAWER_BODY = `${DRAWER}-body`;
+export const DRAWER_FOOTER = `${DRAWER}-footer`;
+export const DRAWER_HEADER = `${DRAWER}-header`;
+
 export const EDITABLE_TEXT = `${NS}-editable-text`;
 export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
 export const EDITABLE_TEXT_EDITING = `${EDITABLE_TEXT}-editing`;
@@ -126,9 +131,11 @@ export const INPUT_ACTION = `${INPUT}-action`;
 
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
+export const CONTROL_INDICATOR_CHILD = `${CONTROL_INDICATOR}-child`;
 export const CHECKBOX = `${NS}-checkbox`;
 export const RADIO = `${NS}-radio`;
 export const SWITCH = `${NS}-switch`;
+export const SWITCH_INNER_TEXT = `${SWITCH}-inner-text`;
 export const FILE_INPUT = `${NS}-file-input`;
 export const FILE_UPLOAD_INPUT = `${NS}-file-upload-input`;
 
@@ -168,6 +175,7 @@ export const OVERFLOW_LIST_SPACER = `${OVERFLOW_LIST}-spacer`;
 
 export const OVERLAY = `${NS}-overlay`;
 export const OVERLAY_BACKDROP = `${OVERLAY}-backdrop`;
+export const OVERLAY_CONTAINER = `${OVERLAY}-container`;
 export const OVERLAY_CONTENT = `${OVERLAY}-content`;
 export const OVERLAY_INLINE = `${OVERLAY}-inline`;
 export const OVERLAY_OPEN = `${OVERLAY}-open`;

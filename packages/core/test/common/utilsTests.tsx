@@ -101,6 +101,8 @@ describe("Utils", () => {
         assert.equal(Utils.countDecimalPlaces(1), 0);
         assert.equal(Utils.countDecimalPlaces(0.11), 2);
         assert.equal(Utils.countDecimalPlaces(-1.1111111111), 10);
+        assert.equal(Utils.countDecimalPlaces(1e-10), 10);
+        assert.equal(Utils.countDecimalPlaces(NaN), 0);
     });
 
     // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?

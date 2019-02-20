@@ -274,7 +274,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
     }
 
     private renderTabPanel = (tab: TabElement) => {
-        const { className, panel, id } = tab.props;
+        const { className, panel, id, panelClassName } = tab.props;
         if (panel === undefined) {
             return undefined;
         }
@@ -282,7 +282,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
             <div
                 aria-labelledby={generateTabTitleId(this.props.id, id)}
                 aria-hidden={id !== this.state.selectedTabId}
-                className={classNames(Classes.TAB_PANEL, className)}
+                className={classNames(Classes.TAB_PANEL, className, panelClassName)}
                 id={generateTabPanelId(this.props.id, id)}
                 key={id}
                 role="tabpanel"

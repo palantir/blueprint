@@ -97,7 +97,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * Callback invoked in controlled mode when the popover open state *would*
      * change due to user interaction.
      */
-    onInteraction?: (nextOpenState: boolean) => void;
+    onInteraction?: (nextOpenState: boolean, e?: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Whether the popover should open when its target is focused. If `true`,

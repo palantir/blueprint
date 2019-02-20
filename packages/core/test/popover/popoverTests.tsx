@@ -597,16 +597,14 @@ describe("<Popover>", () => {
         afterEach(() => root.detach());
 
         it("shows tooltip on hover", () => {
-            root
-                .find(`.${Classes.POPOVER_TARGET}`)
+            root.find(`.${Classes.POPOVER_TARGET}`)
                 .last()
                 .simulate("mouseenter");
             assert.lengthOf(root.find(`.${Classes.TOOLTIP}`), 1);
         });
 
         it("shows popover on click", () => {
-            root
-                .find(`.${Classes.POPOVER_TARGET}`)
+            root.find(`.${Classes.POPOVER_TARGET}`)
                 .first()
                 .simulate("click");
             assert.lengthOf(root.find(`.${Classes.POPOVER}`), 1);

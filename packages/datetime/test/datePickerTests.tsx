@@ -137,8 +137,7 @@ describe("<DatePicker>", () => {
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find(".DayPicker-NavButton--next")
+                root.find(".DayPicker-NavButton--next")
                     .first()
                     .simulate("click");
                 assert.isTrue(onMonthChange.called);
@@ -147,8 +146,7 @@ describe("<DatePicker>", () => {
             it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find(".DayPicker-NavButton--prev")
+                root.find(".DayPicker-NavButton--prev")
                     .first()
                     .simulate("click");
                 assert.isTrue(onMonthChange.called);
@@ -157,8 +155,7 @@ describe("<DatePicker>", () => {
             it("calls onMonthChange on month select change", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find({ className: Classes.DATEPICKER_MONTH_SELECT })
+                root.find({ className: Classes.DATEPICKER_MONTH_SELECT })
                     .first()
                     .find("select")
                     .simulate("change");
@@ -168,8 +165,7 @@ describe("<DatePicker>", () => {
             it("calls onMonthChange on year select change", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root
-                    .find({ className: Classes.DATEPICKER_YEAR_SELECT })
+                root.find({ className: Classes.DATEPICKER_YEAR_SELECT })
                     .first()
                     .find("select")
                     .simulate("change");
@@ -413,6 +409,16 @@ describe("<DatePicker>", () => {
             assert.isTrue(onChange.calledOnce);
         });
 
+        it("onChange fired when month is changed", () => {
+            const onChange = sinon.spy();
+            const { getDay, clickNextMonth } = wrap(<DatePicker onChange={onChange} />);
+            assert.isTrue(onChange.notCalled);
+            getDay().simulate("click");
+            assert.isTrue(onChange.calledOnce, "expected onChange called");
+            clickNextMonth();
+            assert.isTrue(onChange.calledTwice, "expected onChange called again");
+        });
+
         it("selected day updates are automatic", () => {
             const { assertSelectedDays, getDay } = wrap(<DatePicker />);
             assertSelectedDays();
@@ -493,8 +499,7 @@ describe("<DatePicker>", () => {
                 />,
             );
             assert.isTrue(onChangeSpy.notCalled);
-            root
-                .find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`)
+            root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`)
                 .first()
                 .simulate("click");
             assert.isTrue(onChangeSpy.calledOnce);
@@ -548,8 +553,7 @@ describe("<DatePicker>", () => {
 
     it("selects the current day when Today is clicked", () => {
         const { root } = wrap(<DatePicker showActionsBar={true} />);
-        root
-            .find({ className: Classes.DATEPICKER_FOOTER })
+        root.find({ className: Classes.DATEPICKER_FOOTER })
             .find(Button)
             .first()
             .simulate("click");
@@ -564,8 +568,7 @@ describe("<DatePicker>", () => {
     it("clears the value when Clear is clicked", () => {
         const { getDay, root } = wrap(<DatePicker showActionsBar={true} />);
         getDay().simulate("click");
-        root
-            .find({ className: Classes.DATEPICKER_FOOTER })
+        root.find({ className: Classes.DATEPICKER_FOOTER })
             .find(Button)
             .last()
             .simulate("click");
