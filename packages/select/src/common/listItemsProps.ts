@@ -129,12 +129,12 @@ export interface IListItemsProps<T> extends IProps {
      * This is invoked when user interaction causes a new item to be created, either by pressing the `enter` key or
      * by clicking on the "Create Item" option. It transforms a query string into an item type.
      */
-    createItemFromQuery?: (query: string) => T;
+    createNewItemFromQuery?: (query: string) => T;
 
     /**
      * Custom renderer to transform the current query string into a selectable "Create Item" option.
      */
-    createItemRenderer?: (
+    createNewItemRenderer?: (
         query: string,
         active: boolean,
         handleClick: React.MouseEventHandler<HTMLElement>,

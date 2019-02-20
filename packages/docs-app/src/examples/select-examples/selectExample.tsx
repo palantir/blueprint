@@ -58,16 +58,16 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         ) : (
             undefined
         );
-        const maybeCreateItemFromQuery = this.state.allowCreate ? createFilm : undefined;
-        const maybeCreateItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
+        const maybeCreateNewItemFromQuery = this.state.allowCreate ? createFilm : undefined;
+        const maybeCreateNewItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmSelect
                     {...filmSelectProps}
                     {...flags}
-                    createItemFromQuery={maybeCreateItemFromQuery}
-                    createItemRenderer={maybeCreateItemRenderer}
+                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
+                    createNewItemRenderer={maybeCreateNewItemRenderer}
                     disabled={disabled}
                     itemDisabled={this.isItemDisabled}
                     initialContent={initialContent}

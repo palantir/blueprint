@@ -238,7 +238,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
 
-        // omit noResults if createItemFromQuery and createItemRenderer are both supplied, and query is not empty
+        // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
         const maybeNoResults = this.isCreateItemRendered() ? null : noResults;
         const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
         const createItemView = this.isCreateItemRendered() ? this.renderCreateItemMenuItem(this.state.query) : null;
@@ -272,7 +272,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.handleItemCreate(query, evt);
         };
         return Utils.safeInvoke(
-            this.props.createItemRenderer,
+            this.props.createNewItemRenderer,
             query,
             this.state.activeItem ? this.state.activeItem.type === QueryListActiveItemType.CREATE : false,
             handleClick,
@@ -316,7 +316,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private handleItemCreate = (query: string, evt?: React.SyntheticEvent<HTMLElement>) => {
-        const item = Utils.safeInvoke(this.props.createItemFromQuery, query);
+        const item = Utils.safeInvoke(this.props.createNewItemFromQuery, query);
         if (item != null) {
             Utils.safeInvoke(this.props.onItemSelect, item, evt);
             this.setQuery("", true);
@@ -400,7 +400,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private isCreateItemRendered(): boolean {
-        return (this.props.createItemFromQuery && this.props.createItemRenderer && this.state.query !== "") || false;
+        return !!(this.props.createNewItemFromQuery && this.props.createNewItemRenderer && this.state.query !== "");
     }
 }
 

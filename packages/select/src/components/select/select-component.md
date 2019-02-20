@@ -84,8 +84,8 @@ data sets.
 
 @## Creating new items
 
-Use the `createItemFromQuery` prop to allow `Select<T>` to create new items. `createItemFromQuery` specifies how to turn a
-user-entered query string into an item of type `<T>` that `Select` understands. You should also provide the `createItemRenderer`
+Use the `createNewItemFromQuery` prop to allow `Select<T>` to create new items. `createNewItemFromQuery` specifies how to turn a
+user-entered query string into an item of type `<T>` that `Select` understands. You should also provide the `createNewItemRenderer`
 prop to render a custom `MenuItem` to indicate that users can create new items.
 
 @## JavaScript API

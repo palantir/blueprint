@@ -59,8 +59,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             // explicit undefined (not null) for default behavior (show full list)
             undefined
         );
-        const maybeCreateItemFromQuery = this.state.allowCreate ? createFilm : undefined;
-        const maybeCreateItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
+        const maybeCreateNewItemFromQuery = this.state.allowCreate ? createFilm : undefined;
+        const maybeCreateNewItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
 
         const clearButton = films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : null;
 
@@ -77,8 +77,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     tagRenderer={this.renderTag}
                     tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
                     selectedItems={this.state.films}
-                    createItemFromQuery={maybeCreateItemFromQuery}
-                    createItemRenderer={maybeCreateItemRenderer}
+                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
+                    createNewItemRenderer={maybeCreateNewItemRenderer}
                 />
             </Example>
         );

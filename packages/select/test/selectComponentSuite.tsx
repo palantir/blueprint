@@ -123,8 +123,8 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     describe("create", () => {
         const testCreateProps = {
             ...testProps,
-            createItemFromQuery: sinon.spy(),
-            createItemRenderer: () => <textarea />,
+            createNewItemFromQuery: sinon.spy(),
+            createNewItemRenderer: () => <textarea />,
         };
 
         it("renders create item if filtering returns empty list", () => {
@@ -138,7 +138,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.lengthOf(wrapper.find(`textarea`), 1, "should find createItem");
         });
 
-        it("enter invokes createItemFromQuery", () => {
+        it("enter invokes createNewItemFromQuery", () => {
             const wrapper = render({
                 ...testCreateProps,
                 items: [],
@@ -146,7 +146,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
                 query: "non-existent film name",
             });
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
-            assert.equal(testCreateProps.createItemFromQuery.args[0][0], "non-existent film name");
+            assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
         });
     });
 }
