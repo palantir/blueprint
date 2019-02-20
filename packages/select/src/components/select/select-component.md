@@ -88,6 +88,41 @@ Use the `createNewItemFromQuery` prop to allow `Select<T>` to create new items. 
 user-entered query string into an item of type `<T>` that `Select` understands. You should also provide the `createNewItemRenderer`
 prop to render a custom `MenuItem` to indicate that users can create new items.
 
+```tsx
+function createFilm(title: string): IFilm {
+    return {
+        rank: /* ... */,
+        title,
+        year: /* ... */,
+    };
+}
+
+function renderCreateFilmOption(query: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) {
+    return (
+        <MenuItem
+            icon="add"
+            text={`Create "${query}"`}
+            active={active}
+            onClick={handleClick}
+            shouldDismissPopover={false}
+        />
+    )
+}
+
+ReactDOM.render(
+    <FilmSelect
+        items={Films.items}
+        itemPredicate={Films.itemPredicate}
+        itemRenderer={Films.itemRenderer}
+        noResults={<MenuItem disabled={true} text="No results." />}
+        createNewItemFromQuery={createFilm}
+        createNewItemRenderer={renderCreateFilmOption}
+        onItemSelect={...}
+    />,
+    document.querySelector("#root")
+);
+```
+
 @## JavaScript API
 
 @interface ISelectProps
