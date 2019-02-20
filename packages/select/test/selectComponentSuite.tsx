@@ -130,7 +130,6 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         it("renders create item if filtering returns empty list", () => {
             const wrapper = render({
                 ...testCreateProps,
-                items: [],
                 noResults: <address />,
                 query: "non-existent film name",
             });
