@@ -10,7 +10,7 @@ import { ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 import { filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IListItemsProps } from "../src/index";
+import { IListItemsProps, IQueryListActiveItem, QueryListActiveItemType } from "../src/index";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
@@ -125,12 +125,29 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             ...testProps,
             createNewItemFromQuery: sinon.spy(),
             createNewItemRenderer: () => <textarea />,
+            noResults: <address />,
         };
+
+        it("doesn't render create item if input is empty", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: "",
+            });
+            assert.lengthOf(wrapper.find(`textarea`), 0, "should not find createItem");
+        });
+
+        it("renders create item if input is not empty", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: TOP_100_FILMS[0].title,
+            });
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(wrapper.find(`textarea`), 1, "should find createItem");
+        });
 
         it("renders create item if filtering returns empty list", () => {
             const wrapper = render({
                 ...testCreateProps,
-                noResults: <address />,
                 query: "non-existent film name",
             });
             assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
@@ -140,12 +157,46 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         it("enter invokes createNewItemFromQuery", () => {
             const wrapper = render({
                 ...testCreateProps,
-                items: [],
-                noResults: <address />,
                 query: "non-existent film name",
             });
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
             assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
+        });
+
+        it("when create item is rendered, arrow down invokes onActiveItemChange with CREATE", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: TOP_100_FILMS[0].title,
+            });
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
+                QueryListActiveItemType.CREATE,
+            );
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
+                QueryListActiveItemType.ITEM,
+            );
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0].item as IFilm).rank, TOP_100_FILMS[0].rank);
+        });
+
+        it("when create item is rendered, arrow up invokes onActiveItemChange with CREATE", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: TOP_100_FILMS[0].title,
+            });
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
+                QueryListActiveItemType.CREATE,
+            );
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
+                QueryListActiveItemType.ITEM,
+            );
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0].item as IFilm).rank, TOP_100_FILMS[0].rank);
         });
     });
 }
