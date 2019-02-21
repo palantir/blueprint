@@ -23,7 +23,7 @@ export interface IDatePickerCaptionProps extends ICaptionElementProps {
     /** Callback invoked when the month or year `<select>` is changed. */
     onDateChange?: (date: Date) => void;
     reverseMonthAndYearMenus?: boolean;
-    months: [string, string, string, string, string, string, string, string, string, string, string, string];
+    months: string[];
 }
 
 export interface IDatePickerCaptionState {
