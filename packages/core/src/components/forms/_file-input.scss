@@ -76,6 +76,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
   right: 0;
   left: 0;
   padding-right: $file-input-button-width + $input-padding-horizontal;
+  color: $pt-text-color-disabled;
   user-select: none;
 
   &::after {
@@ -114,7 +115,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 
   .#{$ns}-dark & {
     @include pt-dark-input();
-    color: $pt-dark-text-color-muted;
+    color: $pt-dark-text-color-disabled;
 
     &::after {
       @include pt-dark-button();
