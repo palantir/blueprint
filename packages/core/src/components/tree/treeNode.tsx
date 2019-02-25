@@ -84,14 +84,6 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     path: number[];
 }
 
-interface ITreeNodeMouseEventHandlers {
-    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-    onContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void;
-    onDoubleClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-    onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>) => void;
-    onMouseLeave?: (e: React.MouseEvent<HTMLDivElement>) => void;
-}
-
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
 
@@ -116,16 +108,16 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
             `${Classes.TREE_NODE_CONTENT}-${this.props.depth}`,
         );
 
-        let eventHandlers: ITreeNodeMouseEventHandlers = {
-            onClick: this.handleClick,
-            onContextMenu: this.handleContextMenu,
-            onDoubleClick: this.handleDoubleClick,
-            onMouseEnter: this.handleMouseEnter,
-            onMouseLeave: this.handleMouseLeave,
-        };
-        if (disabled === true) {
-            eventHandlers = {};
-        }
+        const eventHandlers =
+            disabled === true
+                ? {}
+                : {
+                      onClick: this.handleClick,
+                      onContextMenu: this.handleContextMenu,
+                      onDoubleClick: this.handleDoubleClick,
+                      onMouseEnter: this.handleMouseEnter,
+                      onMouseLeave: this.handleMouseLeave,
+                  };
 
         return (
             <li className={classes}>
