@@ -138,6 +138,20 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   }
 }
 
+.#{$ns}-tree-node.#{$ns}-disabled {
+  .#{$ns}-tree-node-content {
+    background-color: inherit;
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
+  }
+
+  .#{$ns}-tree-node-caret,
+  .#{$ns}-tree-node-icon {
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
+  }
+}
+
 .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
   background-color: $pt-intent-primary;
 

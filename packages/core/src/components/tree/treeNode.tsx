@@ -20,6 +20,12 @@ export interface ITreeNode<T = {}> extends IProps {
     childNodes?: Array<ITreeNode<T>>;
 
     /**
+     * Whether this tree node is non-interactive. Enabling this prop will ignore
+     * mouse event handlers (in particular click, down, enter, leave).
+     */
+    disabled?: boolean;
+
+    /**
      * Whether the caret to expand/collapse a node should be shown.
      * If not specified, this will be true if the node has children and false otherwise.
      */
@@ -86,10 +92,11 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
     }
 
     public render() {
-        const { children, className, icon, isExpanded, isSelected, label } = this.props;
+        const { children, className, disabled, icon, isExpanded, isSelected, label } = this.props;
         const classes = classNames(
             Classes.TREE_NODE,
             {
+                [Classes.DISABLED]: disabled,
                 [Classes.TREE_NODE_SELECTED]: isSelected,
                 [Classes.TREE_NODE_EXPANDED]: isExpanded,
             },
@@ -101,17 +108,20 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
             `${Classes.TREE_NODE_CONTENT}-${this.props.depth}`,
         );
 
+        const eventHandlers =
+            disabled === true
+                ? {}
+                : {
+                      onClick: this.handleClick,
+                      onContextMenu: this.handleContextMenu,
+                      onDoubleClick: this.handleDoubleClick,
+                      onMouseEnter: this.handleMouseEnter,
+                      onMouseLeave: this.handleMouseLeave,
+                  };
+
         return (
             <li className={classes}>
-                <div
-                    className={contentClasses}
-                    onClick={this.handleClick}
-                    onContextMenu={this.handleContextMenu}
-                    onDoubleClick={this.handleDoubleClick}
-                    onMouseEnter={this.handleMouseEnter}
-                    onMouseLeave={this.handleMouseLeave}
-                    ref={this.handleContentRef}
-                >
+                <div className={contentClasses} ref={this.handleContentRef} {...eventHandlers}>
                     {this.maybeRenderCaret()}
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
@@ -123,13 +133,14 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>, {}> {
     }
 
     private maybeRenderCaret() {
-        const { hasCaret = React.Children.count(this.props.children) > 0 } = this.props;
+        const { children, isExpanded, disabled, hasCaret = React.Children.count(children) > 0 } = this.props;
         if (hasCaret) {
             const caretClasses = classNames(
                 Classes.TREE_NODE_CARET,
-                this.props.isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED,
+                isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED,
             );
-            return <Icon className={caretClasses} onClick={this.handleCaretClick} icon={"chevron-right"} />;
+            const onClick = disabled === true ? undefined : this.handleCaretClick;
+            return <Icon className={caretClasses} onClick={onClick} icon={"chevron-right"} />;
         }
         return <span className={Classes.TREE_NODE_CARET_NONE} />;
     }
