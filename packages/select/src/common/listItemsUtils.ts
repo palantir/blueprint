@@ -10,12 +10,12 @@
  * list.
  */
 export interface ICreateNewItem {
-    __blueprintBrand: "blueprint-create-item";
+    __blueprintCreateNewItemBrand: "blueprint-create-new-item";
 }
 
 /** Returns an instance of a "Create Item" object. */
 export function getCreateNewItem(): ICreateNewItem {
-    return { __blueprintBrand: "blueprint-create-item" };
+    return { __blueprintCreateNewItemBrand: "blueprint-create-new-item" };
 }
 
 /**
@@ -23,7 +23,17 @@ export function getCreateNewItem(): ICreateNewItem {
  * `activeItem`) is a "Create Item" option.
  */
 export function isCreateNewItem<T>(item: T | ICreateNewItem | null | undefined): item is ICreateNewItem {
-    return item != null && (item as ICreateNewItem).__blueprintBrand === "blueprint-create-item";
+    if (item == null) {
+        return false;
+    }
+
+    // see if the provided item exactly matches the `ICreateNewItem` object,
+    // with no superfluous keys.
+    const keys = Object.keys(item);
+    if (keys.length !== 1 || keys[0] !== "__blueprintCreateNewItemBrand") {
+        return false;
+    }
+    return (item as ICreateNewItem).__blueprintCreateNewItemBrand === "blueprint-create-new-item";
 }
 
 /**
