@@ -1,36 +1,46 @@
+/*!
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
+ */
+
+import { IListItemsCreateNewItem } from "./listItemsProps";
+
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-export enum QueryListActiveItemType {
-    CREATE = "create",
-    ITEM = "item",
-}
+// export enum QueryListActiveItemType {
+//     CREATE = "create",
+//     ITEM = "item",
+// }
 
-export interface IQueryListActiveItem<T> {
-    type: QueryListActiveItemType;
-    item: T | null;
-}
+// export interface IQueryListActiveItem<T> {
+//     type: QueryListActiveItemType;
+//     item: T | null;
+// }
 
-export function getActiveItem<T>(activeItem: IQueryListActiveItem<T> | null | undefined): T | null {
-    if (activeItem && activeItem.type === QueryListActiveItemType.ITEM) {
-        return activeItem.item;
-    }
-    return null;
+// TODO (clewis): Make sure this works with the "Create Item" option.
+export function getActiveItem<T, C = IListItemsCreateNewItem>(activeItem: T | C | null | undefined): T | C | null {
+    // if (activeItem && activeItem.type === QueryListActiveItemType.ITEM) {
+    //     return activeItem.item;
+    // }
+    // return null;
+    return activeItem === undefined ? null : activeItem;
 }
 
 /**
  * An object describing how to render the list of items.
  * An `itemListRenderer` receives this object as its sole argument.
  */
-export interface IItemListRendererProps<T> {
+export interface IItemListRendererProps<T, C = IListItemsCreateNewItem> {
     /**
      * The currently focused item (for keyboard interactions), or `null` to
      * indicate that no item is active.
      */
-    activeItem: IQueryListActiveItem<T> | null;
+    activeItem: T | C | null;
 
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.

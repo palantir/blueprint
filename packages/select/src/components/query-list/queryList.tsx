@@ -12,9 +12,10 @@ import {
     getActiveItem,
     IItemListRendererProps,
     IItemModifiers,
+    IListItemsCreateNewItem,
+    // IQueryListActiveItem,
+    // QueryListActiveItemType,
     IListItemsProps,
-    IQueryListActiveItem,
-    QueryListActiveItemType,
     renderFilteredItems,
 } from "../../common";
 
@@ -73,9 +74,9 @@ export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
     itemList: React.ReactNode;
 }
 
-export interface IQueryListState<T> {
+export interface IQueryListState<T, C = IListItemsCreateNewItem> {
     /** The currently focused item (for keyboard interactions). */
-    activeItem: IQueryListActiveItem<T> | null;
+    activeItem: T | C | null;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
@@ -84,7 +85,10 @@ export interface IQueryListState<T> {
     query: string;
 }
 
-export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
+export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
+    IQueryListProps<T>,
+    IQueryListState<T, C>
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {
@@ -112,7 +116,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      * or key interactions). When scrollToActiveItem = false, used to detect if
      * an unexpected external change to the active item has been made.
      */
-    private expectedNextActiveItem: IQueryListActiveItem<T> | null = null;
+    private expectedNextActiveItem: T | C | null = null;
 
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);

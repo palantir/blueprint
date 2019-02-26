@@ -1,11 +1,11 @@
 /*
-* Copyright 2018 Palantir Technologies, Inc. All rights reserved.
-*
-* Licensed under the terms of the LICENSE file distributed with this project.
-*/
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
+ */
 
 import { IProps, Utils } from "@blueprintjs/core";
-import { IQueryListActiveItem, ItemListRenderer } from "./itemListRenderer";
+import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
 import { ItemListPredicate, ItemPredicate } from "./predicate";
 
@@ -20,15 +20,44 @@ export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
  */
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
+/**
+ * The default type of the "Create Item" option. If this is incompatible with
+ * your custom type `T`, feel free to override this in `IListItemsProps` with a
+ * custom type `C` of your choosing.
+ */
+export interface IListItemsCreateNewItem {
+    type: "create";
+    value: null;
+}
+
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
-export interface IListItemsProps<T> extends IProps {
+export interface IListItemsProps<T, C = IListItemsCreateNewItem> extends IProps {
     /**
      * The currently focused item for keyboard interactions, or `null` to
      * indicate that no item is active. If omitted or `undefined`, this prop will be
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
-    activeItem?: IQueryListActiveItem<T> | null;
+    activeItem?: T | C | null;
+
+    /**
+     * Whether the specified item is the "Create item" option. This is necessary
+     * because the "Create Item" option can have a custom type `C`. You should
+     * provide this function only if you've overridden the default type for the
+     * "Create Item" option (`IListItemsCreateNewItem`); otherwise, an
+     * acceptable default implementation will be used.
+     */
+    isCreateNewItem?: (item: T | C | null) => boolean;
+
+    // /**
+    //  * Whether the "Create Item" option is currently active.
+    //  *
+    //  * _Note:_ This was introduced as a separate prop from `activeItem` to avoid
+    //  * breaking the existing API. It may be resolved into `activeItem` in a
+    //  * future major release. At present, it is the responsibility of the caller
+    //  * to coordinate these two props as needed.
+    //  */
+    // isCreateNewItemActive: boolean;
 
     /** Array of items in the list. */
     items: T[];
@@ -111,7 +140,19 @@ export interface IListItemsProps<T> extends IProps {
      * in the list, selecting an item makes it active, and changing the query may reset it to
      * the first item in the list if it no longer matches the filter.
      */
-    onActiveItemChange?: (activeItem: IQueryListActiveItem<T> | null) => void;
+    onActiveItemChange?: (activeItem: T | C | null) => void;
+
+    // /**
+    //  * Invoked when user interaction should change the active status of the
+    //  * "Create Item" option, assuming it is rendered.
+    //  *
+    //  * _Note:_ This was introduced as a separate callback from
+    //  * `onActiveItemChange` to avoid breaking the existing API. It may be
+    //  * resolved into `onActiveItemChange` in a future major release. At present,
+    //  * it is the responsibility of the caller to coordinate these two callbacks
+    //  * as needed.
+    //  */
+    // onCreateNewItemActiveChange?: () => void;
 
     /**
      * Callback invoked when an item from the list is selected,
@@ -125,14 +166,18 @@ export interface IListItemsProps<T> extends IProps {
     onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
-     * If provided, allows new items to be created with the current query string.
-     * This is invoked when user interaction causes a new item to be created, either by pressing the `enter` key or
-     * by clicking on the "Create Item" option. It transforms a query string into an item type.
+     * If provided, allows new items to be created using the current query
+     * string. This is invoked when user interaction causes a new item to be
+     * created, either by pressing the `Enter` key or by clicking on the "Create
+     * Item" option. It transforms a query string into an item type.
      */
     createNewItemFromQuery?: (query: string) => T;
 
     /**
-     * Custom renderer to transform the current query string into a selectable "Create Item" option.
+     * Custom renderer to transform the current query string into a selectable
+     * "Create Item" option. If this function is provided, a "Create Item"
+     * option will be rendered at the end of the list of items. If this function
+     * is not provided, a "Create Item" option will not be displayed.
      */
     createNewItemRenderer?: (
         query: string,
