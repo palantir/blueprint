@@ -10,12 +10,12 @@ import { DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core
 import {
     executeItemsEqual,
     getActiveItem,
+    getCreateNewItem,
+    ICreateNewItem,
     IItemListRendererProps,
     IItemModifiers,
-    IListItemsCreateNewItem,
-    // IQueryListActiveItem,
-    // QueryListActiveItemType,
     IListItemsProps,
+    isCreateNewItem,
     renderFilteredItems,
 } from "../../common";
 
@@ -74,9 +74,9 @@ export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
     itemList: React.ReactNode;
 }
 
-export interface IQueryListState<T, C = IListItemsCreateNewItem> {
+export interface IQueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
-    activeItem: T | C | null;
+    activeItem: T | ICreateNewItem | null;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
@@ -85,10 +85,7 @@ export interface IQueryListState<T, C = IListItemsCreateNewItem> {
     query: string;
 }
 
-export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
-    IQueryListProps<T>,
-    IQueryListState<T, C>
-> {
+export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {
@@ -116,7 +113,7 @@ export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
      * or key interactions). When scrollToActiveItem = false, used to detect if
      * an unexpected external change to the active item has been made.
      */
-    private expectedNextActiveItem: T | C | null = null;
+    private expectedNextActiveItem: T | ICreateNewItem | null = null;
 
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);
@@ -272,21 +269,18 @@ export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
     };
 
     private renderCreateItemMenuItem = (query: string) => {
+        const { activeItem } = this.state;
         const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
             this.handleItemCreate(query, evt);
         };
-        return Utils.safeInvoke(
-            this.props.createNewItemRenderer,
-            query,
-            this.state.activeItem ? this.state.activeItem.type === QueryListActiveItemType.CREATE : false,
-            handleClick,
-        );
+        const isActive = isCreateNewItem(activeItem);
+        return Utils.safeInvoke(this.props.createNewItemRenderer, query, isActive, handleClick);
     };
 
     private getActiveElement() {
+        const { activeItem } = this.state;
         if (this.itemsParentRef != null) {
-            if (this.state.activeItem && this.state.activeItem.type === QueryListActiveItemType.CREATE) {
-                // "Create" is active
+            if (isCreateNewItem(activeItem)) {
                 return this.itemsParentRef.children.item(this.state.filteredItems.length) as HTMLElement;
             } else {
                 const activeIndex = this.getActiveIndex();
@@ -298,12 +292,12 @@ export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
 
     private getActiveIndex(items = this.state.filteredItems) {
         const { activeItem } = this.state;
-        if (activeItem == null || activeItem.type === QueryListActiveItemType.CREATE || activeItem.item == null) {
+        if (activeItem == null || isCreateNewItem(activeItem)) {
             return -1;
         }
         // NOTE: this operation is O(n) so it should be avoided in render(). safe for events though.
         for (let i = 0; i < items.length; ++i) {
-            if (executeItemsEqual(this.props.itemsEqual, items[i], activeItem.item)) {
+            if (executeItemsEqual(this.props.itemsEqual, items[i], activeItem)) {
                 return i;
             }
         }
@@ -328,10 +322,7 @@ export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setActiveItem({
-            item,
-            type: QueryListActiveItemType.ITEM,
-        });
+        this.setActiveItem(item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
         if (this.props.resetOnSelect) {
             this.setQuery("", true);
@@ -358,10 +349,10 @@ export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
         // and the popvoer would re-open out of our control :(.
         if (event.keyCode === Keys.ENTER) {
             event.preventDefault();
-            if (activeItem == null || activeItem.type === QueryListActiveItemType.CREATE || activeItem.item == null) {
+            if (activeItem == null || isCreateNewItem(activeItem)) {
                 this.handleItemCreate(this.state.query, event);
             } else {
-                this.handleItemSelect(activeItem.item, event);
+                this.handleItemSelect(activeItem, event);
             }
         }
         Utils.safeInvoke(onKeyUp, event);
@@ -378,22 +369,19 @@ export class QueryList<T, C = IListItemsCreateNewItem> extends React.Component<
      * index. A `null` return value means no suitable item was found.
      * @param direction amount to move in each iteration, typically +/-1
      */
-    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): IQueryListActiveItem<T> | null {
+    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | ICreateNewItem | null {
         if (this.isCreateItemRendered()) {
             const reachedCreate =
                 (startIndex === 0 && direction === -1) ||
                 (startIndex === this.state.filteredItems.length - 1 && direction === 1);
             if (reachedCreate) {
-                return {
-                    item: null,
-                    type: QueryListActiveItemType.CREATE,
-                };
+                return getCreateNewItem();
             }
         }
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private setActiveItem(activeItem: IQueryListActiveItem<T> | null) {
+    private setActiveItem(activeItem: T | ICreateNewItem | null) {
         this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
@@ -454,7 +442,7 @@ export function getFirstEnabledItem<T>(
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,
-): IQueryListActiveItem<T> | null {
+): T | ICreateNewItem | null {
     if (items.length === 0) {
         return null;
     }
@@ -465,10 +453,7 @@ export function getFirstEnabledItem<T>(
         // find first non-disabled item
         index = wrapNumber(index + direction, 0, maxIndex);
         if (!isItemDisabled(items[index], index, itemDisabled)) {
-            return {
-                item: items[index],
-                type: QueryListActiveItemType.ITEM,
-            };
+            return items[index];
         }
     } while (index !== startIndex);
     return null;

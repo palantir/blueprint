@@ -7,6 +7,7 @@
 import { IProps, Utils } from "@blueprintjs/core";
 import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
+import { ICreateNewItem } from "./listItemsUtils";
 import { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /**
@@ -20,44 +21,15 @@ export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
  */
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
-/**
- * The default type of the "Create Item" option. If this is incompatible with
- * your custom type `T`, feel free to override this in `IListItemsProps` with a
- * custom type `C` of your choosing.
- */
-export interface IListItemsCreateNewItem {
-    type: "create";
-    value: null;
-}
-
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
-export interface IListItemsProps<T, C = IListItemsCreateNewItem> extends IProps {
+export interface IListItemsProps<T> extends IProps {
     /**
      * The currently focused item for keyboard interactions, or `null` to
      * indicate that no item is active. If omitted or `undefined`, this prop will be
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
-    activeItem?: T | C | null;
-
-    /**
-     * Whether the specified item is the "Create item" option. This is necessary
-     * because the "Create Item" option can have a custom type `C`. You should
-     * provide this function only if you've overridden the default type for the
-     * "Create Item" option (`IListItemsCreateNewItem`); otherwise, an
-     * acceptable default implementation will be used.
-     */
-    isCreateNewItem?: (item: T | C | null) => boolean;
-
-    // /**
-    //  * Whether the "Create Item" option is currently active.
-    //  *
-    //  * _Note:_ This was introduced as a separate prop from `activeItem` to avoid
-    //  * breaking the existing API. It may be resolved into `activeItem` in a
-    //  * future major release. At present, it is the responsibility of the caller
-    //  * to coordinate these two props as needed.
-    //  */
-    // isCreateNewItemActive: boolean;
+    activeItem?: T | ICreateNewItem | null;
 
     /** Array of items in the list. */
     items: T[];
@@ -140,19 +112,7 @@ export interface IListItemsProps<T, C = IListItemsCreateNewItem> extends IProps 
      * in the list, selecting an item makes it active, and changing the query may reset it to
      * the first item in the list if it no longer matches the filter.
      */
-    onActiveItemChange?: (activeItem: T | C | null) => void;
-
-    // /**
-    //  * Invoked when user interaction should change the active status of the
-    //  * "Create Item" option, assuming it is rendered.
-    //  *
-    //  * _Note:_ This was introduced as a separate callback from
-    //  * `onActiveItemChange` to avoid breaking the existing API. It may be
-    //  * resolved into `onActiveItemChange` in a future major release. At present,
-    //  * it is the responsibility of the caller to coordinate these two callbacks
-    //  * as needed.
-    //  */
-    // onCreateNewItemActiveChange?: () => void;
+    onActiveItemChange?: (activeItem: T | ICreateNewItem | null) => void;
 
     /**
      * Callback invoked when an item from the list is selected,
