@@ -10,7 +10,6 @@ import { ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 import { filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { isCreateNewItem } from "../lib/esm";
 import { IListItemsProps } from "../src/index";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
@@ -164,16 +163,17 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
         });
 
-        it("when create item is rendered, arrow down invokes onActiveItemChange with an `ICreateNewItem`", () => {
+        it("when create item is rendered, arrow down invokes onActiveItemChange with activeItem=null and isCreateNewItem=true", () => {
             const wrapper = render({
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.isTrue(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
+            assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.isFalse(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
             assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
         });
 
         it("when create item is rendered, arrow up invokes onActiveItemChange with an `ICreateNewItem`", () => {
@@ -182,10 +182,11 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.isTrue(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
+            assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.isFalse(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
             assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
         });
     });
 }

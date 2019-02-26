@@ -388,7 +388,12 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem });
         }
-        Utils.safeInvoke(this.props.onActiveItemChange, activeItem);
+
+        if (isCreateNewItem(activeItem)) {
+            Utils.safeInvoke(this.props.onActiveItemChange, null, true);
+        } else {
+            Utils.safeInvoke(this.props.onActiveItemChange, activeItem, false);
+        }
     }
 
     private isCreateItemRendered(): boolean {

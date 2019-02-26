@@ -108,11 +108,20 @@ export interface IListItemsProps<T> extends IProps {
     noResults?: React.ReactNode;
 
     /**
-     * Invoked when user interaction should change the active item: arrow keys move it up/down
-     * in the list, selecting an item makes it active, and changing the query may reset it to
-     * the first item in the list if it no longer matches the filter.
+     * Invoked when user interaction should change the active item: arrow keys
+     * move it up/down in the list, selecting an item makes it active, and
+     * changing the query may reset it to the first item in the list if it no
+     * longer matches the filter.
+     *
+     * If the "Create Item" option is displayed and currently active, then
+     * `isCreateNewItem` will be `true` and `activeItem` will be `null`. In this
+     * case, you should provide a valid "Create Item" object to the `activeItem`
+     * _prop_ in order for the "Create Item" option to appear as active.
+     *
+     * __Note:__ You can instantiate a "Create Item" object using the
+     * `getCreateNewItem()` utility exported from this package.
      */
-    onActiveItemChange?: (activeItem: T | ICreateNewItem | null) => void;
+    onActiveItemChange?: (activeItem: T | null, isCreateNewItem: boolean) => void;
 
     /**
      * Callback invoked when an item from the list is selected,
