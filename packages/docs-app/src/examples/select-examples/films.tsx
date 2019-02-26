@@ -138,6 +138,20 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers, 
     );
 };
 
+export const renderCreateFilmOption = (
+    query: string,
+    active: boolean,
+    handleClick: React.MouseEventHandler<HTMLElement>,
+) => (
+    <MenuItem
+        icon="add"
+        text={`Create "${query}"`}
+        active={active}
+        onClick={handleClick}
+        shouldDismissPopover={false}
+    />
+);
+
 export const filterFilm: ItemPredicate<IFilm> = (query, film) => {
     return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
 };

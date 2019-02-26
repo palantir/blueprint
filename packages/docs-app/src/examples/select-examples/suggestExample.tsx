@@ -9,11 +9,12 @@ import * as React from "react";
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Suggest } from "@blueprintjs/select";
-import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
+import { createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
 
 const FilmSuggest = Suggest.ofType<IFilm>();
 
 export interface ISuggestExampleState {
+    allowCreate: boolean;
     closeOnSelect: boolean;
     film: IFilm;
     minimal: boolean;
@@ -25,6 +26,7 @@ export interface ISuggestExampleState {
 
 export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestExampleState> {
     public state: ISuggestExampleState = {
+        allowCreate: false,
         closeOnSelect: true,
         film: TOP_100_FILMS[0],
         minimal: true,
@@ -34,6 +36,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         resetOnSelect: false,
     };
 
+    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
     private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
     private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
     private handleMinimalChange = this.handleSwitchChange("minimal");
@@ -42,12 +45,18 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
-        const { film, minimal, ...flags } = this.state;
+        const { allowCreate, film, minimal, ...flags } = this.state;
+
+        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmSuggest
                     {...filmSelectProps}
                     {...flags}
+                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
+                    createNewItemRenderer={maybeCreateNewItemRenderer}
                     inputValueRenderer={this.renderInputValue}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleValueChange}
@@ -85,6 +94,11 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     label="Reset on select"
                     checked={this.state.resetOnSelect}
                     onChange={this.handleResetOnSelectChange}
+                />
+                <Switch
+                    label="Allow creating new items"
+                    checked={this.state.allowCreate}
+                    onChange={this.handleAllowCreateChange}
                 />
                 <H5>Popover props</H5>
                 <Switch

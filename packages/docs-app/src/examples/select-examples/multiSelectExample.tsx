@@ -9,17 +9,17 @@ import * as React from "react";
 import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
-import { createFilm, filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
+import { createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
 
 const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface IMultiSelectExampleState {
+    allowCreate: boolean;
     films: IFilm[];
     hasInitialContent: boolean;
     intent: boolean;
-    allowCreate: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
     resetOnSelect: boolean;
@@ -38,16 +38,16 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         tagMinimal: false,
     };
 
+    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
     private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
     private handleResetChange = this.handleSwitchChange("resetOnSelect");
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
     private handleIntentChange = this.handleSwitchChange("intent");
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
-    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
 
     public render() {
-        const { films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
+        const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
         const getTagProps = (_value: string, index: number): ITagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
@@ -59,8 +59,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             // explicit undefined (not null) for default behavior (show full list)
             undefined
         );
-        const maybeCreateNewItemFromQuery = this.state.allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
+        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         const clearButton = films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : null;
 
@@ -69,6 +69,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                 <FilmMultiSelect
                     {...filmSelectProps}
                     {...flags}
+                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
+                    createNewItemRenderer={maybeCreateNewItemRenderer}
                     initialContent={initialContent}
                     itemRenderer={this.renderFilm}
                     noResults={<MenuItem disabled={true} text="No results." />}
@@ -77,8 +79,6 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     tagRenderer={this.renderTag}
                     tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
                     selectedItems={this.state.films}
-                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
-                    createNewItemRenderer={maybeCreateNewItemRenderer}
                 />
             </Example>
         );
@@ -148,20 +148,6 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             />
         );
     };
-
-    private renderCreateFilmOption = (
-        query: string,
-        active: boolean,
-        handleClick: React.MouseEventHandler<HTMLElement>,
-    ) => (
-        <MenuItem
-            icon="add"
-            text={`Create "${query}"`}
-            active={active}
-            onClick={handleClick}
-            shouldDismissPopover={false}
-        />
-    );
 
     private handleTagRemove = (_tag: string, index: number) => {
         this.deselectFilm(index);

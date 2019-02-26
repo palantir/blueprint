@@ -9,7 +9,7 @@ import * as React from "react";
 import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
-import { createFilm, filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
+import { createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
 
 const FilmSelect = Select.ofType<IFilm>();
 
@@ -51,15 +51,15 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
-        const { disabled, disableItems, film, minimal, ...flags } = this.state;
+        const { allowCreate, disabled, disableItems, film, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
         ) : (
             undefined
         );
-        const maybeCreateNewItemFromQuery = this.state.allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = this.state.allowCreate ? this.renderCreateFilmOption : null;
+        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
@@ -131,20 +131,6 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
             </>
         );
     }
-
-    private renderCreateFilmOption = (
-        query: string,
-        active: boolean,
-        handleClick: React.MouseEventHandler<HTMLElement>,
-    ) => (
-        <MenuItem
-            icon="add"
-            text={`Create "${query}"`}
-            active={active}
-            onClick={handleClick}
-            shouldDismissPopover={false}
-        />
-    );
 
     private handleValueChange = (film: IFilm) => this.setState({ film });
 
