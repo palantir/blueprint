@@ -11,14 +11,7 @@ import * as sinon from "sinon";
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IQueryListProps } from "@blueprintjs/select";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import {
-    getActiveItem,
-    IQueryListRendererProps,
-    IQueryListState,
-    ItemListPredicate,
-    ItemListRenderer,
-    QueryList,
-} from "../src/index";
+import { IQueryListRendererProps, IQueryListState, ItemListPredicate, ItemListRenderer, QueryList } from "../src/index";
 
 type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
 
@@ -120,14 +113,12 @@ describe("<QueryList>", () => {
                 query: "abc",
             };
             const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
-            assert.isNotNull(filmQueryList.state().activeItem);
-            assert.deepEqual(getActiveItem(filmQueryList.state().activeItem), TOP_100_FILMS[0]);
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
                 query: "123",
             });
-            assert.isNotNull(filmQueryList.state().activeItem);
-            assert.deepEqual(getActiveItem(filmQueryList.state().activeItem), TOP_100_FILMS[1]);
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
         });
     });
 
@@ -141,8 +132,7 @@ describe("<QueryList>", () => {
                 query: "123",
             };
             const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
-            assert.isNotNull(filmQueryList.state().activeItem);
-            assert(getActiveItem(filmQueryList.state().activeItem) === TOP_100_FILMS[11]);
+            assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
         });
 
         it("initializes to controlled activeItem prop (non-null)", () => {
@@ -152,8 +142,7 @@ describe("<QueryList>", () => {
                 activeItem: TOP_100_FILMS[11],
             };
             const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
-            assert.isNotNull(filmQueryList.state().activeItem);
-            assert(getActiveItem(filmQueryList.state().activeItem) === TOP_100_FILMS[11]);
+            assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
         });
 
         it("initializes to controlled activeItem prop (null)", () => {
