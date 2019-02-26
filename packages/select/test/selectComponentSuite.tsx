@@ -10,7 +10,8 @@ import { ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 import { filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IListItemsProps, IQueryListActiveItem, QueryListActiveItemType } from "../src/index";
+import { isCreateNewItem } from "../lib/esm";
+import { IListItemsProps } from "../src/index";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
@@ -61,7 +62,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
                 .at(4)
                 .simulate("click");
             assert.strictEqual(testProps.onItemSelect.args[0][0].rank, 6, "onItemSelect");
-            assert.strictEqual(testProps.onActiveItemChange.args[0][0].item.rank, 6, "onActiveItemChange");
+            assert.strictEqual(testProps.onActiveItemChange.args[0][0].rank, 6, "onActiveItemChange");
         });
 
         it("clicking item resets state when resetOnSelect=true", () => {
@@ -69,7 +70,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             findItems(wrapper)
                 .at(3)
                 .simulate("click");
-            const ranks = testProps.onActiveItemChange.args.map(args => (args[0].item as IFilm).rank);
+            const ranks = testProps.onActiveItemChange.args.map(args => (args[0] as IFilm).rank);
             // clicking changes to 5, then resets to 1
             assert.deepEqual(ranks, [5, 1]);
             assert.strictEqual(testProps.onQueryChange.lastCall.args[0], "");
@@ -86,14 +87,14 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: true });
             // more specific query picks the first item.
             wrapper.setProps({ query: "199" });
-            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].item.rank, 1);
+            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].rank, 1);
         });
 
         it("querying resets active item if it does not match", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
             // a different query altogether invalidates the previous active item, so QL chooses the first.
             wrapper.setProps({ query: "Forrest" });
-            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].item.title, "Forrest Gump");
+            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].title, "Forrest Gump");
         });
     });
 
@@ -103,19 +104,19 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             findInput(wrapper)
                 .simulate("keydown", { keyCode: Keys.ARROW_DOWN })
                 .simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0].item as IFilm).rank, 3);
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 3);
         });
 
         it("arrow up invokes onActiveItemChange with previous filtered item", () => {
             const wrapper = render(testProps);
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0].item as IFilm).rank, 20);
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 20);
         });
 
         it("enter invokes onItemSelect with active item", () => {
             const wrapper = render(testProps);
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
-            const activeItem = testProps.onActiveItemChange.lastCall.args[0].item;
+            const activeItem = testProps.onActiveItemChange.lastCall.args[0];
             assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);
         });
     });
@@ -163,40 +164,28 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
         });
 
-        it("when create item is rendered, arrow down invokes onActiveItemChange with CREATE", () => {
+        it("when create item is rendered, arrow down invokes onActiveItemChange with an `ICreateNewItem`", () => {
             const wrapper = render({
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.equal(
-                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
-                QueryListActiveItemType.CREATE,
-            );
+            assert.isTrue(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.equal(
-                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
-                QueryListActiveItemType.ITEM,
-            );
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0].item as IFilm).rank, TOP_100_FILMS[0].rank);
+            assert.isFalse(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
         });
 
-        it("when create item is rendered, arrow up invokes onActiveItemChange with CREATE", () => {
+        it("when create item is rendered, arrow up invokes onActiveItemChange with an `ICreateNewItem`", () => {
             const wrapper = render({
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.equal(
-                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
-                QueryListActiveItemType.CREATE,
-            );
+            assert.isTrue(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.equal(
-                (testProps.onActiveItemChange.lastCall.args[0] as IQueryListActiveItem<IFilm>).type,
-                QueryListActiveItemType.ITEM,
-            );
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0].item as IFilm).rank, TOP_100_FILMS[0].rank);
+            assert.isFalse(isCreateNewItem(testProps.onActiveItemChange.lastCall.args[0]));
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
         });
     });
 }

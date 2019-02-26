@@ -7,14 +7,11 @@
 import { assert } from "chai";
 import React from "react";
 import sinon from "sinon";
-import { IItemListRendererProps, QueryListActiveItemType, renderFilteredItems } from "../src";
+import { IItemListRendererProps, renderFilteredItems } from "../src";
 
 describe("renderFilteredItems()", () => {
     const PROPS: IItemListRendererProps<string> = {
-        activeItem: {
-            item: "one",
-            type: QueryListActiveItemType.ITEM,
-        },
+        activeItem: "one",
         filteredItems: ["one"],
         items: ["one", "two", "three"],
         itemsParentRef: sinon.stub(),
