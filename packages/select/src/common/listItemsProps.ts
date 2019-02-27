@@ -115,10 +115,11 @@ export interface IListItemsProps<T> extends IProps {
      *
      * If the "Create Item" option is displayed and currently active, then
      * `isCreateNewItem` will be `true` and `activeItem` will be `null`. In this
-     * case, you should provide a valid "Create Item" object to the `activeItem`
-     * _prop_ in order for the "Create Item" option to appear as active.
+     * case, you should provide a valid `ICreateNewItem` object to the
+     * `activeItem` _prop_ in order for the "Create Item" option to appear as
+     * active.
      *
-     * __Note:__ You can instantiate a "Create Item" object using the
+     * __Note:__ You can instantiate a `ICreateNewItem` object using the
      * `getCreateNewItem()` utility exported from this package.
      */
     onActiveItemChange?: (activeItem: T | null, isCreateNewItem: boolean) => void;
