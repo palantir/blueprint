@@ -79,7 +79,6 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
-        isCloseButtonShown: true,
         isOpen: false,
         style: {},
         vertical: false,
@@ -115,7 +114,9 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     }
 
     private maybeRenderCloseButton() {
-        if (this.props.isCloseButtonShown) {
+        // `isCloseButtonShown` can't be defaulted through default props because of props validation
+        // so this check actually defaults it to true if it is not defined (== null)
+        if (this.props.isCloseButtonShown || this.props.isCloseButtonShown == null) {
             return (
                 <Button
                     aria-label="Close"
