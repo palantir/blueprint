@@ -47,6 +47,12 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 .#{$ns}-tree {
   #{$icon-classes} {
     color: $pt-icon-color;
+
+    @each $intent, $colors in $pt-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include intent-color($intent);
+      }
+    }
   }
 }
 
@@ -129,6 +135,20 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   .#{$ns}-popover-target {
     display: flex;
     align-items: center;
+  }
+}
+
+.#{$ns}-tree-node.#{$ns}-disabled {
+  .#{$ns}-tree-node-content {
+    background-color: inherit;
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
+  }
+
+  .#{$ns}-tree-node-caret,
+  .#{$ns}-tree-node-icon {
+    cursor: not-allowed;
+    color: $pt-text-color-disabled;
   }
 }
 

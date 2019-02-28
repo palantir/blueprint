@@ -38,6 +38,11 @@ export interface ITabProps extends IProps {
     panel?: JSX.Element;
 
     /**
+     * Space-delimited string of class names applied to tab panel container.
+     */
+    panelClassName?: string;
+
+    /**
      * Content of tab title element, rendered in a list above the active panel.
      * Can also be set via React `children`.
      */

@@ -1,8 +1,10 @@
-/*
+/*!
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
+
+import { ICreateNewItem } from "./listItemsUtils";
 
 /**
  * An object describing how to render the list of items.
@@ -13,7 +15,7 @@ export interface IItemListRendererProps<T> {
      * The currently focused item (for keyboard interactions), or `null` to
      * indicate that no item is active.
      */
-    activeItem: T | null;
+    activeItem: T | ICreateNewItem | null;
 
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.
