@@ -1,12 +1,13 @@
 /*
-* Copyright 2018 Palantir Technologies, Inc. All rights reserved.
-*
-* Licensed under the terms of the LICENSE file distributed with this project.
-*/
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the terms of the LICENSE file distributed with this project.
+ */
 
 import { IProps, Utils } from "@blueprintjs/core";
 import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
+import { ICreateNewItem } from "./listItemsUtils";
 import { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /**
@@ -28,7 +29,7 @@ export interface IListItemsProps<T> extends IProps {
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
-    activeItem?: T | null;
+    activeItem?: T | ICreateNewItem | null;
 
     /** Array of items in the list. */
     items: T[];
@@ -107,11 +108,21 @@ export interface IListItemsProps<T> extends IProps {
     noResults?: React.ReactNode;
 
     /**
-     * Invoked when user interaction should change the active item: arrow keys move it up/down
-     * in the list, selecting an item makes it active, and changing the query may reset it to
-     * the first item in the list if it no longer matches the filter.
+     * Invoked when user interaction should change the active item: arrow keys
+     * move it up/down in the list, selecting an item makes it active, and
+     * changing the query may reset it to the first item in the list if it no
+     * longer matches the filter.
+     *
+     * If the "Create Item" option is displayed and currently active, then
+     * `isCreateNewItem` will be `true` and `activeItem` will be `null`. In this
+     * case, you should provide a valid `ICreateNewItem` object to the
+     * `activeItem` _prop_ in order for the "Create Item" option to appear as
+     * active.
+     *
+     * __Note:__ You can instantiate a `ICreateNewItem` object using the
+     * `getCreateNewItem()` utility exported from this package.
      */
-    onActiveItemChange?: (activeItem: T | null) => void;
+    onActiveItemChange?: (activeItem: T | null, isCreateNewItem: boolean) => void;
 
     /**
      * Callback invoked when an item from the list is selected,
@@ -123,6 +134,26 @@ export interface IListItemsProps<T> extends IProps {
      * Callback invoked when the query string changes.
      */
     onQueryChange?: (query: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
+
+    /**
+     * If provided, allows new items to be created using the current query
+     * string. This is invoked when user interaction causes a new item to be
+     * created, either by pressing the `Enter` key or by clicking on the "Create
+     * Item" option. It transforms a query string into an item type.
+     */
+    createNewItemFromQuery?: (query: string) => T;
+
+    /**
+     * Custom renderer to transform the current query string into a selectable
+     * "Create Item" option. If this function is provided, a "Create Item"
+     * option will be rendered at the end of the list of items. If this function
+     * is not provided, a "Create Item" option will not be displayed.
+     */
+    createNewItemRenderer?: (
+        query: string,
+        active: boolean,
+        handleClick: React.MouseEventHandler<HTMLElement>,
+    ) => JSX.Element | undefined;
 
     /**
      * Whether the active item should be reset to the first matching item _every
