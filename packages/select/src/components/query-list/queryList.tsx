@@ -431,7 +431,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private wouldCreatedItemMatchSomeExistingItem() {
-        return this.props.items.some(item => executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem));
+        // search only the filtered items, not the full items list, because we
+        // only need to check items that match the current query.
+        return this.state.filteredItems.some(item =>
+            executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem),
+        );
     }
 }
 
