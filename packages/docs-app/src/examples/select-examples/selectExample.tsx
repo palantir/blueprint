@@ -9,15 +9,26 @@ import * as React from "react";
 import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
-import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
+import {
+    areFilmsEqual,
+    createFilm,
+    filmSelectProps,
+    IFilm,
+    maybeAddCreatedFilmToArrays,
+    maybeDeleteCreatedFilmFromArrays,
+    renderCreateFilmOption,
+    TOP_100_FILMS,
+} from "./films";
 
 const FilmSelect = Select.ofType<IFilm>();
 
 export interface ISelectExampleState {
     allowCreate: boolean;
+    createdItems: IFilm[];
     film: IFilm;
     filterable: boolean;
     hasInitialContent: boolean;
+    items: IFilm[];
     minimal: boolean;
     resetOnClose: boolean;
     resetOnQuery: boolean;
@@ -29,11 +40,13 @@ export interface ISelectExampleState {
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
     public state: ISelectExampleState = {
         allowCreate: false,
+        createdItems: [],
         disableItems: false,
         disabled: false,
         film: TOP_100_FILMS[0],
         filterable: true,
         hasInitialContent: false,
+        items: filmSelectProps.items,
         minimal: false,
         resetOnClose: false,
         resetOnQuery: true,
@@ -71,6 +84,9 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     disabled={disabled}
                     itemDisabled={this.isItemDisabled}
                     itemsEqual={areFilmsEqual}
+                    // we may customize the default filmSelectProps.items by
+                    // adding newly created items to the list, so pass our own
+                    items={this.state.items}
                     initialContent={initialContent}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleValueChange}
@@ -133,7 +149,21 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         );
     }
 
-    private handleValueChange = (film: IFilm) => this.setState({ film });
+    private handleValueChange = (film: IFilm) => {
+        // Delete the old film from the list if it was newly created.
+        const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
+            this.state.items,
+            this.state.createdItems,
+            this.state.film,
+        );
+        // Add the new film to the list if it is newly created.
+        const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
+            items,
+            createdItems,
+            film,
+        );
+        this.setState({ createdItems: nextCreatedItems, film, items: nextItems });
+    };
 
     private handleSwitchChange(prop: keyof ISelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

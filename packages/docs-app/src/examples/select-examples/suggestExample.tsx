@@ -9,14 +9,25 @@ import * as React from "react";
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Suggest } from "@blueprintjs/select";
-import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
+import {
+    areFilmsEqual,
+    createFilm,
+    filmSelectProps,
+    IFilm,
+    maybeAddCreatedFilmToArrays,
+    maybeDeleteCreatedFilmFromArrays,
+    renderCreateFilmOption,
+    TOP_100_FILMS,
+} from "./films";
 
 const FilmSuggest = Suggest.ofType<IFilm>();
 
 export interface ISuggestExampleState {
     allowCreate: boolean;
     closeOnSelect: boolean;
+    createdItems: IFilm[];
     film: IFilm;
+    items: IFilm[];
     minimal: boolean;
     openOnKeyDown: boolean;
     resetOnClose: boolean;
@@ -28,7 +39,9 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
     public state: ISuggestExampleState = {
         allowCreate: false,
         closeOnSelect: true,
+        createdItems: [],
         film: TOP_100_FILMS[0],
+        items: filmSelectProps.items,
         minimal: true,
         openOnKeyDown: false,
         resetOnClose: false,
@@ -59,6 +72,9 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     inputValueRenderer={this.renderInputValue}
                     itemsEqual={areFilmsEqual}
+                    // we may customize the default filmSelectProps.items by
+                    // adding newly created items to the list, so pass our own.
+                    items={this.state.items}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ minimal }}
@@ -113,7 +129,21 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
 
     private renderInputValue = (film: IFilm) => film.title;
 
-    private handleValueChange = (film: IFilm) => this.setState({ film });
+    private handleValueChange = (film: IFilm) => {
+        // delete the old film from the list if it was newly created
+        const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
+            this.state.items,
+            this.state.createdItems,
+            this.state.film,
+        );
+        // add the new film to the list if it is newly created
+        const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
+            items,
+            createdItems,
+            film,
+        );
+        this.setState({ createdItems: nextCreatedItems, film, items: nextItems });
+    };
 
     private handleSwitchChange(prop: keyof ISuggestExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

@@ -9,7 +9,17 @@ import * as React from "react";
 import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
-import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
+import {
+    areFilmsEqual,
+    arrayContainsFilm,
+    createFilm,
+    filmSelectProps,
+    IFilm,
+    maybeAddCreatedFilmToArrays,
+    maybeDeleteCreatedFilmFromArrays,
+    renderCreateFilmOption,
+    TOP_100_FILMS,
+} from "./films";
 
 const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 
@@ -78,6 +88,9 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     initialContent={initialContent}
                     itemRenderer={this.renderFilm}
                     itemsEqual={areFilmsEqual}
+                    // we may customize the default filmSelectProps.items by
+                    // adding newly created items to the list, so pass our own
+                    items={this.state.items}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleFilmSelect}
                     popoverProps={{ minimal: popoverMinimal }}
@@ -167,30 +180,39 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private selectFilm(film: IFilm) {
-        const { createdItems, films, items } = this.state;
-        const isNewlyCreatedItem = !this.arrayContainsFilm(items, film);
+        const { films } = this.state;
+
+        const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
+            this.state.items,
+            this.state.createdItems,
+            film,
+        );
+
         this.setState({
-            createdItems: isNewlyCreatedItem ? this.addFilmToArray(createdItems, film) : createdItems,
+            createdItems: nextCreatedItems,
             // Avoid re-creating an item that is already selected (the "Create
             // Item" option will be shown even if it matches an already selected
             // item).
-            films: !this.arrayContainsFilm(films, film) ? [...films, film] : films,
-            // Add a created film to `items` so that the film can be deselected.
-            items: isNewlyCreatedItem ? this.addFilmToArray(items, film) : items,
+            films: !arrayContainsFilm(films, film) ? [...films, film] : films,
+            items: nextItems,
         });
     }
 
     private deselectFilm(index: number) {
-        const { createdItems, films, items } = this.state;
+        const { films } = this.state;
 
         const film = films[index];
-        const wasItemCreatedByUser = this.arrayContainsFilm(createdItems, film);
+        const { createdItems: nextCreatedItems, items: nextItems } = maybeDeleteCreatedFilmFromArrays(
+            this.state.items,
+            this.state.createdItems,
+            film,
+        );
 
         // Delete the item if the user manually created it.
         this.setState({
-            createdItems: wasItemCreatedByUser ? this.deleteFilmFromArray(createdItems, film) : createdItems,
+            createdItems: nextCreatedItems,
             films: films.filter((_film, i) => i !== index),
-            items: wasItemCreatedByUser ? this.deleteFilmFromArray(items, film) : items,
+            items: nextItems,
         });
     }
 
@@ -210,16 +232,4 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private handleClear = () => this.setState({ films: [] });
-
-    private arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
-        return films.find(f => f.title === filmToFind.title) !== undefined;
-    }
-
-    private addFilmToArray(films: IFilm[], filmToAdd: IFilm) {
-        return [...films, filmToAdd];
-    }
-
-    private deleteFilmFromArray(films: IFilm[], filmToDelete: IFilm) {
-        return films.filter(film => film !== filmToDelete);
-    }
 }
