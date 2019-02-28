@@ -9,7 +9,7 @@ import * as React from "react";
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Suggest } from "@blueprintjs/select";
-import { createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
+import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
 
 const FilmSuggest = Suggest.ofType<IFilm>();
 
@@ -58,6 +58,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     inputValueRenderer={this.renderInputValue}
+                    itemsEqual={areFilmsEqual}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleValueChange}
                     popoverProps={{ minimal }}

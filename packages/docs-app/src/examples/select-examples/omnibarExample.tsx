@@ -20,7 +20,7 @@ import {
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
-import { createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./films";
+import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./films";
 
 const FilmOmnibar = Omnibar.ofType<IFilm>();
 
@@ -80,6 +80,7 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                     {...this.state}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
+                    itemsEqual={areFilmsEqual}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleItemSelect}
                     onClose={this.handleClose}

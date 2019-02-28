@@ -9,7 +9,7 @@ import * as React from "react";
 import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
-import { createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
+import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
 
 const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 
@@ -17,9 +17,11 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
+    createdItems: IFilm[];
     films: IFilm[];
     hasInitialContent: boolean;
     intent: boolean;
+    items: IFilm[];
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
     resetOnSelect: boolean;
@@ -29,9 +31,11 @@ export interface IMultiSelectExampleState {
 export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
         allowCreate: false,
+        createdItems: [],
         films: [],
         hasInitialContent: false,
         intent: false,
+        items: filmSelectProps.items,
         openOnKeyDown: false,
         popoverMinimal: true,
         resetOnSelect: true,
@@ -73,6 +77,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     initialContent={initialContent}
                     itemRenderer={this.renderFilm}
+                    itemsEqual={areFilmsEqual}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleFilmSelect}
                     popoverProps={{ minimal: popoverMinimal }}
@@ -162,11 +167,31 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private selectFilm(film: IFilm) {
-        this.setState({ films: [...this.state.films, film] });
+        const { createdItems, films, items } = this.state;
+        const isNewlyCreatedItem = !this.arrayContainsFilm(items, film);
+        this.setState({
+            createdItems: isNewlyCreatedItem ? this.addFilmToArray(createdItems, film) : createdItems,
+            // Avoid re-creating an item that is already selected (the "Create
+            // Item" option will be shown even if it matches an already selected
+            // item).
+            films: !this.arrayContainsFilm(films, film) ? [...films, film] : films,
+            // Add a created film to `items` so that the film can be deselected.
+            items: isNewlyCreatedItem ? this.addFilmToArray(items, film) : items,
+        });
     }
 
     private deselectFilm(index: number) {
-        this.setState({ films: this.state.films.filter((_film, i) => i !== index) });
+        const { createdItems, films, items } = this.state;
+
+        const film = films[index];
+        const wasItemCreatedByUser = this.arrayContainsFilm(createdItems, film);
+
+        // Delete the item if the user manually created it.
+        this.setState({
+            createdItems: wasItemCreatedByUser ? this.deleteFilmFromArray(createdItems, film) : createdItems,
+            films: films.filter((_film, i) => i !== index),
+            items: wasItemCreatedByUser ? this.deleteFilmFromArray(items, film) : items,
+        });
     }
 
     private handleFilmSelect = (film: IFilm) => {
@@ -185,4 +210,16 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private handleClear = () => this.setState({ films: [] });
+
+    private arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
+        return films.find(f => f.title === filmToFind.title) !== undefined;
+    }
+
+    private addFilmToArray(films: IFilm[], filmToAdd: IFilm) {
+        return [...films, filmToAdd];
+    }
+
+    private deleteFilmFromArray(films: IFilm[], filmToDelete: IFilm) {
+        return films.filter(film => film !== filmToDelete);
+    }
 }

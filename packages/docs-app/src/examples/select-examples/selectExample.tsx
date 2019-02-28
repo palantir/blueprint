@@ -9,7 +9,7 @@ import * as React from "react";
 import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
-import { createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
+import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption, TOP_100_FILMS } from "./films";
 
 const FilmSelect = Select.ofType<IFilm>();
 
@@ -70,6 +70,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     createNewItemRenderer={maybeCreateNewItemRenderer}
                     disabled={disabled}
                     itemDisabled={this.isItemDisabled}
+                    itemsEqual={areFilmsEqual}
                     initialContent={initialContent}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleValueChange}

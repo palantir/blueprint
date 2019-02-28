@@ -204,3 +204,8 @@ export function createFilm(title: string): IFilm {
         year: new Date().getFullYear(),
     };
 }
+
+export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
+    // Compare only the titles (ignoring case) just for simplicity.
+    return filmA.title.toLowerCase() === filmB.title.toLowerCase();
+}
