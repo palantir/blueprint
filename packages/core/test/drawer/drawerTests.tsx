@@ -51,6 +51,15 @@ describe("<Drawer>", () => {
         assert.isTrue(drawer.find(`.${Classes.VERTICAL}`).exists());
     });
 
+    it("reversed adds class", () => {
+        const drawer = mount(
+            <Drawer isOpen={true} usePortal={false} reversed={true}>
+                {createDrawerContents()}
+            </Drawer>,
+        );
+        assert.isTrue(drawer.find(`.${Classes.REVERSED}`).exists());
+    });
+
     it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
         const drawer = mount(

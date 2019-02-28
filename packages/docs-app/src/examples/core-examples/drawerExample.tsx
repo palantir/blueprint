@@ -17,6 +17,7 @@ export interface IDrawerExampleState {
     enforceFocus: boolean;
     hasBackdrop: boolean;
     isOpen: boolean;
+    reversed: boolean;
     size: string;
     usePortal: boolean;
     vertical: boolean;
@@ -29,6 +30,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         enforceFocus: true,
         hasBackdrop: true,
         isOpen: false,
+        reversed: false,
         size: undefined,
         usePortal: true,
         vertical: false,
@@ -40,6 +42,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
+    private handleReversedChange = handleBooleanChange(reversed => this.setState({ reversed }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
     private handleSizeChange = handleStringChange(size => this.setState({ size }));
 
@@ -100,6 +103,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                     <HTMLSelect options={SIZES} onChange={this.handleSizeChange} />
                 </Label>
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
+                <Switch checked={this.state.reversed} label="Reversed" onChange={this.handleReversedChange} />
                 <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
