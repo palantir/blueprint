@@ -34,8 +34,10 @@ const POPPER_MODIFIERS: PopperModifiers = {
 };
 const TRANSITION_DURATION = 100;
 
+type IContextMenuProps = IOverlayLifecycleProps;
+
 /* istanbul ignore next */
-class ContextMenu extends AbstractPureComponent<IOverlayLifecycleProps, IContextMenuState> {
+class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,
@@ -126,7 +128,10 @@ export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, i
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
-        contextMenu = ReactDOM.render(<ContextMenu onClosed={remove} />, contextMenuElement) as ContextMenu;
+        contextMenu = ReactDOM.render<IContextMenuProps>(
+            <ContextMenu onClosed={remove} />,
+            contextMenuElement,
+        ) as ContextMenu;
     }
 
     contextMenu.show(menu, offset, onClose, isDarkTheme);

@@ -5,7 +5,7 @@
  */
 
 import * as Lint from "tslint";
-import * as utils from "tsutils";
+import { isExpressionStatement, isJsxAttribute, isPropertyAssignment, isStringLiteral } from "tsutils/typeguard/2.8";
 import * as ts from "typescript";
 import { addImportToFile } from "./utils/addImportToFile";
 
@@ -41,7 +41,7 @@ function walk(ctx: Lint.WalkContext<void>) {
             const prefixMatches = getAllMatches(node.getFullText());
             if (prefixMatches.length > 0) {
                 const ptClassStrings = prefixMatches.map(m => m.match);
-                const replacementText = utils.isStringLiteral(node)
+                const replacementText = isStringLiteral(node)
                     ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
                       wrapForParent(getLiteralReplacement(node.getText(), ptClassStrings), node)
                     : getTemplateReplacement(node.getText(), ptClassStrings);
@@ -107,13 +107,13 @@ function wrapForParent(statement: string, node: ts.Node) {
     const { parent } = node;
     if (parent === undefined) {
         return statement;
-    } else if (utils.isJsxAttribute(parent)) {
+    } else if (isJsxAttribute(parent)) {
         return `{${statement}}`;
-    } else if (utils.isExpressionStatement(parent)) {
+    } else if (isExpressionStatement(parent)) {
         return `[${statement}]`;
         // If we're changing the key, it will be child index 0 and we need to wrap it.
         // Else, we're changing a value, and there's no need to wrap
-    } else if (utils.isPropertyAssignment(parent) && parent.getChildAt(0) === node) {
+    } else if (isPropertyAssignment(parent) && parent.getChildAt(0) === node) {
         return `[${statement}]`;
     } else {
         return statement;

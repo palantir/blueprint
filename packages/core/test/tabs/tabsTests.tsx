@@ -219,7 +219,7 @@ describe("<Tabs>", () => {
     });
 
     it("animate=false removes moving indicator element", () => {
-        const wrapper = mount(
+        const wrapper = mount<Tabs>(
             <Tabs id={ID} animate={false}>
                 {getTabsContents()}
             </Tabs>,
@@ -229,7 +229,7 @@ describe("<Tabs>", () => {
     });
 
     it("removes indicator element when selected tab is removed", () => {
-        const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
+        const wrapper = mount<Tabs>(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         // first tab is selected by default. now remove it.
         const tabIdsWithoutFirstTab = TAB_IDS.slice(1);
         wrapper.setProps({ children: getTabsContents(tabIdsWithoutFirstTab) });
@@ -259,7 +259,7 @@ describe("<Tabs>", () => {
         });
 
         it("unknown tab ID hides moving indicator element", () => {
-            const wrapper = mount(
+            const wrapper = mount<Tabs>(
                 <Tabs id={ID} defaultSelectedTabId="unknown">
                     {getTabsContents()}
                 </Tabs>,

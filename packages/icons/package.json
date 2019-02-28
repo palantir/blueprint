@@ -42,7 +42,7 @@
     "@blueprintjs/node-build-scripts": "^0.8.1",
     "@blueprintjs/test-commons": "^0.8.1",
     "enzyme": "^3.3.0",
-    "mocha": "^4.1.0",
+    "mocha": "^5.2.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
