@@ -39,7 +39,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * Whether the drawer should appear on the reversed side.
-     * Depending on the `vertical` prop, it will show on the left side (instead of the left),
+     * Depending on the `vertical` prop, it will show on the left side (instead of the right),
      * or on the top (instead of the bottom)
      * @default false
      */
