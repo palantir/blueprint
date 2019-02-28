@@ -45,7 +45,9 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
  */
-export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
+export interface IQueryListRendererProps<T>  // Omit `createNewItem`, because it's used strictly for internal tracking.
+    extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,
+        IProps {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -77,6 +79,14 @@ export interface IQueryListRendererProps<T> extends IQueryListState<T>, IProps {
 export interface IQueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
     activeItem: T | ICreateNewItem | null;
+
+    /**
+     * The item returned from `createNewItemFromQuery(this.state.query)`, cached
+     * to avoid continuous reinstantions within `isCreateItemRendered`, where
+     * this element will be used to hide the "Create Item" option if its value
+     * matches the current `query`.
+     */
+    createNewItem: T | undefined;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
@@ -117,13 +127,17 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);
-        const { query = "" } = this.props;
-        const filteredItems = getFilteredItems(query, this.props);
+
+        const { query = "" } = props;
+        const createNewItem = Utils.safeInvoke(props.createNewItemFromQuery, query);
+        const filteredItems = getFilteredItems(query, props);
+
         this.state = {
             activeItem:
                 this.props.activeItem !== undefined
                     ? this.props.activeItem
-                    : getFirstEnabledItem(filteredItems, this.props.itemDisabled),
+                    : getFirstEnabledItem(filteredItems, props.itemDisabled),
+            createNewItem,
             filteredItems,
             query,
         };
@@ -131,15 +145,16 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public render() {
         const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
+        const { createNewItem, ...spreadableState } = this.state;
         return renderer({
-            ...this.state,
+            ...spreadableState,
             className,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
             handleQueryChange: this.handleQueryChange,
             itemList: itemListRenderer({
-                ...this.state,
+                ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
                 renderItem: this.renderItem,
@@ -214,6 +229,8 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     public setQuery(query: string, resetActiveItem = this.props.resetOnQuery, props = this.props) {
+        const { createNewItemFromQuery } = props;
+
         this.shouldCheckActiveItemInViewport = true;
         const hasQueryChanged = query !== this.state.query;
         if (hasQueryChanged) {
@@ -221,7 +238,9 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
 
         const filteredItems = getFilteredItems(query, props);
-        this.setState({ filteredItems, query });
+        const createNewItem =
+            createNewItemFromQuery != null && query !== "" ? createNewItemFromQuery(query) : undefined;
+        this.setState({ createNewItem, filteredItems, query });
 
         // always reset active item if it's now filtered or disabled
         const activeIndex = this.getActiveIndex(filteredItems);
@@ -314,6 +333,8 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private handleItemCreate = (query: string, evt?: React.SyntheticEvent<HTMLElement>) => {
+        // we keep a cached createNewItem in state, but might as well recompute
+        // the result just to be sure it's perfectly in sync with the query.
         const item = Utils.safeInvoke(this.props.createNewItemFromQuery, query);
         if (item != null) {
             Utils.safeInvoke(this.props.onItemSelect, item, evt);
@@ -397,7 +418,20 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private isCreateItemRendered(): boolean {
-        return !!(this.props.createNewItemFromQuery && this.props.createNewItemRenderer && this.state.query !== "");
+        const { createNewItemFromQuery } = this.props;
+        return (
+            createNewItemFromQuery != null &&
+            this.props.createNewItemRenderer != null &&
+            this.state.query !== "" &&
+            // this check is unfortunately O(N) on the number of items, but
+            // alas, hiding the "Create Item" option when it exactly matches an
+            // existing item is much clearer.
+            !this.wouldCreatedItemMatchSomeExistingItem()
+        );
+    }
+
+    private wouldCreatedItemMatchSomeExistingItem() {
+        return this.props.items.some(item => executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem));
     }
 }
 
