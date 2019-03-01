@@ -44,18 +44,25 @@ export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boo
 
 /**
  * Converts a React node to an element: non-empty string or number or
- * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
- * and booleans are discarded.
+ * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings and booleans are discarded.
+ *
+ * N.B. it's important to explicitly declare the return type so that we remain compatible with old `@types/react`
+ * versions where `React.ReactElement` only had 1 generic type param instead of 2.
  */
-export function ensureElement(child: React.ReactNode | undefined, tagName: keyof JSX.IntrinsicElements = "span") {
+export function ensureElement<P = any>(
+    child: React.ReactNode | undefined,
+    tagName: keyof JSX.IntrinsicElements = "span",
+): React.ReactElement<P> {
     if (child == null || typeof child === "boolean") {
         return undefined;
     } else if (typeof child === "string") {
         // cull whitespace strings
-        return child.trim().length > 0 ? React.createElement(tagName, {}, child) : undefined;
+        // tslint:disable-next-line no-object-literal-type-assertion
+        return child.trim().length > 0 ? React.createElement<P>(tagName, {} as P, child) : undefined;
     } else if (typeof child === "number" || typeof (child as any).type === "symbol" || Array.isArray(child)) {
         // React.Fragment has a symbol type, ReactNodeArray extends from Array
-        return React.createElement(tagName, {}, child);
+        // tslint:disable-next-line no-object-literal-type-assertion
+        return React.createElement<P>(tagName, {} as P, child);
     } else if (isReactElement(child)) {
         return child;
     } else {
@@ -230,11 +237,14 @@ export interface IThrottledReactEventOptions {
  * Throttle a callback by wrapping it in a `requestAnimationFrame` call. Returns
  * the throttled function.
  * @see https://www.html5rocks.com/en/tutorials/speed/animations/
+ *
+ * N.B. it's important to explicitly declare the return type so that we remain compatible with old `@types/react`
+ * versions where `React.SyntheticEvent` only had 1 generic type param instead of 2.
  */
 export function throttleReactEventCallback(
     callback: (event: React.SyntheticEvent<any>, ...otherArgs: any[]) => any,
     options: IThrottledReactEventOptions = {},
-) {
+): (event2: React.SyntheticEvent<any>) => void {
     const throttledFunc = _throttleHelper(
         callback,
         (event2: React.SyntheticEvent<any>) => {
