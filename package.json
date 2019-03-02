@@ -34,17 +34,17 @@
     "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint"
   },
   "dependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/classnames": "^2.2.7",
-    "@types/enzyme": "^3.1.18",
-    "@types/enzyme-adapter-react-16": "^1.0.4",
-    "@types/mocha": "^5.2.6",
-    "@types/prop-types": "^15.5.9",
-    "@types/react": "^16.8.3",
-    "@types/react-dom": "^16.8.2",
-    "@types/react-transition-group": "^2.0.16",
-    "@types/sinon": "^7.0.6",
-    "@types/webpack": "^4.4.24",
+    "@types/chai": "4.1.7",
+    "@types/classnames": "2.2.7",
+    "@types/enzyme": "3.1.15",
+    "@types/enzyme-adapter-react-16": "1.0.3",
+    "@types/mocha": "5.2.6",
+    "@types/prop-types": "15.7.0",
+    "@types/react": "16.4.18",
+    "@types/react-dom": "16.0.11",
+    "@types/react-transition-group": "2.0.14",
+    "@types/sinon": "7.0.6",
+    "@types/webpack": "4.4.24",
     "chai": "^4.2.0",
     "circle-github-bot": "^2.0.1",
     "cross-env": "^5.2.0",
@@ -57,11 +57,13 @@
     "stylelint-scss": "^3.3.1",
     "typescript": "~2.8.3"
   },
+  "resolutions": {
+    "@types/enzyme": "3.1.15",
+    "@types/react": "16.4.18",
+    "node-gyp": "3.8.0"
+  },
   "engines": {
     "node": ">=6.1"
-  },
-  "resolutions": {
-    "node-gyp": "^3.6.3"
   },
   "repository": {
     "type": "git",
