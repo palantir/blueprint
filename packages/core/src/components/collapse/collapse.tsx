@@ -131,10 +131,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
         }
     }
 
-    /**
-     * Return typedef is required for backwards compatibility with old React types
-     */
-    public render(): React.ReactElement<any> {
+    public render() {
         const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
         const shouldRenderChildren = isContentVisible || this.props.keepChildrenMounted;
         const displayWithTransform = isContentVisible && this.state.animationState !== AnimationStates.CLOSING;

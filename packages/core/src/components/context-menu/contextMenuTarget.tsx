@@ -30,7 +30,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
     return class ContextMenuTargetClass extends WrappedComponent {
         public static displayName = `ContextMenuTarget(${getDisplayName(WrappedComponent)})`;
 
-        public render(): React.ReactElement<any> | null | undefined {
+        public render() {
             const element = super.render();
 
             if (element == null) {
