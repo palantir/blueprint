@@ -34,10 +34,11 @@ type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezo
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable no-unnecessary-callback-wrapper
-const shallow = (el: React.ReactElement, options?: ShallowRendererProps): TimezonePickerShallowWrapper =>
-    untypedShallow<TimezonePicker>(el, options);
-// tslint:enable no-unnecessary-callback-wrapper
+// tslint:disable-next-line no-unnecessary-callback-wrapper
+const shallow = (
+    el: React.ReactElement<ITimezonePickerProps>,
+    options?: ShallowRendererProps,
+): TimezonePickerShallowWrapper => untypedShallow<TimezonePicker>(el, options);
 
 const VALUE = "America/Los_Angeles";
 

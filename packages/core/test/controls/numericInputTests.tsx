@@ -34,8 +34,10 @@ import {
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
 // tslint:disable no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement, options?: MountRendererProps) => untypedMount<NumericInput>(el, options);
-const shallow = (el: React.ReactElement, options?: ShallowRendererProps) => untypedShallow<NumericInput>(el, options);
+const mount = (el: React.ReactElement<INumericInputProps>, options?: MountRendererProps) =>
+    untypedMount<NumericInput>(el, options);
+const shallow = (el: React.ReactElement<INumericInputProps>, options?: ShallowRendererProps) =>
+    untypedShallow<NumericInput>(el, options);
 // tslint:enable no-unnecessary-callback-wrapper
 
 describe("<NumericInput>", () => {

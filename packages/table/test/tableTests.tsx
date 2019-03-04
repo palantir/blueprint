@@ -30,9 +30,8 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement, options?: MountRendererProps) => untypedMount<Table>(el, options);
-// tslint:enable no-unnecessary-callback-wrapper
+// tslint:disable-next-line no-unnecessary-callback-wrapper
+const mount = (el: React.ReactElement<ITableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
 describe("<Table>", function(this) {
     // allow retrying failed tests here to reduce flakes.
