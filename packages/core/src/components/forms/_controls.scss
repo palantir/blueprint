@@ -12,35 +12,38 @@ $dark-control-background-color: $dark-button-background-color !default;
 $dark-control-background-color-hover: $dark-button-background-color-hover !default;
 $dark-control-background-color-active: $dark-button-background-color-active !default;
 
-$control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !default;
-$control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
-$control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
-
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
 $control-indicator-spacing: $pt-grid-size !default;
 
 @mixin control-checked-colors($selector: ":checked") {
-  input#{$selector} ~ .#{$ns}-control-indicator {
+  input#{$selector} ~ .#{$ns}-control-indicator:not([class*="#{$ns}-intent-"]) {
+    @include pt-control-intent(
+      nth(map-get($button-intents, "primary"), 1),
+      nth(map-get($button-intents, "primary"), 2),
+      nth(map-get($button-intents, "primary"), 3));
     box-shadow: $button-intent-box-shadow;
-    background-color: $control-checked-background-color;
     background-image: $button-intent-gradient;
     color: $white;
   }
 
+  // intents
+  @each $intent, $colors in $button-intents {
+    input#{$selector} ~ .#{$ns}-control-indicator.#{$ns}-intent-#{$intent} {
+      @include pt-control-intent($colors...);
+    }
+  }
+
   &:hover input#{$selector} ~ .#{$ns}-control-indicator {
     box-shadow: $button-intent-box-shadow;
-    background-color: $control-checked-background-color-hover;
   }
 
   input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
     box-shadow: $button-intent-box-shadow-active;
-    background: $control-checked-background-color-active;
   }
 
   input:disabled#{$selector} ~ .#{$ns}-control-indicator {
     box-shadow: none;
-    background: rgba($control-checked-background-color, 0.5);
   }
 
   .#{$ns}-dark & {
@@ -50,18 +53,31 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     &:hover input#{$selector} ~ .#{$ns}-control-indicator {
       box-shadow: $dark-button-intent-box-shadow;
-      background-color: $control-checked-background-color-hover;
     }
 
     input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
       box-shadow: $dark-button-intent-box-shadow-active;
-      background-color: $control-checked-background-color-active;
     }
 
     input:disabled#{$selector} ~ .#{$ns}-control-indicator {
       box-shadow: none;
-      background: rgba($control-checked-background-color-active, 0.5);
     }
+  }
+}
+
+@mixin pt-control-intent($default-color, $hover-color, $active-color) {
+  background-color: $default-color;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+
+  input:not(:disabled):active#{$selector} {
+    background-color: $active-color;
+  }
+
+  input:disabled#{$selector} {
+    background-color: rgba($default-color, 0.5);
   }
 }
 
