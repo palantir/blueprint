@@ -6,15 +6,17 @@
 
 import * as React from "react";
 
-import { Alignment, Checkbox, H5, Label, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Alignment, Checkbox, H5, Label, Switch, Intent } from "@blueprintjs/core";
+import { Example, handleBooleanChange, IExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 import { AlignmentSelect } from "./common/alignmentSelect";
+import { IntentSelect } from './common/intentSelect';
 
 export interface ICheckboxExampleState {
     alignIndicator: Alignment;
     disabled: boolean;
     inline: boolean;
     large: boolean;
+    intent: Intent;
     value?: string;
 }
 
@@ -24,6 +26,7 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
         disabled: false,
         inline: false,
         large: false,
+        intent: Intent.NONE
     };
 
     public render() {
@@ -33,6 +36,7 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
                 <Switch checked={this.state.disabled} label="Disabled" onChange={this.handleDisabledChange} />
                 <Switch checked={this.state.inline} label="Inline" onChange={this.handleInlineChange} />
                 <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
+                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <AlignmentSelect
                     align={this.state.alignIndicator}
                     allowCenter={false}
@@ -65,4 +69,5 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 }

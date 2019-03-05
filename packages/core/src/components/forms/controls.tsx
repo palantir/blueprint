@@ -13,10 +13,10 @@ import * as React from "react";
 
 import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps, IIntentProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
-export interface IControlProps extends IProps, HTMLInputProps {
+export interface IControlProps extends IProps, IIntentProps, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
 
     /**
@@ -114,6 +114,7 @@ const Control: React.SFC<IControlInternalProps> = ({
             [Classes.LARGE]: large,
         },
         Classes.alignmentClass(alignIndicator),
+        Classes.intentClass(this.props.intent),
         className,
     );
     return (
