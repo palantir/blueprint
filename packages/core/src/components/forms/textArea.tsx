@@ -36,7 +36,7 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
     inputRef?: (ref: HTMLTextAreaElement | null) => any;
 }
 
-interface ITextAreaState {
+export interface ITextAreaState {
     height?: number;
 }
 
