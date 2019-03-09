@@ -28,12 +28,13 @@
     "@blueprintjs/webpack-build-scripts": "*",
     "npm-run-all": "^4.1.2",
     "stylelint": "~8.4.0",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack": "^4.27.1",
+    "webpack-dev-server": "^3.1.0"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/table-dev-app"
   },
   "author": "Palantir Technologies",
   "license": "SEE LICENSE IN REPO ROOT"

@@ -5,8 +5,8 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
 import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
@@ -363,8 +363,8 @@ describe("DragSelectable", () => {
             });
 
             afterEach(() => {
-                (FocusedCellUtils.expandFocusedRegion as any).restore();
-                (Regions.expandRegion as any).restore();
+                (FocusedCellUtils.expandFocusedRegion as sinon.SinonSpy).restore();
+                (Regions.expandRegion as sinon.SinonSpy).restore();
             });
 
             it("expands selection from focused cell (if provided)", () => {
@@ -375,6 +375,7 @@ describe("DragSelectable", () => {
                 const item = getItem(component);
 
                 item.mouse("mousedown", { shiftKey: true });
+
                 expect(expandFocusedSpy.calledOnce, "calls FCU.expandFocusedRegion on mousedown").to.be.true;
                 expect(onSelection.calledOnce, "calls onSelection on mousedown").to.be.true;
 

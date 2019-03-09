@@ -57,8 +57,36 @@ class RightClickMe extends React.Component<{}, {}> {
 }
 ```
 
+If you're using Blueprint in Javascript, and don't have access to the Babel config (ie: using `create-react-app`), you won't be able to just use the decorator. You can, instead, use it as a [Higher-Order Component][react-hoc], and get to keep all the benefits of `ContextMenuTarget`:
+
+```jsx
+import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
+
+const RightClickMe = ContextMenuTarget(class RightClickMeWithContext extends React.Component {
+    render() {
+        // root element must support `onContextMenu`
+        return <div>{...}</div>;
+    }
+
+    renderContextMenu() {
+        // return a single element, or nothing to use default browser behavior
+        return (
+            <Menu>
+                <MenuItem onClick={this.handleSave} text="Save" />
+                <MenuItem onClick={this.handleDelete} text="Delete" />
+            </Menu>
+        );
+    }
+
+    onContextMenuClose() {
+        // Optional method called once the context menu is closed.
+    }
+});
+```
+
 [ts-decorator]: https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/Decorators.md
 [wiki-cm]: https://en.wikipedia.org/wiki/Context_menu
+[react-hoc]: https://reactjs.org/docs/higher-order-components.html
 
 @## Imperative usage
 
@@ -66,7 +94,7 @@ The imperative API provides a single static `ContextMenu` object, enforcing the
 principle that only one context menu can be open at a time. This API is ideal
 for programmatically triggered menus or for non-React apps.
 
-- `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void): void`
+- `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean): void`
 
   Show the given element at the given offset from the top-left corner of the
   viewport. Showing a menu closes the previously shown one automatically. The

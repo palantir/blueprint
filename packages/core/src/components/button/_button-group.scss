@@ -117,6 +117,12 @@ Styleguide button-group
     }
   }
 
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover-target {
+    display: flex;
+    flex: 1 1 auto;
+  }
+
   /*
   Responsive
 
@@ -188,10 +194,6 @@ Styleguide button-group
       margin-right: 0 !important; // stylelint-disable-line declaration-no-important
       // needed to ensure buttons take up the full width when wrapped in a Popover:
       width: 100%;
-    }
-
-    .#{$ns}-popover-target {
-      display: block;
     }
 
     &:not(.#{$ns}-minimal) {

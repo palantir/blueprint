@@ -17,7 +17,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { DatePickerNavbar } from "../src/datePickerNavbar";
-import { IDateRangePickerState } from "../src/dateRangePicker";
+import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
     DateRange,
@@ -714,8 +714,7 @@ describe("<DateRangePicker>", () => {
         describe("when only end date is defined", () => {
             it("should show a hovered range of [end, day] if day > end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .clickDay(14) // deselect start date
                     .mouseEnterDay(22);
@@ -724,8 +723,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [null, null] if day === end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .clickDay(14)
                     .mouseEnterDay(18);
@@ -734,8 +732,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, end] if day < end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .clickDay(14)
                     .mouseEnterDay(14);
@@ -746,8 +743,7 @@ describe("<DateRangePicker>", () => {
         describe("when both start and end date are defined", () => {
             it("should show a hovered range of [null, end] if day === start", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(14);
                 assertHoveredDays(null, 18);
@@ -755,8 +751,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [start, null] if day === end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(18);
                 assertHoveredDays(14, null);
@@ -764,8 +759,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, null] if start < day < end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(16);
                 assertHoveredDays(16, null);
@@ -773,8 +767,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, null] if day < start", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(10);
                 assertHoveredDays(10, null);
@@ -782,8 +775,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [day, null] if day > end", () => {
                 const { left, assertHoveredDays } = render();
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(18)
                     .mouseEnterDay(22);
                 assertHoveredDays(22, null);
@@ -791,8 +783,7 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [null, null] if start === day === end", () => {
                 const { left, assertHoveredDays } = render({ allowSingleDayRange: true });
-                left
-                    .clickDay(14)
+                left.clickDay(14)
                     .clickDay(14)
                     .mouseEnterDay(14);
                 assertHoveredDays(null, null);
@@ -984,8 +975,7 @@ describe("<DateRangePicker>", () => {
         it("onHoverChange fired with `undefined` on mouseleave within a day", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
             assert.isTrue(onHoverChangeSpy.notCalled);
-            left
-                .clickDay(1)
+            left.clickDay(1)
                 .findDay(5)
                 .simulate("mouseleave");
             assert.isTrue(onHoverChangeSpy.calledTwice);
@@ -1028,8 +1018,7 @@ describe("<DateRangePicker>", () => {
 
         it("deselects endpoint when an endpoint of the current selection is clicked", () => {
             const { assertSelectedDays, left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
-            left
-                .clickDay(10)
+            left.clickDay(10)
                 .clickDay(14)
                 .clickDay(10);
             assertSelectedDays(14);
@@ -1147,9 +1136,26 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
         });
 
-        it("clicking a shortcut doesn't change time", () => {
+        it("clicking a shortcut with includeTime=false doesn't change time", () => {
             render({ timePrecision: "minute", defaultValue: defaultRange }).clickShortcut();
             assert.isTrue(DateUtils.areSameTime(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
+        });
+
+        it("clicking a shortcut with includeTime=true changes time", () => {
+            const endTime = defaultRange[1];
+            const startTime = new Date(defaultRange[1].getTime());
+            startTime.setHours(startTime.getHours() - 2);
+
+            const shortcuts: IDateRangeShortcut[] = [
+                {
+                    dateRange: [startTime, endTime] as DateRange,
+                    includeTime: true,
+                    label: "shortcut with time",
+                },
+            ];
+
+            render({ timePrecision: "minute", defaultValue: defaultRange, shortcuts }).clickShortcut();
+            assert.equal(onChangeSpy.firstCall.args[0][0] as Date, startTime);
         });
 
         it("selecting and unselecting a day doesn't change time", () => {

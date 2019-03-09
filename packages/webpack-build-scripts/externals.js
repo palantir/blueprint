@@ -13,14 +13,16 @@ module.exports = externalize({
     "@blueprintjs/timezone": ["Blueprint", "Timezone"],
     "classnames": "classNames",
     "dom4": "window",
-    "jquery": "$",
     "moment": "moment",
     "moment-timezone": "moment",
+    "popper.js": "Popper",
     "react": "React",
-    "react-transition-group": "ReactTransitionGroup",
     "react-day-picker": "DayPicker",
     "react-dom": "ReactDOM",
-    "tslib": "tslib",
+    "react-popper": "ReactPopper",
+    "react-transition-group": "ReactTransitionGroup",
+    "resize-observer-polyfill": "ResizeObserver",
+    "tslib": "window",
 });
 
 /**

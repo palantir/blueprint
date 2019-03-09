@@ -188,7 +188,9 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
 
     private getDisabledDaysModifier = () => {
-        const { dayPickerProps: { disabledDays } } = this.props;
+        const {
+            dayPickerProps: { disabledDays },
+        } = this.props;
 
         return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
@@ -246,7 +248,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                 selectedDay: day.getDate(),
             });
         }
-        if (this.state.value == null || this.state.value.getMonth() !== day.getMonth()) {
+        if (this.state.value != null && this.state.value.getMonth() !== day.getMonth()) {
             this.ignoreNextMonthChange = true;
         }
 

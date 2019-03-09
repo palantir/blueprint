@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/test-commons",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Common utilities for tests in @blueprintjs packages",
   "main": "lib/cjs/index.js",
   "typings": "lib/cjs/index.d.ts",
@@ -27,7 +27,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/test-commons"
   },
   "author": "Palantir Technologies",
   "license": "SEE LICENSE IN LICENSE"

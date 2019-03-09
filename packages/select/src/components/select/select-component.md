@@ -1,6 +1,6 @@
 @# Select
 
-Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#labs/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
+Use `Select<T>` for choosing one item from a list. The component's children will be wrapped in a [`Popover`](#core/components/popover) that contains the list and an optional `InputGroup` to filter it. Provide a predicate to customize the filtering algorithm. The value of a `Select<T>` (the currently chosen item) is uncontrolled: listen to changes with `onItemSelect`.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Disabling a Select</h4>
@@ -82,6 +82,121 @@ This controlled usage allows you to implement all sorts of advanced behavior on
 top of the basic `Select` interactions, such as windowed filtering for large
 data sets.
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items" section below.
+</div>
+
+@## Creating new items
+
+If you wish, you can allow users to select a brand new item that doesn't appear
+in the list, based on the current query string. Use `createNewItemFromQuery` and
+`createNewItemRenderer` to enable this:
+- `createNewItemFromQuery`: Specifies how to convert a user-entered query string
+into an item of type `<T>` that `Select` understands.
+- `createNewItemRenderer`: Renders a custom "Create Item" element that will be
+shown at the bottom of the list. When selected via click or `Enter`, this element
+will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
+    <h4 class="@ns-heading">Avoiding type conflicts</h4>
+    The "Create Item" option is represented by the reserved type `ICreateNewItem`
+    exported from this package. It is exceedingly unlikely but technically possible
+    for your custom type `<T>` to conflict with this type. If your type conflicts,
+    you may see unexpected behavior; to resolve, consider changing the schema for
+    your items.
+</div>
+
+```tsx
+function createFilm(title: string): IFilm {
+    return {
+        rank: /* ... */,
+        title,
+        year: /* ... */,
+    };
+}
+
+function renderCreateFilmOption(
+    query: string,
+    active: boolean,
+    handleClick: React.MouseEventHandler<HTMLElement>,
+) {
+    return (
+        <MenuItem
+            icon="add"
+            text={`Create "${query}"`}
+            active={active}
+            onClick={handleClick}
+            shouldDismissPopover={false}
+        />
+    )
+}
+
+ReactDOM.render(
+    <FilmSelect
+        createNewItemFromQuery={createFilm}
+        createNewItemRenderer={renderCreateFilmOption}
+        items={Films.items}
+        itemPredicate={Films.itemPredicate}
+        itemRenderer={Films.itemRenderer}
+        noResults={<MenuItem disabled={true} text="No results." />}
+        onItemSelect={...}
+    />,
+    document.querySelector("#root")
+);
+```
+
+@### Controlling the active item
+
+Controlling the active item is slightly more involved when the "Create Item"
+option is present. At a high level, the process works the same way as before:
+control the `activeItem` value and listen for updates via `onActiveItemChange`.
+However, some special handling is required.
+
+When the "Create Item" option is present, the callback will emit
+`activeItem=null` and `isCreateNewItem=true`:
+
+```tsx
+onActiveItemChange(null, true);
+```
+
+You can then make the "Create Item" option active by passing the result of
+`getCreateNewItem()` to the `activeItem` prop (the `getCreateNewItem` function
+is exported from this package):
+
+```tsx
+activeItem={isCreateNewItemActive ? getCreateNewItem() : activeItem}
+```
+
+Altogether, the code might look something like this:
+
+```tsx
+const currentActiveItem: Film | ICreateNewItem | null;
+const isCreateNewItemActive: Film | ICreateNewItem | null;
+
+function handleActiveItemChange(
+    activeItem: Film | ICreateNewItem | null,
+    isCreateNewItem: boolean,
+) {
+    currentActiveItem = activeItem;
+    isCreateNewItemActive = isCreateNewItem;
+}
+
+function getActiveItem() {
+    return isCreateNewItemActive ? getCreateNewItem() : currentActiveItem;
+}
+
+ReactDOM.render(
+    <FilmSelect
+        {...} // Other required props (see previous examples).
+        activeItem={getActiveItem()}
+        createNewItemFromQuery={...}
+        createNewItemRenderer={...}
+        onActiveItemChange={handleActiveItemChange}
+    />,
+    document.querySelector("#root")
+);
+```
+
 @## JavaScript API
 
 @interface ISelectProps
@@ -90,8 +205,7 @@ data sets.
 
 `Select`'s `itemRenderer` will be called for each item and receives the item and a props object containing data specific
 to rendering this item in this frame. The renderer is called for all items, so don't forget to respect
-`modifiers.filtered` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item,
-or face React's console wrath!
+`modifiers.matchesPredicate` to hide items that don't match the predicate. Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
@@ -104,7 +218,7 @@ const filterFilm: ItemPredicate<IFilm> = (query, film) => {
 };
 
 const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
-    if (!modifiers.filtered) {
+    if (!modifiers.matchesPredicate) {
         return null;
     }
     return (

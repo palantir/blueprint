@@ -13,6 +13,7 @@ import { FileMenu } from "./common/fileMenu";
 
 export interface IButtonGroupPopoverExampleState {
     alignText: Alignment;
+    fill: boolean;
     large: boolean;
     minimal: boolean;
     vertical: boolean;
@@ -21,11 +22,13 @@ export interface IButtonGroupPopoverExampleState {
 export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps, IButtonGroupPopoverExampleState> {
     public state: IButtonGroupPopoverExampleState = {
         alignText: Alignment.CENTER,
+        fill: false,
         large: false,
         minimal: false,
         vertical: false,
     };
 
+    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
@@ -34,6 +37,7 @@ export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps
         const options = (
             <>
                 <H5>Props</H5>
+                <Switch label="Fill" checked={this.state.fill} onChange={this.handleFillChange} />
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Vertical" checked={this.state.vertical} onChange={this.handleVerticalChange} />

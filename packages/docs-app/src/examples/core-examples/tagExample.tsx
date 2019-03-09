@@ -11,6 +11,7 @@ import { Example, handleBooleanChange, handleStringChange, IExampleProps } from 
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ITagExampleState {
+    fill: boolean;
     icon: boolean;
     intent: Intent;
     interactive: boolean;
@@ -24,6 +25,7 @@ export interface ITagExampleState {
 
 export class TagExample extends React.PureComponent<IExampleProps, ITagExampleState> {
     public state: ITagExampleState = {
+        fill: false,
         icon: false,
         intent: Intent.NONE,
         interactive: false,
@@ -35,6 +37,7 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
         tags: INITIAL_TAGS,
     };
 
+    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIconChange = handleBooleanChange(icon => this.setState({ icon }));
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
@@ -68,10 +71,11 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
     }
 
     private renderOptions() {
-        const { icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
+        const { fill, icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
         return (
             <>
                 <H5>Props</H5>
+                <Switch label="Fill" checked={fill} onChange={this.handleFillChange} />
                 <Switch label="Large" checked={large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Interactive" checked={interactive} onChange={this.handleInteractiveChange} />

@@ -4,7 +4,13 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper, shallow } from "enzyme";
+import {
+    mount as untypedMount,
+    MountRendererProps,
+    ReactWrapper,
+    shallow as untypedShallow,
+    ShallowRendererProps,
+} from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
@@ -24,12 +30,22 @@ import {
     Position,
 } from "../../src/index";
 
+/**
+ * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
+ */
+// tslint:disable no-unnecessary-callback-wrapper
+const mount = (el: React.ReactElement<INumericInputProps>, options?: MountRendererProps) =>
+    untypedMount<NumericInput>(el, options);
+const shallow = (el: React.ReactElement<INumericInputProps>, options?: ShallowRendererProps) =>
+    untypedShallow<NumericInput>(el, options);
+// tslint:enable no-unnecessary-callback-wrapper
+
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
         it("renders the buttons on the right by default", () => {
             // this ordering is trivial to test with shallow renderer
             // (no DOM elements getting in the way)
-            const component = shallow(<NumericInput />);
+            const component = untypedShallow(<NumericInput />);
             const rightGroup = component.children().last();
             expect(rightGroup.is(ButtonGroup)).to.be.true;
         });
@@ -97,7 +113,7 @@ describe("<NumericInput>", () => {
         it(`always renders the children in a ControlGroup`, () => {
             // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
-            const component = shallow<INumericInputProps>(<NumericInput />);
+            const component = shallow(<NumericInput />);
             expect(component.find(ControlGroup).exists()).to.be.true;
             component.setProps({ buttonPosition: null });
             expect(component.find(ControlGroup).exists()).to.be.true;
@@ -674,6 +690,25 @@ describe("<NumericInput>", () => {
             });
         });
 
+        describe("if min === max", () => {
+            it("never changes value", () => {
+                const onValueChangeSpy = spy();
+                const component = mount(<NumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
+                // repeated interactions, no change in state
+                component
+                    .find(Button)
+                    .first()
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown")
+                    .simulate("mousedown");
+                expect(component.state().value).to.equal("2");
+                expect(onValueChangeSpy.callCount).to.equal(5);
+                expect(onValueChangeSpy.args[0]).to.deep.equal([2, "2"]);
+            });
+        });
+
         describe("clampValueOnBlur", () => {
             it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
                 // should be false by default
@@ -820,10 +855,9 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left icon if provided", () => {
-            const leftIcon = mount(<NumericInput leftIcon="variable" />)
-                .find(Icon)
-                .first();
-            expect(leftIcon.text()).to.equal("variable");
+            const component = mount(<NumericInput leftIcon="variable" />);
+            const icon = component.find(InputGroup).find(Icon);
+            expect(icon.prop("icon")).to.equal("variable");
         });
 
         it("shows placeholder text if provided", () => {
@@ -833,6 +867,11 @@ describe("<NumericInput>", () => {
             const placeholderText = inputField.props().placeholder;
 
             expect(placeholderText).to.equal("Enter a number...");
+        });
+
+        it("shows right element if provided", () => {
+            const component = mount(<NumericInput rightElement={<Button />} />);
+            expect(component.find(InputGroup).find(Button)).to.exist;
         });
 
         it("changes max precision of displayed value to that of the smallest step size defined", () => {

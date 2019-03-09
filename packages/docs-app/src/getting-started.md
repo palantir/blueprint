@@ -2,27 +2,20 @@
 
 @## Installing Blueprint
 
-@### NPM packages
-
-Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
-Each package appears at the top level of the sidebar, along with its current version.
+Blueprint is available as a collection of NPM packages under the `@blueprintjs`
+scope. Each package appears at the top level of the sidebar to the left, along
+with its current version.
 
 Each package contains a CSS file and a collection of CommonJS modules exposing React components.
 The `main` module exports all symbols from all modules so you don't have to import individual files
 (though you can if you want to). The JavaScript components are stable and their APIs adhere to
 [semantic versioning](http://semver.org/).
 
-1.  Install the core package with an NPM client like `npm` or `yarn`, pulling in all relevant
-    dependencies:
+1.  Install the core package and its peer dependencies with an NPM client like
+    `npm` or `yarn`, pulling in all relevant dependencies:
 
     ```sh
-    yarn add @blueprintjs/core
-    ```
-
-1.  If you see `UNMET PEER DEPENDENCY` errors, you should manually install React (v15.3 or greater):
-
-    ```sh
-    yarn add react react-dom
+    yarn add @blueprintjs/core react react-dom
     ```
 
 1.  After installation, you'll be able to import the React components in your application:
@@ -37,75 +30,32 @@ The `main` module exports all symbols from all modules so you don't have to impo
     const myButton = React.createElement(Button, { intent: Intent.SUCCESS }, "button content");
     ```
 
-1.  Don't forget to include the main CSS file from each Blueprint package! Additionally, the
+1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the
     `resources/` directory contains supporting media such as fonts and images.
 
-    ```html
-    <!-- in plain old HTML -->
-    <!DOCTYPE HTML>
-    <html>
-      <head>
-        ...
-        <!-- include dependencies manually -->
-        <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
-        <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
-        <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
-        <!-- NOTE: blueprint-icons.css file must be included alongside blueprint.css! -->
-        ...
-      </head>
-      ...
-    </html>
-    ```
-
     ```css.scss
-    // or, using node-style package resolution in a CSS file:
+    // using node-style package resolution in a CSS file:
+    @import "~normalize.css";
     @import "~@blueprintjs/core/lib/css/blueprint.css";
     @import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
     ```
 
-@### CDN consumption
+    ```html
+    <!-- or using plain old HTML -->
+    <head>
+      <!-- include dependencies manually -->
+      <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
+      <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+      <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
+      <!-- NOTE: blueprint-icons.css file must be included alongside blueprint.css! -->
+    </head>
+    ```
 
-Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package provides a UMD
-`dist/[name].bundle.js` file containing the bundled source code. The UMD wrapper exposes each
-library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
-
-These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `react-transition-group`, `popper.js`, and
-`react-popper` are available at runtime.
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Blueprint Starter Kit</title>
-    <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/core@^3.0.0/lib/css/blueprint.css" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/icons@^3.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
-  </head>
-  <body>
-    <script src="https://unpkg.com/classnames@^2.2"></script>
-    <script src="https://unpkg.com/dom4@^1.8"></script>
-    <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
-    <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
-    <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
-    <script src="https://unpkg.com/@blueprintjs/core@^3.0.0"></script>
-    <script src="https://unpkg.com/@blueprintjs/icons@^3.0.0"></script>
-
-    <div id="btn"></div>
-    <script>
-      const button = React.createElement(Blueprint.Core.Button, {
-        icon: "cloud",
-        text: "CDN Blueprint is go!",
-      });
-      ReactDOM.render(button, document.querySelector("#btn"));
-    </script>
-  </body>
-</html>
-```
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+    <h4 class="@ns-heading">CDN-only usage</h4>
+    Blueprint can instead be quickly added to a page using the Unpkg CDN.
+    [See below for instructions](#blueprint/getting-started.cdn-consumption).
+</div>
 
 @## JS environment
 
@@ -181,11 +131,53 @@ ReactDOM.unmountComponentAtNode(myContainerElement);
 
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
 
-You'll need to install React v15.3 or greater alongside Blueprint.
+@## CDN consumption
 
-```sh
-npm install --save @blueprintjs/core react react-dom react-transition-group
+Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package provides a UMD
+`dist/[name].bundle.js` file containing the bundled source code. The UMD wrapper exposes each
+library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
+
+These bundles _do not include_ external dependencies; your application will need to ensure that
+`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `react-transition-group`, `popper.js`, and
+`react-popper` are available at runtime.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Blueprint Starter Kit</title>
+
+    <!-- Style dependencies -->
+    <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
+    <!-- Blueprint stylesheets -->
+    <link href="https://unpkg.com/@blueprintjs/icons@^3.4.0/lib/css/blueprint-icons.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/core@^3.10.0/lib/css/blueprint.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Blueprint dependencies -->
+    <script src="https://unpkg.com/classnames@^2.2"></script>
+    <script src="https://unpkg.com/dom4@^1.8"></script>
+    <script src="https://unpkg.com/tslib@^1.9.0"></script>
+    <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
+    <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
+    <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
+    <script src="https://unpkg.com/resize-observer-polyfill@^1.5.0"></script>
+    <!-- Blueprint packages (note: icons script must come first) -->
+    <script src="https://unpkg.com/@blueprintjs/icons@^3.4.0"></script>
+    <script src="https://unpkg.com/@blueprintjs/core@^3.10.0"></script>
+
+    <div id="btn"></div>
+    <script>
+      const button = React.createElement(Blueprint.Core.Button, {
+        icon: "cloud",
+        text: "CDN Blueprint is go!",
+      });
+      ReactDOM.render(button, document.querySelector("#btn"));
+    </script>
+  </body>
+</html>
 ```
-
-Import components from the `@blueprintjs/core` module into your project.
-Don't forget to include the main CSS stylesheet too!

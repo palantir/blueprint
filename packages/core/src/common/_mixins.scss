@@ -25,6 +25,10 @@ $pt-dark-intent-text-colors: (
   "danger" : $red5,
 ) !default;
 
+@mixin intent-color($intentName) {
+  color: map-get($pt-intent-colors, $intentName);
+}
+
 @mixin position-all($position, $value) {
   position: $position;
   top: $value;

@@ -37,7 +37,7 @@ $headings: (
   "h4": (18px, 21px),
   "h5": (16px, 19px),
   "h6": (14px, 16px)
-);
+) !default;
 
 @each $tag, $props in $headings {
   %#{$tag} {

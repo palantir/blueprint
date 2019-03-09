@@ -9,16 +9,29 @@ import * as React from "react";
 import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
-import { filmSelectProps, IFilm, TOP_100_FILMS } from "./films";
+import {
+    areFilmsEqual,
+    arrayContainsFilm,
+    createFilm,
+    filmSelectProps,
+    IFilm,
+    maybeAddCreatedFilmToArrays,
+    maybeDeleteCreatedFilmFromArrays,
+    renderCreateFilmOption,
+    TOP_100_FILMS,
+} from "./films";
 
 const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface IMultiSelectExampleState {
+    allowCreate: boolean;
+    createdItems: IFilm[];
     films: IFilm[];
     hasInitialContent: boolean;
     intent: boolean;
+    items: IFilm[];
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
     resetOnSelect: boolean;
@@ -27,15 +40,19 @@ export interface IMultiSelectExampleState {
 
 export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
     public state: IMultiSelectExampleState = {
+        allowCreate: false,
+        createdItems: [],
         films: [],
         hasInitialContent: false,
         intent: false,
+        items: filmSelectProps.items,
         openOnKeyDown: false,
         popoverMinimal: true,
         resetOnSelect: true,
         tagMinimal: false,
     };
 
+    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
     private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
     private handleResetChange = this.handleSwitchChange("resetOnSelect");
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
@@ -44,7 +61,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
     public render() {
-        const { films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
+        const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
         const getTagProps = (_value: string, index: number): ITagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
@@ -56,6 +73,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
             // explicit undefined (not null) for default behavior (show full list)
             undefined
         );
+        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
+        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         const clearButton = films.length > 0 ? <Button icon="cross" minimal={true} onClick={this.handleClear} /> : null;
 
@@ -64,8 +83,14 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                 <FilmMultiSelect
                     {...filmSelectProps}
                     {...flags}
+                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
+                    createNewItemRenderer={maybeCreateNewItemRenderer}
                     initialContent={initialContent}
                     itemRenderer={this.renderFilm}
+                    itemsEqual={areFilmsEqual}
+                    // we may customize the default filmSelectProps.items by
+                    // adding newly created items to the list, so pass our own
+                    items={this.state.items}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleFilmSelect}
                     popoverProps={{ minimal: popoverMinimal }}
@@ -95,6 +120,11 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     label="Use initial content"
                     checked={this.state.hasInitialContent}
                     onChange={this.handleInitialContentChange}
+                />
+                <Switch
+                    label="Allow creating new films"
+                    checked={this.state.allowCreate}
+                    onChange={this.handleAllowCreateChange}
                 />
                 <H5>Tag props</H5>
                 <Switch
@@ -150,11 +180,40 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private selectFilm(film: IFilm) {
-        this.setState({ films: [...this.state.films, film] });
+        const { films } = this.state;
+
+        const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
+            this.state.items,
+            this.state.createdItems,
+            film,
+        );
+
+        this.setState({
+            createdItems: nextCreatedItems,
+            // Avoid re-creating an item that is already selected (the "Create
+            // Item" option will be shown even if it matches an already selected
+            // item).
+            films: !arrayContainsFilm(films, film) ? [...films, film] : films,
+            items: nextItems,
+        });
     }
 
     private deselectFilm(index: number) {
-        this.setState({ films: this.state.films.filter((_film, i) => i !== index) });
+        const { films } = this.state;
+
+        const film = films[index];
+        const { createdItems: nextCreatedItems, items: nextItems } = maybeDeleteCreatedFilmFromArrays(
+            this.state.items,
+            this.state.createdItems,
+            film,
+        );
+
+        // Delete the item if the user manually created it.
+        this.setState({
+            createdItems: nextCreatedItems,
+            films: films.filter((_film, i) => i !== index),
+            items: nextItems,
+        });
     }
 
     private handleFilmSelect = (film: IFilm) => {

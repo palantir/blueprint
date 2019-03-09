@@ -85,9 +85,6 @@ export interface INumericInputProps extends IIntentProps, IProps {
      */
     leftIcon?: IconName | MaybeElement;
 
-    /** The placeholder text in the absence of any value. */
-    placeholder?: string;
-
     /**
      * The increment between successive values when <kbd>shift</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
@@ -107,6 +104,15 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * @default 0.1
      */
     minorStepSize?: number | null;
+
+    /** The placeholder text in the absence of any value. */
+    placeholder?: string;
+
+    /**
+     * Element to render on right side of input.
+     * For best results, use a minimal button, tag, or small spinner.
+     */
+    rightElement?: JSX.Element;
 
     /**
      * Whether the entire text field should be selected on focus.
@@ -147,12 +153,11 @@ enum IncrementDirection {
     UP = +1,
 }
 
-const NON_HTML_PROPS = [
+const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
     "allowNumericCharactersOnly",
     "buttonPosition",
     "clampValueOnBlur",
     "className",
-    "large",
     "majorStepSize",
     "minorStepSize",
     "onButtonClick",
@@ -248,7 +253,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
-        if (min != null && max != null && min >= max) {
+        if (min != null && max != null && min > max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize == null) {
@@ -301,6 +306,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
                 onKeyDown={this.handleInputKeyDown}
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
+                rightElement={this.props.rightElement}
                 value={this.state.value}
             />
         );

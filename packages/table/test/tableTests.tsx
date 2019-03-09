@@ -5,7 +5,7 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
@@ -26,6 +26,12 @@ import { ITableState } from "../src/table";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";
+
+/**
+ * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
+ */
+// tslint:disable-next-line no-unnecessary-callback-wrapper
+const mount = (el: React.ReactElement<ITableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
 describe("<Table>", function(this) {
     // allow retrying failed tests here to reduce flakes.

@@ -29,13 +29,10 @@ import {
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
-import { Shortcuts } from "./shortcuts";
+import { IDateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-export interface IDateRangeShortcut {
-    label: string;
-    dateRange: DateRange;
-}
+export { IDateRangeShortcut };
 
 export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     /**
@@ -147,7 +144,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         [`${SELECTED_RANGE_MODIFIER}-end`]: day => DateUtils.areSameDay(this.state.value[1], day),
 
         [HOVERED_RANGE_MODIFIER]: day => {
-            const { hoverValue, value: [selectedStart, selectedEnd] } = this.state;
+            const {
+                hoverValue,
+                value: [selectedStart, selectedEnd],
+            } = this.state;
             if (selectedStart == null && selectedEnd == null) {
                 return false;
             }
@@ -266,7 +266,9 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
 
     private getDisabledDaysModifier = () => {
-        const { dayPickerProps: { disabledDays } } = this.props;
+        const {
+            dayPickerProps: { disabledDays },
+        } = this.props;
 
         return disabledDays instanceof Array ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
     };
@@ -282,7 +284,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             <Shortcuts
                 key="shortcuts"
                 {...{ allowSingleDayRange, maxDate, minDate, shortcuts }}
-                onShortcutClick={this.handleNextState}
+                onShortcutClick={this.handleShortcutClick}
             />,
             <Divider key="div" />,
         ];
@@ -495,6 +497,24 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         this.handleNextState(nextValue);
     };
 
+    private handleShortcutClick = (shortcut: IDateRangeShortcut) => {
+        const { dateRange, includeTime } = shortcut;
+        if (includeTime) {
+            const newDateRange: DateRange = [dateRange[0], dateRange[1]];
+            const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
+            const nextState = getStateChange(
+                this.state.value,
+                dateRange,
+                this.state,
+                this.props.contiguousCalendarMonths,
+            );
+            this.setState({ ...nextState, time: newTimeRange });
+            Utils.safeInvoke(this.props.onChange, newDateRange);
+        } else {
+            this.handleNextState(dateRange);
+        }
+    };
+
     private handleNextState = (nextValue: DateRange) => {
         const { value } = this.state;
         nextValue[0] = DateUtils.getDateTime(nextValue[0], this.state.time[0]);
@@ -549,12 +569,12 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
     }
 
     /*
-    * The min / max months are offset by one because we are showing two months.
-    * We do a comparison check to see if
-    *   a) the proposed [Month, Year] change throws the two calendars out of order
-    *   b) the proposed [Month, Year] goes beyond the min / max months
-    * and rectify appropriately.
-    */
+     * The min / max months are offset by one because we are showing two months.
+     * We do a comparison check to see if
+     *   a) the proposed [Month, Year] change throws the two calendars out of order
+     *   b) the proposed [Month, Year] goes beyond the min / max months
+     * and rectify appropriately.
+     */
     private handleLeftYearSelectChange = (leftDisplayYear: number) => {
         let leftView = new MonthAndYear(this.state.leftView.getMonth(), leftDisplayYear);
         Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, leftView.getFullDate());

@@ -709,7 +709,7 @@ describe("TableQuadrantStack", () => {
     function renderIntoDom(element: JSX.Element) {
         const containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
-        const component = ReactDOM.render(element, containerElement);
+        const component = ReactDOM.render<any>(element, containerElement);
         return {
             component: component as TableQuadrantStack,
             container: containerElement,

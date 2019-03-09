@@ -6,7 +6,7 @@
 
 import * as React from "react";
 
-import { Classes, Icon, ITreeNode, Position, Tooltip, Tree } from "@blueprintjs/core";
+import { Classes, Icon, Intent, ITreeNode, Position, Tooltip, Tree } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ITreeExampleState {
@@ -93,7 +93,7 @@ const INITIAL_STATE: ITreeNode[] = [
             },
             {
                 id: 3,
-                icon: "tag",
+                icon: <Icon icon="tag" intent={Intent.PRIMARY} className={Classes.TREE_NODE_ICON} />,
                 label: "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
             },
             {
@@ -121,6 +121,13 @@ const INITIAL_STATE: ITreeNode[] = [
                 ],
             },
         ],
+    },
+    {
+        id: 2,
+        hasCaret: true,
+        icon: "folder-close",
+        label: "Super secret files",
+        disabled: true,
     },
 ];
 /* tslint:enable:object-literal-sort-keys */

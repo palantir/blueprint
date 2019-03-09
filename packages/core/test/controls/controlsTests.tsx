@@ -31,7 +31,40 @@ describe("Controls:", () => {
         });
     });
 
-    controlsTests(Switch, "checkbox", Classes.SWITCH);
+    controlsTests(Switch, "checkbox", Classes.SWITCH, () => {
+        describe("internal text", () => {
+            it("renders both innerLabels when both defined", () => {
+                const switchWithText = mount(<Switch innerLabelChecked="checked" innerLabel="unchecked" />);
+                const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
+                const checkedTest = innerTextNodes.first().text();
+                const uncheckedText = innerTextNodes.last().text();
+                assert.lengthOf(innerTextNodes, 2);
+                assert.equal(checkedTest.trim(), "checked");
+                assert.equal(uncheckedText.trim(), "unchecked");
+            });
+            it("does not render innerLabel components when neither defined", () => {
+                const switchWithoutText = mount(<Switch />);
+                const innerTextNodes = switchWithoutText.find(`.${Classes.SWITCH_INNER_TEXT}`);
+                assert.lengthOf(innerTextNodes, 0);
+            });
+            it("renders innerLabel when innerLabelChecked is undefined", () => {
+                const switchWithText = mount(<Switch innerLabel="onlyInnerLabel" />);
+                const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
+                const checkedText = innerTextNodes.last().text();
+                const uncheckedText = innerTextNodes.first().text();
+                assert.equal(checkedText.trim(), "onlyInnerLabel");
+                assert.equal(checkedText.trim(), uncheckedText.trim());
+            });
+            it("renders innerLabelChecked only when checked", () => {
+                const switchWithText = mount(<Switch innerLabelChecked="onlyChecked" />);
+                const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
+                const checked = innerTextNodes.first().text();
+                const uncheckedText = innerTextNodes.last().text();
+                assert.equal(checked.trim(), "onlyChecked");
+                assert.equal(uncheckedText.trim(), "");
+            });
+        });
+    });
 
     controlsTests(Radio, "radio", Classes.RADIO);
 
@@ -51,7 +84,7 @@ describe("Controls:", () => {
             it("supports JSX children", () => {
                 const control = mountControl({}, <span className="jsx-child" key="jsx" />, "Label Text");
                 assert.lengthOf(control.find(".jsx-child"), 1);
-                assert.equal(control.text(), "Label Text");
+                assert.equal(control.text().trim(), "Label Text");
             });
 
             it("supports JSX labelElement", () => {
@@ -60,7 +93,7 @@ describe("Controls:", () => {
 
                 const control = mountControl({ labelElement: <strong>boom</strong> });
                 assert.lengthOf(control.find("strong"), 1);
-                assert.equal(control.text(), "boom");
+                assert.equal(control.text().trim(), "boom");
             });
 
             if (moreTests != null) {

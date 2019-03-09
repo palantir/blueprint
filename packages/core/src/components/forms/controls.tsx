@@ -82,6 +82,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
 interface IControlInternalProps extends IControlProps {
     type: "checkbox" | "radio";
     typeClassName: string;
+    indicatorChildren?: React.ReactNode;
 }
 
 /**
@@ -92,6 +93,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     alignIndicator,
     children,
     className,
+    indicatorChildren,
     inline,
     inputRef,
     label,
@@ -117,7 +119,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     return (
         <TagName className={classes} style={style}>
             <input {...htmlProps} ref={inputRef} type={type} />
-            <span className={Classes.CONTROL_INDICATOR} />
+            <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>
             {label}
             {labelElement}
             {children}
@@ -129,13 +131,47 @@ const Control: React.SFC<IControlInternalProps> = ({
 // Switch
 //
 
-export interface ISwitchProps extends IControlProps {}
+export interface ISwitchProps extends IControlProps {
+    /**
+     * Text to display inside the switch indicator when checked.
+     * If `innerLabel` is provided and this prop is omitted, then `innerLabel`
+     * will be used for both states.
+     * @default innerLabel
+     */
+    innerLabelChecked?: string;
+
+    /**
+     * Text to display inside the switch indicator when unchecked.
+     */
+    innerLabel?: string;
+}
 
 export class Switch extends React.PureComponent<ISwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
     public render() {
-        return <Control {...this.props} type="checkbox" typeClassName={Classes.SWITCH} />;
+        const { innerLabelChecked, innerLabel, ...controlProps } = this.props;
+        const switchLabels =
+            innerLabel || innerLabelChecked
+                ? [
+                      <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                          <div className={Classes.SWITCH_INNER_TEXT}>
+                              {innerLabelChecked ? innerLabelChecked : innerLabel}
+                          </div>
+                      </div>,
+                      <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                          <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
+                      </div>,
+                  ]
+                : null;
+        return (
+            <Control
+                {...controlProps}
+                type="checkbox"
+                typeClassName={Classes.SWITCH}
+                indicatorChildren={switchLabels}
+            />
+        );
     }
 }
 

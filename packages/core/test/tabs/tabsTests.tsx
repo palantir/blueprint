@@ -92,6 +92,30 @@ describe("<Tabs>", () => {
         assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 1);
     });
 
+    it("attaches className to both tab and panel container if set", () => {
+        const tabClassName = "tabClassName";
+        const wrapper = mount(
+            <Tabs id={ID}>
+                <Tab id="first" title="First" className={tabClassName} panel={<Panel title="first" />} />,
+                <Tab id="second" title="Second" className={tabClassName} panel={<Panel title="second" />} />,
+                <Tab id="third" title="Third" className={tabClassName} panel={<Panel title="third" />} />,
+            </Tabs>,
+        );
+        assert.lengthOf(wrapper.find(`.${tabClassName}`), 9);
+    });
+
+    it("attaches panelClassName to panel container if set", () => {
+        const panelClassName = "secondPanelClassName";
+        const wrapper = mount(
+            <Tabs id={ID}>
+                <Tab id="first" title="First" panel={<Panel title="first" />} />,
+                <Tab id="second" title="Second" panelClassName={panelClassName} panel={<Panel title="second" />} />,
+                <Tab id="third" title="Third" panel={<Panel title="third" />} />,
+            </Tabs>,
+        );
+        assert.lengthOf(wrapper.find(`.${panelClassName}`), 1);
+    });
+
     it("renderActiveTabPanelOnly only renders active tab panel", () => {
         const wrapper = mount(
             <Tabs id={ID} renderActiveTabPanelOnly={true}>
@@ -195,7 +219,7 @@ describe("<Tabs>", () => {
     });
 
     it("animate=false removes moving indicator element", () => {
-        const wrapper = mount(
+        const wrapper = mount<Tabs>(
             <Tabs id={ID} animate={false}>
                 {getTabsContents()}
             </Tabs>,
@@ -205,7 +229,7 @@ describe("<Tabs>", () => {
     });
 
     it("removes indicator element when selected tab is removed", () => {
-        const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
+        const wrapper = mount<Tabs>(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         // first tab is selected by default. now remove it.
         const tabIdsWithoutFirstTab = TAB_IDS.slice(1);
         wrapper.setProps({ children: getTabsContents(tabIdsWithoutFirstTab) });
@@ -235,7 +259,7 @@ describe("<Tabs>", () => {
         });
 
         it("unknown tab ID hides moving indicator element", () => {
-            const wrapper = mount(
+            const wrapper = mount<Tabs>(
                 <Tabs id={ID} defaultSelectedTabId="unknown">
                     {getTabsContents()}
                 </Tabs>,

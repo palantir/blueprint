@@ -1,9 +1,10 @@
 {
   "name": "@blueprintjs/icons",
-  "version": "3.4.0",
+  "version": "3.6.0",
   "description": "Components, fonts, icons, and css files for creating and displaying icons.",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
+  "esnext": "lib/esnext/index.js",
   "typings": "lib/esm/index.d.ts",
   "style": "lib/css/blueprint-icons.css",
   "unpkg": "dist/icons.bundle.js",
@@ -15,7 +16,8 @@
     "compile": "npm-run-all -s \"compile:pre\" -p \"compile:*\"",
     "compile:pre": "generate-icons-source",
     "compile:esm": "tsc -p ./src",
-    "compile:cjs": "tsc -p ./src/tsconfig.cjs.json",
+    "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+    "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
     "compile:css": "sass-compile ./src",
     "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
     "dist": "run-s \"dist:*\"",
@@ -37,20 +39,21 @@
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "*",
-    "@blueprintjs/test-commons": "^0.8.0",
+    "@blueprintjs/node-build-scripts": "^0.8.1",
+    "@blueprintjs/test-commons": "^0.8.1",
     "enzyme": "^3.3.0",
-    "mocha": "^4.1.0",
+    "mocha": "^5.2.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "typescript": "~2.8.3",
-    "webpack": "^3.10.0"
+    "webpack-cli": "^3.1.2"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:palantir/blueprint.git"
+    "url": "git@github.com:palantir/blueprint.git",
+    "directory": "packages/icons"
   },
   "keywords": [
     "palantir",

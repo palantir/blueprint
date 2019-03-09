@@ -51,7 +51,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * This is used by React `CSSTransition` to know when a transition completes and must match
      * the duration of the animation in CSS. Only set this prop if you override Blueprint's default
      * transitions with new transitions of a different length.
-     * @default 100
+     * @default 300
      */
     transitionDuration?: number;
 

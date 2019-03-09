@@ -9,7 +9,14 @@ import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
-import { filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import {
+    areFilmsEqual,
+    createFilm,
+    filterFilm,
+    IFilm,
+    renderFilm,
+    TOP_100_FILMS,
+} from "../../docs-app/src/examples/select-examples/films";
 import { IListItemsProps } from "../src/index";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
@@ -21,6 +28,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         itemPredicate: filterFilm,
         itemRenderer: sinon.spy(renderFilm),
         items: TOP_100_FILMS.slice(0, 20),
+        itemsEqual: areFilmsEqual,
         onActiveItemChange: sinon.spy(),
         onItemSelect: sinon.spy(),
         onQueryChange: sinon.spy(),
@@ -119,4 +127,111 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);
         });
     });
+
+    describe("create", () => {
+        const testCreateProps = {
+            ...testProps,
+            createNewItemFromQuery: sinon.spy(),
+            createNewItemRenderer: () => <textarea />,
+            noResults: <address />,
+        };
+
+        beforeEach(() => {
+            testCreateProps.createNewItemFromQuery.resetHistory();
+        });
+
+        it("doesn't render create item if input is empty", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: "",
+            });
+            assert.lengthOf(findCreateItem(wrapper), 0, "should not find createItem");
+        });
+
+        it("doesn't render create item if query is non-empty and matches one of the items", () => {
+            const EXISTING_FILM_TITLE = TOP_100_FILMS[0].title;
+            const wrapper = render({
+                ...testCreateProps,
+                // We need this callback to return a real item this time, and we
+                // don't need to spy on it.
+                createNewItemFromQuery: createFilm,
+                query: EXISTING_FILM_TITLE,
+            });
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(findCreateItem(wrapper), 0, "should not find createItem");
+        });
+
+        it("renders create item if query is not empty and doesn't match any items exactly", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: TOP_100_FILMS[0].title + " a few extra chars",
+            });
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
+        });
+
+        it("renders create item if filtering returns empty list", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: "non-existent film name",
+            });
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
+        });
+
+        it("enter invokes createNewItemFromQuery", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: "non-existent film name",
+            });
+            findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
+            assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
+        });
+
+        it("when create item is rendered, arrow down invokes onActiveItemChange with activeItem=null and isCreateNewItem=true", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: TOP_100_FILMS[0].title,
+            });
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
+        });
+
+        it("when create item is rendered, arrow up invokes onActiveItemChange with an `ICreateNewItem`", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                query: TOP_100_FILMS[0].title,
+            });
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
+            assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
+            assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
+        });
+
+        it("when create item is rendered, updating the query to exactly match one of the items hides the create item", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                // Again, we need this callback to return a real item this time.
+                createNewItemFromQuery: createFilm,
+                query: "non-empty, non-matching initial value",
+            });
+
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
+
+            const EXISTING_FILM_TITLE = TOP_100_FILMS[0].title;
+            findInput(wrapper).simulate("change", { target: { value: EXISTING_FILM_TITLE } });
+
+            assert.lengthOf(findCreateItem(wrapper), 0, "should not find createItem");
+        });
+    });
+
+    function findCreateItem(wrapper: ReactWrapper<P, S>) {
+        return wrapper.find("textarea");
+    }
 }
