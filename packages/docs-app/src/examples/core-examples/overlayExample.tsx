@@ -11,6 +11,7 @@ import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-t
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
+const OVERLAY_TALL_CLASS = "docs-overlay-example-tall";
 
 export interface IOverlayExampleState {
     autoFocus: boolean;
@@ -20,6 +21,7 @@ export interface IOverlayExampleState {
     hasBackdrop: boolean;
     isOpen: boolean;
     usePortal: boolean;
+    scroll: boolean;
 }
 
 export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IOverlayExampleState> {
@@ -31,6 +33,7 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
         hasBackdrop: true,
         isOpen: false,
         usePortal: true,
+        scroll: false
     };
 
     private button: HTMLButtonElement;
@@ -46,7 +49,13 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, this.props.data.themeName);
+        const classes = classNames(
+            Classes.CARD,
+            Classes.ELEVATION_4,
+            OVERLAY_EXAMPLE_CLASS,
+            this.props.data.themeName,
+            this.state.scroll ? OVERLAY_TALL_CLASS : undefined
+        );
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
@@ -60,18 +69,33 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
                             transitions can be implemented.
                         </p>
                         <p>
-                            Click the right button below to transfer focus to the "Show overlay" trigger button outside
+                            Click the "Focus button" below to transfer focus to the "Show overlay" trigger button outside
                             of this overlay. If persistent focus is enabled, focus will be constrained to the overlay.
                             Use the <Code>tab</Code> key to move to the next focusable element to illustrate this
                             effect.
                         </p>
+                        <p>
+                            Click the "Make me scroll" button below to make this overlay's content really tall, which
+                            will make the overlay's container (but not the page) scrollable
+                        </p>
                         <br />
-                        <Button intent={Intent.DANGER} onClick={this.handleClose}>
-                            Close
-                        </Button>
-                        <Button onClick={this.focusButton} style={{ float: "right" }}>
-                            Focus button
-                        </Button>
+                        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+                            <Button intent={Intent.DANGER} onClick={this.handleClose} style={{ margin: "" }}>
+                                Close
+                            </Button>
+                            <Button onClick={this.focusButton} style={{ margin: "" }}>
+                                Focus button
+                            </Button>
+                            <Button
+                                onClick={this.toggleScrollButton}
+                                icon="double-chevron-down"
+                                rightIcon="double-chevron-down"
+                                active={this.state.scroll}
+                                style={{ margin: "" }}
+                            >
+                                Make me scroll
+                            </Button>
+                        </div>
                     </div>
                 </Overlay>
             </Example>
@@ -100,7 +124,8 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
     }
 
     private handleOpen = () => this.setState({ isOpen: true });
-    private handleClose = () => this.setState({ isOpen: false });
+    private handleClose = () => this.setState({ isOpen: false, scroll: false });
 
     private focusButton = () => this.button.focus();
+    private toggleScrollButton = () => this.setState({ scroll: !this.state.scroll });
 }
