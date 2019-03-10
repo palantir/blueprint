@@ -378,7 +378,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
             document.addEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         }
 
-        if (this.props.canOutsideClickClose && !this.props.hasBackdrop) {
+        if (this.props.canOutsideClickClose && (!this.props.usePortal || !this.props.hasBackdrop)) {
             document.addEventListener("mousedown", this.handleDocumentClick);
         }
 
