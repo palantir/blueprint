@@ -252,7 +252,7 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
     }
 
     private updateIndeterminate() {
-        if (this.state.indeterminate != null) {
+        if (this.input != null) {
             this.input.indeterminate = this.state.indeterminate;
         }
     }
