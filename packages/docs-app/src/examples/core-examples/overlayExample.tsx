@@ -54,7 +54,7 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
             Classes.ELEVATION_4,
             OVERLAY_EXAMPLE_CLASS,
             this.props.data.themeName,
-            { [OVERLAY_TALL_CLASS]: this.state.useTallContent }
+            { [OVERLAY_TALL_CLASS]: this.state.useTallContent },
         );
 
         return (
