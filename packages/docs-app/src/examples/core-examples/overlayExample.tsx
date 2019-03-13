@@ -21,7 +21,7 @@ export interface IOverlayExampleState {
     hasBackdrop: boolean;
     isOpen: boolean;
     usePortal: boolean;
-    scroll: boolean;
+    useTallContent: boolean;
 }
 
 export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IOverlayExampleState> {
@@ -33,7 +33,7 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
         hasBackdrop: true,
         isOpen: false,
         usePortal: true,
-        scroll: false
+        useTallContent: false,
     };
 
     private button: HTMLButtonElement;
@@ -54,7 +54,7 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
             Classes.ELEVATION_4,
             OVERLAY_EXAMPLE_CLASS,
             this.props.data.themeName,
-            this.state.scroll ? OVERLAY_TALL_CLASS : undefined
+            { [OVERLAY_TALL_CLASS]: this.state.useTallContent }
         );
 
         return (
@@ -69,10 +69,10 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
                             transitions can be implemented.
                         </p>
                         <p>
-                            Click the "Focus button" below to transfer focus to the "Show overlay" trigger button outside
-                            of this overlay. If persistent focus is enabled, focus will be constrained to the overlay.
-                            Use the <Code>tab</Code> key to move to the next focusable element to illustrate this
-                            effect.
+                            Click the "Focus button" below to transfer focus to the "Show overlay" trigger button
+                            outside of this overlay. If persistent focus is enabled, focus will be constrained to the
+                            overlay. Use the <Code>tab</Code> key to move to the next focusable element to illustrate
+                            this effect.
                         </p>
                         <p>
                             Click the "Make me scroll" button below to make this overlay's content really tall, which
@@ -90,7 +90,7 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
                                 onClick={this.toggleScrollButton}
                                 icon="double-chevron-down"
                                 rightIcon="double-chevron-down"
-                                active={this.state.scroll}
+                                active={this.state.useTallContent}
                                 style={{ margin: "" }}
                             >
                                 Make me scroll
@@ -124,8 +124,8 @@ export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprint
     }
 
     private handleOpen = () => this.setState({ isOpen: true });
-    private handleClose = () => this.setState({ isOpen: false, scroll: false });
+    private handleClose = () => this.setState({ isOpen: false, useTallContent: false });
 
     private focusButton = () => this.button.focus();
-    private toggleScrollButton = () => this.setState({ scroll: !this.state.scroll });
+    private toggleScrollButton = () => this.setState({ useTallContent: !this.state.useTallContent });
 }
