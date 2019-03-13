@@ -7,7 +7,7 @@
     // for consistent editor settings:
     "EditorConfig.EditorConfig",
     // for typescript source files:
-    "eg2.tslint",
+    "ms-vscode.vscode-typescript-tslint-plugin",
     // for sass source files:
     "shinnn.stylelint",
   ]
