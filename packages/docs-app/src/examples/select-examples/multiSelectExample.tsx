@@ -13,6 +13,7 @@ import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilm,
+    doesFilmEqualQuery,
     filmSelectProps,
     IFilm,
     maybeAddCreatedFilmToArrays,
@@ -88,11 +89,13 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     initialContent={initialContent}
                     itemRenderer={this.renderFilm}
                     itemsEqual={areFilmsEqual}
+                    itemEqualsQuery={doesFilmEqualQuery}
                     // we may customize the default filmSelectProps.items by
                     // adding newly created items to the list, so pass our own
                     items={this.state.items}
                     noResults={<MenuItem disabled={true} text="No results." />}
                     onItemSelect={this.handleFilmSelect}
+                    onItemsPaste={this.handleFilmsPaste}
                     popoverProps={{ minimal: popoverMinimal }}
                     tagRenderer={this.renderTag}
                     tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
@@ -180,20 +183,29 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     }
 
     private selectFilm(film: IFilm) {
-        const { films } = this.state;
+        this.selectFilms([film]);
+    }
 
-        const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
-            this.state.items,
-            this.state.createdItems,
-            film,
-        );
+    private selectFilms(filmsToSelect: IFilm[]) {
+        const { createdItems, films, items } = this.state;
 
-        this.setState({
-            createdItems: nextCreatedItems,
+        let nextCreatedItems = createdItems.slice();
+        let nextFilms = films.slice();
+        let nextItems = items.slice();
+
+        filmsToSelect.forEach(film => {
+            const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
+            nextItems = results.items;
+            nextCreatedItems = results.createdItems;
             // Avoid re-creating an item that is already selected (the "Create
             // Item" option will be shown even if it matches an already selected
             // item).
-            films: !arrayContainsFilm(films, film) ? [...films, film] : films,
+            nextFilms = !arrayContainsFilm(nextFilms, film) ? [...nextFilms, film] : nextFilms;
+        });
+
+        this.setState({
+            createdItems: nextCreatedItems,
+            films: nextFilms,
             items: nextItems,
         });
     }
@@ -222,6 +234,12 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         } else {
             this.deselectFilm(this.getSelectedFilmIndex(film));
         }
+    };
+
+    private handleFilmsPaste = (films: IFilm[]) => {
+        // On paste, don't bother with deselecting already selected values, just
+        // add the new ones.
+        this.selectFilms(films);
     };
 
     private handleSwitchChange(prop: keyof IMultiSelectExampleState) {

@@ -55,6 +55,24 @@ export interface IQueryListRendererProps<T>  // Omit `createNewItem`, because it
     handleItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
+     * Handler that should be invoked when the user pastes one or more values.
+     *
+     * This callback will use `itemEqualsQuery` to find a subset of `items`
+     * exactly matching the pasted `values` provided, then it will invoke
+     * `onItemsPaste` with those found items. Each pasted value that does not
+     * exactly match an item will be ignored.
+     *
+     * If creating items is enabled (by providing both `createNewItemFromQuery`
+     * and `createNewItemRenderer`), then pasted values that do not exactly
+     * match an existing item will emit a new item as created via
+     * `createNewItemFromQuery`.
+     *
+     * If `itemEqualsQuery` returns multiple matching items for a particular
+     * `value`, then only the first matching item will be emitted.
+     */
+    handlePaste: (values: string[]) => void;
+
+    /**
      * Keyboard handler for up/down arrow keys to shift the active item.
      * Attach this handler to any element that should support this interaction.
      */
@@ -152,6 +170,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
+            handlePaste: this.handlePaste,
             handleQueryChange: this.handleQueryChange,
             itemList: itemListRenderer({
                 ...spreadableState,
@@ -350,6 +369,43 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     };
 
+    private handlePaste = (values: string[]) => {
+        const { createNewItemFromQuery, items, itemEqualsQuery, onItemsPaste } = this.props;
+
+        let nextActiveItem: T | undefined;
+
+        // Find an exising item that exactly matches each pasted value, or
+        // create a new item if possible. Ignore unmatched values if creating
+        // items is disabled.
+        const pastedItemsToEmit = values.reduce<T[]>((agg, value) => {
+            // Use .find() instead of .filter() so the operation short-circuits
+            // as soon as it finds an equal value.
+            const equalItem =
+                itemEqualsQuery === undefined ? undefined : items.find(item => itemEqualsQuery(item, value));
+
+            if (equalItem !== undefined) {
+                nextActiveItem = equalItem;
+                agg.push(equalItem);
+            } else if (this.canCreateItems()) {
+                const newItem = Utils.safeInvoke(createNewItemFromQuery, value);
+                if (newItem !== undefined) {
+                    agg.push(newItem);
+                }
+            }
+
+            return agg;
+        }, []);
+
+        // UX nicety: update the active item if we matched with at least one
+        // existing item.
+        if (nextActiveItem !== undefined) {
+            this.setActiveItem(nextActiveItem);
+        }
+
+        // No need to update the active item.
+        Utils.safeInvoke(onItemsPaste, pastedItemsToEmit);
+    };
+
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         const { keyCode } = event;
         if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
@@ -418,24 +474,24 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     }
 
     private isCreateItemRendered(): boolean {
-        const { createNewItemFromQuery } = this.props;
         return (
-            createNewItemFromQuery != null &&
-            this.props.createNewItemRenderer != null &&
+            this.canCreateItems() &&
             this.state.query !== "" &&
             // this check is unfortunately O(N) on the number of items, but
             // alas, hiding the "Create Item" option when it exactly matches an
             // existing item is much clearer.
-            !this.wouldCreatedItemMatchSomeExistingItem()
+            !this.doesItemMatchSomeExistingItem(this.state.createNewItem)
         );
     }
 
-    private wouldCreatedItemMatchSomeExistingItem() {
+    private canCreateItems(): boolean {
+        return this.props.createNewItemFromQuery != null && this.props.createNewItemRenderer != null;
+    }
+
+    private doesItemMatchSomeExistingItem(item: T | undefined, validItems: T[] = this.state.filteredItems) {
         // search only the filtered items, not the full items list, because we
         // only need to check items that match the current query.
-        return this.state.filteredItems.some(item =>
-            executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem),
-        );
+        return validItems.some(filteredItem => executeItemsEqual(this.props.itemsEqual, filteredItem, item));
     }
 }
 

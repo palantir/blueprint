@@ -35,6 +35,13 @@ export interface IListItemsProps<T> extends IProps {
     items: T[];
 
     /**
+     * Whether the provided item fully matches the provided value. This is used
+     * to match pasted values to existing items, so that items can be emitted
+     * via `onItemsPaste`.
+     */
+    itemEqualsQuery?: (item: T, query: string) => boolean;
+
+    /**
      * Specifies how to test if two items are equal. By default, simple strict
      * equality (`===`) is used to compare two items.
      *
@@ -129,6 +136,11 @@ export interface IListItemsProps<T> extends IProps {
      * typically by clicking or pressing `enter` key.
      */
     onItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /**
+     * Callback invoked when multiple items are selected at once via pasting.
+     */
+    onItemsPaste?: (items: T[]) => void;
 
     /**
      * Callback invoked when the query string changes.

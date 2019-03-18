@@ -210,6 +210,10 @@ export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
     return filmA.title.toLowerCase() === filmB.title.toLowerCase();
 }
 
+export function doesFilmEqualQuery(film: IFilm, query: string) {
+    return film.title.toLowerCase() === query.toLowerCase();
+}
+
 export function arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
     return films.some((film: IFilm) => film.title === filmToFind.title);
 }
