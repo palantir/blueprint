@@ -480,7 +480,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             // this check is unfortunately O(N) on the number of items, but
             // alas, hiding the "Create Item" option when it exactly matches an
             // existing item is much clearer.
-            !this.wouldCreatedItemMatchSomeExistingItem(this.state.createNewItem)
+            !this.wouldCreatedItemMatchSomeExistingItem()
         );
     }
 
@@ -488,11 +488,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         return this.props.createNewItemFromQuery != null && this.props.createNewItemRenderer != null;
     }
 
-    private wouldCreatedItemMatchSomeExistingItem(item: T | undefined) {
+    private wouldCreatedItemMatchSomeExistingItem() {
         // search only the filtered items, not the full items list, because we
         // only need to check items that match the current query.
-        return this.state.filteredItems.some(filteredItem =>
-            executeItemsEqual(this.props.itemsEqual, filteredItem, item),
+        return this.state.filteredItems.some(item =>
+            executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem),
         );
     }
 }
