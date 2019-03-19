@@ -370,7 +370,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     };
 
     private handlePaste = (values: string[]) => {
-        const { createNewItemFromQuery, items, itemEqualsQuery, onItemsPaste } = this.props;
+        const { createNewItemFromQuery, onItemsPaste } = this.props;
 
         let nextActiveItem: T | undefined;
 
@@ -378,10 +378,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         // create a new item if possible. Ignore unmatched values if creating
         // items is disabled.
         const pastedItemsToEmit = values.reduce<T[]>((agg, value) => {
-            // Use .find() instead of .filter() so the operation short-circuits
-            // as soon as it finds an equal value.
-            const equalItem =
-                itemEqualsQuery === undefined ? undefined : items.find(item => itemEqualsQuery(item, value));
+            const equalItem = getMatchingItem(value, this.props);
 
             if (equalItem !== undefined) {
                 nextActiveItem = equalItem;
@@ -499,6 +496,19 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
 function pxToNumber(value: string | null) {
     return value == null ? 0 : parseInt(value.slice(0, -2), 10);
+}
+
+function getMatchingItem<T>(query: string, { items, itemEqualsQuery }: IQueryListProps<T>): T | undefined {
+    if (Utils.isFunction(itemEqualsQuery)) {
+        // .find() doesn't exist in ES5. Alternative: use a for loop instead of
+        // .filter() so that we can return as soon as we find the first match.
+        for (const item of items) {
+            if (itemEqualsQuery(item, query)) {
+                return item;
+            }
+        }
+    }
+    return undefined;
 }
 
 function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: IQueryListProps<T>) {
