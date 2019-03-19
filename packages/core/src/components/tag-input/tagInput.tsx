@@ -16,24 +16,15 @@ import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
 
 /**
- * An enumeration of methods in which a `TagInput` value might have been added.
+ * A type reflecting the manner in which a `TagInput` value was added.
+ * - `"default"` - indicates that a value was added in the default fasion, via
+ *   manual selection.
+ * - `"blur"` - indicates that a value was added when the `TagInput` lost focus.
+ *   This is only possible when `addOnBlur=true`.
+ * - `"paste"` - indicates that a value was added via paste. This is only
+ *   possible when `addOnPaste=true`.
  */
-export enum TagInputAddMethod {
-    /** Indicates that a value was added in the default fasion, via manual selection. */
-    DEFAULT = "default",
-
-    /**
-     * Indicates that a value was added when the `TagInput` lost focus. This is
-     * only possible when `addOnBlur=true`.
-     */
-    BLUR = "blur",
-
-    /**
-     * Indicates that a value was added via paste. This is only possible when
-     * `addOnPaste=true`.
-     */
-    PASTE = "paste",
-}
+export type TagInputAddMethod = "default" | "blur" | "paste";
 
 export interface ITagInputProps extends IIntentProps, IProps {
     /**
@@ -280,7 +271,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         );
     }
 
-    private addTags = (value: string, method: TagInputAddMethod = TagInputAddMethod.DEFAULT) => {
+    private addTags = (value: string, method: TagInputAddMethod = "default") => {
         const { inputValue, onAdd, onChange, values } = this.props;
         const newValues = this.getValues(value);
         let shouldClearInput = Utils.safeInvoke(onAdd, newValues, method) !== false && inputValue === undefined;
@@ -362,7 +353,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
             // defer this check using rAF so activeElement will have updated.
             if (!currentTarget.contains(document.activeElement)) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
-                    this.addTags(this.state.inputValue, TagInputAddMethod.BLUR);
+                    this.addTags(this.state.inputValue, "blur");
                 }
                 this.setState({ activeIndex: NONE, isInputFocused: false });
             }
@@ -387,7 +378,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         let activeIndexToEmit = activeIndex;
 
         if (event.which === Keys.ENTER && value.length > 0) {
-            this.addTags(value, TagInputAddMethod.DEFAULT);
+            this.addTags(value, "default");
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
@@ -425,7 +416,7 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         }
 
         event.preventDefault();
-        this.addTags(value, TagInputAddMethod.PASTE);
+        this.addTags(value, "paste");
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {

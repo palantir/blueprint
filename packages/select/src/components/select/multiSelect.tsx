@@ -97,7 +97,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 
         const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
-            if (method === TagInputAddMethod.PASTE) {
+            if (method === "paste") {
                 handlePaste(values);
             }
         };
