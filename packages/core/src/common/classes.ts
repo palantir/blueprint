@@ -28,7 +28,7 @@ export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
 export const SMALL = `${NS}-small`;
 export const VERTICAL = `${NS}-vertical`;
-export const REVERSED = `${NS}-reversed`;
+export const REVERSE = `${NS}-reverse`;
 
 export const ELEVATION_0 = elevationClass(Elevation.ZERO);
 export const ELEVATION_1 = elevationClass(Elevation.ONE);

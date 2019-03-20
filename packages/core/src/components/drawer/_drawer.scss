@@ -28,7 +28,7 @@ $drawer-default-size: 50%;
     bottom: 0;
     width: $drawer-default-size;
 
-    &:not(.#{$ns}-reversed) {
+    &:not(.#{$ns}-reverse) {
       @include react-transition-phase(
         "#{$ns}-overlay",
         "enter",
@@ -48,7 +48,7 @@ $drawer-default-size: 50%;
       right: 0;
     }
 
-    &.#{$ns}-reversed {
+    &.#{$ns}-reverse {
       @include react-transition-phase(
         "#{$ns}-overlay",
         "enter",
@@ -74,7 +74,7 @@ $drawer-default-size: 50%;
     left: 0;
     height: $drawer-default-size;
 
-    &:not(.#{$ns}-reversed) {
+    &:not(.#{$ns}-reverse) {
       @include react-transition-phase(
         "#{$ns}-overlay",
         "enter",
@@ -94,7 +94,7 @@ $drawer-default-size: 50%;
       bottom: 0;
     }
 
-    &.#{$ns}-reversed {
+    &.#{$ns}-reverse {
       @include react-transition-phase(
         "#{$ns}-overlay",
         "enter",

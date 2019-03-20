@@ -40,10 +40,10 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Whether the drawer should appear on the reversed side.
      * Depending on the `vertical` prop, it will show on the left side (instead of the right),
-     * or on the top (instead of the bottom)
+     * or on the top (instead of the bottom).
      * @default false
      */
-    reversed?: boolean;
+    reverse?: boolean;
 
     /**
      * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
@@ -88,7 +88,7 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
-        reversed: false,
+        reverse: false,
         style: {},
         vertical: false,
     };
@@ -98,9 +98,15 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static readonly SIZE_LARGE = "90%";
 
     public render() {
-        const { size, style, vertical, reversed } = this.props;
-        const additionalClasses = { [Classes.VERTICAL]: vertical, [Classes.REVERSED]: reversed };
-        const classes = classNames(Classes.DRAWER, additionalClasses, this.props.className);
+        const { size, style, vertical, reverse } = this.props;
+        const classes = classNames(
+            Classes.DRAWER,
+            {
+                [Classes.VERTICAL]: vertical,
+                [Classes.REVERSE]: reverse,
+            },
+            this.props.className,
+        );
         const styleProp = size == null ? style : { ...style, [vertical ? "height" : "width"]: size };
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
