@@ -138,6 +138,20 @@ export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers, 
     );
 };
 
+export const renderCreateFilmOption = (
+    query: string,
+    active: boolean,
+    handleClick: React.MouseEventHandler<HTMLElement>,
+) => (
+    <MenuItem
+        icon="add"
+        text={`Create "${query}"`}
+        active={active}
+        onClick={handleClick}
+        shouldDismissPopover={false}
+    />
+);
+
 export const filterFilm: ItemPredicate<IFilm> = (query, film) => {
     return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
 };
@@ -182,3 +196,55 @@ export const filmSelectProps = {
     itemRenderer: renderFilm,
     items: TOP_100_FILMS,
 };
+
+export function createFilm(title: string): IFilm {
+    return {
+        rank: 100 + Math.floor(Math.random() * 100 + 1),
+        title,
+        year: new Date().getFullYear(),
+    };
+}
+
+export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
+    // Compare only the titles (ignoring case) just for simplicity.
+    return filmA.title.toLowerCase() === filmB.title.toLowerCase();
+}
+
+export function arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
+    return films.some((film: IFilm) => film.title === filmToFind.title);
+}
+
+export function addFilmToArray(films: IFilm[], filmToAdd: IFilm) {
+    return [...films, filmToAdd];
+}
+
+export function deleteFilmFromArray(films: IFilm[], filmToDelete: IFilm) {
+    return films.filter(film => film !== filmToDelete);
+}
+
+export function maybeAddCreatedFilmToArrays(
+    items: IFilm[],
+    createdItems: IFilm[],
+    film: IFilm,
+): { createdItems: IFilm[]; items: IFilm[] } {
+    const isNewlyCreatedItem = !arrayContainsFilm(items, film);
+    return {
+        createdItems: isNewlyCreatedItem ? addFilmToArray(createdItems, film) : createdItems,
+        // Add a created film to `items` so that the film can be deselected.
+        items: isNewlyCreatedItem ? addFilmToArray(items, film) : items,
+    };
+}
+
+export function maybeDeleteCreatedFilmFromArrays(
+    items: IFilm[],
+    createdItems: IFilm[],
+    film: IFilm,
+): { createdItems: IFilm[]; items: IFilm[] } {
+    const wasItemCreatedByUser = arrayContainsFilm(createdItems, film);
+
+    // Delete the item if the user manually created it.
+    return {
+        createdItems: wasItemCreatedByUser ? deleteFilmFromArray(createdItems, film) : createdItems,
+        items: wasItemCreatedByUser ? deleteFilmFromArray(items, film) : items,
+    };
+}

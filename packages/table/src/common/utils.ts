@@ -21,6 +21,8 @@ export interface IKeyBlacklist<T> {
     exclude: Array<keyof T>;
 }
 
+// table is nearly deprecated, let's not block on code coverage
+/* istanbul ignore next */
 export const Utils = {
     /**
      * Invokes the callback `n` times, collecting the results in an array, which
@@ -331,6 +333,8 @@ export const Utils = {
     },
 };
 
+// table is nearly deprecated, let's not block on code coverage
+/* istanbul ignore next */
 /**
  * Wrapper around Canvas measureText which applies some extra logic to optionally
  * exclude an element's text from the computation.

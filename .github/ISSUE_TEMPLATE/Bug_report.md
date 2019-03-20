@@ -10,6 +10,8 @@ about: Something not working as expected?
 - __Package version(s)__: <!-- fill this out -->
 - __Browser and OS versions__: <!-- fill this out -->
 
+If possible, ink to a minimal repro (fork [this code sandbox](https://codesandbox.io/s/nko3k41y60)): <!-- here -->
+
 #### Steps to reproduce
 
 1. <!-- fill this out -->
@@ -18,12 +20,12 @@ about: Something not working as expected?
 
 #### Actual behavior
 
-<!-- fill this out -->
+<!-- what happened? -->
 
 #### Expected behavior
 
-<!-- fill this out -->
+<!-- what did you expect to happen? -->
 
 #### Possible solution
 
-<!-- fill this out -->
+<!-- if you have any ideas -->

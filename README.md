@@ -4,8 +4,7 @@
 
 Blueprint is a React-based UI toolkit for the web.
 
-It is optimized for building complex, data-dense web interfaces for _desktop applications_.
-If you rely heavily on mobile interactions and are looking for a mobile-first UI toolkit, this may not be for you.
+It is optimized for building complex, data-dense web interfaces for _desktop applications_ which run in modern browsers and IE11. This is not a mobile-first UI toolkit.
 
 
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
@@ -14,17 +13,17 @@ If you rely heavily on mobile interactions and are looking for a mobile-first UI
 
 [**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/nko3k41y60)
 
-[**Read our FAQ on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
+[**Read frequently asked questions (FAQ) on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-## :tada: 3.0 is here! :tada:
+## Latest changelog
 
-[**3.0 Changelog and migration guide ▸**](https://github.com/palantir/blueprint/wiki/3.0-Changelog)
+[**3.x Changelog and 3.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/3.0-Changelog)
 
-Blueprint 3.0 supports multiple major versions of Blueprint on the same page through removing global styles and deconflicting selectors by changing the namespace. It also restores support for React 15 in most packages.
+Blueprint 3.0 brings support for using multiple major versions of Blueprint on the same web page. This is possible through the removal of global styles and by deconflicting CSS selectors. It also restores support for React 15 as a peer dependency in most packages.
 
 ### Upgrading from 1.x
 
-Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path), in addition to the 3.0 content above.
+Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path), in addition to the 3.x content above.
 
 ## Packages
 

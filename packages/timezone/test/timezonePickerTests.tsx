@@ -5,7 +5,7 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow, ShallowWrapper } from "enzyme";
+import { mount, shallow as untypedShallow, ShallowRendererProps, ShallowWrapper } from "enzyme";
 import * as moment from "moment-timezone";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -30,6 +30,15 @@ import {
 import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src/index";
 
 type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
+
+/**
+ * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
+ */
+// tslint:disable-next-line no-unnecessary-callback-wrapper
+const shallow = (
+    el: React.ReactElement<ITimezonePickerProps>,
+    options?: ShallowRendererProps,
+): TimezonePickerShallowWrapper => untypedShallow<TimezonePicker>(el, options);
 
 const VALUE = "America/Los_Angeles";
 

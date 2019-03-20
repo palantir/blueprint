@@ -281,7 +281,7 @@ describe("Suggest", () => {
     });
 
     function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
-        const wrapper = mount(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
+        const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
         if (query !== undefined) {
             wrapper.setState({ query });
         }

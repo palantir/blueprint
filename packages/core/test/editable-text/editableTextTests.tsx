@@ -75,7 +75,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = mount(
+            const component = mount<EditableText>(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
@@ -96,7 +96,7 @@ describe("<EditableText>", () => {
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
 
-            const component = mount(
+            const component = mount<EditableText>(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
             component
