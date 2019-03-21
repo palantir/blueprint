@@ -12,7 +12,7 @@ import { ITimePickerProps, TimePrecision } from "./timePicker";
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
 /**
  * Collection of functions that determine which modifier classes get applied to which days.
- * See the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html) to learn more.
+ * See the [**react-day-picker** documentation](http://react-day-picker.js.org/api/ModifiersUtils) to learn more.
  */
 export interface IDatePickerModifiers {
     [name: string]: (date: Date) => boolean;
@@ -50,7 +50,7 @@ export interface IDatePickerBaseProps {
     /**
      * Collection of functions that determine which modifier classes get applied to which days.
      * Each function should accept a `Date` and return a boolean.
-     * See the [**react-day-picker** documentation](http://react-day-picker.js.org/Modifiers.html) to learn more.
+     * See the [**react-day-picker** documentation](http://react-day-picker.js.org/api/ModifiersUtils) to learn more.
      */
     modifiers?: IDatePickerModifiers;
 
