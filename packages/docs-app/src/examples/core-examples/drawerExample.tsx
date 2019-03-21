@@ -6,7 +6,19 @@
 
 import * as React from "react";
 
-import { Button, Classes, Code, Divider, Drawer, H5, HTMLSelect, IOptionProps, Label, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    Code,
+    Divider,
+    Drawer,
+    H5,
+    HTMLSelect,
+    IOptionProps,
+    Label,
+    Position,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
@@ -17,7 +29,7 @@ export interface IDrawerExampleState {
     enforceFocus: boolean;
     hasBackdrop: boolean;
     isOpen: boolean;
-    reverse: boolean;
+    position?: Position;
     size: string;
     usePortal: boolean;
     vertical: boolean;
@@ -30,7 +42,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         enforceFocus: true,
         hasBackdrop: true,
         isOpen: false,
-        reverse: false,
+        position: Position.RIGHT,
         size: undefined,
         usePortal: true,
         vertical: false,
@@ -41,8 +53,8 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
+    private handlePositionChange = handleStringChange((position: Position) => this.setState({ position }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
-    private handleReverseChange = handleBooleanChange(reverse => this.setState({ reverse }));
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
     private handleSizeChange = handleStringChange(size => this.setState({ size }));
 
@@ -99,11 +111,18 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
             <>
                 <H5>Props</H5>
                 <Label>
+                    Position
+                    <HTMLSelect
+                        value={this.state.position}
+                        onChange={this.handlePositionChange}
+                        options={VALID_POSITIONS}
+                    />
+                </Label>
+                <Label>
                     Size
                     <HTMLSelect options={SIZES} onChange={this.handleSizeChange} />
                 </Label>
-                <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
-                <Switch checked={this.state.reverse} label="Reverse" onChange={this.handleReverseChange} />
+                <Switch checked={this.state.vertical} label="Vertical (deprecated)" onChange={this.handleVerticalChange} />
                 <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
@@ -133,3 +152,5 @@ const SIZES: Array<string | IOptionProps> = [
     "72%",
     "560px",
 ];
+
+const VALID_POSITIONS: Position[] = [Position.TOP, Position.RIGHT, Position.BOTTOM, Position.LEFT];
