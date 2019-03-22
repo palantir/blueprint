@@ -13,7 +13,6 @@ import {
     areFilmsEqual,
     arrayContainsFilm,
     createFilm,
-    doesFilmEqualQuery,
     filmSelectProps,
     IFilm,
     maybeAddCreatedFilmToArrays,
