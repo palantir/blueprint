@@ -262,6 +262,9 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const maybeNoResults = this.isCreateItemRendered() ? null : noResults;
         const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
         const createItemView = this.isCreateItemRendered() ? this.renderCreateItemMenuItem(this.state.query) : null;
+        if (menuContent == null && createItemView == null) {
+            return null;
+        }
         return (
             <Menu ulRef={listProps.itemsParentRef}>
                 {menuContent}
