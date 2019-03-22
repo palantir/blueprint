@@ -102,11 +102,13 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-
-                assert.isTrue(
-                    drawerDefault
-                        .find(`.${Classes.DRAWER}`)
-                        .equals(drawerRight.find(`.${Classes.DRAWER}`).getElement()),
+                assert.equal(
+                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style").width,
+                    drawerRight.find(`.${Classes.DRAWER}`).prop("style").width,
+                );
+                assert.equal(
+                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style").height,
+                    drawerRight.find(`.${Classes.DRAWER}`).prop("style").height,
                 );
             });
 
@@ -125,8 +127,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isFalse(drawer.find(`.${Classes.VERTICAL}`).exists());
-                assert.isFalse(drawer.find(`.${Classes.REVERSE}`).exists());
+                assert.isTrue(drawer.find(`.${Classes.POSITION_RIGHT}`).exists());
             });
         });
 
@@ -146,8 +147,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isTrue(drawer.find(`.${Classes.VERTICAL}`).exists());
-                assert.isTrue(drawer.find(`.${Classes.REVERSE}`).exists());
+                assert.isTrue(drawer.find(`.${Classes.POSITION_TOP}`).exists());
             });
         });
 
@@ -167,8 +167,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isTrue(drawer.find(`.${Classes.VERTICAL}`).exists());
-                assert.isFalse(drawer.find(`.${Classes.REVERSE}`).exists());
+                assert.isTrue(drawer.find(`.${Classes.POSITION_BOTTOM}`).exists());
             });
         });
 
@@ -188,8 +187,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isFalse(drawer.find(`.${Classes.VERTICAL}`).exists());
-                assert.isTrue(drawer.find(`.${Classes.REVERSE}`).exists());
+                assert.isTrue(drawer.find(`.${Classes.POSITION_LEFT}`).exists());
             });
         });
     });

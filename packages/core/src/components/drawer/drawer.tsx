@@ -80,7 +80,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * Whether the drawer should appear with vertical styling.
      * It will be ignored if `position` prop is set
      * @default false
-     * @deprecated
+     * @deprecated use `position` instead
      */
     vertical?: boolean;
 }
@@ -101,18 +101,24 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
 
     public render() {
         const { size, style, position, vertical } = this.props;
-        const realPosition = getPositionIgnoreAngles(position || (vertical ? Position.BOTTOM : Position.RIGHT));
+        const realPosition = position ? getPositionIgnoreAngles(position) : null;
 
         const classes = classNames(
             Classes.DRAWER,
             {
-                [Classes.VERTICAL]: isPositionHorizontal(realPosition),
-                [Classes.REVERSE]: realPosition === Position.TOP || realPosition === Position.LEFT,
+                [Classes.VERTICAL]: !realPosition && vertical,
+                [realPosition ? Classes.positionClass(realPosition) : ""]: true,
             },
             this.props.className,
         );
+
         const styleProp =
-            size == null ? style : { ...style, [isPositionHorizontal(realPosition) ? "height" : "width"]: size };
+            size == null
+                ? style
+                : {
+                      ...style,
+                      [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
+                  };
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
                 <div className={classes} style={styleProp}>

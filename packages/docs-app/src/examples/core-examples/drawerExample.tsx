@@ -32,7 +32,6 @@ export interface IDrawerExampleState {
     position?: Position;
     size: string;
     usePortal: boolean;
-    vertical: boolean;
 }
 export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
     public state: IDrawerExampleState = {
@@ -45,7 +44,6 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         position: Position.RIGHT,
         size: undefined,
         usePortal: true,
-        vertical: false,
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
@@ -55,7 +53,6 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
     private handlePositionChange = handleStringChange((position: Position) => this.setState({ position }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
-    private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
     private handleSizeChange = handleStringChange(size => this.setState({ size }));
 
     public render() {
@@ -122,7 +119,6 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
                     Size
                     <HTMLSelect options={SIZES} onChange={this.handleSizeChange} />
                 </Label>
-                <Switch checked={this.state.vertical} label="Vertical (deprecated)" onChange={this.handleVerticalChange} />
                 <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
