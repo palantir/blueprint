@@ -16,9 +16,8 @@ import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
 
 /**
- * A type reflecting the manner in which a `TagInput` value was added.
- * - `"default"` - indicates that a value was added in the default fasion, via
- *   manual selection.
+ * The method in which a `TagInput` value was added.
+ * - `"default"` - indicates that a value was added by manual selection.
  * - `"blur"` - indicates that a value was added when the `TagInput` lost focus.
  *   This is only possible when `addOnBlur=true`.
  * - `"paste"` - indicates that a value was added via paste. This is only

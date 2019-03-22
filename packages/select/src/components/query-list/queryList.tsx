@@ -67,10 +67,10 @@ export interface IQueryListRendererProps<T>  // Omit `createNewItem`, because it
      * match an existing item will emit a new item as created via
      * `createNewItemFromQuery`.
      *
-     * If `itemPredicate` returns multiple matching items for a particular
-     * `value`, then only the first matching item will be emitted.
+     * If `itemPredicate` returns multiple matching items for a particular query
+     * in `queries`, then only the first matching item will be emitted.
      */
-    handlePaste: (values: string[]) => void;
+    handlePaste: (queries: string[]) => void;
 
     /**
      * Keyboard handler for up/down arrow keys to shift the active item.
@@ -369,7 +369,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         }
     };
 
-    private handlePaste = (values: string[]) => {
+    private handlePaste = (queries: string[]) => {
         const { createNewItemFromQuery, onItemsPaste } = this.props;
 
         let nextActiveItem: T | undefined;
@@ -377,21 +377,21 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         // Find an exising item that exactly matches each pasted value, or
         // create a new item if possible. Ignore unmatched values if creating
         // items is disabled.
-        const pastedItemsToEmit = values.reduce<T[]>((agg, value) => {
-            const equalItem = getMatchingItem(value, this.props);
+        const pastedItemsToEmit = [];
+
+        for (const query of queries) {
+            const equalItem = getMatchingItem(query, this.props);
 
             if (equalItem !== undefined) {
                 nextActiveItem = equalItem;
-                agg.push(equalItem);
+                pastedItemsToEmit.push(equalItem);
             } else if (this.canCreateItems()) {
-                const newItem = Utils.safeInvoke(createNewItemFromQuery, value);
+                const newItem = Utils.safeInvoke(createNewItemFromQuery, query);
                 if (newItem !== undefined) {
-                    agg.push(newItem);
+                    pastedItemsToEmit.push(newItem);
                 }
             }
-
-            return agg;
-        }, []);
+        }
 
         // UX nicety: update the active item if we matched with at least one
         // existing item.
@@ -399,7 +399,6 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.setActiveItem(nextActiveItem);
         }
 
-        // No need to update the active item.
         Utils.safeInvoke(onItemsPaste, pastedItemsToEmit);
     };
 
