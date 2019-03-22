@@ -84,7 +84,6 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             <this.TypedQueryList
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
-                onItemsPaste={this.handleItemsPaste}
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
@@ -142,10 +141,6 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             this.input.focus();
         }
         Utils.safeInvoke(this.props.onItemSelect, item, evt);
-    };
-
-    private handleItemsPaste = (items: T[]) => {
-        Utils.safeInvoke(this.props.onItemsPaste, items);
     };
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {

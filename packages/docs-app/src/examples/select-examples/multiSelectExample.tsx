@@ -89,7 +89,6 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     initialContent={initialContent}
                     itemRenderer={this.renderFilm}
                     itemsEqual={areFilmsEqual}
-                    itemEqualsQuery={doesFilmEqualQuery}
                     // we may customize the default filmSelectProps.items by
                     // adding newly created items to the list, so pass our own
                     items={this.state.items}

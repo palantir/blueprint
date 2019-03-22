@@ -152,8 +152,15 @@ export const renderCreateFilmOption = (
     />
 );
 
-export const filterFilm: ItemPredicate<IFilm> = (query, film) => {
-    return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
+export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
+    const normalizedTitle = film.title.toLowerCase();
+    const normalizedQuery = query.toLowerCase();
+
+    if (exactMatch) {
+        return normalizedTitle === normalizedQuery;
+    } else {
+        return `${film.rank}. ${normalizedTitle} ${film.year}`.indexOf(normalizedQuery) >= 0;
+    }
 };
 
 function highlightText(text: string, query: string) {

@@ -57,17 +57,17 @@ export interface IQueryListRendererProps<T>  // Omit `createNewItem`, because it
     /**
      * Handler that should be invoked when the user pastes one or more values.
      *
-     * This callback will use `itemEqualsQuery` to find a subset of `items`
-     * exactly matching the pasted `values` provided, then it will invoke
-     * `onItemsPaste` with those found items. Each pasted value that does not
-     * exactly match an item will be ignored.
+     * This callback will use `itemPredicate` with `exactMatch=true` to find a
+     * subset of `items` exactly matching the pasted `values` provided, then it
+     * will invoke `onItemsPaste` with those found items. Each pasted value that
+     * does not exactly match an item will be ignored.
      *
      * If creating items is enabled (by providing both `createNewItemFromQuery`
      * and `createNewItemRenderer`), then pasted values that do not exactly
      * match an existing item will emit a new item as created via
      * `createNewItemFromQuery`.
      *
-     * If `itemEqualsQuery` returns multiple matching items for a particular
+     * If `itemPredicate` returns multiple matching items for a particular
      * `value`, then only the first matching item will be emitted.
      */
     handlePaste: (values: string[]) => void;
@@ -498,12 +498,13 @@ function pxToNumber(value: string | null) {
     return value == null ? 0 : parseInt(value.slice(0, -2), 10);
 }
 
-function getMatchingItem<T>(query: string, { items, itemEqualsQuery }: IQueryListProps<T>): T | undefined {
-    if (Utils.isFunction(itemEqualsQuery)) {
+function getMatchingItem<T>(query: string, { items, itemPredicate }: IQueryListProps<T>): T | undefined {
+    if (Utils.isFunction(itemPredicate)) {
         // .find() doesn't exist in ES5. Alternative: use a for loop instead of
         // .filter() so that we can return as soon as we find the first match.
-        for (const item of items) {
-            if (itemEqualsQuery(item, query)) {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if (itemPredicate(query, item, i, true)) {
                 return item;
             }
         }

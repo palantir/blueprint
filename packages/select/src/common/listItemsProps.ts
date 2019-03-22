@@ -35,13 +35,6 @@ export interface IListItemsProps<T> extends IProps {
     items: T[];
 
     /**
-     * Whether the provided item fully matches the provided value. This is used
-     * to match pasted values to existing items, so that items can be emitted
-     * via `onItemsPaste`.
-     */
-    itemEqualsQuery?: (item: T, query: string) => boolean;
-
-    /**
      * Specifies how to test if two items are equal. By default, simple strict
      * equality (`===`) is used to compare two items.
      *
@@ -73,11 +66,21 @@ export interface IListItemsProps<T> extends IProps {
     itemListPredicate?: ItemListPredicate<T>;
 
     /**
-     * Customize querying of individual items. Return `true` to keep the item, `false` to hide.
-     * This method will be invoked once for each item, so it should be performant. For more complex
-     * queries, use `itemListPredicate` to operate once on the entire array.
+     * Customize querying of individual items.
      *
-     * This prop is ignored if `itemListPredicate` is also defined.
+     * __Filtering a list of items.__ This function is invoked to filter the
+     * list of items as a query is typed. Return `true` to keep the item, or
+     * `false` to hide. This method is invoked once for each item, so it should
+     * be performant. For more complex queries, use `itemListPredicate` to
+     * operate once on the entire array. For the purposes of filtering the list,
+     * this prop is ignored if `itemListPredicate` is also defined.
+     *
+     * __Matching a pasted value to an item.__ This function is also invoked to
+     * match a pasted value to an existing item if possible. In this case, the
+     * function will receive `exactMatch=true`, and the function should return
+     * true only if the item _exactly_ matches the query. For the purposes of
+     * matching pasted values, this prop will be invoked even if
+     * `itemListPredicate` is defined.
      */
     itemPredicate?: ItemPredicate<T>;
 
