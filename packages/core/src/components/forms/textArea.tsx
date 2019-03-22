@@ -61,17 +61,19 @@ export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState
             className,
         );
 
-        const styleProps =
-            this.props.growVertically && this.state.height != null
-                ? {
-                      style: {
-                          height: `${this.state.height}px`,
-                      },
-                  }
-                : {};
+        // add explicit height style while preserving user-supplied styles if they exist
+        let { style = {} } = htmlProps;
+        if (growVertically && this.state.height != null) {
+            // this style object becomes non-extensible when mounted (at least in the enzyme renderer),
+            // so we make a new one to add a property
+            style = {
+                ...style,
+                height: `${this.state.height}px`,
+            };
+        }
 
         return (
-            <textarea {...htmlProps} {...styleProps} className={rootClasses} ref={inputRef} onChange={this.onChange} />
+            <textarea {...htmlProps} className={rootClasses} onChange={this.onChange} ref={inputRef} style={style} />
         );
     }
 
