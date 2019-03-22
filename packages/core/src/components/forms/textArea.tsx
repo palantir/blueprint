@@ -73,11 +73,17 @@ export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState
         }
 
         return (
-            <textarea {...htmlProps} className={rootClasses} onChange={this.onChange} ref={inputRef} style={style} />
+            <textarea
+                {...htmlProps}
+                className={rootClasses}
+                onChange={this.handleChange}
+                ref={inputRef}
+                style={style}
+            />
         );
     }
 
-    private onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (this.props.growVertically) {
             this.setState({
                 height: e.target.scrollHeight,
