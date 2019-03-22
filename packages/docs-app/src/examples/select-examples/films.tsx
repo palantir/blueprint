@@ -152,8 +152,15 @@ export const renderCreateFilmOption = (
     />
 );
 
-export const filterFilm: ItemPredicate<IFilm> = (query, film) => {
-    return `${film.rank}. ${film.title.toLowerCase()} ${film.year}`.indexOf(query.toLowerCase()) >= 0;
+export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
+    const normalizedTitle = film.title.toLowerCase();
+    const normalizedQuery = query.toLowerCase();
+
+    if (exactMatch) {
+        return normalizedTitle === normalizedQuery;
+    } else {
+        return `${film.rank}. ${normalizedTitle} ${film.year}`.indexOf(normalizedQuery) >= 0;
+    }
 };
 
 function highlightText(text: string, query: string) {
@@ -208,6 +215,10 @@ export function createFilm(title: string): IFilm {
 export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
     // Compare only the titles (ignoring case) just for simplicity.
     return filmA.title.toLowerCase() === filmB.title.toLowerCase();
+}
+
+export function doesFilmEqualQuery(film: IFilm, query: string) {
+    return film.title.toLowerCase() === query.toLowerCase();
 }
 
 export function arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
