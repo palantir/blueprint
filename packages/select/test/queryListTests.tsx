@@ -207,6 +207,7 @@ describe("<QueryList>", () => {
             assert.isTrue(onItemsPaste.calledOnce);
             assert.deepEqual(onItemsPaste.args[0][0], [TOP_100_FILMS[0]]);
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
+            assert.deepEqual(filmQueryList.state().query, "");
         });
 
         it("convert multiple pasted values into items", () => {
@@ -228,25 +229,28 @@ describe("<QueryList>", () => {
             assert.deepEqual(onItemsPaste.args[0][0], [item1, item2, item3]);
             // Highlight the last item pasted.
             assert.deepEqual(filmQueryList.state().activeItem, item3);
+            assert.deepEqual(filmQueryList.state().query, "");
         });
 
-        it("ignores unrecognized values by default", () => {
+        it("concatenates unrecognized values into the ghost input by default", () => {
             const { filmQueryList, handlePaste } = mountForPasteTest();
 
-            const item1 = TOP_100_FILMS[6];
-            const item3 = TOP_100_FILMS[3];
+            const item2 = TOP_100_FILMS[6];
+            const item4 = TOP_100_FILMS[3];
 
-            const pastedValue1 = item1.title;
-            const pastedValue2 = "unrecognized";
-            const pastedValue3 = item3.title;
+            const pastedValue1 = "unrecognized1";
+            const pastedValue2 = item2.title;
+            const pastedValue3 = "unrecognized2";
+            const pastedValue4 = item4.title;
 
-            handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            handlePaste([pastedValue1, pastedValue2, pastedValue3, pastedValue4]);
 
             assert.isTrue(onItemsPaste.calledOnce);
             // Emits just the 2 valid items.
-            assert.deepEqual(onItemsPaste.args[0][0], [item1, item3]);
+            assert.deepEqual(onItemsPaste.args[0][0], [item2, item4]);
             // Highlight the last item pasted.
-            assert.deepEqual(filmQueryList.state().activeItem, item3);
+            assert.deepEqual(filmQueryList.state().activeItem, item4);
+            assert.deepEqual(filmQueryList.state().query, "unrecognized1, unrecognized2");
         });
 
         it("creates new items out of unrecognized values if 'Create item' option is enabled", () => {
@@ -275,6 +279,7 @@ describe("<QueryList>", () => {
             assert.deepEqual(onItemsPaste.args[0][0], [item1, item2, createdItem]);
             // Highlight the last *already existing* item pasted.
             assert.deepEqual(filmQueryList.state().activeItem, item2);
+            assert.deepEqual(filmQueryList.state().query, "");
         });
     });
 });

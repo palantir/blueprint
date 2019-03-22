@@ -373,6 +373,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         const { createNewItemFromQuery, onItemsPaste } = this.props;
 
         let nextActiveItem: T | undefined;
+        const nextQueries = [];
 
         // Find an exising item that exactly matches each pasted value, or
         // create a new item if possible. Ignore unmatched values if creating
@@ -390,8 +391,15 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
                 if (newItem !== undefined) {
                     pastedItemsToEmit.push(newItem);
                 }
+            } else {
+                nextQueries.push(query);
             }
         }
+
+        // UX nicety: combine all unmatched queries into a single
+        // comma-separated query in the input, so we don't lose any information.
+        // And don't reset the active item; we'll do that ourselves below.
+        this.setQuery(nextQueries.join(", "), false);
 
         // UX nicety: update the active item if we matched with at least one
         // existing item.
