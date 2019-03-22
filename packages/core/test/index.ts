@@ -26,6 +26,7 @@ import "./drawer/drawerTests";
 import "./editable-text/editableTextTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
+import "./forms/textAreaTests";
 import "./hotkeys/hotkeysTests";
 import "./html-select/htmlSelectTests";
 import "./icon/iconTests";
