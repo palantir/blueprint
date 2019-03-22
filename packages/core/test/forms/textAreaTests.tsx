@@ -15,11 +15,7 @@ describe("<TextArea>", () => {
         const wrapper = mount(<TextArea growVertically={true} />);
         const textarea = wrapper.find("textarea");
 
-        textarea.simulate("change", {
-            target: {
-                scrollHeight: 500,
-            },
-        });
+        textarea.simulate("change", { target: { scrollHeight: 500 } });
 
         assert.equal((textarea.getDOMNode() as HTMLElement).style.height, "500px");
     });
@@ -35,5 +31,14 @@ describe("<TextArea>", () => {
         });
 
         assert.equal((textarea.getDOMNode() as HTMLElement).style.height, "");
+    });
+
+    it("doesn't clobber user-supplied styles", () => {
+        const wrapper = mount(<TextArea growVertically={true} style={{ marginTop: 10 }} />);
+        const textarea = wrapper.find("textarea");
+
+        textarea.simulate("change", { target: { scrollHeight: 500 } });
+
+        assert.equal((textarea.getDOMNode() as HTMLElement).style.marginTop, "10px");
     });
 });
