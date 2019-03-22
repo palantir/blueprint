@@ -128,6 +128,7 @@ describe("<TagInput>", () => {
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.isTrue(onAdd.calledOnce);
             assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
+            assert.deepEqual(onAdd.args[0][1], "default");
         });
 
         it("is invoked on blur when addOnBlur=true", done => {
@@ -140,6 +141,8 @@ describe("<TagInput>", () => {
             // Need setTimeout here to wait for focus to change after blur event
             setTimeout(() => {
                 assert.isTrue(onAdd.calledOnce);
+                assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
+                assert.equal(onAdd.args[0][1], "blur");
                 done();
             });
         });
@@ -183,6 +186,7 @@ describe("<TagInput>", () => {
                 wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
                 assert.isTrue(onAdd.calledOnce);
                 assert.deepEqual(onAdd.args[0][0], ["pasted"]);
+                assert.equal(onAdd.args[0][1], "paste");
             });
 
             it("is not invoked on paste if the text does not include a delimiter", () => {

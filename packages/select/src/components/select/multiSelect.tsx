@@ -14,6 +14,7 @@ import {
     Popover,
     Position,
     TagInput,
+    TagInputAddMethod,
     Utils,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
@@ -92,7 +93,13 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         const { tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
-        const { handleKeyDown, handleKeyUp } = listProps;
+        const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+
+        const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
+            if (method === "paste") {
+                handlePaste(values);
+            }
+        };
 
         return (
             <Popover
@@ -117,6 +124,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
                         inputValue={listProps.query}
+                        onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
