@@ -42,14 +42,16 @@ export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}
             // from IRowHeaderCellProps
             enableRowReordering,
             isRowSelected,
+            name,
             nameRenderer,
+
             // from IHeaderProps
             ...spreadableProps
         } = this.props;
-        const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
+        const defaultName = <div className={Classes.TABLE_ROW_NAME_TEXT}>{name}</div>;
 
         const nameComponent = (
-            <LoadableContent loading={spreadableProps.loading} variableLength={true}>
+            <LoadableContent loading={spreadableProps.loading}>
                 {nameRenderer == null ? defaultName : nameRenderer(name, spreadableProps.index)}
             </LoadableContent>
         );
