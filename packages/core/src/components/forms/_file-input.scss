@@ -16,6 +16,7 @@ Markup:
 :disabled - Disabled
 .#{$ns}-large - Larger size
 .#{$ns}-fill - Take up full width of parent element
+.#{$ns}-file-input-has-selection - User has made a selection
 
 Styleguide file-input
 */
@@ -39,7 +40,8 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     // unlike other form controls that directly style native elements,
     // pt-file-input wraps and hides the native element for better control over
     // visual styles. to disable, we need to disable the hidden child input, not
-    // the surrounding wrapper. see #689 for gory details.
+    // the surrounding wrapper. @see https://github.com/palantir/blueprint/issues/689
+    // for gory details.
     &:disabled + .#{$ns}-file-upload-input,
     &.#{$ns}-disabled + .#{$ns}-file-upload-input {
       @include pt-input-disabled();
@@ -127,6 +129,16 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 
     &:active::after {
       @include pt-dark-button-active();
+    }
+  }
+
+  .#{ns}-file-input-has-selection {
+    & {
+      color: $pt-text-color;
+    }
+
+    &.#{$ns}-dark & {
+      color: $pt-dark-text-color;
     }
   }
 }
