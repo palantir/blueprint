@@ -44,7 +44,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
 
     /**
      * Enables/disables the resize interaction.
-     * @default false
+     * @default true
      */
     isResizable?: boolean;
 
