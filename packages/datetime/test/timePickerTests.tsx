@@ -398,7 +398,9 @@ describe("<TimePicker>", () => {
 
         it("when minTime prop change, selected time immediately adjust to new range", () => {
             const defaultValue = createTimeObject(10, 20);
-            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
+            const wrapper = mount<TimePicker>(
+                <TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />,
+            );
 
             wrapper.setProps({ minTime: createTimeObject(15, 32, 20, 600) });
 
@@ -407,7 +409,9 @@ describe("<TimePicker>", () => {
 
         it("when maxTime prop change, selected time immediately adjust to new range", () => {
             const defaultValue = createTimeObject(12, 20);
-            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
+            const wrapper = mount<TimePicker>(
+                <TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />,
+            );
 
             wrapper.setProps({ maxTime: createTimeObject(10, 30, 15, 200) });
 
@@ -679,7 +683,7 @@ describe("<TimePicker>", () => {
     }
 
     function renderTimePicker(props?: Partial<ITimePickerProps>) {
-        timePicker = ReactDOM.render(
+        timePicker = ReactDOM.render<ITimePickerProps>(
             <TimePicker onChange={onTimePickerChange} {...props} />,
             testsContainerElement,
         ) as TimePicker;

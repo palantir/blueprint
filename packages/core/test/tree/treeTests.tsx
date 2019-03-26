@@ -144,6 +144,67 @@ describe("<Tree>", () => {
         assert.deepEqual(onNodeMouseLeave.args[0][1], [2]);
     });
 
+    it("if disabled, event callbacks are not fired", () => {
+        const onNodeClick = spy();
+        const onNodeCollapse = spy();
+        const onNodeContextMenu = spy();
+        const onNodeDoubleClick = spy();
+        const onNodeExpand = spy();
+        const onNodeMouseEnter = spy();
+        const onNodeMouseLeave = spy();
+
+        const contents = createDefaultContents();
+        contents[0].disabled = true;
+        contents[0].hasCaret = true;
+        contents[0].isExpanded = false;
+
+        const tree = renderTree({
+            contents,
+            onNodeClick,
+            onNodeCollapse,
+            onNodeContextMenu,
+            onNodeDoubleClick,
+            onNodeExpand,
+            onNodeMouseEnter,
+            onNodeMouseLeave,
+        });
+
+        const treeNode = tree.find(`.${Classes.TREE_NODE}.c0`);
+        const treeNodeContent = treeNode.find(`.${Classes.TREE_NODE_CONTENT}`);
+        const treeNodeCaret = treeNodeContent.find(`.${Classes.TREE_NODE_CARET}`).first();
+
+        treeNodeContent.simulate("click");
+        assert.isTrue(onNodeClick.notCalled);
+
+        treeNodeContent.simulate("dblclick");
+        assert.isTrue(onNodeDoubleClick.notCalled);
+
+        treeNodeContent.simulate("contextmenu");
+        assert.isTrue(onNodeContextMenu.notCalled);
+
+        treeNodeContent.simulate("mouseenter");
+        assert.isTrue(onNodeMouseEnter.notCalled);
+
+        treeNodeContent.simulate("mouseleave");
+        assert.isTrue(onNodeMouseLeave.notCalled);
+
+        treeNodeCaret.simulate("click");
+        assert.isTrue(onNodeExpand.notCalled);
+
+        treeNodeCaret.simulate("click");
+        assert.isTrue(onNodeCollapse.notCalled);
+    });
+
+    it("disabled nodes are rendered correctly", () => {
+        const contents = createDefaultContents();
+        contents[0].disabled = true;
+
+        const tree = renderTree({ contents });
+        const disabledTreeNode = tree.find(`.${Classes.TREE_NODE}.c0.${Classes.DISABLED}`);
+
+        assert.equal(disabledTreeNode.length, 1);
+    });
+
     it("icons are rendered correctly if present", () => {
         const contents = createDefaultContents();
         contents[1].icon = "document";

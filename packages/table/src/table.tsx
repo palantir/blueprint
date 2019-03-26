@@ -164,7 +164,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
 
     /**
      * If `false`, disables resizing of rows.
-     * @default false
+     * @default true
      */
     enableRowResizing?: boolean;
 

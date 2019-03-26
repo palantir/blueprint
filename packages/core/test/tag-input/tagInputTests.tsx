@@ -5,11 +5,27 @@
  */
 
 import { assert, expect } from "chai";
-import { mount, shallow, ShallowWrapper } from "enzyme";
+import {
+    mount as untypedMount,
+    MountRendererProps,
+    shallow as untypedShallow,
+    ShallowRendererProps,
+    ShallowWrapper,
+} from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src/index";
+
+/**
+ * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
+ */
+// tslint:disable no-unnecessary-callback-wrapper
+const mount = (el: React.ReactElement<ITagInputProps>, options?: MountRendererProps) =>
+    untypedMount<TagInput>(el, options);
+const shallow = (el: React.ReactElement<ITagInputProps>, options?: ShallowRendererProps) =>
+    untypedShallow<TagInput>(el, options);
+// tslint:enable no-unnecessary-callback-wrapper
 
 const VALUES = ["one", "two", "three"];
 
@@ -112,6 +128,7 @@ describe("<TagInput>", () => {
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.isTrue(onAdd.calledOnce);
             assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
+            assert.deepEqual(onAdd.args[0][1], "default");
         });
 
         it("is invoked on blur when addOnBlur=true", done => {
@@ -124,6 +141,8 @@ describe("<TagInput>", () => {
             // Need setTimeout here to wait for focus to change after blur event
             setTimeout(() => {
                 assert.isTrue(onAdd.calledOnce);
+                assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
+                assert.equal(onAdd.args[0][1], "blur");
                 done();
             });
         });
@@ -167,6 +186,7 @@ describe("<TagInput>", () => {
                 wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
                 assert.isTrue(onAdd.calledOnce);
                 assert.deepEqual(onAdd.args[0][0], ["pasted"]);
+                assert.equal(onAdd.args[0][1], "paste");
             });
 
             it("is not invoked on paste if the text does not include a delimiter", () => {

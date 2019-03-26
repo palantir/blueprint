@@ -7,6 +7,7 @@
 import { Alignment } from "./alignment";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
+import { Position } from "./position";
 
 const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 
@@ -28,6 +29,10 @@ export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
 export const SMALL = `${NS}-small`;
 export const VERTICAL = `${NS}-vertical`;
+export const POSITION_TOP = positionClass(Position.TOP);
+export const POSITION_BOTTOM = positionClass(Position.BOTTOM);
+export const POSITION_LEFT = positionClass(Position.LEFT);
+export const POSITION_RIGHT = positionClass(Position.RIGHT);
 
 export const ELEVATION_0 = elevationClass(Elevation.ZERO);
 export const ELEVATION_1 = elevationClass(Elevation.ONE);
@@ -303,4 +308,11 @@ export function intentClass(intent?: Intent) {
         return undefined;
     }
     return `${NS}-intent-${intent.toLowerCase()}`;
+}
+
+export function positionClass(position: Position) {
+    if (position == null) {
+        return undefined;
+    }
+    return `${NS}-position-${position}`;
 }

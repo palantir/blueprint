@@ -10,6 +10,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
+import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
@@ -36,6 +37,13 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * This prop is required because the component is controlled.
      */
     isOpen: boolean;
+
+    /**
+     * Position of a drawer. All angled positions will be casted into pure positions
+     * (TOP, BOTTOM, LEFT or RIGHT).
+     * @default Position.RIGHT
+     */
+    position?: Position;
 
     /**
      * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
@@ -70,7 +78,9 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * Whether the drawer should appear with vertical styling.
+     * It will be ignored if `position` prop is set
      * @default false
+     * @deprecated use `position` instead
      */
     vertical?: boolean;
 }
@@ -79,8 +89,8 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
-        isCloseButtonShown: true,
         isOpen: false,
+        position: null,
         style: {},
         vertical: false,
     };
@@ -90,9 +100,25 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static readonly SIZE_LARGE = "90%";
 
     public render() {
-        const { size, style, vertical } = this.props;
-        const classes = classNames(Classes.DRAWER, { [Classes.VERTICAL]: vertical }, this.props.className);
-        const styleProp = size == null ? style : { ...style, [vertical ? "height" : "width"]: size };
+        const { size, style, position, vertical } = this.props;
+        const realPosition = position ? getPositionIgnoreAngles(position) : null;
+
+        const classes = classNames(
+            Classes.DRAWER,
+            {
+                [Classes.VERTICAL]: !realPosition && vertical,
+                [realPosition ? Classes.positionClass(realPosition) : ""]: true,
+            },
+            this.props.className,
+        );
+
+        const styleProp =
+            size == null
+                ? style
+                : {
+                      ...style,
+                      [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
+                  };
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
                 <div className={classes} style={styleProp}>
@@ -112,10 +138,20 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_CLOSE_BUTTON);
             }
         }
+        if (props.position != null) {
+            if (props.vertical) {
+                console.warn(Errors.DRAWER_VERTICAL_IS_IGNORED);
+            }
+            if (props.position !== getPositionIgnoreAngles(props.position)) {
+                console.warn(Errors.DRAWER_ANGLE_POSITIONS_ARE_CASTED);
+            }
+        }
     }
 
     private maybeRenderCloseButton() {
-        if (this.props.isCloseButtonShown) {
+        // `isCloseButtonShown` can't be defaulted through default props because of props validation
+        // so this check actually defaults it to true (fails only if directly set to false)
+        if (this.props.isCloseButtonShown !== false) {
             return (
                 <Button
                     aria-label="Close"

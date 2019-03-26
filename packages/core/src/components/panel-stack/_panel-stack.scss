@@ -13,6 +13,7 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  z-index: 1;
   box-shadow: 0 1px $pt-divider-black;
   height: $pt-grid-size * 3;
 

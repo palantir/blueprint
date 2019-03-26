@@ -17,7 +17,7 @@ field.
 
 @### Props
 
-The `InputGroup` React component  supports one non-interactive icon on the left
+The `InputGroup` React component supports one non-interactive icon on the left
 side and one arbitrary element on the right side. Unlike the CSS approach,
 `InputGroup` supports _content of any length_ on the right side (not just
 icon buttons) because it is able to measure the content and ensure there is
@@ -40,11 +40,12 @@ the parent input.
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Icons only</h4>
     <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
-    in CSS cannot accomodate buttons whose width varies due to text content. You should use icons on
+    in CSS cannot accommodate buttons whose width varies due to text content. You should use icons on
     buttons instead.</p>
 
     Conversely, the [`InputGroup`](#core/components/text-inputs.input-group) React
     component _does_ support arbitrary content in its right element.
+
 </div>
 
 @css input-group
@@ -63,6 +64,7 @@ Apply `Classes.INPUT` on a `<textarea>`, or use the `TextArea` React component.
 
 ```tsx
 <TextArea
+    growVertically={true}
     large={true}
     intent={Intent.PRIMARY}
     onChange={this.handleChange}

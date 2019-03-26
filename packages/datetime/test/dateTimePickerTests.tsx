@@ -124,7 +124,7 @@ describe("<DateTimePicker>", () => {
     });
 
     function wrap(dtp: JSX.Element) {
-        const root = mount(dtp);
+        const root = mount<DateTimePicker>(dtp);
         return {
             getDay: (dayNumber = 1) => {
                 return root

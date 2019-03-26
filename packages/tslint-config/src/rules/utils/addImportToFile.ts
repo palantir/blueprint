@@ -5,18 +5,18 @@
  */
 
 import { Replacement } from "tslint";
-import * as utils from "tsutils";
+import { isImportDeclaration, isNamedImports } from "tsutils/typeguard/2.8";
 import * as ts from "typescript";
 
 export function addImportToFile(file: ts.SourceFile, imports: string[], packageName: string) {
     const packageToModify = file.statements.find(
-        statement => utils.isImportDeclaration(statement) && statement.moduleSpecifier.getText() === `"${packageName}"`,
+        statement => isImportDeclaration(statement) && statement.moduleSpecifier.getText() === `"${packageName}"`,
     ) as ts.ImportDeclaration;
     if (
         packageToModify &&
         packageToModify.importClause &&
         packageToModify.importClause.namedBindings &&
-        utils.isNamedImports(packageToModify.importClause.namedBindings)
+        isNamedImports(packageToModify.importClause.namedBindings)
     ) {
         const existingImports = packageToModify.importClause.namedBindings.elements.map(el => el.name.getText());
         // Poor man's lodash.uniq without the dep.
@@ -26,7 +26,7 @@ export function addImportToFile(file: ts.SourceFile, imports: string[], packageN
     } else {
         // we always place the import in alphabetical order. If imports are already alpha-ordered, this will act nicely
         // with existing lint rules. If imports are not alpha-ordered, this may appear weird.
-        const allImports = file.statements.filter(utils.isImportDeclaration);
+        const allImports = file.statements.filter(isImportDeclaration);
         const newImportIndex = allImports.findIndex(imp => {
             // slice the quotes off each module specifier
             return compare(imp.moduleSpecifier.getText().slice(1, -1), packageName) === 1;
