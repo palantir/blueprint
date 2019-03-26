@@ -43,3 +43,27 @@ export function isPositionVertical(position: Position) {
         position === Position.RIGHT_BOTTOM
     );
 }
+
+export function getPositionIgnoreAngles(position: Position) {
+    if (
+        position === Position.TOP ||
+        position === Position.TOP_LEFT ||
+        position === Position.TOP_RIGHT
+    ) {
+        return Position.TOP;
+    } else if (
+        position === Position.BOTTOM ||
+        position === Position.BOTTOM_LEFT ||
+        position === Position.BOTTOM_RIGHT
+    ) {
+        return Position.BOTTOM;
+    } else if (
+        position === Position.LEFT ||
+        position === Position.LEFT_TOP ||
+        position === Position.LEFT_BOTTOM
+    ) {
+        return Position.LEFT;
+    } else {
+        return Position.RIGHT;
+    }
+}

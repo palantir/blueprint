@@ -80,3 +80,7 @@ export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop a
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
     ns + ` <Dialog> isCloseButtonShown prop is ignored if title is omitted.`;
+
+export const DRAWER_VERTICAL_IS_IGNORED = ns + ` <Drawer> vertical is ignored if position is defined`;
+export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
+    ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
