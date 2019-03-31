@@ -60,6 +60,16 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     }
   }
 
+  &.#{$ns}-file-input-has-selection {
+    .#{$ns}-file-upload-input {
+      color: $pt-text-color;
+    }
+
+    .#{$ns}-dark & .#{$ns}-file-upload-input {
+      color: $pt-dark-text-color;
+    }
+  }
+
   &.#{$ns}-fill {
     width: 100%;
   }
@@ -129,16 +139,6 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 
     &:active::after {
       @include pt-dark-button-active();
-    }
-  }
-
-  .#{ns}-file-input-has-selection {
-    & {
-      color: $pt-text-color;
-    }
-
-    &.#{$ns}-dark & {
-      color: $pt-dark-text-color;
     }
   }
 }
