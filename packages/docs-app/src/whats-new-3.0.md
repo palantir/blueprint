@@ -18,6 +18,6 @@ Blueprint 3.0 supports multiple major versions of Blueprint on the same page thr
 - Many new components! Look for the <span class="@ns-tag @ns-intent-success @ns-minimal">new</span> tag in the sidebar.
 - Complete refactor of documentation content to focus on React usage and de-emphasize CSS/HTML usage.
 
-<a class="@ns-button @ns-intent-primary" href="https://github.com/palantir/blueprint/wiki/3.0-Changelog" target="_blank" style="margin-top: 30px;">
+<a class="@ns-button @ns-intent-primary" href="https://github.com/palantir/blueprint/wiki/3.x-Changelog" target="_blank" style="margin-top: 30px;">
     View the full changelog on the wiki
 </a>
