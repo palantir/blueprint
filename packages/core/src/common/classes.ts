@@ -152,6 +152,7 @@ export const RADIO = `${NS}-radio`;
 export const SWITCH = `${NS}-switch`;
 export const SWITCH_INNER_TEXT = `${SWITCH}-inner-text`;
 export const FILE_INPUT = `${NS}-file-input`;
+export const FILE_INPUT_HAS_SELECTION = `${NS}-file-input-has-selection`;
 export const FILE_UPLOAD_INPUT = `${NS}-file-upload-input`;
 
 export const KEY = `${NS}-key`;
