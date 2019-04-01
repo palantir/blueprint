@@ -33,6 +33,13 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     fill?: boolean;
 
     /**
+     * Whether the user has made a selection in the input. This will affect the component's
+     * text styling. Make sure to set a non-empty value for the text prop as well.
+     * @default false
+     */
+    hasSelection?: boolean;
+
+    /**
      * The props to pass to the child input.
      * `disabled` will be ignored in favor of the top-level prop.
      * `type` will be ignored, because the input _must_ be `type="file"`.
@@ -69,16 +76,28 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
     public static defaultProps: IFileInputProps = {
+        hasSelection: false,
         inputProps: {},
         text: "Choose file...",
     };
 
     public render() {
-        const { className, fill, disabled, inputProps, onInputChange, large, text, ...htmlProps } = this.props;
+        const {
+            className,
+            disabled,
+            fill,
+            hasSelection,
+            inputProps,
+            large,
+            onInputChange,
+            text,
+            ...htmlProps
+        } = this.props;
 
         const rootClasses = classNames(
             Classes.FILE_INPUT,
             {
+                [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
                 [Classes.DISABLED]: disabled,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
