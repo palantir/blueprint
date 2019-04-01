@@ -26,5 +26,5 @@
     "directory": "packages/karma-build-scripts"
   },
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "Apache-2.0"
 }
