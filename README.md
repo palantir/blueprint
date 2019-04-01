@@ -115,8 +115,4 @@ running any of the dev scripts.
 
 ## License
 
-This project is made available under its own **Blueprint License**, based on Apache 2.0 License.
-
-The only modification is an additional section (paragraph 10) in which we ask
-that you do not pass off any derivative products as Palantir’s products, given
-that Blueprint is a design toolkit.
+This project is made available under the Apache 2.0 License.
