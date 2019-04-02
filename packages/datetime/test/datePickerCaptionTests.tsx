@@ -72,6 +72,26 @@ describe("<DatePickerCaption>", () => {
         assert.deepEqual(year.find("option").map(yr => yr.text()), ["2014", "2015"]);
     });
 
+    it("renders localized month labels when supplied", () => {
+        const months = [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre",
+        ] as any;
+        const { month } = renderDatePickerCaption({ months });
+        const options = month.find("option");
+        assert.deepEqual(options.map(mo => mo.text()), months);
+    });
+
     it("out-of-bounds year adds disabled year option", () => {
         const date = new Date(2017, 0, 6);
         const minDate = new Date(2015, 0, 1);
