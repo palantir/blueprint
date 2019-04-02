@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs-data",
-  "version": "3.0.0",
+  "version": "3.15.0",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "private": true,
@@ -10,8 +10,8 @@
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.0.0",
-    "@blueprintjs/docs-theme": "^3.0.0",
+    "@blueprintjs/core": "^3.15.0",
+    "@blueprintjs/docs-theme": "^3.1.0",
     "documentalist": "^1.4.0",
     "better-handlebars": "github:wmeldon/better-handlebars",
     "glob": "^7.1.2",
