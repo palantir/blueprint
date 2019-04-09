@@ -379,8 +379,16 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     // focus DOM event listener (not React event)
     private handlePopoverBlur = (e: FocusEvent) => {
-        const relatedTarget = e.relatedTarget as HTMLElement;
-        if (relatedTarget == null || !this.popoverContentEl.contains(relatedTarget)) {
+        let relatedTarget = e.relatedTarget as HTMLElement;
+        if (relatedTarget == null) {
+            // Support IE11 (#2924)
+            relatedTarget = document.activeElement as HTMLElement;
+        }
+        // Beware: this.popoverContentEl is sometimes null under Chrome
+        if (
+            relatedTarget == null ||
+            (this.popoverContentEl != null && !this.popoverContentEl.contains(relatedTarget))
+        ) {
             this.handleClosePopover();
         } else if (relatedTarget != null) {
             this.unregisterPopoverBlurHandler();
