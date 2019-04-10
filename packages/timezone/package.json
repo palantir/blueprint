@@ -46,7 +46,7 @@
     "@blueprintjs/node-build-scripts": "^0.9.0",
     "@blueprintjs/test-commons": "^0.9.0",
     "@types/moment-timezone": "^0.5.0",
-    "enzyme": "^3.3.0",
+    "enzyme": "^3.9.0",
     "karma": "^3.1.4",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
