@@ -383,13 +383,16 @@ describe("<Popover>", () => {
                 .assertIsOpen();
         });
 
-        it("state does not update on user interaction", () => {
+        it("state does not update on user (click) interaction", () => {
             renderPopover({ isOpen: true })
                 .simulateTarget("click")
                 .assertIsOpen()
                 .setProps({ isOpen: false })
                 .simulateTarget("click")
                 .assertIsOpen(false);
+        });
+
+        it("state does not update on user (key) interaction", () => {
             renderPopover({ canEscapeKeyClose: true, isOpen: true })
                 .sendEscapeKey()
                 .assertIsOpen();
@@ -738,6 +741,7 @@ describe("<Popover>", () => {
             </Popover>,
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
+
         wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);

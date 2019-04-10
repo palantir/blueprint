@@ -55,12 +55,13 @@ describe("<Text>", () => {
 
         describe("title behavior", () => {
             let testsContainerElement: HTMLElement;
-            before(() => {
+
+            beforeEach(() => {
                 testsContainerElement = document.createElement("div");
                 document.documentElement.appendChild(testsContainerElement);
             });
 
-            after(() => {
+            afterEach(() => {
                 testsContainerElement.remove();
             });
 
@@ -72,8 +73,9 @@ describe("<Text>", () => {
             });
 
             it("does not add the title attribute when text does not overflow", () => {
-                const textContent = "this doesn't overflow";
-                const wrapper = mount(<Text ellipsize={true}>{textContent}</Text>, { attachTo: testsContainerElement });
+                const textContent = "no overflow";
+                let wrapper = mount(<Text ellipsize={true}>{textContent}</Text>, { attachTo: testsContainerElement });
+                wrapper = wrapper.update();
                 const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
                 assert.strictEqual(actualTitle, undefined, "title should be undefined");
             });
