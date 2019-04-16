@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ITag } from "documentalist/dist/client";
+import { ITag } from "@documentalist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
 

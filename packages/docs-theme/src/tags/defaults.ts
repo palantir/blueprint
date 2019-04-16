@@ -17,7 +17,7 @@
 import * as React from "react";
 import * as tags from "./";
 
-import { ITag } from "documentalist/dist/client";
+import { ITag } from "@documentalist/client";
 
 export function createDefaultRenderers(): Record<string, React.ComponentType<ITag>> {
     return {
