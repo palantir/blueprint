@@ -21,6 +21,9 @@ import { CLAMP_MIN_MAX } from "./errors";
 export * from "./utils/compareUtils";
 export * from "./utils/safeInvokeMember";
 
+type FnAny = (...args: any) => any;
+type FnArgs<X> = X extends (...args: infer P) => any ? P : never;
+
 // only accessible within this file, so use `Utils.isNodeEnv(env)` from the outside.
 declare var process: { env: any };
 
@@ -30,8 +33,7 @@ export function isNodeEnv(env: string) {
 }
 
 /** Returns whether the value is a function. Acts as a type guard. */
-// tslint:disable-next-line:ban-types
-export function isFunction(value: any): value is Function {
+export function isFunction(value: any): value is FnAny {
     return typeof value === "function";
 }
 
@@ -118,24 +120,7 @@ export function isElementOfType<P = {}>(
  * Safely invoke the function with the given arguments, if it is indeed a
  * function, and return its value. Otherwise, return undefined.
  */
-export function safeInvoke<R>(func: (() => R) | undefined): R | undefined;
-export function safeInvoke<A, R>(func: ((arg1: A) => R) | undefined, arg1: A): R | undefined;
-export function safeInvoke<A, B, R>(func: ((arg1: A, arg2: B) => R) | undefined, arg1: A, arg2: B): R | undefined;
-export function safeInvoke<A, B, C, R>(
-    func: ((arg1: A, arg2: B, arg3: C) => R) | undefined,
-    arg1: A,
-    arg2: B,
-    arg3: C,
-): R | undefined;
-export function safeInvoke<A, B, C, D, R>(
-    func: ((arg1: A, arg2: B, arg3: C, arg4: D) => R) | undefined,
-    arg1: A,
-    arg2: B,
-    arg3: C,
-    arg4: D,
-): R | undefined;
-// tslint:disable-next-line:ban-types
-export function safeInvoke(func: Function | undefined, ...args: any[]) {
+export function safeInvoke<A extends FnAny>(func: A | undefined, ...args: FnArgs<A>): ReturnType<A> | undefined {
     if (isFunction(func)) {
         return func(...args);
     }
@@ -146,24 +131,7 @@ export function safeInvoke(func: Function | undefined, ...args: any[]) {
  * Safely invoke the provided entity if it is a function; otherwise, return the
  * entity itself.
  */
-export function safeInvokeOrValue<R>(funcOrValue: (() => R) | R | undefined): R;
-export function safeInvokeOrValue<A, R>(funcOrValue: ((arg1: A) => R) | R | undefined, arg1: A): R;
-export function safeInvokeOrValue<A, B, R>(funcOrValue: ((arg1: A, arg2: B) => R) | R | undefined, arg1: A, arg2: B): R;
-export function safeInvokeOrValue<A, B, C, R>(
-    funcOrValue: ((arg1: A, arg2: B, arg3: C) => R) | R | undefined,
-    arg1: A,
-    arg2: B,
-    arg3: C,
-): R;
-export function safeInvokeOrValue<A, B, C, D, R>(
-    funcOrValue: ((arg1: A, arg2: B, arg3: C, arg4: D) => R) | R | undefined,
-    arg1: A,
-    arg2: B,
-    arg3: C,
-    arg4: D,
-): R;
-// tslint:disable-next-line:ban-types
-export function safeInvokeOrValue(funcOrValue: Function | any | undefined, ...args: any[]) {
+export function safeInvokeOrValue<A extends FnAny, R>(funcOrValue: A | R | undefined, ...args: FnArgs<A>): R {
     return isFunction(funcOrValue) ? funcOrValue(...args) : funcOrValue;
 }
 
@@ -262,13 +230,11 @@ export function throttleReactEventCallback(
  * Throttle a method by wrapping it in a `requestAnimationFrame` call. Returns
  * the throttled function.
  */
-// tslint:disable-next-line:ban-types
-export function throttle<T extends Function>(method: T): T {
+export function throttle<T extends FnAny>(method: T): T {
     return _throttleHelper(method);
 }
 
-// tslint:disable-next-line:ban-types
-function _throttleHelper<T extends Function>(
+function _throttleHelper<T extends FnAny>(
     onAnimationFrameRequested: T,
     onBeforeIsRunningCheck?: T,
     onAfterIsRunningCheck?: T,
