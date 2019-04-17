@@ -106,7 +106,7 @@ import * as SomeLibrary from "some-library";
 
 export class NumericInputExample extends React.Component<{}, { value?: number |
 string }> {
-    public state = { value: null };
+    public state = { value: NumericInput.VALUE_EMPTY };
 
     public render() {
         return (
