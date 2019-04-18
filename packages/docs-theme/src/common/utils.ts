@@ -15,7 +15,7 @@
  */
 
 import { Utils } from "@blueprintjs/core";
-import { IHeadingNode, IPageNode, isPageNode } from "documentalist/dist/client";
+import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
 import * as React from "react";
 
 /**

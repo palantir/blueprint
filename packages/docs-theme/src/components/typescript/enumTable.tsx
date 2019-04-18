@@ -15,8 +15,8 @@
  */
 
 import { IProps } from "@blueprintjs/core";
+import { ITsEnum, ITsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
-import { ITsEnum, ITsEnumMember } from "documentalist/dist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";

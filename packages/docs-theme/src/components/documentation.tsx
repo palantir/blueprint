@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "@documentalist/client";
 import classNames from "classnames";
-import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "documentalist/dist/client";
 import * as React from "react";
 
 import { Classes, Drawer, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
