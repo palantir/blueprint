@@ -66,7 +66,7 @@ jobs:
       - run: yarn compile
       - persist_to_workspace:
           root: '.'
-          paths: [pacakges/*/lib]
+          paths: [packages/*/lib]
 
   lint:
     docker: *docker-node-lts
