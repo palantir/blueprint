@@ -15,8 +15,8 @@
  */
 
 import { Classes, Icon } from "@blueprintjs/core";
+import { IHeadingTag } from "@documentalist/client";
 import classNames from "classnames";
-import { IHeadingTag } from "documentalist/dist/client";
 import * as React from "react";
 
 export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>

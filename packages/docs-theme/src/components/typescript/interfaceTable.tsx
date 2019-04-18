@@ -15,7 +15,6 @@
  */
 
 import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
-import classNames from "classnames";
 import {
     isTag,
     isTsProperty,
@@ -24,7 +23,8 @@ import {
     ITsMethod,
     ITsProperty,
     ITsSignature,
-} from "documentalist/dist/client";
+} from "@documentalist/client";
+import classNames from "classnames";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";

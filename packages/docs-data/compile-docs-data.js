@@ -8,7 +8,7 @@
 // @ts-check
 const { Classes } = require("@blueprintjs/core/lib/cjs/common");
 const { execSync, spawn } = require("child_process");
-const dm = require("documentalist");
+const dm = require("@documentalist/compiler");
 const fs = require("fs");
 const glob = require("glob");
 const path = require("path");

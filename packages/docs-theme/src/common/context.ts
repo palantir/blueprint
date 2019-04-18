@@ -22,7 +22,7 @@ import {
     INpmPluginData,
     ITsDocBase,
     ITypescriptPluginData,
-} from "documentalist/dist/client";
+} from "@documentalist/client";
 
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
 export type IDocsData = IMarkdownPluginData &

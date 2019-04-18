@@ -15,8 +15,8 @@
  */
 
 import { Classes, Code, H3 } from "@blueprintjs/core";
+import { IBlock } from "@documentalist/client";
 import classNames from "classnames";
-import { IBlock } from "documentalist/dist/client";
 import * as React from "react";
 import { ITagRendererMap } from "../tags";
 
