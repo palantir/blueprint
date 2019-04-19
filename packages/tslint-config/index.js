@@ -53,7 +53,6 @@ module.exports = {
         "no-submodule-imports": {
             options: [
                 "core-js",
-                "documentalist",
                 "lodash",
                 "react-dom",
                 "@blueprintjs/table/src",
