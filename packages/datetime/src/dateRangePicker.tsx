@@ -289,11 +289,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             return null;
         }
 
-        const { allowSingleDayRange, maxDate, minDate } = this.props;
+        const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
         return [
             <Shortcuts
                 key="shortcuts"
-                {...{ allowSingleDayRange, maxDate, minDate, shortcuts }}
+                {...{ allowSingleDayRange, maxDate, minDate, shortcuts, timePrecision }}
                 onShortcutClick={this.handleShortcutClick}
             />,
             <Divider key="div" />,
