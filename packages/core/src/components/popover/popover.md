@@ -3,8 +3,8 @@
 Popovers display floating content next to a target element.
 
 `Popover` is built on top of the [__Popper.js__](https://popper.js.org) library.
-Popper.js is a small (~6kb) library that offers a powerful, customizable
-positioning engine and operates at blazing speed (~60fps).
+Popper.js is a small (`~6kb`) library that offers a powerful, customizable
+positioning engine and operates at blazing speed (`~60fps`).
 
 @reactExample PopoverExample
 
