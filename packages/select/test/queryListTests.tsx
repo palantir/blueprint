@@ -20,7 +20,7 @@ import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IQueryListProps } from "@blueprintjs/select";
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { IFilm, renderFilm, TOP_100_FILMS } from "@blueprintjs/docs-app";
 import {
     IQueryListRendererProps,
     IQueryListState,
@@ -134,6 +134,20 @@ describe("<QueryList>", () => {
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
                 query: "123",
+            });
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
+        });
+
+        it("ensure activeItem changes on when no longer in new items", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                items: [TOP_100_FILMS[0]],
+                query: "abc",
+            };
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
+            filmQueryList.setProps({
+                items: [TOP_100_FILMS[1]],
             });
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
         });

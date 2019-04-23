@@ -196,7 +196,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem: nextProps.activeItem });
         }
-        if (nextProps.query != null) {
+        if (nextProps.query != null && nextProps.query !== this.props.query) {
             this.setQuery(nextProps.query, nextProps.resetOnQuery, nextProps);
         }
     }
@@ -278,7 +278,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             activeIndex < 0 ||
             isItemDisabled(getActiveItem(this.state.activeItem), activeIndex, props.itemDisabled);
 
-        if (hasQueryChanged && shouldUpdateActiveItem) {
+        if (shouldUpdateActiveItem) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
         }
     }
