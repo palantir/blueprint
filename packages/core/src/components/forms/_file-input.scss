@@ -143,6 +143,11 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
   }
 }
 
+#blueprint-documentation [data-example-id="file-input"] .#{$ns}-file-upload-input::after {
+  content: "Browse";
+}
+
+
 // hack to force the button shadow to display since
 // it doesn't render correct via the `pt-button` mixin
 // stylelint-disable-next-line

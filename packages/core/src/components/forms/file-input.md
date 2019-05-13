@@ -3,6 +3,9 @@
 Use the standard `input type="file"` along with a `span` with class `@ns-file-upload-input`.
 Wrap that all in a `label` with class `@ns-file-input`.
 
+
+@reactExample FileInputExample
+
 @## Props
 
 This component is a lightweight wrapper around the underlying `<label>` element
