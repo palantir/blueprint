@@ -68,6 +68,12 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
      * @default "Choose file..."
      */
     text?: React.ReactNode;
+
+    /**
+     * The button text.
+     * @default "Browse"
+     */
+    buttonText?: string;
 }
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
@@ -76,13 +82,27 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
     public static defaultProps: IFileInputProps = {
+        buttonText: "Browse",
         hasSelection: false,
         inputProps: {},
         text: "Choose file...",
     };
 
+    private input: HTMLSpanElement | null = null;
+
+    public componentDidMount() {
+        this.changeButtonText(this.props.buttonText);
+    }
+
+    public componentWillReceiveProps(newProps: IFileInputProps) {
+        if (this.props.buttonText !== newProps.buttonText) {
+            this.changeButtonText(newProps.buttonText);
+        }
+    }
+
     public render() {
         const {
+            buttonText,
             className,
             disabled,
             fill,
@@ -108,10 +128,24 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
         return (
             <label {...htmlProps} className={rootClasses}>
                 <input {...inputProps} onChange={this.handleInputChange} type="file" disabled={disabled} />
-                <span className={Classes.FILE_UPLOAD_INPUT}>{text}</span>
+                <span ref={this.createRef} className={Classes.FILE_UPLOAD_INPUT}>
+                    {text}
+                </span>
             </label>
         );
     }
+
+    private createRef = (input: HTMLSpanElement | null) => {
+        if (input !== null) {
+            this.input = input;
+        }
+    };
+
+    private changeButtonText = (text: string) => {
+        if (this.input) {
+            this.input.setAttribute("button-text", text);
+        }
+    };
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         Utils.safeInvoke(this.props.onInputChange, e);
