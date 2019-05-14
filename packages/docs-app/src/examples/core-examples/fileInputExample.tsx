@@ -19,16 +19,12 @@ import { FileInput, FormGroup, H5, InputGroup } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 interface IFileInputExampleState {
-    buttonText: string;
-    text: string;
+    buttonText?: string;
+    text?: string;
 }
 
 export class FileInputExample extends React.PureComponent<IExampleProps, IFileInputExampleState> {
-
-    public state: IFileInputExampleState = {
-        buttonText: "Browse",
-        text: "Choose file...",
-    };
+    public state: IFileInputExampleState = {};
 
     public render() {
         const { text, buttonText } = this.state;
@@ -47,10 +43,10 @@ export class FileInputExample extends React.PureComponent<IExampleProps, IFileIn
             <>
                 <H5>Props</H5>
                 <FormGroup label="Text">
-                    <InputGroup onChange={this.handleTextChange} value={text} />
+                    <InputGroup placeholder="Choose file..." onChange={this.handleTextChange} value={text} />
                 </FormGroup>
                 <FormGroup label="Button text">
-                    <InputGroup onChange={this.handleButtonTextChange} value={buttonText} />
+                    <InputGroup placeholder="Browse" onChange={this.handleButtonTextChange} value={buttonText} />
                 </FormGroup>
             </>
         );
