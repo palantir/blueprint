@@ -283,23 +283,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         }
 
         if (isValid) {
-            switch (unit) {
-                case TimeUnit.HOUR_24:
-                case TimeUnit.HOUR_12:
-                    this.updateState({ hourText: text });
-                    break;
-                case TimeUnit.MINUTE:
-                    this.updateState({ minuteText: text });
-                    break;
-                case TimeUnit.SECOND:
-                    this.updateState({ secondText: text });
-                    break;
-                case TimeUnit.MS:
-                    this.updateState({ millisecondText: text });
-                    break;
-                default:
-                    throw Error("Invalid TimeUnit");
-            }
+            this.updateTime(parseInt(text, 10), unit);
         }
     };
 
