@@ -308,6 +308,13 @@ describe("<DateRangePicker>", () => {
             render({ maxDate, minDate, value }).left.assertMonthYear(Months.APRIL, 2007);
         });
 
+        it("has correct initial month on singleMonthOnly and maxDate == initialMonth", () => {
+            const maxDate = new Date(2019, Months.MAY, 6);
+            const minDate = new Date(2019, Months.MARCH, 3);
+            const initialMonth = maxDate;
+            render({ singleMonthOnly: true, maxDate, minDate, initialMonth }).left.assertMonthYear(Months.MAY, 2019);
+        });
+
         it("is (endDate - 1 month) if only endDate is set", () => {
             const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
             render({ value }).left.assertMonthYear(Months.MARCH, 2007);
