@@ -194,7 +194,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         // subtracting one avoids that weird, wraparound state (#289).
         const initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
         const initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
-        if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
+        if (!props.singleMonthOnly && !initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
