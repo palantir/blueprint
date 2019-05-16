@@ -1141,6 +1141,14 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
 
+        it("hovering over date does not change entered time", () => {
+            const harness = render({ timePrecision: "minute", defaultValue: defaultRange });
+            harness.changeTimeInput("minute", 10, "left");
+            const { left } = harness;
+            left.mouseEnterDay(5);
+            assert.equal((onChangeSpy.firstCall.args[0][0] as Date).getMinutes(), 10);
+        });
+
         it("changing time without date uses today", () => {
             render({ timePrecision: "minute" }).setTimeInput("minute", 45, "left");
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
@@ -1215,6 +1223,11 @@ describe("<DateRangePicker>", () => {
                     );
                 }
             },
+            changeTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
+                harness.wrapper
+                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
+                    .at(which === "left" ? 0 : 1)
+                    .simulate("change", { target: { value } }),
             clickNavButton: (which: "next" | "prev", navIndex = 0) => {
                 wrapper
                     .find(DatePickerNavbar)
