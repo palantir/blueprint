@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as moment from "moment-timezone";
+import { IANAZone } from "luxon";
 
 // non-empty abbreviations that do not begin with -/+
 const ABBR_REGEX = /^[^-+]/;
@@ -28,21 +28,28 @@ export interface ITimezoneMetadata {
 }
 
 export function getTimezoneMetadata(timezone: string, date: Date = new Date()): ITimezoneMetadata {
+    // Using just time zones
     const timestamp = date.getTime();
-    const zone = moment.tz.zone(timezone);
-    const zonedDate = moment.tz(timestamp, timezone);
-    const offset = zonedDate.utcOffset();
-    const offsetAsString = zonedDate.format("Z");
+    const zone = IANAZone.create(timezone);
+    const offset = zone.offset(timestamp);
+    // TODO(mdanka): have to update typing to include this method
+    const offsetAsString = zone.formatOffset(timestamp, "narrow");
+    const abbr = zone.offsetName(timestamp, { format: "short" });
+
+    // Using date formatting
+    // const zonedDate = DateTime.fromJSDate(date, { zone: timezone });
+    // const { offset } = zonedDate;
+    // const offsetAsString = zonedDate.toFormat("Z");
+    // const abbr = zonedDate.toFormat("ZZZZ");
 
     // Only include abbreviations that are not just a repeat of the offset:
-    // moment-timezone's `abbr` falls back to the time offset if a zone doesn't have an abbr.
-    const abbr = zone.abbr(timestamp);
     const abbreviation = ABBR_REGEX.test(abbr) ? abbr : undefined;
 
     return {
         abbreviation,
         offset,
         offsetAsString,
+        // TODO(mdanka): have to provide population data
         population: zone.population,
         timezone,
     };

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as moment from "moment-timezone";
+import { IANAZone } from "luxon";
 import { getTimezoneMetadata } from "./timezoneMetadata";
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";
@@ -30,7 +30,7 @@ export const TimezoneDisplayFormat = {
 };
 
 export function formatTimezone(timezone: string, date: Date, displayFormat: TimezoneDisplayFormat): string | undefined {
-    if (!timezone || !moment.tz.zone(timezone)) {
+    if (!timezone || !IANAZone.isValidZone(timezone)) {
         return undefined;
     }
 

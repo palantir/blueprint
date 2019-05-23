@@ -26,3 +26,8 @@ export function guessTimeZone(): string {
     }
     return timeZone != null ? timeZone : "";
 }
+
+export function getAllTimeZoneNames(): string[] {
+    // TODO(mdanka): have to provide all time zone names
+    return [];
+}
