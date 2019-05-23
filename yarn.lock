@@ -160,6 +160,11 @@
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
   integrity sha512-pGF/zvYOACZ/gLGWdQH8zSwteQS1epp68yRcVLJMgUck/MjEn/FBYmPub9pXT8C1e4a8YZfHo1CKyV8q1vKUnQ==
 
+"@types/jstimezonedetect@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/jstimezonedetect/-/jstimezonedetect-1.0.1.tgz#700a460def384df3f4a820f4aea64b7424424003"
+  integrity sha512-avQpzE9QdZBzxmkpLsTeuWPaYZJDywmC23ceo7PFq4HaPSixyzA4lxYcK8NVl1p+tFAY7CZ5cFXkpxj/pzLPpQ==
+
 "@types/kss@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/kss/-/kss-3.0.1.tgz#e302e9b844454671c5c679d235a4a9fe10abd4b9"
@@ -5427,6 +5432,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+jstimezonedetect@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/jstimezonedetect/-/jstimezonedetect-1.0.6.tgz#60d31fbacdbf57af71b064887ee040f1595adb52"
+  integrity sha1-YNMfus2/V69xsGSIfuBA8Vla21I=
+
 just-extend@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/just-extend/-/just-extend-4.0.2.tgz#f3f47f7dfca0f989c55410a7ebc8854b07108afc"
@@ -6482,7 +6492,7 @@ node-forge@0.7.5:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.5.tgz#6c152c345ce11c52f465c2abd957e8639cd674df"
   integrity sha512-MmbQJ2MTESTjt3Gi/3yG1wGpIMhUfcIypUCGtTizFR9IiccFwxSpfp0vtIZlkFclEqERemxfnSdZEMR9VqqEFQ==
 
-node-gyp@3.8.0, node-gyp@^3.8.0:
+node-gyp@^3.8.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-3.8.0.tgz#540304261c330e80d0d5edce253a68cb3964218c"
   integrity sha512-3g8lYefrRRzvGeSowdJKAKyks8oUpLEd/DyPV4eMhVlhJ0aNaZqIrNUIPuEWWTAoPqyFkfGrM67MC69baqn6vA==
