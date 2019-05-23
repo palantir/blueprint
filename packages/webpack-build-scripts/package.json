@@ -20,7 +20,7 @@
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "webpack": "^4.27.1",
-    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-server": "^3.1.0",
     "webpack-notifier": "^1.7.0"
   },
