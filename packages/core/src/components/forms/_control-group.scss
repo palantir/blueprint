@@ -106,7 +106,6 @@ Styleguide control-group
 
     &:focus {
       // establish new stacking context so focus state covers neighbors
-      position: relative;
       z-index: index($control-group-stack, "button-focus");
     }
 
