@@ -56,10 +56,15 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
     };
 }
 
-export function getAllTimeZoneNames(): string[] {
+export function getAllTimezoneNames(): string[] {
+    // Some possible timezone names might not be available in the current environment
     return Object.keys(getTimezoneStaticMetadata()).filter(IANAZone.isValidZone);
 }
 
+/**
+ * Loads a statically compiled map of all timezone names and population data,
+ * as this is not available from the Intl API.
+ */
 function getTimezoneStaticMetadata(): ITimezoneStaticMap {
     return BP_TIMEZONE_STATIC_METADATA;
 }

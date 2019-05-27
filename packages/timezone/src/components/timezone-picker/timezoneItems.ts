@@ -16,7 +16,7 @@
 
 import { IconName } from "@blueprintjs/core";
 import { IANAZone } from "luxon";
-import { getAllTimeZoneNames, getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
+import { getAllTimezoneNames, getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
 import { guessTimezone } from "./timezoneUtils";
 
 /** Timezone-specific QueryList item */
@@ -42,7 +42,7 @@ export interface ITimezoneItem {
  * @param date the date to use when determining timezone offsets
  */
 export function getTimezoneItems(date: Date): ITimezoneItem[] {
-    return getAllTimeZoneNames()
+    return getAllTimezoneNames()
         .map(timezone => getTimezoneMetadata(timezone, date))
         .sort((a, b) => a.offset - b.offset)
         .map(toTimezoneItem);
@@ -90,7 +90,7 @@ export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
  */
 function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     // Filter out noisy timezones. See https://github.com/moment/moment-timezone/issues/227
-    const timezones = getAllTimeZoneNames().filter(timezone => /\//.test(timezone) && !/Etc\//.test(timezone));
+    const timezones = getAllTimezoneNames().filter(timezone => /\//.test(timezone) && !/Etc\//.test(timezone));
 
     const timezoneToMetadata = timezones.reduce<{ [timezone: string]: ITimezoneMetadata }>((store, zone) => {
         store[zone] = getTimezoneMetadata(zone, date);
