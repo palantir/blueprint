@@ -15,7 +15,7 @@
  */
 
 import { IANAZone } from "luxon";
-import * as timezoneStaticMetadataJson from "../../generated/timezoneStaticMetadata.json";
+import * as timezoneStaticMetadata from "../../data/timezoneStaticMetadata";
 
 // non-empty abbreviations that do not begin with -/+
 const ABBR_REGEX = /^[^-+]/;
@@ -25,14 +25,6 @@ export interface ITimezoneMetadata {
     abbreviation: string | undefined;
     offset: number;
     offsetAsString: string;
-    population: number | undefined;
-}
-
-export interface ITimezoneStaticMap {
-    [timezone: string]: ITimezoneStaticMetadata | undefined;
-}
-
-export interface ITimezoneStaticMetadata {
     population: number | undefined;
 }
 
@@ -62,6 +54,6 @@ export function getAllTimeZoneNames(): string[] {
     return Object.keys(getTimezoneStaticMetadata());
 }
 
-function getTimezoneStaticMetadata(): ITimezoneStaticMap {
-    return timezoneStaticMetadataJson;
+function getTimezoneStaticMetadata(): timezoneStaticMetadata.ITimezoneStaticMap {
+    return timezoneStaticMetadata;
 }

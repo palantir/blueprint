@@ -16,7 +16,7 @@
 
 import * as fs from "fs";
 import * as moment from "moment-timezone";
-import { ITimezoneStaticMap } from "../src/components/timezone-picker/timezoneMetadata";
+import { ITimezoneStaticMap } from "../src/data/timezoneStaticMetadata";
 
 /**
  * Get a list of all timezone items.
@@ -33,7 +33,7 @@ function getAllTimezoneMetadata(): ITimezoneStaticMap {
 
 function writeAllTimezoneMetadataToFile(path: string) {
     const allTimezoneMetadata = getAllTimezoneMetadata();
-    const allTimezoneMetadataString = JSON.stringify(allTimezoneMetadata);
+    const allTimezoneMetadataString = `export default ${JSON.stringify(allTimezoneMetadata)}`;
     fs.writeFileSync(path, allTimezoneMetadataString, { encoding: "utf8" });
 }
 
