@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IANAZone } from "luxon";
+import { IANAZone, Zone } from "luxon";
 import { BP_TIMEZONE_STATIC_METADATA } from "../../data/timezoneStaticMetadata";
 
 // non-empty abbreviations that do not begin with -/+
@@ -40,7 +40,7 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
     const timestamp = date.getTime();
     const zone = IANAZone.create(timezone);
     const offset = zone.offset(timestamp);
-    const offsetAsString = zone.formatOffset(timestamp, "narrow");
+    const offsetAsString = getOffsetAsString(zone, timestamp);
     const abbr = zone.offsetName(timestamp, { format: "short" });
     const staticMetadata = getTimezoneStaticMetadata()[timezone];
     const population = staticMetadata === undefined ? undefined : staticMetadata.population;
@@ -54,6 +54,10 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
         population,
         timezone,
     };
+}
+
+export function getOffsetAsString(zone: Zone, timestamp: number) {
+    return zone.formatOffset(timestamp, "short");
 }
 
 export function getAllTimezoneNames(): string[] {

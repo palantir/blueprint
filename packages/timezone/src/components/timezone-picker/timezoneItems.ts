@@ -16,7 +16,7 @@
 
 import { IconName } from "@blueprintjs/core";
 import { IANAZone } from "luxon";
-import { getAllTimezoneNames, getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
+import { getAllTimezoneNames, getOffsetAsString, getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
 import { guessTimezone } from "./timezoneUtils";
 
 /** Timezone-specific QueryList item */
@@ -70,7 +70,7 @@ export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
     if (timezone !== undefined) {
         const timestamp = date.getTime();
         const zone = IANAZone.create(timezone);
-        const offsetAsString = zone.formatOffset(timestamp, "narrow");
+        const offsetAsString = getOffsetAsString(zone, timestamp);
         return {
             iconName: "locate",
             key: `${timezone}-local`,
