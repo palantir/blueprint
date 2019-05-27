@@ -16,8 +16,8 @@
 
 import { IconName } from "@blueprintjs/core";
 import { IANAZone } from "luxon";
-import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
-import { getAllTimeZoneNames, guessTimeZone } from "./timezoneUtils";
+import { getAllTimeZoneNames, getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
+import { guessTimeZone } from "./timezoneUtils";
 
 /** Timezone-specific QueryList item */
 export interface ITimezoneItem {

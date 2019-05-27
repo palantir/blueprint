@@ -15,6 +15,7 @@
  */
 
 import { IANAZone } from "luxon";
+import * as timezoneStaticMetadataJson from "../../generated/timezoneStaticMetadata.json";
 
 // non-empty abbreviations that do not begin with -/+
 const ABBR_REGEX = /^[^-+]/;
@@ -27,20 +28,23 @@ export interface ITimezoneMetadata {
     population: number | undefined;
 }
 
+export interface ITimezoneStaticMap {
+    [timezone: string]: ITimezoneStaticMetadata | undefined;
+}
+
+export interface ITimezoneStaticMetadata {
+    population: number | undefined;
+}
+
 export function getTimezoneMetadata(timezone: string, date: Date = new Date()): ITimezoneMetadata {
     // Using just time zones
     const timestamp = date.getTime();
     const zone = IANAZone.create(timezone);
     const offset = zone.offset(timestamp);
-    // TODO(mdanka): have to update typing to include this method
     const offsetAsString = zone.formatOffset(timestamp, "narrow");
     const abbr = zone.offsetName(timestamp, { format: "short" });
-
-    // Using date formatting
-    // const zonedDate = DateTime.fromJSDate(date, { zone: timezone });
-    // const { offset } = zonedDate;
-    // const offsetAsString = zonedDate.toFormat("Z");
-    // const abbr = zonedDate.toFormat("ZZZZ");
+    const staticMetadata = getTimezoneStaticMetadata()[timezone];
+    const population = staticMetadata === undefined ? undefined : staticMetadata.population;
 
     // Only include abbreviations that are not just a repeat of the offset:
     const abbreviation = ABBR_REGEX.test(abbr) ? abbr : undefined;
@@ -49,8 +53,15 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
         abbreviation,
         offset,
         offsetAsString,
-        // TODO(mdanka): have to provide population data
-        population: zone.population,
+        population,
         timezone,
     };
+}
+
+export function getAllTimeZoneNames(): string[] {
+    return Object.keys(getTimezoneStaticMetadata());
+}
+
+function getTimezoneStaticMetadata(): ITimezoneStaticMap {
+    return timezoneStaticMetadataJson;
 }

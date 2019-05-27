@@ -23,6 +23,7 @@
     "dist:bundle": "cross-env NODE_ENV=production webpack",
     "dist:css": "css-dist lib/css/*.css",
     "dist:verify": "assert-package-layout",
+    "generateTimezoneMetadata": "ts-node buildSrc/generateTimezoneList.ts ./src/generated/timezoneStaticMetadata.json",
     "lint": "run-p lint:scss lint:ts",
     "lint:scss": "sass-lint",
     "lint:ts": "ts-lint",
@@ -56,6 +57,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
+    "ts-node": "^8.2.0",
     "typescript": "~2.8.3",
     "webpack-cli": "^3.1.2"
   },
