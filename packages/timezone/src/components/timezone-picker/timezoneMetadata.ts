@@ -37,7 +37,6 @@ export interface ITimezoneStaticMetadata {
 }
 
 export function getTimezoneMetadata(timezone: string, date: Date = new Date()): ITimezoneMetadata {
-    // Using just time zones
     const timestamp = date.getTime();
     const zone = IANAZone.create(timezone);
     const offset = zone.offset(timestamp);
@@ -45,7 +44,6 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
     const abbr = zone.offsetName(timestamp, { format: "short" });
     const staticMetadata = getTimezoneStaticMetadata()[timezone];
     const population = staticMetadata === undefined ? undefined : staticMetadata.population;
-
     // Only include abbreviations that are not just a repeat of the offset:
     const abbreviation = ABBR_REGEX.test(abbr) ? abbr : undefined;
 
