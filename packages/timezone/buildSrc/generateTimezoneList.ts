@@ -18,10 +18,10 @@ import * as fs from "fs";
 import * as moment from "moment-timezone";
 import { ITimezoneStaticMap } from "../src/components/timezone-picker/timezoneMetadata";
 
-/**
- * Get a list of all timezone items.
- * @param date the date to use when determining timezone offsets
+/*
+ * Generates a list of timezone names and population dataat build time.
  */
+
 function getAllTimezoneMetadata(): ITimezoneStaticMap {
     return moment.tz.names().reduce<ITimezoneStaticMap>((mapInProgress, timezone) => {
         const zone = moment.tz.zone(timezone);

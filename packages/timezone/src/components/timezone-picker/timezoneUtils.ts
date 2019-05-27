@@ -16,13 +16,13 @@
 
 import * as jstz from "jstimezonedetect";
 
-export function guessTimeZone(): string {
-    // Getting time zone from the Intl api is not supported in IE (it returns undefined)
-    let timeZone: string | undefined = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (timeZone == null) {
+export function guessTimezone(): string {
+    // Getting timezone from the Intl api is not supported in IE (it returns undefined)
+    let timezone: string | undefined = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (timezone == null) {
         // Fall back to manual guessing. According to types this returns a string, but it could
         // in theory return an undefined (not very likely but we err on the side of caution here).
-        timeZone = jstz.determine().name() as string | undefined;
+        timezone = jstz.determine().name() as string | undefined;
     }
-    return timeZone != null ? timeZone : "";
+    return timezone != null ? timezone : "";
 }
