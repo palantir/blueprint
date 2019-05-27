@@ -232,6 +232,64 @@ describe("<TimezonePicker>", () => {
         assert.lengthOf(span, 1, "expected custom target with class '.foo'");
     });
 
+    it("displays almost all moment timezones", () => {
+        const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} inputProps={{ value: "test query" }} />);
+        const items = findSelect(timezonePicker).prop("items");
+        const momentMinusPickerTimezones = new Set(moment.tz.names());
+        items.forEach(item => momentMinusPickerTimezones.delete(item.timezone));
+        const notIncludedTimezones = [
+            "America/Argentina/ComodRivadavia",
+            "America/Knox_IN",
+            "Antarctica/DumontDUrville",
+            "Antarctica/McMurdo",
+            "Australia/ACT",
+            "Australia/LHI",
+            "Australia/NSW",
+            "Brazil/DeNoronha",
+            "CET",
+            "CST6CDT",
+            "Chile/EasterIsland",
+            "EET",
+            "EST",
+            "EST5EDT",
+            "Etc/UCT",
+            "GB",
+            "GB-Eire",
+            "GMT+0",
+            "GMT-0",
+            "GMT0",
+            "HST",
+            "MET",
+            "MST",
+            "MST7MDT",
+            "Mexico/BajaNorte",
+            "Mexico/BajaSur",
+            "NZ",
+            "NZ-CHAT",
+            "PRC",
+            "PST8PDT",
+            "ROC",
+            "ROK",
+            "UCT",
+            "US/Alaska",
+            "US/Aleutian",
+            "US/Arizona",
+            "US/Central",
+            "US/East-Indiana",
+            "US/Eastern",
+            "US/Hawaii",
+            "US/Indiana-Starke",
+            "US/Michigan",
+            "US/Mountain",
+            "US/Pacific",
+            "US/Pacific-New",
+            "US/Samoa",
+            "W-SU",
+            "WET",
+        ];
+        assert.deepEqual(Array.from(momentMinusPickerTimezones), notIncludedTimezones);
+    });
+
     function findSelect(timezonePicker: TimezonePickerShallowWrapper) {
         return timezonePicker.find(Select.ofType<ITimezoneItem>());
     }
