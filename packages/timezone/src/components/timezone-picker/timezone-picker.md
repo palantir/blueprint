@@ -7,7 +7,7 @@ timezone metadata.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">IE 11 requires polyfilling</h4>
-    While IE 11 supports the Intl.DateTimeFormat API, it doesn't provide timezone information. Use a polyfill such as [date-time-format-timezone](https://github.com/formatjs/date-time-format-timezone). 
+    While IE 11 supports the Intl.DateTimeFormat API, it doesn't provide timezone information. Use a polyfill such as <a href="https://github.com/formatjs/date-time-format-timezone" target="_blank">date-time-format-timezone</a>.
 </div>
 
 @reactExample TimezonePickerExample
@@ -44,7 +44,7 @@ all button-specific props will be ignored:
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Local timezone detection</h4>
     We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
-    In supported browsers, the [Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
+    In supported browsers, the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions" target="_blank">Intl API</a> is used.
     In other browsers, `Date` methods and other heuristics are used.
 </div>
 
