@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist/* && rm -rf lib/*",
-    "compile": "run-p \"compile:*\"",
+    "compile": "npm-run-all generateTimezoneMetadata -p \"compile:*\"",
     "compile:esm": "tsc -p ./src",
     "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
     "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
