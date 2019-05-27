@@ -59,7 +59,7 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
 }
 
 export function getAllTimeZoneNames(): string[] {
-    return Object.keys(getTimezoneStaticMetadata());
+    return Object.keys(getTimezoneStaticMetadata()).filter(IANAZone.isValidZone);
 }
 
 function getTimezoneStaticMetadata(): ITimezoneStaticMap {
