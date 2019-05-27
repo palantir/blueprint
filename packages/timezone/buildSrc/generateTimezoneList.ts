@@ -51,6 +51,11 @@ function writeAllTimezoneMetadataToFile(path: string) {
 
 // tslint:disable
 
+/*
+ * THIS IS A GENERATED FILE.
+ * Any changes will be overwritten at build time.
+ */
+
 export const BP_TIMEZONE_STATIC_METADATA = ${JSON.stringify(allTimezoneMetadata)};
 `;
     fs.writeFileSync(path, allTimezoneMetadataString, { encoding: "utf8" });
