@@ -2,8 +2,13 @@
 
 `TimezonePicker` allows the user to select from a list of timezones.
 
-[Moment Timezone](http://momentjs.com/timezone/) is used internally for the list of available timezones and
+[Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) is used internally for the list of available timezones and
 timezone metadata.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">IE 11 requires polyfilling</h4>
+    While IE 11 supports the Intl.DateTimeFormat API, it doesn't provide timezone information. Use a polyfill such as [date-time-format-timezone](https://github.com/formatjs/date-time-format-timezone). 
+</div>
 
 @reactExample TimezonePickerExample
 
@@ -39,10 +44,8 @@ all button-specific props will be ignored:
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Local timezone detection</h4>
     We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
-    In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
-    In other browsers, `Date` methods and a population heuristic are used.
-    See [Moment Timezone's documentation](https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
-    for more information and browser compatibility.
+    In supported browsers, the [Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
+    In other browsers, `Date` methods and other heuristics are used.
 </div>
 
 ```tsx
