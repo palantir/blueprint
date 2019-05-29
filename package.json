@@ -61,7 +61,8 @@
   "resolutions": {
     "@types/enzyme": "3.1.15",
     "@types/react": "16.4.18",
-    "node-gyp": "3.8.0"
+    "node-gyp": "3.8.0",
+    "typedoc": "0.14.2"
   },
   "engines": {
     "node": ">=6.1"
