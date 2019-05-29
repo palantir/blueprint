@@ -17,9 +17,6 @@
 import { IANAZone, Zone } from "luxon";
 import { BP_TIMEZONE_STATIC_METADATA } from "../../data/timezoneStaticMetadata";
 
-// non-empty abbreviations that do not begin with -/+
-const ABBR_REGEX = /^[^-+]/;
-
 export interface ITimezoneMetadata {
     timezone: string;
     abbreviation: string | undefined;
@@ -41,11 +38,9 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
     const zone = IANAZone.create(timezone);
     const offset = zone.offset(timestamp);
     const offsetAsString = getOffsetAsString(zone, timestamp);
-    const abbr = zone.offsetName(timestamp, { format: "short" });
+    const abbreviation = getAbbreviation(timestamp, zone);
     const staticMetadata = getTimezoneStaticMetadata()[timezone];
     const population = staticMetadata === undefined ? undefined : staticMetadata.population;
-    // Only include abbreviations that are not just a repeat of the offset:
-    const abbreviation = ABBR_REGEX.test(abbr) ? abbr : undefined;
 
     return {
         abbreviation,
@@ -63,6 +58,34 @@ export function getOffsetAsString(zone: Zone, timestamp: number) {
 export function getAllTimezoneNames(): string[] {
     // Some possible timezone names might not be available in the current environment
     return Object.keys(getTimezoneStaticMetadata()).filter(IANAZone.isValidZone);
+}
+
+/**
+ * First consider the abbreviation in the default locale.
+ * If it's an offset abbreviation (GMT+3), use en-us and en-gb as a fall back.
+ * Note that in Chrome the en-us and en-gb locales return different abbreviations.
+ * See https://github.com/moment/luxon/issues/499#issuecomment-496880701
+ */
+function getAbbreviation(timestamp: number, zone: Zone) {
+    const abbrDefaultLocale = zone.offsetName(timestamp, { format: "short" });
+    if (!isOffsetAbbreviation(abbrDefaultLocale)) {
+        return abbrDefaultLocale;
+    }
+    // TODO(mdanka): using any because types are not yet updated
+    const abbrUsLocale = zone.offsetName(timestamp, { format: "short", locale: "en-us" } as any);
+    if (!isOffsetAbbreviation(abbrUsLocale)) {
+        return abbrUsLocale;
+    }
+    // TODO(mdanka): using any because types are not yet updated
+    const abbrGbLocale = zone.offsetName(timestamp, { format: "short", locale: "en-gb" } as any);
+    if (!isOffsetAbbreviation(abbrGbLocale)) {
+        return abbrGbLocale;
+    }
+    return undefined;
+}
+
+function isOffsetAbbreviation(abbr: string) {
+    return /^GMT\+/.test(abbr) || /^GMT\-/.test(abbr);
 }
 
 /**
