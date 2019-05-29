@@ -189,10 +189,10 @@
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.132.tgz#8ce45ca8745ff2e004fac0de0ab46f61e390ffa0"
   integrity sha512-RNUU1rrh85NgUJcjOOr96YXr+RHwInGbaQCZmlitqOaCKXffj8bh+Zxwuq5rjDy5OgzFldDVoqk4pyLEDiwxIw==
 
-"@types/luxon@^1.13.0":
-  version "1.13.0"
-  resolved "https://registry.npmjs.org/@types/luxon/-/luxon-1.13.0.tgz#e92338702d0b1b96e8d5ea6fe39d9938891aacd0"
-  integrity sha512-XmDiRVoJWgVdqX9x1a/GU4p9bSgZY7q8SOyMLs3fx1AdQcxLYAPIt/jfZm2e+PBVRWuEx1FqYNJ37kBZ53TMqA==
+"@types/luxon@^1.15.0":
+  version "1.15.0"
+  resolved "https://registry.npmjs.org/@types/luxon/-/luxon-1.15.0.tgz#30219caf634bf8084118f94ed878fbce5b3c9458"
+  integrity sha512-eDzc9ByxV8oeRFoJEWEKlMkNiOD17tQFhIsjEqgsh0cCzUQXAM77RvdekaQeuIlvdqdq0xvqH1WcLZYSfAd6Ug==
 
 "@types/marked@^0.6.0":
   version "0.6.5"
@@ -6534,7 +6534,7 @@ node-forge@0.7.5:
   resolved "https://registry.npmjs.org/node-forge/-/node-forge-0.7.5.tgz#6c152c345ce11c52f465c2abd957e8639cd674df"
   integrity sha512-MmbQJ2MTESTjt3Gi/3yG1wGpIMhUfcIypUCGtTizFR9IiccFwxSpfp0vtIZlkFclEqERemxfnSdZEMR9VqqEFQ==
 
-node-gyp@3.8.0, node-gyp@^3.8.0:
+node-gyp@^3.8.0:
   version "3.8.0"
   resolved "https://registry.npmjs.org/node-gyp/-/node-gyp-3.8.0.tgz#540304261c330e80d0d5edce253a68cb3964218c"
   integrity sha512-3g8lYefrRRzvGeSowdJKAKyks8oUpLEd/DyPV4eMhVlhJ0aNaZqIrNUIPuEWWTAoPqyFkfGrM67MC69baqn6vA==
