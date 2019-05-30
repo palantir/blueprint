@@ -150,7 +150,7 @@
 
 "@types/fs-extra@^5.0.5":
   version "5.1.0"
-  resolved "https://registry.npmjs.org/@types/fs-extra/-/fs-extra-5.1.0.tgz#2a325ef97901504a3828718c390d34b8426a10a1"
+  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-5.1.0.tgz#2a325ef97901504a3828718c390d34b8426a10a1"
   integrity sha512-AInn5+UBFIK9FK5xc9yP5e3TQSPNNgjHByqYcj9g5elVBnDQcQL7PlO1CIRy2gWlbwK7UPYqi7vRvFA44dCmYQ==
   dependencies:
     "@types/node" "*"
@@ -186,17 +186,17 @@
 
 "@types/lodash@^4.14.123":
   version "4.14.132"
-  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.132.tgz#8ce45ca8745ff2e004fac0de0ab46f61e390ffa0"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.132.tgz#8ce45ca8745ff2e004fac0de0ab46f61e390ffa0"
   integrity sha512-RNUU1rrh85NgUJcjOOr96YXr+RHwInGbaQCZmlitqOaCKXffj8bh+Zxwuq5rjDy5OgzFldDVoqk4pyLEDiwxIw==
 
 "@types/luxon@^1.15.1":
   version "1.15.1"
-  resolved "https://registry.npmjs.org/@types/luxon/-/luxon-1.15.1.tgz#2ce9143cc28ec236397833be416d4ca30fc9b79c"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-1.15.1.tgz#2ce9143cc28ec236397833be416d4ca30fc9b79c"
   integrity sha512-SOGSpxsAoR+pHLev7oFGbQ4mZCmfcmYY2xsv2+/UeEG2rcJA30k5NVux3cW9rgTe2EVtrqFG+KtMs6ERZsTGKA==
 
 "@types/marked@^0.6.0":
   version "0.6.5"
-  resolved "https://registry.npmjs.org/@types/marked/-/marked-0.6.5.tgz#3cf2a56ef615dad24aaf99784ef90a9eba4e29d8"
+  resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.6.5.tgz#3cf2a56ef615dad24aaf99784ef90a9eba4e29d8"
   integrity sha512-6kBKf64aVfx93UJrcyEZ+OBM5nGv4RLsI6sR1Ar34bpgvGVRoyTgpxn4ZmtxOM5aDTAaaznYuYUH8bUX3Nk3YA==
 
 "@types/minimatch@*", "@types/minimatch@3.0.3":
@@ -260,7 +260,7 @@
 
 "@types/shelljs@^0.8.3":
   version "0.8.5"
-  resolved "https://registry.npmjs.org/@types/shelljs/-/shelljs-0.8.5.tgz#1e507b2f6d1f893269bd3e851ec24419ef9beeea"
+  resolved "https://registry.yarnpkg.com/@types/shelljs/-/shelljs-0.8.5.tgz#1e507b2f6d1f893269bd3e851ec24419ef9beeea"
   integrity sha512-bZgjwIWu9gHCjirKJoOlLzGi5N0QgZ5t7EXEuoqyWCHTuSddURXo3FOBYDyRPNOWzZ6NbkLvZnVkn483Y/tvcQ==
   dependencies:
     "@types/glob" "*"
@@ -996,7 +996,7 @@ babylon@^6.18.0:
 
 backbone@^1.1.2:
   version "1.4.0"
-  resolved "https://registry.npmjs.org/backbone/-/backbone-1.4.0.tgz#54db4de9df7c3811c3f032f34749a4cd27f3bd12"
+  resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.4.0.tgz#54db4de9df7c3811c3f032f34749a4cd27f3bd12"
   integrity sha512-RLmDrRXkVdouTg38jcgHhyQ/2zjg7a8E6sz2zxfz21Hh17xDJYUHBZimVIt5fUyS8vbfpeSmTL3gUjTEvUV3qQ==
   dependencies:
     underscore ">=1.8.3"
@@ -5366,7 +5366,7 @@ jest-docblock@^21.0.0:
 
 jquery@^2.2.4:
   version "2.2.4"
-  resolved "https://registry.npmjs.org/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
   integrity sha1-LInWiJterFIqfuoywUUhVZxsvwI=
 
 js-base64@^2.1.8, js-base64@^2.1.9:
@@ -5938,7 +5938,7 @@ lru-cache@^5.1.1:
 
 lunr@^2.3.6:
   version "2.3.6"
-  resolved "https://registry.npmjs.org/lunr/-/lunr-2.3.6.tgz#f278beee7ffd56ad86e6e478ce02ab2b98c78dd5"
+  resolved "https://registry.yarnpkg.com/lunr/-/lunr-2.3.6.tgz#f278beee7ffd56ad86e6e478ce02ab2b98c78dd5"
   integrity sha512-swStvEyDqQ85MGpABCMBclZcLI/pBIlu8FFDtmX197+oEgKloJ67QnB+Tidh0340HmLMs39c4GrkPY3cmkXp6Q==
 
 luxon@^1.15.0:
@@ -7913,7 +7913,7 @@ process@^0.11.10:
 
 progress@^2.0.3:
   version "2.0.3"
-  resolved "https://registry.npmjs.org/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
+  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
 promise-inflight@^1.0.1:
@@ -8955,7 +8955,7 @@ shell-quote@^1.6.1:
 
 shelljs@^0.8.3:
   version "0.8.3"
-  resolved "https://registry.npmjs.org/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
+  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
   integrity sha512-fc0BKlAWiLpwZljmOvAOTE/gXawtCoNrP5oaY7KIaQbbyHeQVg01pSEuEGvGh3HEdBU4baCD7wQBwADmM/7f7A==
   dependencies:
     glob "^7.0.0"
@@ -10099,7 +10099,7 @@ typedarray@^0.0.6:
 
 typedoc-default-themes@^0.6.0-0:
   version "0.6.0-0"
-  resolved "https://registry.npmjs.org/typedoc-default-themes/-/typedoc-default-themes-0.6.0-0.tgz#a4867eaf91fb7888efd01680f1328b72e8a33640"
+  resolved "https://registry.yarnpkg.com/typedoc-default-themes/-/typedoc-default-themes-0.6.0-0.tgz#a4867eaf91fb7888efd01680f1328b72e8a33640"
   integrity sha512-O7hBMS1yBCozvVUntIIdlBk04WiqM+f6NOEc9p+LimJSFKJMF66cgzejeiybuTk6mgbMJW+olg42BNYC8E9x9Q==
   dependencies:
     backbone "^1.1.2"
@@ -10109,7 +10109,7 @@ typedoc-default-themes@^0.6.0-0:
 
 typedoc@^0.15.0-0:
   version "0.15.0-0"
-  resolved "https://registry.npmjs.org/typedoc/-/typedoc-0.15.0-0.tgz#4d0acd8697c22824fb51fff68766fd435b99163d"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.15.0-0.tgz#4d0acd8697c22824fb51fff68766fd435b99163d"
   integrity sha512-N43CSq6T22MVrP1kb0OYusgwnUniwuh9vGVmtgTCjvTSkuJjdMyMeJPMfnugmfRIWxuP9pO6wvNhdDRG32+EQA==
   dependencies:
     "@types/fs-extra" "^5.0.5"
@@ -10131,7 +10131,7 @@ typedoc@^0.15.0-0:
 
 typescript@3.3.x:
   version "3.3.4000"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-3.3.4000.tgz#76b0f89cfdbf97827e1112d64f283f1151d6adf0"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.4000.tgz#76b0f89cfdbf97827e1112d64f283f1151d6adf0"
   integrity sha512-jjOcCZvpkl2+z7JFn0yBOoLQyLoIkNZAs/fYJkUG6VKy6zLPHJGfQJYFHzibB6GJaF/8QrcECtlQ5cpvRHSMEA==
 
 typescript@~2.8.3:
