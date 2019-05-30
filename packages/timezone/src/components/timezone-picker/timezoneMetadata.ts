@@ -71,13 +71,11 @@ function getAbbreviation(timestamp: number, zone: Zone) {
     if (!isOffsetAbbreviation(abbrDefaultLocale)) {
         return abbrDefaultLocale;
     }
-    // TODO(mdanka): using any because types are not yet updated
-    const abbrUsLocale = zone.offsetName(timestamp, { format: "short", locale: "en-us" } as any);
+    const abbrUsLocale = zone.offsetName(timestamp, { format: "short", locale: "en-us" });
     if (!isOffsetAbbreviation(abbrUsLocale)) {
         return abbrUsLocale;
     }
-    // TODO(mdanka): using any because types are not yet updated
-    const abbrGbLocale = zone.offsetName(timestamp, { format: "short", locale: "en-gb" } as any);
+    const abbrGbLocale = zone.offsetName(timestamp, { format: "short", locale: "en-gb" });
     if (!isOffsetAbbreviation(abbrGbLocale)) {
         return abbrGbLocale;
     }
