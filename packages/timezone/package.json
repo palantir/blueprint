@@ -23,7 +23,7 @@
     "dist:bundle": "cross-env NODE_ENV=production webpack",
     "dist:css": "css-dist lib/css/*.css",
     "dist:verify": "assert-package-layout",
-    "generateTimezoneMetadata": "ts-node buildSrc/generateTimezoneList.ts ./src/data/timezoneStaticMetadata.ts",
+    "generateTimezoneMetadata": "ts-node scripts/generateTimezoneList.ts ./src/data/timezoneStaticMetadata.ts",
     "lint": "run-p lint:scss lint:ts",
     "lint:scss": "sass-lint",
     "lint:ts": "ts-lint",
