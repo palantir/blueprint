@@ -16,8 +16,6 @@
 
 import { IANAZone, Zone } from "luxon";
 import { BP_TIMEZONE_STATIC_METADATA } from "../../data/timezoneStaticMetadata";
-// tslint:disable-next-line:no-var-requires
-const memoize = require("lodash.memoize");
 
 export interface ITimezoneMetadata {
     timezone: string;
@@ -47,9 +45,7 @@ export interface ITimezoneStaticMetadata {
     population: number | undefined;
 }
 
-export const getTimezoneMetadata = memoize(getTimezoneMetadataInternal);
-
-function getTimezoneMetadataInternal(timezone: string, date: Date = new Date()): ITimezoneMetadata {
+export function getTimezoneMetadata(timezone: string, date: Date = new Date()): ITimezoneMetadata {
     const timestamp = date.getTime();
     const zone = IANAZone.create(timezone);
     const offset = zone.offset(timestamp);
