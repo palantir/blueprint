@@ -30,7 +30,7 @@
     "lint-fix": "ts-lint --fix",
     "test": "run-s test:pre test:iso test:karma",
     "test:pre": "tsc -p ./test",
-    "test:iso": "mocha test/isotest.js",
+    "test:iso": "mocha test/isotest.js --timeout 5000",
     "test:karma": "karma start",
     "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
     "verify": "npm-run-all compile -p dist test lint"
