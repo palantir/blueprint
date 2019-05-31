@@ -34,6 +34,9 @@ export const TIMEZONE_STATIC_METADATA_ENTRY_SEPARATOR = "|";
  */
 const BP_TIMEZONE_STATIC_METADATA_MAP = unpackTimezoneStaticMetadata(BP_TIMEZONE_STATIC_METADATA);
 
+// Some possible timezone names might not be available in the current environment
+const BP_TIMEZONE_NAMES = Object.keys(BP_TIMEZONE_STATIC_METADATA_MAP).filter(IANAZone.isValidZone);
+
 export interface ITimezoneStaticMap {
     [timezone: string]: ITimezoneStaticMetadata | undefined;
 }
@@ -65,8 +68,7 @@ export function getOffsetAsString(zone: Zone, timestamp: number) {
 }
 
 export function getAllTimezoneNames(): string[] {
-    // Some possible timezone names might not be available in the current environment
-    return Object.keys(BP_TIMEZONE_STATIC_METADATA_MAP).filter(IANAZone.isValidZone);
+    return BP_TIMEZONE_NAMES;
 }
 
 /**
