@@ -16,11 +16,7 @@
 
 import * as fs from "fs";
 import * as moment from "moment-timezone";
-import {
-    ITimezoneStaticMap,
-    TIMEZONE_STATIC_METADATA_ENTRY_SEPARATOR,
-    TIMEZONE_STATIC_METADATA_FIELD_SEPARATOR,
-} from "../src/components/timezone-picker/timezoneMetadata";
+import { ITimezoneStaticMap } from "../src/components/timezone-picker/timezoneMetadata";
 
 /*
  * Generates a list of timezone names and population dataat build time.
@@ -35,19 +31,9 @@ function getAllTimezoneMetadata(): ITimezoneStaticMap {
     }, {});
 }
 
-function packTimezoneStaticMetadata(map: ITimezoneStaticMap): string {
-    return Object.keys(map)
-        .map(timezone => {
-            const { population } = map[timezone];
-            return `${timezone}${TIMEZONE_STATIC_METADATA_FIELD_SEPARATOR}${population}`;
-        })
-        .join(TIMEZONE_STATIC_METADATA_ENTRY_SEPARATOR);
-}
-
 function writeAllTimezoneMetadataToFile(path: string) {
     const allTimezoneMetadata = getAllTimezoneMetadata();
-    const allTimezoneMetadataString = packTimezoneStaticMetadata(allTimezoneMetadata);
-    const allTimezoneMetadataFileContent = `/*
+    const allTimezoneMetadataString = `/*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,9 +56,9 @@ function writeAllTimezoneMetadataToFile(path: string) {
  * Any changes will be overwritten at build time.
  */
 
-export const BP_TIMEZONE_STATIC_METADATA = "${allTimezoneMetadataString}";
+export const BP_TIMEZONE_STATIC_METADATA = ${JSON.stringify(allTimezoneMetadata)};
 `;
-    fs.writeFileSync(path, allTimezoneMetadataFileContent, { encoding: "utf8" });
+    fs.writeFileSync(path, allTimezoneMetadataString, { encoding: "utf8" });
 }
 
 const filePath = process.argv[2];

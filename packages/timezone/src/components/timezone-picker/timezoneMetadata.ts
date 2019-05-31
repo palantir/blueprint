@@ -25,17 +25,8 @@ export interface ITimezoneMetadata {
     population: number | undefined;
 }
 
-export const TIMEZONE_STATIC_METADATA_FIELD_SEPARATOR = ";";
-export const TIMEZONE_STATIC_METADATA_ENTRY_SEPARATOR = "|";
-
-/**
- * Loads a statically compiled map of all timezone names and population data,
- * as this is not available from the Intl API.
- */
-const BP_TIMEZONE_STATIC_METADATA_MAP = unpackTimezoneStaticMetadata(BP_TIMEZONE_STATIC_METADATA);
-
 // Some possible timezone names might not be available in the current environment
-const BP_TIMEZONE_NAMES = Object.keys(BP_TIMEZONE_STATIC_METADATA_MAP).filter(IANAZone.isValidZone);
+const BP_TIMEZONE_NAMES = Object.keys(BP_TIMEZONE_STATIC_METADATA).filter(IANAZone.isValidZone);
 
 export interface ITimezoneStaticMap {
     [timezone: string]: ITimezoneStaticMetadata | undefined;
@@ -51,7 +42,7 @@ export function getTimezoneMetadata(timezone: string, date: Date = new Date()): 
     const offset = zone.offset(timestamp);
     const offsetAsString = getOffsetAsString(zone, timestamp);
     const abbreviation = getAbbreviation(timestamp, zone);
-    const staticMetadata = BP_TIMEZONE_STATIC_METADATA_MAP[timezone];
+    const staticMetadata = getTimezoneStaticMetadata()[timezone];
     const population = staticMetadata === undefined ? undefined : staticMetadata.population;
 
     return {
@@ -97,14 +88,10 @@ function isOffsetAbbreviation(abbr: string) {
     return /^GMT\+/.test(abbr) || /^GMT\-/.test(abbr);
 }
 
-function unpackTimezoneStaticMetadata(mapString: string): ITimezoneStaticMap {
-    return mapString
-        .split(TIMEZONE_STATIC_METADATA_ENTRY_SEPARATOR)
-        .reduce<ITimezoneStaticMap>((mapInProgress, packedMetadata) => {
-            const metadataArray = packedMetadata.split(TIMEZONE_STATIC_METADATA_FIELD_SEPARATOR);
-            const [timezone, populationString] = metadataArray;
-            const populationInt = parseInt(populationString, 10);
-            mapInProgress[timezone] = { population: isNaN(populationInt) ? undefined : populationInt };
-            return mapInProgress;
-        }, {});
+/**
+ * Loads a statically compiled map of all timezone names and population data,
+ * as this is not available from the Intl API.
+ */
+function getTimezoneStaticMetadata(): ITimezoneStaticMap {
+    return BP_TIMEZONE_STATIC_METADATA;
 }
