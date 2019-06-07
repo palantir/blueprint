@@ -7,7 +7,11 @@ It is optimized for building complex data-dense interfaces for desktop applicati
 @reactDocs Welcome
 
 <div class="@ns-callout @ns-intent-success @ns-icon-endorsed">
-    <h4 class="@ns-heading">Blueprint v3 is available now! [See what's new.](#blueprint/whats-new-3.0)</h4>
+<h4 class="@ns-heading">
+
+Blueprint v3 is available now! [See what's new.](#blueprint/whats-new-3.0)
+
+</h4>
 </div>
 
 @## Quick start

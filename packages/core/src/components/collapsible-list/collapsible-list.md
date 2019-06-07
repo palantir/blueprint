@@ -7,18 +7,26 @@ customizing the appearance of visible items, using the props from the `MenuItem`
 children.
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Deprecated: use [Overflow list](#core/components/overflow-list)</h4>
-    This component is **deprecated since 3.0.0** with the introduction of
-    [`OverflowList`](#core/components/overflow-list) which provides a similar
-    experience with two distinct advantages:
-    <ol>
-        <li>Items collapse automatically based on available space in the container.</li>
-        <li>
-            `OverflowList` accepts a generic array of items (instead of explicit
-            `<MenuItem>` children) with custom renderers for both visible and overflowed
-            items, allowing for _any_ UI, not just a dropdown menu.
-        </li>
-    </ol>
+    <h4 class="@ns-heading">
+
+Deprecated: use [Overflow list](#core/components/overflow-list)
+</h4>
+
+This component is **deprecated since 3.0.0** with the introduction of
+[`OverflowList`](#core/components/overflow-list) which provides a similar
+experience with two distinct advantages:
+
+<ol>
+    <li>Items collapse automatically based on available space in the container.</li>
+    <li>
+
+`OverflowList` accepts a generic array of items (instead of explicit
+`<MenuItem>` children) with custom renderers for both visible and overflowed
+items, allowing for _any_ UI, not just a dropdown menu.
+
+</li>
+</ol>
+
 </div>
 
 @reactExample CollapsibleListExample
