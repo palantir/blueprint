@@ -15,9 +15,11 @@ You should not use `EditableText` when a static always-editable `<input>` or
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
     <h4 class="@ns-heading">Centering the component</h4>
-    **Do not center this component** using `text-align: center`, as it will cause an infinite loop
-    in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
-    you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
+
+**Do not center this component** using `text-align: center`, as it will cause an infinite loop
+in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
+you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
+
 </div>
 
 

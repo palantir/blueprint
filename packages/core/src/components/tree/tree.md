@@ -35,8 +35,10 @@ whether the node's children are shown.
 @## CSS
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    Note that the following examples set a maximum width and background color for the tree;
-    you may want to do this as well in your own usage.
+
+Note that the following examples set a maximum width and background color for the tree;
+you may want to do this as well in your own usage.
+
 </div>
 
 @css tree

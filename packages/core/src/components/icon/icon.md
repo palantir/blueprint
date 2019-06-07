@@ -1,15 +1,19 @@
 @# Icon
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    See the [**Icons package**](#icons) for a searchable list of all available UI icons.
+
+See the [**Icons package**](#icons) for a searchable list of all available UI icons.
+
 </div>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">SVG icons in 2.0</h4>
-    Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
-    The `Icon` component renders SVG paths and the icon classes are no longer used by any Blueprint React component.
-    Icon font support has been preserved but should be considered a legacy feature that will be removed in a
-    future major version.
+
+Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
+The `Icon` component renders SVG paths and the icon classes are no longer used by any Blueprint React component.
+Icon font support has been preserved but should be considered a legacy feature that will be removed in a
+future major version.
+
 </div>
 
 This section describes two ways of using the UI icon font: via React `Icon`
@@ -66,9 +70,11 @@ import { IconNames } from "@blueprintjs/icons";
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Icon fonts are legacy in 2.0</h4>
-    Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
-    The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
-    support is equivalent.
+
+Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
+The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
+support is equivalent.
+
 </div>
 
 The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
@@ -88,7 +94,9 @@ Icon classes also support the four `.@ns-intent-*` modifiers to color the image.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Non-standard sizes</h4>
-    Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
-    necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
-    You can instead use the class `@ns-icon` to make the icon inherit its size from surrounding text.
+
+Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
+necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
+You can instead use the class `@ns-icon` to make the icon inherit its size from surrounding text.
+
 </div>

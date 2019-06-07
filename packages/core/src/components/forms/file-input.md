@@ -12,8 +12,10 @@ Use `inputProps` to apply props to the `<input>` element.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Static file name</h4>
-    File name does not update on file selection. To get this behavior,
-    you must implement it separately in JS.
+
+File name does not update on file selection. To get this behavior,
+you must implement it separately in JS.
+
 </div>
 
 ```tsx

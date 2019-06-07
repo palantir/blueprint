@@ -37,10 +37,12 @@ The content will appear in a contrasting popover when the target is hovered.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Button targets</h4>
-    Buttons make great tooltip targets, but the `disabled` attribute will prevent all
-    events so the enclosing `Tooltip` will not know when to respond.
-    Use [`AnchorButton`](#core/components/button.anchor-button) instead;
-    see the [callout here](#core/components/button.props) for more details.
+
+Buttons make great tooltip targets, but the `disabled` attribute will prevent all
+events so the enclosing `Tooltip` will not know when to respond.
+Use [`AnchorButton`](#core/components/button.anchor-button) instead;
+see the [callout here](#core/components/button.props) for more details.
+
 </div>
 
 @interface ITooltipProps
