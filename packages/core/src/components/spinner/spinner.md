@@ -23,9 +23,11 @@ by including `Classes.SMALL` or `Classes.LARGE` in `className` instead of the
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">IE11 compatibility note</h4>
-    IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
-    `value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
-    correctly because they rely on CSS animations.
+
+IE11 [does not support CSS transitions on SVG elements][msdn-css-svg] so spinners with known
+`value` will not smoothly transition as `value` changes. Indeterminate spinners still animate
+correctly because they rely on CSS animations.
+
 </div>
 
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg

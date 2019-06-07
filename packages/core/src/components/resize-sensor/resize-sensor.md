@@ -26,10 +26,11 @@ function handleResize(entries: IResizeEntry[]) {
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Asynchronous behavior</h4>
-    The `onResize` callback is invoked asynchronously after a resize is detected
-    and typically happens at the end of a frame (after layout, before paint).
-    Therefore, testing behavior that relies on this component involves setting a
-    timeout for the next frame.
+
+The `onResize` callback is invoked asynchronously after a resize is detected
+and typically happens at the end of a frame (after layout, before paint).
+Therefore, testing behavior that relies on this component involves setting a
+timeout for the next frame.
 </div>
 
 @interface IResizeSensorProps

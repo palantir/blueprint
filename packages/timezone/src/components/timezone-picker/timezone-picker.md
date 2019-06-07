@@ -38,11 +38,12 @@ all button-specific props will be ignored:
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Local timezone detection</h4>
-    We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
-    In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
-    In other browsers, `Date` methods and a population heuristic are used.
-    See [Moment Timezone's documentation](https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
-    for more information and browser compatibility.
+
+We detect the local timezone when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
+In supported browsers, the [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions) is used.
+In other browsers, `Date` methods and a population heuristic are used.
+See [Moment Timezone's documentation](https://momentjs.com/timezone/docs/#/using-timezones/guessing-user-timezone/)
+for more information and browser compatibility.
 </div>
 
 ```tsx

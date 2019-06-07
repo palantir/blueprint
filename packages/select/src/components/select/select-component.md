@@ -4,9 +4,12 @@ Use `Select<T>` for choosing one item from a list. The component's children will
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Disabling a Select</h4>
-    <p>Disabling the component requires setting the `disabled` prop to `true`
-    and separately disabling the component's children as appropriate (because `Select` accepts arbitrary children).</p>
-    <p>For example, `<Select ... disabled={true}><Button ... disabled={true} /></Select>`</p>
+
+Disabling the component requires setting the `disabled` prop to `true`
+and separately disabling the component's children as appropriate (because `Select` accepts arbitrary children).
+
+For example, `<Select ... disabled={true}><Button ... disabled={true} /></Select>`
+
 </div>
 
 @reactExample SelectExample
@@ -83,7 +86,8 @@ top of the basic `Select` interactions, such as windowed filtering for large
 data sets.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items" section below.
+
+To control the active item when a "Create Item" option is present, See [Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items" section below.
 </div>
 
 @## Creating new items
@@ -99,11 +103,13 @@ will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h4 class="@ns-heading">Avoiding type conflicts</h4>
-    The "Create Item" option is represented by the reserved type `ICreateNewItem`
-    exported from this package. It is exceedingly unlikely but technically possible
-    for your custom type `<T>` to conflict with this type. If your type conflicts,
-    you may see unexpected behavior; to resolve, consider changing the schema for
-    your items.
+
+The "Create Item" option is represented by the reserved type `ICreateNewItem`
+exported from this package. It is exceedingly unlikely but technically possible
+for your custom type `<T>` to conflict with this type. If your type conflicts,
+you may see unexpected behavior; to resolve, consider changing the schema for
+your items.
+
 </div>
 
 ```tsx
