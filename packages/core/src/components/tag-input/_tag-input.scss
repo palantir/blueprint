@@ -36,6 +36,8 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
     align-self: stretch;
     margin-top: $tag-input-padding;
     margin-right: $tag-input-icon-padding;
+    // allow tags to ellipse and not overflow the container
+    min-width: 0;
 
     // use the larger, conventional input padding when there are no tags and no left icon present.
     // see: https://github.com/palantir/blueprint/issues/2872
