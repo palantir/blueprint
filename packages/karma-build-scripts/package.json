@@ -1,12 +1,12 @@
 {
   "name": "@blueprintjs/karma-build-scripts",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "Karma build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
   },
   "dependencies": {
-    "@blueprintjs/webpack-build-scripts": "^0.7.1",
+    "@blueprintjs/webpack-build-scripts": "^0.8.0",
     "istanbul-instrumenter-loader": "^3.0.1",
     "karma": "^3.1.4",
     "karma-chrome-launcher": "^2.2.0",
@@ -26,5 +26,5 @@
     "directory": "packages/karma-build-scripts"
   },
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "Apache-2.0"
 }

@@ -1,7 +1,17 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
@@ -124,6 +134,20 @@ describe("<QueryList>", () => {
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
                 query: "123",
+            });
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
+        });
+
+        it("ensure activeItem changes on when no longer in new items", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                items: [TOP_100_FILMS[0]],
+                query: "abc",
+            };
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
+            filmQueryList.setProps({
+                items: [TOP_100_FILMS[1]],
             });
             assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
         });

@@ -1,5 +1,5 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the terms of the LICENSE file distributed with this project.
+// Licensed under the Apache License, Version 2.0.
 
 @import "~@blueprintjs/icons/src/icons";
 @import "../../common/mixins";
@@ -23,7 +23,76 @@ $drawer-default-size: 50%;
     outline: 0;
   }
 
-  &:not(.#{$ns}-vertical) {
+  &.#{$ns}-position-top {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (transform: (translateY(-100%), translateY(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (transform: (translateY(-100%), translateY(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
+
+    top: 0;
+    right: 0;
+    left: 0;
+    height: $drawer-default-size;
+  }
+
+  &.#{$ns}-position-bottom {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (transform: (translateY(100%), translateY(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (transform: (translateY(100%), translateY(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: $drawer-default-size;
+  }
+
+  &.#{$ns}-position-left {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (transform: (translateX(-100%), translateX(0))),
+      $pt-transition-duration * 2,
+      $pt-transition-ease,
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (transform: (translateX(-100%), translateX(0))),
+      $pt-transition-duration,
+      $before: "&"
+    );
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: $drawer-default-size;
+  }
+
+  &.#{$ns}-position-right {
     @include react-transition-phase(
       "#{$ns}-overlay",
       "enter",
@@ -46,27 +115,53 @@ $drawer-default-size: 50%;
     width: $drawer-default-size;
   }
 
-  &.#{$ns}-vertical {
-    @include react-transition-phase(
-      "#{$ns}-overlay",
-      "enter",
-      (transform: (translateY(100%), translateY(0))),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
-      $before: "&"
-    );
-    @include react-transition-phase(
-      "#{$ns}-overlay",
-      "exit",
-      (transform: (translateY(100%), translateY(0))),
-      $pt-transition-duration,
-      $before: "&"
-    );
+  &:not(.#{$ns}-position-top):not(.#{$ns}-position-bottom):not(.#{$ns}-position-left):not(
+  .#{$ns}-position-right) {
+    &:not(.#{$ns}-vertical) {
+      @include react-transition-phase(
+        "#{$ns}-overlay",
+        "enter",
+        (transform: (translateX(100%), translateX(0))),
+        $pt-transition-duration * 2,
+        $pt-transition-ease,
+        $before: "&"
+      );
+      @include react-transition-phase(
+        "#{$ns}-overlay",
+        "exit",
+        (transform: (translateX(100%), translateX(0))),
+        $pt-transition-duration,
+        $before: "&"
+      );
 
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: $drawer-default-size;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: $drawer-default-size;
+    }
+
+    &.#{$ns}-vertical {
+      @include react-transition-phase(
+        "#{$ns}-overlay",
+        "enter",
+        (transform: (translateY(100%), translateY(0))),
+        $pt-transition-duration * 2,
+        $pt-transition-ease,
+        $before: "&"
+      );
+      @include react-transition-phase(
+        "#{$ns}-overlay",
+        "exit",
+        (transform: (translateY(100%), translateY(0))),
+        $pt-transition-duration,
+        $before: "&"
+      );
+
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: $drawer-default-size;
+    }
   }
 
   &.#{$ns}-dark,

@@ -1,7 +1,17 @@
 /*
  * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import classNames from "classnames";
@@ -10,6 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
+import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
@@ -36,6 +47,13 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * This prop is required because the component is controlled.
      */
     isOpen: boolean;
+
+    /**
+     * Position of a drawer. All angled positions will be casted into pure positions
+     * (TOP, BOTTOM, LEFT or RIGHT).
+     * @default Position.RIGHT
+     */
+    position?: Position;
 
     /**
      * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
@@ -70,7 +88,9 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * Whether the drawer should appear with vertical styling.
+     * It will be ignored if `position` prop is set
      * @default false
+     * @deprecated use `position` instead
      */
     vertical?: boolean;
 }
@@ -80,6 +100,7 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        position: null,
         style: {},
         vertical: false,
     };
@@ -89,9 +110,25 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
     public static readonly SIZE_LARGE = "90%";
 
     public render() {
-        const { size, style, vertical } = this.props;
-        const classes = classNames(Classes.DRAWER, { [Classes.VERTICAL]: vertical }, this.props.className);
-        const styleProp = size == null ? style : { ...style, [vertical ? "height" : "width"]: size };
+        const { size, style, position, vertical } = this.props;
+        const realPosition = position ? getPositionIgnoreAngles(position) : null;
+
+        const classes = classNames(
+            Classes.DRAWER,
+            {
+                [Classes.VERTICAL]: !realPosition && vertical,
+                [realPosition ? Classes.positionClass(realPosition) : ""]: true,
+            },
+            this.props.className,
+        );
+
+        const styleProp =
+            size == null
+                ? style
+                : {
+                      ...style,
+                      [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
+                  };
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
                 <div className={classes} style={styleProp}>
@@ -109,6 +146,14 @@ export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
             }
             if (props.isCloseButtonShown != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_CLOSE_BUTTON);
+            }
+        }
+        if (props.position != null) {
+            if (props.vertical) {
+                console.warn(Errors.DRAWER_VERTICAL_IS_IGNORED);
+            }
+            if (props.position !== getPositionIgnoreAngles(props.position)) {
+                console.warn(Errors.DRAWER_ANGLE_POSITIONS_ARE_CASTED);
             }
         }
     }

@@ -8,10 +8,12 @@ below, clicking a label focuses its `<input>`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Prefer form groups over labels</h4>
-    The [React `FormGroup` component](#core/components/form-group) provides
-    additional functionality such as helper text and modifier props as well as
-    full label support. `FormGroup` supports both simple and complex use cases,
-    therefore we recommend using it exclusively when constructing forms.
+
+The [React `FormGroup` component](#core/components/form-group) provides
+additional functionality such as helper text and modifier props as well as
+full label support. `FormGroup` supports both simple and complex use cases,
+therefore we recommend using it exclusively when constructing forms.
+
 </div>
 
 @## Props

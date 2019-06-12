@@ -3232,5 +3232,75 @@
     "tags": "folder, mail, file, message, notifications, warning",
     "group": "file",
     "content": "\\e7d4"
+  },
+  {
+    "displayName": "Inheritance",
+    "iconName": "inheritance",
+    "tags": "arrows, derive",
+    "group": "action",
+    "content": "\\e7d5"
+  },
+  {
+    "displayName": "Reset",
+    "iconName": "reset",
+    "tags": "circle, arrow",
+    "group": "action",
+    "content": "\\e7d6"
+  },
+  {
+    "displayName": "Filter: open",
+    "iconName": "filter-open",
+    "tags": "filtering, funnel, tube, pipe",
+    "group": "action",
+    "content": "\\e7d7"
+  },
+  {
+    "displayName": "Table: disconnect",
+    "iconName": "th-disconnect",
+    "tags": "index, rows, columns, agenda, list, spreadsheet, unlink, detach, remove",
+    "group": "table",
+    "content": "\\e7d8"
+  },
+  {
+    "displayName": "Equals",
+    "iconName": "equals",
+    "tags": "mathematical, equations, expression, formula",
+    "group": "action",
+    "content": "\\e7d9"
+  },
+  {
+    "displayName": "Not equal to",
+    "iconName": "not-equal-to",
+    "tags": "mathematical, equations, expression, formula",
+    "group": "action",
+    "content": "\\e7e0"
+  },
+  {
+    "displayName": "Greater than",
+    "iconName": "greater-than",
+    "tags": "mathematical, equations, expression, formula",
+    "group": "action",
+    "content": "\\e7e1"
+  },
+  {
+    "displayName": "Greater than or equal to",
+    "iconName": "greater-than-or-equal-to",
+    "tags": "mathematical, equations, expression, formula",
+    "group": "action",
+    "content": "\\e7e2"
+  },
+  {
+    "displayName": "Less than",
+    "iconName": "less-than",
+    "tags": "mathematical, equations, expression, formula",
+    "group": "action",
+    "content": "\\e7e3"
+  },
+  {
+    "displayName": "Less than or equal to",
+    "iconName": "less-than-or-equal-to",
+    "tags": "mathematical, equations, expression, formula",
+    "group": "action",
+    "content": "\\e7e4"
   }
 ]

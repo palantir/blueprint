@@ -1,7 +1,17 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 const ns = "[Blueprint]";
@@ -80,3 +90,7 @@ export const TOASTER_WARN_INLINE = ns + ` Toaster.create() ignores inline prop a
 export const DIALOG_WARN_NO_HEADER_ICON = ns + ` <Dialog> iconName is ignored if title is omitted.`;
 export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
     ns + ` <Dialog> isCloseButtonShown prop is ignored if title is omitted.`;
+
+export const DRAWER_VERTICAL_IS_IGNORED = ns + ` <Drawer> vertical is ignored if position is defined`;
+export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
+    ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;

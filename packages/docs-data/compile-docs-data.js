@@ -8,7 +8,7 @@
 // @ts-check
 const { Classes } = require("@blueprintjs/core/lib/cjs/common");
 const { execSync, spawn } = require("child_process");
-const dm = require("documentalist");
+const dm = require("@documentalist/compiler");
 const fs = require("fs");
 const glob = require("glob");
 const path = require("path");
@@ -68,7 +68,7 @@ function transformDocumentalistData(key, value) {
     if (key === "versions" && Array.isArray(value)) {
         // one major version per release
         const majors = new Map();
-        for (version of value) {
+        for (const version of value) {
             const major = semver.major(version)
             if (!majors.has(major) || semver.gt(version, majors.get(major))) {
                 majors.set(major, version);

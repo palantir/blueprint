@@ -43,9 +43,11 @@ custom `onKeyDown` callback) and when the field loses focus (via a custom
 trigged, the field will be cleared.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    This example contains non-core functionality that is meant to demonstrate
-    the extensibility of the `NumericInput` component. The correctness of the
-    custom evaluation code has not been tested robustly.
+
+This example contains non-core functionality that is meant to demonstrate
+the extensibility of the `NumericInput` component. The correctness of the
+custom evaluation code has not been tested robustly.
+
 </div>
 
 @reactExample NumericInputExtendedExample
@@ -106,7 +108,7 @@ import * as SomeLibrary from "some-library";
 
 export class NumericInputExample extends React.Component<{}, { value?: number |
 string }> {
-    public state = { value: null };
+    public state = { value: NumericInput.VALUE_EMPTY };
 
     public render() {
         return (

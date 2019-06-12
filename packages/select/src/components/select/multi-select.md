@@ -4,7 +4,8 @@ Use `MultiSelect<T>` for choosing multiple items in a list. The component render
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Generic components and custom filtering</h4>
-    For more information on controlled usage, generic components, creating new items, and custom filtering, visit the documentation for [`Select<T>`](#select/select-component).
+
+For more information on controlled usage, generic components, creating new items, and custom filtering, visit the documentation for [`Select<T>`](#select/select-component).
 </div>
 
 @reactExample MultiSelectExample

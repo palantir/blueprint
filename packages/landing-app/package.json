@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/landing-app",
-  "version": "3.0.0",
+  "version": "3.15.0",
   "description": "Blueprint landing page",
   "private": true,
   "scripts": {
@@ -16,7 +16,7 @@
     "verify": "run-p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.0.0",
+    "@blueprintjs/core": "^3.15.0",
     "classnames": "^2.2.5",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
@@ -39,5 +39,5 @@
     "landing page"
   ],
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE IN REPO ROOT"
+  "license": "Apache-2.0"
 }

@@ -1,12 +1,23 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import { Alignment } from "./alignment";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
+import { Position } from "./position";
 
 const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
 
@@ -28,6 +39,10 @@ export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
 export const SMALL = `${NS}-small`;
 export const VERTICAL = `${NS}-vertical`;
+export const POSITION_TOP = positionClass(Position.TOP);
+export const POSITION_BOTTOM = positionClass(Position.BOTTOM);
+export const POSITION_LEFT = positionClass(Position.LEFT);
+export const POSITION_RIGHT = positionClass(Position.RIGHT);
 
 export const ELEVATION_0 = elevationClass(Elevation.ZERO);
 export const ELEVATION_1 = elevationClass(Elevation.ONE);
@@ -137,6 +152,7 @@ export const RADIO = `${NS}-radio`;
 export const SWITCH = `${NS}-switch`;
 export const SWITCH_INNER_TEXT = `${SWITCH}-inner-text`;
 export const FILE_INPUT = `${NS}-file-input`;
+export const FILE_INPUT_HAS_SELECTION = `${NS}-file-input-has-selection`;
 export const FILE_UPLOAD_INPUT = `${NS}-file-upload-input`;
 
 export const KEY = `${NS}-key`;
@@ -303,4 +319,11 @@ export function intentClass(intent?: Intent) {
         return undefined;
     }
     return `${NS}-intent-${intent.toLowerCase()}`;
+}
+
+export function positionClass(position: Position) {
+    if (position == null) {
+        return undefined;
+    }
+    return `${NS}-position-${position}`;
 }

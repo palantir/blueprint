@@ -1,13 +1,24 @@
 /*
  * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import { Classes, Menu, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
 import { DATERANGEPICKER_SHORTCUTS } from "./common/classes";
 import { clone, DateRange, isDayRangeInRange } from "./common/dateUtils";
+import { TimePrecision } from "./timePicker";
 
 export interface IDateRangeShortcut {
     /** Shortcut label that appears in the list. */
@@ -34,6 +45,7 @@ export interface IShortcutsProps {
     minDate: Date;
     maxDate: Date;
     shortcuts: IDateRangeShortcut[] | true;
+    timePrecision: TimePrecision;
     onShortcutClick: (shortcut: IDateRangeShortcut) => void;
 }
 
@@ -41,7 +53,7 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
     public render() {
         const shortcuts =
             this.props.shortcuts === true
-                ? createDefaultShortcuts(this.props.allowSingleDayRange)
+                ? createDefaultShortcuts(this.props.allowSingleDayRange, this.props.timePrecision !== undefined)
                 : this.props.shortcuts;
 
         const shortcutElements = shortcuts.map((s, i) => (
@@ -70,7 +82,7 @@ function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut
     return { dateRange, label };
 }
 
-function createDefaultShortcuts(allowSingleDayRange: boolean) {
+function createDefaultShortcuts(allowSingleDayRange: boolean, hasTimePrecision: boolean) {
     const today = new Date();
     const makeDate = (action: (d: Date) => void) => {
         const returnVal = clone(today);
@@ -79,6 +91,7 @@ function createDefaultShortcuts(allowSingleDayRange: boolean) {
         return returnVal;
     };
 
+    const tomorrow = makeDate(() => null);
     const yesterday = makeDate(d => d.setDate(d.getDate() - 2));
     const oneWeekAgo = makeDate(d => d.setDate(d.getDate() - 7));
     const oneMonthAgo = makeDate(d => d.setMonth(d.getMonth() - 1));
@@ -88,7 +101,10 @@ function createDefaultShortcuts(allowSingleDayRange: boolean) {
     const twoYearsAgo = makeDate(d => d.setFullYear(d.getFullYear() - 2));
 
     const singleDayShortcuts = allowSingleDayRange
-        ? [createShortcut("Today", [today, today]), createShortcut("Yesterday", [yesterday, yesterday])]
+        ? [
+              createShortcut("Today", [today, hasTimePrecision ? tomorrow : today]),
+              createShortcut("Yesterday", [yesterday, hasTimePrecision ? today : yesterday]),
+          ]
         : [];
 
     return [

@@ -43,8 +43,10 @@ there is not enough room to the right.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">JavaScript only</h4>
-    Submenus are only supported in the React components. They cannot be created with CSS alone because
-    they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
+
+Submenus are only supported in the React components. They cannot be created with CSS alone because
+they rely on the [`Popover`](#core/components/popover) component for positioning and transitions.
+
 </div>
 
 @## Props
@@ -126,8 +128,10 @@ as they abstract away the tedious parts of implementing a menu.
 defined as part of `.@ns-menu-item`.</small>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    Note that the following examples are `display: inline-block`; you may need to adjust
-    menu width in your own usage.
+
+Note that the following examples are `display: inline-block`; you may need to adjust
+menu width in your own usage.
+
 </div>
 
 @css menu

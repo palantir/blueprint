@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/tslint-config",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "TSLint configuration for @blueprintjs packages",
   "scripts": {
     "compile": "tsc -p ./src",
@@ -22,5 +22,5 @@
     "directory": "packages/tslint-config"
   },
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "Apache-2.0"
 }

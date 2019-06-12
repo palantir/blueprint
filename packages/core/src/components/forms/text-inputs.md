@@ -39,12 +39,13 @@ the parent input.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Icons only</h4>
-    <p>You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
-    in CSS cannot accommodate buttons whose width varies due to text content. You should use icons on
-    buttons instead.</p>
 
-    Conversely, the [`InputGroup`](#core/components/text-inputs.input-group) React
-    component _does_ support arbitrary content in its right element.
+You cannot use buttons with text in the CSS API for input groups. The padding for text inputs
+in CSS cannot accommodate buttons whose width varies due to text content. You should use icons on
+buttons instead.
+
+Conversely, the [`InputGroup`](#core/components/text-inputs.input-group) React
+component _does_ support arbitrary content in its right element.
 
 </div>
 

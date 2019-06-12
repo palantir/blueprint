@@ -4,7 +4,7 @@
   "description": "React 15 dependencies for testing",
   "private": true,
   "dependencies": {
-    "enzyme-adapter-react-15": "^1.0.5",
+    "enzyme-adapter-react-15": "^1.4.0",
     "react": "^15.6.0",
     "react-dom": "^15.6.0",
     "react-test-renderer": "^15.6.0"
@@ -15,5 +15,5 @@
     "directory": "packages/test-react15"
   },
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE IN REPO ROOT"
+  "license": "Apache-2.0"
 }

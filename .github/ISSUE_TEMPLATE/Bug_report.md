@@ -10,7 +10,7 @@ about: Something not working as expected?
 - __Package version(s)__: <!-- fill this out -->
 - __Browser and OS versions__: <!-- fill this out -->
 
-If possible, ink to a minimal repro (fork [this code sandbox](https://codesandbox.io/s/nko3k41y60)): <!-- here -->
+If possible, link to a minimal repro (fork [this code sandbox](https://codesandbox.io/s/nko3k41y60)): <!-- here -->
 
 #### Steps to reproduce
 

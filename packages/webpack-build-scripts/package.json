@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/webpack-build-scripts",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Webpack build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
@@ -10,7 +10,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "circular-dependency-plugin": "^5.0.2",
     "css-loader": "^2.0.1",
-    "cssnano": "^4.1.4",
+    "cssnano": "^4.1.10",
     "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
@@ -20,7 +20,7 @@
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "webpack": "^4.27.1",
-    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-server": "^3.1.0",
     "webpack-notifier": "^1.7.0"
   },
@@ -30,5 +30,5 @@
     "directory": "packages/webpack-build-scripts"
   },
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "Apache-2.0"
 }

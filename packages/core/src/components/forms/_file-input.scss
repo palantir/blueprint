@@ -1,5 +1,5 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the terms of the LICENSE file distributed with this project.
+// Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
 @import "../button/common";
@@ -16,6 +16,7 @@ Markup:
 :disabled - Disabled
 .#{$ns}-large - Larger size
 .#{$ns}-fill - Take up full width of parent element
+.#{$ns}-file-input-has-selection - User has made a selection
 
 Styleguide file-input
 */
@@ -39,7 +40,8 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     // unlike other form controls that directly style native elements,
     // pt-file-input wraps and hides the native element for better control over
     // visual styles. to disable, we need to disable the hidden child input, not
-    // the surrounding wrapper. see #689 for gory details.
+    // the surrounding wrapper. @see https://github.com/palantir/blueprint/issues/689
+    // for gory details.
     &:disabled + .#{$ns}-file-upload-input,
     &.#{$ns}-disabled + .#{$ns}-file-upload-input {
       @include pt-input-disabled();
@@ -55,6 +57,16 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
           @include pt-dark-button-disabled();
         }
       }
+    }
+  }
+
+  &.#{$ns}-file-input-has-selection {
+    .#{$ns}-file-upload-input {
+      color: $pt-text-color;
+    }
+
+    .#{$ns}-dark & .#{$ns}-file-upload-input {
+      color: $pt-dark-text-color;
     }
   }
 
@@ -76,6 +88,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
   right: 0;
   left: 0;
   padding-right: $file-input-button-width + $input-padding-horizontal;
+  color: $pt-text-color-disabled;
   user-select: none;
 
   &::after {
@@ -114,7 +127,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 
   .#{$ns}-dark & {
     @include pt-dark-input();
-    color: $pt-dark-text-color-muted;
+    color: $pt-dark-text-color-disabled;
 
     &::after {
       @include pt-dark-button();

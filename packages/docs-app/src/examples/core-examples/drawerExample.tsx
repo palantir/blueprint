@@ -1,12 +1,34 @@
 /*
  * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import * as React from "react";
 
-import { Button, Classes, Code, Divider, Drawer, H5, HTMLSelect, IOptionProps, Label, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    Code,
+    Divider,
+    Drawer,
+    H5,
+    HTMLSelect,
+    IOptionProps,
+    Label,
+    Position,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/reactExamples";
 
@@ -17,9 +39,9 @@ export interface IDrawerExampleState {
     enforceFocus: boolean;
     hasBackdrop: boolean;
     isOpen: boolean;
+    position?: Position;
     size: string;
     usePortal: boolean;
-    vertical: boolean;
 }
 export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
     public state: IDrawerExampleState = {
@@ -29,9 +51,9 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
         enforceFocus: true,
         hasBackdrop: true,
         isOpen: false,
+        position: Position.RIGHT,
         size: undefined,
         usePortal: true,
-        vertical: false,
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
@@ -39,8 +61,8 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
+    private handlePositionChange = handleStringChange((position: Position) => this.setState({ position }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
-    private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
     private handleSizeChange = handleStringChange(size => this.setState({ size }));
 
     public render() {
@@ -96,10 +118,17 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
             <>
                 <H5>Props</H5>
                 <Label>
+                    Position
+                    <HTMLSelect
+                        value={this.state.position}
+                        onChange={this.handlePositionChange}
+                        options={VALID_POSITIONS}
+                    />
+                </Label>
+                <Label>
                     Size
                     <HTMLSelect options={SIZES} onChange={this.handleSizeChange} />
                 </Label>
-                <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
                 <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
                 <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
@@ -129,3 +158,5 @@ const SIZES: Array<string | IOptionProps> = [
     "72%",
     "560px",
 ];
+
+const VALID_POSITIONS: Position[] = [Position.TOP, Position.RIGHT, Position.BOTTOM, Position.LEFT];

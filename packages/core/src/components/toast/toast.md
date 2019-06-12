@@ -36,16 +36,20 @@ There are three ways to use the `Toaster` component:
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Working with multiple toasters</h4>
-    You can have multiple toasters in a single application, but you must ensure that each has a unique
-    `position` to prevent overlap.
+
+You can have multiple toasters in a single application, but you must ensure that each has a unique
+`position` to prevent overlap.
+
 </div>
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">Toaster focus</h4>
-    `Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
-    from accessing other parts of the application while a toast is active), and by default also
-    disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
-    enable `autoFocus` for an individual `Toaster` via a prop, if desired.
+
+`Toaster` always disables `Overlay`'s `enforceFocus` behavior (meaning that you're not blocked
+from accessing other parts of the application while a toast is active), and by default also
+disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
+enable `autoFocus` for an individual `Toaster` via a prop, if desired.
+
 </div>
 
 
@@ -70,8 +74,10 @@ because the `Toaster` should not be treated as a normal React component.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">React 16 usage</h4>
-    `Toaster.create()` will throw an error if invoked inside a component lifecycle method in React 16, as `ReactDOM.render()` will return
-    `null` resulting in an inaccessible toaster instance. See the second bullet point on the [React 16 release notes](https://reactjs.org/blog/2017/09/26/react-v16.0.html#breaking-changes) for more information.
+
+`Toaster.create()` will throw an error if invoked inside a component lifecycle method in React 16, as `ReactDOM.render()` will return
+`null` resulting in an inaccessible toaster instance. See the second bullet point on the [React 16 release notes](https://reactjs.org/blog/2017/09/26/react-v16.0.html#breaking-changes) for more information.
+
 </div>
 
 @interface IToaster

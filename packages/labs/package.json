@@ -41,9 +41,9 @@
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.8.1",
-    "@blueprintjs/test-commons": "^0.8.1",
-    "enzyme": "^3.3.0",
+    "@blueprintjs/node-build-scripts": "^0.9.0",
+    "@blueprintjs/test-commons": "^0.9.0",
+    "enzyme": "^3.9.0",
     "karma": "^3.1.4",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
@@ -64,5 +64,5 @@
     "labs"
   ],
   "author": "Palantir Technologies",
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "Apache-2.0"
 }

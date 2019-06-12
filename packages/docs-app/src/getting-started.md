@@ -53,8 +53,9 @@ The `main` module exports all symbols from all modules so you don't have to impo
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">CDN-only usage</h4>
-    Blueprint can instead be quickly added to a page using the Unpkg CDN.
-    [See below for instructions](#blueprint/getting-started.cdn-consumption).
+
+Blueprint can instead be quickly added to a page using the Unpkg CDN.
+[See below for instructions](#blueprint/getting-started.cdn-consumption).
 </div>
 
 @## JS environment
@@ -96,7 +97,8 @@ npm install --save @types/moment-timezone
 Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-  For more information, see [Understanding TypeScript](#blueprint/reading-the-docs.understanding-typescript).
+
+For more information, see [Understanding TypeScript](#blueprint/reading-the-docs.understanding-typescript).
 </div>
 
 @## Vanilla JS APIs

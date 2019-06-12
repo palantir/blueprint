@@ -1,7 +1,17 @@
 /*
  * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import classNames from "classnames";
@@ -369,8 +379,16 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
 
     // focus DOM event listener (not React event)
     private handlePopoverBlur = (e: FocusEvent) => {
-        const relatedTarget = e.relatedTarget as HTMLElement;
-        if (relatedTarget == null || !this.popoverContentEl.contains(relatedTarget)) {
+        let relatedTarget = e.relatedTarget as HTMLElement;
+        if (relatedTarget == null) {
+            // Support IE11 (#2924)
+            relatedTarget = document.activeElement as HTMLElement;
+        }
+        // Beware: this.popoverContentEl is sometimes null under Chrome
+        if (
+            relatedTarget == null ||
+            (this.popoverContentEl != null && !this.popoverContentEl.contains(relatedTarget))
+        ) {
             this.handleClosePopover();
         } else if (relatedTarget != null) {
             this.unregisterPopoverBlurHandler();
