@@ -160,7 +160,6 @@ describe("<EditableCell>", () => {
         // start editing
         elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
         const input = elem.find("input");
-        console.log("input = ", elem.debug());
         // input props that EditableCell does not care about should pass through unchanged
         expect(input.prop("maxLength")).to.equal(345);
         expect(elem.find(`.${Classes.EDITABLE_TEXT}`).prop("className")).to.contain("input-only-class");
