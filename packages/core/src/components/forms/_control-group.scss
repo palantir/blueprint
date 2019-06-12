@@ -100,13 +100,12 @@ Styleguide control-group
   .#{$ns}-button,
   .#{$ns}-html-select select,
   .#{$ns}-select select {
+    @include new-render-layer();
     z-index: index($control-group-stack, "button-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
 
     &:focus {
-      // establish new stacking context so focus state covers neighbors
-      position: relative;
       z-index: index($control-group-stack, "button-focus");
     }
 
