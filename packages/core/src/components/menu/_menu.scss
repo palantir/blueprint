@@ -52,6 +52,15 @@ Styleguide menu
   @include menu-item();
   @include menu-item-intent();
 
+  #{$icon-classes} {
+    color: $pt-icon-color;
+    @each $intent, $colors in $pt-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include intent-color($intent);
+      }
+    }
+  }
+
   &::before {
     // support pt-icon-* classes directly on this element
     @include pt-icon();
@@ -152,6 +161,15 @@ Styleguide menu-header
 
   .#{$ns}-menu-item {
     @include menu-item-intent($pt-dark-intent-text-colors);
+
+    #{$icon-classes} {
+      color: $pt-icon-color;
+      @each $intent, $colors in $pt-intent-colors {
+        &.#{$ns}-intent-#{$intent} {
+          @include intent-color($intent);
+        }
+      }
+    }
 
     &::before,
     > .#{$ns}-icon {

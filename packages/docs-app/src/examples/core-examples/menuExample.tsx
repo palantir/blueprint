@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, Icon, Intent, Menu, MenuDivider, MenuItem } from '@blueprintjs/core'
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 export class MenuExample extends React.PureComponent<IExampleProps, {}> {
@@ -30,7 +30,7 @@ export class MenuExample extends React.PureComponent<IExampleProps, {}> {
                     <MenuItem icon="new-object" text="New object" />
                     <MenuItem icon="new-link" text="New link" />
                     <MenuDivider />
-                    <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." />
+                    <MenuItem icon={<Icon icon="cog" intent={Intent.PRIMARY} />} labelElement={<Icon icon="share" />} text="Settings..." />
                 </Menu>
                 <Menu className={Classes.ELEVATION_1}>
                     <MenuDivider title="Edit" />
