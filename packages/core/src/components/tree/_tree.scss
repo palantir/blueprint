@@ -179,6 +179,12 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
   .#{$ns}-tree {
     #{$icon-classes} {
       color: $pt-dark-icon-color;
+
+      @each $intent, $colors in $pt-intent-colors {
+        &.#{$ns}-intent-#{$intent} {
+          @include intent-color($intent);
+        }
+      }
     }
   }
 
