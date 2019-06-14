@@ -42,6 +42,12 @@ export interface IPanelStackProps extends IProps {
      * prop method.
      */
     onOpen?: (addedPanel: IPanel) => void;
+
+    /**
+     * Whether to show the header with the "back" button in each panel.
+     * @default true
+     */
+    showPanelHeader?: boolean;
 }
 
 export interface IPanelStackState {
@@ -72,6 +78,7 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
     }
 
     private renderCurrentPanel() {
+        const { showPanelHeader = true } = this.props;
         const { stack } = this.state;
         if (stack.length === 0) {
             return null;
@@ -84,6 +91,7 @@ export class PanelStack extends React.PureComponent<IPanelStackProps, IPanelStac
                     onOpen={this.handlePanelOpen}
                     panel={activePanel}
                     previousPanel={previousPanel}
+                    showHeader={showPanelHeader}
                 />
             </CSSTransition>
         );
