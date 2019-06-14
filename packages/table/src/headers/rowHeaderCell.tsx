@@ -30,7 +30,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
      * This render callback can be used, for example, to provide a
      * `EditableName` component for editing row names.
      *
-     * The callback will also receive the column index if an `index` was originally
+     * The callback will also receive the row index if an `index` was originally
      * provided via props.
      */
     nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
