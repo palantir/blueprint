@@ -84,6 +84,28 @@ describe("<PanelStack>", () => {
         assert.equal(oldPanelHeader.at(1).text(), "Test Title");
     });
 
+    it("renders a panel stack without header and allows opening and closing", () => {
+        panelStackWrapper = renderPanelStack({ initialPanel, showPanelHeader: false });
+        assert.exists(panelStackWrapper);
+
+        const newPanelButton = panelStackWrapper.find("#new-panel-button");
+        assert.exists(newPanelButton);
+        newPanelButton.simulate("click");
+
+        const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
+        assert.lengthOf(newPanelHeader, 0);
+
+        const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
+        assert.lengthOf(backButton, 0);
+
+        const closePanel = panelStackWrapper.find("#close-panel-button");
+        assert.exists(closePanel);
+        closePanel.last().simulate("click");
+
+        const oldPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
+        assert.lengthOf(oldPanelHeader, 0);
+    });
+
     it("does not call the callback handler onClose when there is only a single panel on the stack", () => {
         const onClose = spy();
         panelStackWrapper = renderPanelStack({ initialPanel, onClose });

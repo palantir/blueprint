@@ -48,6 +48,12 @@ export interface IPanelStackProps extends IProps {
     onOpen?: (addedPanel: IPanel) => void;
 
     /**
+     * Whether to show the header with the "back" button in each panel.
+     * @default true
+     */
+    showPanelHeader?: boolean;
+
+    /**
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
@@ -103,6 +109,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
     }
 
     private renderCurrentPanel() {
+        const { showPanelHeader = true } = this.props;
         const { stack } = this.state;
         if (stack.length === 0) {
             return null;
@@ -115,6 +122,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
                     onOpen={this.handlePanelOpen}
                     panel={activePanel}
                     previousPanel={previousPanel}
+                    showHeader={showPanelHeader}
                 />
             </CSSTransition>
         );
