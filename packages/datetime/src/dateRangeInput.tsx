@@ -342,14 +342,13 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
     private renderInputGroup = (boundary: Boundary) => {
         const inputProps = this.getInputProps(boundary);
-
         const handleInputEvent = boundary === Boundary.START ? this.handleStartInputEvent : this.handleEndInputEvent;
 
         return (
             <InputGroup
                 autoComplete="off"
+                disabled={inputProps.disabled || this.props.disabled}
                 {...inputProps}
-                disabled={this.props.disabled}
                 intent={this.isInputInErrorState(boundary) ? Intent.DANGER : inputProps.intent}
                 inputRef={this.getInputRef(boundary)}
                 onBlur={handleInputEvent}
