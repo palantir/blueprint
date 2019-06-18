@@ -176,6 +176,62 @@ describe("<PanelStack>", () => {
         assert.equal(backButtonWithTitle.text(), "chevron-left");
     });
 
+    it("can render a panel stack in controlled mode", () => {
+        const stack = [initialPanel];
+        panelStackWrapper = renderPanelStack({ stack });
+        assert.exists(panelStackWrapper);
+
+        const newPanelButton = panelStackWrapper.find("#new-panel-button");
+        assert.exists(newPanelButton);
+        newPanelButton.simulate("click");
+
+        // Expect the same panel as before since onOpen is not handled
+        const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
+        assert.exists(newPanelHeader);
+        assert.equal(newPanelHeader.at(0).text(), "Test Title");
+    });
+
+    it("can open a panel in controlled mode", () => {
+        let stack = [initialPanel];
+        panelStackWrapper = renderPanelStack({ onOpen: panel => (stack = [...stack, panel]), stack });
+        assert.exists(panelStackWrapper);
+
+        const newPanelButton = panelStackWrapper.find("#new-panel-button");
+        assert.exists(newPanelButton);
+        newPanelButton.simulate("click");
+        panelStackWrapper.setProps({ stack });
+
+        const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
+        assert.exists(newPanelHeader);
+        assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
+    });
+
+    it("can render a panel stack with multiple initial panels and close one", () => {
+        let stack: Array<IPanel<any>> = [initialPanel, { component: TestPanel, title: "New Panel 1" }];
+        panelStackWrapper = renderPanelStack({
+            onClose: () => {
+                const newStack = stack.slice();
+                newStack.pop();
+                stack = newStack;
+            },
+            stack,
+        });
+        assert.exists(panelStackWrapper);
+
+        const panelHeader = panelStackWrapper.findClass(Classes.HEADING);
+        assert.exists(panelHeader);
+        assert.equal(panelHeader.at(0).text(), "New Panel 1");
+
+        const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
+        assert.exists(backButton);
+        backButton.simulate("click");
+        panelStackWrapper.setProps({ stack });
+
+        const firstPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
+        assert.exists(firstPanelHeader);
+        assert.equal(firstPanelHeader.at(0).text(), "Test Title");
+    });
+
     interface IPanelStackWrapper extends ReactWrapper<IPanelStackProps, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
