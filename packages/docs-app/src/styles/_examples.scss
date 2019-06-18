@@ -502,3 +502,9 @@
     padding: 0;
   }
 }
+
+#{example("file-input")} {
+  .#{$ns}-file-upload-input::after {
+    content: "Browse";
+  }
+}
