@@ -32,9 +32,9 @@ export class CollapseExample extends React.Component<{}, ICollapseExampleState> 
                     {this.state.isOpen ? "Hide" : "Show"} build logs
                 </Button>
                 <Collapse isOpen={this.state.isOpen}>
-                    <pre>
+                    <Pre>
                         Dummy text.
-                    </pre>
+                    </Pre>
                 </Collapse>
             </div>
         );
