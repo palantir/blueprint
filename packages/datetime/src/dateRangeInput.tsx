@@ -339,9 +339,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
         }
     }
+
     private renderInputGroup = (boundary: Boundary) => {
         const inputProps = this.getInputProps(boundary);
-
         const handleInputEvent = boundary === Boundary.START ? this.handleStartInputEvent : this.handleEndInputEvent;
 
         return (
