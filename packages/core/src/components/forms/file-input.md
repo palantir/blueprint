@@ -1,9 +1,5 @@
 @# File input
 
-Use the standard `input type="file"` along with a `span` with class `@ns-file-upload-input`.
-Wrap that all in a `label` with class `@ns-file-input`.
-
-
 @reactExample FileInputExample
 
 @## Props
@@ -26,5 +22,8 @@ Use `inputProps` to apply props to the `<input>` element.
 @interface IFileInputProps
 
 @## CSS
+
+Use the standard `input type="file"` along with a `span` with class `@ns-file-upload-input`.
+Wrap that all in a `label` with class `@ns-file-input`.
 
 @css file-input
