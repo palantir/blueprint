@@ -143,7 +143,8 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
 
     private changeButtonText = (text: string) => {
         if (this.input) {
-            this.input.setAttribute("button-text", text);
+            const NS = Classes.getClassNamespace();
+            this.input.setAttribute(`${NS}-button-text`, text);
         }
     };
 

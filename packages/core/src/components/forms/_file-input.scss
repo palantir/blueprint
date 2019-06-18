@@ -102,7 +102,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
     width: $file-input-button-width;
     text-align: center;
     line-height: $pt-button-height-small;
-    content: attr(button-text);
+    content: attr(#{$ns}-button-text);
   }
 
   &:hover::after {
