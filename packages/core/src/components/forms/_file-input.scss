@@ -3,6 +3,7 @@
 
 @import "../../common/variables";
 @import "../button/common";
+@import "../../common/mixins";
 
 /*
 File input
@@ -94,6 +95,7 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
   &::after {
     @include pt-button();
     @include pt-button-height($pt-button-height-small);
+    @include overflow-ellipsis();
     position: absolute;
     top: 0;
     right: 0;
