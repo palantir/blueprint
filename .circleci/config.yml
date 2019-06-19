@@ -5,7 +5,7 @@ aliases:
     - image: circleci/node:lts
 
   - &docker-node-browsers
-    - image: circleci/node:8.10.0-browsers
+    - image: circleci/node:lts-browsers
       environment:
           CHROME_BIN: "/usr/bin/google-chrome"
 
