@@ -31,7 +31,7 @@ prop is not supported.
 
 When creating a tooltip, you must specify both:
 - its _content_ via the `content` prop, and
-- its _target_ as a single child element or string.
+- its _target_ as a single child element (required if using any of the target props) or string.
 
 The content will appear in a contrasting popover when the target is hovered.
 
