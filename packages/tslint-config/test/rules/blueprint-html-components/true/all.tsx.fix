@@ -1,7 +1,7 @@
-import { Blockquote, Code, H2, H5, Pre } from "@blueprintjs/core";
+import { Blockquote, Code, H2, H5, HTMLTable, Pre } from "@blueprintjs/core";
 <H5>Subtitle</H5>
 <Pre>block</Pre>
 <H2>Title</H2>
 <Code>code element</Code>
 <Blockquote />
-
+<HTMLTable>table element</HTMLTable>
