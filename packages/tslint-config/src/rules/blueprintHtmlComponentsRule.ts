@@ -20,7 +20,6 @@ import { addImportToFile } from "./utils/addImportToFile";
 import { replaceTagName } from "./utils/replaceTagName";
 
 const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
-const BLUEPRINT_HTMLTABLE_COMPONENT = "HTMLTable";
 
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
@@ -43,10 +42,6 @@ export class Rule extends Lint.Rules.AbstractRule {
     }
 }
 
-function isTableTag(tagName: string): boolean {
-    return tagName === "Table";
-}
-
 function walk(ctx: Lint.WalkContext<void>): void {
     const tagFailures: Array<{
         jsxTag: ts.JsxTagNameExpression;
@@ -59,12 +54,7 @@ function walk(ctx: Lint.WalkContext<void>): void {
         if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
             const match = PATTERN.exec(node.tagName.getFullText());
             if (match != null) {
-                let newTagName = match[1].charAt(0).toUpperCase() + match[1].slice(1);
-
-                if (isTableTag(newTagName)) {
-                    newTagName = BLUEPRINT_HTMLTABLE_COMPONENT;
-                }
-
+                const newTagName = getNewTagName(match[1]);
                 const replacements = [replaceTagName(node.tagName, newTagName)];
 
                 if (ts.isJsxOpeningElement(node)) {
@@ -91,4 +81,13 @@ function walk(ctx: Lint.WalkContext<void>): void {
     tagFailures.forEach(({ jsxTag, newTagName, replacements }) =>
         ctx.addFailureAt(jsxTag.getFullStart(), jsxTag.getFullWidth(), Rule.getFailure(newTagName), replacements),
     );
+}
+
+function getNewTagName(tagName: string) {
+    switch (tagName) {
+        case "table":
+            return "HTMLTable";
+        default:
+            return tagName.charAt(0).toUpperCase() + tagName.slice(1);
+    }
 }
