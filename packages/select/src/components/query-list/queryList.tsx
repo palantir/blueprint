@@ -578,7 +578,6 @@ export function getFirstEnabledItem<T>(
     if (items.length === 0) {
         return null;
     }
-    console.log('s', startIndex)
     // remember where we started to prevent an infinite loop
     let index = startIndex;
     const maxIndex = items.length - 1;
@@ -588,6 +587,6 @@ export function getFirstEnabledItem<T>(
         if (!isItemDisabled(items[index], index, itemDisabled)) {
             return items[index];
         }
-    } while (index !== startIndex);
+    } while (index !== startIndex && startIndex !== -1);
     return null;
 }
