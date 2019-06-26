@@ -578,6 +578,7 @@ export function getFirstEnabledItem<T>(
     if (items.length === 0) {
         return null;
     }
+    console.log('s', startIndex)
     // remember where we started to prevent an infinite loop
     let index = startIndex;
     const maxIndex = items.length - 1;
