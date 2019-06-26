@@ -111,6 +111,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     private refHandlers = {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };
+    private progressToastInterval?: number;
 
     private handlePositionChange = handleStringChange((position: ToasterPosition) => this.setState({ position }));
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
@@ -157,6 +158,12 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                     value={amount / 100}
                 />
             ),
+            onDismiss: (didTimeoutExpire: boolean) => {
+                if (!didTimeoutExpire) {
+                    // user dismissed toast with click
+                    window.clearInterval(this.progressToastInterval);
+                }
+            },
             timeout: amount < 100 ? 0 : 2000,
         };
     }
@@ -170,9 +177,9 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     private handleProgressToast = () => {
         let progress = 0;
         const key = this.toaster.show(this.renderProgress(0));
-        const interval = setInterval(() => {
+        this.progressToastInterval = window.setInterval(() => {
             if (this.toaster == null || progress > 100) {
-                clearInterval(interval);
+                window.clearInterval(this.progressToastInterval);
             } else {
                 progress += 10 + Math.random() * 20;
                 this.toaster.show(this.renderProgress(progress), key);
