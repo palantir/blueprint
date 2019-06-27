@@ -97,6 +97,10 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
       color: $pt-text-color-disabled;
     }
 
+    &.DayPicker-Day--isToday {
+      outline: 1px solid $pt-divider-black;
+    }
+
     &:hover,
     &:focus {
       background: $datepicker-day-background-color-hover;
@@ -194,6 +198,10 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   .DayPicker-Day {
     &.DayPicker-Day--outside {
       color: $pt-dark-text-color-disabled;
+    }
+
+    &.DayPicker-Day--isToday {
+      outline: 1px solid $pt-dark-divider-white;
     }
 
     &:hover,
