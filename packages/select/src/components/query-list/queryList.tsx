@@ -587,6 +587,6 @@ export function getFirstEnabledItem<T>(
         if (!isItemDisabled(items[index], index, itemDisabled)) {
             return items[index];
         }
-    } while (index !== startIndex);
+    } while (index !== startIndex && startIndex !== -1);
     return null;
 }
