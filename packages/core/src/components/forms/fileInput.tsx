@@ -91,6 +91,10 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
     private input: HTMLSpanElement | null = null;
 
     public componentDidMount() {
+        const sheet = this.createSheet();
+        const NS = Classes.getClassNamespace();
+        sheet.insertRule(`.${NS}-file-upload-input::after { content: attr(${NS}-button-text); }`, 0);
+
         this.changeButtonText(this.props.buttonText);
     }
 
@@ -134,6 +138,14 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
             </label>
         );
     }
+
+    private createSheet = () => {
+        const style = document.createElement("style");
+        style.appendChild(document.createTextNode(""));
+        document.head.appendChild(style);
+
+        return style.sheet as CSSStyleSheet;
+    };
 
     private createRef = (input: HTMLSpanElement | null) => {
         if (input !== null) {
