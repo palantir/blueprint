@@ -49,6 +49,13 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * Receives an object with props that should be applied to elements as necessary.
      */
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
+
+    /** 
+     * Indicates if 'Select' is disabled
+     * @default false
+     */
+    disabled?: boolean;
+
 }
 
 /**
@@ -128,6 +135,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     public static defaultProps = {
         resetOnQuery: true,
+        disabled: false
     };
 
     public static ofType<T>() {
@@ -304,6 +312,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index: number) => {
+        if (this.props.disabled) return null
         const { activeItem, query } = this.state;
         const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
         const modifiers: IItemModifiers = {
