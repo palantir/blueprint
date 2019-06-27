@@ -51,7 +51,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     defaultValue?: Date;
 
     /**
-     * Whether current day should be highlight in the calendar.
+     * Whether the current day should be highlighted in the calendar.
      * @default false
      */
     highlightCurrentDay?: boolean;
