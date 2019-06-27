@@ -162,7 +162,7 @@ export class Cell extends React.Component<ICellProps> {
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
         const modifiedChildren = React.Children.map(this.props.children, child => {
             if (
-                (style != null && React.isValidElement(child)) ||
+                (style != null && React.isValidElement(child)) &&
                 (CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat))
             ) {
                 return React.cloneElement(child as React.ReactElement<any>, {
