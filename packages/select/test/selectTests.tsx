@@ -72,7 +72,7 @@ describe("<Select>", () => {
     });
 
     it("disabled=false calls itemRenderer", () => {
-        select({ disabled: false })
+        select({ disabled: false });
         assert.equal(handlers.itemRenderer.callCount, 100);
     });
 
