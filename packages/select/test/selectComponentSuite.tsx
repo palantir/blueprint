@@ -130,6 +130,14 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 20);
         });
 
+        it("arrow up/down does not invokes onActiveItemChange, when all items are disabled", () => {
+            const wrapper = render({ ...testProps, itemDisabled: () => true });
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            assert.isNull(testProps.onActiveItemChange.lastCall);
+            findInput(wrapper).simulate("keyup", { keyCode: Keys.ARROW_UP });
+            assert.isNull(testProps.onActiveItemChange.lastCall);
+        });
+
         it("enter invokes onItemSelect with active item", () => {
             const wrapper = render(testProps);
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
