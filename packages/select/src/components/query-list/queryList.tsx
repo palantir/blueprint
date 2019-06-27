@@ -51,7 +51,7 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
 
     /** 
-     * Indicates if 'Select' is disabled
+     * Whether the prop `itemRenderer` should be invoked.
      * @default false
      */
     disabled?: boolean;
