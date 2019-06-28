@@ -42,6 +42,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
 
     /**
      * Whether the component is non-interactive.
+     * If true, the list's item renderer will not be called.
      * Note that you'll also need to disable the component's children, if appropriate.
      * @default false
      */

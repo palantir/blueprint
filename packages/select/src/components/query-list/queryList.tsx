@@ -51,7 +51,7 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
 
     /**
-     * Whether the prop `itemRenderer` should be invoked.
+     * Whether the list is disabled.
      * @default false
      */
     disabled?: boolean;
