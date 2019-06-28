@@ -66,6 +66,16 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
     });
 
+    it("disabled=true doesn't call itemRenderer", () => {
+        select({ disabled: true });
+        assert.equal(handlers.itemRenderer.callCount, 0);
+    });
+
+    it("disabled=false calls itemRenderer", () => {
+        select({ disabled: false });
+        assert.equal(handlers.itemRenderer.callCount, 100);
+    });
+
     it("inputProps value and onChange are ignored", () => {
         const inputProps = { value: "nailed it", onChange: sinon.spy() };
         const input = select({ inputProps }).find("input");
