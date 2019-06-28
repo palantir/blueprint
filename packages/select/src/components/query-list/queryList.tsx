@@ -311,22 +311,23 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index: number) => {
-        if (this.props.disabled) {
-            return null;
+        if (this.props.disabled !== true) {
+            const { activeItem, query } = this.state;
+            const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
+            const modifiers: IItemModifiers = {
+                active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
+                disabled: isItemDisabled(item, index, this.props.itemDisabled),
+                matchesPredicate,
+            };
+            return this.props.itemRenderer(item, {
+                handleClick: e => this.handleItemSelect(item, e),
+                index,
+                modifiers,
+                query,
+            });
         }
-        const { activeItem, query } = this.state;
-        const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
-        const modifiers: IItemModifiers = {
-            active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
-            disabled: isItemDisabled(item, index, this.props.itemDisabled),
-            matchesPredicate,
-        };
-        return this.props.itemRenderer(item, {
-            handleClick: e => this.handleItemSelect(item, e),
-            index,
-            modifiers,
-            query,
-        });
+
+        return null;
     };
 
     private renderCreateItemMenuItem = (query: string) => {
