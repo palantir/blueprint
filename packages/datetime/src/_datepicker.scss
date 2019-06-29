@@ -98,7 +98,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
 
     &.DayPicker-Day--isToday {
-      outline: 1px solid $pt-divider-black;
+      span {
+        border: 1px solid $pt-divider-black;
+        border-radius: $pt-border-radius;
+        padding: 6px;
+      }
     }
 
     &:hover,
@@ -201,7 +205,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
 
     &.DayPicker-Day--isToday {
-      outline: 1px solid $pt-dark-divider-white;
+      span {
+        border: 1px solid $pt-dark-divider-white;
+        border-radius: $pt-border-radius;
+        padding: 6px;
+      }
     }
 
     &:hover,

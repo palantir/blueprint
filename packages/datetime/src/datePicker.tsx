@@ -148,6 +148,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     onMonthChange={this.handleMonthChange}
                     selectedDays={this.state.value}
                     toMonth={maxDate}
+                    renderDay={this.renderDay}
                 />
                 {this.maybeRenderTimePicker()}
                 {showActionsBar && this.renderOptionsBar()}
@@ -208,6 +209,12 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             isToday: this.shouldHighlightCurrentDay,
             ...modifiers,
         };
+    };
+
+    private renderDay = (day: Date) => {
+        const date = day.getDate();
+
+        return <span>{date}</span>;
     };
 
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
