@@ -25,7 +25,7 @@ export interface IDateFormatProps {
     invalidDateMessage?: string;
 
     /**
-     * The locale name, which is passed to `formatDate`, `parseDate` and the functions in `localeUtils`.
+     * The locale name, which is passed to `formatDate`, `parseDate`, and the functions in `localeUtils`.
      */
     locale?: string;
 

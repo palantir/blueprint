@@ -2,7 +2,7 @@
 
 A `TimePicker` allows the user to specify a time.
 
-`TimePicker` has no direct localization support. You should handle localization directly in your
+`TimePicker` has no direct localization support. You should handle localization in your
 application if needed.
 
 @reactExample TimePickerExample
