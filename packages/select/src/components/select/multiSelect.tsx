@@ -31,8 +31,11 @@ import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
-    /** Controlled selected values. */
-    selectedItems?: T[];
+    /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill` and `tagInputProps.fill`.
+     */
+    fill?: boolean;
 
     /**
      * Whether the popover opens on key down or when `TagInput` is focused.
@@ -49,6 +52,9 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 
+    /** Controlled selected values. */
+    selectedItems?: T[];
+
     /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
     tagInputProps?: Partial<ITagInputProps> & object;
 
@@ -64,6 +70,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static defaultProps = {
+        fill: false,
         placeholder: "Search...",
     };
 
@@ -102,8 +109,13 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
+        const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+
+        if (fill) {
+            popoverProps.fill = true;
+            tagInputProps.fill = true;
+        }
 
         const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
             if (method === "paste") {

@@ -38,6 +38,7 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 export interface IMultiSelectExampleState {
     allowCreate: boolean;
     createdItems: IFilm[];
+    fill: boolean;
     films: IFilm[];
     hasInitialContent: boolean;
     intent: boolean;
@@ -52,6 +53,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     public state: IMultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],
+        fill: false,
         films: [],
         hasInitialContent: false,
         intent: false,
@@ -67,6 +69,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     private handleResetChange = this.handleSwitchChange("resetOnSelect");
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
+    private handleFillChange = this.handleSwitchChange("fill");
     private handleIntentChange = this.handleSwitchChange("intent");
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
@@ -138,6 +141,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     checked={this.state.allowCreate}
                     onChange={this.handleAllowCreateChange}
                 />
+                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <H5>Tag props</H5>
                 <Switch
                     label="Minimal tag style"

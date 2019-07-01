@@ -41,6 +41,11 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      */
     disabled?: boolean;
 
+    /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement | null) => any;
 
@@ -92,12 +97,13 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
     };
 
     public render() {
-        const { className, intent, large, small, leftIcon, round } = this.props;
+        const { className, disabled, fill, intent, large, small, leftIcon, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
-                [Classes.DISABLED]: this.props.disabled,
+                [Classes.DISABLED]: disabled,
+                [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
                 [Classes.ROUND]: round,

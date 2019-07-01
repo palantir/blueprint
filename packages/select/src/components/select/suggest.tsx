@@ -42,6 +42,12 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     disabled?: boolean;
 
     /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill` and `inputProps.fill`.
+     */
+    fill?: boolean;
+
+    /**
      * Props to spread to the query `InputGroup`. To control this input, use
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
@@ -91,6 +97,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public static defaultProps: Partial<ISuggestProps<any>> = {
         closeOnSelect: true,
+        fill: false,
         openOnKeyDown: false,
         resetOnClose: false,
     };
@@ -143,7 +150,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { inputProps = {}, popoverProps = {} } = this.props;
+        const { fill, inputProps = {}, popoverProps = {} } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
         const { placeholder = "Search..." } = inputProps;
@@ -156,6 +163,11 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         const inputValue = isOpen
             ? listProps.query
             : selectedItemText || (this.props.resetOnClose ? "" : listProps.query);
+
+        if (fill) {
+            popoverProps.fill = true;
+            inputProps.fill = true;
+        }
 
         return (
             <Popover
