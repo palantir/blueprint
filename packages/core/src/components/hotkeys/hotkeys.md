@@ -43,6 +43,14 @@ export class MyComponent extends React.Component<{}, {}> {
 }
 ```
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+
+Your decorated component must return a single DOM element in its `render()` method,
+not a custom React component. This constraint allows `HotkeysTarget` to inject
+event handlers without creating an extra wrapper element.
+
+</div>
+
 @### Decorator
 
 The `@HotkeysTarget` decorator allows you to easily add global and local
