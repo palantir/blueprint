@@ -92,7 +92,7 @@ jobs:
       - run: yarn dist:apps
       - persist_to_workspace:
           root: '.'
-          paths: [packages/*/dist]
+          paths: [packages/*/lib, packages/*/dist]
 
   test-react-16: &test-react
     docker: *docker-node-browsers
