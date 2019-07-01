@@ -1,6 +1,6 @@
 @# Tooltip
 
-A tooltip is a lightweight popover for showing additional infromation on hover.
+A tooltip is a lightweight popover for showing additional information during hover interactions.
 
 @reactExample TooltipExample
 
