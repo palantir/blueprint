@@ -36,6 +36,7 @@ export interface ISuggestExampleState {
     allowCreate: boolean;
     closeOnSelect: boolean;
     createdItems: IFilm[];
+    fill: boolean;
     film: IFilm;
     items: IFilm[];
     minimal: boolean;
@@ -50,6 +51,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
         allowCreate: false,
         closeOnSelect: true,
         createdItems: [],
+        fill: false,
         film: TOP_100_FILMS[0],
         items: filmSelectProps.items,
         minimal: true,
@@ -63,6 +65,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
     private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
     private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
     private handleMinimalChange = this.handleSwitchChange("minimal");
+    private handleFillChange = this.handleSwitchChange("fill");
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
     private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
@@ -127,6 +130,7 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
                     checked={this.state.allowCreate}
                     onChange={this.handleAllowCreateChange}
                 />
+                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <H5>Popover props</H5>
                 <Switch
                     label="Minimal popover style"
