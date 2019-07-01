@@ -63,3 +63,25 @@ to the **react-day-picker** library. These passed props are documented in full
 in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
 
 @interface IDatePickerProps
+
+@## Localization
+
+`DatePicker`, `DateRangePicker`, `DateInput`, and `DateRangeInput` all support localization using an interface defined in the
+`react-day-picker` module:
+
+```tsx
+import { LocaleUtils } from "react-day-picker/types/utils";
+```
+
+By supplying a `locale: string` and `localeUtils: LocaleUtils` prop to these Blueprint components, you can
+customize how dates are rendered, which day of the week is the first column, etc.
+[See the interface definition for more details](https://github.com/gpbl/react-day-picker/blob/v7.3.0/types/utils.d.ts#L5).
+
+Although `@blueprintjs/datetime` and `react-day-picker` do not explicitly require `moment.js` as a dependency,
+you may wish to use Moment's implementation of localization so that you do not have to write these functions yourself.
+The import from `react-day-picker` shown above gives you a utility object containing functions which do just that; you
+may use it like so:
+
+```tsx
+<DatePicker locale="fr" localeUtils={LocaleUtils} />
+```
