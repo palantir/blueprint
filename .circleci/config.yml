@@ -137,7 +137,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: '.' }
       - run: mkdir ./reports
-      - run: yarn lerna run --parallel test:typeCheck
+      - run: yarn lerna run --parallel test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
