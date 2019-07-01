@@ -413,14 +413,6 @@ Minimal popovers are also useful for context menus that require quick enter and 
 support fast workflows. You can see an example in the [context menus](#core/components/context-menu)
 documentation.
 
-@### Filling container width
-
-Sometimes you will have a React components or element which uses `width: 100%` or `fill: true` to
-fill its container width. If you wrap this component or element in a `Popover`, it may no longer
-achieve the layout you expect. This is likely because `Popover` injects an inline `<span>` tag wrapper.
-To work around this issue, supply the prop `targetTagName="div"` to get a block layout wrapper
-instead, which should better respect width layout styling.
-
 @## Testing
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
