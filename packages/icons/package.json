@@ -29,8 +29,8 @@
     "lint:scss": "sass-lint",
     "lint:ts": "ts-lint",
     "lint-fix": "ts-lint --fix",
-    "test": "run-s test:pre test:iso",
-    "test:pre": "tsc -p ./test",
+    "test": "run-s test:typeCheck test:iso",
+    "test:typeCheck": "tsc -p ./test",
     "test:iso": "mocha test/isotest.js",
     "verify": "npm-run-all compile -p dist test lint"
   },
