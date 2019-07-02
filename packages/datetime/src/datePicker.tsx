@@ -51,6 +51,12 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     defaultValue?: Date;
 
     /**
+     * Whether the current day should be highlighted in the calendar.
+     * @default false
+     */
+    highlightCurrentDay?: boolean;
+
+    /**
      * Called when the user selects a day.
      * If being used in an uncontrolled manner, `selectedDate` will be `null` if the user clicks the currently selected
      * day. If being used in a controlled manner, `selectedDate` will contain the day clicked no matter what.
@@ -95,6 +101,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         canClearSelection: true,
         clearButtonText: "Clear",
         dayPickerProps: {},
+        highlightCurrentDay: false,
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
@@ -120,16 +127,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     }
 
     public render() {
-        const {
-            className,
-            dayPickerProps,
-            locale,
-            localeUtils,
-            maxDate,
-            minDate,
-            modifiers,
-            showActionsBar,
-        } = this.props;
+        const { className, dayPickerProps, locale, localeUtils, maxDate, minDate, showActionsBar } = this.props;
         const { displayMonth, displayYear } = this.state;
 
         return (
@@ -138,7 +136,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     showOutsideDays={true}
                     locale={locale}
                     localeUtils={localeUtils}
-                    modifiers={modifiers}
+                    modifiers={this.getDatePickerModifiers()}
                     {...dayPickerProps}
                     canChangeMonth={true}
                     captionElement={this.renderCaption}
@@ -150,6 +148,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
                     onMonthChange={this.handleMonthChange}
                     selectedDays={this.state.value}
                     toMonth={maxDate}
+                    renderDay={this.renderDay}
                 />
                 {this.maybeRenderTimePicker()}
                 {showActionsBar && this.renderOptionsBar()}
@@ -194,6 +193,29 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             throw new Error(Errors.DATEPICKER_VALUE_INVALID);
         }
     }
+
+    private isToday = (date: Date) => DateUtils.areSameDay(date, new Date());
+
+    private shouldHighlightCurrentDay = (date: Date) => {
+        const { highlightCurrentDay } = this.props;
+
+        return highlightCurrentDay && this.isToday(date);
+    };
+
+    private getDatePickerModifiers = () => {
+        const { modifiers } = this.props;
+
+        return {
+            isToday: this.shouldHighlightCurrentDay,
+            ...modifiers,
+        };
+    };
+
+    private renderDay = (day: Date) => {
+        const date = day.getDate();
+
+        return <div className={Classes.DATEPICKER_DAY_WRAPPER}>{date}</div>;
+    };
 
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
 
