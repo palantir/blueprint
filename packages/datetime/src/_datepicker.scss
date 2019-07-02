@@ -37,6 +37,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
   }
 
+  .#{$ns}-datepicker-day-wrapper {
+    border-radius: $pt-border-radius;
+    padding: 7px;
+  }
+
   .DayPicker-Month {
     display: inline-table;
     margin: 0 $datepicker-padding $datepicker-padding;
@@ -98,10 +103,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
 
     &.DayPicker-Day--isToday {
-      span {
+      .#{$ns}-datepicker-day-wrapper {
         border: 1px solid $pt-divider-black;
-        border-radius: $pt-border-radius;
-        padding: 6px;
       }
     }
 
@@ -205,10 +208,8 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
 
     &.DayPicker-Day--isToday {
-      span {
+      .#{$ns}-datepicker-day-wrapper {
         border: 1px solid $pt-dark-divider-white;
-        border-radius: $pt-border-radius;
-        padding: 6px;
       }
     }
 

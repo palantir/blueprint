@@ -214,7 +214,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     private renderDay = (day: Date) => {
         const date = day.getDate();
 
-        return <span>{date}</span>;
+        return <div className={Classes.DATEPICKER_DAY_WRAPPER}>{date}</div>;
     };
 
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
