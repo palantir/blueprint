@@ -41,6 +41,16 @@ describe("<DatePicker>", () => {
         assert.isNull(root.state("selectedDay"));
     });
 
+    it("current day is not highlighted by default", () => {
+        const { root } = wrap(<DatePicker />);
+        assert.lengthOf(root.find(`.${Classes.DATEPICKER_DAY_IS_TODAY}`), 0);
+    });
+
+    it("current day should be highlighted when highlightCurrentDay={true}", () => {
+        const { root } = wrap(<DatePicker highlightCurrentDay={true} />);
+        assert.lengthOf(root.find(`.${Classes.DATEPICKER_DAY_IS_TODAY}`), 1);
+    });
+
     describe("reconciliates dayPickerProps", () => {
         it("week starts with firstDayOfWeek value", () => {
             const selectedFirstDay = 3;
