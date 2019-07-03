@@ -143,10 +143,7 @@ describe("<DateRangeInput>", () => {
 
         it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
             const { root } = wrap(
-                <DateRangeInput
-                    {...DATE_FORMAT}
-                    timePrecision={TimePrecision.MINUTE}
-                />,
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
                 testsContainerElement,
             );
 
