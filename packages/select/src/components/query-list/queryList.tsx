@@ -49,6 +49,12 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * Receives an object with props that should be applied to elements as necessary.
      */
     renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
+
+    /**
+     * Whether the list is disabled.
+     * @default false
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -127,6 +133,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {
+        disabled: false,
         resetOnQuery: true,
     };
 
@@ -196,7 +203,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem: nextProps.activeItem });
         }
-        if (nextProps.query != null) {
+        if (nextProps.query != null && nextProps.query !== this.props.query) {
             this.setQuery(nextProps.query, nextProps.resetOnQuery, nextProps);
         }
     }
@@ -278,7 +285,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             activeIndex < 0 ||
             isItemDisabled(getActiveItem(this.state.activeItem), activeIndex, props.itemDisabled);
 
-        if (hasQueryChanged && shouldUpdateActiveItem) {
+        if (shouldUpdateActiveItem) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
         }
     }
@@ -304,19 +311,23 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
     /** wrapper around `itemRenderer` to inject props */
     private renderItem = (item: T, index: number) => {
-        const { activeItem, query } = this.state;
-        const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
-        const modifiers: IItemModifiers = {
-            active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
-            disabled: isItemDisabled(item, index, this.props.itemDisabled),
-            matchesPredicate,
-        };
-        return this.props.itemRenderer(item, {
-            handleClick: e => this.handleItemSelect(item, e),
-            index,
-            modifiers,
-            query,
-        });
+        if (this.props.disabled !== true) {
+            const { activeItem, query } = this.state;
+            const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
+            const modifiers: IItemModifiers = {
+                active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
+                disabled: isItemDisabled(item, index, this.props.itemDisabled),
+                matchesPredicate,
+            };
+            return this.props.itemRenderer(item, {
+                handleClick: e => this.handleItemSelect(item, e),
+                index,
+                modifiers,
+                query,
+            });
+        }
+
+        return null;
     };
 
     private renderCreateItemMenuItem = (query: string) => {
@@ -587,6 +598,6 @@ export function getFirstEnabledItem<T>(
         if (!isItemDisabled(items[index], index, itemDisabled)) {
             return items[index];
         }
-    } while (index !== startIndex);
+    } while (index !== startIndex && startIndex !== -1);
     return null;
 }

@@ -22,6 +22,7 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
+    IEditableTextProps,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
@@ -65,6 +66,11 @@ export interface IEditableCellProps extends ICellProps {
      * were originally provided via props.
      */
     onConfirm?: (value: string, rowIndex?: number, columnIndex?: number) => void;
+
+    /**
+     * Props that should be passed to the EditableText when it is used to edit
+     */
+    editableTextProps?: IEditableTextProps;
 }
 
 export interface IEditableCellState {
@@ -121,17 +127,27 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public render() {
-        const { onCancel, onChange, onConfirm, truncated, wrapText, ...spreadableProps } = this.props;
+        const {
+            onCancel,
+            onChange,
+            onConfirm,
+            truncated,
+            wrapText,
+            editableTextProps,
+            ...spreadableProps
+        } = this.props;
 
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
 
         let cellContents: JSX.Element = null;
         if (isEditing) {
+            const className = editableTextProps ? editableTextProps.className : null;
             cellContents = (
                 <EditableText
+                    {...editableTextProps}
                     isEditing={true}
-                    className={classNames(Classes.TABLE_EDITABLE_TEXT, Classes.TABLE_EDITABLE_NAME)}
+                    className={classNames(Classes.TABLE_EDITABLE_TEXT, Classes.TABLE_EDITABLE_NAME, className)}
                     intent={spreadableProps.intent}
                     minWidth={null}
                     onCancel={this.handleCancel}

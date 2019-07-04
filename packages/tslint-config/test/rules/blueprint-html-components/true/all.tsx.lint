@@ -8,5 +8,6 @@
  ~~~~           [err % ("Code")]
 <blockquote />
  ~~~~~~~~~~     [err % ("Blockquote")]
-
+<table>table element</table>
+ ~~~~~          [err % ("HTMLTable")]
 [err]: use Blueprint <%s> component instead of JSX intrinsic element.

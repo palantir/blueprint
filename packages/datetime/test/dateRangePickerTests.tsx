@@ -308,6 +308,13 @@ describe("<DateRangePicker>", () => {
             render({ maxDate, minDate, value }).left.assertMonthYear(Months.APRIL, 2007);
         });
 
+        it("has correct initial month on singleMonthOnly and maxDate == initialMonth", () => {
+            const maxDate = new Date(2019, Months.MAY, 6);
+            const minDate = new Date(2019, Months.MARCH, 3);
+            const initialMonth = maxDate;
+            render({ singleMonthOnly: true, maxDate, minDate, initialMonth }).left.assertMonthYear(Months.MAY, 2019);
+        });
+
         it("is (endDate - 1 month) if only endDate is set", () => {
             const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
             render({ value }).left.assertMonthYear(Months.MARCH, 2007);
@@ -892,6 +899,19 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(today, value[1]));
         });
 
+        it("shortcuts fire onChange with correct values when single day range and allowSingleDayRange enabled", () => {
+            render({ allowSingleDayRange: true, timePrecision: "minute" }).clickShortcut();
+
+            const today = new Date();
+            const tomorrow = DateUtils.clone(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            assert.isTrue(onChangeSpy.calledOnce);
+            const value = onChangeSpy.args[0][0];
+            assert.isTrue(DateUtils.areSameDay(today, value[0]));
+            assert.isTrue(DateUtils.areSameDay(tomorrow, value[1]));
+        });
+
         it("custom shortcuts select the correct values", () => {
             const dateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)] as DateRange;
             render({
@@ -1141,6 +1161,14 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
 
+        it("hovering over date does not change entered time", () => {
+            const harness = render({ timePrecision: "minute", defaultValue: defaultRange });
+            harness.changeTimeInput("minute", 10, "left");
+            const { left } = harness;
+            left.mouseEnterDay(5);
+            assert.equal((onChangeSpy.firstCall.args[0][0] as Date).getMinutes(), 10);
+        });
+
         it("changing time without date uses today", () => {
             render({ timePrecision: "minute" }).setTimeInput("minute", 45, "left");
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
@@ -1215,6 +1243,11 @@ describe("<DateRangePicker>", () => {
                     );
                 }
             },
+            changeTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
+                harness.wrapper
+                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
+                    .at(which === "left" ? 0 : 1)
+                    .simulate("change", { target: { value } }),
             clickNavButton: (which: "next" | "prev", navIndex = 0) => {
                 wrapper
                     .find(DatePickerNavbar)

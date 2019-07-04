@@ -194,7 +194,7 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         // subtracting one avoids that weird, wraparound state (#289).
         const initialMonthEqualsMinMonth = DateUtils.areSameMonth(initialMonth, props.minDate);
         const initalMonthEqualsMaxMonth = DateUtils.areSameMonth(initialMonth, props.maxDate);
-        if (!initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
+        if (!props.singleMonthOnly && !initialMonthEqualsMinMonth && initalMonthEqualsMaxMonth) {
             initialMonth.setMonth(initialMonth.getMonth() - 1);
         }
 
@@ -289,11 +289,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             return null;
         }
 
-        const { allowSingleDayRange, maxDate, minDate } = this.props;
+        const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
         return [
             <Shortcuts
                 key="shortcuts"
-                {...{ allowSingleDayRange, maxDate, minDate, shortcuts }}
+                {...{ allowSingleDayRange, maxDate, minDate, shortcuts, timePrecision }}
                 onShortcutClick={this.handleShortcutClick}
             />,
             <Divider key="div" />,

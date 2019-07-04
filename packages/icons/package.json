@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/icons",
-  "version": "3.8.0",
+  "version": "3.9.1",
   "description": "Components, fonts, icons, and css files for creating and displaying icons.",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -29,8 +29,8 @@
     "lint:scss": "sass-lint",
     "lint:ts": "ts-lint",
     "lint-fix": "ts-lint --fix",
-    "test": "run-s test:pre test:iso",
-    "test:pre": "tsc -p ./test",
+    "test": "run-s test:typeCheck test:iso",
+    "test:typeCheck": "tsc -p ./test",
     "test:iso": "mocha test/isotest.js",
     "verify": "npm-run-all compile -p dist test lint"
   },
@@ -39,7 +39,7 @@
     "tslib": "^1.9.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.9.0",
+    "@blueprintjs/node-build-scripts": "^0.10.0",
     "@blueprintjs/test-commons": "^0.9.0",
     "enzyme": "^3.9.0",
     "mocha": "^5.2.0",

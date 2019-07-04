@@ -51,6 +51,13 @@ export interface IPopoverProps extends IPopoverSharedProps {
     content?: string | JSX.Element;
 
     /**
+     * Whether the wrapper and target should take up the full width of their container.
+     * Note that supplying `true` for this prop will force  `targetTagName="div"` and
+     * `wrapperTagName="div"`.
+     */
+    fill?: boolean;
+
+    /**
      * The kind of interaction that triggers the display of the popover.
      * @default PopoverInteractionKind.CLICK
      */
@@ -100,6 +107,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         captureDismiss: false,
         defaultIsOpen: false,
         disabled: false,
+        fill: false,
         hasBackdrop: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
@@ -156,8 +164,12 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         // as JSX component instead of intrinsic element. but because of its
         // type, tsc actually recognizes that it is _any_ intrinsic element, so
         // it can typecheck the HTML props!!
-        const { className, disabled, wrapperTagName: WrapperTagName } = this.props;
+        const { className, disabled, fill } = this.props;
         const { isOpen } = this.state;
+        let { wrapperTagName: WrapperTagName } = this.props;
+        if (fill) {
+            WrapperTagName = "div";
+        }
 
         const isContentEmpty = Utils.ensureElement(this.understandChildren().content) == null;
         // need to do this check in render(), because `isOpen` is derived from
@@ -166,9 +178,13 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             console.warn(Errors.POPOVER_WARN_EMPTY_CONTENT);
         }
 
+        const wrapperClasses = classNames(Classes.POPOVER_WRAPPER, className, {
+            [Classes.FILL]: fill,
+        });
+
         return (
             <Manager>
-                <WrapperTagName className={classNames(Classes.POPOVER_WRAPPER, className)}>
+                <WrapperTagName className={wrapperClasses}>
                     <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
                     <Overlay
                         autoFocus={this.props.autoFocus}
@@ -316,9 +332,13 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     };
 
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
-        const { openOnTargetFocus, targetClassName, targetProps = {}, targetTagName: TagName } = this.props;
+        const { fill, openOnTargetFocus, targetClassName, targetProps = {} } = this.props;
         const { isOpen } = this.state;
         const isHoverInteractionKind = this.isHoverInteractionKind();
+        let { targetTagName: TagName } = this.props;
+        if (fill) {
+            TagName = "div";
+        }
 
         const finalTargetProps: React.HTMLProps<HTMLElement> = isHoverInteractionKind
             ? {

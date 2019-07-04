@@ -37,6 +37,7 @@ import "./rectTests.ts";
 import "./regionsTests.ts";
 import "./reorderableTests.tsx";
 import "./resizableTests.tsx";
+import "./rowHeaderTests.tsx";
 import "./selectableTests.tsx";
 import "./selectionTests.tsx";
 import "./tableBodyTests.tsx";

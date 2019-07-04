@@ -32,6 +32,18 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
      * Specifies whether the full row is part of a selection.
      */
     isRowSelected?: boolean;
+
+    /**
+     * A callback to override the default name rendering behavior. The default
+     * behavior is to simply use the `RowHeaderCell`s name prop.
+     *
+     * This render callback can be used, for example, to provide a
+     * `EditableName` component for editing row names.
+     *
+     * The callback will also receive the row index if an `index` was originally
+     * provided via props.
+     */
+    nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
 }
 
 export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}> {
@@ -40,10 +52,19 @@ export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}
             // from IRowHeaderCellProps
             enableRowReordering,
             isRowSelected,
+            name,
+            nameRenderer,
 
             // from IHeaderProps
             ...spreadableProps
         } = this.props;
+        const defaultName = <div className={Classes.TABLE_ROW_NAME_TEXT}>{name}</div>;
+
+        const nameComponent = (
+            <LoadableContent loading={spreadableProps.loading}>
+                {nameRenderer == null ? defaultName : nameRenderer(name, spreadableProps.index)}
+            </LoadableContent>
+        );
 
         return (
             <HeaderCell
@@ -51,11 +72,7 @@ export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}
                 isSelected={this.props.isRowSelected}
                 {...spreadableProps}
             >
-                <div className={Classes.TABLE_ROW_NAME}>
-                    <LoadableContent loading={spreadableProps.loading}>
-                        <div className={Classes.TABLE_ROW_NAME_TEXT}>{spreadableProps.name}</div>
-                    </LoadableContent>
-                </div>
+                <div className={Classes.TABLE_ROW_NAME}>{nameComponent}</div>
                 {this.props.children}
                 {spreadableProps.loading ? undefined : spreadableProps.resizeHandle}
             </HeaderCell>

@@ -263,44 +263,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     };
 
     private getInputChangeHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
-        const TWO_DIGITS = /^\d{0,2}$/;
-        const THREE_DIGITS = /^\d{0,3}$/;
         const text = getStringValueFromInputEvent(e);
-
-        let isValid = false;
-        switch (unit) {
-            case TimeUnit.HOUR_24:
-            case TimeUnit.HOUR_12:
-            case TimeUnit.MINUTE:
-            case TimeUnit.SECOND:
-                isValid = TWO_DIGITS.test(text);
-                break;
-            case TimeUnit.MS:
-                isValid = THREE_DIGITS.test(text);
-                break;
-            default:
-                throw Error("Invalid TimeUnit");
-        }
-
-        if (isValid) {
-            switch (unit) {
-                case TimeUnit.HOUR_24:
-                case TimeUnit.HOUR_12:
-                    this.updateState({ hourText: text });
-                    break;
-                case TimeUnit.MINUTE:
-                    this.updateState({ minuteText: text });
-                    break;
-                case TimeUnit.SECOND:
-                    this.updateState({ secondText: text });
-                    break;
-                case TimeUnit.MS:
-                    this.updateState({ millisecondText: text });
-                    break;
-                default:
-                    throw Error("Invalid TimeUnit");
-            }
-        }
+        this.updateTime(parseInt(text, 10), unit);
     };
 
     private getInputKeyDownHandler = (unit: TimeUnit) => (e: React.KeyboardEvent<HTMLInputElement>) => {

@@ -5,7 +5,7 @@ aliases:
     - image: circleci/node:lts
 
   - &docker-node-browsers
-    - image: circleci/node:8.10.0-browsers
+    - image: circleci/node:lts-browsers
       environment:
           CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -92,24 +92,30 @@ jobs:
       - run: yarn dist:apps
       - persist_to_workspace:
           root: '.'
-          paths: [packages/*/dist]
+          paths: [packages/*/lib, packages/*/dist]
 
   test-react-16: &test-react
     docker: *docker-node-browsers
     environment:
       JUNIT_REPORT_PATH: reports
-    parallelism: 3
+    parallelism: 6
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: '.' }
       - run: mkdir ./reports
       - run:
+          # split karma tests into containers because they can take up a lot of memory
+          # running them in one container caused Karma to time out frequently
+          # see https://github.com/palantir/blueprint/issues/3616
           command: |
               case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run --parallel test:pre ;; \
-              1) yarn lerna run --parallel test:iso ;; \
-              2) yarn lerna run --parallel test:karma ;; \
+              0) yarn lerna run --parallel test:typeCheck ;; \
+              1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
+              2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
+              3) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
+              4) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
+              5) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
               esac
           when: always
       - store_test_results: { path: ./reports }
@@ -118,6 +124,26 @@ jobs:
   test-react-15:
     # copy test-react-16 and override environment
     <<: *test-react
+    environment:
+      JUNIT_REPORT_PATH: reports
+      REACT: 15 # use React 15 for this job
+
+  test-iso-react-16: &test-iso
+    docker: *docker-node-lts
+    environment:
+      JUNIT_REPORT_PATH: reports
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: '.' }
+      - run: mkdir ./reports
+      - run: yarn lerna run --parallel test:iso
+      - store_test_results: { path: ./reports }
+      - store_artifacts: { path: ./reports }
+
+  test-iso-react-15:
+    # copy test-iso-react-16 and override environment
+    <<: *test-iso
     environment:
       JUNIT_REPORT_PATH: reports
       REACT: 15 # use React 15 for this job
@@ -160,10 +186,14 @@ workflows:
           requires: [compile]
       - test-react-16:
           requires: [compile]
+      - test-iso-react-15:
+          requires: [compile]
+      - test-iso-react-16:
+          requires: [compile]
       - deploy-preview:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-react-15, test-react-16]
+          requires: [dist, lint, test-react-15, test-react-16, test-iso-react-15, test-iso-react-16]
           filters:
             branches:
               only:
