@@ -82,27 +82,10 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
     public static defaultProps: IFileInputProps = {
-        buttonText: "Browse",
         hasSelection: false,
         inputProps: {},
         text: "Choose file...",
     };
-
-    private input: HTMLSpanElement | null = null;
-
-    public componentDidMount() {
-        const sheet = this.createSheet();
-        const NS = Classes.getClassNamespace();
-        sheet.insertRule(`.${NS}-file-upload-input::after { content: attr(${NS}-button-text); }`, 0);
-
-        this.changeButtonText(this.props.buttonText);
-    }
-
-    public componentWillReceiveProps(newProps: IFileInputProps) {
-        if (this.props.buttonText !== newProps.buttonText) {
-            this.changeButtonText(newProps.buttonText);
-        }
-    }
 
     public render() {
         const {
@@ -129,36 +112,22 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
             className,
         );
 
+        const NS = Classes.getClassNamespace();
+
+        const uploadProps = {
+            [`${NS}-button-text`]: buttonText,
+            className: classNames(Classes.FILE_UPLOAD_INPUT, {
+                [Classes.FILE_UPLOAD_INPUT_CUSTOM_TEXT]: !!buttonText,
+            }),
+        };
+
         return (
             <label {...htmlProps} className={rootClasses}>
                 <input {...inputProps} onChange={this.handleInputChange} type="file" disabled={disabled} />
-                <span ref={this.createRef} className={Classes.FILE_UPLOAD_INPUT}>
-                    {text}
-                </span>
+                <span {...uploadProps}>{text}</span>
             </label>
         );
     }
-
-    private createSheet = () => {
-        const style = document.createElement("style");
-        style.appendChild(document.createTextNode(""));
-        document.head.appendChild(style);
-
-        return style.sheet as CSSStyleSheet;
-    };
-
-    private createRef = (input: HTMLSpanElement | null) => {
-        if (input !== null) {
-            this.input = input;
-        }
-    };
-
-    private changeButtonText = (text: string) => {
-        if (this.input) {
-            const NS = Classes.getClassNamespace();
-            this.input.setAttribute(`${NS}-button-text`, text);
-        }
-    };
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         Utils.safeInvoke(this.props.onInputChange, e);
