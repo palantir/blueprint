@@ -503,8 +503,3 @@
   }
 }
 
-#{example("file-input")} {
-  .#{$ns}-file-upload-input::after {
-    content: "Browse";
-  }
-}
