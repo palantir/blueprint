@@ -79,6 +79,10 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
   .#{$ns}-large & {
     height: $pt-input-height-large;
   }
+
+  .#{$ns}-file-upload-input-custom-text::after {
+    content: attr(#{$ns}-button-text);
+  }
 }
 
 .#{$ns}-file-upload-input {
