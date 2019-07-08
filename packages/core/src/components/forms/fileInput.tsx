@@ -68,6 +68,12 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
      * @default "Choose file..."
      */
     text?: React.ReactNode;
+
+    /**
+     * The button text.
+     * @default "Browse"
+     */
+    buttonText?: string;
 }
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
@@ -83,6 +89,7 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
 
     public render() {
         const {
+            buttonText,
             className,
             disabled,
             fill,
@@ -105,10 +112,19 @@ export class FileInput extends React.PureComponent<IFileInputProps, {}> {
             className,
         );
 
+        const NS = Classes.getClassNamespace();
+
+        const uploadProps = {
+            [`${NS}-button-text`]: buttonText,
+            className: classNames(Classes.FILE_UPLOAD_INPUT, {
+                [Classes.FILE_UPLOAD_INPUT_CUSTOM_TEXT]: !!buttonText,
+            }),
+        };
+
         return (
             <label {...htmlProps} className={rootClasses}>
                 <input {...inputProps} onChange={this.handleInputChange} type="file" disabled={disabled} />
-                <span className={Classes.FILE_UPLOAD_INPUT}>{text}</span>
+                <span {...uploadProps}>{text}</span>
             </label>
         );
     }
