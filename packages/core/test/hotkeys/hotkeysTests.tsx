@@ -16,7 +16,7 @@
 
 // tslint:disable max-classes-per-file
 
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { SinonSpy, spy } from "sinon";
@@ -77,6 +77,8 @@ describe("Hotkeys", () => {
             disabled?: boolean;
             preventDefault?: boolean;
             stopPropagation?: boolean;
+            onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
+            onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
         }
 
         @HotkeysTarget
@@ -128,7 +130,7 @@ describe("Hotkeys", () => {
 
             public render() {
                 return (
-                    <div>
+                    <div onKeyUp={this.props.onKeyUp} onKeyDown={this.props.onKeyDown}>
                         <input type="text" />
                         <input type="number" />
                         <input type="password" />
@@ -232,6 +234,22 @@ describe("Hotkeys", () => {
             expect(handleKeyDown.called).to.be.true;
             const testCombo = getKeyComboString(handleKeyDown.firstCall.args[0]);
             expect(testCombo).to.equal(combo);
+        });
+
+        it("invokes onKeyUp & onKeyDown props", () => {
+            const handlers = {
+                onKeyDown: spy(),
+                onKeyUp: spy(),
+            };
+
+            comp = mount(<TestComponent {...handlers} />, { attachTo });
+            const node = comp.getDOMNode();
+
+            dispatchTestKeyboardEvent(node, "keydown", "1");
+            assert.equal(handlers.onKeyDown.callCount, 1);
+            assert.equal(handlers.onKeyUp.callCount, 0);
+            dispatchTestKeyboardEvent(node, "keyup", "1");
+            assert.equal(handlers.onKeyUp.callCount, 1);
         });
 
         function runHotkeySuiteForKeyEvent(eventName: "keydown" | "keyup") {
