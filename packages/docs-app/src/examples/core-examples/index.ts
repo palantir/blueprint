@@ -32,6 +32,7 @@ export * from "./dividerExample";
 export * from "./drawerExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
+export * from "./fileInputExample";
 export * from "./focusExample";
 export * from "./formGroupExample";
 export * from "./hotkeyPiano";
