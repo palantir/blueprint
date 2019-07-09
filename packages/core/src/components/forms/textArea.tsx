@@ -54,9 +54,16 @@ export interface ITextAreaState {
 /* istanbul ignore next */
 export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
-
     public state: ITextAreaState = {};
+    private internalTextAreaRef: HTMLTextAreaElement;
 
+    public componentDidMount() {
+        if (this.props.growVertically) {
+            this.setState({
+                height: this.internalTextAreaRef.scrollHeight,
+            });
+        }
+    }
     public render() {
         const { className, fill, inputRef, intent, large, small, growVertically, ...htmlProps } = this.props;
 
@@ -87,7 +94,7 @@ export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState
                 {...htmlProps}
                 className={rootClasses}
                 onChange={this.handleChange}
-                ref={inputRef}
+                ref={this.handleInternalRef}
                 style={style}
             />
         );
@@ -102,6 +109,14 @@ export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState
 
         if (this.props.onChange != null) {
             this.props.onChange(e);
+        }
+    };
+
+    // hold an internal ref for growVertically
+    private handleInternalRef = (ref: HTMLTextAreaElement | null) => {
+        this.internalTextAreaRef = ref;
+        if (this.props.inputRef != null) {
+            this.props.inputRef(ref);
         }
     };
 }
