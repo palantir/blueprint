@@ -49,7 +49,7 @@
     "react-popper": "^1.0.0",
     "react-transition-group": "^2.2.1",
     "resize-observer-polyfill": "^1.5.0",
-    "tslib": "^1.9.0"
+    "tslib": "~1.9.0"
   },
   "peerDependencies": {
     "react": "^15.3.0 || 16",

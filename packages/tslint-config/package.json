@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "prettier": "^1.16.1",
-    "tslib": "^1.9.0",
+    "tslib": "~1.9.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-plugin-prettier": "^2.0.1",
     "tslint-react": "^3.6.0"
