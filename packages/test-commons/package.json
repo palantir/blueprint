@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "react": "^16.2.0",
-    "typescript": "~3.2.4"
+    "typescript": "~3.5.3"
   },
   "repository": {
     "type": "git",
