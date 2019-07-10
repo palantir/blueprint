@@ -17,6 +17,8 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
 import {
@@ -34,7 +36,7 @@ import {
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -133,6 +135,37 @@ describe("<DateRangeInput>", () => {
 
     it("throws error if value === null", () => {
         expectPropValidationError(DateRangeInput, { ...DATE_FORMAT, value: null });
+    });
+
+    describe("timePrecision prop", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
+
+        it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
+            const { root } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            expect(isStartInputFocused(root), "start input focus to be false").to.be.false;
+            expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
+        });
+
+        after(() => {
+            ReactDOM.unmountComponentAtNode(testsContainerElement);
+        });
+
+        function keyDownOnInput(className: string, key: number) {
+            TestUtils.Simulate.keyDown(findTimePickerInputElement(className), { which: key });
+        }
+
+        function findTimePickerInputElement(className: string) {
+            return document.querySelector(`.${DateClasses.TIMEPICKER_INPUT}.${className}`) as HTMLInputElement;
+        }
     });
 
     describe("startInputProps and endInputProps", () => {
