@@ -40,7 +40,7 @@
     "classnames": "^2.2",
     "moment": "^2.14.1",
     "moment-timezone": "^0.5.13",
-    "tslib": "^1.9.0"
+    "tslib": "~1.9.0"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.10.0",

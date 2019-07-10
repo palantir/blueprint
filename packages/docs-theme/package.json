@@ -35,7 +35,7 @@
     "@documentalist/client": "^2.0.1",
     "classnames": "^2.2",
     "fuzzaldrin-plus": "^0.6.0",
-    "tslib": "^1.9.3"
+    "tslib": "~1.9.3"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^0.10.0",
