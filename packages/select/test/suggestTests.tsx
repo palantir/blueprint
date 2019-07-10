@@ -22,6 +22,7 @@ import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
+import { IItemRendererProps } from "../src/index";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
@@ -32,9 +33,9 @@ describe("Suggest", () => {
         query: "",
     };
     let handlers: {
-        inputValueRenderer: sinon.SinonSpy;
-        itemPredicate: sinon.SinonSpy;
-        itemRenderer: sinon.SinonSpy;
+        inputValueRenderer: sinon.SinonSpy<[IFilm], string>;
+        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
+        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 

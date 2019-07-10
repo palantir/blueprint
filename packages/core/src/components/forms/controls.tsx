@@ -112,7 +112,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     style,
     type,
     typeClassName,
-    tagName: TagName = "label",
+    tagName = "label",
     ...htmlProps
 }) => {
     const classes = classNames(
@@ -126,14 +126,15 @@ const Control: React.SFC<IControlInternalProps> = ({
         Classes.alignmentClass(alignIndicator),
         className,
     );
-    return (
-        <TagName className={classes} style={style}>
-            <input {...htmlProps} ref={inputRef} type={type} />
-            <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>
-            {label}
-            {labelElement}
-            {children}
-        </TagName>
+
+    return React.createElement(
+        tagName,
+        { className: classes, style },
+        <input {...htmlProps} ref={inputRef} type={type} />,
+        <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
+        label,
+        labelElement,
+        children,
     );
 };
 

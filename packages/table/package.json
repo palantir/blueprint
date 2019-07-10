@@ -51,7 +51,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
-    "typescript": "~2.8.3",
+    "typescript": "~3.2.4",
     "webpack": "^4.27.1",
     "webpack-dev-server": "^3.1.0"
   },

@@ -496,7 +496,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private refHandlers = {
         cellContainer: (ref: HTMLElement) => (this.cellContainerElement = ref),
         columnHeader: (ref: HTMLElement) => (this.columnHeaderElement = ref),
-        mainQuadrant: (ref: HTMLElement) => (this.mainQuadrantElement = ref),
         quadrantStack: (ref: TableQuadrantStack) => (this.quadrantStackInstance = ref),
         rootTable: (ref: HTMLElement) => (this.rootTableElement = ref),
         rowHeader: (ref: HTMLElement) => (this.rowHeaderElement = ref),
@@ -505,7 +504,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private cellContainerElement: HTMLElement;
     private columnHeaderElement: HTMLElement;
-    private mainQuadrantElement: HTMLElement;
     private quadrantStackInstance: TableQuadrantStack;
     private rootTableElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
@@ -853,7 +851,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     numFrozenRows={numFrozenRowsClamped}
                     numRows={numRows}
                     onScroll={this.handleBodyScroll}
-                    quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
                     menuRenderer={this.renderMenu}
                     rowHeaderCellRenderer={this.renderRowHeader}
