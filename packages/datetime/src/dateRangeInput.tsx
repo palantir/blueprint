@@ -382,37 +382,67 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         let startHoverString: string;
         let endHoverString: string;
 
+        let boundaryToModify: Boundary;
+
         if (selectedStart == null) {
             // focus the start field by default or if only an end date is specified
-            isStartInputFocused = true;
-            isEndInputFocused = false;
+            if (this.props.timePrecision == null) {
+                isStartInputFocused = true;
+                isEndInputFocused = false;
+            } else {
+                isStartInputFocused = false;
+                isEndInputFocused = false;
+                boundaryToModify = Boundary.START;
+            }
 
             // for clarity, hide the hover string until the mouse moves over a different date
             startHoverString = null;
         } else if (selectedEnd == null) {
             // focus the end field if a start date is specified
-            isStartInputFocused = false;
-            isEndInputFocused = true;
+            if (this.props.timePrecision == null) {
+                isStartInputFocused = false;
+                isEndInputFocused = true;
+            } else {
+                isStartInputFocused = false;
+                isEndInputFocused = false;
+                boundaryToModify = Boundary.END;
+            }
 
             endHoverString = null;
         } else if (this.props.closeOnSelection) {
             isOpen = false;
             isStartInputFocused = false;
-            // if we submit via click or Tab, the focus will have moved already.
-            // it we submit with Enter, the focus won't have moved, and setting
-            // the flag to false won't have an effect anyway, so leave it true.
-            isEndInputFocused = didSubmitWithEnter ? true : false;
+            if (this.props.timePrecision == null && didSubmitWithEnter) {
+                // if we submit via click or Tab, the focus will have moved already.
+                // it we submit with Enter, the focus won't have moved, and setting
+                // the flag to false won't have an effect anyway, so leave it true.
+                isEndInputFocused = true;
+            } else {
+                isEndInputFocused = false;
+                boundaryToModify = Boundary.END;
+            }
         } else if (this.state.lastFocusedField === Boundary.START) {
             // keep the start field focused
-            isStartInputFocused = true;
-            isEndInputFocused = false;
-        } else {
+            if (this.props.timePrecision == null) {
+                isStartInputFocused = true;
+                isEndInputFocused = false;
+            } else {
+                isStartInputFocused = false;
+                isEndInputFocused = false;
+                boundaryToModify = Boundary.START;
+            }
+        } else if (this.props.timePrecision == null) {
             // keep the end field focused
             isStartInputFocused = false;
             isEndInputFocused = true;
+        } else {
+            isStartInputFocused = false;
+            isEndInputFocused = false;
+            boundaryToModify = Boundary.END;
         }
 
         const baseStateChange = {
+            boundaryToModify,
             endHoverString,
             endInputString: this.formatDate(selectedEnd),
             isEndInputFocused,
