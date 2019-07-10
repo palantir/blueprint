@@ -204,9 +204,11 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
             <EditableCell
                 value={value == null ? "" : value}
                 intent={this.state.sparseCellIntent[dataKey]}
-                onCancel={this.cellValidator(rowIndex, columnIndex)}
-                onChange={this.cellValidator(rowIndex, columnIndex)}
-                onConfirm={this.cellSetter(rowIndex, columnIndex)}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}
+                onCancel={this.cellValidator}
+                onChange={this.cellValidator}
+                onConfirm={this.cellSetter}
             />
         );
     };
@@ -216,10 +218,11 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
             return (
                 <EditableName
                     name={name}
+                    index={columnIndex}
                     intent={this.state.intents[columnIndex]}
-                    onChange={this.nameValidator(columnIndex)}
-                    onCancel={this.nameValidator(columnIndex)}
-                    onConfirm={this.nameSetter(columnIndex)}
+                    onChange={this.nameValidator}
+                    onCancel={this.nameValidator}
+                    onConfirm={this.nameSetter}
                 />
             );
         };
@@ -236,36 +239,28 @@ class EditableTable extends React.Component<{}, IEditableTableState> {
         return /^[a-zA-Z]*$/.test(value);
     }
 
-    private nameValidator = (index: number) => {
-        return (name: string) => {
-            const intent = this.isValidValue(name) ? null : Intent.DANGER;
-            this.setArrayState("intents", index, intent);
-            this.setArrayState("names", index, name);
-        };
+    private nameValidator = (name: string, index: number) => {
+        const intent = this.isValidValue(name) ? null : Intent.DANGER;
+        this.setArrayState("intents", index, intent);
+        this.setArrayState("names", index, name);
     };
 
-    private nameSetter = (index: number) => {
-        return (name: string) => {
-            this.setArrayState("names", index, name);
-        };
+    private nameSetter = (name: string, index: number) => {
+        this.setArrayState("names", index, name);
     };
 
-    private cellValidator = (rowIndex: number, columnIndex: number) => {
+    private cellValidator = (value: string, rowIndex: number, columnIndex: number) => {
         const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
-        return (value: string) => {
-            const intent = this.isValidValue(value) ? null : Intent.DANGER;
-            this.setSparseState("sparseCellIntent", dataKey, intent);
-            this.setSparseState("sparseCellData", dataKey, value);
-        };
+        const intent = this.isValidValue(value) ? null : Intent.DANGER;
+        this.setSparseState("sparseCellIntent", dataKey, intent);
+        this.setSparseState("sparseCellData", dataKey, value);
     };
 
-    private cellSetter = (rowIndex: number, columnIndex: number) => {
+    private cellSetter = (value: string, rowIndex: number, columnIndex: number) => {
         const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
-        return (value: string) => {
-            const intent = this.isValidValue(value) ? null : Intent.DANGER;
-            this.setSparseState("sparseCellData", dataKey, value);
-            this.setSparseState("sparseCellIntent", dataKey, intent);
-        };
+        const intent = this.isValidValue(value) ? null : Intent.DANGER;
+        this.setSparseState("sparseCellData", dataKey, value);
+        this.setSparseState("sparseCellIntent", dataKey, intent);
     };
 
     private setArrayState<T>(key: string, index: number, value: T) {
