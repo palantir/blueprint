@@ -104,7 +104,7 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
             iconSize = Icon.SIZE_STANDARD,
             intent,
             title = icon,
-            tagName: TagName = "span",
+            tagName = "span",
             ...htmlprops
         } = this.props;
 
@@ -116,13 +116,17 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
-        return (
-            <TagName {...htmlprops} className={classes} title={htmlTitle}>
-                <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
-                    {title && <desc>{title}</desc>}
-                    {paths}
-                </svg>
-            </TagName>
+        return React.createElement(
+            tagName,
+            {
+                ...htmlprops,
+                className: classes,
+                title: htmlTitle,
+            },
+            <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
+                {title && <desc>{title}</desc>}
+                {paths}
+            </svg>,
         );
     }
 

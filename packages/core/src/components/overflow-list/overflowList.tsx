@@ -191,23 +191,23 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
     }
 
     public render() {
-        const {
-            className,
-            collapseFrom,
-            observeParents,
-            style,
-            tagName: TagName = "div",
-            visibleItemRenderer,
-        } = this.props;
+        const { className, collapseFrom, observeParents, style, tagName = "div", visibleItemRenderer } = this.props;
         const overflow = this.maybeRenderOverflow();
+        const list = React.createElement(
+            tagName,
+            {
+                className: classNames(Classes.OVERFLOW_LIST, className),
+                style,
+            },
+            collapseFrom === Boundary.START ? overflow : null,
+            this.state.visible.map(visibleItemRenderer),
+            collapseFrom === Boundary.END ? overflow : null,
+            <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />,
+        );
+
         return (
             <ResizeSensor onResize={this.resize} observeParents={observeParents}>
-                <TagName className={classNames(Classes.OVERFLOW_LIST, className)} style={style}>
-                    {collapseFrom === Boundary.START ? overflow : null}
-                    {this.state.visible.map(visibleItemRenderer)}
-                    {collapseFrom === Boundary.END ? overflow : null}
-                    <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />
-                </TagName>
+                {list}
             </ResizeSensor>
         );
     }
