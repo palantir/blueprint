@@ -122,7 +122,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
             shouldDismissPopover,
             text,
             textClassName,
-            tagName: TagName = "a",
+            tagName = "a",
             ...htmlProps
         } = this.props;
         const hasSubmenu = children != null;
@@ -141,15 +141,19 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
             className,
         );
 
-        const target = (
-            <TagName {...htmlProps} {...(disabled ? DISABLED_PROPS : {})} className={anchorClasses}>
-                <Icon icon={icon} />
-                <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline}>
-                    {text}
-                </Text>
-                {this.maybeRenderLabel(labelElement)}
-                {hasSubmenu && <Icon icon="caret-right" />}
-            </TagName>
+        const target = React.createElement(
+            tagName,
+            {
+                ...htmlProps,
+                ...(disabled ? DISABLED_PROPS : {}),
+                className: anchorClasses,
+            },
+            <Icon icon={icon} />,
+            <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline}>
+                {text}
+            </Text>,
+            this.maybeRenderLabel(labelElement),
+            hasSubmenu ? <Icon icon="caret-right" /> : undefined,
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });

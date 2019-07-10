@@ -66,7 +66,7 @@ export function shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IK
  * Deep comparison between objects. If `keys` is provided, just that subset of
  * keys will be compared; otherwise, all keys will be compared.
  */
-export function deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean {
+export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | number | symbol>): boolean {
     if (objA === objB) {
         return true;
     } else if (objA == null && objB == null) {
@@ -145,7 +145,7 @@ function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyW
 /**
  * Partial deep comparison between objects using the given list of keys.
  */
-function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
+function _deepCompareKeys(objA: any, objB: any, keys: Array<string | number | symbol>): boolean {
     return keys.every(key => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && deepCompareKeys(objA[key], objB[key]);
     });

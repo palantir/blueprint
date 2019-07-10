@@ -22,7 +22,7 @@ import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src/index";
+import { IItemRendererProps, IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src/index";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {
@@ -35,8 +35,8 @@ describe("<MultiSelect>", () => {
         tagRenderer: renderTag,
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy;
-        itemRenderer: sinon.SinonSpy;
+        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
+        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 

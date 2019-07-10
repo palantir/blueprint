@@ -65,15 +65,16 @@ export class Text extends React.PureComponent<ITextProps, ITextState> {
             },
             this.props.className,
         );
-        const { tagName: TagName = "div" } = this.props;
-        return (
-            <TagName
-                className={classes}
-                ref={(ref: HTMLElement | null) => (this.textRef = ref)}
-                title={this.state.isContentOverflowing ? this.state.textContent : undefined}
-            >
-                {this.props.children}
-            </TagName>
+        const { children, tagName = "div" } = this.props;
+
+        return React.createElement(
+            tagName,
+            {
+                className: classes,
+                ref: (ref: HTMLElement | null) => (this.textRef = ref),
+                title: this.state.isContentOverflowing ? this.state.textContent : undefined,
+            },
+            children,
         );
     }
 
