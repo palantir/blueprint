@@ -36,7 +36,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
+import { areSameTime, DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
@@ -410,8 +410,8 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
             endHoverString = null;
         } else if (this.props.closeOnSelection) {
-            isOpen = false;
             isStartInputFocused = false;
+
             if (this.props.timePrecision == null && didSubmitWithEnter) {
                 // if we submit via click or Tab, the focus will have moved already.
                 // it we submit with Enter, the focus won't have moved, and setting
@@ -421,6 +421,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 isEndInputFocused = false;
                 boundaryToModify = Boundary.END;
             }
+            isOpen = this.getIsOpenValueWhenDateChanges(selectedStart, selectedEnd);
         } else if (this.state.lastFocusedField === Boundary.START) {
             // keep the start field focused
             if (this.props.timePrecision == null) {
@@ -734,6 +735,44 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     private shouldFocusInputRef(isFocused: boolean, inputRef: HTMLInputElement) {
         return isFocused && inputRef !== undefined && document.activeElement !== inputRef;
     }
+
+    private getIsOpenValueWhenDateChanges = (nextSelectedStart: Date, nextSelectedEnd: Date): boolean => {
+        if (this.props.closeOnSelection) {
+            // trivial case when TimePicker is not shown
+            if (this.props.timePrecision == null) {
+                return false;
+            }
+
+            let currentStartDate: Date;
+            let currentEndDate: Date;
+
+            if (this.isControlled()) {
+                const [selectedStart, selectedEnd] = this.props.value;
+                currentStartDate = selectedStart;
+                currentEndDate = selectedEnd;
+            } else {
+                currentStartDate = this.state.selectedStart;
+                currentEndDate = this.state.selectedEnd;
+            }
+            // cases when TimePicker is shown
+            if (currentStartDate == null) {
+                return false;
+            }
+            if (currentEndDate == null) {
+                return false;
+            }
+            // case to check if the user has changed TimePicker values
+            if (
+                areSameTime(currentStartDate, nextSelectedStart) === true &&
+                areSameTime(currentEndDate, nextSelectedEnd) === true
+            ) {
+                return false;
+            }
+            return true;
+        }
+
+        return true;
+    };
 
     private getInitialRange = (props = this.props): DateRange => {
         const { defaultValue, value } = props;

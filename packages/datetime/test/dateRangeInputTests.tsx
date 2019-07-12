@@ -155,7 +155,25 @@ describe("<DateRangeInput>", () => {
             expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
         });
 
-        after(() => {
+        it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+
+            root.setState({ isOpen: true });
+
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
+        afterEach(() => {
             ReactDOM.unmountComponentAtNode(testsContainerElement);
         });
 
