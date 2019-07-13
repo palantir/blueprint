@@ -173,16 +173,32 @@ describe("<DateRangeInput>", () => {
             expect(root.find(Popover).prop("isOpen")).to.be.true;
         });
 
+        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
+            const { root } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
         afterEach(() => {
             ReactDOM.unmountComponentAtNode(testsContainerElement);
         });
 
-        function keyDownOnInput(className: string, key: number) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className), { which: key });
+        function keyDownOnInput(className: string, key: number, inputElementIndex: number = 0) {
+            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { which: key });
         }
 
-        function findTimePickerInputElement(className: string) {
-            return document.querySelector(`.${DateClasses.TIMEPICKER_INPUT}.${className}`) as HTMLInputElement;
+        function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
+            return document.querySelectorAll(`.${DateClasses.TIMEPICKER_INPUT}.${className}`)[
+                inputElementIndex
+            ] as HTMLInputElement;
         }
     });
 

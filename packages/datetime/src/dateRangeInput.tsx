@@ -756,10 +756,10 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             }
             // cases when TimePicker is shown
             if (currentStartDate == null) {
-                return false;
+                currentStartDate = new Date();
             }
             if (currentEndDate == null) {
-                return false;
+                currentEndDate = new Date();
             }
             // case to check if the user has changed TimePicker values
             if (
