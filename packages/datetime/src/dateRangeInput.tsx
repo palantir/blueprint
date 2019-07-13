@@ -36,7 +36,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { areSameTime, clone, DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
+import { areSameTime, DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
@@ -748,12 +748,12 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
             if (this.isControlled()) {
                 const [selectedStart, selectedEnd] = this.props.value;
-                currentStartDate = selectedStart != null ? clone(selectedStart) : currentStartDate;
-                currentEndDate = selectedEnd != null ? clone(selectedEnd) : currentEndDate;
+                currentStartDate = selectedStart != null ? selectedStart : currentStartDate;
+                currentEndDate = selectedEnd != null ? selectedEnd : currentEndDate;
             } else {
                 const { selectedStart, selectedEnd } = this.state;
-                currentStartDate = selectedStart != null ? clone(selectedStart) : currentStartDate;
-                currentEndDate = selectedEnd != null ? clone(selectedEnd) : currentEndDate;
+                currentStartDate = selectedStart != null ? selectedStart : currentStartDate;
+                currentEndDate = selectedEnd != null ? selectedEnd : currentEndDate;
             }
             // case to check if the user has changed TimePicker values
             if (
