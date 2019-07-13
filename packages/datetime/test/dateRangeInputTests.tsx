@@ -371,7 +371,9 @@ describe("<DateRangeInput>", () => {
         });
 
         it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", () => {
-            const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />);
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+            );
             root.setState({ isOpen: true });
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
