@@ -36,7 +36,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { areSameTime, DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
+import { areSameTime, clone, DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
@@ -743,23 +743,17 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 return false;
             }
 
-            let currentStartDate: Date;
-            let currentEndDate: Date;
+            let currentStartDate: Date = new Date(new Date().setHours(0, 0, 0, 0));
+            let currentEndDate: Date = new Date(new Date().setHours(0, 0, 0, 0));
 
             if (this.isControlled()) {
                 const [selectedStart, selectedEnd] = this.props.value;
-                currentStartDate = selectedStart;
-                currentEndDate = selectedEnd;
+                currentStartDate = selectedStart != null ? clone(selectedStart) : currentStartDate;
+                currentEndDate = selectedEnd != null ? clone(selectedEnd) : currentEndDate;
             } else {
-                currentStartDate = this.state.selectedStart;
-                currentEndDate = this.state.selectedEnd;
-            }
-            // cases when TimePicker is shown
-            if (currentStartDate == null) {
-                currentStartDate = new Date(new Date().setHours(0, 0, 0, 0));
-            }
-            if (currentEndDate == null) {
-                currentEndDate = new Date(new Date().setHours(0, 0, 0, 0));
+                const { selectedStart, selectedEnd } = this.state;
+                currentStartDate = selectedStart != null ? clone(selectedStart) : currentStartDate;
+                currentEndDate = selectedEnd != null ? clone(selectedEnd) : currentEndDate;
             }
             // case to check if the user has changed TimePicker values
             if (
