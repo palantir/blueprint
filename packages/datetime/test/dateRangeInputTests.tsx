@@ -369,6 +369,14 @@ describe("<DateRangeInput>", () => {
             getDayElement(10).simulate("click");
             expect(root.state("isOpen")).to.be.false;
         });
+
+        it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", () => {
+            const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />);
+            root.setState({ isOpen: true });
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+            expect(root.state("isOpen")).to.be.false;
+        });
     });
 
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {

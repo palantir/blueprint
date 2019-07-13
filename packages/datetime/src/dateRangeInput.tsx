@@ -756,10 +756,10 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             }
             // cases when TimePicker is shown
             if (currentStartDate == null) {
-                currentStartDate = new Date();
+                currentStartDate = new Date(new Date().setHours(0, 0, 0, 0));
             }
             if (currentEndDate == null) {
-                currentEndDate = new Date();
+                currentEndDate = new Date(new Date().setHours(0, 0, 0, 0));
             }
             // case to check if the user has changed TimePicker values
             if (
