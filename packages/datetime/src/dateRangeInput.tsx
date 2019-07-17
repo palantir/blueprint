@@ -410,6 +410,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
             endHoverString = null;
         } else if (this.props.closeOnSelection) {
+            isOpen = this.getIsOpenValueWhenDateChanges(selectedStart, selectedEnd);
             isStartInputFocused = false;
 
             if (this.props.timePrecision == null && didSubmitWithEnter) {
@@ -421,7 +422,6 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 isEndInputFocused = false;
                 boundaryToModify = Boundary.END;
             }
-            isOpen = this.getIsOpenValueWhenDateChanges(selectedStart, selectedEnd);
         } else if (this.state.lastFocusedField === Boundary.START) {
             // keep the start field focused
             if (this.props.timePrecision == null) {
@@ -743,22 +743,13 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 return false;
             }
 
-            let currentStartDate: Date = new Date(new Date().setHours(0, 0, 0, 0));
-            let currentEndDate: Date = new Date(new Date().setHours(0, 0, 0, 0));
+            const fallbackDate = new Date(new Date().setHours(0, 0, 0, 0));
+            const [selectedStart, selectedEnd] = this.getSelectedRange([fallbackDate, fallbackDate]);
 
-            if (this.isControlled()) {
-                const [selectedStart, selectedEnd] = this.props.value;
-                currentStartDate = selectedStart != null ? selectedStart : currentStartDate;
-                currentEndDate = selectedEnd != null ? selectedEnd : currentEndDate;
-            } else {
-                const { selectedStart, selectedEnd } = this.state;
-                currentStartDate = selectedStart != null ? selectedStart : currentStartDate;
-                currentEndDate = selectedEnd != null ? selectedEnd : currentEndDate;
-            }
             // case to check if the user has changed TimePicker values
             if (
-                areSameTime(currentStartDate, nextSelectedStart) === true &&
-                areSameTime(currentEndDate, nextSelectedEnd) === true
+                areSameTime(selectedStart, nextSelectedStart) === true &&
+                areSameTime(selectedEnd, nextSelectedEnd) === true
             ) {
                 return false;
             }
@@ -779,7 +770,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         }
     };
 
-    private getSelectedRange = () => {
+    private getSelectedRange = (fallbackRange?: [Date, Date]) => {
         let selectedStart: Date;
         let selectedEnd: Date;
 
@@ -796,8 +787,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const doBoundaryDatesOverlap = this.doBoundaryDatesOverlap(selectedStart, Boundary.START);
         const dateRange = [selectedStart, doBoundaryDatesOverlap ? undefined : selectedEnd];
 
-        return dateRange.map((selectedBound: Date | undefined) => {
-            return this.isDateValidAndInRange(selectedBound) ? selectedBound : undefined;
+        return dateRange.map((selectedBound: Date | undefined, index: number) => {
+            const fallbackDate = fallbackRange != null ? fallbackRange[index] : undefined;
+            return this.isDateValidAndInRange(selectedBound) ? selectedBound : fallbackDate;
         }) as DateRange;
     };
 
