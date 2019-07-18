@@ -36,7 +36,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 
-import { DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
+import { areSameTime, DateRange, isDateValid, isDayInRange } from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
@@ -410,8 +410,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
 
             endHoverString = null;
         } else if (this.props.closeOnSelection) {
-            isOpen = false;
+            isOpen = this.getIsOpenValueWhenDateChanges(selectedStart, selectedEnd);
             isStartInputFocused = false;
+
             if (this.props.timePrecision == null && didSubmitWithEnter) {
                 // if we submit via click or Tab, the focus will have moved already.
                 // it we submit with Enter, the focus won't have moved, and setting
@@ -735,6 +736,29 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         return isFocused && inputRef !== undefined && document.activeElement !== inputRef;
     }
 
+    private getIsOpenValueWhenDateChanges = (nextSelectedStart: Date, nextSelectedEnd: Date): boolean => {
+        if (this.props.closeOnSelection) {
+            // trivial case when TimePicker is not shown
+            if (this.props.timePrecision == null) {
+                return false;
+            }
+
+            const fallbackDate = new Date(new Date().setHours(0, 0, 0, 0));
+            const [selectedStart, selectedEnd] = this.getSelectedRange([fallbackDate, fallbackDate]);
+
+            // case to check if the user has changed TimePicker values
+            if (
+                areSameTime(selectedStart, nextSelectedStart) === true &&
+                areSameTime(selectedEnd, nextSelectedEnd) === true
+            ) {
+                return false;
+            }
+            return true;
+        }
+
+        return true;
+    };
+
     private getInitialRange = (props = this.props): DateRange => {
         const { defaultValue, value } = props;
         if (value != null) {
@@ -746,7 +770,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         }
     };
 
-    private getSelectedRange = () => {
+    private getSelectedRange = (fallbackRange?: [Date, Date]) => {
         let selectedStart: Date;
         let selectedEnd: Date;
 
@@ -763,8 +787,9 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         const doBoundaryDatesOverlap = this.doBoundaryDatesOverlap(selectedStart, Boundary.START);
         const dateRange = [selectedStart, doBoundaryDatesOverlap ? undefined : selectedEnd];
 
-        return dateRange.map((selectedBound: Date | undefined) => {
-            return this.isDateValidAndInRange(selectedBound) ? selectedBound : undefined;
+        return dateRange.map((selectedBound: Date | undefined, index: number) => {
+            const fallbackDate = fallbackRange != null ? fallbackRange[index] : undefined;
+            return this.isDateValidAndInRange(selectedBound) ? selectedBound : fallbackDate;
         }) as DateRange;
     };
 

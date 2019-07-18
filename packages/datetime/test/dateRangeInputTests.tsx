@@ -155,16 +155,50 @@ describe("<DateRangeInput>", () => {
             expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
         });
 
-        after(() => {
+        it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+
+            root.setState({ isOpen: true });
+
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
+        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
+            const { root } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
+        afterEach(() => {
             ReactDOM.unmountComponentAtNode(testsContainerElement);
         });
 
-        function keyDownOnInput(className: string, key: number) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className), { which: key });
+        function keyDownOnInput(className: string, key: number, inputElementIndex: number = 0) {
+            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { which: key });
         }
 
-        function findTimePickerInputElement(className: string) {
-            return document.querySelector(`.${DateClasses.TIMEPICKER_INPUT}.${className}`) as HTMLInputElement;
+        function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
+            return document.querySelectorAll(`.${DateClasses.TIMEPICKER_INPUT}.${className}`)[
+                inputElementIndex
+            ] as HTMLInputElement;
         }
     });
 
@@ -330,6 +364,16 @@ describe("<DateRangeInput>", () => {
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} />);
+            root.setState({ isOpen: true });
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+            expect(root.state("isOpen")).to.be.false;
+        });
+
+        it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", () => {
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+            );
             root.setState({ isOpen: true });
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
