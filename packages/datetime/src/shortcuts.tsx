@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Classes, Menu, MenuItem } from "@blueprintjs/core";
+import { Menu, MenuItem } from "@blueprintjs/core";
 import React from "react";
 import { DATERANGEPICKER_SHORTCUTS } from "./common/classes";
 import { clone, DateRange, isDayRangeInRange } from "./common/dateUtils";
@@ -35,6 +35,7 @@ export interface IShortcutsProps {
     maxDate: Date;
     shortcuts: IDateRangeShortcut[] | true;
     onShortcutClick: (shortcut: IDateRangeShortcut) => void;
+    closeOnSelection?: boolean;
 }
 
 export class Shortcuts extends React.PureComponent<IShortcutsProps> {
@@ -46,7 +47,7 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
 
         const shortcutElements = shortcuts.map((s, i) => (
             <MenuItem
-                className={Classes.POPOVER_DISMISS_OVERRIDE}
+                shouldDismissPopover={!!this.props.closeOnSelection}
                 disabled={!this.isShortcutInRange(s.dateRange)}
                 key={i}
                 onClick={this.getShorcutClickHandler(s)}

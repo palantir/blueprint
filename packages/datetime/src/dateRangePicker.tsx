@@ -108,6 +108,12 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * If this prop is provided, the component acts in a controlled manner.
      */
     value?: DateRange;
+
+    /**
+     * Whether the calendar popover should close when a date range is fully selected.
+     * @default true
+     */
+    closeOnSelection?: boolean;
 }
 
 // leftView and rightView controls the DayPicker displayed month
@@ -274,11 +280,11 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             return null;
         }
 
-        const { allowSingleDayRange, maxDate, minDate } = this.props;
+        const { allowSingleDayRange, maxDate, minDate, closeOnSelection } = this.props;
         return [
             <Shortcuts
                 key="shortcuts"
-                {...{ allowSingleDayRange, maxDate, minDate, shortcuts }}
+                {...{ allowSingleDayRange, maxDate, minDate, shortcuts, closeOnSelection }}
                 onShortcutClick={this.handleShortcutClick}
             />,
             <Divider key="div" />,

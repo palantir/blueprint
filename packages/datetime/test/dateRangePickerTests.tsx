@@ -4,7 +4,7 @@
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
 
-import { Button } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -1167,6 +1167,16 @@ describe("<DateRangePicker>", () => {
 
             render({ timePrecision: "minute", defaultValue: defaultRange, shortcuts }).clickShortcut();
             assert.equal(onChangeSpy.firstCall.args[0][0] as Date, startTime);
+        });
+
+        it("shortcuts with closeOnSelection=false do not dismiss popovers", () => {
+            const { shortcuts } = render({ closeOnSelection: false });
+            assert.isFalse(shortcuts.find(`.${CoreClasses.POPOVER_DISMISS}`).exists());
+        });
+
+        it("shortcuts with closeOnSelect=true do not dismiss popovers", () => {
+            const { shortcuts } = render({ closeOnSelection: true });
+            assert.isTrue(shortcuts.find(`.${CoreClasses.POPOVER_DISMISS}`).exists());
         });
 
         it("selecting and unselecting a day doesn't change time", () => {
