@@ -403,7 +403,7 @@ function inputSupportsSelection(input: HTMLInputElement | HTMLTextAreaElement) {
         case "textarea":
             return true;
         // HTMLInputElement
-        // see  https://html.spec.whatwg.org/multipage/input.html#do-not-apply
+        // see https://html.spec.whatwg.org/multipage/input.html#do-not-apply
         case "text":
         case "search":
         case "tel":
