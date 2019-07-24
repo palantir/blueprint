@@ -143,7 +143,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         input: (input: HTMLInputElement | HTMLTextAreaElement) => {
             if (input != null) {
                 input.focus();
-                const supportsSelection = inputSupportsSelection(input)
+                const supportsSelection = inputSupportsSelection(input);
                 if (supportsSelection) {
                     const { length } = input.value;
                     input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
@@ -321,8 +321,8 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         return multiline ? (
             <textarea ref={this.refHandlers.input} {...props} />
         ) : (
-                <input ref={this.refHandlers.input} type={type} {...props} />
-            );
+            <input ref={this.refHandlers.input} type={type} {...props} />
+        );
     }
 
     private updateInputDimensions() {
