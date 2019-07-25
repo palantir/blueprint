@@ -333,6 +333,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
         const { fill, openOnTargetFocus, targetClassName, targetProps = {} } = this.props;
         const { isOpen } = this.state;
+        const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
         let { targetTagName } = this.props;
         if (fill) {
@@ -365,7 +366,9 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         const tabIndex = rawTabIndex == null && openOnTargetFocus && isHoverInteractionKind ? 0 : rawTabIndex;
         const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
             className: classNames(rawTarget.props.className, {
-                [Classes.ACTIVE]: isOpen && !isHoverInteractionKind,
+                // this class is mainly useful for button targets; we should only apply it for uncontrolled popovers
+                // when they are opened by a user interaction
+                [Classes.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
             }),
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
             disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
@@ -394,6 +397,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
             target: targetChild == null ? targetProp : targetChild,
         };
     }
+
+    private isControlled = () => this.props.isOpen !== undefined;
 
     private getIsOpen(props: IPopoverProps) {
         // disabled popovers should never be allowed to open.
