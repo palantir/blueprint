@@ -78,6 +78,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     /**
      * Whether the entire text field should be selected on focus.
      * If `false`, the cursor is placed at the end of the text.
+     * This prop is ignored on inputs with type other then text, search, url, tel and password. See https://html.spec.whatwg.org/multipage/input.html#do-not-apply for details.
      * @default false
      */
     selectAllOnFocus?: boolean;
@@ -142,9 +143,12 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         input: (input: HTMLInputElement | HTMLTextAreaElement) => {
             if (input != null) {
                 input.focus();
-                const { length } = input.value;
-                input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
-                if (!this.props.selectAllOnFocus) {
+                const supportsSelection = inputSupportsSelection(input);
+                if (supportsSelection) {
+                    const { length } = input.value;
+                    input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
+                }
+                if (!supportsSelection || !this.props.selectAllOnFocus) {
                     input.scrollLeft = input.scrollWidth;
                 }
             }
@@ -390,5 +394,23 @@ function insertAtCaret(el: HTMLTextAreaElement, text: string) {
         el.value = `${before}${text}${after}`;
         el.selectionStart = selectionStart + len;
         el.selectionEnd = selectionStart + len;
+    }
+}
+
+function inputSupportsSelection(input: HTMLInputElement | HTMLTextAreaElement) {
+    switch (input.type) {
+        // HTMLTextAreaElement
+        case "textarea":
+            return true;
+        // HTMLInputElement
+        // see https://html.spec.whatwg.org/multipage/input.html#do-not-apply
+        case "text":
+        case "search":
+        case "tel":
+        case "url":
+        case "password":
+            return true;
+        default:
+            return false;
     }
 }
