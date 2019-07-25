@@ -489,6 +489,11 @@ describe("<Popover>", () => {
                 assert.isTrue(onInteraction.calledWith(false));
             });
         });
+
+        it("does not apply active class to target when open", () => {
+            wrapper = renderPopover({ interactionKind: PopoverInteractionKind.CLICK, isOpen: true });
+            wrapper.assertFindClass(Classes.ACTIVE, false);
+        });
     });
 
     describe("in uncontrolled mode", () => {
@@ -593,6 +598,12 @@ describe("<Popover>", () => {
             renderPopover({ onInteraction: () => false });
             assert.strictEqual(warnSpy.firstCall.args[0], Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
             warnSpy.restore();
+        });
+
+        it("does apply active class to target when open", () => {
+            wrapper = renderPopover({ interactionKind: PopoverInteractionKind.CLICK });
+            wrapper.simulateTarget("click");
+            wrapper.assertFindClass(Classes.ACTIVE, true);
         });
     });
 
