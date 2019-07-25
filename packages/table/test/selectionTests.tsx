@@ -26,9 +26,7 @@ import { createTableOfSize } from "./mocks/table";
 
 describe("Selection", () => {
     const harness = new ReactHarness();
-    const COLUMN_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${
-        Classes.TABLE_HEADER
-    }`;
+    const COLUMN_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
     const ROW_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
     const CELL_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.rowCellIndexClass(
         2,
