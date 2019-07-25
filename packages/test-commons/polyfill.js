@@ -19,7 +19,7 @@
  * Require the minimal set of ES2015+ polyfills from `core-js` library.
  * See "NPM Installation" section of docs homepage for more information.
  */
-require("core-js/fn/array/fill");
-require("core-js/fn/array/from");
-require("core-js/fn/map");
-require("core-js/fn/set");
+require("core-js/features/array/fill");
+require("core-js/features/array/from");
+require("core-js/features/map");
+require("core-js/features/set");
