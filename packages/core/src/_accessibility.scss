@@ -5,7 +5,7 @@
   @include focus-outline();
 }
 
-.#{$ns}-focus-disabled :focus {
+.#{$ns}-focus-disabled:focus {
   // override any focus outline anywhere
   // stylelint-disable declaration-no-important
   outline: none !important;
