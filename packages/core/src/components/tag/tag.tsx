@@ -148,6 +148,7 @@ export class Tag extends React.PureComponent<ITagProps, {}> {
     }
 
     private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         Utils.safeInvoke(this.props.onRemove, e, this.props);
     };
 }
