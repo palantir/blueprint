@@ -41,10 +41,10 @@
     "@blueprintjs/node-build-scripts": "^0.10.0",
     "@types/fuzzaldrin-plus": "^0.6.0",
     "npm-run-all": "^4.1.5",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "typescript": "~3.5.3",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.6"
   },
   "repository": {
     "type": "git",

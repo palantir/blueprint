@@ -31,4 +31,9 @@ module.exports = Object.assign({}, baseConfig, {
         libraryTarget: "umd",
         path: path.resolve(__dirname, "./dist")
     },
+
+    performance: {
+        maxAssetSize: 500000,
+        maxEntrypointSize: 500000,
+    },
 });

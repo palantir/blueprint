@@ -17,7 +17,6 @@ module.exports = externalize({
     "@blueprintjs/core": ["Blueprint", "Core"],
     "@blueprintjs/icons": ["Blueprint", "Icons"],
     "@blueprintjs/datetime": ["Blueprint", "Datetime"],
-    "@blueprintjs/labs": ["Blueprint", "Labs"],
     "@blueprintjs/select": ["Blueprint", "Select"],
     "@blueprintjs/table": ["Blueprint", "Table"],
     "@blueprintjs/timezone": ["Blueprint", "Timezone"],

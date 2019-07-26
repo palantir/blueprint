@@ -61,16 +61,6 @@ const ICON_CONTENTS: Record<string, JSX.Element> = {
         </g>
     ),
 
-    labs: (
-        <g fillRule="evenodd">
-            <path
-                d="M10 9V7h-.5a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1H14v2l3.927 5.89A2 2 0 0 1 16.263 18H7.737a2 2 0 0 1-1.664-3.11L10 9z"
-                opacity={OPACITY}
-            />
-            <path d="M17.281 13.917l.649.974A2 2 0 0 1 16.266 18H7.74a2 2 0 0 1-1.664-3.11l2.25-3.375c1.363-.21 2.755.165 4.177 1.124 1.255.847 2.848 1.273 4.778 1.278z" />
-        </g>
-    ),
-
     resources: (
         <g fillRule="evenodd">
             <path d="M5 11l7 7 7-7H5z" />
