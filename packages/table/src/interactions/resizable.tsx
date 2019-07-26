@@ -106,7 +106,7 @@ export class Resizable extends React.PureComponent<IResizableProps, IResizeableS
     }
 
     public render() {
-        const child = React.Children.only(this.props.children);
+        const child = React.Children.only(this.props.children) as React.ReactElement;
         const style = { ...child.props.style, ...this.getStyle() };
 
         if (this.props.isResizable === false) {
