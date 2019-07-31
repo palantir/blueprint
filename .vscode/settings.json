@@ -10,6 +10,7 @@
         "**/build": true,
         "**/coverage": true,
         "**/dist": true,
+        "**/lib": true,
         "**/node_modules": true,
         "docs": true,
         "site/docs": true
