@@ -39,6 +39,7 @@ export interface IDateRangePickerExampleState {
     reverseMonthAndYearMenus?: boolean;
     shortcuts?: boolean;
     timePrecision?: TimePrecision;
+    selectedShortcutIndex?: number;
 }
 
 interface IDateOption {
@@ -80,6 +81,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
         maxDateIndex: 0,
         minDateIndex: 0,
         reverseMonthAndYearMenus: false,
+        selectedShortcutIndex: -1,
         shortcuts: true,
         singleMonthOnly: false,
     };
@@ -112,6 +114,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
                     maxDate={maxDate}
                     minDate={minDate}
                     onChange={this.handleDateChange}
+                    onShortcutChange={this.handleShortcutChange}
                 />
                 <MomentDateRange withTime={props.timePrecision !== undefined} range={this.state.dateRange} />
             </Example>
@@ -172,6 +175,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
     }
 
     private handleDateChange = (dateRange: DateRange) => this.setState({ dateRange });
+    private handleShortcutChange = (selectedShortcutIndex: number) => this.setState({ selectedShortcutIndex });
 
     private renderSelectMenu(
         label: string,

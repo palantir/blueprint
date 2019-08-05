@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Button } from "@blueprintjs/core";
+import { Button, Classes, Menu } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -37,6 +37,7 @@ import {
     TimePicker,
     TimePrecision,
 } from "../src/index";
+import { Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
@@ -910,6 +911,43 @@ describe("<DateRangePicker>", () => {
             const value = onChangeSpy.args[0][0];
             assert.isTrue(DateUtils.areSameDay(today, value[0]));
             assert.isTrue(DateUtils.areSameDay(tomorrow, value[1]));
+        });
+
+        it("shortcuts without active menu style", () => {
+            const { wrapper } = render();
+
+            assert.isFalse(
+                wrapper
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(`.${Classes.ACTIVE}`)
+                    .exists(),
+            );
+        });
+
+        it("shortcuts with active menu style", () => {
+            const selectedShortcut = 1;
+            const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
+
+            assert.isTrue(
+                wrapper
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(`.${Classes.ACTIVE}`)
+                    .exists(),
+            );
+        });
+
+        it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
+            const selectedShortcut = 1;
+            const onShortcutChangeSpy = sinon.spy();
+            const { clickShortcut } = render({ onShortcutChange: onShortcutChangeSpy });
+
+            clickShortcut(selectedShortcut);
+
+            assert.isTrue(onChangeSpy.calledOnce);
+            assert.isTrue(onShortcutChangeSpy.calledOnce);
+            assert.isTrue(onShortcutChangeSpy.calledWith(selectedShortcut));
         });
 
         it("custom shortcuts select the correct values", () => {
