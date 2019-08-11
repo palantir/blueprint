@@ -171,7 +171,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
     }
 
-    public componentWillMount() {
+    public UNSAFE_componentWillMount() {
         this.handleProps = getSortedInteractiveHandleProps(this.props);
     }
 
@@ -183,7 +183,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         this.updateTickSize();
     }
 
-    public componentWillReceiveProps(nextProps: IMultiSliderProps & IChildrenProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IMultiSliderProps & IChildrenProps) {
         this.setState({ labelPrecision: this.getLabelPrecision(nextProps) });
 
         const newHandleProps = getSortedInteractiveHandleProps(nextProps);

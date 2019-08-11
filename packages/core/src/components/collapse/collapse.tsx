@@ -125,7 +125,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
     // The most recent non-0 height (once a height has been measured - is 0 until then)
     private height: number = 0;
 
-    public componentWillReceiveProps(nextProps: ICollapseProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: ICollapseProps) {
         if (this.props.isOpen !== nextProps.isOpen) {
             this.clearTimeouts();
             if (this.state.animationState !== AnimationStates.CLOSED && !nextProps.isOpen) {

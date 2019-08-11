@@ -119,7 +119,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         );
     }
 
-    public componentWillReceiveProps(nextProps: IEditableCellProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IEditableCellProps) {
         const { value } = nextProps;
         if (value != null) {
             this.setState({ savedValue: value, dirtyValue: value });

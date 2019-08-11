@@ -222,8 +222,8 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         this.updateDarkParent();
     }
 
-    public componentWillReceiveProps(nextProps: IPopoverProps) {
-        super.componentWillReceiveProps(nextProps);
+    public UNSAFE_componentWillReceiveProps(nextProps: IPopoverProps) {
+        super.UNSAFE_componentWillReceiveProps(nextProps);
 
         const nextIsOpen = this.getIsOpen(nextProps);
 

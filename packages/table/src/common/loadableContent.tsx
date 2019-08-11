@@ -41,7 +41,7 @@ export class LoadableContent extends React.PureComponent<ILoadableContentProps, 
         this.style = this.calculateStyle(props.variableLength);
     }
 
-    public componentWillReceiveProps(nextProps: ILoadableContentProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: ILoadableContentProps) {
         if ((!this.props.loading && nextProps.loading) || this.props.variableLength !== nextProps.variableLength) {
             this.style = this.calculateStyle(nextProps.variableLength);
         }

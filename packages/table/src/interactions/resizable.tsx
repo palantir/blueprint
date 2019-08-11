@@ -97,7 +97,7 @@ export class Resizable extends React.PureComponent<IResizableProps, IResizeableS
         };
     }
 
-    public componentWillReceiveProps(nextProps: IResizableProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IResizableProps) {
         const { size } = nextProps;
         this.setState({
             size,

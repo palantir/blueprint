@@ -222,8 +222,8 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         },
     };
 
-    public componentWillReceiveProps(nextProps: HTMLInputProps & ITagInputProps) {
-        super.componentWillReceiveProps(nextProps);
+    public UNSAFE_componentWillReceiveProps(nextProps: HTMLInputProps & ITagInputProps) {
+        super.UNSAFE_componentWillReceiveProps(nextProps);
 
         if (nextProps.inputValue !== this.props.inputValue) {
             this.setState({ inputValue: nextProps.inputValue || "" });

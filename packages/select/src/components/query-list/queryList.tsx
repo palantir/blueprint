@@ -198,7 +198,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         });
     }
 
-    public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IQueryListProps<T>) {
         if (nextProps.activeItem !== undefined) {
             this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem: nextProps.activeItem });

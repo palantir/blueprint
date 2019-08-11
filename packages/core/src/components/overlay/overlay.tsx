@@ -253,7 +253,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         }
     }
 
-    public componentWillReceiveProps(nextProps: IOverlayProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IOverlayProps) {
         this.setState({ hasEverOpened: this.state.hasEverOpened || nextProps.isOpen });
     }
 

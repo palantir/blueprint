@@ -223,7 +223,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         this.updateInputDimensions();
     }
 
-    public componentWillReceiveProps(nextProps: IEditableTextProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IEditableTextProps) {
         const state: IEditableTextState = {};
         if (nextProps.value != null) {
             state.value = nextProps.value;

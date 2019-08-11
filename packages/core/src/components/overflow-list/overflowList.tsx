@@ -137,7 +137,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         this.repartition(false);
     }
 
-    public componentWillReceiveProps(nextProps: IOverflowListProps<T>) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IOverflowListProps<T>) {
         const {
             collapseFrom,
             items,

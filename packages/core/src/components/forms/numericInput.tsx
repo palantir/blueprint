@@ -216,8 +216,8 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
 
-    public componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
-        super.componentWillReceiveProps(nextProps);
+    public UNSAFE_componentWillReceiveProps(nextProps: HTMLInputProps & INumericInputProps) {
+        super.UNSAFE_componentWillReceiveProps(nextProps);
 
         const value = getValueOrEmptyValue(nextProps.value);
 

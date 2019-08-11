@@ -239,7 +239,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         this.state = { hasValidSelection: this.isSelectedRegionsControlledAndNonEmpty(props) };
     }
 
-    public componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps?: IInternalHeaderProps) {
         this.setState({ hasValidSelection: this.isSelectedRegionsControlledAndNonEmpty(nextProps) });
     }
 

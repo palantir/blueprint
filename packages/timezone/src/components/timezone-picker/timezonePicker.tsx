@@ -167,7 +167,7 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         );
     }
 
-    public componentWillReceiveProps(nextProps: ITimezonePickerProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: ITimezonePickerProps) {
         const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = nextProps;
 
         if (this.props.showLocalTimezone !== nextProps.showLocalTimezone) {

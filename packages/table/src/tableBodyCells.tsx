@@ -108,7 +108,7 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
         );
     }
 
-    public componentWillUpdate(nextProps?: ITableBodyCellsProps) {
+    public UNSAFE_componentWillUpdate(nextProps?: ITableBodyCellsProps) {
         const resetKeysBlacklist = { exclude: BATCHER_RESET_PROP_KEYS_BLACKLIST };
         const shouldResetBatcher = !CoreUtils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
         if (shouldResetBatcher) {

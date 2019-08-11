@@ -189,7 +189,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         /* tslint:enable:max-line-length */
     }
 
-    public componentWillReceiveProps(nextProps: ITimePickerProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: ITimePickerProps) {
         const didMinTimeChange = nextProps.minTime !== this.props.minTime;
         const didMaxTimeChange = nextProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;

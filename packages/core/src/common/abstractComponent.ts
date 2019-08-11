@@ -35,7 +35,7 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
         }
     }
 
-    public componentWillReceiveProps(nextProps: P & { children?: React.ReactNode }) {
+    public UNSAFE_componentWillReceiveProps(nextProps: P & { children?: React.ReactNode }) {
         if (!isNodeEnv("production")) {
             this.validateProps(nextProps);
         }

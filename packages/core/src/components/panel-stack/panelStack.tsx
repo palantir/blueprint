@@ -74,7 +74,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
         stack: this.props.stack != null ? this.props.stack.slice().reverse() : [this.props.initialPanel],
     };
 
-    public componentWillReceiveProps(nextProps: IPanelStackProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IPanelStackProps) {
         if (this.props.stack !== nextProps.stack && this.props.stack != null && nextProps.stack != null) {
             this.setState({
                 direction: this.props.stack.length - nextProps.stack.length < 0 ? "push" : "pop",

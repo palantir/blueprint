@@ -49,7 +49,7 @@ export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
         );
     }
 
-    public componentWillMount() {
+    public UNSAFE_componentWillMount() {
         // HACKHACK: The docs app suffers from a Flash of Unstyled Content that causes some 'width: 100%' examples to
         // render incorrectly, because they mis-measure the horizontal space available to them. Until that bug is squashed,
         // this is the workaround: delay initial render with a requestAnimationFrame.

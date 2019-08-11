@@ -136,7 +136,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         );
     }
 
-    public componentWillReceiveProps(nextProps: ISuggestProps<T>) {
+    public UNSAFE_componentWillReceiveProps(nextProps: ISuggestProps<T>) {
         // If the selected item prop changes, update the underlying state.
         if (nextProps.selectedItem !== undefined && nextProps.selectedItem !== this.state.selectedItem) {
             this.setState({ selectedItem: nextProps.selectedItem });

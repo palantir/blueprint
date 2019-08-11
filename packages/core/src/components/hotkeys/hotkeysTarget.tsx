@@ -47,9 +47,9 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(W
         /** @internal */
         public localHotkeysEvents?: HotkeysEvents;
 
-        public componentWillMount() {
-            if (super.componentWillMount != null) {
-                super.componentWillMount();
+        public UNSAFE_componentWillMount() {
+            if (super.UNSAFE_componentWillMount != null) {
+                super.UNSAFE_componentWillMount();
             }
             this.localHotkeysEvents = new HotkeysEvents(HotkeyScope.LOCAL);
             this.globalHotkeysEvents = new HotkeysEvents(HotkeyScope.GLOBAL);

@@ -247,7 +247,7 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
         );
     }
 
-    public componentWillReceiveProps({ indeterminate }: ICheckboxProps) {
+    public UNSAFE_componentWillReceiveProps({ indeterminate }: ICheckboxProps) {
         // put props into state if controlled by props
         if (indeterminate != null) {
             this.setState({ indeterminate });

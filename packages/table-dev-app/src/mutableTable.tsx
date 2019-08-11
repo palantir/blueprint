@@ -347,7 +347,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    public componentWillMount() {
+    public UNSAFE_componentWillMount() {
         this.resetCellContent();
     }
 
@@ -355,7 +355,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.syncFocusStyle();
     }
 
-    public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
+    public UNSAFE_componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
         if (
             nextState.cellContent !== this.state.cellContent ||
             nextState.numRows !== this.state.numRows ||

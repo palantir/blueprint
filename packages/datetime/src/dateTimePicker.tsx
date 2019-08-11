@@ -101,7 +101,7 @@ export class DateTimePicker extends AbstractPureComponent<IDateTimePickerProps, 
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDatePickerProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: IDatePickerProps) {
         if (this.props.value === nextProps.value) {
             return;
         } else if (nextProps.value != null) {

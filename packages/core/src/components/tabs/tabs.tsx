@@ -159,7 +159,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         this.moveSelectionIndicator();
     }
 
-    public componentWillReceiveProps({ selectedTabId }: ITabsProps) {
+    public UNSAFE_componentWillReceiveProps({ selectedTabId }: ITabsProps) {
         if (selectedTabId !== undefined) {
             // keep state in sync with controlled prop, so state is canonical source of truth
             this.setState({ selectedTabId });
