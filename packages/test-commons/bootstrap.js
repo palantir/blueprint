@@ -6,8 +6,6 @@
 require("./polyfill");
 
 const Enzyme = require("enzyme");
-// test against React 15 with REACT=15 env variable.
-// this module is swapped out using webpack aliases in webpack.config.karma.js
 const Adapter = require("enzyme-adapter-react-16");
 
 Enzyme.configure({ adapter: new Adapter() });

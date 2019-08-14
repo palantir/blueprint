@@ -93,7 +93,7 @@ jobs:
           root: '.'
           paths: [packages/*/lib, packages/*/dist]
 
-  test-react-16: &test-react
+  test:
     docker: *docker-node-browsers
     environment:
       JUNIT_REPORT_PATH: reports
@@ -120,14 +120,7 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
-  test-react-15:
-    # copy test-react-16 and override environment
-    <<: *test-react
-    environment:
-      JUNIT_REPORT_PATH: reports
-      REACT: 15 # use React 15 for this job
-
-  test-iso-react-16: &test-iso
+  test-iso:
     docker: *docker-node-lts
     environment:
       JUNIT_REPORT_PATH: reports
@@ -139,13 +132,6 @@ jobs:
       - run: yarn lerna run --parallel test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
-
-  test-iso-react-15:
-    # copy test-iso-react-16 and override environment
-    <<: *test-iso
-    environment:
-      JUNIT_REPORT_PATH: reports
-      REACT: 15 # use React 15 for this job
 
   deploy-preview:
     docker: *docker-node-lts
@@ -181,18 +167,14 @@ workflows:
           requires: [checkout-code]
       - dist:
           requires: [compile]
-      - test-react-15:
+      - test:
           requires: [compile]
-      - test-react-16:
-          requires: [compile]
-      - test-iso-react-15:
-          requires: [compile]
-      - test-iso-react-16:
+      - test-iso:
           requires: [compile]
       - deploy-preview:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-react-15, test-react-16, test-iso-react-15, test-iso-react-16]
+          requires: [dist, lint, test, test-iso]
           filters:
             branches:
               only:
