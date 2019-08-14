@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { isNodeEnv } from "./utils";
+import * as React from 'react';
+import { isNodeEnv } from './utils';
 
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
  */
-export abstract class AbstractPureComponent<P, S = {}> extends React.PureComponent<P, S> {
+export abstract class AbstractPureComponent<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;
 
@@ -30,14 +30,14 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
 
     constructor(props?: P, context?: any) {
         super(props, context);
-        if (!isNodeEnv("production")) {
+        if (!isNodeEnv('production')) {
             this.validateProps(this.props);
         }
     }
 
-    public componentWillReceiveProps(nextProps: P & { children?: React.ReactNode }) {
-        if (!isNodeEnv("production")) {
-            this.validateProps(nextProps);
+    public componentDidUpdate(_: P, __: S, ___: SS) {
+        if (!isNodeEnv('production')) {
+            this.validateProps(this.props);
         }
     }
 
@@ -77,7 +77,7 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
      * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
      * Like propTypes, these runtime checks run only in development mode.
      */
-    protected validateProps(_: P & { children?: React.ReactNode }) {
+    protected validateProps(_: P) {
         // implement in subclass
     }
 }
