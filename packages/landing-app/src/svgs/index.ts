@@ -16,20 +16,20 @@
 
 // tslint:disable no-var-requires no-submodule-imports
 const HERO_SVGS: Record<string, string> = {
-    alert: require("raw-loader!./alert.svg"),
-    buttons: require("raw-loader!./buttons.svg"),
-    calendar: require("raw-loader!./calendar.svg"),
-    checkboxes: require("raw-loader!./checkboxes.svg"),
-    "file-upload": require("raw-loader!./file-upload.svg"),
-    "input-groups": require("raw-loader!./input-groups.svg"),
-    inputs: require("raw-loader!./inputs.svg"),
-    labels: require("raw-loader!./labels.svg"),
-    radios: require("raw-loader!./radios.svg"),
-    "select-menus": require("raw-loader!./select-menus.svg"),
-    sliders: require("raw-loader!./sliders.svg"),
-    switches: require("raw-loader!./switches.svg"),
-    "time-selections": require("raw-loader!./time-selections.svg"),
-    toggles: require("raw-loader!./toggles.svg"),
+    alert: require("raw-loader!./alert.svg").default,
+    buttons: require("raw-loader!./buttons.svg").default,
+    calendar: require("raw-loader!./calendar.svg").default,
+    checkboxes: require("raw-loader!./checkboxes.svg").default,
+    "file-upload": require("raw-loader!./file-upload.svg").default,
+    "input-groups": require("raw-loader!./input-groups.svg").default,
+    inputs: require("raw-loader!./inputs.svg").default,
+    labels: require("raw-loader!./labels.svg").default,
+    radios: require("raw-loader!./radios.svg").default,
+    "select-menus": require("raw-loader!./select-menus.svg").default,
+    sliders: require("raw-loader!./sliders.svg").default,
+    switches: require("raw-loader!./switches.svg").default,
+    "time-selections": require("raw-loader!./time-selections.svg").default,
+    toggles: require("raw-loader!./toggles.svg").default,
 };
 
 function injectSVG(elem: HTMLElement, id: string) {

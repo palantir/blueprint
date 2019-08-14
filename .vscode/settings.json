@@ -7,11 +7,13 @@
         "docs": true
     },
     "search.exclude": {
-      "**/node_modules": true,
-      "**/build": true,
-      "**/coverage": true,
-      "**/dist": true,
-      "docs": true
+        "**/build": true,
+        "**/coverage": true,
+        "**/dist": true,
+        "**/lib": true,
+        "**/node_modules": true,
+        "docs": true,
+        "site/docs": true
     },
     "editor.insertSpaces": true,
     "editor.tabSize": 4,

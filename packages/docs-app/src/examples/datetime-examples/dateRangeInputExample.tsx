@@ -15,7 +15,7 @@
  */
 
 import { H5, Switch } from "@blueprintjs/core";
-import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
+import { DateRange, DateRangeInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
@@ -27,6 +27,7 @@ export interface IDateRangeInputExampleState {
     closeOnSelection: boolean;
     contiguousCalendarMonths: boolean;
     disabled: boolean;
+    enableTimePicker: boolean;
     format: IDateFormatProps;
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
@@ -41,6 +42,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
         closeOnSelection: false,
         contiguousCalendarMonths: true,
         disabled: false,
+        enableTimePicker: false,
         format: FORMATS[0],
         range: [null, null],
         reverseMonthAndYearMenus: false,
@@ -61,12 +63,19 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
     private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+    private toggleTimePicker = handleBooleanChange(enableTimePicker => this.setState({ enableTimePicker }));
 
     public render() {
-        const { format, range, ...spreadProps } = this.state;
+        const { enableTimePicker, format, range, ...spreadProps } = this.state;
+        const timePrecision = enableTimePicker ? TimePrecision.MINUTE : undefined;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <DateRangeInput {...spreadProps} {...format} onChange={this.handleRangeChange} />
+                <DateRangeInput
+                    {...spreadProps}
+                    {...format}
+                    onChange={this.handleRangeChange}
+                    timePrecision={timePrecision}
+                />
                 <MomentDateRange range={range} />
             </Example>
         );
@@ -107,6 +116,11 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                     checked={this.state.reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
                     onChange={this.toggleReverseMonthAndYearMenus}
+                />
+                <Switch
+                    checked={this.state.enableTimePicker}
+                    label="Enable time picker"
+                    onChange={this.toggleTimePicker}
                 />
                 <FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />
             </>

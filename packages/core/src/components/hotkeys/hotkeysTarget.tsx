@@ -97,17 +97,22 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(W
                 if (this.localHotkeysEvents.count() > 0) {
                     const tabIndex = hotkeys.props.tabIndex === undefined ? 0 : hotkeys.props.tabIndex;
 
-                    const { keyDown: existingKeyDown, keyUp: existingKeyUp } = element.props;
-                    const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+                    const { onKeyDown: existingKeyDown, onKeyUp: existingKeyUp } = element.props;
+
+                    const handleKeyDownWrapper = (e: React.KeyboardEvent<HTMLElement>) => {
                         this.localHotkeysEvents.handleKeyDown(e.nativeEvent as KeyboardEvent);
                         safeInvoke(existingKeyDown, e);
                     };
 
-                    const onKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
+                    const handleKeyUpWrapper = (e: React.KeyboardEvent<HTMLElement>) => {
                         this.localHotkeysEvents.handleKeyUp(e.nativeEvent as KeyboardEvent);
                         safeInvoke(existingKeyUp, e);
                     };
-                    return React.cloneElement(element, { tabIndex, onKeyDown, onKeyUp });
+                    return React.cloneElement(element, {
+                        onKeyDown: handleKeyDownWrapper,
+                        onKeyUp: handleKeyUpWrapper,
+                        tabIndex,
+                    });
                 }
             }
             return element;

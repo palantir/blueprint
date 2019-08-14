@@ -144,6 +144,7 @@ $toast-margin: $pt-grid-size * 2 !default;
 .#{$ns}-toast-message {
   flex: 1 1 auto;
   padding: centered-text($toast-height);
+  word-break: break-word;
 }
 
 .#{$ns}-toast-container {

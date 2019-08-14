@@ -17,6 +17,8 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
 import {
@@ -34,7 +36,7 @@ import {
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -135,7 +137,102 @@ describe("<DateRangeInput>", () => {
         expectPropValidationError(DateRangeInput, { ...DATE_FORMAT, value: null });
     });
 
+    describe("timePrecision prop", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
+
+        it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
+            const { root } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            expect(isStartInputFocused(root), "start input focus to be false").to.be.false;
+            expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
+        });
+
+        it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+
+            root.setState({ isOpen: true });
+
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
+        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
+            const { root } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
+        afterEach(() => {
+            ReactDOM.unmountComponentAtNode(testsContainerElement);
+        });
+
+        function keyDownOnInput(className: string, key: number, inputElementIndex: number = 0) {
+            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { which: key });
+        }
+
+        function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
+            return document.querySelectorAll(`.${DateClasses.TIMEPICKER_INPUT}.${className}`)[
+                inputElementIndex
+            ] as HTMLInputElement;
+        }
+    });
+
     describe("startInputProps and endInputProps", () => {
+        it("startInput is disabled when startInputProps={ disabled: true }", () => {
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} startInputProps={{ disabled: true }} />);
+            const startInput = getStartInput(root);
+
+            startInput.simulate("click");
+            expect(root.find(Popover).prop("isOpen")).to.be.false;
+            expect(startInput.prop("disabled")).to.be.true;
+        });
+
+        it("endInput is not disabled when startInputProps={ disabled: true }", () => {
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} startInputProps={{ disabled: true }} />);
+            const endInput = getEndInput(root);
+            expect(endInput.prop("disabled")).to.be.false;
+        });
+
+        it("endInput is disabled when endInputProps={ disabled: true }", () => {
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} endInputProps={{ disabled: true }} />);
+            const endInput = getEndInput(root);
+
+            endInput.simulate("click");
+            expect(root.find(Popover).prop("isOpen")).to.be.false;
+            expect(endInput.prop("disabled")).to.be.true;
+        });
+
+        it("startInput is not disabled when endInputProps={ disabled: true }", () => {
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} endInputProps={{ disabled: true }} />);
+            const startInput = getStartInput(root);
+            expect(startInput.prop("disabled")).to.be.false;
+        });
+
         describe("startInputProps", () => {
             runTestSuite(getStartInput, inputGroupProps => {
                 return mount(<DateRangeInput {...DATE_FORMAT} startInputProps={inputGroupProps} />);
@@ -267,6 +364,16 @@ describe("<DateRangeInput>", () => {
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} />);
+            root.setState({ isOpen: true });
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+            expect(root.state("isOpen")).to.be.false;
+        });
+
+        it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", () => {
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+            );
             root.setState({ isOpen: true });
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");

@@ -44,8 +44,9 @@ actually closes the overlay.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">A note about overlay content positioning</h4>
-    When rendered inline, content will automatically be set to `position: absolute` to respect
-    document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
+
+When rendered inline, content will automatically be set to `position: absolute` to respect
+document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
 </div>
 
 ```tsx

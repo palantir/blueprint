@@ -55,4 +55,35 @@ describe("<EditableName>", () => {
         expect(onCancel.called).to.be.false;
         expect(onConfirm.called).to.be.true;
     });
+
+    it("passes index prop to callbacks if index was provided", () => {
+        const onCancelSpy = sinon.spy();
+        const onChangeSpy = sinon.spy();
+        const onConfirmSpy = sinon.spy();
+
+        const CHANGED_VALUE = "my-changed-value";
+        const INDEX = 17;
+
+        const elem = mount(
+            <EditableName
+                name="test-name-5000"
+                index={INDEX}
+                onCancel={onCancelSpy}
+                onChange={onChangeSpy}
+                onConfirm={onConfirmSpy}
+            />,
+        );
+
+        elem.find(EditableText).simulate("focus");
+
+        elem.find(EditableText)
+            .find("input")
+            .simulate("change", { target: { value: CHANGED_VALUE } });
+        expect(onChangeSpy.firstCall.args).to.deep.equal([CHANGED_VALUE, INDEX]);
+
+        elem.find(EditableText)
+            .find("input")
+            .simulate("blur");
+        expect(onChangeSpy.firstCall.args).to.deep.equal([CHANGED_VALUE, INDEX]);
+    });
 });

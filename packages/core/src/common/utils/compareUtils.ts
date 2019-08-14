@@ -66,7 +66,7 @@ export function shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IK
  * Deep comparison between objects. If `keys` is provided, just that subset of
  * keys will be compared; otherwise, all keys will be compared.
  */
-export function deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean {
+export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | number | symbol>): boolean {
     if (objA === objB) {
         return true;
     } else if (objA == null && objB == null) {
@@ -93,26 +93,6 @@ export function deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean 
         }
         return arraysEqual(keysA, keysB) && _deepCompareKeys(objA, objB, keysA);
     }
-}
-
-/**
- * Returns a descriptive object for each key whose values are shallowly unequal
- * between two provided objects. Useful for debugging shouldComponentUpdate.
- */
-export function getShallowUnequalKeyValues<T extends object>(
-    objA: T,
-    objB: T,
-    keys?: IKeyBlacklist<T> | IKeyWhitelist<T>,
-) {
-    // default param values let null values pass through, so we have to take
-    // this more thorough approach
-    const definedObjA = objA == null ? {} : objA;
-    const definedObjB = objB == null ? {} : objB;
-
-    const filteredKeys = _filterKeys(definedObjA, definedObjB, keys == null ? { exclude: [] } : keys);
-    return _getUnequalKeyValues(definedObjA, definedObjB, filteredKeys, (a, b, key) => {
-        return shallowCompareKeys(a, b, { include: [key] });
-    });
 }
 
 /**
@@ -145,7 +125,7 @@ function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyW
 /**
  * Partial deep comparison between objects using the given list of keys.
  */
-function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
+function _deepCompareKeys(objA: any, objB: any, keys: Array<string | number | symbol>): boolean {
     return keys.every(key => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && deepCompareKeys(objA[key], objB[key]);
     });
@@ -158,7 +138,7 @@ function _isSimplePrimitiveType(value: any) {
 function _filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
     if (_isWhitelist(keys)) {
         return keys.include;
-    } else {
+    } else if (_isBlacklist(keys)) {
         const keysA = Object.keys(objA);
         const keysB = Object.keys(objB);
 
@@ -171,10 +151,16 @@ function _filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist
         // return the remaining keys as an array
         return Object.keys(keySet) as Array<keyof T>;
     }
+
+    return [];
 }
 
 function _isWhitelist<T>(keys: any): keys is IKeyWhitelist<T> {
     return keys != null && (keys as IKeyWhitelist<T>).include != null;
+}
+
+function _isBlacklist<T>(keys: any): keys is IKeyBlacklist<T> {
+    return keys != null && (keys as IKeyBlacklist<T>).exclude != null;
 }
 
 function _arrayToObject(arr: any[]) {

@@ -147,7 +147,7 @@ describe("Toaster", () => {
             setTimeout(() => {
                 assert.equal(testsContainerElement.querySelector(`.${Classes.TOAST}`), document.activeElement);
                 done();
-            }, 10);
+            }, 100);
         });
     });
 

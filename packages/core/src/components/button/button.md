@@ -21,13 +21,17 @@ Buttons trigger actions when clicked.
 ```
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
-    <h4 class="@ns-heading">Disabled `Button` prevents all interaction</h4>
-    Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
+    <h4 class="@ns-heading">
 
-    `Button` uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
-    `AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
-    attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
-    when disabled but permit other events.
+Disabled `Button` prevents all interaction
+</h4>
+
+Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
+
+`Button` uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
+`AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
+attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
+when disabled but permit other events.
 
 </div>
 

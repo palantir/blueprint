@@ -34,8 +34,11 @@ export class Divider extends React.PureComponent<IDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 
     public render() {
-        const { className, tagName: TagName = "div", ...htmlProps } = this.props;
+        const { className, tagName = "div", ...htmlProps } = this.props;
         const classes = classNames(DIVIDER, className);
-        return <TagName {...htmlProps} className={classes} />;
+        return React.createElement(tagName, {
+            ...htmlProps,
+            className: classes,
+        });
     }
 }
