@@ -41,7 +41,7 @@ export interface IHotkeysProps extends IProps {
     tabIndex?: number;
 }
 
-export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
+export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;
 
     public static defaultProps = {
