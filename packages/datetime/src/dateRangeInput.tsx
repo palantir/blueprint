@@ -960,7 +960,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     }
 
     // this is a slightly kludgy function, but it saves us a good amount of repeated code between
-    // the constructor and componentWillReceiveProps.
+    // the constructor and componentDidUpdate.
     private getFormattedMinMaxDateString(props: IDateRangeInputProps, propName: "minDate" | "maxDate") {
         const date = props[propName];
         const defaultDate = DateRangeInput.defaultProps[propName];

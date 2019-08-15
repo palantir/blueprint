@@ -273,7 +273,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             return;
         }
         if (this.props.value === undefined) {
-            // set now if uncontrolled, otherwise they'll be updated in `componentWillReceiveProps`
+            // set now if uncontrolled, otherwise they'll be updated in `componentDidUpdate`
             this.setState({
                 displayMonth: day.getMonth(),
                 displayYear: day.getFullYear(),
