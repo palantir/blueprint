@@ -200,8 +200,28 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     }
 
     public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState, ss: {}) {
-        super.componentDidUpdate(prevProps, prevState, ss)
+        super.componentDidUpdate(prevProps, prevState, ss);
         this.updateTickSize();
+    }
+
+    protected validateProps(props: IMultiSliderProps & IChildrenProps) {
+        if (props.stepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_STEP);
+        }
+        if (props.labelStepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
+        }
+
+        let anyInvalidChildren = false;
+        React.Children.forEach(props.children, child => {
+            // allow boolean coercion to omit nulls and false values
+            if (child && !Utils.isElementOfType(child, MultiSlider.Handle)) {
+                anyInvalidChildren = true;
+            }
+        });
+        if (anyInvalidChildren) {
+            throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
+        }
     }
 
     private formatLabel(value: number): React.ReactChild {
@@ -417,26 +437,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             const tickSizeRatio = 1 / ((this.props.max as number) - (this.props.min as number));
             const tickSize = trackSize * tickSizeRatio;
             this.setState({ tickSize, tickSizeRatio });
-        }
-    }
-
-    protected validateProps(props: IMultiSliderProps & IChildrenProps) {
-        if (props.stepSize <= 0) {
-            throw new Error(Errors.SLIDER_ZERO_STEP);
-        }
-        if (props.labelStepSize <= 0) {
-            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
-        }
-
-        let anyInvalidChildren = false;
-        React.Children.forEach(props.children, child => {
-            // allow boolean coercion to omit nulls and false values
-            if (child && !Utils.isElementOfType(child, MultiSlider.Handle)) {
-                anyInvalidChildren = true;
-            }
-        });
-        if (anyInvalidChildren) {
-            throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
         }
     }
 }
