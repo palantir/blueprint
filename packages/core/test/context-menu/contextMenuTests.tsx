@@ -67,7 +67,7 @@ describe("ContextMenu", () => {
         setTimeout(() => {
             assert.isTrue(document.querySelector(`.${Classes.CONTEXT_MENU}`) == null);
             done();
-        }, 110);
+        }, 200);
     });
 
     it("does not invoke previous onClose callback", () => {
