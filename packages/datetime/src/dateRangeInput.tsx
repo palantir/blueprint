@@ -256,7 +256,8 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         };
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: IDateRangeInputProps, _: IDateRangeInputState, __: {}) {
+        super.componentDidUpdate(prevProps, _, __);
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
         const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, this.startInputRef);
@@ -273,6 +274,25 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         } else if (isEndInputFocused && shouldSelectAfterUpdate) {
             this.endInputRef.select();
         }
+
+        let nextState: IDateRangeInputState = {};
+
+        if (this.props.value !== prevProps.value) {
+            const [selectedStart, selectedEnd] = this.getInitialRange(this.props);
+            nextState = { ...nextState, selectedStart, selectedEnd };
+        }
+
+        // cache the formatted date strings to avoid computing on each render.
+        if (this.props.minDate !== prevProps.minDate) {
+            const formattedMinDateString = this.getFormattedMinMaxDateString(this.props, "minDate");
+            nextState = { ...nextState, formattedMinDateString };
+        }
+        if (this.props.maxDate !== prevProps.maxDate) {
+            const formattedMaxDateString = this.getFormattedMinMaxDateString(this.props, "maxDate");
+            nextState = { ...nextState, formattedMaxDateString };
+        }
+
+        this.setState(nextState);
     }
 
     public render() {
@@ -309,29 +329,6 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
                 </div>
             </Popover>
         );
-    }
-
-    public componentWillReceiveProps(nextProps: IDateRangeInputProps) {
-        super.componentWillReceiveProps(nextProps);
-
-        let nextState: IDateRangeInputState = {};
-
-        if (nextProps.value !== this.props.value) {
-            const [selectedStart, selectedEnd] = this.getInitialRange(nextProps);
-            nextState = { ...nextState, selectedStart, selectedEnd };
-        }
-
-        // cache the formatted date strings to avoid computing on each render.
-        if (nextProps.minDate !== this.props.minDate) {
-            const formattedMinDateString = this.getFormattedMinMaxDateString(nextProps, "minDate");
-            nextState = { ...nextState, formattedMinDateString };
-        }
-        if (nextProps.maxDate !== this.props.maxDate) {
-            const formattedMaxDateString = this.getFormattedMinMaxDateString(nextProps, "maxDate");
-            nextState = { ...nextState, formattedMaxDateString };
-        }
-
-        this.setState(nextState);
     }
 
     protected validateProps(props: IDateRangeInputProps) {
