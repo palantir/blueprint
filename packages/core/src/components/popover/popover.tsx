@@ -181,6 +181,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         const wrapperClasses = classNames(Classes.POPOVER_WRAPPER, className, {
             [Classes.FILL]: fill,
         });
+
         const wrapper = React.createElement(
             wrapperTagName,
             { className: wrapperClasses },
@@ -222,24 +223,21 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         this.updateDarkParent();
     }
 
-    public componentWillReceiveProps(nextProps: IPopoverProps) {
-        super.componentWillReceiveProps(nextProps);
+    public componentDidUpdate(_: IPopoverProps, __: IPopoverState, snapshot: {}) {
+        super.componentDidUpdate(_, __, snapshot);
+        this.updateDarkParent();
 
-        const nextIsOpen = this.getIsOpen(nextProps);
+        const nextIsOpen = this.getIsOpen(this.props);
 
-        if (nextProps.isOpen != null && nextIsOpen !== this.state.isOpen) {
+        if (this.props.isOpen != null && nextIsOpen !== this.state.isOpen) {
             this.setOpenState(nextIsOpen);
             // tricky: setOpenState calls setState only if this.props.isOpen is
             // not controlled, so we need to invoke setState manually here.
             this.setState({ isOpen: nextIsOpen });
-        } else if (this.state.isOpen && nextProps.isOpen == null && nextProps.disabled) {
+        } else if (this.props.disabled && this.state.isOpen && this.props.isOpen == null) {
             // special case: close an uncontrolled popover when disabled is set to true
             this.setOpenState(false);
         }
-    }
-
-    public componentDidUpdate() {
-        this.updateDarkParent();
     }
 
     /**
