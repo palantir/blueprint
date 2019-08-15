@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { Classes, Intent } from "../../common";
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
@@ -440,6 +441,8 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         }
     }
 }
+
+polyfill(MultiSlider);
 
 function getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
     // infer default label precision from stepSize because that's how much the handle moves.

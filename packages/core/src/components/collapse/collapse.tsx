@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -240,3 +241,5 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
         }
     }
 }
+
+polyfill(Collapse);

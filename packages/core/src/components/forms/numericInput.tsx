@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { IconName } from "@blueprintjs/icons";
 import {
@@ -528,3 +529,5 @@ export class NumericInput extends AbstractPureComponent<
         return this.delta;
     }
 }
+
+polyfill(NumericInput);
