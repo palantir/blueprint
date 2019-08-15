@@ -35,7 +35,7 @@ export abstract class AbstractComponent<P, S, SS = {}> extends React.Component<P
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_: P, __: S, ___: SS) {
         if (!isNodeEnv("production")) {
             this.validateProps(this.props);
         }
