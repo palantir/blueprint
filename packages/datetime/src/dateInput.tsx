@@ -231,10 +231,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDateInputProps) {
-        super.componentWillReceiveProps(nextProps);
-        if (nextProps.value !== this.props.value) {
-            this.setState({ value: nextProps.value });
+    public componentDidUpdate(prevProps: IDateInputProps, _: IDateInputState, __: {}) {
+        super.componentDidUpdate(prevProps, _, __);
+        if (prevProps.value !== this.props.value) {
+            this.setState({ value: this.props.value });
         }
     }
 
