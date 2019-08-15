@@ -271,8 +271,12 @@ export class NumericInput extends AbstractPureComponent<
         );
     }
 
-    public componentDidUpdate(prevProps: INumericInputProps, prevState: INumericInputState, snapshot: INumericInputSnapshot) {
-        super.componentDidUpdate(prevProps, prevState, snapshot)
+    public componentDidUpdate(
+        prevProps: INumericInputProps,
+        prevState: INumericInputState,
+        snapshot: INumericInputSnapshot,
+    ) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
