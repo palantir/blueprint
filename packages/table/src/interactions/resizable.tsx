@@ -97,12 +97,15 @@ export class Resizable extends React.PureComponent<IResizableProps, IResizeableS
         };
     }
 
-    public componentWillReceiveProps(nextProps: IResizableProps) {
-        const { size } = nextProps;
-        this.setState({
-            size,
-            unclampedSize: size,
-        });
+    public componentDidUpdate(prevProps: IResizableProps) {
+        const didSizePropChange = prevProps.size !== this.props.size;
+        const { size } = this.props;
+        if (didSizePropChange) {
+            this.setState({
+                size,
+                unclampedSize: size,
+            });
+        }
     }
 
     public render() {
