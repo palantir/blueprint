@@ -83,8 +83,12 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(W
 
             if (isFunction(this.renderHotkeys)) {
                 const hotkeys = this.renderHotkeys();
-                if (this.localHotkeysEvents) { this.localHotkeysEvents.setHotkeys(hotkeys.props); }
-                if (this.globalHotkeysEvents) { this.globalHotkeysEvents.setHotkeys(hotkeys.props); }
+                if (this.localHotkeysEvents) {
+                    this.localHotkeysEvents.setHotkeys(hotkeys.props);
+                }
+                if (this.globalHotkeysEvents) {
+                    this.globalHotkeysEvents.setHotkeys(hotkeys.props);
+                }
 
                 if (this.localHotkeysEvents.count() > 0) {
                     const tabIndex = hotkeys.props.tabIndex === undefined ? 0 : hotkeys.props.tabIndex;

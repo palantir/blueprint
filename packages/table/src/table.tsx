@@ -697,9 +697,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentWillReceiveProps(nextProps: ITableProps) {
-        // calls validateProps
-        super.componentWillReceiveProps(nextProps);
-
         const {
             children,
             columnWidths,
@@ -883,6 +880,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * ClientRects.
      */
     public componentDidMount() {
+        this.validateProps(this.props, true);
         this.validateGrid();
 
         this.locator = new Locator(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
@@ -904,7 +902,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.didCompletelyMount = false;
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: ITableProps, __: ITableState, ___: {}) {
+        this.validateProps(prevProps);
         if (this.locator != null) {
             this.validateGrid();
             this.updateLocator();
@@ -918,24 +917,30 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.maybeScrollTableIntoView();
     }
 
-    protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
+    protected validateProps(prevProps: ITableProps, forceValidation: boolean = false) {
+        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = this.props;
         const numColumns = React.Children.count(children);
 
+        const shouldValidate =
+            numFrozenRows !== prevProps.numFrozenRows ||
+            numFrozenColumns !== prevProps.numFrozenColumns ||
+            numRows !== prevProps.numRows ||
+            forceValidation;
+
         // do cheap error-checking first.
-        if (numRows != null && numRows < 0) {
+        if (shouldValidate && numRows != null && numRows < 0) {
             throw new Error(Errors.TABLE_NUM_ROWS_NEGATIVE);
         }
-        if (numFrozenRows != null && numFrozenRows < 0) {
+        if (shouldValidate && numFrozenRows != null && numFrozenRows < 0) {
             throw new Error(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
         }
-        if (numFrozenColumns != null && numFrozenColumns < 0) {
+        if (shouldValidate && numFrozenColumns != null && numFrozenColumns < 0) {
             throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
         }
-        if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
+        if (shouldValidate && numRows != null && rowHeights != null && rowHeights.length !== numRows) {
             throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
         }
-        if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
+        if (shouldValidate && numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
         React.Children.forEach(children, child => {
@@ -945,10 +950,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         });
 
         // these are recoverable scenarios, so just print a warning.
-        if (numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
+        if (shouldValidate && numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
             console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
         }
-        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
+
+        const propsOrColsChanged = shouldValidate || numColumns !== React.Children.count(prevProps.children);
+        if (propsOrColsChanged && numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
     }
