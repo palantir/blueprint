@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -215,6 +215,25 @@ describe("<MultiSlider>", () => {
     });
 
     describe("validation", () => {
+        let expectedErrors = 0;
+        let actualErrors = 0;
+        function onError(e: ErrorEvent) {
+            e.preventDefault();
+            actualErrors++;
+        }
+
+        beforeEach(() => {
+            expectedErrors = 0;
+            actualErrors = 0;
+            window.addEventListener("error", onError);
+        });
+
+        afterEach(() => {
+            window.removeEventListener("error", onError);
+            expect(actualErrors).to.eq(expectedErrors);
+            expectedErrors = 0;
+        });
+
         it("throws an error if a child is not a slider handle", () => {
             expectPropValidationError(MultiSlider, { children: <span>Bad</span> as any });
         });
