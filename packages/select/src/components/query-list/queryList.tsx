@@ -198,18 +198,19 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         });
     }
 
-    public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (nextProps.activeItem !== undefined) {
-            this.shouldCheckActiveItemInViewport = true;
-            this.setState({ activeItem: nextProps.activeItem });
-        }
-        if (nextProps.query != null && nextProps.query !== this.props.query) {
-            this.setQuery(nextProps.query, nextProps.resetOnQuery, nextProps);
-        }
-    }
-
     public componentDidUpdate(prevProps: IQueryListProps<T>) {
-        if (
+        if (this.props.activeItem !== undefined && this.props.activeItem !== this.state.activeItem) {
+            this.shouldCheckActiveItemInViewport = true;
+            this.setState({ activeItem: this.props.activeItem });
+        }
+
+        // new query
+        if (this.props.query != null && this.props.query !== prevProps.query) {
+            this.setQuery(this.props.query, this.props.resetOnQuery, this.props);
+        }
+        // same query, but items in the list changed
+        else if (
+            this.props.query != null &&
             !Utils.shallowCompareKeys(this.props, prevProps, {
                 include: ["items", "itemListPredicate", "itemPredicate"],
             })
