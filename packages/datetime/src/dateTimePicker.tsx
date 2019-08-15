@@ -101,13 +101,13 @@ export class DateTimePicker extends AbstractPureComponent<IDateTimePickerProps, 
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDatePickerProps) {
-        if (this.props.value === nextProps.value) {
+    public componentDidUpdate(prevProps: IDatePickerProps) {
+        if (this.props.value === prevProps.value) {
             return;
-        } else if (nextProps.value != null) {
+        } else if (this.props.value != null) {
             this.setState({
-                dateValue: nextProps.value,
-                timeValue: nextProps.value,
+                dateValue: this.props.value,
+                timeValue: this.props.value,
             });
         } else {
             // clear only the date to remove the selected-date style in the calendar
