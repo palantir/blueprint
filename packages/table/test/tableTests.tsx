@@ -477,6 +477,7 @@ describe("<Table>", function(this) {
 
             // deselect the full table
             table.setProps({ selectedRegions: [] });
+            table.update();
             columnHeader = table
                 .find(COLUMN_HEADER_SELECTOR)
                 .hostNodes()
@@ -604,7 +605,7 @@ describe("<Table>", function(this) {
 
             expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
             table.setProps({ numRows: 2 }); // still small enough to fit in one batch
-            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
+            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(3);
         });
     });
 
@@ -696,6 +697,7 @@ describe("<Table>", function(this) {
         it("renders correct number of frozen cells if numFrozenRows and numFrozenColumns are changed to > 0", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
             table.setProps({ numFrozenRows: 1, numFrozenColumns: 1 });
+            table.update();
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
             expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
@@ -708,6 +710,7 @@ describe("<Table>", function(this) {
                 createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
             );
             table.setProps({ numFrozenRows: 0, numFrozenColumns: 0 });
+            table.update();
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
             expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
@@ -1105,6 +1108,7 @@ describe("<Table>", function(this) {
             const focusCellSelector = `.${Classes.TABLE_FOCUS_REGION}`;
             expect(component.find(focusCellSelector).exists()).to.be.true;
             component.setProps({ enableFocusedCell: false });
+            component.update();
             expect(component.find(focusCellSelector).exists()).to.be.false;
         });
 
