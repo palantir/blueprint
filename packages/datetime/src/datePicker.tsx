@@ -156,10 +156,10 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDatePickerProps) {
-        super.componentWillReceiveProps(nextProps);
-        const { value } = nextProps;
-        if (value === this.props.value) {
+    public componentDidUpdate(prevProps: IDatePickerProps, _: IDatePickerState, __: {}) {
+        super.componentDidUpdate(prevProps, _, __);
+        const { value } = this.props;
+        if (value === prevProps.value) {
             // no action needed
             return;
         } else if (value == null) {
