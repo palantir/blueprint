@@ -118,6 +118,8 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
 }
 
 export class Alert extends AbstractPureComponent<IAlertProps, {}> {
+    state = {};
+
     public static defaultProps: IAlertProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
