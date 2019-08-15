@@ -139,6 +139,15 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     public static Handle = MultiSliderHandle;
 
+    public static getDerivedStateFromProps(props: IMultiSliderProps & IChildrenProps) {
+        return { labelPrecision: MultiSlider.getLabelPrecision(props) };
+    }
+
+    private static getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
+        // infer default label precision from stepSize because that's how much the handle moves.
+        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
+    }
+
     public state: ISliderState = {
         labelPrecision: getLabelPrecision(this.props),
         tickSize: 0,
@@ -149,6 +158,10 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     private handleProps: IHandleProps[];
 
     private trackElement: HTMLElement | null;
+
+    constructor(props: IMultiSliderProps) {
+        super(props);
+    }
 
     public render() {
         const classes = classNames(
@@ -171,46 +184,24 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
     }
 
-    public componentWillMount() {
-        this.handleProps = getSortedInteractiveHandleProps(this.props);
-    }
-
     public componentDidMount() {
+        this.handleProps = getSortedInteractiveHandleProps(this.props);
         this.updateTickSize();
     }
 
-    public componentDidUpdate() {
-        this.updateTickSize();
-    }
-
-    public componentWillReceiveProps(nextProps: IMultiSliderProps & IChildrenProps) {
-        this.setState({ labelPrecision: this.getLabelPrecision(nextProps) });
-
-        const newHandleProps = getSortedInteractiveHandleProps(nextProps);
+    public getSnapshotBeforeUpdate(): {} | null {
+        const newHandleProps = getSortedInteractiveHandleProps(this.props);
         if (newHandleProps.length !== this.handleProps.length) {
             this.handleElements = [];
         }
         this.handleProps = newHandleProps;
+
+        return null;
     }
 
-    protected validateProps(props: IMultiSliderProps & IChildrenProps) {
-        if (props.stepSize <= 0) {
-            throw new Error(Errors.SLIDER_ZERO_STEP);
-        }
-        if (props.labelStepSize <= 0) {
-            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
-        }
-
-        let anyInvalidChildren = false;
-        React.Children.forEach(props.children, child => {
-            // allow boolean coercion to omit nulls and false values
-            if (child && !Utils.isElementOfType(child, MultiSlider.Handle)) {
-                anyInvalidChildren = true;
-            }
-        });
-        if (anyInvalidChildren) {
-            throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
-        }
+    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState, ss: {}) {
+        super.componentDidUpdate(prevProps, prevState, ss)
+        this.updateTickSize();
     }
 
     private formatLabel(value: number): React.ReactChild {
@@ -280,6 +271,9 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private renderHandles() {
         const { disabled, max, min, stepSize, vertical } = this.props;
+        if (!this.handleProps) {
+            return null;
+        }
         return this.handleProps.map(({ value, type }, index) => (
             <Handle
                 className={classNames({
@@ -401,11 +395,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         });
     };
 
-    private getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
-        // infer default label precision from stepSize because that's how much the handle moves.
-        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
-    }
-
     private getOffsetRatio(value: number) {
         return Utils.clamp((value - this.props.min) * this.state.tickSizeRatio, 0, 1);
     }
@@ -428,6 +417,26 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             const tickSizeRatio = 1 / ((this.props.max as number) - (this.props.min as number));
             const tickSize = trackSize * tickSizeRatio;
             this.setState({ tickSize, tickSizeRatio });
+        }
+    }
+
+    protected validateProps(props: IMultiSliderProps & IChildrenProps) {
+        if (props.stepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_STEP);
+        }
+        if (props.labelStepSize <= 0) {
+            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
+        }
+
+        let anyInvalidChildren = false;
+        React.Children.forEach(props.children, child => {
+            // allow boolean coercion to omit nulls and false values
+            if (child && !Utils.isElementOfType(child, MultiSlider.Handle)) {
+                anyInvalidChildren = true;
+            }
+        });
+        if (anyInvalidChildren) {
+            throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
         }
     }
 }
