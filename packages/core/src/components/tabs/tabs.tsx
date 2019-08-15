@@ -107,6 +107,14 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 
+    public static getDerivedStateFromProps({ selectedTabId }: ITabsProps) {
+        if (selectedTabId !== undefined) {
+            // keep state in sync with controlled prop, so state is canonical source of truth
+            return { selectedTabId };
+        }
+        return null;
+    }
+
     private tablistElement: HTMLDivElement;
     private refHandlers = {
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
@@ -157,13 +165,6 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     public componentDidMount() {
         this.moveSelectionIndicator();
-    }
-
-    public componentWillReceiveProps({ selectedTabId }: ITabsProps) {
-        if (selectedTabId !== undefined) {
-            // keep state in sync with controlled prop, so state is canonical source of truth
-            this.setState({ selectedTabId });
-        }
     }
 
     public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {

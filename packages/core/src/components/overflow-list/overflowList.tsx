@@ -137,35 +137,6 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         this.repartition(false);
     }
 
-    public componentWillReceiveProps(nextProps: IOverflowListProps<T>) {
-        const {
-            collapseFrom,
-            items,
-            minVisibleItems,
-            observeParents,
-            overflowRenderer,
-            visibleItemRenderer,
-        } = this.props;
-        if (observeParents !== nextProps.observeParents) {
-            console.warn(OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED);
-        }
-        if (
-            collapseFrom !== nextProps.collapseFrom ||
-            items !== nextProps.items ||
-            minVisibleItems !== nextProps.minVisibleItems ||
-            overflowRenderer !== nextProps.overflowRenderer ||
-            visibleItemRenderer !== nextProps.visibleItemRenderer
-        ) {
-            // reset visible state if the above props change.
-            this.setState({
-                direction: OverflowDirection.GROW,
-                lastOverflowCount: 0,
-                overflow: [],
-                visible: nextProps.items,
-            });
-        }
-    }
-
     public shouldComponentUpdate(_nextProps: IOverflowListProps<T>, nextState: IOverflowListState<T>) {
         // We want this component to always re-render, even when props haven't changed, so that
         // changes in the renderers' behavior can be reflected.
@@ -175,7 +146,27 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         return !(this.state !== nextState && shallowCompareKeys(this.state, nextState));
     }
 
-    public componentDidUpdate(_prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
+    public componentDidUpdate(prevProps: IOverflowListProps<T>, prevState: IOverflowListState<T>) {
+        if (prevProps.observeParents !== this.props.observeParents) {
+            console.warn(OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED);
+        }
+
+        if (
+            prevProps.collapseFrom !== this.props.collapseFrom ||
+            prevProps.items !== this.props.items ||
+            prevProps.minVisibleItems !== this.props.minVisibleItems ||
+            prevProps.overflowRenderer !== this.props.overflowRenderer ||
+            prevProps.visibleItemRenderer !== this.props.visibleItemRenderer
+        ) {
+            // reset visible state if the above props change.
+            this.setState({
+                direction: OverflowDirection.GROW,
+                lastOverflowCount: 0,
+                overflow: [],
+                visible: this.props.items,
+            });
+        }
+
         if (!shallowCompareKeys(prevState, this.state)) {
             this.repartition(false);
         }

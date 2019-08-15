@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { findDOMNode } from "react-dom";
@@ -188,6 +189,13 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         usePortal: true,
     };
 
+    public static getDerivedStateFromProps({ isOpen: hasEverOpened }: IOverlayProps) {
+        if (hasEverOpened) {
+            return { hasEverOpened };
+        }
+        return null;
+    }
+
     private static openStack: Overlay[] = [];
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
 
@@ -251,10 +259,6 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         if (this.props.isOpen) {
             this.overlayWillOpen();
         }
-    }
-
-    public componentWillReceiveProps(nextProps: IOverlayProps) {
-        this.setState({ hasEverOpened: this.state.hasEverOpened || nextProps.isOpen });
     }
 
     public componentDidUpdate(prevProps: IOverlayProps) {
@@ -451,3 +455,5 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         }
     };
 }
+
+polyfill(Overlay);

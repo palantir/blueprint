@@ -20,6 +20,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { Alignment } from "../../common/alignment";
 import * as Classes from "../../common/classes";
@@ -227,6 +228,15 @@ export interface ICheckboxState {
 export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
 
+    public static getDerivedStateFromProps({ indeterminate }: ICheckboxProps): ICheckboxState | null {
+        // put props into state if controlled by props
+        if (indeterminate != null) {
+            return { indeterminate };
+        }
+
+        return null;
+    }
+
     public state: ICheckboxState = {
         indeterminate: this.props.indeterminate || this.props.defaultIndeterminate || false,
     };
@@ -245,13 +255,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
                 typeClassName={Classes.CHECKBOX}
             />
         );
-    }
-
-    public componentWillReceiveProps({ indeterminate }: ICheckboxProps) {
-        // put props into state if controlled by props
-        if (indeterminate != null) {
-            this.setState({ indeterminate });
-        }
     }
 
     public componentDidMount() {
@@ -283,3 +286,5 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
         safeInvoke(this.props.inputRef, ref);
     };
 }
+
+polyfill(Checkbox);
