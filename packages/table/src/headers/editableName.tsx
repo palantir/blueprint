@@ -68,9 +68,9 @@ export class EditableName extends React.PureComponent<IEditableNameProps, IEdita
         };
     }
 
-    public componentWillReceiveProps(nextProps: IEditableNameProps) {
-        const { name } = nextProps;
-        if (name !== this.props.name) {
+    public componentDidUpdate(prevProps: IEditableNameProps) {
+        const { name } = this.props;
+        if (name !== prevProps.name) {
             this.setState({ savedName: name, dirtyName: name });
         }
     }
