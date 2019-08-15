@@ -231,18 +231,18 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
-        super.componentWillReceiveProps(nextProps);
+    public componentDidUpdate(prevProps: IDateRangePickerProps, _: IDateRangePickerState, __: {}) {
+        super.componentDidUpdate(prevProps, _, __);
 
         if (
-            !DateUtils.areRangesEqual(this.props.value, nextProps.value) ||
-            this.props.contiguousCalendarMonths !== nextProps.contiguousCalendarMonths
+            !DateUtils.areRangesEqual(prevProps.value, this.props.value) ||
+            prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths
         ) {
             const nextState = getStateChange(
+                prevProps.value,
                 this.props.value,
-                nextProps.value,
                 this.state,
-                nextProps.contiguousCalendarMonths,
+                prevProps.contiguousCalendarMonths,
             );
             this.setState(nextState);
         }
