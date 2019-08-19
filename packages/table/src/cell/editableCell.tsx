@@ -190,8 +190,10 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public renderHotkeys() {
+        const { tabIndex } = this.props;
+
         return (
-            <Hotkeys>
+            <Hotkeys tabIndex={tabIndex}>
                 <Hotkey
                     key="edit-cell"
                     label="Edit the currently focused cell"

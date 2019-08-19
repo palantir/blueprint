@@ -21,7 +21,7 @@ import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
 import * as TableClasses from "../src/common/classes";
-import { EditableCell } from "../src/index";
+import { Cell, EditableCell } from "../src/index";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 
 describe("<EditableCell>", () => {
@@ -33,6 +33,22 @@ describe("<EditableCell>", () => {
     it("renders loading state", () => {
         const editableCellHarness = mount(<EditableCell loading={true} value="test-value-5000" />);
         expectCellLoading(editableCellHarness.first().getDOMNode(), CellType.BODY_CELL);
+    });
+
+    it("renders cell with default tabIndex as zero", () => {
+        const tabIndex = 0;
+        const elem = mount(<EditableCell value="test-value-5000" />);
+        const cellInstance = elem.find(Cell).instance() as Cell;
+
+        expect(cellInstance.props.tabIndex).to.equal(tabIndex);
+    });
+
+    it("renders cell with tabIndex", () => {
+        const tabIndex = 1;
+        const elem = mount(<EditableCell tabIndex={tabIndex} value="test-value-5000" />);
+        const cellInstance = elem.find(Cell).instance() as Cell;
+
+        expect(cellInstance.props.tabIndex).to.equal(tabIndex);
     });
 
     it("renders new value if props.value changes", () => {
