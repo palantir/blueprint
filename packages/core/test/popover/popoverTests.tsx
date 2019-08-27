@@ -739,6 +739,8 @@ describe("<Popover>", () => {
          */
         it("does not close a HOVER interaction popover", done => {
             const onCloseSpy = sinon.spy();
+            const setOpenStateSpy = sinon.spy(Popover.prototype as any, "setOpenState");
+
             wrapper = renderPopover({
                 interactionKind: PopoverInteractionKind.HOVER,
                 onClose: onCloseSpy,
@@ -750,7 +752,11 @@ describe("<Popover>", () => {
             wrapper.then(() => {
                 // need to trigger a real event because the click handler will be on the document
                 dispatchMouseEvent(wrapper.targetElement);
-                assert(onCloseSpy.notCalled, "onClose should not be called");
+
+                assert(onCloseSpy.notCalled, "onClose prop callback should not be called");
+                assert(setOpenStateSpy.notCalled, "setOpenState private method should not be called");
+
+                setOpenStateSpy.restore();
             }, done);
         });
     });
