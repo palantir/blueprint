@@ -82,7 +82,7 @@ See the [callout here](#core/components/button.props) for more details.
 </div>
 
 ```tsx
-const { Button, Intent, Popover, PopoverInteractionKind, Position } = "@blueprintjs/core";
+import { Button, Intent, Popover, PopoverInteractionKind, Position } from "@blueprintjs/core";
 
 export class PopoverExample extends React.Component {
     public render() {
@@ -205,7 +205,7 @@ The popover will re-open when `disabled` is set to `false`.
 #### Example controlled usage
 
 ```tsx
-const { Popover, Position } = "@blueprintjs/core";
+import { Popover, Position } from "@blueprintjs/core";
 
 export class ControlledPopoverExample extends React.Component<{}, { isOpen: boolean }> {
     public state = { isOpen: false };
