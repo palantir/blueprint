@@ -733,8 +733,38 @@ describe("<Popover>", () => {
         }
     });
 
+    describe("clicking on target", () => {
+        /**
+         * @see https://github.com/palantir/blueprint/issues/3010
+         */
+        it("does not close a HOVER interaction popover", done => {
+            const onCloseSpy = sinon.spy();
+            const setOpenStateSpy = sinon.spy(Popover.prototype as any, "setOpenState");
+
+            wrapper = renderPopover({
+                interactionKind: PopoverInteractionKind.HOVER,
+                onClose: onCloseSpy,
+                usePortal: true,
+            })
+                .simulateTarget("mouseenter")
+                .assertIsOpen();
+
+            wrapper.then(() => {
+                setOpenStateSpy.resetHistory();
+                // need to trigger a real event because the click handler will be on the document
+                dispatchMouseEvent(wrapper.targetElement);
+
+                assert(onCloseSpy.notCalled, "onClose prop callback should not be called");
+                assert(setOpenStateSpy.notCalled, "setOpenState private method should not be called");
+
+                setOpenStateSpy.restore();
+            }, done);
+        });
+    });
+
     interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
         popoverElement: HTMLElement;
+        targetElement: HTMLElement;
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
@@ -754,6 +784,7 @@ describe("<Popover>", () => {
         ) as IPopoverWrapper;
 
         wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement;
+        wrapper.targetElement = (wrapper.instance() as Popover).targetElement;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
             return wrapper;
