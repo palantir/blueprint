@@ -446,8 +446,11 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             // if the next element to receive focus is within the popover, we'll want to leave the
-            // popover open.
-            if (!this.isElementInPopover(e.relatedTarget as HTMLElement)) {
+            // popover open. e.relatedTarget ought to tell us the next element to receive focus, but if the user just
+            // clicked on an element which is not focusable (either by default or with a tabIndex attribute),
+            // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
+            // close the popover if necessary.
+            if (e.relatedTarget != null && !this.isElementInPopover(e.relatedTarget as HTMLElement)) {
                 this.handleMouseLeave(e);
             }
         }
