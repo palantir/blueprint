@@ -733,7 +733,7 @@ describe("<Popover>", () => {
         }
     });
 
-    describe.only("clicking on target", () => {
+    describe("clicking on target", () => {
         /**
          * @see https://github.com/palantir/blueprint/issues/3010
          */
@@ -750,6 +750,7 @@ describe("<Popover>", () => {
                 .assertIsOpen();
 
             wrapper.then(() => {
+                setOpenStateSpy.resetHistory();
                 // need to trigger a real event because the click handler will be on the document
                 dispatchMouseEvent(wrapper.targetElement);
 
