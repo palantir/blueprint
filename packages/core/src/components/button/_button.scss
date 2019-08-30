@@ -45,10 +45,14 @@ Styleguide button
     width: 100%;
   }
 
-  // default is `text-align: left` so we only need `right` case.
   &.#{$ns}-align-right,
   .#{$ns}-align-right & {
     text-align: right;
+  }
+
+  &.#{$ns}-align-left,
+  .#{$ns}-align-left & {
+    text-align: left;
   }
 
   // default styles
