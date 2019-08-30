@@ -16,14 +16,12 @@
 
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
+import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface IButtonsExampleState {
-    alignText: Alignment;
     active: boolean;
     disabled: boolean;
     iconOnly: boolean;
@@ -37,7 +35,6 @@ export interface IButtonsExampleState {
 export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsExampleState> {
     public state: IButtonsExampleState = {
         active: false,
-        alignText: Alignment.CENTER,
         disabled: false,
         iconOnly: false,
         intent: Intent.NONE,
@@ -73,7 +70,6 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
                 <Switch label="Loading" checked={this.state.loading} onChange={this.handleLoadingChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
-                <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
                 <H5>Example</H5>
                 <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
             </>
@@ -107,34 +103,6 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
                         {...buttonProps}
                     />
                 </div>
-                <div>
-                    <p>
-                        <Code>Wide AnchorButton</Code>
-                    </p>
-                    <AnchorButton
-                        href="#core/components/button"
-                        icon="duplicate"
-                        rightIcon="share"
-                        target="_blank"
-                        text={iconOnly ? undefined : "Duplicate this page"}
-                        {...buttonProps}
-                        style={{ width: 500 }}
-                    />
-                </div>
-                <div>
-                    <p>
-                        <Code>Wide Button</Code>
-                    </p>
-                    <Button
-                        className={this.state.wiggling ? "docs-wiggle" : ""}
-                        icon="refresh"
-                        onClick={this.beginWiggling}
-                        {...buttonProps}
-                        style={{ width: 500 }}
-                    >
-                        {!iconOnly && "Click to wiggle"}
-                    </Button>
-                </div>
             </Example>
         );
     }
@@ -144,6 +112,4 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
         this.setState({ wiggling: true });
         this.wiggleTimeoutId = window.setTimeout(() => this.setState({ wiggling: false }), 300);
     };
-
-    private handleAlignChange = (alignText: Alignment) => this.setState({ alignText });
 }
