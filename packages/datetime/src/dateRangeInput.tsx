@@ -469,7 +469,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         Utils.safeInvoke(this.props.onChange, selectedRange);
     };
 
-    private handleShortcutChange = (selectedShortcutIndex: number) => {
+    private handleShortcutChange = (_: IDateRangeShortcut, selectedShortcutIndex: number) => {
         this.setState({ selectedShortcutIndex });
     };
 

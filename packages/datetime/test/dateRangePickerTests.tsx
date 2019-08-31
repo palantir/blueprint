@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Button, Classes, Menu } from "@blueprintjs/core";
+import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -913,19 +913,20 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(tomorrow, value[1]));
         });
 
-        it("shortcuts without active menu style", () => {
+        it("all shortcuts are displayed as inactive when none are selected", () => {
             const { wrapper } = render();
 
             assert.isFalse(
                 wrapper
                     .find(Shortcuts)
                     .find(Menu)
+                    .find(MenuItem)
                     .find(`.${Classes.ACTIVE}`)
                     .exists(),
             );
         });
 
-        it("shortcuts with active menu style", () => {
+        it("corresponding shortcut is displayed as active when selected", () => {
             const selectedShortcut = 1;
             const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
 
@@ -933,9 +934,21 @@ describe("<DateRangePicker>", () => {
                 wrapper
                     .find(Shortcuts)
                     .find(Menu)
+                    .find(MenuItem)
                     .find(`.${Classes.ACTIVE}`)
                     .exists(),
             );
+
+            assert.lengthOf(
+                wrapper
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${Classes.ACTIVE}`),
+                1,
+            );
+
+            assert.isTrue(wrapper.state("selectedShortcutIndex") === selectedShortcut);
         });
 
         it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
@@ -947,7 +960,7 @@ describe("<DateRangePicker>", () => {
 
             assert.isTrue(onChangeSpy.calledOnce);
             assert.isTrue(onShortcutChangeSpy.calledOnce);
-            assert.isTrue(onShortcutChangeSpy.calledWith(selectedShortcut));
+            assert.isTrue(onShortcutChangeSpy.lastCall.lastArg === selectedShortcut);
         });
 
         it("custom shortcuts select the correct values", () => {

@@ -399,7 +399,7 @@ describe("<DateRangeInput>", () => {
         expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
     });
 
-    it("should set the selectedShortcutIndex state when when click on the shortcut", () => {
+    it("should update the selectedShortcutIndex state when clicking on a shortcut", () => {
         const selectedShortcut = 1;
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} />);
 
