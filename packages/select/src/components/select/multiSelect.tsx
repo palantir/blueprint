@@ -64,6 +64,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
 export interface IMultiSelectState {
     isOpen: boolean;
+    keyDownIsTagRemove: boolean;
 }
 
 export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState> {
@@ -80,6 +81,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     public state: IMultiSelectState = {
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
+        keyDownIsTagRemove: false,
     };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -123,6 +125,13 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             }
         };
 
+        const handleTagInKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
+            // Do not call handle select item if tag remove clicked
+            if (!this.state.keyDownIsTagRemove) {
+                handleKeyUp(event);
+            }
+        };
+
         return (
             <Popover
                 autoFocus={false}
@@ -138,7 +147,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             >
                 <div
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
+                    onKeyUp={handleTagInKeyUp}
                 >
                     <TagInput
                         placeholder={placeholder}
@@ -196,6 +205,13 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     ) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             const { which } = e;
+            const htmlTarget = e.target as HTMLElement;
+            if (htmlTarget.className.includes("remove")) {
+                this.setState({ keyDownIsTagRemove: true });
+            } else {
+                this.setState({ keyDownIsTagRemove: false });
+            }
+
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 // By default the escape key will not trigger a blur on the
                 // input element. It must be done explicitly.
