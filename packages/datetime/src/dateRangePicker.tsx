@@ -99,6 +99,11 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     onHoverChange?: (hoveredDates: DateRange, hoveredDay: Date, hoveredBoundary: Boundary) => void;
 
     /**
+     * Called when the `shortcuts` props is enabled and the user changes the shortcut.
+     */
+    onShortcutChange?: (shortcut: IDateRangeShortcut, index: number) => void;
+
+    /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
@@ -106,6 +111,12 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * @default true
      */
     shortcuts?: boolean | IDateRangeShortcut[];
+
+    /**
+     * The currently selected shortcut.
+     * If this prop is provided, the component acts in a controlled manner.
+     */
+    selectedShortcutIndex?: number;
 
     /**
      * Whether to show only a single month calendar.
@@ -127,6 +138,7 @@ export interface IDateRangePickerState {
     rightView?: MonthAndYear;
     value?: DateRange;
     time?: DateRange;
+    selectedShortcutIndex?: number;
 }
 
 export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps, IDateRangePickerState> {
@@ -207,7 +219,14 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             !props.contiguousCalendarMonths && rightDate != null && !DateUtils.areSameMonth(initialMonth, rightDate)
                 ? MonthAndYear.fromDate(rightDate)
                 : leftView.getNextMonth();
-        this.state = { leftView, rightView, value, hoverValue: [null, null], time };
+        this.state = {
+            hoverValue: [null, null],
+            leftView,
+            rightView,
+            selectedShortcutIndex: this.props.selectedShortcutIndex || -1,
+            time,
+            value,
+        };
     }
 
     public render() {
@@ -245,6 +264,10 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
                 nextProps.contiguousCalendarMonths,
             );
             this.setState(nextState);
+        }
+
+        if (this.props.selectedShortcutIndex !== nextProps.selectedShortcutIndex) {
+            this.setState({ selectedShortcutIndex: nextProps.selectedShortcutIndex });
         }
     }
 
@@ -289,11 +312,12 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             return null;
         }
 
+        const { selectedShortcutIndex } = this.state;
         const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
         return [
             <Shortcuts
                 key="shortcuts"
-                {...{ allowSingleDayRange, maxDate, minDate, shortcuts, timePrecision }}
+                {...{ allowSingleDayRange, maxDate, minDate, shortcuts, timePrecision, selectedShortcutIndex }}
                 onShortcutClick={this.handleShortcutClick}
             />,
             <Divider key="div" />,
@@ -507,22 +531,24 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         this.handleNextState(nextValue);
     };
 
-    private handleShortcutClick = (shortcut: IDateRangeShortcut) => {
+    private handleShortcutClick = (shortcut: IDateRangeShortcut, selectedShortcutIndex: number) => {
+        const { onChange, contiguousCalendarMonths, onShortcutChange } = this.props;
         const { dateRange, includeTime } = shortcut;
         if (includeTime) {
             const newDateRange: DateRange = [dateRange[0], dateRange[1]];
             const newTimeRange: DateRange = [dateRange[0], dateRange[1]];
-            const nextState = getStateChange(
-                this.state.value,
-                dateRange,
-                this.state,
-                this.props.contiguousCalendarMonths,
-            );
+            const nextState = getStateChange(this.state.value, dateRange, this.state, contiguousCalendarMonths);
             this.setState({ ...nextState, time: newTimeRange });
-            Utils.safeInvoke(this.props.onChange, newDateRange);
+            Utils.safeInvoke(onChange, newDateRange);
         } else {
             this.handleNextState(dateRange);
         }
+
+        if (this.props.selectedShortcutIndex === undefined) {
+            this.setState({ selectedShortcutIndex });
+        }
+
+        Utils.safeInvoke(onShortcutChange, shortcut, selectedShortcutIndex);
     };
 
     private handleNextState = (nextValue: DateRange) => {

@@ -46,36 +46,46 @@ export interface IShortcutsProps {
     maxDate: Date;
     shortcuts: IDateRangeShortcut[] | true;
     timePrecision: TimePrecision;
-    onShortcutClick: (shortcut: IDateRangeShortcut) => void;
+    selectedShortcutIndex?: number;
+    onShortcutClick: (shortcut: IDateRangeShortcut, index: number) => void;
 }
 
 export class Shortcuts extends React.PureComponent<IShortcutsProps> {
+    public static defaultProps: Partial<IShortcutsProps> = {
+        selectedShortcutIndex: -1,
+    };
+
     public render() {
         const shortcuts =
             this.props.shortcuts === true
                 ? createDefaultShortcuts(this.props.allowSingleDayRange, this.props.timePrecision !== undefined)
                 : this.props.shortcuts;
 
-        const shortcutElements = shortcuts.map((s, i) => (
+        const shortcutElements = shortcuts.map((shortcut, index) => (
             <MenuItem
+                active={this.props.selectedShortcutIndex === index}
                 className={Classes.POPOVER_DISMISS_OVERRIDE}
-                disabled={!this.isShortcutInRange(s.dateRange)}
-                key={i}
-                onClick={this.getShorcutClickHandler(s)}
-                text={s.label}
+                disabled={!this.isShortcutInRange(shortcut.dateRange)}
+                key={index}
+                onClick={this.getShorcutClickHandler(shortcut, index)}
+                text={shortcut.label}
             />
         ));
 
         return <Menu className={DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
     }
 
-    private getShorcutClickHandler(shortcut: IDateRangeShortcut) {
-        return () => this.props.onShortcutClick(shortcut);
-    }
+    private getShorcutClickHandler = (shortcut: IDateRangeShortcut, index: number) => () => {
+        const { onShortcutClick } = this.props;
 
-    private isShortcutInRange(shortcutDateRange: DateRange) {
-        return isDayRangeInRange(shortcutDateRange, [this.props.minDate, this.props.maxDate]);
-    }
+        onShortcutClick(shortcut, index);
+    };
+
+    private isShortcutInRange = (shortcutDateRange: DateRange) => {
+        const { minDate, maxDate } = this.props;
+
+        return isDayRangeInRange(shortcutDateRange, [minDate, maxDate]);
+    };
 }
 
 function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut {
