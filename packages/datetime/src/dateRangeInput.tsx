@@ -184,6 +184,8 @@ export interface IDateRangeInputState {
 
     shouldSelectAfterUpdate?: boolean;
     wasLastFocusChangeDueToHover?: boolean;
+
+    selectedShortcutIndex?: number;
 }
 
 interface IStateKeysAndValuesObject {
@@ -252,6 +254,7 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
             formattedMinDateString: this.getFormattedMinMaxDateString(props, "minDate"),
             isOpen: false,
             selectedEnd,
+            selectedShortcutIndex: -1,
             selectedStart,
         };
     }
@@ -276,13 +279,16 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
     }
 
     public render() {
+        const { selectedShortcutIndex } = this.state;
         const { popoverProps = {} } = this.props;
 
         const popoverContent = (
             <DateRangePicker
                 {...this.props}
+                selectedShortcutIndex={selectedShortcutIndex}
                 boundaryToModify={this.state.boundaryToModify}
                 onChange={this.handleDateRangePickerChange}
+                onShortcutChange={this.handleShortcutChange}
                 onHoverChange={this.handleDateRangePickerHoverChange}
                 value={this.getSelectedRange()}
             />
@@ -461,6 +467,10 @@ export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, 
         }
 
         Utils.safeInvoke(this.props.onChange, selectedRange);
+    };
+
+    private handleShortcutChange = (_: IDateRangeShortcut, selectedShortcutIndex: number) => {
+        this.setState({ selectedShortcutIndex });
     };
 
     private handleDateRangePickerHoverChange = (

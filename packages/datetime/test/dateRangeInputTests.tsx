@@ -399,6 +399,19 @@ describe("<DateRangeInput>", () => {
         expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
     });
 
+    it("should update the selectedShortcutIndex state when clicking on a shortcut", () => {
+        const selectedShortcut = 1;
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} />);
+
+        root.setState({ isOpen: true });
+        root.find(DateRangePicker)
+            .find(`.${DateClasses.DATERANGEPICKER_SHORTCUTS}`)
+            .find("a")
+            .at(selectedShortcut)
+            .simulate("click");
+        expect(root.state("selectedShortcutIndex")).equals(selectedShortcut);
+    });
+
     it("pressing Shift+Tab in the start field blurs the start field and closes the popover", () => {
         const startInputProps = { onKeyDown: sinon.spy() };
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ startInputProps }} />);
