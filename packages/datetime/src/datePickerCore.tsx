@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { LocaleUtils } from "react-day-picker/types/utils";
+import { LocaleUtils } from "react-day-picker";
 import { Months } from "./common/months";
 import { ITimePickerProps, TimePrecision } from "./timePicker";
 
@@ -43,7 +43,7 @@ export interface IDatePickerBaseProps {
     /**
      * Collection of functions that provide internationalization support.
      */
-    localeUtils?: LocaleUtils;
+    localeUtils?: typeof LocaleUtils;
 
     /**
      * The latest date the user can select.

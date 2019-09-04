@@ -16,8 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker from "react-day-picker";
-import { DayPickerProps } from "react-day-picker/types/props";
+import DayPicker, { DayPickerProps } from "react-day-picker";
 
 import {
     AbstractPureComponent,
