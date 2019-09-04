@@ -100,7 +100,6 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Called when the `shortcuts` props is enabled and the user changes the shortcut.
-     * When triggered, it will pass the selected `shortcut` and its index which is optional.
      */
     onShortcutChange?: (shortcut: IDateRangeShortcut, index: number) => void;
 
@@ -114,7 +113,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
-     * The currently selected `shortcut`.
+     * The currently selected shortcut.
      * If this prop is provided, the component acts in a controlled manner.
      */
     selectedShortcutIndex?: number;
