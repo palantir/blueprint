@@ -145,10 +145,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpened={this.handlePopoverOpened}
             >
-                <div
-                    onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
-                    onKeyUp={handleTagInKeyUp}
-                >
+                <div onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)} onKeyUp={handleTagInKeyUp}>
                     <TagInput
                         placeholder={placeholder}
                         {...tagInputProps}
