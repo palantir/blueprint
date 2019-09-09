@@ -116,6 +116,7 @@ export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorH
             disabled,
             icon,
             intent,
+            labelClassName,
             labelElement,
             multiline,
             popoverProps,
