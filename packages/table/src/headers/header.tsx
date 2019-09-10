@@ -379,7 +379,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             : this.wrapInDragReorderable(
                   index,
                   <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
-                      <div className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}>
+                      <div
+                          className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}
+                      >
                           <Icon icon="drag-handle-vertical" />
                       </div>
                   </div>,
