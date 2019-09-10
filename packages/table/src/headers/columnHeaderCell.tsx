@@ -28,6 +28,7 @@ import {
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
@@ -194,9 +195,13 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             return undefined;
         }
 
-        const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, {
-            [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
-        });
+        const classes = classNames(
+            Classes.TABLE_TH_MENU_CONTAINER,
+            CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT,
+            {
+                [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
+            }
+        );
 
         return (
             <div className={classes}>
