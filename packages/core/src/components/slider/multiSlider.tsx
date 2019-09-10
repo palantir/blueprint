@@ -268,7 +268,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     private renderTrackFill(index: number, start: IHandleProps, end: IHandleProps) {
         // ensure startRatio <= endRatio
         const [startRatio, endRatio] = [this.getOffsetRatio(start.value), this.getOffsetRatio(end.value)].sort(
-            (left, right) => left - right
+            (left, right) => left - right,
         );
         const startOffset = formatPercentage(startRatio);
         const endOffset = formatPercentage(1 - endRatio);

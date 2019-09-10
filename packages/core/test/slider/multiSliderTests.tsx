@@ -219,7 +219,6 @@ describe("<MultiSlider>", () => {
                     <MultiSlider.Handle value={1.2e-7} intentBefore="warning" intentAfter="warning" />
                     <MultiSlider.Handle value={0.2} intentBefore="danger" intentAfter="success" />
                 </MultiSlider>,
-                { attachTo: testsContainerElement },
             );
             const locations = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
                 const match = segment.prop("style");
