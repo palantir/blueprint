@@ -58,38 +58,49 @@ export interface IFormGroupProps extends IIntentProps, IProps {
 
     /** CSS properties to apply to the root element. */
     style?: React.CSSProperties;
+
+    children?: React.ReactNode;
 }
 
-export class FormGroup extends React.PureComponent<IFormGroupProps, {}> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
-
-    public render() {
-        const { children, contentClassName, helperText, label, labelFor, labelInfo, style } = this.props;
-        return (
-            <div className={this.getClassName()} style={style}>
-                {label && (
-                    <label className={Classes.LABEL} htmlFor={labelFor}>
-                        {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
-                    </label>
-                )}
-                <div className={classNames(Classes.FORM_CONTENT, contentClassName)}>
-                    {children}
-                    {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
-                </div>
+export const FormGroup = React.forwardRef<HTMLDivElement, IFormGroupProps>((props, ref) => {
+    const {
+        children,
+        contentClassName,
+        helperText,
+        label,
+        labelFor,
+        labelInfo,
+        style,
+        intent,
+        disabled,
+        inline,
+        className
+    } = props;
+    return (
+        <div
+            ref={ref}
+            className={classNames(
+                Classes.FORM_GROUP,
+                Classes.intentClass(intent),
+                {
+                    [Classes.DISABLED]: disabled,
+                    [Classes.INLINE]: inline
+                },
+                className
+            )}
+            style={style}
+        >
+            {label && (
+                <label className={Classes.LABEL} htmlFor={labelFor}>
+                    {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
+                </label>
+            )}
+            <div className={classNames(Classes.FORM_CONTENT, contentClassName)}>
+                {children}
+                {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
             </div>
-        );
-    }
+        </div>
+    );
+});
 
-    private getClassName() {
-        const { className, disabled, inline, intent } = this.props;
-        return classNames(
-            Classes.FORM_GROUP,
-            Classes.intentClass(intent),
-            {
-                [Classes.DISABLED]: disabled,
-                [Classes.INLINE]: inline,
-            },
-            className,
-        );
-    }
-}
+FormGroup.displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
