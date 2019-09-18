@@ -170,7 +170,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
 
     public render() {
         const { disabled, multiline } = this.props;
-        const value = this.props.value == null ? this.state.value : this.props.value;
+        const value = this.state.isEditing && this.props.value == null ? this.state.value : this.props.value;
         const hasValue = value != null && value !== "";
 
         const classes = classNames(
