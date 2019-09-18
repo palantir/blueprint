@@ -87,9 +87,6 @@ export interface IToasterProps extends IProps {
 
     /**
      * Position of `Toaster` within its container.
-     *
-     * Note that only `TOP` and `BOTTOM` are supported because Toaster only
-     * supports the top and bottom edge positioning.
      * @default Position.TOP
      */
     position?: ToasterPosition;
