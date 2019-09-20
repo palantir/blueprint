@@ -3330,12 +3330,5 @@
     "tags": "clock, day, hours, minutes, seconds",
     "group": "interface",
     "content": "\\e901"
-  },
-  {
-    "displayName": "Signal search",
-    "iconName": "signal-search",
-    "tags": "search, exploration, signal, communication, radio",
-    "group": "action",
-    "content": "\\e905"
   }
 ]
