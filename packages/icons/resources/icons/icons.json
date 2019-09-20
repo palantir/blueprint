@@ -3128,77 +3128,77 @@
     "group": "table",
     "content": "\\e7b9"
   },
-    {
+  {
     "displayName": "Flow: linear",
     "iconName": "flow-linear",
     "tags": "workflow, edge, node, step",
     "group": "data",
     "content": "\\e7c0"
   },
-    {
+  {
     "displayName": "Flow: branch",
     "iconName": "flow-branch",
     "tags": "workflow, edge, node, fork",
     "group": "data",
     "content": "\\e7c1"
   },
-    {
+  {
     "displayName": "Flow: review",
     "iconName": "flow-review",
     "tags": "workflow, edge, node, reverse",
     "group": "data",
     "content": "\\e7c2"
   },
-    {
+  {
     "displayName": "Flow: review branch",
     "iconName": "flow-review-branch",
     "tags": "workflow, edge, node, fork",
     "group": "data",
     "content": "\\e7c3"
   },
-    {
+  {
     "displayName": "Flow: end",
     "iconName": "flow-end",
     "tags": "workflow, edge, node, complete, finished, final, last",
     "group": "data",
     "content": "\\e7c4"
   },
-    {
+  {
     "displayName": "Clean",
     "iconName": "clean",
     "tags": "correct, cleanse, clear, purify, stars",
     "group": "action",
     "content": "\\e7c5"
   },
-    {
+  {
     "displayName": "Table: filtered",
     "iconName": "th-filtered",
     "tags": "index, rows, columns, agenda, list, spreadsheet, filtering, funnel",
     "group": "table",
     "content": "\\e7c6"
   },
-    {
+  {
     "displayName": "Lifesaver",
     "iconName": "lifesaver",
     "tags": "help, support, aid, advice",
     "group": "miscellaneous",
     "content": "\\e7c7"
   },
-    {
+  {
     "displayName": "Cube",
     "iconName": "cube",
     "tags": "shape, 3d, object",
     "group": "miscellaneous",
     "content": "\\e7c8"
   },
-    {
+  {
     "displayName": "Cube: add",
     "iconName": "cube-add",
     "tags": "shape, 3d, object",
     "group": "miscellaneous",
     "content": "\\e7c9"
   },
-    {
+  {
     "displayName": "Cube: remove",
     "iconName": "cube-remove",
     "tags": "shape, 3d, object",
@@ -3302,5 +3302,33 @@
     "tags": "mathematical, equations, expression, formula",
     "group": "action",
     "content": "\\e7e4"
+  },
+  {
+    "displayName": "Learning",
+    "iconName": "learning",
+    "tags": "tutorial, learn, teach",
+    "group": "miscellaneous",
+    "content": "\\e904"
+  },
+  {
+    "displayName": "New layer",
+    "iconName": "new-layer",
+    "tags": "layers, levels, stack, cards",
+    "group": "interface",
+    "content": "\\e902"
+  },
+  {
+    "displayName": "New layers",
+    "iconName": "new-layers",
+    "tags": "layers, levels, stack, cards",
+    "group": "interface",
+    "content": "\\e903"
+  },
+  {
+    "displayName": "Stopwatch",
+    "iconName": "stopwatch",
+    "tags": "clock, day, hours, minutes, seconds",
+    "group": "interface",
+    "content": "\\e901"
   }
 ]
