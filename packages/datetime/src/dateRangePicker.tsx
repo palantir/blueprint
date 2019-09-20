@@ -264,8 +264,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
             this.setState(nextState);
         }
 
-        if (this.props.selectedShortcutIndex !== nextProps.selectedShortcutIndex) {
-            this.setState({ selectedShortcutIndex: nextProps.selectedShortcutIndex });
+        if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
+            this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
         }
     }
 
