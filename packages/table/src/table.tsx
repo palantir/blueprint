@@ -922,6 +922,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = this.props;
         const numColumns = React.Children.count(children);
 
+        // since prop validation is triggered more often now, we need to make sure we don't duplicate error messages
         const shouldValidate =
             numFrozenRows !== prevProps.numFrozenRows ||
             numFrozenColumns !== prevProps.numFrozenColumns ||
