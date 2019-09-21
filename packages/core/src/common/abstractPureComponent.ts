@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from 'react';
-import { isNodeEnv } from './utils';
+import * as React from "react";
+import { isNodeEnv } from "./utils";
 
 /**
  * An abstract component that Blueprint components can extend
@@ -31,7 +31,7 @@ export abstract class AbstractPureComponent<P, S = {}, SS = {}> extends React.Pu
     constructor(props?: P, context?: any) {
         super(props, context);
         if (!isNodeEnv('production')) {
-            this.validateProps(this.props);
+            this.validateProps(this.props, true);
         }
     }
 
@@ -77,7 +77,7 @@ export abstract class AbstractPureComponent<P, S = {}, SS = {}> extends React.Pu
      * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
      * Like propTypes, these runtime checks run only in development mode.
      */
-    protected validateProps(_: P) {
+    protected validateProps(_: P, __: boolean = false) {
         // implement in subclass
     }
 }

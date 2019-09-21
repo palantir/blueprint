@@ -31,7 +31,7 @@ export abstract class AbstractComponent<P, S, SS = {}> extends React.Component<P
     protected constructor(props?: P, context?: any) {
         super(props, context);
         if (!isNodeEnv("production")) {
-            this.validateProps(this.props);
+            this.validateProps(this.props, true);
         }
     }
 
@@ -50,7 +50,7 @@ export abstract class AbstractComponent<P, S, SS = {}> extends React.Component<P
      * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
      * Like propTypes, these runtime checks run only in development mode.
      */
-    protected validateProps(_: P) {
+    protected validateProps(_: P, __: boolean = false) {
         // implement in subclass
     }
 
