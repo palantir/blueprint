@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponentNewLifecycles, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
@@ -253,7 +253,7 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "enableColumnInteractionBar",
 ];
 
-export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps, {}> {
+export class TableQuadrantStack extends AbstractComponentNewLifecycles<ITableQuadrantStackProps, {}> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantStackProps> = {

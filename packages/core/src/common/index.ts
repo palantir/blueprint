@@ -15,7 +15,9 @@
  */
 
 export * from "./abstractComponent";
+export * from "./abstractComponentNewLifecycles";
 export * from "./abstractPureComponent";
+export * from "./abstractPureComponentNewLifecycles";
 export * from "./alignment";
 export * from "./boundary";
 export * from "./colors";

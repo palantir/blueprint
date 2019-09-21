@@ -20,7 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { IconName } from "@blueprintjs/icons";
 import {
-    AbstractPureComponent,
+    AbstractPureComponentNewLifecycles,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
@@ -184,7 +184,7 @@ const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
 
 type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
 
-export class NumericInput extends AbstractPureComponent<
+export class NumericInput extends AbstractPureComponentNewLifecycles<
     HTMLInputProps & INumericInputProps,
     INumericInputState,
     INumericInputSnapshot

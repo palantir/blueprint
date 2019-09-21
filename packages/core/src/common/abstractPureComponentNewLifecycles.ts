@@ -1,7 +1,6 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,9 +20,8 @@ import { isNodeEnv } from "./utils";
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
- * This version will not work with React 17 upwards and only exists for legacy purposes
  */
-export abstract class AbstractPureComponent<P, S = {}> extends React.PureComponent<P, S> {
+export abstract class AbstractPureComponentNewLifecycles<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;
 
@@ -32,14 +30,14 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
 
     constructor(props?: P, context?: any) {
         super(props, context);
-        if (!isNodeEnv("production")) {
-            this.validateProps(this.props);
+        if (!isNodeEnv('production')) {
+            this.validateProps(this.props, true);
         }
     }
 
-    public componentWillReceiveProps(nextProps: P & { children?: React.ReactNode }) {
-        if (!isNodeEnv("production")) {
-            this.validateProps(nextProps);
+    public componentDidUpdate(_: P, __: S, ___: SS) {
+        if (!isNodeEnv('production')) {
+            this.validateProps(this.props);
         }
     }
 
@@ -79,8 +77,7 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
      * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
      * Like propTypes, these runtime checks run only in development mode.
      */
-    protected validateProps(_: P & { children?: React.ReactNode }) {
+    protected validateProps(_: P, __: boolean = false) {
         // implement in subclass
     }
 }
-

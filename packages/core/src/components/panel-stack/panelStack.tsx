@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
@@ -68,7 +68,7 @@ export interface IPanelStackState {
     stack: IPanel[];
 }
 
-export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelStackState> {
+export class PanelStack extends AbstractPureComponentNewLifecycles<IPanelStackProps, IPanelStackState> {
     public state: IPanelStackState = {
         direction: "push",
         stack: this.props.stack != null ? this.props.stack.slice().reverse() : [this.props.initialPanel],

@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import { Intent } from "../../common/intent";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
@@ -42,7 +42,7 @@ export interface ISliderProps extends ISliderBaseProps {
     onRelease?(value: number): void;
 }
 
-export class Slider extends AbstractPureComponent<ISliderProps> {
+export class Slider extends AbstractPureComponentNewLifecycles<ISliderProps> {
     public static defaultProps: ISliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    AbstractPureComponent,
+    AbstractPureComponentNewLifecycles,
     Icon,
     IconName,
     IProps,
@@ -80,7 +80,10 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }
 
-export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
+export class ColumnHeaderCell extends AbstractPureComponentNewLifecycles<
+    IColumnHeaderCellProps,
+    IColumnHeaderCellState
+> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
         menuIcon: "chevron-down",

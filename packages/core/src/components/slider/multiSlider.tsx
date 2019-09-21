@@ -19,7 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { Classes, Intent } from "../../common";
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -120,7 +120,7 @@ export interface ISliderState {
     tickSizeRatio?: number;
 }
 
-export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISliderState> {
+export class MultiSlider extends AbstractPureComponentNewLifecycles<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
         labelStepSize: 1,

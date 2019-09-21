@@ -19,7 +19,7 @@ import * as React from "react";
 import { DayPickerProps } from "react-day-picker";
 
 import {
-    AbstractPureComponent,
+    AbstractPureComponentNewLifecycles,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
@@ -141,7 +141,7 @@ export interface IDateInputState {
     isOpen: boolean;
 }
 
-export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
+export class DateInput extends AbstractPureComponentNewLifecycles<IDateInputProps, IDateInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {

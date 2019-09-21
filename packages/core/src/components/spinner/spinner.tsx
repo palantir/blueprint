@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
@@ -65,7 +65,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     value?: number;
 }
 
-export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
+export class Spinner extends AbstractPureComponentNewLifecycles<ISpinnerProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
     public static readonly SIZE_SMALL = 20;

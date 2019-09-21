@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    AbstractPureComponent,
+    AbstractPureComponentNewLifecycles,
     Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
@@ -108,7 +108,7 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
+export class TimezonePicker extends AbstractPureComponentNewLifecycles<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
     public static defaultProps: Partial<ITimezonePickerProps> = {

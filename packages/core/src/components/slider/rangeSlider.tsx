@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Errors from "../../common/errors";
 import { Intent } from "../../common/intent";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -43,7 +43,7 @@ export interface IRangeSliderProps extends ISliderBaseProps {
     onRelease?(value: NumberRange): void;
 }
 
-export class RangeSlider extends AbstractPureComponent<IRangeSliderProps> {
+export class RangeSlider extends AbstractPureComponentNewLifecycles<IRangeSliderProps> {
     public static defaultProps: IRangeSliderProps = {
         ...MultiSlider.defaultSliderProps,
         value: [0, 10],

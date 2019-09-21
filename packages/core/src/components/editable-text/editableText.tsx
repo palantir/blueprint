@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
@@ -120,7 +120,7 @@ export interface IEditableTextState {
 const BUFFER_WIDTH_EDGE = 5;
 const BUFFER_WIDTH_IE = 30;
 
-export class EditableText extends AbstractPureComponent<IEditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractPureComponentNewLifecycles<IEditableTextProps, IEditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
     public static defaultProps: IEditableTextProps = {

@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
+import {
+    AbstractPureComponentNewLifecycles,
+    Boundary,
+    DISPLAYNAME_PREFIX,
+    Divider,
+    IProps,
+    Utils,
+} from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
@@ -139,7 +146,7 @@ export interface IDateRangePickerState {
     selectedShortcutIndex?: number;
 }
 
-export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps, IDateRangePickerState> {
+export class DateRangePicker extends AbstractPureComponentNewLifecycles<IDateRangePickerProps, IDateRangePickerState> {
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,

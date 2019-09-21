@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
@@ -202,7 +202,7 @@ export interface ITagInputSnapshot {
 /** special value for absence of active tag */
 const NONE = -1;
 
-export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState, ITagInputSnapshot> {
+export class TagInput extends AbstractPureComponentNewLifecycles<ITagInputProps, ITagInputState, ITagInputSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> & object = {

@@ -15,7 +15,7 @@
  */
 
 import {
-    AbstractComponent,
+    AbstractComponentNewLifecycles,
     DISPLAYNAME_PREFIX,
     Hotkey,
     Hotkeys,
@@ -427,7 +427,7 @@ export interface ITableState {
 }
 
 @HotkeysTarget
-export class Table extends AbstractComponent<ITableProps, ITableState> {
+export class Table extends AbstractComponentNewLifecycles<ITableProps, ITableState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: ITableProps = {

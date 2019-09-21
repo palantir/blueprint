@@ -19,7 +19,7 @@ import { ModifierFn } from "popper.js";
 import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
@@ -99,7 +99,7 @@ export interface IPopoverState {
     hasDarkParent: boolean;
 }
 
-export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
+export class Popover extends AbstractPureComponentNewLifecycles<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     public static defaultProps: IPopoverProps = {

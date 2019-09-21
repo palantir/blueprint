@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import { TOASTER_CREATE_NULL, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
@@ -96,7 +96,7 @@ export interface IToasterState {
     toasts: IToastOptions[];
 }
 
-export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState> implements IToaster {
+export class Toaster extends AbstractPureComponentNewLifecycles<IToasterProps, IToasterState> implements IToaster {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 
     public static defaultProps: IToasterProps = {

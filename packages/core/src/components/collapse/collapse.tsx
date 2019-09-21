@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
@@ -111,7 +111,7 @@ export interface ICollapseSnapshot {
     height?: string;
 }
 
-export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState, ICollapseSnapshot> {
+export class Collapse extends AbstractPureComponentNewLifecycles<ICollapseProps, ICollapseState, ICollapseSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: ICollapseProps = {

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
@@ -54,7 +54,7 @@ export interface IToastProps extends IProps, IIntentProps {
     timeout?: number;
 }
 
-export class Toast extends AbstractPureComponent<IToastProps, {}> {
+export class Toast extends AbstractPureComponentNewLifecycles<IToastProps, {}> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",

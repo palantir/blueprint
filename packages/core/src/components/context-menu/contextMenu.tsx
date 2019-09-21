@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import { Position } from "../../common/position";
 import { safeInvoke } from "../../common/utils";
@@ -47,7 +47,7 @@ const TRANSITION_DURATION = 100;
 type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
-class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
+class ContextMenu extends AbstractPureComponentNewLifecycles<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,

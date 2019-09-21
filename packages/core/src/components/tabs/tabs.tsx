@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
 import * as Classes from "../../common/classes";
 import * as Keys from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
@@ -93,7 +93,7 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
-export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
+export class Tabs extends AbstractPureComponentNewLifecycles<ITabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
 
