@@ -146,7 +146,7 @@ class MyComponent extends React.PureComponent {
                     {/* "Toasted!" will appear here after clicking button. */}
                     {this.state.toasts.map(toast => <Toast {...toast} />)}
                 </Toaster>
-            </div
+            </div>
         )
     }
 

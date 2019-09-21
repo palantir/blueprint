@@ -70,7 +70,7 @@ in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker
 `react-day-picker` module:
 
 ```tsx
-import { LocaleUtils } from "react-day-picker/types/utils";
+import { LocaleUtils } from "react-day-picker";
 ```
 
 By supplying a `locale: string` and `localeUtils: LocaleUtils` prop to these Blueprint components, you can
