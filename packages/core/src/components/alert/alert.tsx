@@ -126,7 +126,6 @@ export class Alert extends AbstractPureComponent<IAlertProps, {}> {
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Alert`;
-    public state = {};
 
     public render() {
         const {

@@ -160,10 +160,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private trackElement: HTMLElement | null;
 
-    constructor(props: IMultiSliderProps) {
-        super(props);
-    }
-
     public render() {
         const classes = classNames(
             Classes.SLIDER,
