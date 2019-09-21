@@ -413,6 +413,7 @@ describe("<DateRangeInput>", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} />);
 
         root.setState({ isOpen: true });
+        root.update();
         root.find(DateRangePicker)
             .find(`.${DateClasses.DATERANGEPICKER_SHORTCUTS}`)
             .find("a")
