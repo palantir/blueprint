@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent } from "../../common/abstractPureComponent";
 import * as Classes from "../../common/classes";
@@ -318,6 +319,8 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         return child;
     };
 }
+
+polyfill(Tabs);
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
     return codes.indexOf(e.which) >= 0;
