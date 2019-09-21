@@ -774,7 +774,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
      * ClientRects.
      */
     public componentDidMount() {
-        this.validateProps(this.props, true);
         this.validateGrid();
 
         this.locator = new Locator(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
@@ -797,7 +796,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     }
 
     public componentDidUpdate(prevProps: ITableProps, prevState: ITableState, ___: {}) {
-        this.validateProps(prevProps);
+        super.componentDidUpdate(prevProps, prevState, ___);
         const {
             children,
             columnWidths,
