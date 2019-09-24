@@ -797,8 +797,8 @@ export class Table extends AbstractComponent2<ITableProps, ITableState> {
         this.didCompletelyMount = false;
     }
 
-    public componentDidUpdate(prevProps: ITableProps, prevState: ITableState, ___: {}) {
-        super.componentDidUpdate(prevProps, prevState, ___);
+    public componentDidUpdate(prevProps: ITableProps, prevState: ITableState, snapshot?: {}) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
         const {
             children,
             columnWidths,
