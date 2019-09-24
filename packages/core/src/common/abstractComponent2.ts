@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import { isNodeEnv } from "./utils";
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
  */
-export abstract class AbstractPureComponentNewLifecycles<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
+export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;
 
@@ -30,13 +30,13 @@ export abstract class AbstractPureComponentNewLifecycles<P, S = {}, SS = {}> ext
 
     constructor(props?: P, context?: any) {
         super(props, context);
-        if (!isNodeEnv('production')) {
+        if (!isNodeEnv("production")) {
             this.validateProps(this.props, true);
         }
     }
 
     public componentDidUpdate(_: P, __: S, ___: SS) {
-        if (!isNodeEnv('production')) {
+        if (!isNodeEnv("production")) {
             this.validateProps(this.props);
         }
     }

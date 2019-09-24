@@ -1,7 +1,6 @@
 /*
  * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
  *
- * Licensed under the terms of the LICENSE file distributed with this project.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +20,7 @@ import { isNodeEnv } from "./utils";
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
- * This version will not work with React 17 upwards and only exists for legacy purposes
+ * @deprecated componentWillReceiveProps is deprecated in React 16.9; use AbstractComponent2 instead
  */
 export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
@@ -83,4 +82,3 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
         // implement in subclass
     }
 }
-
