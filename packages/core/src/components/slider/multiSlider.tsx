@@ -18,8 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { Classes, Intent } from "../../common";
-import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
+import { AbstractPureComponent2, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -120,7 +119,8 @@ export interface ISliderState {
     tickSizeRatio?: number;
 }
 
-export class MultiSlider extends AbstractPureComponentNewLifecycles<IMultiSliderProps, ISliderState> {
+@polyfill
+export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
         labelStepSize: 1,
@@ -437,8 +437,6 @@ export class MultiSlider extends AbstractPureComponentNewLifecycles<IMultiSlider
         }
     }
 }
-
-polyfill(MultiSlider);
 
 function getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
     // infer default label precision from stepSize because that's how much the handle moves.

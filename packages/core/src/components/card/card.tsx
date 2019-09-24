@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Classes from "../../common/classes";
-import { Elevation } from "../../common/elevation";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface ICardProps extends IProps, HTMLDivProps {
@@ -48,7 +48,8 @@ export interface ICardProps extends IProps, HTMLDivProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export class Card extends React.PureComponent<ICardProps, {}> {
+@polyfill
+export class Card extends AbstractPureComponent2<ICardProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
     public static defaultProps: ICardProps = {
         elevation: Elevation.ZERO,

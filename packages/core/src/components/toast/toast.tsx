@@ -16,9 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { ButtonGroup } from "../button/buttonGroup";
@@ -54,7 +53,8 @@ export interface IToastProps extends IProps, IIntentProps {
     timeout?: number;
 }
 
-export class Toast extends AbstractPureComponentNewLifecycles<IToastProps, {}> {
+@polyfill
+export class Toast extends AbstractPureComponent2<IToastProps, {}> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",

@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-import {
-    AbstractPureComponentNewLifecycles,
-    Button,
-    DISPLAYNAME_PREFIX,
-    Divider,
-    IProps,
-    Utils,
-} from "@blueprintjs/core";
+import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import { polyfill } from "react-lifecycles-compat";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -103,7 +97,8 @@ export interface IDatePickerState {
     value: Date | null;
 }
 
-export class DatePicker extends AbstractPureComponentNewLifecycles<IDatePickerProps, IDatePickerState> {
+@polyfill
+export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
         clearButtonText: "Clear",

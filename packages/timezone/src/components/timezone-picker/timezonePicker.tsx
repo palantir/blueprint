@@ -16,9 +16,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import {
-    AbstractPureComponentNewLifecycles,
+    AbstractPureComponent2,
     Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
@@ -31,6 +32,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
+
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
@@ -108,7 +110,8 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-export class TimezonePicker extends AbstractPureComponentNewLifecycles<ITimezonePickerProps, ITimezonePickerState> {
+@polyfill
+export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
     public static defaultProps: Partial<ITimezonePickerProps> = {

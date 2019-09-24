@@ -16,9 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
@@ -72,7 +71,8 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     transitionName?: string;
 }
 
-export class Dialog extends AbstractPureComponentNewLifecycles<IDialogProps, {}> {
+@polyfill
+export class Dialog extends AbstractPureComponent2<IDialogProps, {}> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,
         isOpen: false,

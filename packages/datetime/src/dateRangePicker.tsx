@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-import {
-    AbstractPureComponentNewLifecycles,
-    Boundary,
-    DISPLAYNAME_PREFIX,
-    Divider,
-    IProps,
-    Utils,
-} from "@blueprintjs/core";
+import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import { polyfill } from "react-lifecycles-compat";
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -146,7 +140,8 @@ export interface IDateRangePickerState {
     selectedShortcutIndex?: number;
 }
 
-export class DateRangePicker extends AbstractPureComponentNewLifecycles<IDateRangePickerProps, IDateRangePickerState> {
+@polyfill
+export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProps, IDateRangePickerState> {
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,

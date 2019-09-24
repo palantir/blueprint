@@ -18,8 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Modifiers } from "popper.js";
-import * as Classes from "../../common/classes";
-import { Position } from "../../common/position";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
@@ -98,7 +98,8 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     textClassName?: string;
 }
 
-export class MenuItem extends React.PureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+@polyfill
+export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,
         multiline: false,

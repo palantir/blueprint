@@ -15,7 +15,7 @@
  */
 
 import {
-    AbstractComponentNewLifecycles,
+    AbstractComponent2,
     DISPLAYNAME_PREFIX,
     Hotkey,
     Hotkeys,
@@ -25,6 +25,7 @@ import {
 } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
@@ -426,8 +427,9 @@ export interface ITableState {
     viewportRect?: Rect;
 }
 
+@polyfill
 @HotkeysTarget
-export class Table extends AbstractComponentNewLifecycles<ITableProps, ITableState> {
+export class Table extends AbstractComponent2<ITableProps, ITableState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: ITableProps = {

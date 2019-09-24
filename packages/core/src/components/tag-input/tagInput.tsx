@@ -18,11 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
+import { AbstractPureComponent2, Classes, Keys, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
-import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
 
@@ -202,7 +199,8 @@ export interface ITagInputSnapshot {
 /** special value for absence of active tag */
 const NONE = -1;
 
-export class TagInput extends AbstractPureComponentNewLifecycles<ITagInputProps, ITagInputState, ITagInputSnapshot> {
+@polyfill
+export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputState, ITagInputSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> & object = {
@@ -476,5 +474,3 @@ export class TagInput extends AbstractPureComponentNewLifecycles<ITagInputProps,
         return index !== NONE && index < this.props.values.length;
     }
 }
-
-polyfill(TagInput);

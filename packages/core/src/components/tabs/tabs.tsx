@@ -18,9 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
+import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 
@@ -93,7 +91,8 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
-export class Tabs extends AbstractPureComponentNewLifecycles<ITabsProps, ITabsState> {
+@polyfill
+export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
 
@@ -319,8 +318,6 @@ export class Tabs extends AbstractPureComponentNewLifecycles<ITabsProps, ITabsSt
         return child;
     };
 }
-
-polyfill(Tabs);
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
     return codes.indexOf(e.which) >= 0;

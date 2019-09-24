@@ -16,7 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -52,7 +53,8 @@ export interface ITextAreaState {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState> {
+@polyfill
+export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
     public state: ITextAreaState = {};
     private internalTextAreaRef: HTMLTextAreaElement;

@@ -16,7 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
@@ -26,7 +27,8 @@ export interface INavbarHeadingProps extends IProps, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class NavbarHeading extends React.PureComponent<INavbarHeadingProps, {}> {
+@polyfill
+export class NavbarHeading extends AbstractPureComponent2<INavbarHeadingProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
 
     public render() {

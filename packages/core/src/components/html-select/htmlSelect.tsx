@@ -16,6 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2 } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { IOptionProps } from "../../common/props";
 import { IElementRefProps } from "../html/html";
@@ -58,7 +60,8 @@ export interface IHTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class HTMLSelect extends React.PureComponent<IHTMLSelectProps> {
+@polyfill
+export class HTMLSelect extends AbstractPureComponent2<IHTMLSelectProps> {
     public render() {
         const {
             className,

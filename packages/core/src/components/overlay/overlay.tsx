@@ -20,8 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { findDOMNode } from "react-dom";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
+import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Portal } from "../portal/portal";
@@ -172,7 +171,8 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
+@polyfill
+export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
     public static defaultProps: IOverlayProps = {
@@ -455,5 +455,3 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         }
     };
 }
-
-polyfill(Overlay);

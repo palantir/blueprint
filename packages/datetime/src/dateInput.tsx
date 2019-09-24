@@ -17,9 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 import { DayPickerProps } from "react-day-picker";
+import { polyfill } from "react-lifecycles-compat";
 
 import {
-    AbstractPureComponentNewLifecycles,
+    AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
@@ -141,7 +142,8 @@ export interface IDateInputState {
     isOpen: boolean;
 }
 
-export class DateInput extends AbstractPureComponentNewLifecycles<IDateInputProps, IDateInputState> {
+@polyfill
+export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {

@@ -16,10 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { AbstractPureComponentNewLifecycles } from "../../common/abstractPureComponentNewLifecycles";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 import { Browser } from "../../compatibility";
@@ -120,7 +118,8 @@ export interface IEditableTextState {
 const BUFFER_WIDTH_EDGE = 5;
 const BUFFER_WIDTH_IE = 30;
 
-export class EditableText extends AbstractPureComponentNewLifecycles<IEditableTextProps, IEditableTextState> {
+@polyfill
+export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
     public static defaultProps: IEditableTextProps = {
