@@ -427,8 +427,8 @@ export interface ITableState {
     viewportRect?: Rect;
 }
 
-@polyfill
 @HotkeysTarget
+@polyfill
 export class Table extends AbstractComponent2<ITableProps, ITableState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
