@@ -31,11 +31,11 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
     constructor(props?: P, context?: any) {
         super(props, context);
         if (!isNodeEnv("production")) {
-            this.validateProps(this.props, true);
+            this.validateProps(this.props);
         }
     }
 
-    public componentDidUpdate(_: P, __: S, ___: SS) {
+    public componentDidUpdate(_prevProps: P, _prevState: S, _snapshot?: SS) {
         if (!isNodeEnv("production")) {
             this.validateProps(this.props);
         }
@@ -77,7 +77,7 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
      * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
      * Like propTypes, these runtime checks run only in development mode.
      */
-    protected validateProps(_: P, __: boolean = false) {
+    protected validateProps(_props: P) {
         // implement in subclass
     }
 }

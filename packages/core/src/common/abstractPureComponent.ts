@@ -78,7 +78,7 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
      * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
      * Like propTypes, these runtime checks run only in development mode.
      */
-    protected validateProps(_: P & { children?: React.ReactNode }) {
+    protected validateProps(_props: P & { children?: React.ReactNode }) {
         // implement in subclass
     }
 }
