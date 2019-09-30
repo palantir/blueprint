@@ -16,9 +16,9 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { Classes, Intent } from "../../common";
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponent2, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -119,7 +119,8 @@ export interface ISliderState {
     tickSizeRatio?: number;
 }
 
-export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISliderState> {
+@polyfill
+export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
         labelStepSize: 1,
@@ -138,6 +139,15 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSlider`;
 
     public static Handle = MultiSliderHandle;
+
+    public static getDerivedStateFromProps(props: IMultiSliderProps & IChildrenProps) {
+        return { labelPrecision: MultiSlider.getLabelPrecision(props) };
+    }
+
+    private static getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
+        // infer default label precision from stepSize because that's how much the handle moves.
+        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
+    }
 
     public state: ISliderState = {
         labelPrecision: getLabelPrecision(this.props),
@@ -171,26 +181,24 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
     }
 
-    public componentWillMount() {
-        this.handleProps = getSortedInteractiveHandleProps(this.props);
-    }
-
     public componentDidMount() {
+        this.handleProps = getSortedInteractiveHandleProps(this.props);
         this.updateTickSize();
     }
 
-    public componentDidUpdate() {
-        this.updateTickSize();
-    }
-
-    public componentWillReceiveProps(nextProps: IMultiSliderProps & IChildrenProps) {
-        this.setState({ labelPrecision: this.getLabelPrecision(nextProps) });
-
-        const newHandleProps = getSortedInteractiveHandleProps(nextProps);
+    public getSnapshotBeforeUpdate(): {} | null {
+        const newHandleProps = getSortedInteractiveHandleProps(this.props);
         if (newHandleProps.length !== this.handleProps.length) {
             this.handleElements = [];
         }
         this.handleProps = newHandleProps;
+
+        return null;
+    }
+
+    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState, ss: {}) {
+        super.componentDidUpdate(prevProps, prevState, ss);
+        this.updateTickSize();
     }
 
     protected validateProps(props: IMultiSliderProps & IChildrenProps) {
@@ -282,6 +290,9 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private renderHandles() {
         const { disabled, max, min, stepSize, vertical } = this.props;
+        if (!this.handleProps) {
+            return null;
+        }
         return this.handleProps.map(({ value, type }, index) => (
             <Handle
                 className={classNames({
@@ -402,11 +413,6 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
             Utils.safeInvoke(handle.onRelease, newValues[index]);
         });
     };
-
-    private getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
-        // infer default label precision from stepSize because that's how much the handle moves.
-        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
-    }
 
     private getOffsetRatio(value: number) {
         return Utils.clamp((value - this.props.min) * this.state.tickSizeRatio, 0, 1);

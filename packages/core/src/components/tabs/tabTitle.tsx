@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ITabProps, TabId } from "./tab";
 
@@ -32,7 +32,8 @@ export interface ITabTitleProps extends ITabProps {
     selected: boolean;
 }
 
-export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
+@polyfill
+export class TabTitle extends AbstractPureComponent2<ITabTitleProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {

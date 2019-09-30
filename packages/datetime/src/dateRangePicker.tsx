@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent, Boundary, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import { polyfill } from "react-lifecycles-compat";
 
 import * as DateClasses from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -139,7 +140,8 @@ export interface IDateRangePickerState {
     selectedShortcutIndex?: number;
 }
 
-export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps, IDateRangePickerState> {
+@polyfill
+export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProps, IDateRangePickerState> {
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
@@ -248,24 +250,24 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDateRangePickerProps) {
-        super.componentWillReceiveProps(nextProps);
+    public componentDidUpdate(prevProps: IDateRangePickerProps, prevState: IDateRangePickerState, snapshot?: {}) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
 
         if (
-            !DateUtils.areRangesEqual(this.props.value, nextProps.value) ||
-            this.props.contiguousCalendarMonths !== nextProps.contiguousCalendarMonths
+            !DateUtils.areRangesEqual(prevProps.value, this.props.value) ||
+            prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths
         ) {
             const nextState = getStateChange(
+                prevProps.value,
                 this.props.value,
-                nextProps.value,
                 this.state,
-                nextProps.contiguousCalendarMonths,
+                prevProps.contiguousCalendarMonths,
             );
             this.setState(nextState);
         }
 
-        if (this.props.selectedShortcutIndex !== nextProps.selectedShortcutIndex) {
-            this.setState({ selectedShortcutIndex: nextProps.selectedShortcutIndex });
+        if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
+            this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
         }
     }
 

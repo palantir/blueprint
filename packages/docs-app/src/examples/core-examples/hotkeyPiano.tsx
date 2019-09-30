@@ -122,10 +122,10 @@ class PianoKey extends React.Component<IPianoKeyProps, {}> {
         this.envelope.gain.connect(context.destination);
     }
 
-    public componentWillReceiveProps(nextProps: IPianoKeyProps) {
-        if (this.props.pressed === false && nextProps.pressed === true) {
+    public componentDidUpdate(prevProps: IPianoKeyProps) {
+        if (prevProps.pressed === false && this.props.pressed === true) {
             this.envelope.on();
-        } else if (this.props.pressed === true && nextProps.pressed === false) {
+        } else if (prevProps.pressed === true && this.props.pressed === false) {
             this.envelope.off();
         }
     }

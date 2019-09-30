@@ -109,6 +109,7 @@ describe("<DateTimePicker>", () => {
                 const { root, getSelectedDay } = wrap(<DateTimePicker value={defaultValue} />);
                 assert.isTrue(getSelectedDay().exists());
                 root.setProps({ value });
+                root.update();
                 assert.isFalse(getSelectedDay().exists());
             });
         }

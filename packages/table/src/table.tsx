@@ -15,7 +15,7 @@
  */
 
 import {
-    AbstractComponent,
+    AbstractComponent2,
     DISPLAYNAME_PREFIX,
     Hotkey,
     Hotkeys,
@@ -25,6 +25,7 @@ import {
 } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
@@ -427,7 +428,8 @@ export interface ITableState {
 }
 
 @HotkeysTarget
-export class Table extends AbstractComponent<ITableProps, ITableState> {
+@polyfill
+export class Table extends AbstractComponent2<ITableProps, ITableState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: ITableProps = {
@@ -696,115 +698,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         );
     }
 
-    public componentWillReceiveProps(nextProps: ITableProps) {
-        // calls validateProps
-        super.componentWillReceiveProps(nextProps);
-
-        const {
-            children,
-            columnWidths,
-            defaultColumnWidth,
-            defaultRowHeight,
-            enableFocusedCell,
-            focusedCell,
-            forceRerenderOnSelectionChange,
-            numRows,
-            rowHeights,
-            selectedRegions,
-            selectionModes,
-        } = nextProps;
-
-        const didChildrenChange = this.props.children !== nextProps.children;
-        const newChildArray = didChildrenChange
-            ? (React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>)
-            : this.childrenArray;
-        const numCols = newChildArray.length;
-
-        let shouldInvalidateGrid = false;
-        let newColumnWidths = this.state.columnWidths;
-        if (
-            defaultColumnWidth !== this.props.defaultColumnWidth ||
-            columnWidths !== this.props.columnWidths ||
-            didChildrenChange
-        ) {
-            // Try to maintain widths of columns by looking up the width of the
-            // column that had the same `ID` prop. If none is found, use the
-            // previous width at the same index.
-            const previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
-                const mappedIndex = this.columnIdToIndex[child.props.id];
-                return this.state.columnWidths[mappedIndex != null ? mappedIndex : index];
-            });
-
-            // Make sure the width/height arrays have the correct length, but keep
-            // as many existing widths/heights as possible. Also, apply the
-            // sparse width/heights from props.
-            newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
-            newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
-            newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
-
-            shouldInvalidateGrid = true;
-        }
-
-        let newRowHeights = this.state.rowHeights;
-        if (
-            defaultRowHeight !== this.props.defaultRowHeight ||
-            rowHeights !== this.props.rowHeights ||
-            numRows !== this.props.numRows
-        ) {
-            newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
-            newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
-            shouldInvalidateGrid = true;
-        }
-
-        if (
-            !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
-            !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
-        ) {
-            // grid invalidation is required after changing this flag,
-            // which happens at the end of this method.
-            this.didUpdateColumnOrRowSizes = true;
-        }
-
-        let newSelectedRegions = selectedRegions;
-        if (forceRerenderOnSelectionChange && newSelectedRegions !== this.props.selectedRegions) {
-            shouldInvalidateGrid = true;
-        }
-        if (selectedRegions == null) {
-            // if we're in uncontrolled mode, filter out all selected regions that don't
-            // fit in the current new table dimensions
-            newSelectedRegions = this.state.selectedRegions.filter(region => {
-                const regionCardinality = Regions.getRegionCardinality(region);
-                return (
-                    this.isSelectionModeEnabled(regionCardinality, selectionModes) &&
-                    Regions.isRegionValidForTable(region, numRows, numCols)
-                );
-            });
-        }
-
-        const newFocusedCell = FocusedCellUtils.getInitialFocusedCell(
-            enableFocusedCell,
-            focusedCell,
-            this.state.focusedCell,
-            newSelectedRegions,
-        );
-
-        if (didChildrenChange) {
-            this.childrenArray = newChildArray;
-            this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
-        }
-        if (shouldInvalidateGrid) {
-            this.invalidateGrid();
-        }
-        this.setState({
-            columnWidths: newColumnWidths,
-            focusedCell: newFocusedCell,
-            numFrozenColumnsClamped: clampNumFrozenColumns(nextProps),
-            numFrozenRowsClamped: clampNumFrozenRows(nextProps),
-            rowHeights: newRowHeights,
-            selectedRegions: newSelectedRegions,
-        });
-    }
-
     public render() {
         const {
             children,
@@ -904,7 +797,116 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.didCompletelyMount = false;
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: ITableProps, prevState: ITableState, snapshot?: {}) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
+        const {
+            children,
+            columnWidths,
+            defaultColumnWidth,
+            defaultRowHeight,
+            enableFocusedCell,
+            focusedCell,
+            forceRerenderOnSelectionChange,
+            numRows,
+            rowHeights,
+            selectedRegions,
+            selectionModes,
+        } = this.props;
+
+        const didChildrenChange = prevProps.children !== children;
+        const newChildArray = didChildrenChange
+            ? (React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>)
+            : this.childrenArray;
+        const numCols = newChildArray.length;
+
+        let shouldInvalidateGrid = false;
+        let newColumnWidths = this.state.columnWidths;
+        if (
+            defaultColumnWidth !== prevProps.defaultColumnWidth ||
+            columnWidths !== prevProps.columnWidths ||
+            didChildrenChange
+        ) {
+            // Try to maintain widths of columns by looking up the width of the
+            // column that had the same `ID` prop. If none is found, use the
+            // previous width at the same index.
+            const previousColumnWidths = newChildArray.map((child: React.ReactElement<IColumnProps>, index: number) => {
+                const mappedIndex = this.columnIdToIndex[child.props.id];
+                return this.state.columnWidths[mappedIndex != null ? mappedIndex : index];
+            });
+
+            // Make sure the width/height arrays have the correct length, but keep
+            // as many existing widths/heights as possible. Also, apply the
+            // sparse width/heights from props.
+            newColumnWidths = Utils.arrayOfLength(newColumnWidths, numCols, defaultColumnWidth);
+            newColumnWidths = Utils.assignSparseValues(newColumnWidths, previousColumnWidths);
+            newColumnWidths = Utils.assignSparseValues(newColumnWidths, columnWidths);
+
+            shouldInvalidateGrid = true;
+        }
+
+        let newRowHeights = this.state.rowHeights;
+        if (
+            defaultRowHeight !== prevProps.defaultRowHeight ||
+            rowHeights !== prevProps.rowHeights ||
+            numRows !== prevProps.numRows
+        ) {
+            newRowHeights = Utils.arrayOfLength(newRowHeights, numRows, defaultRowHeight);
+            newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
+            shouldInvalidateGrid = true;
+        }
+
+        if (
+            !CoreUtils.arraysEqual(newColumnWidths, this.state.columnWidths) ||
+            !CoreUtils.arraysEqual(newRowHeights, this.state.rowHeights)
+        ) {
+            // grid invalidation is required after changing this flag,
+            // which happens at the end of this method.
+            this.didUpdateColumnOrRowSizes = true;
+        }
+
+        let newSelectedRegions = selectedRegions;
+        if (forceRerenderOnSelectionChange && newSelectedRegions !== prevProps.selectedRegions) {
+            shouldInvalidateGrid = true;
+        }
+        if (selectedRegions == null) {
+            // if we're in uncontrolled mode, filter out all selected regions that don't
+            // fit in the current new table dimensions
+            newSelectedRegions = this.state.selectedRegions.filter(region => {
+                const regionCardinality = Regions.getRegionCardinality(region);
+                return (
+                    this.isSelectionModeEnabled(regionCardinality, selectionModes) &&
+                    Regions.isRegionValidForTable(region, numRows, numCols)
+                );
+            });
+        }
+
+        const newFocusedCell = FocusedCellUtils.getInitialFocusedCell(
+            enableFocusedCell,
+            focusedCell,
+            this.state.focusedCell,
+            newSelectedRegions,
+        );
+
+        if (didChildrenChange) {
+            this.childrenArray = newChildArray;
+            this.columnIdToIndex = Table.createColumnIdIndex(this.childrenArray);
+        }
+        if (shouldInvalidateGrid) {
+            this.invalidateGrid();
+        }
+        const nextState = {
+            columnWidths: newColumnWidths,
+            focusedCell: newFocusedCell,
+            numFrozenColumnsClamped: clampNumFrozenColumns(this.props),
+            numFrozenRowsClamped: clampNumFrozenRows(this.props),
+            rowHeights: newRowHeights,
+            selectedRegions: newSelectedRegions,
+        };
+
+        if (!CoreUtils.deepCompareKeys(prevState, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST)) {
+            this.setState(nextState);
+        }
+
         if (this.locator != null) {
             this.validateGrid();
             this.updateLocator();
@@ -918,8 +920,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         this.maybeScrollTableIntoView();
     }
 
-    protected validateProps(props: ITableProps & { children: React.ReactNode }) {
-        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
+    protected validateProps(props: ITableProps) {
+        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = this.props;
         const numColumns = React.Children.count(children);
 
         // do cheap error-checking first.
@@ -948,7 +950,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         if (numFrozenRows != null && numRows != null && numFrozenRows > numRows) {
             console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
         }
-        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
+
+        const propsOrColsChanged = numColumns !== React.Children.count(props.children);
+        if (propsOrColsChanged && numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
     }

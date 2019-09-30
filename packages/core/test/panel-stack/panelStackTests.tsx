@@ -200,6 +200,7 @@ describe("<PanelStack>", () => {
         assert.exists(newPanelButton);
         newPanelButton.simulate("click");
         panelStackWrapper.setProps({ stack });
+        panelStackWrapper.update();
 
         const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(newPanelHeader);
@@ -226,6 +227,7 @@ describe("<PanelStack>", () => {
         assert.exists(backButton);
         backButton.simulate("click");
         panelStackWrapper.setProps({ stack });
+        panelStackWrapper.update();
 
         const firstPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(firstPanelHeader);

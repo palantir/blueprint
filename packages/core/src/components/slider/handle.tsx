@@ -16,10 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp, safeInvoke } from "../../common/utils";
 import { IHandleProps } from "./handleProps";
@@ -49,7 +47,8 @@ export interface IHandleState {
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
-export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleState> {
+@polyfill
+export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandleState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 
     public state = {

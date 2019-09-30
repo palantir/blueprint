@@ -136,14 +136,12 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         );
     }
 
-    public componentWillReceiveProps(nextProps: ISuggestProps<T>) {
-        // If the selected item prop changes, update the underlying state.
-        if (nextProps.selectedItem !== undefined && nextProps.selectedItem !== this.state.selectedItem) {
-            this.setState({ selectedItem: nextProps.selectedItem });
-        }
-    }
-
     public componentDidUpdate(_prevProps: ISuggestProps<T>, prevState: ISuggestState<T>) {
+        // If the selected item prop changes, update the underlying state.
+        if (this.props.selectedItem !== undefined && this.props.selectedItem !== this.state.selectedItem) {
+            this.setState({ selectedItem: this.props.selectedItem });
+        }
+
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }

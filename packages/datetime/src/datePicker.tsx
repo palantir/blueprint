@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import { polyfill } from "react-lifecycles-compat";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -96,7 +97,8 @@ export interface IDatePickerState {
     value: Date | null;
 }
 
-export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
+@polyfill
+export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
         clearButtonText: "Clear",
@@ -156,10 +158,10 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDatePickerProps) {
-        super.componentWillReceiveProps(nextProps);
-        const { value } = nextProps;
-        if (value === this.props.value) {
+    public componentDidUpdate(prevProps: IDatePickerProps, prevState: IDatePickerState, snapshot?: {}) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
+        const { value } = this.props;
+        if (value === prevProps.value) {
             // no action needed
             return;
         } else if (value == null) {
@@ -273,7 +275,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
             return;
         }
         if (this.props.value === undefined) {
-            // set now if uncontrolled, otherwise they'll be updated in `componentWillReceiveProps`
+            // set now if uncontrolled, otherwise they'll be updated in `componentDidUpdate`
             this.setState({
                 displayMonth: day.getMonth(),
                 displayYear: day.getFullYear(),

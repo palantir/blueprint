@@ -198,18 +198,19 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
         });
     }
 
-    public componentWillReceiveProps(nextProps: IQueryListProps<T>) {
-        if (nextProps.activeItem !== undefined) {
-            this.shouldCheckActiveItemInViewport = true;
-            this.setState({ activeItem: nextProps.activeItem });
-        }
-        if (nextProps.query != null && nextProps.query !== this.props.query) {
-            this.setQuery(nextProps.query, nextProps.resetOnQuery, nextProps);
-        }
-    }
-
     public componentDidUpdate(prevProps: IQueryListProps<T>) {
-        if (
+        if (this.props.activeItem !== undefined && this.props.activeItem !== this.state.activeItem) {
+            this.shouldCheckActiveItemInViewport = true;
+            this.setState({ activeItem: this.props.activeItem });
+        }
+
+        // new query
+        if (this.props.query != null && this.props.query !== prevProps.query) {
+            this.setQuery(this.props.query, this.props.resetOnQuery, this.props);
+        }
+        // same query, but items in the list changed
+        else if (
+            this.props.query != null &&
             !Utils.shallowCompareKeys(this.props, prevProps, {
                 include: ["items", "itemListPredicate", "itemPredicate"],
             })
@@ -473,6 +474,7 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
      * Get the next enabled item, moving in the given direction from the start
      * index. A `null` return value means no suitable item was found.
      * @param direction amount to move in each iteration, typically +/-1
+     * @param startIndex item to start iteration
      */
     private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | ICreateNewItem | null {
         if (this.isCreateItemRendered()) {
@@ -576,7 +578,7 @@ function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListIt
  * Get the next enabled item, moving in the given direction from the start
  * index. A `null` return value means no suitable item was found.
  * @param items the list of items
- * @param isItemDisabled callback to determine if a given item is disabled
+ * @param itemDisabled callback to determine if a given item is disabled
  * @param direction amount to move in each iteration, typically +/-1
  * @param startIndex which index to begin moving from
  */
