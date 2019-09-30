@@ -212,6 +212,20 @@ describe("<MultiSlider>", () => {
                 assert.isNull(segment.prop("className").match(/-intent-(\w+)/));
             });
         });
+
+        it("track section positioning is correct", () => {
+            slider = mount(
+                <MultiSlider max={1}>
+                    <MultiSlider.Handle value={1.2e-7} intentBefore="warning" intentAfter="warning" />
+                    <MultiSlider.Handle value={0.2} intentBefore="danger" intentAfter="success" />
+                </MultiSlider>,
+            );
+            const locations = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
+                const match = segment.prop("style");
+                return [match.left, match.right];
+            });
+            assert.deepEqual(locations, [["0.00%", "100.00%"], ["0.00%", "80.00%"], ["20.00%", "0.00%"]]);
+        });
     });
 
     describe("validation", () => {
