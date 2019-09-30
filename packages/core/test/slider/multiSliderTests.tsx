@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
+import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
