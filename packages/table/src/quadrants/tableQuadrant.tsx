@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -124,7 +126,8 @@ export interface ITableQuadrantProps extends IProps {
     style?: React.CSSProperties;
 }
 
-export class TableQuadrant extends AbstractComponent<ITableQuadrantProps, {}> {
+@polyfill
+export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantProps> & object = {

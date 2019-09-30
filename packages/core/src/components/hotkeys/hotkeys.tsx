@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import classNames from "classnames";
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType } from "../../common/utils";
 import { H4 } from "../html/html";
@@ -41,7 +41,8 @@ export interface IHotkeysProps extends IProps {
     tabIndex?: number;
 }
 
-export class Hotkeys extends AbstractPureComponent<IHotkeysProps, {}> {
+@polyfill
+export class Hotkeys extends AbstractPureComponent2<IHotkeysProps, {}, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;
 
     public static defaultProps = {

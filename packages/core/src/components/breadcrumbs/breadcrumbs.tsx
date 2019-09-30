@@ -16,11 +16,9 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { Boundary } from "../../common/boundary";
-import * as Classes from "../../common/classes";
-import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
+import { AbstractPureComponent2, Boundary, Classes, IProps, Position } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { IOverflowListProps, OverflowList } from "../overflow-list/overflowList";
@@ -76,7 +74,8 @@ export interface IBreadcrumbsProps extends IProps {
     popoverProps?: IPopoverProps;
 }
 
-export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
+@polyfill
+export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
     public static defaultProps: Partial<IBreadcrumbsProps> = {
         collapseFrom: Boundary.START,
     };

@@ -13,6 +13,7 @@ module.exports = function (config) {
             // not worth full coverage
             "src/accessibility/*",
             "src/common/abstractComponent*",
+            "src/common/abstractPureComponent*",
         ],
     });
     config.set(baseConfig);

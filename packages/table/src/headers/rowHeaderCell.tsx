@@ -15,8 +15,9 @@
  */
 
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
@@ -46,7 +47,8 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
 }
 
-export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps, {}> {
+@polyfill
+export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
     public render() {
         const {
             // from IRowHeaderCellProps

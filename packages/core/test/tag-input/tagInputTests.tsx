@@ -148,13 +148,14 @@ describe("<TagInput>", () => {
             wrapper.setProps({ inputProps: { value: NEW_VALUE } });
             wrapper.find("input").simulate("change", { currentTarget: { value: NEW_VALUE } });
             wrapper.simulate("blur");
+
             // Need setTimeout here to wait for focus to change after blur event
             setTimeout(() => {
                 assert.isTrue(onAdd.calledOnce);
                 assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
                 assert.equal(onAdd.args[0][1], "blur");
                 done();
-            });
+            }, 50);
         });
 
         it("is not invoked on blur when addOnBlur=true but inputValue is empty", done => {
@@ -549,6 +550,7 @@ describe("<TagInput>", () => {
         it("Updating inputValue updates input element", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: NEW_VALUE });
+            wrapper.update();
             expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
 

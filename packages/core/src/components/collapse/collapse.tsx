@@ -16,9 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface ICollapseProps extends IProps {
@@ -105,7 +104,13 @@ export enum AnimationStates {
     CLOSED,
 }
 
-export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState> {
+export interface ICollapseSnapshot {
+    animationState?: AnimationStates;
+    height?: string;
+}
+
+@polyfill
+export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState, ICollapseSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: ICollapseProps = {
@@ -125,20 +130,25 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
     // The most recent non-0 height (once a height has been measured - is 0 until then)
     private height: number = 0;
 
-    public componentWillReceiveProps(nextProps: ICollapseProps) {
-        if (this.props.isOpen !== nextProps.isOpen) {
+    public getSnapshotBeforeUpdate(prevProps: ICollapseProps): ICollapseSnapshot {
+        let snapshot: ICollapseSnapshot = {};
+        if (this.props.isOpen !== prevProps.isOpen) {
             this.clearTimeouts();
-            if (this.state.animationState !== AnimationStates.CLOSED && !nextProps.isOpen) {
-                this.setState({
+            if (this.state.animationState !== AnimationStates.CLOSED && !this.props.isOpen) {
+                snapshot = {
+                    ...snapshot,
                     animationState: AnimationStates.CLOSING_START,
                     height: `${this.height}px`,
-                });
-            } else if (this.state.animationState !== AnimationStates.OPEN && nextProps.isOpen) {
-                this.setState({
+                };
+            } else if (this.state.animationState !== AnimationStates.OPEN && this.props.isOpen) {
+                snapshot = {
+                    ...snapshot,
                     animationState: AnimationStates.OPEN_START,
-                });
+                };
             }
         }
+
+        return snapshot;
     }
 
     public render() {
@@ -184,11 +194,11 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(_: ICollapseProps, __: ICollapseState, snapshot: ICollapseSnapshot) {
         if (this.contents != null && this.contents.clientHeight !== 0) {
             this.height = this.contents.clientHeight;
         }
-        if (this.state.animationState === AnimationStates.CLOSING_START) {
+        if (snapshot.animationState === AnimationStates.CLOSING_START) {
             this.setTimeout(() =>
                 this.setState({
                     animationState: AnimationStates.CLOSING,
@@ -197,7 +207,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
             );
             this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
         }
-        if (this.state.animationState === AnimationStates.OPEN_START) {
+        if (snapshot.animationState === AnimationStates.OPEN_START) {
             this.setState({
                 animationState: AnimationStates.OPENING,
                 height: this.height + "px",

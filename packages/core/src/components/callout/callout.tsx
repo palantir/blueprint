@@ -16,11 +16,20 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { Classes, DISPLAYNAME_PREFIX, HTMLDivProps, IIntentProps, Intent, IProps, MaybeElement } from "../../common";
-import { Icon } from "../../index";
+import {
+    AbstractPureComponent2,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    HTMLDivProps,
+    IIntentProps,
+    Intent,
+    IProps,
+    MaybeElement,
+} from "../../common";
 import { H4 } from "../html/html";
-import { IconName } from "../icon/icon";
+import { Icon, IconName } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` props. */
 export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
@@ -50,7 +59,8 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     title?: string;
 }
 
-export class Callout extends React.PureComponent<ICalloutProps, {}> {
+@polyfill
+export class Callout extends AbstractPureComponent2<ICalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {

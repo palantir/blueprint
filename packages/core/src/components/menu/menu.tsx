@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { MenuDivider } from "./menuDivider";
 import { MenuItem } from "./menuItem";
@@ -30,7 +30,8 @@ export interface IMenuProps extends IProps, React.HTMLAttributes<HTMLUListElemen
     ulRef?: (ref: HTMLUListElement | null) => any;
 }
 
-export class Menu extends React.Component<IMenuProps, {}> {
+@polyfill
+export class Menu extends AbstractPureComponent2<IMenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
     public static Divider = MenuDivider;

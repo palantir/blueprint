@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export type TabId = string | number;
@@ -59,7 +59,8 @@ export interface ITabProps extends IProps {
     title?: React.ReactNode;
 }
 
-export class Tab extends React.PureComponent<ITabProps, {}> {
+@polyfill
+export class Tab extends AbstractPureComponent2<ITabProps, {}> {
     public static defaultProps: ITabProps = {
         disabled: false,
         id: undefined,

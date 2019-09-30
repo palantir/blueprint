@@ -16,12 +16,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
+import { AbstractPureComponent2, Classes, Keys, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
-import * as Utils from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
 
@@ -194,10 +192,15 @@ export interface ITagInputState {
     isInputFocused: boolean;
 }
 
+export interface ITagInputSnapshot {
+    inputValue: string;
+}
+
 /** special value for absence of active tag */
 const NONE = -1;
 
-export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
+@polyfill
+export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputState, ITagInputSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> & object = {
@@ -222,12 +225,15 @@ export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputSta
         },
     };
 
-    public componentWillReceiveProps(nextProps: HTMLInputProps & ITagInputProps) {
-        super.componentWillReceiveProps(nextProps);
+    public getSnapshotBeforeUpdate(prevProps: Readonly<ITagInputProps>): ITagInputSnapshot {
+        return {
+            inputValue: prevProps.inputValue !== this.props.inputValue ? this.props.inputValue : this.state.inputValue,
+        };
+    }
 
-        if (nextProps.inputValue !== this.props.inputValue) {
-            this.setState({ inputValue: nextProps.inputValue || "" });
-        }
+    public componentDidUpdate(_: ITagInputProps, __: ITagInputState, snapshot: ITagInputSnapshot) {
+        super.componentDidUpdate(_, __, snapshot);
+        this.setState(snapshot);
     }
 
     public render() {

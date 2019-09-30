@@ -153,9 +153,11 @@ describe("<DateInput>", () => {
     });
 
     it("setting timePrecision renders a TimePicker", () => {
-        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePrecision.SECOND} />).setState({
-            isOpen: true,
-        });
+        const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePrecision.SECOND} />)
+            .setState({
+                isOpen: true,
+            })
+            .update();
         // assert TimePicker appears
         const timePicker = wrapper.find(TimePicker);
         assert.isTrue(timePicker.exists());
@@ -202,7 +204,9 @@ describe("<DateInput>", () => {
                 value={value}
                 timePickerProps={timePickerProps}
             />,
-        ).setState({ isOpen: true });
+        )
+            .setState({ isOpen: true })
+            .update();
 
         const timePicker = wrapper.find(TimePicker);
 
@@ -221,9 +225,11 @@ describe("<DateInput>", () => {
             todayButtonText: "today",
         };
 
-        const wrapper = mount(<DateInput {...DATE_FORMAT} {...datePickerProps} />).setState({
-            isOpen: true,
-        });
+        const wrapper = mount(<DateInput {...DATE_FORMAT} {...datePickerProps} />)
+            .setState({
+                isOpen: true,
+            })
+            .update();
         const datePicker = wrapper.find(DatePicker);
 
         assert.equal(datePicker.prop("clearButtonText"), "clear");
@@ -295,6 +301,7 @@ describe("<DateInput>", () => {
         it("Clicking a date puts it in the input box and closes the popover", () => {
             const { root: wrapper, getDay } = wrap(<DateInput {...DATE_FORMAT} />);
             wrapper.setState({ isOpen: true });
+            wrapper.update();
             assert.equal(wrapper.find(InputGroup).prop("value"), "");
             getDay(12).simulate("click");
             assert.notEqual(wrapper.find(InputGroup).prop("value"), "");
@@ -305,13 +312,16 @@ describe("<DateInput>", () => {
             const DAY = 15;
             const PREV_DAY = DAY - 1;
             const defaultValue = new Date(2017, Months.JANUARY, DAY, 15, 0, 0, 0); // include an arbitrary non-zero hour
-            const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />).setState({
-                isOpen: true,
-            });
+            const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />)
+                .setState({
+                    isOpen: true,
+                })
+                .update();
             wrapper
                 .find(`.${Classes.DATEPICKER_DAY}`)
                 .at(PREV_DAY - 1)
-                .simulate("click");
+                .simulate("click")
+                .update();
             assert.isFalse(wrapper.state("isOpen"));
         });
 
@@ -321,6 +331,8 @@ describe("<DateInput>", () => {
                 <DateInput {...DATE_FORMAT} defaultValue={new Date(2016, Months.JULY, 22)} onChange={onChange} />,
             );
             root.setState({ isOpen: true });
+            root.update();
+
             getDay(22).simulate("click");
             assert.equal(root.find(InputGroup).prop("value"), "");
             assert.isTrue(onChange.calledWith(null));
@@ -338,13 +350,16 @@ describe("<DateInput>", () => {
         });
 
         it("Popover stays open on date click if closeOnSelection=false", () => {
-            const wrapper = mount(<DateInput {...DATE_FORMAT} closeOnSelection={false} />).setState({
-                isOpen: true,
-            });
+            const wrapper = mount(<DateInput {...DATE_FORMAT} closeOnSelection={false} />)
+                .setState({
+                    isOpen: true,
+                })
+                .update();
             wrapper
                 .find(`.${Classes.DATEPICKER_DAY}`)
                 .first()
-                .simulate("click");
+                .simulate("click")
+                .update();
             assert.isTrue(wrapper.state("isOpen"));
         });
 
@@ -367,6 +382,7 @@ describe("<DateInput>", () => {
                 <DateInput {...DATE_FORMAT} defaultValue={defaultValue} timePrecision={TimePrecision.MILLISECOND} />,
             );
             wrapper.setState({ isOpen: true });
+            wrapper.update();
 
             // try typing a new time
             wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("change", { target: { value: "1" } });
@@ -379,7 +395,9 @@ describe("<DateInput>", () => {
 
         it("Clicking a date in a different month sets input value but keeps popover open", () => {
             const date = new Date(2016, Months.APRIL, 3);
-            const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={date} />).setState({ isOpen: true });
+            const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={date} />)
+                .setState({ isOpen: true })
+                .update();
             assert.equal(wrapper.find(InputGroup).prop("value"), "4/3/2016");
 
             wrapper
@@ -468,6 +486,7 @@ describe("<DateInput>", () => {
                 />,
             );
             root.setState({ isOpen: true });
+            root.update();
 
             getDay(DATE.getDate()).simulate("click");
 
@@ -506,6 +525,7 @@ describe("<DateInput>", () => {
             const onChange = sinon.spy();
             const { getDay, root } = wrap(<DateInput {...DATE_FORMAT} onChange={onChange} value={DATE} />);
             root.setState({ isOpen: true });
+            root.update();
             getDay(27).simulate("click");
 
             assert.isTrue(onChange.calledOnce);
@@ -517,6 +537,7 @@ describe("<DateInput>", () => {
             const onChange = sinon.spy();
             const { root, getDay } = wrap(<DateInput {...DATE_FORMAT} value={DATE} onChange={onChange} />);
             root.setState({ isOpen: true });
+            root.update();
             getDay(4).simulate("click");
             assert.equal(root.find(InputGroup).prop("value"), "4/4/2016");
             assert.isTrue(onChange.calledWith(null, true));
@@ -526,6 +547,7 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput {...DATE_FORMAT} value={DATE} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE_STR);
             wrapper.setProps({ value: DATE2 });
+            wrapper.update();
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_STR);
         });
 
@@ -573,6 +595,7 @@ describe("<DateInput>", () => {
                 />,
             );
             root.setState({ isOpen: true });
+            root.update();
 
             getSelectedDays()
                 .at(0)

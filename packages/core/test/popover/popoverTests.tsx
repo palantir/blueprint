@@ -380,6 +380,7 @@ describe("<Popover>", () => {
             renderPopover()
                 .assertIsOpen(false)
                 .setProps({ isOpen: true })
+                .update()
                 .assertIsOpen();
         });
 
@@ -430,6 +431,7 @@ describe("<Popover>", () => {
                 renderPopover({ disabled: true, isOpen: true, onInteraction: onInteractionSpy })
                     .assertOnInteractionCalled(false)
                     .setProps({ disabled: false })
+                    .update()
                     .assertIsOpen()
                     .assertOnInteractionCalled();
             });
@@ -590,6 +592,7 @@ describe("<Popover>", () => {
                 .simulateTarget("click")
                 .assertIsOpen()
                 .setProps({ disabled: true })
+                .update()
                 .assertIsOpen(false);
         });
 

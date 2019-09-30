@@ -359,6 +359,7 @@ describe("<Tabs>", () => {
             );
             assert.deepEqual(tabs.state("selectedTabId"), SELECTED_TAB_ID);
             tabs.setProps({ selectedTabId: TAB_ID_TO_SELECT });
+            tabs.update();
             assert.deepEqual(tabs.state("selectedTabId"), TAB_ID_TO_SELECT);
         });
 
@@ -370,6 +371,7 @@ describe("<Tabs>", () => {
                 { attachTo: testsContainerElement },
             );
             wrapper.setProps({ selectedTabId: TAB_ID_TO_SELECT });
+            wrapper.update();
             // indicator moves via componentDidUpdate
             setTimeout(() => {
                 assertIndicatorPosition(wrapper, TAB_ID_TO_SELECT);
