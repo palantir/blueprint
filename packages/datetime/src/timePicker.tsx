@@ -19,6 +19,7 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLSelect,
     Icon,
+    Intent,
     IProps,
     Keys,
     Utils as BlueprintUtils,
@@ -229,9 +230,15 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
+        const isValid = isTimeUnitValid(unit, parseInt(value, 10));
+
         return (
             <input
-                className={classNames(Classes.TIMEPICKER_INPUT, className)}
+                className={classNames(
+                    Classes.TIMEPICKER_INPUT,
+                    { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
+                    className,
+                )}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
                 onFocus={this.handleFocus}
@@ -261,12 +268,26 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     // begin method definitions: event handlers
 
-    private getInputBlurHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private getInputChangeHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const text = getStringValueFromInputEvent(e);
-        this.updateTime(parseInt(text, 10), unit);
+        switch (unit) {
+            case TimeUnit.HOUR_12:
+            case TimeUnit.HOUR_24:
+                this.setState({ hourText: text });
+                break;
+            case TimeUnit.MINUTE:
+                this.setState({ minuteText: text });
+                break;
+            case TimeUnit.SECOND:
+                this.setState({ secondText: text });
+                break;
+            case TimeUnit.MS:
+                this.setState({ millisecondText: text });
+                break;
+        }
     };
 
-    private getInputChangeHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private getInputBlurHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const text = getStringValueFromInputEvent(e);
         this.updateTime(parseInt(text, 10), unit);
     };

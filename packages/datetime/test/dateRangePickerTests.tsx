@@ -1208,20 +1208,24 @@ describe("<DateRangePicker>", () => {
         });
 
         it("changing time does not change date", () => {
-            render({ timePrecision: "minute", defaultValue: defaultRange }).setTimeInput("minute", 10, "left");
+            render({ timePrecision: "minute", defaultValue: defaultRange }).setTimeInput("minute", "left", 10);
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
 
         it("hovering over date does not change entered time", () => {
             const harness = render({ timePrecision: "minute", defaultValue: defaultRange });
-            harness.changeTimeInput("minute", 10, "left");
+            const newLeftMinute = 10;
+            harness.setTimeInput("minute", "left", newLeftMinute);
+            onChangeSpy.resetHistory();
             const { left } = harness;
             left.mouseEnterDay(5);
-            assert.equal((onChangeSpy.firstCall.args[0][0] as Date).getMinutes(), 10);
+            assert.isTrue(onChangeSpy.notCalled);
+            const minuteInputText = harness.getTimeInput("minute", "left");
+            assert.equal(parseInt(minuteInputText, 10), newLeftMinute);
         });
 
         it("changing time without date uses today", () => {
-            render({ timePrecision: "minute" }).setTimeInput("minute", 45, "left");
+            render({ timePrecision: "minute" }).setTimeInput("minute", "left", 45);
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
         });
 
@@ -1268,6 +1272,10 @@ describe("<DateRangePicker>", () => {
 
     function wrap(datepicker: JSX.Element) {
         const wrapper = mount<IDateRangePickerProps, IDateRangePickerState>(datepicker);
+
+        const findTimeInput = (precision: TimePrecision | "hour", which: "left" | "right") =>
+            wrapper.find(`.${DateClasses.TIMEPICKER}-${precision}`).at(which === "left" ? 0 : 1);
+
         // Don't cache the left/right day pickers into variables in this scope,
         // because as of Enzyme 3.0 they can get stale if the views change.
         const harness = {
@@ -1294,11 +1302,8 @@ describe("<DateRangePicker>", () => {
                     );
                 }
             },
-            changeTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
-                harness.wrapper
-                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
-                    .at(which === "left" ? 0 : 1)
-                    .simulate("change", { target: { value } }),
+            changeTimeInput: (precision: TimePrecision | "hour", which: "left" | "right", value: number) =>
+                findTimeInput(precision, which).simulate("change", { target: { value } }),
             clickNavButton: (which: "next" | "prev", navIndex = 0) => {
                 wrapper
                     .find(DatePickerNavbar)
@@ -1318,11 +1323,10 @@ describe("<DateRangePicker>", () => {
             getDays: (className: string) => {
                 return wrapper.find(`.${className}`).filterWhere(dayNotOutside);
             },
-            setTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
-                harness.wrapper
-                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
-                    .at(which === "left" ? 0 : 1)
-                    .simulate("blur", { target: { value } }),
+            getTimeInput: (precision: TimePrecision | "hour", which: "left" | "right") =>
+                findTimeInput(precision, which).props().value as string,
+            setTimeInput: (precision: TimePrecision | "hour", which: "left" | "right", value: number) =>
+                findTimeInput(precision, which).simulate("blur", { target: { value } }),
         };
         return harness;
     }
