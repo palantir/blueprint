@@ -70,6 +70,16 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
     &:focus {
       box-shadow: input-transition-shadow($input-shadow-color-focus, true);
     }
+
+    @each $intent, $color in $pt-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-input-intent($color);
+
+        .#{$ns}-dark & {
+          @include pt-dark-input-intent($color);
+        }
+      }
+    }
   }
 
   .#{$ns}-timepicker-ampm-select {
