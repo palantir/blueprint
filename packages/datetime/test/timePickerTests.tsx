@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Keys } from "@blueprintjs/core";
+import { Classes as CoreClasses, Intent, Keys } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -145,13 +145,25 @@ describe("<TimePicker>", () => {
         assert.strictEqual(hourInput.value, "2");
     });
 
-    it("does not allow invalid text entry", () => {
+    it("allows invalid text entry, but shows visual indicator", () => {
         renderTimePicker();
         const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
         assert.strictEqual(hourInput.value, "0");
 
         hourInput.value = "ab";
         TestUtils.Simulate.change(hourInput);
+        assert.strictEqual(hourInput.value, "ab");
+        assert.isTrue(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
+    });
+
+    it("reverts to saved value after invalid text entry is blurred", () => {
+        renderTimePicker();
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.strictEqual(hourInput.value, "0");
+
+        hourInput.value = "ab";
+        TestUtils.Simulate.change(hourInput);
+        TestUtils.Simulate.blur(hourInput);
         assert.strictEqual(hourInput.value, "0");
     });
 
