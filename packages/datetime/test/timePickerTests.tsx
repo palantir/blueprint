@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Intent, Keys } from "@blueprintjs/core";
+import { Classes as CoreClasses, Intent, Keys } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -22,11 +22,10 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses } from "@blueprintjs/core";
 import { Classes, ITimePickerProps, TimePicker, TimePrecision } from "../src/index";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
-describe.only("<TimePicker>", () => {
+describe("<TimePicker>", () => {
     let testsContainerElement: Element;
     let timePicker: TimePicker;
     let onTimePickerChange: sinon.SinonSpy;
