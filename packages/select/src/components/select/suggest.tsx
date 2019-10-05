@@ -151,7 +151,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         const { fill, inputProps = {}, popoverProps = {} } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const { placeholder = "Search..." } = inputProps;
+        const { autoComplete = "off", placeholder = "Search..." } = inputProps;
 
         const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
         // placeholder shows selected item while open.
@@ -181,6 +181,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 onOpened={this.handlePopoverOpened}
             >
                 <InputGroup
+                    autoComplete={autoComplete}
                     disabled={this.props.disabled}
                     {...inputProps}
                     inputRef={this.refHandlers.input}
