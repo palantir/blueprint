@@ -18,11 +18,11 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export type TabId = string | number;
 
-export interface ITabProps extends IProps {
+export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Content of tab title, rendered in a list above the active panel.
      * Can also be set via the `title` prop.
