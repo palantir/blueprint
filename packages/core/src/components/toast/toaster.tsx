@@ -88,6 +88,14 @@ export interface IToasterProps extends IProps {
      * @default Position.TOP
      */
     position?: ToasterPosition;
+
+    /**
+     * The maximum number of active toasts that can be displayed at once.
+     *
+     * When the limit is about to be exceeded, the oldest active toast is removed.
+     * @default 5
+     */
+    maxToasts?: number;
 }
 
 export interface IToasterState {
@@ -101,6 +109,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     public static defaultProps: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
+        maxToasts: 5,
         position: Position.TOP,
         usePortal: true,
     };
@@ -133,6 +142,10 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     private toastId = 0;
 
     public show(props: IToastProps, key?: string) {
+        // show no toasts if max toasts is less than 1.
+        if (this.props.maxToasts < 1) {
+            return null;
+        }
         const options = this.createToastOptions(props, key);
         if (key === undefined || this.isNewToastKey(key)) {
             this.setState(prevState => ({
@@ -143,6 +156,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
                 toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
             }));
         }
+        this.dismissIfAtLimit();
         return options.key;
     }
 
@@ -192,6 +206,13 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
 
     private isNewToastKey(key: string) {
         return this.state.toasts.every(toast => toast.key !== key);
+    }
+
+    private dismissIfAtLimit() {
+        if (this.state.toasts.length > this.props.maxToasts) {
+            // dismiss the oldest toast to stay below the maxToasts limit
+            this.dismiss(this.state.toasts[this.state.toasts.length - 1].key);
+        }
     }
 
     private renderToast(toast: IToastOptions) {

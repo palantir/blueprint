@@ -83,6 +83,15 @@ describe("Toaster", () => {
         assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
     });
 
+    it("does not exceed the maximum toast limit set", () => {
+        toaster = Toaster.create({ maxToasts: 3 });
+        toaster.show({ message: "one" });
+        toaster.show({ message: "two" });
+        toaster.show({ message: "three" });
+        toaster.show({ message: "oh no" });
+        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+    });
+
     it("action onClick callback invoked when action clicked", () => {
         const onClick = spy();
         toaster.show({
