@@ -124,6 +124,8 @@ const INVALID_PROPS = [
     "minimal",
     "onChildrenMount",
     "onRemove",
+    "panel", // ITabProps
+    "panelClassName", // ITabProps
     "popoverProps",
     "rightElement",
     "rightIcon",
