@@ -83,15 +83,6 @@ describe("Toaster", () => {
         assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
     });
 
-    it("does not exceed the maximum toast limit set", () => {
-        toaster = Toaster.create({ maxToasts: 3 });
-        toaster.show({ message: "one" });
-        toaster.show({ message: "two" });
-        toaster.show({ message: "three" });
-        toaster.show({ message: "oh no" });
-        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
-    });
-
     it("action onClick callback invoked when action clicked", () => {
         const onClick = spy();
         toaster.show({
@@ -141,6 +132,22 @@ describe("Toaster", () => {
         toaster.show(toast);
         toaster.show(toast);
         assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
+    });
+
+    it("does not exceed the maximum toast limit set", () => {
+        toaster = Toaster.create({ maxToasts: 3 });
+        toaster.show({ message: "one" });
+        toaster.show({ message: "two" });
+        toaster.show({ message: "three" });
+        toaster.show({ message: "oh no" });
+        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+    });
+
+    it("shows no toasts when max toast is set to a number less than 1", () => {
+        toaster = Toaster.create({ maxToasts: 0 });
+        toaster.show({ message: "one" });
+        toaster.show({ message: "two" });
+        assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
     });
 
     describe("with autoFocus set to true", () => {
