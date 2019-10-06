@@ -146,6 +146,8 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         if (this.props.maxToasts < 1) {
             return null;
         }
+        // check if active number of toasts are at the maxToasts limit
+        this.dismissIfAtLimit();
         const options = this.createToastOptions(props, key);
         if (key === undefined || this.isNewToastKey(key)) {
             this.setState(prevState => ({
@@ -156,7 +158,6 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
                 toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
             }));
         }
-        this.dismissIfAtLimit();
         return options.key;
     }
 
@@ -209,8 +210,8 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     }
 
     private dismissIfAtLimit() {
-        if (this.state.toasts.length > this.props.maxToasts) {
-            // dismiss the oldest toast to stay below the maxToasts limit
+        if (this.state.toasts.length === this.props.maxToasts) {
+            // dismiss the oldest toast to stay within the maxToasts limit
             this.dismiss(this.state.toasts[this.state.toasts.length - 1].key);
         }
     }
