@@ -46,7 +46,11 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
     public render() {
         const stackList = (
             <>
-                <Switch checked={this.state.activePanelOnly} label="Render active panel only" onChange={this.toggleActiveOnly} />
+                <Switch
+                    checked={this.state.activePanelOnly}
+                    label="Render active panel only"
+                    onChange={this.toggleActiveOnly}
+                />
                 <Switch checked={this.state.showHeader} label="Show panel header" onChange={this.handleHeaderChange} />
                 <H5>Current stack</H5>
                 <UL>
