@@ -472,21 +472,28 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     public static getDerivedStateFromProps(props: ITableProps, state: ITableState) {
         const {
             children,
-            columnWidths = [],
             defaultColumnWidth,
             defaultRowHeight,
             enableFocusedCell,
             focusedCell,
             numRows,
-            rowHeights = [],
             selectedRegions = [],
             selectionModes,
         } = props;
 
+        let { columnWidths, rowHeights } = props;
+        if (columnWidths == null) {
+            columnWidths = state.columnWidths == null ? [] : state.columnWidths;
+        }
+        if (rowHeights == null) {
+            rowHeights = state.rowHeights == null ? [] : state.rowHeights;
+        }
+
+        let { didUpdateColumnOrRowSizes } = state;
+
         const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
         const didChildrenChange = newChildrenArray !== state.childrenArray;
         const numCols = newChildrenArray.length;
-        let didUpdateColumnOrRowSizes = false;
 
         let newColumnWidths = columnWidths;
         if (columnWidths !== state.columnWidths || didChildrenChange) {
@@ -910,6 +917,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     public getSnapshotBeforeUpdate() {
         const { viewportRect } = this.state;
 
+        this.validateGrid();
         const tableBottom = this.grid.getCumulativeHeightAt(this.grid.numRows - 1);
         const tableRight = this.grid.getCumulativeWidthAt(this.grid.numCols - 1);
 
