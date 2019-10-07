@@ -22,6 +22,13 @@ import { isNodeEnv } from "./utils";
  * in order to add some common functionality like runtime props validation.
  */
 export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
+    // unsafe lifecycle methods
+    public componentWillUpdate: never;
+    public componentWillReceiveProps: never;
+    public componentWillMount: never;
+    // this should be static, not an instance method
+    public getDerivedStateFromProps: never;
+
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;
 

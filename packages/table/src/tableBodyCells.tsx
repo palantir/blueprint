@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -84,7 +84,7 @@ const BATCHER_RESET_PROP_KEYS_BLACKLIST: Array<keyof ITableBodyCellsProps> = [
     "rowIndexStart",
 ];
 
-export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
+export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
     public static defaultProps = {
         renderMode: RenderMode.BATCH,
     };
@@ -108,15 +108,12 @@ export class TableBodyCells extends React.Component<ITableBodyCellsProps, {}> {
         );
     }
 
-    public componentWillUpdate(nextProps?: ITableBodyCellsProps) {
+    public componentDidUpdate(prevProps: ITableBodyCellsProps) {
         const resetKeysBlacklist = { exclude: BATCHER_RESET_PROP_KEYS_BLACKLIST };
-        const shouldResetBatcher = !CoreUtils.shallowCompareKeys(this.props, nextProps, resetKeysBlacklist);
+        const shouldResetBatcher = !CoreUtils.shallowCompareKeys(prevProps, this.props, resetKeysBlacklist);
         if (shouldResetBatcher) {
             this.batcher.reset();
         }
-    }
-
-    public componentDidUpdate() {
         this.maybeInvokeOnCompleteRender();
     }
 

@@ -23,7 +23,11 @@ import { isNodeEnv } from "./utils";
  */
 export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
     // unsafe lifecycle method
+    public componentWillUpdate: never;
     public componentWillReceiveProps: never;
+    public componentWillMount: never;
+    // this should be static, not an instance method
+    public getDerivedStateFromProps: never;
 
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;
