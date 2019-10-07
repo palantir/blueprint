@@ -109,8 +109,9 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
     }
 
     public componentDidUpdate(prevProps: ITableBodyCellsProps) {
-        const resetKeysBlacklist = { exclude: BATCHER_RESET_PROP_KEYS_BLACKLIST };
-        const shouldResetBatcher = !CoreUtils.shallowCompareKeys(prevProps, this.props, resetKeysBlacklist);
+        const shouldResetBatcher = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
+            exclude: BATCHER_RESET_PROP_KEYS_BLACKLIST,
+        });
         if (shouldResetBatcher) {
             this.batcher.reset();
         }
@@ -145,8 +146,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
             this.batcher.idleCallback(() => this.forceUpdate());
         }
 
-        const cells: Array<React.ReactElement<any>> = this.batcher.getList();
-        return cells;
+        return this.batcher.getList();
     }
 
     private renderAllCells() {
