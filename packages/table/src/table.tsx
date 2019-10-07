@@ -625,11 +625,6 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     private rowHeaderElement: HTMLElement;
     private scrollContainerElement: HTMLElement;
 
-    // when true, we'll need to imperatively synchronize quadrant views after
-    // the update. this variable lets us avoid expensively diff'ing columnWidths
-    // and rowHeights in <TableQuadrantStack> on each update.
-    private didUpdateColumnOrRowSizes = false;
-
     // this value is set to `true` when all cells finish mounting for the first
     // time. it serves as a signal that we can switch to batch rendering.
     private didCompletelyMount = false;
