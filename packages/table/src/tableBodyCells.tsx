@@ -182,7 +182,10 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
 
     private renderCell = (rowIndex: number, columnIndex: number, extremaClasses: string[], isGhost: boolean) => {
         const { cellRenderer, focusedCell, loading, grid } = this.props;
-        const baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
+        let baseCell = isGhost ? emptyCellRenderer() : cellRenderer(rowIndex, columnIndex);
+        // cellRenderer still may return null
+        baseCell = baseCell == null ? emptyCellRenderer() : baseCell;
+
         const className = classNames(
             cellClassNames(rowIndex, columnIndex),
             extremaClasses,

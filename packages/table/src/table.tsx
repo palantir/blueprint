@@ -490,7 +490,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState> {
     public grid: Grid;
     public locator: Locator;
 
-    private childrenArray: Array<React.ReactElement<IColumnProps>>;
+    private childrenArray: Array<React.ReactElement<IColumnProps>> = [];
     private columnIdToIndex: { [key: string]: number };
 
     private resizeSensorDetach: () => void;
@@ -1319,11 +1319,15 @@ export class Table extends AbstractComponent2<ITableProps, ITableState> {
 
     private getColumnProps(columnIndex: number) {
         const column = this.childrenArray[columnIndex] as React.ReactElement<IColumnProps>;
-        return column.props;
+        return column === undefined ? undefined : column.props;
     }
 
     private columnHeaderCellRenderer = (columnIndex: number) => {
         const props = this.getColumnProps(columnIndex);
+        if (props === undefined) {
+            return null;
+        }
+
         const { id, loadingOptions, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = props;
 
         const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
@@ -1470,6 +1474,11 @@ export class Table extends AbstractComponent2<ITableProps, ITableState> {
     };
 
     private bodyCellRenderer = (rowIndex: number, columnIndex: number) => {
+        const columnProps = this.getColumnProps(columnIndex);
+        if (columnProps === undefined) {
+            return null;
+        }
+
         const {
             id,
             loadingOptions,
@@ -1478,7 +1487,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState> {
             name,
             nameRenderer,
             ...restColumnProps
-        } = this.getColumnProps(columnIndex);
+        } = columnProps;
 
         const cell = cellRenderer(rowIndex, columnIndex);
         const { loading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
