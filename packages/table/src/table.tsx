@@ -928,16 +928,11 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             (React.Children.toArray(this.props.children) as Array<React.ReactElement<IColumnProps>>) !==
             this.state.childrenArray;
 
-        let shouldInvalidateGrid = false;
-        if (this.props.columnWidths !== prevState.columnWidths || didChildrenChange) {
-            shouldInvalidateGrid = true;
-        }
-        if (this.props.rowHeights !== prevState.rowHeights || this.props.numRows !== prevProps.numRows) {
-            shouldInvalidateGrid = true;
-        }
-        if (this.props.forceRerenderOnSelectionChange && this.props.selectedRegions !== prevProps.selectedRegions) {
-            shouldInvalidateGrid = true;
-        }
+        const shouldInvalidateGrid =
+            didChildrenChange ||
+            this.props.columnWidths !== prevState.columnWidths ||
+            (this.props.rowHeights !== prevState.rowHeights || this.props.numRows !== prevProps.numRows) ||
+            (this.props.forceRerenderOnSelectionChange && this.props.selectedRegions !== prevProps.selectedRegions);
 
         if (shouldInvalidateGrid) {
             this.invalidateGrid();
@@ -957,9 +952,8 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
 
         if (didUpdateColumnOrRowSizes) {
             this.quadrantStackInstance.synchronizeQuadrantViews();
+            this.syncViewportPosition(snapshot);
         }
-
-        this.syncViewportPosition(snapshot);
     }
 
     protected validateProps(props: ITableProps) {
