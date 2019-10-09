@@ -956,7 +956,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         }
     }
 
-    protected validateProps(props: ITableProps) {
+    protected validateProps() {
         const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = this.props;
         const numColumns = React.Children.count(children);
 
@@ -987,8 +987,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             console.warn(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING);
         }
 
-        const propsOrColsChanged = numColumns !== React.Children.count(props.children);
-        if (propsOrColsChanged && numFrozenColumns != null && numFrozenColumns > numColumns) {
+        if (numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
     }
