@@ -472,7 +472,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             enableFocusedCell,
             focusedCell,
             numRows,
-            selectedRegions = [],
+            selectedRegions,
             selectionModes,
         } = props;
 
@@ -518,7 +518,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         if (selectedRegions == null) {
             // if we're in uncontrolled mode, filter out all selected regions that don't
             // fit in the current new table dimensions
-            newSelectedRegions = selectedRegions.filter(region => {
+            newSelectedRegions = state.selectedRegions.filter(region => {
                 const regionCardinality = Regions.getRegionCardinality(region);
                 return (
                     Table.isSelectionModeEnabled(props, regionCardinality, selectionModes) &&

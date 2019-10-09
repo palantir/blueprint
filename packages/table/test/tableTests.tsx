@@ -605,7 +605,7 @@ describe("<Table>", function(this) {
 
             expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
             table.setProps({ numRows: 2 }); // still small enough to fit in one batch
-            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(3);
+            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
         });
     });
 
