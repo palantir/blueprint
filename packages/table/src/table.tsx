@@ -476,12 +476,13 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             selectionModes,
         } = props;
 
+        // assign values from state if uncontrolled
         let { columnWidths, rowHeights } = props;
         if (columnWidths == null) {
-            columnWidths = state.columnWidths == null ? [] : state.columnWidths;
+            columnWidths = state.columnWidths;
         }
         if (rowHeights == null) {
-            rowHeights = state.rowHeights == null ? [] : state.rowHeights;
+            rowHeights = state.rowHeights;
         }
 
         const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
@@ -956,8 +957,8 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         }
     }
 
-    protected validateProps() {
-        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = this.props;
+    protected validateProps(props: ITableProps) {
+        const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
         // do cheap error-checking first.

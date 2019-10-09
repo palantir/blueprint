@@ -1647,21 +1647,19 @@ describe("<Table>", function(this) {
                 after(() => consoleWarn.restore());
 
                 it("should print a warning when numFrozenRows > numRows", () => {
-                    const table = mount(<Table numRows={1} numFrozenRows={2} />);
+                    mount(<Table numRows={1} numFrozenRows={2} />);
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
-                    table.unmount();
                 });
 
                 it("should print a warning when numFrozenColumns > num <Column>s", () => {
-                    const table = mount(
+                    mount(
                         <Table numFrozenColumns={2}>
                             <Column />
                         </Table>,
                     );
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
-                    table.unmount();
                 });
             });
         });
