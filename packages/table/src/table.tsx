@@ -429,16 +429,11 @@ export interface ITableState {
     columnIdToIndex: { [key: string]: number };
 
     childrenArray: Array<React.ReactElement<IColumnProps>>;
-
-    // when true, we'll need to imperatively synchronize quadrant views after
-    // the update. this variable lets us avoid expensively diff'ing columnWidths
-    // and rowHeights in <TableQuadrantStack> on each update.
-    didUpdateColumnOrRowSizes: boolean;
 }
 
 export interface ITableSnapshot {
-    nextScrollTop: number;
-    nextScrollLeft: number;
+    nextScrollTop?: number;
+    nextScrollLeft?: number;
 }
 
 @HotkeysTarget
@@ -489,8 +484,6 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             rowHeights = state.rowHeights == null ? [] : state.rowHeights;
         }
 
-        let { didUpdateColumnOrRowSizes } = state;
-
         const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
         const didChildrenChange = newChildrenArray !== state.childrenArray;
         const numCols = newChildrenArray.length;
@@ -521,15 +514,6 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
         }
 
-        if (
-            !CoreUtils.arraysEqual(newColumnWidths, state.columnWidths) ||
-            !CoreUtils.arraysEqual(newRowHeights, state.rowHeights)
-        ) {
-            // grid invalidation is required after changing this flag,
-            // which happens at the end of this method.
-            didUpdateColumnOrRowSizes = true;
-        }
-
         let newSelectedRegions = selectedRegions;
         if (selectedRegions == null) {
             // if we're in uncontrolled mode, filter out all selected regions that don't
@@ -554,7 +538,6 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            didUpdateColumnOrRowSizes,
             focusedCell: newFocusedCell,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
@@ -632,8 +615,10 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     private rowHeaderElement: HTMLElement;
     private scrollContainerElement: HTMLElement;
 
-    // this value is set to `true` when all cells finish mounting for the first
-    // time. it serves as a signal that we can switch to batch rendering.
+    /*
+     * This value is set to `true` when all cells finish mounting for the first
+     * time. It serves as a signal that we can switch to batch rendering.
+     */
     private didCompletelyMount = false;
 
     public constructor(props: ITableProps, context?: any) {
@@ -664,7 +649,6 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             childrenArray,
             columnIdToIndex,
             columnWidths: newColumnWidths,
-            didUpdateColumnOrRowSizes: false,
             focusedCell,
             isLayoutLocked: false,
             isReordering: false,
@@ -731,7 +715,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         }
 
         this.invalidateGrid();
-        this.setState({ didUpdateColumnOrRowSizes: true, rowHeights });
+        this.setState({ rowHeights });
     }
 
     /**
@@ -753,7 +737,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         }
         const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
         this.invalidateGrid();
-        this.setState({ didUpdateColumnOrRowSizes: true, rowHeights });
+        this.setState({ rowHeights });
     }
 
     /**
@@ -925,14 +909,15 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             tableBottom < viewportRect.top + viewportRect.height
                 ? // scroll the last row into view
                   Math.max(0, tableBottom - viewportRect.height)
-                : viewportRect.top;
+                : undefined;
 
         const nextScrollLeft =
             tableRight < viewportRect.left + viewportRect.width
                 ? // scroll the last column into view
                   Math.max(0, tableRight - viewportRect.width)
-                : viewportRect.left;
+                : undefined;
 
+        // these will only be defined if they differ from viewportRect
         return { nextScrollLeft, nextScrollTop };
     }
 
@@ -963,11 +948,15 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             this.updateLocator();
         }
 
-        if (this.state.didUpdateColumnOrRowSizes) {
+        // When true, we'll need to imperatively synchronize quadrant views after
+        // the update. This check lets us avoid expensively diff'ing columnWidths
+        // and rowHeights in <TableQuadrantStack> on each update.
+        const didUpdateColumnOrRowSizes =
+            !CoreUtils.arraysEqual(this.state.columnWidths, prevState.columnWidths) ||
+            !CoreUtils.arraysEqual(this.state.rowHeights, prevState.rowHeights);
+
+        if (didUpdateColumnOrRowSizes) {
             this.quadrantStackInstance.synchronizeQuadrantViews();
-            this.setState({
-                didUpdateColumnOrRowSizes: false,
-            });
         }
 
         this.syncViewportPosition(snapshot);
@@ -1812,7 +1801,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         }
 
         this.invalidateGrid();
-        this.setState({ didUpdateColumnOrRowSizes: true, columnWidths });
+        this.setState({ columnWidths });
 
         const { onColumnWidthChanged } = this.props;
         if (onColumnWidthChanged != null) {
@@ -1838,7 +1827,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         }
 
         this.invalidateGrid();
-        this.setState({ didUpdateColumnOrRowSizes: true, rowHeights });
+        this.setState({ rowHeights });
 
         const { onRowHeightChanged } = this.props;
         if (onRowHeightChanged != null) {
@@ -2040,48 +2029,44 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
         const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
 
-        let nextScrollTop = viewportRect.top;
-        let nextScrollLeft = viewportRect.left;
+        const ss: ITableSnapshot = {};
 
         // keep the top end of an overly tall focused cell in view when moving left and right
         // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
         if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
             // scroll up (minus one pixel to avoid clipping the focused-cell border)
-            nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
+            ss.nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
         } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
             // scroll down
             const scrollDelta = focusedCellBounds.bottom - viewportBounds.bottom;
-            nextScrollTop = viewportBounds.top + scrollDelta;
+            ss.nextScrollTop = viewportBounds.top + scrollDelta;
         }
 
         // keep the left end of an overly wide focused cell in view when moving up and down
         if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
             // scroll left (again minus one additional pixel)
-            nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
+            ss.nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
         } else if (focusedCellBounds.right > viewportBounds.right) {
             // scroll right
             const scrollDelta = focusedCellBounds.right - viewportBounds.right;
-            nextScrollLeft = viewportBounds.left + scrollDelta;
+            ss.nextScrollLeft = viewportBounds.left + scrollDelta;
         }
 
-        this.syncViewportPosition({ nextScrollLeft, nextScrollTop });
+        this.syncViewportPosition(ss);
     };
 
     private syncViewportPosition({ nextScrollLeft, nextScrollTop }: ITableSnapshot) {
         const { viewportRect } = this.state;
 
-        const didScrollTopChange = nextScrollTop !== viewportRect.top;
-        const didScrollLeftChange = nextScrollLeft !== viewportRect.left;
-
-        if (didScrollTopChange || didScrollLeftChange) {
+        if (nextScrollLeft !== undefined || nextScrollTop !== undefined) {
             // we need to modify the scroll container explicitly for the viewport to shift. in so
             // doing, we add the size of the header elements, which are not technically part of the
             // "grid" concept (the grid only consists of body cells at present).
-            if (didScrollTopChange) {
+            if (nextScrollTop !== undefined) {
                 const topCorrection = this.shouldDisableVerticalScroll() ? 0 : this.columnHeaderElement.clientHeight;
                 this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
             }
-            if (didScrollLeftChange) {
+            if (nextScrollLeft !== undefined) {
                 const leftCorrection =
                     this.shouldDisableHorizontalScroll() || this.rowHeaderElement == null
                         ? 0

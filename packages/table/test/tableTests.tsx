@@ -1314,11 +1314,14 @@ describe("<Table>", function(this) {
                     const { component } = mountTable();
                     component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
                     expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
-                    expect(onVisibleCellsChange.calledThrice).to.be.true;
+                    expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(6);
 
                     const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
                     const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: NUM_COLS - 1 };
-                    expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
+                    expect(
+                        onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices),
+                        "onVisibleCellsChange row/col indices",
+                    ).to.be.true;
                 });
             }
         });
