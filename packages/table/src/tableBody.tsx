@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -55,7 +55,7 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
 
 const DEEP_COMPARE_KEYS: Array<keyof ITableBodyProps> = ["selectedRegions"];
 
-export class TableBody extends React.Component<ITableBodyProps, {}> {
+export class TableBody extends AbstractComponent2<ITableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,
