@@ -49,6 +49,15 @@ describe("<QueryList>", () => {
         testProps.renderer.resetHistory();
     });
 
+    describe("items", () => {
+        it("handles controlled changes to the whole items list", () => {
+            const wrapper = shallow(<FilmQueryList {...testProps} />);
+            const newItems = TOP_100_FILMS.slice(0, 1);
+            wrapper.setProps({ items: newItems });
+            assert.deepEqual(wrapper.state("filteredItems"), newItems);
+        });
+    });
+
     describe("itemListRenderer", () => {
         const itemListRenderer: ItemListRenderer<IFilm> = props => (
             <ul className="foo">{props.items.map(props.renderItem)}</ul>
