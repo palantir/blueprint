@@ -41,6 +41,7 @@ export function arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any)
 /**
  * Shallow comparison between objects. If `keys` is provided, just that subset
  * of keys will be compared; otherwise, all keys will be compared.
+ * @returns true if items are equal.
  */
 export function shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
     // treat `null` and `undefined` as the same
@@ -65,6 +66,7 @@ export function shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IK
 /**
  * Deep comparison between objects. If `keys` is provided, just that subset of
  * keys will be compared; otherwise, all keys will be compared.
+ * @returns true if items are equal.
  */
 export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | number | symbol>): boolean {
     if (objA === objB) {
