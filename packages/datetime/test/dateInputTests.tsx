@@ -265,6 +265,7 @@ describe("<DateInput>", () => {
                 popoverProps={{
                     autoFocus: true,
                     content: "fail",
+                    fill: true,
                     onOpening,
                     position: Position.TOP,
                     usePortal: false,
@@ -276,6 +277,7 @@ describe("<DateInput>", () => {
         const popover = wrapper.find(Popover);
         assert.strictEqual(popover.prop("autoFocus"), false, "autoFocus cannot be changed");
         assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
+        assert.strictEqual(popover.prop("fill"), true);
         assert.strictEqual(popover.prop("position"), Position.TOP);
         assert.strictEqual(popover.prop("usePortal"), false);
         assert.isTrue(onOpening.calledOnce);
