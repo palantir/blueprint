@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
+import { AbstractComponent2, DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
 import {
     executeItemsEqual,
     getActiveItem,
@@ -129,7 +129,7 @@ export interface IQueryListState<T> {
     query: string;
 }
 
-export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryListState<T>> {
+export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {
@@ -169,8 +169,8 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
 
         this.state = {
             activeItem:
-                this.props.activeItem !== undefined
-                    ? this.props.activeItem
+                props.activeItem !== undefined
+                    ? props.activeItem
                     : getFirstEnabledItem(filteredItems, props.itemDisabled),
             createNewItem,
             filteredItems,
@@ -204,13 +204,11 @@ export class QueryList<T> extends React.Component<IQueryListProps<T>, IQueryList
             this.setState({ activeItem: this.props.activeItem });
         }
 
-        // new query
         if (this.props.query != null && this.props.query !== prevProps.query) {
+            // new query
             this.setQuery(this.props.query, this.props.resetOnQuery, this.props);
-        }
-        // same query, but items in the list changed
-        else if (
-            this.props.query != null &&
+        } else if (
+            // same query (or uncontrolled query), but items in the list changed
             !Utils.shallowCompareKeys(this.props, prevProps, {
                 include: ["items", "itemListPredicate", "itemPredicate"],
             })

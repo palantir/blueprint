@@ -306,6 +306,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         const { getIndexClass, selectedRegions } = this.props;
 
         const cell = this.props.headerCellRenderer(index);
+        if (cell == null) {
+            return null;
+        }
 
         const isLoading = cell.props.loading != null ? cell.props.loading : this.props.loading;
         const isSelected = this.props.isCellSelected(index);

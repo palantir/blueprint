@@ -101,6 +101,8 @@ export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeab
         return null;
     }
 
+    public state: IResizeableState = Resizable.getDerivedStateFromProps(this.props, null);
+
     public componentDidUpdate(prevProps: IResizableProps) {
         if (prevProps.size !== this.props.size) {
             this.setState(Resizable.getDerivedStateFromProps(this.props, null));
