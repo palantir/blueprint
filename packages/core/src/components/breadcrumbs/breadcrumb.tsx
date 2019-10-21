@@ -35,9 +35,13 @@ export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
         },
         breadcrumbProps.className,
     );
+
+    const icon = breadcrumbProps.icon !== undefined ? <Icon icon={breadcrumbProps.icon} /> : undefined;
+
     if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
         return (
             <span className={classes}>
+                {icon}
                 {breadcrumbProps.text}
                 {breadcrumbProps.children}
             </span>
@@ -51,7 +55,7 @@ export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
             tabIndex={breadcrumbProps.disabled ? null : 0}
             target={breadcrumbProps.target}
         >
-            {breadcrumbProps.icon ? <Icon icon={breadcrumbProps.icon} /> : undefined}
+            {icon}
             {breadcrumbProps.text}
             {breadcrumbProps.children}
         </a>
