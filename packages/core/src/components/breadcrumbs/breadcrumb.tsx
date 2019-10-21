@@ -36,7 +36,7 @@ export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
         breadcrumbProps.className,
     );
 
-    const icon = breadcrumbProps.icon !== undefined ? <Icon icon={breadcrumbProps.icon} /> : undefined;
+    const icon = breadcrumbProps.icon != null ? <Icon icon={breadcrumbProps.icon} /> : undefined;
 
     if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
         return (
