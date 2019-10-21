@@ -19,6 +19,7 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IActionProps, ILinkProps } from "../../common/props";
+import { Icon } from "../icon/icon";
 
 export interface IBreadcrumbProps extends IActionProps, ILinkProps {
     /** Whether this breadcrumb is the current breadcrumb. */
@@ -50,6 +51,7 @@ export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
             tabIndex={breadcrumbProps.disabled ? null : 0}
             target={breadcrumbProps.target}
         >
+            {breadcrumbProps.icon ? <Icon icon={breadcrumbProps.icon} /> : undefined}
             {breadcrumbProps.text}
             {breadcrumbProps.children}
         </a>

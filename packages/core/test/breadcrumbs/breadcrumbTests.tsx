@@ -19,7 +19,8 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Breadcrumb, Classes } from "../../src/index";
+import { IconNames } from "@blueprintjs/icons";
+import { Breadcrumb, Classes, Icon } from "../../src/index";
 
 describe("Breadcrumb", () => {
     it("renders its contents", () => {
@@ -49,5 +50,10 @@ describe("Breadcrumb", () => {
     it("renders a span tag if it's not clickable", () => {
         assert.lengthOf(shallow(<Breadcrumb />).find("a"), 0);
         assert.lengthOf(shallow(<Breadcrumb />).find("span"), 1);
+    });
+
+    it("renders an icon if one is provided", () => {
+        assert.lengthOf(shallow(<Breadcrumb />).find(Icon), 0);
+        assert.lengthOf(shallow(<Breadcrumb icon={IconNames.BLANK} />).find(Icon), 1);
     });
 });
