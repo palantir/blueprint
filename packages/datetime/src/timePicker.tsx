@@ -62,6 +62,11 @@ export interface ITimePickerProps extends IProps {
     disabled?: boolean;
 
     /**
+     * Props passed through to each rendered input element.
+     */
+    inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+
+    /**
      * Callback invoked when the user changes the time.
      */
     onChange?: (newTime: Date) => void;
@@ -230,21 +235,24 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
+        const { disabled, inputProps } = this.props;
         const isValid = isTimeUnitValid(unit, parseInt(value, 10));
 
         return (
             <input
+                {...inputProps}
                 className={classNames(
                     Classes.TIMEPICKER_INPUT,
                     { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
                     className,
+                    inputProps ? inputProps.className : "",
                 )}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
                 onFocus={this.handleFocus}
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 value={value}
-                disabled={this.props.disabled}
+                disabled={disabled}
             />
         );
     }
@@ -285,11 +293,17 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 this.setState({ millisecondText: text });
                 break;
         }
+        if (this.props.inputProps) {
+            BlueprintUtils.safeInvoke<React.SyntheticEvent<HTMLInputElement>, void>(this.props.inputProps.onChange, e);
+        }
     };
 
     private getInputBlurHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const text = getStringValueFromInputEvent(e);
         this.updateTime(parseInt(text, 10), unit);
+        if (this.props.inputProps) {
+            BlueprintUtils.safeInvoke<React.SyntheticEvent<HTMLInputElement>, void>(this.props.inputProps.onBlur, e);
+        }
     };
 
     private getInputKeyDownHandler = (unit: TimeUnit) => (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -300,11 +314,18 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 (e.currentTarget as HTMLInputElement).blur();
             },
         });
+        if (this.props.inputProps) {
+            BlueprintUtils.safeInvoke<React.KeyboardEvent<HTMLInputElement>, void>(this.props.inputProps.onKeyDown, e);
+        }
     };
 
     private handleFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (this.props.selectAllOnFocus) {
             e.currentTarget.select();
+        }
+
+        if (this.props.inputProps) {
+            BlueprintUtils.safeInvoke<React.SyntheticEvent<HTMLInputElement>, void>(this.props.inputProps.onFocus, e);
         }
     };
 

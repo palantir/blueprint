@@ -60,6 +60,57 @@ describe("<TimePicker>", () => {
         assert.lengthOf(document.querySelectorAll(selector), 1);
     });
 
+    it("passes down input props correctly", () => {
+        const onBlur = sinon.spy();
+        const onChange = sinon.spy();
+        const onClick = sinon.spy();
+        const onFocus = sinon.spy();
+        const onKeyDown = sinon.spy();
+
+        renderTimePicker({ inputProps: { className: "foo", onBlur, onChange, onFocus, onKeyDown, onClick } });
+
+        assert.lengthOf(document.querySelectorAll(".foo"), 2);
+
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+
+        TestUtils.Simulate.blur(hourInput);
+        assert.isTrue(onBlur.calledOnce);
+
+        TestUtils.Simulate.change(hourInput);
+        assert.isTrue(onChange.calledOnce);
+
+        TestUtils.Simulate.click(hourInput);
+        assert.isTrue(onClick.calledOnce);
+
+        TestUtils.Simulate.focus(hourInput);
+        assert.isTrue(onFocus.calledOnce);
+
+        TestUtils.Simulate.keyDown(hourInput);
+        assert.isTrue(onKeyDown.calledOnce);
+
+        const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+        onBlur.resetHistory();
+        onChange.resetHistory();
+        onClick.resetHistory();
+        onFocus.resetHistory();
+        onKeyDown.resetHistory();
+
+        TestUtils.Simulate.blur(minuteInput);
+        assert.isTrue(onBlur.calledOnce);
+
+        TestUtils.Simulate.change(minuteInput);
+        assert.isTrue(onChange.calledOnce);
+
+        TestUtils.Simulate.click(minuteInput);
+        assert.isTrue(onClick.calledOnce);
+
+        TestUtils.Simulate.focus(minuteInput);
+        assert.isTrue(onFocus.calledOnce);
+
+        TestUtils.Simulate.keyDown(minuteInput);
+        assert.isTrue(onKeyDown.calledOnce);
+    });
+
     it("arrow buttons allow looping", () => {
         renderTimePicker({
             defaultValue: new Date(2015, 1, 1, 0, 0, 59, 999),
