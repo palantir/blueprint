@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
+import { Classes, Colors, H5, HTMLSelect, Switch } from "@blueprintjs/core";
 import { Example, handleNumberChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
@@ -28,6 +28,7 @@ export interface ITimePickerExampleState {
     selectAllOnFocus?: boolean;
     showArrowButtons?: boolean;
     disabled?: boolean;
+    inputComponent?: React.ComponentType<React.HTMLProps<HTMLInputElement>>;
     minTime?: Date;
     maxTime?: Date;
     useAmPm?: boolean;
@@ -44,6 +45,10 @@ enum MaximumHours {
     NINE_PM = 21,
     TWO_AM = 2,
 }
+
+const CustomInput = (props: React.HTMLProps<HTMLInputElement>) => (
+    <input {...props} style={{ backgroundColor: Colors.BLUE4 }} />
+);
 
 export class TimePickerExample extends React.PureComponent<IExampleProps, ITimePickerExampleState> {
     public state = {
@@ -78,6 +83,11 @@ export class TimePickerExample extends React.PureComponent<IExampleProps, ITimeP
                     label="Show arrow buttons"
                     onChange={this.toggleShowArrowButtons}
                 />
+                <Switch
+                    checked={!!this.state.inputComponent}
+                    label="Use custom input"
+                    onChange={this.toggleCustomInput}
+                />
                 <Switch checked={this.state.disabled} label="Disabled" onChange={this.toggleDisabled} />
                 <Switch checked={this.state.useAmPm} label="Use AM/PM" onChange={this.toggleUseAmPm} />
                 <PrecisionSelect value={this.state.precision} onChange={this.handlePrecisionChange} />
@@ -111,6 +121,10 @@ export class TimePickerExample extends React.PureComponent<IExampleProps, ITimeP
 
     private toggleDisabled = () => {
         this.setState({ disabled: !this.state.disabled });
+    };
+
+    private toggleCustomInput = () => {
+        this.setState(prevState => ({ inputComponent: !prevState.inputComponent ? CustomInput : undefined }));
     };
 
     private toggleUseAmPm = () => {
