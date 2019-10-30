@@ -22,6 +22,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
+import classNames from "classnames";
 import { Classes, ITimePickerProps, TimePicker, TimePrecision } from "../src/index";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
@@ -282,6 +283,19 @@ describe("<TimePicker>", () => {
         assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
         keyDownOnInput(Classes.TIMEPICKER_MILLISECOND, Keys.ARROW_DOWN);
         assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+    });
+
+    describe("with custom input component", () => {
+        const CustomInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
+            <input {...props} className={classNames(props.className, "custom-input")} type="text" />
+        );
+
+        it("renders input components", () => {
+            const wrapper = mount(<TimePicker inputComponent={CustomInput} />);
+            assert.lengthOf(wrapper.find(CustomInput), 2);
+            assert.lengthOf(wrapper.find(`input.${Classes.TIMEPICKER_HOUR}`), 1);
+            assert.lengthOf(wrapper.find(`input.${Classes.TIMEPICKER_MINUTE}`), 1);
+        });
     });
 
     describe("Time range - minTime and maxTime props", () => {

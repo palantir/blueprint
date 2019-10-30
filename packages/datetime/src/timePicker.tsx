@@ -67,6 +67,12 @@ export interface ITimePickerProps extends IProps {
     inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 
     /**
+     * Custom input component that will be used instead of a pure input element.
+     * Needs to have the same interface as a normal input.
+     */
+    inputComponent?: React.ComponentType<React.InputHTMLAttributes<HTMLInputElement>>;
+
+    /**
      * Callback invoked when the user changes the time.
      */
     onChange?: (newTime: Date) => void;
@@ -235,26 +241,26 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
-        const { disabled, inputProps } = this.props;
+        const { disabled, inputProps, inputComponent: CustomInputComponent } = this.props;
         const isValid = isTimeUnitValid(unit, parseInt(value, 10));
 
-        return (
-            <input
-                {...inputProps}
-                className={classNames(
-                    Classes.TIMEPICKER_INPUT,
-                    { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
-                    className,
-                    inputProps ? inputProps.className : "",
-                )}
-                onBlur={this.getInputBlurHandler(unit)}
-                onChange={this.getInputChangeHandler(unit)}
-                onFocus={this.handleFocus}
-                onKeyDown={this.getInputKeyDownHandler(unit)}
-                value={value}
-                disabled={disabled}
-            />
-        );
+        const props: React.InputHTMLAttributes<HTMLInputElement> = {
+            ...inputProps,
+            className: classNames(
+                Classes.TIMEPICKER_INPUT,
+                { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
+                className,
+                inputProps ? inputProps.className : "",
+            ),
+            disabled,
+            onBlur: this.getInputBlurHandler(unit),
+            onChange: this.getInputChangeHandler(unit),
+            onFocus: this.handleFocus,
+            onKeyDown: this.getInputKeyDownHandler(unit),
+            value,
+        };
+
+        return CustomInputComponent ? <CustomInputComponent {...props} /> : <input {...props} />;
     }
 
     private maybeRenderAmPm() {
