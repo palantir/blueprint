@@ -225,14 +225,16 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         },
     };
 
-    public getSnapshotBeforeUpdate(prevProps: Readonly<ITagInputProps>): ITagInputSnapshot {
-        return {
-            inputValue: prevProps.inputValue !== this.props.inputValue ? this.props.inputValue : this.state.inputValue,
-        };
+    public getSnapshotBeforeUpdate(prevProps: Readonly<ITagInputProps>): ITagInputSnapshot | null {
+        if (prevProps.inputValue !== this.props.inputValue) {
+            return { inputValue: this.props.inputValue };
+        }
+
+        return null;
     }
 
-    public componentDidUpdate(_: ITagInputProps, __: ITagInputState, snapshot: ITagInputSnapshot) {
-        super.componentDidUpdate(_, __, snapshot);
+    public componentDidUpdate(props: ITagInputProps, state: ITagInputState, snapshot: ITagInputSnapshot) {
+        super.componentDidUpdate(props, state, snapshot);
         this.setState(snapshot);
     }
 
