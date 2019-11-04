@@ -174,6 +174,7 @@ describe("Toaster", () => {
     });
 
     it("throws an error if used within a React lifecycle method", () => {
+        // tslint:disable-next-line:max-classes-per-file
         class LifecycleToaster extends React.Component {
             public render() {
                 return React.createElement("div");
