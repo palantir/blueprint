@@ -190,17 +190,14 @@ export interface ITagInputState {
     activeIndex: number;
     inputValue: string;
     isInputFocused: boolean;
-}
-
-export interface ITagInputSnapshot {
-    inputValue: string;
+    prevInputValueProp?: string;
 }
 
 /** special value for absence of active tag */
 const NONE = -1;
 
 @polyfill
-export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputState, ITagInputSnapshot> {
+export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> & object = {
@@ -210,6 +207,19 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         separator: /[,\n\r]/,
         tagProps: {},
     };
+
+    public static getDerivedStateFromProps(
+        props: Readonly<ITagInputProps>,
+        state: Readonly<ITagInputState>,
+    ): Partial<ITagInputState> | null {
+        if (props.inputValue !== state.prevInputValueProp) {
+            return {
+                inputValue: props.inputValue,
+                prevInputValueProp: props.inputValue,
+            };
+        }
+        return null;
+    }
 
     public state: ITagInputState = {
         activeIndex: NONE,
@@ -224,17 +234,6 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
             Utils.safeInvoke(this.props.inputRef, ref);
         },
     };
-
-    public getSnapshotBeforeUpdate(prevProps: Readonly<ITagInputProps>): ITagInputSnapshot {
-        return {
-            inputValue: prevProps.inputValue !== this.props.inputValue ? this.props.inputValue : this.state.inputValue,
-        };
-    }
-
-    public componentDidUpdate(_: ITagInputProps, __: ITagInputState, snapshot: ITagInputSnapshot) {
-        super.componentDidUpdate(_, __, snapshot);
-        this.setState(snapshot);
-    }
 
     public render() {
         const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
