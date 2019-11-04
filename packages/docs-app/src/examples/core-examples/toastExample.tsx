@@ -26,6 +26,7 @@ import {
     IToasterProps,
     IToastProps,
     Label,
+    NumericInput,
     Position,
     ProgressBar,
     Switch,
@@ -50,6 +51,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     public state: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
+        maxToasts: undefined,
         position: Position.TOP,
     };
 
@@ -128,13 +130,23 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     }
 
     protected renderOptions() {
-        const { autoFocus, canEscapeKeyClear, position } = this.state;
+        const { autoFocus, canEscapeKeyClear, position, maxToasts } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Label>
                     Position
                     <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
+                </Label>
+                <Label>
+                    Maximum toasts
+                    <NumericInput
+                        allowNumericCharactersOnly={true}
+                        placeholder="No maximum!"
+                        min={1}
+                        value={maxToasts}
+                        onValueChange={this.handleValueChange}
+                    />
                 </Label>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />
@@ -185,5 +197,13 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                 this.toaster.show(this.renderProgress(progress), key);
             }
         }, 1000);
+    };
+
+    private handleValueChange = (value: number) => {
+        if (value) {
+            this.setState({ maxToasts: Math.max(1, value) });
+        } else {
+            this.setState({ maxToasts: undefined });
+        }
     };
 }
