@@ -144,11 +144,16 @@ describe("Toaster", () => {
     });
 
     it("throws an error when max toast is set to a number less than 1", () => {
-        try {
-            Toaster.create({ maxToasts: 0 });
-        } catch (err) {
-            assert.equal(err.message, TOASTER_MAX_TOASTS_INVALID);
+        class InvalidMaxToastsToaster extends React.Component {
+            public render() {
+                return Toaster.create({ maxToasts: 0 });
+            }
+
+            public componentDidCatch(err: Error): void {
+                assert.equal(err.message, TOASTER_MAX_TOASTS_INVALID);
+            }
         }
+        mount(React.createElement(InvalidMaxToastsToaster));
     });
 
     describe("with autoFocus set to true", () => {
