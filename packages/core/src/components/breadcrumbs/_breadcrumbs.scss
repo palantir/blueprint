@@ -53,7 +53,8 @@ Styleguide breadcrumbs
 .#{$ns}-breadcrumb,
 .#{$ns}-breadcrumb-current,
 .#{$ns}-breadcrumbs-collapsed {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-size: $pt-font-size-large;
 }
 
@@ -70,6 +71,10 @@ Styleguide breadcrumbs
   &.#{$ns}-disabled {
     cursor: not-allowed;
     color: $pt-text-color-disabled;
+  }
+
+  .#{$ns}-icon {
+    margin-right: $pt-grid-size / 2;
   }
 }
 

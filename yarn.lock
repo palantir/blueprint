@@ -6667,7 +6667,7 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
-nan@^2.10.0, nan@^2.12.1, nan@^2.13.2, nan@^2.14.0:
+nan@^2.12.1, nan@^2.13.2, nan@^2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
@@ -10260,12 +10260,11 @@ tough-cookie@~2.4.3:
     psl "^1.1.24"
     punycode "^1.4.1"
 
-tree-sitter-typescript@^0.15.1:
+"tree-sitter-typescript@github:tree-sitter/tree-sitter-typescript#3684243ae16fca82bb337782759d7316fdf5f325":
   version "0.15.1"
-  resolved "https://registry.yarnpkg.com/tree-sitter-typescript/-/tree-sitter-typescript-0.15.1.tgz#7a5bd71b9d9cd4e4ffb513907cf3a2c6eff7161b"
-  integrity sha512-xntREG9BE+zknNgcwmeVuq5/AT+lVCSUKvhX6T6KoZLk5OPY5EfHrTqGTxS97KDlSRiGfGPheOPMNzIgk/kwNQ==
+  resolved "https://codeload.github.com/tree-sitter/tree-sitter-typescript/tar.gz/3684243ae16fca82bb337782759d7316fdf5f325"
   dependencies:
-    nan "^2.10.0"
+    nan "^2.14.0"
 
 trim-newlines@^1.0.0:
   version "1.0.0"

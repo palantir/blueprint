@@ -53,6 +53,10 @@ label.#{$ns}-label {
     text-transform: none;
   }
 
+  .#{$ns}-button-group {
+    margin-top: $pt-grid-size / 2;
+  }
+
   .#{$ns}-select select,
   .#{$ns}-html-select select {
     width: 100%;
@@ -78,6 +82,10 @@ label.#{$ns}-label {
       display: inline-block;
       margin: 0 0 0 ($pt-grid-size / 2);
       vertical-align: top;
+    }
+
+    .#{$ns}-button-group {
+      margin: 0 0 0 ($pt-grid-size / 2);
     }
 
     .#{$ns}-input-group .#{$ns}-input {
