@@ -19,7 +19,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { TOASTER_CREATE_NULL, TOASTER_WARN_INLINE } from "../../common/errors";
+import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isNodeEnv, safeInvoke } from "../../common/utils";
@@ -93,7 +93,7 @@ export interface IToasterProps extends IProps {
      * The maximum number of active toasts that can be displayed at once.
      *
      * When the limit is about to be exceeded, the oldest active toast is removed.
-     * @default 5
+     * @default undefined
      */
     maxToasts?: number;
 }
@@ -109,7 +109,6 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     public static defaultProps: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
-        maxToasts: 5,
         position: Position.TOP,
         usePortal: true,
     };
@@ -142,10 +141,6 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     private toastId = 0;
 
     public show(props: IToastProps, key?: string) {
-        // show no toasts if max toasts is less than 1.
-        if (this.props.maxToasts < 1) {
-            return null;
-        }
         // check if active number of toasts are at the maxToasts limit
         this.dismissIfAtLimit();
         const options = this.createToastOptions(props, key);
@@ -203,6 +198,13 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
                 {this.props.children}
             </Overlay>
         );
+    }
+
+    protected validateProps(props: IToasterProps) {
+        // maximum number of toasts should not be a number less than 1
+        if (props.maxToasts < 1) {
+            throw new Error(TOASTER_MAX_TOASTS_INVALID);
+        }
     }
 
     private isNewToastKey(key: string) {
