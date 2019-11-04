@@ -148,6 +148,10 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 
+    private static renderDivider(text = ":") {
+        return <span className={Classes.TIMEPICKER_DIVIDER_TEXT}>{text}</span>;
+    }
+
     public constructor(props?: ITimePickerProps, context?: any) {
         super(props, context);
 
@@ -180,12 +184,12 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 </div>
                 <div className={Classes.TIMEPICKER_INPUT_ROW}>
                     {this.renderInput(Classes.TIMEPICKER_HOUR, hourUnit, this.state.hourText)}
-                    {this.renderDivider()}
+                    {TimePicker.renderDivider()}
                     {this.renderInput(Classes.TIMEPICKER_MINUTE, TimeUnit.MINUTE, this.state.minuteText)}
-                    {shouldRenderSeconds && this.renderDivider()}
+                    {shouldRenderSeconds && TimePicker.renderDivider()}
                     {shouldRenderSeconds &&
                         this.renderInput(Classes.TIMEPICKER_SECOND, TimeUnit.SECOND, this.state.secondText)}
-                    {shouldRenderMilliseconds && this.renderDivider(".")}
+                    {shouldRenderMilliseconds && TimePicker.renderDivider(".")}
                     {shouldRenderMilliseconds &&
                         this.renderInput(Classes.TIMEPICKER_MILLISECOND, TimeUnit.MS, this.state.millisecondText)}
                 </div>
@@ -234,10 +238,6 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
             </span>
         );
-    }
-
-    private renderDivider(text = ":") {
-        return <span className={Classes.TIMEPICKER_DIVIDER_TEXT}>{text}</span>;
     }
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
