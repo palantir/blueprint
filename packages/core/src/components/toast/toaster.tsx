@@ -141,8 +141,10 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     private toastId = 0;
 
     public show(props: IToastProps, key?: string) {
-        // check if active number of toasts are at the maxToasts limit
-        this.dismissIfAtLimit();
+        if (this.props.maxToasts) {
+            // check if active number of toasts are at the maxToasts limit
+            this.dismissIfAtLimit();
+        }
         const options = this.createToastOptions(props, key);
         if (key === undefined || this.isNewToastKey(key)) {
             this.setState(prevState => ({
