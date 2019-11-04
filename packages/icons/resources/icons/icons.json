@@ -3330,5 +3330,40 @@
     "tags": "clock, day, hours, minutes, seconds",
     "group": "interface",
     "content": "\\e901"
+  },
+  {
+    "displayName": "Archive",
+    "iconName": "archive",
+    "tags": "compress, compression, zip, bundle",
+    "group": "action",
+    "content": "\\e907"
+  },
+  {
+    "displayName": "Unarchive",
+    "iconName": "unarchive",
+    "tags": "compress, compression, zip, bundle, uncompress, unzip, unbundle",
+    "group": "action",
+    "content": "\\e906"
+  },
+  {
+    "displayName": "Data lineage",
+    "iconName": "data-lineage",
+    "tags": "flow, rectangle, graph, downstream, upstream, propagation",
+    "group": "interface",
+    "content": "\\e908"
+  },
+  {
+    "displayName": "New drawing",
+    "iconName": "new-drawing",
+    "tags": "selection, area, highlight, sketch",
+    "group": "interface",
+    "content": "\\e905"
+  },
+  {
+    "displayName": "Signal search",
+    "iconName": "signal-search",
+    "tags": "signal, communication, radio, mast",
+    "group": "action",
+    "content": "\\e909"
   }
 ]
