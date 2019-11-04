@@ -76,8 +76,10 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
 
     public componentDidUpdate(prevProps: IPanelStackProps, _prevState: IPanelStackState, _snapshot: {}) {
         super.componentDidUpdate(prevProps, _prevState, _snapshot);
+        const stackLength = this.props.stack != null ? this.props.stack.length : 0;
+        const prevStackLength = prevProps.stack != null ? prevProps.stack.length : 0;
 
-        if (this.props.stack !== prevProps.stack && prevProps.stack != null) {
+        if (stackLength !== prevStackLength && prevProps.stack != null) {
             this.setState({
                 direction: prevProps.stack.length - this.props.stack.length < 0 ? "push" : "pop",
                 stack: this.props.stack.slice().reverse(),

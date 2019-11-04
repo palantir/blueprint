@@ -11,7 +11,7 @@ on the container will focus the text input for seamless interaction.
     <h4 class="@ns-heading">Looking for a dropdown menu?</h4>
 
 [`MultiSelect` in the **@blueprintjs/select** package](#select/multi-select)
-composes this component with a dropdopwn menu of suggestions.
+composes this component with a dropdown menu of suggestions.
 
 </div>
 
