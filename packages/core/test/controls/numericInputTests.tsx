@@ -839,6 +839,15 @@ describe("<NumericInput>", () => {
         });
     });
 
+    describe("Controlled mode", () => {
+        it("value prop updates do not trigger onValueChange", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
+            component.setProps({ value: 1 });
+            expect(onValueChangeSpy.notCalled).to.be.true;
+        });
+    });
+
     describe("Other", () => {
         it("disables the input field and buttons when disabled is true", () => {
             const component = mount(<NumericInput disabled={true} />);
