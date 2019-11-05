@@ -19,7 +19,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { TOASTER_CREATE_NULL, TOASTER_WARN_INLINE } from "../../common/errors";
+import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isNodeEnv, safeInvoke } from "../../common/utils";
@@ -88,6 +88,14 @@ export interface IToasterProps extends IProps {
      * @default Position.TOP
      */
     position?: ToasterPosition;
+
+    /**
+     * The maximum number of active toasts that can be displayed at once.
+     *
+     * When the limit is about to be exceeded, the oldest active toast is removed.
+     * @default undefined
+     */
+    maxToasts?: number;
 }
 
 export interface IToasterState {
@@ -133,6 +141,10 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     private toastId = 0;
 
     public show(props: IToastProps, key?: string) {
+        if (this.props.maxToasts) {
+            // check if active number of toasts are at the maxToasts limit
+            this.dismissIfAtLimit();
+        }
         const options = this.createToastOptions(props, key);
         if (key === undefined || this.isNewToastKey(key)) {
             this.setState(prevState => ({
@@ -190,8 +202,22 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         );
     }
 
+    protected validateProps(props: IToasterProps) {
+        // maximum number of toasts should not be a number less than 1
+        if (props.maxToasts < 1) {
+            throw new Error(TOASTER_MAX_TOASTS_INVALID);
+        }
+    }
+
     private isNewToastKey(key: string) {
         return this.state.toasts.every(toast => toast.key !== key);
+    }
+
+    private dismissIfAtLimit() {
+        if (this.state.toasts.length === this.props.maxToasts) {
+            // dismiss the oldest toast to stay within the maxToasts limit
+            this.dismiss(this.state.toasts[this.state.toasts.length - 1].key);
+        }
     }
 
     private renderToast(toast: IToastOptions) {
