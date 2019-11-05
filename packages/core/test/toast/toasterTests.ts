@@ -19,6 +19,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { mount } from "enzyme";
 import * as Classes from "../../src/common/classes";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
@@ -144,16 +145,7 @@ describe("Toaster", () => {
     });
 
     it("throws an error when max toast is set to a number less than 1", () => {
-        class InvalidMaxToastsToaster extends React.Component {
-            public render() {
-                return Toaster.create({ maxToasts: 0 });
-            }
-
-            public componentDidCatch(err: Error): void {
-                assert.equal(err.message, TOASTER_MAX_TOASTS_INVALID);
-            }
-        }
-        mount(React.createElement(InvalidMaxToastsToaster));
+        expectPropValidationError(Toaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
     });
 
     describe("with autoFocus set to true", () => {
@@ -174,7 +166,6 @@ describe("Toaster", () => {
     });
 
     it("throws an error if used within a React lifecycle method", () => {
-        // tslint:disable-next-line:max-classes-per-file
         class LifecycleToaster extends React.Component {
             public render() {
                 return React.createElement("div");
