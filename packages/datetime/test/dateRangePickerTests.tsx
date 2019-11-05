@@ -927,7 +927,7 @@ describe("<DateRangePicker>", () => {
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
-            const selectedShortcut = 1;
+            const selectedShortcut = 0;
             const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
 
             assert.isTrue(

@@ -223,7 +223,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
             hoverValue: [null, null],
             leftView,
             rightView,
-            selectedShortcutIndex: this.props.selectedShortcutIndex || -1,
+            selectedShortcutIndex: this.props.selectedShortcutIndex !== undefined ? this.props.selectedShortcutIndex : -1,
             time,
             value,
         };

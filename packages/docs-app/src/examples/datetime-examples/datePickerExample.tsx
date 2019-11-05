@@ -28,6 +28,7 @@ export interface IDatePickerExampleState {
     reverseMonthAndYearMenus: boolean;
     showActionsBar: boolean;
     timePrecision: TimePrecision | undefined;
+    shortcuts: boolean;
 }
 
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
@@ -36,11 +37,13 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
         showActionsBar: false,
+        shortcuts: false,
         timePrecision: undefined,
     };
 
     private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
     private handlePrecisionChange = handleStringChange((p: TimePrecision | "none") =>
         this.setState({ timePrecision: p === "none" ? undefined : p }),
@@ -53,6 +56,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
             <>
                 <H5>Props</H5>
                 <Switch checked={props.showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
+                <Switch checked={props.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
                 <Switch
                     checked={props.highlightCurrentDay}
                     label="Highlight current day"

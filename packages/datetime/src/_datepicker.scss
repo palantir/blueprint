@@ -25,6 +25,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   background: $datepicker-background-color;
   padding: $datepicker-padding;
   user-select: none;
+  display: flex;
 
   .DayPicker {
     display: inline-block;

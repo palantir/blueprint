@@ -30,6 +30,7 @@ export interface IDateInputExampleState {
     format: IDateFormatProps;
     reverseMonthAndYearMenus: boolean;
     timePrecision: TimePrecision | undefined;
+    shortcuts: boolean;
 }
 
 export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
@@ -40,9 +41,11 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         format: FORMATS[0],
         reverseMonthAndYearMenus: false,
         timePrecision: undefined,
+        shortcuts: false,
     };
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
+    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
     private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision | "none") =>
@@ -66,11 +69,12 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     }
 
     protected renderOptions() {
-        const { closeOnSelection, disabled, reverseMonthAndYearMenus: reverse, format, timePrecision } = this.state;
+        const { closeOnSelection, disabled, reverseMonthAndYearMenus: reverse, format, timePrecision, shortcuts } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Close on selection" checked={closeOnSelection} onChange={this.toggleSelection} />
+                <Switch checked={shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
                 <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
                 <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
                 <FormatSelect format={format} onChange={this.handleFormatChange} />
