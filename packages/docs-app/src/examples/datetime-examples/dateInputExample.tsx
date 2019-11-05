@@ -29,8 +29,8 @@ export interface IDateInputExampleState {
     disabled: boolean;
     format: IDateFormatProps;
     reverseMonthAndYearMenus: boolean;
-    timePrecision: TimePrecision | undefined;
     shortcuts: boolean;
+    timePrecision: TimePrecision | undefined;
 }
 
 export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
@@ -40,8 +40,8 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         disabled: false,
         format: FORMATS[0],
         reverseMonthAndYearMenus: false,
-        timePrecision: undefined,
         shortcuts: false,
+        timePrecision: undefined,
     };
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
@@ -69,7 +69,14 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     }
 
     protected renderOptions() {
-        const { closeOnSelection, disabled, reverseMonthAndYearMenus: reverse, format, timePrecision, shortcuts } = this.state;
+        const {
+            closeOnSelection,
+            disabled,
+            reverseMonthAndYearMenus: reverse,
+            format,
+            timePrecision,
+            shortcuts,
+        } = this.state;
         return (
             <>
                 <H5>Props</H5>

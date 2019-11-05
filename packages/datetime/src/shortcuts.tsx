@@ -74,7 +74,11 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
     public render() {
         const shortcuts =
             this.props.shortcuts === true
-                ? createDefaultShortcuts(this.props.allowSingleDayRange, this.props.timePrecision !== undefined, this.props.useSingleDateLabels === true)
+                ? createDefaultShortcuts(
+                      this.props.allowSingleDayRange,
+                      this.props.timePrecision !== undefined,
+                      this.props.useSingleDateLabels === true,
+                  )
                 : this.props.shortcuts;
 
         const shortcutElements = shortcuts.map((shortcut, index) => (
@@ -135,11 +139,11 @@ function createDefaultShortcuts(allowSingleDayRange: boolean, hasTimePrecision: 
 
     return [
         ...singleDayShortcuts,
-        createShortcut(useSingleDateLabels ? "1 week ago": "Past week", [oneWeekAgo, today]),
-        createShortcut(useSingleDateLabels ? "1 month ago": "Past month", [oneMonthAgo, today]),
-        createShortcut(useSingleDateLabels ? "3 months ago": "Past 3 months", [threeMonthsAgo, today]),
-        createShortcut(useSingleDateLabels ? "6 months ago": "Past 6 months", [sixMonthsAgo, today]),
-        createShortcut(useSingleDateLabels ? "1 year ago": "Past year", [oneYearAgo, today]),
-        createShortcut(useSingleDateLabels ? "2 years ago": "Past 2 years", [twoYearsAgo, today]),
+        createShortcut(useSingleDateLabels ? "1 week ago" : "Past week", [oneWeekAgo, today]),
+        createShortcut(useSingleDateLabels ? "1 month ago" : "Past month", [oneMonthAgo, today]),
+        createShortcut(useSingleDateLabels ? "3 months ago" : "Past 3 months", [threeMonthsAgo, today]),
+        createShortcut(useSingleDateLabels ? "6 months ago" : "Past 6 months", [sixMonthsAgo, today]),
+        createShortcut(useSingleDateLabels ? "1 year ago" : "Past year", [oneYearAgo, today]),
+        createShortcut(useSingleDateLabels ? "2 years ago" : "Past 2 years", [twoYearsAgo, today]),
     ];
 }

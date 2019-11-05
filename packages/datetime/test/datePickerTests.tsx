@@ -20,7 +20,7 @@ import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import * as sinon from "sinon";
 
-import { Button, HTMLSelect, Menu, MenuItem, Classes as CoreClasses } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as DateUtils from "../src/common/dateUtils";
@@ -28,8 +28,8 @@ import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDatePickerState } from "../src/datePicker";
 import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, TimePicker, TimePrecision } from "../src/index";
+import { IDatePickerShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
-import { Shortcuts, IDatePickerShortcut } from '../src/shortcuts';
 
 describe("<DatePicker>", () => {
     it(`renders .${Classes.DATEPICKER}`, () => {
@@ -470,7 +470,7 @@ describe("<DatePicker>", () => {
             const onShortcutChangeSpy = sinon.spy();
             const onChangeSpy = sinon.spy();
             const { clickShortcut } = wrap(
-                <DatePicker onChange={onChangeSpy} shortcuts={true} onShortcutChange={onShortcutChangeSpy} />
+                <DatePicker onChange={onChangeSpy} shortcuts={true} onShortcutChange={onShortcutChangeSpy} />,
             );
 
             clickShortcut(selectedShortcut);
@@ -485,7 +485,7 @@ describe("<DatePicker>", () => {
             const date = new Date(2015, Months.JANUARY, 1);
             const onChangeSpy = sinon.spy();
             const { clickShortcut, assertSelectedDays } = wrap(
-                <DatePicker onChange={onChangeSpy} shortcuts={[{ label: "custom shortcut", date }]} />
+                <DatePicker onChange={onChangeSpy} shortcuts={[{ label: "custom shortcut", date }]} />,
             );
             clickShortcut();
             assert.isTrue(onChangeSpy.calledOnce);
@@ -575,7 +575,7 @@ describe("<DatePicker>", () => {
         });
 
         it("shortcuts select values", () => {
-            const { root, clickShortcut } = wrap(<DatePicker shortcuts={true} />)
+            const { root, clickShortcut } = wrap(<DatePicker shortcuts={true} />);
             clickShortcut(2);
 
             const today = new Date();
@@ -588,7 +588,9 @@ describe("<DatePicker>", () => {
 
         it("custom shortcuts select the correct values", () => {
             const date = new Date(2010, Months.JANUARY, 10);
-            const { clickShortcut, assertSelectedDays } = wrap(<DatePicker shortcuts={[{ label: "custom shortcut", date }]} />);
+            const { clickShortcut, assertSelectedDays } = wrap(
+                <DatePicker shortcuts={[{ label: "custom shortcut", date }]} />,
+            );
             clickShortcut();
             assertSelectedDays(date.getDate());
         });
@@ -665,7 +667,12 @@ describe("<DatePicker>", () => {
                 },
             ];
             const { clickShortcut } = wrap(
-                <DatePicker defaultValue={defaultValue} onChange={onChangeSpy} timePrecision="minute" shortcuts={shortcuts} />,
+                <DatePicker
+                    defaultValue={defaultValue}
+                    onChange={onChangeSpy}
+                    timePrecision="minute"
+                    shortcuts={shortcuts}
+                />,
             );
             clickShortcut();
             assert.equal(onChangeSpy.firstCall.args[0] as Date, date);
@@ -730,23 +737,25 @@ describe("<DatePicker>", () => {
                     .find(Button)
                     .first()
                     .simulate("click"),
-            getDay: (dayNumber = 1) =>
-                wrapper
-                    .find(`.${Classes.DATEPICKER_DAY}`)
-                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE)),
-            setTimeInput: (precision: TimePrecision | "hour", value: number) =>
-                wrapper.find(`.${Classes.TIMEPICKER}-${precision}`).simulate("blur", { target: { value } }),
             clickShortcut: (index = 0) => {
-                wrapper.find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`).hostNodes()
+                wrapper
+                    .find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`)
+                    .hostNodes()
                     .find("a")
                     .at(index)
                     .simulate("click");
             },
+            getDay: (dayNumber = 1) =>
+                wrapper
+                    .find(`.${Classes.DATEPICKER_DAY}`)
+                    .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE)),
             months: wrapper
                 .find(HTMLSelect)
                 .filter({ className: Classes.DATEPICKER_MONTH_SELECT })
                 .find("select"),
             root: wrapper,
+            setTimeInput: (precision: TimePrecision | "hour", value: number) =>
+                wrapper.find(`.${Classes.TIMEPICKER}-${precision}`).simulate("blur", { target: { value } }),
             years: wrapper
                 .find(HTMLSelect)
                 .filter({ className: Classes.DATEPICKER_YEAR_SELECT })

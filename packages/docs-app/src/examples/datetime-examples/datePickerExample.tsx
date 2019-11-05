@@ -26,9 +26,9 @@ export interface IDatePickerExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
     reverseMonthAndYearMenus: boolean;
+    shortcuts: boolean;
     showActionsBar: boolean;
     timePrecision: TimePrecision | undefined;
-    shortcuts: boolean;
 }
 
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
@@ -36,8 +36,8 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
         date: null,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
-        showActionsBar: false,
         shortcuts: false,
+        showActionsBar: false,
         timePrecision: undefined,
     };
 

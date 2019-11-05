@@ -26,8 +26,8 @@ import * as Errors from "./common/errors";
 import { DatePickerCaption } from "./datePickerCaption";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
+import { IDatePickerShortcut, IDateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
-import { IDatePickerShortcut, IDateRangeShortcut, Shortcuts } from './shortcuts';
 
 export { IDatePickerShortcut };
 
@@ -130,8 +130,8 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         maxDate: getDefaultMaxDate(),
         minDate: getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
-        showActionsBar: false,
         shortcuts: false,
+        showActionsBar: false,
         timePickerProps: {},
         todayButtonText: "Today",
     };
@@ -148,8 +148,9 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
             displayMonth: initialMonth.getMonth(),
             displayYear: initialMonth.getFullYear(),
             selectedDay: value == null ? null : value.getDate(),
+            selectedShortcutIndex:
+                this.props.selectedShortcutIndex !== undefined ? this.props.selectedShortcutIndex : -1,
             value,
-            selectedShortcutIndex: this.props.selectedShortcutIndex !== undefined ? this.props.selectedShortcutIndex : -1,
         };
     }
 
@@ -302,7 +303,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     }
 
     private maybeRenderShortcuts() {
-        let { shortcuts } = this.props;
+        const { shortcuts } = this.props;
         if (shortcuts == null || shortcuts === false) {
             return null;
         }
@@ -310,14 +311,24 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         const { selectedShortcutIndex } = this.state;
         const { maxDate, minDate, timePrecision } = this.props;
         // Reuse the existing date range shortcuts and only care about start date
-        const dateRangeShortcuts: IDateRangeShortcut[] | true = shortcuts === true ? true : shortcuts.map(shortcut => ({
-            ...shortcut,
-            dateRange: [shortcut.date, undefined],
-        }));
+        const dateRangeShortcuts: IDateRangeShortcut[] | true =
+            shortcuts === true
+                ? true
+                : shortcuts.map(shortcut => ({
+                      ...shortcut,
+                      dateRange: [shortcut.date, undefined],
+                  }));
         return [
             <Shortcuts
                 key="shortcuts"
-                {...{ allowSingleDayRange: true, maxDate, minDate, shortcuts: dateRangeShortcuts, timePrecision, selectedShortcutIndex }}
+                {...{
+                    allowSingleDayRange: true,
+                    maxDate,
+                    minDate,
+                    selectedShortcutIndex,
+                    shortcuts: dateRangeShortcuts,
+                    timePrecision,
+                }}
                 onShortcutClick={this.handleShortcutClick}
                 useSingleDateLabels={true}
             />,

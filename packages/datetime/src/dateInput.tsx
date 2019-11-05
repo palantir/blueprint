@@ -38,7 +38,7 @@ import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
-import { IDatePickerShortcut } from './shortcuts';
+import { IDatePickerShortcut } from "./shortcuts";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
