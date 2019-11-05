@@ -51,7 +51,6 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     public state: IToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
-        maxToasts: undefined,
         position: Position.TOP,
     };
 
@@ -139,7 +138,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                     <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
                 </Label>
                 <Label>
-                    Maximum toasts
+                    Maximum active toasts
                     <NumericInput
                         allowNumericCharactersOnly={true}
                         placeholder="No maximum!"
