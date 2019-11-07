@@ -6,6 +6,33 @@ A `DatePicker` shows a monthly calendar and allows the user to choose a single d
 
 @reactExample DatePickerExample
 
+@## Shortcuts
+
+The menu on the left of the calendars provides "shortcuts" that allow users to
+quickly select common dates. The items in this menu are controlled through
+the `shortcuts` prop: `true` to show presets, `false` to hide (default), or an
+array of `IDatePickerShortcut` objects to define custom shortcuts.
+
+The **preset shortcuts** can be seen in the example above. They are as follows:
+
+- Today
+- Yesterday
+- 1 week ago
+- 1 month ago
+- 3 months ago
+- 1 year ago
+
+**Custom shortcuts** use the following interface:
+
+@interface IDatePickerShortcut
+
+@## Props
+
+Use the `onChange` prop to listen for changes to the set date range. You can
+control the selected date range by setting the `value` prop, or use the
+component in uncontrolled mode and specify an initial date range by setting
+`defaultValue`.
+
 @## Modifiers
 
 You can use the `modifiers` prop to conditionally apply styles to days.

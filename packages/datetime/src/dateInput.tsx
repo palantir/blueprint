@@ -38,6 +38,7 @@ import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { IDatePickerShortcut } from "./shortcuts";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
@@ -126,6 +127,15 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     showActionsBar?: boolean;
 
     /**
+     * Whether shortcuts to quickly select a date are displayed or not.
+     * If `true`, preset shortcuts will be displayed.
+     * If `false`, no shortcuts will be displayed.
+     * If an array is provided, the custom shortcuts will be displayed.
+     * @default false
+     */
+    shortcuts?: boolean | IDatePickerShortcut[];
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
@@ -145,6 +155,7 @@ export interface IDateInputState {
     valueString: string;
     isInputFocused: boolean;
     isOpen: boolean;
+    selectedShortcutIndex?: number;
 }
 
 @polyfill
@@ -200,6 +211,8 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
                     dayPickerProps={dayPickerProps}
                     onChange={this.handleDateChange}
                     value={dateValue}
+                    onShortcutChange={this.handleShortcutChange}
+                    selectedShortcutIndex={this.state.selectedShortcutIndex}
                 />
             </div>
         );
@@ -437,6 +450,10 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         if (this.lastElementInPopover != null) {
             this.lastElementInPopover.removeEventListener("blur", this.handlePopoverBlur);
         }
+    };
+
+    private handleShortcutChange = (_: IDatePickerShortcut, selectedShortcutIndex: number) => {
+        this.setState({ selectedShortcutIndex });
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */

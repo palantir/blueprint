@@ -20,15 +20,9 @@ import { DATERANGEPICKER_SHORTCUTS } from "./common/classes";
 import { clone, DateRange, isDayRangeInRange } from "./common/dateUtils";
 import { TimePrecision } from "./timePicker";
 
-export interface IDateRangeShortcut {
+export interface IDateShortcutBase {
     /** Shortcut label that appears in the list. */
     label: string;
-
-    /**
-     * Date range represented by this shortcut. Note that time components of a
-     * shortcut are ignored by default; set `includeTime: true` to respect them.
-     */
-    dateRange: DateRange;
 
     /**
      * Set this prop to `true` to allow this shortcut to change the selected
@@ -40,6 +34,22 @@ export interface IDateRangeShortcut {
     includeTime?: boolean;
 }
 
+export interface IDateRangeShortcut extends IDateShortcutBase {
+    /**
+     * Date range represented by this shortcut. Note that time components of a
+     * shortcut are ignored by default; set `includeTime: true` to respect them.
+     */
+    dateRange: DateRange;
+}
+
+export interface IDatePickerShortcut extends IDateShortcutBase {
+    /**
+     * Date represented by this shortcut. Note that time components of a
+     * shortcut are ignored by default; set `includeTime: true` to respect them.
+     */
+    date: Date;
+}
+
 export interface IShortcutsProps {
     allowSingleDayRange: boolean;
     minDate: Date;
@@ -48,6 +58,12 @@ export interface IShortcutsProps {
     timePrecision: TimePrecision;
     selectedShortcutIndex?: number;
     onShortcutClick: (shortcut: IDateRangeShortcut, index: number) => void;
+    /**
+     * The DatePicker component reuses this component for a single date.
+     * This changes the default shortcut labels and affects which shortcuts are used.
+     * @default false
+     */
+    useSingleDateShortcuts?: boolean;
 }
 
 export class Shortcuts extends React.PureComponent<IShortcutsProps> {
@@ -58,7 +74,11 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
     public render() {
         const shortcuts =
             this.props.shortcuts === true
-                ? createDefaultShortcuts(this.props.allowSingleDayRange, this.props.timePrecision !== undefined)
+                ? createDefaultShortcuts(
+                      this.props.allowSingleDayRange,
+                      this.props.timePrecision !== undefined,
+                      this.props.useSingleDateShortcuts === true,
+                  )
                 : this.props.shortcuts;
 
         const shortcutElements = shortcuts.map((shortcut, index) => (
@@ -92,7 +112,11 @@ function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut
     return { dateRange, label };
 }
 
-function createDefaultShortcuts(allowSingleDayRange: boolean, hasTimePrecision: boolean) {
+function createDefaultShortcuts(
+    allowSingleDayRange: boolean,
+    hasTimePrecision: boolean,
+    useSingleDateShortcuts: boolean,
+) {
     const today = new Date();
     const makeDate = (action: (d: Date) => void) => {
         const returnVal = clone(today);
@@ -110,20 +134,22 @@ function createDefaultShortcuts(allowSingleDayRange: boolean, hasTimePrecision: 
     const oneYearAgo = makeDate(d => d.setFullYear(d.getFullYear() - 1));
     const twoYearsAgo = makeDate(d => d.setFullYear(d.getFullYear() - 2));
 
-    const singleDayShortcuts = allowSingleDayRange
-        ? [
-              createShortcut("Today", [today, hasTimePrecision ? tomorrow : today]),
-              createShortcut("Yesterday", [yesterday, hasTimePrecision ? today : yesterday]),
-          ]
-        : [];
+    const singleDayShortcuts =
+        allowSingleDayRange || useSingleDateShortcuts
+            ? [
+                  createShortcut("Today", [today, hasTimePrecision ? tomorrow : today]),
+                  createShortcut("Yesterday", [yesterday, hasTimePrecision ? today : yesterday]),
+              ]
+            : [];
 
     return [
         ...singleDayShortcuts,
-        createShortcut("Past week", [oneWeekAgo, today]),
-        createShortcut("Past month", [oneMonthAgo, today]),
-        createShortcut("Past 3 months", [threeMonthsAgo, today]),
-        createShortcut("Past 6 months", [sixMonthsAgo, today]),
-        createShortcut("Past year", [oneYearAgo, today]),
-        createShortcut("Past 2 years", [twoYearsAgo, today]),
+        createShortcut(useSingleDateShortcuts ? "1 week ago" : "Past week", [oneWeekAgo, today]),
+        createShortcut(useSingleDateShortcuts ? "1 month ago" : "Past month", [oneMonthAgo, today]),
+        createShortcut(useSingleDateShortcuts ? "3 months ago" : "Past 3 months", [threeMonthsAgo, today]),
+        // Don't include a couple of these for the single date shortcut
+        ...(useSingleDateShortcuts ? [] : [createShortcut("Past 6 months", [sixMonthsAgo, today])]),
+        createShortcut(useSingleDateShortcuts ? "1 year ago" : "Past year", [oneYearAgo, today]),
+        ...(useSingleDateShortcuts ? [] : [createShortcut("Past 2 years", [twoYearsAgo, today])]),
     ];
 }

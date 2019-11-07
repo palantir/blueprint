@@ -20,7 +20,7 @@ import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import * as sinon from "sinon";
 
-import { Button, HTMLSelect } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as DateUtils from "../src/common/dateUtils";
@@ -28,6 +28,7 @@ import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDatePickerState } from "../src/datePicker";
 import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, TimePicker, TimePrecision } from "../src/index";
+import { IDatePickerShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
 describe("<DatePicker>", () => {
@@ -412,6 +413,86 @@ describe("<DatePicker>", () => {
             assert.equal(root.state("displayMonth"), Months.JANUARY);
             assert.equal(root.state("displayYear"), 2014);
         });
+
+        it("shortcuts fire onChange with correct values", () => {
+            const today = new Date();
+            const aWeekAgo = DateUtils.clone(today);
+            aWeekAgo.setDate(today.getDate() - 6);
+            const onChange = sinon.spy();
+            const { clickShortcut } = wrap(<DatePicker onChange={onChange} value={today} shortcuts={true} />);
+            clickShortcut(2);
+
+            assert.isTrue(onChange.calledOnce, "called");
+            const value = onChange.args[0][0];
+            assert.isTrue(DateUtils.areSameDay(aWeekAgo, value));
+        });
+
+        it("all shortcuts are displayed as inactive when none are selected", () => {
+            const { root } = wrap(<DatePicker shortcuts={true} />);
+
+            assert.isFalse(
+                root
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${CoreClasses.ACTIVE}`)
+                    .exists(),
+            );
+        });
+
+        it("corresponding shortcut is displayed as active when selected", () => {
+            const selectedShortcut = 0;
+            const { root } = wrap(<DatePicker shortcuts={true} selectedShortcutIndex={selectedShortcut} />);
+
+            assert.isTrue(
+                root
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${CoreClasses.ACTIVE}`)
+                    .exists(),
+            );
+
+            assert.lengthOf(
+                root
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${CoreClasses.ACTIVE}`),
+                1,
+            );
+
+            assert.isTrue(root.state("selectedShortcutIndex") === selectedShortcut);
+        });
+
+        it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
+            const selectedShortcut = 0;
+            const onShortcutChangeSpy = sinon.spy();
+            const onChangeSpy = sinon.spy();
+            const { clickShortcut } = wrap(
+                <DatePicker onChange={onChangeSpy} shortcuts={true} onShortcutChange={onShortcutChangeSpy} />,
+            );
+
+            clickShortcut(selectedShortcut);
+
+            assert.isTrue(onChangeSpy.calledOnce);
+            assert.isTrue(onShortcutChangeSpy.calledOnce);
+            assert.isTrue(onShortcutChangeSpy.lastCall.args[0].label === "Today");
+            assert.isTrue(onShortcutChangeSpy.lastCall.args[1] === selectedShortcut);
+        });
+
+        it("custom shortcuts select the correct values", () => {
+            const date = new Date(2015, Months.JANUARY, 1);
+            const onChangeSpy = sinon.spy();
+            const { clickShortcut, assertSelectedDays } = wrap(
+                <DatePicker onChange={onChangeSpy} shortcuts={[{ label: "custom shortcut", date }]} />,
+            );
+            clickShortcut();
+            assert.isTrue(onChangeSpy.calledOnce);
+            const value = onChangeSpy.args[0][0];
+            assert.isTrue(DateUtils.areSameDay(date, value));
+            assertSelectedDays(date.getDate());
+        });
     });
 
     describe("when uncontrolled", () => {
@@ -492,6 +573,27 @@ describe("<DatePicker>", () => {
             assert.equal(root.state("displayMonth"), Months.JANUARY);
             assert.equal(root.state("displayYear"), 2014);
         });
+
+        it("shortcuts select values", () => {
+            const { root, clickShortcut } = wrap(<DatePicker shortcuts={true} />);
+            clickShortcut(2);
+
+            const today = new Date();
+            const aWeekAgo = DateUtils.clone(today);
+            aWeekAgo.setDate(today.getDate() - 6);
+
+            const value = root.state("value");
+            assert.isTrue(DateUtils.areSameDay(aWeekAgo, value));
+        });
+
+        it("custom shortcuts select the correct values", () => {
+            const date = new Date(2010, Months.JANUARY, 10);
+            const { clickShortcut, assertSelectedDays } = wrap(
+                <DatePicker shortcuts={[{ label: "custom shortcut", date }]} />,
+            );
+            clickShortcut();
+            assertSelectedDays(date.getDate());
+        });
     });
 
     describe("time selection", () => {
@@ -550,6 +652,30 @@ describe("<DatePicker>", () => {
             const { setTimeInput } = wrap(<DatePicker onChange={onChangeSpy} timePrecision="minute" />);
             setTimeInput("minute", 45);
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0] as Date, new Date()));
+        });
+
+        it("clicking a shortcut with includeTime=true changes time", () => {
+            const onChangeSpy = sinon.spy();
+            const date = DateUtils.clone(defaultValue);
+            date.setHours(date.getHours() - 2);
+
+            const shortcuts: IDatePickerShortcut[] = [
+                {
+                    date,
+                    includeTime: true,
+                    label: "shortcut with time",
+                },
+            ];
+            const { clickShortcut } = wrap(
+                <DatePicker
+                    defaultValue={defaultValue}
+                    onChange={onChangeSpy}
+                    timePrecision="minute"
+                    shortcuts={shortcuts}
+                />,
+            );
+            clickShortcut();
+            assert.equal(onChangeSpy.firstCall.args[0] as Date, date);
         });
     });
 
@@ -611,18 +737,25 @@ describe("<DatePicker>", () => {
                     .find(Button)
                     .first()
                     .simulate("click"),
+            clickShortcut: (index = 0) => {
+                wrapper
+                    .find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`)
+                    .hostNodes()
+                    .find("a")
+                    .at(index)
+                    .simulate("click");
+            },
             getDay: (dayNumber = 1) =>
                 wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)
                     .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE)),
-            setTimeInput: (precision: TimePrecision | "hour", value: number) =>
-                wrapper.find(`.${Classes.TIMEPICKER}-${precision}`).simulate("blur", { target: { value } }),
-
             months: wrapper
                 .find(HTMLSelect)
                 .filter({ className: Classes.DATEPICKER_MONTH_SELECT })
                 .find("select"),
             root: wrapper,
+            setTimeInput: (precision: TimePrecision | "hour", value: number) =>
+                wrapper.find(`.${Classes.TIMEPICKER}-${precision}`).simulate("blur", { target: { value } }),
             years: wrapper
                 .find(HTMLSelect)
                 .filter({ className: Classes.DATEPICKER_YEAR_SELECT })
