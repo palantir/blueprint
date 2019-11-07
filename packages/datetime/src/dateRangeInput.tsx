@@ -40,7 +40,8 @@ import { areSameTime, DateRange, isDateValid, isDayInRange } from "./common/date
 import * as Errors from "./common/errors";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
-import { DateRangePicker, IDateRangeShortcut } from "./dateRangePicker";
+import { DateRangePicker } from "./dateRangePicker";
+import { IDateRangeShortcut } from "./shortcuts";
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**

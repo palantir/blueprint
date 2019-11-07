@@ -20,9 +20,7 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 - 1 week ago
 - 1 month ago
 - 3 months ago
-- 6 months ago
 - 1 year ago
-- 2 years ago
 
 **Custom shortcuts** use the following interface:
 

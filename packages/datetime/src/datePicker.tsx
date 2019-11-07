@@ -29,8 +29,6 @@ import { DatePickerNavbar } from "./datePickerNavbar";
 import { IDatePickerShortcut, IDateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-export { IDatePickerShortcut };
-
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
@@ -330,7 +328,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
                     timePrecision,
                 }}
                 onShortcutClick={this.handleShortcutClick}
-                useSingleDateLabels={true}
+                useSingleDateShortcuts={true}
             />,
             <Divider key="div" />,
         ];
@@ -351,7 +349,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     };
 
     private handleShortcutClick = (shortcut: IDateRangeShortcut, selectedShortcutIndex: number) => {
-        const { onShortcutChange } = this.props;
+        const { onShortcutChange, selectedShortcutIndex: currentShortcutIndex } = this.props;
         const { dateRange, includeTime } = shortcut;
         const newDate = dateRange[0];
         const newValue = includeTime ? newDate : DateUtils.getDateTime(newDate, this.state.value);
@@ -359,7 +357,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         this.updateDay(newDate);
         this.updateValue(newValue, true);
 
-        if (this.props.selectedShortcutIndex === undefined) {
+        if (currentShortcutIndex === undefined) {
             this.setState({ selectedShortcutIndex });
         }
 

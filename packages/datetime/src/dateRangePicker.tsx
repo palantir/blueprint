@@ -41,8 +41,6 @@ import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 import { IDateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-export { IDateRangeShortcut };
-
 export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Whether the start and end dates of the range can be the same day.
