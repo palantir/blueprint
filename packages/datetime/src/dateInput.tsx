@@ -83,6 +83,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     defaultValue?: Date;
 
     /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
+    /**
      * Props to pass to the [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
@@ -218,6 +223,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         return (
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
+                fill={this.props.fill}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}
