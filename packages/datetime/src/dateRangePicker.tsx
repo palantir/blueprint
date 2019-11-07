@@ -41,8 +41,6 @@ import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
 import { IDateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-export { IDateRangeShortcut };
-
 export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Whether the start and end dates of the range can be the same day.
@@ -223,7 +221,8 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
             hoverValue: [null, null],
             leftView,
             rightView,
-            selectedShortcutIndex: this.props.selectedShortcutIndex || -1,
+            selectedShortcutIndex:
+                this.props.selectedShortcutIndex !== undefined ? this.props.selectedShortcutIndex : -1,
             time,
             value,
         };

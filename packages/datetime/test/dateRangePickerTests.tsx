@@ -27,7 +27,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { DatePickerNavbar } from "../src/datePickerNavbar";
-import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
+import { IDateRangePickerState } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
     DateRange,
@@ -37,7 +37,7 @@ import {
     TimePicker,
     TimePrecision,
 } from "../src/index";
-import { Shortcuts } from "../src/shortcuts";
+import { IDateRangeShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
@@ -927,7 +927,7 @@ describe("<DateRangePicker>", () => {
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
-            const selectedShortcut = 1;
+            const selectedShortcut = 0;
             const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
 
             assert.isTrue(
