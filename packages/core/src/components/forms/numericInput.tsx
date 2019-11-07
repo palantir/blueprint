@@ -156,6 +156,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 export interface INumericInputState {
     prevMinProp?: number;
     prevMaxProp?: number;
+    prevValueProp?: number | string;
     shouldSelectAfterUpdate: boolean;
     stepMaxPrecision: number;
     value: string;
@@ -203,11 +204,14 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     };
 
     public static getDerivedStateFromProps(props: INumericInputProps, state: INumericInputState) {
-        const value = getValueOrEmptyValue(props.value);
+        const nextState = { prevMinProp: props.min, prevMaxProp: props.max, prevValueProp: props.value };
 
         const didMinChange = props.min !== state.prevMinProp;
         const didMaxChange = props.max !== state.prevMaxProp;
         const didBoundsChange = didMinChange || didMaxChange;
+
+        const didValuePropChange = props.value !== state.prevValueProp;
+        const value = getValueOrEmptyValue(didValuePropChange ? props.value : state.value);
 
         const sanitizedValue =
             value !== NumericInput.VALUE_EMPTY
@@ -219,9 +223,9 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         // if a new min and max were provided that cause the existing value to fall
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange && sanitizedValue !== state.value) {
-            return { stepMaxPrecision, value: sanitizedValue };
+            return { ...nextState, stepMaxPrecision, value: sanitizedValue };
         } else {
-            return { stepMaxPrecision, value };
+            return { ...nextState, stepMaxPrecision, value };
         }
     }
 
@@ -280,9 +284,9 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
 
-        const didValuePropChange = this.props.value !== prevProps.value;
+        const didControlledValueChange = this.props.value !== prevProps.value;
 
-        if (!didValuePropChange && this.state.value !== prevState.value) {
+        if (!didControlledValueChange && this.state.value !== prevState.value) {
             this.invokeValueCallback(this.state.value, this.props.onValueChange);
         }
     }
@@ -419,9 +423,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             const { value } = e.target as HTMLInputElement;
             const sanitizedValue = this.getSanitizedValue(value);
             this.setState({ value: sanitizedValue });
-            if (value !== sanitizedValue) {
-                this.invokeValueCallback(sanitizedValue, this.props.onValueChange);
-            }
         }
 
         Utils.safeInvoke(this.props.onBlur, e);
@@ -485,7 +486,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
 
         this.setState({ shouldSelectAfterUpdate: false, value: nextValue });
-        this.invokeValueCallback(nextValue, this.props.onValueChange);
     };
 
     private invokeValueCallback(value: string, callback: (valueAsNumber: number, valueAsString: string) => void) {
@@ -498,7 +498,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const nextValue = this.getSanitizedValue(currValue, delta);
 
         this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement, value: nextValue });
-        this.invokeValueCallback(nextValue, this.props.onValueChange);
 
         return nextValue;
     }

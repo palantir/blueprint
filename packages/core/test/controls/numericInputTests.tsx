@@ -153,9 +153,9 @@ describe("<NumericInput>", () => {
 
         it("provides numeric value to onValueChange as a number and a string", () => {
             const onValueChangeSpy = spy();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={1} />);
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
-            component.find("input").simulate("change");
+            component.setState({ value: "1" });
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
             expect(onValueChangeSpy.calledWith(1, "1")).to.be.true;
@@ -163,9 +163,9 @@ describe("<NumericInput>", () => {
 
         it("provides non-numeric value to onValueChange as NaN and a string", () => {
             const onValueChangeSpy = spy();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={"non-numeric-value"} />);
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
-            component.find("input").simulate("change");
+            component.setState({ value: "non-numeric-value" });
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
             expect(onValueChangeSpy.calledWith(NaN, "non-numeric-value")).to.be.true;
@@ -714,7 +714,7 @@ describe("<NumericInput>", () => {
                     .simulate("mousedown")
                     .simulate("mousedown");
                 expect(component.state().value).to.equal("2");
-                expect(onValueChangeSpy.callCount).to.equal(5);
+                expect(onValueChangeSpy.callCount).to.equal(1);
                 expect(onValueChangeSpy.args[0]).to.deep.equal([2, "2"]);
             });
         });
