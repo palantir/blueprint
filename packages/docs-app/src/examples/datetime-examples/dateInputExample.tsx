@@ -80,10 +80,6 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
             format,
             timePrecision,
             shortcuts,
-            fill,
-            reverseMonthAndYearMenus: reverse,
-            format,
-            timePrecision,
         } = this.state;
         return (
             <>
