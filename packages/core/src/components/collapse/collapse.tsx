@@ -150,7 +150,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         };
 
         const contentsStyle = {
-            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.height}px)`,
+            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.height}px)`,
             transition: isAutoHeight ? "none" : undefined,
         };
 
