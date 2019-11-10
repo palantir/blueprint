@@ -315,4 +315,26 @@ describe("<QueryList>", () => {
             assert.deepEqual(filmQueryList.state().query, "");
         });
     });
+
+    describe("query", () => {
+        it("trims leading and trailing whitespace in query input", () => {
+            // tslint:disable-next-line no-unnecessary-initializer
+            let triggerInputQueryChange: ((e: any) => void) | undefined = undefined;
+            const onQueryChangeSpy = sinon.spy();
+            // we must supply our own renderer so that we can hook into IQueryListRendererProps#handleQueryChange
+            const renderer = sinon.spy((props: IQueryListRendererProps<IFilm>) => {
+                triggerInputQueryChange = props.handleQueryChange;
+                return <div>{props.itemList}</div>;
+            });
+            shallow(<FilmQueryList {...testProps} renderer={renderer} onQueryChange={onQueryChangeSpy} />);
+
+            const untrimmedQuery = " foo ";
+            const trimmedQuery = untrimmedQuery.trim();
+
+            assert.isDefined(triggerInputQueryChange, "query list should render with input change callbacks");
+            triggerInputQueryChange!({ target: { value: untrimmedQuery } });
+            assert.isTrue(onQueryChangeSpy.calledWith(trimmedQuery));
+            assert.isFalse(onQueryChangeSpy.calledWith(untrimmedQuery));
+        });
+    });
 });

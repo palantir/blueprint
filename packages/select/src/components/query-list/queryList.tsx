@@ -188,7 +188,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
             handlePaste: this.handlePaste,
-            handleQueryChange: this.handleQueryChange,
+            handleQueryChange: this.handleInputQueryChange,
             itemList: itemListRenderer({
                 ...spreadableState,
                 items,
@@ -462,8 +462,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         Utils.safeInvoke(onKeyUp, event);
     };
 
-    private handleQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
-        const query = event == null ? "" : event.target.value;
+    private handleInputQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
+        const query = event == null ? "" : event.target.value.trim();
         this.setQuery(query);
         Utils.safeInvoke(this.props.onQueryChange, query, event);
     };
