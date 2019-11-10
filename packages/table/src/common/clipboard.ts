@@ -104,8 +104,7 @@ export const Clipboard = {
                     e.preventDefault();
                     const clipboardData = (e as any).clipboardData || (window as any).clipboardData;
                     if (clipboardData != null) {
-                        clipboardData.setData("text/html", elem.outerHTML);
-                        clipboardData.setData("text/plain", plaintext);
+                        clipboardData.setData("text", plaintext);
                     }
                 });
             }
