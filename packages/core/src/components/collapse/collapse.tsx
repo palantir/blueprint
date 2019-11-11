@@ -116,14 +116,29 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
     };
 
     public static getDerivedStateFromProps(props: ICollapseProps, state: ICollapseState) {
-        if (state.animationState !== AnimationStates.CLOSED && !props.isOpen) {
-            return {
-                animationState: AnimationStates.CLOSING_START,
-            };
-        } else if (state.animationState !== AnimationStates.OPEN && props.isOpen) {
-            return {
-                animationState: AnimationStates.OPEN_START,
-            };
+        const { isOpen } = props;
+        const { animationState } = state;
+
+        if (isOpen) {
+            switch (animationState) {
+                case AnimationStates.OPENING:
+                    // allow Collapse#onDelayedStateChange() to handle the transition here
+                    break;
+                case AnimationStates.OPEN:
+                    break;
+                default:
+                    return { animationState: AnimationStates.OPEN_START };
+            }
+        } else {
+            switch (animationState) {
+                case AnimationStates.CLOSING:
+                    // allow Collapse#onDelayedStateChange() to handle the transition here
+                    break;
+                case AnimationStates.CLOSED:
+                    break;
+                default:
+                    return { animationState: AnimationStates.CLOSING_START };
+            }
         }
 
         return null;
@@ -201,7 +216,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         } else if (animationState === AnimationStates.OPEN_START) {
             this.setState({
                 animationState: AnimationStates.OPENING,
-                height: `${height}px`,
+                height: height !== undefined ? `${height}px` : this.state.height,
             });
             this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
         }
