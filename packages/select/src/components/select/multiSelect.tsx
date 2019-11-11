@@ -150,6 +150,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                         {...tagInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
+                        inputProps={inputProps}
                         inputValue={listProps.query}
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
