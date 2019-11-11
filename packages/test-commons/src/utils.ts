@@ -27,9 +27,20 @@ import * as React from "react";
  * chrome tests.
  */
 export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, shift = false) {
-    const event = document.createEvent("KeyboardEvent");
-    const keyCode = key.charCodeAt(0);
+    return dispatchTestKeyboardEventWithCode(target, eventType, key, key.charCodeAt(0), shift);
+}
 
+/**
+ * Same as dispatchTestKeyboardEvent, but with more control over the keyCode.
+ */
+export function dispatchTestKeyboardEventWithCode(
+    target: EventTarget,
+    eventType: string,
+    key: string,
+    keyCode: number,
+    shift = false,
+) {
+    const event = document.createEvent("KeyboardEvent");
     (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, false, false, shift);
 
     // Hack around these readonly properties in WebKit and Chrome
