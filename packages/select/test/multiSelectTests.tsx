@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Tag } from "@blueprintjs/core";
+import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
+import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -76,6 +77,25 @@ describe("<MultiSelect>", () => {
 
     it("selectedItems is optional", () => {
         assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
+    });
+
+    it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
+        const itemSelectSpy = sinon.spy();
+        const wrapper = multiselect({
+            onItemSelect: itemSelectSpy,
+            selectedItems: [TOP_100_FILMS[1]],
+        });
+
+        const firstTagRemoveButton = wrapper
+            .find(`.${CoreClasses.TAG_REMOVE}`)
+            .at(0)
+            .getDOMNode();
+        dispatchTestKeyboardEventWithCode(firstTagRemoveButton, "keyup", "Enter", Keys.ENTER);
+
+        // checks for the bug in https://github.com/palantir/blueprint/issues/3674
+        // where the first item in the dropdown list would get selected upon hitting Enter inside
+        // a TAG_REMOVE button
+        assert.isFalse(itemSelectSpy.calledWith(TOP_100_FILMS[0]));
     });
 
     function multiselect(props: Partial<IMultiSelectProps<IFilm>> = {}, query?: string) {
