@@ -30,7 +30,7 @@ import {
     MaybeElement,
     Position,
     removeNonHTMLProps,
-    Utils
+    Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
 
@@ -44,7 +44,7 @@ import {
     isFloatingPointNumericCharacter,
     isValidNumericKeyboardEvent,
     isValueNumeric,
-    toMaxPrecision
+    toMaxPrecision,
 } from "./numericInputUtils";
 
 export interface INumericInputProps extends IIntentProps, IProps {
@@ -164,7 +164,7 @@ export interface INumericInputState {
 
 enum IncrementDirection {
     DOWN = -1,
-    UP = +1
+    UP = +1,
 }
 
 const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
@@ -178,7 +178,7 @@ const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
     "onValueChange",
     "selectAllOnFocus",
     "selectAllOnIncrement",
-    "stepSize"
+    "stepSize",
 ];
 
 type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
@@ -200,7 +200,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
         stepSize: 1,
-        value: NumericInput.VALUE_EMPTY
+        value: NumericInput.VALUE_EMPTY,
     };
 
     public static getDerivedStateFromProps(props: INumericInputProps, state: INumericInputState) {
@@ -252,7 +252,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     public state: INumericInputState = {
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
-        value: getValueOrEmptyValue(this.props.value)
+        value: getValueOrEmptyValue(this.props.value),
     };
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
@@ -370,7 +370,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             onMouseDown: evt => {
                 this.handleButtonClick(evt, direction);
                 this.startContinuousChange();
-            }
+            },
         };
     }
 
@@ -519,7 +519,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             this.state.stepMaxPrecision,
             this.props.min,
             this.props.max,
-            delta
+            delta,
         );
     }
 
