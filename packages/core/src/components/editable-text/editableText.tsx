@@ -148,20 +148,25 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         type: "text",
     };
 
+    private inputElement?: HTMLInputElement | HTMLTextAreaElement;
     private valueElement: HTMLSpanElement;
     private refHandlers = {
         content: (spanElement: HTMLSpanElement) => {
             this.valueElement = spanElement;
         },
         input: (input: HTMLInputElement | HTMLTextAreaElement) => {
-            if (input != null && this.state != null && this.state.isEditing) {
-                const supportsSelection = inputSupportsSelection(input);
-                if (supportsSelection) {
-                    const { length } = input.value;
-                    input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
-                }
-                if (!supportsSelection || !this.props.selectAllOnFocus) {
-                    input.scrollLeft = input.scrollWidth;
+            if (input != null) {
+                this.inputElement = input;
+
+                if (this.state != null && this.state.isEditing) {
+                    const supportsSelection = inputSupportsSelection(input);
+                    if (supportsSelection) {
+                        const { length } = input.value;
+                        input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
+                    }
+                    if (!supportsSelection || !this.props.selectAllOnFocus) {
+                        input.scrollLeft = input.scrollWidth;
+                    }
                 }
             }
         },
@@ -279,8 +284,15 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
     };
 
     private handleFocus = () => {
-        if (!this.props.disabled) {
+        const { alwaysRenderInput, disabled, selectAllOnFocus } = this.props;
+
+        if (!disabled) {
             this.setState({ isEditing: true });
+        }
+
+        if (alwaysRenderInput && selectAllOnFocus && this.inputElement != null) {
+            const { length } = this.inputElement.value;
+            this.inputElement.setSelectionRange(0, length);
         }
     };
 
