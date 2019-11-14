@@ -139,6 +139,7 @@ $dialog-padding: $pt-grid-size * 2 !default;
 .#{$ns}-dialog-footer-actions {
   display: flex;
   justify-content: flex-end;
+  margin: 0 $dialog-padding;
 
   .#{$ns}-button {
     margin-left: $pt-grid-size;
