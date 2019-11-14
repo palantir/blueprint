@@ -92,7 +92,11 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
             />
         ));
 
-        return <Menu className={DATERANGEPICKER_SHORTCUTS}>{shortcutElements}</Menu>;
+        return (
+            <Menu className={DATERANGEPICKER_SHORTCUTS} tabIndex={0}>
+                {shortcutElements}
+            </Menu>
+        );
     }
 
     private getShorcutClickHandler = (shortcut: IDateRangeShortcut, index: number) => () => {
