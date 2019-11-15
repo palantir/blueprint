@@ -3920,10 +3920,10 @@ findup-sync@^3.0.0:
     micromatch "^3.0.4"
     resolve-dir "^1.0.1"
 
-first-mate-select-grammar@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/first-mate-select-grammar/-/first-mate-select-grammar-1.0.2.tgz#2fbfce17b39a93ee5ed590f0b80821350be8d4bf"
-  integrity sha512-fVtOtHNG7bQML64fSy7ycQNcjg8LIavZJ/O7h1x5E2QMhvMf5HoE4l81fkHlyQhShAJDYjr8NSZmSnqplqdvag==
+first-mate-select-grammar@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/first-mate-select-grammar/-/first-mate-select-grammar-1.0.3.tgz#4c91d12978d5d4a03b7ab4b303c54fae610882f7"
+  integrity sha512-OTGt//jDdzPAzny8hpxhg6SHpkeFhOAj26egYqusY78twKk9vpyMBqIVtm6TE2Q7ccM0p21gnNFadIUbyDFmJQ==
   dependencies:
     lodash "^4.17.11"
 
@@ -4632,13 +4632,13 @@ highlight.js@^9.12.0, highlight.js@^9.13.1:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.15.6.tgz#72d4d8d779ec066af9a17cb14360c3def0aa57c4"
   integrity sha512-zozTAWM1D6sozHo8kqhfYgsac+B+q0PmsjXeyDrYIHHcBN0zTVT66+s2GW1GZv7DbyaROdLXKdabwS/WqPyIdQ==
 
-highlights@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/highlights/-/highlights-3.1.1.tgz#a404ff0d73764b64637fb16c1078b08a068c5f0d"
-  integrity sha1-pAT/DXN2S2Rjf7FsEHiwigaMXw0=
+highlights@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/highlights/-/highlights-3.1.4.tgz#02fb2ede2de8b5cf5b9233f9f129e19243c5b8eb"
+  integrity sha512-sba+ho6gC2IgMe2+c4Tk2T7Ba+z9OOHaXmpbaGFlk7EQ/sS9Fp5CZYV1gnTHH8+AHlg9HqAwOIQe/E74ciMCTQ==
   dependencies:
     first-mate "^7.0.2"
-    first-mate-select-grammar "^1.0.1"
+    first-mate-select-grammar "^1.0.3"
     fs-plus "^3.0.0"
     once "^1.3.2"
     season "^6.0.2"
@@ -6614,7 +6614,7 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
-nan@^2.10.0, nan@^2.12.1, nan@^2.13.2:
+nan@^2.12.1, nan@^2.13.2, nan@^2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
@@ -10367,12 +10367,11 @@ tough-cookie@~2.4.3:
     psl "^1.1.24"
     punycode "^1.4.1"
 
-tree-sitter-typescript@^0.13.6:
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/tree-sitter-typescript/-/tree-sitter-typescript-0.13.6.tgz#f13fa362a9f797f571341706a87607a758bb3d10"
-  integrity sha512-1csvCrW5gf4d4D0ZXCctsVDr0M+fOCXYfX/Tve6OAeHUdFu0JsI+CEsS6X3VH7umX5/62RDYe1cwbvOhCuIiXA==
+"tree-sitter-typescript@github:tree-sitter/tree-sitter-typescript#3684243ae16fca82bb337782759d7316fdf5f325":
+  version "0.15.1"
+  resolved "https://codeload.github.com/tree-sitter/tree-sitter-typescript/tar.gz/3684243ae16fca82bb337782759d7316fdf5f325"
   dependencies:
-    nan "^2.10.0"
+    nan "^2.14.0"
 
 trim-newlines@^1.0.0:
   version "1.0.0"
