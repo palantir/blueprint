@@ -24,6 +24,7 @@ import { IntentSelect } from "./common/intentSelect";
 const INPUT_ID = "EditableTextExample-max-length";
 
 export interface IEditableTextExampleState {
+    alwaysRenderInput?: boolean;
     confirmOnEnterKey?: boolean;
     intent?: Intent;
     maxLength?: number;
@@ -33,6 +34,7 @@ export interface IEditableTextExampleState {
 
 export class EditableTextExample extends React.PureComponent<IExampleProps, IEditableTextExampleState> {
     public state: IEditableTextExampleState = {
+        alwaysRenderInput: true,
         confirmOnEnterKey: false,
         report: "",
         selectAllOnFocus: false,
@@ -41,12 +43,14 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
     private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
+    private toggleAlwaysRenderInput = handleBooleanChange(alwaysRenderInput => this.setState({ alwaysRenderInput }));
 
     public render() {
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <H1>
                     <EditableText
+                        alwaysRenderInput={this.state.alwaysRenderInput}
                         intent={this.state.intent}
                         maxLength={this.state.maxLength}
                         placeholder="Edit title..."
@@ -54,6 +58,7 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
                     />
                 </H1>
                 <EditableText
+                    alwaysRenderInput={this.state.alwaysRenderInput}
                     intent={this.state.intent}
                     maxLength={this.state.maxLength}
                     maxLines={12}
@@ -94,6 +99,11 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
                 <Switch checked={this.state.confirmOnEnterKey} onChange={this.toggleSwap}>
                     Swap keypress for confirm and newline (multiline only)
                 </Switch>
+                <Switch
+                    checked={this.state.alwaysRenderInput}
+                    label="Always render input"
+                    onChange={this.toggleAlwaysRenderInput}
+                />
             </>
         );
     }
