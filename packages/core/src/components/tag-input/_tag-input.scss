@@ -113,6 +113,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
   &.#{$ns}-active {
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
+
+    @each $intent, $color in $pt-intent-text-colors {
+      &.#{$ns}-intent-#{$intent} {
+        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
+      }
+    }
   }
 
   .#{$ns}-dark &,
