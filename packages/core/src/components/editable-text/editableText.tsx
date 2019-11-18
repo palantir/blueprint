@@ -24,6 +24,19 @@ import { Browser } from "../../compatibility";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
     /**
+     * EXPERIMENTAL FEATURE.
+     *
+     * When true, this forces the component to _always_ render an editable input (or textarea)
+     * both when the component is focussed and unfocussed, instead of the component's default
+     * behavior of switching between a text span and a text input upon interaction.
+     *
+     * This behavior can help in certain applications where, for example, a custom right-click
+     * context menu is used to supply clipboard copy and paste functionality.
+     * @default false
+     */
+    alwaysRenderInput?: boolean;
+
+    /**
      * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
      * will insert a newline. If `false`, the key bindings are inverted such that `enter`
      * adds a newline.
@@ -123,6 +136,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
     public static defaultProps: IEditableTextProps = {
+        alwaysRenderInput: false,
         confirmOnEnterKey: false,
         defaultValue: "",
         disabled: false,
@@ -134,6 +148,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         type: "text",
     };
 
+    private inputElement?: HTMLInputElement | HTMLTextAreaElement;
     private valueElement: HTMLSpanElement;
     private refHandlers = {
         content: (spanElement: HTMLSpanElement) => {
@@ -141,14 +156,17 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         },
         input: (input: HTMLInputElement | HTMLTextAreaElement) => {
             if (input != null) {
-                input.focus();
-                const supportsSelection = inputSupportsSelection(input);
-                if (supportsSelection) {
-                    const { length } = input.value;
-                    input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
-                }
-                if (!supportsSelection || !this.props.selectAllOnFocus) {
-                    input.scrollLeft = input.scrollWidth;
+                this.inputElement = input;
+
+                if (this.state != null && this.state.isEditing) {
+                    const supportsSelection = inputSupportsSelection(input);
+                    if (supportsSelection) {
+                        const { length } = input.value;
+                        input.setSelectionRange(this.props.selectAllOnFocus ? 0 : length, length);
+                    }
+                    if (!supportsSelection || !this.props.selectAllOnFocus) {
+                        input.scrollLeft = input.scrollWidth;
+                    }
                 }
             }
         },
@@ -168,7 +186,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     }
 
     public render() {
-        const { disabled, multiline } = this.props;
+        const { alwaysRenderInput, disabled, multiline } = this.props;
         const value = this.props.value == null ? this.state.value : this.props.value;
         const hasValue = value != null && value !== "";
 
@@ -198,15 +216,25 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             };
         }
 
-        // make enclosing div focusable when not editing, so it can still be tabbed to focus
-        // (when editing, input itself is focusable so div doesn't need to be)
-        const tabIndex = this.state.isEditing || disabled ? null : 0;
+        // If we are always rendering an input, then NEVER make the container div focusable.
+        // Otherwise, make container div focusable when not editing, so it can still be tabbed
+        // to focus (when the input is rendered, it is itself focusable so container div doesn't need to be)
+        const tabIndex = alwaysRenderInput || this.state.isEditing || disabled ? null : 0;
+
+        // we need the contents to be rendered while editing so that we can measure their height
+        // and size the container element responsively
+        const shouldHideContents = alwaysRenderInput && !this.state.isEditing;
+
         return (
             <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
-                {this.maybeRenderInput(value)}
-                <span className={Classes.EDITABLE_TEXT_CONTENT} ref={this.refHandlers.content} style={contentStyle}>
-                    {hasValue ? value : this.props.placeholder}
-                </span>
+                {alwaysRenderInput || this.state.isEditing ? this.renderInput(value) : undefined}
+                {shouldHideContents ? (
+                    undefined
+                ) : (
+                    <span className={Classes.EDITABLE_TEXT_CONTENT} ref={this.refHandlers.content} style={contentStyle}>
+                        {hasValue ? value : this.props.placeholder}
+                    </span>
+                )}
             </div>
         );
     }
@@ -254,8 +282,15 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     };
 
     private handleFocus = () => {
-        if (!this.props.disabled) {
+        const { alwaysRenderInput, disabled, selectAllOnFocus } = this.props;
+
+        if (!disabled) {
             this.setState({ isEditing: true });
+        }
+
+        if (alwaysRenderInput && selectAllOnFocus && this.inputElement != null) {
+            const { length } = this.inputElement.value;
+            this.inputElement.setSelectionRange(0, length);
         }
     };
 
@@ -296,11 +331,8 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         }
     };
 
-    private maybeRenderInput(value: string) {
+    private renderInput(value: string) {
         const { maxLength, multiline, type, placeholder } = this.props;
-        if (!this.state.isEditing) {
-            return undefined;
-        }
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             maxLength,
@@ -308,13 +340,18 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
             placeholder,
-            style: {
-                height: this.state.inputHeight,
-                lineHeight: !multiline && this.state.inputHeight != null ? `${this.state.inputHeight}px` : null,
-                width: multiline ? "100%" : this.state.inputWidth,
-            },
             value,
         };
+
+        const { inputHeight, inputWidth } = this.state;
+        if (inputHeight !== 0 && inputWidth !== 0) {
+            props.style = {
+                height: inputHeight,
+                lineHeight: !multiline && inputHeight != null ? `${inputHeight}px` : null,
+                width: multiline ? "100%" : inputWidth,
+            };
+        }
+
         return multiline ? (
             <textarea ref={this.refHandlers.input} {...props} />
         ) : (
