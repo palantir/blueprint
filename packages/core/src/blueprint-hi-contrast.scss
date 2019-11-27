@@ -12,11 +12,11 @@ $pt-intent-warning: #a66321 !default; // $orange1;
 $pt-intent-danger: #c23030 !default; // $red2;
 
 // Import files in the same order that they are documented in the docs
-@import "../common/variables";
-@import "../common/colors";
+@import "common/variables";
+@import "common/colors";
 
-@import "../reset";
-@import "../typography";
-@import "./focus-states";
+@import "reset";
+@import "typography";
+@import "accessibilityfocus-states";
 
-@import "../components/index";
+@import "components/index";
