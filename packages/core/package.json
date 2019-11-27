@@ -10,9 +10,9 @@
   "unpkg": "dist/core.bundle.js",
   "sideEffects": [
     "*.css",
-    "lib/esm/components/index.js",
-    "lib/esnext/components/index.js",
-    "lib/cjs/components/index.js"
+    "lib/esm/common/configureDom4.js",
+    "lib/esnext/common/configureDom4.js",
+    "lib/cjs/common/configureDom4.js"
   ],
   "bin": {
     "upgrade-blueprint-2.0.0-rename": "./scripts/upgrade-blueprint-2.0.0-rename.sh",
