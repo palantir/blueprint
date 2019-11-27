@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import "../configureDom4";
-
-import { Classes } from "../";
-
-export function isDarkTheme(element: Element | Text | null): boolean {
-    return element instanceof Element && element.closest(`.${Classes.DARK}`) != null;
+if (typeof require !== "undefined" && typeof window !== "undefined" && typeof document !== "undefined") {
+    // we're in browser
+    // tslint:disable-next-line:no-var-requires
+    require("dom4"); // only import actual dom4 if we're in the browser (not server-compatible)
+    // we'll still need dom4 types for the TypeScript to compile, these are included in package.json
 }
