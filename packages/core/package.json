@@ -9,7 +9,10 @@
   "style": "lib/css/blueprint.css",
   "unpkg": "dist/core.bundle.js",
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "lib/esm/components/index.js",
+    "lib/esnext/components/index.js",
+    "lib/cjs/components/index.js"
   ],
   "bin": {
     "upgrade-blueprint-2.0.0-rename": "./scripts/upgrade-blueprint-2.0.0-rename.sh",
