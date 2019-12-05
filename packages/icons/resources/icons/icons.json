@@ -3365,5 +3365,26 @@
     "tags": "signal, communication, radio, mast",
     "group": "action",
     "content": "\\e909"
+  },
+  {
+    "displayName": "Bring in data",
+    "iconName": "bring-data",
+    "tags": "copy, duplicate, add, data, bring",
+    "group": "action",
+    "content": "\\e90a"
+  },
+  {
+    "displayName": "Tractor",
+    "iconName": "tractor",
+    "tags": "tractor, automobile, vehicle, farm, farming",
+    "group": "interface",
+    "content": "\\e90c"
+  },
+  {
+    "displayName": "Truck",
+    "iconName": "truck",
+    "tags": "truck, automobile, vehicle, car, van, drive, ride, distance, navigation, directions",
+    "group": "interface",
+    "content": "\\e90b"
   }
 ]
