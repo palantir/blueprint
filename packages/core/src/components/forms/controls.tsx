@@ -247,10 +247,9 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
     private input: HTMLInputElement;
 
     public render() {
-        const { defaultIndeterminate, indeterminate, ...controlProps } = this.props;
         return (
             <Control
-                {...controlProps}
+                {...this.props}
                 inputRef={this.handleInputRef}
                 onChange={this.handleChange}
                 type="checkbox"

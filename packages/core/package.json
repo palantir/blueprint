@@ -33,6 +33,8 @@
     "dist:verify": "assert-package-layout",
     "lint": "run-p lint:scss lint:ts",
     "lint:scss": "sass-lint",
+    "lint:es": "es-lint",
+    "lint:es-fix": "es-lint --fix",
     "lint:ts": "ts-lint",
     "lint-fix": "ts-lint --fix",
     "test": "run-s test:typeCheck test:iso test:karma",

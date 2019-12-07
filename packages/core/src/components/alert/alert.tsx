@@ -139,7 +139,6 @@ export class Alert extends AbstractPureComponent2<IAlertProps, {}> {
             intent,
             cancelButtonText,
             confirmButtonText,
-            onClose,
             ...overlayProps
         } = this.props;
         return (

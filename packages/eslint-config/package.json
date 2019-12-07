@@ -1,0 +1,23 @@
+{
+    "name": "@blueprintjs/eslint-config",
+    "version": "1.9.0",
+    "description": "ESLint configuration for @blueprintjs packages",
+    "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.10.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^2.10.0",
+        "@typescript-eslint/parser": "^2.10.0",
+        "eslint": "^6.7.2",
+        "eslint-config-prettier": "^6.7.0",
+        "eslint-plugin-import": "^2.18.2",
+        "eslint-plugin-mocha": "^6.2.2",
+        "eslint-plugin-prettier": "^3.1.1",
+        "eslint-plugin-react": "^7.17.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/eslint-config"
+    },
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}
