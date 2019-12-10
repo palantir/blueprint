@@ -1,15 +1,5 @@
 {
     "extends": [
         "./packages/eslint-config"
-    ],
-    "plugins": [
-        "header"
-    ],
-    "rules": {
-        "header/header": [2, "block", [
-            {
-                "pattern": "Copyright \\d{4} Palantir Technologies, Inc. All rights reserved."
-            }
-        ]]
-    }
+    ]
 }
