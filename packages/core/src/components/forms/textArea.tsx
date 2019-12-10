@@ -67,7 +67,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
         }
     }
     public render() {
-        const { className, fill, intent, large, small, growVertically, ...htmlProps } = this.props;
+        const { className, fill, inputRef, intent, large, small, growVertically, ...htmlProps } = this.props;
 
         const rootClasses = classNames(
             Classes.INPUT,

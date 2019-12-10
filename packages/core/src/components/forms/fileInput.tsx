@@ -97,6 +97,7 @@ export class FileInput extends AbstractPureComponent2<IFileInputProps, {}> {
             hasSelection,
             inputProps,
             large,
+            onInputChange,
             text,
             ...htmlProps
         } = this.props;

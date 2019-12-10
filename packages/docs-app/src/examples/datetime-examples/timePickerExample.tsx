@@ -20,7 +20,7 @@ import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
-// tslint:disable-next-line: no-submodule-imports
+// tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
 
 export interface ITimePickerExampleState {
