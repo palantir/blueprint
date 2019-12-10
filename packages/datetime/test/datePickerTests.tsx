@@ -512,7 +512,10 @@ describe("<DatePicker>", () => {
 
         it("onChange fired when month is changed", () => {
             const onChange = sinon.spy();
-            const { getDay, clickNextMonth } = wrap(<DatePicker onChange={onChange} />);
+            // must use an initial month otherwise clicking next month in december will fail
+            const { getDay, clickNextMonth } = wrap(
+                <DatePicker initialMonth={new Date(2015, Months.JANUARY, 12)} onChange={onChange} />,
+            );
             assert.isTrue(onChange.notCalled);
             getDay().simulate("click");
             assert.isTrue(onChange.calledOnce, "expected onChange called");
