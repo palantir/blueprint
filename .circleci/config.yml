@@ -77,7 +77,8 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: '.' }
       - run: mkdir -p ./reports/eslint ./reports/stylelint
-      - run: yarn compile --scope "@blueprintjs/eslint-config"
+      # we need to compile the lint rules for blueprint
+      - run: yarn compile --scope "@blueprintjs/tslint-config"
       - run: yarn lint
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
