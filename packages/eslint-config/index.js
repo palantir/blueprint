@@ -22,6 +22,7 @@ module.exports = {
     extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:react/recommended",
         "plugin:prettier/recommended"
     ],
@@ -47,8 +48,18 @@ module.exports = {
         ]
     },
     rules: {
-        "@typescript-eslint/tslint/config": ["warn", {
-          "lintFile": "../../tslint.json",
+        // run the tslint rules which are not yet converted (run inside eslint)
+        "@typescript-eslint/tslint/config": ["error", {
+          "rules": {
+                "no-implicit-dependencies": {
+                    options: ["dev", ["chai", "sinon", "prop-types"]]
+                },
+                "no-invalid-this": {
+                    options: ["check-function-in-method"]
+                },
+                "no-unnecessary-callback-wrapper": true,
+                "prefer-conditional-expression": false,
+            }
         }],
 
         // no-unused-vars conflicts with typescript, tuin off
@@ -57,19 +68,35 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": ["error", {
           "vars": "all",
           "args": "after-used",
-          "ignoreRestSiblings": false,
+          "ignoreRestSiblings": true,
           "argsIgnorePattern": "^_"
         }],
 
         // default rules: unset rules causing errors
         "no-irregular-whitespace": "off",
         "no-prototype-builtins": "off",
+        "no-case-declarations": "off",
+
+        // @typescript-eslint rules: unset rules causing errors
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+
+        // it would be nice to turn these ones back on at some point
+        "@typescript-eslint/no-inferrable-types": "off",
+        "prefer-spread": "off", // partially covered by no-restricted-properties
 
         // react plugin: unset rules causing errors
         "react/display-name": "off",
         "react/no-children-prop": "off",
         "react/no-find-dom-node": "off",
         "react/prop-types": "off",
+        "react/no-deprecated": "off",
+        "no-useless-escape": "off",
+        "no-constant-condition": "off",
+        "react/no-unescaped-entities": "off",
 
         // prettier
         "prettier/prettier": ["error", {
@@ -117,12 +144,6 @@ module.exports = {
             allow: ["info", "warn", "error"]
         }],
         "import/no-default-export": ["error"],
-        // to use this theres a bit of fixing up required
-        // "import/no-extraneous-dependencies": ["error", {
-        //     devDependencies: ["test/**/*.*"]
-        // }],
-        // this is broken because of fat arrow class functions typescript-eslint#491
-        // "no-invalid-this": ["error"],
         "import/no-internal-modules": ["error", {
             allow: [
                 "core-js",
@@ -137,6 +158,10 @@ module.exports = {
         "id-blacklist": ["error"],
         "camelcase": ["error", {
             properties: "always"
-        }]
+        }],
+
+        "@typescript-eslint/interface-name-prefix": ["error", {
+            "prefixWithI": "always"
+        }],
     }
 }

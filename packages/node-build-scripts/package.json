@@ -12,7 +12,6 @@
     "generate-icons-source": "./generate-icons-source.js",
     "sass-compile": "./sass-compile.sh",
     "sass-lint": "./sass-lint.js",
-    "ts-lint": "./ts-lint.js",
     "es-lint": "./es-lint.js"
   },
   "dependencies": {

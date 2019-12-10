@@ -11,7 +11,8 @@
         "eslint-plugin-import": "^2.18.2",
         "eslint-plugin-mocha": "^6.2.2",
         "eslint-plugin-prettier": "^3.1.1",
-        "eslint-plugin-react": "^7.17.0"
+        "eslint-plugin-react": "^7.17.0",
+        "eslint-plugin-header": "^3.0.0"
     },
     "repository": {
         "type": "git",

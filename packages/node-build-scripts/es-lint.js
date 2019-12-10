@@ -11,7 +11,8 @@
 const path = require("path");
 const fs = require("fs");
 const { junitReportPath } = require("./utils");
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
+const glob = require("glob");
 
 let format = "codeframe";
 let out;
@@ -23,11 +24,21 @@ if (process.env.JUNIT_REPORT_PATH != null) {
     outputStream = fs.createWriteStream(out, { flags: "w+" });
 }
 
-const commandLineOptions = ["-c", "../../.eslintrc.json", "-f", format, "--color"];
+const gitRoot = execSync("git rev-parse --show-toplevel").toString().trim();
+const commandLineOptions = ["-c", path.join(gitRoot, "./.eslintrc.json"), "-f", format, "--color"];
 if (process.argv.includes("--fix")) {
     commandLineOptions.push("--fix")
 }
-const eslint = spawn("eslint", [...commandLineOptions, path.resolve(process.cwd(),"{src,test}/**/*.tsx")]);
+
+const fileGlob = "{src, test}/**/*.tsx";
+const absoluteFileGlob = path.resolve(process.cwd(), fileGlob);
+const anyFilesToLint = glob.sync(absoluteFileGlob)
+if (anyFilesToLint.length === 0) {
+    console.log("Not running ESLint because no files match the glob ")
+    process.exit();
+}
+
+const eslint = spawn("eslint", [...commandLineOptions, absoluteFileGlob]);
 
 eslint.stdout.pipe(outputStream);
 eslint.stderr.pipe(process.stderr);

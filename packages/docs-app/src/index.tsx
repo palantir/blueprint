@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-// tslint:disable-next-line:no-submodule-imports
+// eslint-disable-next-line no-internal-modules
 import "@blueprintjs/test-commons/polyfill";
 import "dom4";
 
