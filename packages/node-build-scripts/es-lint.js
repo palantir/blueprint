@@ -25,7 +25,7 @@ if (process.env.JUNIT_REPORT_PATH != null) {
 }
 
 const gitRoot = execSync("git rev-parse --show-toplevel").toString().trim();
-const commandLineOptions = ["-c", path.join(gitRoot, "./.eslintrc.json"), "-f", format, "--color"];
+const commandLineOptions = ["-c", path.join(gitRoot, "./.eslintrc.json"), "--color", "-f", format];
 if (process.argv.includes("--fix")) {
     commandLineOptions.push("--fix")
 }
@@ -34,7 +34,7 @@ const fileGlob = "{src, test}/**/*.tsx";
 const absoluteFileGlob = path.resolve(process.cwd(), fileGlob);
 const anyFilesToLint = glob.sync(absoluteFileGlob)
 if (anyFilesToLint.length === 0) {
-    console.log("Not running ESLint because no files match the glob ")
+    console.log(`Not running ESLint because no files match the glob "${fileGlob}"`)
     process.exit();
 }
 
