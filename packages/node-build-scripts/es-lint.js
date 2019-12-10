@@ -2,7 +2,7 @@
 
 /**
  * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- * @fileoverview Runs TSLint, with support for generating JUnit report
+ * @fileoverview Runs ESLint, with support for generating JUnit report
  */
 
 // @ts-check
