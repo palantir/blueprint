@@ -18,6 +18,7 @@
 // tslint:disable: no-invalid-template-strings
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
+import * as dedent from "dedent";
 import { classesConstantsRule } from "../classes-constants";
 
 const ruleTester = new TSESLint.RuleTester({
@@ -26,54 +27,127 @@ const ruleTester = new TSESLint.RuleTester({
         ecmaFeatures: {
             jsx: true,
         },
+        sourceType: "module",
     },
 });
 
 ruleTester.run("classes-constants", classesConstantsRule, {
     invalid: [
+        // literal string
         {
-            code: `<div className="pt-fill" />`,
+            code: dedent`<div className="pt-fill" />`,
             errors: [{ messageId: "useBlueprintClasses", column: 16, line: 1 }],
-            output: `<div className={Classes.FILL} />`,
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                <div className={Classes.FILL} />
+            `,
         },
+        // literal string with other classes
         {
             code: `<div className="pt-fill and-some-other-things" />`,
             errors: [{ messageId: "useBlueprintClasses", column: 16, line: 1 }],
-            output: "<div className={`${Classes.FILL} and-some-other-things`} />",
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                <div className={${"`${Classes.FILL} and-some-other-things`"}} />
+            `,
         },
 
+        // literal string inside curly brackets
         {
             code: `<div className={"pt-fill"} />`,
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
-            output: `<div className={Classes.FILL} />`,
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                <div className={Classes.FILL} />
+            `,
         },
+        // literal string and other classes inside curly brackets
         {
             code: `<div className={"pt-fill and-some-other-things"} />`,
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
-            output: "<div className={`${Classes.FILL} and-some-other-things`} />",
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                <div className={${"`${Classes.FILL} and-some-other-things`"}} />
+            `,
         },
 
+        // template string
         {
             code: "<div className={`pt-fill`} />",
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
-            output: "<div className={Classes.FILL} />",
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                <div className={Classes.FILL} />
+            `,
         },
+        // template string and other classes
         {
             code: "<div className={`pt-fill and-some-other-things`} />",
             errors: [{ messageId: "useBlueprintClasses", column: 17, line: 1 }],
-            output: "<div className={`${Classes.FILL} and-some-other-things`} />",
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                <div className={${"`${Classes.FILL} and-some-other-things`"}} />
+            `,
         },
 
+        // function usage
         {
-            code: `classNames("pt-fill")`,
+            code: `classNames("pt-fill");`,
             errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
-            output: "classNames(Classes.FILL)",
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                classNames(Classes.FILL);
+            `,
         },
 
+        // array index usage
         {
-            code: `classNames["pt-fill"] = true`,
+            code: `classNames["pt-fill"] = true;`,
             errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
-            output: "classNames[Classes.FILL] = true",
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                classNames[Classes.FILL] = true;
+            `,
+        },
+
+        // adding import to existing import
+
+        {
+            code: dedent`
+                import { Dialog } from "@blueprintjs/core";
+
+                classNames["pt-fill"] = true;
+            `,
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 3 }],
+            output: dedent`
+                import { Classes, Dialog } from "@blueprintjs/core";
+
+                classNames[Classes.FILL] = true;
+            `,
+        },
+
+        // adding import before existing non-blueprint import
+        {
+            code: dedent`
+                import { Something } from "somewhere";
+
+                classNames["pt-fill"] = true;
+            `,
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 3 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+                import { Something } from "somewhere";
+
+                classNames[Classes.FILL] = true;
+            `,
         },
     ],
     valid: [

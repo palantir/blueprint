@@ -15,10 +15,10 @@
  */
 
 // tslint:disable: object-literal-sort-keys
-// tslint:disable: no-submodule-imports
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
-import { createRule } from "./utils";
+import { addImportToFile } from "./utils/addImportToFile";
+import { createRule } from "./utils/createRule";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
 // currently support pt- and bp3- prefixes.
@@ -62,9 +62,29 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
         context.report({
             messageId: "useBlueprintClasses",
             node,
-            fix: fixer => fixer.replaceText(node, replacementText),
+            fix: fixer => {
+                const program = getProgram(node);
+                const fixes = [fixer.replaceText(node, replacementText)];
+
+                if (program !== undefined) {
+                    fixes.push(addImportToFile(program, fixer, ["Classes"], "@blueprintjs/core"));
+                }
+
+                return fixes;
+            },
         });
     }
+}
+
+function getProgram(node: TSESTree.BaseNode & { type: AST_NODE_TYPES }): TSESTree.Program | undefined {
+    let curr = node;
+    while (curr.parent != null) {
+        curr = curr.parent;
+    }
+    if (curr.type === AST_NODE_TYPES.Program) {
+        return curr as TSESTree.Program;
+    }
+    return undefined;
 }
 
 function getAllMatches(className: string) {
