@@ -19,6 +19,7 @@ import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils"
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
+import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
 // currently support pt- and bp3- prefixes.
@@ -63,9 +64,10 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
             messageId: "useBlueprintClasses",
             node,
             fix: fixer => {
-                const program = getProgram(node);
                 const fixes = [fixer.replaceText(node, replacementText)];
 
+                // Add import for the Classes enum
+                const program = getProgram(node);
                 if (program !== undefined) {
                     fixes.push(addImportToFile(program, fixer, ["Classes"], "@blueprintjs/core"));
                 }
@@ -74,17 +76,6 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
             },
         });
     }
-}
-
-function getProgram(node: TSESTree.BaseNode & { type: AST_NODE_TYPES }): TSESTree.Program | undefined {
-    let curr = node;
-    while (curr.parent != null) {
-        curr = curr.parent;
-    }
-    if (curr.type === AST_NODE_TYPES.Program) {
-        return curr as TSESTree.Program;
-    }
-    return undefined;
 }
 
 function getAllMatches(className: string) {

@@ -24,6 +24,7 @@ module.exports = {
             plugins: ["@blueprintjs/blueprint"],
             rules: {
                 "@blueprintjs/blueprint/classes-constants": "error",
+                "@blueprintjs/blueprint/html-components": "error",
             },
         },
     },

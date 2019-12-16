@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-import { classesConstantsRule } from "./classes-constants";
-import { htmlComponentsRule } from "./html-components";
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
 
-// tslint:disable-next-line: no-default-export
-export default {
-    "classes-constants": classesConstantsRule,
-    "html-components": htmlComponentsRule,
-};
+export function getProgram(node: TSESTree.BaseNode & { type: AST_NODE_TYPES }): TSESTree.Program | undefined {
+    let curr = node;
+    while (curr.parent != null) {
+        curr = curr.parent;
+    }
+    if (curr.type === AST_NODE_TYPES.Program) {
+        return curr as TSESTree.Program;
+    }
+    return undefined;
+}
