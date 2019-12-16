@@ -134,17 +134,19 @@ ruleTester.run("classes-constants", classesConstantsRule, {
             `,
         },
 
-        // adding import before existing non-blueprint import
+        // adding import in alphabetical order
         {
             code: dedent`
-                import { Something } from "somewhere";
+                import { Something } from "@a/somewhere";
+                import { SomethingElse } from "somewhere";
 
                 classNames["pt-fill"] = true;
             `,
-            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 3 }],
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 4 }],
             output: dedent`
+                import { Something } from "@a/somewhere";
                 import { Classes } from "@blueprintjs/core";
-                import { Something } from "somewhere";
+                import { SomethingElse } from "somewhere";
 
                 classNames[Classes.FILL] = true;
             `,

@@ -32,19 +32,42 @@ export function addImportToFile(
         nodeToModify !== undefined &&
         nodeToModify.specifiers.every(node => node.type === AST_NODE_TYPES.ImportSpecifier)
     ) {
-        // module imports
+        // Module imports
         const existingImports = nodeToModify.specifiers.map(node => node.local.name);
         const newImports = Array.from(new Set(existingImports.concat(imports))).sort();
         const importString = `import { ${newImports.join(", ")} } from "${nodeToModify.source.value}";`;
         return fixer.replaceText(nodeToModify, importString);
     } else {
-        // default imports
+        // Default imports
 
-        // if we are adding the first import, add a 2nd new line afterwards
+        // Find the node thats alphabetically after the new one, so we can insert before it
+        const followingImportNode = fileImports.find(imp => {
+            return imp.source.value != null && compare(imp.source.value.toString(), packageName) === 1;
+        });
+
         const onlyImport = fileImports.length === 0;
         return fixer.insertTextBefore(
-            program.body[0],
+            followingImportNode !== undefined ? followingImportNode : program.body[0],
+            // If we are adding the first import, add a 2nd new line afterwards
             `import { ${imports.sort().join(", ")} } from "${packageName}";\n${onlyImport ? "\n" : ""}`,
         );
     }
+}
+
+function isLow(value: string) {
+    return value[0] === "." || value[0] === "/";
+}
+
+// taken from tslint orderedImportRules
+function compare(a: string, b: string): 0 | 1 | -1 {
+    if (isLow(a) && !isLow(b)) {
+        return 1;
+    } else if (!isLow(a) && isLow(b)) {
+        return -1;
+    } else if (a > b) {
+        return 1;
+    } else if (a < b) {
+        return -1;
+    }
+    return 0;
 }
