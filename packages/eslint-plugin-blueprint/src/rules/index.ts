@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { blueprintClassesConstantsRule } from "./blueprint-classes-constants";
+import { classesConstantsRule } from "./classes-constants";
 
 // tslint:disable-next-line: no-default-export
 export default {
-    "blueprint-classes-constants": blueprintClassesConstantsRule,
+    "classes-constants": classesConstantsRule,
 };

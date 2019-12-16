@@ -17,5 +17,5 @@
 import { ESLintUtils } from "@typescript-eslint/experimental-utils";
 
 export const createRule = ESLintUtils.RuleCreator(
-    name => `https://github.com/palantir/blueprint/tree/develop/packages/eslint-config/src/rules/${name}.ts`,
+    name => `https://github.com/palantir/blueprint/tree/develop/packages/eslint-plugin-blueprint/src/rules/${name}.ts`,
 );

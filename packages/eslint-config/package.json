@@ -3,6 +3,7 @@
     "version": "1.9.0",
     "description": "ESLint configuration for @blueprintjs packages",
     "dependencies": {
+        "@blueprintjs/eslint-plugin-blueprint": "0.0.0",
         "@typescript-eslint/eslint-plugin": "^2.11.0",
         "@typescript-eslint/eslint-plugin-tslint": "^2.10.0",
         "@typescript-eslint/parser": "^2.10.0",

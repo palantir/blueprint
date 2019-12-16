@@ -18,7 +18,7 @@
 // tslint:disable: no-invalid-template-strings
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
-import { blueprintClassesConstantsRule } from "../blueprint-classes-constants";
+import { classesConstantsRule } from "../classes-constants";
 
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
@@ -29,7 +29,7 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-ruleTester.run("blueprint-classes-constants", blueprintClassesConstantsRule, {
+ruleTester.run("classes-constants", classesConstantsRule, {
     invalid: [
         {
             code: `<div className="pt-fill" />`,

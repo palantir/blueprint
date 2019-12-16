@@ -23,7 +23,7 @@ module.exports = {
         recommended: {
             plugins: ["@blueprintjs/blueprint"],
             rules: {
-                "blueprint-classes-constants": "error",
+                "@blueprintjs/blueprint/classes-constants": "error",
             },
         },
     },

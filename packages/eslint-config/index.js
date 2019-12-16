@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+
 module.exports = {
     env: {
         browser: true,
@@ -22,6 +23,7 @@ module.exports = {
     plugins: [
         "@typescript-eslint",
         "@typescript-eslint/tslint",
+        "@blueprintjs/blueprint"
     ],
     extends: [
         "plugin:@blueprintjs/blueprint/recommended"

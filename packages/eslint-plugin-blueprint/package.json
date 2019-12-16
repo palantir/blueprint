@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-plugin-blueprint",
-    "version": "1.9.0",
+    "version": "0.0.0",
     "description": "ESLint configuration for @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {

@@ -26,8 +26,8 @@ const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]?((pt|bp3)-(?!icon-?)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
-export const blueprintClassesConstantsRule = createRule<[], MessageIds>({
-    name: "blueprint-classes-constants",
+export const classesConstantsRule = createRule<[], MessageIds>({
+    name: "classes-constants",
     meta: {
         docs: {
             description: "Enforce usage of Classes constants over namespaced string literals.",
