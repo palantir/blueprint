@@ -1,0 +1,13 @@
+{
+    "extends": "../../../config/tsconfig.base",
+    "compilerOptions": {
+        "lib": ["es6", "dom"],
+        "module": "commonjs",
+        "outDir": "../lib",
+        "strict": true,
+        "rootDir": "."
+    },
+    "exclude": [
+        "*/__tests__"
+    ]
+}

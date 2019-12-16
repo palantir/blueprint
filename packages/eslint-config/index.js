@@ -23,6 +23,9 @@ module.exports = {
         "@typescript-eslint",
         "@typescript-eslint/tslint",
     ],
+    extends: [
+        "plugin:@blueprintjs/blueprint/recommended"
+    ],
     parser: "@typescript-eslint/parser",
     parserOptions: {
         sourceType: "module",
