@@ -20,6 +20,7 @@ import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslin
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
 import { getProgram } from "./utils/getProgram";
+import { FixList } from "./utils/fixList";
 
 const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
 
@@ -60,23 +61,25 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.JSXOpeningE
                 },
                 node,
                 fix: fixer => {
-                    const fixes = [fixer.replaceText(tagNameNode, newTagName)];
+                    const fixes = new FixList();
 
+                    fixes.addFixes(fixer.replaceText(tagNameNode, newTagName));
+
+                    // Find closing tag after this opening tag to replace both in one failure
                     if (!node.selfClosing) {
-                        // find closing tag after this opening tag to replace both in one failure
                         const closingNode = (node.parent as TSESTree.JSXElement).closingElement;
                         if (closingNode != null) {
-                            fixes.push(fixer.replaceText(closingNode.name, newTagName));
+                            fixes.addFixes(fixer.replaceText(closingNode.name, newTagName));
                         }
                     }
 
                     // Add import for the new tag
                     const program = getProgram(node);
                     if (program !== undefined) {
-                        fixes.push(addImportToFile(program, fixer, [newTagName], "@blueprintjs/core"));
+                        fixes.addFixes(addImportToFile(program, [newTagName], "@blueprintjs/core")(fixer));
                     }
 
-                    return fixes;
+                    return fixes.getFixes();
                 },
             });
         }

@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-// tslint:disable: blueprint-classes-constants
-// tslint:disable: no-invalid-template-strings
-
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import * as dedent from "dedent";
 import { htmlComponentsRule } from "../html-components";

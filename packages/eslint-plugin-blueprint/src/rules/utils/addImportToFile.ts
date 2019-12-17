@@ -15,14 +15,17 @@
  */
 
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
-import { RuleFix, RuleFixer } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+import { ReportFixFunction } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
 
-export function addImportToFile(
+/**
+ * Return a function which when provided with a fixer will produce a RuleFix to add the
+ * specified imports from the specified packageName at the top of the file (in alphabetical order)
+ */
+export const addImportToFile = (
     program: TSESTree.Program,
-    fixer: RuleFixer,
     imports: string[],
     packageName: string,
-): RuleFix {
+): ReportFixFunction => fixer => {
     const fileImports = program.body.filter(
         node => node.type === AST_NODE_TYPES.ImportDeclaration,
     ) as TSESTree.ImportDeclaration[];
@@ -52,7 +55,7 @@ export function addImportToFile(
             `import { ${imports.sort().join(", ")} } from "${packageName}";\n${onlyImport ? "\n" : ""}`,
         );
     }
-}
+};
 
 function isLow(value: string) {
     return value[0] === "." || value[0] === "/";

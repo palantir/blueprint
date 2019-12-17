@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// tslint:disable: object-literal-sort-keys
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
 import { createRule } from "./utils/createRule";
@@ -23,9 +22,9 @@ export const OPTION_COMPONENT = "component";
 export const OPTION_LITERAL = "literal";
 
 type Options = ["component" | "literal"];
-
 type MessageIds = "component" | "literal";
 
+// tslint:disable: object-literal-sort-keys
 export const iconComponentsRule = createRule<Options, MessageIds>({
     name: "icon-components",
     meta: {
@@ -52,9 +51,10 @@ export const iconComponentsRule = createRule<Options, MessageIds>({
         JSXAttribute: node => create(context, node),
     }),
 });
+// tslint:enable: object-literal-sort-keys
 
 function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAttribute): void {
-    const option = context.options[0];
+    const option = context.options[0] || OPTION_COMPONENT;
 
     if (node.name.name !== "icon") {
         return;
@@ -68,12 +68,12 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
         const iconName = `<${pascalCase(valueNode.value.toString())}Icon />`;
 
         context.report({
-            messageId: OPTION_COMPONENT,
-            node,
             data: {
                 component: iconName,
             },
             fix: fixer => fixer.replaceText(valueNode, `{${iconName}}`),
+            messageId: OPTION_COMPONENT,
+            node,
         });
     } else if (valueNode.type === AST_NODE_TYPES.JSXExpressionContainer && option === OPTION_LITERAL) {
         // <TickIcon /> -> "tick"
@@ -87,12 +87,12 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
                 const iconName = `"${dashCase(match[1])}"`;
 
                 context.report({
-                    messageId: OPTION_LITERAL,
-                    node,
                     data: {
                         literal: iconName,
                     },
                     fix: fixer => fixer.replaceText(valueNode, iconName),
+                    messageId: OPTION_LITERAL,
+                    node,
                 });
             }
         }

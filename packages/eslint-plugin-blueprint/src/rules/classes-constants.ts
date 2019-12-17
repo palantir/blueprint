@@ -20,6 +20,7 @@ import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslin
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
 import { getProgram } from "./utils/getProgram";
+import { FixList } from "./utils/fixList";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
 // currently support pt- and bp3- prefixes.
@@ -64,15 +65,17 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
             messageId: "useBlueprintClasses",
             node,
             fix: fixer => {
-                const fixes = [fixer.replaceText(node, replacementText)];
+                const fixes = new FixList();
+
+                fixes.addFixes(fixer.replaceText(node, replacementText));
 
                 // Add import for the Classes enum
                 const program = getProgram(node);
                 if (program !== undefined) {
-                    fixes.push(addImportToFile(program, fixer, ["Classes"], "@blueprintjs/core"));
+                    fixes.addFixes(addImportToFile(program, ["Classes"], "@blueprintjs/core")(fixer));
                 }
 
-                return fixes;
+                return fixes.getFixes();
             },
         });
     }

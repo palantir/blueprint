@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// tslint:disable: no-invalid-template-strings
-
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import { iconComponentsRule, OPTION_COMPONENT, OPTION_LITERAL } from "../icon-components";
 
@@ -30,6 +28,11 @@ const ruleTester = new TSESLint.RuleTester({
 
 ruleTester.run("icon-components", iconComponentsRule, {
     invalid: [
+        {
+            code: `<Button icon="tick" />`,
+            errors: [{ messageId: OPTION_COMPONENT, column: 9, line: 1, data: { [OPTION_COMPONENT]: "<TickIcon />" } }],
+            output: `<Button icon={<TickIcon />} />`,
+        },
         {
             code: `<Button icon="tick" />`,
             errors: [{ messageId: OPTION_COMPONENT, column: 9, line: 1, data: { [OPTION_COMPONENT]: "<TickIcon />" } }],

@@ -25,6 +25,7 @@ module.exports = {
             rules: {
                 "@blueprintjs/blueprint/classes-constants": "error",
                 "@blueprintjs/blueprint/html-components": "error",
+                "@blueprintjs/blueprint/icon-components": "error",
             },
         },
     },
