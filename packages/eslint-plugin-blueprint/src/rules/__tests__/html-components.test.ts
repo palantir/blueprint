@@ -31,7 +31,7 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-ruleTester.run("classes-constants", htmlComponentsRule, {
+ruleTester.run("html-components", htmlComponentsRule, {
     invalid: [
         {
             code: "<h1 />",
