@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+ const path = require("path");
+
 
 module.exports = {
     env: {
@@ -40,7 +42,7 @@ module.exports = {
     rules: {
         // run the tslint rules which are not yet converted (run inside eslint)
         "@typescript-eslint/tslint/config": ["error", {
-          "lintFile": "../../tslint.json"
+          "lintFile": path.resolve(__dirname, "./tslint.json")
         }]
     }
 }

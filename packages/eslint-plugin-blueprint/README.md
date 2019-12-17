@@ -1,58 +1,46 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-## Note: This package is deprecated in favour of `@blueprintjs/eslint-plugin-blueprint`
-
-[TSLint is deprecated](https://medium.com/palantir/tslint-in-2019-1a144c2317a9), and as such Blueprint is transitioning to ESLint. Blueprint is now using ESLint in its own repository, and as such this package will be removed in a future major version.
-
-# [Blueprint](http://blueprintjs.com/) [TSLint](https://palantir.github.io/tslint) configuration
+# [Blueprint](http://blueprintjs.com/) [eslint](https://eslint.org/) plugin
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains configuration for [TSLint](https://palantir.github.io/tslint) (the TypeScript linter) and a handful of new rules specifically for use when developing against Blueprint libraries.
+This package contains the [ESLint](https://eslint.org/) plugin for Blueprint - handful of new rules specifically for use when developing against Blueprint libraries.
 
 **Key features:**
 
-- React & JSX rules from [tslint-react](https://github.com/palantir/tslint-react).
-- [Prettier](https://github.com/prettier/prettier) integration for consistent code style and automatic fixes.
 - [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 
 ```
-yarn add @blueprintjs/tslint-config tslint
+yarn add @blueprintjs/eslint-plugin-blueprint
 ```
 
 ## Usage
 
-Simply extend this package in your `tslint.json` to use the default rules configuration. This configuration includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages.
+Simply add this plugin in your `.eslintrc` file to use the add the plugin.  The plugin includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages, but does not turn them on by default.
 
-`tslint.json`
+`.eslintrc`
 ```json
-{
-  "extends": "@blueprintjs/tslint-config"
-}
+plugins: [
+    "@blueprintjs/blueprint"
+]
 ```
 
 ### Rules-only usage
 
-To enable the Blueprint-specific rules _only_ without the full TSLint config, extend the `blueprint-rules` config inside the package:
+To enable the Blueprint-specific rules, extend the `plugin:@blueprintjs/blueprint/recommended` config inside the package:
 
 `tslint.json`
 ```diff
-{
-  "extends": [
-+   "@blueprintjs/tslint-config/blueprint-rules"
-  ]
-}
+extends: [
++    "plugin:@blueprintjs/blueprint/recommended"
+]
 ```
-
-### Editor integration
-
-⭐️ **VS Code:** Enable the `tslint.autoFixOnSave` option to fix all fixable failures every time you save. Most importantly, this will automatically apply the Prettier formatting fixes!
 
 ## Rules
 
-### `blueprint-classes-constants`
+### `@blueprintjs/blueprint/classes-constants`
 
 Enforce usage of `Classes` constants over namespaced string literals.
 
@@ -61,7 +49,7 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 ```json
 {
   "rules": {
-    "blueprint-classes-constants": true,
+    "@blueprintjs/blueprint/classes-constants": ["error"],
   }
 }
 ```
@@ -71,7 +59,25 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 +const element = <div className={Classes.NAVBAR} />;
 ```
 
-### `blueprint-icon-components`
+### `@blueprintjs/blueprint/html-components`
+
+Enforce usage of Blueprint components over regular html components.
+
+- h1-6 -> H1-6
+- code -> Code
+- pre -> Pre
+- blockquote -> Blockquote
+- table -> HTMLTable
+
+```js
+{
+  "rules": {
+    "@blueprintjs/blueprint/html-components": ["error"],
+  }
+}
+```
+
+### `@blueprintjs/blueprint/icon-components`
 
 Enforce usage of JSX `Icon` components over `IconName` string literals (or vice-versa) in `icon` JSX props. Note that this rule only supports hardcoded values in the `icon` prop; it does not handle expressions or conditionals.
 
@@ -85,11 +91,9 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 {
   "rules": {
     // default uses "component"
-    "blueprint-icon-components": true,
+    "@blueprintjs/blueprint/icon-components": ["error"],
     // expanded syntax
-    "blueprint-icon-components": {
-      "options": ["component" | "literal"] // choose one
-    }
+    "@blueprintjs/blueprint/icon-components": ["error", "component" | "literal"] // choose one
   }
 }
 ```
