@@ -158,6 +158,11 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             if (input != null) {
                 this.inputElement = input;
 
+                // temporary fix for #3882
+                if (!this.props.alwaysRenderInput) {
+                    this.inputElement.focus();
+                }
+
                 if (this.state != null && this.state.isEditing) {
                     const supportsSelection = inputSupportsSelection(input);
                     if (supportsSelection) {
