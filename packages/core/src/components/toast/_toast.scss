@@ -173,8 +173,6 @@ $toast-margin: $pt-grid-size * 2 !default;
 
   &.#{$ns}-toast-container-top {
     top: 0;
-    // clear opposite side cuz .#{$ns}-overlay has all sides 0'ed
-    bottom: auto;
   }
 
   &.#{$ns}-toast-container-bottom {
