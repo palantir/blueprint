@@ -55,7 +55,11 @@ export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
         const { value, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={value[RangeIndex.START]} type="start" intentAfter={Intent.PRIMARY} />
+                <MultiSlider.Handle
+                    value={value[RangeIndex.START]}
+                    type="start"
+                    intentAfter={props.intent || Intent.PRIMARY}
+                />
                 <MultiSlider.Handle value={value[RangeIndex.END]} type="end" />
             </MultiSlider>
         );
