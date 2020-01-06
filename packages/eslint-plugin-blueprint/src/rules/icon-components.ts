@@ -55,6 +55,7 @@ export const iconComponentsRule = createRule<Options, MessageIds>({
 
 function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAttribute): void {
     const option = context.options[0] || OPTION_COMPONENT;
+    const sourceCode = context.getSourceCode();
 
     if (node.name.name !== "icon") {
         return;
@@ -65,7 +66,7 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
         // no-op
     } else if (valueNode.type === AST_NODE_TYPES.Literal && valueNode.value != null && option === OPTION_COMPONENT) {
         // "tick" -> <TickIcon />
-        const iconName = `<${pascalCase(valueNode.value.toString())}Icon />`;
+        const iconName = `<${pascalCase(sourceCode.getText(valueNode))}Icon />`;
 
         context.report({
             data: {
@@ -77,24 +78,19 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
         });
     } else if (valueNode.type === AST_NODE_TYPES.JSXExpressionContainer && option === OPTION_LITERAL) {
         // <TickIcon /> -> "tick"
-        const identifierNode =
-            valueNode.expression.type === AST_NODE_TYPES.JSXElement
-                ? valueNode.expression.openingElement.name
-                : undefined;
-        if (identifierNode !== undefined && identifierNode.type === AST_NODE_TYPES.JSXIdentifier) {
-            const match = /(\w+)Icon/.exec(identifierNode.name);
-            if (match != null) {
-                const iconName = `"${dashCase(match[1])}"`;
+        const componentText = sourceCode.getText(valueNode.expression);
+        const match = /<(\w+)Icon /.exec(componentText);
+        if (match != null) {
+            const iconName = `"${dashCase(match[1])}"`;
 
-                context.report({
-                    data: {
-                        literal: iconName,
-                    },
-                    fix: fixer => fixer.replaceText(valueNode, iconName),
-                    messageId: OPTION_LITERAL,
-                    node,
-                });
-            }
+            context.report({
+                data: {
+                    literal: iconName,
+                },
+                fix: fixer => fixer.replaceText(valueNode, iconName),
+                messageId: OPTION_LITERAL,
+                node,
+            });
         }
     }
 }
