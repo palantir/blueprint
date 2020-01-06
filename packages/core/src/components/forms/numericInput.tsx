@@ -213,12 +213,12 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const didValuePropChange = props.value !== state.prevValueProp;
         const value = getValueOrEmptyValue(didValuePropChange ? props.value : state.value);
 
+        const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
+
         const sanitizedValue =
             value !== NumericInput.VALUE_EMPTY
-                ? NumericInput.getSanitizedValue(value, /* delta */ 0, props.min, props.max)
+                ? NumericInput.getSanitizedValue(value, stepMaxPrecision, props.min, props.max)
                 : NumericInput.VALUE_EMPTY;
-
-        const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
 
         // if a new min and max were provided that cause the existing value to fall
         // outside of the new bounds, then clamp the value to the new valid range.
