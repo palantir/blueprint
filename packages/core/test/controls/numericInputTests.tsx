@@ -893,6 +893,16 @@ describe("<NumericInput>", () => {
             expect(component.find(InputGroup).find(Button)).to.exist;
         });
 
+        it("passed decimal value should be rounded by stepSize", () => {
+            const component = mount(<NumericInput value={9.001} min={0} />);
+            expect(component.find("input").prop("value")).to.equal("9");
+        });
+
+        it("passed decimal value should be rounded by minorStepSize", () => {
+            const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} />);
+            expect(component.find("input").prop("value")).to.equal("9.01");
+        });
+
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
             const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
             const incrementButton = component.find(Button).first();
