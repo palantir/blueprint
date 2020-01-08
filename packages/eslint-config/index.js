@@ -28,14 +28,13 @@ module.exports = {
         sourceType: "module",
         ecmaFeatures: {
             jsx: true,
-
         },
         project: "**/tsconfig.json",
     },
     rules: {
         // run the tslint rules which are not yet converted (run inside eslint)
         "@typescript-eslint/tslint/config": ["error", {
-          "lintFile": "../../tslint.json"
-        }]
-    }
-}
+            "lintFile": "../../tslint.json",
+        }],
+    },
+};
