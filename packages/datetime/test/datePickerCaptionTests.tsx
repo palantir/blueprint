@@ -110,7 +110,7 @@ describe("<DatePickerCaption>", () => {
                 date={new Date(2015, 0)}
                 locale="en"
                 localeUtils={LOCALE_UTILS}
-                maxDate={new Date(2020, 0)}
+                maxDate={new Date(2030, 0)}
                 minDate={new Date(2010, 0)}
                 months={undefined}
                 {...props}

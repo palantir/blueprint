@@ -80,7 +80,7 @@ describe("<DateRangeInput>", () => {
     const INVALID_MESSAGE = "Custom invalid-date message";
 
     const OUT_OF_RANGE_TEST_MIN = new Date(2000, 1, 1);
-    const OUT_OF_RANGE_TEST_MAX = new Date(2020, 1, 1);
+    const OUT_OF_RANGE_TEST_MAX = new Date(2030, 1, 1);
     const OUT_OF_RANGE_START_DATE = new Date(1000, 1, 1);
     const OUT_OF_RANGE_START_STR = DateTestUtils.toDateString(OUT_OF_RANGE_START_DATE);
     const OUT_OF_RANGE_END_DATE = new Date(3000, 1, 1);
