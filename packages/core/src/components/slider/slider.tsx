@@ -46,14 +46,14 @@ export class Slider extends AbstractPureComponent2<ISliderProps> {
     public static defaultProps: ISliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,
+        intent: Intent.PRIMARY,
         value: 0,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
     public render() {
-        const { initialValue, value, onChange, onRelease, ...props } = this.props;
-        const intent = props.intent || Intent.PRIMARY;
+        const { initialValue, intent, value, onChange, onRelease, ...props } = this.props;
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
