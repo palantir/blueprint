@@ -148,7 +148,6 @@ Lefthand navigation menu
 
 .docs-nav-title {
   @include pt-flex-container(row);
-  flex-wrap: wrap;
   align-items: center;
 }
 

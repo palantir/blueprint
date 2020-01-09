@@ -173,8 +173,6 @@ $toast-margin: $pt-grid-size * 2 !default;
 
   &.#{$ns}-toast-container-top {
     top: 0;
-    // clear opposite side cuz .#{$ns}-overlay has all sides 0'ed
-    bottom: auto;
   }
 
   &.#{$ns}-toast-container-bottom {
@@ -198,6 +196,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   &.#{$ns}-toast-enter:not(.#{$ns}-toast-enter-active) ~ .#{$ns}-toast,
   &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active),
   &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active) ~ .#{$ns}-toast,
+  &.#{$ns}-toast-exit-active ~ .#{$ns}-toast,
   &.#{$ns}-toast-leave-active ~ .#{$ns}-toast {
     transform: translateY($toast-margin + $toast-height);
   }

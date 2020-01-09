@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/core",
-  "version": "3.22.2",
+  "version": "3.22.3",
   "description": "Core styles & components",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -10,8 +10,11 @@
   "unpkg": "dist/core.bundle.js",
   "sideEffects": [
     "*.css",
+    "lib/esm/components/index.js",
     "lib/esm/common/configureDom4.js",
+    "lib/esnext/components/index.js",
     "lib/esnext/common/configureDom4.js",
+    "lib/cjs/components/index.js",
     "lib/cjs/common/configureDom4.js"
   ],
   "bin": {
@@ -34,7 +37,7 @@
     "lint": "run-p lint:scss lint:es",
     "lint:scss": "sass-lint",
     "lint:es": "es-lint",
-    "lint:fix": "es-lint --fix",
+    "lint-fix": "es-lint --fix",
     "test": "run-s test:typeCheck test:iso test:karma",
     "test:typeCheck": "tsc -p ./test",
     "test:iso": "mocha test/isotest.js",
