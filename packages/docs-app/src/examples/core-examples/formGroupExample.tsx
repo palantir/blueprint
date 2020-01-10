@@ -80,11 +80,10 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
                     inline={inline}
                     intent={intent}
                     label={label && "Label"}
-                    labelFor="text-input"
                     labelInfo={requiredLabel && "(required)"}
                 >
-                    <Switch id="text-input" label="Engage the hyperdrive" disabled={disabled} />
-                    <Switch id="text-input" label="Initiate thrusters" disabled={disabled} />
+                    <Switch label="Engage the hyperdrive" disabled={disabled} />
+                    <Switch label="Initiate thrusters" disabled={disabled} />
                 </FormGroup>
             </Example>
         );
