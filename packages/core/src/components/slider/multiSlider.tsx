@@ -20,7 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps, IIntentProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { HandleInteractionKind, HandleType, IHandleProps } from "./handleProps";
