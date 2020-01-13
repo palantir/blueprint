@@ -582,6 +582,24 @@ describe("<Table>", function(this) {
             expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
         });
 
+        it("does not try to render cells that no longer exist", () => {
+            const onCompleteRenderSpy = sinon.spy();
+            let numRows = 2;
+            const cellRenderer = (rowIndex: number) => {
+                if (rowIndex >= numRows) {
+                    throw new Error(`There is no row with index ${rowIndex}`);
+                }
+                return <Cell>Row ${rowIndex}</Cell>;
+            };
+            const table = mount(
+                <Table numRows={numRows} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
+                    <Column cellRenderer={cellRenderer} />
+                </Table>,
+            );
+            numRows = 1;
+            expect(() => table.setProps({ numRows })).does.not.throw();
+        });
+
         it("triggers immediately on mount with RenderMode.BATCH_ON_UPDATE", () => {
             const onCompleteRenderSpy = sinon.spy();
             mount(
