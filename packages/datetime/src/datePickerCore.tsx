@@ -43,7 +43,7 @@ export interface IDatePickerBaseProps {
     /**
      * Collection of functions that provide internationalization support.
      */
-    localeUtils?: typeof LocaleUtils;
+    localeUtils?: LocaleUtils;
 
     /**
      * The latest date the user can select.

@@ -20,12 +20,12 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { HTMLSelect } from "@blueprintjs/core";
-import { ClassNames } from "react-day-picker";
+import { ClassNames, LocaleUtils } from "react-day-picker";
 import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
-import { Classes, IDatePickerLocaleUtils } from "../src/index";
+import { Classes } from "../src/index";
 
 describe("<DatePickerCaption>", () => {
-    const LOCALE_UTILS: IDatePickerLocaleUtils = {
+    const LOCALE_UTILS: LocaleUtils = {
         getMonths: () => [
             "January",
             "February",
