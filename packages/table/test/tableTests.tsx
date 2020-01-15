@@ -1163,7 +1163,10 @@ describe("<Table>", function(this) {
                 expectedCoords: IFocusedCellCoordinates,
             ) {
                 it(name, () => {
-                    const selectedRegions: IRegion[] = [{ cols: [0, 1], rows: [0, 1] }, { cols: [2, 2], rows: [2, 2] }];
+                    const selectedRegions: IRegion[] = [
+                        { cols: [0, 1], rows: [0, 1] },
+                        { cols: [2, 2], rows: [2, 2] },
+                    ];
                     const tableHarness = mount(
                         <Table
                             numRows={5}
