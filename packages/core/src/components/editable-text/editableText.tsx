@@ -250,7 +250,8 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
 
     public componentDidUpdate(prevProps: IEditableTextProps, prevState: IEditableTextState) {
         const state: IEditableTextState = {};
-        if (this.props.value != null && this.props.value !== prevProps.value) {
+        // allow setting the value to undefined/null in controlled mode
+        if (this.props.value !== prevProps.value && (prevProps.value != null || this.props.value != null)) {
             state.value = this.props.value;
         }
         if (this.props.isEditing != null && this.props.isEditing !== prevProps.isEditing) {
