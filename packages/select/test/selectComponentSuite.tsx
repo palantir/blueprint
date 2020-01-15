@@ -31,7 +31,8 @@ import { IListItemsProps } from "../src/index";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
-    findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper => wrapper.find("input"),
+    findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper =>
+        wrapper.find("input") as ReactWrapper<HTMLInputProps>,
     findItems: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper => wrapper.find("a"),
 ) {
     const testProps = {

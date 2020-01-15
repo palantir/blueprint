@@ -212,7 +212,10 @@ describe("<OverflowList>", function(this) {
 
         /** Asserts that the last call to `onOverflow` received the given item IDs. */
         wrapper.assertLastOnOverflowArgs = (ids: number[]) => {
-            assert.sameMembers(onOverflowSpy.lastCall.args[0].map((i: ITestItem) => i.id), ids);
+            assert.sameMembers(
+                onOverflowSpy.lastCall.args[0].map((i: ITestItem) => i.id),
+                ids,
+            );
             return wrapper;
         };
 
@@ -229,7 +232,11 @@ describe("<OverflowList>", function(this) {
         /** Assert ordered IDs of overflow items. */
         wrapper.assertOverflowItems = (...ids: number[]) => {
             const overflowItems = wrapper.find(TestOverflow).prop("items");
-            assert.sameMembers(overflowItems.map(it => it.id), ids, "overflow items");
+            assert.sameMembers(
+                overflowItems.map(it => it.id),
+                ids,
+                "overflow items",
+            );
             return wrapper;
         };
 
