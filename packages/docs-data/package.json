@@ -19,7 +19,7 @@
     "language-less": "github:atom/language-less",
     "marked": "^0.7.0",
     "semver": "^6.3.0",
-    "tree-sitter-typescript": "github:tree-sitter/tree-sitter-typescript#3684243ae16fca82bb337782759d7316fdf5f325"
+    "tree-sitter-typescript": "~0.16.1"
   },
   "repository": {
     "type": "git",

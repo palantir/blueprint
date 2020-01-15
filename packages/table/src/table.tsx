@@ -936,7 +936,8 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         const shouldInvalidateGrid =
             didChildrenChange ||
             this.props.columnWidths !== prevState.columnWidths ||
-            (this.props.rowHeights !== prevState.rowHeights || this.props.numRows !== prevProps.numRows) ||
+            this.props.rowHeights !== prevState.rowHeights ||
+            this.props.numRows !== prevProps.numRows ||
             (this.props.forceRerenderOnSelectionChange && this.props.selectedRegions !== prevProps.selectedRegions);
 
         if (shouldInvalidateGrid) {
