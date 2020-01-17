@@ -56,12 +56,12 @@ export interface ICollapseState {
     animationState: AnimationStates;
 
     /** The height that should be used for the content animations. This is a CSS value, not just a number. */
-    height: string;
+    height: string | undefined;
 
     /**
      * The most recent non-zero height (once a height has been measured upon first open; it is undefined until then)
      */
-    prevHeight: number | undefined;
+    heightWhenOpen: number | undefined;
 }
 
 /**
@@ -109,8 +109,12 @@ export enum AnimationStates {
     CLOSED,
 }
 
+interface ICollapseSnapshot {
+    height: number;
+}
+
 @polyfill
-export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState, ICollapseSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: ICollapseProps = {
@@ -126,26 +130,25 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
         if (isOpen) {
             switch (animationState) {
+                case AnimationStates.OPEN:
+                    // no-op
+                    break;
                 case AnimationStates.OPENING:
                     // allow Collapse#onDelayedStateChange() to handle the transition here
                     break;
-                case AnimationStates.OPEN:
-                    break;
                 default:
-                    return {
-                        animationState: AnimationStates.OPEN_START,
-                        height: state.prevHeight === undefined ? undefined : `${state.prevHeight}px`,
-                    };
+                    return { animationState: AnimationStates.OPEN_START };
             }
         } else {
             switch (animationState) {
+                case AnimationStates.CLOSED:
+                    // no-op
+                    break;
                 case AnimationStates.CLOSING:
                     // allow Collapse#onDelayedStateChange() to handle the transition here
                     break;
-                case AnimationStates.CLOSED:
-                    break;
                 default:
-                    return { animationState: AnimationStates.CLOSING_START, height: `${state.prevHeight}px` };
+                    return { animationState: AnimationStates.CLOSING_START };
             }
         }
 
@@ -154,8 +157,8 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
     public state: ICollapseState = {
         animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
-        height: "0px",
-        prevHeight: undefined,
+        height: undefined,
+        heightWhenOpen: undefined,
     };
 
     // The element containing the contents of the collapse.
@@ -169,12 +172,13 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
         const containerStyle = {
             height: isContentVisible ? this.state.height : undefined,
-            overflowY: (isAutoHeight ? "visible" : undefined) as "visible" | undefined,
+            overflowY: isAutoHeight ? "visible" : undefined,
             transition: isAutoHeight ? "none" : undefined,
         };
 
         const contentsStyle = {
-            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.prevHeight}px)`,
+            // only use heightWhenOpen while closing
+            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
             transition: isAutoHeight ? "none" : undefined,
         };
 
@@ -204,20 +208,19 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         }
     }
 
-    public componentDidUpdate() {
-        let height: number | undefined;
-
-        if (this.contents != null && this.contents.clientHeight !== 0) {
-            height = this.contents.clientHeight;
-            this.setState({
-                prevHeight: height,
-            });
-        }
-
+    public componentDidUpdate(_prevProps: ICollapseProps, _prevState: ICollapseState) {
         const { transitionDuration } = this.props;
         const { animationState } = this.state;
 
-        if (animationState === AnimationStates.CLOSING_START) {
+        if (animationState === AnimationStates.OPEN_START) {
+            const { clientHeight } = this.contents;
+            this.setState({
+                animationState: AnimationStates.OPENING,
+                height: `${clientHeight}px`,
+                heightWhenOpen: clientHeight,
+            });
+            this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
+        } else if (animationState === AnimationStates.CLOSING_START) {
             this.setTimeout(() =>
                 this.setState({
                     animationState: AnimationStates.CLOSING,
@@ -225,23 +228,17 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
                 }),
             );
             this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
-        } else if (animationState === AnimationStates.OPEN_START) {
-            this.setState({
-                animationState: AnimationStates.OPENING,
-                height: `${this.state.prevHeight}px`,
-            });
-            this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
         }
     }
 
     private contentsRefHandler = (el: HTMLElement) => {
         this.contents = el;
         if (this.contents != null) {
-            const prevHeight = this.contents.clientHeight;
+            const height = this.contents.clientHeight;
             this.setState({
                 animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
-                height: `${prevHeight}px`,
-                prevHeight,
+                height: height === 0 ? undefined : `${height}px`,
+                heightWhenOpen: height === 0 ? undefined : height,
             });
         }
     };
