@@ -109,12 +109,8 @@ export enum AnimationStates {
     CLOSED,
 }
 
-interface ICollapseSnapshot {
-    height: number;
-}
-
 @polyfill
-export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState, ICollapseSnapshot> {
+export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: ICollapseProps = {
@@ -208,7 +204,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         }
     }
 
-    public componentDidUpdate(_prevProps: ICollapseProps, _prevState: ICollapseState) {
+    public componentDidUpdate() {
         const { transitionDuration } = this.props;
         const { animationState } = this.state;
 
