@@ -486,7 +486,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
     }
 
-    private setActiveItem(activeItem: T | ICreateNewItem | null) {
+    public setActiveItem(activeItem: T | ICreateNewItem | null) {
         this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
