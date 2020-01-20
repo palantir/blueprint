@@ -289,6 +289,21 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         }
     }
 
+    public setActiveItem(activeItem: T | ICreateNewItem | null) {
+        this.expectedNextActiveItem = activeItem;
+        if (this.props.activeItem === undefined) {
+            // indicate that the active item may need to be scrolled into view after update.
+            this.shouldCheckActiveItemInViewport = true;
+            this.setState({ activeItem });
+        }
+
+        if (isCreateNewItem(activeItem)) {
+            Utils.safeInvoke(this.props.onActiveItemChange, null, true);
+        } else {
+            Utils.safeInvoke(this.props.onActiveItemChange, activeItem, false);
+        }
+    }
+
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
@@ -484,21 +499,6 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             }
         }
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
-    }
-
-    public setActiveItem(activeItem: T | ICreateNewItem | null) {
-        this.expectedNextActiveItem = activeItem;
-        if (this.props.activeItem === undefined) {
-            // indicate that the active item may need to be scrolled into view after update.
-            this.shouldCheckActiveItemInViewport = true;
-            this.setState({ activeItem });
-        }
-
-        if (isCreateNewItem(activeItem)) {
-            Utils.safeInvoke(this.props.onActiveItemChange, null, true);
-        } else {
-            Utils.safeInvoke(this.props.onActiveItemChange, activeItem, false);
-        }
     }
 
     private isCreateItemRendered(): boolean {
