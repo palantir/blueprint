@@ -437,6 +437,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         if (
             this.props.enforceFocus &&
             this.containerElement != null &&
+            e.target instanceof Node &&
             !this.containerElement.contains(e.target as HTMLElement)
         ) {
             // prevent default focus behavior (sometimes auto-scrolls the page)
