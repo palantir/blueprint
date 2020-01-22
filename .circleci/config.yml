@@ -97,14 +97,16 @@ jobs:
   test-jest:
     docker: *docker-node-lts
     environment:
-      JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
+      JUNIT_REPORT_PATH: reports
+      # JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: '.' }
-      - run: mkdir -p ./reports/jest
+      - run: mkdir ./reports
       - run: yarn lerna run test:jest-ci
       - store_test_results: { path: ./reports }
+      - store_artifacts: { path: ./reports }
 
   test-react-16: &test-react
     docker: *docker-node-browsers

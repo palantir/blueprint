@@ -6,7 +6,7 @@
     "scripts": {
         "compile": "tsc -p src/",
         "test": "jest",
-        "test:jest-ci": "jest --ci --runInBand --reporters=default reporters=jest-junit"
+        "test:jest-ci": "jest --ci --runInBand"
     },
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^2.11.0",
