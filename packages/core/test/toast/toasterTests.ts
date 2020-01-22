@@ -72,7 +72,10 @@ describe("Toaster", () => {
         const key = toaster.show({ message: "two" });
         toaster.show({ message: "six" });
         toaster.dismiss(key);
-        assert.deepEqual(toaster.getToasts().map(t => t.message), ["six", "one"]);
+        assert.deepEqual(
+            toaster.getToasts().map(t => t.message),
+            ["six", "one"],
+        );
     });
 
     it("clear() removes all toasts", () => {

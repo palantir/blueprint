@@ -18,7 +18,6 @@ import { assert } from "chai";
 import * as sinon from "sinon";
 import { executeItemsEqual } from "../src/common/listItemsProps";
 
-
 describe("IListItemsProps Utils", () => {
     describe("executeItemsEqual", () => {
         // interface for a non-primitive item value
