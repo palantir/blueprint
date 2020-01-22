@@ -78,7 +78,7 @@ jobs:
       - attach_workspace: { at: '.' }
       - run: mkdir -p ./reports/eslint ./reports/stylelint
       # we need to compile the lint rules for blueprint
-      - run: yarn compile --scope "@blueprintjs/tslint-config"
+      - run: yarn compile --scope "@blueprintjs/{eslint-plugin-blueprint,tslint-config}"
       - run: yarn lint
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
