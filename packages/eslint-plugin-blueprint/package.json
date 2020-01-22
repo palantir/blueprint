@@ -5,7 +5,8 @@
     "main": "lib/index.js",
     "scripts": {
         "compile": "tsc -p src/",
-        "test": "jest"
+        "test": "jest",
+        "test:jest-ci": "jest --ci --runInBand --reporters=default reporters=jest-junit"
     },
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^2.11.0",
@@ -23,6 +24,7 @@
     "author": "Palantir Technologies",
     "license": "Apache-2.0",
     "devDependencies": {
-        "@types/dedent": "^0.7.0"
+        "@types/dedent": "^0.7.0",
+        "jest-junit": "^10.0.0"
     }
 }
