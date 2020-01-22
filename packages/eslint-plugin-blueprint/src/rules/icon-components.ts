@@ -66,13 +66,14 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
         // no-op
     } else if (valueNode.type === AST_NODE_TYPES.Literal && valueNode.value != null && option === OPTION_COMPONENT) {
         // "tick" -> <TickIcon />
-        const iconName = `<${pascalCase(sourceCode.getText(valueNode))}Icon />`;
+        const quotedIconName = sourceCode.getText(valueNode);
+        const iconTag = `<${pascalCase(quotedIconName.slice(1, quotedIconName.length - 1))}Icon />`;
 
         context.report({
             data: {
-                component: iconName,
+                component: iconTag,
             },
-            fix: fixer => fixer.replaceText(valueNode, `{${iconName}}`),
+            fix: fixer => fixer.replaceText(valueNode, `{${iconTag}}`),
             messageId: OPTION_COMPONENT,
             node,
         });
@@ -81,7 +82,7 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
         const componentText = sourceCode.getText(valueNode.expression);
         const match = /<(\w+)Icon /.exec(componentText);
         if (match != null) {
-            const iconName = `"${dashCase(match[1])}"`;
+            const iconName = `"${kebabCase(match[1])}"`;
 
             context.report({
                 data: {
@@ -96,7 +97,7 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
 }
 
 /** "MultiWordPhrase" => "multi-word-phrase" */
-function dashCase(text: string) {
+function kebabCase (text: string) {
     return text.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`).replace(/^-+/, "");
 }
 
