@@ -1,10 +1,10 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-# [Blueprint](http://blueprintjs.com/) [eslint](https://eslint.org/) plugin
+# [Blueprint](http://blueprintjs.com/) [ESLint](https://eslint.org/) plugin
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains the [ESLint](https://eslint.org/) plugin for Blueprint - handful of new rules specifically for use when developing against Blueprint libraries.
+This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It provides configuration and custom rules which are useful when developing against Blueprint libraries.
 
 **Key features:**
 

@@ -16,7 +16,7 @@
 import rules from "./rules";
 
 /**
- * Enable Blueprint-specific TSLint rules defined in this package.
+ * Enable Blueprint-specific lint rules defined in this package.
  */
 module.exports = {
     configs: {

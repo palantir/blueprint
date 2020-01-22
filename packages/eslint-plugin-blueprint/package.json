@@ -1,10 +1,10 @@
 {
     "name": "@blueprintjs/eslint-plugin-blueprint",
     "version": "0.0.0",
-    "description": "ESLint configuration for @blueprintjs packages",
+    "description": "ESLint rules and configuration for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
-        "compile": "tsc -p src/tsconfig.json",
+        "compile": "tsc -p src/",
         "test": "jest"
     },
     "dependencies": {
@@ -18,7 +18,7 @@
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",
-        "directory": "packages/eslint-plugin"
+        "directory": "packages/eslint-plugin-blueprint"
     },
     "author": "Palantir Technologies",
     "license": "Apache-2.0",
