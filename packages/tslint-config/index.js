@@ -57,7 +57,8 @@ module.exports = {
                 "react-dom",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
-                "tsutils"
+                "tsutils",
+                "@typescript-eslint/experimental-utils"
             ]
         },
         "no-unnecessary-callback-wrapper": true,

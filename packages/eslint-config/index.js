@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+const path = require("path");
+
 module.exports = {
     env: {
         browser: true,
@@ -22,6 +24,10 @@ module.exports = {
     plugins: [
         "@typescript-eslint",
         "@typescript-eslint/tslint",
+        "@blueprintjs/blueprint"
+    ],
+    extends: [
+        "plugin:@blueprintjs/blueprint/recommended"
     ],
     parser: "@typescript-eslint/parser",
     parserOptions: {
@@ -34,7 +40,7 @@ module.exports = {
     rules: {
         // run the tslint rules which are not yet converted (run inside eslint)
         "@typescript-eslint/tslint/config": ["error", {
-            "lintFile": "../../tslint.json",
-        }],
-    },
-};
+            "lintFile": path.resolve(__dirname, "./tslint.json")
+        }]
+    }
+}

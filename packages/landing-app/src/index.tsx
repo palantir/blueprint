@@ -20,7 +20,7 @@ import { initializeSVGs } from "./svgs";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-// tslint:disable:blueprint-classes-constants
+/* eslint-disable @blueprintjs/blueprint/classes-constants */
 initializeLogo(
     document.getElementById("pt-logo") as HTMLCanvasElement,
     document.getElementById("pt-logo-background") as HTMLCanvasElement,

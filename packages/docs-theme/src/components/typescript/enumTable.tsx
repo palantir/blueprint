@@ -61,7 +61,8 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
             "docs-prop-is-internal": !isExternal,
         });
 
-        // tslint:disable:blueprint-html-components - this is inside RUNNING_TEXT
+        // this is inside RUNNING_TEXT
+        /* eslint-disable @blueprintjs/blueprint/html-components */
         return (
             <tr key={name}>
                 <td className={classes}>
@@ -76,7 +77,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
                 </td>
             </tr>
         );
-        // tslint:enable:blueprint-html-components
+        /* eslint-enable @blueprintjs/blueprint/html-components */
     };
 
     private renderTags(entry: ITsEnumMember) {
