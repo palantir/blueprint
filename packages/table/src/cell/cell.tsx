@@ -163,7 +163,8 @@ export class Cell extends React.Component<ICellProps> {
         const modifiedChildren = React.Children.map(this.props.children, child => {
             if (
                 (style != null && React.isValidElement(child)) ||
-                (CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat))
+                CoreUtils.isElementOfType(child, TruncatedFormat) ||
+                CoreUtils.isElementOfType(child, JSONFormat)
             ) {
                 return React.cloneElement(child as React.ReactElement<any>, {
                     parentCellHeight: parseInt(style.height.toString(), 10),

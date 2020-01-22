@@ -29,7 +29,11 @@ describe("Menus", () => {
         it("uses selected regions if clicked inside selection", () => {
             const context = new MenuContext(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             expect(context.getRegions()).to.deep.equal([Regions.column(1)]);
-            expect(context.getUniqueCells()).to.deep.equal([[0, 1], [1, 1], [2, 1]]);
+            expect(context.getUniqueCells()).to.deep.equal([
+                [0, 1],
+                [1, 1],
+                [2, 1],
+            ]);
         });
 
         it("uses target cell if clicked outside selection", () => {

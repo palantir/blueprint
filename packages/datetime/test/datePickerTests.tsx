@@ -729,7 +729,10 @@ describe("<DatePicker>", () => {
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
             assertSelectedDays: (...days: number[]) =>
-                assert.sameMembers(wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`).map(d => +d.text()), days),
+                assert.sameMembers(
+                    wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`).map(d => +d.text()),
+                    days,
+                ),
             clickNextMonth: () =>
                 wrapper
                     .find(Button)

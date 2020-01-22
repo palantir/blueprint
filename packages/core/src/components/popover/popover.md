@@ -276,8 +276,8 @@ and `Classes.POPOVER_DISMISS_OVERRIDE`, that can be attached to elements to
 describe whether click events should dismiss the enclosing popover.
 
 To mark an element (and its children) as "dismiss elements", simply add the
-class `Classes.POPOVER_DISMISS`. For example, the **Dismiss** button in the
-top-level [Popover example](#core/components/popover) has this class, and all
+class `Classes.POPOVER_DISMISS`. For example, the **Cancel** and **Delete** buttons in the
+top-level [Popover example](#core/components/popover) have this class, and all
 `MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
 enable this behavior on the entire popover body, pass
 `popoverClassName={Classes.POPOVER_DISMISS}`.

@@ -810,6 +810,10 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             enableColumnInteractionBar,
         } = this.props;
         const { horizontalGuides, numFrozenColumnsClamped, numFrozenRowsClamped, verticalGuides } = this.state;
+        if (!this.gridDimensionsMatchProps()) {
+            // Ensure we're rendering the correct number of rows & columns
+            this.invalidateGrid();
+        }
         this.validateGrid();
 
         const classes = classNames(
@@ -932,7 +936,8 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         const shouldInvalidateGrid =
             didChildrenChange ||
             this.props.columnWidths !== prevState.columnWidths ||
-            (this.props.rowHeights !== prevState.rowHeights || this.props.numRows !== prevProps.numRows) ||
+            this.props.rowHeights !== prevState.rowHeights ||
+            this.props.numRows !== prevProps.numRows ||
             (this.props.forceRerenderOnSelectionChange && this.props.selectedRegions !== prevProps.selectedRegions);
 
         if (shouldInvalidateGrid) {
@@ -991,6 +996,13 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         if (numFrozenColumns != null && numFrozenColumns > numColumns) {
             console.warn(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING);
         }
+    }
+
+    private gridDimensionsMatchProps() {
+        const { children, numRows } = this.props;
+        return (
+            this.grid != null && this.grid.numCols === React.Children.count(children) && this.grid.numRows === numRows
+        );
     }
 
     // Hotkeys

@@ -46,6 +46,7 @@ export interface IRangeSliderProps extends ISliderBaseProps {
 export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
     public static defaultProps: IRangeSliderProps = {
         ...MultiSlider.defaultSliderProps,
+        intent: Intent.PRIMARY,
         value: [0, 10],
     };
 
@@ -55,7 +56,7 @@ export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
         const { value, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={value[RangeIndex.START]} type="start" intentAfter={Intent.PRIMARY} />
+                <MultiSlider.Handle value={value[RangeIndex.START]} type="start" intentAfter={props.intent} />
                 <MultiSlider.Handle value={value[RangeIndex.END]} type="end" />
             </MultiSlider>
         );
