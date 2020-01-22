@@ -59,6 +59,7 @@ jobs:
 
   compile:
     docker: *docker-node-lts
+    resource_class: large
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -85,6 +86,7 @@ jobs:
 
   dist:
     docker: *docker-node-lts
+    resource_class: large
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
