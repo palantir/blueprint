@@ -21,6 +21,7 @@ import * as React from "react";
 import { Grid } from "../common";
 import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
+import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
 import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
@@ -384,7 +385,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             : this.wrapInDragReorderable(
                   index,
                   <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
-                      <div className={Classes.TABLE_REORDER_HANDLE}>
+                      <div
+                          className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}
+                      >
                           <Icon icon="drag-handle-vertical" />
                       </div>
                   </div>,
