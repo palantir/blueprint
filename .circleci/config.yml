@@ -194,6 +194,8 @@ workflows:
           requires: [checkout-code]
       - dist:
           requires: [compile]
+      - test-jest:
+          requires: [compile]
       - test-react-15:
           requires: [compile]
       - test-react-16:
