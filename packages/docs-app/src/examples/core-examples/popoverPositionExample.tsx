@@ -28,7 +28,7 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
     public render() {
         return (
             <Example className={EXAMPLE_CLASS} options={false} {...this.props}>
-                {/* tslint:disable-next-line:blueprint-html-components */}
+                {/* eslint-disable-next-line @blueprintjs/blueprint/html-components */}
                 <table>
                     <tbody>
                         <tr>

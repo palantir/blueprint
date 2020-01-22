@@ -20,7 +20,7 @@ let outputStream = process.stdout;
 if (process.env.JUNIT_REPORT_PATH != null) {
     format = "junit";
     out = junitReportPath("eslint");
-    console.info(`TSLint report will appear in ${out}`);
+    console.info(`ESLint report will appear in ${out}`);
     outputStream = fs.createWriteStream(out, { flags: "w+" });
 }
 
