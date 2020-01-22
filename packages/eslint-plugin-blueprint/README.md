@@ -4,7 +4,7 @@
 
 Blueprint is a React UI toolkit for the web.
 
-This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It provides configuration and custom rules which are useful when developing against Blueprint libraries.
+This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It provides custom rules which are useful when developing against Blueprint libraries.
 
 **Key features:**
 

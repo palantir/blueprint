@@ -1,7 +1,7 @@
 {
     "name": "@blueprintjs/eslint-plugin-blueprint",
     "version": "0.0.0",
-    "description": "ESLint rules and configuration for use with @blueprintjs packages",
+    "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
         "compile": "tsc -p src/",
