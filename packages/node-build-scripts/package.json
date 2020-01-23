@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/node-build-scripts",
-  "version": "0.11.0",
+  "version": "1.0.0",
   "description": "Node.js build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
