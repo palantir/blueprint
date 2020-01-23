@@ -20,7 +20,10 @@ import { arrowOffsetModifier, getAlignment, getOppositePosition } from "../../sr
 
 describe("Popper utils", () => {
     it("getOppositePosition returns opposite", () => {
-        [["top", "bottom"], ["left", "right"]].map(([a, b]) => {
+        [
+            ["top", "bottom"],
+            ["left", "right"],
+        ].map(([a, b]) => {
             expect(getOppositePosition(a as Position)).to.equal(b);
             expect(getOppositePosition(b as Position)).to.equal(a);
         });
@@ -34,12 +37,16 @@ describe("Popper utils", () => {
 
     describe("arrow offset modifier shifts away from popover", () => {
         it("right", () => {
-            const { offsets: { popper, arrow } } = arrowOffsetModifier(getPopperData("right"), {});
+            const {
+                offsets: { popper, arrow },
+            } = arrowOffsetModifier(getPopperData("right"), {});
             expect(popper.left).to.be.greaterThan(arrow.left);
         });
 
         it("left", () => {
-            const { offsets: { popper, arrow } } = arrowOffsetModifier(getPopperData("left"), {});
+            const {
+                offsets: { popper, arrow },
+            } = arrowOffsetModifier(getPopperData("left"), {});
             expect(popper.left).to.be.lessThan(arrow.left);
         });
 

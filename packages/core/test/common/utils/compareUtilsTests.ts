@@ -277,7 +277,10 @@ describe("CompareUtils", () => {
 
             describe("returns unequal key/values if any specified values are not deeply equal", () => {
                 runTest(
-                    [{ key: "a", valueA: 2, valueB: 1 }, { key: "b", valueA: [2, 3, 4], valueB: [1, 2, 3] }],
+                    [
+                        { key: "a", valueA: 2, valueB: 1 },
+                        { key: "b", valueA: [2, 3, 4], valueB: [1, 2, 3] },
+                    ],
                     { a: 2, b: [2, 3, 4], c: "3" },
                     { b: [1, 2, 3], a: 1, c: "3" },
                     ["a", "b"],
