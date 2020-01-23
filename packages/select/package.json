@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@blueprintjs/karma-build-scripts": "^0.12.0",
-    "@blueprintjs/node-build-scripts": "^0.11.0",
+    "@blueprintjs/node-build-scripts": "^1.0.0",
     "enzyme": "^3.10.0",
     "karma": "^4.2.0",
     "mocha": "^6.2.0",
