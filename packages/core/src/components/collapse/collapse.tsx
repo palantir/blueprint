@@ -144,7 +144,8 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
                     // allow Collapse#onDelayedStateChange() to handle the transition here
                     break;
                 default:
-                    return { animationState: AnimationStates.CLOSING_START };
+                    // need to set an explicit height so that transition can work
+                    return { animationState: AnimationStates.CLOSING_START, height: `${state.heightWhenOpen}px` };
             }
         }
 
@@ -169,12 +170,14 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         const containerStyle = {
             height: isContentVisible ? this.state.height : undefined,
             overflowY: isAutoHeight ? "visible" : undefined,
+            // transitions don't work with height: auto
             transition: isAutoHeight ? "none" : undefined,
         };
 
         const contentsStyle = {
             // only use heightWhenOpen while closing
             transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
+            // transitions don't work with height: auto
             transition: isAutoHeight ? "none" : undefined,
         };
 
