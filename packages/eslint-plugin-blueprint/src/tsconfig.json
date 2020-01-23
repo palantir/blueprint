@@ -1,0 +1,14 @@
+{
+    "extends": "../../../config/tsconfig.base",
+    "compilerOptions": {
+        "lib": ["es6", "dom"],
+        "module": "commonjs",
+        "outDir": "../lib",
+        "strict": true,
+        "rootDir": ".",
+        "skipLibCheck": true, // it seems like ts-estree requires ts 3.7 features, which breaks if we do not have them yet
+    },
+    "exclude": [
+        "*/__tests__"
+    ]
+}

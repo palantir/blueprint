@@ -46,8 +46,8 @@ currently transitioning from [TSLint](https://palantir.github.io/tslint/) to ESL
 such, rules are being migrated from TSLint to ESLint. In the meantime, some TSLint rules are
 being run using ESLint.
 
-The [**@blueprintjs/tslint-config**](https://www.npmjs.com/package/@blueprintjs/tslint-config)
-NPM package includes a custom `blueprint-html-components` rule that will warn on usages of
+The [**@blueprintjs/eslint-plugin-blueprint**](https://www.npmjs.com/package/@blueprintjs/eslint-plugin-blueprint)
+package includes a custom `blueprint-html-components` rule that will warn on usages of
 JSX intrinsic elements (`<h1>`) that have a Blueprint alternative (`<H1>`). See
-the package's [README](https://www.npmjs.com/package/@blueprintjs/tslint-config)
+the package's [README](https://www.npmjs.com/package/@blueprintjs/eslint-plugin-blueprint)
 for usage instructions.
