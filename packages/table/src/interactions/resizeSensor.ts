@@ -76,7 +76,8 @@ export class ResizeSensor {
         };
     }
 
-    private static RESIZE_SENSOR_STYLE = "position: absolute; left: 0; top: 0; right: 0; " +
+    private static RESIZE_SENSOR_STYLE =
+        "position: absolute; left: 0; top: 0; right: 0; " +
         "bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;";
 
     private static RESIZE_SENSOR_HTML = `<div class="${Classes.TABLE_RESIZE_SENSOR_EXPAND}"

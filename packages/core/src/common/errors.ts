@@ -99,5 +99,5 @@ export const DRAWER_VERTICAL_IS_IGNORED = ns + ` <Drawer> vertical is ignored if
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
 
-export const TOASTER_MAX_TOASTS_INVALID = ns + ` <Toaster> maxToasts is set to an invalid number, must be greater than 0`;
-
+export const TOASTER_MAX_TOASTS_INVALID =
+    ns + ` <Toaster> maxToasts is set to an invalid number, must be greater than 0`;
