@@ -203,7 +203,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         if (this.props.isOpen) {
             this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
         } else {
-            this.setState({ animationState: AnimationStates.CLOSED });
+            this.setState({ animationState: AnimationStates.CLOSED, height: "0px" });
         }
     }
 
