@@ -11,7 +11,7 @@
 const path = require("path");
 const fs = require("fs");
 const { junitReportPath } = require("./utils");
-const { spawn, execSync } = require("child_process");
+const { spawn } = require("child_process");
 const glob = require("glob");
 
 let format = "codeframe";
@@ -24,8 +24,7 @@ if (process.env.JUNIT_REPORT_PATH != null) {
     outputStream = fs.createWriteStream(out, { flags: "w+" });
 }
 
-const gitRoot = execSync("git rev-parse --show-toplevel").toString().trim();
-const commandLineOptions = ["-c", path.join(gitRoot, "./.eslintrc.json"), "--color", "-f", format];
+const commandLineOptions = ["--color", "-f", format];
 if (process.argv.includes("--fix")) {
     commandLineOptions.push("--fix")
 }
