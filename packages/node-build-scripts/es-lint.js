@@ -11,8 +11,10 @@
 const path = require("path");
 const fs = require("fs");
 const { junitReportPath } = require("./utils");
-const { spawn, execSync } = require("child_process");
+const { execSync, spawn } = require("child_process");
 const glob = require("glob");
+
+const IGNORE_FILE_NAME = ".eslintignore";
 
 let format = "codeframe";
 let out;
@@ -24,18 +26,26 @@ if (process.env.JUNIT_REPORT_PATH != null) {
     outputStream = fs.createWriteStream(out, { flags: "w+" });
 }
 
-const gitRoot = execSync("git rev-parse --show-toplevel").toString().trim();
-const commandLineOptions = ["-c", path.join(gitRoot, "./.eslintrc.json"), "--color", "-f", format];
-if (process.argv.includes("--fix")) {
-    commandLineOptions.push("--fix")
+// additional args provided to es-lint script
+const additionalArgs = process.argv.filter(a => {
+    // exclude engine and script name
+    return ["node", "es-lint"].every(s => path.basename(a) !== s);
+});
+
+// by default, ESLint only looks for .eslintignore in the current directory, but it might exist at the project root
+const ignoreFilepath = findIgnoreFile();
+if (ignoreFilepath !== undefined) {
+    additionalArgs.push("--ignore-path", ignoreFilepath);
 }
+
+const commandLineOptions = ["--color", "-f", format, ...additionalArgs];
 
 // ESLint will fail if provided with no files, so we expand the glob before running it
 const fileGlob = "{src,test}/**/*.{ts,tsx}";
 const absoluteFileGlob = path.resolve(process.cwd(), fileGlob);
 const anyFilesToLint = glob.sync(absoluteFileGlob)
 if (anyFilesToLint.length === 0) {
-    console.log(`Not running ESLint because no files match the glob "${fileGlob}"`)
+    console.log(`[node-build-scripts] Not running ESLint because no files match the glob "${fileGlob}"`)
     process.exit();
 }
 
@@ -47,3 +57,18 @@ eslint.stderr.pipe(process.stderr);
 eslint.on("close", code => {
     process.exitCode = code;
 });
+
+function findIgnoreFile() {
+    if (fs.existsSync(path.join(process.cwd(), IGNORE_FILE_NAME))) {
+        return undefined;
+    }
+
+    const gitRoot = execSync("git rev-parse --show-toplevel").toString().trim();
+    const rootIgnoreFilepath = path.join(gitRoot, IGNORE_FILE_NAME);
+    if (fs.existsSync(rootIgnoreFilepath)) {
+        console.log(`[node-build-scripts] Using ESLint ignore file path ${rootIgnoreFilepath}`)
+        return rootIgnoreFilepath;
+    }
+
+    return undefined;
+}
