@@ -18,16 +18,14 @@ const path = require("path");
 module.exports = {
     env: {
         browser: true,
-        mocha: true,
-        node: true,
     },
     plugins: [
         "@typescript-eslint",
         "@typescript-eslint/tslint",
-        "@blueprintjs/blueprint"
+        "@blueprintjs/blueprint",
     ],
     extends: [
-        "plugin:@blueprintjs/blueprint/recommended"
+        "plugin:@blueprintjs/blueprint/recommended",
     ],
     parser: "@typescript-eslint/parser",
     parserOptions: {
@@ -40,7 +38,16 @@ module.exports = {
     rules: {
         // run the tslint rules which are not yet converted (run inside eslint)
         "@typescript-eslint/tslint/config": ["error", {
-            "lintFile": path.resolve(__dirname, "./tslint.json")
-        }]
-    }
-}
+            "lintFile": path.resolve(__dirname, "./tslint.json"),
+        }],
+    },
+    overrides: [
+        {
+            files: ["test/**/*"],
+            env: {
+                browser: true,
+                mocha: true,
+            },
+        },
+    ],
+};

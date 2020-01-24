@@ -1,5 +1,5 @@
 {
-  "extends": "../tslint-config",
+  "extends": "@blueprintjs/tslint-config",
   "rules": {
     "file-header": {
       "options": [
