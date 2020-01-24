@@ -24,10 +24,11 @@ if (process.env.JUNIT_REPORT_PATH != null) {
     outputStream = fs.createWriteStream(out, { flags: "w+" });
 }
 
-const commandLineOptions = ["--color", "-f", format];
-if (process.argv.includes("--fix")) {
-    commandLineOptions.push("--fix")
-}
+const additionalArgs = process.argv.filter(a => {
+    // exclude engine and script name
+    return ["node", "es-lint"].every(s => path.basename(a) !== s);
+});
+const commandLineOptions = ["--color", "-f", format, ...additionalArgs];
 
 // ESLint will fail if provided with no files, so we expand the glob before running it
 const fileGlob = "{src,test}/!(generated)/**/*.{ts,tsx}";
