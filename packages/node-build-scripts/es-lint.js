@@ -31,7 +31,7 @@ if (process.argv.includes("--fix")) {
 }
 
 // ESLint will fail if provided with no files, so we expand the glob before running it
-const fileGlob = "{src,test}/**/*.{ts,tsx}";
+const fileGlob = "{src,test}/!(generated)/**/*.{ts,tsx}";
 const absoluteFileGlob = path.resolve(process.cwd(), fileGlob);
 const anyFilesToLint = glob.sync(absoluteFileGlob)
 if (anyFilesToLint.length === 0) {
