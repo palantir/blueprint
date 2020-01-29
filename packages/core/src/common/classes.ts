@@ -35,6 +35,7 @@ export const INTERACTIVE = `${NS}-interactive`;
 export const LARGE = `${NS}-large`;
 export const LOADING = `${NS}-loading`;
 export const MINIMAL = `${NS}-minimal`;
+export const OUTLINE = `${NS}-outline`;
 export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
 export const SMALL = `${NS}-small`;
