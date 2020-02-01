@@ -47,6 +47,12 @@ export interface IPanelStackProps extends IProps {
     onOpen?: (addedPanel: IPanel) => void;
 
     /**
+     * If false, PanelStack will render all panels in the stack to the DOM, allowing their React component trees to maintain state as a user navigates through the stack. Panels other than the currently active one will be invisible.
+     * @default true
+     */
+    renderCurrentPanelOnly?: boolean;
+
+    /**
      * Whether to show the header with the "back" button in each panel.
      * @default true
      */
@@ -98,7 +104,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         );
         return (
             <TransitionGroup className={classes} component="div">
-                {this.renderCurrentPanel()}
+                {this.renderPanels()}
             </TransitionGroup>
         );
     }
@@ -115,25 +121,35 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         }
     }
 
-    private renderCurrentPanel() {
-        const { showPanelHeader = true } = this.props;
+    private renderPanels() {
+        const { renderCurrentPanelOnly = true } = this.props;
         const { stack } = this.state;
         if (stack.length === 0) {
             return null;
         }
-        const [activePanel, previousPanel] = stack;
+        const panelsToRender = renderCurrentPanelOnly ? [stack[0]] : stack;
+        const panelViews = panelsToRender.map(this.renderPanel).reverse();
+        return panelViews;
+    }
+
+    private renderPanel = (panel: IPanel, index: number) => {
+        const { showPanelHeader = true } = this.props;
+        const { stack } = this.state;
+        const active = index === 0;
+        const layer = stack.length - index;
+        const key = `${layer}-${active}`;
         return (
-            <CSSTransition classNames={Classes.PANEL_STACK} key={stack.length} timeout={400}>
+            <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
                 <PanelView
                     onClose={this.handlePanelClose}
                     onOpen={this.handlePanelOpen}
-                    panel={activePanel}
-                    previousPanel={previousPanel}
+                    panel={panel}
+                    previousPanel={stack[index + 1]}
                     showHeader={showPanelHeader}
                 />
             </CSSTransition>
         );
-    }
+    };
 
     private handlePanelClose = (panel: IPanel) => {
         const { stack } = this.state;

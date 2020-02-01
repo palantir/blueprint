@@ -20,6 +20,7 @@ import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, Switch, UL } from 
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
+    activePanelOnly: boolean;
     currentPanelStack: IPanel[];
     showHeader: boolean;
 }
@@ -34,15 +35,22 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
     };
 
     public state = {
+        activePanelOnly: true,
         currentPanelStack: [this.initialPanel],
         showHeader: true,
     };
 
+    private toggleActiveOnly = handleBooleanChange((activePanelOnly: boolean) => this.setState({ activePanelOnly }));
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
 
     public render() {
         const stackList = (
             <>
+                <Switch
+                    checked={this.state.activePanelOnly}
+                    label="Render active panel only"
+                    onChange={this.toggleActiveOnly}
+                />
                 <Switch checked={this.state.showHeader} label="Show panel header" onChange={this.handleHeaderChange} />
                 <H5>Current stack</H5>
                 <UL>
@@ -59,6 +67,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
                     initialPanel={this.state.currentPanelStack[0]}
                     onOpen={this.addToPanelStack}
                     onClose={this.removeFromPanelStack}
+                    renderCurrentPanelOnly={this.state.activePanelOnly}
                     showPanelHeader={this.state.showHeader}
                 />
             </Example>
