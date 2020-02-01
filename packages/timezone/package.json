@@ -40,7 +40,7 @@
     "classnames": "^2.2",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
-    "tslib": "~1.9.0"
+    "tslib": "~1.10.0"
   },
   "peerDependencies": {
     "react": "^15.3.0 || 16",
@@ -56,7 +56,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
-    "typescript": "~3.5.3",
+    "typescript": "~3.7.5",
     "webpack-cli": "^3.3.6"
   },
   "repository": {

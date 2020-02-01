@@ -24,7 +24,7 @@
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^1.0.0",
     "react": "^16.8.6",
-    "typescript": "~3.5.3"
+    "typescript": "~3.7.5"
   },
   "repository": {
     "type": "git",

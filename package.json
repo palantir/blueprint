@@ -55,7 +55,7 @@
     "sinon": "^7.3.2",
     "stylelint-config-palantir": "^4.0.0",
     "stylelint-scss": "^3.9.2",
-    "typescript": "~3.5.3",
+    "typescript": "~3.7.5",
     "yarn-deduplicate": "^1.1.1"
   },
   "resolutions": {
