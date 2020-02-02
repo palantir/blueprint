@@ -244,9 +244,9 @@ describe("<PanelStack>", () => {
         assert.equal(panelHeaders.at(0).text(), stack[1].title);
     });
 
-    it("renders all panels with renderCurrentPanelOnly disabled", () => {
+    it("renders all panels with renderActivePanelOnly disabled", () => {
         const stack = [{ component: TestPanel, title: "Panel A" }, { component: TestPanel, title: "Panel B" }];
-        panelStackWrapper = renderPanelStack({ renderCurrentPanelOnly: false, stack });
+        panelStackWrapper = renderPanelStack({ renderActivePanelOnly: false, stack });
 
         const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(panelHeaders);
