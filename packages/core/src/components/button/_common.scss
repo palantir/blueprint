@@ -488,7 +488,7 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-outline-intent( $text-color, $dark-text-color) {
+@mixin pt-button-outline-intent($text-color, $dark-text-color) {
   border-color: rgba($text-color, $button-outline-border-intent-opacity);
 
   &:disabled,
