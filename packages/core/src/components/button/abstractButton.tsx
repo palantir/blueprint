@@ -57,7 +57,7 @@ export interface IButtonProps extends IActionProps {
     /** Whether this button should use minimal styles. */
     minimal?: boolean;
 
-    /** Wheather this button should use outline styles. */
+    /** Whether this button should use outline styles. */
     outline?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
