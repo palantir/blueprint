@@ -85,9 +85,9 @@ $dark-minimal-button-background-color: none !default;
 $dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 
-$button-outline-width: 1px !default;
-$button-outline-border-intent-opacity: 0.6 !default;
-$button-outline-border-disabled-intent-opacity: 0.2 !default;
+$button-outlined-width: 1px !default;
+$button-outlined-border-intent-opacity: 0.6 !default;
+$button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
 // "intent": (default, hover, active colors)
 $button-intents: (
@@ -452,8 +452,8 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-outline() {
-  border: $button-outline-width solid rgba($pt-text-color, 0.2);
+@mixin pt-button-outlined() {
+  border: $button-outlined-width solid rgba($pt-text-color, 0.2);
   box-sizing: border-box;
 
   &:disabled,
@@ -464,7 +464,7 @@ $button-intents: (
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-button-outline();
+    @include pt-dark-button-outlined();
   }
 
   @each $intent, $colors in $button-intents {
@@ -477,7 +477,7 @@ $button-intents: (
   }
 }
 
-@mixin pt-dark-button-outline() {
+@mixin pt-dark-button-outlined() {
   border-color: rgba($white, 0.4);
 
   &:disabled,
@@ -489,19 +489,19 @@ $button-intents: (
 }
 
 @mixin pt-button-outline-intent($text-color, $dark-text-color) {
-  border-color: rgba($text-color, $button-outline-border-intent-opacity);
+  border-color: rgba($text-color, $button-outlined-border-intent-opacity);
 
   &:disabled,
   &.#{$ns}-disabled {
-    border-color: rgba($text-color, $button-outline-border-disabled-intent-opacity);
+    border-color: rgba($text-color, $button-outlined-border-disabled-intent-opacity);
   }
 
   .#{$ns}-dark & {
-    border-color: rgba($dark-text-color, $button-outline-border-intent-opacity);
+    border-color: rgba($dark-text-color, $button-outlined-border-intent-opacity);
 
     &:disabled,
     &.#{$ns}-disabled {
-      border-color: rgba($dark-text-color, $button-outline-border-disabled-intent-opacity);
+      border-color: rgba($dark-text-color, $button-outlined-border-disabled-intent-opacity);
     }
   }
 }

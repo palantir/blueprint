@@ -29,7 +29,7 @@ export interface IButtonsExampleState {
     loading: boolean;
     large: boolean;
     minimal: boolean;
-    outline: boolean;
+    outlined: boolean;
     wiggling: boolean;
 }
 
@@ -42,7 +42,7 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
         large: false,
         loading: false,
         minimal: false,
-        outline: false,
+        outlined: false,
         wiggling: false,
     };
 
@@ -52,7 +52,7 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
-    private handleOutlineChange = handleBooleanChange(outline => this.setState({ outline }));
+    private handleOutlineChange = handleBooleanChange(outlined => this.setState({ outlined }));
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 
     private wiggleTimeoutId: number;
@@ -72,7 +72,7 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Loading" checked={this.state.loading} onChange={this.handleLoadingChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
-                <Switch label="Outline" checked={this.state.outline} onChange={this.handleOutlineChange} />
+                <Switch label="Outline" checked={this.state.outlined} onChange={this.handleOutlineChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <H5>Example</H5>
                 <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
