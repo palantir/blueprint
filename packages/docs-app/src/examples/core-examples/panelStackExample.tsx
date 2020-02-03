@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, Switch, UL, NumericInput } from "@blueprintjs/core";
+import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
@@ -85,7 +85,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
     };
 }
 
-interface IPanelExampleProps {
+interface IPanelExampleProps extends IPanelProps {
     panelNumber: number;
 }
 
@@ -94,9 +94,9 @@ interface IPanelExampleState {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps> {
+class PanelExample extends React.PureComponent<IPanelExampleProps> {
     public state: IPanelExampleState = {
-        counter: 0
+        counter: 0,
     };
 
     public render() {
@@ -119,5 +119,5 @@ class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps>
 
     private updateCounter = (counter: number) => {
         this.setState({ counter });
-    }
+    };
 }
