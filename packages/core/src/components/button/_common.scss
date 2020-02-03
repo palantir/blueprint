@@ -469,7 +469,7 @@ $button-intents: (
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-outline-intent(
+      @include pt-button-outlined-intent(
         map-get($pt-intent-text-colors, $intent),
         map-get($pt-dark-intent-text-colors, $intent)
       );
@@ -488,7 +488,7 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-outline-intent($text-color, $dark-text-color) {
+@mixin pt-button-outlined-intent($text-color, $dark-text-color) {
   border-color: rgba($text-color, $button-outlined-border-intent-opacity);
 
   &:disabled,
