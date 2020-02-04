@@ -135,7 +135,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
     }
 
     private renderPanel = (panel: IPanel, index: number) => {
-        const { showPanelHeader = true } = this.props;
+        const { renderActivePanelOnly, showPanelHeader = true } = this.props;
         const { stack } = this.state;
         const active = index === 0;
 
@@ -146,7 +146,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         // This key contains two parts: first one, stack.length - index is constant (and unique) for each panel,
         // second one, active changes only when the panel becomes or stops being active.
         const layer = stack.length - index;
-        const key = `${layer}-${active}`;
+        const key = renderActivePanelOnly ? stack.length : `${layer}-${active}`;
 
         return (
             <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
