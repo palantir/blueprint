@@ -285,21 +285,21 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
     };
 
-    private handlePopoverClosed = (node: HTMLElement) => {
+    private handlePopoverClosed = (element: HTMLElement) => {
         // The activeItem should always be the selectedItem when the Popover is first opened
         // if the activeItem prop is not set. Set the activeItem on close so that there isn't
         // a flash of the activeItem on screen.
         const shouldResetActiveItemToSelectedItem =
-            this.props.activeItem === undefined && this.state.selectedItem && !this.props.resetOnSelect;
+            this.props.activeItem === undefined && this.state.selectedItem !== null && !this.props.resetOnSelect;
 
-        if (this.queryList && shouldResetActiveItemToSelectedItem) {
+        if (this.queryList !== null && shouldResetActiveItemToSelectedItem) {
             // If the selectedItem prop is set then use it.
             // If not fall back to component state.
-            const selectedItem = this.props.selectedItem || this.state.selectedItem;
+            const selectedItem = this.props.selectedItem ?? this.state.selectedItem;
             this.queryList.setActiveItem(selectedItem);
         }
 
-        Utils.safeInvokeMember(this.props.popoverProps, "onClosed", node);
+        Utils.safeInvokeMember(this.props.popoverProps, "onClosed", element);
     };
 
     private getTargetKeyDownHandler = (
