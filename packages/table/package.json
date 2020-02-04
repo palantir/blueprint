@@ -39,7 +39,7 @@
     "classnames": "^2.2",
     "prop-types": "^15.6.0",
     "react-lifecycles-compat": "^3.0.4",
-    "tslib": "~1.9.0"
+    "tslib": "~1.10.0"
   },
   "peerDependencies": {
     "react": "^15.3.0 || 16",
@@ -57,7 +57,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
-    "typescript": "~3.5.3",
+    "typescript": "~3.7.5",
     "webpack": "^4.37.0",
     "webpack-dev-server": "^3.7.2"
   },

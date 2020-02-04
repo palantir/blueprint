@@ -35,7 +35,7 @@
     "@documentalist/client": "^2.1.0",
     "classnames": "^2.2",
     "fuzzaldrin-plus": "^0.6.0",
-    "tslib": "~1.9.3"
+    "tslib": "~1.10.0"
   },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^1.0.0",
@@ -43,7 +43,7 @@
     "npm-run-all": "^4.1.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "typescript": "~3.5.3",
+    "typescript": "~3.7.5",
     "webpack-cli": "^3.3.6"
   },
   "repository": {
