@@ -19,6 +19,7 @@ Markup:
 .#{$ns}-intent-warning - Warning intent
 .#{$ns}-intent-danger - Danger intent
 .#{$ns}-minimal - More subtle appearance
+.#{$ns}-outlined - Subtle yet structured appearance
 .#{$ns}-large - Larger size
 .#{$ns}-small - Smaller size
 .#{$ns}-fill - Fill parent container
@@ -162,6 +163,12 @@ Styleguide button
   // minimal must come last to override all default styles
   &.#{$ns}-minimal {
     @include pt-button-minimal();
+  }
+
+  // outline is based on the styles of minimal
+  &.#{$ns}-outlined {
+    @include pt-button-minimal();
+    @include pt-button-outlined();
   }
 }
 

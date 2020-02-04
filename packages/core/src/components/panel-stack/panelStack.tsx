@@ -47,6 +47,14 @@ export interface IPanelStackProps extends IProps {
     onOpen?: (addedPanel: IPanel) => void;
 
     /**
+     * If false, PanelStack will render all panels in the stack to the DOM, allowing their
+     * React component trees to maintain state as a user navigates through the stack.
+     * Panels other than the currently active one will be invisible.
+     * @default true
+     */
+    renderActivePanelOnly?: boolean;
+
+    /**
      * Whether to show the header with the "back" button in each panel.
      * @default true
      */
@@ -98,7 +106,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         );
         return (
             <TransitionGroup className={classes} component="div">
-                {this.renderCurrentPanel()}
+                {this.renderPanels()}
             </TransitionGroup>
         );
     }
@@ -115,25 +123,42 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         }
     }
 
-    private renderCurrentPanel() {
-        const { showPanelHeader = true } = this.props;
+    private renderPanels() {
+        const { renderActivePanelOnly = true } = this.props;
         const { stack } = this.state;
         if (stack.length === 0) {
             return null;
         }
-        const [activePanel, previousPanel] = stack;
+        const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
+        const panelViews = panelsToRender.map(this.renderPanel).reverse();
+        return panelViews;
+    }
+
+    private renderPanel = (panel: IPanel, index: number) => {
+        const { renderActivePanelOnly, showPanelHeader = true } = this.props;
+        const { stack } = this.state;
+
+        // With renderActivePanelOnly={false} we would keep all the CSSTransitions rendered,
+        // therefore they would not trigger the "enter" transition event as they were entered.
+        // To force the enter event, we want to change the key, but stack.length is not enough
+        // and a single panel should not rerender as long as it's hidden.
+        // This key contains two parts: first one, stack.length - index is constant (and unique) for each panel,
+        // second one, active changes only when the panel becomes or stops being active.
+        const layer = stack.length - index;
+        const key = renderActivePanelOnly ? stack.length : layer;
+
         return (
-            <CSSTransition classNames={Classes.PANEL_STACK} key={stack.length} timeout={400}>
+            <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
                 <PanelView
                     onClose={this.handlePanelClose}
                     onOpen={this.handlePanelOpen}
-                    panel={activePanel}
-                    previousPanel={previousPanel}
+                    panel={panel}
+                    previousPanel={stack[index + 1]}
                     showHeader={showPanelHeader}
                 />
             </CSSTransition>
         );
-    }
+    };
 
     private handlePanelClose = (panel: IPanel) => {
         const { stack } = this.state;
@@ -145,7 +170,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         if (this.props.stack == null) {
             this.setState(state => ({
                 direction: "pop",
-                stack: state.stack.filter(p => p !== panel),
+                stack: state.stack.slice(1),
             }));
         }
     };
