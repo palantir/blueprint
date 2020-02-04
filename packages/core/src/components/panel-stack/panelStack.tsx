@@ -137,7 +137,6 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
     private renderPanel = (panel: IPanel, index: number) => {
         const { renderActivePanelOnly, showPanelHeader = true } = this.props;
         const { stack } = this.state;
-        const active = index === 0;
 
         // With renderActivePanelOnly={false} we would keep all the CSSTransitions rendered,
         // therefore they would not trigger the "enter" transition event as they were entered.
@@ -146,7 +145,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         // This key contains two parts: first one, stack.length - index is constant (and unique) for each panel,
         // second one, active changes only when the panel becomes or stops being active.
         const layer = stack.length - index;
-        const key = renderActivePanelOnly ? stack.length : `${layer}-${active}`;
+        const key = renderActivePanelOnly ? stack.length : layer;
 
         return (
             <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
@@ -171,7 +170,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         if (this.props.stack == null) {
             this.setState(state => ({
                 direction: "pop",
-                stack: state.stack.filter(p => p !== panel),
+                stack: state.stack.slice(1),
             }));
         }
     };
