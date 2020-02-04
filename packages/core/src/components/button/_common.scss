@@ -85,6 +85,10 @@ $dark-minimal-button-background-color: none !default;
 $dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 
+$button-outlined-width: 1px !default;
+$button-outlined-border-intent-opacity: 0.6 !default;
+$button-outlined-border-disabled-intent-opacity: 0.2 !default;
+
 // "intent": (default, hover, active colors)
 $button-intents: (
   "primary": ($pt-intent-primary, $blue2, $blue1),
@@ -448,3 +452,56 @@ $button-intents: (
   }
 }
 
+@mixin pt-button-outlined() {
+  border: $button-outlined-width solid rgba($pt-text-color, 0.2);
+  box-sizing: border-box;
+
+  &:disabled,
+  &.#{$ns}-disabled,
+  &:disabled:hover,
+  &.#{$ns}-disabled:hover {
+    border-color: rgba($pt-text-color-disabled, 0.1);
+  }
+
+  .#{$ns}-dark & {
+    @include pt-dark-button-outlined();
+  }
+
+  @each $intent, $colors in $button-intents {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-button-outlined-intent(
+        map-get($pt-intent-text-colors, $intent),
+        map-get($pt-dark-intent-text-colors, $intent)
+      );
+    }
+  }
+}
+
+@mixin pt-dark-button-outlined() {
+  border-color: rgba($white, 0.4);
+
+  &:disabled,
+  &:disabled:hover,
+  &.#{$ns}-disabled,
+  &.#{$ns}-disabled:hover {
+    border-color: rgba($white, 0.2);
+  }
+}
+
+@mixin pt-button-outlined-intent($text-color, $dark-text-color) {
+  border-color: rgba($text-color, $button-outlined-border-intent-opacity);
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    border-color: rgba($text-color, $button-outlined-border-disabled-intent-opacity);
+  }
+
+  .#{$ns}-dark & {
+    border-color: rgba($dark-text-color, $button-outlined-border-intent-opacity);
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      border-color: rgba($dark-text-color, $button-outlined-border-disabled-intent-opacity);
+    }
+  }
+}
