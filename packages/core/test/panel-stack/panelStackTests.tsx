@@ -235,7 +235,10 @@ describe("<PanelStack>", () => {
     });
 
     it("renders only one panel by default", () => {
-        const stack = [{ component: TestPanel, title: "Panel A" }, { component: TestPanel, title: "Panel B" }];
+        const stack = [
+            { component: TestPanel, title: "Panel A" },
+            { component: TestPanel, title: "Panel B" },
+        ];
         panelStackWrapper = renderPanelStack({ stack });
 
         const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
@@ -244,9 +247,12 @@ describe("<PanelStack>", () => {
         assert.equal(panelHeaders.at(0).text(), stack[1].title);
     });
 
-    it("renders all panels with renderCurrentPanelOnly disabled", () => {
-        const stack = [{ component: TestPanel, title: "Panel A" }, { component: TestPanel, title: "Panel B" }];
-        panelStackWrapper = renderPanelStack({ renderCurrentPanelOnly: false, stack });
+    it("renders all panels with renderActivePanelOnly disabled", () => {
+        const stack = [
+            { component: TestPanel, title: "Panel A" },
+            { component: TestPanel, title: "Panel B" },
+        ];
+        panelStackWrapper = renderPanelStack({ renderActivePanelOnly: false, stack });
 
         const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(panelHeaders);
