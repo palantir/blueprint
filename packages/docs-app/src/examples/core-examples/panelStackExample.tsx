@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, IPanel, IPanelProps, PanelStack, Switch, UL } from "@blueprintjs/core";
+import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
@@ -67,7 +67,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
                     initialPanel={this.state.currentPanelStack[0]}
                     onOpen={this.addToPanelStack}
                     onClose={this.removeFromPanelStack}
-                    renderCurrentPanelOnly={this.state.activePanelOnly}
+                    renderActivePanelOnly={this.state.activePanelOnly}
                     showPanelHeader={this.state.showHeader}
                 />
             </Example>
@@ -85,16 +85,25 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
     };
 }
 
-interface IPanelExampleProps {
+interface IPanelExampleProps extends IPanelProps {
     panelNumber: number;
 }
 
+interface IPanelExampleState {
+    counter: number;
+}
+
 // tslint:disable-next-line:max-classes-per-file
-class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps> {
+class PanelExample extends React.PureComponent<IPanelExampleProps> {
+    public state: IPanelExampleState = {
+        counter: 0,
+    };
+
     public render() {
         return (
             <div className="docs-panel-stack-contents-example">
                 <Button intent={Intent.PRIMARY} onClick={this.openNewPanel} text="Open new panel" />
+                <NumericInput value={this.state.counter} stepSize={1} onValueChange={this.updateCounter} />
             </div>
         );
     }
@@ -106,5 +115,9 @@ class PanelExample extends React.PureComponent<IPanelProps & IPanelExampleProps>
             props: { panelNumber },
             title: `Panel ${panelNumber}`,
         });
+    };
+
+    private updateCounter = (counter: number) => {
+        this.setState({ counter });
     };
 }
