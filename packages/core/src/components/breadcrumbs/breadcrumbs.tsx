@@ -134,7 +134,8 @@ export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
         } else if (this.props.breadcrumbRenderer != null) {
             return this.props.breadcrumbRenderer(props);
         } else {
-            return <Breadcrumb {...props} current={isCurrent} />;
+            // allow user to override 'current' prop
+            return <Breadcrumb current={isCurrent} {...props} />;
         }
     }
 }
