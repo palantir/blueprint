@@ -112,6 +112,7 @@ const INVALID_PROPS = [
     "active",
     "alignText",
     "containerRef",
+    "current",
     "elementRef",
     "fill",
     "icon",
