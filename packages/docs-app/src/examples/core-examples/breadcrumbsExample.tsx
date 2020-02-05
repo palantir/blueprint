@@ -35,7 +35,7 @@ const ITEMS: IBreadcrumbProps[] = [
     { icon: "folder-close", text: "Janet" },
     { href: "#", icon: "folder-close", text: "Photos" },
     { href: "#", icon: "folder-close", text: "Wednesday" },
-    { icon: "document", text: "image.jpg" },
+    { icon: "document", text: "image.jpg", current: true },
 ];
 
 export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBreadcrumbsExampleState> {
