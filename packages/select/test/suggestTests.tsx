@@ -99,6 +99,26 @@ describe("Suggest", () => {
             assert.strictEqual(scrollActiveItemIntoViewSpy.callCount, 1, "should call scrollActiveItemIntoView");
         });
 
+        it("sets active item to the selected item when the popover is closed", () => {
+            const ITEM_INDEX = 4;
+            const wrapper = suggest();
+            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList; // private ref
+            console.log("INITIAL STATE", queryList.state.activeItem, wrapper.state().selectedItem)
+            simulateFocus(wrapper);
+            assert.isTrue(wrapper.state().isOpen);
+            selectItem(wrapper, ITEM_INDEX);
+            assert.isFalse(wrapper.state().isOpen);
+            simulateFocus(wrapper);
+            assert.isTrue(wrapper.state().isOpen);
+            simulateKeyDown(wrapper, Keys.ARROW_DOWN);
+            console.log("AFTER KEY DOWN", queryList.state.activeItem, wrapper.state().selectedItem)
+            console.log("BEFORE BLUR", queryList.state.activeItem, wrapper.state().selectedItem)
+            simulateKeyDown(wrapper, Keys.ESCAPE);
+            assert.isFalse(wrapper.state().isOpen);
+            console.log("AFTER BLUR", queryList.state.activeItem, wrapper.state().selectedItem)
+            assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
+        });
+
         function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, which: number) {
             simulateKeyDown(wrapper, which);
             assert.isFalse(wrapper.state().isOpen, "should not open popover");
