@@ -176,7 +176,9 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
         const contentsStyle = {
             // only use heightWhenOpen while closing
-            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
+            // If translate is equal to 0, we use a none transform, to avoid having problem if trying to use
+            // fixed position in a child of this node
+            transform: displayWithTransform ? "none" : `translateY(-${this.state.heightWhenOpen}px)`,
             // transitions don't work with height: auto
             transition: isAutoHeight ? "none" : undefined,
         };
