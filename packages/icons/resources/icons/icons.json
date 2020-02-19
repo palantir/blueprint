@@ -3386,5 +3386,19 @@
     "tags": "truck, automobile, vehicle, car, van, drive, ride, distance, navigation, directions",
     "group": "interface",
     "content": "\\e90b"
+  },
+  {
+    "displayName": "Diagnosis",
+    "iconName": "diagnosis",
+    "tags": "doctor, science, heart, stethoscope, medical, examination",
+    "group": "interface",
+    "content": "\\e90d"
+  },
+  {
+    "displayName": "Lab test",
+    "iconName": "lab-test",
+    "tags": "science, beaker, chemistry, mixing, scientist",
+    "group": "interface",
+    "content": "\\e90e"
   }
 ]
