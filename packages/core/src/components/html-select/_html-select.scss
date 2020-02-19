@@ -85,6 +85,10 @@ Styleguide select
       color: $pt-dark-text-color;
     }
 
+    option:disabled {
+      color: $pt-dark-text-color-disabled;
+    }
+
     &::after {
       color: $pt-dark-icon-color;
     }
