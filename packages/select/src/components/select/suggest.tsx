@@ -185,7 +185,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
-                onClosed={this.handlePopoverClosed}
             >
                 <InputGroup
                     autoComplete={autoComplete}
@@ -289,11 +288,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             this.queryList.scrollActiveItemIntoView();
         }
         Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
-    };
-
-    private handlePopoverClosed = (element: HTMLElement) => {
-        this.maybeResetActiveItemToSelectedItem();
-        Utils.safeInvokeMember(this.props.popoverProps, "onClosed", element);
     };
 
     private getTargetKeyDownHandler = (
