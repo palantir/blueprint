@@ -129,13 +129,11 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
     }
 
     public componentDidMount() {
-        if (this.rightElement != null) {
-            const { clientWidth } = this.rightElement;
-            // small threshold to prevent infinite loops
-            if (Math.abs(clientWidth - this.state.rightElementWidth) > 2) {
-                this.setState({ rightElementWidth: clientWidth });
-            }
-        }
+        this.updateInputWidth();
+    }
+
+    public componentDidUpdate() {
+        this.updateInputWidth();
     }
 
     private maybeRenderRightElement() {
@@ -148,5 +146,17 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
                 {rightElement}
             </span>
         );
+    }
+
+    private updateInputWidth() {
+        if (this.rightElement != null) {
+            const { clientWidth } = this.rightElement;
+            // small threshold to prevent infinite loops
+            if (Math.abs(clientWidth - this.state.rightElementWidth) > 2) {
+                this.setState({ rightElementWidth: clientWidth });
+            }
+        } else {
+            this.setState({ rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH });
+        }
     }
 }
