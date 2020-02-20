@@ -22,7 +22,7 @@ import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
-import { IItemRendererProps } from "../src/index";
+import { IItemRendererProps, QueryList } from "../src/index";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
@@ -100,22 +100,27 @@ describe("Suggest", () => {
         });
 
         it("sets active item to the selected item when the popover is closed", () => {
-            const ITEM_INDEX = 4;
-            const wrapper = suggest();
-            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList; // private ref
-            console.log("INITIAL STATE", queryList.state.activeItem, wrapper.state().selectedItem)
+            const wrapper = suggest({ selectedItem: TOP_100_FILMS[10] });
+            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList as QueryList<IFilm>; // private ref
+
+            assert.deepEqual(
+                queryList.state.activeItem,
+                wrapper.state().selectedItem,
+                "QueryList activeItem should be set to the controlled selectedItem if prop is provided",
+            );
+
             simulateFocus(wrapper);
             assert.isTrue(wrapper.state().isOpen);
-            selectItem(wrapper, ITEM_INDEX);
-            assert.isFalse(wrapper.state().isOpen);
-            simulateFocus(wrapper);
-            assert.isTrue(wrapper.state().isOpen);
-            simulateKeyDown(wrapper, Keys.ARROW_DOWN);
-            console.log("AFTER KEY DOWN", queryList.state.activeItem, wrapper.state().selectedItem)
-            console.log("BEFORE BLUR", queryList.state.activeItem, wrapper.state().selectedItem)
+
+            const newActiveItem = TOP_100_FILMS[11];
+            queryList.setActiveItem(newActiveItem);
+            assert.deepEqual(queryList.state.activeItem, newActiveItem);
+
             simulateKeyDown(wrapper, Keys.ESCAPE);
             assert.isFalse(wrapper.state().isOpen);
-            console.log("AFTER BLUR", queryList.state.activeItem, wrapper.state().selectedItem)
+
+            wrapper.update();
+            wrapper.find(QueryList).update();
             assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
         });
 

@@ -129,6 +129,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         return (
             <this.TypedQueryList
                 {...restProps}
+                initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
@@ -140,6 +141,11 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         // If the selected item prop changes, update the underlying state.
         if (this.props.selectedItem !== undefined && this.props.selectedItem !== this.state.selectedItem) {
             this.setState({ selectedItem: this.props.selectedItem });
+        }
+
+        if (this.state.isOpen === false && prevState.isOpen === true) {
+            // just closed, likely by keyboard interaction
+            this.maybeResetActiveItemToSelectedItem();
         }
 
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
@@ -286,19 +292,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     };
 
     private handlePopoverClosed = (element: HTMLElement) => {
-        // The activeItem should always be the selectedItem when the Popover is first opened
-        // if the activeItem prop is not set. Set the activeItem on close so that there isn't
-        // a flash of the activeItem on screen.
-        const shouldResetActiveItemToSelectedItem =
-            this.props.activeItem === undefined && this.state.selectedItem !== null && !this.props.resetOnSelect;
-
-        if (this.queryList !== null && shouldResetActiveItemToSelectedItem) {
-            // If the selectedItem prop is set then use it.
-            // If not fall back to component state.
-            const selectedItem = this.props.selectedItem ?? this.state.selectedItem;
-            this.queryList.setActiveItem(selectedItem);
-        }
-
+        this.maybeResetActiveItemToSelectedItem();
         Utils.safeInvokeMember(this.props.popoverProps, "onClosed", element);
     };
 
@@ -338,4 +332,16 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             Utils.safeInvokeMember(this.props.inputProps, "onKeyUp", evt);
         };
     };
+
+    private maybeResetActiveItemToSelectedItem() {
+        // The activeItem should always be the selectedItem when the Popover is first opened
+        // if the activeItem prop is not set. Set the activeItem on close so that there isn't
+        // a flash of the activeItem on screen.
+        const shouldResetActiveItemToSelectedItem =
+            this.props.activeItem === undefined && this.state.selectedItem !== null && !this.props.resetOnSelect;
+
+        if (this.queryList !== null && shouldResetActiveItemToSelectedItem) {
+            this.queryList.setActiveItem(this.props.selectedItem ?? this.state.selectedItem);
+        }
+    }
 }
