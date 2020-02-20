@@ -132,8 +132,10 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
         this.updateInputWidth();
     }
 
-    public componentDidUpdate() {
-        this.updateInputWidth();
+    public componentDidUpdate(prevProps: IInputGroupProps & HTMLInputProps) {
+        if (prevProps.rightElement !== this.props.rightElement) {
+            this.updateInputWidth();
+        }
     }
 
     private maybeRenderRightElement() {
