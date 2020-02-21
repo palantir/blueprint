@@ -109,6 +109,7 @@ $button-intents: (
   vertical-align: middle;
   text-align: left;
   font-size: $pt-font-size;
+  user-select: none;
 }
 
 @mixin pt-button-height($height) {
