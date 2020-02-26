@@ -347,7 +347,8 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
     }
 
     private handleTimeChange = (newTime: Date, dateIndex: number) => {
-        Utils.safeInvoke(this.props.timePickerProps.onChange, newTime);
+        this.props.timePickerProps?.onChange?.(newTime);
+
         const { value, time } = this.state;
         const newValue = DateUtils.getDateTime(
             value[dateIndex] != null ? DateUtils.clone(value[dateIndex]) : new Date(),
@@ -357,7 +358,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         newDateRange[dateIndex] = newValue;
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
-        Utils.safeInvoke(this.props.onChange, newDateRange);
+        this.props.onChange?.(newDateRange);
         this.setState({ value: newDateRange, time: newTimeRange });
     };
 
