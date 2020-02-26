@@ -949,7 +949,10 @@ describe("<NumericInput>", () => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
 
-            const inputElement = component.find("input").first().getDOMNode();
+            const inputElement = component
+                .find("input")
+                .first()
+                .getDOMNode();
             expect(handleValueChangeSpy.calledOnceWith(1, "1", inputElement));
         });
     });
