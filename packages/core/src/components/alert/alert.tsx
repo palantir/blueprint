@@ -62,7 +62,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     icon?: IconName | MaybeElement;
 
     /**
-     * The intent to be applied to the confirm (right-most) button.
+     * The intent to be applied to the confirm (right-most) button and the icon (if provided).
      */
     intent?: Intent;
 
