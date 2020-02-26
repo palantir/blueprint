@@ -99,8 +99,9 @@ describe("Suggest", () => {
             assert.strictEqual(scrollActiveItemIntoViewSpy.callCount, 1, "should call scrollActiveItemIntoView");
         });
 
-        it("sets active item to the selected item when the popover is closed", () => {
-            const wrapper = suggest({ selectedItem: TOP_100_FILMS[10] });
+        it("sets active item to the selected item when the popover is closed", (done) => {
+            // transition duration shorter than timeout below to ensure it's done
+            const wrapper = suggest({ selectedItem: TOP_100_FILMS[10], popoverProps: { transitionDuration: 5 } });
             const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList as QueryList<IFilm>; // private ref
 
             assert.deepEqual(
@@ -121,7 +122,10 @@ describe("Suggest", () => {
 
             wrapper.update();
             wrapper.find(QueryList).update();
-            assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
+            setTimeout(() => {
+                assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
+                done();
+            }, 10);
         });
 
         function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, which: number) {
