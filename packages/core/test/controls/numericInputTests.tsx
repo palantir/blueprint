@@ -24,7 +24,7 @@ import {
 import * as React from "react";
 import { spy } from "sinon";
 
-import { expectPropValidationError } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as Errors from "../../src/common/errors";
 import {
@@ -193,15 +193,19 @@ describe("<NumericInput>", () => {
             expect(component.state().value).to.equal("1 + 1");
         });
 
-        it("fires onValueChange with the number value and the string value when the value changes", () => {
+        it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
 
-            expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.firstCall.args).to.deep.equal([1, "1"]);
+            const inputElement = component
+                .find("input")
+                .first()
+                .getDOMNode();
+            expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
         });
 
         it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
@@ -213,6 +217,8 @@ describe("<NumericInput>", () => {
 
             // incrementing from 0
             incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
             onButtonClickSpy.resetHistory();
@@ -611,8 +617,12 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
-                expect(onValueChangeSpy.calledOnce).to.be.true;
-                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
+
+                const inputElement = component
+                    .find("input")
+                    .first()
+                    .getDOMNode();
+                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
             it("does not fire onValueChange if nextProps.min < value", () => {
@@ -684,8 +694,12 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
-                expect(onValueChangeSpy.calledOnce).to.be.true;
-                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
+
+                const inputElement = component
+                    .find("input")
+                    .first()
+                    .getDOMNode();
+                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
             it("does not fire onValueChange if nextProps.max > value", () => {
@@ -714,8 +728,12 @@ describe("<NumericInput>", () => {
                     .simulate("mousedown")
                     .simulate("mousedown");
                 expect(component.state().value).to.equal("2");
-                expect(onValueChangeSpy.callCount).to.equal(1);
-                expect(onValueChangeSpy.args[0]).to.deep.equal([2, "2"]);
+
+                const inputElement = component
+                    .find("input")
+                    .first()
+                    .getDOMNode();
+                expect(onValueChangeSpy.calledOnceWithExactly(2, "2", inputElement)).to.be.true;
             });
         });
 
