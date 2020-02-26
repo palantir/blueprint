@@ -125,7 +125,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     public render() {
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
-
         return (
             <this.TypedQueryList
                 {...restProps}
@@ -145,7 +144,10 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
-            this.maybeResetActiveItemToSelectedItem();
+            // wait until the transition ends so there isn't a flash of content in the popover
+            setTimeout(() => {
+                this.maybeResetActiveItemToSelectedItem();
+            }, this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration);
         }
 
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
@@ -328,9 +330,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     };
 
     private maybeResetActiveItemToSelectedItem() {
-        // The activeItem should always be the selectedItem when the Popover is first opened
-        // if the activeItem prop is not set. Set the activeItem on close so that there isn't
-        // a flash of the activeItem on screen.
         const shouldResetActiveItemToSelectedItem =
             this.props.activeItem === undefined && this.state.selectedItem !== null && !this.props.resetOnSelect;
 
