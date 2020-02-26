@@ -941,6 +941,17 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("mousedown", { altKey: true });
             expect(component.find("input").prop("value")).to.equal("0.1");
         });
+
+        it("supplies onValueChange callback with the input element when mounted", () => {
+            const handleValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={handleValueChangeSpy} />);
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("mousedown");
+
+            const inputElement = component.find("input").first().getDOMNode();
+            expect(handleValueChangeSpy.calledOnceWith(1, "1", inputElement));
+        });
     });
 
     interface IMockEvent {
