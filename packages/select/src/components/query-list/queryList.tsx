@@ -31,6 +31,12 @@ import {
 
 export interface IQueryListProps<T> extends IListItemsProps<T> {
     /**
+     * Initial active item, useful if the parent component is controlling its selectedItem but
+     * not activeItem.
+     */
+    initialActiveItem?: T;
+
+    /**
      * Callback invoked when user presses a key, after processing `QueryList`'s own key events
      * (up/down to navigate active item). This callback is passed to `renderer` and (along with
      * `onKeyUp`) can be attached to arbitrary content elements to support keyboard selection.
@@ -171,7 +177,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             activeItem:
                 props.activeItem !== undefined
                     ? props.activeItem
-                    : getFirstEnabledItem(filteredItems, props.itemDisabled),
+                    : props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled),
             createNewItem,
             filteredItems,
             query,
@@ -286,6 +292,21 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
 
         if (shouldUpdateActiveItem) {
             this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
+        }
+    }
+
+    public setActiveItem(activeItem: T | ICreateNewItem | null) {
+        this.expectedNextActiveItem = activeItem;
+        if (this.props.activeItem === undefined) {
+            // indicate that the active item may need to be scrolled into view after update.
+            this.shouldCheckActiveItemInViewport = true;
+            this.setState({ activeItem });
+        }
+
+        if (isCreateNewItem(activeItem)) {
+            Utils.safeInvoke(this.props.onActiveItemChange, null, true);
+        } else {
+            Utils.safeInvoke(this.props.onActiveItemChange, activeItem, false);
         }
     }
 
@@ -484,21 +505,6 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             }
         }
         return getFirstEnabledItem(this.state.filteredItems, this.props.itemDisabled, direction, startIndex);
-    }
-
-    private setActiveItem(activeItem: T | ICreateNewItem | null) {
-        this.expectedNextActiveItem = activeItem;
-        if (this.props.activeItem === undefined) {
-            // indicate that the active item may need to be scrolled into view after update.
-            this.shouldCheckActiveItemInViewport = true;
-            this.setState({ activeItem });
-        }
-
-        if (isCreateNewItem(activeItem)) {
-            Utils.safeInvoke(this.props.onActiveItemChange, null, true);
-        } else {
-            Utils.safeInvoke(this.props.onActiveItemChange, activeItem, false);
-        }
     }
 
     private isCreateItemRendered(): boolean {

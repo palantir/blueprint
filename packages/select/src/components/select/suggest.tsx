@@ -125,10 +125,10 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     public render() {
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
-
         return (
             <this.TypedQueryList
                 {...restProps}
+                initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
@@ -140,6 +140,14 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         // If the selected item prop changes, update the underlying state.
         if (this.props.selectedItem !== undefined && this.props.selectedItem !== this.state.selectedItem) {
             this.setState({ selectedItem: this.props.selectedItem });
+        }
+
+        if (this.state.isOpen === false && prevState.isOpen === true) {
+            // just closed, likely by keyboard interaction
+            // wait until the transition ends so there isn't a flash of content in the popover
+            setTimeout(() => {
+                this.maybeResetActiveItemToSelectedItem();
+            }, this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration);
         }
 
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
@@ -320,4 +328,13 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             Utils.safeInvokeMember(this.props.inputProps, "onKeyUp", evt);
         };
     };
+
+    private maybeResetActiveItemToSelectedItem() {
+        const shouldResetActiveItemToSelectedItem =
+            this.props.activeItem === undefined && this.state.selectedItem !== null && !this.props.resetOnSelect;
+
+        if (this.queryList !== null && shouldResetActiveItemToSelectedItem) {
+            this.queryList.setActiveItem(this.props.selectedItem ?? this.state.selectedItem);
+        }
+    }
 }
