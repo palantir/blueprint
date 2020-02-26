@@ -150,7 +150,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     onButtonClick?(valueAsNumber: number, valueAsString: string): void;
 
     /** The callback invoked when the value changes due to typing, arrow keys, or button clicks. */
-    onValueChange?(valueAsNumber: number, valueAsString: string): void;
+    onValueChange?(valueAsNumber: number, valueAsString: string, inputElement: HTMLInputElement | null): void;
 }
 
 export interface INumericInputState {
@@ -287,7 +287,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const didControlledValueChange = this.props.value !== prevProps.value;
 
         if (!didControlledValueChange && this.state.value !== prevState.value) {
-            this.invokeValueCallback(this.state.value, this.props.onValueChange);
+            const { value: valueAsString } = this.state;
+            this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement);
         }
     }
 
@@ -378,7 +379,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     private handleButtonClick = (e: React.MouseEvent | React.KeyboardEvent, direction: IncrementDirection) => {
         const delta = this.updateDelta(direction, e);
         const nextValue = this.incrementValue(delta);
-        this.invokeValueCallback(nextValue, this.props.onButtonClick);
+        this.props.onButtonClick?.(+nextValue, nextValue);
     };
 
     private startContinuousChange() {
@@ -403,7 +404,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private handleContinuousChange = () => {
         const nextValue = this.incrementValue(this.delta);
-        this.invokeValueCallback(nextValue, this.props.onButtonClick);
+        this.props.onButtonClick?.(+nextValue, nextValue);
     };
 
     // Callbacks - Input
@@ -487,10 +488,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         this.setState({ shouldSelectAfterUpdate: false, value: nextValue });
     };
-
-    private invokeValueCallback(value: string, callback: (valueAsNumber: number, valueAsString: string) => void) {
-        Utils.safeInvoke(callback, +value, value);
-    }
 
     private incrementValue(delta: number) {
         // pretend we're incrementing from 0 if currValue is empty
