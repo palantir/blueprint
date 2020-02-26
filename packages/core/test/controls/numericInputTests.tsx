@@ -198,7 +198,7 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
             const incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown")
+            incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
             const inputElement = component
@@ -216,7 +216,7 @@ describe("<NumericInput>", () => {
             const decrementButton = component.find(Button).last();
 
             // incrementing from 0
-            incrementButton.simulate("mousedown")
+            incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
             expect(onButtonClickSpy.calledOnce).to.be.true;
@@ -507,7 +507,7 @@ describe("<NumericInput>", () => {
         runInteractionSuite("Click '+'", "Click '-'", simulateIncrement, simulateDecrement);
     });
 
-    describe.only("Value bounds", () => {
+    describe("Value bounds", () => {
         describe("if no bounds are defined", () => {
             it("enforces no minimum bound", () => {
                 const component = mount(<NumericInput />);
