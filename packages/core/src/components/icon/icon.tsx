@@ -18,10 +18,13 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+import { IconName as _IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
 
-export { IconName };
+// We'd prefer
+//    export { IconName };
+// here, but TypeScript compiler option "--isolatedModules" doesn't allow direct re-exports.
+export type IconName = _IconName;
 
 export interface IIconProps extends IIntentProps, IProps {
     /** This component does not support custom children. Use the `icon` prop. */
