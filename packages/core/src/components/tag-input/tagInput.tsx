@@ -405,6 +405,8 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
                 }
             } else if (event.which === Keys.BACKSPACE) {
                 this.handleBackspaceToRemove(event);
+            } else if (event.which === Keys.DELETE) {
+                this.handleDeleteToRemove(event);
             }
         }
 
@@ -447,6 +449,14 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         if (this.isValidIndex(previousActiveIndex)) {
             event.stopPropagation();
             this.removeIndexFromValues(previousActiveIndex);
+        }
+    }
+
+    private handleDeleteToRemove(event: React.KeyboardEvent<HTMLInputElement>) {
+        const { activeIndex } = this.state;
+        if (this.isValidIndex(activeIndex)) {
+            event.stopPropagation();
+            this.removeIndexFromValues(activeIndex);
         }
     }
 
