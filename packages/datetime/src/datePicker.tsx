@@ -44,8 +44,8 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
      *
-     * In case of supplying your owner `renderDay` function, make sure to provide the appropriate class to obtain default
-     * blueprint styling.
+     * In case of supplying your owner `renderDay` function, make sure to apply the appropriate 
+     * CSS wrapper class to obtain default Blueprint styling.
      * eg.
      * `<div className={Classes.DATEPICKER_DAY_WRAPPER}>{CONTENT_HERE}</div>`
      *
@@ -182,7 +182,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
                         onMonthChange={this.handleMonthChange}
                         selectedDays={this.state.value}
                         toMonth={maxDate}
-                        renderDay={dayPickerProps?.renderDay ? dayPickerProps?.renderDay : this.renderDay}
+                        renderDay={dayPickerProps?.renderDay ?? this.renderDay}
                     />
                     {this.maybeRenderTimePicker()}
                     {showActionsBar && this.renderOptionsBar()}
