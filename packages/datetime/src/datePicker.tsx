@@ -182,7 +182,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
                         onMonthChange={this.handleMonthChange}
                         selectedDays={this.state.value}
                         toMonth={maxDate}
-                        renderDay={dayPickerProps?.renderDay ? dayPickerProps?.renderDay : this.renderDay}
+                        renderDay={dayPickerProps?.renderDay ?? this.renderDay}
                     />
                     {this.maybeRenderTimePicker()}
                     {showActionsBar && this.renderOptionsBar()}
