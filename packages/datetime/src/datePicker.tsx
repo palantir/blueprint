@@ -46,7 +46,6 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      *
      * In case of supplying your owner `renderDay` function, make sure to apply the appropriate 
      * CSS wrapper class to obtain default Blueprint styling.
-     * blueprint styling.
      * eg.
      * `<div className={Classes.DATEPICKER_DAY_WRAPPER}>{CONTENT_HERE}</div>`
      *
