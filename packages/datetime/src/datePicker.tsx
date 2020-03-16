@@ -43,6 +43,12 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * The following props are managed by the component and cannot be configured:
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
      * `initialMonth`), `toMonth` (use `maxDate`).
+     *
+     * In case of supplying your owner `renderDay` function, make sure to apply the appropriate
+     * CSS wrapper class to obtain default Blueprint styling.
+     * eg.
+     * `<div className={Classes.DATEPICKER_DAY_WRAPPER}>{CONTENT_HERE}</div>`
+     *
      */
     dayPickerProps?: DayPickerProps;
 
@@ -176,7 +182,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
                         onMonthChange={this.handleMonthChange}
                         selectedDays={this.state.value}
                         toMonth={maxDate}
-                        renderDay={this.renderDay}
+                        renderDay={dayPickerProps?.renderDay ?? this.renderDay}
                     />
                     {this.maybeRenderTimePicker()}
                     {showActionsBar && this.renderOptionsBar()}
