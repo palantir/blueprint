@@ -319,9 +319,9 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
             shortcuts === true
                 ? true
                 : shortcuts.map(shortcut => ({
-                    ...shortcut,
-                    dateRange: [shortcut.date, undefined],
-                }));
+                      ...shortcut,
+                      dateRange: [shortcut.date, undefined],
+                  }));
         return [
             <Shortcuts
                 key="shortcuts"
