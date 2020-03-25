@@ -121,6 +121,13 @@ export interface ITruncatedFormatProps extends IProps {
     showPopover?: TruncatedPopoverMode;
 
     /**
+     * The container element into which the overlay renders its contents, when `usePortal` is `true`.
+     * This prop is ignored if `usePortal` is `false`.
+     * @default document.body
+     */
+    portalContainer?: HTMLElement;
+
+    /**
      * Number of characters that are displayed before being truncated and appended with the
      * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
      * `detectTruncation` is `true`.
@@ -219,6 +226,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     modifiers={{ preventOverflow: { boundariesElement: "window" } }}
                     content={popoverContent}
+                    portalContainer={this.props.portalContainer}
                     position={Position.BOTTOM}
                     isOpen={true}
                     onClose={this.handlePopoverClose}
