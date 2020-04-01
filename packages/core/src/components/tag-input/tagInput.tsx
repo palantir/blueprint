@@ -436,6 +436,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     };
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
+        event.stopPropagation();
         // using data attribute to simplify callback logic -- one handler for all children
         const index = +event.currentTarget.parentElement.getAttribute("data-tag-index");
         this.removeIndexFromValues(index);
