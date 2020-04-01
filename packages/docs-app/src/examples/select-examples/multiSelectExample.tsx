@@ -262,5 +262,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         };
     }
 
-    private handleClear = () => this.setState({ films: [] });
+    private handleClear = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        event.stopPropagation();
+        this.setState({ films: [] });
+    };
 }
