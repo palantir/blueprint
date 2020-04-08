@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>pt-virus-cion-16px</title>
+    <desc>Created with Sketch.</desc>
+    <g id="pt-virus-cion-16px" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="pt-icon-virus" transform="translate(0.000000, 0.500000)" stroke="#000000">
+            <g id="arms" stroke-width="2">
+                <g id="Group-7" transform="translate(12.500000, 6.500000)">
+                    <line x1="1.42108547e-14" y1="1.5" x2="1" y2="1.5" id="Line" stroke-linecap="square"></line>
+                    <line x1="1.5" y1="1.5" x2="3.5" y2="1.5" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(2.500000, 1.500000) scale(1, -1) rotate(90.000000) translate(-2.500000, -1.500000) "></line>
+                </g>
+                <g id="Group-9" transform="translate(10.792893, 1.292893)">
+                    <line x1="0.146446609" y1="3.26776695" x2="0.853553391" y2="2.56066017" id="Line" stroke-linecap="square"></line>
+                    <line x1="0.914213562" y1="1.5" x2="2.91421356" y2="1.5" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.914214, 1.500000) scale(1, -1) rotate(135.000000) translate(-1.914214, -1.500000) "></line>
+                </g>
+                <g id="Group-3" transform="translate(1.292893, 1.292893)">
+                    <line x1="3.56066017" y1="2.56066017" x2="3.06066017" y2="2.56066017" id="Line" stroke-linecap="square" transform="translate(3.060660, 2.560660) scale(-1, 1) rotate(-45.000000) translate(-3.060660, -2.560660) "></line>
+                    <line x1="1" y1="1.5" x2="3" y2="1.5" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(2.000000, 1.500000) scale(-1, -1) rotate(135.000000) translate(-2.000000, -1.500000) "></line>
+                </g>
+                <g id="Group-8" transform="translate(9.646447, 10.146447)">
+                    <line x1="1.79289322" y1="1.5" x2="2" y2="1.5" id="Line" stroke-linecap="square" transform="translate(2.000000, 1.500000) scale(1, -1) rotate(-45.000000) translate(-2.000000, -1.500000) "></line>
+                    <line x1="2.06066017" y1="2.56066017" x2="4.06066017" y2="2.56066017" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(3.060660, 2.560660) rotate(135.000000) translate(-3.060660, -2.560660) "></line>
+                </g>
+                <g id="Group-5" transform="translate(1.292893, 10.792893)">
+                    <line x1="3.76776695" y1="0.146446609" x2="3.06066017" y2="0.853553391" id="Line" stroke-linecap="square"></line>
+                    <line x1="1" y1="1.91421356" x2="3" y2="1.91421356" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(2.000000, 1.914214) scale(-1, 1) rotate(135.000000) translate(-2.000000, -1.914214) "></line>
+                </g>
+                <g id="Group-4" transform="translate(0.000000, 6.500000)">
+                    <line x1="2.5" y1="1.5" x2="3.5" y2="1.5" id="Line" stroke-linecap="square" transform="translate(3.000000, 1.500000) scale(-1, 1) translate(-3.000000, -1.500000) "></line>
+                    <line x1="3.55271368e-14" y1="1.5" x2="2" y2="1.5" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.000000, 1.500000) scale(-1, -1) rotate(90.000000) translate(-1.000000, -1.500000) "></line>
+                </g>
+                <g id="Group-2" transform="translate(7.000000, 0.000000)">
+                    <line x1="0.5" y1="2.5" x2="1.5" y2="2.5" id="Line" stroke-linecap="square" transform="translate(1.000000, 2.500000) rotate(270.000000) translate(-1.000000, -2.500000) "></line>
+                    <line x1="1.42108547e-14" y1="0.5" x2="2" y2="0.5" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.000000, 0.500000) scale(1, -1) rotate(-180.000000) translate(-1.000000, -0.500000) "></line>
+                </g>
+                <g id="Group-6" transform="translate(7.000000, 13.000000)">
+                    <line x1="0.5" y1="0.5" x2="1.5" y2="0.5" id="Line" stroke-linecap="square" transform="translate(1.000000, 0.500000) rotate(90.000000) translate(-1.000000, -0.500000) "></line>
+                    <line x1="1.42108547e-14" y1="1.5" x2="2" y2="1.5" id="Line" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.000000, 1.500000) scale(1, -1) translate(-1.000000, -1.500000) "></line>
+                </g>
+            </g>
+            <path d="M8,3 C9.24264069,3 10.3676407,3.50367966 11.1819805,4.31801948 C11.9963203,5.13235931 12.5,6.25735931 12.5,7.5 C12.5,8.74264069 11.9963203,9.86764069 11.1819805,10.6819805 C10.3676407,11.4963203 9.24264069,12 8,12 C6.75735931,12 5.63235931,11.4963203 4.81801948,10.6819805 C4.00367966,9.86764069 3.5,8.74264069 3.5,7.5 C3.5,6.25735931 4.00367966,5.13235931 4.81801948,4.31801948 C5.63235931,3.50367966 6.75735931,3 8,3 L8,3 Z M10,8 C9.58578644,8 9.21078644,8.16789322 8.93933983,8.43933983 C8.66789322,8.71078644 8.5,9.08578644 8.5,9.5 C8.5,9.91421356 8.66789322,10.2892136 8.93933983,10.5606602 C9.21078644,10.8321068 9.58578644,11 10,11 C10.4142136,11 10.7892136,10.8321068 11.0606602,10.5606602 C11.3321068,10.2892136 11.5,9.91421356 11.5,9.5 C11.5,9.08578644 11.3321068,8.71078644 11.0606602,8.43933983 C10.7892136,8.16789322 10.4142136,8 10,8 Z M6.5,4 C5.94771525,4 5.44771525,4.22385763 5.08578644,4.58578644 C4.72385763,4.94771525 4.5,5.44771525 4.5,6 C4.5,6.55228475 4.72385763,7.05228475 5.08578644,7.41421356 C5.44771525,7.77614237 5.94771525,8 6.5,8 C7.05228475,8 7.55228475,7.77614237 7.91421356,7.41421356 C8.27614237,7.05228475 8.5,6.55228475 8.5,6 C8.5,5.44771525 8.27614237,4.94771525 7.91421356,4.58578644 C7.55228475,4.22385763 7.05228475,4 6.5,4 Z" id="base" fill="#000000"></path>
+        </g>
+    </g>
+</svg>

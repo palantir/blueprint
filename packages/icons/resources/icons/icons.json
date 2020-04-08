@@ -3400,5 +3400,12 @@
     "tags": "science, beaker, chemistry, mixing, scientist",
     "group": "interface",
     "content": "\\e90e"
+  },
+  {
+    "displayName": "Virus",
+    "iconName": "virus",
+    "tags": "virus, doctor, medical, examination, disease, pandemic, sick",
+    "group": "interface",
+    "content": "\\e90f"
   }
 ]
