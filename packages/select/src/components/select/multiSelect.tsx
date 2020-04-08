@@ -119,8 +119,10 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         }
 
         // add our own inputProps.className so that we can reference it in event handlers
-        const { inputProps = {} } = tagInputProps;
-        inputProps.className = classNames(inputProps.className, Classes.MULTISELECT_TAG_INPUT_INPUT);
+        const inputProps = {
+            ...tagInputProps.inputProps,
+            className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT)
+        };
 
         const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
             if (method === "paste") {
