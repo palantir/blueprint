@@ -321,7 +321,9 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
         const maybeNoResults = this.isCreateItemRendered() ? null : noResults;
         const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
-        const createItemView = this.isCreateItemRendered() ? this.renderCreateItemMenuItem(this.state.query.trim()) : null;
+        const createItemView = this.isCreateItemRendered()
+            ? this.renderCreateItemMenuItem(this.state.query.trim())
+            : null;
         if (menuContent == null && createItemView == null) {
             return null;
         }
