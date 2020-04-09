@@ -278,9 +278,13 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             Utils.safeInvoke(props.onQueryChange, query);
         }
 
-        const filteredItems = getFilteredItems(query, props);
+        // Leading and trailing whitespace can be confusing to display, so we remove it when passing it
+        // to functions dealing with data, like createNewItemFromQuery. But we need the unaltered user-typed
+        // query to remain in state to be able to render controlled text inputs properly.
+        const trimmedQuery = query.trim();
+        const filteredItems = getFilteredItems(trimmedQuery, props);
         const createNewItem =
-            createNewItemFromQuery != null && query !== "" ? createNewItemFromQuery(query) : undefined;
+            createNewItemFromQuery != null && trimmedQuery !== "" ? createNewItemFromQuery(trimmedQuery) : undefined;
         this.setState({ createNewItem, filteredItems, query });
 
         // always reset active item if it's now filtered or disabled
@@ -317,7 +321,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
         const maybeNoResults = this.isCreateItemRendered() ? null : noResults;
         const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
-        const createItemView = this.isCreateItemRendered() ? this.renderCreateItemMenuItem(this.state.query) : null;
+        const createItemView = this.isCreateItemRendered() ? this.renderCreateItemMenuItem(this.state.query.trim()) : null;
         if (menuContent == null && createItemView == null) {
             return null;
         }
@@ -484,7 +488,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     };
 
     private handleInputQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
-        const query = event == null ? "" : event.target.value.trim();
+        const query = event == null ? "" : event.target.value;
         this.setQuery(query);
         Utils.safeInvoke(this.props.onQueryChange, query, event);
     };
