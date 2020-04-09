@@ -55,11 +55,7 @@ export function isPositionVertical(position: Position) {
 }
 
 export function getPositionIgnoreAngles(position: Position) {
-    if (
-        position === Position.TOP ||
-        position === Position.TOP_LEFT ||
-        position === Position.TOP_RIGHT
-    ) {
+    if (position === Position.TOP || position === Position.TOP_LEFT || position === Position.TOP_RIGHT) {
         return Position.TOP;
     } else if (
         position === Position.BOTTOM ||
@@ -67,11 +63,7 @@ export function getPositionIgnoreAngles(position: Position) {
         position === Position.BOTTOM_RIGHT
     ) {
         return Position.BOTTOM;
-    } else if (
-        position === Position.LEFT ||
-        position === Position.LEFT_TOP ||
-        position === Position.LEFT_BOTTOM
-    ) {
+    } else if (position === Position.LEFT || position === Position.LEFT_TOP || position === Position.LEFT_BOTTOM) {
         return Position.LEFT;
     } else {
         return Position.RIGHT;

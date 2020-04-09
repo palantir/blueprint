@@ -98,7 +98,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
 
     /**
      * Popper modifier options, passed directly to internal Popper instance. See
-     * https://popper.js.org/popper-documentation.html#modifiers for complete
+     * https://popper.js.org/docs/modifiers/ for complete
      * details.
      */
     modifiers?: PopperModifiers;

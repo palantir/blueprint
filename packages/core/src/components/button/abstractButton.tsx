@@ -57,6 +57,9 @@ export interface IButtonProps extends IActionProps {
     /** Whether this button should use minimal styles. */
     minimal?: boolean;
 
+    /** Whether this button should use outlined styles. */
+    outlined?: boolean;
+
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | MaybeElement;
 
@@ -96,7 +99,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { alignText, fill, large, loading, minimal, small, tabIndex } = this.props;
+        const { alignText, fill, large, loading, outlined, minimal, small, tabIndex } = this.props;
         const disabled = this.props.disabled || loading;
 
         const className = classNames(
@@ -108,6 +111,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
                 [Classes.LARGE]: large,
                 [Classes.LOADING]: loading,
                 [Classes.MINIMAL]: minimal,
+                [Classes.OUTLINED]: outlined,
                 [Classes.SMALL]: small,
             },
             Classes.alignmentClass(alignText),

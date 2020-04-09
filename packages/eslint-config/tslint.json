@@ -1,5 +1,5 @@
 {
-  "extends": "./packages/tslint-config",
+  "extends": "@blueprintjs/tslint-config",
   "rules": {
     "file-header": {
       "options": [
@@ -10,6 +10,10 @@
     // TODO: test dependencies are only declared at root but used in all packages.
     "no-implicit-dependencies": false,
     // TODO: Currently, a lot of chai assertions are not written as proper statements.
-    "no-unused-expression": false
+    "no-unused-expression": false,
+    // Turn off the blueprint tslint rules since we have replaced them with eslint rules
+    "blueprint-classes-constants": false,
+    "blueprint-html-components": false,
+    "blueprint-icon-components": false
   }
 }

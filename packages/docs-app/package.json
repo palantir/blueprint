@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/docs-app",
-  "version": "3.19.0",
+  "version": "3.24.0",
   "description": "Blueprint Documentation Site",
   "private": true,
   "scripts": {
@@ -8,22 +8,22 @@
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js --host 0.0.0.0",
     "dist": "cross-env NODE_ENV=production yarn bundle",
-    "lint": "run-p lint:scss lint:ts",
+    "lint": "run-p lint:scss lint:es",
     "lint:scss": "sass-lint",
-    "lint:ts": "ts-lint",
-    "lint-fix": "ts-lint --fix",
+    "lint:es": "es-lint",
+    "lint-fix": "es-lint --fix",
     "test": "exit 0",
     "verify": "run-p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.19.0",
-    "@blueprintjs/datetime": "^3.14.0",
+    "@blueprintjs/core": "^3.24.0",
+    "@blueprintjs/datetime": "^3.15.0",
     "@blueprintjs/docs-data": "^3.16.0",
     "@blueprintjs/docs-theme": "^3.4.0",
-    "@blueprintjs/icons": "^3.11.0",
-    "@blueprintjs/select": "^3.11.0",
-    "@blueprintjs/table": "^3.8.0",
-    "@blueprintjs/test-commons": "^0.10.0",
+    "@blueprintjs/icons": "^3.14.0",
+    "@blueprintjs/select": "^3.12.0",
+    "@blueprintjs/table": "^3.8.3",
+    "@blueprintjs/test-commons": "^0.10.1",
     "@blueprintjs/timezone": "^3.6.0",
     "@types/downloadjs": "^1.4.1",
     "chroma-js": "^2.0.4",
@@ -39,7 +39,7 @@
     "tslib": "~1.10.0"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.11.0",
+    "@blueprintjs/node-build-scripts": "^1.0.0",
     "@blueprintjs/webpack-build-scripts": "^0.9.0",
     "@types/chroma-js": "^1.4.1",
     "npm-run-all": "^4.1.5",

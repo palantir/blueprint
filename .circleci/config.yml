@@ -59,6 +59,7 @@ jobs:
 
   compile:
     docker: *docker-node-lts
+    resource_class: large
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -76,14 +77,16 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: '.' }
-      - run: mkdir -p ./reports/tslint ./reports/stylelint
-      - run: yarn compile --scope "@blueprintjs/tslint-config"
+      - run: mkdir -p ./reports/eslint ./reports/stylelint
+      # we need to compile the lint rules for blueprint
+      - run: yarn compile --scope "@blueprintjs/{eslint-plugin-blueprint,tslint-config}"
       - run: yarn lint
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
   dist:
     docker: *docker-node-lts
+    resource_class: large
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -92,6 +95,20 @@ jobs:
       - persist_to_workspace:
           root: '.'
           paths: [packages/*/lib, packages/*/dist]
+
+  test-jest:
+    docker: *docker-node-lts
+    environment:
+      JUNIT_REPORT_PATH: reports
+      # JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: '.' }
+      - run: mkdir ./reports
+      - run: yarn lerna run test:jest-ci
+      - store_test_results: { path: ./reports }
+      - store_artifacts: { path: ./reports }
 
   test-react-16: &test-react
     docker: *docker-node-browsers
@@ -180,6 +197,8 @@ workflows:
       - lint:
           requires: [checkout-code]
       - dist:
+          requires: [compile]
+      - test-jest:
           requires: [compile]
       - test-react-15:
           requires: [compile]

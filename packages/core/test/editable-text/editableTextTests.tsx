@@ -40,6 +40,13 @@ describe("<EditableText>", () => {
         assert.isFalse(editable.state("isEditing"));
     });
 
+    it("allows resetting controlled value to undefined or null", () => {
+        const editable = shallow(<EditableText isEditing={false} placeholder="placeholder" value="alphabet" />);
+        assert.strictEqual(editable.text(), "alphabet");
+        editable.setProps({ value: null });
+        assert.strictEqual(editable.text(), "placeholder");
+    });
+
     describe("when editing", () => {
         it('renders <input type="text"> when editing', () => {
             const input = shallow(<EditableText isEditing={true} />).find("input");

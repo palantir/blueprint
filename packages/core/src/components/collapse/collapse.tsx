@@ -52,11 +52,16 @@ export interface ICollapseProps extends IProps {
 }
 
 export interface ICollapseState {
-    /** The height that should be used for the content animations. This is a CSS value, not just a number. */
-    height: string;
-
     /** The state the element is currently in. */
     animationState: AnimationStates;
+
+    /** The height that should be used for the content animations. This is a CSS value, not just a number. */
+    height: string | undefined;
+
+    /**
+     * The most recent non-zero height (once a height has been measured upon first open; it is undefined until then)
+     */
+    heightWhenOpen: number | undefined;
 }
 
 /**
@@ -104,13 +109,8 @@ export enum AnimationStates {
     CLOSED,
 }
 
-export interface ICollapseSnapshot {
-    animationState?: AnimationStates;
-    height?: string;
-}
-
 @polyfill
-export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState, ICollapseSnapshot> {
+export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: ICollapseProps = {
@@ -120,36 +120,46 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         transitionDuration: 200,
     };
 
-    public state = {
+    public static getDerivedStateFromProps(props: ICollapseProps, state: ICollapseState) {
+        const { isOpen } = props;
+        const { animationState } = state;
+
+        if (isOpen) {
+            switch (animationState) {
+                case AnimationStates.OPEN:
+                    // no-op
+                    break;
+                case AnimationStates.OPENING:
+                    // allow Collapse#onDelayedStateChange() to handle the transition here
+                    break;
+                default:
+                    return { animationState: AnimationStates.OPEN_START };
+            }
+        } else {
+            switch (animationState) {
+                case AnimationStates.CLOSED:
+                    // no-op
+                    break;
+                case AnimationStates.CLOSING:
+                    // allow Collapse#onDelayedStateChange() to handle the transition here
+                    break;
+                default:
+                    // need to set an explicit height so that transition can work
+                    return { animationState: AnimationStates.CLOSING_START, height: `${state.heightWhenOpen}px` };
+            }
+        }
+
+        return null;
+    }
+
+    public state: ICollapseState = {
         animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
-        height: "0px",
+        height: undefined,
+        heightWhenOpen: undefined,
     };
 
     // The element containing the contents of the collapse.
     private contents: HTMLElement;
-    // The most recent non-0 height (once a height has been measured - is 0 until then)
-    private height: number = 0;
-
-    public getSnapshotBeforeUpdate(prevProps: ICollapseProps): ICollapseSnapshot {
-        let snapshot: ICollapseSnapshot = {};
-        if (this.props.isOpen !== prevProps.isOpen) {
-            this.clearTimeouts();
-            if (this.state.animationState !== AnimationStates.CLOSED && !this.props.isOpen) {
-                snapshot = {
-                    ...snapshot,
-                    animationState: AnimationStates.CLOSING_START,
-                    height: `${this.height}px`,
-                };
-            } else if (this.state.animationState !== AnimationStates.OPEN && this.props.isOpen) {
-                snapshot = {
-                    ...snapshot,
-                    animationState: AnimationStates.OPEN_START,
-                };
-            }
-        }
-
-        return snapshot;
-    }
 
     public render() {
         const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
@@ -159,12 +169,15 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
         const containerStyle = {
             height: isContentVisible ? this.state.height : undefined,
-            overflowY: (isAutoHeight ? "visible" : undefined) as "visible" | undefined,
+            overflowY: isAutoHeight ? "visible" : undefined,
+            // transitions don't work with height: auto
             transition: isAutoHeight ? "none" : undefined,
         };
 
         const contentsStyle = {
-            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.height}px)`,
+            // only use heightWhenOpen while closing
+            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
+            // transitions don't work with height: auto
             transition: isAutoHeight ? "none" : undefined,
         };
 
@@ -190,39 +203,41 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         if (this.props.isOpen) {
             this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
         } else {
-            this.setState({ animationState: AnimationStates.CLOSED });
+            this.setState({ animationState: AnimationStates.CLOSED, height: "0px" });
         }
     }
 
-    public componentDidUpdate(_: ICollapseProps, __: ICollapseState, snapshot: ICollapseSnapshot) {
-        if (this.contents != null && this.contents.clientHeight !== 0) {
-            this.height = this.contents.clientHeight;
-        }
-        if (snapshot.animationState === AnimationStates.CLOSING_START) {
+    public componentDidUpdate() {
+        const { transitionDuration } = this.props;
+        const { animationState } = this.state;
+
+        if (animationState === AnimationStates.OPEN_START) {
+            const { clientHeight } = this.contents;
+            this.setState({
+                animationState: AnimationStates.OPENING,
+                height: `${clientHeight}px`,
+                heightWhenOpen: clientHeight,
+            });
+            this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
+        } else if (animationState === AnimationStates.CLOSING_START) {
             this.setTimeout(() =>
                 this.setState({
                     animationState: AnimationStates.CLOSING,
                     height: "0px",
                 }),
             );
-            this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
-        }
-        if (snapshot.animationState === AnimationStates.OPEN_START) {
-            this.setState({
-                animationState: AnimationStates.OPENING,
-                height: this.height + "px",
-            });
-            this.setTimeout(() => this.onDelayedStateChange(), this.props.transitionDuration);
+            this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
         }
     }
 
     private contentsRefHandler = (el: HTMLElement) => {
         this.contents = el;
-        if (el != null) {
-            this.height = this.contents.clientHeight;
+        if (this.contents != null) {
+            const height = this.contents.clientHeight;
             this.setState({
                 animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
-                height: `${this.height}px`,
+                height: height === 0 ? undefined : `${height}px`,
+                heightWhenOpen: height === 0 ? undefined : height,
             });
         }
     };

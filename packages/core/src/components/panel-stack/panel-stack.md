@@ -12,6 +12,11 @@ the stack. Panels use
 [`CSSTransition`](http://reactcommunity.org/react-transition-group/css-transition)
 for seamless transitions.
 
+By default, only the currently active panel is rendered to the DOM. This means
+that other panels are unmounted and can lose their component state as a user
+transitions between the panels. You can notice this in the example below as
+the numeric counter is reset. To render all panels to the DOM and keep their
+React trees mounted, change the `renderActivePanelOnly` prop.
 
 @reactExample PanelStackExample
 

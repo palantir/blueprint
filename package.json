@@ -1,6 +1,6 @@
 {
   "name": "blueprintjs-monorepo",
-  "version": "3.18.0",
+  "version": "3.22.3",
   "private": true,
   "description": "A React UI toolkit for the web.",
   "workspaces": [
@@ -33,18 +33,18 @@
     "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint"
   },
   "dependencies": {
-    "@types/chai": "4.1.7",
+    "@types/chai": "4.2.7",
     "@types/classnames": "2.2.9",
-    "@types/enzyme": "3.10.3",
+    "@types/enzyme": "3.10.4",
     "@types/enzyme-adapter-react-16": "1.0.5",
     "@types/mocha": "5.2.7",
     "@types/prop-types": "15.7.1",
-    "@types/react": "16.8.23",
-    "@types/react-lifecycles-compat": "^3.0.1",
+    "@types/react": "16.9.17",
     "@types/react-dom": "16.8.5",
+    "@types/react-lifecycles-compat": "^3.0.1",
     "@types/react-transition-group": "4.2.0",
-    "@types/sinon": "7.0.13",
-    "@types/webpack": "4.32.1",
+    "@types/sinon": "7.5.1",
+    "@types/webpack": "4.41.2",
     "chai": "^4.2.0",
     "circle-github-bot": "^2.0.1",
     "cross-env": "^5.2.0",
@@ -55,14 +55,14 @@
     "sinon": "^7.3.2",
     "stylelint-config-palantir": "^4.0.0",
     "stylelint-scss": "^3.9.2",
-    "typescript": "~3.5.3",
+    "typescript": "~3.7.5",
     "yarn-deduplicate": "^1.1.1"
   },
   "resolutions": {
     "js-yaml": "3.13.1"
   },
   "engines": {
-    "node": ">=6.1"
+    "node": ">=10"
   },
   "repository": {
     "type": "git",

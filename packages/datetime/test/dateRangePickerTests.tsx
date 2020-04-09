@@ -290,20 +290,20 @@ describe("<DateRangePicker>", () => {
         it("is initialMonth if set", () => {
             const defaultValue = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             const initialMonth = new Date(2002, Months.MARCH, 1);
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             render({ defaultValue, initialMonth, maxDate, minDate }).left.assertMonthYear(Months.MARCH, 2002);
         });
 
         it("is defaultValue if set and initialMonth not set", () => {
             const defaultValue = [new Date(2007, Months.APRIL, 4), null] as DateRange;
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             render({ defaultValue, maxDate, minDate }).left.assertMonthYear(Months.APRIL, 2007);
         });
 
         it("is value if set and initialMonth not set", () => {
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const value = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             render({ maxDate, minDate, value }).left.assertMonthYear(Months.APRIL, 2007);
@@ -328,7 +328,7 @@ describe("<DateRangePicker>", () => {
         });
 
         it("is today if only maxDate/minDate set and today is in date range", () => {
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const today = new Date();
             render({ maxDate, minDate }).left.assertMonthYear(today.getMonth(), today.getFullYear());

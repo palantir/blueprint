@@ -25,6 +25,7 @@ export interface IDocsIconProps {
     group: string;
     iconName: IconName;
     tags: string;
+    content?: string;
 }
 
 const GITHUB_RAW_PATH = "https://raw.githubusercontent.com/palantir/blueprint/develop/resources/icons";

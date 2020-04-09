@@ -113,6 +113,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
   &.#{$ns}-active {
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
+
+    @each $intent, $color in $pt-intent-text-colors {
+      &.#{$ns}-intent-#{$intent} {
+        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
+      }
+    }
   }
 
   .#{$ns}-dark &,
@@ -131,6 +137,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
       box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
                   $pt-dark-input-box-shadow;
       background-color: $dark-input-background-color;
+
+      @each $intent, $color in $pt-intent-text-colors {
+        &.#{$ns}-intent-#{$intent} {
+          box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
+        }
+      }
     }
   }
 }

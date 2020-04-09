@@ -45,12 +45,25 @@ interface design — take a look at [core colors](#colors.core-colors) instead.
 Blueprint provides variables for colors in Sass, Less, and JavaScript.
 [Semantic aliases for common colors](#core/variables.color-aliases) are also provided in Sass and Less.
 
+Example in Sass:
+
 ```css.scss
 @import "~@blueprintjs/core/lib/scss/variables";
 
 .rule {
     color: $pt-link-color;
     background: $black;
+}
+```
+
+Example in Less:
+
+```css.less
+@import "~@blueprintjs/core/lib/less/variables";
+
+.rule {
+    color: @pt-link-color;
+    background: @black;
 }
 ```
 

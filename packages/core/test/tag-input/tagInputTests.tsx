@@ -315,6 +315,33 @@ describe("<TagInput>", () => {
             assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
         });
 
+        it("pressing left arrow key navigates active item and delete removes it", () => {
+            const onRemove = sinon.spy();
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
+            // select and remove middle item
+            wrapper
+                .find("input")
+                .simulate("keydown", { which: Keys.ARROW_LEFT })
+                .simulate("keydown", { which: Keys.ARROW_LEFT })
+                .simulate("keydown", { which: Keys.DELETE });
+
+            // in this case we're not moving into the previous item but
+            // we rather "take the place" of the item we just removed
+            assert.equal(wrapper.state("activeIndex"), 1);
+            assert.isTrue(onRemove.calledOnce);
+            assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+        });
+
+        it("pressing delete with no selection does nothing", () => {
+            const onRemove = sinon.spy();
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
+
+            wrapper.find("input").simulate("keydown", { which: Keys.DELETE });
+
+            assert.equal(wrapper.state("activeIndex"), -1);
+            assert.isTrue(onRemove.notCalled);
+        });
+
         it("pressing right arrow key in initial state does nothing", () => {
             const wrapper = mount(<TagInput values={VALUES} />);
             wrapper.find("input").simulate("keydown", { which: Keys.ARROW_RIGHT });

@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/timezone",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "Components related to timezone selection and UI",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -23,10 +23,10 @@
     "dist:bundle": "cross-env NODE_ENV=production webpack",
     "dist:css": "css-dist lib/css/*.css",
     "dist:verify": "assert-package-layout",
-    "lint": "run-p lint:scss lint:ts",
+    "lint": "run-p lint:scss lint:es",
     "lint:scss": "sass-lint",
-    "lint:ts": "ts-lint",
-    "lint-fix": "ts-lint --fix",
+    "lint:es": "es-lint",
+    "lint-fix": "es-lint --fix",
     "test": "run-s test:typeCheck test:iso test:karma",
     "test:typeCheck": "tsc -p ./test",
     "test:iso": "mocha test/isotest.js",
@@ -39,15 +39,15 @@
     "@blueprintjs/select": "^3.11.0",
     "classnames": "^2.2",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.26",
-    "tslib": "~1.9.0"
+    "moment-timezone": "^0.5.27",
+    "tslib": "~1.10.0"
   },
   "peerDependencies": {
     "react": "^15.3.0 || 16",
     "react-dom": "^15.3.0 || 16"
   },
   "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^0.11.0",
+    "@blueprintjs/node-build-scripts": "^1.0.0",
     "@blueprintjs/test-commons": "^0.10.0",
     "@types/moment-timezone": "^0.5.12",
     "enzyme": "^3.10.0",
@@ -56,7 +56,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
-    "typescript": "~3.5.3",
+    "typescript": "~3.7.5",
     "webpack-cli": "^3.3.6"
   },
   "repository": {

@@ -1,0 +1,30 @@
+{
+    "name": "@blueprintjs/eslint-plugin-blueprint",
+    "version": "0.1.0",
+    "description": "ESLint rules for use with @blueprintjs packages",
+    "main": "lib/index.js",
+    "scripts": {
+        "compile": "tsc -p src/",
+        "test": "jest",
+        "test:jest-ci": "jest --ci --runInBand"
+    },
+    "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.11.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^2.10.0",
+        "@typescript-eslint/parser": "^2.10.0",
+        "eslint": "^6.7.2",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.2.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/eslint-plugin-blueprint"
+    },
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@types/dedent": "^0.7.0",
+        "jest-junit": "^10.0.0"
+    }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/test-commons",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Common utilities for tests in @blueprintjs packages",
   "main": "lib/cjs/index.js",
   "typings": "lib/cjs/index.d.ts",
@@ -8,7 +8,7 @@
     "compile": "tsc -p ./src",
     "clean": "rm -rf lib/*",
     "dev": "yarn compile --watch",
-    "lint": "ts-lint",
+    "lint": "es-lint",
     "test": "exit 0"
   },
   "dependencies": {
@@ -22,8 +22,9 @@
     "react": ">=15.3.0"
   },
   "devDependencies": {
+    "@blueprintjs/node-build-scripts": "^1.0.0",
     "react": "^16.8.6",
-    "typescript": "~3.5.3"
+    "typescript": "~3.7.5"
   },
   "repository": {
     "type": "git",

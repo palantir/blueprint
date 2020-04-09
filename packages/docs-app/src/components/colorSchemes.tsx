@@ -219,7 +219,10 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
 export const QualitativeSchemePalette: React.SFC<{}> = () => <ColorBar colors={QUALITATIVE} />;
 
 export const SequentialSchemePalette: React.SFC<{}> = () => {
-    const schemes = [{ label: "Single hue", palettes: SINGLE_HUE }, { label: "Multi-hue", palettes: SEQUENTIAL }];
+    const schemes = [
+        { label: "Single hue", palettes: SINGLE_HUE },
+        { label: "Multi-hue", palettes: SEQUENTIAL },
+    ];
     return <ColorScheme schemes={schemes} />;
 };
 

@@ -368,6 +368,26 @@ describe("<Overlay>", () => {
             assertFocus("button", done);
         });
 
+        it("does not crash while trying to return focus to overlay if user clicks outside the document", () => {
+            mountWrapper(
+                <Overlay enforceFocus={true} canOutsideClickClose={false} isOpen={true} usePortal={false}>
+                    {createOverlayContents()}
+                </Overlay>,
+            );
+
+            // this is a fairly custom / nonstandard event dispatch, trying to simulate what happens in some browsers when a user clicks
+            // on the browser toolbar (outside the document), but a focus event is still dispatched to document
+            // see https://github.com/palantir/blueprint/issues/3928
+            const event = new FocusEvent("focus");
+            Object.defineProperty(event, "target", { value: window });
+
+            try {
+                document.dispatchEvent(event);
+            } catch (e) {
+                assert.fail("threw uncaught error");
+            }
+        });
+
         function assertFocus(selector: string | (() => void), done: MochaDone) {
             // the behavior being tested relies on requestAnimationFrame.
             // setTimeout for a few frames later to let things settle (to reduce flakes).
