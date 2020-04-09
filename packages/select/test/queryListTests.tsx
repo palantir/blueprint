@@ -318,7 +318,7 @@ describe("<QueryList>", () => {
 
     describe("query", () => {
         it("trims leading and trailing whitespace when creating new items", () => {
-            let triggerInputQueryChange: ((e: any) => void) | undefined = undefined;
+            let triggerInputQueryChange: ((e: any) => void) | undefined;
             const createNewItemFromQuerySpy = sinon.spy();
             const createNewItemRendererSpy = sinon.spy();
             // we must supply our own renderer so that we can hook into IQueryListRendererProps#handleQueryChange
@@ -326,7 +326,14 @@ describe("<QueryList>", () => {
                 triggerInputQueryChange = props.handleQueryChange;
                 return <div>{props.itemList}</div>;
             });
-            shallow(<FilmQueryList {...testProps} renderer={renderer} createNewItemFromQuery={createNewItemFromQuerySpy} createNewItemRenderer={createNewItemRendererSpy} />);
+            shallow(
+                <FilmQueryList
+                    {...testProps}
+                    renderer={renderer}
+                    createNewItemFromQuery={createNewItemFromQuerySpy}
+                    createNewItemRenderer={createNewItemRendererSpy}
+                />,
+            );
 
             const untrimmedQuery = " foo ";
             const trimmedQuery = untrimmedQuery.trim();
