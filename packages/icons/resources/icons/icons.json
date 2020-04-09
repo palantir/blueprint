@@ -3405,7 +3405,6 @@
     "displayName": "Virus",
     "iconName": "virus",
     "tags": "virus, doctor, medical, examination, disease, pandemic, sick",
-    "group": "interface",
-    "content": "\\e90f"
+    "group": "interface"
   }
 ]
