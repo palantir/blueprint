@@ -24,6 +24,7 @@
 @page resize-sensor
 @page skeleton
 @page spinner
+@page stepper
 @page tabs
 @page tag
 @page text

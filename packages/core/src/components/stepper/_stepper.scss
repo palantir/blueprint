@@ -1,0 +1,221 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "~@blueprintjs/icons/src/icons";
+
+$stepper-text-color-inactive: $gray3 !default;
+$stepper-icon-color: $gray3 !default;
+$stepper-line-color: $gray3 !default;
+
+.#{$ns}-step-connector {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  transition-property: flex-basis;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 1, 0.75, 0.9);
+
+  .#{$ns}-step-connector-line {
+    display: block;
+    border-color: $stepper-line-color;
+  }
+}
+
+@mixin icon-colors {
+  &.#{$ns}-step-active {
+    background-color: $pt-intent-primary;
+  }
+
+  &.#{$ns}-step-completed {
+    background-color: $pt-intent-primary;
+  }
+
+  &.#{$ns}-step-error {
+    background-color: $pt-intent-danger;
+  }
+}
+
+.#{$ns}-step-icon-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $stepper-icon-color;
+
+  @include icon-colors();
+}
+
+.#{$ns}-step-icon-root,
+.#{$ns}-step-icon-dot-root {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  justify-content: center;
+}
+
+.#{$ns}-step-icon-root {
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  cursor: default;
+  background-color: $stepper-icon-color;
+
+  @include icon-colors();
+}
+
+.#{$ns}-step-label-container {
+  font-size: 13px;
+}
+
+.#{$ns}-step-label {
+  display: block;
+  font-size: 14px;
+  margin: 4px 0;
+  color: $pt-text-color-muted;
+  white-space: nowrap;
+
+  &.#{$ns}-step-active {
+    color: $dark-gray1;
+    font-weight: 500;
+  }
+
+  &.#{$ns}-step-completed {
+    color: $dark-gray1;
+    font-weight: 500;
+  }
+}
+
+.#{$ns}-step-label-root {
+  display: flex;
+  align-items: center;
+  color: $stepper-text-color-inactive;
+}
+
+.#{$ns}-step-content {
+  margin-left: 9px;
+  padding-left: 20px;
+}
+
+.#{$ns}-step {
+  flex-basis: 0;
+  transition-property: flex-basis;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 1, 0.75, 0.9);
+}
+
+.#{$ns}-stepper {
+  display: flex;
+  padding: 12px;
+
+  &.fill {
+    flex: 1 1 auto;
+  }
+
+  &.#{$ns}-stepper-vertical {
+    flex-direction: column;
+
+    &.#{$ns}-fill {
+      height: 100%;
+    }
+
+    .#{$ns}-step-label-root {
+      margin-bottom: 8px;
+    }
+
+    .#{$ns}-step-connector {
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-bottom: 8px;
+    }
+
+    .#{$ns}-step-connector-line {
+      min-height: 24px;
+      height: 100%;
+      margin-left: 9px;
+      border-left-style: solid;
+      border-left-width: 1px;
+    }
+
+    .#{$ns}-step {
+      &:not(:last-child) {
+        .#{$ns}-step-content {
+          border-left: 1px solid $stepper-line-color;
+        }
+      }
+    }
+  }
+
+  &.#{$ns}-stepper-horizontal {
+    flex-direction: row;
+    align-items: center;
+
+    &.#{$ns}-fill {
+      width: 100%;
+    }
+
+    .#{$ns}-step-label-container {
+      text-align: center;
+    }
+
+    .#{$ns}-step-connector {
+      padding-right: 8px;
+    }
+
+    .#{$ns}-step-connector-line {
+      min-width: 24px;
+      width: 100%;
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+    }
+
+    .#{$ns}-step {
+      &:not(:last-child) {
+        padding-right: 8px;
+      }
+    }
+  }
+
+  &.#{$ns}-stepper-alternative-label {
+    align-items: flex-start;
+
+    .#{$ns}-step {
+      flex: 1;
+      position: relative;
+    }
+
+    .#{$ns}-step-label-root {
+      flex-direction: column;
+    }
+
+    .#{$ns}-step-label {
+      margin-top: 16px;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .#{$ns}-step-icon-root,
+    .#{$ns}-step-icon-dot-root {
+      margin-right: 0;
+    }
+
+    .#{$ns}-step-connector {
+      top: 9px;
+      left: calc(-50% + 12px);
+      right: calc(50% + 12px);
+      position: absolute;
+    }
+  }
+
+  &.#{$ns}-stepper-accordion {
+    .#{$ns}-step.#{$ns}-step-active + .#{$ns}-step-connector,
+    .#{$ns}-step.#{$ns}-step-active:last-child,
+    .#{$ns}-step.#{$ns}-step-completed:last-child {
+      flex-basis: 100%;
+    }
+  }
+}

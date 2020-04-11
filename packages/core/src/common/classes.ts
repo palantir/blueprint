@@ -240,6 +240,23 @@ export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
 
+export const STEPPER = `${NS}-stepper`;
+export const STEPPER_VERTICAL = `${NS}-stepper-vertical`;
+export const STEPPER_HORIZONTAL = `${NS}-stepper-horizontal`;
+export const STEPPER_ACCORDION = `${NS}-stepper-accordion`;
+export const STEPPER_ALTERNATIVE_LABEL = `${NS}-stepper-alternative-label`;
+export const STEP = `${NS}-step`;
+export const STEP_ICON_ROOT = `${NS}-step-icon-root`;
+export const STEP_ICON_DOT_ROOT = `${NS}-step-icon-dot-root`;
+export const STEP_ICON_DOT = `${NS}-step-icon-dot`;
+export const STEP_LABEL_ROOT = `${NS}-step-label-root`;
+export const STEP_LABEL_CONTAINER = `${NS}-step-label-container`;
+export const STEP_LABEL = `${NS}-step-label`;
+export const STEP_CONTENT = `${NS}-step-content`;
+export const STEP_ACTIVE = `${NS}-step-active`;
+export const STEP_COMPLETED = `${NS}-step-completed`;
+export const STEP_ERROR = `${NS}-step-error`;
+
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
 export const TAB_INDICATOR_WRAPPER = `${TAB_INDICATOR}-wrapper`;
