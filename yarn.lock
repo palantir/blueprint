@@ -2859,8 +2859,8 @@ cross-spawn@^7.0.0:
 
 cross-spawn@^7.0.2:
   version "7.0.2"
-  resolved "https://pkgs.dev.azure.com/remarkable-health/Artifacts/_packaging/artifacts/npm/registry/cross-spawn/-/cross-spawn-7.0.2.tgz#d0d7dcfa74e89115c7619f4f721a94e1fdb716d6"
-  integrity sha1-0Nfc+nTokRXHYZ9PchqU4f23FtY=
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.2.tgz#d0d7dcfa74e89115c7619f4f721a94e1fdb716d6"
+  integrity sha512-PD6G8QG3S4FK/XCGFbEQrDqO2AnMMsy0meR7lerlIOHAAbkuavGU/pOqprrlvfTNjvowivTeBsjebAL0NSoMxw==
   dependencies:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
