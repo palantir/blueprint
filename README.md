@@ -82,6 +82,10 @@ __Prerequisites__: Node.js v10+, Yarn v1.18+
 After cloning this repo, run:
 
 1. `yarn` to install all dependencies.
+1. If running on Windows:
+    1. `npm install -g windows-build-tools` to install build tools globally
+    1. Ensure `bash` is your configured script-shell by running:<br />
+      `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
 1. `yarn verify` to ensure you have all the build tooling working properly.
 
 ### Incorporating upstream changes
