@@ -11,7 +11,8 @@
 const path = require("path");
 const fs = require("fs");
 const { junitReportPath } = require("./utils");
-const { execSync, spawn } = require("child_process");
+const { execSync } = require("child_process");
+const { spawn } = require("cross-spawn");
 const glob = require("glob");
 
 const IGNORE_FILE_NAME = ".eslintignore";
@@ -29,7 +30,7 @@ if (process.env.JUNIT_REPORT_PATH != null) {
 // additional args provided to es-lint script
 const additionalArgs = process.argv.filter(a => {
     // exclude engine and script name
-    return ["node", "es-lint"].every(s => path.basename(a) !== s);
+    return ["node", "node.exe", "es-lint", "es-lint.js"].every(s => path.basename(a) !== s);
 });
 
 // by default, ESLint only looks for .eslintignore in the current directory, but it might exist at the project root
