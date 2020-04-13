@@ -59,6 +59,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-input-action,
+  > .#{$ns}-input-left,
   > .#{$ns}-button,
   > .#{$ns}-icon {
     position: absolute;
@@ -83,10 +84,15 @@ $input-button-height-small: $pt-button-height-smaller !default;
     &:empty { padding: 0; }
   }
 
-  // direct descendant to exclude icons in buttons
+  // bump icon or left content up so it sits above input
+  > .#{$ns}-input-left,
   > .#{$ns}-icon {
-    // bump icon up so it sits above input
     z-index: 1;
+  }
+
+  // direct descendant to exclude icons in buttons
+  > .#{$ns}-input-left > .#{$ns}-icon,
+  > .#{$ns}-icon {
     color: $pt-icon-color;
 
     &:empty {
@@ -96,6 +102,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   // adjusting the margin of spinners in input groups
   // we have to avoid targetting buttons that contain a spinner
+  > .#{$ns}-input-left > .#{$ns}-icon,
   > .#{$ns}-icon,
   .#{$ns}-input-action > .#{$ns}-spinner {
     margin: ($pt-input-height - $pt-icon-size-standard) / 2;
@@ -150,6 +157,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       margin: ($pt-input-height-large - $input-button-height-large) / 2;
     }
 
+    > .#{$ns}-input-left > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
       margin: ($pt-input-height-large - $pt-icon-size-standard) / 2;
@@ -179,6 +187,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       margin: ($pt-input-height-small - $pt-button-height-smaller) / 2;
     }
 
+    > .#{$ns}-input-left > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
       margin: ($pt-input-height-small - $pt-icon-size-standard) / 2;

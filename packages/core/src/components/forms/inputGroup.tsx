@@ -29,8 +29,6 @@ import {
 } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 
-const DEFAULT_RIGHT_ELEMENT_WIDTH = 10;
-
 // NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
 // Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
 export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
@@ -50,8 +48,14 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     inputRef?: (ref: HTMLInputElement | null) => any;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of the input group,
+     * Element to render on the left side of input.
+     */
+    leftElement?: JSX.Element;
+
+    /**
+     * Name of a Blueprint UI icon to render on the left side of the input group,
      * before the user's cursor.
+     * @deprecated Unless used with icon name.  Use `leftElement` for elements.
      */
     leftIcon?: IconName | MaybeElement;
 
@@ -81,24 +85,26 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 }
 
 export interface IInputGroupState {
-    rightElementWidth: number;
+    leftElementWidth?: number;
+    rightElementWidth?: number;
 }
 
 @polyfill
 export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLInputProps, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
-    public state: IInputGroupState = {
-        rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH,
-    };
+    public state: IInputGroupState = {};
 
+    private leftElement: HTMLElement;
     private rightElement: HTMLElement;
+
     private refHandlers = {
+        leftElement: (ref: HTMLSpanElement) => (this.leftElement = ref),
         rightElement: (ref: HTMLSpanElement) => (this.rightElement = ref),
     };
 
     public render() {
-        const { className, disabled, fill, intent, large, small, leftIcon, round } = this.props;
+        const { className, disabled, fill, intent, large, small, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
@@ -111,11 +117,16 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
             },
             className,
         );
-        const style: React.CSSProperties = { ...this.props.style, paddingRight: this.state.rightElementWidth };
+
+        const style: React.CSSProperties = {
+            ...this.props.style,
+            paddingLeft: this.state.leftElementWidth,
+            paddingRight: this.state.rightElementWidth,
+        };
 
         return (
             <div className={classes}>
-                <Icon icon={leftIcon} />
+                {this.maybeRenderLeftElement()}
                 <input
                     type="text"
                     {...removeNonHTMLProps(this.props)}
@@ -133,9 +144,22 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
     }
 
     public componentDidUpdate(prevProps: IInputGroupProps & HTMLInputProps) {
-        if (prevProps.rightElement !== this.props.rightElement) {
+        const { leftElement, rightElement } = this.props;
+        if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
             this.updateInputWidth();
         }
+    }
+
+    private maybeRenderLeftElement() {
+        const { leftElement, leftIcon } = this.props;
+        if (leftElement == null) {
+            return <Icon icon={leftIcon} />;
+        }
+        return (
+            <span className={Classes.INPUT_LEFT} ref={this.refHandlers.leftElement}>
+                {leftElement}
+            </span>
+        );
     }
 
     private maybeRenderRightElement() {
@@ -151,14 +175,26 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
     }
 
     private updateInputWidth() {
+        const { leftElementWidth, rightElementWidth } = this.state;
+
+        if (this.leftElement != null) {
+            const { clientWidth } = this.leftElement;
+            // small threshold to prevent infinite loops
+            if (leftElementWidth === undefined || Math.abs(clientWidth - leftElementWidth) > 2) {
+                this.setState({ leftElementWidth: clientWidth });
+            }
+        } else {
+            this.setState({ leftElementWidth: undefined });
+        }
+
         if (this.rightElement != null) {
             const { clientWidth } = this.rightElement;
             // small threshold to prevent infinite loops
-            if (Math.abs(clientWidth - this.state.rightElementWidth) > 2) {
+            if (rightElementWidth === undefined || Math.abs(clientWidth - rightElementWidth) > 2) {
                 this.setState({ rightElementWidth: clientWidth });
             }
         } else {
-            this.setState({ rightElementWidth: DEFAULT_RIGHT_ELEMENT_WIDTH });
+            this.setState({ rightElementWidth: undefined });
         }
     }
 }

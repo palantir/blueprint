@@ -143,6 +143,7 @@ export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 export const INPUT = `${NS}-input`;
 export const INPUT_GHOST = `${INPUT}-ghost`;
 export const INPUT_GROUP = `${INPUT}-group`;
+export const INPUT_LEFT = `${INPUT}-left`;
 export const INPUT_ACTION = `${INPUT}-action`;
 
 export const CONTROL = `${NS}-control`;
