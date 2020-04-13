@@ -54,8 +54,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 
     /**
      * Name of a Blueprint UI icon to render on the left side of the input group,
-     * before the user's cursor.
-     * @deprecated Unless used with icon name.  Use `leftElement` for elements.
+     * before the user's cursor.  Usage with content is deprecated.  Use `leftElement` for elements.
      */
     leftIcon?: IconName | MaybeElement;
 
