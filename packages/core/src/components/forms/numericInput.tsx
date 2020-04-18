@@ -327,13 +327,13 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
-                    disabled={disabled || +value >= max}
+                    disabled={disabled || (value !== "" && +value >= max)}
                     icon="chevron-up"
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
                 <Button
-                    disabled={disabled || +value <= min}
+                    disabled={disabled || (value !== "" && +value <= min)}
                     icon="chevron-down"
                     intent={intent}
                     {...this.decrementButtonHandlers}
