@@ -117,7 +117,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                 <InputGroup
                     disabled={disabled}
                     large={large}
-                    leftIcon="tag"
+                    leftElement={<Icon icon="tag" />}
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
                     rightElement={resultsTag}
