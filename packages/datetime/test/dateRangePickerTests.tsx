@@ -509,8 +509,8 @@ describe("<DateRangePicker>", () => {
         it("left calendar can be altered independently of right calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
             const { left, clickNavButton } = render({
-                initialMonth,
                 contiguousCalendarMonths: false,
+                initialMonth,
             });
             left.assertMonthYear(Months.MAY);
             clickNavButton("prev");
@@ -523,8 +523,8 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { right, clickNavButton } = render({
-                initialMonth,
                 contiguousCalendarMonths: false,
+                initialMonth,
             });
             right.assertMonthYear(Months.JUNE);
             clickNavButton("prev", 1);
@@ -579,8 +579,8 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right, clickNavButton } = render({
-                initialMonth,
                 contiguousCalendarMonths: false,
+                initialMonth,
             });
             clickNavButton("next");
             left.assertMonthYear(Months.JUNE);
@@ -591,8 +591,8 @@ describe("<DateRangePicker>", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right, clickNavButton } = render({
-                initialMonth,
                 contiguousCalendarMonths: false,
+                initialMonth,
             });
             clickNavButton("prev", 1);
             left.assertMonthYear(Months.APRIL);
@@ -1180,8 +1180,8 @@ describe("<DateRangePicker>", () => {
 
         it("onChange fired when the time is changed", () => {
             const { wrapper } = render({
-                timePickerProps: { showArrowButtons: true },
                 defaultValue: defaultRange,
+                timePickerProps: { showArrowButtons: true },
             });
             assert.isTrue(onChangeSpy.notCalled);
             wrapper
@@ -1239,9 +1239,9 @@ describe("<DateRangePicker>", () => {
             ];
 
             render({
-                timePrecision: "minute",
                 defaultValue: defaultRange,
                 shortcuts,
+                timePrecision: "minute",
             }).clickShortcut();
             assert.equal(onChangeSpy.firstCall.args[0][0] as Date, startTime);
         });
