@@ -71,8 +71,8 @@ describe("Formats", () => {
             // regardless of the page's dimensions.
             const style: React.CSSProperties = {
                 height: "300px",
-                width: "300px",
                 position: "relative",
+                width: "300px",
             };
 
             const comp = harness.mount(
@@ -106,8 +106,8 @@ describe("Formats", () => {
             // regardless of the page's dimensions.
             const style: React.CSSProperties = {
                 height: "300px",
-                width: "300px",
                 position: "relative",
+                width: "300px",
             };
 
             const comp = harness.mount(

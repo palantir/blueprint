@@ -449,8 +449,8 @@ describe("<Table>", function (this) {
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
             expect(onFocusedCell.args[0][0]).to.deep.equal({
                 col: 0,
-                row: 0,
                 focusSelectionIndex: 0,
+                row: 0,
             });
         });
 
@@ -1114,19 +1114,19 @@ describe("<Table>", function (this) {
         describe("moves a focus cell with arrow keys", () => {
             runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1, focusSelectionIndex: 0 });
             runFocusCellMoveTest("down", Keys.ARROW_DOWN, {
-                row: 2,
                 col: 1,
                 focusSelectionIndex: 0,
+                row: 2,
             });
             runFocusCellMoveTest("left", Keys.ARROW_LEFT, {
-                row: 1,
                 col: 0,
                 focusSelectionIndex: 0,
+                row: 1,
             });
             runFocusCellMoveTest("right", Keys.ARROW_RIGHT, {
-                row: 1,
                 col: 2,
                 focusSelectionIndex: 0,
+                row: 1,
             });
 
             it("doesn't move a focus cell if modifier key is pressed", () => {
@@ -1331,8 +1331,8 @@ describe("<Table>", function (this) {
 
                     const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
                     const columnIndices: IColumnIndices = {
-                        columnIndexStart: 0,
                         columnIndexEnd: NUM_COLS - 1,
+                        columnIndexStart: 0,
                     };
                     expect(
                         onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices),
@@ -1883,9 +1883,9 @@ describe("<Table>", function (this) {
 
             const onSelection = sinon.spy();
             const focusedCell = {
-                row: SELECTED_CELL_ROW,
                 col: SELECTED_CELL_COL,
                 focusSelectionIndex: 0,
+                row: SELECTED_CELL_ROW,
             };
             const tableProps = {
                 enableFocusedCell: true,

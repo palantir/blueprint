@@ -206,8 +206,8 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
         const isFocused = focusedCell != null && focusedCell.row === rowIndex && focusedCell.col === columnIndex;
         return React.cloneElement(baseCell, {
             className,
-            key,
             isFocused,
+            key,
             loading: cellLoading,
             style,
         });

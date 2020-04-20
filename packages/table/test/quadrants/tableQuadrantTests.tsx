@@ -209,8 +209,8 @@ describe("TableQuadrant", () => {
             it("still renders column header if enableRowHeader=false", () => {
                 const columnHeaderCellRenderer = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
                 const component = mountTableQuadrant({
-                    enableRowHeader: false,
                     columnHeaderCellRenderer,
+                    enableRowHeader: false,
                 });
                 expect(columnHeaderCellRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);

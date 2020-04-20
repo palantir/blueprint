@@ -1882,8 +1882,8 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
 
         const newFocusedCell = {
             col: focusedCell.col,
-            row: focusedCell.row,
             focusSelectionIndex: 0,
+            row: focusedCell.row,
         };
 
         switch (direction) {

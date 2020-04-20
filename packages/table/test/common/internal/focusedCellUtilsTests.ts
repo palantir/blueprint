@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// tslint:disable object-literal-sort-keys
+
 import { expect } from "chai";
 
 import { ICellCoordinates, IFocusedCellCoordinates } from "../../../src/common/cell";
