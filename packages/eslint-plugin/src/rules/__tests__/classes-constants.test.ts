@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable: blueprint-classes-constants
-// tslint:disable: no-invalid-template-strings
+// tslint:disable no-invalid-template-strings object-literal-sort-keys
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import * as dedent from "dedent";

@@ -17,6 +17,8 @@
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import { iconComponentsRule, OPTION_COMPONENT, OPTION_LITERAL } from "../icon-components";
 
+// tslint:disable object-literal-sort-keys
+
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
     parserOptions: {

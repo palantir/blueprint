@@ -18,6 +18,8 @@ import { TSESLint } from "@typescript-eslint/experimental-utils";
 import * as dedent from "dedent";
 import { htmlComponentsRule } from "../html-components";
 
+// tslint:disable object-literal-sort-keys
+
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
     parserOptions: {

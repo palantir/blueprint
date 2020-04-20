@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable:max-classes-per-file
+// tslint:disable:max-classes-per-file object-literal-sort-keys
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
