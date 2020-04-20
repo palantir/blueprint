@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "@blueprintjs/classes-constants": "off",
+    "@blueprintjs/html-components": "off",
+    "@blueprintjs/icon-components": "off"
+  }
+}

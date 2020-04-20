@@ -19,7 +19,6 @@ module.exports = {
         "tslint-react",
         // disable tslint rules which would conflict with eslint-plugin-prettier
         "tslint-config-prettier",
-        "./blueprint-rules",
     ],
 
     defaultSeverity: "error",

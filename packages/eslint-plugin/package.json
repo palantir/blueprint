@@ -5,6 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "compile": "tsc -p src/",
+    "lint": "es-lint",
+    "lint-fix": "es-lint --fix",
     "test": "jest",
     "test:jest-ci": "jest --ci --runInBand"
   },
@@ -16,15 +18,16 @@
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0"
   },
+  "devDependencies": {
+    "@blueprintjs/node-build-scripts": "^1.2.0",
+    "@types/dedent": "^0.7.0",
+    "jest-junit": "^10.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:palantir/blueprint.git",
     "directory": "packages/eslint-plugin"
   },
   "author": "Palantir Technologies",
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "@types/dedent": "^0.7.0",
-    "jest-junit": "^10.0.0"
-  }
+  "license": "Apache-2.0"
 }
