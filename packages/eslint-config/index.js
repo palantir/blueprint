@@ -30,6 +30,7 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     parserOptions: {
         sourceType: "module",
+        createDefaultProgram: true,
         ecmaFeatures: {
             jsx: true,
         },

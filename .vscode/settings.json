@@ -13,11 +13,15 @@
         "**/lib": true,
         "**/node_modules": true,
         "docs": true,
-        "site/docs": true
+        "site/docs": true,
+        "packages/docs-data/src/generated": true
     },
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
     "[scss]": {
         "editor.tabSize": 2
-    }
+    },
+    "eslint.workingDirectories": [
+        { "pattern": "./packages/*" }
+    ]
 }
