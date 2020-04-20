@@ -13,7 +13,8 @@
         "**/lib": true,
         "**/node_modules": true,
         "docs": true,
-        "site/docs": true
+        "site/docs": true,
+        "packages/docs-data/src/generated": true
     },
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
