@@ -867,6 +867,26 @@ describe("<NumericInput>", () => {
     });
 
     describe("Other", () => {
+        it("disables the increment button when the value is greater than or equal to max", () => {
+            const component = mount(<NumericInput value={100} max={100} />);
+
+            const decrementButton = component.find(Button).last();
+            const incrementButton = component.find(Button).first();
+
+            expect(decrementButton.props().disabled).to.be.false;
+            expect(incrementButton.props().disabled).to.be.true;
+        });
+
+        it("disables the decrement button when the value is less than or equal to min", () => {
+            const component = mount(<NumericInput value={-10} min={-10} />);
+
+            const decrementButton = component.find(Button).last();
+            const incrementButton = component.find(Button).first();
+
+            expect(decrementButton.props().disabled).to.be.true;
+            expect(incrementButton.props().disabled).to.be.false;
+        });
+
         it("disables the input field and buttons when disabled is true", () => {
             const component = mount(<NumericInput disabled={true} />);
 
