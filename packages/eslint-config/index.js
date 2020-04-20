@@ -22,10 +22,10 @@ module.exports = {
     plugins: [
         "@typescript-eslint",
         "@typescript-eslint/tslint",
-        "@blueprintjs/blueprint",
+        "@blueprintjs",
     ],
     extends: [
-        "plugin:@blueprintjs/blueprint/recommended",
+        "plugin:@blueprintjs/recommended",
     ],
     parser: "@typescript-eslint/parser",
     parserOptions: {

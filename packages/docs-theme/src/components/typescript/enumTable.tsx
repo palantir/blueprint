@@ -62,7 +62,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         });
 
         // this is inside RUNNING_TEXT
-        /* eslint-disable @blueprintjs/blueprint/html-components */
+        /* eslint-disable @blueprintjs/html-components */
         return (
             <tr key={name}>
                 <td className={classes}>
@@ -77,7 +77,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
                 </td>
             </tr>
         );
-        /* eslint-enable @blueprintjs/blueprint/html-components */
+        /* eslint-enable @blueprintjs/html-components */
     };
 
     private renderTags(entry: ITsEnumMember) {

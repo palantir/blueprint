@@ -59,7 +59,7 @@ export class HTMLTable extends AbstractPureComponent2<IHTMLTableProps> {
             },
             className,
         );
-        // eslint-disable-next-line @blueprintjs/blueprint/html-components
+        // eslint-disable-next-line @blueprintjs/html-components
         return <table {...htmlProps} ref={elementRef} className={classes} />;
     }
 }

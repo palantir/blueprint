@@ -29,18 +29,18 @@ plugins: [
 
 ### Rules-only usage
 
-To enable the Blueprint-specific rules, extend the `plugin:@blueprintjs/blueprint/recommended` config inside the package:
+To enable the Blueprint-specific rules, extend the `plugin:@blueprintjs/recommended` config inside the package:
 
 `tslint.json`
 ```diff
 extends: [
-+    "plugin:@blueprintjs/blueprint/recommended"
++    "plugin:@blueprintjs/recommended"
 ]
 ```
 
 ## Rules
 
-### `@blueprintjs/blueprint/classes-constants`
+### `@blueprintjs/classes-constants`
 
 Enforce usage of `Classes` constants over namespaced string literals.
 
@@ -49,7 +49,7 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 ```json
 {
   "rules": {
-    "@blueprintjs/blueprint/classes-constants": ["error"],
+    "@blueprintjs/classes-constants": ["error"],
   }
 }
 ```
@@ -59,7 +59,7 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 +const element = <div className={Classes.NAVBAR} />;
 ```
 
-### `@blueprintjs/blueprint/html-components`
+### `@blueprintjs/html-components`
 
 Enforce usage of Blueprint components over regular html components.
 
@@ -72,12 +72,12 @@ Enforce usage of Blueprint components over regular html components.
 ```js
 {
   "rules": {
-    "@blueprintjs/blueprint/html-components": ["error"],
+    "@blueprintjs/html-components": ["error"],
   }
 }
 ```
 
-### `@blueprintjs/blueprint/icon-components`
+### `@blueprintjs/icon-components`
 
 Enforce usage of JSX `Icon` components over `IconName` string literals (or vice-versa) in `icon` JSX props. Note that this rule only supports hardcoded values in the `icon` prop; it does not handle expressions or conditionals.
 
@@ -91,9 +91,9 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 {
   "rules": {
     // default uses "component"
-    "@blueprintjs/blueprint/icon-components": ["error"],
+    "@blueprintjs/icon-components": ["error"],
     // expanded syntax
-    "@blueprintjs/blueprint/icon-components": ["error", "component" | "literal"] // choose one
+    "@blueprintjs/icon-components": ["error", "component" | "literal"] // choose one
   }
 }
 ```
