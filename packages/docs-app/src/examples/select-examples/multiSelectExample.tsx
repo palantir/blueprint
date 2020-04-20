@@ -109,9 +109,9 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     popoverProps={{ minimal: popoverMinimal }}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
-                        tagProps: getTagProps,
                         onRemove: this.handleTagRemove,
                         rightElement: clearButton,
+                        tagProps: getTagProps,
                     }}
                     selectedItems={this.state.films}
                 />
