@@ -101,7 +101,9 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
 
     public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
         return (
-            !CoreUtils.shallowCompareKeys(nextProps, this.props, { exclude: SHALLOW_COMPARE_BLACKLIST }) ||
+            !CoreUtils.shallowCompareKeys(nextProps, this.props, {
+                exclude: SHALLOW_COMPARE_BLACKLIST,
+            }) ||
             // "viewportRect" is not a plain object, so we can't just deep
             // compare; we need custom logic.
             this.didViewportRectChange(nextProps.viewportRect, this.props.viewportRect)
@@ -202,7 +204,13 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
 
         const style = { ...baseCell.props.style, ...Rect.style(rect) };
         const isFocused = focusedCell != null && focusedCell.row === rowIndex && focusedCell.col === columnIndex;
-        return React.cloneElement(baseCell, { className, key, isFocused, loading: cellLoading, style });
+        return React.cloneElement(baseCell, {
+            className,
+            key,
+            isFocused,
+            loading: cellLoading,
+            style,
+        });
     };
 
     // Callbacks

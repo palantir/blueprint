@@ -103,10 +103,7 @@ describe("MenuItem", () => {
                 <Button />
             </Popover>,
         );
-        wrapper
-            .find(MenuItem)
-            .find("a")
-            .simulate("click");
+        wrapper.find(MenuItem).find("a").simulate("click");
         assert.isTrue(handleClose.notCalled);
     });
 
@@ -124,13 +121,7 @@ describe("MenuItem", () => {
             </MenuItem>,
         );
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
-        assert.notStrictEqual(
-            wrapper
-                .find(Popover)
-                .prop("popoverClassName")
-                .indexOf(popoverProps.popoverClassName),
-            0,
-        );
+        assert.notStrictEqual(wrapper.find(Popover).prop("popoverClassName").indexOf(popoverProps.popoverClassName), 0);
         assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
     });
 

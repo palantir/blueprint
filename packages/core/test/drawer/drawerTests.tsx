@@ -329,10 +329,7 @@ describe("<Drawer>", () => {
                     drawer body
                 </Drawer>,
             );
-            drawer
-                .find(`.${Classes.DRAWER_HEADER}`)
-                .find(Button)
-                .simulate("click");
+            drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button).simulate("click");
             assert.isTrue(onClose.calledOnce, "onClose not called");
         });
     });

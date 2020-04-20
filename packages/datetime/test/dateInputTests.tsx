@@ -90,15 +90,9 @@ describe("<DateInput>", () => {
     it("Popover closes when first day of the month is blurred", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper
-            .find("input")
-            .simulate("focus")
-            .simulate("blur");
+        wrapper.find("input").simulate("focus").simulate("blur");
         // First day of month is the only .DayPicker-Day with tabIndex == 0
-        const tabbables = wrapper
-            .find(Popover)
-            .find(".DayPicker-Day")
-            .filter({ tabIndex: 0 });
+        const tabbables = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 });
         const firstDay = tabbables.getDOMNode() as HTMLElement;
         firstDay.dispatchEvent(createFocusEvent("blur"));
         // manually updating wrapper is required with enzyme 3
@@ -110,14 +104,8 @@ describe("<DateInput>", () => {
     it("Popover should not close if focus moves to previous day", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
-        wrapper
-            .find("input")
-            .simulate("focus")
-            .simulate("blur");
-        const tabbables = wrapper
-            .find(Popover)
-            .find(".DayPicker-Day")
-            .filter({ tabIndex: 0 });
+        wrapper.find("input").simulate("focus").simulate("blur");
+        const tabbables = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 });
         const firstDay = tabbables.getDOMNode() as HTMLElement;
         const lastDayOfPrevMonth = wrapper
             .find(Popover)
@@ -134,9 +122,7 @@ describe("<DateInput>", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         root.setState({ isOpen: true });
-        root.find("input")
-            .simulate("focus")
-            .simulate("blur");
+        root.find("input").simulate("focus").simulate("blur");
         changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
         assert.isTrue(root.find(Popover).prop("isOpen"));
     });
@@ -145,9 +131,7 @@ describe("<DateInput>", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const { root, changeSelect } = wrap(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         root.setState({ isOpen: true });
-        root.find("input")
-            .simulate("focus")
-            .simulate("blur");
+        root.find("input").simulate("focus").simulate("blur");
         changeSelect(Classes.DATEPICKER_YEAR_SELECT, 2016);
         assert.isTrue(root.find(Popover).prop("isOpen"));
     });
@@ -243,7 +227,14 @@ describe("<DateInput>", () => {
             <DateInput
                 {...DATE_FORMAT}
                 disabled={false}
-                inputProps={{ disabled: true, inputRef, leftIcon: "star", onFocus, required: true, value: "fail" }}
+                inputProps={{
+                    disabled: true,
+                    inputRef,
+                    leftIcon: "star",
+                    onFocus,
+                    required: true,
+                    value: "fail",
+                }}
             />,
         );
         wrapper.find("input").simulate("focus");
@@ -357,11 +348,7 @@ describe("<DateInput>", () => {
                     isOpen: true,
                 })
                 .update();
-            wrapper
-                .find(`.${Classes.DATEPICKER_DAY}`)
-                .first()
-                .simulate("click")
-                .update();
+            wrapper.find(`.${Classes.DATEPICKER_DAY}`).first().simulate("click").update();
             assert.isTrue(wrapper.state("isOpen"));
         });
 
@@ -440,10 +427,7 @@ describe("<DateInput>", () => {
                 />,
             );
             const value = "2/1/2030";
-            wrapper
-                .find("input")
-                .simulate("change", { target: { value } })
-                .simulate("blur");
+            wrapper.find("input").simulate("change", { target: { value } }).simulate("blur");
 
             assert.strictEqual(wrapper.find(InputGroup).prop("intent"), Intent.DANGER);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
@@ -599,9 +583,7 @@ describe("<DateInput>", () => {
             root.setState({ isOpen: true });
             root.update();
 
-            getSelectedDays()
-                .at(0)
-                .simulate("click");
+            getSelectedDays().at(0).simulate("click");
 
             assert.isTrue(onChange.calledOnce);
             assert.deepEqual(onChange.firstCall.args, [DATE, true]);

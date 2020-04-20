@@ -204,7 +204,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     };
 
     public static getDerivedStateFromProps(props: INumericInputProps, state: INumericInputState) {
-        const nextState = { prevMinProp: props.min, prevMaxProp: props.max, prevValueProp: props.value };
+        const nextState = {
+            prevMinProp: props.min,
+            prevMaxProp: props.max,
+            prevValueProp: props.value,
+        };
 
         const didMinChange = props.min !== state.prevMinProp;
         const didMaxChange = props.max !== state.prevMaxProp;
@@ -494,7 +498,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const currValue = this.state.value || NumericInput.VALUE_ZERO;
         const nextValue = this.getSanitizedValue(currValue, delta);
 
-        this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement, value: nextValue });
+        this.setState({
+            shouldSelectAfterUpdate: this.props.selectAllOnIncrement,
+            value: nextValue,
+        });
 
         return nextValue;
     }

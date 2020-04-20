@@ -136,9 +136,7 @@ const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => str
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
         const randomLength = getRandomInteger(LONG_TEXT_MIN_LENGTH, LONG_TEXT_MAX_LENGTH);
-        return getRandomString(randomLength)
-            .match(LONG_TEXT_WORD_SPLIT_REGEXP)
-            .join(" ");
+        return getRandomString(randomLength).match(LONG_TEXT_WORD_SPLIT_REGEXP).join(" ");
     },
     [CellContent.LARGE_JSON]: () => {
         return getRandomObject(LARGE_JSON_PROP_COUNT, LARGE_JSON_OBJECT_DEPTH);
@@ -194,9 +192,7 @@ function getRandomInteger(min: number, max: number): number {
 function getRandomString(length: number): string {
     let str = "";
     while (str.length < length) {
-        str += Math.random()
-            .toString(36)
-            .substr(2);
+        str += Math.random().toString(36).substr(2);
     }
     return str.substr(0, length);
 }
@@ -375,9 +371,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     // ==========
 
     private generateColumnKey = () => {
-        return Math.random()
-            .toString(36)
-            .substring(7);
+        return Math.random().toString(36).substring(7);
     };
 
     // Renderers
@@ -553,7 +547,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         const valueAsString = value == null ? "" : value;
 
         const isEvenRow = rowIndex % 2 === 0;
-        const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
+        const classes = classNames({
+            "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow,
+        });
 
         if (this.state.enableCellEditing) {
             return (
@@ -721,7 +717,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
 
                 <H4>Settings</H4>
-                {this.renderButton("Reset all", { icon: "undo", onClick: this.handleDefaultsButtonClick })}
+                {this.renderButton("Reset all", {
+                    icon: "undo",
+                    onClick: this.handleDefaultsButtonClick,
+                })}
             </div>
         );
     }

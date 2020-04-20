@@ -1880,7 +1880,11 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             return;
         }
 
-        const newFocusedCell = { col: focusedCell.col, row: focusedCell.row, focusSelectionIndex: 0 };
+        const newFocusedCell = {
+            col: focusedCell.col,
+            row: focusedCell.row,
+            focusSelectionIndex: 0,
+        };
 
         switch (direction) {
             case "up":

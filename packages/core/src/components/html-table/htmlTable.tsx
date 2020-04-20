@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { HTMLTable } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
@@ -60,6 +61,6 @@ export class HTMLTable extends AbstractPureComponent2<IHTMLTableProps> {
             className,
         );
         // eslint-disable-next-line @blueprintjs/html-components
-        return <table {...htmlProps} ref={elementRef} className={classes} />;
+        return <HTMLTable {...htmlProps} ref={elementRef} className={classes} />;
     }
 }

@@ -111,7 +111,10 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
             },
             className,
         );
-        const style: React.CSSProperties = { ...this.props.style, paddingRight: this.state.rightElementWidth };
+        const style: React.CSSProperties = {
+            ...this.props.style,
+            paddingRight: this.state.rightElementWidth,
+        };
 
         return (
             <div className={classes}>

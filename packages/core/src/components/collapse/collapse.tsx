@@ -145,7 +145,10 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
                     break;
                 default:
                     // need to set an explicit height so that transition can work
-                    return { animationState: AnimationStates.CLOSING_START, height: `${state.heightWhenOpen}px` };
+                    return {
+                        animationState: AnimationStates.CLOSING_START,
+                        height: `${state.heightWhenOpen}px`,
+                    };
             }
         }
 

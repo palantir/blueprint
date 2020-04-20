@@ -36,7 +36,11 @@ describe("<Tooltip>", () => {
     });
 
     it("wrapperTagName & targetTagName render the right elements", () => {
-        const tooltip = renderTooltip({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
+        const tooltip = renderTooltip({
+            isOpen: true,
+            targetTagName: "address",
+            wrapperTagName: "article",
+        });
         assert.isTrue(tooltip.find("address").hasClass(Classes.POPOVER_TARGET));
         assert.isTrue(tooltip.find("article").hasClass(Classes.POPOVER_WRAPPER));
     });

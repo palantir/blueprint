@@ -82,7 +82,10 @@ describe("<Handle>", () => {
                 const options = { touch, vertical, verticalHeight: 0 };
                 it("onChange is invoked each time movement changes value", () => {
                     const onChange = sinon.spy();
-                    simulateMovement(mountHandle(0, { onChange, vertical }), { dragTimes: 3, ...options });
+                    simulateMovement(mountHandle(0, { onChange, vertical }), {
+                        dragTimes: 3,
+                        ...options,
+                    });
                     assert.strictEqual(onChange.callCount, 3);
                     assert.deepEqual(onChange.args, [[1], [2], [3]]);
                 });
@@ -100,14 +103,20 @@ describe("<Handle>", () => {
 
                 it("onRelease is invoked once on mouseup", () => {
                     const onRelease = sinon.spy();
-                    simulateMovement(mountHandle(0, { onRelease, vertical }), { dragTimes: 3, ...options });
+                    simulateMovement(mountHandle(0, { onRelease, vertical }), {
+                        dragTimes: 3,
+                        ...options,
+                    });
                     assert.strictEqual(onRelease.callCount, 1);
                     assert.strictEqual(onRelease.args[0][0], 3);
                 });
 
                 it("onRelease is invoked if new value === props.value", () => {
                     const onRelease = sinon.spy();
-                    simulateMovement(mountHandle(0, { onRelease, vertical }), { dragTimes: 0, ...options });
+                    simulateMovement(mountHandle(0, { onRelease, vertical }), {
+                        dragTimes: 0,
+                        ...options,
+                    });
                     assert.strictEqual(onRelease.callCount, 1);
                     assert.isTrue(onRelease.calledWithExactly(0));
                 });

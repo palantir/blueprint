@@ -250,7 +250,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
         return (
             !CoreUtils.shallowCompareKeys(this.state, nextState) ||
-            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST }) ||
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, {
+                exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST,
+            }) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
         );
     }

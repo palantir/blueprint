@@ -52,10 +52,7 @@ describe("<MultiSlider>", () => {
     describe("handles", () => {
         it("handle values are automatically sorted", () => {
             const slider = renderSlider({ values: [5, 10, 0], onRelease });
-            slider
-                .find(Handle)
-                .first()
-                .simulate("mousedown", { clientX: 0 });
+            slider.find(Handle).first().simulate("mousedown", { clientX: 0 });
             mouseUpHorizontal(0);
             assert.equal(onRelease.callCount, 1);
             assert.deepEqual(onRelease.firstCall.args[0], [0, 5, 10]);
@@ -79,7 +76,12 @@ describe("<MultiSlider>", () => {
 
         it("moving mouse on the middle handle updates the middle value", () => {
             const slider = renderSlider({ onChange });
-            simulateMovement(slider, { dragSize: STEP_SIZE, dragTimes: 4, from: STEP_SIZE * 5, handleIndex: 1 });
+            simulateMovement(slider, {
+                dragSize: STEP_SIZE,
+                dragTimes: 4,
+                from: STEP_SIZE * 5,
+                handleIndex: 1,
+            });
             // called 3 times for the move to 6, 7, 8, and 9
             assert.equal(onChange.callCount, 4);
             assert.deepEqual(
@@ -95,7 +97,12 @@ describe("<MultiSlider>", () => {
 
         it("moving mouse on the last handle updates the last value", () => {
             const slider = renderSlider({ onChange });
-            simulateMovement(slider, { dragSize: -STEP_SIZE, dragTimes: 4, from: STEP_SIZE * 10, handleIndex: 2 });
+            simulateMovement(slider, {
+                dragSize: -STEP_SIZE,
+                dragTimes: 4,
+                from: STEP_SIZE * 10,
+                handleIndex: 2,
+            });
             // called 3 times for the move to 9, 8, 7, and 6
             assert.equal(onChange.callCount, 4);
             assert.deepEqual(

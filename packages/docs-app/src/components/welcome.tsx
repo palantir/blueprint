@@ -35,7 +35,12 @@ export class Welcome extends React.PureComponent {
     }
 }
 
-const WelcomeCard: React.SFC<{ icon: IconName; title: string; href: string; sameTab?: boolean }> = props => (
+const WelcomeCard: React.SFC<{
+    icon: IconName;
+    title: string;
+    href: string;
+    sameTab?: boolean;
+}> = props => (
     <a href={props.href} target={props.sameTab ? "" : "_blank"}>
         <Card interactive={true}>
             <Icon icon={props.icon} iconSize={40} />

@@ -101,7 +101,10 @@ describe("Suggest", () => {
 
         it("sets active item to the selected item when the popover is closed", done => {
             // transition duration shorter than timeout below to ensure it's done
-            const wrapper = suggest({ selectedItem: TOP_100_FILMS[10], popoverProps: { transitionDuration: 5 } });
+            const wrapper = suggest({
+                popoverProps: { transitionDuration: 5 },
+                selectedItem: TOP_100_FILMS[10],
+            });
             const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList as QueryList<IFilm>; // private ref
 
             assert.deepEqual(
@@ -334,10 +337,7 @@ function filterByYear(query: string, film: IFilm) {
 }
 
 function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
-    wrapper
-        .find("a")
-        .at(index)
-        .simulate("click");
+    wrapper.find("a").at(index).simulate("click");
 }
 
 function inputValueRenderer(item: IFilm) {

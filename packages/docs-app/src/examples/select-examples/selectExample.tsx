@@ -78,9 +78,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
-        ) : (
-            undefined
-        );
+        ) : undefined;
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 

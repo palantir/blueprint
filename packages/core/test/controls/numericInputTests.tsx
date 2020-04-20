@@ -201,10 +201,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
-            const inputElement = component
-                .find("input")
-                .first()
-                .getDOMNode();
+            const inputElement = component.find("input").first().getDOMNode();
             expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
         });
 
@@ -246,7 +243,9 @@ describe("<NumericInput>", () => {
 
             it("if true, selects all text on focus", () => {
                 const attachTo = document.createElement("div");
-                const input = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, { attachTo }).find("input");
+                const input = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, {
+                    attachTo,
+                }).find("input");
                 input.simulate("focus");
                 const { selectionStart, selectionEnd } = input.getDOMNode() as HTMLInputElement;
                 expect(selectionStart).to.equal(0);
@@ -443,9 +442,18 @@ describe("<NumericInput>", () => {
                 runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { metaKey: true });
 
                 const charsWithShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT;
-                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, altKey: true });
-                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, ctrlKey: true });
-                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true, metaKey: true });
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, {
+                    shiftKey: true,
+                    altKey: true,
+                });
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, {
+                    shiftKey: true,
+                    ctrlKey: true,
+                });
+                runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, {
+                    shiftKey: true,
+                    metaKey: true,
+                });
             });
         });
     });
@@ -618,10 +626,7 @@ describe("<NumericInput>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
 
-                const inputElement = component
-                    .find("input")
-                    .first()
-                    .getDOMNode();
+                const inputElement = component.find("input").first().getDOMNode();
                 expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
@@ -695,10 +700,7 @@ describe("<NumericInput>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
 
-                const inputElement = component
-                    .find("input")
-                    .first()
-                    .getDOMNode();
+                const inputElement = component.find("input").first().getDOMNode();
                 expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
@@ -729,10 +731,7 @@ describe("<NumericInput>", () => {
                     .simulate("mousedown");
                 expect(component.state().value).to.equal("2");
 
-                const inputElement = component
-                    .find("input")
-                    .first()
-                    .getDOMNode();
+                const inputElement = component.find("input").first().getDOMNode();
                 expect(onValueChangeSpy.calledOnceWithExactly(2, "2", inputElement)).to.be.true;
             });
         });
@@ -1112,7 +1111,10 @@ describe("<NumericInput>", () => {
 
         it(`increments by stepSize on Shift + Alt + ${incrementDescription} when \
             majorStepSize and minorStepSize are null`, () => {
-            const component = createNumericInputForInteractionSuite({ majorStepSize: null, minorStepSize: null });
+            const component = createNumericInputForInteractionSuite({
+                majorStepSize: null,
+                minorStepSize: null,
+            });
 
             simulateIncrement(component, { shiftKey: true, altKey: true });
 
@@ -1122,7 +1124,10 @@ describe("<NumericInput>", () => {
 
         it(`decrements by stepSize on Shift + Alt + ${incrementDescription} when \
             majorStepSize and minorStepSize are null`, () => {
-            const component = createNumericInputForInteractionSuite({ majorStepSize: null, minorStepSize: null });
+            const component = createNumericInputForInteractionSuite({
+                majorStepSize: null,
+                minorStepSize: null,
+            });
 
             simulateDecrement(component, { shiftKey: true, altKey: true });
 

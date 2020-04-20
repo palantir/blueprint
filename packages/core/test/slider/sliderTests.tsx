@@ -61,7 +61,10 @@ describe("<Slider>", () => {
 
     it("moving mouse calls onChange with nearest value", () => {
         const changeSpy = sinon.spy();
-        simulateMovement(renderSlider(<Slider onChange={changeSpy} />), { dragTimes: 4, dragSize: STEP_SIZE });
+        simulateMovement(renderSlider(<Slider onChange={changeSpy} />), {
+            dragTimes: 4,
+            dragSize: STEP_SIZE,
+        });
         // called 4 times, for the move to 1, 2, 3, and 4
         assert.equal(changeSpy.callCount, 4, "call count");
         assert.deepEqual(changeSpy.args, [[1], [2], [3], [4]]);
@@ -69,7 +72,10 @@ describe("<Slider>", () => {
 
     it("releasing mouse calls onRelease with nearest value", () => {
         const releaseSpy = sinon.spy();
-        simulateMovement(renderSlider(<Slider onRelease={releaseSpy} />), { dragTimes: 1, dragSize: STEP_SIZE });
+        simulateMovement(renderSlider(<Slider onRelease={releaseSpy} />), {
+            dragTimes: 1,
+            dragSize: STEP_SIZE,
+        });
         assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
         assert.equal(releaseSpy.args[0][0], 1);
     });

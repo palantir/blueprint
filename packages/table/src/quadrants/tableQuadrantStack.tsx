@@ -350,7 +350,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     public componentDidUpdate(prevProps: ITableQuadrantStackProps) {
         // sync'ing quadrant views triggers expensive reflows, so we only call
         // it when layout-affecting props change.
-        if (!CoreUtils.shallowCompareKeys(this.props, prevProps, { include: SYNC_TRIGGER_PROP_KEYS })) {
+        if (
+            !CoreUtils.shallowCompareKeys(this.props, prevProps, {
+                include: SYNC_TRIGGER_PROP_KEYS,
+            })
+        ) {
             this.emitRefs();
             this.syncQuadrantViews();
         }
@@ -384,9 +388,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
                 rowHeaderCellRenderer={this.renderLeftQuadrantRowHeader}
                 scrollContainerRef={this.quadrantRefHandlers[QuadrantType.LEFT].scrollContainer}
             />
-        ) : (
-            undefined
-        );
+        ) : undefined;
         const maybeTopLeftQuadrant = shouldRenderLeftQuadrants ? (
             <TableQuadrant
                 {...baseProps}
@@ -397,9 +399,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
                 rowHeaderCellRenderer={this.renderTopLeftQuadrantRowHeader}
                 scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP_LEFT].scrollContainer}
             />
-        ) : (
-            undefined
-        );
+        ) : undefined;
 
         return (
             <div className={Classes.TABLE_QUADRANT_STACK}>

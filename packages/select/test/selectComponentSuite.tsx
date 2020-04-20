@@ -69,24 +69,29 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         });
 
         it("renders noResults when filtering returns empty list", () => {
-            const wrapper = render({ ...testProps, noResults: <address />, query: "non-existent film name" });
+            const wrapper = render({
+                ...testProps,
+                noResults: <address />,
+                query: "non-existent film name",
+            });
             assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
         });
 
         it("clicking item invokes onItemSelect and changes active item", () => {
             const wrapper = render(testProps);
-            findItems(wrapper)
-                .at(4)
-                .simulate("click");
+            findItems(wrapper).at(4).simulate("click");
             assert.strictEqual(testProps.onItemSelect.args[0][0].rank, 6, "onItemSelect");
             assert.strictEqual(testProps.onActiveItemChange.args[0][0].rank, 6, "onActiveItemChange");
         });
 
         it("clicking item resets state when resetOnSelect=true", () => {
-            const wrapper = render({ ...testProps, query: "19", resetOnSelect: true, resetOnQuery: false });
-            findItems(wrapper)
-                .at(3)
-                .simulate("click");
+            const wrapper = render({
+                ...testProps,
+                query: "19",
+                resetOnQuery: false,
+                resetOnSelect: true,
+            });
+            findItems(wrapper).at(3).simulate("click");
             const ranks = testProps.onActiveItemChange.args.map(args => (args[0] as IFilm).rank);
             // clicking changes to 5, then resets to 1
             assert.deepEqual(ranks, [5, 1]);

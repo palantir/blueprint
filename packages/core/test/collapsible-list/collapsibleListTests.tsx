@@ -102,7 +102,11 @@ describe("<CollapsibleList>", () => {
         it("is called with props of each child", () => {
             const visibleItemRenderer = spy();
             // using END so it won't reverse the list
-            renderCollapsibleList(5, { collapseFrom: Boundary.END, visibleItemRenderer, visibleItemCount: 3 });
+            renderCollapsibleList(5, {
+                collapseFrom: Boundary.END,
+                visibleItemRenderer,
+                visibleItemCount: 3,
+            });
             assert.equal(visibleItemRenderer.callCount, 3);
             visibleItemRenderer.args.map((arg, index) => {
                 const props: IMenuItemProps = arg[0];
@@ -122,7 +126,11 @@ describe("<CollapsibleList>", () => {
 
         it("is called with absolute index of item in props array when Boundary.END", () => {
             const visibleItemRenderer = spy();
-            renderCollapsibleList(6, { collapseFrom: Boundary.END, visibleItemRenderer, visibleItemCount: 3 });
+            renderCollapsibleList(6, {
+                collapseFrom: Boundary.END,
+                visibleItemRenderer,
+                visibleItemCount: 3,
+            });
             visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];
                 const absoluteIndex = +props.text.toString().slice(5); // "Item #"

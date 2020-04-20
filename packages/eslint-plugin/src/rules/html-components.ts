@@ -19,8 +19,8 @@ import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils"
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
-import { getProgram } from "./utils/getProgram";
 import { FixList } from "./utils/fixList";
+import { getProgram } from "./utils/getProgram";
 
 const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
 

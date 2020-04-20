@@ -82,10 +82,8 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
-        ) : (
-            // explicit undefined (not null) for default behavior (show full list)
-            undefined
-        );
+        ) : // explicit undefined (not null) for default behavior (show full list)
+        undefined;
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
@@ -110,7 +108,11 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     onItemsPaste={this.handleFilmsPaste}
                     popoverProps={{ minimal: popoverMinimal }}
                     tagRenderer={this.renderTag}
-                    tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
+                    tagInputProps={{
+                        tagProps: getTagProps,
+                        onRemove: this.handleTagRemove,
+                        rightElement: clearButton,
+                    }}
                     selectedItems={this.state.films}
                 />
             </Example>

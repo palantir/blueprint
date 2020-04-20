@@ -43,7 +43,7 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
 // tslint:disable-next-line no-unnecessary-callback-wrapper
 const mount = (el: React.ReactElement<ITableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
-describe("<Table>", function(this) {
+describe("<Table>", function (this) {
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
@@ -447,7 +447,11 @@ describe("<Table>", function(this) {
             selectFullTable(table);
 
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-            expect(onFocusedCell.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
+            expect(onFocusedCell.args[0][0]).to.deep.equal({
+                col: 0,
+                row: 0,
+                focusSelectionIndex: 0,
+            });
         });
 
         it("Does not move focused cell on shift+click", () => {
@@ -463,10 +467,7 @@ describe("<Table>", function(this) {
 
             // select the full table
             selectFullTable(table);
-            let columnHeader = table
-                .find(COLUMN_HEADER_SELECTOR)
-                .hostNodes()
-                .first();
+            let columnHeader = table.find(COLUMN_HEADER_SELECTOR).hostNodes().first();
             let rowHeader = table
                 .find(`.${Classes.TABLE_ROW_HEADERS}`)
                 .find(`.${Classes.TABLE_HEADER}`)
@@ -478,10 +479,7 @@ describe("<Table>", function(this) {
             // deselect the full table
             table.setProps({ selectedRegions: [] });
             table.update();
-            columnHeader = table
-                .find(COLUMN_HEADER_SELECTOR)
-                .hostNodes()
-                .first();
+            columnHeader = table.find(COLUMN_HEADER_SELECTOR).hostNodes().first();
             rowHeader = table
                 .find(`.${Classes.TABLE_ROW_HEADERS}`)
                 .find(`.${Classes.TABLE_HEADER}`)
@@ -742,11 +740,7 @@ describe("<Table>", function(this) {
             const rows = getRowHeadersWrapper(table);
             const resizeHandleTarget = getResizeHandle(rows, 0);
 
-            resizeHandleTarget
-                .mouse("mousemove")
-                .mouse("mousedown")
-                .mouse("mousemove", 0, 2)
-                .mouse("mouseup");
+            resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2).mouse("mouseup");
 
             expect(rows.find(`.${Classes.TABLE_HEADER}`, 0).bounds().height).to.equal(3);
             expect(rows.find(`.${Classes.TABLE_HEADER}`, 1).bounds().height).to.equal(3);
@@ -765,11 +759,7 @@ describe("<Table>", function(this) {
             const resizeHandleTarget = getResizeHandle(columnHeader, 0);
 
             expect(() => {
-                resizeHandleTarget
-                    .mouse("mousemove")
-                    .mouse("mousedown")
-                    .mouse("mousemove", 0, 2)
-                    .mouse("mouseup");
+                resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2).mouse("mouseup");
             }).not.to.throw();
         });
 
@@ -777,10 +767,7 @@ describe("<Table>", function(this) {
             const table = mountTable();
             const resizeHandleTarget = getResizeHandle(getRowHeadersWrapper(table), 0);
 
-            resizeHandleTarget
-                .mouse("mousemove")
-                .mouse("mousedown")
-                .mouse("mousemove", 0, 2);
+            resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2);
             expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.false;
 
             resizeHandleTarget.mouse("mouseup");
@@ -834,11 +821,7 @@ describe("<Table>", function(this) {
             const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
 
             // double-click the frozen column's resize handle
-            frozenColumnResizeHandle
-                .mouse("mousedown")
-                .mouse("mouseup", 10)
-                .mouse("mousedown")
-                .mouse("mouseup", 10);
+            frozenColumnResizeHandle.mouse("mousedown").mouse("mouseup", 10).mouse("mousedown").mouse("mouseup", 10);
 
             const columnWidth = table.state.columnWidths[0];
             const quadrantWidth = parseInt(quadrantElement.style().width, 10);
@@ -991,10 +974,7 @@ describe("<Table>", function(this) {
             const length = 1;
             const offsetX = (newIndex + length) * COLUMN_WIDTH_IN_PX;
             const adjustedOffsetX = getAdjustedOffsetX(offsetX, reorderHandle);
-            reorderHandle
-                .mouse("mousedown")
-                .mouse("mousemove", adjustedOffsetX)
-                .mouse("mouseup", adjustedOffsetX);
+            reorderHandle.mouse("mousedown").mouse("mousemove", adjustedOffsetX).mouse("mouseup", adjustedOffsetX);
 
             // called once on mousedown (to select column 0), once on mouseup (to move the selection)
             expect(onSelection.callCount).to.equal(2);
@@ -1133,9 +1113,21 @@ describe("<Table>", function(this) {
 
         describe("moves a focus cell with arrow keys", () => {
             runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, { row: 1, col: 2, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("down", Keys.ARROW_DOWN, {
+                row: 2,
+                col: 1,
+                focusSelectionIndex: 0,
+            });
+            runFocusCellMoveTest("left", Keys.ARROW_LEFT, {
+                row: 1,
+                col: 0,
+                focusSelectionIndex: 0,
+            });
+            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, {
+                row: 1,
+                col: 2,
+                focusSelectionIndex: 0,
+            });
 
             it("doesn't move a focus cell if modifier key is pressed", () => {
                 const { component } = mountTable();
@@ -1338,7 +1330,10 @@ describe("<Table>", function(this) {
                     expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(6);
 
                     const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
-                    const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: NUM_COLS - 1 };
+                    const columnIndices: IColumnIndices = {
+                        columnIndexStart: 0,
+                        columnIndexEnd: NUM_COLS - 1,
+                    };
                     expect(
                         onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices),
                         "onVisibleCellsChange row/col indices",
@@ -1373,7 +1368,9 @@ describe("<Table>", function(this) {
             const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
             const viewportWidth = COL_WIDTH;
             const viewportHeight = ROW_HEIGHT;
-            component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
+            component.setState({
+                viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
+            });
 
             return { attachTo, component };
         }
@@ -1466,9 +1463,7 @@ describe("<Table>", function(this) {
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             // need to explicitly `.fill` a new array with empty values for mapping to work
             const defineColumn = (_unused: any, i: number) => <Column key={i} cellRenderer={renderDummyCell} />;
-            const columns = Array(NUM_COLS)
-                .fill(undefined)
-                .map(defineColumn);
+            const columns = Array(NUM_COLS).fill(undefined).map(defineColumn);
 
             const table = mount(
                 <Table
@@ -1582,9 +1577,7 @@ describe("<Table>", function(this) {
         }
 
         function renderColumns(numCols: number) {
-            return Array(numCols)
-                .fill(undefined)
-                .map(renderColumn);
+            return Array(numCols).fill(undefined).map(renderColumn);
         }
 
         function renderColumn(_unused: any, i: number) {
@@ -1599,10 +1592,7 @@ describe("<Table>", function(this) {
         ) {
             // make the viewport small enough to fit only one cell
             updateLocatorElements(table, scrollLeft, scrollTop, COL_WIDTH, ROW_HEIGHT);
-            table
-                .find(TableQuadrant)
-                .first()
-                .simulate("scroll");
+            table.find(TableQuadrant).first().simulate("scroll");
 
             // delay to next frame to let throttled scroll logic execute first
             delayToNextFrame(callback);
@@ -1704,10 +1694,7 @@ describe("<Table>", function(this) {
     xdescribe("Persists column widths", () => {
         const expectHeaderWidth = (table: ElementHarness, index: number, width: number) => {
             expect(
-                table
-                    .find(`.${Classes.TABLE_COLUMN_HEADERS}`)
-                    .find(`.${Classes.TABLE_HEADER}`, index)
-                    .bounds().width,
+                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).find(`.${Classes.TABLE_HEADER}`, index).bounds().width,
             ).to.equal(width);
         };
 
@@ -1895,8 +1882,17 @@ describe("<Table>", function(this) {
             document.body.appendChild(containerElement);
 
             const onSelection = sinon.spy();
-            const focusedCell = { row: SELECTED_CELL_ROW, col: SELECTED_CELL_COL, focusSelectionIndex: 0 };
-            const tableProps = { enableFocusedCell: true, focusedCell, onSelection, selectedRegions };
+            const focusedCell = {
+                row: SELECTED_CELL_ROW,
+                col: SELECTED_CELL_COL,
+                focusSelectionIndex: 0,
+            };
+            const tableProps = {
+                enableFocusedCell: true,
+                focusedCell,
+                onSelection,
+                selectedRegions,
+            };
             const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
                 attachTo: containerElement,
             });
@@ -1969,7 +1965,10 @@ describe("<Table>", function(this) {
         // commensurately.
         locator.cellContainerElement = {
             ...baseStyles,
-            getBoundingClientRect: () => ({ left: rowHeaderWidth - scrollLeft, top: 0 - scrollTop }),
+            getBoundingClientRect: () => ({
+                left: rowHeaderWidth - scrollLeft,
+                top: 0 - scrollTop,
+            }),
         };
     }
 

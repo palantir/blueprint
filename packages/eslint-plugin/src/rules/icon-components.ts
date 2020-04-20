@@ -97,7 +97,7 @@ function create(context: RuleContext<MessageIds, Options>, node: TSESTree.JSXAtt
 }
 
 /** "MultiWordPhrase" => "multi-word-phrase" */
-function kebabCase (text: string) {
+function kebabCase(text: string) {
     return text.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`).replace(/^-+/, "");
 }
 
