@@ -23,3 +23,12 @@ Enable this configuration in your ESLint configuration file (e.g. `.eslintrc.jso
     ]
 }
 ```
+
+### VSCode
+
+If you use VSCode, install the [dbaeumer.vscode-eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to lint your code in the editor. We recommend enabling these global VSCode settings:
+
+```json
+"editor.formatOnSave": true,
+"eslint.format.enable": true
+```
