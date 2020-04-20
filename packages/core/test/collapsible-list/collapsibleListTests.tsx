@@ -104,8 +104,8 @@ describe("<CollapsibleList>", () => {
             // using END so it won't reverse the list
             renderCollapsibleList(5, {
                 collapseFrom: Boundary.END,
-                visibleItemRenderer,
                 visibleItemCount: 3,
+                visibleItemRenderer,
             });
             assert.equal(visibleItemRenderer.callCount, 3);
             visibleItemRenderer.args.map((arg, index) => {
@@ -128,8 +128,8 @@ describe("<CollapsibleList>", () => {
             const visibleItemRenderer = spy();
             renderCollapsibleList(6, {
                 collapseFrom: Boundary.END,
-                visibleItemRenderer,
                 visibleItemCount: 3,
+                visibleItemRenderer,
             });
             visibleItemRenderer.args.map(arg => {
                 const props: IMenuItemProps = arg[0];

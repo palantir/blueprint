@@ -443,16 +443,16 @@ describe("<NumericInput>", () => {
 
                 const charsWithShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT;
                 runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, {
-                    shiftKey: true,
                     altKey: true,
+                    shiftKey: true,
                 });
                 runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, {
-                    shiftKey: true,
                     ctrlKey: true,
+                    shiftKey: true,
                 });
                 runTextInputSuite(charsWithShift, EXPECT_DEFAULT_PREVENTED, {
-                    shiftKey: true,
                     metaKey: true,
+                    shiftKey: true,
                 });
             });
         });

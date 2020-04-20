@@ -205,8 +205,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     public static getDerivedStateFromProps(props: INumericInputProps, state: INumericInputState) {
         const nextState = {
-            prevMinProp: props.min,
             prevMaxProp: props.max,
+            prevMinProp: props.min,
             prevValueProp: props.value,
         };
 

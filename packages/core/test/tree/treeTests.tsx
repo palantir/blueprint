@@ -308,6 +308,7 @@ describe("<Tree>", () => {
         return mount(<Tree contents={createDefaultContents()} {...props} />);
     }
 
+    // tslint:disable object-literal-sort-keys
     function createDefaultContents(): ITreeNode[] {
         return [
             { id: 0, className: "c0", label: "Item 0" },
