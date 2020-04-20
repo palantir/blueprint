@@ -17,8 +17,8 @@ module.exports = {
     extends: [
         "tslint:latest",
         "tslint-react",
+        // disable tslint rules which would conflict with eslint-plugin-prettier
         "tslint-config-prettier",
-        "tslint-plugin-prettier",
         "./blueprint-rules",
     ],
 
@@ -64,13 +64,6 @@ module.exports = {
         "no-unnecessary-callback-wrapper": true,
         "no-unnecessary-initializer": true,
         "prefer-conditional-expression": false,
-        "prettier": {
-            options: {
-                "printWidth": 120,
-                "tabWidth": 4,
-                "trailingComma": "all"
-            }
-        },
         "variable-name": {
             options: [
                 "allow-leading-underscore",

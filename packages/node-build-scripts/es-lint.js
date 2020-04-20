@@ -15,8 +15,6 @@ const { execSync } = require("child_process");
 const { spawn } = require("cross-spawn");
 const glob = require("glob");
 
-const IGNORE_FILE_NAME = ".eslintignore";
-
 let format = "codeframe";
 let out;
 let outputStream = process.stdout;
@@ -24,6 +22,7 @@ if (process.env.JUNIT_REPORT_PATH != null) {
     format = "junit";
     out = junitReportPath("eslint");
     console.info(`ESLint report will appear in ${out}`);
+    // @ts-ignore
     outputStream = fs.createWriteStream(out, { flags: "w+" });
 }
 
@@ -32,12 +31,6 @@ const additionalArgs = process.argv.filter(a => {
     // exclude engine and script name
     return ["node", "node.exe", "es-lint", "es-lint.js"].every(s => path.basename(a) !== s);
 });
-
-// by default, ESLint only looks for .eslintignore in the current directory, but it might exist at the project root
-const ignoreFilepath = findIgnoreFile();
-if (ignoreFilepath !== undefined) {
-    additionalArgs.push("--ignore-path", ignoreFilepath);
-}
 
 const commandLineOptions = ["--color", "-f", format, ...additionalArgs];
 
@@ -58,18 +51,3 @@ eslint.stderr.pipe(process.stderr);
 eslint.on("close", code => {
     process.exitCode = code;
 });
-
-function findIgnoreFile() {
-    if (fs.existsSync(path.join(process.cwd(), IGNORE_FILE_NAME))) {
-        return undefined;
-    }
-
-    const gitRoot = execSync("git rev-parse --show-toplevel").toString().trim();
-    const rootIgnoreFilepath = path.join(gitRoot, IGNORE_FILE_NAME);
-    if (fs.existsSync(rootIgnoreFilepath)) {
-        console.log(`[node-build-scripts] Using ESLint ignore file path ${rootIgnoreFilepath}`)
-        return rootIgnoreFilepath;
-    }
-
-    return undefined;
-}

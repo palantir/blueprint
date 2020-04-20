@@ -23,9 +23,11 @@ module.exports = {
         "@typescript-eslint",
         "@typescript-eslint/tslint",
         "@blueprintjs",
+        "prettier"
     ],
     extends: [
         "plugin:@blueprintjs/recommended",
+        "plugin:prettier/recommended"
     ],
     parser: "@typescript-eslint/parser",
     parserOptions: {
@@ -40,6 +42,12 @@ module.exports = {
         // run the tslint rules which are not yet converted (run inside eslint)
         "@typescript-eslint/tslint/config": ["error", {
             "lintFile": path.resolve(__dirname, "./tslint.json"),
+        }],
+        "prettier/prettier": ["error", {
+            "printWidth": 120,
+            "tabWidth": 4,
+            "trailingComma": "all",
+            "arrowParens": "avoid",
         }],
     },
     overrides: [
