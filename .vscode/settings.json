@@ -20,5 +20,8 @@
     "editor.tabSize": 4,
     "[scss]": {
         "editor.tabSize": 2
-    }
+    },
+    "eslint.workingDirectories": [
+        { "pattern": "./packages/*" }
+    ]
 }
