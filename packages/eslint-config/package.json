@@ -5,10 +5,10 @@
     "dependencies": {
         "@blueprintjs/eslint-plugin-blueprint": "^0.1.0",
         "@blueprintjs/tslint-config": "^2.0.0",
-        "@typescript-eslint/eslint-plugin": "^2.15.0",
-        "@typescript-eslint/eslint-plugin-tslint": "^2.15.0",
-        "@typescript-eslint/parser": "^2.15.0",
-        "eslint": "^6.7.2"
+        "@typescript-eslint/eslint-plugin": "^2.29.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^2.29.0",
+        "@typescript-eslint/parser": "^2.29.0",
+        "eslint": "^6.8.0"
     },
     "repository": {
         "type": "git",

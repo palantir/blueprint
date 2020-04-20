@@ -1,7 +1,0 @@
-node_modules
-dist
-lib
-fixtures
-coverage
-__snapshots__
-**/src/generated
