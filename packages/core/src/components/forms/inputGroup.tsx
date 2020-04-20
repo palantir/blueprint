@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
+import * as Errors from "../../common/errors";
 import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
@@ -48,13 +49,15 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     inputRef?: (ref: HTMLInputElement | null) => any;
 
     /**
-     * Element to render on the left side of input.
+     * Element to render on the left side of input.  This prop is mutually exclusive
+     * with `leftIcon`.
      */
     leftElement?: JSX.Element;
 
     /**
      * Name of a Blueprint UI icon to render on the left side of the input group,
-     * before the user's cursor.  Usage with content is deprecated.  Use `leftElement` for elements.
+     * before the user's cursor.  This prop is mutually exclusive with `leftElement`.
+     * Usage with content is deprecated.  Use `leftElement` for elements.
      */
     leftIcon?: IconName | MaybeElement;
 
@@ -149,16 +152,28 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
         }
     }
 
+    protected validateProps(props: IInputGroupProps) {
+        if (props.leftElement != null && props.leftIcon != null) {
+            console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
+        }
+    }
+
     private maybeRenderLeftElement() {
         const { leftElement, leftIcon } = this.props;
-        if (leftElement == null) {
-            return <Icon icon={leftIcon} />;
+
+        if (leftElement != null) {
+            return (
+                <span className={Classes.INPUT_LEFT_CONTAINER} ref={this.refHandlers.leftElement}>
+                    {leftElement}
+                </span>
+            );
+        } else if (leftIcon != null) {
+            return (
+                <Icon icon={leftIcon} />
+            );
         }
-        return (
-            <span className={Classes.INPUT_LEFT} ref={this.refHandlers.leftElement}>
-                {leftElement}
-            </span>
-        );
+
+        return undefined;
     }
 
     private maybeRenderRightElement() {
