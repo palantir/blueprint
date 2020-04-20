@@ -417,7 +417,11 @@ export type ISegment = [Point, Point];
 export class Corner extends Transformable<Corner> {
     public static CORNER() {
         return new Corner(
-            [[P(), P().translate(-1, 0, 0)], [P(), P().translate(0, 1, 0)], [P(), P().translate(0, 0, -1)]],
+            [
+                [P(), P().translate(-1, 0, 0)],
+                [P(), P().translate(0, 1, 0)],
+                [P(), P().translate(0, 0, -1)],
+            ],
             P(),
         );
     }
@@ -520,7 +524,7 @@ export const T = {
         return t => callback(t === 0 ? 0 : Math.pow(e, 10 * (t - 1)));
     },
     EASE_IN_OUT: (callback: IAnimatedCallback): IAnimatedCallback => {
-        return t => callback((t *= 2) < 1 ? 1 / 2 * t * t * t * t : -1 / 2 * ((t -= 2) * t * t * t - 2));
+        return t => callback((t *= 2) < 1 ? (1 / 2) * t * t * t * t : (-1 / 2) * ((t -= 2) * t * t * t - 2));
     },
     EASE_IN_OUT_EXP: (e: number, callback: IAnimatedCallback): IAnimatedCallback => {
         return t => {
@@ -529,9 +533,9 @@ export const T = {
             } else if (t === 1) {
                 callback(1);
             } else if ((t *= 2) < 1) {
-                callback(1 / 2 * Math.pow(e, 10 * (t - 1)));
+                callback((1 / 2) * Math.pow(e, 10 * (t - 1)));
             } else {
-                callback(1 / 2 * (-Math.pow(e, -10 * --t) + 2));
+                callback((1 / 2) * (-Math.pow(e, -10 * --t) + 2));
             }
         };
     },
@@ -1100,7 +1104,13 @@ export function initializeLogo(canvas: HTMLCanvasElement, canvasBackground: HTML
             .timeline()
             .tween(0, () => model.restore().translate(0, -8, 0))
             .tween(offset + 100)
-            .tween(1000, T.EASE_OUT_EXP(2, T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0))));
+            .tween(
+                1000,
+                T.EASE_OUT_EXP(
+                    2,
+                    T.INTERPOLATE(-8, 0, (t: number) => model.restore().translate(0, t, 0)),
+                ),
+            );
     };
 
     slideDownAnimation(0, slideInGroups[0]);

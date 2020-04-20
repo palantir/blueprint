@@ -35,7 +35,7 @@ export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
         const { data } = this.props;
         const { renderBlock, renderType } = this.context;
         const aliases = data.type.split(" | ").map((type, i) => (
-            <div>
+            <div key={i}>
                 {i === 0 ? "=" : "|"} {renderType(type)}
             </div>
         ));

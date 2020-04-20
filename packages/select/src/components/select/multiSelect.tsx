@@ -17,6 +17,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
     ITagInputProps,
@@ -31,8 +32,11 @@ import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
-    /** Controlled selected values. */
-    selectedItems?: T[];
+    /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill` and `tagInputProps.fill`.
+     */
+    fill?: boolean;
 
     /**
      * Whether the popover opens on key down or when `TagInput` is focused.
@@ -49,6 +53,9 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps> & object;
 
+    /** Controlled selected values. */
+    selectedItems?: T[];
+
     /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
     tagInputProps?: Partial<ITagInputProps> & object;
 
@@ -64,6 +71,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static defaultProps = {
+        fill: false,
         placeholder: "Search...",
     };
 
@@ -102,8 +110,19 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
+        const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
+
+        if (fill) {
+            popoverProps.fill = true;
+            tagInputProps.fill = true;
+        }
+
+        // add our own inputProps.className so that we can reference it in event handlers
+        const inputProps = {
+            ...tagInputProps.inputProps,
+            className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
+        };
 
         const handleTagInputAdd = (values: any[], method: TagInputAddMethod) => {
             if (method === "paste") {
@@ -125,21 +144,22 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 onOpened={this.handlePopoverOpened}
             >
                 <div
-                    onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
-                    onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
+                    onKeyDown={this.getTagInputKeyDownHandler(handleKeyDown)}
+                    onKeyUp={this.getTagInputKeyUpHandler(handleKeyUp)}
                 >
                     <TagInput
                         placeholder={placeholder}
                         {...tagInputProps}
                         className={classNames(Classes.MULTISELECT, tagInputProps.className)}
                         inputRef={this.refHandlers.input}
+                        inputProps={inputProps}
                         inputValue={listProps.query}
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
-                <div onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)} onKeyUp={handleKeyUp}>
+                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
             </Popover>
@@ -179,11 +199,10 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
     };
 
-    private getTargetKeyDownHandler = (
-        handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
-    ) => {
+    private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             const { which } = e;
+
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 // By default the escape key will not trigger a blur on the
                 // input element. It must be done explicitly.
@@ -195,8 +214,22 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 this.setState({ isOpen: true });
             }
 
-            if (this.state.isOpen) {
+            const isTargetingTagRemoveButton = (e.target as HTMLElement).closest(`.${CoreClasses.TAG_REMOVE}`) != null;
+
+            if (this.state.isOpen && !isTargetingTagRemoveButton) {
                 Utils.safeInvoke(handleQueryListKeyDown, e);
+            }
+        };
+    };
+
+    private getTagInputKeyUpHandler = (handleQueryListKeyUp: React.KeyboardEventHandler<HTMLElement>) => {
+        return (e: React.KeyboardEvent<HTMLElement>) => {
+            const isTargetingInput = (e.target as HTMLElement).classList.contains(Classes.MULTISELECT_TAG_INPUT_INPUT);
+
+            // only handle events when the focus is on the actual <input> inside the TagInput, as that's
+            // what QueryList is designed to do
+            if (this.state.isOpen && isTargetingInput) {
+                Utils.safeInvoke(handleQueryListKeyUp, e);
             }
         };
     };

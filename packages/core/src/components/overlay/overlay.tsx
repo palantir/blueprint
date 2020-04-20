@@ -16,11 +16,11 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { findDOMNode } from "react-dom";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
+import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 import { Portal } from "../portal/portal";
@@ -171,7 +171,8 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
+@polyfill
+export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
     public static defaultProps: IOverlayProps = {
@@ -187,6 +188,13 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         transitionName: Classes.OVERLAY,
         usePortal: true,
     };
+
+    public static getDerivedStateFromProps({ isOpen: hasEverOpened }: IOverlayProps) {
+        if (hasEverOpened) {
+            return { hasEverOpened };
+        }
+        return null;
+    }
 
     private static openStack: Overlay[] = [];
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
@@ -251,10 +259,6 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         if (this.props.isOpen) {
             this.overlayWillOpen();
         }
-    }
-
-    public componentWillReceiveProps(nextProps: IOverlayProps) {
-        this.setState({ hasEverOpened: this.state.hasEverOpened || nextProps.isOpen });
     }
 
     public componentDidUpdate(prevProps: IOverlayProps) {
@@ -433,6 +437,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
         if (
             this.props.enforceFocus &&
             this.containerElement != null &&
+            e.target instanceof Node &&
             !this.containerElement.contains(e.target as HTMLElement)
         ) {
             // prevent default focus behavior (sometimes auto-scrolls the page)

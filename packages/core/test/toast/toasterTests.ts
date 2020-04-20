@@ -19,9 +19,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { mount } from "enzyme";
 import * as Classes from "../../src/common/classes";
-import { TOASTER_CREATE_NULL } from "../../src/common/errors";
+import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 import { IToaster, Toaster } from "../../src/index";
 
 describe("Toaster", () => {
@@ -71,7 +72,10 @@ describe("Toaster", () => {
         const key = toaster.show({ message: "two" });
         toaster.show({ message: "six" });
         toaster.dismiss(key);
-        assert.deepEqual(toaster.getToasts().map(t => t.message), ["six", "one"]);
+        assert.deepEqual(
+            toaster.getToasts().map(t => t.message),
+            ["six", "one"],
+        );
     });
 
     it("clear() removes all toasts", () => {
@@ -134,6 +138,19 @@ describe("Toaster", () => {
         assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
     });
 
+    it("does not exceed the maximum toast limit set", () => {
+        toaster = Toaster.create({ maxToasts: 3 });
+        toaster.show({ message: "one" });
+        toaster.show({ message: "two" });
+        toaster.show({ message: "three" });
+        toaster.show({ message: "oh no" });
+        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+    });
+
+    it("throws an error when max toast is set to a number less than 1", () => {
+        expectPropValidationError(Toaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
+    });
+
     describe("with autoFocus set to true", () => {
         before(() => {
             testsContainerElement = document.createElement("div");
@@ -147,7 +164,7 @@ describe("Toaster", () => {
             setTimeout(() => {
                 assert.equal(testsContainerElement.querySelector(`.${Classes.TOAST}`), document.activeElement);
                 done();
-            }, 10);
+            }, 100);
         });
     });
 

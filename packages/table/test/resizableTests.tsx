@@ -18,8 +18,9 @@ import { expect } from "chai";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { mount } from "enzyme";
 import * as Classes from "../src/common/classes";
-import { Resizable } from "../src/interactions/resizable";
+import { IResizableProps, IResizeableState, Resizable } from "../src/interactions/resizable";
 import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
 import { ReactHarness } from "./harness";
 
@@ -49,6 +50,30 @@ describe("Resizable", () => {
 
     after(() => {
         harness.destroy();
+    });
+
+    it("is externally controllable", () => {
+        const onSizeChanged = sinon.spy();
+        const onResizeEnd = sinon.spy();
+        const onLayoutLock = sinon.spy();
+
+        const wrapper = mount<IResizableProps, IResizeableState>(
+            <Resizable
+                maxSize={150}
+                minSize={50}
+                size={100}
+                orientation={Orientation.VERTICAL}
+                onLayoutLock={onLayoutLock}
+                onSizeChanged={onSizeChanged}
+                onResizeEnd={onResizeEnd}
+            >
+                <ResizableDiv />
+            </Resizable>,
+        );
+
+        wrapper.setProps({ size: 120 });
+
+        expect(wrapper.state().size).to.eq(120);
     });
 
     it("renders at the specified size", () => {

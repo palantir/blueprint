@@ -16,9 +16,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
-import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
 
 export { IconName };
 
@@ -83,7 +84,8 @@ export interface IIconProps extends IIntentProps, IProps {
     title?: string | false | null;
 }
 
-export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<HTMLElement>> {
+@polyfill
+export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
@@ -104,7 +106,7 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
             iconSize = Icon.SIZE_STANDARD,
             intent,
             title = icon,
-            tagName: TagName = "span",
+            tagName = "span",
             ...htmlprops
         } = this.props;
 
@@ -116,13 +118,17 @@ export class Icon extends React.PureComponent<IIconProps & React.DOMAttributes<H
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
-        return (
-            <TagName {...htmlprops} className={classes} title={htmlTitle}>
-                <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
-                    {title && <desc>{title}</desc>}
-                    {paths}
-                </svg>
-            </TagName>
+        return React.createElement(
+            tagName,
+            {
+                ...htmlprops,
+                className: classes,
+                title: htmlTitle,
+            },
+            <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
+                {title && <desc>{title}</desc>}
+                {paths}
+            </svg>,
         );
     }
 

@@ -15,9 +15,8 @@
  */
 
 import * as React from "react";
-
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IOptionProps, IProps } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
@@ -67,7 +66,8 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
-export class RadioGroup extends AbstractPureComponent<IRadioGroupProps, {}> {
+@polyfill
+export class RadioGroup extends AbstractPureComponent2<IRadioGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 
     // a unique name for this group, which can be overridden by `name` prop.

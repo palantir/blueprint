@@ -305,8 +305,8 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-background-color-active: rgba($black, 0.9) !default;
   $dark-switch-background-color-disabled: $dark-button-background-color-disabled !default;
   $dark-switch-checked-background-color: $control-checked-background-color !default;
-  $dark-switch-checked-background-color-hover: $blue4 !default;
-  $dark-switch-checked-background-color-active: $blue5 !default;
+  $dark-switch-checked-background-color-hover: $control-checked-background-color-hover !default;
+  $dark-switch-checked-background-color-active: $control-checked-background-color-active !default;
   $dark-switch-checked-background-color-disabled: rgba($blue1, 0.5) !default;
 
   $switch-indicator-background-color: $white !default;
@@ -315,7 +315,14 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-indicator-background-color-disabled: rgba($black, 0.4) !default;
 
   &.#{$ns}-switch {
-    @mixin indicator-colors($selector, $color, $hover-color, $active-color, $disabled-color) {
+    @mixin indicator-colors(
+      $selector,
+      $color,
+      $hover-color,
+      $active-color,
+      $disabled-color,
+      $disabled-indicator-color
+    ) {
       input#{$selector} ~ .#{$ns}-control-indicator {
         background: $color;
       }
@@ -330,6 +337,10 @@ $control-indicator-spacing: $pt-grid-size !default;
 
       input#{$selector}:disabled ~ .#{$ns}-control-indicator {
         background: $disabled-color;
+
+        &::before {
+          background: $disabled-indicator-color;
+        }
       }
     }
 
@@ -338,14 +349,16 @@ $control-indicator-spacing: $pt-grid-size !default;
       $switch-background-color,
       $switch-background-color-hover,
       $switch-background-color-active,
-      $switch-background-color-disabled
+      $switch-background-color-disabled,
+      $switch-indicator-background-color-disabled
     );
     @include indicator-colors(
       ":checked",
       $switch-checked-background-color,
       $switch-checked-background-color-hover,
       $switch-checked-background-color-active,
-      $switch-checked-background-color-disabled
+      $switch-checked-background-color-disabled,
+      $switch-indicator-background-color-disabled
     );
     // convert em variable to px value
     @include indicator-position($switch-width / 1em * $control-indicator-size);
@@ -388,14 +401,16 @@ $control-indicator-spacing: $pt-grid-size !default;
         $dark-switch-background-color,
         $dark-switch-background-color-hover,
         $dark-switch-background-color-active,
-        $dark-switch-background-color-disabled
+        $dark-switch-background-color-disabled,
+        $dark-switch-indicator-background-color-disabled
       );
       @include indicator-colors(
         ":checked",
         $dark-switch-checked-background-color,
         $dark-switch-checked-background-color-hover,
         $dark-switch-checked-background-color-active,
-        $dark-switch-checked-background-color-disabled
+        $dark-switch-checked-background-color-disabled,
+        $dark-switch-indicator-background-color-disabled
       );
 
       .#{$ns}-control-indicator::before {

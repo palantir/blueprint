@@ -16,7 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -52,11 +53,19 @@ export interface ITextAreaState {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState> {
+@polyfill
+export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
-
     public state: ITextAreaState = {};
+    private internalTextAreaRef: HTMLTextAreaElement;
 
+    public componentDidMount() {
+        if (this.props.growVertically) {
+            this.setState({
+                height: this.internalTextAreaRef.scrollHeight,
+            });
+        }
+    }
     public render() {
         const { className, fill, inputRef, intent, large, small, growVertically, ...htmlProps } = this.props;
 
@@ -87,7 +96,7 @@ export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState
                 {...htmlProps}
                 className={rootClasses}
                 onChange={this.handleChange}
-                ref={inputRef}
+                ref={this.handleInternalRef}
                 style={style}
             />
         );
@@ -102,6 +111,14 @@ export class TextArea extends React.PureComponent<ITextAreaProps, ITextAreaState
 
         if (this.props.onChange != null) {
             this.props.onChange(e);
+        }
+    };
+
+    // hold an internal ref for growVertically
+    private handleInternalRef = (ref: HTMLTextAreaElement | null) => {
+        this.internalTextAreaRef = ref;
+        if (this.props.inputRef != null) {
+            this.props.inputRef(ref);
         }
     };
 }

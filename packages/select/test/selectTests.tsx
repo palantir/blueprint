@@ -21,7 +21,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { ISelectProps, ISelectState, Select } from "../src/index";
+import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src/index";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Select>", () => {
@@ -32,8 +32,8 @@ describe("<Select>", () => {
         query: "",
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy;
-        itemRenderer: sinon.SinonSpy;
+        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
+        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 
@@ -64,6 +64,16 @@ describe("<Select>", () => {
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
         assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
+    });
+
+    it("disabled=true doesn't call itemRenderer", () => {
+        select({ disabled: true });
+        assert.equal(handlers.itemRenderer.callCount, 0);
+    });
+
+    it("disabled=false calls itemRenderer", () => {
+        select({ disabled: false });
+        assert.equal(handlers.itemRenderer.callCount, 100);
     });
 
     it("inputProps value and onChange are ignored", () => {

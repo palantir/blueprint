@@ -22,6 +22,7 @@ import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
+import { IItemRendererProps, QueryList } from "../src/index";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
@@ -32,9 +33,9 @@ describe("Suggest", () => {
         query: "",
     };
     let handlers: {
-        inputValueRenderer: sinon.SinonSpy;
-        itemPredicate: sinon.SinonSpy;
-        itemRenderer: sinon.SinonSpy;
+        inputValueRenderer: sinon.SinonSpy<[IFilm], string>;
+        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
+        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 
@@ -96,6 +97,35 @@ describe("Suggest", () => {
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
             wrapper.setState({ isOpen: true });
             assert.strictEqual(scrollActiveItemIntoViewSpy.callCount, 1, "should call scrollActiveItemIntoView");
+        });
+
+        it("sets active item to the selected item when the popover is closed", done => {
+            // transition duration shorter than timeout below to ensure it's done
+            const wrapper = suggest({ selectedItem: TOP_100_FILMS[10], popoverProps: { transitionDuration: 5 } });
+            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList as QueryList<IFilm>; // private ref
+
+            assert.deepEqual(
+                queryList.state.activeItem,
+                wrapper.state().selectedItem,
+                "QueryList activeItem should be set to the controlled selectedItem if prop is provided",
+            );
+
+            simulateFocus(wrapper);
+            assert.isTrue(wrapper.state().isOpen);
+
+            const newActiveItem = TOP_100_FILMS[11];
+            queryList.setActiveItem(newActiveItem);
+            assert.deepEqual(queryList.state.activeItem, newActiveItem);
+
+            simulateKeyDown(wrapper, Keys.ESCAPE);
+            assert.isFalse(wrapper.state().isOpen);
+
+            wrapper.update();
+            wrapper.find(QueryList).update();
+            setTimeout(() => {
+                assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
+                done();
+            }, 10);
         });
 
         function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, which: number) {

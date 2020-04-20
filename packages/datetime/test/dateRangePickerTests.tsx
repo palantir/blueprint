@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Button } from "@blueprintjs/core";
+import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -27,7 +27,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { DatePickerNavbar } from "../src/datePickerNavbar";
-import { IDateRangePickerState, IDateRangeShortcut } from "../src/dateRangePicker";
+import { IDateRangePickerState } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
     DateRange,
@@ -37,6 +37,7 @@ import {
     TimePicker,
     TimePrecision,
 } from "../src/index";
+import { IDateRangeShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
@@ -289,20 +290,20 @@ describe("<DateRangePicker>", () => {
         it("is initialMonth if set", () => {
             const defaultValue = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             const initialMonth = new Date(2002, Months.MARCH, 1);
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             render({ defaultValue, initialMonth, maxDate, minDate }).left.assertMonthYear(Months.MARCH, 2002);
         });
 
         it("is defaultValue if set and initialMonth not set", () => {
             const defaultValue = [new Date(2007, Months.APRIL, 4), null] as DateRange;
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             render({ defaultValue, maxDate, minDate }).left.assertMonthYear(Months.APRIL, 2007);
         });
 
         it("is value if set and initialMonth not set", () => {
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const value = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             render({ maxDate, minDate, value }).left.assertMonthYear(Months.APRIL, 2007);
@@ -327,7 +328,7 @@ describe("<DateRangePicker>", () => {
         });
 
         it("is today if only maxDate/minDate set and today is in date range", () => {
-            const maxDate = new Date(2020, Months.JANUARY);
+            const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const today = new Date();
             render({ maxDate, minDate }).left.assertMonthYear(today.getMonth(), today.getFullYear());
@@ -912,6 +913,56 @@ describe("<DateRangePicker>", () => {
             assert.isTrue(DateUtils.areSameDay(tomorrow, value[1]));
         });
 
+        it("all shortcuts are displayed as inactive when none are selected", () => {
+            const { wrapper } = render();
+
+            assert.isFalse(
+                wrapper
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${Classes.ACTIVE}`)
+                    .exists(),
+            );
+        });
+
+        it("corresponding shortcut is displayed as active when selected", () => {
+            const selectedShortcut = 0;
+            const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
+
+            assert.isTrue(
+                wrapper
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${Classes.ACTIVE}`)
+                    .exists(),
+            );
+
+            assert.lengthOf(
+                wrapper
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${Classes.ACTIVE}`),
+                1,
+            );
+
+            assert.isTrue(wrapper.state("selectedShortcutIndex") === selectedShortcut);
+        });
+
+        it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
+            const selectedShortcut = 1;
+            const onShortcutChangeSpy = sinon.spy();
+            const { clickShortcut } = render({ onShortcutChange: onShortcutChangeSpy });
+
+            clickShortcut(selectedShortcut);
+
+            assert.isTrue(onChangeSpy.calledOnce);
+            assert.isTrue(onShortcutChangeSpy.calledOnce);
+            assert.isTrue(onShortcutChangeSpy.lastCall.lastArg === selectedShortcut);
+        });
+
         it("custom shortcuts select the correct values", () => {
             const dateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)] as DateRange;
             render({
@@ -1157,20 +1208,24 @@ describe("<DateRangePicker>", () => {
         });
 
         it("changing time does not change date", () => {
-            render({ timePrecision: "minute", defaultValue: defaultRange }).setTimeInput("minute", 10, "left");
+            render({ timePrecision: "minute", defaultValue: defaultRange }).setTimeInput("minute", "left", 10);
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, defaultRange[0]));
         });
 
         it("hovering over date does not change entered time", () => {
             const harness = render({ timePrecision: "minute", defaultValue: defaultRange });
-            harness.changeTimeInput("minute", 10, "left");
+            const newLeftMinute = 10;
+            harness.setTimeInput("minute", "left", newLeftMinute);
+            onChangeSpy.resetHistory();
             const { left } = harness;
             left.mouseEnterDay(5);
-            assert.equal((onChangeSpy.firstCall.args[0][0] as Date).getMinutes(), 10);
+            assert.isTrue(onChangeSpy.notCalled);
+            const minuteInputText = harness.getTimeInput("minute", "left");
+            assert.equal(parseInt(minuteInputText, 10), newLeftMinute);
         });
 
         it("changing time without date uses today", () => {
-            render({ timePrecision: "minute" }).setTimeInput("minute", 45, "left");
+            render({ timePrecision: "minute" }).setTimeInput("minute", "left", 45);
             assert.isTrue(DateUtils.areSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
         });
 
@@ -1217,6 +1272,10 @@ describe("<DateRangePicker>", () => {
 
     function wrap(datepicker: JSX.Element) {
         const wrapper = mount<IDateRangePickerProps, IDateRangePickerState>(datepicker);
+
+        const findTimeInput = (precision: TimePrecision | "hour", which: "left" | "right") =>
+            wrapper.find(`.${DateClasses.TIMEPICKER}-${precision}`).at(which === "left" ? 0 : 1);
+
         // Don't cache the left/right day pickers into variables in this scope,
         // because as of Enzyme 3.0 they can get stale if the views change.
         const harness = {
@@ -1243,11 +1302,8 @@ describe("<DateRangePicker>", () => {
                     );
                 }
             },
-            changeTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
-                harness.wrapper
-                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
-                    .at(which === "left" ? 0 : 1)
-                    .simulate("change", { target: { value } }),
+            changeTimeInput: (precision: TimePrecision | "hour", which: "left" | "right", value: number) =>
+                findTimeInput(precision, which).simulate("change", { target: { value } }),
             clickNavButton: (which: "next" | "prev", navIndex = 0) => {
                 wrapper
                     .find(DatePickerNavbar)
@@ -1267,11 +1323,10 @@ describe("<DateRangePicker>", () => {
             getDays: (className: string) => {
                 return wrapper.find(`.${className}`).filterWhere(dayNotOutside);
             },
-            setTimeInput: (precision: TimePrecision | "hour", value: number, which: "left" | "right") =>
-                harness.wrapper
-                    .find(`.${DateClasses.TIMEPICKER}-${precision}`)
-                    .at(which === "left" ? 0 : 1)
-                    .simulate("blur", { target: { value } }),
+            getTimeInput: (precision: TimePrecision | "hour", which: "left" | "right") =>
+                findTimeInput(precision, which).props().value as string,
+            setTimeInput: (precision: TimePrecision | "hour", which: "left" | "right", value: number) =>
+                findTimeInput(precision, which).simulate("blur", { target: { value } }),
         };
         return harness;
     }

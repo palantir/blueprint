@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface ITextProps extends IProps {
@@ -40,7 +40,8 @@ export interface ITextState {
     isContentOverflowing: boolean;
 }
 
-export class Text extends React.PureComponent<ITextProps, ITextState> {
+@polyfill
+export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
 
     public state: ITextState = {
@@ -65,15 +66,16 @@ export class Text extends React.PureComponent<ITextProps, ITextState> {
             },
             this.props.className,
         );
-        const { tagName: TagName = "div" } = this.props;
-        return (
-            <TagName
-                className={classes}
-                ref={(ref: HTMLElement | null) => (this.textRef = ref)}
-                title={this.state.isContentOverflowing ? this.state.textContent : undefined}
-            >
-                {this.props.children}
-            </TagName>
+        const { children, tagName = "div" } = this.props;
+
+        return React.createElement(
+            tagName,
+            {
+                className: classes,
+                ref: (ref: HTMLElement | null) => (this.textRef = ref),
+                title: this.state.isContentOverflowing ? this.state.textContent : undefined,
+            },
+            children,
         );
     }
 

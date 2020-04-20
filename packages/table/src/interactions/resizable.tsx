@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { IProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, IProps } from "@blueprintjs/core";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 import { Utils } from "../common/index";
 import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 
@@ -82,31 +83,34 @@ export interface IResizeableState {
     unclampedSize?: number;
 }
 
-export class Resizable extends React.PureComponent<IResizableProps, IResizeableState> {
+@polyfill
+export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeableState> {
     public static defaultProps = {
         isResizable: true,
         minSize: 0,
     };
 
-    public constructor(props: IResizableProps, context?: any) {
-        super(props, context);
-        const { size } = props;
-        this.state = {
-            size,
-            unclampedSize: size,
-        };
+    public static getDerivedStateFromProps({ size }: IResizableProps, prevState: IResizeableState) {
+        if (prevState == null) {
+            return {
+                size,
+                unclampedSize: size,
+            };
+        }
+
+        return null;
     }
 
-    public componentWillReceiveProps(nextProps: IResizableProps) {
-        const { size } = nextProps;
-        this.setState({
-            size,
-            unclampedSize: size,
-        });
+    public state: IResizeableState = Resizable.getDerivedStateFromProps(this.props, null);
+
+    public componentDidUpdate(prevProps: IResizableProps) {
+        if (prevProps.size !== this.props.size) {
+            this.setState(Resizable.getDerivedStateFromProps(this.props, null));
+        }
     }
 
     public render() {
-        const child = React.Children.only(this.props.children);
+        const child = React.Children.only(this.props.children) as React.ReactElement;
         const style = { ...child.props.style, ...this.getStyle() };
 
         if (this.props.isResizable === false) {

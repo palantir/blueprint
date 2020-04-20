@@ -24,7 +24,7 @@ import {
 import * as React from "react";
 import { spy } from "sinon";
 
-import { expectPropValidationError } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import * as Errors from "../../src/common/errors";
 import {
@@ -153,9 +153,9 @@ describe("<NumericInput>", () => {
 
         it("provides numeric value to onValueChange as a number and a string", () => {
             const onValueChangeSpy = spy();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={1} />);
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
-            component.find("input").simulate("change");
+            component.setState({ value: "1" });
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
             expect(onValueChangeSpy.calledWith(1, "1")).to.be.true;
@@ -163,9 +163,9 @@ describe("<NumericInput>", () => {
 
         it("provides non-numeric value to onValueChange as NaN and a string", () => {
             const onValueChangeSpy = spy();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} value={"non-numeric-value"} />);
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
-            component.find("input").simulate("change");
+            component.setState({ value: "non-numeric-value" });
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
             expect(onValueChangeSpy.calledWith(NaN, "non-numeric-value")).to.be.true;
@@ -193,15 +193,19 @@ describe("<NumericInput>", () => {
             expect(component.state().value).to.equal("1 + 1");
         });
 
-        it("fires onValueChange with the number value and the string value when the value changes", () => {
+        it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
 
-            expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.firstCall.args).to.deep.equal([1, "1"]);
+            const inputElement = component
+                .find("input")
+                .first()
+                .getDOMNode();
+            expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
         });
 
         it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
@@ -213,6 +217,8 @@ describe("<NumericInput>", () => {
 
             // incrementing from 0
             incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
             onButtonClickSpy.resetHistory();
@@ -611,8 +617,12 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
-                expect(onValueChangeSpy.calledOnce).to.be.true;
-                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
+
+                const inputElement = component
+                    .find("input")
+                    .first()
+                    .getDOMNode();
+                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
             it("does not fire onValueChange if nextProps.min < value", () => {
@@ -684,8 +694,12 @@ describe("<NumericInput>", () => {
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
-                expect(onValueChangeSpy.calledOnce).to.be.true;
-                expect(onValueChangeSpy.firstCall.args).to.deep.equal([0, "0"]);
+
+                const inputElement = component
+                    .find("input")
+                    .first()
+                    .getDOMNode();
+                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
             it("does not fire onValueChange if nextProps.max > value", () => {
@@ -714,8 +728,12 @@ describe("<NumericInput>", () => {
                     .simulate("mousedown")
                     .simulate("mousedown");
                 expect(component.state().value).to.equal("2");
-                expect(onValueChangeSpy.callCount).to.equal(5);
-                expect(onValueChangeSpy.args[0]).to.deep.equal([2, "2"]);
+
+                const inputElement = component
+                    .find("input")
+                    .first()
+                    .getDOMNode();
+                expect(onValueChangeSpy.calledOnceWithExactly(2, "2", inputElement)).to.be.true;
             });
         });
 
@@ -839,7 +857,36 @@ describe("<NumericInput>", () => {
         });
     });
 
+    describe("Controlled mode", () => {
+        it("value prop updates do not trigger onValueChange", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
+            component.setProps({ value: 1 });
+            expect(onValueChangeSpy.notCalled).to.be.true;
+        });
+    });
+
     describe("Other", () => {
+        it("disables the increment button when the value is greater than or equal to max", () => {
+            const component = mount(<NumericInput value={100} max={100} />);
+
+            const decrementButton = component.find(Button).last();
+            const incrementButton = component.find(Button).first();
+
+            expect(decrementButton.props().disabled).to.be.false;
+            expect(incrementButton.props().disabled).to.be.true;
+        });
+
+        it("disables the decrement button when the value is less than or equal to min", () => {
+            const component = mount(<NumericInput value={-10} min={-10} />);
+
+            const decrementButton = component.find(Button).last();
+            const incrementButton = component.find(Button).first();
+
+            expect(decrementButton.props().disabled).to.be.true;
+            expect(incrementButton.props().disabled).to.be.false;
+        });
+
         it("disables the input field and buttons when disabled is true", () => {
             const component = mount(<NumericInput disabled={true} />);
 
@@ -882,6 +929,16 @@ describe("<NumericInput>", () => {
         it("shows right element if provided", () => {
             const component = mount(<NumericInput rightElement={<Button />} />);
             expect(component.find(InputGroup).find(Button)).to.exist;
+        });
+
+        it("passed decimal value should be rounded by stepSize", () => {
+            const component = mount(<NumericInput value={9.001} min={0} />);
+            expect(component.find("input").prop("value")).to.equal("9");
+        });
+
+        it("passed decimal value should be rounded by minorStepSize", () => {
+            const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} />);
+            expect(component.find("input").prop("value")).to.equal("9.01");
         });
 
         it("changes max precision of displayed value to that of the smallest step size defined", () => {

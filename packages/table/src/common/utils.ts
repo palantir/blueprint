@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-const CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT = "bp-table-text-no-measure";
+import { Icon } from "@blueprintjs/core";
+
+// used to exclude icons from column header measure
+export const CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT = "bp-table-text-no-measure";
+// supposed width of the icons placeholder
+const EXCLUDED_ICON_PLACEHOLDER_WIDTH = Icon.SIZE_STANDARD;
 
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
@@ -350,23 +355,20 @@ export const Utils = {
  * exclude an element's text from the computation.
  */
 function measureTextContentWithExclusions(context: CanvasRenderingContext2D, element: Element): TextMetrics {
-    // We only expect one or zero excluded elements in this subtree
-    // We don't have a need for more than one, so we avoid that complexity altogether.
-    const elementToExclude = element.querySelector(`.${CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT}`);
-    let removedElementParent: Element | undefined;
-    let removedElementNextSibling: Node | undefined;
-
-    if (elementToExclude != null) {
-        removedElementParent = elementToExclude.parentElement;
-        removedElementNextSibling = elementToExclude.nextSibling;
-        removedElementParent.removeChild(elementToExclude);
+    const elementsToExclude = element.querySelectorAll(`.${CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT}`);
+    let excludedElementsWidth = 0;
+    if (elementsToExclude && elementsToExclude.length) {
+        elementsToExclude.forEach(e => {
+            const excludedMetrics = context.measureText(e.textContent);
+            excludedElementsWidth += excludedMetrics.width - EXCLUDED_ICON_PLACEHOLDER_WIDTH;
+        });
     }
 
     const metrics = context.measureText(element.textContent);
+    const metricsWithExclusions = {
+        ...metrics,
+        width: metrics.width - excludedElementsWidth,
+    };
 
-    if (elementToExclude != null) {
-        removedElementParent.insertBefore(elementToExclude, removedElementNextSibling);
-    }
-
-    return metrics;
+    return metricsWithExclusions;
 }

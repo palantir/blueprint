@@ -150,6 +150,16 @@ describe("<Tabs>", () => {
         });
     });
 
+    it("sets arbitrary data-* attributes on Tab elements", () => {
+        const tabs = TAB_IDS.map(id => (
+            <Tab id={id} key={id} panel={<Panel title={id} />} title={id} data-arbitrary-attr="foo" />
+        ));
+        const wrapper = mount(<Tabs id={ID}>{tabs}</Tabs>);
+        wrapper.find(TAB).forEach(title => {
+            assert.strictEqual((title.getDOMNode() as HTMLElement).getAttribute("data-arbitrary-attr"), "foo");
+        });
+    });
+
     it("clicking selected tab still fires onChange", () => {
         const tabId = TAB_IDS[0];
         const changeSpy = spy();
@@ -359,6 +369,7 @@ describe("<Tabs>", () => {
             );
             assert.deepEqual(tabs.state("selectedTabId"), SELECTED_TAB_ID);
             tabs.setProps({ selectedTabId: TAB_ID_TO_SELECT });
+            tabs.update();
             assert.deepEqual(tabs.state("selectedTabId"), TAB_ID_TO_SELECT);
         });
 
@@ -370,6 +381,7 @@ describe("<Tabs>", () => {
                 { attachTo: testsContainerElement },
             );
             wrapper.setProps({ selectedTabId: TAB_ID_TO_SELECT });
+            wrapper.update();
             // indicator moves via componentDidUpdate
             setTimeout(() => {
                 assertIndicatorPosition(wrapper, TAB_ID_TO_SELECT);

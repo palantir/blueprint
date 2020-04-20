@@ -17,11 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment } from "../../common/alignment";
-import * as Classes from "../../common/classes";
-import * as Keys from "../../common/keys";
-import { IActionProps, MaybeElement } from "../../common/props";
-import { isReactNodeEmpty, safeInvoke } from "../../common/utils";
+import { AbstractPureComponent2, Alignment, Classes, IActionProps, Keys, MaybeElement, Utils } from "../../common";
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
@@ -61,6 +57,9 @@ export interface IButtonProps extends IActionProps {
     /** Whether this button should use minimal styles. */
     minimal?: boolean;
 
+    /** Whether this button should use outlined styles. */
+    outlined?: boolean;
+
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | MaybeElement;
 
@@ -79,7 +78,7 @@ export interface IButtonState {
     isActive: boolean;
 }
 
-export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extends React.PureComponent<
+export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extends AbstractPureComponent2<
     IButtonProps & H,
     IButtonState
 > {
@@ -91,7 +90,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     protected refHandlers = {
         button: (ref: HTMLElement) => {
             this.buttonRef = ref;
-            safeInvoke(this.props.elementRef, ref);
+            Utils.safeInvoke(this.props.elementRef, ref);
         },
     };
 
@@ -100,7 +99,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {
-        const { alignText, fill, large, loading, minimal, small, tabIndex } = this.props;
+        const { alignText, fill, large, loading, outlined, minimal, small, tabIndex } = this.props;
         const disabled = this.props.disabled || loading;
 
         const className = classNames(
@@ -112,6 +111,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
                 [Classes.LARGE]: large,
                 [Classes.LOADING]: loading,
                 [Classes.MINIMAL]: minimal,
+                [Classes.OUTLINED]: outlined,
                 [Classes.SMALL]: small,
             },
             Classes.alignmentClass(alignText),
@@ -142,7 +142,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             }
         }
         this.currentKeyDown = e.which;
-        safeInvoke(this.props.onKeyDown, e);
+        Utils.safeInvoke(this.props.onKeyDown, e);
     };
 
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
@@ -151,7 +151,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
             this.buttonRef.click();
         }
         this.currentKeyDown = null;
-        safeInvoke(this.props.onKeyUp, e);
+        Utils.safeInvoke(this.props.onKeyUp, e);
     };
 
     protected renderChildren(): React.ReactNode {
@@ -159,7 +159,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         return [
             loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />,
             <Icon key="leftIcon" icon={icon} />,
-            (!isReactNodeEmpty(text) || !isReactNodeEmpty(children)) && (
+            (!Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children)) && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
                     {children}

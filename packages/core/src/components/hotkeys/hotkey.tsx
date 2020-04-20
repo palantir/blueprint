@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps extends IProps {
@@ -83,7 +83,8 @@ export interface IHotkeyProps extends IProps {
     onKeyUp?(e: KeyboardEvent): any;
 }
 
-export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {
+@polyfill
+export class Hotkey extends AbstractPureComponent2<IHotkeyProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
 
     public static defaultProps = {

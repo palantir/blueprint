@@ -25,29 +25,44 @@ const svgo = new SVGO({ plugins: [{ convertShapeToPath: { convertArcs: true } }]
 const ICONS_METADATA = require(path.resolve(process.cwd(), "./resources/icons/icons.json")).sort((a, b) =>
     a.iconName.localeCompare(b.iconName),
 );
+const ICONS_WITH_FONT_SUPPORT = ICONS_METADATA.filter(icon => typeof icon.content === "string");
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
 
 if (!fs.existsSync(GENERATED_SRC_DIR)) {
     fs.mkdirSync(GENERATED_SRC_DIR);
 }
 
-// great big map for iteration
+// map for iterating through icons with font support
 writeLinesToFile(
     "_icon-map.scss",
     '@import "icon-variables";',
     "$icons: (",
-    ...ICONS_METADATA.map(icon => `  "${icon.iconName}": ${toSassVariable(icon)},`),
+    ...ICONS_WITH_FONT_SUPPORT.map(icon => `  "${icon.iconName}": ${toSassVariable(icon)},`),
     ");",
 );
 
-// simple variable definitions
-writeLinesToFile("_icon-variables.scss", ...ICONS_METADATA.map(icon => `${toSassVariable(icon)}: "${icon.content}";`));
+// list out content strings for icons with font support
+writeLinesToFile(
+    "_icon-variables.scss",
+    ...ICONS_WITH_FONT_SUPPORT.map(icon => `${toSassVariable(icon)}: "${icon.content}";`),
+);
 
 // map ENUM_NAME to unicode character
-writeLinesToFile("iconContents.ts", ...exportIconConsts(icon => icon.content.replace("\\", "\\u")));
+writeLinesToFile(
+    "iconContents.ts",
+    ...ICONS_WITH_FONT_SUPPORT.map(icon =>
+        `export const ${toEnumName(icon)} = "${icon.content.replace("\\", "\\u")}";`,
+    ),
+);
 
-// map ENUM_NAME to icon-name
-writeLinesToFile("iconNames.ts", ...exportIconConsts(icon => icon.iconName));
+// map ENUM_NAME to icon-name, must include ALL icons (not just those with font support)
+// so that we can reference their SVG paths
+writeLinesToFile(
+    "iconNames.ts",
+    ...ICONS_METADATA.map(icon =>
+        `export const ${toEnumName(icon)} = "${icon.iconName}";`,
+    ),
+);
 
 (async () => {
     // SVG path strings. IIFE to unwrap async.
@@ -91,14 +106,6 @@ function toSassVariable(icon) {
  */
 function toEnumName(icon) {
     return icon.iconName.replace(/-/g, "_").toUpperCase();
-}
-
-/**
- * Exports a named constant for each icon. Name is `ICON_NAME`. Value is result of `valueGetter`.
- * @param {(icon: IconMetadata) => string} valueGetter
- */
-function exportIconConsts(valueGetter) {
-    return ICONS_METADATA.map(icon => `export const ${toEnumName(icon)} = "${valueGetter(icon)}";`);
 }
 
 /**

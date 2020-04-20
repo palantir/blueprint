@@ -17,12 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
-import { TOASTER_CREATE_NULL, TOASTER_WARN_INLINE } from "../../common/errors";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, Position } from "../../common";
+import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
-import { Position } from "../../common/position";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isNodeEnv, safeInvoke } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
@@ -87,19 +85,25 @@ export interface IToasterProps extends IProps {
 
     /**
      * Position of `Toaster` within its container.
-     *
-     * Note that only `TOP` and `BOTTOM` are supported because Toaster only
-     * supports the top and bottom edge positioning.
      * @default Position.TOP
      */
     position?: ToasterPosition;
+
+    /**
+     * The maximum number of active toasts that can be displayed at once.
+     *
+     * When the limit is about to be exceeded, the oldest active toast is removed.
+     * @default undefined
+     */
+    maxToasts?: number;
 }
 
 export interface IToasterState {
     toasts: IToastOptions[];
 }
 
-export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState> implements IToaster {
+@polyfill
+export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState> implements IToaster {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 
     public static defaultProps: IToasterProps = {
@@ -137,6 +141,10 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
     private toastId = 0;
 
     public show(props: IToastProps, key?: string) {
+        if (this.props.maxToasts) {
+            // check if active number of toasts are at the maxToasts limit
+            this.dismissIfAtLimit();
+        }
         const options = this.createToastOptions(props, key);
         if (key === undefined || this.isNewToastKey(key)) {
             this.setState(prevState => ({
@@ -194,8 +202,22 @@ export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState>
         );
     }
 
+    protected validateProps(props: IToasterProps) {
+        // maximum number of toasts should not be a number less than 1
+        if (props.maxToasts < 1) {
+            throw new Error(TOASTER_MAX_TOASTS_INVALID);
+        }
+    }
+
     private isNewToastKey(key: string) {
         return this.state.toasts.every(toast => toast.key !== key);
+    }
+
+    private dismissIfAtLimit() {
+        if (this.state.toasts.length === this.props.maxToasts) {
+            // dismiss the oldest toast to stay within the maxToasts limit
+            this.dismiss(this.state.toasts[this.state.toasts.length - 1].key);
+        }
     }
 
     private renderToast(toast: IToastOptions) {

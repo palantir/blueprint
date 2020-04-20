@@ -16,8 +16,16 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement, Utils } from "../../common";
+import { polyfill } from "react-lifecycles-compat";
+import {
+    AbstractPureComponent2,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    IIntentProps,
+    IProps,
+    MaybeElement,
+    Utils,
+} from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
@@ -91,7 +99,8 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
     round?: boolean;
 }
 
-export class Tag extends React.PureComponent<ITagProps, {}> {
+@polyfill
+export class Tag extends AbstractPureComponent2<ITagProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {

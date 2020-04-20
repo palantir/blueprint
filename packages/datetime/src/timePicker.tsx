@@ -19,6 +19,7 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLSelect,
     Icon,
+    Intent,
     IProps,
     Keys,
     Utils as BlueprintUtils,
@@ -189,20 +190,24 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         /* tslint:enable:max-line-length */
     }
 
-    public componentWillReceiveProps(nextProps: ITimePickerProps) {
-        const didMinTimeChange = nextProps.minTime !== this.props.minTime;
-        const didMaxTimeChange = nextProps.maxTime !== this.props.maxTime;
+    public componentDidUpdate(prevProps: ITimePickerProps) {
+        const didMinTimeChange = prevProps.minTime !== this.props.minTime;
+        const didMaxTimeChange = prevProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;
+        const didPropValueChange = prevProps.value !== this.props.value;
+        const shouldStateUpdate = didMinTimeChange || didMaxTimeChange || didBoundsChange || didPropValueChange;
 
         let value = this.state.value;
         if (didBoundsChange) {
-            value = DateUtils.getTimeInRange(this.state.value, nextProps.minTime, nextProps.maxTime);
+            value = DateUtils.getTimeInRange(this.state.value, this.props.minTime, this.props.maxTime);
         }
-        if (nextProps.value != null && !DateUtils.areSameTime(nextProps.value, this.props.value)) {
-            value = nextProps.value;
+        if (this.props.value != null && !DateUtils.areSameTime(this.props.value, prevProps.value)) {
+            value = this.props.value;
         }
 
-        this.setState(this.getFullStateFromValue(value, nextProps.useAmPm));
+        if (shouldStateUpdate) {
+            this.setState(this.getFullStateFromValue(value, this.props.useAmPm));
+        }
     }
 
     // begin method definitions: rendering
@@ -225,9 +230,15 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
+        const isValid = isTimeUnitValid(unit, parseInt(value, 10));
+
         return (
             <input
-                className={classNames(Classes.TIMEPICKER_INPUT, className)}
+                className={classNames(
+                    Classes.TIMEPICKER_INPUT,
+                    { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
+                    className,
+                )}
                 onBlur={this.getInputBlurHandler(unit)}
                 onChange={this.getInputChangeHandler(unit)}
                 onFocus={this.handleFocus}
@@ -257,12 +268,26 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     // begin method definitions: event handlers
 
-    private getInputBlurHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private getInputChangeHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const text = getStringValueFromInputEvent(e);
-        this.updateTime(parseInt(text, 10), unit);
+        switch (unit) {
+            case TimeUnit.HOUR_12:
+            case TimeUnit.HOUR_24:
+                this.setState({ hourText: text });
+                break;
+            case TimeUnit.MINUTE:
+                this.setState({ minuteText: text });
+                break;
+            case TimeUnit.SECOND:
+                this.setState({ secondText: text });
+                break;
+            case TimeUnit.MS:
+                this.setState({ millisecondText: text });
+                break;
+        }
     };
 
-    private getInputChangeHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private getInputBlurHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const text = getStringValueFromInputEvent(e);
         this.updateTime(parseInt(text, 10), unit);
     };

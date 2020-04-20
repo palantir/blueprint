@@ -39,7 +39,7 @@ A typical contributor workflow looks like this:
     - Linting is best handled by your editor for real-time feedback (see
       [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run
       `yarn lint` to be 100% safe.
-    - TypeScript lint errors can often be automatically fixed by TSLint. Run lint fixes with `yarn lint-fix`.
+    - TypeScript lint errors can often be automatically fixed by ESLint. Run lint fixes with `yarn lint-fix`.
 1. Submit a Pull Request on GitHub and fill out the template.
     - ⚠️ __DO NOT enable CircleCI for your fork of Blueprint.__ Our build
       will run on your fork when you open a PR. You can run NPM scripts locally

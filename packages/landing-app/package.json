@@ -1,6 +1,6 @@
 {
   "name": "@blueprintjs/landing-app",
-  "version": "3.15.0",
+  "version": "3.16.0",
   "description": "Blueprint landing page",
   "private": true,
   "scripts": {
@@ -8,26 +8,26 @@
     "clean": "rm -rf dist/*",
     "dev": "webpack-dev-server --config ./webpack.config.js",
     "dist": "cross-env NODE_ENV=production yarn bundle",
-    "lint": "run-p lint:scss lint:ts",
+    "lint": "run-p lint:scss lint:es",
     "lint:scss": "sass-lint",
-    "lint:ts": "ts-lint",
-    "lint-fix": "ts-lint --fix",
+    "lint:es": "es-lint",
+    "lint-fix": "es-lint --fix",
     "test": "exit 0",
     "verify": "run-p dist lint"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.15.0",
-    "classnames": "^2.2.5",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "@blueprintjs/core": "^3.18.0",
+    "classnames": "^2.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "@blueprintjs/webpack-build-scripts": "*",
-    "copy-webpack-plugin": "^4.6.0",
-    "npm-run-all": "^4.1.2",
-    "raw-loader": "^1.0.0",
-    "webpack": "^4.27.1",
-    "webpack-dev-server": "^3.1.0"
+    "@blueprintjs/webpack-build-scripts": "^0.9.0",
+    "copy-webpack-plugin": "^5.0.3",
+    "npm-run-all": "^4.1.5",
+    "raw-loader": "^3.1.0",
+    "webpack": "^4.37.0",
+    "webpack-dev-server": "^3.7.2"
   },
   "repository": {
     "type": "git",

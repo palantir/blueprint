@@ -24,7 +24,9 @@ import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface IDatePickerExampleState {
     date: Date | null;
+    highlightCurrentDay: boolean;
     reverseMonthAndYearMenus: boolean;
+    shortcuts: boolean;
     showActionsBar: boolean;
     timePrecision: TimePrecision | undefined;
 }
@@ -32,12 +34,16 @@ export interface IDatePickerExampleState {
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
     public state: IDatePickerExampleState = {
         date: null,
+        highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
+        shortcuts: false,
         showActionsBar: false,
         timePrecision: undefined,
     };
 
+    private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
     private handlePrecisionChange = handleStringChange((p: TimePrecision | "none") =>
         this.setState({ timePrecision: p === "none" ? undefined : p }),
@@ -50,6 +56,12 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
             <>
                 <H5>Props</H5>
                 <Switch checked={props.showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
+                <Switch checked={props.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
+                <Switch
+                    checked={props.highlightCurrentDay}
+                    label="Highlight current day"
+                    onChange={this.toggleHighlight}
+                />
                 <Switch
                     checked={props.reverseMonthAndYearMenus}
                     label="Reverse month and year menus"

@@ -121,3 +121,7 @@ span.#{$ns}-popover-target {
   // this is important for span tag as default inline display height only includes text.
   // div tag can be used for display: block, which works fine.
 }
+
+.#{$ns}-popover-wrapper.#{$ns}-fill {
+  width: 100%;
+}

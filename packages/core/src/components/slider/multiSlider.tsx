@@ -16,11 +16,11 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { Classes, Intent } from "../../common";
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
+import { AbstractPureComponent2, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
 import { HandleInteractionKind, HandleType, IHandleProps } from "./handleProps";
@@ -33,13 +33,7 @@ import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 const MultiSliderHandle: React.SFC<IHandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
-// TODO: move this to props.ts in a follow up PR
-/** A convenience type for React's optional children prop. */
-export interface IChildrenProps {
-    children?: React.ReactNode;
-}
-
-export interface ISliderBaseProps extends IProps {
+export interface ISliderBaseProps extends IProps, IIntentProps {
     /**
      * Whether the slider is non-interactive.
      * @default false
@@ -119,7 +113,8 @@ export interface ISliderState {
     tickSizeRatio?: number;
 }
 
-export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISliderState> {
+@polyfill
+export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
         labelStepSize: 1,
@@ -139,6 +134,15 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     public static Handle = MultiSliderHandle;
 
+    public static getDerivedStateFromProps(props: IMultiSliderProps) {
+        return { labelPrecision: MultiSlider.getLabelPrecision(props) };
+    }
+
+    private static getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
+        // infer default label precision from stepSize because that's how much the handle moves.
+        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
+    }
+
     public state: ISliderState = {
         labelPrecision: getLabelPrecision(this.props),
         tickSize: 0,
@@ -146,9 +150,17 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     };
 
     private handleElements: Handle[] = [];
-    private handleProps: IHandleProps[];
-
     private trackElement: HTMLElement | null;
+
+    public getSnapshotBeforeUpdate(prevProps: IMultiSliderProps): null {
+        const prevHandleProps = getSortedInteractiveHandleProps(prevProps);
+        const newHandleProps = getSortedInteractiveHandleProps(this.props);
+        if (newHandleProps.length !== prevHandleProps.length) {
+            // clear refs
+            this.handleElements = [];
+        }
+        return null;
+    }
 
     public render() {
         const classes = classNames(
@@ -171,29 +183,16 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         );
     }
 
-    public componentWillMount() {
-        this.handleProps = getSortedInteractiveHandleProps(this.props);
-    }
-
     public componentDidMount() {
         this.updateTickSize();
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState, ss: {}) {
+        super.componentDidUpdate(prevProps, prevState, ss);
         this.updateTickSize();
     }
 
-    public componentWillReceiveProps(nextProps: IMultiSliderProps & IChildrenProps) {
-        this.setState({ labelPrecision: this.getLabelPrecision(nextProps) });
-
-        const newHandleProps = getSortedInteractiveHandleProps(nextProps);
-        if (newHandleProps.length !== this.handleProps.length) {
-            this.handleElements = [];
-        }
-        this.handleProps = newHandleProps;
-    }
-
-    protected validateProps(props: IMultiSliderProps & IChildrenProps) {
+    protected validateProps(props: React.PropsWithChildren<IMultiSliderProps>) {
         if (props.stepSize <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
@@ -267,7 +266,9 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private renderTrackFill(index: number, start: IHandleProps, end: IHandleProps) {
         // ensure startRatio <= endRatio
-        const [startRatio, endRatio] = [this.getOffsetRatio(start.value), this.getOffsetRatio(end.value)].sort();
+        const [startRatio, endRatio] = [this.getOffsetRatio(start.value), this.getOffsetRatio(end.value)].sort(
+            (left, right) => left - right,
+        );
         const startOffset = formatPercentage(startRatio);
         const endOffset = formatPercentage(1 - endRatio);
         const style: React.CSSProperties = this.props.vertical
@@ -280,14 +281,20 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private renderHandles() {
         const { disabled, max, min, stepSize, vertical } = this.props;
-        return this.handleProps.map(({ value, type }, index) => (
+        const handleProps = getSortedInteractiveHandleProps(this.props);
+
+        if (handleProps.length === 0) {
+            return null;
+        }
+
+        return handleProps.map(({ value, type }, index) => (
             <Handle
                 className={classNames({
                     [Classes.START]: type === HandleType.START,
                     [Classes.END]: type === HandleType.END,
                 })}
                 disabled={disabled}
-                key={`${index}-${this.handleProps.length}`}
+                key={`${index}-${handleProps.length}`}
                 label={this.formatLabel(value)}
                 max={max}
                 min={min}
@@ -353,7 +360,8 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     };
 
     private getNewHandleValues(newValue: number, oldIndex: number) {
-        const oldValues = this.handleProps.map(handle => handle.value);
+        const handleProps = getSortedInteractiveHandleProps(this.props);
+        const oldValues = handleProps.map(handle => handle.value);
         const newValues = oldValues.slice();
         newValues[oldIndex] = newValue;
         newValues.sort((left, right) => left - right);
@@ -374,19 +382,23 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
 
     private findFirstLockedHandleIndex(startIndex: number, endIndex: number): number {
         const inc = startIndex < endIndex ? 1 : -1;
+        const handleProps = getSortedInteractiveHandleProps(this.props);
+
         for (let index = startIndex + inc; index !== endIndex + inc; index += inc) {
-            if (this.handleProps[index].interactionKind !== HandleInteractionKind.PUSH) {
+            if (handleProps[index].interactionKind !== HandleInteractionKind.PUSH) {
                 return index;
             }
         }
+
         return -1;
     }
 
     private handleChange = (newValues: number[]) => {
-        const oldValues = this.handleProps.map(handle => handle.value);
+        const handleProps = getSortedInteractiveHandleProps(this.props);
+        const oldValues = handleProps.map(handle => handle.value);
         if (!Utils.arraysEqual(newValues, oldValues)) {
             Utils.safeInvoke(this.props.onChange, newValues);
-            this.handleProps.forEach((handle, index) => {
+            handleProps.forEach((handle, index) => {
                 if (oldValues[index] !== newValues[index]) {
                     Utils.safeInvoke(handle.onChange, newValues[index]);
                 }
@@ -395,16 +407,12 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
     };
 
     private handleRelease = (newValues: number[]) => {
+        const handleProps = getSortedInteractiveHandleProps(this.props);
         Utils.safeInvoke(this.props.onRelease, newValues);
-        this.handleProps.forEach((handle, index) => {
+        handleProps.forEach((handle, index) => {
             Utils.safeInvoke(handle.onRelease, newValues[index]);
         });
     };
-
-    private getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
-        // infer default label precision from stepSize because that's how much the handle moves.
-        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
-    }
 
     private getOffsetRatio(value: number) {
         return Utils.clamp((value - this.props.min) * this.state.tickSizeRatio, 0, 1);
@@ -437,11 +445,14 @@ function getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
     return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
 }
 
-function getSortedInteractiveHandleProps(props: IChildrenProps): IHandleProps[] {
+function getSortedInteractiveHandleProps(props: React.PropsWithChildren<IMultiSliderProps>): IHandleProps[] {
     return getSortedHandleProps(props, childProps => childProps.interactionKind !== HandleInteractionKind.NONE);
 }
 
-function getSortedHandleProps({ children }: IChildrenProps, predicate: (props: IHandleProps) => boolean = () => true) {
+function getSortedHandleProps(
+    { children }: React.PropsWithChildren<IMultiSliderProps>,
+    predicate: (props: IHandleProps) => boolean = () => true,
+) {
     const maybeHandles = React.Children.map(children, child =>
         Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null,
     );

@@ -66,7 +66,15 @@ describe("<MultiSlider>", () => {
             simulateMovement(slider, { dragSize: STEP_SIZE, dragTimes: 4, handleIndex: 0 });
             // called 3 times for the move to 1, 2, 3, and 4
             assert.equal(onChange.callCount, 4);
-            assert.deepEqual(onChange.args.map(arg => arg[0]), [[1, 5, 10], [2, 5, 10], [3, 5, 10], [4, 5, 10]]);
+            assert.deepEqual(
+                onChange.args.map(arg => arg[0]),
+                [
+                    [1, 5, 10],
+                    [2, 5, 10],
+                    [3, 5, 10],
+                    [4, 5, 10],
+                ],
+            );
         });
 
         it("moving mouse on the middle handle updates the middle value", () => {
@@ -74,7 +82,15 @@ describe("<MultiSlider>", () => {
             simulateMovement(slider, { dragSize: STEP_SIZE, dragTimes: 4, from: STEP_SIZE * 5, handleIndex: 1 });
             // called 3 times for the move to 6, 7, 8, and 9
             assert.equal(onChange.callCount, 4);
-            assert.deepEqual(onChange.args.map(arg => arg[0]), [[0, 6, 10], [0, 7, 10], [0, 8, 10], [0, 9, 10]]);
+            assert.deepEqual(
+                onChange.args.map(arg => arg[0]),
+                [
+                    [0, 6, 10],
+                    [0, 7, 10],
+                    [0, 8, 10],
+                    [0, 9, 10],
+                ],
+            );
         });
 
         it("moving mouse on the last handle updates the last value", () => {
@@ -82,7 +98,15 @@ describe("<MultiSlider>", () => {
             simulateMovement(slider, { dragSize: -STEP_SIZE, dragTimes: 4, from: STEP_SIZE * 10, handleIndex: 2 });
             // called 3 times for the move to 9, 8, 7, and 6
             assert.equal(onChange.callCount, 4);
-            assert.deepEqual(onChange.args.map(arg => arg[0]), [[0, 5, 9], [0, 5, 8], [0, 5, 7], [0, 5, 6]]);
+            assert.deepEqual(
+                onChange.args.map(arg => arg[0]),
+                [
+                    [0, 5, 9],
+                    [0, 5, 8],
+                    [0, 5, 7],
+                    [0, 5, 6],
+                ],
+            );
         });
 
         it("releasing mouse on a track value closer to the first handle moves the first handle", () => {
@@ -212,11 +236,29 @@ describe("<MultiSlider>", () => {
                 assert.isNull(segment.prop("className").match(/-intent-(\w+)/));
             });
         });
+
+        it("track section positioning is correct", () => {
+            slider = mount(
+                <MultiSlider max={1}>
+                    <MultiSlider.Handle value={1.2e-7} intentBefore="warning" intentAfter="warning" />
+                    <MultiSlider.Handle value={0.2} intentBefore="danger" intentAfter="success" />
+                </MultiSlider>,
+            );
+            const locations = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
+                const match = segment.prop("style");
+                return [match.left, match.right];
+            });
+            assert.deepEqual(locations, [
+                ["0.00%", "100.00%"],
+                ["0.00%", "80.00%"],
+                ["20.00%", "0.00%"],
+            ]);
+        });
     });
 
     describe("validation", () => {
         it("throws an error if a child is not a slider handle", () => {
-            expectPropValidationError(MultiSlider, { children: <span>Bad</span> as any });
+            expectPropValidationError(MultiSlider, { children: (<span>Bad</span>) as any });
         });
 
         it("throws error if stepSize <= 0", () => {

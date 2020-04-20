@@ -107,7 +107,16 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         this.checkShouldFocus();
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: IEditableCellProps) {
+        const didPropsChange =
+            !CoreUtils.shallowCompareKeys(this.props, prevProps, { exclude: ["style"] }) ||
+            !CoreUtils.deepCompareKeys(this.props, prevProps, ["style"]);
+
+        const { value } = this.props;
+        if (didPropsChange && value != null) {
+            this.setState({ savedValue: value, dirtyValue: value });
+        }
+
         this.checkShouldFocus();
     }
 
@@ -117,13 +126,6 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
             !CoreUtils.shallowCompareKeys(this.state, nextState) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, ["style"])
         );
-    }
-
-    public componentWillReceiveProps(nextProps: IEditableCellProps) {
-        const { value } = nextProps;
-        if (value != null) {
-            this.setState({ savedValue: value, dirtyValue: value });
-        }
     }
 
     public render() {
@@ -190,8 +192,10 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     }
 
     public renderHotkeys() {
+        const { tabIndex } = this.props;
+
         return (
-            <Hotkeys>
+            <Hotkeys tabIndex={tabIndex}>
                 <Hotkey
                     key="edit-cell"
                     label="Edit the currently focused cell"

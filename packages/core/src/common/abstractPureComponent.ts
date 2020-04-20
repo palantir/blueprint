@@ -20,6 +20,7 @@ import { isNodeEnv } from "./utils";
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
+ * @deprecated componentWillReceiveProps is deprecated in React 16.9; use AbstractPureComponent2 instead
  */
 export abstract class AbstractPureComponent<P, S = {}> extends React.PureComponent<P, S> {
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
@@ -77,7 +78,7 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
      * [propTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) feature.
      * Like propTypes, these runtime checks run only in development mode.
      */
-    protected validateProps(_: P & { children?: React.ReactNode }) {
+    protected validateProps(_props: P & { children?: React.ReactNode }) {
         // implement in subclass
     }
 }

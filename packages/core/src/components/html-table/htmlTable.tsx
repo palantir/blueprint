@@ -16,14 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import {
-    HTML_TABLE,
-    HTML_TABLE_BORDERED,
-    HTML_TABLE_CONDENSED,
-    HTML_TABLE_STRIPED,
-    INTERACTIVE,
-    SMALL,
-} from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { IElementRefProps } from "../html/html";
 
 export interface IHTMLTableProps
@@ -50,21 +44,22 @@ export interface IHTMLTableProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class HTMLTable extends React.PureComponent<IHTMLTableProps> {
+@polyfill
+export class HTMLTable extends AbstractPureComponent2<IHTMLTableProps> {
     public render() {
         const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;
         const classes = classNames(
-            HTML_TABLE,
+            Classes.HTML_TABLE,
             {
-                [HTML_TABLE_BORDERED]: bordered,
-                [HTML_TABLE_CONDENSED]: condensed,
-                [HTML_TABLE_STRIPED]: striped,
-                [INTERACTIVE]: interactive,
-                [SMALL]: small,
+                [Classes.HTML_TABLE_BORDERED]: bordered,
+                [Classes.HTML_TABLE_CONDENSED]: condensed,
+                [Classes.HTML_TABLE_STRIPED]: striped,
+                [Classes.INTERACTIVE]: interactive,
+                [Classes.SMALL]: small,
             },
             className,
         );
-        // tslint:disable-next-line:blueprint-html-components
+        // eslint-disable-next-line @blueprintjs/blueprint/html-components
         return <table {...htmlProps} ref={elementRef} className={classes} />;
     }
 }

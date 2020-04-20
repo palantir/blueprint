@@ -15,9 +15,8 @@
  */
 
 import * as React from "react";
-
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import { Intent } from "../../common/intent";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
@@ -42,23 +41,25 @@ export interface ISliderProps extends ISliderBaseProps {
     onRelease?(value: number): void;
 }
 
-export class Slider extends AbstractPureComponent<ISliderProps> {
+@polyfill
+export class Slider extends AbstractPureComponent2<ISliderProps> {
     public static defaultProps: ISliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,
+        intent: Intent.PRIMARY,
         value: 0,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
     public render() {
-        const { initialValue, value, onChange, onRelease, ...props } = this.props;
+        const { initialValue, intent, value, onChange, onRelease, ...props } = this.props;
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
                     value={value}
-                    intentAfter={value < initialValue ? Intent.PRIMARY : undefined}
-                    intentBefore={value >= initialValue ? Intent.PRIMARY : undefined}
+                    intentAfter={value < initialValue ? intent : undefined}
+                    intentBefore={value >= initialValue ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
                 />

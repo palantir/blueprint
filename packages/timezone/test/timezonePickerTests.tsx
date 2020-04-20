@@ -89,6 +89,7 @@ describe("<TimezonePicker>", () => {
     it("if query is not empty, shows all items", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} />);
         timezonePicker.setState({ query: "not empty" });
+        timezonePicker.update();
         const items = timezonePicker.find(Select).prop("items");
         assert.lengthOf(items, getTimezoneItems(new Date()).length);
     });

@@ -1,6 +1,6 @@
 @# Tooltip
 
-A tooltip is a lightweight popover for showing additional infromation on hover.
+A tooltip is a lightweight popover for showing additional information during hover interactions.
 
 @reactExample TooltipExample
 
@@ -31,7 +31,9 @@ prop is not supported.
 
 When creating a tooltip, you must specify both:
 - its _content_ via the `content` prop, and
-- its _target_ as a single child element or string.
+- its _target_ as either:
+    - a single child element, or
+    - an instrinsic element string identifier (N.B. this doesn't work if you are using any of the target props, so use an element instead, i.e. `<div>...</div>` instead of `"div"`).
 
 The content will appear in a contrasting popover when the target is hovered.
 

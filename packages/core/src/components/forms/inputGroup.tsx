@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
@@ -40,6 +40,11 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      * @default false
      */
     disabled?: boolean;
+
+    /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
     inputRef?: (ref: HTMLInputElement | null) => any;
@@ -79,7 +84,8 @@ export interface IInputGroupState {
     rightElementWidth: number;
 }
 
-export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInputProps, IInputGroupState> {
+@polyfill
+export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLInputProps, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
     public state: IInputGroupState = {
@@ -92,12 +98,13 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
     };
 
     public render() {
-        const { className, intent, large, small, leftIcon, round } = this.props;
+        const { className, disabled, fill, intent, large, small, leftIcon, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
-                [Classes.DISABLED]: this.props.disabled,
+                [Classes.DISABLED]: disabled,
+                [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
                 [Classes.ROUND]: round,
@@ -125,8 +132,10 @@ export class InputGroup extends React.PureComponent<IInputGroupProps & HTMLInput
         this.updateInputWidth();
     }
 
-    public componentDidUpdate() {
-        this.updateInputWidth();
+    public componentDidUpdate(prevProps: IInputGroupProps & HTMLInputProps) {
+        if (prevProps.rightElement !== this.props.rightElement) {
+            this.updateInputWidth();
+        }
     }
 
     private maybeRenderRightElement() {

@@ -16,9 +16,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import {
-    AbstractPureComponent,
+    AbstractPureComponent2,
     Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
@@ -31,6 +32,7 @@ import {
     Utils,
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
+
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
@@ -108,7 +110,8 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
+@polyfill
+export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
@@ -167,11 +170,12 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
         );
     }
 
-    public componentWillReceiveProps(nextProps: ITimezonePickerProps) {
-        const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = nextProps;
+    public componentDidUpdate(prevProps: ITimezonePickerProps, prevState: ITimezonePickerState, snapshot?: {}) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
+        const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = this.props;
 
-        if (this.props.showLocalTimezone !== nextProps.showLocalTimezone) {
-            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, nextProps.showLocalTimezone);
+        if (this.props.showLocalTimezone !== prevProps.showLocalTimezone) {
+            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, this.props.showLocalTimezone);
         }
         if (nextInputProps.value !== undefined && this.state.query !== nextInputProps.value) {
             this.setState({ query: nextInputProps.value });

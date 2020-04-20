@@ -20,6 +20,7 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
 // react-day-picker does not conform to our naming scheme
 // stylelint-disable selector-class-pattern
 .#{$ns}-datepicker {
+  display: flex;
   position: relative;
   border-radius: $pt-border-radius;
   background: $datepicker-background-color;
@@ -35,6 +36,11 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     &:focus {
       outline: none;
     }
+  }
+
+  .#{$ns}-datepicker-day-wrapper {
+    border-radius: $pt-border-radius;
+    padding: 7px;
   }
 
   .DayPicker-Month {
@@ -95,6 +101,12 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
     &.DayPicker-Day--outside {
       color: $pt-text-color-disabled;
+    }
+
+    &.DayPicker-Day--isToday {
+      .#{$ns}-datepicker-day-wrapper {
+        border: 1px solid $pt-divider-black;
+      }
     }
 
     &:hover,
@@ -194,6 +206,12 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
   .DayPicker-Day {
     &.DayPicker-Day--outside {
       color: $pt-dark-text-color-disabled;
+    }
+
+    &.DayPicker-Day--isToday {
+      .#{$ns}-datepicker-day-wrapper {
+        border: 1px solid $pt-dark-divider-white;
+      }
     }
 
     &:hover,

@@ -42,6 +42,12 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     disabled?: boolean;
 
     /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill` and `inputProps.fill`.
+     */
+    fill?: boolean;
+
+    /**
      * Props to spread to the query `InputGroup`. To control this input, use
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
@@ -91,6 +97,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     public static defaultProps: Partial<ISuggestProps<any>> = {
         closeOnSelect: true,
+        fill: false,
         openOnKeyDown: false,
         resetOnClose: false,
     };
@@ -118,10 +125,10 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     public render() {
         // omit props specific to this component, spread the rest.
         const { disabled, inputProps, popoverProps, ...restProps } = this.props;
-
         return (
             <this.TypedQueryList
                 {...restProps}
+                initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
@@ -129,24 +136,30 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         );
     }
 
-    public componentWillReceiveProps(nextProps: ISuggestProps<T>) {
-        // If the selected item prop changes, update the underlying state.
-        if (nextProps.selectedItem !== undefined && nextProps.selectedItem !== this.state.selectedItem) {
-            this.setState({ selectedItem: nextProps.selectedItem });
-        }
-    }
-
     public componentDidUpdate(_prevProps: ISuggestProps<T>, prevState: ISuggestState<T>) {
+        // If the selected item prop changes, update the underlying state.
+        if (this.props.selectedItem !== undefined && this.props.selectedItem !== this.state.selectedItem) {
+            this.setState({ selectedItem: this.props.selectedItem });
+        }
+
+        if (this.state.isOpen === false && prevState.isOpen === true) {
+            // just closed, likely by keyboard interaction
+            // wait until the transition ends so there isn't a flash of content in the popover
+            setTimeout(() => {
+                this.maybeResetActiveItemToSelectedItem();
+            }, this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration);
+        }
+
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
-        const { inputProps = {}, popoverProps = {} } = this.props;
+        const { fill, inputProps = {}, popoverProps = {} } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
-        const { placeholder = "Search..." } = inputProps;
+        const { autoComplete = "off", placeholder = "Search..." } = inputProps;
 
         const selectedItemText = selectedItem ? this.props.inputValueRenderer(selectedItem) : "";
         // placeholder shows selected item while open.
@@ -156,6 +169,11 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         const inputValue = isOpen
             ? listProps.query
             : selectedItemText || (this.props.resetOnClose ? "" : listProps.query);
+
+        if (fill) {
+            popoverProps.fill = true;
+            inputProps.fill = true;
+        }
 
         return (
             <Popover
@@ -171,6 +189,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 onOpened={this.handlePopoverOpened}
             >
                 <InputGroup
+                    autoComplete={autoComplete}
                     disabled={this.props.disabled}
                     {...inputProps}
                     inputRef={this.refHandlers.input}
@@ -309,4 +328,13 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             Utils.safeInvokeMember(this.props.inputProps, "onKeyUp", evt);
         };
     };
+
+    private maybeResetActiveItemToSelectedItem() {
+        const shouldResetActiveItemToSelectedItem =
+            this.props.activeItem === undefined && this.state.selectedItem !== null && !this.props.resetOnSelect;
+
+        if (this.queryList !== null && shouldResetActiveItemToSelectedItem) {
+            this.queryList.setActiveItem(this.props.selectedItem ?? this.state.selectedItem);
+        }
+    }
 }

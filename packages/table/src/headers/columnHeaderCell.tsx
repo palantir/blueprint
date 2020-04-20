@@ -16,9 +16,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
 import {
-    AbstractPureComponent,
+    AbstractPureComponent2,
     Icon,
     IconName,
     IProps,
@@ -30,6 +31,7 @@ import {
 import * as Classes from "../common/classes";
 import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
+import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
 export interface IColumnNameProps {
@@ -80,7 +82,8 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }
 
-export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
+@polyfill
+export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellProps, IColumnHeaderCellState> {
     public static defaultProps: IColumnHeaderCellProps = {
         isActive: false,
         menuIcon: "chevron-down",
@@ -194,7 +197,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
             return undefined;
         }
 
-        const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, {
+        const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
         });
 

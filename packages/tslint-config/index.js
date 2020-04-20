@@ -57,8 +57,8 @@ module.exports = {
                 "react-dom",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
-                "react-day-picker/types",
-                "tsutils"
+                "tsutils",
+                "@typescript-eslint/experimental-utils"
             ]
         },
         "no-unnecessary-callback-wrapper": true,

@@ -17,10 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
-import { Position } from "../../common/position";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { safeInvoke } from "../../common/utils";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
 import { Popover } from "../popover/popover";
@@ -47,7 +45,8 @@ const TRANSITION_DURATION = 100;
 type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
-class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
+@polyfill
+class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,

@@ -1,5 +1,9 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
+## Note: This package is deprecated in favour of `@blueprintjs/eslint-plugin-blueprint`
+
+[TSLint is deprecated](https://medium.com/palantir/tslint-in-2019-1a144c2317a9), and as such Blueprint is transitioning to ESLint. Blueprint is now using ESLint in its own repository, and as such this package will be removed in a future major version.
+
 # [Blueprint](http://blueprintjs.com/) [TSLint](https://palantir.github.io/tslint) configuration
 
 Blueprint is a React UI toolkit for the web.

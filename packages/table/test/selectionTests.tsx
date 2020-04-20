@@ -26,9 +26,7 @@ import { createTableOfSize } from "./mocks/table";
 
 describe("Selection", () => {
     const harness = new ReactHarness();
-    const COLUMN_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${
-        Classes.TABLE_HEADER
-    }`;
+    const COLUMN_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
     const ROW_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
     const CELL_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.rowCellIndexClass(
         2,
@@ -124,8 +122,8 @@ describe("Selection", () => {
             .find(ROW_TH_SELECTOR)
             .mouse("mousedown")
             .mouse("mouseup");
-        expect(onSelection.called).to.equal(true);
-        expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(0)]]);
+        expect(onSelection.called, "onSelection should be called on select").to.equal(true);
+        expect(onSelection.lastCall.args, "selected region should be first row").to.deep.equal([[Regions.row(0)]]);
         onSelection.resetHistory();
 
         // deselects on cmd+click
@@ -133,9 +131,8 @@ describe("Selection", () => {
             .find(ROW_TH_SELECTOR)
             .mouse("mousedown", { metaKey: true })
             .mouse("mouseup");
-        expect(onSelection.called).to.equal(true, "cmd+click to deselect");
-        expect(onSelection.lastCall.args.length).to.equal(1);
-        expect(onSelection.lastCall.args).to.deep.equal([[]]);
+        expect(onSelection.called, "onSelection should be called on deselect").to.equal(true, "cmd+click to deselect");
+        expect(onSelection.lastCall.args, "selected region should be empty").to.deep.equal([[]]);
         onSelection.resetHistory();
     });
 

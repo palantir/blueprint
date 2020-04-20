@@ -17,6 +17,8 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
 import {
@@ -34,7 +36,7 @@ import {
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -78,7 +80,7 @@ describe("<DateRangeInput>", () => {
     const INVALID_MESSAGE = "Custom invalid-date message";
 
     const OUT_OF_RANGE_TEST_MIN = new Date(2000, 1, 1);
-    const OUT_OF_RANGE_TEST_MAX = new Date(2020, 1, 1);
+    const OUT_OF_RANGE_TEST_MAX = new Date(2030, 1, 1);
     const OUT_OF_RANGE_START_DATE = new Date(1000, 1, 1);
     const OUT_OF_RANGE_START_STR = DateTestUtils.toDateString(OUT_OF_RANGE_START_DATE);
     const OUT_OF_RANGE_END_DATE = new Date(3000, 1, 1);
@@ -121,6 +123,7 @@ describe("<DateRangeInput>", () => {
     it("inner DateRangePicker receives all supported props", () => {
         const component = mount(<DateRangeInput {...DATE_FORMAT} locale="uk" contiguousCalendarMonths={false} />);
         component.setState({ isOpen: true });
+        component.update();
         const picker = component.find(DateRangePicker);
         expect(picker.prop("locale")).to.equal("uk");
         expect(picker.prop("contiguousCalendarMonths")).to.be.false;
@@ -133,6 +136,73 @@ describe("<DateRangeInput>", () => {
 
     it("throws error if value === null", () => {
         expectPropValidationError(DateRangeInput, { ...DATE_FORMAT, value: null });
+    });
+
+    describe("timePrecision prop", () => {
+        const testsContainerElement = document.createElement("div");
+        document.documentElement.appendChild(testsContainerElement);
+
+        it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
+            const { root } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            expect(isStartInputFocused(root), "start input focus to be false").to.be.false;
+            expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
+        });
+
+        it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            root.update();
+
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+
+            root.setState({ isOpen: true });
+            root.update();
+
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
+        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
+            const { root } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+                testsContainerElement,
+            );
+
+            root.setState({ isOpen: true });
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
+            root.update();
+            keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
+            root.update();
+            expect(root.find(Popover).prop("isOpen")).to.be.true;
+        });
+
+        afterEach(() => {
+            ReactDOM.unmountComponentAtNode(testsContainerElement);
+        });
+
+        function keyDownOnInput(className: string, key: number, inputElementIndex: number = 0) {
+            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { which: key });
+        }
+
+        function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
+            return document.querySelectorAll(`.${DateClasses.TIMEPICKER_INPUT}.${className}`)[
+                inputElementIndex
+            ] as HTMLInputElement;
+        }
     });
 
     describe("startInputProps and endInputProps", () => {
@@ -290,6 +360,7 @@ describe("<DateRangeInput>", () => {
         it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} closeOnSelection={false} />);
             root.setState({ isOpen: true });
+            root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             expect(root.state("isOpen")).to.be.true;
@@ -298,6 +369,18 @@ describe("<DateRangeInput>", () => {
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} />);
             root.setState({ isOpen: true });
+            root.update();
+            getDayElement(1).simulate("click");
+            getDayElement(10).simulate("click");
+            expect(root.state("isOpen")).to.be.false;
+        });
+
+        it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", () => {
+            const { root, getDayElement } = wrap(
+                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
+            );
+            root.setState({ isOpen: true });
+            root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             expect(root.state("isOpen")).to.be.false;
@@ -307,19 +390,36 @@ describe("<DateRangeInput>", () => {
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} contiguousCalendarMonths={false} />);
         root.setState({ isOpen: true });
+        root.update();
         expect(root.find(DateRangePicker).prop("contiguousCalendarMonths")).to.be.false;
     });
 
     it("accepts singleMonthOnly prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} singleMonthOnly={false} />);
         root.setState({ isOpen: true });
+        root.update();
         expect(root.find(DateRangePicker).prop("singleMonthOnly")).to.be.false;
     });
 
     it("accepts shortcuts prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} shortcuts={false} />);
         root.setState({ isOpen: true });
+        root.update();
         expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
+    });
+
+    it("should update the selectedShortcutIndex state when clicking on a shortcut", () => {
+        const selectedShortcut = 1;
+        const { root } = wrap(<DateRangeInput {...DATE_FORMAT} />);
+
+        root.setState({ isOpen: true });
+        root.update();
+        root.find(DateRangePicker)
+            .find(`.${DateClasses.DATERANGEPICKER_SHORTCUTS}`)
+            .find("a")
+            .at(selectedShortcut)
+            .simulate("click");
+        expect(root.state("selectedShortcutIndex")).equals(selectedShortcut);
     });
 
     it("pressing Shift+Tab in the start field blurs the start field and closes the popover", () => {
@@ -498,6 +598,7 @@ describe("<DateRangeInput>", () => {
                 />,
             );
             root.setState({ isOpen: true });
+            root.update();
 
             getDayElement(END_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, END_STR]);
@@ -2134,7 +2235,9 @@ describe("<DateRangeInput>", () => {
         it("Updating value changes the text accordingly in both fields", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={DATE_RANGE} />);
             root.setState({ isOpen: true });
+            root.update();
             root.setProps({ value: DATE_RANGE_2 });
+            root.update();
             assertInputTextsEqual(root, START_STR_2, END_STR_2);
         });
 

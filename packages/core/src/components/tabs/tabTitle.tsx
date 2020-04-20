@@ -16,9 +16,9 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { ITabProps, TabId } from "./tab";
 
 export interface ITabTitleProps extends ITabProps {
@@ -32,26 +32,28 @@ export interface ITabTitleProps extends ITabProps {
     selected: boolean;
 }
 
-export class TabTitle extends React.PureComponent<ITabTitleProps, {}> {
+@polyfill
+export class TabTitle extends AbstractPureComponent2<ITabTitleProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {
-        const { disabled, id, parentId, selected } = this.props;
+        const { className, children, disabled, id, parentId, selected, title, ...htmlProps } = this.props;
         return (
             <div
+                {...removeNonHTMLProps(htmlProps)}
                 aria-controls={generateTabPanelId(parentId, id)}
                 aria-disabled={disabled}
                 aria-expanded={selected}
                 aria-selected={selected}
-                className={classNames(Classes.TAB, this.props.className)}
+                className={classNames(Classes.TAB, className)}
                 data-tab-id={id}
                 id={generateTabTitleId(parentId, id)}
                 onClick={disabled ? undefined : this.handleClick}
                 role="tab"
                 tabIndex={disabled ? undefined : 0}
             >
-                {this.props.title}
-                {this.props.children}
+                {title}
+                {children}
             </div>
         );
     }

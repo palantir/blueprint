@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HTMLInputProps, Keys } from "@blueprintjs/core";
+import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -31,7 +31,8 @@ import { IListItemsProps } from "../src/index";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
-    findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper => wrapper.find("input"),
+    findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper =>
+        wrapper.find("input") as ReactWrapper<HTMLInputProps>,
     findItems: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper => wrapper.find("a"),
 ) {
     const testProps = {
@@ -56,11 +57,10 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
-            assert.equal(testProps.itemRenderer.callCount, 15);
-            // only filtered items re-rendered
-            testProps.itemRenderer.resetHistory();
+            assert.equal(wrapper.find(MenuItem).length, 15, "re-render");
             wrapper.setProps({ query: "1999" });
-            assert.equal(testProps.itemRenderer.callCount, 2, "re-render");
+            wrapper.update();
+            assert.equal(wrapper.find(MenuItem).length, 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {
@@ -128,6 +128,14 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
             const wrapper = render(testProps);
             findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
             assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 20);
+        });
+
+        it("arrow up/down does not invokes onActiveItemChange, when all items are disabled", () => {
+            const wrapper = render({ ...testProps, itemDisabled: () => true });
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            assert.isNull(testProps.onActiveItemChange.lastCall);
+            findInput(wrapper).simulate("keyup", { keyCode: Keys.ARROW_UP });
+            assert.isNull(testProps.onActiveItemChange.lastCall);
         });
 
         it("enter invokes onItemSelect with active item", () => {

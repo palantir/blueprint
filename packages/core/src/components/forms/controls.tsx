@@ -20,9 +20,9 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { Alignment } from "../../common/alignment";
-import * as Classes from "../../common/classes";
+import { AbstractPureComponent2, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 import { safeInvoke } from "../../common/utils";
 
@@ -112,7 +112,7 @@ const Control: React.SFC<IControlInternalProps> = ({
     style,
     type,
     typeClassName,
-    tagName: TagName = "label",
+    tagName = "label",
     ...htmlProps
 }) => {
     const classes = classNames(
@@ -126,14 +126,15 @@ const Control: React.SFC<IControlInternalProps> = ({
         Classes.alignmentClass(alignIndicator),
         className,
     );
-    return (
-        <TagName className={classes} style={style}>
-            <input {...htmlProps} ref={inputRef} type={type} />
-            <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>
-            {label}
-            {labelElement}
-            {children}
-        </TagName>
+
+    return React.createElement(
+        tagName,
+        { className: classes, style },
+        <input {...htmlProps} ref={inputRef} type={type} />,
+        <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
+        label,
+        labelElement,
+        children,
     );
 };
 
@@ -156,7 +157,8 @@ export interface ISwitchProps extends IControlProps {
     innerLabel?: string;
 }
 
-export class Switch extends React.PureComponent<ISwitchProps> {
+@polyfill
+export class Switch extends AbstractPureComponent2<ISwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
     public render() {
@@ -191,7 +193,8 @@ export class Switch extends React.PureComponent<ISwitchProps> {
 
 export interface IRadioProps extends IControlProps {}
 
-export class Radio extends React.PureComponent<IRadioProps> {
+@polyfill
+export class Radio extends AbstractPureComponent2<IRadioProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
     public render() {
@@ -223,8 +226,18 @@ export interface ICheckboxState {
     indeterminate: boolean;
 }
 
-export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState> {
+@polyfill
+export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
+
+    public static getDerivedStateFromProps({ indeterminate }: ICheckboxProps): ICheckboxState | null {
+        // put props into state if controlled by props
+        if (indeterminate != null) {
+            return { indeterminate };
+        }
+
+        return null;
+    }
 
     public state: ICheckboxState = {
         indeterminate: this.props.indeterminate || this.props.defaultIndeterminate || false,
@@ -244,13 +257,6 @@ export class Checkbox extends React.PureComponent<ICheckboxProps, ICheckboxState
                 typeClassName={Classes.CHECKBOX}
             />
         );
-    }
-
-    public componentWillReceiveProps({ indeterminate }: ICheckboxProps) {
-        // put props into state if controlled by props
-        if (indeterminate != null) {
-            this.setState({ indeterminate });
-        }
     }
 
     public componentDidMount() {

@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
@@ -62,7 +62,8 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
     transitionDuration?: number;
 }
 
-export class Tooltip extends React.PureComponent<ITooltipProps, {}> {
+@polyfill
+export class Tooltip extends AbstractPureComponent2<ITooltipProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
     public static defaultProps: Partial<ITooltipProps> = {

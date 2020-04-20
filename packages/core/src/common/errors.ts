@@ -98,3 +98,6 @@ export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
 export const DRAWER_VERTICAL_IS_IGNORED = ns + ` <Drawer> vertical is ignored if position is defined`;
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
+
+export const TOASTER_MAX_TOASTS_INVALID =
+    ns + ` <Toaster> maxToasts is set to an invalid number, must be greater than 0`;

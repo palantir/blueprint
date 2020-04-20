@@ -51,4 +51,18 @@ describe("<TextArea>", () => {
 
         assert.equal((textarea.getDOMNode() as HTMLElement).style.marginTop, "10px");
     });
+    it("can fit large initial content", () => {
+        const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenean finibus eget enim non accumsan.
+        Nunc lobortis luctus magna eleifend consectetur.
+        Suspendisse ut semper sem, quis efficitur felis.
+        Praesent suscipit nunc non semper tempor.
+        Sed eros sapien, semper sed imperdiet sed,
+        dictum eget purus. Donec porta accumsan pretium.
+        Fusce at felis mattis, tincidunt erat non, varius erat.`;
+        const wrapper = mount(<TextArea growVertically={true} value={initialValue} style={{ marginTop: 10 }} />);
+        const textarea = wrapper.find("textarea");
+        const scrollHeightInPixels = `${(textarea.getDOMNode() as HTMLElement).scrollHeight}px`;
+        assert.equal((textarea.getDOMNode() as HTMLElement).style.height, scrollHeightInPixels);
+    });
 });

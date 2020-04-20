@@ -16,7 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2 } from "../../common";
 import { DIVIDER } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
@@ -30,12 +31,16 @@ export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement>
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class Divider extends React.PureComponent<IDividerProps> {
+@polyfill
+export class Divider extends AbstractPureComponent2<IDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 
     public render() {
-        const { className, tagName: TagName = "div", ...htmlProps } = this.props;
+        const { className, tagName = "div", ...htmlProps } = this.props;
         const classes = classNames(DIVIDER, className);
-        return <TagName {...htmlProps} className={classes} />;
+        return React.createElement(tagName, {
+            ...htmlProps,
+            className: classes,
+        });
     }
 }

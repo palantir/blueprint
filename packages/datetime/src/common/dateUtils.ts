@@ -16,7 +16,7 @@
 
 import { Months } from "./months";
 
-export type DateRange = [Date | undefined, Date | undefined];
+export type DateRange = [Date | null, Date | null];
 
 export function isDateValid(date: Date | false | null): date is Date {
     return date instanceof Date && !isNaN(date.valueOf());
@@ -210,7 +210,7 @@ export function convert24HourMeridiem(hour: number, toPm: boolean): number {
     if (hour < 0 || hour > 23) {
         throw new Error(`hour must be between [0,23] inclusive: got ${hour}`);
     }
-    return toPm ? hour % 12 + 12 : hour % 12;
+    return toPm ? (hour % 12) + 12 : hour % 12;
 }
 
 export function getIsPmFrom24Hour(hour: number): boolean {

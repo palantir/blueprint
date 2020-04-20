@@ -261,14 +261,30 @@ describe("Regions", () => {
         expect(invalid).to.have.lengthOf(0);
 
         const cells = Regions.enumerateUniqueCells([Regions.column(0), Regions.row(0)], 3, 2);
-        expect(cells).to.deep.equal([[0, 0], [0, 1], [1, 0], [2, 0]]);
+        expect(cells).to.deep.equal([
+            [0, 0],
+            [0, 1],
+            [1, 0],
+            [2, 0],
+        ]);
     });
 
     it("sparsely maps cells", () => {
-        const cells = [[0, 0], [0, 1], [1, 0], [2, 0]] as ICellCoordinate[];
+        const cells = [
+            [0, 0],
+            [0, 1],
+            [1, 0],
+            [2, 0],
+        ] as ICellCoordinate[];
         const sparse = Regions.sparseMapCells(cells, () => "X");
         // normal deep equals doesn't work here so we use JSON.stringify
-        expect(JSON.stringify(sparse)).to.equal(JSON.stringify([["X", "X"], ["X", null], ["X", null]]));
+        expect(JSON.stringify(sparse)).to.equal(
+            JSON.stringify([
+                ["X", "X"],
+                ["X", null],
+                ["X", null],
+            ]),
+        );
     });
 
     describe("clampRegion", () => {

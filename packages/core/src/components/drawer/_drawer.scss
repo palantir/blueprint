@@ -11,12 +11,15 @@ $drawer-padding: $pt-grid-size * 2 !default;
 
 $drawer-default-size: 50%;
 
+$drawer-background-color: $white !default;
+$dark-drawer-background-color: $dark-gray4 !default;
+
 .#{$ns}-drawer {
   display: flex;
   flex-direction: column;
   margin: 0;
   box-shadow: $pt-elevation-shadow-4;
-  background: $white;
+  background: $drawer-background-color;
   padding: 0;
 
   &:focus {
@@ -167,7 +170,7 @@ $drawer-default-size: 50%;
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     box-shadow: $pt-dark-dialog-box-shadow;
-    background: $dark-gray4;
+    background: $dark-drawer-background-color;
     color: $pt-dark-text-color;
   }
 }
@@ -179,14 +182,14 @@ $drawer-default-size: 50%;
   position: relative;
   border-radius: 0;
   box-shadow: 0 1px 0 $pt-divider-black;
-  min-height: $pt-icon-size-large + $dialog-padding;
-  padding: $dialog-padding / 4;
-  padding-left: $dialog-padding;
+  min-height: $pt-icon-size-large + $drawer-padding;
+  padding: $drawer-padding / 4;
+  padding-left: $drawer-padding;
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     flex: 0 0 auto;
-    margin-right: $dialog-padding / 2;
+    margin-right: $drawer-padding / 2;
     color: $pt-icon-color;
   }
 
@@ -197,7 +200,7 @@ $drawer-default-size: 50%;
     line-height: inherit;
 
     &:last-child {
-      margin-right: $dialog-padding;
+      margin-right: $drawer-padding;
     }
   }
 
@@ -221,7 +224,7 @@ $drawer-default-size: 50%;
   flex: 0 0 auto;
   position: relative;
   box-shadow: inset 0 1px 0 $pt-divider-black;
-  padding: $dialog-padding/2 $dialog-padding;
+  padding: $drawer-padding/2 $drawer-padding;
 
   .#{$ns}-dark & {
     box-shadow: inset 0 1px 0 $pt-dark-divider-black;

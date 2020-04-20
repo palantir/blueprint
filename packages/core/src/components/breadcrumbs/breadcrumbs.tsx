@@ -16,11 +16,9 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
 
-import { Boundary } from "../../common/boundary";
-import * as Classes from "../../common/classes";
-import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
+import { AbstractPureComponent2, Boundary, Classes, IProps, Position, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { IOverflowListProps, OverflowList } from "../overflow-list/overflowList";
@@ -76,7 +74,8 @@ export interface IBreadcrumbsProps extends IProps {
     popoverProps?: IPopoverProps;
 }
 
-export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
+@polyfill
+export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
     public static defaultProps: Partial<IBreadcrumbsProps> = {
         collapseFrom: Boundary.START,
     };
@@ -120,7 +119,8 @@ export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
 
     private renderOverflowBreadcrumb = (props: IBreadcrumbProps, index: number) => {
         const isClickable = props.href != null || props.onClick != null;
-        return <MenuItem disabled={!isClickable} {...props} text={props.text} key={index} />;
+        const htmlProps = removeNonHTMLProps(props);
+        return <MenuItem disabled={!isClickable} {...htmlProps} text={props.text} key={index} />;
     };
 
     private renderBreadcrumbWrapper = (props: IBreadcrumbProps, index: number) => {
@@ -134,7 +134,8 @@ export class Breadcrumbs extends React.PureComponent<IBreadcrumbsProps> {
         } else if (this.props.breadcrumbRenderer != null) {
             return this.props.breadcrumbRenderer(props);
         } else {
-            return <Breadcrumb {...props} current={isCurrent} />;
+            // allow user to override 'current' prop
+            return <Breadcrumb current={isCurrent} {...props} />;
         }
     }
 }

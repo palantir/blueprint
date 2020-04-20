@@ -68,12 +68,14 @@ import { IconNames } from "@blueprintjs/icons";
 
 @## CSS
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="@ns-callout @ns-intent-danger @ns-icon-warning-sign">
     <h4 class="@ns-heading">Icon fonts are legacy in 2.0</h4>
 
 Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
 The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
 support is equivalent.
+
+__Important__: Blueprint icons added after `@blueprintjs/icons@3.14.0` do not have icon font support.
 
 </div>
 

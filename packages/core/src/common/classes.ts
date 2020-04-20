@@ -19,7 +19,7 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || "bp3";
+const NS = process.env.BLUEPRINT_NAMESPACE || process.env.REACT_APP_BLUEPRINT_NAMESPACE || "bp3";
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
@@ -35,6 +35,7 @@ export const INTERACTIVE = `${NS}-interactive`;
 export const LARGE = `${NS}-large`;
 export const LOADING = `${NS}-loading`;
 export const MINIMAL = `${NS}-minimal`;
+export const OUTLINED = `${NS}-outlined`;
 export const MULTILINE = `${NS}-multiline`;
 export const ROUND = `${NS}-round`;
 export const SMALL = `${NS}-small`;
@@ -154,6 +155,7 @@ export const SWITCH_INNER_TEXT = `${SWITCH}-inner-text`;
 export const FILE_INPUT = `${NS}-file-input`;
 export const FILE_INPUT_HAS_SELECTION = `${NS}-file-input-has-selection`;
 export const FILE_UPLOAD_INPUT = `${NS}-file-upload-input`;
+export const FILE_UPLOAD_INPUT_CUSTOM_TEXT = `${NS}-file-upload-input-custom-text`;
 
 export const KEY = `${NS}-key`;
 export const KEY_COMBO = `${KEY}-combo`;

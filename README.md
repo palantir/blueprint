@@ -11,7 +11,7 @@ It is optimized for building complex, data-dense web interfaces for _desktop app
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
-[**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/nko3k41y60)
+[**Try it out on CodeSandbox ▸**](https://codesandbox.io/s/blueprint-sandbox-et9xy)
 
 [**Read frequently asked questions (FAQ) on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
@@ -39,7 +39,6 @@ These are the component libraries we publish to NPM.
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/select.svg?label=@blueprintjs/select)](https://www.npmjs.com/package/@blueprintjs/select) &ndash; Components for selecting items from a list.
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable interactive table component.
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/timezone.svg?label=@blueprintjs/timezone)](https://www.npmjs.com/package/@blueprintjs/timezone) &ndash; Components for picking timezones.
-- [![npm](https://img.shields.io/npm/v/@blueprintjs/labs.svg?label=@blueprintjs/labs)](https://www.npmjs.com/package/@blueprintjs/labs) &ndash; Incubator and staging area for new components still under initial development.
 
 ### Applications
 
@@ -57,10 +56,12 @@ These are used as development playground environments:
 These packages define development dependencies and contain build configuration. They adhere to the standard NPM package layout, which allows us to keep clear API boundaries for build configuration and isolate groups of `devDependencies`. They are published to NPM in order to allow other Blueprint-related projects to use this infrastructure outside this monorepo.
 
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/docs-theme.svg?label=@blueprintjs/docs-theme)](https://www.npmjs.com/package/@blueprintjs/docs-theme) &ndash; Documentation theme for [Documentalist](https://github.com/palantir/documentalist) data.
+- [![npm](https://img.shields.io/npm/v/@blueprintjs/eslint-config.svg?label=@blueprintjs/eslint-config)](https://www.npmjs.com/package/@blueprintjs/eslint-config) &ndash; ESLint configuration used in this repo and recommended for Blueprint-related projects
+- [![npm](https://img.shields.io/npm/v/@blueprintjs/eslint-plugin-blueprint.svg?label=@blueprintjs/eslint-plugin-blueprint)](https://www.npmjs.com/package/@blueprintjs/eslint-plugin-blueprint) &ndash; implementations for custom ESLint rules which enforce best practices for Blueprint usage
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/karma-build-scripts.svg?label=@blueprintjs/karma-build-scripts)](https://www.npmjs.com/package/@blueprintjs/karma-build-scripts)
-- [![npm](https://img.shields.io/npm/v/@blueprintjs/node-build-scripts.svg?label=@blueprintjs/node-build-scripts)](https://www.npmjs.com/package/@blueprintjs/node-build-scripts)
-- [![npm](https://img.shields.io/npm/v/@blueprintjs/test-commons.svg?label=@blueprintjs/test-commons)](https://www.npmjs.com/package/@blueprintjs/test-commons)
-- [![npm](https://img.shields.io/npm/v/@blueprintjs/tslint-config.svg?label=@blueprintjs/tslint-config)](https://www.npmjs.com/package/@blueprintjs/tslint-config)
+- [![npm](https://img.shields.io/npm/v/@blueprintjs/node-build-scripts.svg?label=@blueprintjs/node-build-scripts)](https://www.npmjs.com/package/@blueprintjs/node-build-scripts) &ndash; various utility scripts for linting, working with CSS variables, and building icons
+- [![npm](https://img.shields.io/npm/v/@blueprintjs/test-commons.svg?label=@blueprintjs/test-commons)](https://www.npmjs.com/package/@blueprintjs/test-commons) &ndash; various utility functions used in Blueprint test suites
+- [![npm](https://img.shields.io/npm/v/@blueprintjs/tslint-config.svg?label=@blueprintjs/tslint-config)](https://www.npmjs.com/package/@blueprintjs/tslint-config) &ndash; TSLint configuration used in this repo and recommended for Blueprint-related projects (should be installed by `@blueprintjs/eslint-config`, not directly)
 - [![npm](https://img.shields.io/npm/v/@blueprintjs/webpack-build-scripts.svg?label=@blueprintjs/webpack-build-scripts)](https://www.npmjs.com/package/@blueprintjs/webpack-build-scripts)
 
 ## Contributing
@@ -71,16 +72,20 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 
 ## Development
 
-[Lerna](https://lernajs.io/) manages inter-package dependencies in this monorepo.
+[Lerna](https://lerna.js.org/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-__Prerequisites__: Node.js v8+, Yarn v1.10+
+__Prerequisites__: Node.js v10+, Yarn v1.18+
 
 ### One-time setup
 
 After cloning this repo, run:
 
 1. `yarn` to install all dependencies.
+1. If running on Windows:
+    1. `npm install -g windows-build-tools` to install build tools globally
+    1. Ensure `bash` is your configured script-shell by running:<br />
+      `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
 1. `yarn verify` to ensure you have all the build tooling working properly.
 
 ### Incorporating upstream changes

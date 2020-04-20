@@ -1,28 +1,28 @@
 {
   "name": "@blueprintjs/webpack-build-scripts",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Webpack build scripts for @blueprintjs packages",
   "scripts": {
     "test": "exit 0"
   },
   "dependencies": {
-    "autoprefixer": "^7.1.2",
+    "autoprefixer": "^9.6.1",
     "awesome-typescript-loader": "^5.2.1",
     "circular-dependency-plugin": "^5.0.2",
-    "css-loader": "^2.0.1",
+    "css-loader": "^3.1.0",
     "cssnano": "^4.1.10",
-    "file-loader": "^2.0.0",
-    "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.11.0",
-    "postcss-discard-comments": "^2.0.4",
+    "file-loader": "^4.1.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "postcss-discard-comments": "^4.0.2",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
-    "webpack": "^4.27.1",
+    "webpack": "^4.37.0",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-dev-server": "^3.1.0",
-    "webpack-notifier": "^1.7.0"
+    "webpack-dev-server": "^3.7.2",
+    "webpack-notifier": "^1.8.0"
   },
   "repository": {
     "type": "git",

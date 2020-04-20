@@ -144,6 +144,7 @@ $toast-margin: $pt-grid-size * 2 !default;
 .#{$ns}-toast-message {
   flex: 1 1 auto;
   padding: centered-text($toast-height);
+  word-break: break-word;
 }
 
 .#{$ns}-toast-container {
@@ -172,8 +173,6 @@ $toast-margin: $pt-grid-size * 2 !default;
 
   &.#{$ns}-toast-container-top {
     top: 0;
-    // clear opposite side cuz .#{$ns}-overlay has all sides 0'ed
-    bottom: auto;
   }
 
   &.#{$ns}-toast-container-bottom {
@@ -195,6 +194,9 @@ $toast-margin: $pt-grid-size * 2 !default;
   // minimal diff in react-transition styles so we can avoid calling those mixins again
   &.#{$ns}-toast-enter:not(.#{$ns}-toast-enter-active),
   &.#{$ns}-toast-enter:not(.#{$ns}-toast-enter-active) ~ .#{$ns}-toast,
+  &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active),
+  &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active) ~ .#{$ns}-toast,
+  &.#{$ns}-toast-exit-active ~ .#{$ns}-toast,
   &.#{$ns}-toast-leave-active ~ .#{$ns}-toast {
     transform: translateY($toast-margin + $toast-height);
   }

@@ -304,8 +304,9 @@
   .docs-panel-stack-contents-example {
     display: flex;
     flex: 1 0 auto;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     padding: 10px;
   }
 
@@ -484,6 +485,12 @@
 .docs-date-range {
   @include pt-flex-container(row, $pt-grid-size / 2);
   align-items: center;
+}
+
+#{example("DateInputExample")} {
+  .docs-example > * {
+    margin: 0 0 20px 0;
+  }
 }
 
 //

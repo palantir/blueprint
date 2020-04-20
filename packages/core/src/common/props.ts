@@ -112,6 +112,7 @@ const INVALID_PROPS = [
     "active",
     "alignText",
     "containerRef",
+    "current",
     "elementRef",
     "fill",
     "icon",
@@ -122,8 +123,10 @@ const INVALID_PROPS = [
     "loading",
     "leftIcon",
     "minimal",
-    "onChildrenMount",
-    "onRemove",
+    "onRemove", // ITagProps, ITagInputProps
+    "outlined", // IButtonProps
+    "panel", // ITabProps
+    "panelClassName", // ITabProps
     "popoverProps",
     "rightElement",
     "rightIcon",

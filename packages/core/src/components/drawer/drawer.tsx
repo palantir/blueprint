@@ -16,9 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
-import { AbstractPureComponent } from "../../common/abstractPureComponent";
-import * as Classes from "../../common/classes";
+import { polyfill } from "react-lifecycles-compat";
+import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
@@ -95,7 +94,8 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     vertical?: boolean;
 }
 
-export class Drawer extends AbstractPureComponent<IDrawerProps, {}> {
+@polyfill
+export class Drawer extends AbstractPureComponent2<IDrawerProps, {}> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,

@@ -16,10 +16,11 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { DayPickerProps } from "react-day-picker/types/props";
+import { DayPickerProps } from "react-day-picker";
+import { polyfill } from "react-lifecycles-compat";
 
 import {
-    AbstractPureComponent,
+    AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IInputGroupProps,
@@ -37,6 +38,7 @@ import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { IDatePickerShortcut } from "./shortcuts";
 
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
@@ -81,6 +83,11 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     defaultValue?: Date;
 
     /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
+    /**
      * Props to pass to the [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
@@ -120,6 +127,15 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     showActionsBar?: boolean;
 
     /**
+     * Whether shortcuts to quickly select a date are displayed or not.
+     * If `true`, preset shortcuts will be displayed.
+     * If `false`, no shortcuts will be displayed.
+     * If an array is provided, the custom shortcuts will be displayed.
+     * @default false
+     */
+    shortcuts?: boolean | IDatePickerShortcut[];
+
+    /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      * To display no date in the input field, pass `null` to the value prop. To display an invalid date error
      * in the input field, pass `new Date(undefined)` to the value prop.
@@ -139,9 +155,11 @@ export interface IDateInputState {
     valueString: string;
     isInputFocused: boolean;
     isOpen: boolean;
+    selectedShortcutIndex?: number;
 }
 
-export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
+@polyfill
+export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {
@@ -193,6 +211,8 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
                     dayPickerProps={dayPickerProps}
                     onChange={this.handleDateChange}
                     value={dateValue}
+                    onShortcutChange={this.handleShortcutChange}
+                    selectedShortcutIndex={this.state.selectedShortcutIndex}
                 />
             </div>
         );
@@ -203,6 +223,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         return (
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
+                fill={this.props.fill}
                 {...popoverProps}
                 autoFocus={false}
                 className={classNames(popoverProps.className, this.props.className)}
@@ -231,10 +252,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         );
     }
 
-    public componentWillReceiveProps(nextProps: IDateInputProps) {
-        super.componentWillReceiveProps(nextProps);
-        if (nextProps.value !== this.props.value) {
-            this.setState({ value: nextProps.value });
+    public componentDidUpdate(prevProps: IDateInputProps, prevState: IDateInputState, snapshot?: {}) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
+        if (prevProps.value !== this.props.value) {
+            this.setState({ value: this.props.value });
         }
     }
 
@@ -429,6 +450,10 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
         if (this.lastElementInPopover != null) {
             this.lastElementInPopover.removeEventListener("blur", this.handlePopoverBlur);
         }
+    };
+
+    private handleShortcutChange = (_: IDatePickerShortcut, selectedShortcutIndex: number) => {
+        this.setState({ selectedShortcutIndex });
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */

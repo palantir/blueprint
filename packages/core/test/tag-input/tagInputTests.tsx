@@ -148,13 +148,14 @@ describe("<TagInput>", () => {
             wrapper.setProps({ inputProps: { value: NEW_VALUE } });
             wrapper.find("input").simulate("change", { currentTarget: { value: NEW_VALUE } });
             wrapper.simulate("blur");
+
             // Need setTimeout here to wait for focus to change after blur event
             setTimeout(() => {
                 assert.isTrue(onAdd.calledOnce);
                 assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
                 assert.equal(onAdd.args[0][1], "blur");
                 done();
-            });
+            }, 50);
         });
 
         it("is not invoked on blur when addOnBlur=true but inputValue is empty", done => {
@@ -312,6 +313,33 @@ describe("<TagInput>", () => {
             assert.equal(wrapper.state("activeIndex"), 0);
             assert.isTrue(onRemove.calledOnce);
             assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+        });
+
+        it("pressing left arrow key navigates active item and delete removes it", () => {
+            const onRemove = sinon.spy();
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
+            // select and remove middle item
+            wrapper
+                .find("input")
+                .simulate("keydown", { which: Keys.ARROW_LEFT })
+                .simulate("keydown", { which: Keys.ARROW_LEFT })
+                .simulate("keydown", { which: Keys.DELETE });
+
+            // in this case we're not moving into the previous item but
+            // we rather "take the place" of the item we just removed
+            assert.equal(wrapper.state("activeIndex"), 1);
+            assert.isTrue(onRemove.calledOnce);
+            assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+        });
+
+        it("pressing delete with no selection does nothing", () => {
+            const onRemove = sinon.spy();
+            const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
+
+            wrapper.find("input").simulate("keydown", { which: Keys.DELETE });
+
+            assert.equal(wrapper.state("activeIndex"), -1);
+            assert.isTrue(onRemove.notCalled);
         });
 
         it("pressing right arrow key in initial state does nothing", () => {
@@ -549,6 +577,7 @@ describe("<TagInput>", () => {
         it("Updating inputValue updates input element", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: NEW_VALUE });
+            wrapper.update();
             expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
 

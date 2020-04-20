@@ -109,18 +109,20 @@ Running text
 Markup:
 <div class="@ns-running-text {{.modifier}}">
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    We build products that make people better at their most important
+    work — the kind of work you read about on the front page of the
+    newspaper, not just the technology section.
   </p>
   <ul>
     <li>Item the <code>first</code>.</li>
     <li>Item the <strong>second</strong></code>.</li>
     <li>Item the <a href="#core/typography.running-text">third</a>.</li>
   </ul>
-  <h3>New section</h3>
+  <h3>Scale, Speed, Agility</h3>
   <p>
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    nisi ut aliquip ex ea commodo consequat.
+    A successful data transformation requires the whole organization — users, the IT shop, and
+    leadership — to operate in lockstep. With Foundry, the enterprise comes together to
+    transform the organization and turn data into a competitive advantage.
   </p>
 </div>
 
@@ -356,10 +358,10 @@ Block quotes
 
 Markup:
 <blockquote class="@ns-blockquote">
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  Premium Aerotec is a key supplier for Airbus, producing 30 million parts per year,
+  which is huge complexity. Skywise helps us manage all the production steps.
+  It gives Airbus much better visibility into where the product is in the supply chain,
+  and it lets us immediately see our weak points so we can react on the spot.
 </blockquote>
 
 Styleguide blockquote

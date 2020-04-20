@@ -33,3 +33,7 @@ import { DateRangeInput } from "@blueprintjs/datetime";
 ```
 
 @interface IDateRangeInputProps
+
+@## Localization
+
+See the [Date picker localization docs](#datetime/datepicker.localization).

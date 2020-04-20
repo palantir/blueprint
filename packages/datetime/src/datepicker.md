@@ -6,6 +6,33 @@ A `DatePicker` shows a monthly calendar and allows the user to choose a single d
 
 @reactExample DatePickerExample
 
+@## Shortcuts
+
+The menu on the left of the calendars provides "shortcuts" that allow users to
+quickly select common dates. The items in this menu are controlled through
+the `shortcuts` prop: `true` to show presets, `false` to hide (default), or an
+array of `IDatePickerShortcut` objects to define custom shortcuts.
+
+The **preset shortcuts** can be seen in the example above. They are as follows:
+
+- Today
+- Yesterday
+- 1 week ago
+- 1 month ago
+- 3 months ago
+- 1 year ago
+
+**Custom shortcuts** use the following interface:
+
+@interface IDatePickerShortcut
+
+@## Props
+
+Use the `onChange` prop to listen for changes to the set date range. You can
+control the selected date range by setting the `value` prop, or use the
+component in uncontrolled mode and specify an initial date range by setting
+`defaultValue`.
+
 @## Modifiers
 
 You can use the `modifiers` prop to conditionally apply styles to days.
@@ -63,3 +90,32 @@ to the **react-day-picker** library. These passed props are documented in full
 in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
 
 @interface IDatePickerProps
+
+@## Localization
+
+`DatePicker`, `DateRangePicker`, `DateInput`, and `DateRangeInput` all support localization using an interface defined in the
+`react-day-picker` module:
+
+```tsx
+import { LocaleUtils } from "react-day-picker";
+```
+
+By supplying a `locale: string` and `localeUtils: LocaleUtils` prop to these Blueprint components, you can
+customize how dates are rendered, which day of the week is the first column, etc.
+You will need to overwrite the functions of `LocaleUtil` by your own.
+[See the interface definition for more details](https://github.com/gpbl/react-day-picker/blob/v7.3.0/types/utils.d.ts#L5).
+
+Although `@blueprintjs/datetime` and `react-day-picker` do not explicitly require `moment.js` as a dependency,
+you may wish to use Moment's implementation of localization so that you do not have to write these functions yourself.
+
+To use moment for your localization, make sure to include `moment` in your dependencies and use `MomentLocaleUtils` 
+from `react-day-picker/moment` as follow:
+
+```tsx
+import MomentLocaleUtils from 'react-day-picker/moment'
+import 'moment/locale/fr';
+
+<DatePicker locale="fr" localeUtils={MomentLocaleUtils} />
+```
+
+More detailed examples can be found in the [**react-day-picker** documentation](https://react-day-picker.js.org/docs/localization/).
