@@ -121,6 +121,7 @@ const INVALID_PROPS = [
     "inline",
     "large",
     "loading",
+    "leftElement",
     "leftIcon",
     "minimal",
     "onRemove", // ITagProps, ITagInputProps

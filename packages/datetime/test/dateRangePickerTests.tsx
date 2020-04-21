@@ -1051,6 +1051,24 @@ describe("<DateRangePicker>", () => {
             left.assertMonthYear(Months.JANUARY, 2016);
             right.assertMonthYear(Months.FEBRUARY, 2016);
         });
+
+        it("custom shortcuts set the displayed dates correctly when month stays the same but not years and contiguousCalendarMonths is false", () => {
+            const dateRange = [new Date(2014, Months.JUNE, 1), new Date(2015, Months.JUNE, 1)] as DateRange;
+            const { clickShortcut, left, right } = render({
+                contiguousCalendarMonths: false,
+                initialMonth: new Date(2015, Months.JUNE, 1),
+                shortcuts: [{ label: "custom shortcut", dateRange }],
+            });
+
+            clickShortcut();
+            assert.isTrue(onChangeSpy.calledOnce);
+            left.assertMonthYear(Months.JUNE, 2014);
+            right.assertMonthYear(Months.JUNE, 2015);
+
+            clickShortcut();
+            left.assertMonthYear(Months.JUNE, 2014);
+            right.assertMonthYear(Months.JUNE, 2015);
+        });
     });
 
     describe("when uncontrolled", () => {

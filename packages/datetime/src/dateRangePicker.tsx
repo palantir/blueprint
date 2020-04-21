@@ -711,7 +711,7 @@ function getStateChange(
             // If the selected month isn't in either of the displayed months, then
             //   - set the left DayPicker to be the selected month
             //   - set the right DayPicker to +1
-            if (nextValueStartView.isSameMonth(nextValueEndView)) {
+            if (nextValueStartView.isSame(nextValueEndView)) {
                 if (leftView.isSame(nextValueStartView) || rightView.isSame(nextValueStartView)) {
                     // do nothing
                 } else {

@@ -38,7 +38,7 @@ describe("<InputGroup>", () => {
     it(`renders right element inside .${Classes.INPUT_ACTION} after input`, () => {
         const action = mount(<InputGroup rightElement={<address />} />)
             .children()
-            .childAt(2);
+            .childAt(1);
         assert.isTrue(action.hasClass(Classes.INPUT_ACTION));
         assert.lengthOf(action.find("address"), 1);
     });
