@@ -85,6 +85,17 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
+  format-check:
+    docker: *docker-node-lts
+    environment:
+      JUNIT_REPORT_PATH: reports
+      NODE_ENV: test
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: yarn format-check
+
   dist:
     docker: *docker-node-lts
     resource_class: large
@@ -196,6 +207,8 @@ workflows:
       - compile:
           requires: [checkout-code]
       - lint:
+          requires: [checkout-code]
+      - format-check:
           requires: [checkout-code]
       - dist:
           requires: [compile]
