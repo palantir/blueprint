@@ -17,7 +17,8 @@
 import { Classes, Menu, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
 import { DATERANGEPICKER_SHORTCUTS } from "./common/classes";
-import { clone, DateRange, isDayRangeInRange } from "./common/dateUtils";
+import { DateRange } from "./common/dateRange";
+import { clone, isDayRangeInRange } from "./common/dateUtils";
 import { TimePrecision } from "./timePicker";
 
 export interface IDateShortcutBase {

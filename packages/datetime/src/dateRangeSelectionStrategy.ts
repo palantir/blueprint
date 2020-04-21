@@ -15,7 +15,8 @@
  */
 
 import { Boundary } from "@blueprintjs/core";
-import { areSameDay, DateRange } from "./common/dateUtils";
+import { DateRange } from "./common/dateRange";
+import { areSameDay } from "./common/dateUtils";
 
 export interface IDateRangeSelectionState {
     /**
