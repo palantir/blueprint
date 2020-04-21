@@ -50,8 +50,8 @@ writeLinesToFile(
 // map ENUM_NAME to unicode character
 writeLinesToFile(
     "iconContents.ts",
-    ...ICONS_WITH_FONT_SUPPORT.map(icon =>
-        `export const ${toEnumName(icon)} = "${icon.content.replace("\\", "\\u")}";`,
+    ...ICONS_WITH_FONT_SUPPORT.map(
+        icon => `export const ${toEnumName(icon)} = "${icon.content.replace("\\", "\\u")}";`,
     ),
 );
 
@@ -59,9 +59,7 @@ writeLinesToFile(
 // so that we can reference their SVG paths
 writeLinesToFile(
     "iconNames.ts",
-    ...ICONS_METADATA.map(icon =>
-        `export const ${toEnumName(icon)} = "${icon.iconName}";`,
-    ),
+    ...ICONS_METADATA.map(icon => `export const ${toEnumName(icon)} = "${icon.iconName}";`),
 );
 
 (async () => {

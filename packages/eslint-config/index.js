@@ -14,35 +14,53 @@
  */
 
 const path = require("path");
-const tsConfig = require("./ts");
 
-// in CI, we don't wan to run eslint-plugin-prettier because it has a ~50% performance penalty.
-// instead, we run yarn format-check at the root to ensure prettier formatting
-const isCI = process.env.NODE_ENV === "test";
-const prettierConfig = require("../../.prettierrc.json");
-
-const plugins = [...tsConfig.plugins, "@blueprintjs"];
-const xtends = ["plugin:@blueprintjs/recommended"];
-const rules = {...tsConfig.rules};
-
-if (!isCI) {
-    plugins.push("prettier");
-    xtends.push("plugin:prettier/recommended");
-    rules["prettier/prettier"] = ["error", prettierConfig];
-}
-
+/**
+ * Enable @blueprintjs/eslint-plugin.
+ * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
+ */
 module.exports = {
-    ...tsConfig,
-    plugins,
-    extends: xtends,
-    rules,
+    plugins: ["@blueprintjs"],
+    extends: ["plugin:@blueprintjs/recommended"],
+    parserOptions: { ecmaVersion: 2017 },
+    rules: {
+        // HACKHACK: this rule impl has too many false positives
+        "@blueprintjs/classes-constants": "off",
+    },
     overrides: [
-        ...tsConfig.overrides,
+        {
+            files: ["*.js"],
+            env: {
+                node: true,
+                es6: true,
+            },
+        },
+        {
+            files: ["**/*.{ts,tsx}"],
+            env: {
+                browser: true,
+            },
+            plugins: ["@typescript-eslint", "@typescript-eslint/tslint"],
+            parser: "@typescript-eslint/parser",
+            parserOptions: {
+                sourceType: "module",
+                project: ["{src,test}/tsconfig.json"],
+            },
+            rules: {
+                // run the tslint rules which are not yet converted (run inside eslint)
+                "@typescript-eslint/tslint/config": [
+                    "error",
+                    {
+                        lintFile: path.resolve(__dirname, "./tslint.json"),
+                    },
+                ],
+            },
+        },
         {
             files: ["test/**/*"],
-            rules: {
-                // HACKHACK: this rule is buggy when it sees scoped module names
-                "@blueprintjs/classes-constants": "off",
+            env: {
+                browser: true,
+                mocha: true,
             },
         },
     ],

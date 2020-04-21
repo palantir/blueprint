@@ -14,7 +14,6 @@
  */
 
 const path = require("path");
-const webpack = require("webpack");
 
 // webpack plugins
 const { CheckerPlugin } = require("awesome-typescript-loader");
@@ -51,7 +50,7 @@ const plugins = [
 if (!IS_PRODUCTION) {
     plugins.push(
         // Trigger an OS notification when the build succeeds in dev mode.
-        new WebpackNotifierPlugin({ title: PACKAGE_NAME })
+        new WebpackNotifierPlugin({ title: PACKAGE_NAME }),
     );
 }
 
@@ -70,10 +69,7 @@ const scssLoaders = [
     {
         loader: require.resolve("postcss-loader"),
         options: {
-            plugins: [
-                require("autoprefixer"),
-                require("cssnano")({ preset: "default" }),
-            ],
+            plugins: [require("autoprefixer"), require("cssnano")({ preset: "default" })],
         },
     },
     require.resolve("sass-loader"),
@@ -129,6 +125,6 @@ module.exports = {
     plugins,
 
     resolve: {
-        extensions: [ ".js", ".jsx", ".ts", ".tsx", ".scss" ],
+        extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"],
     },
 };
