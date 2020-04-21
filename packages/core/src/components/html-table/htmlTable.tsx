@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// eslint @blueprintjs/html-components
-
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
