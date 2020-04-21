@@ -138,7 +138,10 @@ describe("<Popover>", () => {
                 it(interactionKindKey, () => {
                     expectPropValidationError(
                         Popover,
-                        { hasBackdrop: true, interactionKind: PopoverInteractionKind[interactionKindKey] },
+                        {
+                            hasBackdrop: true,
+                            interactionKind: PopoverInteractionKind[interactionKindKey],
+                        },
                         Errors.POPOVER_HAS_BACKDROP_INTERACTION,
                     );
                 });
@@ -216,7 +219,11 @@ describe("<Popover>", () => {
     });
 
     it("wrapperTagName & targetTagName render the right elements", () => {
-        wrapper = renderPopover({ isOpen: true, targetTagName: "address", wrapperTagName: "article" });
+        wrapper = renderPopover({
+            isOpen: true,
+            targetTagName: "address",
+            wrapperTagName: "article",
+        });
         assert.isTrue(wrapper.find("address").hasClass(Classes.POPOVER_TARGET));
         assert.isTrue(wrapper.find("article").hasClass(Classes.POPOVER_WRAPPER));
     });
@@ -493,7 +500,10 @@ describe("<Popover>", () => {
         });
 
         it("does not apply active class to target when open", () => {
-            wrapper = renderPopover({ interactionKind: PopoverInteractionKind.CLICK, isOpen: true });
+            wrapper = renderPopover({
+                interactionKind: PopoverInteractionKind.CLICK,
+                isOpen: true,
+            });
             wrapper.assertFindClass(Classes.ACTIVE, false);
         });
     });
@@ -519,7 +529,10 @@ describe("<Popover>", () => {
         });
 
         it("HOVER_TARGET_ONLY works properly", done => {
-            renderPopover({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY, usePortal: true })
+            renderPopover({
+                interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
+                usePortal: true,
+            })
                 .simulateTarget("mouseenter")
                 .assertIsOpen()
                 .simulateTarget("mouseleave")
@@ -540,7 +553,10 @@ describe("<Popover>", () => {
         });
 
         it("inline HOVER works properly", done => {
-            wrapper = renderPopover({ interactionKind: PopoverInteractionKind.HOVER, usePortal: false });
+            wrapper = renderPopover({
+                interactionKind: PopoverInteractionKind.HOVER,
+                usePortal: false,
+            });
 
             wrapper.simulateTarget("mouseenter").assertIsOpen();
 

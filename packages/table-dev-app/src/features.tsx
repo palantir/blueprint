@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable:max-classes-per-file
+// tslint:disable:max-classes-per-file object-literal-sort-keys
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -49,7 +49,12 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
         return Utils.toBase26Alpha(col) + (row + 1);
     };
 
-    const tablePropsWithDefaults = { numRows, getCellClipboardData, enableFocusedCell: true, ...tableProps };
+    const tablePropsWithDefaults = {
+        numRows,
+        getCellClipboardData,
+        enableFocusedCell: true,
+        ...tableProps,
+    };
 
     // combine column overrides
     const columnPropsWithDefaults = {

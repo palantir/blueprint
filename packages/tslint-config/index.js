@@ -17,15 +17,14 @@ module.exports = {
     extends: [
         "tslint:latest",
         "tslint-react",
+        // disable tslint rules which would conflict with eslint-plugin-prettier
         "tslint-config-prettier",
-        "tslint-plugin-prettier",
-        "./blueprint-rules",
     ],
 
     defaultSeverity: "error",
 
     rules: {
-        "ban": {
+        ban: {
             options: [
                 ["_", "extend", "use object spread: { ...a, ...b }"],
                 ["_", "isNull", "use plain JS: == null"],
@@ -45,10 +44,10 @@ module.exports = {
         },
         "no-default-export": true,
         "no-implicit-dependencies": {
-            options: ["dev"]
+            options: ["dev"],
         },
         "no-invalid-this": {
-            options: ["check-function-in-method"]
+            options: ["check-function-in-method"],
         },
         "no-submodule-imports": {
             options: [
@@ -58,31 +57,19 @@ module.exports = {
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",
                 "tsutils",
-                "@typescript-eslint/experimental-utils"
-            ]
+                "@typescript-eslint/experimental-utils",
+            ],
         },
         "no-unnecessary-callback-wrapper": true,
         "no-unnecessary-initializer": true,
         "prefer-conditional-expression": false,
-        "prettier": {
-            options: {
-                "printWidth": 120,
-                "tabWidth": 4,
-                "trailingComma": "all"
-            }
-        },
         "variable-name": {
-            options: [
-                "allow-leading-underscore",
-                "allow-pascal-case",
-                "ban-keywords",
-                "check-format",
-            ]
-        }
+            options: ["allow-leading-underscore", "allow-pascal-case", "ban-keywords", "check-format"],
+        },
     },
     jsRules: {
         "no-console": false,
         "object-literal-sort-keys": false,
         "trailing-comma": false,
-    }
+    },
 };

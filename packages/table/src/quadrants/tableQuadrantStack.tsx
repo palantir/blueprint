@@ -350,7 +350,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     public componentDidUpdate(prevProps: ITableQuadrantStackProps) {
         // sync'ing quadrant views triggers expensive reflows, so we only call
         // it when layout-affecting props change.
-        if (!CoreUtils.shallowCompareKeys(this.props, prevProps, { include: SYNC_TRIGGER_PROP_KEYS })) {
+        if (
+            !CoreUtils.shallowCompareKeys(this.props, prevProps, {
+                include: SYNC_TRIGGER_PROP_KEYS,
+            })
+        ) {
             this.emitRefs();
             this.syncQuadrantViews();
         }

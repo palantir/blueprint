@@ -387,7 +387,11 @@ describe("<DateRangePicker>", () => {
         it("only shows one calendar when minDate and maxDate are in the same month", () => {
             const minDate = new Date(2015, Months.DECEMBER, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
-            const { wrapper, right } = render({ contiguousCalendarMonths: false, maxDate, minDate });
+            const { wrapper, right } = render({
+                contiguousCalendarMonths: false,
+                maxDate,
+                minDate,
+            });
             assert.isFalse(right.wrapper.exists());
             // nav buttons are disabled
             assert.isTrue(wrapper.find(Button).every({ disabled: true }));
@@ -401,27 +405,41 @@ describe("<DateRangePicker>", () => {
         it("left calendar is bound between minDate and (maxDate - 1 month)", () => {
             const minDate = new Date(2015, Months.JANUARY, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
-            const { monthSelect } = render({ contiguousCalendarMonths: false, maxDate, minDate }).left;
+            const { monthSelect } = render({
+                contiguousCalendarMonths: false,
+                maxDate,
+                minDate,
+            }).left;
             assertFirstLastMonths(monthSelect, Months.JANUARY, Months.NOVEMBER);
         });
 
         it("right calendar is bound between (minDate + 1 month) and maxDate", () => {
             const minDate = new Date(2015, Months.JANUARY, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
-            const { monthSelect } = render({ contiguousCalendarMonths: false, maxDate, minDate }).right;
+            const { monthSelect } = render({
+                contiguousCalendarMonths: false,
+                maxDate,
+                minDate,
+            }).right;
             assertFirstLastMonths(monthSelect, Months.FEBRUARY, Months.DECEMBER);
         });
 
         it("right calendar shows the month containing the selected end date", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.JULY, 5);
-            render({ contiguousCalendarMonths: false, value: [startDate, endDate] }).right.assertMonthYear(Months.JULY);
+            render({
+                contiguousCalendarMonths: false,
+                value: [startDate, endDate],
+            }).right.assertMonthYear(Months.JULY);
         });
 
         it("right calendar shows the month immediately after the left view if startDate === endDate month", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.MAY, 15);
-            render({ contiguousCalendarMonths: false, value: [startDate, endDate] }).right.assertMonthYear(Months.JUNE);
+            render({
+                contiguousCalendarMonths: false,
+                value: [startDate, endDate],
+            }).right.assertMonthYear(Months.JUNE);
         });
     });
 
@@ -502,7 +520,10 @@ describe("<DateRangePicker>", () => {
     describe("left/right calendar when not contiguous", () => {
         it("left calendar can be altered independently of right calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
-            const { left, clickNavButton } = render({ initialMonth, contiguousCalendarMonths: false });
+            const { left, clickNavButton } = render({
+                contiguousCalendarMonths: false,
+                initialMonth,
+            });
             left.assertMonthYear(Months.MAY);
             clickNavButton("prev");
             left.assertMonthYear(Months.APRIL);
@@ -513,7 +534,10 @@ describe("<DateRangePicker>", () => {
         it("right calendar can be altered independently of left calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            const { right, clickNavButton } = render({ initialMonth, contiguousCalendarMonths: false });
+            const { right, clickNavButton } = render({
+                contiguousCalendarMonths: false,
+                initialMonth,
+            });
             right.assertMonthYear(Months.JUNE);
             clickNavButton("prev", 1);
             right.assertMonthYear(Months.MAY);
@@ -566,7 +590,10 @@ describe("<DateRangePicker>", () => {
         it("changing left calendar with navButton to equal right calendar, shifts the right", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            const { left, right, clickNavButton } = render({ initialMonth, contiguousCalendarMonths: false });
+            const { left, right, clickNavButton } = render({
+                contiguousCalendarMonths: false,
+                initialMonth,
+            });
             clickNavButton("next");
             left.assertMonthYear(Months.JUNE);
             right.assertMonthYear(Months.JULY);
@@ -575,7 +602,10 @@ describe("<DateRangePicker>", () => {
         it("changing right calendar with navButton to equal left calendar, shifts the left", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
-            const { left, right, clickNavButton } = render({ initialMonth, contiguousCalendarMonths: false });
+            const { left, right, clickNavButton } = render({
+                contiguousCalendarMonths: false,
+                initialMonth,
+            });
             clickNavButton("prev", 1);
             left.assertMonthYear(Months.APRIL);
             right.assertMonthYear(Months.MAY);
@@ -869,7 +899,10 @@ describe("<DateRangePicker>", () => {
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
-            const { left } = render({ initialMonth: new Date(2015, Months.MARCH, 2), value: [null, null] });
+            const { left } = render({
+                initialMonth: new Date(2015, Months.MARCH, 2),
+                value: [null, null],
+            });
             left.assertMonthYear(Months.MARCH, 2015);
             left.monthSelect.simulate("change", { target: { value: Months.JANUARY } });
             left.yearSelect.simulate("change", { target: { value: 2014 } });
@@ -1089,34 +1122,44 @@ describe("<DateRangePicker>", () => {
         });
 
         it("selects a range of dates when two days are clicked", () => {
-            const { assertSelectedDays, left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            const { assertSelectedDays, left } = render({
+                initialMonth: new Date(2015, Months.JANUARY, 1),
+            });
             assertSelectedDays();
             left.clickDay(10).clickDay(14);
             assertSelectedDays(10, 14);
         });
 
         it("selects a range of dates when days are clicked in reverse", () => {
-            const { assertSelectedDays, left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            const { assertSelectedDays, left } = render({
+                initialMonth: new Date(2015, Months.JANUARY, 1),
+            });
             assertSelectedDays();
             left.clickDay(14).clickDay(10);
             assertSelectedDays(10, 14);
         });
 
         it("deselects everything when only selected day is clicked", () => {
-            const { assertSelectedDays, left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            const { assertSelectedDays, left } = render({
+                initialMonth: new Date(2015, Months.JANUARY, 1),
+            });
             left.clickDay(10).clickDay(10);
             assertSelectedDays();
         });
 
         it("starts a new selection when a non-endpoint is clicked in the current selection", () => {
-            const { assertSelectedDays, left, right } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            const { assertSelectedDays, left, right } = render({
+                initialMonth: new Date(2015, Months.JANUARY, 1),
+            });
             left.clickDay(10).clickDay(14);
             right.clickDay(11);
             assertSelectedDays(11);
         });
 
         it("deselects endpoint when an endpoint of the current selection is clicked", () => {
-            const { assertSelectedDays, left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
+            const { assertSelectedDays, left } = render({
+                initialMonth: new Date(2015, Months.JANUARY, 1),
+            });
             left.clickDay(10)
                 .clickDay(14)
                 .clickDay(10);
@@ -1209,7 +1252,10 @@ describe("<DateRangePicker>", () => {
         });
 
         it("onChange fired when the time is changed", () => {
-            const { wrapper } = render({ timePickerProps: { showArrowButtons: true }, defaultValue: defaultRange });
+            const { wrapper } = render({
+                defaultValue: defaultRange,
+                timePickerProps: { showArrowButtons: true },
+            });
             assert.isTrue(onChangeSpy.notCalled);
             wrapper
                 .find(`.${DateClasses.TIMEPICKER_ARROW_BUTTON}.${DateClasses.TIMEPICKER_HOUR}`)
@@ -1265,7 +1311,11 @@ describe("<DateRangePicker>", () => {
                 },
             ];
 
-            render({ timePrecision: "minute", defaultValue: defaultRange, shortcuts }).clickShortcut();
+            render({
+                defaultValue: defaultRange,
+                shortcuts,
+                timePrecision: "minute",
+            }).clickShortcut();
             assert.equal(onChangeSpy.firstCall.args[0][0] as Date, startTime);
         });
 

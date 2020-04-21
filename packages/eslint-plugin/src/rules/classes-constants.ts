@@ -19,8 +19,8 @@ import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils"
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
-import { getProgram } from "./utils/getProgram";
 import { FixList } from "./utils/fixList";
+import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
 // currently support pt- and bp3- prefixes.

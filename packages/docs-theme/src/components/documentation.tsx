@@ -280,7 +280,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private handleHashChange = () => {
         if (location.hostname.indexOf("blueprint") !== -1) {
             // captures a pageview for new location hashes that are dynamically rendered without a full page request
-            (window as any).ga("send", "pageview", { page: location.pathname + location.search + location.hash });
+            (window as any).ga("send", "pageview", {
+                page: location.pathname + location.search + location.hash,
+            });
         }
         // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
         this.updateHash();

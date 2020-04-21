@@ -23,6 +23,7 @@ that class whenever needed.
 ```tsx
 <Button className="my-custom-class" text="customized button" />
 ```
+
 ```css.scss
 .my-custom-class {
     width: 4000px;
@@ -35,15 +36,16 @@ be particularly useful when writing UI tests.
 
 ```tsx
 // use Classes constants for forward-compatible custom elements.
-import { Classes } from "@blueprintjs/core"
-<a className={Classes.MENU_ITEM}>custom menu item</a>
+import { Classes } from "@blueprintjs/core";
+<a className={Classes.MENU_ITEM}>custom menu item</a>;
 ```
 
 ```css.scss
 // interpolate the $ns variable to generate forward-compatible class names.
 // this approach is *not encouraged* as it increases maintenance cost.
 @import "~@blueprintjs/core/lib/scss/variables";
-.#{$ns}-menu-item {}
+.#{$ns}-menu-item {
+}
 ```
 
 @## Modifiers
@@ -102,8 +104,8 @@ currently transitioning from [TSLint](https://palantir.github.io/tslint/) to ESL
 such, rules are being migrated from TSLint to ESLint. In the meantime, some TSLint rules are
 being run using ESLint.
 
-The [**@blueprintjs/eslint-plugin-blueprint**](https://www.npmjs.com/package/@blueprintjs/eslint-plugin-blueprint)
+The [**@blueprintjs/eslint-plugin**](https://www.npmjs.com/package/@blueprintjs/eslint-plugin)
 NPM package includes a custom `blueprint-html-components` rule that will warn on usages of
 JSX intrinsic elements (`<h1>`) that have a Blueprint alternative (`<H1>`). See
-the package's [README](https://www.npmjs.com/package/@blueprintjs/eslint-plugin-blueprint)
+the package's [README](https://www.npmjs.com/package/@blueprintjs/eslint-plugin)
 for usage instructions.

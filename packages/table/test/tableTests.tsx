@@ -447,7 +447,11 @@ describe("<Table>", function(this) {
             selectFullTable(table);
 
             expect(onSelection.args[0][0]).to.deep.equal([Regions.table()]);
-            expect(onFocusedCell.args[0][0]).to.deep.equal({ col: 0, row: 0, focusSelectionIndex: 0 });
+            expect(onFocusedCell.args[0][0]).to.deep.equal({
+                col: 0,
+                focusSelectionIndex: 0,
+                row: 0,
+            });
         });
 
         it("Does not move focused cell on shift+click", () => {
@@ -1133,9 +1137,21 @@ describe("<Table>", function(this) {
 
         describe("moves a focus cell with arrow keys", () => {
             runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("down", Keys.ARROW_DOWN, { row: 2, col: 1, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("left", Keys.ARROW_LEFT, { row: 1, col: 0, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, { row: 1, col: 2, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("down", Keys.ARROW_DOWN, {
+                col: 1,
+                focusSelectionIndex: 0,
+                row: 2,
+            });
+            runFocusCellMoveTest("left", Keys.ARROW_LEFT, {
+                col: 0,
+                focusSelectionIndex: 0,
+                row: 1,
+            });
+            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, {
+                col: 2,
+                focusSelectionIndex: 0,
+                row: 1,
+            });
 
             it("doesn't move a focus cell if modifier key is pressed", () => {
                 const { component } = mountTable();
@@ -1338,7 +1354,10 @@ describe("<Table>", function(this) {
                     expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(6);
 
                     const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
-                    const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: NUM_COLS - 1 };
+                    const columnIndices: IColumnIndices = {
+                        columnIndexEnd: NUM_COLS - 1,
+                        columnIndexStart: 0,
+                    };
                     expect(
                         onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices),
                         "onVisibleCellsChange row/col indices",
@@ -1373,7 +1392,9 @@ describe("<Table>", function(this) {
             const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
             const viewportWidth = COL_WIDTH;
             const viewportHeight = ROW_HEIGHT;
-            component.setState({ viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight) });
+            component.setState({
+                viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
+            });
 
             return { attachTo, component };
         }
@@ -1895,8 +1916,17 @@ describe("<Table>", function(this) {
             document.body.appendChild(containerElement);
 
             const onSelection = sinon.spy();
-            const focusedCell = { row: SELECTED_CELL_ROW, col: SELECTED_CELL_COL, focusSelectionIndex: 0 };
-            const tableProps = { enableFocusedCell: true, focusedCell, onSelection, selectedRegions };
+            const focusedCell = {
+                col: SELECTED_CELL_COL,
+                focusSelectionIndex: 0,
+                row: SELECTED_CELL_ROW,
+            };
+            const tableProps = {
+                enableFocusedCell: true,
+                focusedCell,
+                onSelection,
+                selectedRegions,
+            };
             const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
                 attachTo: containerElement,
             });
@@ -1969,7 +1999,10 @@ describe("<Table>", function(this) {
         // commensurately.
         locator.cellContainerElement = {
             ...baseStyles,
-            getBoundingClientRect: () => ({ left: rowHeaderWidth - scrollLeft, top: 0 - scrollTop }),
+            getBoundingClientRect: () => ({
+                left: rowHeaderWidth - scrollLeft,
+                top: 0 - scrollTop,
+            }),
         };
     }
 

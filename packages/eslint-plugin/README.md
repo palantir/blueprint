@@ -8,19 +8,20 @@ This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It
 
 **Key features:**
 
-- [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
+-   [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 
 ```
-yarn add @blueprintjs/eslint-plugin-blueprint
+yarn add @blueprintjs/eslint-plugin
 ```
 
 ## Usage
 
-Simply add this plugin in your `.eslintrc` file to use the add the plugin.  The plugin includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages, but does not turn them on by default.
+Simply add this plugin in your `.eslintrc` file to use the add the plugin. The plugin includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages, but does not turn them on by default.
 
 `.eslintrc`
+
 ```json
 plugins: [
     "@blueprintjs/blueprint"
@@ -29,18 +30,19 @@ plugins: [
 
 ### Rules-only usage
 
-To enable the Blueprint-specific rules, extend the `plugin:@blueprintjs/blueprint/recommended` config inside the package:
+To enable the Blueprint-specific rules, extend the `plugin:@blueprintjs/recommended` config inside the package:
 
 `tslint.json`
+
 ```diff
 extends: [
-+    "plugin:@blueprintjs/blueprint/recommended"
++    "plugin:@blueprintjs/recommended"
 ]
 ```
 
 ## Rules
 
-### `@blueprintjs/blueprint/classes-constants`
+### `@blueprintjs/classes-constants`
 
 Enforce usage of `Classes` constants over namespaced string literals.
 
@@ -48,9 +50,9 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 
 ```json
 {
-  "rules": {
-    "@blueprintjs/blueprint/classes-constants": ["error"],
-  }
+    "rules": {
+        "@blueprintjs/classes-constants": ["error"]
+    }
 }
 ```
 
@@ -59,25 +61,25 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 +const element = <div className={Classes.NAVBAR} />;
 ```
 
-### `@blueprintjs/blueprint/html-components`
+### `@blueprintjs/html-components`
 
 Enforce usage of Blueprint components over regular html components.
 
-- h1-6 -> H1-6
-- code -> Code
-- pre -> Pre
-- blockquote -> Blockquote
-- table -> HTMLTable
+-   h1-6 -> H1-6
+-   code -> Code
+-   pre -> Pre
+-   blockquote -> Blockquote
+-   table -> HTMLTable
 
 ```js
 {
   "rules": {
-    "@blueprintjs/blueprint/html-components": ["error"],
+    "@blueprintjs/html-components": ["error"],
   }
 }
 ```
 
-### `@blueprintjs/blueprint/icon-components`
+### `@blueprintjs/icon-components`
 
 Enforce usage of JSX `Icon` components over `IconName` string literals (or vice-versa) in `icon` JSX props. Note that this rule only supports hardcoded values in the `icon` prop; it does not handle expressions or conditionals.
 
@@ -91,24 +93,25 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 {
   "rules": {
     // default uses "component"
-    "@blueprintjs/blueprint/icon-components": ["error"],
+    "@blueprintjs/icon-components": ["error"],
     // expanded syntax
-    "@blueprintjs/blueprint/icon-components": ["error", "component" | "literal"] // choose one
+    "@blueprintjs/icon-components": ["error", "component" | "literal"] // choose one
   }
 }
 ```
 
 `"component"`
+
 ```diff
 -<Button icon="tick" />
 +<Button icon={<TickIcon />} />
 ```
 
 `"literal"`
+
 ```diff
 -<Button icon={<GraphIcon />} />
 +<Button icon="graph" />
 ```
-
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

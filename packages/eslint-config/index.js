@@ -14,40 +14,35 @@
  */
 
 const path = require("path");
+const tsConfig = require("./ts");
+
+// in CI, we don't wan to run eslint-plugin-prettier because it has a ~50% performance penalty.
+// instead, we run yarn format-check at the root to ensure prettier formatting
+const isCI = process.env.NODE_ENV === "test";
+const prettierConfig = require("../../.prettierrc.json");
+
+const plugins = [...tsConfig.plugins, "@blueprintjs"];
+const xtends = ["plugin:@blueprintjs/recommended"];
+const rules = {...tsConfig.rules};
+
+if (!isCI) {
+    plugins.push("prettier");
+    xtends.push("plugin:prettier/recommended");
+    rules["prettier/prettier"] = ["error", prettierConfig];
+}
 
 module.exports = {
-    env: {
-        browser: true,
-    },
-    plugins: [
-        "@typescript-eslint",
-        "@typescript-eslint/tslint",
-        "@blueprintjs/blueprint",
-    ],
-    extends: [
-        "plugin:@blueprintjs/blueprint/recommended",
-    ],
-    parser: "@typescript-eslint/parser",
-    parserOptions: {
-        sourceType: "module",
-        createDefaultProgram: true,
-        ecmaFeatures: {
-            jsx: true,
-        },
-        project: "**/tsconfig.json",
-    },
-    rules: {
-        // run the tslint rules which are not yet converted (run inside eslint)
-        "@typescript-eslint/tslint/config": ["error", {
-            "lintFile": path.resolve(__dirname, "./tslint.json"),
-        }],
-    },
+    ...tsConfig,
+    plugins,
+    extends: xtends,
+    rules,
     overrides: [
+        ...tsConfig.overrides,
         {
             files: ["test/**/*"],
-            env: {
-                browser: true,
-                mocha: true,
+            rules: {
+                // HACKHACK: this rule is buggy when it sees scoped module names
+                "@blueprintjs/classes-constants": "off",
             },
         },
     ],

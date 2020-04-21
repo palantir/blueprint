@@ -164,7 +164,9 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
             icon: "cloud-upload",
             message: (
                 <ProgressBar
-                    className={classNames("docs-toast-progress", { [Classes.PROGRESS_NO_STRIPES]: amount >= 100 })}
+                    className={classNames("docs-toast-progress", {
+                        [Classes.PROGRESS_NO_STRIPES]: amount >= 100,
+                    })}
                     intent={amount < 100 ? Intent.PRIMARY : Intent.SUCCESS}
                     value={amount / 100}
                 />

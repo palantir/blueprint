@@ -8,11 +8,11 @@
   "bin": {
     "assert-package-layout": "./assert-package-layout.js",
     "css-dist": "./css-dist.sh",
+    "es-lint": "./es-lint.js",
     "generate-css-variables": "./generate-css-variables.js",
     "generate-icons-source": "./generate-icons-source.js",
     "sass-compile": "./sass-compile.sh",
-    "sass-lint": "./sass-lint.js",
-    "es-lint": "./es-lint.js"
+    "sass-lint": "./sass-lint.js"
   },
   "dependencies": {
     "autoprefixer": "^9.6.1",

@@ -292,7 +292,11 @@ describe("<QueryList>", () => {
 
             const { filmQueryList, handlePaste } = mountForPasteTest({
                 // Must pass these two props to enable the "Create item" option.
-                createNewItemFromQuery: query => ({ title: query, rank: createdRank, year: createdYear }),
+                createNewItemFromQuery: query => ({
+                    rank: createdRank,
+                    title: query,
+                    year: createdYear,
+                }),
                 createNewItemRenderer: () => <div>Create item</div>,
             });
 

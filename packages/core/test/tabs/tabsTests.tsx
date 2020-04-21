@@ -106,8 +106,10 @@ describe("<Tabs>", () => {
         const tabClassName = "tabClassName";
         const wrapper = mount(
             <Tabs id={ID}>
-                <Tab id="first" title="First" className={tabClassName} panel={<Panel title="first" />} />,
-                <Tab id="second" title="Second" className={tabClassName} panel={<Panel title="second" />} />,
+                <Tab id="first" title="First" className={tabClassName} panel={<Panel title="first" />} />
+                ,
+                <Tab id="second" title="Second" className={tabClassName} panel={<Panel title="second" />} />
+                ,
                 <Tab id="third" title="Third" className={tabClassName} panel={<Panel title="third" />} />,
             </Tabs>,
         );
@@ -119,7 +121,8 @@ describe("<Tabs>", () => {
         const wrapper = mount(
             <Tabs id={ID}>
                 <Tab id="first" title="First" panel={<Panel title="first" />} />,
-                <Tab id="second" title="Second" panelClassName={panelClassName} panel={<Panel title="second" />} />,
+                <Tab id="second" title="Second" panelClassName={panelClassName} panel={<Panel title="second" />} />
+                ,
                 <Tab id="third" title="Third" panel={<Panel title="third" />} />,
             </Tabs>,
         );

@@ -69,7 +69,11 @@ describe("Formats", () => {
 
             // fix the container's width and height to ensure this test passes
             // regardless of the page's dimensions.
-            const style: React.CSSProperties = { height: "300px", width: "300px", position: "relative" };
+            const style: React.CSSProperties = {
+                height: "300px",
+                position: "relative",
+                width: "300px",
+            };
 
             const comp = harness.mount(
                 <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
@@ -100,7 +104,11 @@ describe("Formats", () => {
 
             // fix the container's width and height to ensure this test passes
             // regardless of the page's dimensions.
-            const style: React.CSSProperties = { height: "300px", width: "300px", position: "relative" };
+            const style: React.CSSProperties = {
+                height: "300px",
+                position: "relative",
+                width: "300px",
+            };
 
             const comp = harness.mount(
                 <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>

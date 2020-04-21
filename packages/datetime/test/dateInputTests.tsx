@@ -243,7 +243,14 @@ describe("<DateInput>", () => {
             <DateInput
                 {...DATE_FORMAT}
                 disabled={false}
-                inputProps={{ disabled: true, inputRef, leftIcon: "star", onFocus, required: true, value: "fail" }}
+                inputProps={{
+                    disabled: true,
+                    inputRef,
+                    leftIcon: "star",
+                    onFocus,
+                    required: true,
+                    value: "fail",
+                }}
             />,
         );
         wrapper.find("input").simulate("focus");

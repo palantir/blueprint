@@ -553,7 +553,9 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         const valueAsString = value == null ? "" : value;
 
         const isEvenRow = rowIndex % 2 === 0;
-        const classes = classNames({ "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow });
+        const classes = classNames({
+            "tbl-zebra-stripe": this.state.showZebraStriping && isEvenRow,
+        });
 
         if (this.state.enableCellEditing) {
             return (
@@ -721,7 +723,10 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
 
                 <H4>Settings</H4>
-                {this.renderButton("Reset all", { icon: "undo", onClick: this.handleDefaultsButtonClick })}
+                {this.renderButton("Reset all", {
+                    icon: "undo",
+                    onClick: this.handleDefaultsButtonClick,
+                })}
             </div>
         );
     }

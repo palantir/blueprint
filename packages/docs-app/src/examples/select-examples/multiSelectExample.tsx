@@ -110,7 +110,11 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
                     onItemsPaste={this.handleFilmsPaste}
                     popoverProps={{ minimal: popoverMinimal }}
                     tagRenderer={this.renderTag}
-                    tagInputProps={{ tagProps: getTagProps, onRemove: this.handleTagRemove, rightElement: clearButton }}
+                    tagInputProps={{
+                        onRemove: this.handleTagRemove,
+                        rightElement: clearButton,
+                        tagProps: getTagProps,
+                    }}
                     selectedItems={this.state.films}
                 />
             </Example>

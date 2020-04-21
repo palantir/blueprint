@@ -17,6 +17,8 @@
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import { iconComponentsRule, OPTION_COMPONENT, OPTION_LITERAL } from "../icon-components";
 
+// tslint:disable object-literal-sort-keys
+
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
     parserOptions: {
@@ -30,18 +32,39 @@ ruleTester.run("icon-components", iconComponentsRule, {
     invalid: [
         {
             code: `<Button icon="tick" />`,
-            errors: [{ messageId: OPTION_COMPONENT, column: 9, line: 1, data: { [OPTION_COMPONENT]: "<TickIcon />" } }],
+            errors: [
+                {
+                    messageId: OPTION_COMPONENT,
+                    column: 9,
+                    line: 1,
+                    data: { [OPTION_COMPONENT]: "<TickIcon />" },
+                },
+            ],
             output: `<Button icon={<TickIcon />} />`,
         },
         {
             code: `<Button icon="tick" />`,
-            errors: [{ messageId: OPTION_COMPONENT, column: 9, line: 1, data: { [OPTION_COMPONENT]: "<TickIcon />" } }],
+            errors: [
+                {
+                    messageId: OPTION_COMPONENT,
+                    column: 9,
+                    line: 1,
+                    data: { [OPTION_COMPONENT]: "<TickIcon />" },
+                },
+            ],
             options: [OPTION_COMPONENT],
             output: `<Button icon={<TickIcon />} />`,
         },
         {
             code: `<Button icon={<TickIcon />} />`,
-            errors: [{ messageId: OPTION_LITERAL, column: 9, line: 1, data: { [OPTION_LITERAL]: `"tick"` } }],
+            errors: [
+                {
+                    messageId: OPTION_LITERAL,
+                    column: 9,
+                    line: 1,
+                    data: { [OPTION_LITERAL]: `"tick"` },
+                },
+            ],
             options: [OPTION_LITERAL],
             output: `<Button icon="tick" />`,
         },

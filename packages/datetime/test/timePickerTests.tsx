@@ -188,7 +188,11 @@ describe("<TimePicker>", () => {
     });
 
     it("value doesn't change when disabled", () => {
-        renderTimePicker({ disabled: true, precision: TimePrecision.MILLISECOND, showArrowButtons: true });
+        renderTimePicker({
+            disabled: true,
+            precision: TimePrecision.MILLISECOND,
+            showArrowButtons: true,
+        });
 
         const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
         assert.isTrue(hourInput.disabled);

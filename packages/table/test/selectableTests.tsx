@@ -539,7 +539,9 @@ describe("DragSelectable", () => {
         it("triggered when a region receives mousedown with requireMetaKeyToDeselect=true", () => {
             locateDrag.returns(REGION); // different from the locateClick region
 
-            const component = mountDragSelectable({ selectedRegions: [REGION_2, REGION, REGION_3] });
+            const component = mountDragSelectable({
+                selectedRegions: [REGION_2, REGION, REGION_3],
+            });
             const item = getItem(component);
 
             item.mouse("mousedown");
@@ -551,7 +553,9 @@ describe("DragSelectable", () => {
         it("isn't triggered when one of multiple selected regions received mousedown", () => {
             locateDrag.returns(REGION); // different from the locateClick region
 
-            const component = mountDragSelectable({ selectedRegions: [REGION_2, REGION, REGION_3] });
+            const component = mountDragSelectable({
+                selectedRegions: [REGION_2, REGION, REGION_3],
+            });
             const item = getItem(component);
 
             item.mouse("mousedown");

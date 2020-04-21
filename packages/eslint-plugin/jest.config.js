@@ -14,6 +14,11 @@ const config = {
     collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     coverageReporters: ['text-summary', 'lcov'],
+    globals: {
+        "ts-jest": {
+            tsConfig: "tsconfig.test.json"
+        }
+    }
 };
 
 if (process.env.JUNIT_REPORT_PATH) {

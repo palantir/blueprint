@@ -74,7 +74,11 @@ function walk(ctx: Lint.WalkContext<void>): void {
     }
 
     // collect all potential new imports into one replacement (in first failure), after processing entire file.
-    const importsToAdd = addImportToFile(ctx.sourceFile, tagFailures.map(m => m.newTagName), "@blueprintjs/core");
+    const importsToAdd = addImportToFile(
+        ctx.sourceFile,
+        tagFailures.map(m => m.newTagName),
+        "@blueprintjs/core",
+    );
     tagFailures[0].replacements.push(importsToAdd);
 
     // add all failures at the end

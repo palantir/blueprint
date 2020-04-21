@@ -182,7 +182,10 @@ describe("TableQuadrant", () => {
 
             it("does not render row header if enableRowHeader=false", () => {
                 const rowHeaderCellRenderer = sinon.stub().returns(<div className={ROW_HEADER_CLASS} />);
-                const component = mountTableQuadrant({ enableRowHeader: false, rowHeaderCellRenderer });
+                const component = mountTableQuadrant({
+                    enableRowHeader: false,
+                    rowHeaderCellRenderer,
+                });
                 expect(rowHeaderCellRenderer.called).to.be.false;
                 expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER}`).children().length).to.equal(1);
             });
@@ -205,7 +208,10 @@ describe("TableQuadrant", () => {
 
             it("still renders column header if enableRowHeader=false", () => {
                 const columnHeaderCellRenderer = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
-                const component = mountTableQuadrant({ enableRowHeader: false, columnHeaderCellRenderer });
+                const component = mountTableQuadrant({
+                    columnHeaderCellRenderer,
+                    enableRowHeader: false,
+                });
                 expect(columnHeaderCellRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);
             });

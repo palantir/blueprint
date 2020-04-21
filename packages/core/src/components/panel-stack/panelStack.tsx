@@ -94,7 +94,9 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         const stackLength = this.props.stack != null ? this.props.stack.length : 0;
         const prevStackLength = prevProps.stack != null ? prevProps.stack.length : 0;
         if (stackLength !== prevStackLength && prevProps.stack != null) {
-            this.setState({ direction: prevProps.stack.length - this.props.stack.length < 0 ? "push" : "pop" });
+            this.setState({
+                direction: prevProps.stack.length - this.props.stack.length < 0 ? "push" : "pop",
+            });
         }
     }
 

@@ -69,7 +69,11 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         });
 
         it("renders noResults when filtering returns empty list", () => {
-            const wrapper = render({ ...testProps, noResults: <address />, query: "non-existent film name" });
+            const wrapper = render({
+                ...testProps,
+                noResults: <address />,
+                query: "non-existent film name",
+            });
             assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
         });
 
@@ -83,7 +87,12 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         });
 
         it("clicking item resets state when resetOnSelect=true", () => {
-            const wrapper = render({ ...testProps, query: "19", resetOnSelect: true, resetOnQuery: false });
+            const wrapper = render({
+                ...testProps,
+                query: "19",
+                resetOnQuery: false,
+                resetOnSelect: true,
+            });
             findItems(wrapper)
                 .at(3)
                 .simulate("click");

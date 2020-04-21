@@ -197,7 +197,9 @@ describe("<EditableText>", () => {
 
         it("the full input box is highlighted when selectAllOnFocus is true", () => {
             const attachTo = document.createElement("div");
-            mount(<EditableText isEditing={true} selectAllOnFocus={true} value="alphabet" />, { attachTo });
+            mount(<EditableText isEditing={true} selectAllOnFocus={true} value="alphabet" />, {
+                attachTo,
+            });
             const input = attachTo.querySelector("input") as HTMLInputElement;
             assert.strictEqual(input.selectionStart, 0);
             assert.strictEqual(input.selectionEnd, 8);

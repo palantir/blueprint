@@ -173,7 +173,9 @@ describe("Utils", () => {
         });
 
         it("can preventDefault", () => {
-            throttledCallback = Utils.throttleReactEventCallback(callback, { preventDefault: true });
+            throttledCallback = Utils.throttleReactEventCallback(callback, {
+                preventDefault: true,
+            });
             throttledCallback(fakeEvent as any);
             assert.isTrue(fakeEvent.preventDefault.calledOnce);
         });

@@ -195,7 +195,9 @@ describe("<DateRangeInput>", () => {
         });
 
         function keyDownOnInput(className: string, key: number, inputElementIndex: number = 0) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { which: key });
+            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), {
+                which: key,
+            });
         }
 
         function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
@@ -986,11 +988,31 @@ describe("<DateRangeInput>", () => {
             const HOVER_TEST_STR_4 = DateTestUtils.toDateString(HOVER_TEST_DATE_4);
             const HOVER_TEST_STR_5 = DateTestUtils.toDateString(HOVER_TEST_DATE_5);
 
-            const HOVER_TEST_DATE_CONFIG_1 = { day: HOVER_TEST_DAY_1, date: HOVER_TEST_DATE_1, str: HOVER_TEST_STR_1 };
-            const HOVER_TEST_DATE_CONFIG_2 = { day: HOVER_TEST_DAY_2, date: HOVER_TEST_DATE_2, str: HOVER_TEST_STR_2 };
-            const HOVER_TEST_DATE_CONFIG_3 = { day: HOVER_TEST_DAY_3, date: HOVER_TEST_DATE_3, str: HOVER_TEST_STR_3 };
-            const HOVER_TEST_DATE_CONFIG_4 = { day: HOVER_TEST_DAY_4, date: HOVER_TEST_DATE_4, str: HOVER_TEST_STR_4 };
-            const HOVER_TEST_DATE_CONFIG_5 = { day: HOVER_TEST_DAY_5, date: HOVER_TEST_DATE_5, str: HOVER_TEST_STR_5 };
+            const HOVER_TEST_DATE_CONFIG_1 = {
+                date: HOVER_TEST_DATE_1,
+                day: HOVER_TEST_DAY_1,
+                str: HOVER_TEST_STR_1,
+            };
+            const HOVER_TEST_DATE_CONFIG_2 = {
+                date: HOVER_TEST_DATE_2,
+                day: HOVER_TEST_DAY_2,
+                str: HOVER_TEST_STR_2,
+            };
+            const HOVER_TEST_DATE_CONFIG_3 = {
+                date: HOVER_TEST_DATE_3,
+                day: HOVER_TEST_DAY_3,
+                str: HOVER_TEST_STR_3,
+            };
+            const HOVER_TEST_DATE_CONFIG_4 = {
+                date: HOVER_TEST_DATE_4,
+                day: HOVER_TEST_DAY_4,
+                str: HOVER_TEST_STR_4,
+            };
+            const HOVER_TEST_DATE_CONFIG_5 = {
+                date: HOVER_TEST_DATE_5,
+                day: HOVER_TEST_DAY_5,
+                str: HOVER_TEST_STR_5,
+            };
 
             interface IHoverTextDateConfig {
                 day: number;

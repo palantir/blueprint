@@ -193,7 +193,10 @@ describe("<PanelStack>", () => {
 
     it("can open a panel in controlled mode", () => {
         let stack = [initialPanel];
-        panelStackWrapper = renderPanelStack({ onOpen: panel => (stack = [...stack, panel]), stack });
+        panelStackWrapper = renderPanelStack({
+            onOpen: panel => (stack = [...stack, panel]),
+            stack,
+        });
         assert.exists(panelStackWrapper);
 
         const newPanelButton = panelStackWrapper.find("#new-panel-button");
@@ -266,7 +269,9 @@ describe("<PanelStack>", () => {
     }
 
     function renderPanelStack(props: IPanelStackProps): IPanelStackWrapper {
-        panelStackWrapper = mount(<PanelStack {...props} />, { attachTo: testsContainerElement }) as IPanelStackWrapper;
+        panelStackWrapper = mount(<PanelStack {...props} />, {
+            attachTo: testsContainerElement,
+        }) as IPanelStackWrapper;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }

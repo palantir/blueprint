@@ -15,8 +15,10 @@
  */
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
-import * as dedent from "dedent";
+import dedent from "dedent";
 import { htmlComponentsRule } from "../html-components";
+
+// tslint:disable object-literal-sort-keys
 
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
@@ -32,7 +34,14 @@ ruleTester.run("html-components", htmlComponentsRule, {
     invalid: [
         {
             code: "<h1 />",
-            errors: [{ messageId: "useBlueprintComponents", column: 1, line: 1, data: { componentName: "H1" } }],
+            errors: [
+                {
+                    messageId: "useBlueprintComponents",
+                    column: 1,
+                    line: 1,
+                    data: { componentName: "H1" },
+                },
+            ],
             output: dedent`
                 import { H1 } from "@blueprintjs/core";
 
@@ -41,7 +50,14 @@ ruleTester.run("html-components", htmlComponentsRule, {
         },
         {
             code: "<h1>Text</h1>",
-            errors: [{ messageId: "useBlueprintComponents", column: 1, line: 1, data: { componentName: "H1" } }],
+            errors: [
+                {
+                    messageId: "useBlueprintComponents",
+                    column: 1,
+                    line: 1,
+                    data: { componentName: "H1" },
+                },
+            ],
             output: dedent`
                 import { H1 } from "@blueprintjs/core";
 
@@ -50,7 +66,14 @@ ruleTester.run("html-components", htmlComponentsRule, {
         },
         {
             code: "<pre>block</pre>",
-            errors: [{ messageId: "useBlueprintComponents", column: 1, line: 1, data: { componentName: "Pre" } }],
+            errors: [
+                {
+                    messageId: "useBlueprintComponents",
+                    column: 1,
+                    line: 1,
+                    data: { componentName: "Pre" },
+                },
+            ],
             output: dedent`
                 import { Pre } from "@blueprintjs/core";
 
@@ -59,7 +82,14 @@ ruleTester.run("html-components", htmlComponentsRule, {
         },
         {
             code: "<table>table element</table>",
-            errors: [{ messageId: "useBlueprintComponents", column: 1, line: 1, data: { componentName: "HTMLTable" } }],
+            errors: [
+                {
+                    messageId: "useBlueprintComponents",
+                    column: 1,
+                    line: 1,
+                    data: { componentName: "HTMLTable" },
+                },
+            ],
             output: dedent`
                 import { HTMLTable } from "@blueprintjs/core";
 

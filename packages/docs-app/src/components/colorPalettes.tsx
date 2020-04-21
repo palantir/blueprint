@@ -67,7 +67,11 @@ const ColorSwatch: React.SFC<{ colorName: string; hexCode: string }> = ({ colorN
 
 // vertical list of swatches for each color
 const ColorPalette: React.SFC<{ colors: string[] }> = ({ colors }) => (
-    <div className={classNames("docs-color-palette", { "docs-color-palette-single": colors.length === 1 })}>
+    <div
+        className={classNames("docs-color-palette", {
+            "docs-color-palette-single": colors.length === 1,
+        })}
+    >
         {colors.map((name, i) => (
             <ColorSwatch colorName={name} hexCode={getHexCode(name)} key={i} />
         ))}

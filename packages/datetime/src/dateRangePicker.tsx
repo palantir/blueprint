@@ -316,7 +316,14 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         return [
             <Shortcuts
                 key="shortcuts"
-                {...{ allowSingleDayRange, maxDate, minDate, shortcuts, timePrecision, selectedShortcutIndex }}
+                {...{
+                    allowSingleDayRange,
+                    maxDate,
+                    minDate,
+                    selectedShortcutIndex,
+                    shortcuts,
+                    timePrecision,
+                }}
                 onShortcutClick={this.handleShortcutClick}
             />,
             <Divider key="div" />,
