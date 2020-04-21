@@ -20,7 +20,7 @@ const KARMA_SERVER_PORT = 9876;
  */
 
 module.exports = function createKarmaConfig(
-    /** @type {KarmaOptions} */ { coverage = true, dirname, coverageExcludes, coverageOverrides }
+    /** @type {KarmaOptions} */ { coverage = true, dirname, coverageExcludes, coverageOverrides },
 ) {
     const packageManifest = require(`${dirname}/package.json`);
 
@@ -74,9 +74,9 @@ module.exports = function createKarmaConfig(
         },
         // define where to save final remapped coverage reports
         remapCoverageReporter: {
-            'text-summary': null,
-            html: './coverage/html',
-            cobertura: './coverage/cobertura.xml'
+            "text-summary": null,
+            html: "./coverage/html",
+            cobertura: "./coverage/cobertura.xml",
         },
         reporters: ["mocha"],
         singleRun: true,
@@ -92,12 +92,7 @@ module.exports = function createKarmaConfig(
 
     // enable JUnit reporter only if env variable is set (such as on Circle)
     if (process.env.JUNIT_REPORT_PATH) {
-        const outputDir = path.join(
-            __dirname,
-            "../..",
-            process.env.JUNIT_REPORT_PATH,
-            path.basename(dirname),
-        );
+        const outputDir = path.join(__dirname, "../..", process.env.JUNIT_REPORT_PATH, path.basename(dirname));
         console.info(`Karma report will appear in ${outputDir}`);
         // disable mocha reporter on circle for HUGE performance increase
         config.reporters = ["dots", "junit"];
@@ -115,4 +110,3 @@ module.exports = function createKarmaConfig(
 
     return config;
 };
-

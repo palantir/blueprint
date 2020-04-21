@@ -15,23 +15,31 @@
 
 const path = require("path");
 
-/* eslint-disable @blueprintjs/classes-constants */
-
 /**
  * Enable @blueprintjs/eslint-plugin.
  * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
  */
 module.exports = {
-    env: {
-        browser: true,
-    },
     plugins: ["@blueprintjs"],
     extends: ["plugin:@blueprintjs/recommended"],
-    // always use this parser, even for JS files, so we don't have to deal with babel for parsing our node scripts
-    parser: "@typescript-eslint/parser",
+    parserOptions: { ecmaVersion: 2017 },
+    rules: {
+        // HACKHACK: this rule impl has too many false positives
+        "@blueprintjs/classes-constants": "off",
+    },
     overrides: [
         {
+            files: ["*.js"],
+            env: {
+                node: true,
+                es6: true,
+            },
+        },
+        {
             files: ["**/*.{ts,tsx}"],
+            env: {
+                browser: true,
+            },
             plugins: ["@typescript-eslint", "@typescript-eslint/tslint"],
             parser: "@typescript-eslint/parser",
             parserOptions: {
