@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "compile": "tsc -p src/",
-    "lint": "es-lint",
+    "lint": "run-p lint:es",
+    "lint:es": "es-lint",
     "lint-fix": "es-lint --fix",
     "test": "jest",
     "test:jest-ci": "jest --ci --runInBand"
