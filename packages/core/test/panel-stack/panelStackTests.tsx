@@ -162,17 +162,11 @@ describe("<PanelStack>", () => {
         const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.equal(backButtonWithoutTitle.text(), "chevron-left");
 
-        const newPanelButtonOnNotEmpty = panelStackWrapper
-            .find("#new-panel-button")
-            .hostNodes()
-            .at(1);
+        const newPanelButtonOnNotEmpty = panelStackWrapper.find("#new-panel-button").hostNodes().at(1);
         assert.exists(newPanelButtonOnNotEmpty);
         newPanelButtonOnNotEmpty.simulate("click");
 
-        const backButtonWithTitle = panelStackWrapper
-            .findClass(Classes.PANEL_STACK_HEADER_BACK)
-            .hostNodes()
-            .at(1);
+        const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK).hostNodes().at(1);
         assert.equal(backButtonWithTitle.text(), "chevron-left");
     });
 

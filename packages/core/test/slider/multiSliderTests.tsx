@@ -52,10 +52,7 @@ describe("<MultiSlider>", () => {
     describe("handles", () => {
         it("handle values are automatically sorted", () => {
             const slider = renderSlider({ values: [5, 10, 0], onRelease });
-            slider
-                .find(Handle)
-                .first()
-                .simulate("mousedown", { clientX: 0 });
+            slider.find(Handle).first().simulate("mousedown", { clientX: 0 });
             mouseUpHorizontal(0);
             assert.equal(onRelease.callCount, 1);
             assert.deepEqual(onRelease.firstCall.args[0], [0, 5, 10]);

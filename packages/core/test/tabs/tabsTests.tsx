@@ -189,10 +189,7 @@ describe("<Tabs>", () => {
         );
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         // last Tab is inside nested
-        wrapper
-            .find(TAB)
-            .last()
-            .simulate("click");
+        wrapper.find(TAB).last().simulate("click");
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         assert.isTrue(changeSpy.notCalled, "onChange invoked");
     });

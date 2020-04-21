@@ -136,10 +136,7 @@ describe("<Dialog>", () => {
                     dialog body
                 </Dialog>,
             );
-            dialog
-                .find(`.${Classes.DIALOG_HEADER}`)
-                .find(Button)
-                .simulate("click");
+            dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button).simulate("click");
             assert.isTrue(onClose.calledOnce, "onClose not called");
         });
     });

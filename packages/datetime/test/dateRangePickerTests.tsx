@@ -72,20 +72,8 @@ describe("<DateRangePicker>", () => {
         it("hides unnecessary nav buttons in contiguous months mode", () => {
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
             const wrapper = mount(<DateRangePicker defaultValue={defaultValue} />);
-            assert.isTrue(
-                wrapper
-                    .find(DatePickerNavbar)
-                    .at(0)
-                    .find(".DayPicker-NavButton--next")
-                    .isEmpty(),
-            );
-            assert.isTrue(
-                wrapper
-                    .find(DatePickerNavbar)
-                    .at(1)
-                    .find(".DayPicker-NavButton--prev")
-                    .isEmpty(),
-            );
+            assert.isTrue(wrapper.find(DatePickerNavbar).at(0).find(".DayPicker-NavButton--next").isEmpty());
+            assert.isTrue(wrapper.find(DatePickerNavbar).at(1).find(".DayPicker-NavButton--prev").isEmpty());
         });
 
         it("disables days according to custom modifiers in addition to default modifiers", () => {
@@ -771,19 +759,13 @@ describe("<DateRangePicker>", () => {
 
             it("should show a hovered range of [null, null] if day === end", () => {
                 const { left, assertHoveredDays } = render();
-                left.clickDay(14)
-                    .clickDay(18)
-                    .clickDay(14)
-                    .mouseEnterDay(18);
+                left.clickDay(14).clickDay(18).clickDay(14).mouseEnterDay(18);
                 assertHoveredDays(null, null);
             });
 
             it("should show a hovered range of [day, end] if day < end", () => {
                 const { left, assertHoveredDays } = render();
-                left.clickDay(14)
-                    .clickDay(18)
-                    .clickDay(14)
-                    .mouseEnterDay(14);
+                left.clickDay(14).clickDay(18).clickDay(14).mouseEnterDay(14);
                 assertHoveredDays(14, 18);
             });
         });
@@ -791,49 +773,37 @@ describe("<DateRangePicker>", () => {
         describe("when both start and end date are defined", () => {
             it("should show a hovered range of [null, end] if day === start", () => {
                 const { left, assertHoveredDays } = render();
-                left.clickDay(14)
-                    .clickDay(18)
-                    .mouseEnterDay(14);
+                left.clickDay(14).clickDay(18).mouseEnterDay(14);
                 assertHoveredDays(null, 18);
             });
 
             it("should show a hovered range of [start, null] if day === end", () => {
                 const { left, assertHoveredDays } = render();
-                left.clickDay(14)
-                    .clickDay(18)
-                    .mouseEnterDay(18);
+                left.clickDay(14).clickDay(18).mouseEnterDay(18);
                 assertHoveredDays(14, null);
             });
 
             it("should show a hovered range of [day, null] if start < day < end", () => {
                 const { left, assertHoveredDays } = render();
-                left.clickDay(14)
-                    .clickDay(18)
-                    .mouseEnterDay(16);
+                left.clickDay(14).clickDay(18).mouseEnterDay(16);
                 assertHoveredDays(16, null);
             });
 
             it("should show a hovered range of [day, null] if day < start", () => {
                 const { left, assertHoveredDays } = render();
-                left.clickDay(14)
-                    .clickDay(18)
-                    .mouseEnterDay(10);
+                left.clickDay(14).clickDay(18).mouseEnterDay(10);
                 assertHoveredDays(10, null);
             });
 
             it("should show a hovered range of [day, null] if day > end", () => {
                 const { left, assertHoveredDays } = render();
-                left.clickDay(14)
-                    .clickDay(18)
-                    .mouseEnterDay(22);
+                left.clickDay(14).clickDay(18).mouseEnterDay(22);
                 assertHoveredDays(22, null);
             });
 
             it("should show a hovered range of [null, null] if start === day === end", () => {
                 const { left, assertHoveredDays } = render({ allowSingleDayRange: true });
-                left.clickDay(14)
-                    .clickDay(14)
-                    .mouseEnterDay(14);
+                left.clickDay(14).clickDay(14).mouseEnterDay(14);
                 assertHoveredDays(null, null);
             });
         });
@@ -949,37 +919,16 @@ describe("<DateRangePicker>", () => {
         it("all shortcuts are displayed as inactive when none are selected", () => {
             const { wrapper } = render();
 
-            assert.isFalse(
-                wrapper
-                    .find(Shortcuts)
-                    .find(Menu)
-                    .find(MenuItem)
-                    .find(`.${Classes.ACTIVE}`)
-                    .exists(),
-            );
+            assert.isFalse(wrapper.find(Shortcuts).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`).exists());
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
             const selectedShortcut = 0;
             const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
 
-            assert.isTrue(
-                wrapper
-                    .find(Shortcuts)
-                    .find(Menu)
-                    .find(MenuItem)
-                    .find(`.${Classes.ACTIVE}`)
-                    .exists(),
-            );
+            assert.isTrue(wrapper.find(Shortcuts).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`).exists());
 
-            assert.lengthOf(
-                wrapper
-                    .find(Shortcuts)
-                    .find(Menu)
-                    .find(MenuItem)
-                    .find(`.${Classes.ACTIVE}`),
-                1,
-            );
+            assert.lengthOf(wrapper.find(Shortcuts).find(Menu).find(MenuItem).find(`.${Classes.ACTIVE}`), 1);
 
             assert.isTrue(wrapper.state("selectedShortcutIndex") === selectedShortcut);
         });
@@ -1107,9 +1056,7 @@ describe("<DateRangePicker>", () => {
         it("onHoverChange fired with `undefined` on mouseleave within a day", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
             assert.isTrue(onHoverChangeSpy.notCalled);
-            left.clickDay(1)
-                .findDay(5)
-                .simulate("mouseleave");
+            left.clickDay(1).findDay(5).simulate("mouseleave");
             assert.isTrue(onHoverChangeSpy.calledTwice);
             assert.isUndefined(onHoverChangeSpy.args[1][0]);
         });
@@ -1160,9 +1107,7 @@ describe("<DateRangePicker>", () => {
             const { assertSelectedDays, left } = render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
             });
-            left.clickDay(10)
-                .clickDay(14)
-                .clickDay(10);
+            left.clickDay(10).clickDay(14).clickDay(10);
             assertSelectedDays(14);
 
             left.clickDay(10).clickDay(14);
@@ -1382,10 +1327,7 @@ describe("<DateRangePicker>", () => {
                 return harness;
             },
             clickShortcut: (index = 0) => {
-                harness.shortcuts
-                    .find("a")
-                    .at(index)
-                    .simulate("click");
+                harness.shortcuts.find("a").at(index).simulate("click");
                 return harness;
             },
             getDays: (className: string) => {

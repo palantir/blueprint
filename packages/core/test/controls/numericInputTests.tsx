@@ -201,10 +201,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
-            const inputElement = component
-                .find("input")
-                .first()
-                .getDOMNode();
+            const inputElement = component.find("input").first().getDOMNode();
             expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
         });
 
@@ -629,10 +626,7 @@ describe("<NumericInput>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
 
-                const inputElement = component
-                    .find("input")
-                    .first()
-                    .getDOMNode();
+                const inputElement = component.find("input").first().getDOMNode();
                 expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
@@ -706,10 +700,7 @@ describe("<NumericInput>", () => {
                 const newValue = component.state().value;
                 expect(newValue).to.equal("0");
 
-                const inputElement = component
-                    .find("input")
-                    .first()
-                    .getDOMNode();
+                const inputElement = component.find("input").first().getDOMNode();
                 expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
@@ -740,10 +731,7 @@ describe("<NumericInput>", () => {
                     .simulate("mousedown");
                 expect(component.state().value).to.equal("2");
 
-                const inputElement = component
-                    .find("input")
-                    .first()
-                    .getDOMNode();
+                const inputElement = component.find("input").first().getDOMNode();
                 expect(onValueChangeSpy.calledOnceWithExactly(2, "2", inputElement)).to.be.true;
             });
         });
