@@ -79,7 +79,9 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
         it("clicking item invokes onItemSelect and changes active item", () => {
             const wrapper = render(testProps);
-            findItems(wrapper).at(4).simulate("click");
+            findItems(wrapper)
+                .at(4)
+                .simulate("click");
             assert.strictEqual(testProps.onItemSelect.args[0][0].rank, 6, "onItemSelect");
             assert.strictEqual(testProps.onActiveItemChange.args[0][0].rank, 6, "onActiveItemChange");
         });
@@ -91,7 +93,9 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
                 resetOnQuery: false,
                 resetOnSelect: true,
             });
-            findItems(wrapper).at(3).simulate("click");
+            findItems(wrapper)
+                .at(3)
+                .simulate("click");
             const ranks = testProps.onActiveItemChange.args.map(args => (args[0] as IFilm).rank);
             // clicking changes to 5, then resets to 1
             assert.deepEqual(ranks, [5, 1]);

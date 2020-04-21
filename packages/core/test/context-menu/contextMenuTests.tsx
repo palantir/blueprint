@@ -94,7 +94,10 @@ describe("ContextMenu", () => {
             rightClickMe.simulate("contextmenu");
             assertContextMenuWasRendered();
 
-            rightClickMe.find(RightClickMe).last().simulate("contextmenu");
+            rightClickMe
+                .find(RightClickMe)
+                .last()
+                .simulate("contextmenu");
             assertContextMenuWasRendered(childItems.length);
         });
 

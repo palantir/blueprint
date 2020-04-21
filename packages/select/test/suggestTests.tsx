@@ -337,7 +337,10 @@ function filterByYear(query: string, film: IFilm) {
 }
 
 function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
-    wrapper.find("a").at(index).simulate("click");
+    wrapper
+        .find("a")
+        .at(index)
+        .simulate("click");
 }
 
 function inputValueRenderer(item: IFilm) {

@@ -297,7 +297,10 @@ describe("<EditableText>", () => {
         }
 
         function simulateHelper(wrapper: ReactWrapper<any, {}>, value: string, e: IFakeKeyboardEvent) {
-            wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
+            wrapper
+                .find("textarea")
+                .simulate("change", { target: { value } })
+                .simulate("keydown", e);
         }
     });
 });

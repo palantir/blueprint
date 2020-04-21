@@ -2587,11 +2587,17 @@ describe("<DateRangeInput>", () => {
     });
 
     function getStartInput(root: WrappedComponentRoot): WrappedComponentInput {
-        return root.find(InputGroup).first().find("input");
+        return root
+            .find(InputGroup)
+            .first()
+            .find("input");
     }
 
     function getEndInput(root: WrappedComponentRoot): WrappedComponentInput {
-        return root.find(InputGroup).last().find("input");
+        return root
+            .find(InputGroup)
+            .last()
+            .find("input");
     }
 
     function getInputText(input: WrappedComponentInput) {

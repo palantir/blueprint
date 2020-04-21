@@ -130,9 +130,15 @@ describe("<DatePickerCaption>", () => {
         );
 
         return {
-            month: wrapper.find(HTMLSelect).filter({ className: Classes.DATEPICKER_MONTH_SELECT }).find("select"),
+            month: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_MONTH_SELECT })
+                .find("select"),
             root: wrapper,
-            year: wrapper.find(HTMLSelect).filter({ className: Classes.DATEPICKER_YEAR_SELECT }).find("select"),
+            year: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_YEAR_SELECT })
+                .find("select"),
         };
     }
 });

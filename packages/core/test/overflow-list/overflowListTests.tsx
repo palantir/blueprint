@@ -33,7 +33,7 @@ const ITEMS: ITestItem[] = IDS.map(id => ({ id }));
 const TestItem: React.SFC<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
 const TestOverflow: React.SFC<{ items: ITestItem[] }> = () => <div />;
 
-describe("<OverflowList>", function (this) {
+describe("<OverflowList>", function(this) {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
     this.retries(3);
 
@@ -58,7 +58,11 @@ describe("<OverflowList>", function (this) {
     });
 
     it("adds className to itself", () => {
-        assert.isTrue(overflowList(30, { className: "winner" }).find(".winner").exists());
+        assert.isTrue(
+            overflowList(30, { className: "winner" })
+                .find(".winner")
+                .exists(),
+        );
     });
 
     it("uses custom tagName", () => {

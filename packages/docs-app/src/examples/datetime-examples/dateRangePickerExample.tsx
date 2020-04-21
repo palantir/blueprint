@@ -50,11 +50,15 @@ const MIN_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
         label: "4 months ago",
-        value: moment().add(-4, "months").toDate(),
+        value: moment()
+            .add(-4, "months")
+            .toDate(),
     },
     {
         label: "1 year ago",
-        value: moment().add(-1, "years").toDate(),
+        value: moment()
+            .add(-1, "years")
+            .toDate(),
     },
 ];
 
@@ -62,7 +66,9 @@ const MAX_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
         label: "1 month ago",
-        value: moment().add(-1, "months").toDate(),
+        value: moment()
+            .add(-1, "months")
+            .toDate(),
     },
 ];
 

@@ -65,7 +65,9 @@ describe("<DateTimePicker>", () => {
             />,
         );
         assert.isTrue(onChangeSpy.notCalled);
-        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`)
+            .first()
+            .simulate("click");
         assert.isTrue(onChangeSpy.calledOnce);
         assert.deepEqual(onChangeSpy.firstCall.args[0], new Date(2012, 2, 5, 7, 5, 40));
     });
@@ -87,7 +89,9 @@ describe("<DateTimePicker>", () => {
             <DateTimePicker defaultValue={defaultValue} timePickerProps={{ showArrowButtons: true }} />,
         );
         getDay(5).simulate("click");
-        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`)
+            .first()
+            .simulate("click");
         getDay(15).simulate("click");
         assert.equal(root.state("timeValue").getHours(), defaultValue.getHours() + 1);
         assert.equal(root.state("timeValue").getMinutes(), defaultValue.getMinutes());

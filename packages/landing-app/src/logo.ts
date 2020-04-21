@@ -726,7 +726,10 @@ export class CanvasBuffer {
         if (bounds == null) {
             bounds = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
         }
-        const args = [].concat([this.ctx.canvas]).concat(bounds).concat(bounds);
+        const args = []
+            .concat([this.ctx.canvas])
+            .concat(bounds)
+            .concat(bounds);
         ctx.drawImage.apply(ctx, args);
     }
 }
@@ -875,7 +878,12 @@ export class SceneRenderer extends CanvasRenderer {
             if (object instanceof Shape) {
                 const shape = object;
                 for (const face of shape.faces) {
-                    face.projected = face.points.map(point => point.copy().transform(transform).round());
+                    face.projected = face.points.map(point =>
+                        point
+                            .copy()
+                            .transform(transform)
+                            .round(),
+                    );
 
                     face.projectedCenter = P();
                     for (const p of face.projected) {
@@ -1161,15 +1169,27 @@ export function initializeLogo(canvas: HTMLCanvasElement, canvasBackground: HTML
             .multiply(Quaternion.xyAlt(accumX.value, -accumY.value).toMatrix())
             .multiply(M().translate(-1, -1, -1));
 
-        explodeGroups[0].restore().translate(accumExploder[0].value, 0, 0).transform(rotate);
-        explodeGroups[1].restore().translate(0, 0, accumExploder[1].value).transform(rotate);
+        explodeGroups[0]
+            .restore()
+            .translate(accumExploder[0].value, 0, 0)
+            .transform(rotate);
+        explodeGroups[1]
+            .restore()
+            .translate(0, 0, accumExploder[1].value)
+            .transform(rotate);
         explodeGroups[2]
             .restore()
             .translate(accumExploder[2].value, -2 * accumExploder[2].value, -accumExploder[2].value)
             .transform(rotate);
 
-        shadowGroups[0].restore().translate(accumExploder[0].value, SHADOW_DEPTH, 0).transform(rotate);
-        shadowGroups[1].restore().translate(0, SHADOW_DEPTH, accumExploder[1].value).transform(rotate);
+        shadowGroups[0]
+            .restore()
+            .translate(accumExploder[0].value, SHADOW_DEPTH, 0)
+            .transform(rotate);
+        shadowGroups[1]
+            .restore()
+            .translate(0, SHADOW_DEPTH, accumExploder[1].value)
+            .transform(rotate);
         shadowGroups[2]
             .restore()
             .translate(accumExploder[2].value, SHADOW_DEPTH, -accumExploder[2].value)

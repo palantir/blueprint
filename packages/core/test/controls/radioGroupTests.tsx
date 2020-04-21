@@ -77,7 +77,13 @@ describe("<RadioGroup>", () => {
         const OPTIONS = [{ value: "text" }, { value: 23 }];
         const group = mount(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="b" />);
         OPTIONS.forEach(props => {
-            assert.strictEqual(findInput(group, props).parents().first().text(), props.value.toString());
+            assert.strictEqual(
+                findInput(group, props)
+                    .parents()
+                    .first()
+                    .text(),
+                props.value.toString(),
+            );
         });
     });
 

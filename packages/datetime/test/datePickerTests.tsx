@@ -158,28 +158,38 @@ describe("<DatePicker>", () => {
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root.find(".DayPicker-NavButton--next").first().simulate("click");
+                root.find(".DayPicker-NavButton--next")
+                    .first()
+                    .simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root.find(".DayPicker-NavButton--prev").first().simulate("click");
+                root.find(".DayPicker-NavButton--prev")
+                    .first()
+                    .simulate("click");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on month select change", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root.find({ className: Classes.DATEPICKER_MONTH_SELECT }).first().find("select").simulate("change");
+                root.find({ className: Classes.DATEPICKER_MONTH_SELECT })
+                    .first()
+                    .find("select")
+                    .simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on year select change", () => {
                 const onMonthChange = sinon.spy();
                 const { root } = wrap(<DatePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />);
-                root.find({ className: Classes.DATEPICKER_YEAR_SELECT }).first().find("select").simulate("change");
+                root.find({ className: Classes.DATEPICKER_YEAR_SELECT })
+                    .first()
+                    .find("select")
+                    .simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
 
@@ -420,16 +430,37 @@ describe("<DatePicker>", () => {
         it("all shortcuts are displayed as inactive when none are selected", () => {
             const { root } = wrap(<DatePicker shortcuts={true} />);
 
-            assert.isFalse(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
+            assert.isFalse(
+                root
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${CoreClasses.ACTIVE}`)
+                    .exists(),
+            );
         });
 
         it("corresponding shortcut is displayed as active when selected", () => {
             const selectedShortcut = 0;
             const { root } = wrap(<DatePicker shortcuts={true} selectedShortcutIndex={selectedShortcut} />);
 
-            assert.isTrue(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists());
+            assert.isTrue(
+                root
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${CoreClasses.ACTIVE}`)
+                    .exists(),
+            );
 
-            assert.lengthOf(root.find(Shortcuts).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`), 1);
+            assert.lengthOf(
+                root
+                    .find(Shortcuts)
+                    .find(Menu)
+                    .find(MenuItem)
+                    .find(`.${CoreClasses.ACTIVE}`),
+                1,
+            );
 
             assert.isTrue(root.state("selectedShortcutIndex") === selectedShortcut);
         });
@@ -593,7 +624,9 @@ describe("<DatePicker>", () => {
                 />,
             );
             assert.isTrue(onChangeSpy.notCalled);
-            root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+            root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`)
+                .first()
+                .simulate("click");
             assert.isTrue(onChangeSpy.calledOnce);
             const cbHour = onChangeSpy.firstCall.args[0].getHours();
             assert.strictEqual(cbHour, defaultValue.getHours() + 1);
@@ -669,7 +702,10 @@ describe("<DatePicker>", () => {
 
     it("selects the current day when Today is clicked", () => {
         const { root } = wrap(<DatePicker showActionsBar={true} />);
-        root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
+        root.find({ className: Classes.DATEPICKER_FOOTER })
+            .find(Button)
+            .first()
+            .simulate("click");
 
         const today = new Date();
         const value = root.state("value");
@@ -681,7 +717,10 @@ describe("<DatePicker>", () => {
     it("clears the value when Clear is clicked", () => {
         const { getDay, root } = wrap(<DatePicker showActionsBar={true} />);
         getDay().simulate("click");
-        root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).last().simulate("click");
+        root.find({ className: Classes.DATEPICKER_FOOTER })
+            .find(Button)
+            .last()
+            .simulate("click");
         assert.isNull(root.state("value"));
     });
 
@@ -694,20 +733,39 @@ describe("<DatePicker>", () => {
                     wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`).map(d => +d.text()),
                     days,
                 ),
-            clickNextMonth: () => wrapper.find(Button).last().simulate("click"),
-            clickPreviousMonth: () => wrapper.find(Button).first().simulate("click"),
+            clickNextMonth: () =>
+                wrapper
+                    .find(Button)
+                    .last()
+                    .simulate("click"),
+            clickPreviousMonth: () =>
+                wrapper
+                    .find(Button)
+                    .first()
+                    .simulate("click"),
             clickShortcut: (index = 0) => {
-                wrapper.find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`).hostNodes().find("a").at(index).simulate("click");
+                wrapper
+                    .find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`)
+                    .hostNodes()
+                    .find("a")
+                    .at(index)
+                    .simulate("click");
             },
             getDay: (dayNumber = 1) =>
                 wrapper
                     .find(`.${Classes.DATEPICKER_DAY}`)
                     .filterWhere(day => day.text() === "" + dayNumber && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE)),
-            months: wrapper.find(HTMLSelect).filter({ className: Classes.DATEPICKER_MONTH_SELECT }).find("select"),
+            months: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_MONTH_SELECT })
+                .find("select"),
             root: wrapper,
             setTimeInput: (precision: TimePrecision | "hour", value: number) =>
                 wrapper.find(`.${Classes.TIMEPICKER}-${precision}`).simulate("blur", { target: { value } }),
-            years: wrapper.find(HTMLSelect).filter({ className: Classes.DATEPICKER_YEAR_SELECT }).find("select"),
+            years: wrapper
+                .find(HTMLSelect)
+                .filter({ className: Classes.DATEPICKER_YEAR_SELECT })
+                .find("select"),
         };
     }
 });

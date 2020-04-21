@@ -86,7 +86,10 @@ describe("<MultiSelect>", () => {
             selectedItems: [TOP_100_FILMS[1]],
         });
 
-        const firstTagRemoveButton = wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(0).getDOMNode();
+        const firstTagRemoveButton = wrapper
+            .find(`.${CoreClasses.TAG_REMOVE}`)
+            .at(0)
+            .getDOMNode();
         dispatchTestKeyboardEventWithCode(firstTagRemoveButton, "keyup", "Enter", Keys.ENTER);
 
         // checks for the bug in https://github.com/palantir/blueprint/issues/3674

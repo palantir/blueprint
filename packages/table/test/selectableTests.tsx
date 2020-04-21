@@ -348,7 +348,9 @@ describe("DragSelectable", () => {
 
             // be sure to test "click"s as sequentional "mousedown"-"mouseup"s, because those
             // are the events we actually listen for deep in DragEvents.
-            getItem(component).mouse("mousedown").mouse("mouseup");
+            getItem(component)
+                .mouse("mousedown")
+                .mouse("mouseup");
 
             expect(onSelectionEnd.calledOnce).to.be.true;
             expect(onSelectionEnd.firstCall.args[0] === selectedRegions).to.be.true; // check for same instance
@@ -473,7 +475,9 @@ describe("DragSelectable", () => {
                 selectedRegions: [REGION],
             });
 
-            getItem(component).mouse("mousedown").mouse("mousemove");
+            getItem(component)
+                .mouse("mousedown")
+                .mouse("mousemove");
 
             expect(onSelection.calledTwice, "calls onSelection on mousemove").to.be.true;
             expect(
@@ -492,7 +496,9 @@ describe("DragSelectable", () => {
                 selectedRegions: [REGION],
             });
 
-            getItem(component).mouse("mousedown").mouse("mousemove");
+            getItem(component)
+                .mouse("mousedown")
+                .mouse("mousemove");
 
             expect(locateClick.calledTwice, "calls locateClick on mousemove").to.be.true;
             expect(locateDrag.called, "doesn't call locateDrag on mousemove").to.be.false;
@@ -575,7 +581,10 @@ describe("DragSelectable", () => {
 
             const component = mountDragSelectable({ onSelectionEnd, selectedRegions });
 
-            getItem(component).mouse("mousedown").mouse("mousemove").mouse("mouseup");
+            getItem(component)
+                .mouse("mousedown")
+                .mouse("mousemove")
+                .mouse("mouseup");
 
             expect(onSelectionEnd.calledOnce).to.be.true;
             expect(onSelectionEnd.firstCall.args[0] === selectedRegions).to.be.true;

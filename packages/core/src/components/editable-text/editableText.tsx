@@ -233,7 +233,9 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         return (
             <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
                 {alwaysRenderInput || this.state.isEditing ? this.renderInput(value) : undefined}
-                {shouldHideContents ? undefined : (
+                {shouldHideContents ? (
+                    undefined
+                ) : (
                     <span className={Classes.EDITABLE_TEXT_CONTENT} ref={this.refHandlers.content} style={contentStyle}>
                         {hasValue ? value : this.props.placeholder}
                     </span>

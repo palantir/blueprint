@@ -238,18 +238,28 @@ describe("<TimezonePicker>", () => {
     }
 
     function findQueryList(timezonePicker: TimezonePickerShallowWrapper) {
-        return findSelect(timezonePicker).shallow().find(QueryList.ofType<ITimezoneItem>());
+        return findSelect(timezonePicker)
+            .shallow()
+            .find(QueryList.ofType<ITimezoneItem>());
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {
-        return findQueryList(timezonePicker).shallow().find(Popover);
+        return findQueryList(timezonePicker)
+            .shallow()
+            .find(Popover);
     }
 
     function findInputGroup(timezonePicker: TimezonePickerShallowWrapper) {
-        return findQueryList(timezonePicker).shallow().find(InputGroup);
+        return findQueryList(timezonePicker)
+            .shallow()
+            .find(InputGroup);
     }
 
     function clickFirstMenuItem(timezonePicker: TimezonePickerShallowWrapper): void {
-        findQueryList(timezonePicker).shallow().find(MenuItem).first().simulate("click");
+        findQueryList(timezonePicker)
+            .shallow()
+            .find(MenuItem)
+            .first()
+            .simulate("click");
     }
 });
