@@ -15,40 +15,43 @@
 
 const path = require("path");
 
+// in CI, we don't wan to run eslint-plugin-prettier because it has a ~50% performance penalty.
+// instead, we run yarn format-check at the root to ensure prettier formatting
+const isCI = process.env.NODE_ENV === "test";
+const prettierConfig = require("../../.prettierrc.json");
+
+const plugins = ["@typescript-eslint", "@typescript-eslint/tslint", "@blueprintjs"];
+const xtends = ["plugin:@blueprintjs/recommended"];
+
+if (!isCI) {
+    plugins.push("prettier");
+    xtends.push("plugin:prettier/recommended");
+}
+
 module.exports = {
     env: {
         browser: true,
     },
-    plugins: [
-        "@typescript-eslint",
-        "@typescript-eslint/tslint",
-        "@blueprintjs",
-        "prettier"
-    ],
-    extends: [
-        "plugin:@blueprintjs/recommended",
-        "plugin:prettier/recommended"
-    ],
+    plugins,
+    extends: xtends,
     parser: "@typescript-eslint/parser",
     parserOptions: {
         sourceType: "module",
-        createDefaultProgram: true,
-        ecmaFeatures: {
-            jsx: true,
-        },
-        project: "**/tsconfig.json",
+        project: ["{src,test}/tsconfig.json"],
     },
     rules: {
         // run the tslint rules which are not yet converted (run inside eslint)
-        "@typescript-eslint/tslint/config": ["error", {
-            "lintFile": path.resolve(__dirname, "./tslint.json"),
-        }],
-        "prettier/prettier": ["error", {
-            "printWidth": 120,
-            "tabWidth": 4,
-            "trailingComma": "all",
-            "arrowParens": "avoid",
-        }],
+        "@typescript-eslint/tslint/config": [
+            "error",
+            {
+                lintFile: path.resolve(__dirname, "./tslint.json"),
+            },
+        ],
+        ...(isCI
+            ? {}
+            : {
+                  "prettier/prettier": ["error", prettierConfig],
+              }),
     },
     overrides: [
         {
@@ -56,6 +59,10 @@ module.exports = {
             env: {
                 browser: true,
                 mocha: true,
+            },
+            rules: {
+                // HACKHACK: this rule is buggy when it sees scoped module names
+                "@blueprintjs/classes-constants": "off",
             },
         },
     ],
