@@ -1,6 +1,6 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-## Note: This package is deprecated in favour of `@blueprintjs/eslint-plugin-blueprint`
+## Note: This package is deprecated in favour of `@blueprintjs/eslint-plugin`
 
 [TSLint is deprecated](https://medium.com/palantir/tslint-in-2019-1a144c2317a9), and as such Blueprint is transitioning to ESLint. Blueprint is now using ESLint in its own repository, and as such this package will be removed in a future major version.
 
@@ -12,9 +12,9 @@ This package contains configuration for [TSLint](https://palantir.github.io/tsli
 
 **Key features:**
 
-- React & JSX rules from [tslint-react](https://github.com/palantir/tslint-react).
-- [Prettier](https://github.com/prettier/prettier) integration for consistent code style and automatic fixes.
-- [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
+-   React & JSX rules from [tslint-react](https://github.com/palantir/tslint-react).
+-   [Prettier](https://github.com/prettier/prettier) integration for consistent code style and automatic fixes.
+-   [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 
@@ -27,9 +27,10 @@ yarn add @blueprintjs/tslint-config tslint
 Simply extend this package in your `tslint.json` to use the default rules configuration. This configuration includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages.
 
 `tslint.json`
+
 ```json
 {
-  "extends": "@blueprintjs/tslint-config"
+    "extends": "@blueprintjs/tslint-config"
 }
 ```
 
@@ -38,6 +39,7 @@ Simply extend this package in your `tslint.json` to use the default rules config
 To enable the Blueprint-specific rules _only_ without the full TSLint config, extend the `blueprint-rules` config inside the package:
 
 `tslint.json`
+
 ```diff
 {
   "extends": [
@@ -60,9 +62,9 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 
 ```json
 {
-  "rules": {
-    "blueprint-classes-constants": true,
-  }
+    "rules": {
+        "blueprint-classes-constants": true
+    }
 }
 ```
 
@@ -95,16 +97,17 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 ```
 
 `"component"`
+
 ```diff
 -<Button icon="tick" />
 +<Button icon={<TickIcon />} />
 ```
 
 `"literal"`
+
 ```diff
 -<Button icon={<GraphIcon />} />
 +<Button icon="graph" />
 ```
-
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

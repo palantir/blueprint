@@ -8,19 +8,20 @@ This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It
 
 **Key features:**
 
-- [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
+-   [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 
 ```
-yarn add @blueprintjs/eslint-plugin-blueprint
+yarn add @blueprintjs/eslint-plugin
 ```
 
 ## Usage
 
-Simply add this plugin in your `.eslintrc` file to use the add the plugin.  The plugin includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages, but does not turn them on by default.
+Simply add this plugin in your `.eslintrc` file to use the add the plugin. The plugin includes Blueprint-specific rules which enforce semantics particular to usage with `@blueprintjs` packages, but does not turn them on by default.
 
 `.eslintrc`
+
 ```json
 plugins: [
     "@blueprintjs/blueprint"
@@ -32,6 +33,7 @@ plugins: [
 To enable the Blueprint-specific rules, extend the `plugin:@blueprintjs/recommended` config inside the package:
 
 `tslint.json`
+
 ```diff
 extends: [
 +    "plugin:@blueprintjs/recommended"
@@ -48,9 +50,9 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 
 ```json
 {
-  "rules": {
-    "@blueprintjs/classes-constants": ["error"],
-  }
+    "rules": {
+        "@blueprintjs/classes-constants": ["error"]
+    }
 }
 ```
 
@@ -63,11 +65,11 @@ Each `@blueprintjs` package exports a `Classes` object that contains constants f
 
 Enforce usage of Blueprint components over regular html components.
 
-- h1-6 -> H1-6
-- code -> Code
-- pre -> Pre
-- blockquote -> Blockquote
-- table -> HTMLTable
+-   h1-6 -> H1-6
+-   code -> Code
+-   pre -> Pre
+-   blockquote -> Blockquote
+-   table -> HTMLTable
 
 ```js
 {
@@ -99,16 +101,17 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 ```
 
 `"component"`
+
 ```diff
 -<Button icon="tick" />
 +<Button icon={<TickIcon />} />
 ```
 
 `"literal"`
+
 ```diff
 -<Button icon={<GraphIcon />} />
 +<Button icon="graph" />
 ```
-
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)
