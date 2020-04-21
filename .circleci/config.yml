@@ -7,7 +7,7 @@ aliases:
   - &docker-node-browsers
     - image: circleci/node:lts-browsers
       environment:
-          CHROME_BIN: "/usr/bin/google-chrome"
+        CHROME_BIN: "/usr/bin/google-chrome"
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
@@ -47,7 +47,7 @@ jobs:
       - save_cache: *save-node-modules-cache
       - save_cache: *save-yarn-cache
       - persist_to_workspace:
-          root: '.'
+          root: "."
           paths: [packages/*/node_modules]
 
   clean-lockfile:
@@ -63,23 +63,24 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - run: yarn compile
       - persist_to_workspace:
-          root: '.'
+          root: "."
           paths: [packages/*/lib, packages/*/src/generated]
 
   lint:
     docker: *docker-node-lts
     environment:
       JUNIT_REPORT_PATH: reports
+      NODE_ENV: test
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - run: mkdir -p ./reports/eslint ./reports/stylelint
       # we need to compile the lint rules for blueprint
-      - run: yarn compile --scope "@blueprintjs/{eslint-plugin-blueprint,tslint-config}"
+      - run: yarn compile --scope "@blueprintjs/{eslint-plugin-blueprint}"
       - run: yarn lint
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
@@ -90,10 +91,10 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - run: yarn dist
       - persist_to_workspace:
-          root: '.'
+          root: "."
           paths: [packages/*/lib, packages/*/dist]
 
   test-jest:
@@ -104,7 +105,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - run: mkdir ./reports
       - run: yarn lerna run test:jest-ci
       - store_test_results: { path: ./reports }
@@ -118,21 +119,21 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - run: mkdir ./reports
       - run:
           # split karma tests into containers because they can take up a lot of memory
           # running them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
-              case $CIRCLE_NODE_INDEX in \
-              0) yarn lerna run --parallel test:typeCheck ;; \
-              1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
-              2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
-              3) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
-              4) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
-              5) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
-              esac
+            case $CIRCLE_NODE_INDEX in \
+            0) yarn lerna run --parallel test:typeCheck ;; \
+            1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
+            2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
+            3) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
+            4) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
+            5) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
+            esac
           when: always
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
@@ -151,7 +152,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - run: mkdir ./reports
       - run: yarn lerna run --parallel test:iso
       - store_test_results: { path: ./reports }
@@ -169,7 +170,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - store_artifacts: { path: packages/docs-app/dist }
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
@@ -182,7 +183,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: '.' }
+      - attach_workspace: { at: "." }
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
@@ -211,7 +212,15 @@ workflows:
       - deploy-preview:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-react-15, test-react-16, test-iso-react-15, test-iso-react-16]
+          requires:
+            [
+              dist,
+              lint,
+              test-react-15,
+              test-react-16,
+              test-iso-react-15,
+              test-iso-react-16,
+            ]
           filters:
             branches:
               only:
