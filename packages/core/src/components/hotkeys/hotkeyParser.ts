@@ -184,10 +184,7 @@ export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
  * unshifted version. For example, `@` is equivalent to `shift+2`.
  */
 export const parseKeyCombo = (combo: string): IKeyCombo => {
-    const pieces = combo
-        .replace(/\s/g, "")
-        .toLowerCase()
-        .split("+");
+    const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
     let key = null as string;
     for (let piece of pieces) {
