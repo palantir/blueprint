@@ -11,7 +11,6 @@
 const path = require("path");
 const fs = require("fs");
 const { junitReportPath } = require("./utils");
-const { execSync } = require("child_process");
 const { spawn } = require("cross-spawn");
 const glob = require("glob");
 

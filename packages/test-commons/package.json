@@ -8,7 +8,9 @@
     "compile": "tsc -p ./src",
     "clean": "rm -rf lib/*",
     "dev": "yarn compile --watch",
-    "lint": "es-lint",
+    "lint": "run-p lint:es",
+    "lint:es": "es-lint",
+    "lint-fix": "es-lint --fix",
     "test": "exit 0"
   },
   "dependencies": {
