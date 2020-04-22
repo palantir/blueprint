@@ -18,6 +18,7 @@ const options = {
     files: "src/**/*.scss",
     formatter: emitReport ? require("stylelint-junit-formatter") : "string",
     syntax: "scss",
+    fix: process.argv.indexOf("--fix") > 0,
 };
 
 stylelint.lint(options).then(resultObject => {
