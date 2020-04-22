@@ -11,7 +11,7 @@
     "tslint-react": "^5.0.0"
   },
   "peerDependencies": {
-    "tslint": "~6.0.0"
+    "tslint": "^6.0.0"
   },
   "repository": {
     "type": "git",
