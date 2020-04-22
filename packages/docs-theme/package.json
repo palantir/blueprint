@@ -32,7 +32,7 @@
   "dependencies": {
     "@blueprintjs/core": "^3.19.0",
     "@blueprintjs/select": "^3.11.0",
-    "@documentalist/client": "^2.1.0",
+    "@documentalist/client": "~2.5.0",
     "classnames": "^2.2",
     "fuzzaldrin-plus": "^0.6.0",
     "tslib": "~1.10.0"
