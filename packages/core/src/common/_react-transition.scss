@@ -81,11 +81,10 @@ If `exit` phase is given then property values are animated in reverse, from fina
 
   #{transition-name(#{$phase}-active, $name, $before, $after)} {
     @include each-prop($properties, $end-index);
-    transition-property: map-keys($properties);
-    transition-duration: $duration;
-    transition-timing-function: $easing;
-    // stylelint-disable-next-line
     transition-delay: $delay;
+    transition-duration: $duration;
+    transition-property: map-keys($properties);
+    transition-timing-function: $easing;
   }
 }
 

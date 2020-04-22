@@ -15,10 +15,10 @@
 
   &:not(:empty)::before {
     // clear font icon when there's an <svg> image
-    // stylelint-disable
+    /* stylelint-disable */
     content: "" !important; // fallback for IE11
     content: unset !important;
-    // stylelint-enable
+    /* stylelint-enable */
   }
 
   > svg {
@@ -61,11 +61,11 @@ span.#{$ns}-icon-large {
 
 // only apply icon font styles when <svg> image is not present
 span.#{$ns}-icon:empty {
-  line-height: 1;
   font-family: $icons20-family;
   font-size: inherit;
-  font-weight: 400;
   font-style: normal;
+  font-weight: 400;
+  line-height: 1;
 
   &::before {
     @include pt-icon-font-smoothing();

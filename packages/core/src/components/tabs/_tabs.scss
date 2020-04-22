@@ -106,10 +106,10 @@ $tab-indicator-width: 3px !default;
   }
 
   .#{$ns}-tab-indicator-wrapper ~ & {
-    background-color: transparent !important;
     // these properties are only for static markup, therefore
     // we never want them if there's a tab indicator
     // stylelint-disable declaration-no-important
+    background-color: transparent !important;
     box-shadow: none !important;
     // stylelint-enable declaration-no-important
   }
