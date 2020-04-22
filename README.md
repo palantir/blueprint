@@ -14,15 +14,9 @@ It is optimized for building complex, data-dense web interfaces for _desktop app
 
 [**Read frequently asked questions (FAQ) on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
-## Latest changelog
+## Changelog
 
-[**3.x Changelog and 3.0 migration guide ▸**](https://github.com/palantir/blueprint/wiki/3.x-Changelog)
-
-Blueprint 3.0 brings support for using multiple major versions of Blueprint on the same web page. This is possible through the removal of global styles and by deconflicting CSS selectors. It also restores support for React 15 as a peer dependency in most packages.
-
-### Upgrading from 1.x
-
-Check out the [**2.0 changelog**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0) on the wiki, and make sure to review the [**2.0 migration guide**](https://github.com/palantir/blueprint/wiki/What's-new-in-Blueprint-2.0#migration-path), in addition to the 3.x content above.
+Blueprint's change log and migration guides for major verions live on the repo's [Github wiki](https://github.com/palantir/blueprint/wiki/3.x-Changelog).
 
 ## Packages
 

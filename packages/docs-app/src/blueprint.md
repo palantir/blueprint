@@ -18,13 +18,15 @@ Blueprint v3 is available now! [See what's new.](#blueprint/whats-new-3.0)
 
 ### Install
 
-**@blueprintjs/core** is the primary Blueprint package on NPM and home to over 40 components. Install it with your package manager ([Yarn](https://yarnpkg.com/) is used in this example):
+**@blueprintjs/core** is the primary Blueprint package on NPM and home to over 40 components.
+Install it with your package manager ([Yarn](https://yarnpkg.com/) is used in this example):
 
 ```sh
 yarn add @blueprintjs/core react react-dom
 ```
 
-Additional components live in the **@blueprintjs/icons**, **@blueprintjs/datetime**, **@blueprintjs/select**, **@blueprintjs/table**, and **@blueprintjs/timezone** packages, separated by use case and significant dependencies. All have peer dependencies on **react** and **react-dom**, so these two packages must be installed alongside Blueprint.
+Additional components live in the **@blueprintjs/icons**, **@blueprintjs/datetime**, **@blueprintjs/select**, **@blueprintjs/table**, and **@blueprintjs/timezone** packages,
+separated by use case and significant dependencies. All have peer dependencies on **react** and **react-dom**, so these two packages must be installed alongside Blueprint.
 
 ### Import
 
