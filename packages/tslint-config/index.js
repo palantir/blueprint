@@ -19,6 +19,9 @@ module.exports = {
     defaultSeverity: "error",
 
     rules: {
+        "array-type": {
+            options: ["array-simple"],
+        },
         ban: {
             options: [
                 ["_", "extend", "use object spread: { ...a, ...b }"],
