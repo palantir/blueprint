@@ -60,7 +60,7 @@
     "sinon": "^9.0.2",
     "stylelint-config-palantir": "^5.0.0",
     "stylelint-scss": "^3.17.1",
-    "typescript": "~3.7.5",
+    "typescript": "~3.8.3",
     "yarn-deduplicate": "^2.0.0"
   },
   "engines": {

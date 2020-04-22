@@ -53,7 +53,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
-    "typescript": "~3.7.5",
+    "typescript": "~3.8.3",
     "webpack-cli": "^3.3.11"
   },
   "repository": {
