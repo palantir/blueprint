@@ -14,10 +14,7 @@
  */
 
 module.exports = {
-    extends: [
-        "tslint:latest",
-        "tslint-react",
-    ],
+    extends: ["tslint:latest", "tslint-react"],
 
     defaultSeverity: "error",
 
@@ -37,6 +34,7 @@ module.exports = {
         "linebreak-style": {
             options: ["LF"],
         },
+        "member-access": true,
         "no-console": {
             options: ["log", "time", "timeEnd", "trace"],
         },
@@ -60,14 +58,17 @@ module.exports = {
         },
         "no-unnecessary-callback-wrapper": true,
         "no-unnecessary-initializer": true,
+        "object-literal-sort-keys": true,
+        "ordered-imports": {
+            options: {
+                "import-sources-order": "case-insensitive",
+                "module-source-path": "full",
+                "named-imports-order": "case-insensitive",
+            },
+        },
         "prefer-conditional-expression": false,
         "variable-name": {
             options: ["allow-leading-underscore", "allow-pascal-case", "ban-keywords", "check-format"],
         },
-    },
-    jsRules: {
-        "no-console": false,
-        "object-literal-sort-keys": false,
-        "trailing-comma": false,
     },
 };
