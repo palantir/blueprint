@@ -71,6 +71,7 @@ jobs:
 
   lint:
     docker: *docker-node-lts
+    resource_class: large
     environment:
       JUNIT_REPORT_PATH: reports
       NODE_ENV: test
