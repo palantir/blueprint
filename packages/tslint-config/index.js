@@ -17,8 +17,6 @@ module.exports = {
     extends: [
         "tslint:latest",
         "tslint-react",
-        // disable tslint rules which would conflict with eslint-plugin-prettier
-        "tslint-config-prettier",
     ],
 
     defaultSeverity: "error",

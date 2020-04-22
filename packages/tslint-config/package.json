@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "tslib": "~1.10.0",
-    "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^5.0.0"
   },
   "peerDependencies": {
