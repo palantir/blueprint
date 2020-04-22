@@ -15,11 +15,11 @@ $drawer-background-color: $white !default;
 $dark-drawer-background-color: $dark-gray4 !default;
 
 .#{$ns}-drawer {
+  background: $drawer-background-color;
+  box-shadow: $pt-elevation-shadow-4;
   display: flex;
   flex-direction: column;
   margin: 0;
-  box-shadow: $pt-elevation-shadow-4;
-  background: $drawer-background-color;
   padding: 0;
 
   &:focus {
@@ -42,11 +42,11 @@ $dark-drawer-background-color: $dark-gray4 !default;
       $pt-transition-duration,
       $before: "&"
     );
+    height: $drawer-default-size;
+    left: 0;
+    right: 0;
 
     top: 0;
-    right: 0;
-    left: 0;
-    height: $drawer-default-size;
   }
 
   &.#{$ns}-position-bottom {
@@ -65,11 +65,11 @@ $dark-drawer-background-color: $dark-gray4 !default;
       $pt-transition-duration,
       $before: "&"
     );
+    bottom: 0;
+    height: $drawer-default-size;
+    left: 0;
 
     right: 0;
-    bottom: 0;
-    left: 0;
-    height: $drawer-default-size;
   }
 
   &.#{$ns}-position-left {
@@ -88,10 +88,10 @@ $dark-drawer-background-color: $dark-gray4 !default;
       $pt-transition-duration,
       $before: "&"
     );
-
-    top: 0;
     bottom: 0;
     left: 0;
+
+    top: 0;
     width: $drawer-default-size;
   }
 
@@ -111,10 +111,10 @@ $dark-drawer-background-color: $dark-gray4 !default;
       $pt-transition-duration,
       $before: "&"
     );
+    bottom: 0;
+    right: 0;
 
     top: 0;
-    right: 0;
-    bottom: 0;
     width: $drawer-default-size;
   }
 
@@ -136,10 +136,10 @@ $dark-drawer-background-color: $dark-gray4 !default;
         $pt-transition-duration,
         $before: "&"
       );
+      bottom: 0;
+      right: 0;
 
       top: 0;
-      right: 0;
-      bottom: 0;
       width: $drawer-default-size;
     }
 
@@ -159,45 +159,45 @@ $dark-drawer-background-color: $dark-gray4 !default;
         $pt-transition-duration,
         $before: "&"
       );
+      bottom: 0;
+      height: $drawer-default-size;
+      left: 0;
 
       right: 0;
-      bottom: 0;
-      left: 0;
-      height: $drawer-default-size;
     }
   }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    box-shadow: $pt-dark-dialog-box-shadow;
     background: $dark-drawer-background-color;
+    box-shadow: $pt-dark-dialog-box-shadow;
     color: $pt-dark-text-color;
   }
 }
 
 .#{$ns}-drawer-header {
-  display: flex;
-  flex: 0 0 auto;
   align-items: center;
-  position: relative;
   border-radius: 0;
   box-shadow: 0 1px 0 $pt-divider-black;
+  display: flex;
+  flex: 0 0 auto;
   min-height: $pt-icon-size-large + $drawer-padding;
   padding: $drawer-padding / 4;
   padding-left: $drawer-padding;
+  position: relative;
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
+    color: $pt-icon-color;
     flex: 0 0 auto;
     margin-right: $drawer-padding / 2;
-    color: $pt-icon-color;
   }
 
   .#{$ns}-heading {
     @include overflow-ellipsis();
     flex: 1 1 auto;
-    margin: 0;
     line-height: inherit;
+    margin: 0;
 
     &:last-child {
       margin-right: $drawer-padding;
@@ -216,15 +216,15 @@ $dark-drawer-background-color: $dark-gray4 !default;
 
 .#{$ns}-drawer-body {
   flex: 1 1 auto;
-  overflow: auto;
   line-height: $pt-grid-size * 1.8;
+  overflow: auto;
 }
 
 .#{$ns}-drawer-footer {
-  flex: 0 0 auto;
-  position: relative;
   box-shadow: inset 0 1px 0 $pt-divider-black;
+  flex: 0 0 auto;
   padding: $drawer-padding/2 $drawer-padding;
+  position: relative;
 
   .#{$ns}-dark & {
     box-shadow: inset 0 1px 0 $pt-dark-divider-black;

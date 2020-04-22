@@ -54,24 +54,24 @@ $progress-bar-gradient: linear-gradient(
 }
 
 .#{$ns}-progress-bar {
-  display: block;
-  position: relative;
-  border-radius: $progress-bar-border-radius;
   background: $progress-track-color;
-  width: 100%;
+  border-radius: $progress-bar-border-radius;
+  display: block;
   height: $progress-bar-height;
   overflow: hidden;
+  position: relative;
+  width: 100%;
 
   .#{$ns}-progress-meter {
-    position: absolute;
-    border-radius: $progress-bar-border-radius;
     background: $progress-bar-gradient;
     background-color: $progress-head-color;
     background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
+    border-radius: $progress-bar-border-radius;
+    height: 100%;
+    position: absolute;
+    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
     // initial state is a full bar, a la "indeterminate"
     width: 100%;
-    height: 100%;
-    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
   }
 
   &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {

@@ -11,7 +11,7 @@
     "lint": "npm-run-all -p lint:scss lint:es",
     "lint:scss": "sass-lint",
     "lint:es": "es-lint",
-    "lint-fix": "es-lint --fix",
+    "lint-fix": "es-lint --fix && sass-lint --fix",
     "test": "exit 0",
     "verify": "npm-run-all -p dist lint"
   },

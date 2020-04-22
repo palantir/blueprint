@@ -92,9 +92,9 @@ Styleguide button
     }
 
     .#{$ns}-button-spinner {
+      margin: 0;
       // spinner appears centered within button
       position: absolute;
-      margin: 0;
     }
 
     > :not(.#{$ns}-button-spinner) {

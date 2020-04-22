@@ -55,23 +55,23 @@ Page layout elements
 
 .docs-nav {
   $background-shift: 999px;
-
-  position: fixed;
-  box-shadow: 1px 0 0 $pt-divider-black;
   background-color: $sidebar-background-color;
-  width: $sidebar-width + $background-shift;
+  box-shadow: 1px 0 0 $pt-divider-black;
   height: 100vh;
-  overflow-y: auto;
-  padding-bottom: $sidebar-padding * 2;
 
   // these rules allow the nav background-color to cover all area to the left
   // stylelint-disable-next-line order/properties-order
   margin-left: -$background-shift;
+  overflow-y: auto;
+  padding-bottom: $sidebar-padding * 2;
   padding-left: $background-shift + $container-padding;
 
+  position: fixed;
+  width: $sidebar-width + $background-shift;
+
   .#{$ns}-dark & {
-    box-shadow: 1px 0 0 $pt-dark-divider-black;
     background-color: $dark-sidebar-background-color;
+    box-shadow: 1px 0 0 $pt-dark-divider-black;
   }
 
   > * {
@@ -81,10 +81,10 @@ Page layout elements
 }
 
 .docs-content-wrapper {
-  flex-basis: $content-width;
   align-items: flex-start;
-  outline: none;
   background-color: $content-background-color;
+  flex-basis: $content-width;
+  outline: none;
 
   .#{$ns}-dark & {
     background-color: $dark-content-background-color;
@@ -92,18 +92,18 @@ Page layout elements
 }
 
 .docs-page {
-  position: relative;
   max-width: $content-width;
-  padding-top: 0;
-  padding-right: $container-padding;
   padding-bottom: $content-padding * 2;
   padding-left: $content-padding * 2;
+  padding-right: $container-padding;
+  padding-top: 0;
+  position: relative;
 }
 
 .docs-page-actions {
   position: absolute;
-  top: $container-padding;
   right: 0;
+  top: $container-padding;
   // above h1 heading
   z-index: 1;
 }
@@ -115,8 +115,8 @@ Lefthand navigation menu
 .docs-nav-menu {
   .#{$ns}-menu-item {
     align-items: center;
-    padding-right: $pt-grid-size;
     padding-left: 0;
+    padding-right: $pt-grid-size;
     white-space: initial;
 
     &:hover,

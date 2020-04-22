@@ -40,8 +40,8 @@ Styleguide label
 
 label.#{$ns}-label {
   display: block;
-  margin-top: 0;
   margin-bottom: ($pt-grid-size * 1.5);
+  margin-top: 0;
 
   .#{$ns}-html-select,
   .#{$ns}-input,
@@ -59,9 +59,9 @@ label.#{$ns}-label {
 
   .#{$ns}-select select,
   .#{$ns}-html-select select {
-    width: 100%;
-    vertical-align: top;
     font-weight: 400;
+    vertical-align: top;
+    width: 100%;
   }
 
   &.#{$ns}-disabled {

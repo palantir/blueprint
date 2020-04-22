@@ -19,21 +19,21 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
   flex: 1 1 0%;
   flex-direction: column;
   justify-content: center;
-  position: relative;
   padding-left: $asset-icon-size + $asset-padding * 2;
+  position: relative;
   white-space: nowrap;
 
   &::before {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: $asset-padding;
-    transform: translateY(-50%);
 
     background: url("#{$resources-path}/sketch-mac-icon@2x.png") no-repeat center / $asset-icon-size;
-    width: $asset-icon-size;
-    height: $asset-icon-size;
     content: "";
+    display: block;
+    height: $asset-icon-size;
+    left: $asset-padding;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: $asset-icon-size;
   }
 
   &:hover .blueprint-resource-title {
@@ -42,11 +42,11 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
 }
 
 .blueprint-resource-title {
+  color: $pt-link-color;
   // must use inline elements inside <a> tag
   display: block;
-  margin-bottom: $pt-grid-size / 2;
-  color: $pt-link-color;
   font-size: $pt-font-size-large;
   font-weight: 700;
+  margin-bottom: $pt-grid-size / 2;
 }
 

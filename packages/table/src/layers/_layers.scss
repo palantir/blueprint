@@ -7,14 +7,14 @@ $region-default-color: $gray3 !default;
 $region-selected-color: $pt-intent-primary !default;
 
 .#{$ns}-table-overlay-layer {
-  position: absolute;
-  top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
-  z-index: $region-layer-z-index;
   overflow: hidden;
   pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: $region-layer-z-index;
 }
 
 .#{$ns}-table-overlay {
@@ -22,13 +22,13 @@ $region-selected-color: $pt-intent-primary !default;
 }
 
 .#{$ns}-table-region {
-  border: $cell-border-width solid $region-default-color;
   background-color: rgba($region-default-color, 0.1);
+  border: $cell-border-width solid $region-default-color;
 }
 
 .#{$ns}-table-selection-region {
-  border: $cell-border-width solid $region-selected-color;
   background-color: rgba($region-selected-color, 0.1);
+  border: $cell-border-width solid $region-selected-color;
 
   .#{$ns}-table-column-headers & {
     // Issue #120 - Don't actually overlay a color since it causes artifacts.
@@ -54,13 +54,13 @@ $region-selected-color: $pt-intent-primary !default;
 }
 
 .#{$ns}-table-vertical-guide {
-  top: 0;
   bottom: 0;
+  top: 0;
 }
 
 .#{$ns}-table-horizontal-guide {
-  right: 0;
   left: 0;
+  right: 0;
 }
 
 .#{$ns}-table-reordering-cursor-overlay {

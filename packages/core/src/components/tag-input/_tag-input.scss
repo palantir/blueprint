@@ -15,27 +15,27 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
   align-items: flex-start;
   cursor: text;
   height: auto;
-  min-height: $pt-input-height;
-  padding-right: 0;
-  padding-left: $tag-input-padding;
   line-height: inherit;
+  min-height: $pt-input-height;
+  padding-left: $tag-input-padding;
+  padding-right: 0;
 
   .#{$ns}-tag-input-icon {
+    color: $pt-icon-color;
+    margin-left: $tag-input-icon-padding - $tag-input-padding;
+    margin-right: $tag-input-icon-padding;
     // margins to center icon in one-line input
     margin-top: $tag-input-icon-padding;
-    margin-right: $tag-input-icon-padding;
-    margin-left: $tag-input-icon-padding - $tag-input-padding;
-    color: $pt-icon-color;
   }
 
   .#{$ns}-tag-input-values {
     @include pt-flex-container(row, $tag-input-padding);
-    flex-wrap: wrap;
     align-items: center;
     // fill vertical height
     align-self: stretch;
-    margin-top: $tag-input-padding;
+    flex-wrap: wrap;
     margin-right: $tag-input-icon-padding;
+    margin-top: $tag-input-padding;
     // allow tags to ellipse and not overflow the container
     min-width: 0;
 
@@ -64,9 +64,9 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
   .#{$ns}-input-ghost {
     // input fills remaining line
     flex: 1 1 auto;
+    line-height: $tag-height;
     // essentially a min-width, cuz flex allows it to grow or shrink:
     width: $pt-grid-size * 8;
-    line-height: $tag-height;
 
     &:disabled,
     &.#{$ns}-disabled {
@@ -90,8 +90,8 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
     min-height: $pt-input-height-large;
 
     .#{$ns}-tag-input-icon {
-      margin-top: $tag-input-icon-padding-large;
       margin-left: $tag-input-icon-padding-large - $tag-input-padding;
+      margin-top: $tag-input-icon-padding-large;
     }
 
     .#{$ns}-input-ghost {
@@ -111,8 +111,8 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
   }
 
   &.#{$ns}-active {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
     background-color: $input-background-color;
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
 
     @each $intent, $color in $pt-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
@@ -134,9 +134,9 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
     }
 
     &.#{$ns}-active {
+      background-color: $dark-input-background-color;
       box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
                   $pt-dark-input-box-shadow;
-      background-color: $dark-input-background-color;
 
       @each $intent, $color in $pt-intent-text-colors {
         &.#{$ns}-intent-#{$intent} {
@@ -150,11 +150,11 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
 // TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
 .#{$ns}-input-ghost {
   @include pt-input-placeholder();
+  background: none;
 
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
   box-shadow: none;
-  background: none;
   padding: 0;
 
   &:focus {

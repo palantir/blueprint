@@ -20,28 +20,28 @@ Styleguide breadcrumbs
 */
 
 .#{$ns}-breadcrumbs {
+  align-items: center;
+  cursor: default;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  height: $pt-input-height;
+  list-style: none;
   // unstyled inline list reset
   margin: 0;
-  cursor: default;
-  height: $pt-input-height;
   padding: 0;
-  list-style: none;
 
   // descendant selector because nothing should come between ul and li
   > li {
-    display: flex;
     align-items: center;
+    display: flex;
 
     &::after {
-      display: block;
-      margin: 0 ($pt-grid-size / 2);
       background: svg-icon("16px/chevron-right.svg", (path: (fill: $pt-icon-color)));
-      width: $pt-icon-size-standard;
-      height: $pt-icon-size-standard;
       content: "";
+      display: block;
+      height: $pt-icon-size-standard;
+      margin: 0 ($pt-grid-size / 2);
+      width: $pt-icon-size-standard;
     }
 
     &:last-of-type::after {
@@ -53,8 +53,8 @@ Styleguide breadcrumbs
 .#{$ns}-breadcrumb,
 .#{$ns}-breadcrumb-current,
 .#{$ns}-breadcrumbs-collapsed {
-  display: inline-flex;
   align-items: center;
+  display: inline-flex;
   font-size: $pt-font-size-large;
 }
 
@@ -69,8 +69,8 @@ Styleguide breadcrumbs
   }
 
   &.#{$ns}-disabled {
-    cursor: not-allowed;
     color: $pt-text-color-disabled;
+    cursor: not-allowed;
   }
 
   .#{$ns}-icon {
@@ -83,33 +83,33 @@ Styleguide breadcrumbs
   font-weight: 600;
 
   .#{$ns}-input {
-    vertical-align: baseline;
     font-size: inherit;
     font-weight: inherit;
+    vertical-align: baseline;
   }
 }
 
 .#{$ns}-breadcrumbs-collapsed {
-  margin-right: 2px;
+  background: $light-gray1;
   border: none;
   border-radius: $pt-border-radius;
-  background: $light-gray1;
   cursor: pointer;
+  margin-right: 2px;
   padding: 1px ($pt-grid-size / 2);
   vertical-align: text-bottom;
 
   &::before {
-    display: block;
     background: svg-icon("16px/more.svg", (circle: (fill: $pt-icon-color))) center no-repeat;
-    width: $pt-icon-size-standard;
-    height: $pt-icon-size-standard;
     content: "";
+    display: block;
+    height: $pt-icon-size-standard;
+    width: $pt-icon-size-standard;
   }
 
   &:hover {
     background: $gray5;
-    text-decoration: none;
     color: $pt-text-color;
+    text-decoration: none;
   }
 }
 

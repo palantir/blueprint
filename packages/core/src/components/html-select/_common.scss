@@ -6,15 +6,15 @@
 %pt-select {
   @include pt-button-base();
   @include pt-button();
-  border-radius: $pt-border-radius;
-  // fill parent container
-  width: 100%;
-  height: $pt-button-height;
-  padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
 
   // stylelint-disable property-no-vendor-prefix
   -moz-appearance: none;
   -webkit-appearance: none;
+  border-radius: $pt-border-radius;
+  height: $pt-button-height;
+  padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
+  // fill parent container
+  width: 100%;
   // stylelint-enable property-no-vendor-prefix
 }
 
@@ -23,9 +23,9 @@
 }
 
 %pt-select-large {
+  font-size: $pt-font-size-large;
   height: $pt-button-height-large;
   padding-right: $input-padding-horizontal * 3.5;
-  font-size: $pt-font-size-large;
 }
 
 %pt-dark-select {
@@ -33,18 +33,18 @@
 }
 
 %pt-select-disabled {
-  box-shadow: none;
   background-color: $button-background-color-disabled;
-  cursor: not-allowed;
+  box-shadow: none;
   color: $button-color-disabled;
+  cursor: not-allowed;
 }
 
 %pt-select-arrow {
-  position: absolute;
-  top: ($pt-button-height - $pt-icon-size-standard) / 2;
-  right: $input-padding-horizontal * 0.7;
   color: $pt-icon-color;
   pointer-events: none;
+  position: absolute;
+  right: $input-padding-horizontal * 0.7;
+  top: ($pt-button-height - $pt-icon-size-standard) / 2;
 
   &.#{$ns}-disabled {
     color: $pt-icon-color-disabled;

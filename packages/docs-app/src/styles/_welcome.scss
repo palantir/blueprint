@@ -7,8 +7,8 @@
   text-align: center;
 
   .#{$ns}-heading {
-    margin: $content-padding 0 0;
     color: inherit;
+    margin: $content-padding 0 0;
   }
 
   .#{$ns}-icon {

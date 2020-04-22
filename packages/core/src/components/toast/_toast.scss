@@ -49,21 +49,21 @@ $toast-margin: $pt-grid-size * 2 !default;
     $before: "&",
     $after: "~ &"
   );
-  display: flex;
   align-items: flex-start;
+  background-color: $white;
+  border-radius: $pt-border-radius;
+  box-shadow: $pt-elevation-shadow-3;
+  display: flex;
+  margin: $toast-margin 0 0;
+  max-width: $toast-max-width;
+  min-width: $toast-min-width;
+
+  // toast is interactive even though container isn't
+  pointer-events: all;
 
   // override inline styles (#367): toasts rely on relative positioning for stacking.
   // stylelint-disable-next-line declaration-no-important
   position: relative !important;
-  margin: $toast-margin 0 0;
-  border-radius: $pt-border-radius;
-  box-shadow: $pt-elevation-shadow-3;
-  background-color: $white;
-  min-width: $toast-min-width;
-  max-width: $toast-max-width;
-
-  // toast is interactive even though container isn't
-  pointer-events: all;
 
   .#{$ns}-button-group {
     flex: 0 0 auto;
@@ -72,15 +72,15 @@ $toast-margin: $pt-grid-size * 2 !default;
   }
 
   > .#{$ns}-icon {
+    color: $pt-icon-color;
     margin: ($toast-height - $pt-icon-size-standard) / 2;
     margin-right: 0;
-    color: $pt-icon-color;
   }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-3;
     background-color: $dark-gray5;
+    box-shadow: $pt-dark-elevation-shadow-3;
 
     > .#{$ns}-icon {
       color: $pt-dark-icon-color;
@@ -148,18 +148,12 @@ $toast-margin: $pt-grid-size * 2 !default;
 }
 
 .#{$ns}-toast-container {
+  align-items: center;
   // override inline overlay styles (#2626)
   // stylelint-disable-next-line declaration-no-important
   display: flex !important;
   flex-direction: column;
-  align-items: center;
-
-  position: fixed;
-  right: 0;
   left: 0;
-
-  // #975 ensure toasts are on top of everything (esp dialogs)
-  z-index: $pt-z-index-overlay * 2;
   // toasts have margin-top so omit it on container
 
   // prevent container from scrolling as new toasts enter (from bottom)
@@ -171,14 +165,20 @@ $toast-margin: $pt-grid-size * 2 !default;
   // container will not block clicks on elements behind it
   pointer-events: none;
 
+  position: fixed;
+  right: 0;
+
+  // #975 ensure toasts are on top of everything (esp dialogs)
+  z-index: $pt-z-index-overlay * 2;
+
   &.#{$ns}-toast-container-top {
     top: 0;
   }
 
   &.#{$ns}-toast-container-bottom {
+    bottom: 0;
     flex-direction: column-reverse;
     top: auto;
-    bottom: 0;
   }
 
   &.#{$ns}-toast-container-left {

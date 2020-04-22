@@ -28,15 +28,15 @@ $file-input-button-padding: ($pt-input-height - $pt-button-height-small) / 2 !de
 $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) / 2 !default;
 
 .#{$ns}-file-input {
-  display: inline-block;
-  position: relative;
   cursor: pointer;
+  display: inline-block;
   height: $pt-input-height;
+  position: relative;
 
   input {
-    opacity: 0;
     margin: 0;
     min-width: $pt-grid-size * 20;
+    opacity: 0;
 
     // unlike other form controls that directly style native elements,
     // pt-file-input wraps and hides the native element for better control over
@@ -88,27 +88,27 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 .#{$ns}-file-upload-input {
   @include pt-input();
   @include overflow-ellipsis();
-  position: absolute;
-  top: 0;
-  right: 0;
+  color: $pt-text-color-disabled;
   left: 0;
   padding-right: $file-input-button-width + $input-padding-horizontal;
-  color: $pt-text-color-disabled;
+  position: absolute;
+  right: 0;
+  top: 0;
   user-select: none;
 
   &::after {
     @include pt-button();
     @include pt-button-height($pt-button-height-small);
     @include overflow-ellipsis();
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: $file-input-button-padding;
     border-radius: $pt-border-radius;
-    width: $file-input-button-width;
-    text-align: center;
-    line-height: $pt-button-height-small;
     content: "Browse";
+    line-height: $pt-button-height-small;
+    margin: $file-input-button-padding;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: $file-input-button-width;
   }
 
   &:hover::after {
@@ -125,9 +125,9 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 
     &::after {
       @include pt-button-height($pt-button-height);
+      line-height: $pt-button-height;
       margin: $file-input-button-padding-large;
       width: $file-input-button-width-large;
-      line-height: $pt-button-height;
     }
   }
 
@@ -151,5 +151,5 @@ $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) /
 
 // hack to force the button shadow to display since
 // it doesn't render correct via the `pt-button` mixin
-// stylelint-disable-next-line
+/* stylelint-disable-next-line no-duplicate-selectors */
 .#{$ns}-file-upload-input::after { box-shadow: $button-box-shadow; }

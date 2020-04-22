@@ -23,11 +23,11 @@ Styleguide callout
 
 .#{$ns}-callout {
   @include running-typography();
-  position: relative;
-  border-radius: $pt-border-radius;
   background-color: rgba($gray3, 0.15);
-  width: 100%;
+  border-radius: $pt-border-radius;
   padding: $pt-grid-size ($pt-grid-size * 1.2) ($pt-grid-size * 0.9);
+  position: relative;
+  width: 100%;
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
@@ -35,10 +35,10 @@ Styleguide callout
 
     &::before {
       @include pt-icon($pt-icon-size-large);
+      color: $pt-icon-color;
+      left: $pt-grid-size;
       position: absolute;
       top: $pt-grid-size;
-      left: $pt-grid-size;
-      color: $pt-icon-color;
     }
   }
 
@@ -46,17 +46,17 @@ Styleguide callout
     padding-left: ($pt-grid-size * 2) + $pt-icon-size-large;
 
     > .#{$ns}-icon:first-child {
+      color: $pt-icon-color;
+      left: $pt-grid-size;
       position: absolute;
       top: $pt-grid-size;
-      left: $pt-grid-size;
-      color: $pt-icon-color;
     }
   }
 
   .#{$ns}-heading {
-    margin-top: 0;
-    margin-bottom: $pt-grid-size / 2;
     line-height: $pt-icon-size-large;
+    margin-bottom: $pt-grid-size / 2;
+    margin-top: 0;
 
     &:last-child {
       margin-bottom: 0;

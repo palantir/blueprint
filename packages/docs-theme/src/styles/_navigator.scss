@@ -8,9 +8,9 @@ $navigator-width: $pt-grid-size * 40;
   width: $navigator-width;
 
   .#{$ns}-menu-item small {
+    align-items: center;
     // center-align text and SVG icons
     display: flex;
-    align-items: center;
   }
 
   .#{$ns}-menu-item.#{$ns}-active small {

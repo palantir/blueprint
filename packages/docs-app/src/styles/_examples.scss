@@ -77,22 +77,22 @@
     $node-size: $pt-grid-size * 8;
     $icon-size: $pt-icon-size-standard * 2;
     $node-border-width: 4px;
+    background-color: $blue5;
 
     border: $node-border-width solid $white;
     border-radius: 50%;
     box-shadow: $pt-elevation-shadow-2;
-    background-color: $blue5;
-    width: $node-size;
     height: $node-size;
     overflow: hidden;
+    width: $node-size;
 
     &::before {
       @include pt-icon($icon-size, 16);
-      position: relative;
-      top: ($node-size - $icon-size) / 2 - $node-border-width;
-      left: ($node-size - $icon-size) / 2 - $node-border-width;
       color: $white;
       content: $pt-icon-envelope;
+      left: ($node-size - $icon-size) / 2 - $node-border-width;
+      position: relative;
+      top: ($node-size - $icon-size) / 2 - $node-border-width;
     }
 
     &.context-menu-open {
@@ -106,13 +106,13 @@
   transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
-    opacity: 0.6;
     cursor: pointer;
+    opacity: 0.6;
   }
 
   &:focus {
-    opacity: 1;
     cursor: default;
+    opacity: 1;
   }
 
   > :first-child {
@@ -125,29 +125,29 @@
     z-index: 1;
 
     > div {
-      margin-right: $pt-grid-size/2;
+      background-color: $white;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
-      background-color: $white;
-      width: $pt-grid-size * 8;
-      height: $pt-grid-size * 24;
       color: $black;
+      height: $pt-grid-size * 24;
+      margin-right: $pt-grid-size/2;
+      width: $pt-grid-size * 8;
     }
   }
 
   .piano-key-sharp {
-    z-index: 2;
-    width: 0;
     overflow: visible;
     vertical-align: top;
+    width: 0;
+    z-index: 2;
 
     > div {
+      background-color: $black;
+      color: $white;
+      height: $pt-grid-size * 16;
+      left: $pt-grid-size * -4;
       position: absolute;
       top: 0;
-      left: $pt-grid-size * -4;
-      background-color: $black;
-      height: $pt-grid-size * 16;
-      color: $white;
     }
   }
 
@@ -157,10 +157,10 @@
   }
 
   .piano-key-text {
-    position: absolute;
-    right: 0;
     bottom: 5px;
     left: 0;
+    position: absolute;
+    right: 0;
     text-align: center;
   }
 
@@ -172,33 +172,33 @@
 #{example("HotkeyTester")} {
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-grid-size);
-    flex: 1 1;
     align-items: center;
-    justify-content: space-around;
-    opacity: 0.4;
+    background: rgba($gray3, 0.2);
     border: 2px solid rgba($gray3, 0.8);
     border-radius: $pt-border-radius * 2;
-    background: rgba($gray3, 0.2);
+    flex: 1 1;
+    justify-content: space-around;
     max-width: 70%;
     min-height: $pt-grid-size * 12;
+    opacity: 0.4;
     padding: $pt-grid-size * 2;
     transition: all $pt-transition-duration $pt-transition-ease;
 
     &:hover {
-      opacity: 0.6;
       cursor: pointer;
+      opacity: 0.6;
     }
 
     &:focus {
-      opacity: 1;
-      border: 2px solid rgba($blue3, 0.6);
       background: rgba($blue3, 0.1);
-      cursor: default;
+      border: 2px solid rgba($blue3, 0.6);
       color: map-get($pt-intent-text-colors, "primary");
+      cursor: default;
+      opacity: 1;
 
       .#{$ns}-dark & {
-        border: 2px solid rgba($blue4, 0.6);
         background: rgba($blue4, 0.1);
+        border: 2px solid rgba($blue4, 0.6);
         color: map-get($pt-dark-intent-text-colors, "primary");
       }
     }
@@ -241,10 +241,10 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
-
-  top: 0;
   left: calc(50vw - #{$overlay-example-width / 2});
   margin: 10vh 0;
+
+  top: 0;
   width: $overlay-example-width;
 }
 
@@ -260,12 +260,12 @@
   }
 
   .docs-popover-example-scroll {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    height: 1500px;
     justify-content: center;
     width: 1000px;
-    height: 1500px;
 
     > p {
       margin-top: $pt-grid-size;
@@ -277,8 +277,8 @@
   height: 220px;
 
   .docs-reopen-message {
-    width: 240px;
     text-align: center;
+    width: 240px;
   }
 
   .#{$ns}-popover-content {
@@ -297,15 +297,15 @@
 #{example("PanelStackExample")} {
   .docs-panel-stack-example {
     box-shadow: $pt-elevation-shadow-0;
-    width: 300px;
     height: 240px;
+    width: 300px;
   }
 
   .docs-panel-stack-contents-example {
+    align-items: center;
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
-    align-items: center;
     justify-content: space-around;
     padding: 10px;
   }
@@ -318,10 +318,10 @@
 
 .docs-popover-position-example {
   em {
-    display: inline-block;
-    max-width: 25 * $pt-grid-size;
     color: $pt-text-color-muted;
+    display: inline-block;
     font-style: italic;
+    max-width: 25 * $pt-grid-size;
 
     .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;
@@ -329,9 +329,9 @@
   }
 
   td:nth-child(1) {
+    align-items: flex-end;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
   }
 
   td:nth-child(2) {
@@ -339,9 +339,9 @@
   }
 
   td:nth-child(3) {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
   }
 
   .#{$ns}-popover-wrapper {
@@ -350,15 +350,15 @@
   }
 
   .#{$ns}-popover-content {
-    display: flex;
     align-items: center;
-    justify-content: center;
-    // big enough to make the shifting arrow position noticeable
-    width: 20 * $pt-grid-size;
+    display: flex;
     height: 7 * $pt-grid-size;
+    justify-content: center;
+    line-height: 2;
     padding: $pt-grid-size * 2;
     text-align: center;
-    line-height: 2;
+    // big enough to make the shifting arrow position noticeable
+    width: 20 * $pt-grid-size;
 
     code {
       font-weight: 600;
@@ -367,9 +367,9 @@
 }
 
 .docs-popover-position-value-code-block {
-  text-align: center;
   font-size: $pt-font-size-large;
   font-weight: 600;
+  text-align: center;
 }
 
 .docs-popover-position-label-side {
@@ -396,8 +396,8 @@
 
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
-    margin-right: $pt-grid-size;
     font-family: $pt-font-family-monospace;
+    margin-right: $pt-grid-size;
   }
 }
 
@@ -408,9 +408,9 @@
 
 .docs-popover-portal-example {
   .docs-popover-portal-example-scroll-container {
-    flex: 1 1 auto;
-    border-radius: $pt-border-radius;
     background: $light-gray3;
+    border-radius: $pt-border-radius;
+    flex: 1 1 auto;
     overflow-x: scroll;
     overflow-y: hidden;
 
@@ -425,15 +425,15 @@
     // example code.
     $assumed-height-of-target-plus-popover: $pt-grid-size * 8.5;
     $vertical-padding: $pt-grid-size * 2;
+    align-items: flex-start;
 
     display: flex;
-    align-items: flex-start;
+    height: $assumed-height-of-target-plus-popover + (2 * $vertical-padding);
     justify-content: center;
+    padding-top: $vertical-padding;
     // wide enough to allow scrolling, but wide enough to let the popover target
     // fully leave the viewport.
     width: 200%;
-    height: $assumed-height-of-target-plus-popover + (2 * $vertical-padding);
-    padding-top: $vertical-padding;
   }
 }
 
@@ -445,8 +445,8 @@
 }
 
 .#{$ns}-progress-bar.docs-toast-progress {
-  margin-top: $pt-grid-size / 2;
   margin-bottom: 0;
+  margin-top: $pt-grid-size / 2;
 }
 
 .docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
@@ -500,8 +500,8 @@
 #{page("table", "^=")} {
   // make all tables the same width & height
   .#{$ns}-table-container {
-    width: 100%;
     height: $pt-grid-size * 36;
+    width: 100%;
   }
 
   // reduce example container padding

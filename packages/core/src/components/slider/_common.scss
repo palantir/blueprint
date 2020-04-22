@@ -10,15 +10,15 @@
   $slider-min-size: $pt-grid-size * 15;
 
   @if $vertical == false {
-    width: 100%;
-    min-width: $slider-min-size;
     height: $size;
+    min-width: $slider-min-size;
+    width: 100%;
   } @else {
     // define the same rules for both vertical as for horizontal to ensure all
     // horizontal rules are fully overridden.
-    width: $size;
-    min-width: $size;
     height: $slider-min-size;
+    min-width: $size;
+    width: $size;
   }
 }
 
@@ -26,16 +26,16 @@
   $slider-track-offset: ($handle-size - $track-size) / 2;
 
   @if $vertical == false {
-    top: $slider-track-offset;
-    right: 0;
-    left: 0;
     height: $track-size;
+    left: 0;
+    right: 0;
+    top: $slider-track-offset;
   } @else {
-    top: 0;
     bottom: 0;
-    left: $slider-track-offset;
-    width: $track-size;
     height: auto; // override the non-vertical rule above
+    left: $slider-track-offset;
+    top: 0;
+    width: $track-size;
   }
 }
 

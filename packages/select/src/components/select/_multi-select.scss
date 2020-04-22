@@ -10,8 +10,8 @@
 
 .#{$ns}-multi-select-popover {
   .#{$ns}-menu {
-    max-width: $select-popover-max-width;
     max-height: $select-popover-max-height;
+    max-width: $select-popover-max-width;
     overflow: auto;
   }
 }

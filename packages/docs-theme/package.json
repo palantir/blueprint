@@ -26,13 +26,13 @@
     "lint": "run-p lint:scss lint:es",
     "lint:scss": "sass-lint",
     "lint:es": "es-lint",
-    "lint-fix": "es-lint --fix",
+    "lint-fix": "es-lint --fix && sass-lint --fix",
     "verify": "npm-run-all compile -p dist lint"
   },
   "dependencies": {
     "@blueprintjs/core": "^3.19.0",
     "@blueprintjs/select": "^3.11.0",
-    "@documentalist/client": "^2.1.0",
+    "@documentalist/client": "~2.5.0",
     "classnames": "^2.2",
     "fuzzaldrin-plus": "^0.6.0",
     "tslib": "~1.10.0"

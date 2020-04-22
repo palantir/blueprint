@@ -10,9 +10,9 @@
 }
 
 .#{$ns}-spinner {
+  align-items: center;
   // center animation container inside parent element to isolate layout
   display: flex;
-  align-items: center;
   justify-content: center;
 
   // allow paths to overflow container -- critical for edges of circles!
@@ -28,10 +28,10 @@
   }
 
   .#{$ns}-spinner-head {
-    transform-origin: center;
-    transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
     stroke: $progress-head-color;
     stroke-linecap: round;
+    transform-origin: center;
+    transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
   }
 
   .#{$ns}-spinner-track {

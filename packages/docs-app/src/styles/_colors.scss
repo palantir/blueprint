@@ -18,13 +18,13 @@ $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
 
 .docs-clipboard {
   > input {
-    position: absolute;
     opacity: 0;
+    position: absolute;
   }
 
   .docs-clipboard-message::after {
-    line-height: 1;
     content: attr(data-message);
+    line-height: 1;
   }
 
   input:focus + .docs-clipboard-message::after,
@@ -40,8 +40,8 @@ $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
   // override more specific selector above
   //stylelint-disable declaration-no-important
   &.docs-clipboard-copied .docs-clipboard-message::after {
-    font-family: $pt-font-family-monospace, "Icons16", sans-serif;
     content: $swatch-copied-message !important;
+    font-family: $pt-font-family-monospace, "Icons16", sans-serif;
   }
 
   &.docs-clipboard-copied .docs-clipboard-message[data-copied-message]::after {
@@ -56,8 +56,8 @@ $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
   justify-content: space-between;
 
   .docs-color-scheme & {
-    margin-right: (-$pt-grid-size);
     margin-left: (-$pt-grid-size);
+    margin-right: (-$pt-grid-size);
   }
 }
 
@@ -82,8 +82,8 @@ $swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
   }
 
   .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-0;
     background: transparent;
+    box-shadow: $pt-dark-elevation-shadow-0;
 
     &:hover {
       box-shadow: $pt-dark-elevation-shadow-3;
@@ -102,18 +102,18 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 .docs-color-scheme-radios { margin-bottom: $pt-grid-size; }
 
 .docs-color-bar-hexes {
-  margin: 0;
+  background: $white;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   box-shadow: none;
-  background: $white;
+  margin: 0;
 }
 
 .docs-color-palette {
-  flex: 0 0 palette-width(2);
-  position: relative;
-  margin-bottom: $palette-spacing;
   cursor: pointer;
+  flex: 0 0 palette-width(2);
+  margin-bottom: $palette-spacing;
+  position: relative;
 
   .docs-color-book-grayscale & {
     flex-basis: palette-width(3);
@@ -138,34 +138,34 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 }
 
 .docs-color-swatch {
-  display: block;
-  position: relative;
   border: 1px solid rgba($black, $pt-border-shadow-opacity * 2);
-  border-top-width: 0;
   border-bottom-width: 0;
-  height: $swatch-height;
+  border-top-width: 0;
+  display: block;
   font-family: $pt-font-family-monospace;
+  height: $swatch-height;
+  position: relative;
 
   &:first-child {
-    border-top-width: 1px;
     border-top-left-radius: $pt-border-radius;
     border-top-right-radius: $pt-border-radius;
+    border-top-width: 1px;
   }
 
   &:last-child {
-    border-bottom-width: 1px;
     border-bottom-left-radius: $pt-border-radius;
     border-bottom-right-radius: $pt-border-radius;
+    border-bottom-width: 1px;
   }
 
   input:focus + .docs-color-swatch-trigger,
   &:hover .docs-color-swatch-trigger {
     @include position-all(absolute, $swatch-hover-offset);
-    z-index: $pt-z-index-base + 1;
     border-radius: $pt-border-radius;
     box-shadow: inset border-shadow($pt-border-shadow-opacity * 2),
                       0 2px 4px rgba($black, $pt-drop-shadow-opacity / 2),
                       0 8px 24px rgba($black, $pt-drop-shadow-opacity);
+    z-index: $pt-z-index-base + 1;
   }
 
   &:active .docs-color-swatch-trigger {
@@ -192,17 +192,17 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 
 .docs-color-swatch-trigger {
   @include position-all(absolute, 0);
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-radius: inherit;
   background-color: inherit;
+  border-radius: inherit;
   cursor: pointer;
-  padding: 0 $pt-grid-size;
-  line-height: 1;
-  white-space: nowrap;
+  display: flex;
   font-size: $pt-font-size-small;
+  justify-content: space-between;
+  line-height: 1;
+  padding: 0 $pt-grid-size;
   transition: all $pt-transition-duration $pt-transition-ease;
+  white-space: nowrap;
 
   // ClickToCopy uses ::after element for variable name so we re-order in flexbox
   span { order: 1; }
@@ -210,21 +210,21 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
 
 .docs-color-bar-swatches {
   display: flex;
+  margin-left: -1px;
   position: relative;
   top: -1px;
-  margin-left: -1px;
   width: calc(100% + 2px);
 
   &::before {
     @include position-all(absolute, 0);
-
-    display: block;
-    z-index: 2;
     border-radius: $pt-border-radius;
     box-shadow: inset 0 0 0 1px $pt-divider-black;
     content: "";
+
+    display: block;
     pointer-events: none;
     user-select: none;
+    z-index: 2;
 
     .#{$ns}-dark & {
       box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
@@ -232,8 +232,8 @@ label.docs-color-scheme-label { margin: ($pt-grid-size * 2) 0; }
   }
 
   .docs-color-swatch {
-    flex: 0 1 100%;
     border: none;
+    flex: 0 1 100%;
 
     &:first-child {
       border-top-right-radius: 0;
@@ -290,12 +290,12 @@ $aliases: (
 $bubble-size: $pt-grid-size * 2;
 
 .docs-color-bubble {
-  display: inline-block;
   border-radius: $pt-border-radius;
   box-shadow: inset border-shadow(0.15);
-  width: $bubble-size;
+  display: inline-block;
   height: $bubble-size;
   vertical-align: middle;
+  width: $bubble-size;
 
   .#{$ns}-dark & {
     box-shadow: inset border-shadow(0.2, $white);

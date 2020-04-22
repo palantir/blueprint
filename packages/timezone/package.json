@@ -26,7 +26,7 @@
     "lint": "run-p lint:scss lint:es",
     "lint:scss": "sass-lint",
     "lint:es": "es-lint",
-    "lint-fix": "es-lint --fix",
+    "lint-fix": "es-lint --fix && sass-lint --fix",
     "test": "run-s test:typeCheck test:iso test:karma",
     "test:typeCheck": "tsc -p ./test",
     "test:iso": "mocha test/isotest.js",
@@ -50,14 +50,14 @@
     "@blueprintjs/node-build-scripts": "^1.0.0",
     "@blueprintjs/test-commons": "^0.10.0",
     "@types/moment-timezone": "^0.5.12",
-    "enzyme": "^3.10.0",
-    "karma": "^4.2.0",
+    "enzyme": "^3.11.0",
+    "karma": "^5.0.2",
     "npm-run-all": "^4.1.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
     "typescript": "~3.7.5",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.11"
   },
   "repository": {
     "type": "git",

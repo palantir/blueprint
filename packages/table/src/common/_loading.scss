@@ -16,9 +16,9 @@
 
 @mixin table-skeleton() {
   .#{$ns}-skeleton {
-    opacity: 0;
-    height: $pt-grid-size * 0.5;
     animation: $cell-transition-duration linear forwards skeleton-fade-in, $skeleton-animation;
     animation-delay: 0s, $cell-transition-duration;
+    height: $pt-grid-size * 0.5;
+    opacity: 0;
   }
 }

@@ -21,11 +21,11 @@ $icon-classes: (
   $font-size: $pt-icon-size-standard,
   $font-family-size: strip-unit($font-size)
 ) {
-  line-height: 1;
   font-family: "Icons#{$font-family-size}", sans-serif;
   font-size: $font-size;
-  font-weight: 400;
   font-style: normal;
+  font-weight: 400;
+  line-height: 1;
 }
 
 @mixin pt-icon-colors() {

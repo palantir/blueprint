@@ -9,8 +9,8 @@
 }
 
 .#{$ns}-hotkey-dialog {
-  top: $pt-grid-size * 4;
   padding-bottom: 0;
+  top: $pt-grid-size * 4;
 
   .#{$ns}-dialog-body {
     margin: 0;
@@ -38,11 +38,11 @@
 }
 
 .#{$ns}-hotkey {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-between;
-  margin-right: 0;
   margin-left: 0;
+  margin-right: 0;
 
   &:not(:last-child) {
     margin-bottom: $pt-grid-size;

@@ -33,13 +33,13 @@ $navbar-background-color: $white !default;
 $dark-navbar-background-color: $dark-gray5 !default;
 
 .#{$ns}-navbar {
-  position: relative;
-  z-index: $pt-z-index-content;
-  box-shadow: $pt-elevation-shadow-1;
   background-color: $navbar-background-color;
-  width: 100%;
+  box-shadow: $pt-elevation-shadow-1;
   height: $pt-navbar-height;
   padding: 0 $navbar-padding;
+  position: relative;
+  width: 100%;
+  z-index: $pt-z-index-content;
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
@@ -57,21 +57,21 @@ $dark-navbar-background-color: $dark-gray5 !default;
   }
 
   &.#{$ns}-fixed-top {
-    position: fixed;
-    top: 0;
-    right: 0;
     left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
   }
 }
 
 .#{$ns}-navbar-heading {
-  margin-right: $navbar-padding;
   font-size: $pt-font-size-large;
+  margin-right: $navbar-padding;
 }
 
 .#{$ns}-navbar-group {
-  display: flex;
   align-items: center;
+  display: flex;
   height: $pt-navbar-height;
 
   &.#{$ns}-align-left {
@@ -84,9 +84,9 @@ $dark-navbar-background-color: $dark-gray5 !default;
 }
 
 .#{$ns}-navbar-divider {
-  margin: 0 $pt-grid-size;
   border-left: 1px solid $pt-divider-black;
   height: $pt-navbar-height - $pt-grid-size * 3;
+  margin: 0 $pt-grid-size;
 
   .#{$ns}-dark & {
     border-left-color: $pt-dark-divider-white;

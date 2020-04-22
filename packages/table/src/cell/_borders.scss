@@ -42,9 +42,9 @@ for all borders with minimal duplication. See the bottom of this file.
     box-shadow: $border-bottom-default, $inset-border-right-default;
 
     &::before {
+      bottom: 0;
       // hover shadow
       right: $border-width;
-      bottom: 0;
     }
   }
 
@@ -52,9 +52,9 @@ for all borders with minimal duplication. See the bottom of this file.
     box-shadow: $inset-border-bottom-default, $border-right-default;
 
     &::before {
+      bottom: $border-width;
       // hover shadow
       right: 0;
-      bottom: $border-width;
     }
   }
 
@@ -92,9 +92,9 @@ for all borders with minimal duplication. See the bottom of this file.
         box-shadow: $border-bottom-default, $inset-border-right-frozen;
 
         &::before {
+          bottom: 0;
           // hover shadow
           right: $frozen-border-width;
-          bottom: 0;
         }
       }
 
@@ -102,9 +102,9 @@ for all borders with minimal duplication. See the bottom of this file.
         box-shadow: $inset-border-bottom-frozen, $border-right-default;
 
         &::before {
+          bottom: $frozen-border-width;
           // hover shadow
           right: 0;
-          bottom: $frozen-border-width;
         }
       }
     }
