@@ -17,9 +17,9 @@ $nav-divider-offset: $pt-grid-size * 5;
 .docs-nav-button {
   @include pt-flex-container(row, $pt-grid-size + 4px);
   align-items: center;
+  cursor: pointer;
 
   margin-left: -$nav-divider-offset;
-  cursor: pointer;
   padding: $pt-grid-size $sidebar-padding;
   padding-left: $nav-divider-offset + 4px;
 
@@ -31,8 +31,8 @@ $nav-divider-offset: $pt-grid-size * 5;
 
 .docs-nav-divider {
   @include divider-gradient($pt-divider-black, $pt-dark-divider-black);
-  margin-left: -$nav-divider-offset;
   background-image: linear-gradient(to right, rgba($black, 0) 0%, $pt-divider-black 40%);
   height: 1px;
+  margin-left: -$nav-divider-offset;
   padding: 0;
 }

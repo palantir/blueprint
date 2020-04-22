@@ -10,22 +10,22 @@ $banner-height: $pt-grid-size * 4;
 .docs-banner {
   @include pt-flex-container(row);
   @include overflow-ellipsis();
-  flex: 0 0 auto;
   align-items: center;
-  justify-content: center;
-
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: $pt-z-index-overlay - 1;
 
   box-shadow: inset 0 -1px 0 $pt-divider-black;
-  min-height: $banner-height;
-  padding: $pt-grid-size $pt-grid-size * 2;
-  text-align: center;
   // stylelint-disable declaration-no-important
   color: $white !important;
+  flex: 0 0 auto;
+  justify-content: center;
+  left: 0;
+  min-height: $banner-height;
+  padding: $pt-grid-size $pt-grid-size * 2;
+
+  position: fixed;
+  right: 0;
+  text-align: center;
+  top: 0;
+  z-index: $pt-z-index-overlay - 1;
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {

@@ -65,13 +65,13 @@ Styleguide control-group
   }
 
   .#{$ns}-input {
-    z-index: index($control-group-stack, "input-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
+    z-index: index($control-group-stack, "input-default");
 
     &:focus {
-      z-index: index($control-group-stack, "input-focus");
       border-radius: $pt-border-radius;
+      z-index: index($control-group-stack, "input-focus");
     }
 
     &[class*="#{$ns}-intent"] {
@@ -101,9 +101,9 @@ Styleguide control-group
   .#{$ns}-html-select select,
   .#{$ns}-select select {
     @include new-render-layer();
-    z-index: index($control-group-stack, "button-default");
     // inherit radius since it's most likely to be zero
     border-radius: inherit;
+    z-index: index($control-group-stack, "button-default");
 
     &:focus {
       z-index: index($control-group-stack, "button-focus");
@@ -195,14 +195,14 @@ Styleguide control-group
 
   // round the right corners of the right-most element
   > :last-child {
-    margin-right: 0;
     border-radius: 0 $pt-border-radius $pt-border-radius 0;
+    margin-right: 0;
   }
 
   // round all the corners of the only child element
   > :only-child {
-    margin-right: 0;
     border-radius: $pt-border-radius;
+    margin-right: 0;
   }
 
   // bring back border radius on these buttons
@@ -265,8 +265,8 @@ Styleguide control-group
     }
 
     > :first-child {
-      margin-top: 0;
       border-radius: $pt-border-radius $pt-border-radius 0 0;
+      margin-top: 0;
     }
 
     > :last-child {

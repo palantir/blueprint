@@ -8,8 +8,8 @@
   .docs-modifiers {
     display: flex;
     flex-direction: column;
-    margin: 0;
     height: 100%;
+    margin: 0;
   }
 
   .docs-interface-header {
@@ -18,8 +18,8 @@
 
     + .docs-section {
       flex-shrink: 0;
-      padding-right: $pt-grid-size * 2;
       padding-left: $pt-grid-size * 2;
+      padding-right: $pt-grid-size * 2;
     }
   }
 
@@ -39,8 +39,8 @@
 
   &.#{$ns}-dark {
     .docs-modifiers {
-      box-shadow: $pt-dark-elevation-shadow-4;
       background-color: $dark-sidebar-background-color;
+      box-shadow: $pt-dark-elevation-shadow-4;
     }
   }
 }

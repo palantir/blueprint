@@ -2,13 +2,13 @@
 // Licensed under the Apache License, Version 2.0.
 
 .docs-prop-details code {
+  background: none !important;
   // stylelint-disable declaration-no-important
   box-shadow: none !important;
-  background: none !important;
-  padding: 0;
   color: inherit !important;
   font-size: small;
   font-weight: 600;
+  padding: 0;
   // stylelint-enable declaration-no-important
 }
 
@@ -18,9 +18,9 @@
   &:empty { display: none; }
 
   &::before {
+    content: "=";
     display: inline-block;
     margin: 0 ($pt-grid-size / 2);
-    content: "=";
   }
 }
 
@@ -36,16 +36,16 @@
   &:empty { display: none; }
 
   .#{$ns}-tag {
-    margin-top: $pt-grid-size / 2;
     margin-right: $pt-grid-size;
+    margin-top: $pt-grid-size / 2;
   }
 }
 
 .docs-prop-name code::after {
   @include pt-icon();
+  line-height: small;
   margin-left: $pt-grid-size / 2;
   vertical-align: middle;
-  line-height: small;
 }
 
 .docs-prop-is-deprecated code {
@@ -69,22 +69,22 @@
 }
 
 .docs-interface-header {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  position: relative;
   box-shadow: 0 1px 0 $pt-divider-black;
-  padding: $pt-grid-size 0;
+  display: flex;
   font-family: $pt-font-family-monospace;
   font-size: $pt-font-size-large;
   font-weight: 600;
+  justify-content: space-between;
+  padding: $pt-grid-size 0;
+  position: relative;
 
   // optional interface description
   + .docs-section {
+    box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
     margin-top: $pt-grid-size;
-    box-shadow: 0 1px 0 $pt-divider-black;
   }
 
   .#{$ns}-dark & {
@@ -123,6 +123,6 @@
 
 // modifiers table parent
 .docs-modifiers {
-  margin-top: $heading-margin / 2;
   margin-bottom: $heading-margin;
+  margin-top: $heading-margin / 2;
 }

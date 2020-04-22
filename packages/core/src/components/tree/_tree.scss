@@ -57,17 +57,17 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 .#{$ns}-tree-node-list {
+  list-style: none;
   margin: 0;
   padding-left: 0;
-  list-style: none;
 }
 
 .#{$ns}-tree-root {
-  // lets us position hover/selection effects based on the width of the whole tree
-  position: relative;
   background-color: transparent;
   cursor: default;
   padding-left: 0;
+  // lets us position hover/selection effects based on the width of the whole tree
+  position: relative;
 }
 
 @for $i from 0 through 20 {
@@ -77,11 +77,11 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 .#{$ns}-tree-node-content {
-  display: flex;
   align-items: center;
-  width: 100%;
+  display: flex;
   height: $tree-row-height;
   padding-right: $pt-grid-size / 2;
+  width: 100%;
 
   &:hover {
     background-color: rgba($gray5, 0.4);
@@ -95,9 +95,9 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
 .#{$ns}-tree-node-caret {
   @include pt-icon-colors();
-  transform: rotate(0deg);
   cursor: pointer;
   padding: $tree-icon-spacing;
+  transform: rotate(0deg);
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
 
   &.#{$ns}-tree-node-caret-open {
@@ -111,8 +111,8 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 }
 
 .#{$ns}-tree-node-icon {
-  position: relative;
   margin-right: $tree-icon-spacing;
+  position: relative;
 }
 
 .#{$ns}-tree-node-label {
@@ -133,22 +133,22 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
 
   .#{$ns}-popover-wrapper,
   .#{$ns}-popover-target {
-    display: flex;
     align-items: center;
+    display: flex;
   }
 }
 
 .#{$ns}-tree-node.#{$ns}-disabled {
   .#{$ns}-tree-node-content {
     background-color: inherit;
-    cursor: not-allowed;
     color: $pt-text-color-disabled;
+    cursor: not-allowed;
   }
 
   .#{$ns}-tree-node-caret,
   .#{$ns}-tree-node-icon {
-    cursor: not-allowed;
     color: $pt-text-color-disabled;
+    cursor: not-allowed;
   }
 }
 

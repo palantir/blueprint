@@ -51,8 +51,8 @@
     }
 
     &--selected-range {
-      border-radius: 0;
       background-color: $daterangepicker-range-background-color-selected;
+      border-radius: 0;
 
       &:hover {
         background-color: $daterangepicker-range-background-color-selected-hover;
@@ -62,24 +62,24 @@
     // need to set rounded corners
     // stylelint-disable max-line-length
     &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
-      border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
     }
 
     &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
-      border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
     }
     // stylelint-enable max-line-length
 
     &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
-      border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
     }
 
     &--hovered-range-end:not(.DayPicker-Day--hovered-range-start) {
-      border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
     }
   }
 

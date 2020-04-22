@@ -57,8 +57,8 @@ $dark-table-border-color: $pt-dark-divider-white !default;
   th,
   td {
     padding: centered-text($table-row-height);
-    vertical-align: top;
     text-align: left;
+    vertical-align: top;
   }
 
   th {
@@ -107,8 +107,8 @@ table.#{$ns}-html-table {
 
     th,
     td {
-      padding-top: $small-vertical-padding;
       padding-bottom: $small-vertical-padding;
+      padding-top: $small-vertical-padding;
     }
   }
 

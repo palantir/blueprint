@@ -18,8 +18,8 @@ $select-popover-max-width: $pt-grid-size * 40 !default;
   }
 
   .#{$ns}-menu {
-    max-width: $select-popover-max-width;
     max-height: $select-popover-max-height;
+    max-width: $select-popover-max-width;
     overflow: auto;
     padding: 0;
 

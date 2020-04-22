@@ -41,8 +41,8 @@ $headings: (
 
 @each $tag, $props in $headings {
   %#{$tag} {
-    line-height: nth($props, 2);
     font-size: nth($props, 1);
+    line-height: nth($props, 2);
   }
 
   #{$tag}.#{$ns}-heading {
@@ -138,15 +138,15 @@ Styleguide running-text
     #{$tag} {
       @extend %#{$tag};
       @include heading-typography();
-      margin-top: $pt-grid-size * 4;
       margin-bottom: $pt-grid-size * 2;
+      margin-top: $pt-grid-size * 4;
     }
   }
 
   hr {
-    margin: ($pt-grid-size * 2) 0;
     border: none;
     border-bottom: 1px solid $pt-divider-black;
+    margin: ($pt-grid-size * 2) 0;
 
     .#{$ns}-dark & {
       border-color: $pt-dark-divider-white;
@@ -207,13 +207,13 @@ Styleguide typography.links
 */
 
 a {
-  text-decoration: none;
   color: $pt-link-color;
+  text-decoration: none;
 
   &:hover {
+    color: $pt-link-color;
     cursor: pointer;
     text-decoration: underline;
-    color: $pt-link-color;
   }
 
   #{$icon-classes} {
@@ -259,17 +259,17 @@ Styleguide preformatted
 
 %code {
   @include monospace-typography();
+  background: $pt-code-background-color;
 
   border-radius: $pt-border-radius;
   box-shadow: inset border-shadow(0.2);
-  background: $pt-code-background-color;
-  padding: 2px 5px;
   color: $pt-code-text-color;
   font-size: smaller;
+  padding: 2px 5px;
 
   .#{$ns}-dark & {
-    box-shadow: inset border-shadow(0.4);
     background: $pt-dark-code-background-color;
+    box-shadow: inset border-shadow(0.4);
     color: $pt-dark-code-text-color;
   }
 
@@ -286,31 +286,31 @@ Styleguide preformatted
 
 %code-block {
   @include monospace-typography();
-
-  display: block;
-  margin: $pt-grid-size 0;
+  background: $pt-code-background-color;
   border-radius: $pt-border-radius;
   box-shadow: inset 0 0 0 1px $pt-divider-black;
-  background: $pt-code-background-color;
-  padding: ($pt-grid-size * 1.3) ($pt-grid-size * 1.5) ($pt-grid-size * 1.2);
-  line-height: 1.4;
   color: $pt-text-color;
+
+  display: block;
   font-size: $pt-font-size - 1px;
+  line-height: 1.4;
+  margin: $pt-grid-size 0;
+  padding: ($pt-grid-size * 1.3) ($pt-grid-size * 1.5) ($pt-grid-size * 1.2);
   word-break: break-all;
   word-wrap: break-word;
 
   .#{$ns}-dark & {
-    box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
     background: $pt-dark-code-background-color;
+    box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
     color: $pt-dark-text-color;
   }
 
   > code {
-    box-shadow: none;
     background: none;
-    padding: 0;
+    box-shadow: none;
     color: inherit;
     font-size: inherit;
+    padding: 0;
   }
 }
 
@@ -323,28 +323,28 @@ Styleguide preformatted
 }
 
 %keyboard {
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  background: $white;
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-1;
-  background: $white;
-  min-width: $pt-button-height-small;
-  height: $pt-button-height-small;
-  padding: $pt-border-radius ($pt-border-radius * 2);
-  vertical-align: middle;
-  line-height: $pt-button-height-small;
   color: $pt-text-color-muted;
+  display: inline-flex;
   font-family: inherit;
   font-size: $pt-font-size-small;
+  height: $pt-button-height-small;
+  justify-content: center;
+  line-height: $pt-button-height-small;
+  min-width: $pt-button-height-small;
+  padding: $pt-border-radius ($pt-border-radius * 2);
+  vertical-align: middle;
 
   #{$icon-classes} {
     margin-right: $pt-grid-size / 2;
   }
 
   .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-1;
     background: $dark-gray5;
+    box-shadow: $pt-dark-elevation-shadow-1;
     color: $pt-dark-text-color-muted;
   }
 }
@@ -368,8 +368,8 @@ Styleguide blockquote
 */
 
 %blockquote {
-  margin: 0 0 $pt-grid-size;
   border-left: solid 4px rgba($gray4, 0.5);
+  margin: 0 0 $pt-grid-size;
   padding: 0 ($pt-grid-size * 2);
 
   .#{$ns}-dark & {
@@ -423,9 +423,9 @@ Styleguide lists
 }
 
 .#{$ns}-list-unstyled {
+  list-style: none;
   margin: 0;
   padding: 0;
-  list-style: none;
 
   li {
     padding: 0;

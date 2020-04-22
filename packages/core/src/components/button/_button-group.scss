@@ -99,15 +99,15 @@ Styleguide button-group
   &:not(.#{$ns}-minimal) {
     > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-button,
     > .#{$ns}-button:not(:first-child) {
-      border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
     }
 
     > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
-      margin-right: -$button-border-width;
-      border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      margin-right: -$button-border-width;
     }
   }
 
@@ -180,13 +180,13 @@ Styleguide button-group
   */
 
   &.#{$ns}-vertical {
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
     vertical-align: top;
 
     &.#{$ns}-fill {
-      width: unset;
       height: 100%;
+      width: unset;
     }
 
     .#{$ns}-button {

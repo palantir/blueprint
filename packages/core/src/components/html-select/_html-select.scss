@@ -30,9 +30,9 @@ Styleguide select
 .#{$ns}-html-select,
 .#{$ns}-select {
   display: inline-block;
+  letter-spacing: normal;
   position: relative;
   vertical-align: middle;
-  letter-spacing: normal;
 
   select {
     @extend %pt-select;
@@ -63,8 +63,8 @@ Styleguide select
 
     &::after, // CSS support
     .#{$ns}-icon {
-      top: ($pt-button-height-large - $pt-icon-size-standard) / 2;
       right: $pt-grid-size * 1.2;
+      top: ($pt-button-height-large - $pt-icon-size-standard) / 2;
     }
   }
 

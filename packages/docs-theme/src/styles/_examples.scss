@@ -17,8 +17,8 @@ $dark-options-background-color: $dark-gray5;
 
 // full-bleed wrapper for example
 .docs-example-frame {
-  position: relative;
   margin-top: $content-padding * 2;
+  position: relative;
   width: 100%;
 }
 
@@ -46,16 +46,16 @@ $dark-options-background-color: $dark-gray5;
 }
 
 .docs-example {
+  align-items: center;
+  background: $example-background-color;
+  border-radius: $example-frame-border-radius;
   display: flex;
   flex: 1 1 auto;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  border-radius: $example-frame-border-radius;
-  background: $example-background-color;
+  max-width: 100%;
   // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
   min-width: 0;
-  max-width: 100%;
   padding: $example-spacing / 2;
 
   .#{$ns}-dark & {
@@ -68,9 +68,9 @@ $dark-options-background-color: $dark-gray5;
 }
 
 .docs-example-options {
-  flex: 0 0 auto;
-  border-radius: $example-frame-border-radius;
   background-color: $options-background-color;
+  border-radius: $example-frame-border-radius;
+  flex: 0 0 auto;
   padding: $pt-grid-size * 2;
   text-align: left;
 
@@ -97,23 +97,23 @@ $dark-options-background-color: $dark-gray5;
   margin-top: $example-frame-spacing;
 
   .editor {
-    margin: 0;
+    background: $code-background-color;
     border-radius: $example-frame-border-radius;
     box-shadow: none;
-    background: $code-background-color;
+    margin: 0;
 
     .#{$ns}-dark & {
-      box-shadow: none;
       background: $dark-code-background-color;
+      box-shadow: none;
     }
   }
 }
 
 .docs-example-view-source {
-  display: block;
-  margin-top: $example-frame-spacing;
-  margin-bottom: $pt-grid-size * 4;
   border-radius: $example-frame-border-radius;
+  display: block;
+  margin-bottom: $pt-grid-size * 4;
+  margin-top: $example-frame-spacing;
 
   &.#{$ns}-button {
     height: $pt-button-height-large;

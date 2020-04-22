@@ -23,13 +23,13 @@ Styleguide skeleton
 
 @keyframes skeleton-glow {
   from {
-    border-color: $skeleton-color-start;
     background: $skeleton-color-start;
+    border-color: $skeleton-color-start;
   }
 
   to {
-    border-color: $skeleton-color-end;
     background: $skeleton-color-end;
+    border-color: $skeleton-color-end;
   }
 }
 
@@ -37,20 +37,20 @@ Styleguide skeleton
 // CSS properties that should always override consumer values use the "!important" rule.
 /* stylelint-disable declaration-no-important */
 .#{$ns}-skeleton {
-  border-color: $skeleton-color-start !important;
-  border-radius: 2px;
-  box-shadow: none !important;
+  animation: $skeleton-animation;
 
   // do not !important this for Firefox support
   background: $skeleton-color-start;
 
   // Prevent background color from extending to the border and overlappping
   background-clip: padding-box !important;
-  cursor: default;
+  border-color: $skeleton-color-start !important;
+  border-radius: 2px;
+  box-shadow: none !important;
 
   // Transparent text will occupy space but be invisible to the user
   color: transparent !important;
-  animation: $skeleton-animation;
+  cursor: default;
   pointer-events: none;
   user-select: none;
 

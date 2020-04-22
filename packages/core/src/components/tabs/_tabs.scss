@@ -36,28 +36,28 @@ $tab-indicator-width: 3px !default;
   // these tabs, not tabs that might be further
   // down the DOM hierarchy (i.e. tabs in tabs)
   > .#{$ns}-tab-list {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
 
     .#{$ns}-tab {
       border-radius: $pt-border-radius;
-      width: 100%;
       padding: 0 $pt-grid-size;
+      width: 100%;
 
       &[aria-selected="true"] {
-        box-shadow: none;
         background-color: rgba($pt-intent-primary, 0.2);
+        box-shadow: none;
       }
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      border-radius: $pt-border-radius;
       background-color: rgba($pt-intent-primary, 0.2);
+      border-radius: $pt-border-radius;
+      bottom: 0;
       height: auto;
+      left: 0;
+      right: 0;
+      top: 0;
     }
   }
 
@@ -71,14 +71,14 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab-list {
+  align-items: flex-end;
+  border: none;
   display: flex;
   flex: 0 0 auto;
-  align-items: flex-end;
-  position: relative;
-  margin: 0;
-  border: none;
-  padding: 0;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
 
   // this is fine.
   // stylelint-disable-next-line selector-no-universal
@@ -89,34 +89,34 @@ $tab-indicator-width: 3px !default;
 
 .#{$ns}-tab {
   @include overflow-ellipsis();
-  flex: 0 0 auto;
-  position: relative;
-  cursor: pointer;
-  max-width: 100%;
-  vertical-align: top;
-  line-height: $pt-button-height;
   color: $pt-text-color;
+  cursor: pointer;
+  flex: 0 0 auto;
   font-size: $pt-font-size;
+  line-height: $pt-button-height;
+  max-width: 100%;
+  position: relative;
+  vertical-align: top;
 
   // support for links in tab titles #363
   a {
+    color: inherit;
     display: block;
     text-decoration: none;
-    color: inherit;
   }
 
   .#{$ns}-tab-indicator-wrapper ~ & {
+    background-color: transparent !important;
     // these properties are only for static markup, therefore
     // we never want them if there's a tab indicator
     // stylelint-disable declaration-no-important
     box-shadow: none !important;
-    background-color: transparent !important;
     // stylelint-enable declaration-no-important
   }
 
   &[aria-disabled="true"] {
-    cursor: not-allowed;
     color: $pt-text-color-disabled;
+    cursor: not-allowed;
   }
 
   &[aria-selected="true"] {
@@ -134,8 +134,8 @@ $tab-indicator-width: 3px !default;
   }
 
   .#{$ns}-large > & {
-    line-height: $pt-button-height-large;
     font-size: $pt-font-size-large;
+    line-height: $pt-button-height-large;
   }
 }
 
@@ -148,22 +148,22 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab-indicator-wrapper {
+  left: 0;
+  pointer-events: none;
   position: absolute;
   top: 0;
-  left: 0;
   transform: translateX(0), translateY(0);
   transition: height, transform, width;
   transition-duration: $pt-transition-duration * 2;
   transition-timing-function: $pt-transition-ease;
-  pointer-events: none;
 
   .#{$ns}-tab-indicator {
+    background-color: $tab-color-selected;
+    bottom: 0;
+    height: $tab-indicator-width;
+    left: 0;
     position: absolute;
     right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: $tab-color-selected;
-    height: $tab-indicator-width;
   }
 
   &.#{$ns}-no-animation {

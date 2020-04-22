@@ -12,8 +12,8 @@ $attribute-modifier-color: $violet5;
 
 // title of a section
 .docs-title {
-  position: relative;
   margin: $heading-margin 0 ($heading-margin / 2);
+  position: relative;
 
   // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling
   .depth-1 > & {
@@ -25,19 +25,19 @@ $attribute-modifier-color: $violet5;
 // but it doesn't change the bounds of the element or interfere with interactions. (thanks React docs site!)
 // so the heading will appear _below_ the navbar (since the navbar covers the top 50px of window).
 .docs-anchor {
-  position: absolute;
   margin-top: -$content-padding * 2;
+  position: absolute;
 }
 
 .docs-anchor-link {
   @include pt-icon-colors();
-  position: absolute;
-  top: 50%;
   left: 0;
-  transform: translate(-100%, -50%);
+  line-height: $pt-icon-size-standard;
   opacity: 0;
   padding: $link-icon-padding;
-  line-height: $pt-icon-size-standard;
+  position: absolute;
+  top: 50%;
+  transform: translate(-100%, -50%);
 
   .#{$ns}-icon-standard {
     vertical-align: top;
@@ -55,12 +55,12 @@ $attribute-modifier-color: $violet5;
 
 // additions to the syntax theme
 .editor {
-  overflow: auto;
   color: inherit;
+  overflow: auto;
 
   .line {
-    padding-right: $pt-grid-size * 2;
     line-height: 1.5;
+    padding-right: $pt-grid-size * 2;
     white-space: nowrap;
   }
 
@@ -70,10 +70,10 @@ $attribute-modifier-color: $violet5;
 
     // color for {{:modifier}} to match modifier table
     + span {
-      border-radius: $pt-border-radius;
       background: rgba($attribute-modifier-color, 0.15);
-      padding: 0 3px;
+      border-radius: $pt-border-radius;
       color: $attribute-modifier-color;
+      padding: 0 3px;
     }
 
     // adjust colors for {{.modifier}}

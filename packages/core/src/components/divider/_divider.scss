@@ -6,11 +6,11 @@
 $divider-margin: $pt-grid-size / 2 !default;
 
 .#{$ns}-divider {
-  margin: $divider-margin;
+  border-bottom: 1px solid $pt-divider-black;
   // since the element is empty, it will occupy minimal space and only show
   // the appropriate border based on direction of container.
   border-right: 1px solid $pt-divider-black;
-  border-bottom: 1px solid $pt-divider-black;
+  margin: $divider-margin;
 
 
   .#{$ns}-dark & {

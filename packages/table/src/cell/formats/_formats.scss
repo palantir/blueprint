@@ -8,41 +8,41 @@
 }
 
 .#{$ns}-table-truncated-value {
-  position: absolute;
-  top: 0;
-  // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size * 3.5;
   left: $pt-grid-size;
   max-height: 100%;
 
   overflow: hidden;
+  position: absolute;
+  // note: changing this value can throw off the width calculation in truncated popover
+  right: $pt-grid-size * 3.5;
   text-overflow: ellipsis;
+  top: 0;
 }
 
 .#{$ns}-table-truncated-format-text {
-  position: absolute;
-  top: 0;
-  // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size;
   left: $pt-grid-size;
   max-height: 100%;
 
   overflow: hidden;
+  position: absolute;
+  // note: changing this value can throw off the width calculation in truncated popover
+  right: $pt-grid-size;
   text-overflow: ellipsis;
+  top: 0;
 }
 
 .#{$ns}-table-truncated-popover-target {
-  position: absolute;
-  top: 0;
-  right: $pt-grid-size / 2;
-  bottom: 0;
-
-  opacity: 0.3;
   border-radius: 3px;
+  bottom: 0;
   cursor: pointer;
 
+  opacity: 0.3;
+
   padding: 0 $pt-grid-size / 2;
+  position: absolute;
+  right: $pt-grid-size / 2;
   text-align: center;
+  top: 0;
 
   .#{$ns}-icon-standard {
     line-height: $cell-height;
@@ -62,12 +62,12 @@
 }
 
 .#{$ns}-table-truncated-popover {
-  min-width: 20 * $pt-grid-size;
-  max-width: 60 * $pt-grid-size;
+  font-family: $pt-font-family-monospace;
   max-height: 30 * $pt-grid-size;
+  max-width: 60 * $pt-grid-size;
+  min-width: 20 * $pt-grid-size;
   overflow: auto;
   padding: $pt-grid-size $pt-grid-size;
-  font-family: $pt-font-family-monospace;
 }
 
 .#{$ns}-table-popover-whitespace-pre {

@@ -66,15 +66,15 @@ $reorder-handle-width: 22px !default;
 
 .#{$ns}-table-reorder-handle-target {
   @include grabbable();
-  display: flex;
   align-items: center;
+  bottom: 0;
+  color: $pt-text-color-disabled;
+  display: flex;
   justify-content: center;
+  left: 0;
   position: absolute;
   top: 0;
-  bottom: 0;
-  left: 0;
   width: $reorder-handle-width;
-  color: $pt-text-color-disabled;
 
   &:hover {
     color: $pt-icon-color-hover;
@@ -105,13 +105,13 @@ $reorder-handle-width: 22px !default;
 // The wide, transparent, clickable target that contains the
 // thin resize handle bar
 .#{$ns}-table-resize-handle-target {
-  position: absolute;
   opacity: 0;
+  position: absolute;
+  user-select: none;
   // Move the handle target above the following cell
   // this allows the mouse to hover the target on both
   // sides when the mouse is within the padding distance
   z-index: $pt-z-index-overlay;
-  user-select: none;
 
   &:hover,
   &.#{$ns}-table-dragging {
@@ -119,26 +119,26 @@ $reorder-handle-width: 22px !default;
   }
 
   &.#{$ns}-table-resize-vertical {
-    top: 0;
-    right: 0;
     bottom: -$cell-border-width;
     cursor: $resize-vertical-cursor;
+    right: 0;
+    top: 0;
     width: $resize-handle-target-width;
   }
 
   &.#{$ns}-table-resize-horizontal {
-    right: -$cell-border-width;
     bottom: 0;
-    left: 0;
     cursor: $resize-horizontal-cursor;
     height: $resize-handle-target-width;
+    left: 0;
+    right: -$cell-border-width;
   }
 }
 
 .#{$ns}-table-resize-handle {
+  background-color: $resize-handle-color;
   position: absolute;
   z-index: $pt-z-index-overlay;
-  background-color: $resize-handle-color;
 
   &.#{$ns}-table-dragging {
     background-color: $resize-handle-dragging-color;
@@ -146,23 +146,23 @@ $reorder-handle-width: 22px !default;
 }
 
 .#{$ns}-table-resize-vertical .#{$ns}-table-resize-handle {
-  top: 0;
   bottom: 0;
   left: $resize-handle-padding;
+  top: 0;
   width: $resize-handle-width;
 }
 
 .#{$ns}-table-resize-horizontal .#{$ns}-table-resize-handle {
-  top: $resize-handle-padding;
-  right: 0;
-  left: 0;
   height: $resize-handle-width;
+  left: 0;
+  right: 0;
+  top: $resize-handle-padding;
 }
 
 .#{$ns}-table-resize-guides .#{$ns}-table-horizontal-guide {
-  margin-top: $resize-handle-position-correction;
   background-color: $resize-handle-dragging-color;
   height: $resize-handle-width;
+  margin-top: $resize-handle-position-correction;
 
   &.#{$ns}-table-horizontal-guide-flush-top {
     margin-top: 0;
@@ -170,8 +170,8 @@ $reorder-handle-width: 22px !default;
 }
 
 .#{$ns}-table-resize-guides .#{$ns}-table-vertical-guide {
-  margin-left: $resize-handle-position-correction;
   background-color: $resize-handle-dragging-color;
+  margin-left: $resize-handle-position-correction;
   width: $resize-handle-width;
 
   &.#{$ns}-table-vertical-guide-flush-left {

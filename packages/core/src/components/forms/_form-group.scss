@@ -46,9 +46,9 @@ Styleguide form-group
   }
 
   .#{$ns}-form-helper-text {
-    margin-top: $pt-grid-size / 2;
     color: $pt-text-color-muted;
     font-size: $pt-font-size-small;
+    margin-top: $pt-grid-size / 2;
   }
 
   // stylelint-disable-next-line order/declaration-block-order
@@ -61,17 +61,17 @@ Styleguide form-group
   }
 
   &.#{$ns}-inline {
-    flex-direction: row;
     align-items: flex-start;
+    flex-direction: row;
 
     &.#{$ns}-large label.#{$ns}-label {
-      margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height-large;
+      margin: 0 $pt-grid-size 0 0;
     }
 
     label.#{$ns}-label {
-      margin: 0 $pt-grid-size 0 0;
       line-height: $pt-input-height;
+      margin: 0 $pt-grid-size 0 0;
     }
   }
 

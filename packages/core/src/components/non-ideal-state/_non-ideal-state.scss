@@ -23,10 +23,10 @@ Styleguide non-ideal-state
 .#{$ns}-non-ideal-state {
   @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;
-  justify-content: center;
-  width: 100%;
   height: 100%;
+  justify-content: center;
   text-align: center;
+  width: 100%;
 
   > * {
     max-width: $pt-grid-size * 40;

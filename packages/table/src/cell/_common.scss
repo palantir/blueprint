@@ -23,10 +23,10 @@ $cell-transition-duration: $pt-transition-duration * 3;
 
 @mixin cell() {
   display: inline-block;
-  height: $cell-height;
-  padding: $cell-padding;
-  line-height: $cell-height;
   font-size: $pt-font-size-small;
+  height: $cell-height;
+  line-height: $cell-height;
+  padding: $cell-padding;
   transition: color $cell-transition-duration;
 
   .#{$ns}-dark & {
@@ -49,9 +49,9 @@ $cell-transition-duration: $pt-transition-duration * 3;
 }
 
 @mixin cell-large() {
+  font-size: $pt-font-size;
   height: $large-cell-height;
   line-height: $large-cell-height;
-  font-size: $pt-font-size;
 }
 
 @mixin cell-cursors() {

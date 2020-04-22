@@ -14,9 +14,9 @@ $track-height: $track-size !default;
 
 .#{$ns}-slider {
   @include slider-orientation($pt-input-height-large, $vertical: false);
-  position: relative;
-  outline: none;
   cursor: default;
+  outline: none;
+  position: relative;
   user-select: none;
 
   &:hover {
@@ -28,8 +28,8 @@ $track-height: $track-size !default;
   }
 
   &.#{$ns}-disabled {
-    opacity: 0.5;
     cursor: not-allowed;
+    opacity: 0.5;
   }
 
   &.#{$ns}-slider-unlabeled {
@@ -64,14 +64,14 @@ $track-height: $track-size !default;
 
 .#{$ns}-slider-handle {
   @include pt-button();
-  position: absolute;
-  top: 0;
-  left: 0;
   border-radius: $pt-border-radius;
   box-shadow: $button-box-shadow-overlay;
   cursor: pointer;
-  width: $handle-size;
   height: $handle-size;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: $handle-size;
 
   // ensure target handle's label always covers neighbors
   &:focus {
@@ -80,9 +80,9 @@ $track-height: $track-size !default;
 
   &:hover {
     @include pt-button-hover();
-    z-index: 2;
     box-shadow: $button-box-shadow-overlay;
     cursor: grab;
+    z-index: 2;
   }
 
   &.#{$ns}-active {
@@ -92,8 +92,8 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-disabled & {
-    box-shadow: none;
     background: $gray5;
+    box-shadow: none;
     // easy way to avoid lots of special cases to ignore mouse states when disabled:
     pointer-events: none;
   }
@@ -112,21 +112,21 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-dark .#{$ns}-disabled & {
+    background: $gray1;
     border-color: $gray1;
     box-shadow: none;
-    background: $gray1;
   }
 
   .#{$ns}-slider-label {
-    margin-left: $handle-size / 2;
+    background: $tooltip-background-color;
     border-radius: $pt-border-radius;
     box-shadow: $pt-tooltip-box-shadow;
-    background: $tooltip-background-color;
     color: $tooltip-text-color;
+    margin-left: $handle-size / 2;
 
     .#{$ns}-dark & {
-      box-shadow: $pt-dark-tooltip-box-shadow;
       background: $dark-tooltip-background-color;
+      box-shadow: $pt-dark-tooltip-box-shadow;
       color: $dark-tooltip-text-color;
     }
 
@@ -141,14 +141,14 @@ $track-height: $track-size !default;
   }
 
   &.#{$ns}-start {
-    border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
   }
 
   &.#{$ns}-end {
-    margin-left: $handle-size / 2;
-    border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-left: $handle-size / 2;
 
     .#{$ns}-slider-label {
       margin-left: 0;
@@ -159,11 +159,11 @@ $track-height: $track-size !default;
 .#{$ns}-slider-label {
   @include slider-label-orientation($label-offset);
   display: inline-block;
-  position: absolute;
-  padding: ($pt-grid-size / 5) ($pt-grid-size / 2);
-  vertical-align: top;
-  line-height: 1;
   font-size: $pt-font-size-small;
+  line-height: 1;
+  padding: ($pt-grid-size / 5) ($pt-grid-size / 2);
+  position: absolute;
+  vertical-align: top;
 }
 
 .#{$ns}-slider.#{$ns}-vertical {
@@ -186,20 +186,20 @@ $track-height: $track-size !default;
     top: auto;
 
     .#{$ns}-slider-label {
-      margin-top: -$handle-size / 2;
       margin-left: 0;
+      margin-top: -$handle-size / 2;
     }
 
     &.#{$ns}-end,
     &.#{$ns}-start {
+      height: $handle-size / 2;
       margin-left: 0;
       width: $handle-size;
-      height: $handle-size / 2;
     }
 
     &.#{$ns}-start {
-      border-top-left-radius: 0;
       border-bottom-right-radius: $pt-border-radius;
+      border-top-left-radius: 0;
 
       .#{$ns}-slider-label {
         transform: translate($label-offset);
@@ -207,10 +207,10 @@ $track-height: $track-size !default;
     }
 
     &.#{$ns}-end {
-      margin-bottom: $handle-size / 2;
-      border-top-left-radius: $pt-border-radius;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+      border-top-left-radius: $pt-border-radius;
+      margin-bottom: $handle-size / 2;
     }
   }
 }

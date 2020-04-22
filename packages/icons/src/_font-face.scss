@@ -34,8 +34,8 @@
 ) {
   @font-face {
     font-family: $font-family;
-    font-weight: $font-weight;
     font-style: $font-style;
+    font-weight: $font-weight;
 
     src: font-source-declaration(
       $font-family,

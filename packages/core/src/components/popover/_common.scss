@@ -24,22 +24,22 @@ $dark-popover-background-color: $dark-gray4 !default;
   $computed-arrow-offset: ($arrow-diagonal-half-size - $arrow-square-size) * 0.5 + $arrow-offset;
 
   .#{$ns}-popover-arrow {
+    height: $arrow-square-size;
     position: absolute;
     width: $arrow-square-size;
-    height: $arrow-square-size;
 
     &::before {
+      height: floor($arrow-diagonal-half-size - 1);
       margin: ceil(($arrow-square-size - $arrow-diagonal-half-size) * 0.5);
       // - 1 to compenstate for transparent pixel border shadow
       width: floor($arrow-diagonal-half-size - 1);
-      height: floor($arrow-diagonal-half-size - 1);
     }
   }
 
   // shift content away from target edge to make space for the arrow
   .#{$ns}-tether-element-attached-bottom.#{$ns}-tether-target-attached-top > & {
-    margin-top: -$content-margin;
     margin-bottom: $content-margin;
+    margin-top: -$content-margin;
 
     > .#{$ns}-popover-arrow {
       bottom: $arrow-position;
@@ -75,11 +75,11 @@ $dark-popover-background-color: $dark-gray4 !default;
   }
 
   .#{$ns}-tether-element-attached-right.#{$ns}-tether-target-attached-left > & {
-    // we keep the positive right margin for ease of arrow positioning.
-    margin-right: $content-margin;
     // div will expand to the right and parent div won't be repositioned,
     // so we need to use negative left margin to move content.
     margin-left: -$content-margin;
+    // we keep the positive right margin for ease of arrow positioning.
+    margin-right: $content-margin;
 
     > .#{$ns}-popover-arrow {
       right: $arrow-position;

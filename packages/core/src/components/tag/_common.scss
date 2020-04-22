@@ -23,19 +23,19 @@ $tag-round-adjustment: 2px !default;
   @include pt-tag-interactive($tag-default-color, 1);
   @include pt-flex-container(row, $tag-icon-spacing, inline);
   align-items: center;
-
-  position: relative;
+  background-color: $tag-default-color;
   border: none;
   border-radius: $pt-border-radius;
   box-shadow: none;
-  background-color: $tag-default-color;
-  min-width: $tag-height;
-  max-width: 100%;
-  min-height: $tag-height;
-  padding: $tag-padding-top $tag-padding;
-  line-height: $tag-line-height;
   color: $pt-dark-text-color;
   font-size: $pt-font-size-small;
+  line-height: $tag-line-height;
+  max-width: 100%;
+  min-height: $tag-height;
+  min-width: $tag-height;
+  padding: $tag-padding-top $tag-padding;
+
+  position: relative;
 
   &:focus {
     @include focus-outline(0);
@@ -43,9 +43,9 @@ $tag-round-adjustment: 2px !default;
 
   &.#{$ns}-round {
     border-radius: $tag-height-large;
+    padding-left: $tag-padding + $tag-round-adjustment;
     // optical adjustment for rounded tags
     padding-right: $tag-padding + $tag-round-adjustment;
-    padding-left: $tag-padding + $tag-round-adjustment;
   }
 
   .#{$ns}-dark & {
@@ -66,16 +66,16 @@ $tag-round-adjustment: 2px !default;
 
 @mixin pt-tag-large() {
   @include pt-flex-margin(row, $tag-icon-spacing-large);
-  min-width: $tag-height-large;
-  min-height: $tag-height-large;
-  padding: 0 $tag-padding-large;
-  line-height: $tag-line-height-large;
   font-size: $pt-font-size;
+  line-height: $tag-line-height-large;
+  min-height: $tag-height-large;
+  min-width: $tag-height-large;
+  padding: 0 $tag-padding-large;
 
   &.#{$ns}-round {
+    padding-left: $tag-padding-large + $tag-round-adjustment;
     // optical adjustment for rounded tags
     padding-right: $tag-padding-large + $tag-round-adjustment;
-    padding-left: $tag-padding-large + $tag-round-adjustment;
   }
 }
 
@@ -158,24 +158,24 @@ $tag-round-adjustment: 2px !default;
 }
 
 @mixin pt-tag-remove() {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
   display: flex;
-  opacity: 0.5;
+  margin-bottom: -$tag-padding-top;
+  // stylelint-disable-next-line declaration-no-important
+  margin-right: -$tag-padding !important;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
   margin-top: -$tag-padding-top;
-  // stylelint-disable-next-line declaration-no-important
-  margin-right: -$tag-padding !important;
-  margin-bottom: -$tag-padding-top;
-  border: none;
-  background: none;
-  cursor: pointer;
+  opacity: 0.5;
   padding: $tag-padding-top;
   padding-left: 0;
-  color: inherit;
 
   &:hover {
-    opacity: 0.8;
     background: none;
+    opacity: 0.8;
     text-decoration: none;
   }
 

@@ -19,13 +19,13 @@ $popover-width: $pt-grid-size * 35 !default;
     $pt-border-shadow-opacity
   );
   @include scale-transition();
+  border-radius: $pt-border-radius;
   display: inline-block;
   z-index: $pt-z-index-overlay;
-  border-radius: $pt-border-radius;
 
   .#{$ns}-popover-content {
-    position: relative;
     border-radius: $pt-border-radius;
+    position: relative;
   }
 
   &.#{$ns}-popover-content-sizing {
@@ -75,11 +75,11 @@ $popover-width: $pt-grid-size * 35 !default;
 
 // the box-shadow under the arrow SVG paths
 .#{$ns}-popover-arrow::before {
+  border-radius: $pt-border-radius - 1;
+  content: "";
   display: block;
   position: absolute;
   transform: rotate(45deg);
-  border-radius: $pt-border-radius - 1;
-  content: "";
 }
 
 // remove arrow when popover is pinned inside its container

@@ -30,24 +30,24 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin position-all($position, $value) {
-  position: $position;
-  top: $value;
-  right: $value;
   bottom: $value;
   left: $value;
+  position: $position;
+  right: $value;
+  top: $value;
 }
 
 @mixin base-typography() {
-  text-transform: none;
-  line-height: $pt-line-height;
-  letter-spacing: 0;
   font-size: $pt-font-size;
   font-weight: 400;
+  letter-spacing: 0;
+  line-height: $pt-line-height;
+  text-transform: none;
 }
 
 @mixin running-typography() {
-  line-height: 1.5;
   font-size: $pt-font-size;
+  line-height: 1.5;
 }
 
 @mixin heading-typography() {
@@ -60,8 +60,8 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin monospace-typography() {
-  text-transform: none;
   font-family: $pt-font-family-monospace;
+  text-transform: none;
 }
 
 @mixin overflow-ellipsis() {

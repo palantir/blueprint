@@ -42,17 +42,17 @@ $dark-elevation-shadows: (
 );
 
 .#{$ns}-card {
+  background-color: $card-background-color;
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-0;
-  background-color: $card-background-color;
   padding: $card-padding;
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease,
               box-shadow ($pt-transition-duration * 2) $pt-transition-ease;
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-0;
     background-color: $dark-card-background-color;
+    box-shadow: $pt-dark-elevation-shadow-0;
   }
 }
 
@@ -79,8 +79,8 @@ $dark-elevation-shadows: (
   }
 
   &:active {
-    opacity: 0.9;
     box-shadow: $pt-elevation-shadow-1;
+    opacity: 0.9;
     transition-duration: 0;
 
     &.#{$ns}-dark,
