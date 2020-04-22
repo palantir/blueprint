@@ -7,7 +7,7 @@ set -o pipefail
 
 scripts_dir="$( dirname "$(readlink -f "$0")" )"
 bin="$scripts_dir/../node_modules/.bin"
-duplicates="$("$bin/yarn-deduplicate" "$scripts_dir/../yarn.lock" --list)"
+duplicates="$("$bin/yarn-deduplicate" "$scripts_dir/../yarn.lock" --strategy fewer --list)"
 
 if [[ $duplicates ]]; then
     echo "Found duplicate blocks in yarn.lock which can be cleaned up. Please run 'yarn-deduplicate yarn.lock --strategy fewer'"
