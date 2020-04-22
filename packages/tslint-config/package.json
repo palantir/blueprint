@@ -9,7 +9,7 @@
   "dependencies": {
     "tslib": "~1.10.0",
     "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "^4.0.0"
+    "tslint-react": "^5.0.0"
   },
   "peerDependencies": {
     "tslint": "^6.1.1"
