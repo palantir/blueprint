@@ -29,6 +29,18 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/datetime
 ```
 
+Import CSS with a JS bundler like webpack:
+
+```js
+@import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+```
+
+...or in plain HTML:
+
+```html
+<link href="path/to/node_modules/@blueprintjs/datetime/lib/css/blueprint-datetime.css" rel="stylesheet" />
+```
+
 @page datepicker
 @page daterangepicker
 @page timepicker
