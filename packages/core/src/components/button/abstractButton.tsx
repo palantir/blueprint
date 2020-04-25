@@ -39,7 +39,7 @@ export interface IButtonProps extends IActionProps {
     alignText?: Alignment;
 
     /** A ref handler that receives the native HTML element backing this component. */
-    elementRef?: (ref: HTMLElement | null) => any;
+    elementRef?: React.Ref<HTMLElement>;
 
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
@@ -86,12 +86,23 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         isActive: false,
     };
 
-    protected buttonRef: HTMLElement;
-    protected refHandlers = {
-        button: (ref: HTMLElement) => {
+    protected getAbstractButtonRef = (): React.Ref<any> => {
+        if (this.props.elementRef && !Utils.isFunction(this.props.elementRef)) {
+            this.buttonRef = this.props.elementRef as React.RefObject<HTMLElement>
+
+            return this.props.elementRef;
+        }
+
+        return (ref: HTMLElement) => {
             this.buttonRef = ref;
-            Utils.safeInvoke(this.props.elementRef, ref);
-        },
+
+            Utils.safeInvoke(this.props.elementRef as ((ref: HTMLElement | null) => any), ref);
+        }
+    }
+
+    protected buttonRef: HTMLElement | React.RefObject<HTMLElement>;
+    protected refHandlers = {
+        button: this.getAbstractButtonRef(),
     };
 
     private currentKeyDown: number = null;
@@ -148,7 +159,12 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
-            this.buttonRef.click();
+
+            if ((this.buttonRef as HTMLElement).click) {
+                (this.buttonRef as HTMLElement).click();
+            } else if ((this.buttonRef as React.RefObject<HTMLElement>).current) {
+                (this.buttonRef as React.RefObject<HTMLElement>).current.click();
+            }
         }
         this.currentKeyDown = null;
         Utils.safeInvoke(this.props.onKeyUp, e);
