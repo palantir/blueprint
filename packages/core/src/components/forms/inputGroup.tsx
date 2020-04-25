@@ -46,7 +46,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     fill?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /**
      * Element to render on the left side of input.  This prop is mutually exclusive

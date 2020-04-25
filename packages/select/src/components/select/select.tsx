@@ -86,7 +86,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
-            Utils.safeInvokeMember(this.props.inputProps, "inputRef", ref);
+            Utils.safeInvokeMember(this.props.inputProps as { inputRef: (ref: HTMLInputElement | null) => any }, "inputRef", ref);
         },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };

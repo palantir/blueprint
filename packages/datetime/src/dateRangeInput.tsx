@@ -234,11 +234,11 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     private refHandlers = {
         endInputRef: (ref: HTMLInputElement) => {
             this.endInputRef = ref;
-            Utils.safeInvoke(this.props.endInputProps.inputRef, ref);
+            Utils.safeInvoke(this.props.endInputProps.inputRef as (ref: HTMLInputElement | null) => any, ref);
         },
         startInputRef: (ref: HTMLInputElement) => {
             this.startInputRef = ref;
-            Utils.safeInvoke(this.props.startInputProps.inputRef, ref);
+            Utils.safeInvoke(this.props.startInputProps.inputRef as (ref: HTMLInputElement | null) => any, ref);
         },
     };
 

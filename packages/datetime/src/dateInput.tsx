@@ -262,7 +262,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     private inputRef = (ref: HTMLInputElement | null) => {
         this.inputEl = ref;
         const { inputProps = {} } = this.props;
-        Utils.safeInvoke(inputProps.inputRef, ref);
+        Utils.safeInvoke(inputProps.inputRef as (ref: HTMLInputElement | null) => any, ref);
     };
 
     private isDateInRange(value: Date) {
