@@ -117,7 +117,11 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
-            Utils.safeInvokeMember(this.props.inputProps as { inputRef: (ref: HTMLInputElement | null) => any }, "inputRef", ref);
+            Utils.safeInvokeMember(
+                this.props.inputProps as { inputRef: (ref: HTMLInputElement | null) => any },
+                "inputRef",
+                ref,
+            );
         },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };

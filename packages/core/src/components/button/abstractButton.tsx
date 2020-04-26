@@ -88,7 +88,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
 
     protected getAbstractButtonRef = (): React.Ref<any> => {
         if (this.props.elementRef && !Utils.isFunction(this.props.elementRef)) {
-            this.buttonRef = this.props.elementRef as React.RefObject<HTMLElement>
+            this.buttonRef = this.props.elementRef as React.RefObject<HTMLElement>;
 
             return this.props.elementRef;
         }
@@ -96,9 +96,9 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         return (ref: HTMLElement) => {
             this.buttonRef = ref;
 
-            Utils.safeInvoke(this.props.elementRef as ((ref: HTMLElement | null) => any), ref);
-        }
-    }
+            Utils.safeInvoke(this.props.elementRef as (ref: HTMLElement | null) => any, ref);
+        };
+    };
 
     protected buttonRef: HTMLElement | React.RefObject<HTMLElement>;
     protected refHandlers = {

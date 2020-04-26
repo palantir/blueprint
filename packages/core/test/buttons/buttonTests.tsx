@@ -106,9 +106,12 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         it("matches buttonRef with elementRef using createRef", done => {
             const elementRef = React.createRef<HTMLElement>();
 
-            const wrapper = button({
-                elementRef,
-            }, true);
+            const wrapper = button(
+                {
+                    elementRef,
+                },
+                true,
+            );
 
             // wait for the whole lifecycle to run
             setTimeout(() => {
@@ -119,11 +122,16 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         it("matches buttonRef with elementRef using callback", done => {
             let elementRef: HTMLElement = null;
-            const buttonRefCallback = (ref: HTMLElement) => { elementRef = ref};
+            const buttonRefCallback = (ref: HTMLElement) => {
+                elementRef = ref;
+            };
 
-            const wrapper = button({
-                elementRef: buttonRefCallback
-            }, true);
+            const wrapper = button(
+                {
+                    elementRef: buttonRefCallback,
+                },
+                true,
+            );
 
             // wait for the whole lifecycle to run
             setTimeout(() => {
@@ -139,10 +147,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             const Test = () => {
                 elementRef = React.useRef<HTMLButtonElement>(null);
 
-                return (
-                    <Component elementRef={elementRef} />
-                );
-            }
+                return <Component elementRef={elementRef} />;
+            };
 
             const wrapper = mount(<Test />);
 
