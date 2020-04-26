@@ -112,7 +112,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
             // wait for the whole lifecycle to run
             setTimeout(() => {
-                assert.equal(elementRef.current, (wrapper.instance() as any ).buttonRef.current);
+                assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef.current);
                 done();
             }, 0);
         });
@@ -127,7 +127,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
             // wait for the whole lifecycle to run
             setTimeout(() => {
-                assert.equal(elementRef, (wrapper.instance() as any ).buttonRef);
+                assert.equal(elementRef, (wrapper.instance() as any).buttonRef);
                 done();
             }, 0);
         });
@@ -148,7 +148,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
             // wait for the whole lifecycle to run
             setTimeout(() => {
-                assert.equal(elementRef.current, (wrapper.find(Component).instance() as any ).buttonRef.current);
+                assert.equal(elementRef.current, (wrapper.find(Component).instance() as any).buttonRef.current);
                 done();
             }, 0);
         });
