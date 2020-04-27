@@ -30,7 +30,7 @@ import {
     Switch,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { IBlueprintExampleData } from "../../tags/reactExamples";
+import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IDrawerExampleState {
     autoFocus: boolean;

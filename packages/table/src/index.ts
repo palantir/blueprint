@@ -26,13 +26,9 @@ export { Column, IColumnProps } from "./column";
 
 export { AnyRect, Clipboard, Grid, Rect, RenderMode, Utils } from "./common/index";
 
-export {
-    IClientCoordinates,
-    ICoordinateData,
-    IDragHandler,
-    IDraggableProps,
-    Draggable,
-} from "./interactions/draggable";
+export { IDraggableProps, Draggable } from "./interactions/draggable";
+
+export { IClientCoordinates, ICoordinateData, IDragHandler } from "./interactions/dragTypes";
 
 export { CopyCellsMenuItem, IContextMenuRenderer, IMenuContext } from "./interactions/menus";
 

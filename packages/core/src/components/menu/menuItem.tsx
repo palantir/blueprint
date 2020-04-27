@@ -24,6 +24,7 @@ import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
+// eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
 export interface IMenuItemProps extends IActionProps, ILinkProps {

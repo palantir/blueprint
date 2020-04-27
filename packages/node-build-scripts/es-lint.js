@@ -42,6 +42,8 @@ if (anyFilesToLint.length === 0) {
     process.exit();
 }
 
+process.env.LINT_SCRIPT = "true";
+
 const eslint = spawn("eslint", [...commandLineOptions, absoluteFileGlob]);
 
 eslint.stdout.pipe(outputStream);

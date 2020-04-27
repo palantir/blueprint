@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isFunction } from "../utils";
+import { isFunction } from "./functionUtils";
 
 /*
 Understanding the types here:

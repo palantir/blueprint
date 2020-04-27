@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IClientCoordinates, ICoordinateData, IDragHandler } from "./draggable";
+import { IClientCoordinates, ICoordinateData, IDragHandler } from "./dragTypes";
 
 export class DragEvents {
     public static DOUBLE_CLICK_TIMEOUT_MSEC = 500;

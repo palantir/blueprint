@@ -23,7 +23,7 @@ import { IFocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
-import { IClientCoordinates, ICoordinateData } from "../interactions/draggable";
+import { IClientCoordinates, ICoordinateData } from "../interactions/dragTypes";
 import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";

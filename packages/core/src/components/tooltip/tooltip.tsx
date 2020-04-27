@@ -19,6 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
+// eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 

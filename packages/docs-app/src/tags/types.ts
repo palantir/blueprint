@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-import { ITag } from "@documentalist/client";
-import * as React from "react";
-import { CssExample } from "./css";
-import { Heading } from "./heading";
-import { SeeTag } from "./see";
-import { TypescriptExample } from "./typescript";
-
-export function createDefaultRenderers(): Record<string, React.ComponentType<ITag>> {
-    return {
-        css: CssExample,
-        heading: Heading,
-        interface: TypescriptExample,
-        page: () => null,
-        see: SeeTag,
-    };
+/** Interface for `IExampleProps` `data` in this here Blueprint docs-app. */
+export interface IBlueprintExampleData {
+    /** CSS class of theme, typically `""` or `Classes.DARK`. */
+    themeName: string;
 }

@@ -19,7 +19,8 @@ import * as React from "react";
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
 import { IRegion, RegionCardinality, Regions } from "../regions";
-import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
+import { Draggable, IDraggableProps } from "./draggable";
+import { ICoordinateData } from "./dragTypes";
 
 export interface IReorderableProps {
     /**
