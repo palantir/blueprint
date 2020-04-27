@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { IBlueprintExampleData } from "../../tags/reactExamples";
+import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IDialogExampleState {
     autoFocus: boolean;
