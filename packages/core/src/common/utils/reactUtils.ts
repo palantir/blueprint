@@ -94,4 +94,3 @@ export function isElementOfType<P = {}>(
         element.type.displayName === ComponentType.displayName
     );
 }
-
