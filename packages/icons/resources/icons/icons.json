@@ -3406,5 +3406,11 @@
     "iconName": "virus",
     "tags": "virus, doctor, medical, examination, disease, pandemic, sick",
     "group": "interface"
+  },
+  {
+    "displayName": "Inherited group membership",
+    "iconName": "inherited-group",
+    "tags": "group, inheritance, inherited, membership, people",
+    "group": "interface"
   }
 ]
