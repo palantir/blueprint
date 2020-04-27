@@ -5,7 +5,7 @@ const plugins = [];
 const settings = {};
 const rules = {};
 
-if (process.env.CI) {
+if (process.env.LINT_SCRIPT) {
     // in CI, we don't wan to run eslint-plugin-prettier because it has a ~50% performance penalty.
     // instead, run yarn format-check at the root to ensure prettier formatting.
     // also, run import/no-cycle only in CI because it is slow.
