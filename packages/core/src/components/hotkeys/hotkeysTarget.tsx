@@ -19,8 +19,8 @@ import * as React from "react";
 import { IConstructor } from "../../common/constructor";
 import { HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT, HOTKEYS_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
 import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
-import { IHotkeysProps } from "./hotkeys";
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
+import { IHotkeysProps } from "./hotkeysTypes";
 
 export interface IHotkeysTargetComponent extends React.Component {
     /** Components decorated with the `@HotkeysTarget` decorator must implement React's component `render` function. */
