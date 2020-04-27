@@ -12,6 +12,7 @@ $tag-margin: ($pt-input-height - $tag-height) / 2 !default;
 
 $tag-height-large: $pt-grid-size * 3 !default;
 $tag-line-height-large: $pt-icon-size-large !default;
+$tag-padding-large-top: ($tag-height-large - $tag-line-height-large) / 2 !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 
 $tag-icon-spacing: ($tag-height - 12px) / 2 !default;
@@ -70,7 +71,7 @@ $tag-round-adjustment: 2px !default;
   line-height: $tag-line-height-large;
   min-height: $tag-height-large;
   min-width: $tag-height-large;
-  padding: 0 $tag-padding-large;
+  padding: $tag-padding-large-top $tag-padding-large;
 
   &.#{$ns}-round {
     padding-left: $tag-padding-large + $tag-round-adjustment;
