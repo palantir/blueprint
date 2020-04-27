@@ -15,6 +15,7 @@
   display: flex;
   flex-shrink: 0;
   height: $pt-grid-size * 3;
+  z-index: 1;
 
   .#{$ns}-dark & {
     box-shadow: 0 1px $pt-dark-divider-white;
