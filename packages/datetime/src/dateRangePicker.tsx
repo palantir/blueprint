@@ -21,8 +21,8 @@ import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarEle
 import { polyfill } from "react-lifecycles-compat";
 
 import * as DateClasses from "./common/classes";
+import { DateRange } from "./common/dateRange";
 import * as DateUtils from "./common/dateUtils";
-import DateRange = DateUtils.DateRange;
 
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
