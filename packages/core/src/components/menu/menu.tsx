@@ -20,6 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { MenuDivider } from "./menuDivider";
+// eslint-disable-next-line import/no-cycle
 import { MenuItem } from "./menuItem";
 
 export interface IMenuProps extends IProps, React.HTMLAttributes<HTMLUListElement> {

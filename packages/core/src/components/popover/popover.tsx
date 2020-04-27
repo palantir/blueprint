@@ -26,6 +26,7 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
+// eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
 import { PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
