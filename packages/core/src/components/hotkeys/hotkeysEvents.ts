@@ -19,8 +19,8 @@ import { isElementOfType, safeInvoke } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
-import { IHotkeysProps } from "./hotkeys";
 import { hideHotkeysDialogAfterDelay, isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";
+import { IHotkeysProps } from "./hotkeysTypes";
 
 const SHOW_DIALOG_KEY = "?";
 

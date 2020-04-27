@@ -44,7 +44,7 @@ export * from "./forms/textArea";
 export * from "./html/html";
 export * from "./html-select/htmlSelect";
 export * from "./html-table/htmlTable";
-export * from "./hotkeys/hotkeys";
+export * from "./hotkeys/index";
 export * from "./icon/icon";
 export * from "./menu/menu";
 export * from "./menu/menuDivider";
