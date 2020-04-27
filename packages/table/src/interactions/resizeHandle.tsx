@@ -19,7 +19,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../common/classes";
-import { Draggable, ICoordinateData } from "./draggable";
+import { Draggable } from "./draggable";
+import { ICoordinateData } from "./dragTypes";
 
 export enum Orientation {
     HORIZONTAL = 1,

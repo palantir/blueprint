@@ -23,7 +23,8 @@ import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
 import { IRegion, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
-import { Draggable, ICoordinateData, IDraggableProps } from "./draggable";
+import { Draggable, IDraggableProps } from "./draggable";
+import { ICoordinateData } from "./dragTypes";
 
 export type ISelectedRegionTransform = (
     region: IRegion,

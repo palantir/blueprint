@@ -20,7 +20,7 @@ import * as React from "react";
 import * as Classes from "../common/classes";
 import { IColumnIndices } from "../common/grid";
 import { Utils } from "../common/index";
-import { IClientCoordinates } from "../interactions/draggable";
+import { IClientCoordinates } from "../interactions/dragTypes";
 import { IIndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
