@@ -3412,5 +3412,11 @@
     "iconName": "inherited-group",
     "tags": "group, inheritance, inherited, membership, people",
     "group": "interface"
+  },
+  {
+    "displayName": "Hat",
+    "iconName": "hat",
+    "tags": "head, clothing, cap",
+    "group": "miscellaneous"
   }
 ]
