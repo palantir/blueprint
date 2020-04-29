@@ -3416,7 +3416,7 @@
   {
     "displayName": "Hat",
     "iconName": "hat",
-    "tags": "head, clothing, cap",
+    "tags": "head, clothing, cap, fedora, role",
     "group": "miscellaneous"
   }
 ]
