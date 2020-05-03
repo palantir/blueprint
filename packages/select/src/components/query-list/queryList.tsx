@@ -407,7 +407,9 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         const item = Utils.safeInvoke(this.props.createNewItemFromQuery, query);
         if (item != null) {
             Utils.safeInvoke(this.props.onItemSelect, item, evt);
-            this.setQuery("", true);
+            if (this.props.resetOnSelect) {
+                this.setQuery("", true);
+            }
         }
     };
 
