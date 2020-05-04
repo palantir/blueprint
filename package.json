@@ -10,6 +10,7 @@
     "bundle": "lerna run --parallel bundle",
     "compile": "lerna run compile",
     "clean": "lerna run --parallel clean",
+    "copy:ci-config": "mkdir -p site/.circleci && cp .circleci/config-master.yml site/.circleci/config.yml",
     "copy:docs-app": "cp -rf packages/docs-app/dist/ site/docs",
     "copy:landing-app": "cp -rf packages/landing-app/dist/ site",
     "deploy": "gh-pages -d site -b master",
