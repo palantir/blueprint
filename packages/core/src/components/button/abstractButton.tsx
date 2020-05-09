@@ -102,10 +102,6 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         };
     };
 
-    protected buttonRefCallback = (ref: HTMLElement | Utils.IRefObject<HTMLElement>) => {
-        this.buttonRef = ref;
-    };
-
     protected buttonRef: HTMLElement | Utils.IRefObject<HTMLElement>;
     protected refHandlers = {
         button: this.getButtonRefHandler(),
