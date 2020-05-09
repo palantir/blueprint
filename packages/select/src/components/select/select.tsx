@@ -80,18 +80,37 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     public state: ISelectState = { isOpen: false };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private input: HTMLInputElement | null = null;
+
+    private getInputRefHandler = (): (Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement>) => {
+        if (!this.props.inputProps?.inputRef) {
+            return (ref: HTMLInputElement | null) => {
+                this.input = ref;
+            };
+        }
+
+        const elementRef = this.props.inputProps.inputRef;
+
+        if (
+            elementRef &&
+            !Utils.isFunction(elementRef)
+        ) {
+            this.input = elementRef;
+
+            return elementRef;
+        }
+
+        return (ref: HTMLInputElement | null) => {
+            this.input = ref;
+
+            Utils.safeInvoke(elementRef, ref);
+        };
+    };
+
+    private input: HTMLInputElement | Utils.IRefObject<HTMLInputElement> | null = null;
     private queryList: QueryList<T> | null = null;
     private previousFocusedElement: HTMLElement | undefined;
     private refHandlers = {
-        input: (ref: HTMLInputElement | null) => {
-            this.input = ref;
-            Utils.safeInvokeMember(
-                this.props.inputProps as { inputRef: (ref: HTMLInputElement | null) => any },
-                "inputRef",
-                ref,
-            );
-        },
+        input: this.getInputRefHandler,
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
@@ -204,7 +223,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false && this.input != null) {
-                this.input.focus();
+                const input = Utils.getRef<HTMLInputElement>(this.input);
+                input.focus();
             }
         });
 

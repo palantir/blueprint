@@ -38,8 +38,8 @@ export interface IButtonProps extends IActionProps {
      */
     alignText?: Alignment;
 
-    /** A ref handler that receives the native HTML element backing this component. */
-    elementRef?: React.Ref<HTMLElement>;
+    /** A ref handler or a ref object that receives the native HTML element backing this component. */
+    elementRef?: Utils.IRefCallback<HTMLElement> | Utils.IRefObject<HTMLElement>;
 
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
@@ -86,23 +86,32 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         isActive: false,
     };
 
-    protected getAbstractButtonRef = (): React.Ref<any> => {
-        if (this.props.elementRef && !Utils.isFunction(this.props.elementRef)) {
-            this.buttonRef = this.props.elementRef as React.RefObject<HTMLElement>;
+    protected getButtonRefHandler = (): (Utils.IRefCallback<any> | Utils.IRefObject<any>) => {
+        const elementRef = this.props.elementRef as (Utils.IRefCallback<HTMLElement> | Utils.IRefObject<HTMLElement>);
 
-            return this.props.elementRef;
+        if (
+            elementRef &&
+            !Utils.isFunction(elementRef)
+        ) {
+            this.buttonRef = elementRef;
+
+            return elementRef;
         }
 
         return (ref: HTMLElement) => {
             this.buttonRef = ref;
 
-            Utils.safeInvoke(this.props.elementRef as (ref: HTMLElement | null) => any, ref);
+            Utils.safeInvoke(elementRef as Utils.IRefCallback<HTMLElement>, ref);
         };
     };
 
-    protected buttonRef: HTMLElement | React.RefObject<HTMLElement>;
+    protected buttonRefCallback = (ref: HTMLElement | Utils.IRefObject<HTMLElement>) => {
+        this.buttonRef = ref;
+    }
+
+    protected buttonRef: HTMLElement | Utils.IRefObject<HTMLElement>;
     protected refHandlers = {
-        button: this.getAbstractButtonRef(),
+        button: this.getButtonRefHandler(),
     };
 
     private currentKeyDown: number = null;
@@ -160,11 +169,8 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
 
-            if ((this.buttonRef as HTMLElement).click) {
-                (this.buttonRef as HTMLElement).click();
-            } else if ((this.buttonRef as React.RefObject<HTMLElement>).current) {
-                (this.buttonRef as React.RefObject<HTMLElement>).current.click();
-            }
+            const buttonRef = Utils.getRef<HTMLElement>(this.buttonRef);
+            buttonRef.click();
         }
         this.currentKeyDown = null;
         Utils.safeInvoke(this.props.onKeyUp, e);
