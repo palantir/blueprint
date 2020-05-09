@@ -103,22 +103,24 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
-        it("matches buttonRef with elementRef using createRef", done => {
-            const elementRef = React.createRef<HTMLElement>();
+        if (typeof React.createRef !== "undefined") {
+            it("matches buttonRef with elementRef using createRef", done => {
+                const elementRef = React.createRef<HTMLElement>();
 
-            const wrapper = button(
-                {
-                    elementRef,
-                },
-                true,
-            );
+                const wrapper = button(
+                    {
+                        elementRef,
+                    },
+                    true,
+                );
 
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef.current);
-                done();
-            }, 0);
-        });
+                // wait for the whole lifecycle to run
+                setTimeout(() => {
+                    assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef.current);
+                    done();
+                }, 0);
+            });
+        }
 
         it("matches buttonRef with elementRef using callback", done => {
             let elementRef: HTMLElement = null;
@@ -140,24 +142,26 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             }, 0);
         });
 
-        it("matches buttonRef with elementRef using useRef", done => {
-            let elementRef: React.MutableRefObject<HTMLElement>;
-            const Component = component;
+        if (typeof React.useRef !== "undefined") {
+            it("matches buttonRef with elementRef using useRef", done => {
+                let elementRef: React.MutableRefObject<HTMLElement>;
+                const Component = component;
 
-            const Test = () => {
-                elementRef = React.useRef<HTMLButtonElement>(null);
+                const Test = () => {
+                    elementRef = React.useRef<HTMLButtonElement>(null);
 
-                return <Component elementRef={elementRef} />;
-            };
+                    return <Component elementRef={elementRef} />;
+                };
 
-            const wrapper = mount(<Test />);
+                const wrapper = mount(<Test />);
 
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(elementRef.current, (wrapper.find(Component).instance() as any).buttonRef.current);
-                done();
-            }, 0);
-        });
+                // wait for the whole lifecycle to run
+                setTimeout(() => {
+                    assert.equal(elementRef.current, (wrapper.find(Component).instance() as any).buttonRef.current);
+                    done();
+                }, 0);
+            });
+        }
 
         function button(props: IButtonProps, useMount = false, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
