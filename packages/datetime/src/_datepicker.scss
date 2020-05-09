@@ -242,3 +242,9 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     border-top-color: $pt-dark-divider-black;
   }
 }
+
+.#{$ns}-datepicker-timepicker-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
