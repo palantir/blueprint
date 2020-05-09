@@ -229,13 +229,10 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
-    protected getEndInputRefHandler = (): (Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement>) => {
+    protected getEndInputRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
         const elementRef = this.props.endInputProps.inputRef;
 
-        if (
-            elementRef &&
-            !Utils.isFunction(elementRef)
-        ) {
+        if (elementRef && !Utils.isFunction(elementRef)) {
             this.endInputRef = elementRef;
 
             return elementRef;
@@ -248,7 +245,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         };
     };
 
-    protected getStartRefHandler = (): (Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement>) => {
+    protected getStartRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
         const elementRef = this.props.startInputProps.inputRef;
 
         if (!Utils.isFunction(elementRef)) {

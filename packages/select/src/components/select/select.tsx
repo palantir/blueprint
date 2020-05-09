@@ -81,7 +81,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private getInputRefHandler = (): (Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement>) => {
+    private getInputRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
         if (!this.props.inputProps?.inputRef) {
             return (ref: HTMLInputElement | null) => {
                 this.input = ref;
@@ -90,10 +90,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
         const elementRef = this.props.inputProps.inputRef;
 
-        if (
-            elementRef &&
-            !Utils.isFunction(elementRef)
-        ) {
+        if (elementRef && !Utils.isFunction(elementRef)) {
             this.input = elementRef;
 
             return elementRef;

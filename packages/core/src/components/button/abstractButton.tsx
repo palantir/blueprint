@@ -86,13 +86,10 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         isActive: false,
     };
 
-    protected getButtonRefHandler = (): (Utils.IRefCallback<any> | Utils.IRefObject<any>) => {
-        const elementRef = this.props.elementRef as (Utils.IRefCallback<HTMLElement> | Utils.IRefObject<HTMLElement>);
+    protected getButtonRefHandler = (): Utils.IRefCallback<any> | Utils.IRefObject<any> => {
+        const elementRef = this.props.elementRef as Utils.IRefCallback<HTMLElement> | Utils.IRefObject<HTMLElement>;
 
-        if (
-            elementRef &&
-            !Utils.isFunction(elementRef)
-        ) {
+        if (elementRef && !Utils.isFunction(elementRef)) {
             this.buttonRef = elementRef;
 
             return elementRef;
@@ -107,7 +104,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
 
     protected buttonRefCallback = (ref: HTMLElement | Utils.IRefObject<HTMLElement>) => {
         this.buttonRef = ref;
-    }
+    };
 
     protected buttonRef: HTMLElement | Utils.IRefObject<HTMLElement>;
     protected refHandlers = {

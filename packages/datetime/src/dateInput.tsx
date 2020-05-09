@@ -185,10 +185,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
 
         const elementRef = inputProps.inputRef;
 
-        if (
-            elementRef &&
-            !Utils.isFunction(elementRef)
-        ) {
+        if (elementRef && !Utils.isFunction(elementRef)) {
             this.inputEl = elementRef.current;
 
             return elementRef;

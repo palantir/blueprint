@@ -111,7 +111,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         selectedItem: this.getInitialSelectedItem(),
     };
 
-    private getInputRefHandler = (): (Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement>) => {
+    private getInputRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
         if (!this.props.inputProps?.inputRef) {
             return (ref: HTMLInputElement | null) => {
                 this.input = ref;
@@ -120,10 +120,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
         const elementRef = this.props.inputProps.inputRef;
 
-        if (
-            elementRef &&
-            !Utils.isFunction(elementRef)
-        ) {
+        if (elementRef && !Utils.isFunction(elementRef)) {
             this.input = elementRef;
 
             return elementRef;
