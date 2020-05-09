@@ -248,7 +248,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     protected getStartRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
         const elementRef = this.props.startInputProps.inputRef;
 
-        if (!Utils.isFunction(elementRef)) {
+        if (elementRef && !Utils.isFunction(elementRef)) {
             this.startInputRef = elementRef;
 
             return elementRef;
@@ -257,7 +257,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         return (ref: HTMLInputElement) => {
             this.startInputRef = ref;
 
-            Utils.safeInvoke(elementRef, ref);
+            Utils.safeInvoke(elementRef as Utils.IRefCallback<HTMLInputElement>, ref);
         };
     };
 
