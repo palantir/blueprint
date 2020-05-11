@@ -32,7 +32,7 @@
     "site": "npm-run-all site:clean -p copy:* -s serve",
     "site:clean": "git clean -xdfq site/",
     "test": "lerna run --parallel test",
-    "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint"
+    "verify": "npm-run-all -s compile dist:libs dist:apps -p test lint format-check"
   },
   "dependencies": {
     "@types/chai": "4.2.7",
