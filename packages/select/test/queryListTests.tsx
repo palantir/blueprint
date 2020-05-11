@@ -372,7 +372,9 @@ describe('<QueryList>', () => {
                 <FilmQueryList
                     { ...testProps }
                     // Must return something in order for item creation to work.
-                    createNewItemFromQuery={ () => ({ title: 'irrelevant', rank: 0, year: 0 }) }
+                    createNewItemFromQuery={ function () {
+                        return ({ title: 'irrelevant', rank: 0, year: 0 })
+                    } }
                     createNewItemRenderer={ createNewItemRenderer }
                     onQueryChange={ onQueryChangeSpy }
                     resetOnSelect={ resetOnSelect }
