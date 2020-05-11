@@ -8,11 +8,10 @@ Looking for places to contribute to the codebase? Check out the ["help wanted"](
 
 ### Installation
 
-First, ensure you have Node v8+ and [yarn](https://yarnpkg.com) v1.0+ installed on your machine.
+First, ensure you have Node v10+ and the latest [yarn](https://yarnpkg.com) installed on your machine.
 
-As an external contributor (not a member of the Palantir org), you will have to fork Blueprint in
-order to contribute code. Clone your fork onto your machine and run the following commands to
-install dependencies:
+As an external contributor, you will have to fork Blueprint in order to contribute code.
+Clone your fork onto your machine and then run the following commands to install dependencies:
 
 ```sh
 git clone git@github.com:<username>/blueprint.git # using ssh
@@ -33,13 +32,18 @@ A typical contributor workflow looks like this:
     - [Development practices](https://github.com/palantir/blueprint/wiki/Development-practices)
     - [Coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
     - [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)
-1. Ensure your code is **tested** and **linted**.
+1. Ensure your code is **tested**, **linted**, and **formatted**.
     - Add unit tests as necessary when fixing bugs or adding features; run them with `yarn test`
       in the relevant `packages/` directory.
     - Linting is best handled by your editor for real-time feedback (see
       [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run
       `yarn lint` to be 100% safe.
     - TypeScript lint errors can often be automatically fixed by ESLint. Run lint fixes with `yarn lint-fix`.
+    - Code formatting is enforced using [Prettier](https://prettier.io/). These errors can be fixed in your editor
+      through ESLint (make sure you have set up the editor integrations linked above).
+      __Formatting checks will not run__ during the `yarn lint` package script.
+      Instead, when using the CLI or in a CI environment, you should run the `yarn format` script to fix all
+      formatting issues across the Blueprint monorepo.
 1. Submit a Pull Request on GitHub and fill out the template.
     - ⚠️ __DO NOT enable CircleCI for your fork of Blueprint.__ Our build
       will run on your fork when you open a PR. You can run NPM scripts locally
