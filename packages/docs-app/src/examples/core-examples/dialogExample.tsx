@@ -35,9 +35,9 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
+        hasBackdrop: true,
         isOpen: false,
         usePortal: true,
-        hasBackdrop: true,
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));

@@ -69,8 +69,8 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 export class Dialog extends AbstractPureComponent2<IDialogProps, {}> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,
-        isOpen: false,
         hasBackdrop: true,
+        isOpen: false,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
