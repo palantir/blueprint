@@ -50,6 +50,12 @@ export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 
 export interface ITimePickerProps extends IProps {
     /**
+     * Whether to focus the first input when it opens initially.
+     * @default false
+     */
+    autoFocus?: boolean;
+
+    /**
      * Initial time the `TimePicker` will display.
      * This should not be set if `value` is set.
      */
@@ -126,6 +132,7 @@ export interface ITimePickerState {
 
 export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
     public static defaultProps: ITimePickerProps = {
+        autoFocus: false,
         disabled: false,
         maxTime: getDefaultMaxTime(),
         minTime: getDefaultMinTime(),
@@ -231,6 +238,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     private renderInput(className: string, unit: TimeUnit, value: string) {
         const isValid = isTimeUnitValid(unit, parseInt(value, 10));
+        const isHour = unit === TimeUnit.HOUR_12 || unit === TimeUnit.HOUR_24;
 
         return (
             <input
@@ -245,6 +253,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 onKeyDown={this.getInputKeyDownHandler(unit)}
                 value={value}
                 disabled={this.props.disabled}
+                autoFocus={isHour && this.props.autoFocus}
             />
         );
     }
