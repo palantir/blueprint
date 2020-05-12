@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import { ITag } from "@documentalist/client";
 import * as React from "react";
 import { CssExample } from "./css";
 import { Heading } from "./heading";
+import { Method } from "./method";
 import { SeeTag } from "./see";
 import { TypescriptExample } from "./typescript";
 
@@ -26,6 +27,7 @@ export function createDefaultRenderers(): Record<string, React.ComponentType<ITa
         css: CssExample,
         heading: Heading,
         interface: TypescriptExample,
+        method: Method,
         page: () => null,
         see: SeeTag,
     };

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +24,23 @@ export interface IModifierTableProps {
 
     /** Title of the first column, describing the type of each row in the table. */
     title: string;
+
+    /** Title of the second column */
+    descriptionTitle?: string;
 }
 
-export const ModifierTable: React.SFC<IModifierTableProps> = ({ children, emptyMessage, title }) => (
+export const ModifierTable: React.SFC<IModifierTableProps> = ({
+    children,
+    descriptionTitle = "Description",
+    emptyMessage,
+    title,
+}) => (
     <div className={classNames("docs-modifiers-table", Classes.RUNNING_TEXT)}>
         <HTMLTable>
             <thead>
                 <tr>
                     <th>{title}</th>
-                    <th>Description</th>
+                    <th>{descriptionTitle}</th>
                 </tr>
             </thead>
             <tbody>{isEmpty(children) ? renderEmptyState(emptyMessage) : children}</tbody>

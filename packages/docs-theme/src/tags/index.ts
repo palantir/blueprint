@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ export interface ITagRendererMap {
 export * from "./css";
 export * from "./defaults";
 export * from "./heading";
+export * from "./method";
 export * from "./reactDocs";
 export * from "./reactExample";
 export * from "./see";
