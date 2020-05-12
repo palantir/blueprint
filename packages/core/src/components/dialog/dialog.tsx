@@ -33,12 +33,6 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     isOpen: boolean;
 
     /**
-     * Dialog always has a backdrop so this prop is excluded from the public API.
-     * @internal
-     */
-    hasBackdrop?: boolean;
-
-    /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * dialog's header. Note that the header will only be rendered if `title` is
      * provided.
@@ -76,13 +70,14 @@ export class Dialog extends AbstractPureComponent2<IDialogProps, {}> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        hasBackdrop: true,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
 
     public render() {
         return (
-            <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
+            <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER}>
                 <div className={Classes.DIALOG_CONTAINER}>
                     <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
                         {this.maybeRenderHeader()}

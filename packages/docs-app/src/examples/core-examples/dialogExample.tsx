@@ -27,6 +27,7 @@ export interface IDialogExampleState {
     enforceFocus: boolean;
     isOpen: boolean;
     usePortal: boolean;
+    hasBackdrop: boolean;
 }
 export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDialogExampleState> {
     public state: IDialogExampleState = {
@@ -36,6 +37,7 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
         enforceFocus: true,
         isOpen: false,
         usePortal: true,
+        hasBackdrop: true,
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
@@ -43,6 +45,7 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
+    private handleHashBackdropChange = handleBooleanChange(hasBackdrop => this.setState({ hasBackdrop }));
 
     public render() {
         return (
@@ -103,7 +106,7 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal } = this.state;
+        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal, hasBackdrop } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -118,6 +121,7 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
                     onChange={this.handleOutsideClickChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
+                <Switch checked={hasBackdrop} label="Has backdrop" onChange={this.handleHashBackdropChange} />
             </>
         );
     }
