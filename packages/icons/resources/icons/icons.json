@@ -3418,5 +3418,17 @@
     "iconName": "hat",
     "tags": "head, clothing, cap, fedora, role, level, permission",
     "group": "miscellaneous"
+  },
+  {
+    "displayName": "Cycle",
+    "iconName": "cycle",
+    "tags": "cycle, bike, cyclist, biker, ride, rider, transportation",
+    "group": "interface"
+  },
+  {
+    "displayName": "Route",
+    "iconName": "route",
+    "tags": "route, destination, travel, journey, road, transportation",
+    "group": "interface"
   }
 ]
