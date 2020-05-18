@@ -15,6 +15,7 @@
  */
 
 import { Intent, IProps } from "../../common";
+import * as React from "react";
 
 export const HandleType = {
     /** A full handle appears as a small square. */
@@ -52,6 +53,12 @@ export interface IHandleProps extends IProps {
 
     /** Intent for the track segment immediately before this handle. */
     intentBefore?: Intent;
+
+    /** Style to use for the track segment immediately after this handle, taking priority over trackStyleBefore */
+    trackStyleAfter?: React.CSSProperties;
+
+    /** Style to use for the track segment immediately before this handle */
+    trackStyleBefore?: React.CSSProperties;
 
     /**
      * How this handle interacts with other handles.
