@@ -54,7 +54,7 @@ export interface IHandleProps extends IProps {
     /** Intent for the track segment immediately before this handle. */
     intentBefore?: Intent;
 
-    /** Style to use for the track segment immediately after this handle, taking priority over trackStyleBefore */
+    /** Style to use for the track segment immediately after this handle, taking priority over `trackStyleBefore`. */
     trackStyleAfter?: React.CSSProperties;
 
     /** Style to use for the track segment immediately before this handle */
