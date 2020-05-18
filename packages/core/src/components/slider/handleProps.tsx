@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Intent, IProps } from "../../common";
 import * as React from "react";
+import { Intent, IProps } from "../../common";
 
 export const HandleType = {
     /** A full handle appears as a small square. */
