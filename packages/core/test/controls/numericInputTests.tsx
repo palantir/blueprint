@@ -193,6 +193,18 @@ describe("<NumericInput>", () => {
             expect(component.state().value).to.equal("1 + 1");
         });
 
+        it("in controlled mode, value cannot change without handler", () => {
+            const initialValue = "10";
+            const component = mount(<NumericInput value={initialValue} />);
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+            const inputValue = component.find("input").props().value;
+
+            expect(inputValue).to.equal("10");
+        });
+
         it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);

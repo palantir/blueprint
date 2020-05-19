@@ -363,7 +363,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
                 rightElement={this.props.rightElement}
-                value={this.state.value}
+                value={getValueOrEmptyValue(this.props.value || this.state.value)}
             />
         );
     }
