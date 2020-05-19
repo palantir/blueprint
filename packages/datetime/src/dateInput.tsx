@@ -180,9 +180,31 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         valueString: null,
     };
 
-    private inputEl: HTMLInputElement | null = null;
+    private getInputRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
+        const { inputProps = {} } = this.props;
+
+        const elementRef = inputProps.inputRef;
+
+        if (elementRef && !Utils.isFunction(elementRef)) {
+            this.inputEl = elementRef.current;
+
+            return elementRef;
+        }
+
+        return (ref: HTMLInputElement | null) => {
+            this.inputEl = ref;
+
+            Utils.safeInvoke(elementRef as Utils.IRefCallback<HTMLInputElement>, ref);
+        };
+    };
+
+    private inputEl: HTMLInputElement | Utils.IRefObject<HTMLInputElement> | null = null;
     private popoverContentEl: HTMLElement | null = null;
     private lastElementInPopover: HTMLElement | null = null;
+
+    private refHandlers = {
+        input: this.getInputRefHandler(),
+    };
 
     public componentWillUnmount() {
         super.componentWillUnmount();
@@ -240,7 +262,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
                     type="text"
                     {...inputProps}
                     disabled={this.props.disabled}
-                    inputRef={this.inputRef}
+                    inputRef={this.refHandlers.input}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
@@ -258,12 +280,6 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             this.setState({ value: this.props.value });
         }
     }
-
-    private inputRef = (ref: HTMLInputElement | null) => {
-        this.inputEl = ref;
-        const { inputProps = {} } = this.props;
-        Utils.safeInvoke(inputProps.inputRef, ref);
-    };
 
     private isDateInRange(value: Date) {
         return isDayInRange(value, [this.props.minDate, this.props.maxDate]);
@@ -393,7 +409,9 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
-            this.inputEl.blur();
+
+            const inputEl = Utils.getRef<HTMLInputElement>(this.inputEl);
+            inputEl.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };

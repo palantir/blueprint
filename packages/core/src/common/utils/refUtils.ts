@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-export * from "./compareUtils";
-export * from "./domUtils";
-export * from "./functionUtils";
-export * from "./jsUtils";
-export * from "./reactUtils";
-export * from "./safeInvokeMember";
-export * from "./refUtils";
+export interface IRefObject<T> {
+    readonly current: T | null;
+}
+
+export type IRefCallback<T> = (ref: T | null) => any;
+
+export function getRef<T>(ref: T | IRefObject<T>) {
+    if (ref && (ref as IRefObject<T>).current) {
+        return (ref as IRefObject<T>).current;
+    }
+
+    return ref as T;
+}

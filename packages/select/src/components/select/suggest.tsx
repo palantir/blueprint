@@ -111,14 +111,33 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         selectedItem: this.getInitialSelectedItem(),
     };
 
+    private getInputRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
+        if (!this.props.inputProps?.inputRef) {
+            return (ref: HTMLInputElement | null) => {
+                this.input = ref;
+            };
+        }
+
+        const elementRef = this.props.inputProps.inputRef;
+
+        if (elementRef && !Utils.isFunction(elementRef)) {
+            this.input = elementRef;
+
+            return elementRef;
+        }
+
+        return (ref: HTMLInputElement | null) => {
+            this.input = ref;
+
+            Utils.safeInvoke(elementRef, ref);
+        };
+    };
+
     private TypedQueryList = QueryList.ofType<T>();
-    private input: HTMLInputElement | null = null;
+    private input: HTMLInputElement | Utils.IRefObject<HTMLInputElement> | null = null;
     private queryList: QueryList<T> | null = null;
     private refHandlers = {
-        input: (ref: HTMLInputElement | null) => {
-            this.input = ref;
-            Utils.safeInvokeMember(this.props.inputProps, "inputRef", ref);
-        },
+        input: this.getInputRefHandler(),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
@@ -211,7 +230,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         // wait until the input is properly focused to select the text inside of it
         requestAnimationFrame(() => {
             if (this.input != null) {
-                this.input.setSelectionRange(0, this.input.value.length);
+                const input = Utils.getRef<HTMLInputElement>(this.input);
+
+                input.setSelectionRange(0, input.value.length);
             }
         });
     };
@@ -231,13 +252,17 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         let nextOpenState: boolean;
         if (!this.props.closeOnSelect) {
             if (this.input != null) {
-                this.input.focus();
+                const input = Utils.getRef<HTMLInputElement>(this.input);
+
+                input.focus();
             }
             this.selectText();
             nextOpenState = true;
         } else {
             if (this.input != null) {
-                this.input.blur();
+                const input = Utils.getRef<HTMLInputElement>(this.input);
+
+                input.blur();
             }
             nextOpenState = false;
         }
@@ -300,7 +325,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 if (this.input != null) {
-                    this.input.blur();
+                    const input = Utils.getRef<HTMLInputElement>(this.input);
+
+                    input.blur();
                 }
                 this.setState({ isOpen: false });
             } else if (

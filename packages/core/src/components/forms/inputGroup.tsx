@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent2, Classes, Utils } from "../../common";
 import * as Errors from "../../common/errors";
 import {
     DISPLAYNAME_PREFIX,
@@ -45,8 +45,8 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      */
     fill?: boolean;
 
-    /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    /** Ref handler or a ref object that receives HTML `<input>` element backing this component. */
+    inputRef?: Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement>;
 
     /**
      * Element to render on the left side of input.  This prop is mutually exclusive
