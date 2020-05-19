@@ -39,7 +39,7 @@ export interface IButtonProps extends IActionProps {
     alignText?: Alignment;
 
     /** A ref handler or a ref object that receives the native HTML element backing this component. */
-    elementRef?: Utils.IRefCallback<HTMLElement> | Utils.IRefObject<HTMLElement>;
+    elementRef?: Utils.IRef;
 
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
@@ -86,25 +86,20 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         isActive: false,
     };
 
-    protected getButtonRefHandler = (): Utils.IRefCallback<any> | Utils.IRefObject<any> => {
-        const elementRef = this.props.elementRef as Utils.IRefCallback<HTMLElement> | Utils.IRefObject<HTMLElement>;
-
-        if (elementRef && !Utils.isFunction(elementRef)) {
-            this.buttonRef = elementRef;
-
-            return elementRef;
-        }
-
-        return (ref: HTMLElement) => {
-            this.buttonRef = ref;
-
-            Utils.safeInvoke(elementRef as Utils.IRefCallback<HTMLElement>, ref);
-        };
-    };
-
     protected buttonRef: HTMLElement | Utils.IRefObject<HTMLElement>;
     protected refHandlers = {
-        button: this.getButtonRefHandler(),
+        button: () => {
+            const { elementRef } = this.props;
+            if (Utils.isRefCallback(elementRef)) {
+                return (ref: HTMLElement) => {
+                    this.buttonRef = ref;
+                    elementRef(ref);
+                };
+            } else if (Utils.isRefObject(elementRef)) {
+                this.buttonRef = elementRef;
+                return elementRef;
+            }
+        },
     };
 
     private currentKeyDown: number = null;
