@@ -178,17 +178,17 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         Utils.safeInvoke(this.props.onQueryChange, query, evt);
     };
 
-    private handlePopoverInteraction = (nextOpenState: boolean) =>
+    private handlePopoverInteraction = (_nextOpenState: boolean) =>
         // deferring to rAF to get properly updated document.activeElement
         requestAnimationFrame(() => {
-            if (this.input != null && this.input !== document.activeElement) {
-                // the input is no longer focused so we can close the popover
-                this.setState({ isOpen: false });
-            } else if (!this.props.openOnKeyDown) {
-                // open the popover when focusing the tag input
+            if (this.input != null && this.input === document.activeElement) {
+                // the input is active, we stay open regardless of `nextOpenState`
                 this.setState({ isOpen: true });
+                Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", true);
+            } else {
+                this.setState({ isOpen: false });
+                Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", false);
             }
-            Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", nextOpenState);
         });
 
     private handlePopoverOpened = (node: HTMLElement) => {
