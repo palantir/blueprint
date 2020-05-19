@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+export type IRef<T> = IRefObject<T> | IRefCallback<T>;
+
+// compatible with React.Ref type in @types/react@^16
 export interface IRefObject<T> {
     readonly current: T | null;
 }
