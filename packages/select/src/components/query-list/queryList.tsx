@@ -133,6 +133,12 @@ export interface IQueryListState<T> {
 
     /** The current query string. */
     query: string;
+
+    /** Whether the previous key-down event was for the enter key. This allows us to create new items on enter key KeyUp
+     * IFF it follows an enter key KeyDown, which allows us to avoid accidentally creating a new item on the key-up event
+     * following IME character selection confirmation. (https://github.com/palantir/blueprint/issues/4128)
+     */
+    previousKeyDownWasEnter: boolean;
 }
 
 export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryListState<T>> {
@@ -181,6 +187,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             createNewItem,
             filteredItems,
             query,
+            previousKeyDownWasEnter: false,
         };
     }
 
@@ -469,6 +476,11 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 this.setActiveItem(nextActiveItem);
             }
         }
+        if (keyCode === Keys.ENTER) {
+            this.setState({ previousKeyDownWasEnter: true });
+        } else {
+            this.setState({ previousKeyDownWasEnter: false })
+        }
         Utils.safeInvoke(this.props.onKeyDown, event);
     };
 
@@ -481,7 +493,9 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         if (event.keyCode === Keys.ENTER) {
             event.preventDefault();
             if (activeItem == null || isCreateNewItem(activeItem)) {
-                this.handleItemCreate(this.state.query, event);
+                if (this.state.previousKeyDownWasEnter) {
+                    this.handleItemCreate(this.state.query, event);
+                }
             } else {
                 this.handleItemSelect(activeItem, event);
             }
