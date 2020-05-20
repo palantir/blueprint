@@ -22,12 +22,16 @@ import { polyfill } from "react-lifecycles-compat";
 import {
     AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
+    getRef,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     Intent,
     IPopoverProps,
     IProps,
+    IRefCallback,
+    IRefObject,
+    isRefObject,
     Keys,
     Popover,
     Utils,
@@ -180,30 +184,17 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         valueString: null,
     };
 
-    private getInputRefHandler = (): Utils.IRefCallback<HTMLInputElement> | Utils.IRefObject<HTMLInputElement> => {
-        const { inputProps = {} } = this.props;
-
-        const elementRef = inputProps.inputRef;
-
-        if (elementRef && !Utils.isFunction(elementRef)) {
-            this.inputEl = elementRef.current;
-
-            return elementRef;
-        }
-
-        return (ref: HTMLInputElement | null) => {
-            this.inputEl = ref;
-
-            Utils.safeInvoke(elementRef as Utils.IRefCallback<HTMLInputElement>, ref);
-        };
-    };
-
-    private inputEl: HTMLInputElement | Utils.IRefObject<HTMLInputElement> | null = null;
+    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private popoverContentEl: HTMLElement | null = null;
     private lastElementInPopover: HTMLElement | null = null;
 
     private refHandlers = {
-        input: this.getInputRefHandler(),
+        input: isRefObject<HTMLInputElement>(this.props.inputProps.inputRef)
+            ? (this.inputEl = this.props.inputProps.inputRef)
+            : (ref: HTMLInputElement | null) => {
+                  this.inputEl = ref;
+                  (this.props.inputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
+              },
     };
 
     public componentWillUnmount() {
@@ -409,9 +400,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
-
-            const inputEl = Utils.getRef<HTMLInputElement>(this.inputEl);
-            inputEl.blur();
+            getRef<HTMLInputElement>(this.inputEl).blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };

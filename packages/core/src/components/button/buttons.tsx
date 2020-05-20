@@ -20,6 +20,7 @@
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
+import { IRefCallback, IRefObject, isRefObject } from "../../common/refs";
 import { AbstractButton, IButtonProps } from "./abstractButton";
 
 export { IButtonProps };
@@ -27,9 +28,22 @@ export { IButtonProps };
 export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
+    protected buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null;
+    protected handleRef = isRefObject<HTMLButtonElement>(this.props.elementRef)
+        ? (this.buttonRef = this.props.elementRef)
+        : (ref: HTMLButtonElement | null) => {
+              this.buttonRef = ref;
+              (this.props.elementRef as IRefCallback)?.(ref);
+          };
+
     public render() {
         return (
-            <button type="button" {...removeNonHTMLProps(this.props)} {...this.getCommonButtonProps()}>
+            <button
+                type="button"
+                ref={this.handleRef}
+                {...removeNonHTMLProps(this.props)}
+                {...this.getCommonButtonProps()}
+            >
                 {this.renderChildren()}
             </button>
         );
@@ -39,6 +53,14 @@ export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButton
 export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 
+    protected buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null;
+    protected handleRef = isRefObject<HTMLAnchorElement>(this.props.elementRef)
+        ? (this.buttonRef = this.props.elementRef)
+        : (ref: HTMLAnchorElement | null) => {
+              this.buttonRef = ref;
+              (this.props.elementRef as IRefCallback)?.(ref);
+          };
+
     public render() {
         const { href, tabIndex = 0 } = this.props;
         const commonProps = this.getCommonButtonProps();
@@ -46,6 +68,7 @@ export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTML
         return (
             <a
                 role="button"
+                ref={this.handleRef}
                 {...removeNonHTMLProps(this.props)}
                 {...commonProps}
                 href={commonProps.disabled ? undefined : href}
