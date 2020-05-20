@@ -131,14 +131,15 @@ export interface IQueryListState<T> {
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
     filteredItems: T[];
 
-    /** The current query string. */
-    query: string;
-
-    /** Whether the previous key-down event was for the enter key. This allows us to create new items on enter key KeyUp
+    /**
+     * Whether the previous key-down event was for the enter key. This allows us to create new items on enter key KeyUp
      * IFF it follows an enter key KeyDown, which allows us to avoid accidentally creating a new item on the key-up event
      * following IME character selection confirmation. (https://github.com/palantir/blueprint/issues/4128)
      */
     previousKeyDownWasEnter: boolean;
+
+    /** The current query string. */
+    query: string;
 }
 
 export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryListState<T>> {
@@ -186,8 +187,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                     : props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled),
             createNewItem,
             filteredItems,
-            query,
             previousKeyDownWasEnter: false,
+            query,
         };
     }
 
