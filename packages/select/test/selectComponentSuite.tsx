@@ -145,6 +145,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
         it("enter invokes onItemSelect with active item", () => {
             const wrapper = render(testProps);
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ENTER });
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
             const activeItem = testProps.onActiveItemChange.lastCall.args[0];
             assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);
