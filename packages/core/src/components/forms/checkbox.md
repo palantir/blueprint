@@ -7,7 +7,7 @@ indeterminate states.
 
 @## Props
 
-Use the `checked` prop instead of `value` in controlled mode to avoid typings
+Use the `checked` prop instead of `value` in controlled mode to avoid typing
 issues. Enable the `indeterminate` prop for a third in-between state.
 
 ```tsx
