@@ -166,6 +166,25 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
      */
     private expectedNextActiveItem: T | ICreateNewItem | null = null;
 
+    /**
+     * Flag which is set to true while in between a "keydown" event and its
+     * corresponding "keyup" event.
+     *
+     * N.B. This is distinct from a "keypress" event, which we are in
+     * uninterested in since we care about all keys, not just those which
+     * produce character outputs.
+     *
+     * When entering text via an IME (https://en.wikipedia.org/wiki/Input_method),
+     * the enter key is pressed to confirm the character(s) to be input from a list
+     * of options. The operating system intercepts the ENTER "keydown" event and
+     * prevents it from propagating to the application, but "keyup" is still
+     * fired, triggering a spurious event which this component does not expect.
+     *
+     * To work around this quirk, we keep track of "real" key presses by setting
+     * this flag in handleKeyDown.
+     */
+    private isKeyPressed = false;
+
     public constructor(props: IQueryListProps<T>, context?: any) {
         super(props, context);
 
@@ -469,16 +488,19 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 this.setActiveItem(nextActiveItem);
             }
         }
+
+        this.isKeyPressed = true;
         Utils.safeInvoke(this.props.onKeyDown, event);
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
         const { onKeyUp } = this.props;
         const { activeItem } = this.state;
-        // using keyup for enter to play nice with Button's keyboard clicking.
-        // if we were to process enter on keydown, then Button would click itself on keyup
-        // and the popvoer would re-open out of our control :(.
-        if (event.keyCode === Keys.ENTER) {
+        // We handle ENTER in keyup here to play nice with the Button component's keyboard
+        // clicking. Button is commonly used as the only child of Select. If we were to
+        // instead process ENTER on keydown, then Button would click itself on keyup and
+        // the Select popover would re-open.
+        if (this.isKeyPressed && event.keyCode === Keys.ENTER) {
             event.preventDefault();
             if (activeItem == null || isCreateNewItem(activeItem)) {
                 this.handleItemCreate(this.state.query, event);
@@ -486,6 +508,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 this.handleItemSelect(activeItem, event);
             }
         }
+
+        this.isKeyPressed = false;
         Utils.safeInvoke(onKeyUp, event);
     };
 
