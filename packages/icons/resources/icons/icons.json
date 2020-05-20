@@ -3430,5 +3430,47 @@
     "iconName": "route",
     "tags": "route, destination, travel, journey, road, transportation",
     "group": "interface"
+  },
+  {
+    "displayName": "Modal",
+    "iconName": "modal",
+    "tags": "modal, application, layout, user-interface, UI",
+    "group": "interface"
+  },
+  {
+    "displayName": "Modal filled",
+    "iconName": "modal-filled",
+    "tags": "modal, application, layout, user-interface, UI",
+    "group": "interface"
+  },
+  {
+    "displayName": "Drawer left",
+    "iconName": "drawer-left",
+    "tags": "drawer, application, layout, user-interface, UI",
+    "group": "interface"
+  },
+  {
+    "displayName": "Drawer left filled",
+    "iconName": "drawer-left-filled",
+    "tags": "drawer, application, layout, user-interface, UI",
+    "group": "interface"
+  },
+  {
+    "displayName": "Drawer right",
+    "iconName": "drawer-right",
+    "tags": "drawer, application, layout, user-interface, UI",
+    "group": "interface"
+  },
+  {
+    "displayName": "Drawer right filled",
+    "iconName": "drawer-right-filled",
+    "tags": "drawer, application, layout, user-interface, UI",
+    "group": "interface"
+  },
+  {
+    "displayName": "Application header",
+    "iconName": "app-header",
+    "tags": "header, application, layout, user-interface, UI",
+    "group": "interface"
   }
 ]
