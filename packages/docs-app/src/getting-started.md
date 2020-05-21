@@ -140,7 +140,7 @@ Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package pr
 library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
 
 These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `react-transition-group`, `popper.js`, and
+`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `popper.js`, and
 `react-popper` are available at runtime.
 
 ```html
@@ -164,7 +164,6 @@ These bundles _do not include_ external dependencies; your application will need
     <script src="https://unpkg.com/tslib@^1.9.0"></script>
     <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
     <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
     <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
     <script src="https://unpkg.com/resize-observer-polyfill@^1.5.0"></script>
