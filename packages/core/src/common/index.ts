@@ -30,7 +30,16 @@ export * from "./refs";
 
 import * as Classes from "./classes";
 import * as Keys from "./keys";
+import { getRef } from "./refs";
 import * as Utils from "./utils";
 
-export { Classes, Keys, Utils };
+/**
+ * Utils.getRef() was added to the public API in @blueprintjs/core@3.27.0,
+ * but ref utils were refactored in the next version. We keep this additional
+ * export around for backwards compatibility.
+ * @see https://github.com/palantir/blueprint/pull/4140
+ */
+const UtilsWithRefUtils = { ...Utils, getRef };
+
+export { Classes, Keys, UtilsWithRefUtils as Utils };
 // NOTE: Errors is not exported in public API
