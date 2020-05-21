@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Classes
 
 Blueprint packages provide React components in JS files and associated styles in

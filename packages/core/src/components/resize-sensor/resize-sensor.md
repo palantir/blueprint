@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Resize sensor
 
 `ResizeSensor` is a component that provides a `"resize"` event for its single
@@ -31,6 +27,7 @@ The `onResize` callback is invoked asynchronously after a resize is detected
 and typically happens at the end of a frame (after layout, before paint).
 Therefore, testing behavior that relies on this component involves setting a
 timeout for the next frame.
+
 </div>
 
 @interface IResizeSensorProps

@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Overflow list
 
 `OverflowList` takes a generic list of items and renders as many items as can

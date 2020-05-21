@@ -9,7 +9,7 @@ It is optimized for building complex data-dense interfaces for desktop applicati
 <div class="@ns-callout @ns-intent-success @ns-icon-endorsed">
 <h4 class="@ns-heading">
 
-Blueprint v3 is available now! [See what's new.](#blueprint/whats-new-3.0)
+Blueprint v3 releases new versions regularly. [See what's new in the change log](https://github.com/palantir/blueprint/wiki/3.x-Changelog).
 
 </h4>
 </div>
