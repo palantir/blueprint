@@ -42,7 +42,10 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
   }
 }
 
-@media (min-width: 900px) {
+// when the window is narrower than this width, all the resources wrap into a single column
+$flex-wrap-width: 900px;
+
+@media (min-width: $flex-wrap-width) {
   .blueprint-resource:first-of-type {
     margin-right: $asset-margin;
   }
