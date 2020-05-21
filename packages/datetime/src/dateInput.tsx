@@ -189,11 +189,11 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     private lastElementInPopover: HTMLElement | null = null;
 
     private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps.inputRef)
+        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
             ? (this.inputEl = this.props.inputProps.inputRef)
             : (ref: HTMLInputElement | null) => {
                   this.inputEl = ref;
-                  (this.props.inputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
+                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
               },
     };
 
