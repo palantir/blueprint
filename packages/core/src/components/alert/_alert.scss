@@ -18,6 +18,10 @@
   }
 }
 
+.#{$ns}-alert-contents {
+  word-break: break-word;
+}
+
 .#{$ns}-alert-footer {
   display: flex;
   flex-direction: row-reverse;
