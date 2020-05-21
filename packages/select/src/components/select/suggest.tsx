@@ -119,7 +119,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private queryList: QueryList<T> | null = null;
     private refHandlers = {
-        input: isRefObject<HTMLInputElement, HTMLInputElement>(this.props.inputProps?.inputRef)
+        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
             ? (this.inputEl = this.props.inputProps!.inputRef)
             : (ref: HTMLInputElement | null) => {
                   this.inputEl = ref;

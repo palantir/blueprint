@@ -50,7 +50,7 @@ export interface IButtonProps extends IActionProps {
     alignText?: Alignment;
 
     /** A ref handler or a ref object that receives the native HTML element backing this component. */
-    elementRef?: IRef;
+    elementRef?: IRef<any>;
 
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
@@ -97,7 +97,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         isActive: false,
     };
 
-    protected abstract buttonRef: HTMLElement | IRefObject<HTMLElement>;
+    protected abstract buttonRef: HTMLElement | IRefObject<HTMLElement> | null;
 
     private currentKeyDown: number = null;
 

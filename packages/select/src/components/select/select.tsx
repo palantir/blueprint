@@ -89,7 +89,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     private queryList: QueryList<T> | null = null;
     private previousFocusedElement: HTMLElement | undefined;
     private refHandlers = {
-        input: isRefObject<HTMLInputElement, HTMLInputElement>(this.props.inputProps?.inputRef)
+        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
             ? (this.inputEl = this.props.inputProps!.inputRef)
             : (ref: HTMLInputElement | null) => {
                   this.inputEl = ref;
