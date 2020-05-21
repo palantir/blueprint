@@ -39,7 +39,7 @@ import * as Utils from "./utils";
  * export around for backwards compatibility.
  * @see https://github.com/palantir/blueprint/pull/4140
  */
-const UtilsWithRefUtils = { ...Utils, getRef };
+(Utils as any).getRef = getRef;
 
-export { Classes, Keys, UtilsWithRefUtils as Utils };
+export { Classes, Keys, Utils };
 // NOTE: Errors is not exported in public API
