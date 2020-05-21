@@ -271,9 +271,14 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         );
         const startOffset = formatPercentage(startRatio);
         const endOffset = formatPercentage(1 - endRatio);
-        const style: React.CSSProperties = this.props.vertical
+        const orientationStyle: React.CSSProperties = this.props.vertical
             ? { bottom: startOffset, top: endOffset, left: 0 }
             : { left: startOffset, right: endOffset, top: 0 };
+
+        const style: React.CSSProperties = {
+            ...orientationStyle,
+            ...(start.trackStyleAfter || end.trackStyleBefore || {}),
+        };
 
         const classes = classNames(Classes.SLIDER_PROGRESS, Classes.intentClass(this.getTrackIntent(start, end)));
         return <div key={`track-${index}`} className={classes} style={style} />;
