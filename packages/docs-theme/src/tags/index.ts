@@ -23,6 +23,7 @@ export interface ITagRendererMap {
 export * from "./css";
 export * from "./defaults";
 export * from "./heading";
+export * from "./method";
 export * from "./reactDocs";
 export * from "./reactExample";
 export * from "./see";
