@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 import { IProps } from "@blueprintjs/core";
-import { isTsMethod, ITag, ITypescriptPluginData } from "@documentalist/client";
+import { isTsClass, isTsMethod, ITag, ITsClass, ITypescriptPluginData } from "@documentalist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
 import { MethodTable } from "../components/typescript/methodTable";
@@ -23,7 +23,17 @@ import { MethodTable } from "../components/typescript/methodTable";
 export const Method: React.SFC<ITag & IProps> = ({ className, value }, { getDocsData }: IDocumentationContext) => {
     const { typescript } = getDocsData() as ITypescriptPluginData;
     const member = typescript[value];
+
     if (member === undefined) {
+        const possibleClass = value.split(".")[0];
+        const possibleClassMethod = value.split(".")[1];
+        const classMember = typescript[possibleClass] as ITsClass;
+        if (isTsClass(classMember) && possibleClassMethod) {
+            const classMethod = classMember.methods.find(method => method.name === possibleClassMethod);
+            if (isTsMethod(classMethod)) {
+                return <MethodTable className={className} data={classMethod} />;
+            }
+        }
         throw new Error(`Unknown @method ${name}`);
     } else if (isTsMethod(member)) {
         return <MethodTable className={className} data={member} />;
