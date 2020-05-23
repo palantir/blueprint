@@ -274,8 +274,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         super.componentDidUpdate(prevProps, prevState, snapshot);
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
-        const startInputRef = getRef<HTMLInputElement>(this.startInputRef);
-        const endInputRef = getRef<HTMLInputElement>(this.endInputRef);
+        const startInputRef = getRef(this.startInputRef);
+        const endInputRef = getRef(this.endInputRef);
 
         const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, startInputRef);
         const shouldFocusEndInput = this.shouldFocusInputRef(isEndInputFocused, endInputRef);

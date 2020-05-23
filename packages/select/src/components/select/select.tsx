@@ -207,8 +207,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false && this.inputEl != null) {
-                const input = getRef<HTMLInputElement>(this.inputEl);
-                input.focus();
+                getRef(this.inputEl).focus();
             }
         });
 

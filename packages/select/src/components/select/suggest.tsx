@@ -217,7 +217,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         // wait until the input is properly focused to select the text inside of it
         requestAnimationFrame(() => {
             if (this.inputEl != null) {
-                const input = getRef<HTMLInputElement>(this.inputEl);
+                const input = getRef(this.inputEl);
                 input.setSelectionRange(0, input.value.length);
             }
         });
@@ -238,13 +238,13 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         let nextOpenState: boolean;
         if (!this.props.closeOnSelect) {
             if (this.inputEl != null) {
-                getRef<HTMLInputElement>(this.inputEl).focus();
+                getRef(this.inputEl).focus();
             }
             this.selectText();
             nextOpenState = true;
         } else {
             if (this.inputEl != null) {
-                getRef<HTMLInputElement>(this.inputEl).blur();
+                getRef(this.inputEl).blur();
             }
             nextOpenState = false;
         }
@@ -275,7 +275,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         requestAnimationFrame(() => {
-            if (this.inputEl != null && getRef<HTMLInputElement>(this.inputEl) !== document.activeElement) {
+            if (this.inputEl != null && getRef(this.inputEl) !== document.activeElement) {
                 // the input is no longer focused so we can close the popover
                 this.setState({ isOpen: false });
             }
@@ -307,7 +307,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
                 if (this.inputEl != null) {
-                    getRef<HTMLInputElement>(this.inputEl).blur();
+                    getRef(this.inputEl).blur();
                 }
                 this.setState({ isOpen: false });
             } else if (

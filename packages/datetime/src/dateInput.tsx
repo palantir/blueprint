@@ -400,7 +400,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
-            getRef<HTMLInputElement>(this.inputEl).blur();
+            getRef(this.inputEl).blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
