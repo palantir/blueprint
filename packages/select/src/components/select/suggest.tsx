@@ -275,7 +275,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         requestAnimationFrame(() => {
-            if (this.inputEl != null && this.inputEl !== document.activeElement) {
+            if (this.inputEl != null && getRef<HTMLInputElement>(this.inputEl) !== document.activeElement) {
                 // the input is no longer focused so we can close the popover
                 this.setState({ isOpen: false });
             }
