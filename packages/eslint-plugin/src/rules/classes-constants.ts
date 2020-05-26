@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable: object-literal-sort-keys
+// tslint:disable object-literal-sort-keys
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
 import { addImportToFile } from "./utils/addImportToFile";
