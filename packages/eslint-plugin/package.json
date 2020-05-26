@@ -12,6 +12,7 @@
     "test:jest-ci": "jest --ci --runInBand"
   },
   "dependencies": {
+    "@typescript-eslint/experimental-utils": "^3.0.1",
     "eslint": "^7.1.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0"
