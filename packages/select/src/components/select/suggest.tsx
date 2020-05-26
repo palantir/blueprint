@@ -29,6 +29,7 @@ import {
     isRefObject,
     Keys,
     Popover,
+    PopoverInteractionKind,
     Position,
     Utils,
 } from "@blueprintjs/core";
@@ -75,7 +76,12 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     selectedItem?: T | null;
 
     /**
-     * Whether the popover opens on key down or when the input is focused.
+     * If true, the component waits until a keydown event in the TagInput
+     * before opening its popover.
+     *
+     * If false, the popover opens immediately after a mouse click or TAB key
+     * interaction focuses the component's TagInput.
+     *
      * @default false
      */
     openOnKeyDown?: boolean;
@@ -189,6 +195,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
                 position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                interactionKind={PopoverInteractionKind.CLICK}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
@@ -273,10 +280,14 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         }
     }
 
+    // Popover interaction kind is CLICK, so this only handles click events.
+    // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         requestAnimationFrame(() => {
-            if (this.inputEl != null && getRef(this.inputEl) !== document.activeElement) {
-                // the input is no longer focused so we can close the popover
+            const isInputFocused = getRef(this.inputEl) === document.activeElement;
+
+            if (this.inputEl != null && !isInputFocused) {
+                // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });
             }
             Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", nextOpenState);
