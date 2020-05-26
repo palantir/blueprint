@@ -21,8 +21,9 @@ import * as React from "react";
 const URL_BASE = "https://raw.githubusercontent.com/palantir/blueprint/develop/resources/sketch";
 
 const RESOURCES: IResourceProps[] = [
-    { fileName: "blueprint-core-kit.sketch", lastUpdated: "August 22, 2018" },
-    { fileName: "blueprint-colors.sketchpalette", lastUpdated: "March 22, 2016" },
+    { fileName: "blueprint-core-kit.sketch", lastUpdated: "April 14, 2020" },
+    { fileName: "blueprint-icons.sketch", lastUpdated: "April 14, 2020" },
+    { fileName: "blueprint-colors.sketchpalette", lastUpdated: "January 22, 2020" },
 ];
 
 export const Resources: React.SFC = () => (

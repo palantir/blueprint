@@ -11,20 +11,21 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
 
 .blueprint-resources {
   @include pt-flex-container(row, $asset-margin);
-  margin-bottom: $asset-margin;
+  flex-wrap: wrap;
 }
 
 .blueprint-resource {
   display: flex;
   flex: 1 1 0%;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  margin-bottom: $asset-margin;
+  margin-right: 0;
   padding-left: $asset-icon-size + $asset-padding * 2;
   position: relative;
   white-space: nowrap;
 
   &::before {
-
     background: url("#{$resources-path}/sketch-mac-icon@2x.png") no-repeat center / $asset-icon-size;
     content: "";
     display: block;
@@ -38,6 +39,15 @@ $dark-asset-background-color: rgba($light-gray1, 0.1);
 
   &:hover .blueprint-resource-title {
     text-decoration: underline;
+  }
+}
+
+// when the window is narrower than this width, all the resources wrap into a single column
+$flex-wrap-width: 900px;
+
+@media (min-width: $flex-wrap-width) {
+  .blueprint-resource:first-of-type {
+    margin-right: $asset-margin;
   }
 }
 

@@ -19,10 +19,14 @@ import * as React from "react";
 
 import {
     DISPLAYNAME_PREFIX,
+    getRef,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
+    IRefCallback,
+    IRefObject,
+    isRefObject,
     Keys,
     Popover,
     Position,
@@ -112,13 +116,15 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private input: HTMLInputElement | null = null;
+    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private queryList: QueryList<T> | null = null;
     private refHandlers = {
-        input: (ref: HTMLInputElement | null) => {
-            this.input = ref;
-            Utils.safeInvokeMember(this.props.inputProps, "inputRef", ref);
-        },
+        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
+            ? (this.inputEl = this.props.inputProps!.inputRef)
+            : (ref: HTMLInputElement | null) => {
+                  this.inputEl = ref;
+                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
+              },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
@@ -210,8 +216,9 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
         requestAnimationFrame(() => {
-            if (this.input != null) {
-                this.input.setSelectionRange(0, this.input.value.length);
+            if (this.inputEl != null) {
+                const input = getRef(this.inputEl);
+                input.setSelectionRange(0, input.value.length);
             }
         });
     };
@@ -230,14 +237,14 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         let nextOpenState: boolean;
         if (!this.props.closeOnSelect) {
-            if (this.input != null) {
-                this.input.focus();
+            if (this.inputEl != null) {
+                getRef(this.inputEl).focus();
             }
             this.selectText();
             nextOpenState = true;
         } else {
-            if (this.input != null) {
-                this.input.blur();
+            if (this.inputEl != null) {
+                getRef(this.inputEl).blur();
             }
             nextOpenState = false;
         }
@@ -268,7 +275,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         requestAnimationFrame(() => {
-            if (this.input != null && this.input !== document.activeElement) {
+            if (this.inputEl != null && getRef(this.inputEl) !== document.activeElement) {
                 // the input is no longer focused so we can close the popover
                 this.setState({ isOpen: false });
             }
@@ -299,8 +306,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             const { which } = evt;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
-                if (this.input != null) {
-                    this.input.blur();
+                if (this.inputEl != null) {
+                    getRef(this.inputEl).blur();
                 }
                 this.setState({ isOpen: false });
             } else if (

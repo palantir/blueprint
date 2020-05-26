@@ -26,6 +26,7 @@ export * from "./elevation";
 export * from "./intent";
 export * from "./position";
 export * from "./props";
+export * from "./refs";
 
 import * as Classes from "./classes";
 import * as Keys from "./keys";

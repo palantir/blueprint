@@ -27,6 +27,7 @@ export const Classes = classes;
 
 export { DateRange } from "./common/dateRange";
 export { Months } from "./common/months";
+export { TimeUnit } from "./common/timeUnit";
 export { IDateFormatProps } from "./dateFormat";
 export { DateInput, IDateInputProps } from "./dateInput";
 export { DatePicker, IDatePickerProps } from "./datePicker";

@@ -24,6 +24,7 @@ import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
 
 export interface ITimePickerExampleState {
+    autoFocus: boolean;
     precision?: TimePrecision;
     selectAllOnFocus?: boolean;
     showArrowButtons?: boolean;
@@ -47,6 +48,7 @@ enum MaximumHours {
 
 export class TimePickerExample extends React.PureComponent<IExampleProps, ITimePickerExampleState> {
     public state = {
+        autoFocus: true,
         disabled: false,
         precision: TimePrecision.MINUTE,
         selectAllOnFocus: false,
@@ -80,6 +82,7 @@ export class TimePickerExample extends React.PureComponent<IExampleProps, ITimeP
                 />
                 <Switch checked={this.state.disabled} label="Disabled" onChange={this.toggleDisabled} />
                 <Switch checked={this.state.useAmPm} label="Use AM/PM" onChange={this.toggleUseAmPm} />
+                <Switch checked={this.state.autoFocus} label="Auto focus" onChange={this.toggleAutoFocus} />
                 <PrecisionSelect value={this.state.precision} onChange={this.handlePrecisionChange} />
                 <label className={Classes.LABEL}>
                     Minimum time
@@ -115,6 +118,10 @@ export class TimePickerExample extends React.PureComponent<IExampleProps, ITimeP
 
     private toggleUseAmPm = () => {
         this.setState({ useAmPm: !this.state.useAmPm });
+    };
+
+    private toggleAutoFocus = () => {
+        this.setState({ autoFocus: !this.state.autoFocus });
     };
 
     private changeMinHour = (hour: MinimumHours) => {

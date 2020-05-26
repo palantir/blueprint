@@ -80,8 +80,7 @@ function transformDocumentalistData(key, value) {
         // reverse the list so highest version is first (easier indexing)
         return Array.from(majors.values()).reverse();
     }
-    // remove all class declarations as they're currently unused and only increase bundle size
-    if (value != null && value.kind !== "class") {
+    if (value != null) {
         return replaceNS(value);
     }
     return undefined;

@@ -24,12 +24,16 @@ import {
     Boundary,
     Classes,
     DISPLAYNAME_PREFIX,
+    getRef,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     Intent,
     IPopoverProps,
     IProps,
+    IRefCallback,
+    IRefObject,
+    isRefObject,
     Keys,
     Popover,
     Position,
@@ -229,17 +233,21 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
-    private startInputRef: HTMLInputElement;
-    private endInputRef: HTMLInputElement;
+    private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null;
+    private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null;
     private refHandlers = {
-        endInputRef: (ref: HTMLInputElement) => {
-            this.endInputRef = ref;
-            Utils.safeInvoke(this.props.endInputProps.inputRef, ref);
-        },
-        startInputRef: (ref: HTMLInputElement) => {
-            this.startInputRef = ref;
-            Utils.safeInvoke(this.props.startInputProps.inputRef, ref);
-        },
+        endInputRef: isRefObject<HTMLInputElement>(this.props.endInputProps.inputRef)
+            ? (this.endInputRef = this.props.endInputProps.inputRef)
+            : (ref: HTMLInputElement | null) => {
+                  this.endInputRef = ref;
+                  (this.props.endInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
+              },
+        startInputRef: isRefObject<HTMLInputElement>(this.props.startInputProps.inputRef)
+            ? (this.startInputRef = this.props.startInputProps.inputRef)
+            : (ref: HTMLInputElement | null) => {
+                  this.startInputRef = ref;
+                  (this.props.startInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
+              },
     };
 
     public constructor(props: IDateRangeInputProps, context?: any) {
@@ -266,19 +274,22 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         super.componentDidUpdate(prevProps, prevState, snapshot);
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
-        const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, this.startInputRef);
-        const shouldFocusEndInput = this.shouldFocusInputRef(isEndInputFocused, this.endInputRef);
+        const startInputRef = getRef(this.startInputRef);
+        const endInputRef = getRef(this.endInputRef);
+
+        const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, startInputRef);
+        const shouldFocusEndInput = this.shouldFocusInputRef(isEndInputFocused, endInputRef);
 
         if (shouldFocusStartInput) {
-            this.startInputRef.focus();
+            startInputRef.focus();
         } else if (shouldFocusEndInput) {
-            this.endInputRef.focus();
+            endInputRef.focus();
         }
 
         if (isStartInputFocused && shouldSelectAfterUpdate) {
-            this.startInputRef.select();
+            startInputRef.select();
         } else if (isEndInputFocused && shouldSelectAfterUpdate) {
-            this.endInputRef.select();
+            endInputRef.select();
         }
 
         let nextState: IDateRangeInputState = {};

@@ -8,9 +8,12 @@ about: Something not working as expected?
 #### Environment
 
 - __Package version(s)__: <!-- fill this out -->
-- __Browser and OS versions__: <!-- fill this out -->
+- __Operating System__: <!-- fill this out -->
+- __Browser name and version__: <!-- fill this out -->
 
-If possible, link to a minimal repro (fork [this code sandbox](https://codesandbox.io/s/blueprint-sandbox-et9xy)): <!-- here -->
+#### Code Sandbox
+
+Link to a minimal repro (fork [this code sandbox](https://codesandbox.io/s/blueprint-sandbox-et9xy)): <!-- here -->
 
 #### Steps to reproduce
 

@@ -297,12 +297,14 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
             return null;
         }
         return (
-            <TimePicker
-                precision={timePrecision}
-                {...timePickerProps}
-                onChange={this.handleTimeChange}
-                value={this.state.value}
-            />
+            <div className={Classes.DATEPICKER_TIMEPICKER_WRAPPER}>
+                <TimePicker
+                    precision={timePrecision}
+                    {...timePickerProps}
+                    onChange={this.handleTimeChange}
+                    value={this.state.value}
+                />
+            </div>
         );
     }
 
