@@ -18,6 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+// tslint:disable-next-line no-submodule-imports
+import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
 import { findDOMNode } from "react-dom";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
@@ -317,8 +319,15 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
                 <span className={Classes.OVERLAY_CONTENT}>{child}</span>
             );
         const { onOpening, onOpened, onClosing, onClosed, transitionDuration, transitionName } = this.props;
+
+        // a breaking change in react-transition-group types requires us to be explicit about the type overload here,
+        // using a technique similar to Select.ofType() in @blueprintjs/select
+        const CSSTransitionImplicit = CSSTransition as new (props: CSSTransitionProps<undefined>) => CSSTransition<
+            undefined
+        >;
+
         return (
-            <CSSTransition
+            <CSSTransitionImplicit
                 classNames={transitionName}
                 onEntering={onOpening}
                 onEntered={onOpened}
@@ -327,7 +336,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
                 timeout={transitionDuration}
             >
                 {decoratedChild}
-            </CSSTransition>
+            </CSSTransitionImplicit>
         );
     };
 
