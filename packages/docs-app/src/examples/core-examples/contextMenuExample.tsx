@@ -25,7 +25,7 @@ import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 /**
  * This component uses the imperative ContextMenu API.
  */
-class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> {
+class GraphNode extends React.PureComponent<any, { isContextMenuOpen: boolean }> {
     public state = { isContextMenuOpen: false };
 
     public render() {

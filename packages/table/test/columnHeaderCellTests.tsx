@@ -20,8 +20,8 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import * as Classes from "../src/common/classes";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
+import * as Classes from "../src/common/classes";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
@@ -150,7 +150,7 @@ describe("<ColumnHeaderCell>", () => {
             expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
-        function mount(props: Partial<IColumnHeaderCellProps> & object) {
+        function mount(props: Partial<IColumnHeaderCellProps>) {
             const element = harness.mount(
                 <ColumnHeaderCell
                     enableColumnReordering={props.enableColumnReordering}

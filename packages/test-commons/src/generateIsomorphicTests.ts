@@ -25,7 +25,7 @@ export interface IIsomorphicTestConfig {
     /** Whether to test `className`. */
     className?: boolean;
     /** Required `props` for successful render. */
-    props?: object;
+    props?: Record<string, unknown>;
     /** Whether to skip this component entirely. */
     skip?: boolean;
 }
@@ -39,7 +39,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
     /** Configuration per component. This is a mapped type supporting all keys in `Components`. */
     config: { [P in keyof T]?: IIsomorphicTestConfig } = {},
 ) {
-    function render(name: string, extraProps?: object) {
+    function render(name: string, extraProps?: Record<string, unknown>) {
         const { children, props }: IIsomorphicTestConfig = config[name] || {};
         const finalProps = extraProps ? { ...props, ...extraProps } : props;
         // Render to static HTML, just as a server would.

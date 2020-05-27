@@ -197,7 +197,7 @@ describe("<Table>", function (this) {
             });
         });
 
-        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
+        function mountTable(tableProps: Partial<ITableProps> = {}) {
             const containerElement = document.createElement("div");
             containerElement.style.width = `${CONTAINER_WIDTH}px`;
             containerElement.style.height = `${CONTAINER_HEIGHT}px`;
@@ -413,7 +413,7 @@ describe("<Table>", function (this) {
                 tableInstance = ref;
             }
 
-            function mountTable(tableProps: Partial<ITableProps> & object = {}) {
+            function mountTable(tableProps: Partial<ITableProps> = {}) {
                 mount(
                     <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
                         <Table
@@ -837,7 +837,7 @@ describe("<Table>", function (this) {
             document.body.removeChild(containerElement);
         });
 
-        function mountTable(tableProps: Partial<ITableProps> & object = {}) {
+        function mountTable(tableProps: Partial<ITableProps> = {}) {
             return harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
                 <Table
@@ -1584,12 +1584,7 @@ describe("<Table>", function (this) {
             return <Column key={i} cellRenderer={renderDummyCell} />;
         }
 
-        function scrollTable(
-            table: ReactWrapper<any>,
-            scrollLeft: number,
-            scrollTop: number,
-            callback: () => void,
-        ) {
+        function scrollTable(table: ReactWrapper<any>, scrollLeft: number, scrollTop: number, callback: () => void) {
             // make the viewport small enough to fit only one cell
             updateLocatorElements(table, scrollLeft, scrollTop, COL_WIDTH, ROW_HEIGHT);
             table.find(TableQuadrant).first().simulate("scroll");

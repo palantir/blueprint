@@ -40,6 +40,7 @@
     "classnames": "^2.2",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
+    "react-lifecycles-compat": "^3.0.4",
     "tslib": "~1.10.0"
   },
   "peerDependencies": {

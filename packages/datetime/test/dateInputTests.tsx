@@ -20,8 +20,8 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
-import { Months } from "../src/common/months";
 import { Classes, DateInput, DatePicker, IDateInputProps, TimePicker, TimePrecision } from "../src";
+import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 

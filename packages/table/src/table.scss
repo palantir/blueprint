@@ -1,4 +1,4 @@
-/*!
+/*
 
 Copyright 2016-present Palantir Technologies, Inc. All rights reserved.
 Licensed under the Apache License, Version 2.0.
@@ -22,136 +22,133 @@ $row-z-index: $column-z-index + 1 !default;
 $menu-z-index: $row-z-index + 1 !default;
 
 .#{$ns}-table-container {
-  @include force-hardware-acceleration();
-  background-color: $table-background-color;
-  display: flex;
-  flex-direction: column;
-  height: 100%; // IE 11
-  max-height: 100%;
-  max-width: 100%;
-  min-height: $pt-grid-size * 6; // For unit tests, we make sure at least one row is visible
-  overflow: hidden;
+    @include force-hardware-acceleration();
+    background-color: $table-background-color;
+    display: flex;
+    flex-direction: column;
+    height: 100%; // IE 11
+    max-height: 100%;
+    max-width: 100%;
+    min-height: $pt-grid-size * 6; // For unit tests, we make sure at least one row is visible
+    overflow: hidden;
 
-  .#{$ns}-dark & {
-    background-color: $dark-table-background-color;
-  }
+    .#{$ns}-dark & {
+        background-color: $dark-table-background-color;
+    }
 
-  .#{$ns}-loading {
-    @include table-skeleton();
-    color: transparent;
-  }
+    .#{$ns}-loading {
+        @include table-skeleton();
+        color: transparent;
+    }
 }
 
 .#{$ns}-table-top-container {
-  display: flex;
-  flex: 0 0 auto;
-  min-height: 0%; // Must use % unit for IE11
+    display: flex;
+    flex: 0 0 auto;
+    min-height: 0%; // Must use % unit for IE11
 
-  .#{$ns}-table-container.#{$ns}-table-no-rows & {
-    // edge case when there are no rows: keep bottom borders visible on menu
-    // element and column headers
-    padding-bottom: 1px;
-  }
+    .#{$ns}-table-container.#{$ns}-table-no-rows & {
+        // edge case when there are no rows: keep bottom borders visible on menu
+        // element and column headers
+        padding-bottom: 1px;
+    }
 }
 
 .#{$ns}-table-bottom-container {
-  color: $cell-text-color;
-  display: flex;
-  flex: 1 1 auto;
-  height: 100%; // IE 11
-  min-height: 0%; // Must use % unit for IE11
+    color: $cell-text-color;
+    display: flex;
+    flex: 1 1 auto;
+    height: 100%; // IE 11
+    min-height: 0%; // Must use % unit for IE11
 
-  .#{$ns}-dark & {
-    color: $dark-cell-text-color;
-  }
+    .#{$ns}-dark & {
+        color: $dark-cell-text-color;
+    }
 }
 
 .#{$ns}-table-menu {
+    background-color: $header-background-color;
+    flex: 0 0 auto;
+    // Stay above the moving table-header
+    position: relative;
+    z-index: $menu-z-index;
 
-  background-color: $header-background-color;
-  flex: 0 0 auto;
-  // Stay above the moving table-header
-  position: relative;
-  z-index: $menu-z-index;
-
-  .#{$ns}-dark & {
-    background-color: $dark-header-background-color;
-  }
+    .#{$ns}-dark & {
+        background-color: $dark-header-background-color;
+    }
 }
 
 .#{$ns}-table-column-headers {
+    background-color: $header-background-color;
+    color: $column-header-text-color;
+    display: block;
 
-  background-color: $header-background-color;
-  color: $column-header-text-color;
-  display: block;
+    // allow absolute position for region overlays
+    position: relative;
+    // make custom header content overlap table body
+    z-index: $column-z-index;
 
-  // allow absolute position for region overlays
-  position: relative;
-  // make custom header content overlap table body
-  z-index: $column-z-index;
-
-  .#{$ns}-dark & {
-    background-color: $dark-header-background-color;
-    color: $dark-column-header-text-color;
-  }
+    .#{$ns}-dark & {
+        background-color: $dark-header-background-color;
+        color: $dark-column-header-text-color;
+    }
 }
 
 .#{$ns}-table-row-headers {
+    background-color: $header-background-color;
+    color: $row-header-text-color;
+    flex: 0 0 auto;
+    // allow absolute position for region overlay
+    position: relative;
 
-  background-color: $header-background-color;
-  color: $row-header-text-color;
-  flex: 0 0 auto;
-  // allow absolute position for region overlay
-  position: relative;
+    // animate width changes on scroll end
+    transition: width $pt-transition-duration $pt-transition-ease;
+    // make custom header content overlap table body
+    z-index: $row-z-index;
 
-  // animate width changes on scroll end
-  transition: width $pt-transition-duration $pt-transition-ease;
-  // make custom header content overlap table body
-  z-index: $row-z-index;
-
-  .#{$ns}-dark & {
-    background-color: $dark-header-background-color;
-    color: $dark-row-header-text-color;
-  }
+    .#{$ns}-dark & {
+        background-color: $dark-header-background-color;
+        color: $dark-row-header-text-color;
+    }
 }
 
 .#{$ns}-table-body {
-  flex: 1 1 100%;
-  overflow: scroll;
-  position: relative;
-  z-index: $body-z-index;
+    flex: 1 1 100%;
+    overflow: scroll;
+    position: relative;
+    z-index: $body-z-index;
 }
 
 .#{$ns}-table-body-virtual-client {
-  position: relative;
+    position: relative;
 }
 
 .#{$ns}-table-cell-client {
-  background: $cell-background-color;
+    background: $cell-background-color;
 
-  .#{$ns}-dark & {
-    background: $dark-cell-background-color;
-  }
+    .#{$ns}-dark & {
+        background: $dark-cell-background-color;
+    }
 }
 
 .#{$ns}-table-tbody {
-  display: block;
-  white-space: nowrap;
+    display: block;
+    white-space: nowrap;
 }
 
 .#{$ns}-table-cell {
-  display: inline-block;
+    display: inline-block;
 }
 
 .#{$ns}-table-no-layout {
-  display: inline-block;
-  position: absolute;
+    display: inline-block;
+    position: absolute;
 }
 
 .#{$ns}-table-scrollbar-measure {
-  height: $pt-grid-size * 10;
-  overflow: scroll;
-  position: absolute;
-  top: -9999px;
-  width: $pt-grid-size * 10;
+    height: $pt-grid-size * 10;
+    overflow: scroll;
+    position: absolute;
+    top: -9999px;
+    width: $pt-grid-size * 10;
 }

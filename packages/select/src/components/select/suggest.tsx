@@ -87,6 +87,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     openOnKeyDown?: boolean;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**

@@ -3,7 +3,10 @@
   "import/no-extraneous-dependencies": [
     "error",
     {
-      "devDependencies": false
+      "devDependencies": [
+        "**/test/**/*.{ts,tsx}",
+        "**/*.test.{ts,tsx}"
+      ]
     }
   ],
   "import/order": "off",

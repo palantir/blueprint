@@ -21,8 +21,8 @@ import * as sinon from "sinon";
 
 import { HTMLSelect } from "@blueprintjs/core";
 import { ClassNames } from "react-day-picker";
-import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
 import { Classes, IDatePickerLocaleUtils } from "../src";
+import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
 
 describe("<DatePickerCaption>", () => {
     const LOCALE_UTILS: IDatePickerLocaleUtils = {

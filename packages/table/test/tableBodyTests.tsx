@@ -209,7 +209,7 @@ describe("TableBody", () => {
         }
     });
 
-    function mountTableBody(props: Partial<ITableBodyProps> & object = {}) {
+    function mountTableBody(props: Partial<ITableBodyProps> = {}) {
         const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;

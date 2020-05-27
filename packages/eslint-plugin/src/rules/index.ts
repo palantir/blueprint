@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ import { classesConstantsRule } from "./classes-constants";
 import { htmlComponentsRule } from "./html-components";
 import { iconComponentsRule } from "./icon-components";
 
-// eslint-disable-line import/no-default-export
+// eslint-disable-next-line import/no-default-export
 export default {
     "classes-constants": classesConstantsRule,
     "html-components": htmlComponentsRule,

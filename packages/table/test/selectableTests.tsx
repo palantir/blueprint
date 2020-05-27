@@ -581,7 +581,7 @@ describe("DragSelectable", () => {
         });
     });
 
-    function mountDragSelectable(props: Partial<IDragSelectableProps> & object = {}) {
+    function mountDragSelectable(props: Partial<IDragSelectableProps> = {}) {
         return harness.mount(
             <DragSelectable
                 enableMultipleSelection={true}

@@ -2320,6 +2320,7 @@ describe("<DateRangeInput>", () => {
         });
 
         it("Clicking a start date causes focus to move to end field", () => {
+            // eslint-disable-next-line prefer-const
             let controlledRoot: WrappedComponentRoot;
 
             const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
@@ -2334,6 +2335,7 @@ describe("<DateRangeInput>", () => {
         });
 
         it("Typing in a field while hovering over a date shows the typed date, not the hovered date", () => {
+            // eslint-disable-next-line prefer-const
             let controlledRoot: WrappedComponentRoot;
 
             const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
