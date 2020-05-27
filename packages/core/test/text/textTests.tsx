@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, Text } from "../../src/index";
+import { Classes, Text } from "../../src";
 
 describe("<Text>", () => {
     it("adds the className prop", () => {

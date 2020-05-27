@@ -37,7 +37,7 @@ import {
     getTimezoneItems,
     ITimezoneItem,
 } from "../src/components/timezone-picker/timezoneItems";
-import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src/index";
+import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
 
 type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
 

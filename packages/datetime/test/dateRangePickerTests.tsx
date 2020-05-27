@@ -36,7 +36,7 @@ import {
     IDateRangePickerProps,
     TimePicker,
     TimePrecision,
-} from "../src/index";
+} from "../src";
 import { IDateRangeShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 

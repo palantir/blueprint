@@ -201,7 +201,7 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
             modifiers += ModifierBitMasks[piece];
         } else if (ShiftKeys[piece] != null) {
             // tslint:disable-next-line no-string-literal
-            modifiers += ModifierBitMasks["shift"];
+            modifiers += ModifierBitMasks.shift;
             key = ShiftKeys[piece];
         } else {
             key = piece.toLowerCase();
@@ -236,6 +236,7 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
     } else if (KeyCodes[which] != null) {
         keys.push(KeyCodes[which]);
     } else {
+        // eslint-disable-next-line id-blacklist
         keys.push(String.fromCharCode(which).toLowerCase());
     }
 
@@ -257,22 +258,23 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     } else if (KeyCodes[which] != null) {
         key = KeyCodes[which];
     } else {
+        // eslint-disable-next-line id-blacklist
         key = String.fromCharCode(which).toLowerCase();
     }
 
     let modifiers = 0;
     // tslint:disable no-string-literal
     if (e.altKey) {
-        modifiers += ModifierBitMasks["alt"];
+        modifiers += ModifierBitMasks.alt;
     }
     if (e.ctrlKey) {
-        modifiers += ModifierBitMasks["ctrl"];
+        modifiers += ModifierBitMasks.ctrl;
     }
     if (e.metaKey) {
-        modifiers += ModifierBitMasks["meta"];
+        modifiers += ModifierBitMasks.meta;
     }
     if (e.shiftKey) {
-        modifiers += ModifierBitMasks["shift"];
+        modifiers += ModifierBitMasks.shift;
     }
     // tslint:enable
 

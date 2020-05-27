@@ -28,7 +28,7 @@ import {
     ItemListRenderer,
     ItemPredicate,
     QueryList,
-} from "../src/index";
+} from "../src";
 
 type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
 

@@ -21,7 +21,7 @@ import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
 import * as TableClasses from "../src/common/classes";
-import { Cell, EditableCell } from "../src/index";
+import { Cell, EditableCell } from "../src";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 
 describe("<EditableCell>", () => {

@@ -191,7 +191,7 @@ export class Switch extends AbstractPureComponent2<ISwitchProps> {
 // Radio
 //
 
-export interface IRadioProps extends IControlProps {}
+export type IRadioProps = IControlProps
 
 @polyfill
 export class Radio extends AbstractPureComponent2<IRadioProps> {

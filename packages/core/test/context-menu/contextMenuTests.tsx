@@ -21,7 +21,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src/index";
+import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src";
 
 const MENU_ITEMS = [
     <MenuItem key="left" icon="align-left" text="Align Left" />,

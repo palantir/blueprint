@@ -27,7 +27,7 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { IDatePickerState } from "../src/datePicker";
-import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, TimePicker, TimePrecision } from "../src/index";
+import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, TimePicker, TimePrecision } from "../src";
 import { IDatePickerShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 

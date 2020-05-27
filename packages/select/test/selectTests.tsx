@@ -21,7 +21,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src/index";
+import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Select>", () => {

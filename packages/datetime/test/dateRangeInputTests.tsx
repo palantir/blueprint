@@ -36,7 +36,7 @@ import {
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src/index";
+import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 

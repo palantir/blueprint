@@ -20,7 +20,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { DateTimePicker } from "../src/dateTimePicker";
-import { Classes, DatePicker, TimePicker } from "../src/index";
+import { Classes, DatePicker, TimePicker } from "../src";
 
 describe("<DateTimePicker>", () => {
     it("renders a DatePicker and a TimePicker", () => {

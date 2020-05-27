@@ -21,9 +21,9 @@ import { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { mount } from "enzyme";
-import * as Classes from "../../src/common/classes";
+import { Classes, IToaster, Toaster } from "../../src";
+// eslint-disable-next-line import/no-internal-modules
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
-import { IToaster, Toaster } from "../../src/index";
 
 describe("Toaster", () => {
     let testsContainerElement: HTMLElement;

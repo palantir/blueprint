@@ -19,8 +19,8 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
+import { Button, Classes, Dialog, H4, Icon } from "../../src";
 import * as Keys from "../../src/common/keys";
-import { Button, Classes, Dialog, H4, Icon } from "../../src/index";
 
 describe("<Dialog>", () => {
     it("renders its content correctly", () => {

@@ -20,7 +20,7 @@ import * as sinon from "sinon";
 import * as Classes from "../src/common/classes";
 import { Clipboard } from "../src/common/clipboard";
 import { Utils } from "../src/common/utils";
-import { RegionCardinality, Regions, SelectionModes } from "../src/index";
+import { RegionCardinality, Regions, SelectionModes } from "../src";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 

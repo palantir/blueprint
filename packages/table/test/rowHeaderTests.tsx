@@ -21,7 +21,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
-import { IRowHeaderCellProps, RowHeaderCell } from "../src/index";
+import { IRowHeaderCellProps, RowHeaderCell } from "../src";
 import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 

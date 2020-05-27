@@ -26,7 +26,6 @@ import { spy } from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import * as Errors from "../../src/common/errors";
 import {
     Button,
     ButtonGroup,
@@ -38,7 +37,8 @@ import {
     Keys,
     NumericInput,
     Position,
-} from "../../src/index";
+} from "../../src";
+import * as Errors from "../../src/common/errors";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376

@@ -27,7 +27,7 @@ import {
     MenuItem,
     Popover,
     Position,
-} from "../../src/index";
+} from "../../src";
 
 describe("<CollapsibleList>", () => {
     it("adds className to itself", () => {

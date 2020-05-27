@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, ProgressBar } from "../../src/index";
+import { Classes, ProgressBar } from "../../src";
 
 describe("ProgressBar", () => {
     it("renders a PROGRESS_BAR", () => {

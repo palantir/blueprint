@@ -19,7 +19,7 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { SinonSpy, spy } from "sinon";
 
-import { AnchorButton, Button, Toast } from "../../src/index";
+import { AnchorButton, Button, Toast } from "../../src";
 
 describe("<Toast>", () => {
     it("renders only dismiss button by default", () => {

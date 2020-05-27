@@ -23,8 +23,6 @@ import { SinonSpy, spy } from "sinon";
 
 import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
-import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 import {
     Classes,
     comboMatches,
@@ -36,7 +34,9 @@ import {
     HotkeysTarget,
     IKeyCombo,
     parseKeyCombo,
-} from "../../src/index";
+} from "../../src";
+import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
+import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 
 describe("Hotkeys", () => {
     it("throws error if given non-Hotkey child", () => {
