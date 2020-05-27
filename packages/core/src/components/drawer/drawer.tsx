@@ -95,7 +95,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 }
 
 @polyfill
-export class Drawer extends AbstractPureComponent2<IDrawerProps, {}> {
+export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,

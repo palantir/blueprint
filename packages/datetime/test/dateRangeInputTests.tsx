@@ -40,7 +40,7 @@ import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
-type WrappedComponentRoot = ReactWrapper<any, {}>;
+type WrappedComponentRoot = ReactWrapper<any>;
 type WrappedComponentInput = ReactWrapper<HTMLInputProps, any>;
 type WrappedComponentDayElement = ReactWrapper<HTMLDivProps, any>;
 

@@ -108,7 +108,7 @@ interface IPianoKeyProps {
     context: AudioContext;
 }
 
-class PianoKey extends React.Component<IPianoKeyProps, {}> {
+class PianoKey extends React.Component<IPianoKeyProps> {
     private oscillator: Oscillator;
     private envelope: Envelope;
 

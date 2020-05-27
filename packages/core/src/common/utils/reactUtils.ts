@@ -83,7 +83,7 @@ export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
  * @param element JSX element in question
  * @param ComponentType desired component type of element
  */
-export function isElementOfType<P = {}>(
+export function isElementOfType<P = Record<string, unknown>>(
     element: any,
     ComponentType: React.ComponentType<P>,
 ): element is React.ReactElement<P> {

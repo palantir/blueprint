@@ -65,7 +65,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
 }
 
 @polyfill
-export class Spinner extends AbstractPureComponent2<ISpinnerProps, {}> {
+export class Spinner extends AbstractPureComponent2<ISpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
     public static readonly SIZE_SMALL = 20;

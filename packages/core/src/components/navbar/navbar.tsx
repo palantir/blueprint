@@ -36,7 +36,7 @@ export interface INavbarProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class Navbar extends AbstractPureComponent2<INavbarProps, {}> {
+export class Navbar extends AbstractPureComponent2<INavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
     public static Divider = NavbarDivider;

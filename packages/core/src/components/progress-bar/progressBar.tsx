@@ -43,7 +43,7 @@ export interface IProgressBarProps extends IProps, IIntentProps {
 }
 
 @polyfill
-export class ProgressBar extends AbstractPureComponent2<IProgressBarProps, {}> {
+export class ProgressBar extends AbstractPureComponent2<IProgressBarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 
     public render() {

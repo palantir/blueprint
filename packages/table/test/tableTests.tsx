@@ -540,7 +540,7 @@ describe("<Table>", function (this) {
             );
         }
 
-        function selectFullTable(table: ReactWrapper<any, {}>, ...mouseEventArgs: any[]) {
+        function selectFullTable(table: ReactWrapper<any>, ...mouseEventArgs: any[]) {
             const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
             menu.simulate("mousedown", ...mouseEventArgs).simulate("mouseup", ...mouseEventArgs);
         }
@@ -1585,7 +1585,7 @@ describe("<Table>", function (this) {
         }
 
         function scrollTable(
-            table: ReactWrapper<any, {}>,
+            table: ReactWrapper<any>,
             scrollLeft: number,
             scrollTop: number,
             callback: () => void,
@@ -1930,7 +1930,7 @@ describe("<Table>", function (this) {
             expect(onSelection.calledOnce).to.be.false;
         });
 
-        function pressKeyWithShiftKey(component: ReactWrapper<ITableProps, {}>, keyCode: number) {
+        function pressKeyWithShiftKey(component: ReactWrapper<ITableProps>, keyCode: number) {
             const key = keyCode === Keys.ARROW_LEFT ? "left" : "right";
             component.simulate("keyDown", createKeyEventConfig(component, key, keyCode, true));
         }
@@ -1941,7 +1941,7 @@ describe("<Table>", function (this) {
     }
 
     function updateLocatorElements(
-        table: ReactWrapper<any, {}>,
+        table: ReactWrapper<any>,
         scrollLeft: number,
         scrollTop: number,
         clientWidth: number,

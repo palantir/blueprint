@@ -39,7 +39,7 @@ export interface INavHeaderProps {
 }
 
 @HotkeysTarget
-export class NavHeader extends React.PureComponent<INavHeaderProps, {}> {
+export class NavHeader extends React.PureComponent<INavHeaderProps> {
     public render() {
         const { useDarkTheme } = this.props;
         return (

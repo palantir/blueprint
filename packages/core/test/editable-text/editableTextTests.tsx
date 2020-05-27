@@ -296,7 +296,7 @@ describe("<EditableText>", () => {
             preventDefault?(): void;
         }
 
-        function simulateHelper(wrapper: ReactWrapper<any, {}>, value: string, e: IFakeKeyboardEvent) {
+        function simulateHelper(wrapper: ReactWrapper<any>, value: string, e: IFakeKeyboardEvent) {
             wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
         }
     });

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// eslint-disable  max-classes-per-file
+/* eslint-disable max-classes-per-file */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -60,7 +60,7 @@ class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> 
  * This component uses the decorator API and implements the IContextMenuTarget interface.
  */
 @ContextMenuTarget
-export class ContextMenuExample extends React.PureComponent<IExampleProps, {}> {
+export class ContextMenuExample extends React.PureComponent<IExampleProps> {
     public render() {
         return (
             <Example className="docs-context-menu-example" options={false} {...this.props}>

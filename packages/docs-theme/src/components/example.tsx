@@ -18,7 +18,7 @@ import { IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
-export interface IExampleProps<T = {}> extends IProps {
+export interface IExampleProps<T = Record<string, unknown>> extends IProps {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.

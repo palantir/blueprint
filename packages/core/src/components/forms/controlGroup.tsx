@@ -37,7 +37,7 @@ export interface IControlGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class ControlGroup extends AbstractPureComponent2<IControlGroupProps, {}> {
+export class ControlGroup extends AbstractPureComponent2<IControlGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
 
     public render() {

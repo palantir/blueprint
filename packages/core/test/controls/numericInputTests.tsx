@@ -459,12 +459,12 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard interactions in input field", () => {
-        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
             const inputField = component.find(InputGroup).find("input");
             inputField.simulate("keydown", addKeyCode(mockEvent, Keys.ARROW_UP));
         };
 
-        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
             const inputField = component.find(InputGroup).find("input");
             inputField.simulate("keydown", addKeyCode(mockEvent, Keys.ARROW_DOWN));
         };
@@ -474,12 +474,12 @@ describe("<NumericInput>", () => {
 
     // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
     describe("Keyboard interactions on buttons (with Space key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent: IMockEvent = {}) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent: IMockEvent = {}) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.SPACE));
         };
 
-        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent: IMockEvent = {}) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent: IMockEvent = {}) => {
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.SPACE));
         };
@@ -488,12 +488,12 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard interactions on buttons (with Enter key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.ENTER));
         };
 
-        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.ENTER));
         };
@@ -502,12 +502,12 @@ describe("<NumericInput>", () => {
     });
 
     describe("Mouse interactions", () => {
-        const simulateIncrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", mockEvent);
         };
 
-        const simulateDecrement = (component: ReactWrapper<any, {}>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("mousedown", mockEvent);
         };
@@ -1000,8 +1000,8 @@ describe("<NumericInput>", () => {
     function runInteractionSuite(
         incrementDescription: string,
         decrementDescription: string,
-        simulateIncrement: (component: ReactWrapper<any, {}>, mockEvent?: object) => void,
-        simulateDecrement: (component: ReactWrapper<any, {}>, mockEvent?: object) => void,
+        simulateIncrement: (component: ReactWrapper<any>, mockEvent?: object) => void,
+        simulateDecrement: (component: ReactWrapper<any>, mockEvent?: object) => void,
     ) {
         it(`increments by stepSize on ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();

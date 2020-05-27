@@ -92,7 +92,7 @@ install typings for Blueprint's dependencies before you can consume it:
 npm install --save @types/react @types/react-dom
 ```
 
-Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
+Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = Record<string, unknown>>`.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 

@@ -22,13 +22,13 @@ import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";
 import { ITreeNode, TreeNode } from "./treeNode";
 
-export type TreeEventHandler<T = {}> = (
+export type TreeEventHandler<T = Record<string, unknown>> = (
     node: ITreeNode<T>,
     nodePath: number[],
     e: React.MouseEvent<HTMLElement>,
 ) => void;
 
-export interface ITreeProps<T = {}> extends IProps {
+export interface ITreeProps<T = Record<string, unknown>> extends IProps {
     /**
      * The data specifying the contents and appearance of the tree.
      */
@@ -72,7 +72,7 @@ export interface ITreeProps<T = {}> extends IProps {
     onNodeMouseLeave?: TreeEventHandler<T>;
 }
 
-export class Tree<T = {}> extends React.Component<ITreeProps<T>, {}> {
+export class Tree<T = Record<string, unknown>> extends React.Component<ITreeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tree`;
 
     public static ofType<T>() {

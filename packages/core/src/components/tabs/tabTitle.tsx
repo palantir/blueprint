@@ -33,7 +33,7 @@ export interface ITabTitleProps extends ITabProps {
 }
 
 @polyfill
-export class TabTitle extends AbstractPureComponent2<ITabTitleProps, {}> {
+export class TabTitle extends AbstractPureComponent2<ITabTitleProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {

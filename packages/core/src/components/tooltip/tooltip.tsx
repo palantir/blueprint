@@ -64,7 +64,7 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
 }
 
 @polyfill
-export class Tooltip extends AbstractPureComponent2<ITooltipProps, {}> {
+export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
     public static defaultProps: Partial<ITooltipProps> = {

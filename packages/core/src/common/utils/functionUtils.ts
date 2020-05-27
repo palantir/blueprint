@@ -40,7 +40,7 @@ export function safeInvoke<A, B, C, D, R>(
     arg3: C,
     arg4: D,
 ): R | undefined;
-// eslint-disable-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function safeInvoke(func: Function | undefined, ...args: any[]) {
     if (isFunction(func)) {
         return func(...args);
@@ -68,7 +68,7 @@ export function safeInvokeOrValue<A, B, C, D, R>(
     arg3: C,
     arg4: D,
 ): R;
-// eslint-disable-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function safeInvokeOrValue(funcOrValue: Function | any | undefined, ...args: any[]) {
     return isFunction(funcOrValue) ? funcOrValue(...args) : funcOrValue;
 }
