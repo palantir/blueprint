@@ -14,7 +14,21 @@
         "jsx-no-lambda": true,
         "jsx-no-string-ref": true,
         "jsx-self-close": true,
+        "no-invalid-this": {
+            "options": ["check-function-in-method"]
+        },
         "no-unnecessary-callback-wrapper": true,
+        "no-submodule-imports": {
+            "options": [
+                "core-js",
+                "lodash",
+                "react-dom",
+                "@blueprintjs/table/src",
+                "@blueprintjs/test-commons/bootstrap",
+                "tsutils",
+                "@typescript-eslint/experimental-utils"
+            ]
+        },
         "object-literal-sort-keys": true,
         "only-arrow-functions": {
             "options": ["allow-declarations", "allow-named-functions"]

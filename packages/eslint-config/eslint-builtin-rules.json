@@ -83,7 +83,6 @@
   "no-extra-semi": "off",
   "no-fallthrough": "off",
   "no-floating-decimal": "off",
-  "no-invalid-this": "error",
   "no-mixed-operators": "off",
   "no-mixed-spaces-and-tabs": "off",
   "no-multi-spaces": "off",
