@@ -25,6 +25,23 @@ module.exports = {
     plugins,
     rules,
     settings,
+    overrides: [
+        {
+            files: ["**/test/**/*.{ts,tsx}"],
+            env: {
+                browser: true,
+                mocha: true,
+            },
+            rules: {
+                // HACKHACK: many test assertions are written with this syntax
+                "@typescript-eslint/no-unused-expressions": "off",
+                // HACKHACK: test dependencies are only declared at root but used in all packages.
+                "import/no-extraneous-dependencies": "off",
+                // HACKHACK: many violations, should be fixed eventually
+                "import/no-internal-modules": "off"
+            }
+        },
+    ],
     ignorePatterns: [
         "node_modules",
         "dist",

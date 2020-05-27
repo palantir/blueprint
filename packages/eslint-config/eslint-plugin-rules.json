@@ -23,6 +23,5 @@
   "import/order": "off",
   "jsdoc/check-alignment": "error",
   "jsdoc/check-indentation": "error",
-  "jsdoc/newline-after-description": "error",
-  "prefer-arrow/prefer-arrow-functions": "error"
+  "jsdoc/newline-after-description": "off"
 }

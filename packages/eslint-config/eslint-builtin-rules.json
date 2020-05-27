@@ -31,13 +31,9 @@
     "error",
     "any",
     "Number",
-    "number",
     "String",
-    "string",
     "Boolean",
-    "boolean",
-    "Undefined",
-    "undefined"
+    "Undefined"
   ],
   "id-match": "error",
   "implicit-arrow-linebreak": "off",
@@ -154,7 +150,7 @@
   "one-var-declaration-per-line": "off",
   "operator-linebreak": "off",
   "padded-blocks": "off",
-  "prefer-arrow-callback": "off",
+  "prefer-arrow-callback": "error",
   "prefer-const": "error",
   "prefer-object-spread": "error",
   "quote-props": "off",

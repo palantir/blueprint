@@ -82,6 +82,7 @@ export const Utils = {
         let str = "";
         while (true) {
             const letter = num % 26;
+            // eslint-disable-next-line id-blacklist
             str = String.fromCharCode(65 + letter) + str;
             num = num - letter;
             if (num <= 0) {
