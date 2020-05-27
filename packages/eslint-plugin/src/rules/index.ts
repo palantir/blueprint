@@ -18,7 +18,7 @@ import { classesConstantsRule } from "./classes-constants";
 import { htmlComponentsRule } from "./html-components";
 import { iconComponentsRule } from "./icon-components";
 
-// tslint:disable-next-line: no-default-export
+// eslint-disable-line import/no-default-export
 export default {
     "classes-constants": classesConstantsRule,
     "html-components": htmlComponentsRule,

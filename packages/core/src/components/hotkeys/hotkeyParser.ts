@@ -200,7 +200,6 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
         if (ModifierBitMasks[piece] != null) {
             modifiers += ModifierBitMasks[piece];
         } else if (ShiftKeys[piece] != null) {
-            // tslint:disable-next-line no-string-literal
             modifiers += ModifierBitMasks.shift;
             key = ShiftKeys[piece];
         } else {
@@ -263,7 +262,6 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     }
 
     let modifiers = 0;
-    // tslint:disable no-string-literal
     if (e.altKey) {
         modifiers += ModifierBitMasks.alt;
     }
@@ -276,7 +274,6 @@ export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     if (e.shiftKey) {
         modifiers += ModifierBitMasks.shift;
     }
-    // tslint:enable
 
     return { modifiers, key };
 };
@@ -295,7 +292,6 @@ export const normalizeKeyCombo = (combo: string, platformOverride?: string): str
         return keyName === "meta" ? (isMac(platformOverride) ? "cmd" : "ctrl") : keyName;
     });
 };
-/* tslint:enable:no-string-literal */
 
 function isMac(platformOverride?: string) {
     const platform =

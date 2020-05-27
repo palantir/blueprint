@@ -232,7 +232,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         const labels: JSX.Element[] = [];
         const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
         // step size lends itself naturally to a `for` loop
-        // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
+        // eslint-disable-line one-var, no-sequences
         for (
             let i = min, offsetRatio = 0;
             i < max || Utils.approxEqual(i, max);

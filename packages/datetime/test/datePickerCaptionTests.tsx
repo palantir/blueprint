@@ -117,7 +117,7 @@ describe("<DatePickerCaption>", () => {
     function renderDatePickerCaption(props?: Partial<IDatePickerCaptionProps>) {
         const wrapper = mount(
             <DatePickerCaption
-                // tslint:disable-next-line:no-object-literal-type-assertion
+                // eslint-disable-line @typescript-eslint/consistent-type-assertions
                 classNames={{} as ClassNames}
                 date={new Date(2015, 0)}
                 locale="en"

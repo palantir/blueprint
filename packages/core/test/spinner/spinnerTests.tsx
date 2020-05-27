@@ -20,7 +20,6 @@ import * as React from "react";
 import { stub } from "sinon";
 
 import { Classes, Spinner } from "../../src";
-// eslint-disable-next-line import/no-internal-modules
 import { SPINNER_WARN_CLASSES_SIZE } from "../../src/common/errors";
 
 describe("Spinner", () => {

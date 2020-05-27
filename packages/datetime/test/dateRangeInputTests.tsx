@@ -35,8 +35,8 @@ import {
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Months } from "../src/common/months";
 import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
+import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
@@ -829,7 +829,6 @@ describe("<DateRangeInput>", () => {
                 });
             });
 
-            // tslint:disable-next-line:max-line-length
             describe("calls onChange if last-edited boundary is in range and the other boundary is out of range", () => {
                 runTestForEachScenario((inputGetterFn, boundary, otherInputGetterFn) => {
                     otherInputGetterFn(root).simulate("focus");

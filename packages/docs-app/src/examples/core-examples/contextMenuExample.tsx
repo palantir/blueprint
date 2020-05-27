@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable max-classes-per-file
+// eslint-disable  max-classes-per-file
 
 import classNames from "classnames";
 import * as React from "react";

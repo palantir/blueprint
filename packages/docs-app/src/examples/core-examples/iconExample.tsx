@@ -62,7 +62,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
         );
     }
 
-    // tslint:disable-next-line:member-ordering
+    // eslint-disable-line @typescript-eslint/member-ordering
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });

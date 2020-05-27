@@ -24,7 +24,7 @@ interface IBigSpaceRock {
     [key: string]: number | string;
 }
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-line @typescript-eslint/no-var-requires
 const bigSpaceRocks = require("./potentiallyHazardousAsteroids.json") as IBigSpaceRock[];
 
 export interface IColumnLoadingExampleState {

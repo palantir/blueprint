@@ -16,7 +16,7 @@
 
 // we need some empty interfaces to show up in docs
 // HACKHACK: these components should go in separate files
-// tslint:disable max-classes-per-file no-empty-interface
+// eslint-disable  max-classes-per-file, @typescript-eslint/no-empty-interface
 
 import classNames from "classnames";
 import * as React from "react";

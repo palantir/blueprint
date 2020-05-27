@@ -154,7 +154,7 @@ export function expectPropValidationError<P extends object>(
 ) {
     const { defaultProps = {} } = Component;
     // HACKHACK: weird casts ahead
-    // tslint:disable-next-line no-object-literal-type-assertion
+    // eslint-disable-line  @typescript-eslint/consistent-type-assertions
     expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).to.throw(
         errorMessage,
         assertionMessage,

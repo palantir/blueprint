@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable max-classes-per-file
+// eslint-disable  max-classes-per-file
 
 import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";

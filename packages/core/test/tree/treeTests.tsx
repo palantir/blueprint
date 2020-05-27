@@ -72,7 +72,6 @@ describe("<Tree>", () => {
 
     it("caret direction is determined by node expansion", () => {
         const contents = [
-            // tslint:disable-next-line:max-line-length
             {
                 childNodes: [{ id: 4, label: "" }],
                 className: "c0",

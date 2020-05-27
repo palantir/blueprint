@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable max-classes-per-file
+// eslint-disable  max-classes-per-file
 
 import * as React from "react";
 
@@ -31,7 +31,7 @@ import {
     Utils,
 } from "@blueprintjs/table";
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-line @typescript-eslint/no-var-requires
 const sumo = require("./sumo.json") as any[];
 
 export type ICellLookup = (rowIndex: number, columnIndex: number) => any;

@@ -93,7 +93,7 @@ interface IPanelExampleState {
     counter: number;
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-line max-classes-per-file
 class PanelExample extends React.PureComponent<IPanelExampleProps> {
     public state: IPanelExampleState = {
         counter: 0,

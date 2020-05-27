@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable max-classes-per-file */
+
 import { expect } from "chai";
 import { IKeyBlacklist, IKeyWhitelist } from "../../../src/common/utils";
 import * as CompareUtils from "../../../src/common/utils/compareUtils";
@@ -169,7 +171,6 @@ describe("CompareUtils", () => {
     });
 
     describe("deepCompareKeys", () => {
-        // tslint:disable:max-classes-per-file
         class DVD {
             public constructor() {
                 /* Empty */
@@ -181,7 +182,7 @@ describe("CompareUtils", () => {
                 /* Empty */
             }
         }
-        // tslint:enable:max-classes-per-file
+        // eslint-enable max-classes-per-file
 
         describe("with `keys` defined", () => {
             describe("returns true if only the specified values are deeply equal", () => {

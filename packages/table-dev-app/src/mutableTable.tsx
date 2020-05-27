@@ -999,7 +999,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
         if (this.state.showCallbackLogs) {
             // allow console.log for these callbacks so devs can see exactly when they fire
-            // tslint:disable-next-line no-console
+            // eslint-disable-line  no-console
             console.log(message, ...optionalParams);
         }
     };

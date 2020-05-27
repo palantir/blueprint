@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable max-classes-per-file
+/* eslint-disable  max-classes-per-file */
 
 // tslint:disable-next-line:no-submodule-imports
 import { Browser } from "@blueprintjs/core/lib/esm/compatibility";

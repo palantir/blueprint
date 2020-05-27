@@ -64,12 +64,12 @@ export function throttleReactEventCallback(
  * Throttle a method by wrapping it in a `requestAnimationFrame` call. Returns
  * the throttled function.
  */
-// tslint:disable-next-line:ban-types
+// eslint-disable-line @typescript-eslint/ban-types
 export function throttle<T extends Function>(method: T): T {
     return _throttleHelper(method);
 }
 
-// tslint:disable-next-line:ban-types
+// eslint-disable-line @typescript-eslint/ban-types
 function _throttleHelper<T extends Function>(
     onAnimationFrameRequested: T,
     onBeforeIsRunningCheck?: T,

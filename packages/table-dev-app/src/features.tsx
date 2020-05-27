@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-// tslint:disable:max-classes-per-file object-literal-sort-keys
+// tslint:disable object-literal-sort-keys
+/* eslint-disable max-classes-per-file, no-console */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -78,15 +79,15 @@ const renderTestMenu = () => (
         <MenuItem icon="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
     </Menu>
 );
-// tslint:enable:no-console jsx-no-lambda
+// eslint-enable no-console
 
 ReactDOM.render(getTableComponent(3, 7), document.getElementById("table-0"));
 
-class FormatsTable extends React.Component<{}, {}> {
+class FormatsTable extends React.Component {
     private static ROWS = 1000;
 
     private objects = Utils.times(FormatsTable.ROWS, (row: number) => {
-        // tslint:disable-next-line:switch-default
+        // eslint-disable-line default-case
         switch (row) {
             case 1:
                 return "string";
@@ -174,6 +175,7 @@ interface IEditableTableState {
     sparseCellIntent: { [key: string]: Intent };
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 class EditableTable extends React.Component<{}, IEditableTableState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
@@ -325,7 +327,7 @@ ReactDOM.render(
     document.getElementById("table-big"),
 );
 
-class RowSelectableTable extends React.Component<{}, {}> {
+class RowSelectableTable extends React.Component {
     public state = {
         selectedRegions: [Regions.row(2)],
     };
@@ -377,7 +379,7 @@ document.getElementById("table-ledger").classList.add(Classes.HTML_TABLE_STRIPED
 
 ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
 
-class AdjustableColumnsTable extends React.Component<{}, {}> {
+class AdjustableColumnsTable extends React.Component {
     public state = {
         columns: [<Column name="First" key={0} id={0} />, <Column name="Second" key={1} id={1} />],
     };
@@ -548,7 +550,7 @@ ReactDOM.render(
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<IColumnHeaderCellProps, {}> {
+class CustomHeaderCell extends React.Component<IColumnHeaderCellProps> {
     public render() {
         return <ColumnHeaderCell {...this.props}>Hey dawg.</ColumnHeaderCell>;
     }
@@ -619,6 +621,7 @@ const REORDERABLE_TABLE_DATA = [
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
 ].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 class ReorderableTableExample extends React.Component<{}, IReorderableTableExampleState> {
     public state: IReorderableTableExampleState = {
         data: REORDERABLE_TABLE_DATA,

@@ -19,7 +19,7 @@ import * as React from "react";
 export type AnyRect = Rect | ClientRect;
 
 // HACKHACK: workaround for https://github.com/palantir/tslint/issues/1768
-// tslint:disable adjacent-overload-signatures
+// eslint-disable  @typescript-eslint/adjacent-overload-signatures
 
 /**
  * A simple object for storing the client bounds of HTMLElements. Since

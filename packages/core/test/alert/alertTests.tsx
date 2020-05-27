@@ -19,7 +19,6 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
-// eslint-disable-next-line import/no-internal-modules
 import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
