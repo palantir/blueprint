@@ -19,7 +19,7 @@ import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as React from "react";
 
 @HotkeysTarget
-export class MyComponent extends React.Component<{}> {
+export class MyComponent extends React.Component {
     public render() {
         return <div>Custom content</div>;
     }

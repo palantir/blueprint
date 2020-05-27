@@ -46,7 +46,7 @@ describe("Hotkeys", () => {
     });
 
     it("Decorator does not mutate the original class", () => {
-        class TestComponent extends React.Component<{}> {
+        class TestComponent extends React.Component {
             public render() {
                 return <div />;
             }
@@ -213,7 +213,7 @@ describe("Hotkeys", () => {
             const handleKeyDown = spy();
 
             @HotkeysTarget
-            class ComboComponent extends React.Component<{}> {
+            class ComboComponent extends React.Component {
                 public renderHotkeys() {
                     return (
                         <Hotkeys>

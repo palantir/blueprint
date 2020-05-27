@@ -46,8 +46,7 @@ export interface IIconProps extends IIntentProps, IProps {
      * required because it determines the content of the component, but it can
      * be explicitly set to falsy values to render nothing.
      *
-     * - If `null` or `undefined` or `false`, this component will render
-     *   nothing.
+     * - If `null` or `undefined` or `false`, this component will render nothing.
      * - If given an `IconName` (a string literal union of all icon names), that
      *   icon will be rendered as an `<svg>` with `<path>` tags. Unknown strings
      *   will render a blank icon to occupy space.

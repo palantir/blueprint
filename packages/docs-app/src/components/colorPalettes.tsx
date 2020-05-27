@@ -105,7 +105,7 @@ export const ColorBar: React.SFC<{ colors: string[] }> = ({ colors }) => {
 };
 
 // a group of ColorPalettes, arranged by default in two columns
-function createPaletteBook(palettes: string[][], className?: string): React.SFC<{}> {
+function createPaletteBook(palettes: string[][], className?: string): React.SFC {
     return () => (
         <section className={classNames("docs-color-book", className)}>
             {palettes.map((palette, index) => (

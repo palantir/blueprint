@@ -35,7 +35,7 @@ describe("ContextMenu", () => {
     afterEach(() => ContextMenu.hide());
 
     it("Decorator does not mutate the original class", () => {
-        class TestComponent extends React.Component<{}> {
+        class TestComponent extends React.Component {
             public render() {
                 return <div />;
             }
@@ -101,7 +101,7 @@ describe("ContextMenu", () => {
         /* -- uncomment this test to confirm compilation failure -- */
         // it("TypeScript compilation fails if decorated class does not implement renderContextMenu", () => {
         //     @ContextMenuTarget
-        //     return class TypeScriptFail extends React.Component<{}> {
+        //     return class TypeScriptFail extends React.Component {
         //         public render() { return <article />; }
         //     }
         // });

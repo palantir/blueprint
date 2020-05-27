@@ -8,6 +8,6 @@
   ],
   "import/order": "off",
   "jsdoc/check-alignment": "error",
-  "jsdoc/check-indentation": "error",
+  "jsdoc/check-indentation": "off",
   "jsdoc/newline-after-description": "off"
 }

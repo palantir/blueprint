@@ -1000,8 +1000,8 @@ describe("<NumericInput>", () => {
     function runInteractionSuite(
         incrementDescription: string,
         decrementDescription: string,
-        simulateIncrement: (component: ReactWrapper<any>, mockEvent?: object) => void,
-        simulateDecrement: (component: ReactWrapper<any>, mockEvent?: object) => void,
+        simulateIncrement: (component: ReactWrapper<any>, mockEvent?: Record<string, unknown>) => void,
+        simulateDecrement: (component: ReactWrapper<any>, mockEvent?: Record<string, unknown>) => void,
     ) {
         it(`increments by stepSize on ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();

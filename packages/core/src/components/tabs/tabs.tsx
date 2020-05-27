@@ -25,7 +25,7 @@ import * as Utils from "../../common/utils";
 import { ITabProps, Tab, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.SFC<{}> = () => <div className={Classes.FLEX_EXPANDER} />;
+export const Expander: React.SFC = () => <div className={Classes.FLEX_EXPANDER} />;
 
 type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 

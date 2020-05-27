@@ -18,7 +18,7 @@ import { ITag } from "@documentalist/client";
 import * as React from "react";
 
 export interface IDocsMap {
-    [name: string]: React.ComponentClass<{}>;
+    [name: string]: React.ComponentClass;
 }
 
 export class ReactDocsTagRenderer {

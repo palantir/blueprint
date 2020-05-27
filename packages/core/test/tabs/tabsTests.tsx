@@ -393,7 +393,7 @@ describe("<Tabs>", () => {
     function findTabById(wrapper: ReactWrapper<ITabsProps>, id: string) {
         // Need this to get the right overload signature
         // eslint-disable-line @typescript-eslint/consistent-type-assertions
-        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<{}>);
+        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
     }
 
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabId: string) {

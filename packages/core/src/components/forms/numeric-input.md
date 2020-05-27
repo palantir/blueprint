@@ -76,7 +76,7 @@ provided to the callback both as a number and as a string.
 ```tsx
 import { NumericInput } from "@blueprintjs/core";
 
-export class NumericInputExample extends React.Component<{}> {
+export class NumericInputExample extends React.Component {
     public render() {
         return <NumericInput onValueChange={this.handleValueChange} />;
     }

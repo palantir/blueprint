@@ -187,8 +187,8 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         this.updateTickSize();
     }
 
-    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState, ss: {}) {
-        super.componentDidUpdate(prevProps, prevState, ss);
+    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState) {
+        super.componentDidUpdate(prevProps, prevState);
         this.updateTickSize();
     }
 

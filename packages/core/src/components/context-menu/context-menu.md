@@ -35,7 +35,7 @@ the context menu is closed.
 import { ContextMenuTarget, Menu, MenuItem } from "@blueprintjs/core";
 
 @ContextMenuTarget
-class RightClickMe extends React.Component<{}> {
+class RightClickMe extends React.Component {
     public render() {
         // root element must support `onContextMenu`
         return <div>{...}</div>;
