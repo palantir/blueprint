@@ -1,0 +1,28 @@
+{
+  "import/no-default-export": "error",
+  "import/no-extraneous-dependencies": [
+    "error",
+    {
+      "devDependencies": false
+    }
+  ],
+  "import/no-internal-modules": [
+    "error",
+    {
+      "allow": [
+        "core-js/*",
+        "lodash/*",
+        "react-dom/*",
+        "@blueprintjs/table/src/*",
+        "@blueprintjs/test-commons/bootstrap/*",
+        "tsutils/*",
+        "@typescript-eslint/experimental-utils/*"
+      ]
+    }
+  ],
+  "import/order": "off",
+  "jsdoc/check-alignment": "error",
+  "jsdoc/check-indentation": "error",
+  "jsdoc/newline-after-description": "error",
+  "prefer-arrow/prefer-arrow-functions": "error"
+}

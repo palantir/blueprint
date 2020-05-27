@@ -1,15 +1,30 @@
 {
-  "extends": "@blueprintjs/tslint-config",
-  "rules": {
-    "file-header": {
-      "options": [
-        "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",
-        "Copyright 2019 Palantir Technologies, Inc. All rights reserved.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
-      ]
-    },
-    // TODO: test dependencies are only declared at root but used in all packages.
-    "no-implicit-dependencies": false,
-    // TODO: Currently, a lot of chai assertions are not written as proper statements.
-    "no-unused-expression": false
-  }
+    "extends": ["tslint-react"],
+    "defaultSeverity": "error",
+    "rules": {
+        "file-header": {
+            "options": [
+                "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",
+                "Copyright 2019 Palantir Technologies, Inc. All rights reserved.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+            ]
+        },
+        "jsx-boolean-value": true,
+        "jsx-key": true,
+        "jsx-no-bind": true,
+        "jsx-no-lambda": true,
+        "jsx-no-string-ref": true,
+        "jsx-self-close": true,
+        "no-unnecessary-callback-wrapper": true,
+        "object-literal-sort-keys": true,
+        "ordered-imports": {
+            "options": {
+                "import-sources-order": "case-insensitive",
+                "module-source-path": "full",
+                "named-imports-order": "case-insensitive"
+            }
+        },
+        "variable-name": {
+            "options": ["allow-leading-underscore", "allow-pascal-case", "ban-keywords", "check-format"]
+        }
+    }
 }

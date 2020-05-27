@@ -14,18 +14,23 @@
  */
 
 const path = require("path");
+const tsEslintRules = require("./typescript-eslint-rules.json");
+const eslintBuiltinRules = require("./eslint-builtin-rules.json");
+const eslintPluginRules = require("./eslint-plugin-rules.json");
 
 /**
  * Enable @blueprintjs/eslint-plugin.
  * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
  */
 module.exports = {
-    plugins: ["@blueprintjs"],
-    extends: ["plugin:@blueprintjs/recommended"],
+    plugins: ["@blueprintjs", "import"],
+    extends: ["plugin:@blueprintjs/recommended", "plugin:import/typescript"],
     parserOptions: { ecmaVersion: 2017 },
     rules: {
         // HACKHACK: this rule impl has too many false positives
         "@blueprintjs/classes-constants": "off",
+        ...eslintBuiltinRules,
+        ...eslintPluginRules,
     },
     overrides: [
         {
@@ -54,14 +59,19 @@ module.exports = {
                         lintFile: path.resolve(__dirname, "./tslint.json"),
                     },
                 ],
+                ...tsEslintRules,
             },
         },
         {
-            files: ["test/**/*"],
+            files: ["**/test/**/*.{ts,tsx}"],
             env: {
                 browser: true,
                 mocha: true,
             },
+            rules: {
+                // HACKHACK: test dependencies are only declared at root but used in all packages.
+                "import/no-extraneous-dependencies": "off",
+            }
         },
     ],
 };
