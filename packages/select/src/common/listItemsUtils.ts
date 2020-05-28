@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-underscore-dangle */
+
 /**
  * The reserved type of the "Create Item" option in item lists. This is intended
  * not to conflict with any custom item type `T` that might be used in  item
