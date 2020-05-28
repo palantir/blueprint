@@ -30,7 +30,7 @@ export interface IBaseExampleProps {
  * Examples and options are rendered into separate containers.
  * @deprecated
  */
-export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
+export class BaseExample<S extends Record<string, unknown>> extends React.Component<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
     protected className: string;
 
@@ -38,7 +38,7 @@ export class BaseExample<S> extends React.Component<IBaseExampleProps, S> {
     private hasDelayedBeforeInitialRender = false;
     private hasCompletedInitialRender = false;
 
-    public shouldComponentUpdate(nextProps: IBaseExampleProps, nextState: S & object) {
+    public shouldComponentUpdate(nextProps: IBaseExampleProps, nextState: S) {
         return (
             // HACKHACK: Permit one redundant re-render after the inital delay. (This will be the first proper render of
             // the component.)

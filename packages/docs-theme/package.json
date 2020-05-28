@@ -37,6 +37,10 @@
     "fuzzaldrin-plus": "^0.6.0",
     "tslib": "~1.10.0"
   },
+  "peerDependencies": {
+    "react": "^15.3.0 || 16",
+    "react-dom": "^15.3.0 || 16"
+  },
   "devDependencies": {
     "@blueprintjs/node-build-scripts": "^1.3.1",
     "@types/fuzzaldrin-plus": "^0.6.0",
