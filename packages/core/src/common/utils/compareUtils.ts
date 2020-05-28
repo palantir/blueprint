@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// we use the empty object {} a lot in this public API
+/* eslint-disable @typescript-eslint/ban-types */
+
 export interface IKeyWhitelist<T> {
     include: Array<keyof T>;
 }
@@ -43,11 +46,7 @@ export function arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any)
  * of keys will be compared; otherwise, all keys will be compared.
  * @returns true if items are equal.
  */
-export function shallowCompareKeys<T extends Record<string, unknown>>(
-    objA: T,
-    objB: T,
-    keys?: IKeyBlacklist<T> | IKeyWhitelist<T>,
-) {
+export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
     // treat `null` and `undefined` as the same
     if (objA == null && objB == null) {
         return true;
@@ -106,7 +105,7 @@ export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | numb
  * Returns a descriptive object for each key whose values are deeply unequal
  * between two provided objects. Useful for debugging shouldComponentUpdate.
  */
-export function getDeepUnequalKeyValues<T extends Record<string, unknown>>(
+export function getDeepUnequalKeyValues<T extends {}>(
     objA: T = ({} as any) as T,
     objB: T = ({} as any) as T,
     keys?: Array<keyof T>,
@@ -177,7 +176,7 @@ function arrayToObject(arr: any[]) {
     }, {});
 }
 
-function getUnequalKeyValues<T extends Record<string, unknown>>(
+function getUnequalKeyValues<T extends {}>(
     objA: T,
     objB: T,
     keys: Array<keyof T>,
@@ -192,7 +191,7 @@ function getUnequalKeyValues<T extends Record<string, unknown>>(
     return unequalKeyValues;
 }
 
-function unionKeys<T extends Record<string, unknown>>(objA: T, objB: T) {
+function unionKeys<T extends {}>(objA: T, objB: T) {
     const keysA = Object.keys(objA);
     const keysB = Object.keys(objB);
 

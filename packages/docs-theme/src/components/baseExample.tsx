@@ -30,7 +30,8 @@ export interface IBaseExampleProps {
  * Examples and options are rendered into separate containers.
  * @deprecated
  */
-export class BaseExample<S extends Record<string, unknown>> extends React.Component<IBaseExampleProps, S> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export class BaseExample<S extends {}> extends React.Component<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
     protected className: string;
 

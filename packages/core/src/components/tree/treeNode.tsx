@@ -23,7 +23,8 @@ import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
-export interface ITreeNode<T = Record<string, unknown>> extends IProps {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface ITreeNode<T = {}> extends IProps {
     /**
      * Child tree nodes of this node.
      */
@@ -79,7 +80,8 @@ export interface ITreeNode<T = Record<string, unknown>> extends IProps {
     nodeData?: T;
 }
 
-export interface ITreeNodeProps<T = Record<string, unknown>> extends ITreeNode<T> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     children?: React.ReactNode;
     contentRef?: (node: TreeNode<T>, element: HTMLDivElement | null) => void;
     depth: number;
@@ -94,7 +96,8 @@ export interface ITreeNodeProps<T = Record<string, unknown>> extends ITreeNode<T
     path: number[];
 }
 
-export class TreeNode<T = Record<string, unknown>> extends React.Component<ITreeNodeProps<T>> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
 
     public static ofType<T>() {

@@ -19,7 +19,8 @@ import * as React from "react";
 /**
  * An object describing a panel in a `PanelStack`.
  */
-export interface IPanel<P = Record<string, unknown>> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface IPanel<P = {}> {
     /**
      * The component type to render for this panel. This must be a reference to
      * the component class or SFC, _not_ a JSX element, so it can be re-created

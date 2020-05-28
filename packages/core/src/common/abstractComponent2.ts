@@ -21,11 +21,8 @@ import { isNodeEnv } from "./utils";
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
  */
-export abstract class AbstractComponent2<
-    P,
-    S = Record<string, unknown>,
-    SS = Record<string, unknown>
-> extends React.Component<P, S, SS> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
     // unsafe lifecycle methods
     public componentWillUpdate: never;
     public componentWillReceiveProps: never;
