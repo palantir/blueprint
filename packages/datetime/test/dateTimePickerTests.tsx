@@ -19,8 +19,8 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { Classes, DatePicker, TimePicker } from "../src";
 import { DateTimePicker } from "../src/dateTimePicker";
-import { Classes, DatePicker, TimePicker } from "../src/index";
 
 describe("<DateTimePicker>", () => {
     it("renders a DatePicker and a TimePicker", () => {

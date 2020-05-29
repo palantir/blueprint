@@ -81,7 +81,7 @@ function detectBrowser() {
     }
 
     // Internet Explorer 6-11
-    if (/*@cc_on!@*/ false || !!(document as any).documentMode) {
+    if (/* @cc_on!@*/ false || !!(document as any).documentMode) {
         return Browser.IE;
     }
 
@@ -146,6 +146,7 @@ export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart"
  * We can't simply call mount() here since React 16 throws before we can even validate the errors thrown
  * in component constructors.
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function expectPropValidationError<P extends object>(
     Component: React.ComponentClass<P>,
     props: P & { children?: React.ReactNode },
@@ -154,7 +155,7 @@ export function expectPropValidationError<P extends object>(
 ) {
     const { defaultProps = {} } = Component;
     // HACKHACK: weird casts ahead
-    // tslint:disable-next-line no-object-literal-type-assertion
+    // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/consistent-type-assertions
     expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).to.throw(
         errorMessage,
         assertionMessage,

@@ -56,7 +56,7 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumn
     onColumnWidthChanged: IIndexedResizeCallback;
 }
 
-export class ColumnHeader extends React.Component<IColumnHeaderProps, {}> {
+export class ColumnHeader extends React.Component<IColumnHeaderProps> {
     public static defaultProps = {
         isReorderable: false,
         isResizable: true,

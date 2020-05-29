@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable max-classes-per-file
+/* eslint-disable max-classes-per-file */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -25,7 +25,7 @@ import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 /**
  * This component uses the imperative ContextMenu API.
  */
-class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> {
+class GraphNode extends React.PureComponent<any, { isContextMenuOpen: boolean }> {
     public state = { isContextMenuOpen: false };
 
     public render() {
@@ -60,7 +60,7 @@ class GraphNode extends React.PureComponent<{}, { isContextMenuOpen: boolean }> 
  * This component uses the decorator API and implements the IContextMenuTarget interface.
  */
 @ContextMenuTarget
-export class ContextMenuExample extends React.PureComponent<IExampleProps, {}> {
+export class ContextMenuExample extends React.PureComponent<IExampleProps> {
     public render() {
         return (
             <Example className="docs-context-menu-example" options={false} {...this.props}>

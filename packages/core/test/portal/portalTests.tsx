@@ -21,7 +21,7 @@ import * as React from "react";
 import { Classes, IPortalProps, Portal } from "../../src";
 
 describe("<Portal>", () => {
-    let portal: ReactWrapper<IPortalProps, {}>;
+    let portal: ReactWrapper<IPortalProps>;
 
     afterEach(() => {
         if (portal != null) {

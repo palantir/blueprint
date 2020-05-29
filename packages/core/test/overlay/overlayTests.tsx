@@ -20,8 +20,8 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src";
 import * as Keys from "../../src/common/keys";
-import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src/index";
 import { findInPortal } from "../utils";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;

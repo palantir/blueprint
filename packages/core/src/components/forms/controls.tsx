@@ -16,7 +16,7 @@
 
 // we need some empty interfaces to show up in docs
 // HACKHACK: these components should go in separate files
-// tslint:disable max-classes-per-file no-empty-interface
+/* eslint-disable max-classes-per-file, @typescript-eslint/no-empty-interface */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -191,7 +191,7 @@ export class Switch extends AbstractPureComponent2<ISwitchProps> {
 // Radio
 //
 
-export interface IRadioProps extends IControlProps {}
+export type IRadioProps = IControlProps;
 
 @polyfill
 export class Radio extends AbstractPureComponent2<IRadioProps> {

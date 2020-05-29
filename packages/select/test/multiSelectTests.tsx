@@ -23,7 +23,7 @@ import * as sinon from "sinon";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IItemRendererProps, IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src/index";
+import { IItemRendererProps, IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {

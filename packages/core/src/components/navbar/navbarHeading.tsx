@@ -28,7 +28,7 @@ export interface INavbarHeadingProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class NavbarHeading extends AbstractPureComponent2<INavbarHeadingProps, {}> {
+export class NavbarHeading extends AbstractPureComponent2<INavbarHeadingProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
 
     public render() {

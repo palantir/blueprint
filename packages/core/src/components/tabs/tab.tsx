@@ -60,7 +60,7 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
 }
 
 @polyfill
-export class Tab extends AbstractPureComponent2<ITabProps, {}> {
+export class Tab extends AbstractPureComponent2<ITabProps> {
     public static defaultProps: ITabProps = {
         disabled: false,
         id: undefined,

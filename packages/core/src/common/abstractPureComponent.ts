@@ -22,6 +22,7 @@ import { isNodeEnv } from "./utils";
  * in order to add some common functionality like runtime props validation.
  * @deprecated componentWillReceiveProps is deprecated in React 16.9; use AbstractPureComponent2 instead
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export abstract class AbstractPureComponent<P, S = {}> extends React.PureComponent<P, S> {
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;

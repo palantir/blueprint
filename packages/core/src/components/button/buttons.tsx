@@ -15,7 +15,7 @@
  */
 
 // HACKHACK: these components should go in separate files
-// tslint:disable max-classes-per-file
+/* eslint-disable max-classes-per-file */
 
 import * as React from "react";
 

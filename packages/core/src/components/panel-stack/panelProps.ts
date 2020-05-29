@@ -19,6 +19,7 @@ import * as React from "react";
 /**
  * An object describing a panel in a `PanelStack`.
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export interface IPanel<P = {}> {
     /**
      * The component type to render for this panel. This must be a reference to

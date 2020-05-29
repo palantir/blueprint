@@ -31,13 +31,13 @@ import {
     Position,
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
+import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
     getTimezoneItems,
     ITimezoneItem,
 } from "../src/components/timezone-picker/timezoneItems";
-import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src/index";
 
 type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
 

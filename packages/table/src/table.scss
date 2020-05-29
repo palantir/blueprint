@@ -1,4 +1,4 @@
-/*!
+/*
 
 Copyright 2016-present Palantir Technologies, Inc. All rights reserved.
 Licensed under the Apache License, Version 2.0.
@@ -67,7 +67,6 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .#{$ns}-table-menu {
-
   background-color: $header-background-color;
   flex: 0 0 auto;
   // Stay above the moving table-header
@@ -80,7 +79,6 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .#{$ns}-table-column-headers {
-
   background-color: $header-background-color;
   color: $column-header-text-color;
   display: block;
@@ -97,7 +95,6 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .#{$ns}-table-row-headers {
-
   background-color: $header-background-color;
   color: $row-header-text-color;
   flex: 0 0 auto;

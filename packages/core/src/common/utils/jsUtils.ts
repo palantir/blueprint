@@ -17,7 +17,7 @@
 import { CLAMP_MIN_MAX } from "../errors";
 
 // only accessible within this file, so use `Utils.isNodeEnv(env)` from the outside.
-declare var process: { env: any };
+declare let process: { env: any };
 
 /** Returns whether `process.env.NODE_ENV` exists and equals `env`. */
 export function isNodeEnv(env: string) {

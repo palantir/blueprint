@@ -21,6 +21,7 @@
     "classnames": "^2.2.6",
     "dom4": "^2.1.5",
     "normalize.css": "^8.0.1",
+    "lodash": "^4.17.15",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },

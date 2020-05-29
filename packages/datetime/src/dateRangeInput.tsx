@@ -270,8 +270,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         };
     }
 
-    public componentDidUpdate(prevProps: IDateRangeInputProps, prevState: IDateRangeInputState, snapshot?: {}) {
-        super.componentDidUpdate(prevProps, prevState, snapshot);
+    public componentDidUpdate(prevProps: IDateRangeInputProps, prevState: IDateRangeInputState) {
+        super.componentDidUpdate(prevProps, prevState);
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
         const startInputRef = getRef(this.startInputRef);

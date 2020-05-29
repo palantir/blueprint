@@ -160,7 +160,6 @@ describe("TableBody", () => {
                 expect(onSelection.called).to.be.false;
             });
 
-            // tslint:disable-next-line:max-line-length
             it("clears selections and select the right-clicked cell if it isn't within any existing selection", () => {
                 const selectedRegions = [
                     Regions.row(TARGET_ROW + 1), // some other row
@@ -210,7 +209,7 @@ describe("TableBody", () => {
         }
     });
 
-    function mountTableBody(props: Partial<ITableBodyProps> & object = {}) {
+    function mountTableBody(props: Partial<ITableBodyProps> = {}) {
         const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;

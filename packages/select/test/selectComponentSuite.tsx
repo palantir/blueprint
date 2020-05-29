@@ -27,7 +27,7 @@ import {
     renderFilm,
     TOP_100_FILMS,
 } from "../../docs-app/src/examples/select-examples/films";
-import { IListItemsProps } from "../src/index";
+import { IListItemsProps } from "../src";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,

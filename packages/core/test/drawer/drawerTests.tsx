@@ -19,9 +19,9 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy, stub } from "sinon";
 
+import { Button, Classes, Drawer, Position } from "../../src";
 import { DRAWER_ANGLE_POSITIONS_ARE_CASTED, DRAWER_VERTICAL_IS_IGNORED } from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
-import { Button, Classes, Drawer, Position } from "../../src/index";
 
 describe("<Drawer>", () => {
     it("renders its content correctly", () => {

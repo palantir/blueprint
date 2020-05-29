@@ -19,7 +19,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, Icon, Tag, Text } from "../../src/index";
+import { Classes, Icon, Tag, Text } from "../../src";
 
 describe("<Tag>", () => {
     it("renders its text", () => {

@@ -83,6 +83,7 @@ export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
  * @param element JSX element in question
  * @param ComponentType desired component type of element
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isElementOfType<P = {}>(
     element: any,
     ComponentType: React.ComponentType<P>,

@@ -100,7 +100,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
 }
 
 @polyfill
-export class Tag extends AbstractPureComponent2<ITagProps, {}> {
+export class Tag extends AbstractPureComponent2<ITagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {

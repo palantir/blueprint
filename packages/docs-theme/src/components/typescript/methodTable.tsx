@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,6 @@ export interface IMethodTableProps extends IProps {
     data: ITsMethod;
 }
 
-// tslint:disable:blueprint-html-components - rendered inside RUNNING_TEXT
 export class MethodTable extends React.PureComponent<IMethodTableProps> {
     public static contextTypes = DocumentationContextTypes;
     public static displayName = "Docs2.MethodTable";

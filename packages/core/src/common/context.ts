@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { classesConstantsRule } from "./classes-constants";
-import { htmlComponentsRule } from "./html-components";
-import { iconComponentsRule } from "./icon-components";
+// simplified typings copied from @types/prop-types, to avoid that explicit dependency
 
-// eslint-disable-next-line import/no-default-export
-export default {
-    "classes-constants": classesConstantsRule,
-    "html-components": htmlComponentsRule,
-    "icon-components": iconComponentsRule,
-};
+export type Validator = (
+    props: { [key: string]: any },
+    propName: string,
+    componentName: string,
+    location: string,
+    propFullName: string,
+) => Error | null;
+
+export type ValidationMap<T> = { [K in keyof T]?: Validator };

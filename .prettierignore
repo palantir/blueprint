@@ -3,3 +3,4 @@ generated/
 lib/
 dist/
 /site/
+*.scss

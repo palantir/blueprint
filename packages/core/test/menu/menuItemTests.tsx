@@ -30,7 +30,7 @@ import {
     Popover,
     PopoverInteractionKind,
     Text,
-} from "../../src/index";
+} from "../../src";
 
 describe("MenuItem", () => {
     it("React renders MenuItem", () => {

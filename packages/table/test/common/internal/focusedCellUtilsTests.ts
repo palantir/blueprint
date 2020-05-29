@@ -200,7 +200,6 @@ describe("FocusedCellUtils", () => {
             expect(focusedCell).to.deep.equal(FOCUSED_CELL_FROM_STATE);
         });
 
-        // tslint:disable-next-line:max-line-length
         it("returns the focused cell for the last selected region if focusedCell not provided", () => {
             const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, SELECTED_REGIONS);
             const lastIndex = SELECTED_REGIONS.length - 1;

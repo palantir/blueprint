@@ -32,7 +32,7 @@ export interface IGuideLayerProps extends IProps {
     horizontalGuides?: number[];
 }
 
-export class GuideLayer extends React.Component<IGuideLayerProps, {}> {
+export class GuideLayer extends React.Component<IGuideLayerProps> {
     public shouldComponentUpdate(nextProps: IGuideLayerProps) {
         if (this.props.className !== nextProps.className) {
             return true;

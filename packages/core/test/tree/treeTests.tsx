@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
 import { mount, ReactWrapper } from "enzyme";
-import { Classes, ITreeNode, ITreeProps, Tree } from "../../src/index";
+import { Classes, ITreeNode, ITreeProps, Tree } from "../../src";
 
 describe("<Tree>", () => {
     let testsContainerElement: Element;
@@ -72,7 +72,6 @@ describe("<Tree>", () => {
 
     it("caret direction is determined by node expansion", () => {
         const contents = [
-            // tslint:disable-next-line:max-line-length
             {
                 childNodes: [{ id: 4, label: "" }],
                 className: "c0",

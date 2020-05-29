@@ -29,7 +29,7 @@ export interface IMenuDividerProps extends IProps {
     title?: React.ReactNode;
 }
 
-export class MenuDivider extends React.Component<IMenuDividerProps, {}> {
+export class MenuDivider extends React.Component<IMenuDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
 
     public render() {

@@ -88,7 +88,7 @@ export interface IDragReorderable extends IReorderableProps {
     toRegion: (index1: number, index2?: number) => IRegion;
 }
 
-export class DragReorderable extends React.PureComponent<IDragReorderable, {}> {
+export class DragReorderable extends React.PureComponent<IDragReorderable> {
     public static defaultProps: Partial<IDragReorderable> = {
         selectedRegions: [],
     };
