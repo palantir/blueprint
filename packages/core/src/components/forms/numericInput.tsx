@@ -31,6 +31,7 @@ import {
     Position,
     removeNonHTMLProps,
     Utils,
+    Intent,
 } from "../../common";
 import * as Errors from "../../common/errors";
 
@@ -154,6 +155,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 }
 
 export interface INumericInputState {
+    currentImeInputInvalid: boolean;
     prevMinProp?: number;
     prevMaxProp?: number;
     prevValueProp?: number | string;
@@ -255,6 +257,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     }
 
     public state: INumericInputState = {
+        currentImeInputInvalid: false,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
         value: getValueOrEmptyValue(this.props.value),
@@ -352,7 +355,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             <InputGroup
                 autoComplete="off"
                 {...inputGroupHtmlProps}
-                intent={this.props.intent}
+                intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
                 large={this.props.large}
                 leftIcon={this.props.leftIcon}
@@ -360,6 +363,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
                 onCompositionEnd={this.handleCompositionEnd}
+                onCompositionUpdate={this.handleCompositionUpdate}
                 onKeyDown={this.handleInputKeyDown}
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
@@ -476,10 +480,20 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     };
 
     private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
-        const { value } = e.target as HTMLInputElement;
-
         if (this.props.allowNumericCharactersOnly) {
-            this.setState({ value: sanitizeNumericInput(value) });
+            this.setState({ currentImeInputInvalid: false, value: sanitizeNumericInput(e.data) });
+        }
+    };
+
+    private handleCompositionUpdate = (e: React.CompositionEvent<HTMLInputElement>) => {
+        if (this.props.allowNumericCharactersOnly) {
+            const { data } = e;
+            const sanitizedValue = sanitizeNumericInput(data);
+            if (sanitizedValue.length === 0 && data.length > 0) {
+                this.setState({ currentImeInputInvalid: true });
+            } else {
+                this.setState({ currentImeInputInvalid: false });
+            }
         }
     };
 
