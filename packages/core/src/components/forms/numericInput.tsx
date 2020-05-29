@@ -25,13 +25,13 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IIntentProps,
+    Intent,
     IProps,
     Keys,
     MaybeElement,
     Position,
     removeNonHTMLProps,
     Utils,
-    Intent,
 } from "../../common";
 import * as Errors from "../../common/errors";
 
