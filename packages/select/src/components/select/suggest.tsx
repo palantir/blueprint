@@ -26,12 +26,14 @@ import {
     IPopoverProps,
     IRefCallback,
     IRefObject,
-    isRefObject, IWindowOverrideContext,
+    isRefObject,
+    IWindowOverrideContext,
     Keys,
     Popover,
     PopoverInteractionKind,
     Position,
-    Utils, WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
+    Utils,
+    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";

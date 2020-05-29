@@ -284,7 +284,11 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         return requestAnimationFrame(() => {
             // container ref may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            if (this.containerElement == null || this.getWindow().document.activeElement == null || !this.props.isOpen) {
+            if (
+                this.containerElement == null ||
+                this.getWindow().document.activeElement == null ||
+                !this.props.isOpen
+            ) {
                 return;
             }
 
@@ -377,7 +381,11 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             if (openStack.length > 0) {
                 const lastOpenedOverlay = Overlay.getLastOpened();
                 if (lastOpenedOverlay.props.enforceFocus) {
-                    this.getWindow().document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+                    this.getWindow().document.addEventListener(
+                        "focus",
+                        lastOpenedOverlay.handleDocumentFocus,
+                        /* useCapture */ true,
+                    );
                 }
             }
 
@@ -390,7 +398,11 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     private overlayWillOpen() {
         const { openStack } = Overlay;
         if (openStack.length > 0) {
-            this.getWindow().document.removeEventListener("focus", Overlay.getLastOpened().handleDocumentFocus, /* useCapture */ true);
+            this.getWindow().document.removeEventListener(
+                "focus",
+                Overlay.getLastOpened().handleDocumentFocus,
+                /* useCapture */ true,
+            );
         }
         openStack.push(this);
 

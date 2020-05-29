@@ -20,14 +20,16 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
-    ITagInputProps, IWindowOverrideContext,
+    ITagInputProps,
+    IWindowOverrideContext,
     Keys,
     Popover,
     PopoverInteractionKind,
     Position,
     TagInput,
     TagInputAddMethod,
-    Utils, WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
+    Utils,
+    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";

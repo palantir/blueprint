@@ -65,7 +65,7 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  */
 export class Portal extends React.Component<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-    public static contextTypes = {...REACT_CONTEXT_TYPES, ...WINDOW_OVERRIDE_REACT_CONTEXT_TYPES};
+    public static contextTypes = { ...REACT_CONTEXT_TYPES, ...WINDOW_OVERRIDE_REACT_CONTEXT_TYPES };
 
     public context: IPortalContext & IWindowOverrideContext;
     public state: IPortalState = { hasMounted: false };
@@ -135,7 +135,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
 
     private getContainer() {
         if (this.props.container == null) {
-            return typeof this.getWindow().document !== "undefined" ? this.getWindow().document.body : null
+            return typeof this.getWindow().document !== "undefined" ? this.getWindow().document.body : null;
         }
         return this.props.container;
     }
@@ -146,7 +146,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             return context.windowOverride;
         }
         return typeof window !== "undefined" ? window : undefined;
-    }
+    };
 }
 
 function maybeAddClass(classList: DOMTokenList, className?: string) {
