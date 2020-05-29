@@ -37,8 +37,6 @@ module.exports = {
                 "@typescript-eslint/no-unused-expressions": "off",
                 // HACKHACK: test dependencies are only declared at root but used in all packages.
                 "import/no-extraneous-dependencies": "off",
-                // HACKHACK: many violations, should be fixed eventually
-                "import/no-internal-modules": "off"
             }
         },
     ],

@@ -182,7 +182,6 @@ describe("CompareUtils", () => {
                 /* Empty */
             }
         }
-        // eslint-enable max-classes-per-file
 
         describe("with `keys` defined", () => {
             describe("returns true if only the specified values are deeply equal", () => {

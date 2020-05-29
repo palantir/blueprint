@@ -31,8 +31,8 @@ import {
     Utils,
 } from "@blueprintjs/table";
 
-// eslint-disable-line @typescript-eslint/no-var-requires
-const sumo = require("./sumo.json") as any[];
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const sumo: any[] = require("./sumo.json");
 
 export type ICellLookup = (rowIndex: number, columnIndex: number) => any;
 export type ISortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;

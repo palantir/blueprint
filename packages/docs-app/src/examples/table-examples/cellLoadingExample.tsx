@@ -23,8 +23,8 @@ interface IBigSpaceRock {
     [key: string]: number | string;
 }
 
-// eslint-disable-line @typescript-eslint/no-var-requires
-const bigSpaceRocks = require("./potentiallyHazardousAsteroids.json") as IBigSpaceRock[];
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bigSpaceRocks: IBigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
 export type CellsLoadingConfiguration = "all" | "first-column" | "first-row" | "none" | "random";
 export const CellsLoadingConfiguration = {

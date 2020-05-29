@@ -15,7 +15,7 @@
  */
 
 // tslint:disable no-submodule-imports
-// eslint-disable @typescript-eslint/no-var-requires
+
 const HERO_SVGS: Record<string, string> = {
     alert: require("raw-loader!./alert.svg").default,
     buttons: require("raw-loader!./buttons.svg").default,

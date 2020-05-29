@@ -15,7 +15,7 @@
  */
 
 // tslint:disable object-literal-sort-keys
-/* eslint-disable max-classes-per-file, no-console */
+/* eslint-disable max-classes-per-file */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -70,8 +70,9 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
     return <Table {...tablePropsWithDefaults}>{columns}</Table>;
 }
 
-// tslint:disable:no-console jsx-no-lambda
+// tslint:disable jsx-no-lambda
 const renderTestMenu = () => (
+    /* eslint-disable no-console */
     <Menu>
         <MenuItem icon="export" onClick={() => console.log("Beam me up!")} text="Teleport" />
         <MenuItem icon="sort-alphabetical-desc" onClick={() => console.log("ZA is the worst")} text="Down with ZA!" />
@@ -79,7 +80,6 @@ const renderTestMenu = () => (
         <MenuItem icon="curved-range-chart" onClick={() => console.log("You clicked the trident!")} text="Psi" />
     </Menu>
 );
-// eslint-enable no-console
 
 ReactDOM.render(getTableComponent(3, 7), document.getElementById("table-0"));
 
