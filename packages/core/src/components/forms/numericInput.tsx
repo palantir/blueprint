@@ -44,6 +44,7 @@ import {
     isFloatingPointNumericCharacter,
     isValidNumericKeyboardEvent,
     isValueNumeric,
+    sanitizeNumericInput,
     toMaxPrecision,
 } from "./numericInputUtils";
 
@@ -359,6 +360,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
+                onCompositionEnd={this.handleCompositionEnd}
                 onKeyDown={this.handleInputKeyDown}
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
@@ -474,6 +476,14 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         Utils.safeInvoke(this.props.onKeyDown, e);
     };
 
+    private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+        const { value } = e.target as HTMLInputElement;
+
+        if (this.props.allowNumericCharactersOnly) {
+            this.setState({ value: sanitizeNumericInput(value) });
+        }
+    };
+
     private handleInputKeyPress = (e: React.KeyboardEvent) => {
         // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
         // e.key is not trustworthy in onKeyDown in all browsers.
@@ -495,10 +505,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         let nextValue = value;
         if (this.props.allowNumericCharactersOnly && this.didPasteEventJustOccur) {
             this.didPasteEventJustOccur = false;
-            const valueChars = value.split("");
-            const sanitizedValueChars = valueChars.filter(isFloatingPointNumericCharacter);
-            const sanitizedValue = sanitizedValueChars.join("");
-            nextValue = sanitizedValue;
+            nextValue = sanitizeNumericInput(value);
         }
 
         this.setState({ shouldSelectAfterUpdate: false, value: nextValue });

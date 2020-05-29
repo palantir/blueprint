@@ -95,3 +95,20 @@ export function toMaxPrecision(value: number, maxPrecision: number) {
     const scaleFactor = Math.pow(10, maxPrecision);
     return Math.round(value * scaleFactor) / scaleFactor;
 }
+
+/**
+ * Convert Japanese full-width numbers, e.g. '５', to ASCII, e.g. '5'
+ * This should be called before performing any other numeric string input validation.
+ */
+function convertFullWidthNumbersToAscii(value: string) {
+    return value.replace(/[\uFF10-\uFF19]/g, m => String.fromCharCode(m.charCodeAt(0) - 0xfee0));
+}
+
+/**
+ * Convert full-width (Japanese) numbers to ASCII, and strip all characters that are not valid floating-point numeric characters
+ */
+export function sanitizeNumericInput(value: string) {
+    const valueChars = convertFullWidthNumbersToAscii(value).split("");
+    const sanitizedValueChars = valueChars.filter(isFloatingPointNumericCharacter);
+    return sanitizedValueChars.join("");
+}
