@@ -77,7 +77,8 @@ export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover usePortal={false
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
-export const WINDOW_OVERRIDE_CONTEXT_CLASS_NAME_STRING = ns + ` Window override context windowOverride must be a window object`;
+export const WINDOW_OVERRIDE_CONTEXT_CLASS_NAME_STRING =
+    ns + ` Window override context windowOverride must be a window object`;
 
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;

@@ -25,7 +25,13 @@ export interface IWindowOverrideContext {
 export const WINDOW_OVERRIDE_REACT_CONTEXT_TYPES: ValidationMap<IWindowOverrideContext> = {
     windowOverride: (obj: IWindowOverrideContext, key: keyof IWindowOverrideContext) => {
         const variable = obj[key];
-        if (variable != null && (variable.document == null || variable.location == null || variable.alert == null || variable.setInterval == null)) {
+        if (
+            variable != null &&
+            (variable.document == null ||
+                variable.location == null ||
+                variable.alert == null ||
+                variable.setInterval == null)
+        ) {
             return new Error(Errors.WINDOW_OVERRIDE_CONTEXT_CLASS_NAME_STRING);
         }
         return undefined;

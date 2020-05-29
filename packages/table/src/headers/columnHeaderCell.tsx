@@ -35,7 +35,7 @@ import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 import {
     IWindowOverrideContext,
-    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES
+    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
 } from "@blueprintjs/core/lib/esm/common/windowOverrideContext";
 
 export interface IColumnNameProps {
@@ -93,9 +93,10 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         menuIcon: "chevron-down",
     };
 
-    public static contextTypes: React.ValidationMap<
-        IColumnInteractionBarContextTypes & IWindowOverrideContext
-    > = {...columnInteractionBarContextTypes, ...WINDOW_OVERRIDE_REACT_CONTEXT_TYPES};
+    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes & IWindowOverrideContext> = {
+        ...columnInteractionBarContextTypes,
+        ...WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
+    };
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
