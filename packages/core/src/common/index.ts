@@ -27,6 +27,7 @@ export * from "./intent";
 export * from "./position";
 export * from "./props";
 export * from "./refs";
+export * from "./windowOverrideContext";
 
 import * as Classes from "./classes";
 import * as Keys from "./keys";
