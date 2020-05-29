@@ -18,6 +18,7 @@ import { ValidationMap } from "prop-types";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { IWindowOverrideContext, WINDOW_OVERRIDE_REACT_CONTEXT_TYPES } from "../../common";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
@@ -64,12 +65,9 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  */
 export class Portal extends React.Component<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-    public static contextTypes = REACT_CONTEXT_TYPES;
-    public static defaultProps: IPortalProps = {
-        container: typeof document !== "undefined" ? document.body : null,
-    };
+    public static contextTypes = {...REACT_CONTEXT_TYPES, ...WINDOW_OVERRIDE_REACT_CONTEXT_TYPES};
 
-    public context: IPortalContext;
+    public context: IPortalContext & IWindowOverrideContext;
     public state: IPortalState = { hasMounted: false };
 
     private portalElement: HTMLElement;
@@ -78,7 +76,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         // Only render `children` once this component has mounted in a browser environment, so they are
         // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        if (cannotCreatePortal || typeof document === "undefined" || !this.state.hasMounted) {
+        if (cannotCreatePortal || typeof this.getWindow()?.document === "undefined" || !this.state.hasMounted) {
             return null;
         } else {
             return ReactDOM.createPortal(this.props.children, this.portalElement);
@@ -86,11 +84,11 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     public componentDidMount() {
-        if (!this.props.container) {
+        if (!this.getContainer()) {
             return;
         }
         this.portalElement = this.createContainerElement();
-        this.props.container.appendChild(this.portalElement);
+        this.getContainer().appendChild(this.portalElement);
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();
@@ -118,7 +116,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     private createContainerElement() {
-        const container = document.createElement("div");
+        const container = this.getWindow().document.createElement("div");
         container.classList.add(Classes.PORTAL);
         maybeAddClass(container.classList, this.props.className);
         if (this.context != null) {
@@ -133,6 +131,21 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             <div>{this.props.children}</div>,
             this.portalElement,
         );
+    }
+
+    private getContainer() {
+        if (this.props.container == null) {
+            return typeof this.getWindow().document !== "undefined" ? this.getWindow().document.body : null
+        }
+        return this.props.container;
+    }
+
+    private getWindow = () => {
+        const context = this.context as IWindowOverrideContext | undefined;
+        if (context != null && context.windowOverride != null) {
+            return context.windowOverride;
+        }
+        return typeof window !== "undefined" ? window : undefined;
     }
 }
 
