@@ -225,7 +225,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const focusedElement = document.activeElement.closest(TAB_SELECTOR);
+        const focusedElement = this.getWindow().document.activeElement.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
             return;

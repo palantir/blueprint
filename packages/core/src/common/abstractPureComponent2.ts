@@ -16,12 +16,15 @@
 
 import * as React from "react";
 import { isNodeEnv } from "./utils";
+import { IWindowOverrideContext, WINDOW_OVERRIDE_REACT_CONTEXT_TYPES } from "./windowOverrideContext";
 
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
  */
 export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
+    public static contextTypes = WINDOW_OVERRIDE_REACT_CONTEXT_TYPES;
+
     // unsafe lifecycle method
     public componentWillUpdate: never;
     public componentWillReceiveProps: never;
@@ -74,6 +77,14 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
             this.timeoutIds = [];
         }
     };
+
+    public getWindow() {
+        const context = this.context as IWindowOverrideContext | undefined;
+        if (context != null && context.windowOverride != null) {
+            return context.windowOverride;
+        }
+        return window;
+    }
 
     /**
      * Ensures that the props specified for a component are valid.
