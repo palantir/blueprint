@@ -41,7 +41,6 @@ import { InputGroup } from "./inputGroup";
 import {
     clampValue,
     getValueOrEmptyValue,
-    isFloatingPointNumericCharacter,
     isValidNumericKeyboardEvent,
     isValueNumeric,
     sanitizeNumericInput,

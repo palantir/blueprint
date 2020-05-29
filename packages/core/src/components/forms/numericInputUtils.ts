@@ -78,7 +78,7 @@ export function isValidNumericKeyboardEvent(e: React.KeyboardEvent) {
  * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
  */
 const FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
-export function isFloatingPointNumericCharacter(character: string) {
+function isFloatingPointNumericCharacter(character: string) {
     return FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(character);
 }
 
