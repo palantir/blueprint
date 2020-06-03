@@ -110,6 +110,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static readonly SIZE_LARGE = "90%";
 
     public render() {
+        // eslint-disable-next-line deprecation/deprecation
         const { size, style, position, vertical } = this.props;
         const realPosition = position ? getPositionIgnoreAngles(position) : null;
 
@@ -149,6 +150,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
             }
         }
         if (props.position != null) {
+            // eslint-disable-next-line deprecation/deprecation
             if (props.vertical) {
                 console.warn(Errors.DRAWER_VERTICAL_IS_IGNORED);
             }

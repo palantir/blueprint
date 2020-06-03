@@ -31,7 +31,6 @@ export function addScrollbarStyle() {
 
 function createStyleSheet() {
     const style = document.createElement("style");
-    style.type = "text/css";
     document.head.appendChild(style);
     return style.sheet as CSSStyleSheet;
 }

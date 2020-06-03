@@ -4,7 +4,7 @@
  * Generates isomorphic tests for React components.
  */
 
-import { equal } from "assert";
+import { strictEqual } from "assert";
 import * as Enzyme from "enzyme";
 import * as React from "react";
 
@@ -64,7 +64,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
                 it(`<${componentName} className>`, () => {
                     const testClass = "test-test-test";
                     const doc = render(componentName, { className: testClass });
-                    equal(doc.find(`.${testClass}`).length + doc.filter(`.${testClass}`).length, 1);
+                    strictEqual(doc.find(`.${testClass}`).length + doc.filter(`.${testClass}`).length, 1);
                 });
             }
         });

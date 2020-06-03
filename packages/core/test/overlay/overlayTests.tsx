@@ -388,7 +388,7 @@ describe("<Overlay>", () => {
             }
         });
 
-        function assertFocus(selector: string | (() => void), done: MochaDone) {
+        function assertFocus(selector: string | (() => void), done: Mocha.Done) {
             // the behavior being tested relies on requestAnimationFrame.
             // setTimeout for a few frames later to let things settle (to reduce flakes).
             setTimeout(() => {
@@ -459,7 +459,7 @@ describe("<Overlay>", () => {
             );
         }
 
-        function assertBodyScrollingDisabled(disabled: boolean, done: MochaDone) {
+        function assertBodyScrollingDisabled(disabled: boolean, done: Mocha.Done) {
             // wait for the DOM to settle before checking body classes
             setTimeout(() => {
                 const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);

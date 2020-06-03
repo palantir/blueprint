@@ -229,6 +229,8 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
         keys.push("meta");
     }
 
+    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+    // eslint-disable-next-line deprecation/deprecation
     const { which } = e;
     if (Modifiers[which] != null) {
         // no action key
@@ -251,6 +253,8 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
  */
 export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     let key = null as string;
+    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+    // eslint-disable-next-line deprecation/deprecation
     const { which } = e;
     if (Modifiers[which] != null) {
         // keep key null

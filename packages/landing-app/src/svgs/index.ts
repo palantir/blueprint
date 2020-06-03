@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 // tslint:disable no-submodule-imports
 
 const HERO_SVGS: Record<string, string> = {

@@ -47,6 +47,7 @@ export interface IHTMLTableProps
 @polyfill
 export class HTMLTable extends AbstractPureComponent2<IHTMLTableProps> {
     public render() {
+        // eslint-disable-next-line deprecation/deprecation
         const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;
         const classes = classNames(
             Classes.HTML_TABLE,
