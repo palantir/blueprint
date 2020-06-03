@@ -23,7 +23,7 @@ import * as React from "react";
 const FORMAT = "dddd, LL";
 const FORMAT_TIME = "dddd, LL LT";
 
-export const MomentDate: React.SFC<{ date: Date; format?: string; withTime?: boolean }> = ({
+export const MomentDate: React.FunctionComponent<{ date: Date; format?: string; withTime?: boolean }> = ({
     date,
     withTime = false,
     format = withTime ? FORMAT_TIME : FORMAT,
@@ -36,7 +36,7 @@ export const MomentDate: React.SFC<{ date: Date; format?: string; withTime?: boo
     }
 };
 
-export const MomentDateRange: React.SFC<{ range: DateRange; format?: string; withTime?: boolean } & IProps> = ({
+export const MomentDateRange: React.FunctionComponent<{ range: DateRange; format?: string; withTime?: boolean } & IProps> = ({
     className,
     range: [start, end],
     withTime = false,

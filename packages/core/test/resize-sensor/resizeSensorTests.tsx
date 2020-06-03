@@ -102,7 +102,7 @@ interface ISizeProps {
 }
 
 type IResizeTesterProps = IResizeSensorProps & ISizeProps;
-const ResizeTester: React.SFC<IResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
+const ResizeTester: React.FunctionComponent<IResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
     <ResizeSensor {...resizeProps}>
         <div key={id} style={{ width, height }} />
     </ResizeSensor>

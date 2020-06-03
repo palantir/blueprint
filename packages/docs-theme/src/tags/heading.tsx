@@ -19,7 +19,7 @@ import { IHeadingTag } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-export const Heading: React.SFC<IHeadingTag> = ({ level, route, value }) =>
+export const Heading: React.FunctionComponent<IHeadingTag> = ({ level, route, value }) =>
     // use createElement so we can dynamically choose tag based on depth
     React.createElement(
         `h${level}`,

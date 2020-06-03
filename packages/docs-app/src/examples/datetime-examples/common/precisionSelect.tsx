@@ -42,7 +42,7 @@ export interface IPrecisionSelectProps {
     label?: string;
 }
 
-export const PrecisionSelect: React.SFC<IPrecisionSelectProps> = props => (
+export const PrecisionSelect: React.FunctionComponent<IPrecisionSelectProps> = props => (
     <label className={Classes.LABEL}>
         {props.label || "Precision"}
         <HTMLSelect value={props.value} onChange={props.onChange}>

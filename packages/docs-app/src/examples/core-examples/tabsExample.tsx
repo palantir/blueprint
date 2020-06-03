@@ -97,7 +97,7 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
     private handleNavbarTabChange = (navbarTabId: TabId) => this.setState({ navbarTabId });
 }
 
-const ReactPanel: React.SFC = () => (
+const ReactPanel: React.FunctionComponent = () => (
     <div>
         <H3>Example panel: React</H3>
         <p className={Classes.RUNNING_TEXT}>
@@ -107,7 +107,7 @@ const ReactPanel: React.SFC = () => (
     </div>
 );
 
-const AngularPanel: React.SFC = () => (
+const AngularPanel: React.FunctionComponent = () => (
     <div>
         <H3>Example panel: Angular</H3>
         <p className={Classes.RUNNING_TEXT}>
@@ -118,7 +118,7 @@ const AngularPanel: React.SFC = () => (
     </div>
 );
 
-const EmberPanel: React.SFC = () => (
+const EmberPanel: React.FunctionComponent = () => (
     <div>
         <H3>Example panel: Ember</H3>
         <p className={Classes.RUNNING_TEXT}>
@@ -130,7 +130,7 @@ const EmberPanel: React.SFC = () => (
     </div>
 );
 
-const BackbonePanel: React.SFC = () => (
+const BackbonePanel: React.FunctionComponent = () => (
     <div>
         <H3>Backbone</H3>
     </div>
