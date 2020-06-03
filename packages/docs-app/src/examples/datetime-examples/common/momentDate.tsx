@@ -36,12 +36,9 @@ export const MomentDate: React.FunctionComponent<{ date: Date; format?: string; 
     }
 };
 
-export const MomentDateRange: React.FunctionComponent<{ range: DateRange; format?: string; withTime?: boolean } & IProps> = ({
-    className,
-    range: [start, end],
-    withTime = false,
-    format = withTime ? FORMAT_TIME : FORMAT,
-}) => (
+export const MomentDateRange: React.FunctionComponent<
+    { range: DateRange; format?: string; withTime?: boolean } & IProps
+> = ({ className, range: [start, end], withTime = false, format = withTime ? FORMAT_TIME : FORMAT }) => (
     <div className={classNames("docs-date-range", className)}>
         <MomentDate withTime={withTime} date={start} format={format} />
         <Icon icon="arrow-right" />
