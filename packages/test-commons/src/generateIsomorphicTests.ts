@@ -4,8 +4,6 @@
  * Generates isomorphic tests for React components.
  */
 
-import "../../bootstrap";
-
 import { equal } from "assert";
 import * as Enzyme from "enzyme";
 import * as React from "react";
