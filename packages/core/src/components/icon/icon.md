@@ -53,6 +53,11 @@ import { IconNames } from "@blueprintjs/icons";
 
 // can pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
+
+// custom icons can be passed via an svg path string array
+<Icon icon={["M8,0 16,8 8,16 0,8z"]} />
+// ...or through a custom rendered jsx element
+<Icon icon={<svg viewBox="0 0 16 16"><path d="M8,0 16,8 8,16 0,8z" /></svg>} />
 ```
 
 ```html
