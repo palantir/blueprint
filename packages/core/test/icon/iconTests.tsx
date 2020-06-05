@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { IconName, IconSvgPaths16, IconNames } from "@blueprintjs/icons";
 
 import { Classes, Icon, IIconProps, Intent } from "../../src";
 
@@ -80,6 +80,13 @@ describe("<Icon>", () => {
     it("desc defaults to icon name", () => {
         const icon = shallow(<Icon icon="airplane" />);
         assert.equal(icon.find("desc").text(), "airplane");
+    });
+
+    it("icon from name renders same as path", () => {
+        const iconName = IconNames.PHONE;
+        const iconFromName = shallow(<Icon icon={iconName} />);
+        const iconFromPath = shallow(<Icon icon={IconSvgPaths16[iconName]} />);
+        assert.equal(iconFromName.find("path").prop("d"), iconFromPath.find("path").prop("d"));
     });
 
     /** Asserts that rendered icon has given className. */
