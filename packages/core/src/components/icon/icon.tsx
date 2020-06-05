@@ -42,7 +42,7 @@ export interface IIconProps extends IIntentProps, IProps {
     htmlTitle?: string;
 
     /**
-     * Name of a Blueprint UI icon, or an icon element, to render. This prop is
+     * Name of a Blueprint UI icon, an icon element, or an svg path, to render. This prop is
      * required because it determines the content of the component, but it can
      * be explicitly set to falsy values to render nothing.
      *
@@ -55,8 +55,11 @@ export interface IIconProps extends IIntentProps, IProps {
      *   simplify icon support in other Blueprint components. As a consumer, you
      *   should avoid using `<Icon icon={<Element />}` directly; simply render
      *   `<Element />` instead.
+     * - If given a `string[]` the icon will render an icon with a
+     *   `<path d="{string}"/>` for each string in the array.
+     *   Path strings should fit blueprint's 16px or 24px iconSize
      */
-    icon: IconName | MaybeElement;
+    icon: IconName | MaybeElement | string[];
 
     /**
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
@@ -94,7 +97,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
         const { icon } = this.props;
         if (icon == null || typeof icon === "boolean") {
             return null;
-        } else if (typeof icon !== "string") {
+        } else if (typeof icon !== "string" && !Array.isArray(icon)) {
             return icon;
         }
 
@@ -104,7 +107,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
             htmlTitle,
             iconSize = Icon.SIZE_STANDARD,
             intent,
-            title = icon,
+            title = typeof icon === "string" ? icon : undefined,
             tagName = "span",
             ...htmlprops
         } = this.props;
@@ -114,7 +117,8 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
-        const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
+        const iconClass = typeof icon === "string" ? Classes.iconClass(icon) : undefined;
+        const classes = classNames(Classes.ICON, iconClass, Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
         return React.createElement(
@@ -131,11 +135,11 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
         );
     }
 
-    /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
-    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
+    /** Render `<path>` elements for the given icon name or array of paths. Returns `null` if name is unknown. */
+    private renderSvgPaths(pathsSize: number, iconNameOrPaths: IconName | string[]): JSX.Element[] | null {
         const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathStrings = svgPathsRecord[iconName];
-        if (pathStrings == null) {
+        const pathStrings = Array.isArray(iconNameOrPaths) ? iconNameOrPaths : svgPathsRecord[iconNameOrPaths];
+        if (pathStrings == null || pathStrings.length === 0) {
             return null;
         }
         return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
