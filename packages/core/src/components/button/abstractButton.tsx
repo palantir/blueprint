@@ -71,8 +71,8 @@ export interface IButtonProps extends IActionProps {
     /** Whether this button should use outlined styles. */
     outlined?: boolean;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
-    rightIcon?: IconName | MaybeElement;
+    /** Name of a Blueprint UI icon (or an icon element, or array of path strings) to render after the text. */
+    rightIcon?: IconName | MaybeElement | string[];
 
     /** Whether this button should use small styles. */
     small?: boolean;
@@ -92,7 +92,7 @@ export interface IButtonState {
 export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>> extends AbstractPureComponent2<
     IButtonProps & H,
     IButtonState
-> {
+    > {
     public state = {
         isActive: false,
     };

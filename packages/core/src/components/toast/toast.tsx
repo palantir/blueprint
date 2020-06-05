@@ -33,8 +33,8 @@ export interface IToastProps extends IProps, IIntentProps {
      */
     action?: IActionProps & ILinkProps;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
-    icon?: IconName | MaybeElement;
+    /** Name of a Blueprint UI icon (or an icon element, or array of path strings) to render before the message. */
+    icon?: IconName | MaybeElement | string[];
 
     /** Message to display in the body of the toast. */
     message: React.ReactNode;

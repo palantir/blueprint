@@ -28,11 +28,11 @@ import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
 export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps {
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render in the
+     * Name of a Blueprint UI icon (or an icon element, or array of path strings) to render in the
      * drawer's header. Note that the header will only be rendered if `title` is
      * provided.
      */
-    icon?: IconName | MaybeElement;
+    icon?: IconName | MaybeElement | string[];
 
     /**
      * Whether to show the close button in the dialog's header.
@@ -126,9 +126,9 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
             size == null
                 ? style
                 : {
-                      ...style,
-                      [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
-                  };
+                    ...style,
+                    [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
+                };
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
                 <div className={classes} style={styleProp}>

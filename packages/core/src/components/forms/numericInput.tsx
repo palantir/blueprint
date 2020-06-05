@@ -93,9 +93,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
     large?: boolean;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of input.
+     * Name of a Blueprint UI icon (or an icon element, or array of path strings) to render on the left side of input.
      */
-    leftIcon?: IconName | MaybeElement;
+    leftIcon?: IconName | MaybeElement | string[];
 
     /**
      * The increment between successive values when <kbd>shift</kbd> is held.

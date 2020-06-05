@@ -42,7 +42,7 @@ export interface INonIdealStateProps extends IProps {
     description?: React.ReactChild;
 
     /** The name of a Blueprint icon or a JSX Element (such as `<Spinner/>`) to render above the title. */
-    icon?: IconName | MaybeElement;
+    icon?: IconName | MaybeElement | string[];
 
     /** The title of the non-ideal state. */
     title?: React.ReactNode;

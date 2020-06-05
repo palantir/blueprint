@@ -34,12 +34,12 @@ import { Icon, IconName } from "../icon/icon";
 /** This component also supports the full range of HTML `<div>` props. */
 export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side.
+     * Name of a Blueprint UI icon (or an icon element, or array of path strings) to render on the left side.
      *
      * If this prop is omitted or `undefined`, the `intent` prop will determine a default icon.
      * If this prop is explicitly `null`, no icon will be displayed (regardless of `intent`).
      */
-    icon?: IconName | MaybeElement;
+    icon?: IconName | MaybeElement | string[];
 
     /**
      * Visual intent color to apply to background, title, and icon.
@@ -82,7 +82,7 @@ export class Callout extends AbstractPureComponent2<ICalloutProps> {
         );
     }
 
-    private getIconName(icon?: ICalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
+    private getIconName(icon?: ICalloutProps["icon"], intent?: Intent): IconName | MaybeElement | string[] {
         // 1. no icon
         if (icon === null) {
             return undefined;

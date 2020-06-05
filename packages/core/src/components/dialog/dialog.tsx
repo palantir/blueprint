@@ -39,11 +39,11 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     hasBackdrop?: boolean;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render in the
+     * Name of a Blueprint UI icon (or an icon element, or array of path strings) to render in the
      * dialog's header. Note that the header will only be rendered if `title` is
      * provided.
      */
-    icon?: IconName | MaybeElement;
+    icon?: IconName | MaybeElement | string[];
 
     /**
      * Whether to show the close button in the dialog's header.

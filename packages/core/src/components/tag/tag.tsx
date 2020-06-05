@@ -43,8 +43,8 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     fill?: boolean;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
-    icon?: IconName | MaybeElement;
+    /** Name of a Blueprint UI icon (or an icon element, or array of path strings) to render before the children. */
+    icon?: IconName | MaybeElement | string[];
 
     /**
      * Whether the tag should visually respond to user interactions. If set
@@ -89,8 +89,8 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render after the children. */
-    rightIcon?: IconName | MaybeElement;
+    /** Name of a Blueprint UI icon (or an icon element, or array of path strings) to render after the children. */
+    rightIcon?: IconName | MaybeElement | string[];
 
     /**
      * Whether this tag should have rounded ends.

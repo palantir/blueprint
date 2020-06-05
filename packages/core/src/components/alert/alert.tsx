@@ -58,8 +58,8 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
      */
     confirmButtonText?: string;
 
-    /** Name of a Blueprint UI icon (or an icon element) to display on the left side. */
-    icon?: IconName | MaybeElement;
+    /** Name of a Blueprint UI icon (or an icon element, or array of path strings) to display on the left side. */
+    icon?: IconName | MaybeElement | string[];
 
     /**
      * The intent to be applied to the confirm (right-most) button and the icon (if provided).

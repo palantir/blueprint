@@ -59,7 +59,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      * before the user's cursor.  This prop is mutually exclusive with `leftElement`.
      * Usage with content is deprecated.  Use `leftElement` for elements.
      */
-    leftIcon?: IconName | MaybeElement;
+    leftIcon?: IconName | MaybeElement | string[];
 
     /** Whether this input should use large styles. */
     large?: boolean;

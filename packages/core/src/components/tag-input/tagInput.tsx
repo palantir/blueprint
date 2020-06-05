@@ -80,8 +80,8 @@ export interface ITagInputProps extends IIntentProps, IProps {
     /** Whether the tag input should use a large size. */
     large?: boolean;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
-    leftIcon?: IconName | MaybeElement;
+    /** Name of a Blueprint UI icon (or an icon element, or array of path strings) to render on the left side of the input. */
+    leftIcon?: IconName | MaybeElement | string[];
 
     /**
      * Callback invoked when new tags are added by the user pressing `enter` on the input.

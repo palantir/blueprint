@@ -43,9 +43,9 @@ export interface ITreeNode<T = {}> extends IProps {
     hasCaret?: boolean;
 
     /**
-     * The name of a Blueprint icon (or an icon element) to render next to the node's label.
+     * The name of a Blueprint icon (or an icon element, or array of path strings) to render next to the node's label.
      */
-    icon?: IconName | MaybeElement;
+    icon?: IconName | MaybeElement | string[];
 
     /**
      * A unique identifier for the node.
@@ -125,12 +125,12 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
             disabled === true
                 ? {}
                 : {
-                      onClick: this.handleClick,
-                      onContextMenu: this.handleContextMenu,
-                      onDoubleClick: this.handleDoubleClick,
-                      onMouseEnter: this.handleMouseEnter,
-                      onMouseLeave: this.handleMouseLeave,
-                  };
+                    onClick: this.handleClick,
+                    onContextMenu: this.handleContextMenu,
+                    onDoubleClick: this.handleDoubleClick,
+                    onMouseEnter: this.handleMouseEnter,
+                    onMouseLeave: this.handleMouseLeave,
+                };
 
         return (
             <li className={classes}>
