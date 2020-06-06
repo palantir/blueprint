@@ -24,7 +24,8 @@ export class MenuExample extends React.PureComponent<IExampleProps> {
         return (
             <Example className="docs-menu-example" options={false} {...this.props}>
                 <Menu className={Classes.ELEVATION_1}>
-                    <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
+                    <MenuItem icon={<PalantirLogo />} text="Custom SVG element" />
+                    <MenuItem icon={[PALANTIR_LOGO_PATH]} text="Custom SVG path" />
                     <MenuDivider />
                     <MenuItem icon="new-text-box" text="New text box" />
                     <MenuItem icon="new-object" text="New object" />
@@ -69,6 +70,8 @@ export class MenuExample extends React.PureComponent<IExampleProps> {
         );
     }
 }
+
+const PALANTIR_LOGO_PATH = "M13.4,11.6L8,13.9l-5.4-2.3l-0.9,1.7L8,16l6.3-2.7L13.4,11.6L13.4,11.6z M8,10.3c-2.3,0-4.2-1.9-4.2-4.2c0-2.3,1.9-4.2,4.2-4.2s4.2,1.9,4.2,4.2C12.2,8.4,10.3,10.3,8,10.3L8,10.3z M8,0C4.7,0,2,2.7,2,6.1c0,3.3,2.7,6.1,6,6.1c3.3,0,6-2.7,6-6.1S11.3,0,8,0z"
 
 const PalantirLogo: React.SFC = () => (
     <svg className={Classes.ICON} width="16" height="16" viewBox="0 0 18 23" xmlns="http://www.w3.org/2000/svg">
