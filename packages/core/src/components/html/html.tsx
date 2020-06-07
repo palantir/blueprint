@@ -26,7 +26,7 @@ export interface IElementRefProps<E extends HTMLElement> {
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
-): React.SFC<React.HTMLProps<E> & IElementRefProps<E>> {
+): React.FunctionComponent<React.HTMLProps<E> & IElementRefProps<E>> {
     return props => {
         const { className, elementRef, ...htmlProps } = props;
         return React.createElement(tagName, {

@@ -30,8 +30,8 @@ interface ITestItem {
 const IDS = [0, 1, 2, 3, 4, 5];
 const ITEMS: ITestItem[] = IDS.map(id => ({ id }));
 
-const TestItem: React.SFC<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
-const TestOverflow: React.SFC<{ items: ITestItem[] }> = () => <div />;
+const TestItem: React.FunctionComponent<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
+const TestOverflow: React.FunctionComponent<{ items: ITestItem[] }> = () => <div />;
 
 describe("<OverflowList>", function (this) {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries

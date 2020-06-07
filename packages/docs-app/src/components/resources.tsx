@@ -26,7 +26,7 @@ const RESOURCES: IResourceProps[] = [
     { fileName: "blueprint-colors.sketchpalette", lastUpdated: "January 22, 2020" },
 ];
 
-export const Resources: React.SFC = () => (
+export const Resources: React.FunctionComponent = () => (
     <>
         <div className="blueprint-resources">
             {RESOURCES.map(resource => (

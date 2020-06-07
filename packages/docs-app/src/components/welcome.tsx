@@ -35,7 +35,7 @@ export class Welcome extends React.PureComponent {
     }
 }
 
-const WelcomeCard: React.SFC<{
+const WelcomeCard: React.FunctionComponent<{
     icon: IconName;
     title: string;
     href: string;

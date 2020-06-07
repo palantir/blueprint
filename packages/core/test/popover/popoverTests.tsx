@@ -774,7 +774,7 @@ describe("<Popover>", () => {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: IPopoverWrapper) => void, done: MochaDone): this;
+        then(next: (wrap: IPopoverWrapper) => void, done: Mocha.Done): this;
     }
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {

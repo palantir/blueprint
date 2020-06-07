@@ -169,7 +169,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         }
 
         function checkClickTriggeredOnKeyUp(
-            done: MochaDone,
+            done: Mocha.Done,
             buttonProps: Partial<IButtonProps>,
             keyEventProps: Partial<React.KeyboardEvent<any>>,
         ) {
