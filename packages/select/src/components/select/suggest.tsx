@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
     getRef,
     HTMLInputProps,
@@ -27,13 +28,11 @@ import {
     IRefCallback,
     IRefObject,
     isRefObject,
-    IWindowOverrideContext,
     Keys,
     Popover,
     PopoverInteractionKind,
     Position,
     Utils,
-    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -105,9 +104,8 @@ export interface ISuggestState<T> {
     selectedItem: T | null;
 }
 
-export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
+export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
-    public static contextTypes = WINDOW_OVERRIDE_REACT_CONTEXT_TYPES;
 
     public static defaultProps: Partial<ISuggestProps<any>> = {
         closeOnSelect: true,
@@ -120,7 +118,6 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
     }
 
-    public context: IWindowOverrideContext | undefined;
     public state: ISuggestState<T> = {
         isOpen: (this.props.popoverProps != null && this.props.popoverProps.isOpen) || false,
         selectedItem: this.getInitialSelectedItem(),
@@ -289,7 +286,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         requestAnimationFrame(() => {
-            const isInputFocused = getRef(this.inputEl) === this.getWindow().document.activeElement;
+            const isInputFocused = getRef(this.inputEl) === this.window.document.activeElement;
 
             if (this.inputEl != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
@@ -359,13 +356,5 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         if (this.queryList !== null && shouldResetActiveItemToSelectedItem) {
             this.queryList.setActiveItem(this.props.selectedItem ?? this.state.selectedItem);
         }
-    }
-
-    private getWindow() {
-        const context = this.context as IWindowOverrideContext | undefined;
-        if (context != null && context.windowOverride != null) {
-            return context.windowOverride;
-        }
-        return window;
     }
 }

@@ -284,15 +284,11 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         return requestAnimationFrame(() => {
             // container ref may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            if (
-                this.containerElement == null ||
-                this.getWindow().document.activeElement == null ||
-                !this.props.isOpen
-            ) {
+            if (this.containerElement == null || this.window.document.activeElement == null || !this.props.isOpen) {
                 return;
             }
 
-            const isFocusOutsideModal = !this.containerElement.contains(this.getWindow().document.activeElement);
+            const isFocusOutsideModal = !this.containerElement.contains(this.window.document.activeElement);
             if (isFocusOutsideModal) {
                 // element marked autofocus has higher priority than the other clowns
                 const autofocusElement = this.containerElement.querySelector("[autofocus]") as HTMLElement;
@@ -371,8 +367,8 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     }
 
     private overlayWillClose() {
-        this.getWindow().document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
-        this.getWindow().document.removeEventListener("mousedown", this.handleDocumentClick);
+        this.window.document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
+        this.window.document.removeEventListener("mousedown", this.handleDocumentClick);
 
         const { openStack } = Overlay;
         const stackIndex = openStack.indexOf(this);
@@ -381,7 +377,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             if (openStack.length > 0) {
                 const lastOpenedOverlay = Overlay.getLastOpened();
                 if (lastOpenedOverlay.props.enforceFocus) {
-                    this.getWindow().document.addEventListener(
+                    this.window.document.addEventListener(
                         "focus",
                         lastOpenedOverlay.handleDocumentFocus,
                         /* useCapture */ true,
@@ -390,7 +386,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             }
 
             if (openStack.filter(o => o.props.usePortal && o.props.hasBackdrop).length === 0) {
-                this.getWindow().document.body.classList.remove(Classes.OVERLAY_OPEN);
+                this.window.document.body.classList.remove(Classes.OVERLAY_OPEN);
             }
         }
     }
@@ -398,7 +394,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     private overlayWillOpen() {
         const { openStack } = Overlay;
         if (openStack.length > 0) {
-            this.getWindow().document.removeEventListener(
+            this.window.document.removeEventListener(
                 "focus",
                 Overlay.getLastOpened().handleDocumentFocus,
                 /* useCapture */ true,
@@ -410,16 +406,16 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             this.bringFocusInsideOverlay();
         }
         if (this.props.enforceFocus) {
-            this.getWindow().document.addEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
+            this.window.document.addEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         }
 
         if (this.props.canOutsideClickClose && !this.props.hasBackdrop) {
-            this.getWindow().document.addEventListener("mousedown", this.handleDocumentClick);
+            this.window.document.addEventListener("mousedown", this.handleDocumentClick);
         }
 
         if (this.props.hasBackdrop && this.props.usePortal) {
             // add a class to the body to prevent scrolling of content below the overlay
-            this.getWindow().document.body.classList.add(Classes.OVERLAY_OPEN);
+            this.window.document.body.classList.add(Classes.OVERLAY_OPEN);
         }
     }
 

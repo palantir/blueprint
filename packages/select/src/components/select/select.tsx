@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     Button,
     DISPLAYNAME_PREFIX,
     getRef,
@@ -28,12 +29,10 @@ import {
     IRefCallback,
     IRefObject,
     isRefObject,
-    IWindowOverrideContext,
     Keys,
     Popover,
     Position,
     Utils,
-    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -77,15 +76,13 @@ export interface ISelectState {
     isOpen: boolean;
 }
 
-export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState> {
+export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
-    public static contextTypes = WINDOW_OVERRIDE_REACT_CONTEXT_TYPES;
 
     public static ofType<T>() {
         return Select as new (props: ISelectProps<T>) => Select<T>;
     }
 
-    public context: IWindowOverrideContext | undefined;
     public state: ISelectState = { isOpen: false };
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -193,7 +190,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = this.getWindow().document.activeElement as HTMLElement;
+        this.previousFocusedElement = this.window.document.activeElement as HTMLElement;
 
         if (this.props.resetOnClose) {
             this.resetQuery();
@@ -233,12 +230,4 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     };
 
     private resetQuery = () => this.queryList && this.queryList.setQuery("", true);
-
-    private getWindow() {
-        const context = this.context as IWindowOverrideContext | undefined;
-        if (context != null && context.windowOverride != null) {
-            return context.windowOverride;
-        }
-        return window;
-    }
 }

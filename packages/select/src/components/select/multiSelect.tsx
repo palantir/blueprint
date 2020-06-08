@@ -17,11 +17,11 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
     ITagInputProps,
-    IWindowOverrideContext,
     Keys,
     Popover,
     PopoverInteractionKind,
@@ -29,7 +29,6 @@ import {
     TagInput,
     TagInputAddMethod,
     Utils,
-    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -80,9 +79,8 @@ export interface IMultiSelectState {
     isOpen: boolean;
 }
 
-export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState> {
+export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
-    public static contextTypes = WINDOW_OVERRIDE_REACT_CONTEXT_TYPES;
 
     public static defaultProps = {
         fill: false,
@@ -196,8 +194,8 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
-        this.getWindow().requestAnimationFrame(() => {
-            const isInputFocused = this.input === this.getWindow().document.activeElement;
+        this.window.requestAnimationFrame(() => {
+            const isInputFocused = this.input === this.window.document.activeElement;
 
             if (this.input != null && !isInputFocused) {
                 // input is no longer focused, we should close the popover
@@ -253,12 +251,4 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             }
         };
     };
-
-    private getWindow() {
-        const context = this.context as IWindowOverrideContext | undefined;
-        if (context != null && context.windowOverride != null) {
-            return context.windowOverride;
-        }
-        return window;
-    }
 }

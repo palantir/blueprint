@@ -27,7 +27,7 @@ import {
     Popover,
     Position,
     Utils as CoreUtils,
-    WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
+    windowOverrideReactContextTypes,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
@@ -93,7 +93,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
 
     public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes & IWindowOverrideContext> = {
         ...columnInteractionBarContextTypes,
-        ...WINDOW_OVERRIDE_REACT_CONTEXT_TYPES,
+        ...windowOverrideReactContextTypes,
     };
 
     /**

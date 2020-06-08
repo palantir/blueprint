@@ -406,7 +406,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         // The button's onMouseUp event handler doesn't fire if the user
         // releases outside of the button, so we need to watch all the way
         // from the top.
-        this.getWindow().document.addEventListener("mouseup", this.stopContinuousChange);
+        this.window.document.addEventListener("mouseup", this.stopContinuousChange);
 
         // Initial delay is slightly longer to prevent the user from
         // accidentally triggering the continuous increment/decrement.
@@ -419,7 +419,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         this.delta = 0;
         this.clearTimeouts();
         clearInterval(this.intervalId);
-        this.getWindow().document.removeEventListener("mouseup", this.stopContinuousChange);
+        this.window.document.removeEventListener("mouseup", this.stopContinuousChange);
     };
 
     private handleContinuousChange = () => {

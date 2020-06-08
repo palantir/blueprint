@@ -78,7 +78,7 @@ export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onIntera
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
 export const WINDOW_OVERRIDE_CONTEXT_CLASS_NAME_STRING =
-    ns + ` Window override context windowOverride must be a window object`;
+    ns + ` Window override context must implement a Window-like API`;
 
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;

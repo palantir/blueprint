@@ -16,7 +16,7 @@
 
 import * as React from "react";
 import { isNodeEnv } from "./utils";
-import { IWindowOverrideContext, WINDOW_OVERRIDE_REACT_CONTEXT_TYPES } from "./windowOverrideContext";
+import { IWindowOverrideContext, windowOverrideReactContextTypes } from "./windowOverrideContext";
 
 /**
  * An abstract component that Blueprint components can extend
@@ -24,7 +24,7 @@ import { IWindowOverrideContext, WINDOW_OVERRIDE_REACT_CONTEXT_TYPES } from "./w
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
-    public static contextTypes = WINDOW_OVERRIDE_REACT_CONTEXT_TYPES;
+    public static contextTypes = windowOverrideReactContextTypes;
 
     // unsafe lifecycle method
     public componentWillUpdate: never;
@@ -32,6 +32,17 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     public componentWillMount: never;
     // this should be static, not an instance method
     public getDerivedStateFromProps: never;
+
+    /** Get the browser window, using the context-provided window override if available. */
+    protected get window() {
+        const context = this.context as IWindowOverrideContext | undefined;
+        if (context != null && context.windowOverride != null) {
+            return context.windowOverride;
+        } else if (typeof window !== "undefined") {
+            return window;
+        }
+        return undefined;
+    }
 
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;
@@ -78,14 +89,6 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
             this.timeoutIds = [];
         }
     };
-
-    public getWindow() {
-        const context = this.context as IWindowOverrideContext | undefined;
-        if (context != null && context.windowOverride != null) {
-            return context.windowOverride;
-        }
-        return window;
-    }
 
     /**
      * Ensures that the props specified for a component are valid.

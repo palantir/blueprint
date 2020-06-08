@@ -130,16 +130,16 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     }
 
     public beginHandleMovement = (event: MouseEvent | React.MouseEvent<HTMLElement>) => {
-        this.getWindow().document.addEventListener("mousemove", this.handleHandleMovement);
-        this.getWindow().document.addEventListener("mouseup", this.endHandleMovement);
+        this.window.document.addEventListener("mousemove", this.handleHandleMovement);
+        this.window.document.addEventListener("mouseup", this.endHandleMovement);
         this.setState({ isMoving: true });
         this.changeValue(this.clientToValue(this.mouseEventClientOffset(event)));
     };
 
     public beginHandleTouchMovement = (event: TouchEvent | React.TouchEvent<HTMLElement>) => {
-        this.getWindow().document.addEventListener("touchmove", this.handleHandleTouchMovement);
-        this.getWindow().document.addEventListener("touchend", this.endHandleTouchMovement);
-        this.getWindow().document.addEventListener("touchcancel", this.endHandleTouchMovement);
+        this.window.document.addEventListener("touchmove", this.handleHandleTouchMovement);
+        this.window.document.addEventListener("touchend", this.endHandleTouchMovement);
+        this.window.document.addEventListener("touchcancel", this.endHandleTouchMovement);
         this.setState({ isMoving: true });
         this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
@@ -247,10 +247,10 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     }
 
     private removeDocumentEventListeners() {
-        this.getWindow().document.removeEventListener("mousemove", this.handleHandleMovement);
-        this.getWindow().document.removeEventListener("mouseup", this.endHandleMovement);
-        this.getWindow().document.removeEventListener("touchmove", this.handleHandleTouchMovement);
-        this.getWindow().document.removeEventListener("touchend", this.endHandleTouchMovement);
-        this.getWindow().document.removeEventListener("touchcancel", this.endHandleTouchMovement);
+        this.window.document.removeEventListener("mousemove", this.handleHandleMovement);
+        this.window.document.removeEventListener("mouseup", this.endHandleMovement);
+        this.window.document.removeEventListener("touchmove", this.handleHandleTouchMovement);
+        this.window.document.removeEventListener("touchend", this.endHandleTouchMovement);
+        this.window.document.removeEventListener("touchcancel", this.endHandleTouchMovement);
     }
 }

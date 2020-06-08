@@ -1,5 +1,5 @@
-/*!
- * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
+/*
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ValidationMap } from "prop-types";
+import { ValidationMap } from "./context";
 import * as Errors from "./errors";
 
 export interface IWindowOverrideContext {
@@ -22,7 +22,7 @@ export interface IWindowOverrideContext {
     windowOverride?: Window;
 }
 
-export const WINDOW_OVERRIDE_REACT_CONTEXT_TYPES: ValidationMap<IWindowOverrideContext> = {
+export const windowOverrideReactContextTypes: ValidationMap<IWindowOverrideContext> = {
     windowOverride: (obj: IWindowOverrideContext, key: keyof IWindowOverrideContext) => {
         const variable = obj[key];
         if (
