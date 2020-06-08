@@ -19,8 +19,8 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
+import { AnchorButton, Button, Classes, IButtonProps, Icon, Spinner } from "../../src";
 import * as Keys from "../../src/common/keys";
-import { AnchorButton, Button, Classes, IButtonProps, Icon, Spinner } from "../../src/index";
 
 describe("Buttons:", () => {
     buttonTestSuite(Button, "button");
@@ -169,7 +169,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         }
 
         function checkClickTriggeredOnKeyUp(
-            done: MochaDone,
+            done: Mocha.Done,
             buttonProps: Partial<IButtonProps>,
             keyEventProps: Partial<React.KeyboardEvent<any>>,
         ) {

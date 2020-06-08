@@ -21,8 +21,8 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { IItemRendererProps, QueryList } from "../src";
 import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
-import { IItemRendererProps, QueryList } from "../src/index";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {

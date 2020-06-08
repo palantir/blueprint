@@ -27,7 +27,7 @@ export function elementIsOrContains(element: HTMLElement, testElement: HTMLEleme
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
-    const throttledFunc = _throttleHelper((event: Event) => {
+    const throttledFunc = throttleImpl((event: Event) => {
         target.dispatchEvent(new CustomEvent(newEventName, event));
     });
     target.addEventListener(eventName, throttledFunc);
@@ -47,7 +47,7 @@ export function throttleReactEventCallback(
     callback: (event: React.SyntheticEvent<any>, ...otherArgs: any[]) => any,
     options: IThrottledReactEventOptions = {},
 ) {
-    const throttledFunc = _throttleHelper(
+    const throttledFunc = throttleImpl(
         callback,
         (event2: React.SyntheticEvent<any>) => {
             if (options.preventDefault) {
@@ -64,13 +64,13 @@ export function throttleReactEventCallback(
  * Throttle a method by wrapping it in a `requestAnimationFrame` call. Returns
  * the throttled function.
  */
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function throttle<T extends Function>(method: T): T {
-    return _throttleHelper(method);
+    return throttleImpl(method);
 }
 
-// tslint:disable-next-line:ban-types
-function _throttleHelper<T extends Function>(
+// eslint-disable-next-line @typescript-eslint/ban-types
+function throttleImpl<T extends Function>(
     onAnimationFrameRequested: T,
     onBeforeIsRunningCheck?: T,
     onAfterIsRunningCheck?: T,

@@ -145,7 +145,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
             placeholder: "Search for timezones...",
             ...inputProps,
         };
-        const finalPopoverProps: Partial<IPopoverProps> & object = {
+        const finalPopoverProps: Partial<IPopoverProps> = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
         };
@@ -170,8 +170,8 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         );
     }
 
-    public componentDidUpdate(prevProps: ITimezonePickerProps, prevState: ITimezonePickerState, snapshot?: {}) {
-        super.componentDidUpdate(prevProps, prevState, snapshot);
+    public componentDidUpdate(prevProps: ITimezonePickerProps, prevState: ITimezonePickerState) {
+        super.componentDidUpdate(prevProps, prevState);
         const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = this.props;
 
         if (this.props.showLocalTimezone !== prevProps.showLocalTimezone) {

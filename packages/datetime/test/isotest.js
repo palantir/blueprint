@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+require("@blueprintjs/test-commons/bootstrap");
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const DateTime = require("../lib/cjs");
@@ -24,11 +25,8 @@ describe("DateTime isomorphic rendering", () => {
         placeholder: "enter date",
     };
 
-    generateIsomorphicTests(
-        DateTime,
-        {
-            DateInput: { props: formatProps },
-            DateRangeInput: { props: formatProps },
-        }
-    );
+    generateIsomorphicTests(DateTime, {
+        DateInput: { props: formatProps },
+        DateRangeInput: { props: formatProps },
+    });
 });

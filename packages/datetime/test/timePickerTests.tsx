@@ -22,7 +22,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
-import { Classes, ITimePickerProps, TimePicker, TimePrecision } from "../src/index";
+import { Classes, ITimePickerProps, TimePicker, TimePrecision } from "../src";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
 describe("<TimePicker>", () => {

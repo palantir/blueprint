@@ -19,8 +19,8 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
+import { EditableText } from "../../src";
 import * as Keys from "../../src/common/keys";
-import { EditableText } from "../../src/index";
 
 describe("<EditableText>", () => {
     it("renders value", () => {
@@ -296,7 +296,7 @@ describe("<EditableText>", () => {
             preventDefault?(): void;
         }
 
-        function simulateHelper(wrapper: ReactWrapper<any, {}>, value: string, e: IFakeKeyboardEvent) {
+        function simulateHelper(wrapper: ReactWrapper<any>, value: string, e: IFakeKeyboardEvent) {
             wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
         }
     });

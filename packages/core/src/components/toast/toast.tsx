@@ -54,7 +54,7 @@ export interface IToastProps extends IProps, IIntentProps {
 }
 
 @polyfill
-export class Toast extends AbstractPureComponent2<IToastProps, {}> {
+export class Toast extends AbstractPureComponent2<IToastProps> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",

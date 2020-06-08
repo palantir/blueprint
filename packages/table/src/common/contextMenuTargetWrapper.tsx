@@ -29,7 +29,7 @@ export interface IContextMenuTargetWrapper extends IProps {
  * chains.
  */
 @ContextMenuTarget
-export class ContextMenuTargetWrapper extends React.PureComponent<IContextMenuTargetWrapper, {}> {
+export class ContextMenuTargetWrapper extends React.PureComponent<IContextMenuTargetWrapper> {
     public render() {
         const { className, children, style } = this.props;
         return (

@@ -200,8 +200,7 @@ export const parseKeyCombo = (combo: string): IKeyCombo => {
         if (ModifierBitMasks[piece] != null) {
             modifiers += ModifierBitMasks[piece];
         } else if (ShiftKeys[piece] != null) {
-            // tslint:disable-next-line no-string-literal
-            modifiers += ModifierBitMasks["shift"];
+            modifiers += ModifierBitMasks.shift;
             key = ShiftKeys[piece];
         } else {
             key = piece.toLowerCase();
@@ -230,12 +229,15 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
         keys.push("meta");
     }
 
+    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+    // eslint-disable-next-line deprecation/deprecation
     const { which } = e;
     if (Modifiers[which] != null) {
         // no action key
     } else if (KeyCodes[which] != null) {
         keys.push(KeyCodes[which]);
     } else {
+        // eslint-disable-next-line id-blacklist
         keys.push(String.fromCharCode(which).toLowerCase());
     }
 
@@ -251,30 +253,31 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
  */
 export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
     let key = null as string;
+    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+    // eslint-disable-next-line deprecation/deprecation
     const { which } = e;
     if (Modifiers[which] != null) {
         // keep key null
     } else if (KeyCodes[which] != null) {
         key = KeyCodes[which];
     } else {
+        // eslint-disable-next-line id-blacklist
         key = String.fromCharCode(which).toLowerCase();
     }
 
     let modifiers = 0;
-    // tslint:disable no-string-literal
     if (e.altKey) {
-        modifiers += ModifierBitMasks["alt"];
+        modifiers += ModifierBitMasks.alt;
     }
     if (e.ctrlKey) {
-        modifiers += ModifierBitMasks["ctrl"];
+        modifiers += ModifierBitMasks.ctrl;
     }
     if (e.metaKey) {
-        modifiers += ModifierBitMasks["meta"];
+        modifiers += ModifierBitMasks.meta;
     }
     if (e.shiftKey) {
-        modifiers += ModifierBitMasks["shift"];
+        modifiers += ModifierBitMasks.shift;
     }
-    // tslint:enable
 
     return { modifiers, key };
 };
@@ -293,7 +296,6 @@ export const normalizeKeyCombo = (combo: string, platformOverride?: string): str
         return keyName === "meta" ? (isMac(platformOverride) ? "cmd" : "ctrl") : keyName;
     });
 };
-/* tslint:enable:no-string-literal */
 
 function isMac(platformOverride?: string) {
     const platform =

@@ -79,7 +79,7 @@ export function safeInvokeMember<
     C,
     R = void
 >(obj: T | undefined, key: K, arg1: A, arg2: B, arg3: C): R | undefined;
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function safeInvokeMember<T extends { [P in K]?: Function }, K extends keyof T>(
     obj: T | null | undefined,
     key: K,

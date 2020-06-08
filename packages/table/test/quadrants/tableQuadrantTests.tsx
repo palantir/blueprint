@@ -259,7 +259,7 @@ describe("TableQuadrant", () => {
         return component.getDOMNode() as HTMLElement;
     }
 
-    function mountTableQuadrant(props: Partial<ITableQuadrantProps> & object = {}) {
+    function mountTableQuadrant(props: Partial<ITableQuadrantProps> = {}) {
         return mount(<TableQuadrant grid={grid} bodyRenderer={bodyRenderer} {...props} />);
     }
 });

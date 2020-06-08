@@ -62,12 +62,14 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     placeholder?: string;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
 
     /** Controlled selected values. */
     selectedItems?: T[];
 
     /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     tagInputProps?: Partial<ITagInputProps> & object;
 
     /** Custom renderer to transform an item into tag content. */

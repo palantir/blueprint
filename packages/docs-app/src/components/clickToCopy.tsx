@@ -91,7 +91,7 @@ export class ClickToCopy extends React.PureComponent<IClickToCopyProps, IClickTo
         Utils.safeInvoke(this.props.onClick, e);
     };
 
-    // tslint:disable-next-line:member-ordering
+    // eslint-disable-line @typescript-eslint/member-ordering
     private handleKeyDown = createKeyEventHandler(
         {
             all: this.props.onKeyDown,

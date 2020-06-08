@@ -27,7 +27,7 @@ export interface IPageProps {
     tagRenderers: ITagRendererMap;
 }
 
-export const Page: React.SFC<IPageProps> = ({ page, renderActions, tagRenderers }) => {
+export const Page: React.FunctionComponent<IPageProps> = ({ page, renderActions, tagRenderers }) => {
     // apply running text styles to blocks in pages (but not on blocks in examples)
     const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
     return (

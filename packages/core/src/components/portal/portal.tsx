@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { ValidationMap } from "prop-types";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { IWindowOverrideContext, WINDOW_OVERRIDE_REACT_CONTEXT_TYPES } from "../../common";
 import * as Classes from "../../common/classes";
+import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";

@@ -21,6 +21,7 @@ import * as sinon from "sinon";
 
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
+import { Portal } from "../../src";
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
@@ -28,7 +29,6 @@ import { Overlay } from "../../src/components/overlay/overlay";
 import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
-import { Portal } from "../../src/index";
 import { findInPortal } from "../utils";
 
 describe("<Popover>", () => {
@@ -774,7 +774,7 @@ describe("<Popover>", () => {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: IPopoverWrapper) => void, done: MochaDone): this;
+        then(next: (wrap: IPopoverWrapper) => void, done: Mocha.Done): this;
     }
 
     function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {

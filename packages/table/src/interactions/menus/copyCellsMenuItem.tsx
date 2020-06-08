@@ -46,7 +46,7 @@ export interface ICopyCellsMenuItemProps extends IMenuItemProps {
     onCopy?: (success: boolean) => void;
 }
 
-export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemProps, {}> {
+export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemProps> {
     public render() {
         const { context, getCellData, onCopy, ...menuItemProps } = this.props;
         return <MenuItem {...menuItemProps} onClick={this.handleClick} />;

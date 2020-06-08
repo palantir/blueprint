@@ -50,6 +50,8 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
     }
 
     private renderPropRow = (entry: ITsEnumMember) => {
+        // this is inside RUNNING_TEXT
+        /* eslint-disable @blueprintjs/html-components */
         const { renderBlock } = this.context;
         const {
             flags: { isDeprecated, isExternal },
@@ -61,8 +63,6 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
             "docs-prop-is-internal": !isExternal,
         });
 
-        // this is inside RUNNING_TEXT
-        /* eslint-disable @blueprintjs/html-components */
         return (
             <tr key={name}>
                 <td className={classes}>
@@ -77,7 +77,6 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
                 </td>
             </tr>
         );
-        /* eslint-enable @blueprintjs/html-components */
     };
 
     private renderTags(entry: ITsEnumMember) {

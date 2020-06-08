@@ -25,7 +25,7 @@ import { Hotkey, IHotkeyProps } from "./hotkey";
 import { IHotkeysProps } from "./hotkeysTypes";
 
 @polyfill
-export class Hotkeys extends AbstractPureComponent2<IHotkeysProps, {}, {}> {
+export class Hotkeys extends AbstractPureComponent2<IHotkeysProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;
 
     public static defaultProps = {

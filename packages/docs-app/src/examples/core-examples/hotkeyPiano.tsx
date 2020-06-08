@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable max-classes-per-file
+/* eslint-disable max-classes-per-file */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -108,7 +108,7 @@ interface IPianoKeyProps {
     context: AudioContext;
 }
 
-class PianoKey extends React.Component<IPianoKeyProps, {}> {
+class PianoKey extends React.Component<IPianoKeyProps> {
     private oscillator: Oscillator;
     private envelope: Envelope;
 
@@ -155,7 +155,7 @@ export interface IHotkeyPianoState {
     keys: boolean[];
 }
 
-/* tslint:disable-next-line:no-string-literal */
+// eslint-disable-next-line @typescript-eslint/dot-notation
 const AUDIO_CONTEXT = (window as any)["AudioContext"] != null ? new AudioContext() : null;
 
 @HotkeysTarget

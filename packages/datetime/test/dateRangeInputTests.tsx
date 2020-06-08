@@ -35,12 +35,12 @@ import {
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
+import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
-import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src/index";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
-type WrappedComponentRoot = ReactWrapper<any, {}>;
+type WrappedComponentRoot = ReactWrapper<any>;
 type WrappedComponentInput = ReactWrapper<HTMLInputProps, any>;
 type WrappedComponentDayElement = ReactWrapper<HTMLDivProps, any>;
 
@@ -829,7 +829,6 @@ describe("<DateRangeInput>", () => {
                 });
             });
 
-            // tslint:disable-next-line:max-line-length
             describe("calls onChange if last-edited boundary is in range and the other boundary is out of range", () => {
                 runTestForEachScenario((inputGetterFn, boundary, otherInputGetterFn) => {
                     otherInputGetterFn(root).simulate("focus");
@@ -2321,6 +2320,7 @@ describe("<DateRangeInput>", () => {
         });
 
         it("Clicking a start date causes focus to move to end field", () => {
+            // eslint-disable-next-line prefer-const
             let controlledRoot: WrappedComponentRoot;
 
             const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
@@ -2335,6 +2335,7 @@ describe("<DateRangeInput>", () => {
         });
 
         it("Typing in a field while hovering over a date shows the typed date, not the hovered date", () => {
+            // eslint-disable-next-line prefer-const
             let controlledRoot: WrappedComponentRoot;
 
             const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });

@@ -21,8 +21,8 @@ import * as sinon from "sinon";
 
 import { HTMLSelect } from "@blueprintjs/core";
 import { ClassNames } from "react-day-picker";
+import { Classes, IDatePickerLocaleUtils } from "../src";
 import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
-import { Classes, IDatePickerLocaleUtils } from "../src/index";
 
 describe("<DatePickerCaption>", () => {
     const LOCALE_UTILS: IDatePickerLocaleUtils = {
@@ -117,7 +117,7 @@ describe("<DatePickerCaption>", () => {
     function renderDatePickerCaption(props?: Partial<IDatePickerCaptionProps>) {
         const wrapper = mount(
             <DatePickerCaption
-                // tslint:disable-next-line:no-object-literal-type-assertion
+                // eslint-disable-line @typescript-eslint/consistent-type-assertions
                 classNames={{} as ClassNames}
                 date={new Date(2015, 0)}
                 locale="en"

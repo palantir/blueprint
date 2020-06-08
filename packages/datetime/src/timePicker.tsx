@@ -185,7 +185,6 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
             [CoreClasses.DISABLED]: this.props.disabled,
         });
 
-        /* tslint:disable:max-line-length */
         return (
             <div className={classes}>
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
@@ -214,7 +213,6 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 </div>
             </div>
         );
-        /* tslint:enable:max-line-length */
     }
 
     public componentDidUpdate(prevProps: ITimePickerProps) {

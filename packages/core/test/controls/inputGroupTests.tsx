@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, Icon, InputGroup } from "../../src/index";
+import { Classes, Icon, InputGroup } from "../../src";
 
 describe("<InputGroup>", () => {
     it("renders left icon before input", () => {

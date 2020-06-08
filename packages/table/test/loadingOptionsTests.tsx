@@ -26,7 +26,7 @@ interface ITableLoadingOptionsTesterProps {
     tableLoadingOptions: TableLoadingOption[];
 }
 
-class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTesterProps, {}> {
+class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTesterProps> {
     public static isCellLoading = (index: number) => {
         if (index === 0) {
             return true;

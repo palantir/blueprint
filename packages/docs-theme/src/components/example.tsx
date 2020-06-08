@@ -18,6 +18,7 @@ import { IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export interface IExampleProps<T = {}> extends IProps {
     /**
      * Identifier of this example.

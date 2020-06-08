@@ -27,7 +27,7 @@ import {
     MenuItem,
     Popover,
     Position,
-} from "../../src/index";
+} from "../../src";
 
 describe("<CollapsibleList>", () => {
     it("adds className to itself", () => {
@@ -159,7 +159,7 @@ describe("<CollapsibleList>", () => {
         );
     }
 
-    function assertListItems(list: ReactWrapper<any, {}>, expVisibleCount: number, expCollapsedCount: number) {
+    function assertListItems(list: ReactWrapper<any>, expVisibleCount: number, expCollapsedCount: number) {
         assert.lengthOf(list.find("label"), expVisibleCount, "incorrect visible count");
         assert.lengthOf(list.find(MenuItem), expCollapsedCount, "incorrect collapsed count");
     }

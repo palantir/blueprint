@@ -200,7 +200,7 @@ const NONE = -1;
 export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
-    public static defaultProps: Partial<ITagInputProps> & object = {
+    public static defaultProps: Partial<ITagInputProps> = {
         addOnBlur: false,
         addOnPaste: true,
         inputProps: {},

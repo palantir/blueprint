@@ -49,7 +49,7 @@ export interface INonIdealStateProps extends IProps {
 }
 
 @polyfill
-export class NonIdealState extends AbstractPureComponent2<INonIdealStateProps, {}> {
+export class NonIdealState extends AbstractPureComponent2<INonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
     public render() {

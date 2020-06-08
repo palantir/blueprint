@@ -24,11 +24,13 @@ import {
     ITypescriptPluginData,
 } from "@documentalist/client";
 
+/* eslint-disable @typescript-eslint/ban-types */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
 export type IDocsData = IMarkdownPluginData &
     (ITypescriptPluginData | {}) &
     (IKssPluginData | {}) &
     (INpmPluginData | {});
+/* eslint-enable @typescript-eslint/ban-types */
 
 export function hasTypescriptData(docs: IDocsData): docs is IMarkdownPluginData & ITypescriptPluginData {
     return docs != null && (docs as ITypescriptPluginData).typescript != null;

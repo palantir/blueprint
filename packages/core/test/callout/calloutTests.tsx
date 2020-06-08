@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Callout, Classes, H4, Icon, Intent } from "../../src/index";
+import { Callout, Classes, H4, Icon, Intent } from "../../src";
 
 describe("<Callout>", () => {
     it("supports className", () => {

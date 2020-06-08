@@ -25,6 +25,7 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IIntentProps,
+    Intent,
     IProps,
     Keys,
     MaybeElement,
@@ -41,9 +42,9 @@ import { InputGroup } from "./inputGroup";
 import {
     clampValue,
     getValueOrEmptyValue,
-    isFloatingPointNumericCharacter,
     isValidNumericKeyboardEvent,
     isValueNumeric,
+    sanitizeNumericInput,
     toMaxPrecision,
 } from "./numericInputUtils";
 
@@ -154,6 +155,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 }
 
 export interface INumericInputState {
+    currentImeInputInvalid: boolean;
     prevMinProp?: number;
     prevMaxProp?: number;
     prevValueProp?: number | string;
@@ -255,6 +257,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     }
 
     public state: INumericInputState = {
+        currentImeInputInvalid: false,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
         value: getValueOrEmptyValue(this.props.value),
@@ -352,13 +355,15 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             <InputGroup
                 autoComplete="off"
                 {...inputGroupHtmlProps}
-                intent={this.props.intent}
+                intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputRef={this.inputRef}
                 large={this.props.large}
                 leftIcon={this.props.leftIcon}
                 onFocus={this.handleInputFocus}
                 onBlur={this.handleInputBlur}
                 onChange={this.handleInputChange}
+                onCompositionEnd={this.handleCompositionEnd}
+                onCompositionUpdate={this.handleCompositionUpdate}
                 onKeyDown={this.handleInputKeyDown}
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
@@ -474,6 +479,24 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         Utils.safeInvoke(this.props.onKeyDown, e);
     };
 
+    private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+        if (this.props.allowNumericCharactersOnly) {
+            this.setState({ currentImeInputInvalid: false, value: sanitizeNumericInput(e.data) });
+        }
+    };
+
+    private handleCompositionUpdate = (e: React.CompositionEvent<HTMLInputElement>) => {
+        if (this.props.allowNumericCharactersOnly) {
+            const { data } = e;
+            const sanitizedValue = sanitizeNumericInput(data);
+            if (sanitizedValue.length === 0 && data.length > 0) {
+                this.setState({ currentImeInputInvalid: true });
+            } else {
+                this.setState({ currentImeInputInvalid: false });
+            }
+        }
+    };
+
     private handleInputKeyPress = (e: React.KeyboardEvent) => {
         // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
         // e.key is not trustworthy in onKeyDown in all browsers.
@@ -495,10 +518,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         let nextValue = value;
         if (this.props.allowNumericCharactersOnly && this.didPasteEventJustOccur) {
             this.didPasteEventJustOccur = false;
-            const valueChars = value.split("");
-            const sanitizedValueChars = valueChars.filter(isFloatingPointNumericCharacter);
-            const sanitizedValue = sanitizedValueChars.join("");
-            nextValue = sanitizedValue;
+            nextValue = sanitizeNumericInput(value);
         }
 
         this.setState({ shouldSelectAfterUpdate: false, value: nextValue });

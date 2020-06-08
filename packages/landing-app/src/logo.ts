@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-// tslint:disable:max-classes-per-file no-conditional-assignment
+/* eslint-disable max-classes-per-file, no-cond-assign */
 
 const LOGO_Y_OFFSET = 250;
 const SHADOW_DEPTH = 0.3;
 const EXPLOSION_DELAY = 150;
 
-/*-----------------------------------------------
+/* -----------------------------------------------
 
     GEOMETRIC PRIMITIVES
 
@@ -110,7 +110,7 @@ export class Matrix {
 
 const M = (m?: IMatrixTuple) => new Matrix(m);
 
-// tslint:disable-next-line:no-shadowed-variable - complains about <T>, unsure why
+// eslint-disable-line no-shadow
 export abstract class Transformable<T extends Transformable<any>> {
     public abstract transform(matrix: Matrix): T;
 
@@ -177,7 +177,7 @@ export class Quaternion {
     }
 
     public toMatrix() {
-        // tslint:disable-next-line:no-this-assignment
+        // eslint-disable-line @typescript-eslint/no-this-alias
         const { w, x, y, z } = this;
         return M([
             1 - 2 * (y * y + z * z),
@@ -277,7 +277,7 @@ export class Point extends Transformable<Point> {
 
 export const P = (x?: number, y?: number, z?: number) => new Point(x, y, z);
 
-/*-----------------------------------------------
+/* -----------------------------------------------
 
     3D MODELS
 
@@ -508,7 +508,7 @@ export class SceneModel extends Transformable<SceneModel> {
     }
 }
 
-/*-----------------------------------------------
+/* -----------------------------------------------
 
     ANIMATION
 
@@ -688,7 +688,7 @@ export class Animator {
     }
 }
 
-/*-----------------------------------------------
+/* -----------------------------------------------
 
     CANVAS RENDERERS
 

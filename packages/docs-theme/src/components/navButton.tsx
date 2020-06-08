@@ -25,7 +25,7 @@ export interface INavButtonProps {
     onClick: () => void;
 }
 
-export const NavButton: React.SFC<INavButtonProps> = props => (
+export const NavButton: React.FunctionComponent<INavButtonProps> = props => (
     <div className={classNames("docs-nav-button", Classes.TEXT_MUTED)} onClick={props.onClick}>
         <Icon icon={props.icon} />
         <span className={Classes.FILL}>{props.text}</span>

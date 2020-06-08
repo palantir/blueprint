@@ -25,7 +25,7 @@ import {
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src/index";
+import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376

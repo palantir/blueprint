@@ -4,9 +4,7 @@
  * Generates isomorphic tests for React components.
  */
 
-import "../../bootstrap";
-
-import { equal } from "assert";
+import { strictEqual } from "assert";
 import * as Enzyme from "enzyme";
 import * as React from "react";
 
@@ -25,7 +23,7 @@ export interface IIsomorphicTestConfig {
     /** Whether to test `className`. */
     className?: boolean;
     /** Required `props` for successful render. */
-    props?: object;
+    props?: Record<string, unknown>;
     /** Whether to skip this component entirely. */
     skip?: boolean;
 }
@@ -39,7 +37,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
     /** Configuration per component. This is a mapped type supporting all keys in `Components`. */
     config: { [P in keyof T]?: IIsomorphicTestConfig } = {},
 ) {
-    function render(name: string, extraProps?: object) {
+    function render(name: string, extraProps?: Record<string, unknown>) {
         const { children, props }: IIsomorphicTestConfig = config[name] || {};
         const finalProps = extraProps ? { ...props, ...extraProps } : props;
         // Render to static HTML, just as a server would.
@@ -66,7 +64,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
                 it(`<${componentName} className>`, () => {
                     const testClass = "test-test-test";
                     const doc = render(componentName, { className: testClass });
-                    equal(doc.find(`.${testClass}`).length + doc.filter(`.${testClass}`).length, 1);
+                    strictEqual(doc.find(`.${testClass}`).length + doc.filter(`.${testClass}`).length, 1);
                 });
             }
         });

@@ -78,7 +78,7 @@ export function isValidNumericKeyboardEvent(e: React.KeyboardEvent) {
  * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
  */
 const FLOATING_POINT_NUMBER_CHARACTER_REGEX = /^[Ee0-9\+\-\.]$/;
-export function isFloatingPointNumericCharacter(character: string) {
+function isFloatingPointNumericCharacter(character: string) {
     return FLOATING_POINT_NUMBER_CHARACTER_REGEX.test(character);
 }
 
@@ -94,4 +94,21 @@ export function toMaxPrecision(value: number, maxPrecision: number) {
     // source: http://stackoverflow.com/a/18358056/5199574
     const scaleFactor = Math.pow(10, maxPrecision);
     return Math.round(value * scaleFactor) / scaleFactor;
+}
+
+/**
+ * Convert Japanese full-width numbers, e.g. '５', to ASCII, e.g. '5'
+ * This should be called before performing any other numeric string input validation.
+ */
+function convertFullWidthNumbersToAscii(value: string) {
+    return value.replace(/[\uFF10-\uFF19]/g, m => String.fromCharCode(m.charCodeAt(0) - 0xfee0));
+}
+
+/**
+ * Convert full-width (Japanese) numbers to ASCII, and strip all characters that are not valid floating-point numeric characters
+ */
+export function sanitizeNumericInput(value: string) {
+    const valueChars = convertFullWidthNumbersToAscii(value).split("");
+    const sanitizedValueChars = valueChars.filter(isFloatingPointNumericCharacter);
+    return sanitizedValueChars.join("");
 }

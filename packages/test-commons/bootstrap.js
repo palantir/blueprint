@@ -12,5 +12,4 @@ const Adapter = require("enzyme-adapter-react-16");
 
 Enzyme.configure({ adapter: new Adapter() });
 
-// tslint:disable-next-line:no-console
 console.info(`Enzyme configured with *${Adapter.name}*`);

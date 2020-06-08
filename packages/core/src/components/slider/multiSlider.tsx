@@ -30,7 +30,7 @@ import { argMin, fillValues, formatPercentage } from "./sliderUtils";
  * SFC used to pass slider handle props to a `MultiSlider`.
  * This element is not rendered directly.
  */
-const MultiSliderHandle: React.SFC<IHandleProps> = () => null;
+const MultiSliderHandle: React.FunctionComponent<IHandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
 export interface ISliderBaseProps extends IProps, IIntentProps {
@@ -187,8 +187,8 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         this.updateTickSize();
     }
 
-    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState, ss: {}) {
-        super.componentDidUpdate(prevProps, prevState, ss);
+    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState) {
+        super.componentDidUpdate(prevProps, prevState);
         this.updateTickSize();
     }
 
@@ -232,7 +232,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         const labels: JSX.Element[] = [];
         const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
         // step size lends itself naturally to a `for` loop
-        // tslint:disable-next-line:one-variable-per-declaration ban-comma-operator
+        // eslint-disable-line one-var, no-sequences
         for (
             let i = min, offsetRatio = 0;
             i < max || Utils.approxEqual(i, max);

@@ -249,8 +249,8 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         );
     }
 
-    public componentDidUpdate(prevProps: IDateRangePickerProps, prevState: IDateRangePickerState, snapshot?: {}) {
-        super.componentDidUpdate(prevProps, prevState, snapshot);
+    public componentDidUpdate(prevProps: IDateRangePickerProps, prevState: IDateRangePickerState) {
+        super.componentDidUpdate(prevProps, prevState);
 
         if (
             !DateUtils.areRangesEqual(prevProps.value, this.props.value) ||

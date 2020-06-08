@@ -82,8 +82,8 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         stack: this.props.stack != null ? this.props.stack.slice().reverse() : [this.props.initialPanel],
     };
 
-    public componentDidUpdate(prevProps: IPanelStackProps, _prevState: IPanelStackState, _snapshot: {}) {
-        super.componentDidUpdate(prevProps, _prevState, _snapshot);
+    public componentDidUpdate(prevProps: IPanelStackProps, prevState: IPanelStackState) {
+        super.componentDidUpdate(prevProps, prevState);
 
         // Always update local stack if stack prop changes
         if (this.props.stack !== prevProps.stack && prevProps.stack != null) {

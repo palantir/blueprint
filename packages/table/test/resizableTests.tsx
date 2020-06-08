@@ -29,7 +29,7 @@ interface IResizableDivProps {
     style?: React.CSSProperties;
 }
 
-class ResizableDiv extends React.Component<IResizableDivProps, {}> {
+class ResizableDiv extends React.Component<IResizableDivProps> {
     public render() {
         const { style } = this.props;
         return (

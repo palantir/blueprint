@@ -39,7 +39,7 @@ export interface INavMenuItemProps {
     section: IPageNode | IHeadingNode;
 }
 
-export const NavMenuItem: React.SFC<INavMenuItemProps> = props => {
+export const NavMenuItem: React.FunctionComponent<INavMenuItemProps> = props => {
     const { className, isActive, isExpanded, section, ...htmlProps } = props;
     return (
         <a className={classNames(Classes.MENU_ITEM, className)} {...htmlProps}>
