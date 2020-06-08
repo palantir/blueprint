@@ -365,7 +365,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         requestAnimationFrame(() => {
             // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
-            if (!currentTarget.contains(document.activeElement)) {
+            if (!currentTarget.contains(this.window.document.activeElement)) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
                     this.addTags(this.state.inputValue, "blur");
                 }

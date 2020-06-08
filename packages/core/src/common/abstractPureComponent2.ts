@@ -73,9 +73,9 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {
-        const handle = window.setTimeout(callback, timeout);
+        const handle = this.window.setTimeout(callback, timeout);
         this.timeoutIds.push(handle);
-        return () => window.clearTimeout(handle);
+        return () => this.window.clearTimeout(handle);
     }
 
     /**
@@ -84,7 +84,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     public clearTimeouts = () => {
         if (this.timeoutIds.length > 0) {
             for (const timeoutId of this.timeoutIds) {
-                window.clearTimeout(timeoutId);
+                this.window.clearTimeout(timeoutId);
             }
             this.timeoutIds = [];
         }

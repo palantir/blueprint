@@ -411,7 +411,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         let relatedTarget = e.relatedTarget as HTMLElement;
         if (relatedTarget == null) {
             // Support IE11 (#2924)
-            relatedTarget = document.activeElement as HTMLElement;
+            relatedTarget = this.window.document.activeElement as HTMLElement;
         }
         // Beware: this.popoverContentEl is sometimes null under Chrome
         if (
@@ -431,7 +431,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             // If current activeElement exists inside popover content, a month
             // change has triggered and this element should be lastTabbableElement
             let lastTabbableElement = this.popoverContentEl.contains(document.activeElement)
-                ? document.activeElement
+                ? this.window.document.activeElement
                 : undefined;
             // Popover contents are well structured, but the selector will need
             // to be updated if more focusable components are added in the future

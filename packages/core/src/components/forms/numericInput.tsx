@@ -411,7 +411,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         // Initial delay is slightly longer to prevent the user from
         // accidentally triggering the continuous increment/decrement.
         this.setTimeout(() => {
-            this.intervalId = window.setInterval(this.handleContinuousChange, NumericInput.CONTINUOUS_CHANGE_INTERVAL);
+            this.intervalId = this.window.setInterval(
+                this.handleContinuousChange,
+                NumericInput.CONTINUOUS_CHANGE_INTERVAL,
+            );
         }, NumericInput.CONTINUOUS_CHANGE_DELAY);
     }
 

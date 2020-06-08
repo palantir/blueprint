@@ -754,7 +754,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     // =======
 
     private shouldFocusInputRef(isFocused: boolean, inputRef: HTMLInputElement) {
-        return isFocused && inputRef !== undefined && document.activeElement !== inputRef;
+        return isFocused && inputRef !== undefined && this.window.document.activeElement !== inputRef;
     }
 
     private getIsOpenValueWhenDateChanges = (nextSelectedStart: Date, nextSelectedEnd: Date): boolean => {

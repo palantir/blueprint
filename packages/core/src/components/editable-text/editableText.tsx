@@ -368,7 +368,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             const { maxLines, minLines, minWidth, multiline } = this.props;
             const { parentElement, textContent } = this.valueElement;
             let { scrollHeight, scrollWidth } = this.valueElement;
-            const lineHeight = getLineHeight(this.valueElement);
+            const lineHeight = this.getLineHeight(this.valueElement);
             // add one line to computed <span> height if text ends in newline
             // because <span> collapses that trailing whitespace but <textarea> shows it
             if (multiline && this.state.isEditing && /\n$/.test(textContent)) {
@@ -380,7 +380,11 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             }
             // Chrome's input caret height misaligns text so the line-height must be larger than font-size.
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
-            scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement));
+            scrollHeight = Math.max(
+                scrollHeight,
+                getFontSize(this.valueElement) + 1,
+                this.getLineHeight(parentElement),
+            );
             // IE11 & Edge needs a small buffer so text does not shift prior to resizing
             if (Browser.isEdge()) {
                 scrollWidth += BUFFER_WIDTH_EDGE;
@@ -397,30 +401,30 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             }
         }
     }
+
+    private getLineHeight(element: HTMLElement) {
+        // getComputedStyle() => 18.0001px => 18
+        let lineHeight = parseInt(getComputedStyle(element).lineHeight.slice(0, -2), 10);
+        // this check will be true if line-height is a keyword like "normal"
+        if (isNaN(lineHeight)) {
+            // @see http://stackoverflow.com/a/18430767/6342931
+            const line = this.window.document.createElement("span");
+            line.innerHTML = "<br>";
+            element.appendChild(line);
+            const singleLineHeight = element.offsetHeight;
+            line.innerHTML = "<br><br>";
+            const doubleLineHeight = element.offsetHeight;
+            element.removeChild(line);
+            // this can return 0 in edge cases
+            lineHeight = doubleLineHeight - singleLineHeight;
+        }
+        return lineHeight;
+    }
 }
 
 function getFontSize(element: HTMLElement) {
     const fontSize = getComputedStyle(element).fontSize;
     return fontSize === "" ? 0 : parseInt(fontSize.slice(0, -2), 10);
-}
-
-function getLineHeight(element: HTMLElement) {
-    // getComputedStyle() => 18.0001px => 18
-    let lineHeight = parseInt(getComputedStyle(element).lineHeight.slice(0, -2), 10);
-    // this check will be true if line-height is a keyword like "normal"
-    if (isNaN(lineHeight)) {
-        // @see http://stackoverflow.com/a/18430767/6342931
-        const line = document.createElement("span");
-        line.innerHTML = "<br>";
-        element.appendChild(line);
-        const singleLineHeight = element.offsetHeight;
-        line.innerHTML = "<br><br>";
-        const doubleLineHeight = element.offsetHeight;
-        element.removeChild(line);
-        // this can return 0 in edge cases
-        lineHeight = doubleLineHeight - singleLineHeight;
-    }
-    return lineHeight;
 }
 
 function insertAtCaret(el: HTMLTextAreaElement, text: string) {
