@@ -26,6 +26,7 @@ import "./collapsible-list/collapsibleListTests";
 import "./common/propsTests";
 import "./common/utils/compareUtilsTests";
 import "./common/utilsTests";
+import "./common/windowOverrideTests";
 import "./context-menu/contextMenuTests";
 import "./controls/controlsTests";
 import "./controls/inputGroupTests";
