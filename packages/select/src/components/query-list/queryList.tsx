@@ -422,16 +422,14 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         const item = Utils.safeInvoke(this.props.createNewItemFromQuery, query);
         if (item != null) {
             Utils.safeInvoke(this.props.onItemSelect, item, evt);
-            this.setQuery("", true);
+            this.maybeResetQuery();
         }
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setActiveItem(item);
         Utils.safeInvoke(this.props.onItemSelect, item, event);
-        if (this.props.resetOnSelect) {
-            this.setQuery("", true);
-        }
+        this.maybeResetQuery();
     };
 
     private handlePaste = (queries: string[]) => {
@@ -556,6 +554,12 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         return this.state.filteredItems.some(item =>
             executeItemsEqual(this.props.itemsEqual, item, this.state.createNewItem),
         );
+    }
+
+    private maybeResetQuery() {
+        if (this.props.resetOnSelect) {
+            this.setQuery("", true);
+        }
     }
 }
 

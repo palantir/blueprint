@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { IQueryListProps } from "@blueprintjs/select";
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
-
-// this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { IQueryListProps } from "@blueprintjs/select";
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import {
     IQueryListRendererProps,
     IQueryListState,
@@ -29,6 +27,9 @@ import {
     ItemPredicate,
     QueryList,
 } from "../src";
+
+// this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
+import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 
 type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
 
@@ -347,5 +348,48 @@ describe("<QueryList>", () => {
             assert.isTrue(createNewItemFromQuerySpy.calledWith(trimmedQuery));
             assert.isTrue(createNewItemRendererSpy.calledWith(trimmedQuery));
         });
+
+        it("resets the query after creating new item if resetOnSelect=true", () => {
+            const onQueryChangeSpy = runResetOnSelectTest(true);
+            assert.isTrue(onQueryChangeSpy.calledWith(""));
+        });
+
+        it("does not reset the query after creating new item if resetOnSelect=false", () => {
+            const onQueryChangeSpy = runResetOnSelectTest(false);
+            assert.isTrue(onQueryChangeSpy.notCalled);
+        });
+
+        function runResetOnSelectTest(resetOnSelect: boolean): sinon.SinonSpy {
+            let triggerItemCreate: ((e: any) => void) | undefined;
+            const onQueryChangeSpy = sinon.spy();
+            // supply a custom renderer so we can hook into handleClick and invoke it ourselves later
+            const createNewItemRenderer = sinon.spy(
+                (_query: string, _active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
+                    triggerItemCreate = handleClick;
+                    return <div />;
+                },
+            );
+            const queryList = shallow(
+                <FilmQueryList
+                    {...testProps}
+                    // Must return something in order for item creation to work.
+                    // tslint:disable-next-line jsx-no-lambda
+                    createNewItemFromQuery={() => ({ title: "irrelevant", rank: 0, year: 0 })}
+                    createNewItemRenderer={createNewItemRenderer}
+                    onQueryChange={onQueryChangeSpy}
+                    resetOnSelect={resetOnSelect}
+                />,
+            );
+
+            // Change the query to something non-empty so we can ensure it wasn't cleared.
+            // Ignore this change in the spy.
+            (queryList.instance() as QueryList<IFilm>).setQuery("some query");
+            onQueryChangeSpy.resetHistory();
+
+            assert.isDefined(triggerItemCreate, "query list should pass click handler to createNewItemRenderer");
+            triggerItemCreate!({});
+
+            return onQueryChangeSpy;
+        }
     });
 });
