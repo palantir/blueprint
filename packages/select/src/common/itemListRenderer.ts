@@ -63,7 +63,7 @@ export interface IItemListRendererProps<T> {
 }
 
 /** Type alias for a function that renders the list of items. */
-export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => JSX.Element;
+export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => JSX.Element | null;
 
 /**
  * `ItemListRenderer` helper method for rendering each item in `filteredItems`,
