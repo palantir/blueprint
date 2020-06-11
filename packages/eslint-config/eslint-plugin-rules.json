@@ -1,0 +1,13 @@
+{
+    "import/no-default-export": "error",
+    "import/no-extraneous-dependencies": [
+        "error",
+        {
+            "devDependencies": ["**/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}"]
+        }
+    ],
+    "import/order": "off",
+    "jsdoc/check-alignment": "error",
+    "jsdoc/check-indentation": "off",
+    "jsdoc/newline-after-description": "off"
+}

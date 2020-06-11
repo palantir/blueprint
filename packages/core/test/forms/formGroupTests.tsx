@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Classes, FormGroup, Intent } from "../../src/index";
+import { Classes, FormGroup, Intent } from "../../src";
 
 describe("<FormGroup>", () => {
     it("supports className & intent", () => {

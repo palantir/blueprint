@@ -26,7 +26,7 @@ export interface ICollapseProps extends IProps {
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
      * @default "div"
      */
-    component?: React.ReactType;
+    component?: React.ElementType;
 
     /**
      * Whether the component is open or closed.

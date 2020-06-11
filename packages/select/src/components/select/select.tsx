@@ -20,10 +20,14 @@ import * as React from "react";
 import {
     Button,
     DISPLAYNAME_PREFIX,
+    getRef,
     HTMLInputProps,
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
+    IRefCallback,
+    IRefObject,
+    isRefObject,
     Keys,
     Popover,
     Position,
@@ -56,6 +60,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     inputProps?: IInputGroupProps & HTMLInputProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
 
     /**
@@ -80,14 +85,17 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     public state: ISelectState = { isOpen: false };
 
     private TypedQueryList = QueryList.ofType<T>();
-    private input: HTMLInputElement | null = null;
+
+    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private queryList: QueryList<T> | null = null;
     private previousFocusedElement: HTMLElement | undefined;
     private refHandlers = {
-        input: (ref: HTMLInputElement | null) => {
-            this.input = ref;
-            Utils.safeInvokeMember(this.props.inputProps, "inputRef", ref);
-        },
+        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
+            ? (this.inputEl = this.props.inputProps!.inputRef)
+            : (ref: HTMLInputElement | null) => {
+                  this.inputEl = ref;
+                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
+              },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
@@ -199,8 +207,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
         requestAnimationFrame(() => {
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
-            if (inputProps.autoFocus !== false && this.input != null) {
-                this.input.focus();
+            if (inputProps.autoFocus !== false && this.inputEl != null) {
+                getRef(this.inputEl).focus();
             }
         });
 

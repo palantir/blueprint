@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Divider
 
 `Divider` visually separate contents with a thin line and margin on all sides.

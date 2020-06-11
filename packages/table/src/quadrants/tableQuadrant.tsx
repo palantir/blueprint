@@ -130,7 +130,7 @@ export interface ITableQuadrantProps extends IProps {
 export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<ITableQuadrantProps> & object = {
+    public static defaultProps: Partial<ITableQuadrantProps> = {
         enableRowHeader: true,
     };
 

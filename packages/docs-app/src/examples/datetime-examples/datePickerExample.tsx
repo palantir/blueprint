@@ -29,6 +29,7 @@ export interface IDatePickerExampleState {
     shortcuts: boolean;
     showActionsBar: boolean;
     timePrecision: TimePrecision | undefined;
+    showTimeArrowButtons: boolean;
 }
 
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
@@ -38,6 +39,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
+        showTimeArrowButtons: false,
         timePrecision: undefined,
     };
 
@@ -48,9 +50,12 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
     private handlePrecisionChange = handleStringChange((p: TimePrecision | "none") =>
         this.setState({ timePrecision: p === "none" ? undefined : p }),
     );
+    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
+        this.setState({ showTimeArrowButtons }),
+    );
 
     public render() {
-        const { date, ...props } = this.state;
+        const { date, showTimeArrowButtons, ...props } = this.state;
 
         const options = (
             <>
@@ -73,12 +78,23 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     value={props.timePrecision}
                     onChange={this.handlePrecisionChange}
                 />
+                <Switch
+                    disabled={this.state.timePrecision === undefined}
+                    checked={showTimeArrowButtons}
+                    label="Show timepicker arrow buttons"
+                    onChange={this.toggleTimepickerArrowButtons}
+                />
             </>
         );
 
         return (
             <Example options={options} {...this.props}>
-                <DatePicker className={Classes.ELEVATION_1} onChange={this.handleDateChange} {...props} />
+                <DatePicker
+                    className={Classes.ELEVATION_1}
+                    onChange={this.handleDateChange}
+                    timePickerProps={{ showArrowButtons: showTimeArrowButtons }}
+                    {...props}
+                />
                 <MomentDate date={date} withTime={props.timePrecision !== undefined} />
             </Example>
         );

@@ -9,15 +9,15 @@ Values in numeric inputs can be incremented or decremented using both keyboard a
 
 ##### Keyboard interactions
 
-- `↑/↓` - change the value by one step (default: `±1`)
-- `Shift + ↑/↓` - change the value by one major step (default: `±10`)
-- `Alt + ↑/↓` - change the value by one minor step (default: `±0.1`)
+-   `↑/↓` - change the value by one step (default: `±1`)
+-   `Shift + ↑/↓` - change the value by one major step (default: `±10`)
+-   `Alt + ↑/↓` - change the value by one minor step (default: `±0.1`)
 
 ##### Mouse interactions
 
-- `Click ⌃/⌄` - change the value by one step (default: `±1`)
-- `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
-- `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
+-   `Click ⌃/⌄` - change the value by one step (default: `±1`)
+-   `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
+-   `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
 
 @## Basic example
 
@@ -33,9 +33,9 @@ This example shows how `NumericInput` can be extended beyond its core
 functionality. It supports the basic interactions above as well as each of the
 following types of input:
 
-- **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
-- **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
-- **Addition and subtraction expressions** (e.g. `3+2`, `0.1m - 5k + 1`)
+-   **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
+-   **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
+-   **Addition and subtraction expressions** (e.g. `3+2`, `0.1m - 5k + 1`)
 
 These special-case inputs are evaluated when `Enter` is pressed (via a
 custom `onKeyDown` callback) and when the field loses focus (via a custom
@@ -54,7 +54,7 @@ custom evaluation code has not been tested robustly.
 
 @## JavaScript API
 
-The `NumericInput` component is available in the __@blueprintjs/core__ package.
+The `NumericInput` component is available in the **@blueprintjs/core** package.
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
 @interface INumericInputProps
@@ -76,17 +76,15 @@ provided to the callback both as a number and as a string.
 ```tsx
 import { NumericInput } from "@blueprintjs/core";
 
-export class NumericInputExample extends React.Component<{}, {}> {
+export class NumericInputExample extends React.Component {
     public render() {
-        return (
-            <NumericInput onValueChange={this.handleValueChange} />
-        );
+        return <NumericInput onValueChange={this.handleValueChange} />;
     }
 
     private handleValueChange = (valueAsNumber: number, valueAsString: string) => {
         console.log("Value as number:", valueAsNumber);
         console.log("Value as string:", valueAsString);
-    }
+    };
 }
 ```
 

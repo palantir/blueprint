@@ -18,6 +18,7 @@ import { ITag } from "@documentalist/client";
 import * as React from "react";
 import { CssExample } from "./css";
 import { Heading } from "./heading";
+import { Method } from "./method";
 import { SeeTag } from "./see";
 import { TypescriptExample } from "./typescript";
 
@@ -26,6 +27,7 @@ export function createDefaultRenderers(): Record<string, React.ComponentType<ITa
         css: CssExample,
         heading: Heading,
         interface: TypescriptExample,
+        method: Method,
         page: () => null,
         see: SeeTag,
     };

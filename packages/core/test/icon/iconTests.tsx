@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { IconName } from "@blueprintjs/icons";
 
-import { Classes, Icon, IIconProps, Intent } from "../../src/index";
+import { Classes, Icon, IIconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
     it("tagName dictates HTML tag", () => {

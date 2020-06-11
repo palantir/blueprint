@@ -1,34 +1,33 @@
 {
-  "name": "@blueprintjs/eslint-plugin",
-  "version": "0.1.0",
-  "description": "ESLint rules for use with @blueprintjs packages",
-  "main": "lib/index.js",
-  "scripts": {
-    "compile": "tsc -p src/",
-    "lint": "run-p lint:es",
-    "lint:es": "es-lint",
-    "lint-fix": "es-lint --fix",
-    "test": "jest",
-    "test:jest-ci": "jest --ci --runInBand"
-  },
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
-    "@typescript-eslint/eslint-plugin-tslint": "^2.29.0",
-    "@typescript-eslint/parser": "^2.29.0",
-    "eslint": "^6.8.0",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.2.0"
-  },
-  "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^1.3.0",
-    "@types/dedent": "^0.7.0",
-    "jest-junit": "^10.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:palantir/blueprint.git",
-    "directory": "packages/eslint-plugin"
-  },
-  "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+    "name": "@blueprintjs/eslint-plugin",
+    "version": "0.2.0",
+    "description": "ESLint rules for use with @blueprintjs packages",
+    "main": "lib/index.js",
+    "scripts": {
+        "compile": "tsc -p src/",
+        "lint": "run-p lint:es",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix",
+        "test": "jest",
+        "test:jest-ci": "jest --ci --runInBand"
+    },
+    "dependencies": {
+        "@typescript-eslint/experimental-utils": "^3.0.1",
+        "eslint": "^7.1.0",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.2.0"
+    },
+    "devDependencies": {
+        "@blueprintjs/node-build-scripts": "^1.3.2",
+        "@types/dedent": "^0.7.0",
+        "dedent": "^0.7.0",
+        "jest-junit": "^10.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/eslint-plugin"
+    },
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
 }

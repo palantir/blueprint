@@ -33,7 +33,7 @@ export interface ILoadableContentProps {
 }
 
 // This class expects a single, non-string child.
-export class LoadableContent extends React.PureComponent<ILoadableContentProps, {}> {
+export class LoadableContent extends React.PureComponent<ILoadableContentProps> {
     private style: React.CSSProperties;
 
     public constructor(props: ILoadableContentProps) {

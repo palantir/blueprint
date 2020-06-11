@@ -27,10 +27,12 @@ export const Classes = classes;
 
 export { DateRange } from "./common/dateRange";
 export { Months } from "./common/months";
+export { TimeUnit } from "./common/timeUnit";
 export { IDateFormatProps } from "./dateFormat";
 export { DateInput, IDateInputProps } from "./dateInput";
 export { DatePicker, IDatePickerProps } from "./datePicker";
 export { IDatePickerModifiers } from "./datePickerCore";
+// eslint-disable-next-line deprecation/deprecation
 export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
 export { DateRangeInput, IDateRangeInputProps } from "./dateRangeInput";
 export { DateRangePicker, IDateRangePickerProps } from "./dateRangePicker";

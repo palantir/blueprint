@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-// tslint:disable no-invalid-template-strings object-literal-sort-keys
+// tslint:disable object-literal-sort-keys
+/* eslint-disable no-template-curly-in-string */
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import dedent from "dedent";

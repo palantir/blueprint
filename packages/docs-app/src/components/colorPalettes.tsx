@@ -36,12 +36,11 @@ function getHexCode(color: string) {
 // returns luminance (L in HSL) of given hex color
 // @see http://stackoverflow.com/a/12043228/6342931
 function getLuminance(hex: string) {
+    /* eslint-disable no-bitwise */
     const rgb = parseInt(hex.substring(1), 16); // convert rrggbb to decimal
-    // tslint:disable no-bitwise
     const red = (rgb >> 16) & 0xff;
     const green = (rgb >> 8) & 0xff;
     const blue = (rgb >> 0) & 0xff;
-    // tslint:enable
     const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue; // per ITU-R BT.709
     return luma;
 }
@@ -51,7 +50,7 @@ function getLuminance(hex: string) {
 const DARK_LUMA_CUTOFF = 111;
 
 // a single swatch of color, name on left & hex on right. click to copy hex.
-const ColorSwatch: React.SFC<{ colorName: string; hexCode: string }> = ({ colorName, hexCode }) => {
+const ColorSwatch: React.FunctionComponent<{ colorName: string; hexCode: string }> = ({ colorName, hexCode }) => {
     const style = {
         backgroundColor: hexCode,
         color: getLuminance(hexCode) < DARK_LUMA_CUTOFF ? Colors.WHITE : Colors.BLACK,
@@ -66,7 +65,7 @@ const ColorSwatch: React.SFC<{ colorName: string; hexCode: string }> = ({ colorN
 };
 
 // vertical list of swatches for each color
-const ColorPalette: React.SFC<{ colors: string[] }> = ({ colors }) => (
+const ColorPalette: React.FunctionComponent<{ colors: string[] }> = ({ colors }) => (
     <div
         className={classNames("docs-color-palette", {
             "docs-color-palette-single": colors.length === 1,
@@ -80,7 +79,7 @@ const ColorPalette: React.SFC<{ colors: string[] }> = ({ colors }) => (
 
 // horizontal list of swatches for each color
 // no text in swatch; display all hex codes underneath
-export const ColorBar: React.SFC<{ colors: string[] }> = ({ colors }) => {
+export const ColorBar: React.FunctionComponent<{ colors: string[] }> = ({ colors }) => {
     const hexString = colors.map(getHexCode).join(", ");
     const jsonString = `[${colors.map(c => `"${getHexCode(c)}"`).join(", ")}]`;
 
@@ -105,7 +104,7 @@ export const ColorBar: React.SFC<{ colors: string[] }> = ({ colors }) => {
 };
 
 // a group of ColorPalettes, arranged by default in two columns
-function createPaletteBook(palettes: string[][], className?: string): React.SFC<{}> {
+function createPaletteBook(palettes: string[][], className?: string): React.FunctionComponent {
     return () => (
         <section className={classNames("docs-color-book", className)}>
             {palettes.map((palette, index) => (

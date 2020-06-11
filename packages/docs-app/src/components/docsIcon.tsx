@@ -34,7 +34,7 @@ function downloadIconFile(iconName: IconName, iconSize: 16 | 20) {
 }
 
 @ContextMenuTarget
-export class DocsIcon extends React.PureComponent<IDocsIconProps, {}> {
+export class DocsIcon extends React.PureComponent<IDocsIconProps> {
     public render() {
         const { iconName, displayName, tags } = this.props;
         return (

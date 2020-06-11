@@ -72,7 +72,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 }
 
 @polyfill
-export class Dialog extends AbstractPureComponent2<IDialogProps, {}> {
+export class Dialog extends AbstractPureComponent2<IDialogProps> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,
         isOpen: false,

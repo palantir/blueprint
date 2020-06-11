@@ -62,7 +62,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
 }
 
 @polyfill
-export class FormGroup extends AbstractPureComponent2<IFormGroupProps, {}> {
+export class FormGroup extends AbstractPureComponent2<IFormGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 
     public render() {

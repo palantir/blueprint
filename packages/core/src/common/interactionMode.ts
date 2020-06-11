@@ -26,7 +26,6 @@ const TAB_KEY_CODE = 9;
 export class InteractionModeEngine {
     private isRunning = false;
 
-    // tslint:disable-next-line:no-constructor-vars
     constructor(private container: Element, private className: string) {}
 
     /** Returns whether the engine is currently running. */
@@ -53,6 +52,8 @@ export class InteractionModeEngine {
     }
 
     private handleKeyDown = (e: KeyboardEvent) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        // eslint-disable-next-line deprecation/deprecation
         if (e.which === TAB_KEY_CODE) {
             this.reset();
             this.container.addEventListener("mousedown", this.handleMouseDown);

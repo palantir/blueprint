@@ -4,7 +4,8 @@ Popovers display floating content next to a target element.
 
 `Popover` is built on top of the [__Popper.js__](https://popper.js.org) library.
 Popper.js is a small (`~6kb`) library that offers a powerful, customizable
-positioning engine and operates at blazing speed (`~60fps`).
+positioning engine and operates at blazing speed (`~60fps`). It currently uses
+Popper.js v1; track migration to v2 [here](https://github.com/palantir/blueprint/issues/4023).
 
 @reactExample PopoverExample
 
@@ -157,15 +158,15 @@ through the `modifiers` prop, nor can you define your own with the same name.)
 
 **Popper.js modifiers that can be customized via the `modifiers` prop:**
 
-- [`shift`](https://popper.js.org/popper-documentation.html#modifiers..shift) applies the `-start`/`-end` portion of placement
-- [`offset`](https://popper.js.org/popper-documentation.html#modifiers..offset) can be configured to move the popper on both axes using a CSS-like syntax
-- [`preventOverflow`](https://popper.js.org/popper-documentation.html#modifiers..preventOverflow) prevents the popper from being positioned outside the boundary
-- [`keepTogether`](https://popper.js.org/popper-documentation.html#modifiers..keepTogether) ensures the popper stays near to its reference without leaving any gap.
-- [`arrow`](https://popper.js.org/popper-documentation.html#modifiers..arrow) computes the arrow position.
-- [`flip`](https://popper.js.org/popper-documentation.html#modifiers..flip) flips the popper's placement when it starts to overlap its reference element.
-- [`inner`](https://popper.js.org/popper-documentation.html#modifiers..inner) makes the popper flow toward the inner of the reference element (disabled by default).
-- [`hide`](https://popper.js.org/popper-documentation.html#modifiers..hide) hides the popper when its reference element is outside of the popper boundaries.
-- [`computeStyle`](https://popper.js.org/popper-documentation.html#modifiers..computeStyle) generates the CSS styles to apply to the DOM
+- [`shift`](https://popper.js.org/docs/v1/#modifiers..shift) applies the `-start`/`-end` portion of placement
+- [`offset`](https://popper.js.org/docs/v1/#modifiers..offset) can be configured to move the popper on both axes using a CSS-like syntax
+- [`preventOverflow`](https://popper.js.org/docs/v1/#modifiers..preventOverflow) prevents the popper from being positioned outside the boundary
+- [`keepTogether`](https://popper.js.org/docs/v1/#modifiers..keepTogether) ensures the popper stays near to its reference without leaving any gap.
+- [`arrow`](https://popper.js.org/docs/v1/#modifiers..arrow) computes the arrow position.
+- [`flip`](https://popper.js.org/docs/v1/#modifiers..flip) flips the popper's placement when it starts to overlap its reference element.
+- [`inner`](https://popper.js.org/docs/v1/#modifiers..inner) makes the popper flow toward the inner of the reference element (disabled by default).
+- [`hide`](https://popper.js.org/docs/v1/#modifiers..hide) hides the popper when its reference element is outside of the popper boundaries.
+- [`computeStyle`](https://popper.js.org/docs/v1/#modifiers..computeStyle) generates the CSS styles to apply to the DOM
 
 **Popper.js modifiers that `Popover` manages and that cannot be customized:**
 
@@ -174,7 +175,7 @@ through the `modifiers` prop, nor can you define your own with the same name.)
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-See [the Popper.js Modifiers documentation](https://popper.js.org/popper-documentation.html#modifiers)
+See [the Popper.js v1 modifiers documentation](https://popper.js.org/docs/v1/#modifiers)
 for more details on all the available modifiers.
 
 </div>

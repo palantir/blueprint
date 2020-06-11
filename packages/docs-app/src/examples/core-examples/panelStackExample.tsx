@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable max-classes-per-file */
+
 import * as React from "react";
 
 import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
@@ -93,7 +95,6 @@ interface IPanelExampleState {
     counter: number;
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class PanelExample extends React.PureComponent<IPanelExampleProps> {
     public state: IPanelExampleState = {
         counter: 0,

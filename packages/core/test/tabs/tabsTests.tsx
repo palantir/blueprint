@@ -390,10 +390,10 @@ describe("<Tabs>", () => {
         });
     });
 
-    function findTabById(wrapper: ReactWrapper<ITabsProps, {}>, id: string) {
+    function findTabById(wrapper: ReactWrapper<ITabsProps>, id: string) {
         // Need this to get the right overload signature
-        // tslint:disable-next-line:no-object-literal-type-assertion
-        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<{}>);
+        // eslint-disable-line @typescript-eslint/consistent-type-assertions
+        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
     }
 
     function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabId: string) {
@@ -409,4 +409,4 @@ describe("<Tabs>", () => {
     }
 });
 
-const Panel: React.SFC<{ title: string }> = ({ title }) => <strong>{title} panel</strong>;
+const Panel: React.FunctionComponent<{ title: string }> = ({ title }) => <strong>{title} panel</strong>;

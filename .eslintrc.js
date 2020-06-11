@@ -9,7 +9,6 @@ if (process.env.LINT_SCRIPT) {
     // in CI, we don't wan to run eslint-plugin-prettier because it has a ~50% performance penalty.
     // instead, run yarn format-check at the root to ensure prettier formatting.
     // also, run import/no-cycle only in CI because it is slow.
-    xtends.push("plugin:import/typescript");
     plugins.push(
         "import"
     );
@@ -26,6 +25,21 @@ module.exports = {
     plugins,
     rules,
     settings,
+    overrides: [
+        {
+            files: ["**/test/**/*.{ts,tsx}", "**/test/isotest.js"],
+            env: {
+                browser: true,
+                mocha: true,
+            },
+            rules: {
+                // HACKHACK: many test assertions are written with this syntax
+                "@typescript-eslint/no-unused-expressions": "off",
+                // HACKHACK: test dependencies are only declared at root but used in all packages.
+                "import/no-extraneous-dependencies": "off",
+            }
+        },
+    ],
     ignorePatterns: [
         "node_modules",
         "dist",

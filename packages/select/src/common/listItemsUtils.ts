@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/* eslint-disable no-underscore-dangle */
 
 /**
  * The reserved type of the "Create Item" option in item lists. This is intended

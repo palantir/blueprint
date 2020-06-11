@@ -19,7 +19,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Card, Classes, H4 } from "../../src/index";
+import { Card, Classes, H4 } from "../../src";
 
 describe("<Card>", () => {
     it("supports elevation, interactive, and className props", () => {

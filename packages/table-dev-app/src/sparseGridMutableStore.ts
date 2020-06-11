@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable:max-classes-per-file
+/* eslint-disable max-classes-per-file */
 
 class GridEntry<T> {
     public static key(i: number, j: number) {
@@ -25,7 +25,7 @@ class GridEntry<T> {
 
     // there are two things here called `key` but they're certainly not overloaded (one being static)
     // TSLint bug report: https://github.com/palantir/tslint/issues/2139
-    // tslint:disable-next-line:adjacent-overload-signatures
+    // eslint-disable-line @typescript-eslint/adjacent-overload-signatures
     public get key() {
         return GridEntry.key(this.i, this.j);
     }

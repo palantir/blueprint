@@ -119,7 +119,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
 }
 
 @polyfill
-export class Alert extends AbstractPureComponent2<IAlertProps, {}> {
+export class Alert extends AbstractPureComponent2<IAlertProps> {
     public static defaultProps: IAlertProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,

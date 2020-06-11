@@ -18,7 +18,7 @@ import { ITag } from "@documentalist/client";
 import * as React from "react";
 
 export interface IDocsMap {
-    [name: string]: React.ComponentClass<{}>;
+    [name: string]: React.ComponentClass;
 }
 
 export class ReactDocsTagRenderer {
@@ -29,7 +29,7 @@ export class ReactDocsTagRenderer {
      * it to an actual component class in the given map, or in the default map which contains
      * valid docs components from this package. Provide a custom map to inject your own components.
      */
-    public render: React.SFC<ITag> = ({ value: componentName }) => {
+    public render: React.FunctionComponent<ITag> = ({ value: componentName }) => {
         if (componentName == null) {
             return null;
         }

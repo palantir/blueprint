@@ -1,5 +1,5 @@
 {
-  "rules": {
-    "blueprint-classes-constants": true
-  }
+    "rules": {
+        "blueprint-classes-constants": true
+    }
 }

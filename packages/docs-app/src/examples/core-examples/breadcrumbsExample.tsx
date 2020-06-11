@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable max-classes-per-file */
+
 import * as React from "react";
 
 import {
@@ -117,7 +119,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
     };
 }
 
-/* tslint:disable max-classes-per-file */
+/* eslint-disable  max-classes-per-file */
 class BreadcrumbInput extends React.PureComponent<IBreadcrumbProps & { defaultValue: string | undefined }> {
     public state = {
         text: this.props.defaultValue ?? "",

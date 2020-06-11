@@ -21,7 +21,7 @@ export interface IFileMenuProps extends IProps {
     shouldDismissPopover?: boolean;
 }
 
-export const FileMenu: React.SFC<IFileMenuProps> = props => (
+export const FileMenu: React.FunctionComponent<IFileMenuProps> = props => (
     <Menu className={props.className}>
         <MenuItem text="New" icon="document" {...props} />
         <MenuItem text="Open" icon="folder-shared" {...props} />

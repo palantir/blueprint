@@ -18,7 +18,7 @@ import { ITag } from "@documentalist/client";
 import * as React from "react";
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
 
-export const SeeTag: React.SFC<ITag> = ({ value }, { renderType }: IDocumentationContext) => (
+export const SeeTag: React.FunctionComponent<ITag> = ({ value }, { renderType }: IDocumentationContext) => (
     <p>See: {renderType(value)}</p>
 );
 SeeTag.contextTypes = DocumentationContextTypes;

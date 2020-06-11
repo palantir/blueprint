@@ -27,7 +27,7 @@ import {
     renderFilm,
     TOP_100_FILMS,
 } from "../../docs-app/src/examples/select-examples/films";
-import { IListItemsProps } from "../src/index";
+import { IListItemsProps } from "../src";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
@@ -145,6 +145,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
 
         it("enter invokes onItemSelect with active item", () => {
             const wrapper = render(testProps);
+            findInput(wrapper).simulate("keydown", { keyCode: Keys.ENTER });
             findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
             const activeItem = testProps.onActiveItemChange.lastCall.args[0];
             assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);

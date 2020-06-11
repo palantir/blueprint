@@ -26,7 +26,7 @@ export interface IBreadcrumbProps extends IActionProps, ILinkProps {
     current?: boolean;
 }
 
-export const Breadcrumb: React.SFC<IBreadcrumbProps> = breadcrumbProps => {
+export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbProps => {
     const classes = classNames(
         Classes.BREADCRUMB,
         {

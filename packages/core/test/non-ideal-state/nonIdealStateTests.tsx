@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Classes, H4, NonIdealState } from "../../src/index";
+import { Classes, H4, NonIdealState } from "../../src";
 
 describe("<NonIdealState>", () => {
     it("renders its contents", () => {

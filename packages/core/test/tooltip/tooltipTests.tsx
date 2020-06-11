@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy, stub } from "sinon";
 
-import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src/index";
+import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src";
 
 const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;

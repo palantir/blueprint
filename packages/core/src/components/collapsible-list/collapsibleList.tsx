@@ -65,7 +65,7 @@ export interface ICollapsibleListProps extends IProps {
 }
 
 /** @deprecated use `<OverflowList>` for automatic overflow based on available space. */
-export class CollapsibleList extends React.Component<ICollapsibleListProps, {}> {
+export class CollapsibleList extends React.Component<ICollapsibleListProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.CollapsibleList`;
 
     public static defaultProps: ICollapsibleListProps = {

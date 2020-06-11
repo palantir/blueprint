@@ -23,11 +23,6 @@ import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import * as DateUtils from "../src/common/dateUtils";
-import * as Errors from "../src/common/errors";
-import { Months } from "../src/common/months";
-import { DatePickerNavbar } from "../src/datePickerNavbar";
-import { IDateRangePickerState } from "../src/dateRangePicker";
 import {
     Classes as DateClasses,
     DateRange,
@@ -36,7 +31,12 @@ import {
     IDateRangePickerProps,
     TimePicker,
     TimePrecision,
-} from "../src/index";
+} from "../src";
+import * as DateUtils from "../src/common/dateUtils";
+import * as Errors from "../src/common/errors";
+import { Months } from "../src/common/months";
+import { DatePickerNavbar } from "../src/datePickerNavbar";
+import { IDateRangePickerState } from "../src/dateRangePicker";
 import { IDateRangeShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
@@ -72,8 +72,8 @@ describe("<DateRangePicker>", () => {
         it("hides unnecessary nav buttons in contiguous months mode", () => {
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
             const wrapper = mount(<DateRangePicker defaultValue={defaultValue} />);
-            assert.isTrue(wrapper.find(DatePickerNavbar).at(0).find(".DayPicker-NavButton--next").isEmpty());
-            assert.isTrue(wrapper.find(DatePickerNavbar).at(1).find(".DayPicker-NavButton--prev").isEmpty());
+            assert.isFalse(wrapper.find(DatePickerNavbar).at(0).find(".DayPicker-NavButton--next").exists());
+            assert.isFalse(wrapper.find(DatePickerNavbar).at(1).find(".DayPicker-NavButton--prev").exists());
         });
 
         it("disables days according to custom modifiers in addition to default modifiers", () => {

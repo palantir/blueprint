@@ -19,7 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, IPanel, IPanelProps, IPanelStackProps, PanelStack } from "../../src/index";
+import { Classes, IPanel, IPanelProps, IPanelStackProps, PanelStack } from "../../src";
 
 export class TestPanel extends React.Component<IPanelProps> {
     public render() {

@@ -1,42 +1,43 @@
 {
-  "name": "@blueprintjs/table-dev-app",
-  "version": "3.2.0",
-  "description": "Dev application for @blueprintjs/table",
-  "private": true,
-  "scripts": {
-    "bundle": "webpack --config ./webpack.config.js",
-    "clean": "rm -rf dist/*",
-    "dev": "webpack-dev-server --config ./webpack.config.js",
-    "dist": "cross-env NODE_ENV=production yarn bundle",
-    "lint": "npm-run-all -p lint:scss lint:es",
-    "lint:scss": "sass-lint",
-    "lint:es": "es-lint",
-    "lint-fix": "es-lint --fix && sass-lint --fix",
-    "test": "exit 0",
-    "verify": "npm-run-all -p dist lint"
-  },
-  "dependencies": {
-    "@blueprintjs/core": "^3.26.0",
-    "@blueprintjs/table": "^3.8.4",
-    "classnames": "^2.2.6",
-    "dom4": "^2.1.5",
-    "normalize.css": "^8.0.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
-  },
-  "devDependencies": {
-    "@blueprintjs/webpack-build-scripts": "^1.0.0",
-    "copy-webpack-plugin": "^5.1.1",
-    "npm-run-all": "^4.1.5",
-    "stylelint": "~9.6.0",
-    "webpack": "^4.37.0",
-    "webpack-dev-server": "^3.7.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:palantir/blueprint.git",
-    "directory": "packages/table-dev-app"
-  },
-  "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+    "name": "@blueprintjs/table-dev-app",
+    "version": "3.2.5",
+    "description": "Dev application for @blueprintjs/table",
+    "private": true,
+    "scripts": {
+        "bundle": "webpack --config ./webpack.config.js",
+        "clean": "rm -rf dist/*",
+        "dev": "webpack-dev-server --config ./webpack.config.js",
+        "dist": "cross-env NODE_ENV=production yarn bundle",
+        "lint": "npm-run-all -p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "exit 0",
+        "verify": "npm-run-all -p dist lint"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^3.28.2",
+        "@blueprintjs/table": "^3.8.9",
+        "classnames": "^2.2.6",
+        "dom4": "^2.1.5",
+        "lodash": "^4.17.15",
+        "normalize.css": "^8.0.1",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
+    },
+    "devDependencies": {
+        "@blueprintjs/webpack-build-scripts": "^1.0.1",
+        "copy-webpack-plugin": "^5.1.1",
+        "npm-run-all": "^4.1.5",
+        "stylelint": "~9.6.0",
+        "webpack": "^4.37.0",
+        "webpack-dev-server": "^3.7.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/table-dev-app"
+    },
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
 }

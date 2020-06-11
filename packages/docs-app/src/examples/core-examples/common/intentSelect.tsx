@@ -31,7 +31,7 @@ export interface IIntentSelectProps {
     onChange: React.FormEventHandler<HTMLSelectElement>;
 }
 
-export const IntentSelect: React.SFC<IIntentSelectProps> = props => (
+export const IntentSelect: React.FunctionComponent<IIntentSelectProps> = props => (
     <Label>
         Intent
         <HTMLSelect value={props.intent} onChange={props.onChange} options={INTENTS} />

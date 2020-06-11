@@ -30,7 +30,7 @@ export interface INavMenuProps extends IProps {
     renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
 }
 
-export const NavMenu: React.SFC<INavMenuProps> = props => {
+export const NavMenu: React.FunctionComponent<INavMenuProps> = props => {
     const { renderNavMenuItem = NavMenuItem } = props;
     const menu = props.items.map(section => {
         const isActive = props.activeSectionId === section.route;

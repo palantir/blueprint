@@ -22,7 +22,7 @@ import { EnumTable } from "../components/typescript/enumTable";
 import { InterfaceTable } from "../components/typescript/interfaceTable";
 import { TypeAliasTable } from "../components/typescript/typeAliasTable";
 
-export const TypescriptExample: React.SFC<ITag & IProps> = (
+export const TypescriptExample: React.FunctionComponent<ITag & IProps> = (
     { className, value },
     { getDocsData }: IDocumentationContext,
 ) => {

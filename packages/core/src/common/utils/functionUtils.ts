@@ -15,7 +15,7 @@
  */
 
 /** Returns whether the value is a function. Acts as a type guard. */
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(value: any): value is Function {
     return typeof value === "function";
 }
@@ -40,7 +40,7 @@ export function safeInvoke<A, B, C, D, R>(
     arg3: C,
     arg4: D,
 ): R | undefined;
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function safeInvoke(func: Function | undefined, ...args: any[]) {
     if (isFunction(func)) {
         return func(...args);
@@ -68,7 +68,7 @@ export function safeInvokeOrValue<A, B, C, D, R>(
     arg3: C,
     arg4: D,
 ): R;
-// tslint:disable-next-line:ban-types
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function safeInvokeOrValue(funcOrValue: Function | any | undefined, ...args: any[]) {
     return isFunction(funcOrValue) ? funcOrValue(...args) : funcOrValue;
 }

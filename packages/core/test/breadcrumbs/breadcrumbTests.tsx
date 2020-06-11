@@ -19,7 +19,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Breadcrumb, Classes, Icon } from "../../src/index";
+import { Breadcrumb, Classes, Icon } from "../../src";
 
 describe("Breadcrumb", () => {
     it("renders its contents", () => {

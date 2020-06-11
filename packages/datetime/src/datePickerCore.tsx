@@ -86,8 +86,7 @@ export interface IDatePickerBaseProps {
      * `onChange` and `value` are ignored in favor of the corresponding
      * top-level props on this component.
      *
-     * Passing any defined value to this prop (even `{}`) will cause the
-     * `TimePicker` to appear.
+     * Passing any non-empty object to this prop will cause the `TimePicker` to appear.
      */
     timePickerProps?: ITimePickerProps;
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable max-classes-per-file
+/* eslint-disable max-classes-per-file */
 
 import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
@@ -23,8 +23,6 @@ import { SinonSpy, spy } from "sinon";
 
 import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
-import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 import {
     Classes,
     comboMatches,
@@ -36,7 +34,9 @@ import {
     HotkeysTarget,
     IKeyCombo,
     parseKeyCombo,
-} from "../../src/index";
+} from "../../src";
+import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
+import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 
 describe("Hotkeys", () => {
     it("throws error if given non-Hotkey child", () => {
@@ -46,7 +46,7 @@ describe("Hotkeys", () => {
     });
 
     it("Decorator does not mutate the original class", () => {
-        class TestComponent extends React.Component<{}, {}> {
+        class TestComponent extends React.Component {
             public render() {
                 return <div />;
             }
@@ -82,7 +82,7 @@ describe("Hotkeys", () => {
         }
 
         @HotkeysTarget
-        class TestComponent extends React.Component<ITestComponentProps, {}> {
+        class TestComponent extends React.Component<ITestComponentProps> {
             public static defaultProps: ITestComponentProps = {
                 allowInInput: false,
             };
@@ -213,7 +213,7 @@ describe("Hotkeys", () => {
             const handleKeyDown = spy();
 
             @HotkeysTarget
-            class ComboComponent extends React.Component<{}, {}> {
+            class ComboComponent extends React.Component {
                 public renderHotkeys() {
                     return (
                         <Hotkeys>

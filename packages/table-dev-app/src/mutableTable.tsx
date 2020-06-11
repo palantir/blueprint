@@ -47,7 +47,7 @@ import {
     TruncatedFormat,
     TruncatedPopoverMode,
     Utils,
-} from "@blueprintjs/table/src";
+} from "@blueprintjs/table";
 
 import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
 import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
@@ -131,7 +131,7 @@ const LONG_TEXT_WORD_SPLIT_REGEXP = /.{1,5}/g;
 const LARGE_JSON_PROP_COUNT = 3;
 const LARGE_JSON_OBJECT_DEPTH = 2;
 
-const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => string | object } = {
+const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => string | Record<string, unknown> } = {
     [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
@@ -160,7 +160,7 @@ function handleNumberChange(handler: (value: number) => void) {
     return handleStringChange(value => handler(+value));
 }
 
-function getRandomObject(propCount: number, depth = 0): object {
+function getRandomObject(propCount: number, depth = 0): Record<string, unknown> {
     const childPropCount = propCount;
     const obj: any = {};
     for (let i = 0; i < propCount; i++) {
@@ -305,6 +305,7 @@ const DEFAULT_STATE: IMutableTableState = {
     showZebraStriping: false,
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
@@ -351,6 +352,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.syncFocusStyle();
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
         if (
             nextState.cellContent !== this.state.cellContent ||
@@ -999,7 +1001,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private maybeLogCallback = (message?: any, ...optionalParams: any[]) => {
         if (this.state.showCallbackLogs) {
             // allow console.log for these callbacks so devs can see exactly when they fire
-            // tslint:disable-next-line no-console
+            // eslint-disable-next-line no-console
             console.log(message, ...optionalParams);
         }
     };

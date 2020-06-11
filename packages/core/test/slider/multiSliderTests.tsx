@@ -261,6 +261,31 @@ describe("<MultiSlider>", () => {
                 ["20.00%", "0.00%"],
             ]);
         });
+
+        it("trackStyleBefore and trackStyleAfter work as intended", () => {
+            slider = mount(
+                <MultiSlider>
+                    <MultiSlider.Handle
+                        value={1}
+                        trackStyleBefore={{ background: "red" }}
+                        trackStyleAfter={{ background: "yellow" }}
+                    />
+                    <MultiSlider.Handle
+                        value={2}
+                        trackStyleBefore={{ background: "blue" }}
+                        trackStyleAfter={{ background: "purple" }}
+                    />
+                </MultiSlider>,
+            );
+
+            const trackBackgrounds = slider
+                .find(`.${Classes.SLIDER_PROGRESS}`)
+                .map(segment => segment.prop("style").background);
+
+            assert.equal(trackBackgrounds[0], "red");
+            assert.equal(trackBackgrounds[1], "yellow");
+            assert.equal(trackBackgrounds[2], "purple");
+        });
     });
 
     describe("validation", () => {

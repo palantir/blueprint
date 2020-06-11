@@ -23,6 +23,7 @@ import {
     ITagInputProps,
     Keys,
     Popover,
+    PopoverInteractionKind,
     Position,
     TagInput,
     TagInputAddMethod,
@@ -39,7 +40,15 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     fill?: boolean;
 
     /**
-     * Whether the popover opens on key down or when `TagInput` is focused.
+     * If true, the component waits until a keydown event in the TagInput
+     * before opening its popover.
+     *
+     * If false, the popover opens immediately after a mouse click focuses
+     * the component's TagInput.
+     *
+     * N.B. the behavior of this prop differs slightly from the same one
+     * in the Suggest component; see https://github.com/palantir/blueprint/issues/4152.
+     *
      * @default false
      */
     openOnKeyDown?: boolean;
@@ -51,12 +60,14 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     placeholder?: string;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
 
     /** Controlled selected values. */
     selectedItems?: T[];
 
     /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     tagInputProps?: Partial<ITagInputProps> & object;
 
     /** Custom renderer to transform an item into tag content. */
@@ -139,6 +150,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
                 position={Position.BOTTOM_LEFT}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                interactionKind={PopoverInteractionKind.CLICK}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpened={this.handlePopoverOpened}
@@ -178,17 +190,21 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         Utils.safeInvoke(this.props.onQueryChange, query, evt);
     };
 
+    // Popover interaction kind is CLICK, so this only handles click events.
+    // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
-        // deferring to rAF to get properly updated document.activeElement
         requestAnimationFrame(() => {
-            if (this.input != null && this.input !== document.activeElement) {
-                // the input is no longer focused so we can close the popover
+            const isInputFocused = this.input === document.activeElement;
+
+            if (this.input != null && !isInputFocused) {
+                // input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });
             } else if (!this.props.openOnKeyDown) {
-                // open the popover when focusing the tag input
+                // we should open immediately on click focus events
                 this.setState({ isOpen: true });
             }
-            Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", nextOpenState);
+
+            this.props.popoverProps?.onInteraction?.(nextOpenState);
         });
 
     private handlePopoverOpened = (node: HTMLElement) => {

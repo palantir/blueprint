@@ -76,7 +76,6 @@ describe("DragReorderable", () => {
             expect(callbacks.onSelection.called).to.be.false;
         });
 
-        // tslint:disable-next-line:max-line-length
         it("an existing selection contains the clicked region but has a different cardinality (e.g. FULL_TABLE)", () => {
             const callbacks = initCallbackStubs();
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));

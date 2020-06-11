@@ -19,9 +19,9 @@ import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
+import { Classes, Slider } from "../../src";
 import { ARROW_UP } from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
-import { Classes, Slider } from "../../src/index";
 import { simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;

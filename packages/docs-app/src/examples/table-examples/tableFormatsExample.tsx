@@ -85,7 +85,7 @@ const FORMAT_OPTIONS = {
     year: "numeric",
 };
 
-export class TableFormatsExample extends React.PureComponent<IExampleProps, {}> {
+export class TableFormatsExample extends React.PureComponent<IExampleProps> {
     private data = TIME_ZONES;
     private date = new Date();
 

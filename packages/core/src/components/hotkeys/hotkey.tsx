@@ -84,7 +84,7 @@ export interface IHotkeyProps extends IProps {
 }
 
 @polyfill
-export class Hotkey extends AbstractPureComponent2<IHotkeyProps, {}> {
+export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
 
     public static defaultProps = {

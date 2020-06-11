@@ -111,7 +111,8 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
             // if it has a `contextmenu` event handler then it'll be invoked.
             // if it doesn't, no native menu will show (at least on OSX) :(
             const newTarget = document.elementFromPoint(e.clientX, e.clientY);
-            newTarget.dispatchEvent(new MouseEvent("contextmenu", e));
+            const { view, ...newEventInit } = e;
+            newTarget.dispatchEvent(new MouseEvent("contextmenu", newEventInit));
         }, TRANSITION_DURATION);
     };
 

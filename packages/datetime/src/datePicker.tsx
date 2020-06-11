@@ -191,8 +191,8 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         );
     }
 
-    public componentDidUpdate(prevProps: IDatePickerProps, prevState: IDatePickerState, snapshot?: {}) {
-        super.componentDidUpdate(prevProps, prevState, snapshot);
+    public componentDidUpdate(prevProps: IDatePickerProps, prevState: IDatePickerState) {
+        super.componentDidUpdate(prevProps, prevState);
         const { value } = this.props;
         if (value === prevProps.value) {
             // no action needed
@@ -297,12 +297,14 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
             return null;
         }
         return (
-            <TimePicker
-                precision={timePrecision}
-                {...timePickerProps}
-                onChange={this.handleTimeChange}
-                value={this.state.value}
-            />
+            <div className={Classes.DATEPICKER_TIMEPICKER_WRAPPER}>
+                <TimePicker
+                    precision={timePrecision}
+                    {...timePickerProps}
+                    onChange={this.handleTimeChange}
+                    value={this.state.value}
+                />
+            </div>
         );
     }
 

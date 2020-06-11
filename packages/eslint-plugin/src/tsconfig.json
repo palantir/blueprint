@@ -7,6 +7,7 @@
         "strict": true,
         "rootDir": ".",
         "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "target": "ES2015"
     }
 }

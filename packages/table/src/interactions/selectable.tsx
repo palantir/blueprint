@@ -110,7 +110,7 @@ export interface IDragSelectableProps extends ISelectableProps {
     locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => IRegion;
 }
 
-export class DragSelectable extends React.PureComponent<IDragSelectableProps, {}> {
+export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     public static defaultProps: Partial<IDragSelectableProps> = {
         disabled: false,
         enableMultipleSelection: false,

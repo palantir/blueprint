@@ -19,26 +19,28 @@ import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import * as React from "react";
 
 @HotkeysTarget
-export class MyComponent extends React.Component<{}, {}> {
+export class MyComponent extends React.Component {
     public render() {
         return <div>Custom content</div>;
     }
 
     public renderHotkeys() {
-        return <Hotkeys>
-            <Hotkey
-                global={true}
-                combo="shift + a"
-                label="Be awesome all the time"
-                onKeyDown={() => console.log("Awesome!")}
-            />
-            <Hotkey
-                group="Fancy shortcuts"
-                combo="shift + f"
-                label="Be fancy only when focused"
-                onKeyDown={() => console.log("So fancy!")}
-            />
-        </Hotkeys>;
+        return (
+            <Hotkeys>
+                <Hotkey
+                    global={true}
+                    combo="shift + a"
+                    label="Be awesome all the time"
+                    onKeyDown={() => console.log("Awesome!")}
+                />
+                <Hotkey
+                    group="Fancy shortcuts"
+                    combo="shift + f"
+                    label="Be fancy only when focused"
+                    onKeyDown={() => console.log("So fancy!")}
+                />
+            </Hotkeys>
+        );
     }
 }
 ```
@@ -107,43 +109,44 @@ characters do not have this aliasing, so `X` is equivalent to `x` but is not
 equivalent to `shift + x`.
 
 Examples of valid key combos:
-* `cmd+plus`
-* `!` or, equivalently `shift+1`
-* `return` or, equivalently `enter`
-* `alt + shift + x`
-* `ctrl + left`
+
+-   `cmd+plus`
+-   `!` or, equivalently `shift+1`
+-   `return` or, equivalently `enter`
+-   `alt + shift + x`
+-   `ctrl + left`
 
 Note that spaces are ignored.
 
 ### Named keys
 
-* `plus`
-* `minus`
-* `backspace`
-* `tab`
-* `enter`
-* `capslock`
-* `esc`
-* `space`
-* `pageup`
-* `pagedown`
-* `end`
-* `home`
-* `left`
-* `up`
-* `right`
-* `down`
-* `ins`
-* `del`
+-   `plus`
+-   `minus`
+-   `backspace`
+-   `tab`
+-   `enter`
+-   `capslock`
+-   `esc`
+-   `space`
+-   `pageup`
+-   `pagedown`
+-   `end`
+-   `home`
+-   `left`
+-   `up`
+-   `right`
+-   `down`
+-   `ins`
+-   `del`
 
 ### Aliased keys
 
-* `option` &rarr; `alt`
-* `cmd` &rarr; `meta`
-* `command` &rarr; `meta`
-* `return` &rarr; `enter`
-* `escape` &rarr; `esc`
-* `win` &rarr; `meta`
+-   `option` &rarr; `alt`
+-   `cmd` &rarr; `meta`
+-   `command` &rarr; `meta`
+-   `return` &rarr; `enter`
+-   `escape` &rarr; `esc`
+-   `win` &rarr; `meta`
 
 The special modifier `mod` will choose the OS-preferred modifier key — `cmd`
 for macOS and iOS, or `ctrl` for Windows and Linux.

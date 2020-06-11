@@ -14,19 +14,17 @@
  */
 
 // @ts-check
+require("@blueprintjs/test-commons/bootstrap");
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
 const Table = require("../lib/cjs");
 
 describe("Table isomorphic rendering", () => {
-    generateIsomorphicTests(
-        Table,
-        {
-            // Pass-through renders
-            DragSelectable: { skip: true },
-            Draggable: { skip: true },
-            // needs at least one handler or it returns undefined
-            ResizeHandle: { props: { onDoubleClick: () => undefined } },
-        }
-    );
+    generateIsomorphicTests(Table, {
+        // Pass-through renders
+        DragSelectable: { skip: true },
+        Draggable: { skip: true },
+        // needs at least one handler or it returns undefined
+        ResizeHandle: { props: { onDoubleClick: () => undefined } },
+    });
 });

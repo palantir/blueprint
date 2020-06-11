@@ -50,7 +50,7 @@ const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof
  * If `false` is returned from the onActivate callback, no further events
  * will be fired until the next activation.
  */
-export class Draggable extends React.PureComponent<IDraggableProps, {}> {
+export class Draggable extends React.PureComponent<IDraggableProps> {
     public static defaultProps = {
         preventDefault: true,
         stopPropagation: false,

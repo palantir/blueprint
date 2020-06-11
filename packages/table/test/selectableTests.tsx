@@ -482,7 +482,6 @@ describe("DragSelectable", () => {
             ).to.be.true;
         });
 
-        // tslint:disable-next-line:max-line-length
         it("if enableMultipleSelection=false, moves selection (and focused cell) instead of expanding it", () => {
             locateClick.onCall(0).returns(REGION_2);
             locateClick.onCall(1).returns(REGION_3);
@@ -582,7 +581,7 @@ describe("DragSelectable", () => {
         });
     });
 
-    function mountDragSelectable(props: Partial<IDragSelectableProps> & object = {}) {
+    function mountDragSelectable(props: Partial<IDragSelectableProps> = {}) {
         return harness.mount(
             <DragSelectable
                 enableMultipleSelection={true}

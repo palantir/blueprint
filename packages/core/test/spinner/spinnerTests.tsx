@@ -19,8 +19,8 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { stub } from "sinon";
 
+import { Classes, Spinner } from "../../src";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../src/common/errors";
-import { Classes, Spinner } from "../../src/index";
 
 describe("Spinner", () => {
     it("renders a spinner and two paths", () => {
@@ -77,7 +77,7 @@ describe("Spinner", () => {
         assert.notEqual(viewBox(Spinner.SIZE_SMALL), viewBox(Spinner.SIZE_LARGE), "expected different viewBoxes");
     });
 
-    function assertStrokePercent(wrapper: ReactWrapper<any, {}>, percent: number) {
+    function assertStrokePercent(wrapper: ReactWrapper<any>, percent: number) {
         const head = wrapper.find(`.${Classes.SPINNER_HEAD}`);
         // NOTE: strokeDasharray is string "X X", but parseInt terminates at non-numeric character
         const pathLength = parseInt(head.prop("strokeDasharray").toString(), 10);

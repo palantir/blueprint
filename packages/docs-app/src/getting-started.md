@@ -43,11 +43,11 @@ The `main` module exports all symbols from all modules so you don't have to impo
     ```html
     <!-- or using plain old HTML -->
     <head>
-      <!-- include dependencies manually -->
-      <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
-      <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
-      <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
-      <!-- NOTE: blueprint-icons.css file must be included alongside blueprint.css! -->
+        <!-- include dependencies manually -->
+        <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
+        <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+        <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
+        <!-- NOTE: blueprint-icons.css file must be included alongside blueprint.css! -->
     </head>
     ```
 
@@ -56,6 +56,7 @@ The `main` module exports all symbols from all modules so you don't have to impo
 
 Blueprint can instead be quickly added to a page using the Unpkg CDN.
 [See below for instructions](#blueprint/getting-started.cdn-consumption).
+
 </div>
 
 @## JS environment
@@ -89,9 +90,6 @@ install typings for Blueprint's dependencies before you can consume it:
 ```sh
 # required for all @blueprintjs packages:
 npm install --save @types/react @types/react-dom
-
-# @blueprintjs/timezone requires:
-npm install --save @types/moment-timezone
 ```
 
 Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
@@ -99,6 +97,7 @@ Blueprint's declaration files require **TypeScript 2.3+** for default generic pa
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 For more information, see [Understanding TypeScript](#blueprint/reading-the-docs.understanding-typescript).
+
 </div>
 
 @## Vanilla JS APIs
@@ -119,9 +118,9 @@ ReactDOM.render(<Spinner className={Classes.SMALL} intent={Intent.PRIMARY} />, m
 ReactDOM.render(
     React.createElement(Spinner, {
         className: Classes.SMALL,
-        intent: Intent.PRIMARY
+        intent: Intent.PRIMARY,
     }),
-    myContainerElement
+    myContainerElement,
 );
 ```
 
@@ -146,40 +145,40 @@ These bundles _do not include_ external dependencies; your application will need
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Blueprint Starter Kit</title>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Blueprint Starter Kit</title>
 
-    <!-- Style dependencies -->
-    <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
-    <!-- Blueprint stylesheets -->
-    <link href="https://unpkg.com/@blueprintjs/icons@^3.4.0/lib/css/blueprint-icons.css" rel="stylesheet" />
-    <link href="https://unpkg.com/@blueprintjs/core@^3.10.0/lib/css/blueprint.css" rel="stylesheet" />
-  </head>
-  <body>
-    <!-- Blueprint dependencies -->
-    <script src="https://unpkg.com/classnames@^2.2"></script>
-    <script src="https://unpkg.com/dom4@^1.8"></script>
-    <script src="https://unpkg.com/tslib@^1.9.0"></script>
-    <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
-    <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
-    <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
-    <script src="https://unpkg.com/resize-observer-polyfill@^1.5.0"></script>
-    <!-- Blueprint packages (note: icons script must come first) -->
-    <script src="https://unpkg.com/@blueprintjs/icons@^3.4.0"></script>
-    <script src="https://unpkg.com/@blueprintjs/core@^3.10.0"></script>
+        <!-- Style dependencies -->
+        <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
+        <!-- Blueprint stylesheets -->
+        <link href="https://unpkg.com/@blueprintjs/icons@^3.4.0/lib/css/blueprint-icons.css" rel="stylesheet" />
+        <link href="https://unpkg.com/@blueprintjs/core@^3.10.0/lib/css/blueprint.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Blueprint dependencies -->
+        <script src="https://unpkg.com/classnames@^2.2"></script>
+        <script src="https://unpkg.com/dom4@^1.8"></script>
+        <script src="https://unpkg.com/tslib@^1.9.0"></script>
+        <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
+        <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
+        <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
+        <script src="https://unpkg.com/resize-observer-polyfill@^1.5.0"></script>
+        <!-- Blueprint packages (note: icons script must come first) -->
+        <script src="https://unpkg.com/@blueprintjs/icons@^3.4.0"></script>
+        <script src="https://unpkg.com/@blueprintjs/core@^3.10.0"></script>
 
-    <div id="btn"></div>
-    <script>
-      const button = React.createElement(Blueprint.Core.Button, {
-        icon: "cloud",
-        text: "CDN Blueprint is go!",
-      });
-      ReactDOM.render(button, document.querySelector("#btn"));
-    </script>
-  </body>
+        <div id="btn"></div>
+        <script>
+            const button = React.createElement(Blueprint.Core.Button, {
+                icon: "cloud",
+                text: "CDN Blueprint is go!",
+            });
+            ReactDOM.render(button, document.querySelector("#btn"));
+        </script>
+    </body>
 </html>
 ```
