@@ -17,7 +17,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { AbstractPureComponent2, IWindowOverrideContext, windowOverrideReactContextTypes } from "../../common";
+import { AbstractPureComponent2, IWindowOverrideContext, windowOverrideContextTypes } from "../../common";
 import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
@@ -49,7 +49,7 @@ export interface IPortalContext {
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
+const portalContextTypes: ValidationMap<IPortalContext> = {
     blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
@@ -65,7 +65,7 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  */
 export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-    public static contextTypes = { ...REACT_CONTEXT_TYPES, ...windowOverrideReactContextTypes };
+    public static contextTypes = { ...portalContextTypes, ...windowOverrideContextTypes };
 
     public context: IPortalContext & IWindowOverrideContext;
     public state: IPortalState = { hasMounted: false };

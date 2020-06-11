@@ -16,7 +16,7 @@
 
 import * as React from "react";
 import { isNodeEnv } from "./utils";
-import { IWindowOverrideContext, windowOverrideReactContextTypes } from "./windowOverrideContext";
+import { IWindowOverrideContext, windowOverrideContextTypes } from "./windowOverrideContext";
 
 /**
  * An abstract component that Blueprint components can extend
@@ -24,7 +24,7 @@ import { IWindowOverrideContext, windowOverrideReactContextTypes } from "./windo
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
-    public static contextTypes = windowOverrideReactContextTypes;
+    public static contextTypes = windowOverrideContextTypes;
 
     // unsafe lifecycle method
     public componentWillUpdate: never;

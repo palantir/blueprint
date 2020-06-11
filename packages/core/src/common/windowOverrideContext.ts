@@ -22,17 +22,14 @@ export interface IWindowOverrideContext {
     windowOverride?: Window;
 }
 
-export const windowOverrideReactContextTypes: ValidationMap<IWindowOverrideContext> = {
+export const windowOverrideContextTypes: ValidationMap<IWindowOverrideContext> = {
     windowOverride: (obj: IWindowOverrideContext, key: keyof IWindowOverrideContext) => {
-        const variable = obj[key];
+        const value = obj[key];
         if (
-            variable != null &&
-            (variable.document == null ||
-                variable.location == null ||
-                variable.alert == null ||
-                variable.setInterval == null)
+            value != null &&
+            (value.document == null || value.location == null || value.alert == null || value.setInterval == null)
         ) {
-            return new Error(Errors.WINDOW_OVERRIDE_CONTEXT_CLASS_NAME_STRING);
+            return new Error(Errors.WINDOW_OVERRIDE_CONTEXT_UNEXPECTED_TYPE);
         }
         return undefined;
     },
