@@ -1,43 +1,43 @@
 {
-  "name": "@blueprintjs/landing-app",
-  "version": "3.17.4",
-  "description": "Blueprint landing page",
-  "private": true,
-  "scripts": {
-    "bundle": "webpack --config ./webpack.config.js",
-    "clean": "rm -rf dist/*",
-    "dev": "webpack-dev-server --config ./webpack.config.js",
-    "dist": "cross-env NODE_ENV=production yarn bundle",
-    "lint": "run-p lint:scss lint:es",
-    "lint:scss": "sass-lint",
-    "lint:es": "es-lint",
-    "lint-fix": "es-lint --fix && sass-lint --fix",
-    "test": "exit 0",
-    "verify": "run-p dist lint"
-  },
-  "dependencies": {
-    "@blueprintjs/core": "^3.28.1",
-    "classnames": "^2.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
-  },
-  "devDependencies": {
-    "@blueprintjs/webpack-build-scripts": "^1.0.0",
-    "copy-webpack-plugin": "^5.1.1",
-    "npm-run-all": "^4.1.5",
-    "raw-loader": "^3.1.0",
-    "webpack": "^4.37.0",
-    "webpack-dev-server": "^3.7.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:palantir/blueprint.git",
-    "directory": "packages/landing-app"
-  },
-  "keywords": [
-    "blueprint",
-    "landing page"
-  ],
-  "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+    "name": "@blueprintjs/landing-app",
+    "version": "3.17.4",
+    "description": "Blueprint landing page",
+    "private": true,
+    "scripts": {
+        "bundle": "webpack --config ./webpack.config.js",
+        "clean": "rm -rf dist/*",
+        "dev": "webpack-dev-server --config ./webpack.config.js",
+        "dist": "cross-env NODE_ENV=production yarn bundle",
+        "lint": "run-p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "exit 0",
+        "verify": "run-p dist lint"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^3.28.1",
+        "classnames": "^2.2",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
+    },
+    "devDependencies": {
+        "@blueprintjs/webpack-build-scripts": "^1.0.0",
+        "copy-webpack-plugin": "^5.1.1",
+        "npm-run-all": "^4.1.5",
+        "raw-loader": "^3.1.0",
+        "webpack": "^4.37.0",
+        "webpack-dev-server": "^3.7.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/landing-app"
+    },
+    "keywords": [
+        "blueprint",
+        "landing page"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
 }

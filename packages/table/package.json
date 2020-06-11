@@ -1,78 +1,78 @@
 {
-  "name": "@blueprintjs/table",
-  "version": "3.8.8",
-  "description": "Scalable interactive table component",
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "esnext": "lib/esnext/index.js",
-  "typings": "lib/esm/index.d.ts",
-  "style": "lib/css/table.css",
-  "unpkg": "dist/table.bundle.js",
-  "sideEffects": [
-    "*.css"
-  ],
-  "scripts": {
-    "clean": "rm -rf dist/* && rm -rf lib/*",
-    "compile": "run-p \"compile:*\"",
-    "compile:esm": "tsc -p ./src",
-    "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
-    "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
-    "compile:css": "sass-compile ./src",
-    "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
-    "dist": "run-s \"dist:*\"",
-    "dist:bundle": "cross-env NODE_ENV=production webpack",
-    "dist:css": "css-dist lib/css/*.css",
-    "dist:verify": "assert-package-layout",
-    "lint": "run-p lint:scss lint:es",
-    "lint:scss": "sass-lint",
-    "lint:es": "es-lint",
-    "lint-fix": "es-lint --fix && sass-lint --fix",
-    "test": "run-s test:typeCheck test:iso test:karma",
-    "test:typeCheck": "tsc -p ./test",
-    "test:iso": "mocha test/isotest.js",
-    "test:karma": "karma start",
-    "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
-    "verify": "npm-run-all compile -p dist test lint"
-  },
-  "dependencies": {
-    "@blueprintjs/core": "^3.28.1",
-    "classnames": "^2.2",
-    "lodash": "^4.17.15",
-    "prop-types": "^15.6.0",
-    "react-lifecycles-compat": "^3.0.4",
-    "tslib": "~1.10.0"
-  },
-  "peerDependencies": {
-    "react": "^15.3.0 || 16",
-    "react-dom": "^15.3.0 || 16"
-  },
-  "devDependencies": {
-    "@blueprintjs/node-build-scripts": "^1.3.1",
-    "@blueprintjs/test-commons": "^0.10.3",
-    "@types/lodash": "~4.14.150",
-    "enzyme": "^3.11.0",
-    "karma": "^5.0.9",
-    "mocha": "^7.2.0",
-    "npm-run-all": "^4.1.5",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-test-renderer": "^16.8.6",
-    "typescript": "~3.9.3",
-    "webpack": "^4.43.0",
-    "webpack-dev-server": "^3.10.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:palantir/blueprint.git",
-    "directory": "packages/table"
-  },
-  "keywords": [
-    "palantir",
-    "blueprint",
-    "table",
-    "cell",
-    "spreadsheet"
-  ],
-  "author": "Palantir Technologies",
-  "license": "Apache-2.0"
+    "name": "@blueprintjs/table",
+    "version": "3.8.8",
+    "description": "Scalable interactive table component",
+    "main": "lib/cjs/index.js",
+    "module": "lib/esm/index.js",
+    "esnext": "lib/esnext/index.js",
+    "typings": "lib/esm/index.d.ts",
+    "style": "lib/css/table.css",
+    "unpkg": "dist/table.bundle.js",
+    "sideEffects": [
+        "*.css"
+    ],
+    "scripts": {
+        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p ./src",
+        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "compile:css": "sass-compile ./src",
+        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dist": "run-s \"dist:*\"",
+        "dist:bundle": "cross-env NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css/*.css",
+        "dist:verify": "assert-package-layout",
+        "lint": "run-p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "run-s test:typeCheck test:iso test:karma",
+        "test:typeCheck": "tsc -p ./test",
+        "test:iso": "mocha test/isotest.js",
+        "test:karma": "karma start",
+        "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
+        "verify": "npm-run-all compile -p dist test lint"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^3.28.1",
+        "classnames": "^2.2",
+        "lodash": "^4.17.15",
+        "prop-types": "^15.6.0",
+        "react-lifecycles-compat": "^3.0.4",
+        "tslib": "~1.10.0"
+    },
+    "peerDependencies": {
+        "react": "^15.3.0 || 16",
+        "react-dom": "^15.3.0 || 16"
+    },
+    "devDependencies": {
+        "@blueprintjs/node-build-scripts": "^1.3.1",
+        "@blueprintjs/test-commons": "^0.10.3",
+        "@types/lodash": "~4.14.150",
+        "enzyme": "^3.11.0",
+        "karma": "^5.0.9",
+        "mocha": "^7.2.0",
+        "npm-run-all": "^4.1.5",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6",
+        "react-test-renderer": "^16.8.6",
+        "typescript": "~3.9.3",
+        "webpack": "^4.43.0",
+        "webpack-dev-server": "^3.10.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/table"
+    },
+    "keywords": [
+        "palantir",
+        "blueprint",
+        "table",
+        "cell",
+        "spreadsheet"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
 }
