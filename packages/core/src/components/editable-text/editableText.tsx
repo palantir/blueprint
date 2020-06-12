@@ -87,6 +87,12 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     placeholder?: string;
 
     /**
+     * Element to render on the right side of the input.
+     * For best results, use a minimal button, tag, or small spinner.
+     */
+    rightElement?: JSX.Element;
+
+    /**
      * Whether the entire text field should be selected on focus.
      * If `false`, the cursor is placed at the end of the text.
      * This prop is ignored on inputs with type other then text, search, url, tel and password. See https://html.spec.whatwg.org/multipage/input.html#do-not-apply for details.
@@ -122,8 +128,12 @@ export interface IEditableTextState {
     inputWidth?: number;
     /** Whether the value is currently being edited */
     isEditing?: boolean;
+    /** Whether right element should be currently visible  */
+    isRightElementVisible?: boolean;
     /** The last confirmed value */
     lastValue?: string;
+    /* The width of the right element, if available */
+    rightElementWidth?: number;
     /** The controlled input value, may be different from prop during editing */
     value?: string;
 }
@@ -150,6 +160,9 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
 
     private inputElement?: HTMLInputElement | HTMLTextAreaElement;
     private valueElement: HTMLSpanElement;
+
+    private rightElement: HTMLElement;
+
     private refHandlers = {
         content: (spanElement: HTMLSpanElement) => {
             this.valueElement = spanElement;
@@ -175,6 +188,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
                 }
             }
         },
+        rightElement: (ref: HTMLSpanElement) => (this.rightElement = ref),
     };
 
     public constructor(props?: IEditableTextProps, context?: any) {
@@ -185,6 +199,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             inputHeight: 0,
             inputWidth: 0,
             isEditing: props.isEditing === true && props.disabled === false,
+            isRightElementVisible: false,
             lastValue: value,
             value,
         };
@@ -233,6 +248,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         return (
             <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex}>
                 {alwaysRenderInput || this.state.isEditing ? this.renderInput(value) : undefined}
+                {this.state.isEditing || this.state.isRightElementVisible ? this.maybeRenderRightElement() : undefined}
                 {shouldHideContents ? undefined : (
                     <span className={Classes.EDITABLE_TEXT_CONTENT} ref={this.refHandlers.content} style={contentStyle}>
                         {hasValue ? value : this.props.placeholder}
@@ -347,11 +363,12 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             value,
         };
 
-        const { inputHeight, inputWidth } = this.state;
+        const { inputHeight, inputWidth, rightElementWidth } = this.state;
         if (inputHeight !== 0 && inputWidth !== 0) {
             props.style = {
                 height: inputHeight,
                 lineHeight: !multiline && inputHeight != null ? `${inputHeight}px` : null,
+                paddingRight: rightElementWidth,
                 width: multiline ? "100%" : inputWidth,
             };
         }
@@ -364,6 +381,16 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     }
 
     private updateInputDimensions() {
+        const { rightElementWidth } = this.state;
+        if (this.rightElement != null) {
+            const { clientWidth } = this.rightElement;
+            // small threshold to prevent infinite loops
+            if (rightElementWidth === undefined || Math.abs(clientWidth - rightElementWidth) > 2) {
+                this.setState({ rightElementWidth: clientWidth });
+            }
+        } else {
+            this.setState({ rightElementWidth: undefined });
+        }
         if (this.valueElement != null) {
             const { maxLines, minLines, minWidth, multiline } = this.props;
             const { parentElement, textContent } = this.valueElement;
@@ -397,6 +424,33 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             }
         }
     }
+
+    private maybeRenderRightElement() {
+        const { rightElement } = this.props;
+        if (rightElement == null) {
+            return undefined;
+        }
+        return (
+            <span
+                className={Classes.EDITABLE_TEXT_ACTION}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
+                onClick={this.handleFocus}
+                ref={this.refHandlers.rightElement}
+            >
+                {rightElement}
+            </span>
+        );
+    }
+
+    private handleMouseEnter = () => {
+        this.setState({ isRightElementVisible: true });
+        this.inputElement.focus();
+    };
+    private handleMouseLeave = () => {
+        this.setState({ isRightElementVisible: false });
+        this.inputElement.focus();
+    };
 }
 
 function getFontSize(element: HTMLElement) {
