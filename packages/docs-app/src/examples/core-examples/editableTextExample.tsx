@@ -16,7 +16,18 @@
 
 import * as React from "react";
 
-import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    EditableText,
+    FormGroup,
+    H1,
+    H5,
+    Intent,
+    NumericInput,
+    Switch,
+    Tooltip,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -30,6 +41,8 @@ export interface IEditableTextExampleState {
     maxLength?: number;
     report?: string;
     selectAllOnFocus?: boolean;
+    showRightElement: boolean;
+    showTitle: boolean;
 }
 
 export class EditableTextExample extends React.PureComponent<IExampleProps, IEditableTextExampleState> {
@@ -38,14 +51,36 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
         confirmOnEnterKey: false,
         report: "",
         selectAllOnFocus: false,
+        showRightElement: false,
+        showTitle: true,
     };
 
     private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
     private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
     private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
     private toggleAlwaysRenderInput = handleBooleanChange(alwaysRenderInput => this.setState({ alwaysRenderInput }));
+    private toggleShowRightElement = handleBooleanChange(showRightElement => this.setState({ showRightElement }));
 
     public render() {
+        const { showTitle } = this.state;
+
+        const lockButton = (
+            <Tooltip content={`${showTitle ? "Hide" : "Show"} Title`}>
+                <Button
+                    icon={showTitle ? "eye-open" : "eye-off"}
+                    intent={Intent.PRIMARY}
+                    minimal={true}
+                    onClick={this.handleLockClick}
+                />
+            </Tooltip>
+        );
+
+        const clearButton = (
+            <Tooltip content="Clear text">
+                <Button icon="cross" intent={Intent.DANGER} minimal={true} onClick={this.handleClearClick} />
+            </Tooltip>
+        );
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <H1>
@@ -54,7 +89,9 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
                         intent={this.state.intent}
                         maxLength={this.state.maxLength}
                         placeholder="Edit title..."
+                        rightElement={this.state.showRightElement ? lockButton : undefined}
                         selectAllOnFocus={this.state.selectAllOnFocus}
+                        type={showTitle ? "text" : "password"}
                     />
                 </H1>
                 <EditableText
@@ -65,6 +102,7 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
                     minLines={3}
                     multiline={true}
                     placeholder="Edit report... (controlled, multiline)"
+                    rightElement={this.state.showRightElement ? clearButton : undefined}
                     selectAllOnFocus={this.state.selectAllOnFocus}
                     confirmOnEnterKey={this.state.confirmOnEnterKey}
                     value={this.state.report}
@@ -104,6 +142,11 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
                     label="Always render input"
                     onChange={this.toggleAlwaysRenderInput}
                 />
+                <Switch
+                    checked={this.state.showRightElement}
+                    label="Right element"
+                    onChange={this.toggleShowRightElement}
+                />
             </>
         );
     }
@@ -117,4 +160,6 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
             this.setState({ maxLength, report });
         }
     };
+    private handleLockClick = () => this.setState({ showTitle: !this.state.showTitle });
+    private handleClearClick = () => this.setState({ report: "" });
 }
