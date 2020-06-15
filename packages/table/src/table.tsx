@@ -20,6 +20,7 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
+    IHotkeyProps,
     IProps,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
@@ -101,6 +102,11 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * that use `IColumnProps`.
      */
     children?: React.ReactElement<IColumnProps> | Array<React.ReactElement<IColumnProps>>;
+
+    /**
+     * An array of hotkey elements to be passed to the table component
+     */
+    additionalHotkeys?: Array<React.ReactElement<IHotkeyProps> | undefined | null>;
 
     /**
      * A sparse number array with a length equal to the number of columns. Any
@@ -867,11 +873,13 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     }
 
     public renderHotkeys() {
+        const { additionalHotkeys } = this.props;
         const hotkeys = [
             this.maybeRenderCopyHotkey(),
             this.maybeRenderSelectAllHotkey(),
             this.maybeRenderFocusHotkeys(),
             this.maybeRenderSelectionResizeHotkeys(),
+            additionalHotkeys,
         ];
         return <Hotkeys>{hotkeys.filter(element => element !== undefined)}</Hotkeys>;
     }
