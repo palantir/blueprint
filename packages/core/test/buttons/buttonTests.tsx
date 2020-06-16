@@ -49,7 +49,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         it("renders the button text prop", () => {
             const wrapper = mount(<Button data-test-foo="bar" />);
-            assert.isTrue(!!wrapper.find('[data-test-foo="bar"]'));
+            assert.isTrue(wrapper.find('[data-test-foo="bar"]').exists());
         });
 
         it("wraps string children in spans", () => {
