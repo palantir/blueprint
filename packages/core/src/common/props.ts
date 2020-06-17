@@ -155,6 +155,11 @@ export function removeNonHTMLProps(
 
     return invalidProps.reduce(
         (prev, curr) => {
+            // Props with hyphens (e.g. data-*) are always considered html props
+            if (curr.indexOf("-") !== -1) {
+                return prev;
+            }
+
             if (prev.hasOwnProperty(curr)) {
                 delete (prev as any)[curr];
             }
