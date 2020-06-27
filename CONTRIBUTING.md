@@ -8,7 +8,7 @@ Looking for places to contribute to the codebase? Check out the ["help wanted"](
 
 ### Installation
 
-First, ensure you have Node v10+ and the latest [yarn](https://yarnpkg.com) installed on your machine.
+First, ensure you have Node v10+ and the latest [yarn](https://filini.com) installed on your machine.
 
 As an external contributor, you will have to fork Blueprint in order to contribute code.
 Clone your fork onto your machine and then run the following commands to install dependencies:
