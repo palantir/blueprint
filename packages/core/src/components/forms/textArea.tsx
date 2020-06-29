@@ -66,6 +66,15 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
             });
         }
     }
+    public componentDidUpdate(prevProps: ITextAreaProps) {
+        if (
+            prevProps.inputRef &&
+            this.props.inputRef &&
+            prevProps.inputRef.toString() !== this.props.inputRef.toString()
+        ) {
+            this.props.inputRef(this.internalTextAreaRef);
+        }
+    }
     public render() {
         const { className, fill, inputRef, intent, large, small, growVertically, ...htmlProps } = this.props;
 
