@@ -65,4 +65,16 @@ describe("<TextArea>", () => {
         const scrollHeightInPixels = `${(textarea.getDOMNode() as HTMLElement).scrollHeight}px`;
         assert.equal((textarea.getDOMNode() as HTMLElement).style.height, scrollHeightInPixels);
     });
+    it("updates on ref change", () => {
+        let textArea: HTMLTextAreaElement | null = null;
+        let textAreaNew: HTMLTextAreaElement | null = null;
+        const textAreaRefCallback = (ref: HTMLTextAreaElement | null) => (textArea = ref);
+        const textAreaNewRefCallback = (ref: HTMLTextAreaElement | null) => (textAreaNew = ref);
+
+        const textAreawrapper = mount(<TextArea id="textarea" inputRef={textAreaRefCallback} />);
+        assert.instanceOf(textArea, HTMLTextAreaElement);
+
+        textAreawrapper.setProps({ inputRef: textAreaNewRefCallback });
+        assert.instanceOf(textAreaNew, HTMLTextAreaElement);
+    });
 });
