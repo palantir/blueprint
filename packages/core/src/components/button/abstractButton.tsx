@@ -134,6 +134,16 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         };
     }
 
+    // A disabled element cannot be active, there're are cases where
+    // this situation can happen (NumericInput buttons), hence the need
+    // to check if disabled prop has been passed and change isActive
+    // accordingly
+    public componentDidUpdate() {
+        if (this.state.isActive && this.props.disabled) {
+            this.setState({ isActive: false });
+        }
+    }
+
     // we're casting as `any` to get around a somewhat opaque safeInvoke error
     // that "Type argument candidate 'KeyboardEvent<T>' is not a valid type
     // argument because it is not a supertype of candidate
@@ -149,6 +159,8 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         this.props.onKeyDown?.(e);
     };
 
+    // Keyup event won't fire on a disabled element, so componentDidUpdate
+    // will take care of those cases and set isActive to false
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });

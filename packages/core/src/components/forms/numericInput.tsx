@@ -151,7 +151,12 @@ export interface INumericInputProps extends IIntentProps, IProps {
     onButtonClick?(valueAsNumber: number, valueAsString: string): void;
 
     /** The callback invoked when the value changes due to typing, arrow keys, or button clicks. */
-    onValueChange?(valueAsNumber: number, valueAsString: string, inputElement: HTMLInputElement | null): void;
+    onValueChange?(
+        valueAsNumber: number,
+        valueAsString: string,
+        inputElement: HTMLInputElement | null,
+        instance: NumericInput,
+    ): void;
 }
 
 export interface INumericInputState {
@@ -295,7 +300,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         if (!didControlledValueChange && this.state.value !== prevState.value) {
             const { value: valueAsString } = this.state;
-            this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement);
+            this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement, this);
         }
     }
 
@@ -422,7 +427,21 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         document.removeEventListener("mouseup", this.stopContinuousChange);
     };
 
+    // If limit is reached and mouseup event occurs on top of the disabled button
+    // stopContinuousChange will never be fired, hence the need to check each
+    // iterarion of handleContinuousChange
+    private limitReachedOnContinuousChange = () => {
+        const min = this.props.min ?? -Infinity;
+        const max = this.props.max ?? Infinity;
+        if (Number(this.state.value) <= min || Number(this.state.value) >= max) {
+            this.stopContinuousChange();
+            return true;
+        }
+        return false;
+    };
+
     private handleContinuousChange = () => {
+        if (this.limitReachedOnContinuousChange()) return;
         const nextValue = this.incrementValue(this.delta);
         this.props.onButtonClick?.(+nextValue, nextValue);
     };
