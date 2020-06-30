@@ -223,10 +223,12 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
             });
             this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
         } else if (animationState === AnimationStates.CLOSING_START) {
+            const { clientHeight } = this.contents;
             this.setTimeout(() =>
                 this.setState({
                     animationState: AnimationStates.CLOSING,
                     height: "0px",
+                    heightWhenOpen: clientHeight,
                 }),
             );
             this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);

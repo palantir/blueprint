@@ -16,7 +16,7 @@ dropdown menu, compose a `Menu` as the `content` property of a `Popover`:
 ```
 
 By default, the popover is automatically dismissed when the user clicks a menu
-item ([Popover docs](#core/components/popover.opening-and-closing) have more
+item ([Popover docs](#core/components/popover.closing-on-click) have more
 details). If you want to opt out of this behavior, set
 `shouldDismissPopover={false}` on a `MenuItem`.
 
