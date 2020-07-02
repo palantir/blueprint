@@ -67,11 +67,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
         }
     }
     public componentDidUpdate(prevProps: ITextAreaProps) {
-        if (
-            prevProps.inputRef &&
-            this.props.inputRef &&
-            prevProps.inputRef.toString() !== this.props.inputRef.toString()
-        ) {
+        if (this.props.inputRef && prevProps.inputRef !== this.props.inputRef) {
             this.props.inputRef(this.internalTextAreaRef);
         }
     }
