@@ -151,6 +151,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
 
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (Keys.isKeyboardClick(e.which)) {
+            e.preventDefault();
             this.setState({ isActive: false });
             getRef(this.buttonRef).click();
         }
