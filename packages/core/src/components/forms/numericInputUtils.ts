@@ -25,7 +25,7 @@ export function clampValue(value: number, min?: number, max?: number) {
 }
 
 export function getValueOrEmptyValue(value: number | string = "") {
-    return value.toString();
+    return value === null ? "" : value.toString();
 }
 
 /** Returns `true` if the string represents a valid numeric value, like "1e6". */

@@ -183,6 +183,12 @@ describe("<NumericInput>", () => {
             expect(value).to.equal("10");
         });
 
+        it("accepts a null value", () => {
+            const component = mount(<NumericInput value={null} />);
+            const value = component.state().value;
+            expect(value).to.equal("");
+        });
+
         it("in controlled mode, accepts successive value changes containing non-numeric characters", () => {
             const component = mount(<NumericInput />);
             component.setProps({ value: "1" });
