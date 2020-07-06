@@ -17,7 +17,7 @@ Similarly, focusing the toast (for example, by hitting the `tab` key) halts the 
 
 You can add one additional action button to a toast. You might use this to provide an undo button, for example.
 
-You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css).
+You can also apply the same visual intent styles to `Toast`s that you can to [`Buttons-`](#core/components/button.css).
 
 @interface IToastProps
 
