@@ -101,6 +101,20 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
 
     private currentKeyDown: number = null;
 
+    // A disabled element cannot be active, but there are cases where
+    // this situation can happen (NumericInput buttons), hence the need
+    // to check if disabled prop has been passed and change isActive
+    // accordingly
+    public static getDerivedStateFromProps(props: IButtonProps, state: IButtonState) {
+        if (state.isActive && props.disabled) {
+            return {
+                isActive: false,
+            };
+        }
+
+        return null;
+    }
+
     public abstract render(): JSX.Element;
 
     protected getCommonButtonProps() {

@@ -36,7 +36,7 @@ import {
 import * as Errors from "../../common/errors";
 
 import { ButtonGroup } from "../button/buttonGroup";
-import { Button } from "../button/buttons";
+import { AnchorButton } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import {
@@ -351,13 +351,13 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const disabled = this.props.disabled || this.props.readOnly;
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
-                <Button
+                <AnchorButton
                     disabled={disabled || (value !== "" && +value >= max)}
                     icon="chevron-up"
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
-                <Button
+                <AnchorButton
                     disabled={disabled || (value !== "" && +value <= min)}
                     icon="chevron-down"
                     intent={intent}
