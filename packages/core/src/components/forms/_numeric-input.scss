@@ -21,7 +21,7 @@
     }
   }
 
-  // fix button border radii when the buttons are on the left
+  // fix button border radius when the buttons are on the left
   .#{$ns}-button-group.#{$ns}-vertical {
     &:first-child > .#{$ns}-button {
       &:first-child {
