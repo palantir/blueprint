@@ -406,10 +406,12 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             // keydown is fired repeatedly when held so it's implicitly continuous
             onKeyDown: evt => {
                 if (Keys.isKeyboardClick(evt.keyCode)) {
+                    if (this.props.disabled) return;
                     this.handleButtonClick(evt, direction);
                 }
             },
             onMouseDown: evt => {
+                if (this.props.disabled) return;
                 this.handleButtonClick(evt, direction);
                 this.startContinuousChange();
             },

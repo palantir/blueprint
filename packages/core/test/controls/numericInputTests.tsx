@@ -1015,6 +1015,27 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledOnceWith(0.01, "0.01"));
             onValueChangeSpy.resetHistory();
         });
+
+        it("must not call handleButtonClick if component is disabled", () => {
+            const SPACE_KEYSTROKE = { keyCode: Keys.SPACE, which: Keys.SPACE };
+
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} disabled={true} />);
+
+            const incrementButton = component.find(AnchorButton).first();
+            incrementButton.simulate("mousedown");
+            incrementButton.simulate("mousedown", { altKey: true });
+            incrementButton.simulate("keyDown", SPACE_KEYSTROKE);
+            incrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
+
+            const decrementButton = component.find(AnchorButton).last();
+            decrementButton.simulate("mousedown");
+            decrementButton.simulate("mousedown", { altKey: true });
+            decrementButton.simulate("keyDown", SPACE_KEYSTROKE);
+            decrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
+
+            expect(onValueChangeSpy.notCalled).to.be.true;
+        });
     });
 
     interface IMockEvent {
