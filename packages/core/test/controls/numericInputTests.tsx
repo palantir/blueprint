@@ -50,7 +50,7 @@ const shallow = (el: React.ReactElement<INumericInputProps>, options?: ShallowRe
     untypedShallow<NumericInput>(el, options);
 // tslint:enable no-unnecessary-callback-wrapper
 
-describe.only("<NumericInput>", () => {
+describe("<NumericInput>", () => {
     describe("Defaults", () => {
         it("renders the buttons on the right by default", () => {
             // this ordering is trivial to test with shallow renderer
