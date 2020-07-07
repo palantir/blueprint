@@ -29,6 +29,7 @@ import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test
 import {
     AnchorButton,
     ButtonGroup,
+    Classes,
     ControlGroup,
     HTMLInputProps,
     Icon,
@@ -1019,10 +1020,11 @@ describe("<NumericInput>", () => {
         it("must not call handleButtonClick if component is disabled", () => {
             const SPACE_KEYSTROKE = { keyCode: Keys.SPACE, which: Keys.SPACE };
 
-            const onValueChangeSpy = spy();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} disabled={true} />);
+            const component = mount(<NumericInput disabled={true} />);
 
             const incrementButton = component.find(AnchorButton).first();
+            const handleButtonClickSpy = spy(component.instance(), "handleButtonClick" as any);
+
             incrementButton.simulate("mousedown");
             incrementButton.simulate("mousedown", { altKey: true });
             incrementButton.simulate("keyDown", SPACE_KEYSTROKE);
@@ -1034,7 +1036,13 @@ describe("<NumericInput>", () => {
             decrementButton.simulate("keyDown", SPACE_KEYSTROKE);
             decrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
 
-            expect(onValueChangeSpy.notCalled).to.be.true;
+            expect(handleButtonClickSpy.notCalled).to.be.true;
+        });
+
+        it("must set fill class on controlGroup element when fill is enabled", () => {
+            const component = mount(<NumericInput fill={true} />);
+            const controlGroupNode = component.find(ControlGroup).first().getDOMNode();
+            expect(controlGroupNode.classList.contains(Classes.FILL)).to.be.true;
         });
     });
 
