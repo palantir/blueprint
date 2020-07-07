@@ -72,6 +72,8 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * In uncontrolled mode, this sets the default value of the input.
+     * Note that this value is only used upon component instantiation and changes to this prop
+     * during the component lifecycle will be ignored.
      * @default ""
      */
     defaultValue?: number | string;
@@ -225,7 +227,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         // in controlled mode, use props.value
         // in uncontrolled mode, if state.value has not been assigned yet (upon initial mount), use props.defaultValue
-        const value = props.value?.toString() ?? getValueOrEmptyValue(state.value ?? props.defaultValue);
+        const value = props.value?.toString() ?? state.value;
         const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
 
         const sanitizedValue =
@@ -267,7 +269,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         currentImeInputInvalid: false,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
-        value: getValueOrEmptyValue(this.props.value),
+        value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue),
     };
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
@@ -460,7 +462,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         if (this.props.clampValueOnBlur) {
             const { value } = e.target as HTMLInputElement;
-            this.handleNextValue(this.getSanitizedValue(value));
+            this.handleNextValue(this.roundAndClampValue(value));
         }
 
         Utils.safeInvoke(this.props.onBlur, e);
@@ -557,10 +559,12 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     private incrementValue(delta: number) {
         // pretend we're incrementing from 0 if currValue is empty
         const currValue = this.state.value === NumericInput.VALUE_EMPTY ? NumericInput.VALUE_ZERO : this.state.value;
-        const nextValue = this.getSanitizedValue(currValue, delta);
+        const nextValue = this.roundAndClampValue(currValue, delta);
 
-        this.handleNextValue(nextValue);
-        this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement });
+        if (nextValue !== this.state.value) {
+            this.handleNextValue(nextValue);
+            this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement });
+        }
 
         // return value used in continuous change updates
         return nextValue;
@@ -578,7 +582,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
     }
 
-    private getSanitizedValue(value: string, delta = 0) {
+    private roundAndClampValue(value: string, delta = 0) {
         return NumericInput.roundAndClampValue(
             value,
             this.state.stepMaxPrecision,

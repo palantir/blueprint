@@ -93,6 +93,12 @@ describe("<NumericInput>", () => {
             const value = component.state().value;
             expect(value).to.equal("1");
         });
+
+        it("accepts defaultValue prop", () => {
+            const component = mount(<NumericInput defaultValue={2} />);
+            const value = component.state().value;
+            expect(value).to.equal("2");
+        });
     });
 
     describe("Button position", () => {
@@ -180,34 +186,6 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput value={"10"} />);
             const value = component.state().value;
             expect(value).to.equal("10");
-        });
-
-        it("in controlled mode, state.value only changes with prop change", () => {
-            const initialValue = 10;
-            const onValueChangeSpy = spy();
-            const component = mount(<NumericInput value={initialValue} onValueChange={onValueChangeSpy} />);
-
-            const incrementButton = component.find(AnchorButton).first();
-            incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
-
-            let inputElement = component.find("input");
-            expect(inputElement.props().value).to.equal("10");
-            expect(onValueChangeSpy.calledOnceWithExactly(11, "11", inputElement.getDOMNode()));
-
-            component.setProps({ value: 11 }).update();
-            inputElement = component.find("input");
-            expect(inputElement.props().value).to.equal("11");
-        });
-
-        it("in controlled mode, accepts successive value changes containing non-numeric characters", () => {
-            const component = mount(<NumericInput />);
-            component.setProps({ value: "1" });
-            expect(component.state().value).to.equal("1");
-            component.setProps({ value: "1 +" });
-            expect(component.state().value).to.equal("1 +");
-            component.setProps({ value: "1 + 1" });
-            expect(component.state().value).to.equal("1 + 1");
         });
 
         it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
@@ -879,6 +857,35 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
             component.setProps({ value: 1 });
             expect(onValueChangeSpy.notCalled).to.be.true;
+        });
+
+        it("state.value only changes with prop change", () => {
+            const initialValue = 10;
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput value={initialValue} onValueChange={onValueChangeSpy} />);
+
+            const incrementButton = component.find(AnchorButton).first();
+            incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
+            let inputElement = component.find("input");
+            expect(inputElement.props().value).to.equal("10");
+            expect(onValueChangeSpy.calledOnceWithExactly(11, "11", inputElement.getDOMNode()));
+
+            component.setProps({ value: 11 }).update();
+            inputElement = component.find("input");
+            expect(inputElement.props().value).to.equal("11");
+        });
+
+        it("accepts successive value changes containing non-numeric characters", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            component.setProps({ value: "1" });
+            expect(component.state().value).to.equal("1");
+            component.setProps({ value: "1 +" });
+            expect(component.state().value).to.equal("1 +");
+            component.setProps({ value: "1 + 1" });
+            expect(component.state().value).to.equal("1 + 1");
         });
     });
 
