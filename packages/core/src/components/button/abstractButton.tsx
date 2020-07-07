@@ -134,7 +134,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         };
     }
 
-    // A disabled element cannot be active, there're are cases where
+    // A disabled element cannot be active, but there are cases where
     // this situation can happen (NumericInput buttons), hence the need
     // to check if disabled prop has been passed and change isActive
     // accordingly
