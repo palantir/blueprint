@@ -163,8 +163,6 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         this.props.onKeyDown?.(e);
     };
 
-    // Keyup event won't fire on a disabled element, so componentDidUpdate
-    // will take care of those cases and set isActive to false
     protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
