@@ -105,7 +105,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
     // this situation can happen (NumericInput buttons), hence the need
     // to check if disabled prop has been passed and change isActive
     // accordingly
-    protected static getDerivedStateFromProps(props: IButtonProps, state: IButtonState) {
+    public static getDerivedStateFromProps(props: IButtonProps, state: IButtonState) {
         if (state.isActive && props.disabled) {
             return {
                 isActive: false,
