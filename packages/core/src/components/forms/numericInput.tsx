@@ -36,7 +36,7 @@ import {
 import * as Errors from "../../common/errors";
 
 import { ButtonGroup } from "../button/buttonGroup";
-import { Button } from "../button/buttons";
+import { AnchorButton } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import {
@@ -338,13 +338,13 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const disabled = this.props.disabled || this.props.readOnly;
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
-                <Button
+                <AnchorButton
                     disabled={disabled || (value !== "" && +value >= max)}
                     icon="chevron-up"
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
-                <Button
+                <AnchorButton
                     disabled={disabled || (value !== "" && +value <= min)}
                     icon="chevron-down"
                     intent={intent}
@@ -427,21 +427,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         document.removeEventListener("mouseup", this.stopContinuousChange);
     };
 
-    // If limit is reached and mouseup event occurs on top of the disabled button
-    // stopContinuousChange will never be fired, hence the need to check each
-    // iterarion of handleContinuousChange
-    private limitReachedOnContinuousChange = () => {
-        const min = this.props.min ?? -Infinity;
-        const max = this.props.max ?? Infinity;
-        if (Number(this.state.value) <= min || Number(this.state.value) >= max) {
-            this.stopContinuousChange();
-            return true;
-        }
-        return false;
-    };
-
     private handleContinuousChange = () => {
-        if (this.limitReachedOnContinuousChange()) return;
         const nextValue = this.incrementValue(this.delta);
         this.props.onButtonClick?.(+nextValue, nextValue);
     };
