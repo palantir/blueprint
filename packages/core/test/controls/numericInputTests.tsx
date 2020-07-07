@@ -202,8 +202,7 @@ describe("<NumericInput>", () => {
             dispatchMouseEvent(document, "mouseup");
 
             const inputElement = component.find("input").first().getDOMNode();
-            const instance = component.instance();
-            expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement, instance)).to.be.true;
+            expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
         });
 
         it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
@@ -628,8 +627,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("0");
 
                 const inputElement = component.find("input").first().getDOMNode();
-                const instance = component.instance();
-                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement, instance)).to.be.true;
+                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
             it("does not fire onValueChange if nextProps.min < value", () => {
@@ -703,8 +701,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("0");
 
                 const inputElement = component.find("input").first().getDOMNode();
-                const instance = component.instance();
-                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement, instance)).to.be.true;
+                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
             it("does not fire onValueChange if nextProps.max > value", () => {
@@ -735,8 +732,7 @@ describe("<NumericInput>", () => {
                 expect(component.state().value).to.equal("2");
 
                 const inputElement = component.find("input").first().getDOMNode();
-                const instance = component.instance();
-                expect(onValueChangeSpy.calledOnceWithExactly(2, "2", inputElement, instance)).to.be.true;
+                expect(onValueChangeSpy.calledOnceWithExactly(2, "2", inputElement)).to.be.true;
             });
         });
 

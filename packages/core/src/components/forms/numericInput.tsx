@@ -151,12 +151,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     onButtonClick?(valueAsNumber: number, valueAsString: string): void;
 
     /** The callback invoked when the value changes due to typing, arrow keys, or button clicks. */
-    onValueChange?(
-        valueAsNumber: number,
-        valueAsString: string,
-        inputElement: HTMLInputElement | null,
-        instance: NumericInput,
-    ): void;
+    onValueChange?(valueAsNumber: number, valueAsString: string, inputElement: HTMLInputElement | null): void;
 }
 
 export interface INumericInputState {
@@ -300,7 +295,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         if (!didControlledValueChange && this.state.value !== prevState.value) {
             const { value: valueAsString } = this.state;
-            this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement, this);
+            this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement);
         }
     }
 
