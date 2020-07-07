@@ -71,6 +71,14 @@ export interface INumericInputProps extends IIntentProps, IProps {
     clampValueOnBlur?: boolean;
 
     /**
+     * In uncontrolled mode, this sets the default value of the input.
+     * Note that this value is only used upon component instantiation and changes to this prop
+     * during the component lifecycle will be ignored.
+     * @default ""
+     */
+    defaultValue?: number | string;
+
+    /**
      * Whether the input is non-interactive.
      * @default false
      */
@@ -174,6 +182,7 @@ const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
     "buttonPosition",
     "clampValueOnBlur",
     "className",
+    "defaultValue",
     "majorStepSize",
     "minorStepSize",
     "onButtonClick",
@@ -196,13 +205,13 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
         clampValueOnBlur: false,
+        defaultValue: NumericInput.VALUE_EMPTY,
         large: false,
         majorStepSize: 10,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
         stepSize: 1,
-        value: NumericInput.VALUE_EMPTY,
     };
 
     public static getDerivedStateFromProps(props: INumericInputProps, state: INumericInputState) {
@@ -216,23 +225,23 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const didMaxChange = props.max !== state.prevMaxProp;
         const didBoundsChange = didMinChange || didMaxChange;
 
-        const didValuePropChange = props.value !== state.prevValueProp;
-        const value = getValueOrEmptyValue(didValuePropChange ? props.value : state.value);
-
+        // in controlled mode, use props.value
+        // in uncontrolled mode, if state.value has not been assigned yet (upon initial mount), use props.defaultValue
+        const value = props.value?.toString() ?? state.value;
         const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
 
         const sanitizedValue =
             value !== NumericInput.VALUE_EMPTY
-                ? NumericInput.getSanitizedValue(value, stepMaxPrecision, props.min, props.max)
+                ? NumericInput.roundAndClampValue(value, stepMaxPrecision, props.min, props.max)
                 : NumericInput.VALUE_EMPTY;
 
         // if a new min and max were provided that cause the existing value to fall
         // outside of the new bounds, then clamp the value to the new valid range.
         if (didBoundsChange && sanitizedValue !== state.value) {
             return { ...nextState, stepMaxPrecision, value: sanitizedValue };
-        } else {
-            return { ...nextState, stepMaxPrecision, value };
         }
+
+        return { ...nextState, stepMaxPrecision, value };
     }
 
     private static CONTINUOUS_CHANGE_DELAY = 300;
@@ -248,7 +257,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
     }
 
-    private static getSanitizedValue(value: string, stepMaxPrecision: number, min: number, max: number, delta = 0) {
+    private static roundAndClampValue(value: string, stepMaxPrecision: number, min: number, max: number, delta = 0) {
         if (!isValueNumeric(value)) {
             return NumericInput.VALUE_EMPTY;
         }
@@ -260,7 +269,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         currentImeInputInvalid: false,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
-        value: getValueOrEmptyValue(this.props.value),
+        value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue),
     };
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
@@ -287,20 +296,22 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     public componentDidUpdate(prevProps: INumericInputProps, prevState: INumericInputState) {
         super.componentDidUpdate(prevProps, prevState);
+
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement.setSelectionRange(0, this.state.value.length);
         }
 
-        const didControlledValueChange = this.props.value !== prevProps.value;
-
-        if (!didControlledValueChange && this.state.value !== prevState.value) {
-            const { value: valueAsString } = this.state;
-            this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement);
+        const didMinChange = this.props.min !== prevProps.min;
+        const didMaxChange = this.props.max !== prevProps.max;
+        const didBoundsChange = didMinChange || didMaxChange;
+        if (didBoundsChange && this.state.value !== prevState.value) {
+            // we clamped the value due to a bounds change, so we should fire the change callback
+            this.props.onValueChange?.(+this.state.value, this.state.value, this.inputElement);
         }
     }
 
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
-        const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
+        const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
@@ -321,6 +332,15 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
         if (majorStepSize && majorStepSize < stepSize) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+        }
+
+        // controlled mode
+        if (value != null) {
+            const stepMaxPrecision = NumericInput.getStepMaxPrecision(nextProps);
+            const sanitizedValue = NumericInput.roundAndClampValue(value.toString(), stepMaxPrecision, min, max);
+            if (sanitizedValue !== value.toString()) {
+                console.warn(Errors.NUMERIC_INPUT_CONTROLLED_VALUE_INVALID);
+            }
         }
     }
 
@@ -442,8 +462,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         if (this.props.clampValueOnBlur) {
             const { value } = e.target as HTMLInputElement;
-            const sanitizedValue = this.getSanitizedValue(value);
-            this.setState({ value: sanitizedValue });
+            this.handleNextValue(this.roundAndClampValue(value));
         }
 
         Utils.safeInvoke(this.props.onBlur, e);
@@ -481,7 +500,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
         if (this.props.allowNumericCharactersOnly) {
-            this.setState({ currentImeInputInvalid: false, value: sanitizeNumericInput(e.data) });
+            this.handleNextValue(sanitizeNumericInput(e.data));
+            this.setState({ currentImeInputInvalid: false });
         }
     };
 
@@ -521,19 +541,32 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             nextValue = sanitizeNumericInput(value);
         }
 
-        this.setState({ shouldSelectAfterUpdate: false, value: nextValue });
+        this.handleNextValue(nextValue);
+        this.setState({ shouldSelectAfterUpdate: false });
     };
+
+    // Data logic
+    // ==========
+
+    private handleNextValue(valueAsString: string) {
+        if (this.props.value == null) {
+            this.setState({ value: valueAsString });
+        }
+
+        this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement);
+    }
 
     private incrementValue(delta: number) {
         // pretend we're incrementing from 0 if currValue is empty
-        const currValue = this.state.value || NumericInput.VALUE_ZERO;
-        const nextValue = this.getSanitizedValue(currValue, delta);
+        const currValue = this.state.value === NumericInput.VALUE_EMPTY ? NumericInput.VALUE_ZERO : this.state.value;
+        const nextValue = this.roundAndClampValue(currValue, delta);
 
-        this.setState({
-            shouldSelectAfterUpdate: this.props.selectAllOnIncrement,
-            value: nextValue,
-        });
+        if (nextValue !== this.state.value) {
+            this.handleNextValue(nextValue);
+            this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement });
+        }
 
+        // return value used in continuous change updates
         return nextValue;
     }
 
@@ -549,8 +582,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
     }
 
-    private getSanitizedValue(value: string, delta = 0) {
-        return NumericInput.getSanitizedValue(
+    private roundAndClampValue(value: string, delta = 0) {
+        return NumericInput.roundAndClampValue(
             value,
             this.state.stepMaxPrecision,
             this.props.min,
