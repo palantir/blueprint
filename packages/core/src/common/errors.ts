@@ -51,6 +51,8 @@ export const NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE =
 export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires stepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NULL = ns + ` <NumericInput> requires stepSize to be defined.`;
+export const NUMERIC_INPUT_CONTROLLED_VALUE_INVALID =
+    ns + ` <NumericInput> controlled value prop does not adhere to stepSize, min, and/or max constraints.`;
 
 export const PANEL_STACK_INITIAL_PANEL_STACK_MUTEX =
     ns + ` <PanelStack> requires exactly one of initialPanel and stack prop`;
