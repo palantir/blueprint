@@ -3472,5 +3472,11 @@
         "iconName": "app-header",
         "tags": "header, application, layout, user-interface, UI",
         "group": "interface"
+    },
+    {
+        "displayName": "Send message",
+        "iconName": "send-message",
+        "tags": "send, deliver, paper-airplane, post",
+        "group": "action"
     }
 ]
