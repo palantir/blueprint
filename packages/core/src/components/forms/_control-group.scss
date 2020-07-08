@@ -4,6 +4,7 @@
 @import "../../common/variables";
 @import "../button/common";
 @import "./common";
+@import "../divider/divider";
 
 /*
 Control groups
@@ -166,6 +167,10 @@ Styleguide control-group
   &:not(.#{$ns}-vertical) {
     > *:not(.#{$ns}-divider) {
       margin-right: -$button-border-width;
+    }
+    
+    > .#{$ns}-divider:not(:first-child) {
+      margin-left: $divider-margin + $button-border-width;
     }
 
     .#{$ns}-dark & {
