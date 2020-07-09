@@ -168,7 +168,7 @@ Styleguide control-group
     > *:not(.#{$ns}-divider) {
       margin-right: -$button-border-width;
     }
-    
+
     > .#{$ns}-divider:not(:first-child) {
       margin-left: $divider-margin + $button-border-width;
     }
