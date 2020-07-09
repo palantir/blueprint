@@ -14,7 +14,7 @@
         "copy:docs-app": "cp -rf packages/docs-app/dist/ site/docs",
         "copy:landing-app": "cp -rf packages/landing-app/dist/ site",
         "deploy": "gh-pages -d site -b master",
-        "dev": "lerna run dev --parallel --scope \"!@blueprintjs/{landing-app,table-dev-app}\"",
+        "dev": "lerna run dev --parallel --ignore \"!@blueprintjs/{landing-app,table-dev-app}\"",
         "dev:core": "lerna run dev --parallel --scope \"@blueprintjs/{core,icons,docs-app}\"",
         "dev:docs": "lerna run dev --parallel --scope \"@blueprintjs/{core,docs-app,docs-theme}\"",
         "dev:datetime": "lerna run dev --parallel --scope \"@blueprintjs/{core,datetime,timezone,docs-app}\"",
