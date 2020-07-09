@@ -425,7 +425,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
     private handleDocumentClick = (e: MouseEvent) => {
         const { canOutsideClickClose, isOpen, onClose } = this.props;
-        const eventTarget = e.target as HTMLElement;
+        const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
         const stackIndex = Overlay.openStack.indexOf(this);
         const isClickInThisOverlayOrDescendant = Overlay.openStack
