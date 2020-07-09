@@ -443,7 +443,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     };
 
     private handleDocumentFocus = (e: FocusEvent) => {
-        const eventTarget = e.composed ? e.composedPath()[0] : e.target
+        const eventTarget = e.composed ? e.composedPath()[0] : e.target;
         if (
             this.props.enforceFocus &&
             this.containerElement != null &&
