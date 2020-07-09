@@ -443,11 +443,12 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     };
 
     private handleDocumentFocus = (e: FocusEvent) => {
+        const eventTarget = e.composed ? e.composedPath()[0] : e.target
         if (
             this.props.enforceFocus &&
             this.containerElement != null &&
-            e.target instanceof Node &&
-            !this.containerElement.contains(e.target as HTMLElement)
+            eventTarget instanceof Node &&
+            !this.containerElement.contains(eventTarget as HTMLElement)
         ) {
             // prevent default focus behavior (sometimes auto-scrolls the page)
             e.preventDefault();
