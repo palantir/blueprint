@@ -29,7 +29,6 @@ import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test
 import {
     AnchorButton,
     ButtonGroup,
-    Classes,
     ControlGroup,
     HTMLInputProps,
     Icon,
@@ -1037,12 +1036,6 @@ describe("<NumericInput>", () => {
             decrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
 
             expect(handleButtonClickSpy.notCalled).to.be.true;
-        });
-
-        it("must set fill class on controlGroup element when fill is enabled", () => {
-            const component = mount(<NumericInput fill={true} />);
-            const controlGroupNode = component.find(ControlGroup).first().getDOMNode();
-            expect(controlGroupNode.classList.contains(Classes.FILL)).to.be.true;
         });
     });
 
