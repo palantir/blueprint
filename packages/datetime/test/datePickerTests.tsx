@@ -263,6 +263,7 @@ describe("<DatePicker>", () => {
     describe("minDate/maxDate bounds", () => {
         const MIN_DATE = new Date(2015, Months.JANUARY, 7);
         const MAX_DATE = new Date(2015, Months.JANUARY, 12);
+
         it("maxDate must be later than minDate", () => {
             expectPropValidationError(
                 DatePicker,
@@ -336,6 +337,32 @@ describe("<DatePicker>", () => {
             assert.isTrue(onChange.notCalled);
             getDay(8).simulate("click");
             assert.isTrue(onChange.calledOnce);
+        });
+
+        it("constrains time picker when minDate is selected", () => {
+            const picker = mount(
+                <DatePicker
+                    maxDate={MAX_DATE}
+                    minDate={MIN_DATE}
+                    timePrecision={TimePrecision.MINUTE}
+                    value={MIN_DATE}
+                />,
+            );
+            const timePicker = picker.find(TimePicker).first();
+            assert.strictEqual(timePicker.props().minTime, MIN_DATE);
+        });
+
+        it("constrains time picker when max date is selected", () => {
+            const picker = mount(
+                <DatePicker
+                    maxDate={MAX_DATE}
+                    minDate={MIN_DATE}
+                    timePrecision={TimePrecision.MINUTE}
+                    value={MAX_DATE}
+                />,
+            );
+            const timePicker = picker.find(TimePicker).first();
+            assert.strictEqual(timePicker.props().maxTime, MAX_DATE);
         });
     });
 

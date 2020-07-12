@@ -292,14 +292,18 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     }
 
     private maybeRenderTimePicker() {
-        const { timePrecision, timePickerProps } = this.props;
+        const { timePrecision, timePickerProps, minDate, maxDate } = this.props;
         if (timePrecision == null && timePickerProps === DatePicker.defaultProps.timePickerProps) {
             return null;
         }
+        const applyMin = DateUtils.areSameDay(this.state.value, minDate);
+        const applyMax = DateUtils.areSameDay(this.state.value, maxDate);
         return (
             <div className={Classes.DATEPICKER_TIMEPICKER_WRAPPER}>
                 <TimePicker
                     precision={timePrecision}
+                    minTime={applyMin ? minDate : undefined}
+                    maxTime={applyMax ? maxDate : undefined}
                     {...timePickerProps}
                     onChange={this.handleTimeChange}
                     value={this.state.value}
