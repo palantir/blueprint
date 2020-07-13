@@ -3478,5 +3478,11 @@
         "iconName": "send-message",
         "tags": "send, deliver, paper-airplane, post",
         "group": "action"
+    },
+    {
+        "displayName": "Color picker",
+        "iconName": "color-picker",
+        "tags": "color-picker, droppler, picker",
+        "group": "miscellaneous"
     }
 ]
