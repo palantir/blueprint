@@ -425,7 +425,8 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
     private handleDocumentClick = (e: MouseEvent) => {
         const { canOutsideClickClose, isOpen, onClose } = this.props;
-        const eventTarget = e.target as HTMLElement;
+        // get the actually target even if we are in an open mode Shadow DOM
+        const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
         const stackIndex = Overlay.openStack.indexOf(this);
         const isClickInThisOverlayOrDescendant = Overlay.openStack
@@ -443,11 +444,13 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     };
 
     private handleDocumentFocus = (e: FocusEvent) => {
+        // get the actually target even if we are in an open mode Shadow DOM
+        const eventTarget = e.composed ? e.composedPath()[0] : e.target;
         if (
             this.props.enforceFocus &&
             this.containerElement != null &&
-            e.target instanceof Node &&
-            !this.containerElement.contains(e.target as HTMLElement)
+            eventTarget instanceof Node &&
+            !this.containerElement.contains(eventTarget as HTMLElement)
         ) {
             // prevent default focus behavior (sometimes auto-scrolls the page)
             e.preventDefault();
