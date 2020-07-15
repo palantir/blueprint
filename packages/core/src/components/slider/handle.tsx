@@ -36,6 +36,7 @@ export interface IInternalHandleProps extends IHandleProps {
     tickSize?: number;
     tickSizeRatio?: number;
     vertical?: boolean;
+    rtl?: boolean;
 }
 
 export interface IHandleState {

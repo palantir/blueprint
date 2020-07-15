@@ -92,6 +92,12 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * @default false
      */
     vertical?: boolean;
+
+    /**
+     * Whether to render the slider from right to left
+     * @default false
+     */
+    rtl?: boolean;
 }
 
 export interface IMultiSliderProps extends ISliderBaseProps {
@@ -123,6 +129,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         showTrackFill: true,
         stepSize: 1,
         vertical: false,
+        rtl: false,
     };
 
     public static defaultProps: IMultiSliderProps = {
