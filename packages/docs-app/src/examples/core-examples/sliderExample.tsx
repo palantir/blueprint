@@ -24,6 +24,7 @@ export interface ISliderExampleState {
     value2?: number;
     value3?: number;
     vertical?: boolean;
+    rtl?: boolean;
 }
 
 export class SliderExample extends React.PureComponent<IExampleProps, ISliderExampleState> {
@@ -32,16 +33,19 @@ export class SliderExample extends React.PureComponent<IExampleProps, ISliderExa
         value2: 2.5,
         value3: 30,
         vertical: false,
+        rtl: false,
     };
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+    private toggleRTL = handleBooleanChange(rtl => this.setState({ rtl }));
 
     public render() {
-        const { vertical } = this.state;
+        const { vertical, rtl } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
                 <Switch checked={vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />
+                <Switch checked={rtl} label="RTL" key="rtl" onChange={this.toggleRTL} />
             </>
         );
 

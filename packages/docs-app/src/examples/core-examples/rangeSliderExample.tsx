@@ -22,22 +22,26 @@ import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-t
 export interface IRangeSliderExampleState {
     range: NumberRange;
     vertical: boolean;
+    rtl: boolean;
 }
 
 export class RangeSliderExample extends React.PureComponent<IExampleProps, IRangeSliderExampleState> {
     public state: IRangeSliderExampleState = {
         range: [36, 72],
         vertical: false,
+        rtl: false,
     };
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+    private toggleRTL = handleBooleanChange(rtl => this.setState({ rtl }));
 
     public render() {
-        const { range, vertical } = this.state;
+        const { range, vertical, rtl } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
                 <Switch label="Vertical" checked={vertical} onChange={this.toggleVertical} />
+                <Switch label="RTL" checked={rtl} key="rtl" onChange={this.toggleRTL} />
             </>
         );
 
@@ -51,6 +55,7 @@ export class RangeSliderExample extends React.PureComponent<IExampleProps, IRang
                     onChange={this.handleValueChange}
                     value={range}
                     vertical={vertical}
+                    rtl={rtl}
                 />
             </Example>
         );
