@@ -546,7 +546,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             selectedRegions: newSelectedRegions,
         };
 
-        if (!CoreUtils.deepCompareKeys(state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST)) {
+        if (!CoreUtils.deepCompareKeys(state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST)) {
             return nextState;
         }
 
@@ -565,11 +565,11 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         getNumBufferLines: 1,
     };
 
-    private static SHALLOW_COMPARE_PROP_KEYS_BLACKLIST = [
+    private static SHALLOW_COMPARE_PROP_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
     ] as Array<keyof ITableProps>;
 
-    private static SHALLOW_COMPARE_STATE_KEYS_BLACKLIST = [
+    private static SHALLOW_COMPARE_STATE_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
         "viewportRect",
     ] as Array<keyof ITableState>;
@@ -789,14 +789,14 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     }
 
     public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
-        const propKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST };
-        const stateKeysBlacklist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST };
+        const propKeysDenylist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
+        const stateKeysDenylist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
 
         return (
-            !CoreUtils.shallowCompareKeys(this.props, nextProps, propKeysBlacklist) ||
-            !CoreUtils.shallowCompareKeys(this.state, nextState, stateKeysBlacklist) ||
-            !CoreUtils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_BLACKLIST) ||
-            !CoreUtils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_BLACKLIST)
+            !CoreUtils.shallowCompareKeys(this.props, nextProps, propKeysDenylist) ||
+            !CoreUtils.shallowCompareKeys(this.state, nextState, stateKeysDenylist) ||
+            !CoreUtils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST) ||
+            !CoreUtils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST)
         );
     }
 
