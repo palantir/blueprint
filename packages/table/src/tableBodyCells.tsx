@@ -71,13 +71,13 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
     viewportRect: Rect;
 }
 
-const SHALLOW_COMPARE_BLACKLIST: Array<keyof ITableBodyCellsProps> = ["viewportRect"];
+const SHALLOW_COMPARE_DENYLIST: Array<keyof ITableBodyCellsProps> = ["viewportRect"];
 
 /**
  * We don't want to reset the batcher when this set of keys changes. Any other
  * changes should reset the batcher's internal cache.
  */
-const BATCHER_RESET_PROP_KEYS_BLACKLIST: Array<keyof ITableBodyCellsProps> = [
+const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof ITableBodyCellsProps> = [
     "columnIndexEnd",
     "columnIndexStart",
     "rowIndexEnd",
@@ -102,7 +102,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
     public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
         return (
             !CoreUtils.shallowCompareKeys(nextProps, this.props, {
-                exclude: SHALLOW_COMPARE_BLACKLIST,
+                exclude: SHALLOW_COMPARE_DENYLIST,
             }) ||
             // "viewportRect" is not a plain object, so we can't just deep
             // compare; we need custom logic.
@@ -112,7 +112,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
 
     public componentDidUpdate(prevProps: ITableBodyCellsProps) {
         const shouldResetBatcher = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
-            exclude: BATCHER_RESET_PROP_KEYS_BLACKLIST,
+            exclude: BATCHER_RESET_PROP_KEYS_DENYLIST,
         });
         if (shouldResetBatcher) {
             this.batcher.reset();

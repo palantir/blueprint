@@ -137,12 +137,12 @@ const INVALID_PROPS = [
 ];
 
 /**
- * Typically applied to HTMLElements to filter out blacklisted props. When applied to a Component,
+ * Typically applied to HTMLElements to filter out disallowed props. When applied to a Component,
  * can filter props from being passed down to the children. Can also filter by a combined list of
- * supplied prop keys and the blacklist (only appropriate for HTMLElements).
+ * supplied prop keys and the denylist (only appropriate for HTMLElements).
  * @param props The original props object to filter down.
- * @param {string[]} invalidProps If supplied, overwrites the default blacklist.
- * @param {boolean} shouldMerge If true, will merge supplied invalidProps and blacklist together.
+ * @param {string[]} invalidProps If supplied, overwrites the default denylist.
+ * @param {boolean} shouldMerge If true, will merge supplied invalidProps and denylist together.
  */
 export function removeNonHTMLProps(
     props: { [key: string]: any },
