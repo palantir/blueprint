@@ -273,4 +273,43 @@ Styleguide control-group
       border-radius: 0 0 $pt-border-radius $pt-border-radius;
     }
   }
+
+  /* fix for NumericInput inside ControlGroup */
+  > .#{$ns}-control-group:first-child:not(:only-child) {
+    > * {
+      border-radius: 0;
+
+      &:first-child {
+        border-radius: inherit;
+      }
+    }
+
+    .#{$ns}-button-group.#{$ns}-vertical:not(:first-child) > .#{$ns}-button {
+      border-radius: 0;
+    }
+  }
+
+  > .#{$ns}-control-group:last-child:not(:only-child) {
+    > * {
+      border-radius: 0;
+
+      &:last-child {
+        border-radius: inherit;
+      }
+    }
+
+    .#{$ns}-button-group.#{$ns}-vertical:not(:last-child) > .#{$ns}-button {
+      border-radius: 0;
+    }
+  }
+
+  > .#{$ns}-control-group:not(:last-child):not(:first-child):not(:only-child) {
+    > * {
+      border-radius: 0;
+    }
+
+    .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+      border-radius: 0;
+    }
+  }
 }
