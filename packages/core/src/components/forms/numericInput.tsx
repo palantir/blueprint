@@ -44,7 +44,9 @@ import {
     getValueOrEmptyValue,
     isValidNumericKeyboardEvent,
     isValueNumeric,
+    parseStringToStringNumber,
     sanitizeNumericInput,
+    toLocaleString,
     toMaxPrecision,
 } from "./numericInputUtils";
 
@@ -106,6 +108,12 @@ export interface INumericInputProps extends IIntentProps, IProps {
     leftIcon?: IconName | MaybeElement;
 
     /**
+     * The locale name, which is passed to the component to format the number and allowing to type the number in the specific locale.
+     * @default ""
+     */
+    locale?: string;
+
+    /**
      * The increment between successive values when <kbd>shift</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
      * @default 10
@@ -164,6 +172,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
 export interface INumericInputState {
     currentImeInputInvalid: boolean;
+    locale: string;
     prevMinProp?: number;
     prevMaxProp?: number;
     prevValueProp?: number | string;
@@ -227,12 +236,12 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         // in controlled mode, use props.value
         // in uncontrolled mode, if state.value has not been assigned yet (upon initial mount), use props.defaultValue
-        const value = props.value?.toString() ?? state.value;
+        const value = NumericInput.getValue(props, state.value);
         const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
 
         const sanitizedValue =
             value !== NumericInput.VALUE_EMPTY
-                ? NumericInput.roundAndClampValue(value, stepMaxPrecision, props.min, props.max)
+                ? NumericInput.roundAndClampValue(value, stepMaxPrecision, props.min, props.max, 0, props.locale)
                 : NumericInput.VALUE_EMPTY;
 
         // if a new min and max were provided that cause the existing value to fall
@@ -240,7 +249,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (didBoundsChange && sanitizedValue !== state.value) {
             return { ...nextState, stepMaxPrecision, value: sanitizedValue };
         }
-
         return { ...nextState, stepMaxPrecision, value };
     }
 
@@ -257,19 +265,37 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
     }
 
-    private static roundAndClampValue(value: string, stepMaxPrecision: number, min: number, max: number, delta = 0) {
-        if (!isValueNumeric(value)) {
+    private static getValue(props: INumericInputProps, stateValue: string) {
+        if (props.value != null) {
+            return props.value.toString();
+        } else {
+            return stateValue;
+        }
+    }
+
+    private static roundAndClampValue(
+        value: string,
+        stepMaxPrecision: number,
+        min: number,
+        max: number,
+        delta = 0,
+        locale: string,
+    ) {
+        if (!isValueNumeric(value, locale)) {
             return NumericInput.VALUE_EMPTY;
         }
-        const nextValue = toMaxPrecision(parseFloat(value) + delta, stepMaxPrecision);
-        return clampValue(nextValue, min, max).toString();
+        const currentValue = parseStringToStringNumber(value, locale);
+        const nextValue = toMaxPrecision(parseFloat(currentValue) + delta, stepMaxPrecision);
+        const clampedValue = clampValue(nextValue, min, max);
+        return toLocaleString(clampedValue, locale);
     }
 
     public state: INumericInputState = {
         currentImeInputInvalid: false,
+        locale: "en-US",
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
-        value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue),
+        value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue, this.props.locale),
     };
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
@@ -304,9 +330,13 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const didMinChange = this.props.min !== prevProps.min;
         const didMaxChange = this.props.max !== prevProps.max;
         const didBoundsChange = didMinChange || didMaxChange;
-        if (didBoundsChange && this.state.value !== prevState.value) {
+        const didLocaleChange = this.props.locale !== prevProps.locale;
+
+        if ((didBoundsChange && this.state.value !== prevState.value) || didLocaleChange) {
             // we clamped the value due to a bounds change, so we should fire the change callback
-            this.props.onValueChange?.(+this.state.value, this.state.value, this.inputElement);
+            const valueAsString = parseStringToStringNumber(this.state.value, prevProps.locale);
+            const valueAsNumber = toLocaleString(parseFloat(valueAsString), this.props.locale);
+            this.props.onValueChange?.(+valueAsString, valueAsNumber, this.inputElement);
         }
     }
 
@@ -337,7 +367,14 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         // controlled mode
         if (value != null) {
             const stepMaxPrecision = NumericInput.getStepMaxPrecision(nextProps);
-            const sanitizedValue = NumericInput.roundAndClampValue(value.toString(), stepMaxPrecision, min, max);
+            const sanitizedValue = NumericInput.roundAndClampValue(
+                value.toString(),
+                stepMaxPrecision,
+                min,
+                max,
+                0,
+                this.props.locale,
+            );
             if (sanitizedValue !== value.toString()) {
                 console.warn(Errors.NUMERIC_INPUT_CONTROLLED_VALUE_INVALID);
             }
@@ -502,7 +539,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
         if (this.props.allowNumericCharactersOnly) {
-            this.handleNextValue(sanitizeNumericInput(e.data));
+            this.handleNextValue(sanitizeNumericInput(e.data, this.props.locale));
             this.setState({ currentImeInputInvalid: false });
         }
     };
@@ -510,7 +547,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     private handleCompositionUpdate = (e: React.CompositionEvent<HTMLInputElement>) => {
         if (this.props.allowNumericCharactersOnly) {
             const { data } = e;
-            const sanitizedValue = sanitizeNumericInput(data);
+            const sanitizedValue = sanitizeNumericInput(data, this.props.locale);
             if (sanitizedValue.length === 0 && data.length > 0) {
                 this.setState({ currentImeInputInvalid: true });
             } else {
@@ -522,7 +559,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     private handleInputKeyPress = (e: React.KeyboardEvent) => {
         // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
         // e.key is not trustworthy in onKeyDown in all browsers.
-        if (this.props.allowNumericCharactersOnly && !isValidNumericKeyboardEvent(e)) {
+        if (this.props.allowNumericCharactersOnly && !isValidNumericKeyboardEvent(e, this.props.locale)) {
             e.preventDefault();
         }
 
@@ -536,11 +573,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private handleInputChange = (e: React.FormEvent) => {
         const { value } = e.target as HTMLInputElement;
-
         let nextValue = value;
         if (this.props.allowNumericCharactersOnly && this.didPasteEventJustOccur) {
             this.didPasteEventJustOccur = false;
-            nextValue = sanitizeNumericInput(value);
+            nextValue = sanitizeNumericInput(value, this.props.locale);
         }
 
         this.handleNextValue(nextValue);
@@ -555,7 +591,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             this.setState({ value: valueAsString });
         }
 
-        this.props.onValueChange?.(+valueAsString, valueAsString, this.inputElement);
+        this.props.onValueChange?.(
+            +parseStringToStringNumber(valueAsString, this.props.locale),
+            valueAsString,
+            this.inputElement,
+        );
     }
 
     private incrementValue(delta: number) {
@@ -591,6 +631,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             this.props.min,
             this.props.max,
             delta,
+            this.props.locale,
         );
     }
 

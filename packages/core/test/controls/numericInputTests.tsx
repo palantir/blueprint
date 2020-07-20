@@ -889,6 +889,109 @@ describe("<NumericInput>", () => {
         });
     });
 
+    describe("Localization", () => {
+        it("accepts the number in a different locale", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            const nextValue = "99,99";
+            const nextValueNumber = 99.99;
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+        });
+
+        it("accepts the number in a different locale [Arabic - Bahrain (ar-BH)]", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"ar-BH"} />);
+            const nextValue = "٩٫٩٩";
+            const nextValueNumber = 9.99;
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+        });
+
+        it("changing the locale it changes the value (en-US to it-IT)", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            const nextValue = "99.99";
+            const formattedValue = "99,99";
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+            expect(onValueChangeSpy.lastCall.calledWith(+nextValue, nextValue)).to.be.true;
+
+            component.setProps({ locale: "it-IT" });
+
+            expect(onValueChangeSpy.lastCall.calledWith(+nextValue, formattedValue)).to.be.true;
+        });
+
+        it("changing the locale it changes the value (it-IT to undefined)", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"it-IT"} />);
+            const nextValue = "99,99";
+            const usValue = "99.99";
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+            expect(onValueChangeSpy.lastCall.calledWith(+usValue, nextValue)).to.be.true;
+
+            component.setProps({ locale: undefined });
+
+            expect(onValueChangeSpy.lastCall.calledWith(+usValue, usValue)).to.be.true;
+        });
+
+        it("doesn't accept the number in a different format", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            const invalidValue = "77,99";
+
+            component.find("input").simulate("change", { target: { value: invalidValue } });
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(NaN, invalidValue)).to.be.true;
+        });
+
+        it("increments the number with the specified locale", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            const nextValue = "7,9";
+            const nextValueNumber = 7.9;
+            const valueAfterDecrement = "8,9";
+            const valueNumberAfterDecrement = 8.9;
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+
+            const incrementButton = component.find(AnchorButton).first();
+            incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
+            expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
+        });
+
+        it("decrements the number with the specified locale", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            const nextValue = "7,9";
+            const nextValueNumber = 7.9;
+            const valueAfterDecrement = "6,9";
+            const valueNumberAfterDecrement = 6.9;
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+
+            const incrementButton = component.find(AnchorButton).last();
+            incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
+            expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
+        });
+    });
+
     describe("Other", () => {
         it("disables the increment button when the value is greater than or equal to max", () => {
             const component = mount(<NumericInput value={100} max={100} />);
