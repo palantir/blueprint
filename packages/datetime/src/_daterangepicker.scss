@@ -9,11 +9,6 @@
   display: flex;
   white-space: nowrap;
 
-  // indent first navbar a bit
-  .DayPicker:first-of-type .#{$ns}-datepicker-navbar {
-    left: $datepicker-padding;
-  }
-
   .DayPicker-NavButton--interactionDisabled {
     display: none;
   }
