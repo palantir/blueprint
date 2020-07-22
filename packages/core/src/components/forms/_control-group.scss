@@ -40,6 +40,31 @@ Markup:
   </div>
   <button class="#{$ns}-button #{$ns}-intent-primary">Add</button>
 </div>
+<div class="#{$ns}-control-group">
+  <div class="#{$ns}-select">
+    <select>
+      <option selected value="dollar">$</option>
+      <option value="euro">€</option>
+    </select>
+  </div>
+  <div class="#{$ns}-control-group #{$ns}-numeric-input">
+    <div class="#{$ns}-input-group">
+      <input type="text" autocomplete="off" class="#{$ns}-input" style="padding-right: 10px;" value="1">
+    </div>
+    <div class="#{$ns}-button-group #{$ns}-vertical #{$ns}-fixed">
+      <button type="button" class="#{$ns}-button">
+        <span icon="chevron-up" class="#{$ns}-icon #{$ns}-icon-chevron-up">
+          <svg data-icon="chevron-up" width="16" height="16" viewBox="0 0 16 16"><desc>chevron-up</desc><path d="M12.71 9.29l-4-4C8.53 5.11 8.28 5 8 5s-.53.11-.71.29l-4 4a1.003 1.003 0 001.42 1.42L8 7.41l3.29 3.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71z" fill-rule="evenodd"></path></svg>
+        </span>
+      </button>
+      <button type="button" class="#{$ns}-button">
+        <span icon="chevron-down" class="#{$ns}-icon #{$ns}-icon-chevron-down">
+          <svg data-icon="chevron-down" width="16" height="16" viewBox="0 0 16 16"><desc>chevron-down</desc><path d="M12 5c-.28 0-.53.11-.71.29L8 8.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42l4 4c.18.18.43.29.71.29s.53-.11.71-.29l4-4A1.003 1.003 0 0012 5z" fill-rule="evenodd"></path></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
 
 Styleguide control-group
 */
@@ -163,6 +188,12 @@ Styleguide control-group
     z-index: index($control-group-stack, "select-caret");
   }
 
+  // select container does not get focus directly (its <select> does), and it
+  // sometimes needs to compete with adjacent container elements
+  .#{$ns}-select:focus-within {
+    z-index: index($control-group-stack, "button-focus");
+  }
+
   // have consecutive elements share a border
   &:not(.#{$ns}-vertical) {
     > *:not(.#{$ns}-divider) {
@@ -214,6 +245,12 @@ Styleguide control-group
   // bring back border radius on these buttons
   .#{$ns}-input-group .#{$ns}-button {
     border-radius: $pt-border-radius;
+  }
+
+  // special handling of numeric input, which is a nested control group itself
+  .#{$ns}-numeric-input:not(:first-child) .#{$ns}-input-group {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
   }
 
   /*
