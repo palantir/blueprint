@@ -4,6 +4,7 @@
 @import "../../common/variables";
 @import "../button/common";
 @import "./common";
+@import "../divider/divider";
 
 /*
 Control groups
@@ -164,14 +165,19 @@ Styleguide control-group
 
   // have consecutive elements share a border
   &:not(.#{$ns}-vertical) {
-    > * {
+    > *:not(.#{$ns}-divider) {
       margin-right: -$button-border-width;
     }
 
+    > .#{$ns}-divider:not(:first-child) {
+      margin-left: $divider-margin + $button-border-width;
+    }
+
     .#{$ns}-dark & {
-      > * {
+      > *:not(.#{$ns}-divider) {
         margin-right: 0;
       }
+
 
       // consecutive buttons within a button group look okay out of the box, but
       // we need need to make a small correction for non-grouped buttons. this
