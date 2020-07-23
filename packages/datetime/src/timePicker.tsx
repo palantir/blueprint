@@ -15,10 +15,10 @@
  */
 
 import {
+    Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HTMLSelect,
-    Icon,
     Intent,
     IProps,
     Keys,
@@ -244,9 +244,13 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit));
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
         return (
-            <span className={classes} onClick={onClick}>
-                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
-            </span>
+            <Button
+                icon={isDirectionUp ? "chevron-up" : "chevron-down"}
+                className={classes}
+                minimal={true}
+                onClick={onClick}
+                tabIndex={-1}
+            />
         );
     }
 
