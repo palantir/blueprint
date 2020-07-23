@@ -152,12 +152,12 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
                 onClosing={this.handlePopoverClosing}
             >
                 <div
-                    onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
+                    onKeyDown={this.state.isOpen ? this.onHandleKeyDown(handleKeyDown) : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     {this.props.children}
                 </div>
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                <div onKeyDown={this.onHandleKeyDown(handleKeyDown)} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
                     {listProps.itemList}
                 </div>
@@ -168,6 +168,16 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     private maybeRenderClearButton(query: string) {
         return query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
     }
+
+    private onHandleKeyDown = (handleKeyDownCallback: (event: React.KeyboardEvent<HTMLElement>) => void) => (
+        event: React.KeyboardEvent<HTMLElement>,
+    ) => {
+        if (event.which === Keys.ESCAPE) {
+            this.setState({ isOpen: false });
+        }
+
+        handleKeyDownCallback(event);
+    };
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
