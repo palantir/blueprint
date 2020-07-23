@@ -24,7 +24,7 @@ Simply add this plugin in your `.eslintrc` file to use the add the plugin. The p
 
 ```json
 plugins: [
-    "@blueprintjs/eslint-plugin"
+    "@blueprintjs"
 ]
 ```
 
