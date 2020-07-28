@@ -136,6 +136,38 @@ describe("<DateInput>", () => {
         assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
+    it("Popover should not close when time picker arrows are clicked after selecting a month", () => {
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const { root, changeSelect } = wrap(
+            <DateInput
+                {...DATE_FORMAT}
+                defaultValue={defaultValue}
+                timePrecision={TimePrecision.MINUTE}
+                timePickerProps={{ showArrowButtons: true }}
+            />,
+        );
+        root.setState({ isOpen: true }).update();
+        changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.MARCH);
+        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        assert.isTrue(root.find(Popover).prop("isOpen"));
+    });
+
+    it("Popover should not close when time picker arrows are clicked after selecting a year", () => {
+        const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
+        const { root, changeSelect } = wrap(
+            <DateInput
+                {...DATE_FORMAT}
+                defaultValue={defaultValue}
+                timePrecision={TimePrecision.MINUTE}
+                timePickerProps={{ showArrowButtons: true }}
+            />,
+        );
+        root.setState({ isOpen: true }).update();
+        changeSelect(Classes.DATEPICKER_YEAR_SELECT, 2019);
+        root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        assert.isTrue(root.find(Popover).prop("isOpen"));
+    });
+
     it("setting timePrecision renders a TimePicker", () => {
         const wrapper = mount(<DateInput {...DATE_FORMAT} timePrecision={TimePrecision.SECOND} />)
             .setState({

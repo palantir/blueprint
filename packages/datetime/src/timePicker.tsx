@@ -243,8 +243,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         }
         const classes = classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit));
         const onClick = () => (isDirectionUp ? this.incrementTime : this.decrementTime)(timeUnit);
+        // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
-            <span className={classes} onClick={onClick}>
+            <span tabIndex={-1} className={classes} onClick={onClick}>
                 <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
             </span>
         );
