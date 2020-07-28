@@ -3478,5 +3478,17 @@
         "iconName": "send-message",
         "tags": "send, deliver, paper-airplane, post",
         "group": "action"
+    },
+    {
+        "displayName": "Backlink",
+        "iconName": "backlink",
+        "tags": "link, backlink, back",
+        "group": "interface"
+    },
+    {
+        "displayName": "Geofence",
+        "iconName": "geofence",
+        "tags": "region, geo, fence",
+        "group": "interface"
     }
 ]
