@@ -68,8 +68,6 @@ $dialog-padding: $pt-grid-size * 2 !default;
   display: flex;
   flex-direction: column;
   margin: $dialog-margin;
-  max-height: 80vh;
-  overflow: auto;
   padding-bottom: $pt-grid-size * 2;
   pointer-events: all;
   user-select: text;
@@ -131,6 +129,8 @@ $dialog-padding: $pt-grid-size * 2 !default;
   flex: 1 1 auto;
   line-height: $pt-grid-size * 1.8;
   margin: $dialog-padding;
+  max-height: 70vh;
+  overflow: auto;
 }
 
 .#{$ns}-dialog-footer {
