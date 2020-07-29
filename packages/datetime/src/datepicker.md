@@ -6,6 +6,19 @@ A `DatePicker` shows a monthly calendar and allows the user to choose a single d
 
 @reactExample DatePickerExample
 
+@## Props
+
+`DatePicker` supports both controlled and uncontrolled usage. You can control
+the selected day by setting the `value` prop, or use the component in
+uncontrolled mode and specify an initial day by setting `defaultValue`. Use the
+`onChange` prop to listen for changes to the selected day.
+
+Some props are managed by the `DatePicker` component, while others are passed
+to the **react-day-picker** library. These passed props are documented in full
+in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
+
+@interface IDatePickerProps
+
 @## Shortcuts
 
 The menu on the left of the calendars provides "shortcuts" that allow users to
@@ -15,23 +28,16 @@ array of `IDatePickerShortcut` objects to define custom shortcuts.
 
 The **preset shortcuts** can be seen in the example above. They are as follows:
 
-- Today
-- Yesterday
-- 1 week ago
-- 1 month ago
-- 3 months ago
-- 1 year ago
+-   Today
+-   Yesterday
+-   1 week ago
+-   1 month ago
+-   3 months ago
+-   1 year ago
 
 **Custom shortcuts** use the following interface:
 
 @interface IDatePickerShortcut
-
-@## Props
-
-Use the `onChange` prop to listen for changes to the set date range. You can
-control the selected date range by setting the `value` prop, or use the
-component in uncontrolled mode and specify an initial date range by setting
-`defaultValue`.
 
 @## Modifiers
 
@@ -45,7 +51,7 @@ by using the component in controlled mode and with the `modifiers` prop:
 ```css.scss
 // in CSS
 .#{$ns}-datepicker .DayPicker-Day--isSunday {
-  // CSS rules to make the day appear disabled
+    // CSS rules to make the day appear disabled
 }
 ```
 
@@ -60,7 +66,7 @@ export class DatePickerExample extends React.Component<{}, { selectedDate: Date 
         return (
             <DatePicker
                 modifiers={modifiers}
-                onChange={(newDate) => this.handleChange(newDate)}
+                onChange={newDate => this.handleChange(newDate)}
                 value={this.state.selectedDate}
             />
         );
@@ -77,19 +83,6 @@ function isSunday(date: Date) {
     return date.getDay() === 0;
 }
 ```
-
-@## Props
-
-`DatePicker` supports both controlled and uncontrolled usage. You can control
-the selected day by setting the `value` prop, or use the component in
-uncontrolled mode and specify an initial day by setting `defaultValue`. Use the
-`onChange` prop to listen for changes to the selected day.
-
-Some props are managed by the `DatePicker` component, while others are passed
-to the **react-day-picker** library. These passed props are documented in full
-in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
-
-@interface IDatePickerProps
 
 @## Localization
 
@@ -108,14 +101,14 @@ You will need to overwrite the functions of `LocaleUtil` by your own.
 Although `@blueprintjs/datetime` and `react-day-picker` do not explicitly require `moment.js` as a dependency,
 you may wish to use Moment's implementation of localization so that you do not have to write these functions yourself.
 
-To use moment for your localization, make sure to include `moment` in your dependencies and use `MomentLocaleUtils` 
+To use moment for your localization, make sure to include `moment` in your dependencies and use `MomentLocaleUtils`
 from `react-day-picker/moment` as follow:
 
 ```tsx
-import MomentLocaleUtils from 'react-day-picker/moment'
-import 'moment/locale/fr';
+import MomentLocaleUtils from "react-day-picker/moment";
+import "moment/locale/fr";
 
-<DatePicker locale="fr" localeUtils={MomentLocaleUtils} />
+<DatePicker locale="fr" localeUtils={MomentLocaleUtils} />;
 ```
 
 More detailed examples can be found in the [**react-day-picker** documentation](https://react-day-picker.js.org/docs/localization/).
