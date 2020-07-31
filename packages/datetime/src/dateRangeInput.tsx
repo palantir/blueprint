@@ -938,10 +938,10 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         }
 
         if (boundary === Boundary.START) {
-            const isAfter = DayPicker.DateUtils.isDayAfter(date, otherBoundaryDate);
+            const isAfter = date > otherBoundaryDate;
             return isAfter || (!allowSingleDayRange && DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
         } else {
-            const isBefore = DayPicker.DateUtils.isDayBefore(date, otherBoundaryDate);
+            const isBefore = date < otherBoundaryDate;
             return isBefore || (!allowSingleDayRange && DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
         }
     };
