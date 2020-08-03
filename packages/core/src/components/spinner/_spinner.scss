@@ -48,6 +48,10 @@
   }
 }
 
+.#{$ns}-spinner-animation-slow {
+  animation: pt-spinner-animation ($pt-transition-duration * 10) linear infinite;
+}
+
 .#{$ns}-dark .#{$ns}-spinner {
   .#{$ns}-spinner-head {
     stroke: $dark-progress-head-color;

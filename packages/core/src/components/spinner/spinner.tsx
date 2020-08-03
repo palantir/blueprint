@@ -47,6 +47,11 @@ export interface ISpinnerProps extends IProps, IIntentProps {
      * Omitting this prop will result in an "indeterminate" spinner where the head spins indefinitely.
      */
     value?: number;
+
+    /**
+     * A boolean value that causes the spinner to animate at half speed.
+     */
+    slow?: boolean;
 }
 
 export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
@@ -64,7 +69,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
     }
 
     public render() {
-        const { className, intent, value, tagName: TagName = "div" } = this.props;
+        const { className, intent, value, tagName: TagName = "div", slow } = this.props;
         const size = this.getSize();
 
         const classes = classNames(
@@ -73,6 +78,8 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
             { [Classes.SPINNER_NO_SPIN]: value != null },
             className,
         );
+
+        const animationClasses = classNames(Classes.SPINNER_ANIMATION, { [Classes.SPINNER_ANIMATION_SLOW]: slow });
 
         // attempt to keep spinner stroke width constant at all sizes
         const strokeWidth = Math.min(MIN_STROKE_WIDTH, STROKE_WIDTH * Spinner.SIZE_LARGE / size);
@@ -84,7 +91,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps, {}> {
         // - SPINNER_ANIMATION isolates svg from parent display and is always centered inside root element.
         return (
             <TagName className={classes}>
-                <span className={Classes.SPINNER_ANIMATION}>
+                <span className={animationClasses}>
                     <svg height={size} width={size} viewBox="0 0 100 100" strokeWidth={strokeWidth}>
                         <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
                         <path

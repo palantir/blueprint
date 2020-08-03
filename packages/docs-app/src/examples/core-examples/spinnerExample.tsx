@@ -15,6 +15,7 @@ export interface ISpinnerExampleState {
     intent?: Intent;
     size: number;
     value: number;
+    slow: boolean;
 }
 
 export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerExampleState> {
@@ -22,22 +23,24 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
         hasValue: false,
         size: Spinner.SIZE_STANDARD,
         value: 0.7,
+        slow: false,
     };
 
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
+    private handleSlowChange = handleBooleanChange(slow => this.setState({ slow }));
     private handleModifierChange = handleStringChange((intent: Intent) => this.setState({ intent }));
 
     public render() {
-        const { size, hasValue, intent, value } = this.state;
+        const { size, hasValue, intent, value, slow } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Spinner intent={intent} size={size} value={hasValue ? value : null} />
+                <Spinner intent={intent} size={size} value={hasValue ? value : null} slow={slow} />
             </Example>
         );
     }
 
     private renderOptions() {
-        const { size, hasValue, intent, value } = this.state;
+        const { size, hasValue, intent, value, slow } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -52,6 +55,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     value={size}
                     onChange={this.handleSizeChange}
                 />
+                <Switch checked={slow} label="Slow" onChange={this.handleSlowChange} />
                 <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
                     disabled={!hasValue}
