@@ -308,6 +308,8 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     };
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
         if (which === Keys.ESCAPE) {
             this.cancelEditing();

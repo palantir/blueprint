@@ -21,7 +21,6 @@
         "no-submodule-imports": {
             "options": [
                 "core-js",
-                "lodash",
                 "react-dom",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",

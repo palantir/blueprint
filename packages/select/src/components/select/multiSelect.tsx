@@ -217,6 +217,8 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+            // eslint-disable-next-line deprecation/deprecation
             const { which } = e;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {

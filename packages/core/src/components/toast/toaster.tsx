@@ -241,6 +241,8 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
 
     private handleClose = (e: React.KeyboardEvent<HTMLElement>) => {
         // NOTE that `e` isn't always a KeyboardEvent but that's the only type we care about
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         if (e.which === ESCAPE) {
             this.clear();
         }

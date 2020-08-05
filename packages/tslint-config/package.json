@@ -7,7 +7,7 @@
         "test": "tslint --rules-dir ./lib/rules --test test/rules/**/tslint.json"
     },
     "dependencies": {
-        "tslib": "~1.10.0",
+        "tslib": "~1.13.0",
         "tslint-react": "^5.0.0"
     },
     "peerDependencies": {

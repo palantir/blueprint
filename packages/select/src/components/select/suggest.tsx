@@ -315,6 +315,8 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
         handleQueryListKeyDown: React.EventHandler<React.KeyboardEvent<HTMLElement>>,
     ) => {
         return (evt: React.KeyboardEvent<HTMLInputElement>) => {
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+            // eslint-disable-next-line deprecation/deprecation
             const { which } = evt;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {

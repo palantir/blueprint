@@ -171,6 +171,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        // eslint-disable-next-line deprecation/deprecation
         if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
             event.preventDefault();
             this.setState({ isOpen: true });

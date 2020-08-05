@@ -54,6 +54,8 @@ export function createKeyEventHandler(actions: IKeyEventMap, preventDefault = fa
     return (e: React.KeyboardEvent<HTMLElement>) => {
         for (const k of Object.keys(actions)) {
             const key = Number(k);
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+            // eslint-disable-next-line deprecation/deprecation
             if (e.which === key) {
                 if (preventDefault) {
                     e.preventDefault();

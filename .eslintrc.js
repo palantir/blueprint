@@ -39,6 +39,19 @@ module.exports = {
                 "import/no-extraneous-dependencies": "off",
             }
         },
+        {
+            files: ["**/webpack.config.js"],
+            env: {
+                browser: false,
+                node: true,
+            },
+            rules: {
+                "prefer-object-spread": "off",
+                "import/no-extraneous-dependencies": ["error", {
+                    "devDependencies": true,
+                }]
+            }
+        }
     ],
     ignorePatterns: [
         "node_modules",

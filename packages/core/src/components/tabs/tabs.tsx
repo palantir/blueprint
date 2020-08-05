@@ -247,6 +247,8 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        // eslint-disable-next-line deprecation/deprecation
         if (targetTabElement != null && Keys.isKeyboardClick(e.which)) {
             e.preventDefault();
             targetTabElement.click();
@@ -320,6 +322,8 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
 }
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
+    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+    // eslint-disable-next-line deprecation/deprecation
     return codes.indexOf(e.which) >= 0;
 }
 
