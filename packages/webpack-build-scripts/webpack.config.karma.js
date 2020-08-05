@@ -3,7 +3,6 @@
  */
 
 const { CheckerPlugin } = require("awesome-typescript-loader");
-// const CircularDependencyPlugin = require("circular-dependency-plugin");
 const path = require("path");
 
 const REACT = process.env.REACT || "16";
@@ -67,13 +66,5 @@ module.exports = {
         ],
     },
 
-    plugins: [
-        new CheckerPlugin(),
-
-        // TODO: enable this
-        // new CircularDependencyPlugin({
-        //     exclude: /.js|node_modules/,
-        //     failOnError: true,
-        // }),
-    ],
+    plugins: [new CheckerPlugin()],
 };
