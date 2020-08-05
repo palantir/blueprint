@@ -137,7 +137,12 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
         );
         const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
         const removeButton = isRemovable ? (
-            <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick}>
+            <button
+                type="button"
+                className={Classes.TAG_REMOVE}
+                onClick={this.onRemoveClick}
+                tabIndex={interactive ? tabIndex : undefined}
+            >
                 <Icon icon="small-cross" iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
             </button>
         ) : null;
