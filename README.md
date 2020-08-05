@@ -68,7 +68,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 [Lerna](https://lerna.js.org/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-**Prerequisites**: Node.js v10+, Yarn v1.18+
+**Prerequisites**: Node.js v12+, Yarn v1.22+
 
 ### One-time setup
 
