@@ -453,6 +453,8 @@ interface IKeyEventMap {
 function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: IKeyEventMap, preventDefault = true) {
     for (const k of Object.keys(actions)) {
         const key = Number(k);
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        // eslint-disable-next-line deprecation/deprecation
         if (e.which === key) {
             if (preventDefault) {
                 e.preventDefault();

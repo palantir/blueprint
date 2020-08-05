@@ -386,6 +386,9 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable deprecation/deprecation */
+
         const { selectionEnd, value } = event.currentTarget;
         const { activeIndex } = this.state;
 

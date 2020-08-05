@@ -185,6 +185,8 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         const { which } = event;
         if (which === Keys.ARROW_DOWN || which === Keys.ARROW_LEFT) {
             this.changeValue(value - stepSize);
@@ -197,6 +199,8 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {
             safeInvoke(this.props.onRelease, this.props.value);
         }

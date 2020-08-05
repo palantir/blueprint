@@ -571,6 +571,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     // - if focused in start field, Tab moves focus to end field
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable deprecation/deprecation */
         const isTabPressed = e.which === Keys.TAB;
         const isEnterPressed = e.which === Keys.ENTER;
         const isShiftPressed = e.shiftKey;

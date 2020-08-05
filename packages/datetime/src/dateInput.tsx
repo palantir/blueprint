@@ -394,6 +394,8 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     };
 
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable deprecation/deprecation */
         if (e.which === Keys.ENTER) {
             const nextDate = this.parseDate(this.state.valueString);
             this.handleDateChange(nextDate, true, true);
