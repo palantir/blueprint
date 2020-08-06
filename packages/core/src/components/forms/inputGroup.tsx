@@ -29,6 +29,7 @@ import {
     removeNonHTMLProps,
 } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
+import { AsyncControllableInput } from "./asyncControllableInput";
 
 // NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
 // Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
@@ -129,11 +130,11 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
         return (
             <div className={classes}>
                 {this.maybeRenderLeftElement()}
-                <input
+                <AsyncControllableInput
                     type="text"
                     {...removeNonHTMLProps(this.props)}
                     className={Classes.INPUT}
-                    ref={this.props.inputRef}
+                    inputRef={this.props.inputRef}
                     style={style}
                 />
                 {this.maybeRenderRightElement()}
