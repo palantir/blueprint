@@ -90,7 +90,6 @@ export interface IInputGroupState {
     leftElementWidth?: number;
     rightElementWidth?: number;
     isComposing: boolean;
-    lastOnChangeEvent?: React.FormEvent<HTMLInputElement>;
 }
 
 @polyfill
@@ -132,9 +131,6 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
 
         const htmlProps = {
             ...removeNonHTMLProps(this.props),
-            // Intercept onChange with our own handler so we can block change events while composing.
-            onChange: this.handleOnChange,
-
             // Add handlers to track when IME composition is occuring.
             onCompositionEnd: this.handleCompositionEnd,
             onCompositionStart: this.handleCompositionStart,
@@ -221,26 +217,11 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
         }
     }
 
-    private handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
-        if (this.state.isComposing) {
-            // Don't propagate onChange events while IME is composing.
-            e.persist();
-            this.setState({ lastOnChangeEvent: e });
-            return;
-        }
-
-        this.props?.onChange?.(e);
-    };
-
     private handleCompositionStart = () => {
         this.setState({ isComposing: true });
     };
 
     private handleCompositionEnd = () => {
-        if (this.state.lastOnChangeEvent) {
-            // The last onChange event before composing is finished will contain the composed text.
-            this.props.onChange?.(this.state.lastOnChangeEvent);
-        }
-        this.setState({ isComposing: false, lastOnChangeEvent: undefined });
+        this.setState({ isComposing: false });
     };
 }
