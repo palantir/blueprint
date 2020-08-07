@@ -128,7 +128,7 @@ export interface IEditableTextState {
     value?: string;
 }
 
-const BUFFER_WIDTH_EDGE = 5;
+const BUFFER_WIDTH_DEFAULT = 5;
 const BUFFER_WIDTH_IE = 30;
 
 @polyfill
@@ -258,6 +258,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         if (this.props.disabled || (this.props.disabled == null && prevProps.disabled)) {
             state.isEditing = false;
         }
+
         this.setState(state);
 
         if (this.state.isEditing && !prevState.isEditing) {
@@ -383,12 +384,10 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             // Chrome's input caret height misaligns text so the line-height must be larger than font-size.
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
             scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement));
-            // IE11 & Edge needs a small buffer so text does not shift prior to resizing
-            if (Browser.isEdge()) {
-                scrollWidth += BUFFER_WIDTH_EDGE;
-            } else if (Browser.isInternetExplorer()) {
-                scrollWidth += BUFFER_WIDTH_IE;
-            }
+            // Need to add a small buffer so text does not shift prior to resizing, causing an infinite loop.
+            // IE needs a larger buffer than other browsers.
+            scrollWidth += Browser.isInternetExplorer() ? BUFFER_WIDTH_IE : BUFFER_WIDTH_DEFAULT;
+
             this.setState({
                 inputHeight: scrollHeight,
                 inputWidth: Math.max(scrollWidth, minWidth),
