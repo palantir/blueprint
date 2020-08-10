@@ -84,7 +84,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     /**
      * The default date to be used in the component when uncontrolled.
      */
-    defaultValue?: Date;
+    defaultValue?: Date | null;
 
     /**
      * Whether the component should take up the full width of its container.

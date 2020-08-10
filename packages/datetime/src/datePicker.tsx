@@ -56,7 +56,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * Initial day the calendar will display as selected.
      * This should not be set if `value` is set.
      */
-    defaultValue?: Date;
+    defaultValue?: Date | null;
 
     /**
      * Whether the current day should be highlighted in the calendar.
@@ -113,7 +113,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      */
-    value?: Date;
+    value?: Date | null;
 }
 
 export interface IDatePickerState {

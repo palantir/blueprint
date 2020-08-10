@@ -59,7 +59,7 @@ export interface ITimePickerProps extends IProps {
      * Initial time the `TimePicker` will display.
      * This should not be set if `value` is set.
      */
-    defaultValue?: Date;
+    defaultValue?: Date | null;
 
     /**
      * Whether the time picker is non-interactive.
@@ -138,7 +138,7 @@ export interface ITimePickerProps extends IProps {
      * The currently set time.
      * If this prop is provided, the component acts in a controlled manner.
      */
-    value?: Date;
+    value?: Date | null;
 }
 
 export interface ITimePickerState {

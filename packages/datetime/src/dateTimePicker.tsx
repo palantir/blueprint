@@ -31,7 +31,7 @@ export interface IDateTimePickerProps extends IProps {
      * This will be ignored if `value` is set.
      * @default Date.now()
      */
-    defaultValue?: Date;
+    defaultValue?: Date | null;
 
     /**
      * Any props to be passed on to the `DatePicker` other than the `value` and `onChange` props as they come directly
@@ -53,7 +53,7 @@ export interface IDateTimePickerProps extends IProps {
     /**
      * The currently set date and time. If this prop is provided, the component acts in a controlled manner.
      */
-    value?: Date;
+    value?: Date | null;
 
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
