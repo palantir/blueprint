@@ -67,9 +67,11 @@ export class AsyncControllableInput extends React.PureComponent<
 
     public render() {
         const { isComposing, externalValue, localValue } = this.state;
+        const { inputRef, ...restProps } = this.props;
         return (
             <input
-                {...this.props}
+                {...restProps}
+                ref={inputRef}
                 value={isComposing ? localValue : externalValue}
                 onCompositionStart={this.handleCompositionStart}
                 onCompositionEnd={this.handleCompositionEnd}
