@@ -138,7 +138,7 @@ export interface ITimePickerProps extends IProps {
      * The currently set time.
      * If this prop is provided, the component acts in a controlled manner.
      */
-    value?: Date;
+    value?: Date | null;
 }
 
 export interface ITimePickerState {

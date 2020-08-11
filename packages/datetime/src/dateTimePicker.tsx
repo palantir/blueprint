@@ -53,7 +53,7 @@ export interface IDateTimePickerProps extends IProps {
     /**
      * The currently set date and time. If this prop is provided, the component acts in a controlled manner.
      */
-    value?: Date;
+    value?: Date | null;
 
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
