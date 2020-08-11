@@ -59,7 +59,7 @@ export interface ITimePickerProps extends IProps {
      * Initial time the `TimePicker` will display.
      * This should not be set if `value` is set.
      */
-    defaultValue?: Date | null;
+    defaultValue?: Date;
 
     /**
      * Whether the time picker is non-interactive.

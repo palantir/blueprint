@@ -31,7 +31,7 @@ export interface IDateTimePickerProps extends IProps {
      * This will be ignored if `value` is set.
      * @default Date.now()
      */
-    defaultValue?: Date | null;
+    defaultValue?: Date;
 
     /**
      * Any props to be passed on to the `DatePicker` other than the `value` and `onChange` props as they come directly

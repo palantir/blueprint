@@ -56,7 +56,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * Initial day the calendar will display as selected.
      * This should not be set if `value` is set.
      */
-    defaultValue?: Date | null;
+    defaultValue?: Date;
 
     /**
      * Whether the current day should be highlighted in the calendar.
