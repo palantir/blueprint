@@ -164,7 +164,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     }
 
     public componentDidMount() {
-        this.moveSelectionIndicator(true);
+        this.moveSelectionIndicator(false);
     }
 
     public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
@@ -266,7 +266,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
      * Calculate the new height, width, and position of the tab indicator.
      * Store the CSS values so the transition animation can start.
      */
-    private moveSelectionIndicator(skipTransition?: boolean) {
+    private moveSelectionIndicator(animate = true) {
         if (this.tablistElement == null || !this.props.animate) {
             return;
         }
@@ -281,8 +281,11 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
                 height: clientHeight,
                 transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
                 width: clientWidth,
-                ...(skipTransition ? { transitionDuration: "0s" } : {}),
             };
+
+            if (!animate) {
+                indicatorWrapperStyle.transition = "none";
+            }
         }
         this.setState({ indicatorWrapperStyle });
     }
