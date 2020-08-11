@@ -107,7 +107,7 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
     };
 
     public render() {
-        const { className, disabled, fill, intent, large, small, round } = this.props;
+        const { className, disabled, fill, inputRef, intent, large, small, round } = this.props;
         const classes = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
@@ -134,7 +134,7 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
                     type="text"
                     {...removeNonHTMLProps(this.props)}
                     className={Classes.INPUT}
-                    inputRef={this.props.inputRef}
+                    inputRef={inputRef}
                     style={style}
                 />
                 {this.maybeRenderRightElement()}
