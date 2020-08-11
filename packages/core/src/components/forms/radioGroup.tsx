@@ -35,7 +35,7 @@ export interface IRadioGroupProps extends IProps {
     inline?: boolean;
 
     /** Optional label text to display above the radio buttons. */
-    label?: string;
+    label?: React.ReactNode;
 
     /**
      * Name of the group, used to link radio buttons together in HTML.
