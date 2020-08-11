@@ -752,7 +752,7 @@ describe("<NumericInput>", () => {
                 const inputField = component.find("input");
 
                 inputField.simulate("change", { target: { value: "-5" } });
-                inputField.simulate("blur");
+                inputField.simulate("blur", { target: { value: "-5" } });
                 expect(component.state().value).to.equal(MIN.toString());
             });
 
@@ -762,7 +762,7 @@ describe("<NumericInput>", () => {
                 const inputField = component.find("input");
 
                 inputField.simulate("change", { target: { value: "5" } });
-                inputField.simulate("blur");
+                inputField.simulate("blur", { target: { value: "5" } });
                 expect(component.state().value).to.equal(MAX.toString());
             });
 
@@ -775,7 +775,7 @@ describe("<NumericInput>", () => {
                 const inputField = component.find("input");
 
                 inputField.simulate("change", { target: { value: "-5" } });
-                inputField.simulate("blur");
+                inputField.simulate("blur", { target: { value: "-5" } });
 
                 const args = onValueChange.getCall(1).args;
                 expect(onValueChange.calledTwice).to.be.true;
