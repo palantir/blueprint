@@ -16,7 +16,7 @@ It is optimized for building complex, data-dense web interfaces for _desktop app
 
 ## Changelog
 
-Blueprint's change log and migration guides for major verions live on the repo's [Github wiki](https://github.com/palantir/blueprint/wiki/3.x-Changelog).
+Blueprint's change log and migration guides for major versions live on the repo's [Github wiki](https://github.com/palantir/blueprint/wiki/3.x-Changelog).
 
 ## Packages
 
