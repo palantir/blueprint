@@ -210,6 +210,20 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (anyInvalidChildren) {
             throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
         }
+
+        // don't allow supplied values to be outside of min/max range
+        let anyOutOfBoundsChildren = false;
+        React.Children.forEach(props.children, (child: Handle) => {
+            const { value, min, max } = child.props;
+
+            // make sure this child's values are within parent range and individual range
+            if (value < min || value > max || value < props.min || value > props.max) {
+                anyOutOfBoundsChildren = true;
+            }
+        });
+        if (anyOutOfBoundsChildren) {
+            throw new Error(Errors.MULTISLIDER_OUT_OF_BOUNDS);
+        }
     }
 
     private formatLabel(value: number): React.ReactChild {

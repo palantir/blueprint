@@ -63,9 +63,19 @@ export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
     }
 
     protected validateProps(props: IRangeSliderProps) {
-        const { value } = props;
+        const { value, min, max } = props;
         if (value == null || value[RangeIndex.START] == null || value[RangeIndex.END] == null) {
             throw new Error(Errors.RANGESLIDER_NULL_VALUE);
+        }
+
+        // don't allow supplied value to be outside of min/max range
+        if (
+            value[RangeIndex.START] < min ||
+            value[RangeIndex.END] > max ||
+            value[RangeIndex.START] > max ||
+            value[RangeIndex.END] < min
+        ) {
+            throw new Error(Errors.RANGESLIDER_OUT_OF_BOUNDS);
         }
     }
 }
