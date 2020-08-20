@@ -24,6 +24,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
+import * as Errors from "../../src/common/errors";
 
 const STEP_SIZE = 20;
 
@@ -156,17 +157,6 @@ describe("<MultiSlider>", () => {
             assert.equal(onChange.callCount, 1, "higher handle invokes onChange");
             assert.deepEqual(onChange.firstCall.args[0], [5, 5, 9], "higher handle moves");
         });
-
-        it("values outside of bounds are clamped", () => {
-            const slider = renderSlider({ values: [-1, 5, 12] });
-            slider.find(`.${Classes.SLIDER_PROGRESS}`).forEach(progress => {
-                const { left, right } = progress.prop("style");
-                // CSS properties are percentage strings, but parsing will ignore trailing "%".
-                // percentages should be in 0-100% range.
-                assert.isAtLeast(parseFloat(left.toString()), 0);
-                assert.isAtMost(parseFloat(right.toString()), 100);
-            });
-        });
     });
 
     describe("labels", () => {
@@ -178,7 +168,7 @@ describe("<MultiSlider>", () => {
 
         it("renders all labels even when floating point approx would cause the last one to be skipped", () => {
             // [0  0.14  0.28  0.42  0.56  0.70]
-            const wrapper = renderSlider({ min: 0, max: 0.7, labelStepSize: 0.14 });
+            const wrapper = renderSlider({ values: [0, 0.14, 0.28], min: 0, max: 0.7, labelStepSize: 0.14 });
             assertLabelCount(wrapper, 6);
         });
 
@@ -303,6 +293,16 @@ describe("<MultiSlider>", () => {
             [0, -10].forEach(labelStepSize => {
                 expectPropValidationError(MultiSlider, { labelStepSize }, "greater than zero");
             });
+        });
+
+        it("throws error if values are outside of bounds", () => {
+            expectPropValidationError(
+                MultiSlider,
+                {
+                    children: <MultiSlider.Handle value={11} />,
+                },
+                Errors.MULTISLIDER_OUT_OF_BOUNDS,
+            );
         });
     });
 

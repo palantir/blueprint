@@ -24,6 +24,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { Classes, RangeSlider } from "../../src";
 import { ARROW_DOWN } from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
+import * as Errors from "../../src/common/errors";
 
 const STEP_SIZE = 20;
 
@@ -64,6 +65,16 @@ describe("<RangeSlider>", () => {
         handles.first().simulate("keydown", { which: ARROW_DOWN });
         handles.last().simulate("keydown", { which: ARROW_DOWN });
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
+    });
+
+    it("throws error if values are outside of bounds", () => {
+        expectPropValidationError(
+            RangeSlider,
+            {
+                value: [-1, 11],
+            },
+            Errors.RANGESLIDER_OUT_OF_BOUNDS,
+        );
     });
 
     function renderSlider(slider: JSX.Element) {
