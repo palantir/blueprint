@@ -88,7 +88,8 @@ export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be grea
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 export const RANGESLIDER_OUT_OF_BOUNDS = ns + ` <RangeSlider> value prop must be within range of min, max props`;
 export const MULTISLIDER_INVALID_CHILD = ns + ` <MultiSlider> children must be <SliderHandle>s or <SliderTrackStop>s`;
-export const MULTISLIDER_OUT_OF_BOUNDS = ns + ` <MultiSlider> value prop must be within range of min, max props`;
+export const MULTISLIDER_OUT_OF_BOUNDS =
+    ns + ` <MultiSlider> children's value props must be within range of min, max props`;
 
 export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE are ignored if size prop is set.`;
 
