@@ -22,9 +22,9 @@ import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
+import * as Errors from "../../src/common/errors";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
-import * as Errors from "../../src/common/errors";
 
 const STEP_SIZE = 20;
 
