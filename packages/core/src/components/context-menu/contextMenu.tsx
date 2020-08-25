@@ -120,7 +120,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
         if (!nextOpenState) {
             // delay the actual hiding till the event queue clears
             // to avoid flicker of opening twice
-            requestAnimationFrame(() => this.hide());
+            this.requestAnimationFrame(() => this.hide());
         }
     };
 }

@@ -35,6 +35,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
 
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];
+    private requestIds: number[] = [];
 
     constructor(props?: P, context?: any) {
         super(props, context);
@@ -51,11 +52,23 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
 
     public componentWillUnmount() {
         this.clearTimeouts();
+        this.cancelAnimationFrames();
+    }
+
+    /**
+     * Request an animation frame and remember its ID.
+     * All pending requests will be canceled when component unmounts.
+     * @returns a "cancel" function that will cancel the request when invoked.
+     */
+    public requestAnimationFrame(callback: () => void) {
+        const handle = window.requestAnimationFrame(callback);
+        this.requestIds.push(handle);
+        return () => window.cancelAnimationFrame(handle);
     }
 
     /**
      * Set a timeout and remember its ID.
-     * All stored timeouts will be cleared when component unmounts.
+     * All pending timeouts will be cleared when component unmounts.
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {
@@ -73,6 +86,18 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
                 window.clearTimeout(timeoutId);
             }
             this.timeoutIds = [];
+        }
+    };
+
+    /**
+     * Clear all known animation frame requests.
+     */
+    public cancelAnimationFrames = () => {
+        if (this.requestIds.length > 0) {
+            for (const requestId of this.requestIds) {
+                window.cancelAnimationFrame(requestId);
+            }
+            this.requestIds = [];
         }
     };
 

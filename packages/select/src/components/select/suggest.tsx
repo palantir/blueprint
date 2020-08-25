@@ -223,7 +223,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             if (this.inputEl != null) {
                 const input = getRef(this.inputEl);
                 input.setSelectionRange(0, input.value.length);
@@ -284,7 +284,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             const isInputFocused = getRef(this.inputEl) === document.activeElement;
 
             if (this.inputEl != null && !isInputFocused) {

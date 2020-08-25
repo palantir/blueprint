@@ -193,7 +193,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             const isInputFocused = this.input === document.activeElement;
 
             if (this.input != null && !isInputFocused) {

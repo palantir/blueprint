@@ -109,7 +109,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
     }
 
     public componentDidMount() {
-        requestAnimationFrame(() => this.positionArrows());
+        this.requestAnimationFrame(() => this.positionArrows());
     }
 
     public componentDidUpdate() {

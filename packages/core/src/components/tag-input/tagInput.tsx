@@ -362,7 +362,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     };
 
     private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
             if (!currentTarget.contains(document.activeElement)) {
