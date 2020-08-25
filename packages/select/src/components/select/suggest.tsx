@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
     getRef,
     HTMLInputProps,
@@ -103,7 +104,7 @@ export interface ISuggestState<T> {
     selectedItem: T | null;
 }
 
-export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
+export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
     public static defaultProps: Partial<ISuggestProps<any>> = {
