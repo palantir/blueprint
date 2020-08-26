@@ -19,7 +19,6 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
@@ -169,30 +168,30 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
     private handleCaretClick = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         const { isExpanded, onCollapse, onExpand } = this.props;
-        safeInvoke(isExpanded ? onCollapse : onExpand, this, e);
+        (isExpanded ? onCollapse : onExpand)?.(this, e);
     };
 
     private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onClick, this, e);
+        this.props.onClick?.(this, e);
     };
 
     private handleContentRef = (element: HTMLDivElement | null) => {
-        safeInvoke(this.props.contentRef, this, element);
+        this.props.contentRef?.(this, element);
     };
 
     private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onContextMenu, this, e);
+        this.props.onContextMenu?.(this, e);
     };
 
     private handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onDoubleClick, this, e);
+        this.props.onDoubleClick?.(this, e);
     };
 
     private handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onMouseEnter, this, e);
+        this.props.onMouseEnter?.(this, e);
     };
 
     private handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onMouseLeave, this, e);
+        this.props.onMouseLeave?.(this, e);
     };
 }

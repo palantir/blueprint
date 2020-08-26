@@ -24,7 +24,6 @@ import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import { findDOMNode } from "react-dom";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 export interface IOverlayableProps extends IOverlayLifecycleProps {
@@ -414,13 +413,13 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         const { backdropProps, canOutsideClickClose, enforceFocus, onClose } = this.props;
         if (canOutsideClickClose) {
-            safeInvoke(onClose, e);
+            onClose?.(e);
         }
         if (enforceFocus) {
             // make sure document.activeElement is updated before bringing the focus back
             this.bringFocusInsideOverlay();
         }
-        safeInvoke(backdropProps.onMouseDown, e);
+        backdropProps.onMouseDown?.(e);
     };
 
     private handleDocumentClick = (e: MouseEvent) => {
@@ -439,7 +438,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
         if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event
-            safeInvoke(onClose, e as any);
+            onClose?.(e as any);
         }
     };
 
@@ -464,7 +463,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
         /* eslint-disable-next-line deprecation/deprecation */
         if (e.which === Keys.ESCAPE && canEscapeKeyClose) {
-            safeInvoke(onClose, e);
+            onClose?.(e);
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }

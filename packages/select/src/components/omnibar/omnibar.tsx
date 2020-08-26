@@ -24,7 +24,6 @@ import {
     InputGroup,
     IOverlayProps,
     Overlay,
-    Utils,
 } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
@@ -105,7 +104,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
     };
 
     private handleOverlayClose = (event?: React.SyntheticEvent<HTMLElement>) => {
-        Utils.safeInvokeMember(this.props.overlayProps, "onClose", event);
-        Utils.safeInvoke(this.props.onClose, event);
+        this.props.overlayProps?.onClose?.(event);
+        this.props.onClose?.(event);
     };
 }

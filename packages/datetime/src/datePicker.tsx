@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
@@ -347,7 +347,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     }
 
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
-        Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
+        this.props.dayPickerProps.onDayClick?.(day, modifiers, e);
         if (modifiers.disabled) {
             return;
         }
@@ -374,7 +374,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         }
 
         const datePickerShortcut = { ...shortcut, date: shortcut.dateRange[0] };
-        Utils.safeInvoke(onShortcutChange, datePickerShortcut, selectedShortcutIndex);
+        onShortcutChange?.(datePickerShortcut, selectedShortcutIndex);
     };
 
     private updateDay = (day: Date) => {
@@ -421,7 +421,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
             this.updateValue(date, false, this.ignoreNextMonthChange);
             this.ignoreNextMonthChange = false;
         }
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, date);
+        this.props.dayPickerProps.onMonthChange?.(date);
     };
 
     private handleTodayClick = () => {
@@ -434,7 +434,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     };
 
     private handleTimeChange = (time: Date) => {
-        Utils.safeInvoke(this.props.timePickerProps.onChange, time);
+        this.props.timePickerProps.onChange?.(time);
         const { value } = this.state;
         const newValue = DateUtils.getDateTime(value != null ? value : new Date(), time);
         this.updateValue(newValue, true);
@@ -445,7 +445,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
      */
     private updateValue(value: Date, isUserChange: boolean, skipOnChange = false) {
         if (!skipOnChange) {
-            Utils.safeInvoke(this.props.onChange, value, isUserChange);
+            this.props.onChange?.(value, isUserChange);
         }
         if (this.props.value === undefined) {
             this.setState({ value });

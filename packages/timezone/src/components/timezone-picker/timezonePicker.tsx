@@ -223,7 +223,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         );
     };
 
-    private handleItemSelect = (timezone: ITimezoneItem) => Utils.safeInvoke(this.props.onChange, timezone.timezone);
+    private handleItemSelect = (timezone: ITimezoneItem) => this.props.onChange?.(timezone.timezone);
 
     private handleQueryChange = (query: string) => this.setState({ query });
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { EditableText, IIntentProps, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import * as Classes from "../common/classes";
@@ -117,6 +117,6 @@ export class EditableName extends React.PureComponent<IEditableNameProps, IEdita
 
     private invokeCallback(callback: (value: string, columnIndex?: number) => void, value: string) {
         const { index } = this.props;
-        CoreUtils.safeInvoke(callback, value, index);
+        callback?.(value, index);
     }
 }

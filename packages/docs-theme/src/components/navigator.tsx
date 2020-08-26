@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Classes, Icon, IInputGroupProps, MenuItem, Utils } from "@blueprintjs/core";
+import { Classes, Icon, IInputGroupProps, MenuItem } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { IHeadingNode, IPageNode } from "@documentalist/client";
@@ -55,7 +55,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
-            if (Utils.safeInvoke(this.props.itemExclude, node) === true) {
+            if (this.props.itemExclude?.(node) === true) {
                 // ignore excluded item
                 return;
             }

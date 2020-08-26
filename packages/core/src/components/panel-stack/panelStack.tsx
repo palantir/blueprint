@@ -21,7 +21,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 
@@ -168,7 +167,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         if (stack[0] !== panel || stack.length <= 1) {
             return;
         }
-        safeInvoke(this.props.onClose, panel);
+        this.props.onClose?.(panel);
         if (this.props.stack == null) {
             this.setState(state => ({
                 direction: "pop",
@@ -178,7 +177,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
     };
 
     private handlePanelOpen = (panel: IPanel) => {
-        safeInvoke(this.props.onOpen, panel);
+        this.props.onOpen?.(panel);
         if (this.props.stack == null) {
             this.setState(state => ({
                 direction: "push",

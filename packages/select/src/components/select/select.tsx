@@ -181,7 +181,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
-        Utils.safeInvoke(this.props.onItemSelect, item, event);
+        this.props.onItemSelect?.(item, event);
     };
 
     private handlePopoverInteraction = (isOpen: boolean) => {

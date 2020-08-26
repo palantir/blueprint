@@ -220,7 +220,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
         const { onCompleteRender, renderMode } = this.props;
 
         if (renderMode === RenderMode.NONE || (renderMode === RenderMode.BATCH && this.batcher.isDone())) {
-            CoreUtils.safeInvoke(onCompleteRender);
+            onCompleteRender?.();
         }
     }
 

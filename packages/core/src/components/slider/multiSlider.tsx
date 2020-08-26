@@ -360,7 +360,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
 
     private getHandlerForIndex = (index: number, callback?: (values: number[]) => void) => {
         return (newValue: number) => {
-            Utils.safeInvoke(callback, this.getNewHandleValues(newValue, index));
+            callback?.(this.getNewHandleValues(newValue, index));
         };
     };
 
@@ -402,10 +402,10 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         const handleProps = getSortedInteractiveHandleProps(this.props);
         const oldValues = handleProps.map(handle => handle.value);
         if (!Utils.arraysEqual(newValues, oldValues)) {
-            Utils.safeInvoke(this.props.onChange, newValues);
+            this.props.onChange?.(newValues);
             handleProps.forEach((handle, index) => {
                 if (oldValues[index] !== newValues[index]) {
-                    Utils.safeInvoke(handle.onChange, newValues[index]);
+                    handle.onChange?.(newValues[index]);
                 }
             });
         }
@@ -413,9 +413,9 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
 
     private handleRelease = (newValues: number[]) => {
         const handleProps = getSortedInteractiveHandleProps(this.props);
-        Utils.safeInvoke(this.props.onRelease, newValues);
+        this.props.onRelease?.(newValues);
         handleProps.forEach((handle, index) => {
-            Utils.safeInvoke(handle.onRelease, newValues[index]);
+            handle.onRelease?.(newValues[index]);
         });
     };
 

@@ -24,7 +24,6 @@ import {
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
     ALERT_WARN_CANCEL_PROPS,
 } from "../../common/errors";
-import { safeInvoke } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, IconName } from "../icon/icon";
@@ -182,7 +181,7 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
 
     private internalHandleCallbacks(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>) {
         const { onCancel, onClose, onConfirm } = this.props;
-        safeInvoke(confirmed ? onConfirm : onCancel, evt);
-        safeInvoke(onClose, confirmed, evt);
+        (confirmed ? onConfirm : onCancel)?.(evt);
+        onClose?.(confirmed, evt);
     }
 }

@@ -85,7 +85,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: (ref: HTMLDivElement | null) => void;
+    popoverRef?: (ref: HTMLElement | null) => void;
 
     /**
      * The target to which the popover content is attached. This can instead be
@@ -156,7 +156,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     private refHandlers = {
         popover: (ref: HTMLElement) => {
             this.popoverElement = ref;
-            Utils.safeInvoke(this.props.popoverRef, ref);
+            this.props.popoverRef?.(ref);
         },
         target: (ref: HTMLElement) => (this.targetElement = ref),
     };
@@ -250,7 +250,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
      * without changing its _size_ (since `Popover` already repositions when it
      * detects a resize).
      */
-    public reposition = () => Utils.safeInvoke(this.popperScheduleUpdate);
+    public reposition = () => this.popperScheduleUpdate?.();
 
     protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
         if (props.isOpen == null && props.onInteraction != null) {
@@ -438,9 +438,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter(e);
+            this.handleMouseEnter((e as unknown) as React.MouseEvent<HTMLElement>);
         }
-        Utils.safeInvokeMember(this.props.targetProps, "onFocus", e);
+        this.props.targetProps?.onFocus(e);
     };
 
     private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
@@ -451,14 +451,14 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
             // close the popover if necessary.
             if (e.relatedTarget != null && !this.isElementInPopover(e.relatedTarget as HTMLElement)) {
-                this.handleMouseLeave(e);
+                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;
-        Utils.safeInvokeMember(this.props.targetProps, "onBlur", e);
+        this.props.targetProps?.onBlur?.(e);
     };
 
-    private handleMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
+    private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = true;
 
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
@@ -474,10 +474,10 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             // only begin opening popover when it is enabled
             this.setOpenState(true, e, this.props.hoverOpenDelay);
         }
-        Utils.safeInvokeMember(this.props.targetProps, "onMouseEnter", e);
+        this.props.targetProps?.onMouseEnter?.(e);
     };
 
-    private handleMouseLeave = (e: React.SyntheticEvent<HTMLElement>) => {
+    private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = false;
 
         // wait until the event queue is flushed, because we want to leave the
@@ -490,7 +490,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             // user-configurable closing delay is helpful when moving mouse from target to popover
             this.setOpenState(false, e, this.props.hoverCloseDelay);
         });
-        Utils.safeInvokeMember(this.props.targetProps, "onMouseLeave", e);
+        this.props.targetProps?.onMouseLeave?.(e);
     };
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -524,24 +524,24 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 this.setOpenState(!this.props.isOpen, e);
             }
         }
-        Utils.safeInvokeMember(this.props.targetProps, "onClick", e);
+        this.props.targetProps?.onClick?.(e);
     };
 
     // a wrapper around setState({isOpen}) that will call props.onInteraction instead when in controlled mode.
     // starts a timeout to delay changing the state if a non-zero duration is provided.
     private setOpenState(isOpen: boolean, e?: React.SyntheticEvent<HTMLElement>, timeout?: number) {
         // cancel any existing timeout because we have new state
-        Utils.safeInvoke(this.cancelOpenTimeout);
+        this.cancelOpenTimeout?.();
         if (timeout > 0) {
             this.cancelOpenTimeout = this.setTimeout(() => this.setOpenState(isOpen, e), timeout);
         } else {
             if (this.props.isOpen == null) {
                 this.setState({ isOpen });
             } else {
-                Utils.safeInvoke(this.props.onInteraction, isOpen, e);
+                this.props.onInteraction?.(isOpen, e);
             }
             if (!isOpen) {
-                Utils.safeInvoke(this.props.onClose, e);
+                this.props.onClose?.(e);
             }
         }
     }
