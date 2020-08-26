@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent2, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -142,10 +142,9 @@ export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
 
         const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
 
-        const maybeMenu = enableRowHeader && CoreUtils.safeInvoke(this.props.menuRenderer);
-        const maybeRowHeader =
-            enableRowHeader && CoreUtils.safeInvoke(this.props.rowHeaderCellRenderer, showFrozenRowsOnly);
-        const maybeColumnHeader = CoreUtils.safeInvoke(this.props.columnHeaderCellRenderer, showFrozenColumnsOnly);
+        const maybeMenu = enableRowHeader && this.props.menuRenderer?.();
+        const maybeRowHeader = enableRowHeader && this.props.rowHeaderCellRenderer?.(showFrozenRowsOnly);
+        const maybeColumnHeader = this.props.columnHeaderCellRenderer?.(showFrozenColumnsOnly);
         const body =
             quadrantType != null
                 ? bodyRenderer(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)

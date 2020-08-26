@@ -14,16 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    Classes as CoreClasses,
-    DISPLAYNAME_PREFIX,
-    HTMLSelect,
-    Icon,
-    Intent,
-    IProps,
-    Keys,
-    Utils as BlueprintUtils,
-} from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, IProps, Keys } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -316,17 +307,17 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         }
     };
 
-    private getInputBlurHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private getInputBlurHandler = (unit: TimeUnit) => (e: React.FocusEvent<HTMLInputElement>) => {
         const text = getStringValueFromInputEvent(e);
         this.updateTime(parseInt(text, 10), unit);
-        BlueprintUtils.safeInvoke(this.props.onBlur, e, unit);
+        this.props.onBlur?.(e, unit);
     };
 
-    private getInputFocusHandler = (unit: TimeUnit) => (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private getInputFocusHandler = (unit: TimeUnit) => (e: React.FocusEvent<HTMLInputElement>) => {
         if (this.props.selectAllOnFocus) {
             e.currentTarget.select();
         }
-        BlueprintUtils.safeInvoke(this.props.onFocus, e, unit);
+        this.props.onFocus?.(e, unit);
     };
 
     private getInputKeyDownHandler = (unit: TimeUnit) => (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -337,11 +328,11 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
                 (e.currentTarget as HTMLInputElement).blur();
             },
         });
-        BlueprintUtils.safeInvoke(this.props.onKeyDown, e, unit);
+        this.props.onKeyDown?.(e, unit);
     };
 
     private getInputKeyUpHandler = (unit: TimeUnit) => (e: React.KeyboardEvent<HTMLInputElement>) => {
-        BlueprintUtils.safeInvoke(this.props.onKeyUp, e, unit);
+        this.props.onKeyUp?.(e, unit);
     };
 
     private handleAmPmChange = (e: React.SyntheticEvent<HTMLSelectElement>) => {
@@ -421,7 +412,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         }
 
         if (hasNewValue) {
-            BlueprintUtils.safeInvoke(this.props.onChange, newState.value);
+            this.props.onChange?.(newState.value);
         }
     }
 }

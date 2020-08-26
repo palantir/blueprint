@@ -24,7 +24,6 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 
 export interface IControlProps extends IProps, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
@@ -280,11 +279,11 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
             this.setState({ indeterminate });
         }
         // otherwise wait for props change. always invoke handler.
-        safeInvoke(this.props.onChange, evt);
+        this.props.onChange?.(evt);
     };
 
     private handleInputRef = (ref: HTMLInputElement) => {
         this.input = ref;
-        safeInvoke(this.props.inputRef, ref);
+        this.props.inputRef?.(ref);
     };
 }

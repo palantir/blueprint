@@ -185,7 +185,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         super(props, context);
 
         const { query = "" } = props;
-        const createNewItem = Utils.safeInvoke(props.createNewItemFromQuery, query);
+        const createNewItem = props.createNewItemFromQuery?.(query);
         const filteredItems = getFilteredItems(query, props);
 
         this.state = {
@@ -290,7 +290,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         this.shouldCheckActiveItemInViewport = true;
         const hasQueryChanged = query !== this.state.query;
         if (hasQueryChanged) {
-            Utils.safeInvoke(props.onQueryChange, query);
+            props.onQueryChange?.(query);
         }
 
         // Leading and trailing whitespace can be confusing to display, so we remove it when passing it
@@ -323,9 +323,9 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         }
 
         if (isCreateNewItem(activeItem)) {
-            Utils.safeInvoke(this.props.onActiveItemChange, null, true);
+            this.props.onActiveItemChange?.(null, true);
         } else {
-            Utils.safeInvoke(this.props.onActiveItemChange, activeItem, false);
+            this.props.onActiveItemChange?.(activeItem, false);
         }
     }
 
@@ -377,7 +377,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             this.handleItemCreate(query, evt);
         };
         const isActive = isCreateNewItem(activeItem);
-        return Utils.safeInvoke(this.props.createNewItemRenderer, query, isActive, handleClick);
+        return this.props.createNewItemRenderer?.(query, isActive, handleClick);
     };
 
     private getActiveElement() {
@@ -419,16 +419,16 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     private handleItemCreate = (query: string, evt?: React.SyntheticEvent<HTMLElement>) => {
         // we keep a cached createNewItem in state, but might as well recompute
         // the result just to be sure it's perfectly in sync with the query.
-        const item = Utils.safeInvoke(this.props.createNewItemFromQuery, query);
+        const item = this.props.createNewItemFromQuery?.(query);
         if (item != null) {
-            Utils.safeInvoke(this.props.onItemSelect, item, evt);
+            this.props.onItemSelect?.(item, evt);
             this.maybeResetQuery();
         }
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setActiveItem(item);
-        Utils.safeInvoke(this.props.onItemSelect, item, event);
+        this.props.onItemSelect?.(item, event);
         this.maybeResetQuery();
     };
 
@@ -450,7 +450,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 nextActiveItem = equalItem;
                 pastedItemsToEmit.push(equalItem);
             } else if (this.canCreateItems()) {
-                const newItem = Utils.safeInvoke(createNewItemFromQuery, query);
+                const newItem = createNewItemFromQuery?.(query);
                 if (newItem !== undefined) {
                     pastedItemsToEmit.push(newItem);
                 }
@@ -470,7 +470,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             this.setActiveItem(nextActiveItem);
         }
 
-        Utils.safeInvoke(onItemsPaste, pastedItemsToEmit);
+        onItemsPaste?.(pastedItemsToEmit);
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -485,7 +485,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             this.isEnterKeyPressed = true;
         }
 
-        Utils.safeInvoke(this.props.onKeyDown, event);
+        this.props.onKeyDown?.(event);
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -506,13 +506,13 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             this.isEnterKeyPressed = false;
         }
 
-        Utils.safeInvoke(onKeyUp, event);
+        onKeyUp?.(event);
     };
 
     private handleInputQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
         const query = event == null ? "" : event.target.value;
         this.setQuery(query);
-        Utils.safeInvoke(this.props.onQueryChange, query, event);
+        this.props.onQueryChange?.(query, event);
     };
 
     /**

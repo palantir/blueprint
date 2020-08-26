@@ -15,7 +15,7 @@
  */
 
 import { Children, ReactElement, ReactNode } from "react";
-import { isElementOfType, safeInvoke } from "../../common/utils";
+import { isElementOfType } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
@@ -102,7 +102,7 @@ export class HotkeysEvents {
                     (e as any).isPropagationStopped = true;
                     e.stopPropagation();
                 }
-                safeInvoke(action.props[callbackName], e);
+                action.props[callbackName]?.(e);
             }
         }
     }

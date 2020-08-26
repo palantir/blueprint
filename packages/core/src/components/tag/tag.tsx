@@ -162,6 +162,6 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
     }
 
     private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        Utils.safeInvoke(this.props.onRemove, e, this.props);
+        this.props.onRemove?.(e, this.props);
     };
 }

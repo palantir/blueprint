@@ -40,7 +40,8 @@ describe("Utils", () => {
         assert.isFalse(Utils.isReactNodeEmpty([null, <div key="div" />]), "array");
     });
 
-    it("safeInvoke", () => {
+    /* eslint-disable deprecation/deprecation */
+    it.skip("safeInvoke", () => {
         assert.doesNotThrow(() => Utils.safeInvoke(undefined, 1, "2", true, 4));
 
         // try the max number of args (4)
@@ -49,7 +50,7 @@ describe("Utils", () => {
         assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
     });
 
-    it("safeInvokeOrValue", () => {
+    it.skip("safeInvokeOrValue", () => {
         assert.doesNotThrow(() => Utils.safeInvokeOrValue(undefined, 1, "2", true, 4));
 
         // try the max number of args (4)
@@ -62,6 +63,7 @@ describe("Utils", () => {
         const result = Utils.safeInvokeOrValue(value);
         assert.strictEqual(result, value);
     });
+    /* eslint-enable deprecation/deprecation */
 
     it("elementIsOrContains", () => {
         const child = document.createElement("span");

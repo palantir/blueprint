@@ -267,7 +267,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             this.setState({ isOpen: nextOpenState });
         }
 
-        Utils.safeInvoke(this.props.onItemSelect, item, event);
+        this.props.onItemSelect?.(item, event);
     };
 
     private getInitialSelectedItem(): T | null {
@@ -334,19 +334,19 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
             }
 
             if (this.state.isOpen) {
-                Utils.safeInvoke(handleQueryListKeyDown, evt);
+                handleQueryListKeyDown?.(evt);
             }
 
-            Utils.safeInvokeMember(this.props.inputProps, "onKeyDown", evt);
+            this.props.inputProps?.onKeyDown?.(evt);
         };
     };
 
     private getTargetKeyUpHandler = (handleQueryListKeyUp: React.EventHandler<React.KeyboardEvent<HTMLElement>>) => {
         return (evt: React.KeyboardEvent<HTMLInputElement>) => {
             if (this.state.isOpen) {
-                Utils.safeInvoke(handleQueryListKeyUp, evt);
+                handleQueryListKeyUp?.(evt);
             }
-            Utils.safeInvokeMember(this.props.inputProps, "onKeyUp", evt);
+            this.props.inputProps?.onKeyUp?.(evt);
         };
     };
 

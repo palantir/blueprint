@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, DISPLAYNAME_PREFIX, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent2, DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -122,7 +122,7 @@ export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps,
             this.setState({ dateValue });
         }
         const value = DateUtils.getDateTime(dateValue, this.state.timeValue);
-        Utils.safeInvoke(this.props.onChange, value, isUserChange);
+        this.props.onChange?.(value, isUserChange);
     };
 
     public handleTimeChange = (timeValue: Date) => {
@@ -130,6 +130,6 @@ export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps,
             this.setState({ timeValue });
         }
         const value = DateUtils.getDateTime(this.state.dateValue, timeValue);
-        Utils.safeInvoke(this.props.onChange, value, true);
+        this.props.onChange?.(value, true);
     };
 }
