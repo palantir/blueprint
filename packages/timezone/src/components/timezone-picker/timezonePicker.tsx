@@ -29,7 +29,6 @@ import {
     IPopoverProps,
     IProps,
     MenuItem,
-    Utils,
 } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 
