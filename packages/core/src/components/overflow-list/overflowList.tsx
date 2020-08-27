@@ -21,8 +21,9 @@ import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { safeInvoke, shallowCompareKeys } from "../../common/utils";
-import { IResizeEntry, ResizeSensor } from "../resize-sensor/resizeSensor";
+import { shallowCompareKeys } from "../../common/utils";
+import { IResizeEntry } from "../resize-sensor/resizeObserverTypes";
+import { ResizeSensor } from "../resize-sensor/resizeSensor";
 
 /** @internal - do not expose this type */
 export enum OverflowDirection {
@@ -177,7 +178,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
             direction !== prevState.direction &&
             overflow.length !== lastOverflowCount
         ) {
-            safeInvoke(this.props.onOverflow, overflow);
+            this.props.onOverflow?.(overflow);
         }
     }
 

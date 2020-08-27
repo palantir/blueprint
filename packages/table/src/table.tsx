@@ -1273,7 +1273,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
         if (sparse != null) {
             const success = Clipboard.copyCells(sparse);
-            CoreUtils.safeInvoke(onCopy, success);
+            onCopy?.(success);
         }
     };
 
@@ -1660,7 +1660,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         // will only actually render once the viewportRect is defined though, so
         // we defer invoking onCompleteRender until that check passes.
         if (this.state.viewportRect != null) {
-            CoreUtils.safeInvoke(this.props.onCompleteRender);
+            this.props.onCompleteRender?.();
             this.didCompletelyMount = true;
         }
     };
@@ -2101,7 +2101,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             this.setState({ focusedCell });
         }
 
-        CoreUtils.safeInvoke(this.props.onFocusedCell, focusedCell);
+        this.props.onFocusedCell?.(focusedCell);
     };
 
     private handleSelection = (selectedRegions: IRegion[]) => {
@@ -2122,7 +2122,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ isReordering: false, verticalGuides: undefined });
-        CoreUtils.safeInvoke(this.props.onColumnsReordered, oldIndex, newIndex, length);
+        this.props.onColumnsReordered?.(oldIndex, newIndex, length);
     };
 
     private handleRowsReordering = (horizontalGuides: number[]) => {
@@ -2131,7 +2131,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
         this.setState({ isReordering: false, horizontalGuides: undefined });
-        CoreUtils.safeInvoke(this.props.onRowsReordered, oldIndex, newIndex, length);
+        this.props.onRowsReordered?.(oldIndex, newIndex, length);
     };
 
     private handleLayoutLock = (isLayoutLocked = false) => {
@@ -2168,7 +2168,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     private invokeOnVisibleCellsChangeCallback(viewportRect: Rect) {
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect);
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect);
-        CoreUtils.safeInvoke(this.props.onVisibleCellsChange, rowIndices, columnIndices);
+        this.props.onVisibleCellsChange?.(rowIndices, columnIndices);
     }
 
     private getMaxFrozenColumnIndex = () => {
@@ -2218,10 +2218,15 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
             agg: IResizeRowsByApproximateHeightResolvedOptions,
             key: keyof IResizeRowsByApproximateHeightOptions,
         ) => {
-            agg[key] =
-                options != null && options[key] != null
-                    ? CoreUtils.safeInvokeOrValue(options[key], rowIndex, columnIndex)
-                    : Table.resizeRowsByApproximateHeightDefaults[key];
+            const valueOrMapper = options?.[key];
+            if (typeof valueOrMapper === "function") {
+                agg[key] = valueOrMapper(rowIndex, columnIndex);
+            } else if (valueOrMapper != null) {
+                agg[key] = valueOrMapper;
+            } else {
+                agg[key] = Table.resizeRowsByApproximateHeightDefaults[key];
+            }
+
             return agg;
         };
         const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});

@@ -256,7 +256,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     };
 
     private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
-        Utils.safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
+        this.props.onChange?.(newTabId, this.state.selectedTabId, event);
         if (this.props.selectedTabId === undefined) {
             this.setState({ selectedTabId: newTabId });
         }

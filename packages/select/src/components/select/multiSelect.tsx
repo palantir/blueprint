@@ -183,12 +183,12 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
         if (this.input != null) {
             this.input.focus();
         }
-        Utils.safeInvoke(this.props.onItemSelect, item, evt);
+        this.props.onItemSelect?.(item, evt);
     };
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ isOpen: query.length > 0 || !this.props.openOnKeyDown });
-        Utils.safeInvoke(this.props.onQueryChange, query, evt);
+        this.props.onQueryChange?.(query, evt);
     };
 
     // Popover interaction kind is CLICK, so this only handles click events.
@@ -236,7 +236,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
             const isTargetingTagRemoveButton = (e.target as HTMLElement).closest(`.${CoreClasses.TAG_REMOVE}`) != null;
 
             if (this.state.isOpen && !isTargetingTagRemoveButton) {
-                Utils.safeInvoke(handleQueryListKeyDown, e);
+                handleQueryListKeyDown?.(e);
             }
         };
     };
@@ -248,7 +248,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
             // only handle events when the focus is on the actual <input> inside the TagInput, as that's
             // what QueryList is designed to do
             if (this.state.isOpen && isTargetingInput) {
-                Utils.safeInvoke(handleQueryListKeyUp, e);
+                handleQueryListKeyUp?.(e);
             }
         };
     };

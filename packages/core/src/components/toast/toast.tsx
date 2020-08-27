@@ -19,7 +19,6 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
@@ -113,7 +112,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
     }
 
     private handleActionClick = (e: React.MouseEvent<HTMLElement>) => {
-        safeInvoke(this.props.action.onClick, e);
+        this.props.action.onClick?.(e);
         this.triggerDismiss(false);
     };
 
@@ -121,7 +120,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
 
     private triggerDismiss(didTimeoutExpire: boolean) {
         this.clearTimeouts();
-        safeInvoke(this.props.onDismiss, didTimeoutExpire);
+        this.props.onDismiss?.(didTimeoutExpire);
     }
 
     private startTimeout = () => {

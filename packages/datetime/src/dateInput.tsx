@@ -34,7 +34,6 @@ import {
     isRefObject,
     Keys,
     Popover,
-    Utils,
 } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
@@ -213,7 +212,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             // onMonthChange is called. setTimeout is necessary to wait
             // for the updated month to be rendered
             onMonthChange: (month: Date) => {
-                Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, month);
+                this.props.dayPickerProps.onMonthChange?.(month);
                 this.setTimeout(this.registerPopoverBlurHandler);
             },
         };
@@ -279,7 +278,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
 
     private handleClosePopover = (e?: React.SyntheticEvent<HTMLElement>) => {
         const { popoverProps = {} } = this.props;
-        Utils.safeInvoke(popoverProps.onClose, e);
+        popoverProps.onClose?.(e);
         this.setState({ isOpen: false });
     };
 
@@ -307,7 +306,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         } else {
             this.setState({ isInputFocused, isOpen });
         }
-        Utils.safeInvoke(this.props.onChange, newDate, isUserChange);
+        this.props.onChange?.(newDate, isUserChange);
     };
 
     private hasMonthChanged(prevDate: Date | null, nextDate: Date | null) {
@@ -351,10 +350,10 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             } else {
                 this.setState({ valueString });
             }
-            Utils.safeInvoke(this.props.onChange, value, true);
+            this.props.onChange?.(value, true);
         } else {
             if (valueString.length === 0) {
-                Utils.safeInvoke(this.props.onChange, null, true);
+                this.props.onChange?.(null, true);
             }
             this.setState({ valueString });
         }
@@ -376,11 +375,11 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             }
 
             if (isNaN(date.valueOf())) {
-                Utils.safeInvoke(this.props.onError, new Date(undefined));
+                this.props.onError?.(new Date(undefined));
             } else if (!this.isDateInRange(date)) {
-                Utils.safeInvoke(this.props.onError, date);
+                this.props.onError?.(date);
             } else {
-                Utils.safeInvoke(this.props.onChange, date, true);
+                this.props.onChange?.(date, true);
             }
         } else {
             if (valueString.length === 0) {
@@ -469,7 +468,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
     private safeInvokeInputProp(name: keyof HTMLInputProps, e: React.SyntheticEvent<HTMLElement>) {
         const { inputProps = {} } = this.props;
-        Utils.safeInvoke(inputProps[name], e);
+        inputProps[name]?.(e);
     }
 
     private parseDate(dateString: string): Date | null {

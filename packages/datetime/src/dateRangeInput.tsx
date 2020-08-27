@@ -37,7 +37,6 @@ import {
     Keys,
     Popover,
     Position,
-    Utils,
 } from "@blueprintjs/core";
 
 import { DateRange } from "./common/dateRange";
@@ -47,6 +46,13 @@ import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { DateRangePicker } from "./dateRangePicker";
 import { IDateRangeShortcut } from "./shortcuts";
+
+// we handle events in a kind of generic way in this component, so here we enumerate all the different kinds of events which we have handlers for
+type InputEvent =
+    | React.MouseEvent<HTMLInputElement>
+    | React.KeyboardEvent<HTMLInputElement>
+    | React.FocusEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLInputElement>;
 
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
@@ -477,7 +483,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
             this.setState({ ...baseStateChange, selectedEnd, selectedStart });
         }
 
-        Utils.safeInvoke(this.props.onChange, selectedRange);
+        this.props.onChange?.(selectedRange);
     };
 
     private handleShortcutChange = (_: IDateRangeShortcut, selectedShortcutIndex: number) => {
@@ -529,15 +535,15 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     // instantiate these two functions once so we don't have to for each callback on each render.
 
-    private handleStartInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private handleStartInputEvent = (e: InputEvent) => {
         this.handleInputEvent(e, Boundary.START);
     };
 
-    private handleEndInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private handleEndInputEvent = (e: InputEvent) => {
         this.handleInputEvent(e, Boundary.END);
     };
 
-    private handleInputEvent = (e: React.SyntheticEvent<HTMLInputElement>, boundary: Boundary) => {
+    private handleInputEvent = (e: InputEvent, boundary: Boundary) => {
         switch (e.type) {
             case "blur":
                 this.handleInputBlur(e, boundary);
@@ -564,7 +570,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         const inputProps = this.getInputProps(boundary);
         const callbackFn = this.getInputGroupCallbackForEvent(e, inputProps);
 
-        Utils.safeInvoke(callbackFn, e);
+        callbackFn?.(e);
     };
 
     // add a keydown listener to persistently change focus when tabbing:
@@ -692,7 +698,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
                     [keys.selectedValue]: maybeNextDate,
                 };
             }
-            Utils.safeInvoke(this.props.onError, this.getDateRangeForCallback(maybeNextDate, boundary));
+            this.props.onError?.(this.getDateRangeForCallback(maybeNextDate, boundary));
         }
 
         this.setState(nextState);
@@ -717,7 +723,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
             } else {
                 nextState = { ...baseState, [keys.selectedValue]: null };
             }
-            Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(null, boundary));
+            this.props.onChange?.(this.getDateRangeForCallback(null, boundary));
         } else if (this.isDateValidAndInRange(maybeNextDate)) {
             // note that error cases that depend on both fields (e.g. overlapping dates) should fall
             // through into this block so that the UI can update immediately, possibly with an error
@@ -734,7 +740,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
                 nextState = { ...baseState, [keys.selectedValue]: maybeNextDate };
             }
             if (this.isNextDateRangeValid(maybeNextDate, boundary)) {
-                Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(maybeNextDate, boundary));
+                this.props.onChange?.(this.getDateRangeForCallback(maybeNextDate, boundary));
             }
         } else {
             // again, clear the hover string to ensure the most recent keystroke appears
@@ -749,7 +755,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     private handlePopoverClose = () => {
         this.setState({ isOpen: false });
-        Utils.safeInvoke(this.props.popoverProps.onClose);
+        this.props.popoverProps.onClose?.();
     };
 
     // Helpers
@@ -816,10 +822,10 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         }) as DateRange;
     };
 
-    private getInputGroupCallbackForEvent = (
+    private getInputGroupCallbackForEvent: (
         e: React.SyntheticEvent<HTMLInputElement>,
         inputProps: HTMLInputProps & IInputGroupProps,
-    ) => {
+    ) => ((event: InputEvent) => void) | undefined = (e, inputProps) => {
         // use explicit switch cases to ensure callback function names remain grep-able in the codebase.
         switch (e.type) {
             case "blur":
@@ -920,7 +926,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         }
     };
 
-    private getDateRangeForCallback = (currDate: Date | null, currBoundary?: Boundary) => {
+    private getDateRangeForCallback = (currDate: Date | null, currBoundary?: Boundary): DateRange => {
         const otherBoundary = this.getOtherBoundary(currBoundary);
         const otherDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
 

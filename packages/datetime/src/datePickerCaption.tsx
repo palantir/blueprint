@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IOptionProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IOptionProps } from "@blueprintjs/core";
 import * as React from "react";
 import { CaptionElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
@@ -138,8 +138,8 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
             }
             const newDate = clone(this.props.date);
             updater(newDate, value);
-            Utils.safeInvoke(this.props.onDateChange, newDate);
-            Utils.safeInvoke(handler, value);
+            this.props.onDateChange?.(newDate);
+            handler?.(value);
         };
     }
 }

@@ -189,7 +189,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
 
     private shouldIgnoreMouseDown(event: MouseEvent) {
         const { disabled } = this.props;
-        const isDisabled = CoreUtils.isFunction(disabled) ? CoreUtils.safeInvoke(disabled, event) : disabled;
+        const isDisabled = CoreUtils.isFunction(disabled) ? disabled?.(event) : disabled;
         return !Utils.isLeftClick(event) || isDisabled;
     }
 

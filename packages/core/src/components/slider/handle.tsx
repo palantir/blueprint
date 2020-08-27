@@ -19,7 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { clamp, safeInvoke } from "../../common/utils";
+import { clamp } from "../../common/utils";
 import { IHandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
@@ -165,9 +165,8 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         this.removeDocumentEventListeners();
         this.setState({ isMoving: false });
         // always invoke onRelease; changeValue may call onChange if value is different
-        const { onRelease } = this.props;
         const finalValue = this.changeValue(this.clientToValue(clientPixel));
-        safeInvoke(onRelease, finalValue);
+        this.props.onRelease?.(finalValue);
     };
 
     private handleHandleMovement = (event: MouseEvent) => {
@@ -203,7 +202,7 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
         /* eslint-disable-next-line deprecation/deprecation */
         if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {
-            safeInvoke(this.props.onRelease, this.props.value);
+            this.props.onRelease?.(this.props.value);
         }
     };
 
@@ -211,7 +210,7 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     private changeValue(newValue: number, callback = this.props.onChange) {
         newValue = this.clamp(newValue);
         if (!isNaN(newValue) && this.props.value !== newValue) {
-            safeInvoke(callback, newValue);
+            callback?.(newValue);
         }
         return newValue;
     }

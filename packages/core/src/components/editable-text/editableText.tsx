@@ -19,7 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
-import { clamp, safeInvoke } from "../../common/utils";
+import { clamp } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
@@ -262,7 +262,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         this.setState(state);
 
         if (this.state.isEditing && !prevState.isEditing) {
-            safeInvoke(this.props.onEdit, this.state.value);
+            this.props.onEdit?.(this.state.value);
         }
         this.updateInputDimensions();
     }
@@ -271,16 +271,16 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         const { lastValue, value } = this.state;
         this.setState({ isEditing: false, value: lastValue });
         if (value !== lastValue) {
-            safeInvoke(this.props.onChange, lastValue);
+            this.props.onChange?.(lastValue);
         }
-        safeInvoke(this.props.onCancel, lastValue);
+        this.props.onCancel?.(lastValue);
     };
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
             const { value } = this.state;
             this.setState({ isEditing: false, lastValue: value });
-            safeInvoke(this.props.onConfirm, value);
+            this.props.onConfirm?.(value);
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
@@ -305,7 +305,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         if (this.props.value == null) {
             this.setState({ value });
         }
-        safeInvoke(this.props.onChange, value);
+        this.props.onChange?.(value);
     };
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {

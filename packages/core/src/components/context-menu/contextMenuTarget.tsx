@@ -22,7 +22,7 @@ import {
     CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT,
     CONTEXTMENU_WARN_DECORATOR_NO_METHOD,
 } from "../../common/errors";
-import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
+import { getDisplayName, isFunction } from "../../common/utils";
 import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
@@ -68,7 +68,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                     }
                 }
 
-                safeInvoke(oldOnContextMenu, e);
+                oldOnContextMenu?.(e);
             };
 
             return React.cloneElement(element, { onContextMenu });
