@@ -97,7 +97,6 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     }
 
     public componentWillUnmount() {
-        super.componentWillUnmount();
         this.removeDocumentEventListeners();
     }
 

@@ -198,7 +198,6 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     };
 
     public componentWillUnmount() {
-        super.componentWillUnmount();
         this.unregisterPopoverBlurHandler();
     }
 

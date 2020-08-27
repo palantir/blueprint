@@ -58,9 +58,7 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(W
         }
 
         public componentWillUnmount() {
-            if (super.componentWillUnmount != null) {
-                super.componentWillUnmount();
-            }
+            super.componentWillUnmount?.();
             document.removeEventListener("keydown", this.globalHotkeysEvents.handleKeyDown);
             document.removeEventListener("keyup", this.globalHotkeysEvents.handleKeyUp);
 

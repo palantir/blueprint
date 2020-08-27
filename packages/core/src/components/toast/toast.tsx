@@ -98,7 +98,6 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
     }
 
     public componentWillUnmount() {
-        super.componentWillUnmount();
         this.clearTimeouts();
     }
 

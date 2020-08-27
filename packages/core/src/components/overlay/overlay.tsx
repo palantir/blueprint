@@ -271,7 +271,6 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     }
 
     public componentWillUnmount() {
-        super.componentWillUnmount();
         this.overlayWillClose();
     }
 

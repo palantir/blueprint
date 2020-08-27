@@ -109,7 +109,6 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     public componentWillUnmount() {
-        super.componentWillUnmount();
         if (this.portalElement != null) {
             if (cannotCreatePortal) {
                 ReactDOM.unmountComponentAtNode(this.portalElement);
