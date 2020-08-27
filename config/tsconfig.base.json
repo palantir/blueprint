@@ -1,5 +1,5 @@
 {
-    "version": "3.5.3",
+    "version": "3.9.7",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "declaration": true,
@@ -7,7 +7,13 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "jsx": "react",
-        "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable"],
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "es5",
+            "es2015.collection",
+            "es2015.iterable"
+        ],
         "module": "es2015",
         "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
@@ -20,6 +26,9 @@
         "sourceMap": true,
         "stripInternal": true,
         "target": "es5",
-        "typeRoots": ["../node_modules/@types"]
+        "typeRoots": [
+            "../node_modules/@types"
+        ],
+        "useDefineForClassFields": true
     }
 }
