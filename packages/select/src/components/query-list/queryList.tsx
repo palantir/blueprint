@@ -240,7 +240,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         if (this.shouldCheckActiveItemInViewport) {
             // update scroll position immediately before repaint so DOM is accurate
             // (latest filteredItems) and to avoid flicker.
-            requestAnimationFrame(() => this.scrollActiveItemIntoView());
+            this.requestAnimationFrame(() => this.scrollActiveItemIntoView());
             // reset the flag
             this.shouldCheckActiveItemInViewport = false;
         }

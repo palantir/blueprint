@@ -280,7 +280,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
      */
     public bringFocusInsideOverlay() {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
-        return requestAnimationFrame(() => {
+        return this.requestAnimationFrame(() => {
             // container ref may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
             if (this.containerElement == null || document.activeElement == null || !this.props.isOpen) {

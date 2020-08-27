@@ -17,6 +17,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
@@ -78,7 +79,7 @@ export interface IMultiSelectState {
     isOpen: boolean;
 }
 
-export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState> {
+export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static defaultProps = {
@@ -193,7 +194,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             const isInputFocused = this.input === document.activeElement;
 
             if (this.input != null && !isInputFocused) {

@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
     getRef,
     HTMLInputProps,
@@ -103,7 +104,7 @@ export interface ISuggestState<T> {
     selectedItem: T | null;
 }
 
-export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestState<T>> {
+export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
     public static defaultProps: Partial<ISuggestProps<any>> = {
@@ -223,7 +224,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
 
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             if (this.inputEl != null) {
                 const input = getRef(this.inputEl);
                 input.setSelectionRange(0, input.value.length);
@@ -284,7 +285,7 @@ export class Suggest<T> extends React.PureComponent<ISuggestProps<T>, ISuggestSt
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             const isInputFocused = getRef(this.inputEl) === document.activeElement;
 
             if (this.inputEl != null && !isInputFocused) {

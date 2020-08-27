@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     Button,
     DISPLAYNAME_PREFIX,
     getRef,
@@ -75,7 +76,7 @@ export interface ISelectState {
     isOpen: boolean;
 }
 
-export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState> {
+export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     public static ofType<T>() {
@@ -206,7 +207,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             this.queryList.scrollActiveItemIntoView();
         }
 
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false && this.inputEl != null) {
@@ -220,7 +221,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     private handlePopoverClosing = (node: HTMLElement) => {
         // restore focus to saved element.
         // timeout allows popover to begin closing and remove focus handlers beforehand.
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             if (this.previousFocusedElement !== undefined) {
                 this.previousFocusedElement.focus();
                 this.previousFocusedElement = undefined;
