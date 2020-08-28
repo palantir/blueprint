@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, isRefCallback, isRefObject } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -44,7 +44,7 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
     /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
-    inputRef?: (ref: HTMLTextAreaElement | null) => any;
+    inputRef?: IRef<HTMLTextAreaElement>;
 }
 
 export interface ITextAreaState {
@@ -68,7 +68,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
     }
     public componentDidUpdate(prevProps: ITextAreaProps) {
         if (this.props.inputRef && prevProps.inputRef !== this.props.inputRef) {
-            this.props.inputRef(this.internalTextAreaRef);
+            this.handleInternalRef(this.internalTextAreaRef);
         }
     }
     public render() {
@@ -122,8 +122,13 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
     // hold an internal ref for growVertically
     private handleInternalRef = (ref: HTMLTextAreaElement | null) => {
         this.internalTextAreaRef = ref;
-        if (this.props.inputRef != null) {
+
+        if (isRefCallback(this.props.inputRef)) {
             this.props.inputRef(ref);
+        }
+
+        if (isRefObject(this.props.inputRef)) {
+            this.props.inputRef.current = ref;
         }
     };
 }

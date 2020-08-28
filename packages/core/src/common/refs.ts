@@ -18,7 +18,7 @@ export type IRef<T = HTMLElement> = IRefObject<T> | IRefCallback<T>;
 
 // compatible with React.Ref type in @types/react@^16
 export interface IRefObject<T = HTMLElement> {
-    readonly current: T | null;
+    current: T | null;
 }
 
 export function isRefObject<T extends HTMLElement>(value: IRef<T> | undefined | null): value is IRefObject<T> {
