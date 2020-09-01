@@ -60,6 +60,11 @@ export interface IItemListRendererProps<T> {
      * to the owner component's `itemRenderer` prop.
      */
     renderItem: (item: T, index: number) => JSX.Element | null;
+
+    /**
+     * The rendered createIem.
+     */
+    createItemView: JSX.Element | null;
 }
 
 /** Type alias for a function that renders the list of items. */
