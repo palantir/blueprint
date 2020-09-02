@@ -373,11 +373,12 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     private renderCreateItemMenuItem = () => {
         if (this.isCreateItemRendered()) {
             const { activeItem, query } = this.state;
+            const trimmedQuery = query.trim();
             const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
-                this.handleItemCreate(query.trim(), evt);
+                this.handleItemCreate(trimmedQuery, evt);
             };
             const isActive = isCreateNewItem(activeItem);
-            return this.props.createNewItemRenderer!(query, isActive, handleClick);
+            return this.props.createNewItemRenderer!(trimmedQuery, isActive, handleClick);
         }
 
         return null;
