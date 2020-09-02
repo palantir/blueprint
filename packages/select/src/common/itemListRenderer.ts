@@ -63,8 +63,9 @@ export interface IItemListRendererProps<T> {
 
     /**
      * Call this function to render the "create new item" view component.
+     * @returns null when creating a new item is not available, and undefined if the createNewItemRenderer returns undefined
      */
-    renderCreateItem: () => JSX.Element | null;
+    renderCreateItem: () => JSX.Element | null | undefined;
 }
 
 /** Type alias for a function that renders the list of items. */

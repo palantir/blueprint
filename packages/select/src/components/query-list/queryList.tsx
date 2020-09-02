@@ -202,7 +202,6 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     public render() {
         const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
-        const renderCreateItem: () => this.isCreateItemRendered() ? this.renderCreateItemMenuItem(this.state.query.trim()) : null;
         return renderer({
             ...spreadableState,
             className,
@@ -215,8 +214,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
+                renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
-                renderCreateItem,
             }),
         });
     }
@@ -371,13 +370,17 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         return null;
     };
 
-    private renderCreateItemMenuItem = (query: string) => {
-        const { activeItem } = this.state;
-        const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
-            this.handleItemCreate(query, evt);
-        };
-        const isActive = isCreateNewItem(activeItem);
-        return this.props.createNewItemRenderer?.(query, isActive, handleClick);
+    private renderCreateItemMenuItem = () => {
+        if (this.isCreateItemRendered()) {
+            const { activeItem, query } = this.state;
+            const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
+                this.handleItemCreate(query.trim(), evt);
+            };
+            const isActive = isCreateNewItem(activeItem);
+            return this.props.createNewItemRenderer!(query, isActive, handleClick);
+        }
+
+        return null;
     };
 
     private getActiveElement() {
