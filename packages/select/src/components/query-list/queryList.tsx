@@ -214,6 +214,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
+                renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
             }),
         });
@@ -334,11 +335,9 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         const { initialContent, noResults } = this.props;
 
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
-        const maybeNoResults = this.isCreateItemRendered() ? null : noResults;
+        const createItemView = listProps.renderCreateItem();
+        const maybeNoResults = createItemView != null ? null : noResults;
         const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
-        const createItemView = this.isCreateItemRendered()
-            ? this.renderCreateItemMenuItem(this.state.query.trim())
-            : null;
         if (menuContent == null && createItemView == null) {
             return null;
         }
@@ -371,13 +370,18 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         return null;
     };
 
-    private renderCreateItemMenuItem = (query: string) => {
-        const { activeItem } = this.state;
-        const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
-            this.handleItemCreate(query, evt);
-        };
-        const isActive = isCreateNewItem(activeItem);
-        return this.props.createNewItemRenderer?.(query, isActive, handleClick);
+    private renderCreateItemMenuItem = () => {
+        if (this.isCreateItemRendered()) {
+            const { activeItem, query } = this.state;
+            const trimmedQuery = query.trim();
+            const handleClick: React.MouseEventHandler<HTMLElement> = evt => {
+                this.handleItemCreate(trimmedQuery, evt);
+            };
+            const isActive = isCreateNewItem(activeItem);
+            return this.props.createNewItemRenderer!(trimmedQuery, isActive, handleClick);
+        }
+
+        return null;
     };
 
     private getActiveElement() {

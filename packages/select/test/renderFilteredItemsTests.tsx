@@ -26,6 +26,7 @@ describe("renderFilteredItems()", () => {
         items: ["one", "two", "three"],
         itemsParentRef: sinon.stub(),
         query: "x",
+        renderCreateItem: () => undefined,
         renderItem: () => <div />,
     };
     const noResults = <strong />;
