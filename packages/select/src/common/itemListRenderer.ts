@@ -62,9 +62,9 @@ export interface IItemListRendererProps<T> {
     renderItem: (item: T, index: number) => JSX.Element | null;
 
     /**
-     * The rendered createIem.
+     * Call this function to render the "create new item" view component.
      */
-    createItemView: JSX.Element | null;
+    renderCreateItem: () => JSX.Element | null;
 }
 
 /** Type alias for a function that renders the list of items. */

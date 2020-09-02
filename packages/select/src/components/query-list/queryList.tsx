@@ -202,9 +202,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     public render() {
         const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
-        const createItemView = this.isCreateItemRendered()
-            ? this.renderCreateItemMenuItem(this.state.query.trim())
-            : null;
+        const renderCreateItem: () => this.isCreateItemRendered() ? this.renderCreateItemMenuItem(this.state.query.trim()) : null;
         return renderer({
             ...spreadableState,
             className,
@@ -218,7 +216,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
                 renderItem: this.renderItem,
-                createItemView,
+                renderCreateItem,
             }),
         });
     }
@@ -338,15 +336,16 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         const { initialContent, noResults } = this.props;
 
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
-        const maybeNoResults = listProps.createItemView != null ? null : noResults;
+        const createItemView = listProps.renderCreateItem();
+        const maybeNoResults = createItemView != null ? null : noResults;
         const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
-        if (menuContent == null && listProps.createItemView == null) {
+        if (menuContent == null && createItemView == null) {
             return null;
         }
         return (
             <Menu ulRef={listProps.itemsParentRef}>
                 {menuContent}
-                {listProps.createItemView}
+                {createItemView}
             </Menu>
         );
     };
