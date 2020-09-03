@@ -228,7 +228,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (this.props.labelRenderer === false) {
             return null;
         }
-        const { labelStepSize, max, min } = this.props;
+        const { test, max, min } = this.props;
 
         const labels: JSX.Element[] = [];
 
