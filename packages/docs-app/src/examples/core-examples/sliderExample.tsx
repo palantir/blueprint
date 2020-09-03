@@ -51,7 +51,7 @@ export class SliderExample extends React.PureComponent<IExampleProps, ISliderExa
                     min={0}
                     max={10}
                     stepSize={0.1}
-                    labelStepSize={[2, 5, 7, 10]}
+                    labelStepSize={10}
                     onChange={this.getChangeHandler("value2")}
                     value={this.state.value2}
                     vertical={vertical}
