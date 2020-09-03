@@ -41,7 +41,8 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
     disabled?: boolean;
 
     /**
-     * Increment between successive labels. Must be greater than zero.
+     * As a number, increment between successive labels. Must be greater than zero.
+     * As an array of numbers, places label that corresponds to each entry.
      * @default 1
      */
     labelStepSize?: number | number[];
