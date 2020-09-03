@@ -44,7 +44,7 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * Increment between successive labels. Must be greater than zero.
      * @default 1
      */
-    labelStepSize?: number;
+    labelStepSize?: number | number[];
 
     /**
      * Number of decimal places to use when rendering label value. Default value is the number of
@@ -196,7 +196,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (props.stepSize <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
-        if (props.labelStepSize <= 0) {
+        if (typeof props.labelStepSize === "number" && props.labelStepSize <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
 
@@ -230,21 +230,34 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         const { labelStepSize, max, min } = this.props;
 
         const labels: JSX.Element[] = [];
-        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
-        // step size lends itself naturally to a `for` loop
-        // eslint-disable-line one-var, no-sequences
-        for (
-            let i = min, offsetRatio = 0;
-            i < max || Utils.approxEqual(i, max);
-            i += labelStepSize, offsetRatio += stepSizeRatio
-        ) {
-            const offsetPercentage = formatPercentage(offsetRatio);
-            const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
-            labels.push(
-                <div className={Classes.SLIDER_LABEL} key={i} style={style}>
-                    {this.formatLabel(i)}
-                </div>,
-            );
+
+        if (typeof labelStepSize === "number") {
+            const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
+            // step size lends itself naturally to a `for` loop
+            // eslint-disable-line one-var, no-sequences
+            for (
+                let i = min, offsetRatio = 0;
+                i < max || Utils.approxEqual(i, max);
+                i += labelStepSize, offsetRatio += stepSizeRatio
+            ) {
+                const offsetPercentage = formatPercentage(offsetRatio);
+                const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
+                labels.push(
+                    <div className={Classes.SLIDER_LABEL} key={i} style={style}>
+                        {this.formatLabel(i)}
+                    </div>,
+                );
+            }
+        } else {
+            labelStepSize.forEach((step, i) => {
+                const offsetPercentage = formatPercentage(step / (max - min));
+                const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
+                labels.push(
+                    <div className={Classes.SLIDER_LABEL} key={i} style={style}>
+                        {this.formatLabel(step)}
+                    </div>,
+                );
+            });
         }
         return labels;
     }

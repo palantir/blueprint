@@ -170,10 +170,16 @@ describe("<MultiSlider>", () => {
     });
 
     describe("labels", () => {
-        it("renders label for value and for each labelStepSize", () => {
+        it("renders label for value and for each labelStepSize as a number", () => {
             // [0  10  20  30  40  50]
             const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: 10 });
             assertLabelCount(wrapper, 6);
+        });
+
+        it("renders label for value and for each labelStepSize as an array", () => {
+            const labelStepSize = [0, 30, 50, 60];
+            const wrapper = renderSlider({ min: 0, max: 50, labelStepSize });
+            assertLabelCount(wrapper, 4);
         });
 
         it("renders all labels even when floating point approx would cause the last one to be skipped", () => {
@@ -182,10 +188,16 @@ describe("<MultiSlider>", () => {
             assertLabelCount(wrapper, 6);
         });
 
-        it("renders result of labelRenderer() in each label", () => {
+        it("renders result of labelRenderer() in each label when labelStepSize is a number", () => {
             const labelRenderer = (val: number) => val + "#";
             const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: 10, labelRenderer });
             assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
+        });
+
+        it("renders result of labelRenderer() in each label when labelStepSize is an array", () => {
+            const labelRenderer = (val: number) => val + "#";
+            const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: [20, 40, 50], labelRenderer });
+            assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "20#40#50#");
         });
 
         it("default labelRenderer() fixes decimal places to labelPrecision", () => {
