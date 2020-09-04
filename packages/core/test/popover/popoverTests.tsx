@@ -688,6 +688,35 @@ describe("<Popover>", () => {
                 true,
             ));
 
+        it("Classes.POPOVER_DISMISS does not close if event is defaultPrevented", () => {
+            const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.preventDefault();
+            };
+            return assertClickToClose(
+                <a href="#" onClick={handleClick}>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </a>,
+                true,
+            );
+        });
+
+        it("Classes.POPOVER_DISMISS closes if ignoreDefaultPreventedOnDismiss is set even if event is defaultPrevented", () => {
+            const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.preventDefault();
+            };
+            return assertClickToClose(
+                <a href="#" onClick={handleClick}>
+                    <button className={Classes.POPOVER_DISMISS} id="btn">
+                        Dismiss
+                    </button>
+                </a>,
+                false,
+                { ignoreDefaultPreventedOnDismiss: true },
+            );
+        });
+
         it(":disabled does not close", () =>
             assertClickToClose(
                 <button className={Classes.POPOVER_DISMISS} disabled={true} id="btn">
@@ -729,8 +758,12 @@ describe("<Popover>", () => {
                 false,
             ));
 
-        function assertClickToClose(children: React.ReactNode, expectedIsOpen: boolean) {
-            wrapper = renderPopover({ defaultIsOpen: true }, children);
+        function assertClickToClose(
+            children: React.ReactNode,
+            expectedIsOpen: boolean,
+            popoverProps?: Partial<IPopoverProps>,
+        ) {
+            wrapper = renderPopover({ defaultIsOpen: true, ...popoverProps }, children);
             wrapper.find("#btn").simulate("click");
             wrapper.assertIsOpen(expectedIsOpen);
         }

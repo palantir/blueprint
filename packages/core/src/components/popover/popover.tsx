@@ -113,6 +113,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         hasBackdrop: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
+        ignoreDefaultPreventedOnDismiss: false,
         inheritDarkTheme: true,
         interactionKind: PopoverInteractionKind.CLICK,
         minimal: false,
@@ -499,7 +500,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         const dismissElement = eventTarget.closest(`.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`);
         const shouldDismiss = dismissElement != null && dismissElement.classList.contains(Classes.POPOVER_DISMISS);
         const isDisabled = eventTarget.closest(`:disabled, .${Classes.DISABLED}`) != null;
-        if (shouldDismiss && !isDisabled && !e.isDefaultPrevented()) {
+        if (shouldDismiss && !isDisabled && (this.props.ignoreDefaultPreventedOnDismiss || !e.isDefaultPrevented())) {
             this.setOpenState(false, e);
             if (this.props.captureDismiss) {
                 e.preventDefault();

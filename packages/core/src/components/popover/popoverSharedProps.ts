@@ -81,6 +81,14 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     hoverOpenDelay?: number;
 
     /**
+     * When enabled, popover will close after clicking on an element with
+     * `ClassesClasses.POPOVER_DISMISS` even if the event has defaultPrevented
+     * set to true (useful for allowing popover to close when clicking on a
+     * <Link /> react-router-dom component and similars)
+     */
+    ignoreDefaultPreventedOnDismiss?: boolean;
+
+    /**
      * Whether a popover that uses a `Portal` should automatically inherit the
      * dark theme from its parent.
      * @default true
