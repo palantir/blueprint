@@ -85,6 +85,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * `ClassesClasses.POPOVER_DISMISS` even if the event has defaultPrevented
      * set to true (useful for allowing popover to close when clicking on a
      * <Link /> react-router-dom component and similars)
+     * @default false
      */
     ignoreDefaultPreventedOnDismiss?: boolean;
 
