@@ -106,6 +106,12 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     endInputProps?: HTMLInputProps & IInputGroupProps;
 
     /**
+     * Whether the current day should be highlighted in the calendar.
+     * @default false
+     */
+    highlightCurrentDay?: boolean;
+
+    /**
      * Called when the user selects a day.
      * If no days are selected, it will pass `[null, null]`.
      * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.

@@ -91,6 +91,12 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     fill?: boolean;
 
     /**
+     * Whether the current day should be highlighted in the calendar.
+     * @default false
+     */
+    highlightCurrentDay?: boolean;
+
+    /**
      * Props to pass to the [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
