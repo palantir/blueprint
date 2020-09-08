@@ -64,15 +64,6 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * @default true
      */
     contiguousCalendarMonths?: boolean;
-    /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
-     * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
-     */
-    dayPickerProps?: DayPickerProps;
 
     /**
      * Initial `DateRange` the calendar will display as selected.
@@ -295,6 +286,27 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         }
     }
 
+    private shouldHighlightCurrentDay = (date: Date) => {
+        const { highlightCurrentDay } = this.props;
+
+        return highlightCurrentDay && DateUtils.isToday(date);
+    };
+
+    private getDateRangePickerModifiers = () => {
+        const { modifiers } = this.props;
+
+        return combineModifiers(this.modifiers, {
+            isToday: this.shouldHighlightCurrentDay,
+            ...modifiers,
+        });
+    };
+
+    private renderDay = (day: Date) => {
+        const date = day.getDate();
+
+        return <div className={DateClasses.DATEPICKER_DAY_WRAPPER}>{date}</div>;
+    };
+
     private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
 
     private getDisabledDaysModifier = () => {
@@ -382,7 +394,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         const dayPickerBaseProps: DayPickerProps = {
             locale,
             localeUtils,
-            modifiers: combineModifiers(this.modifiers, this.props.modifiers),
+            modifiers: this.getDateRangePickerModifiers(),
             showOutsideDays: true,
             ...dayPickerProps,
             disabledDays: this.getDisabledDaysModifier(),
@@ -403,6 +415,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
                     numberOfMonths={1}
                     onMonthChange={this.handleLeftMonthChange}
                     toMonth={maxDate}
+                    renderDay={dayPickerProps?.renderDay ?? this.renderDay}
                 />
             );
         } else {
@@ -418,6 +431,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
                     numberOfMonths={1}
                     onMonthChange={this.handleLeftMonthChange}
                     toMonth={DateUtils.getDatePreviousMonth(maxDate)}
+                    renderDay={dayPickerProps?.renderDay ?? this.renderDay}
                 />,
                 <DayPicker
                     key="right"
@@ -430,6 +444,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
                     numberOfMonths={1}
                     onMonthChange={this.handleRightMonthChange}
                     toMonth={maxDate}
+                    renderDay={dayPickerProps?.renderDay ?? this.renderDay}
                 />,
             ];
         }
