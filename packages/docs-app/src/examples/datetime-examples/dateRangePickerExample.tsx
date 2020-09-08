@@ -61,8 +61,12 @@ const MIN_DATE_OPTIONS: IDateOption[] = [
 const MAX_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
-        label: "1 month ago",
-        value: moment().add(-1, "months").toDate(),
+        label: "4 months from now",
+        value: moment().add(4, "months").toDate(),
+    },
+    {
+        label: "1 year from now",
+        value: moment().add(1, "years").toDate(),
     },
 ];
 
