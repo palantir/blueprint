@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { DayPickerProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
 import {
@@ -65,16 +64,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     closeOnSelection?: boolean;
 
     /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
-     * `initialMonth`), `toMonth` (use `maxDate`).
-     */
-    dayPickerProps?: DayPickerProps;
-
-    /**
      * Whether the date input is non-interactive.
      * @default false
      */
@@ -89,12 +78,6 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * Whether the component should take up the full width of its container.
      */
     fill?: boolean;
-
-    /**
-     * Whether the current day should be highlighted in the calendar.
-     * @default false
-     */
-    highlightCurrentDay?: boolean;
 
     /**
      * Props to pass to the [input group](#core/components/text-inputs.input-group).

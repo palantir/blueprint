@@ -64,27 +64,12 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * @default true
      */
     contiguousCalendarMonths?: boolean;
-    /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
-     * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
-     */
-    dayPickerProps?: DayPickerProps;
 
     /**
      * Initial `DateRange` the calendar will display as selected.
      * This should not be set if `value` is set.
      */
     defaultValue?: DateRange;
-
-    /**
-     * Whether the current day should be highlighted in the calendar.
-     * @default false
-     */
-    highlightCurrentDay?: boolean;
 
     /**
      * Called when the user selects a day.
@@ -301,12 +286,10 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         }
     }
 
-    private isToday = (date: Date) => DateUtils.areSameDay(date, new Date());
-
     private shouldHighlightCurrentDay = (date: Date) => {
         const { highlightCurrentDay } = this.props;
 
-        return highlightCurrentDay && this.isToday(date);
+        return highlightCurrentDay && DateUtils.isToday(date);
     };
 
     private getDateRangePickerModifiers = () => {
