@@ -16,11 +16,14 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+import { shallowCompareKeys } from "../../common/utils";
 
 export interface IAsyncControllableInputProps
     extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     inputRef?: React.LegacyRef<HTMLInputElement>;
 }
+
+type InputValue = IAsyncControllableInputProps["value"];
 
 export interface IAsyncControllableInputState {
     /**
@@ -34,13 +37,13 @@ export interface IAsyncControllableInputState {
      * It may be updated by a parent component.
      * @default ""
      */
-    externalValue: IAsyncControllableInputProps["value"];
+    value: InputValue;
 
     /**
      * The latest input value, which updates during IME composition. If undefined, we use
-     * externalValue instead.
+     * value instead.
      */
-    localValue: IAsyncControllableInputProps["value"];
+    nextValue: InputValue;
 }
 
 /**
@@ -50,35 +53,53 @@ export interface IAsyncControllableInputState {
  * asychronously. This might happen if a component chooses to do async validation of a value
  * returned by the input's `onChange` callback.
  *
- * Implementation adapted from https://jsfiddle.net/m792qtys/ (linked in the above issue thread).
+ * Implementation adapted from https://jsfiddle.net/m792qtys/ (linked in the above issue thread) and
+ * https://jsfiddle.net/CodeMedic42/139sp08k/ (via https://github.com/facebook/react/issues/14904).
  *
  * Note: this component does not apply any Blueprint-specific styling.
  */
 @polyfill
-export class AsyncControllableInput extends React.PureComponent<
+export class AsyncControllableInput extends React.Component<
     IAsyncControllableInputProps,
     IAsyncControllableInputState
 > {
     public state: IAsyncControllableInputState = {
-        externalValue: this.props.value,
         isComposing: false,
-        localValue: this.props.value,
+        nextValue: this.props.value,
+        value: this.props.value,
     };
 
-    public static getDerivedStateFromProps({ value }: IAsyncControllableInputProps) {
-        return {
-            externalValue: value,
-        };
+    public static getDerivedStateFromProps(
+        nextProps: IAsyncControllableInputProps,
+        nextState: IAsyncControllableInputState,
+    ): Partial<IAsyncControllableInputState> {
+        let value = nextProps.value ?? "";
+        if (value === nextState.value) {
+            value = nextState.nextValue;
+        }
+        return { value };
+    }
+
+    public shouldComponentUpdate(nextProps: IAsyncControllableInputProps, nextState: IAsyncControllableInputState) {
+        // equivalent to a React.PureComponent
+        const hasShallowDifference =
+            !shallowCompareKeys(this.props, nextProps) || !shallowCompareKeys(this.state, nextState);
+
+        if (this.props.value != null) {
+            return nextState.value !== this.state.value || hasShallowDifference;
+        }
+
+        return hasShallowDifference;
     }
 
     public render() {
-        const { isComposing, externalValue, localValue } = this.state;
+        const { isComposing, value, nextValue } = this.state;
         const { inputRef, ...restProps } = this.props;
         return (
             <input
                 {...restProps}
                 ref={inputRef}
-                value={isComposing ? localValue : externalValue}
+                value={isComposing ? nextValue : value}
                 onCompositionStart={this.handleCompositionStart}
                 onCompositionEnd={this.handleCompositionEnd}
                 onChange={this.handleChange}
@@ -91,7 +112,7 @@ export class AsyncControllableInput extends React.PureComponent<
             isComposing: true,
             // Make sure that localValue matches externalValue, in case externalValue
             // has changed since the last onChange event.
-            localValue: this.state.externalValue,
+            nextValue: this.state.value,
         });
         this.props.onCompositionStart?.(e);
     };
@@ -104,7 +125,7 @@ export class AsyncControllableInput extends React.PureComponent<
     private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
 
-        this.setState({ localValue: value });
+        this.setState({ nextValue: value });
         this.props.onChange?.(e);
     };
 }
