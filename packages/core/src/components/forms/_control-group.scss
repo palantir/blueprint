@@ -272,6 +272,9 @@ Styleguide control-group
 
   Styleguide control-group-fill
   */
+  &.#{$ns}-fill {
+    width: 100%;
+  }
 
   > .#{$ns}-fill {
     flex: 1 1 auto;
