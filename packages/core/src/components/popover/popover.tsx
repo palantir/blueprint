@@ -103,7 +103,7 @@ export interface IPopoverState {
 @polyfill
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
-    private popoverRef = React.createRef<HTMLDivElement>();
+    private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
     public static defaultProps: IPopoverProps = {
         boundary: "scrollParent",
@@ -313,8 +313,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             {
                 [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [Classes.MINIMAL]: this.props.minimal,
+                [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
             },
-            this.props.captureDismiss ? Classes.POPOVER_CAPTURING_DISMISS : "",
             this.props.popoverClassName,
         );
 
