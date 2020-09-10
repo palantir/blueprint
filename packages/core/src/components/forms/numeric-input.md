@@ -73,6 +73,10 @@ its own state. In uncontrolled mode, simply provide an `onValueChange` callback
 in the props to access the value as the user manipulates it. The value will be
 provided to the callback both as a number and as a string.
 
+In general, uncontrolled mode is the recommended API for this component, as it allows
+users to type non-numeric digits like `.` and `-` (for decimals and negative numbers, respectively)
+more easily.
+
 ```tsx
 import { NumericInput } from "@blueprintjs/core";
 
@@ -90,10 +94,12 @@ export class NumericInputExample extends React.Component {
 
 @### Controlled mode
 
-If you prefer to have more control over your numeric input's behavior, you can
+If you need to have more control over your numeric input's behavior, you can
 specify the `value` property to use the component in **controlled mode**.
-numeric input supports arbitrary text entry--not just numeric digits–-so the
-`value` __should always be provided as a string, not a number__.
+Note that NumericInput supports arbitrary text entry (not just numeric digits)
+so the `value` __should always be provided as a string, not a number__. Exceptions
+to this rule may occur if your input only supports _positive integers_, which will not
+have any non-numeric characters.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 

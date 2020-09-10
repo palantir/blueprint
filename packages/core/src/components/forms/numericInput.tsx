@@ -152,7 +152,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
      */
     stepSize?: number;
 
-    /** The value to display in the input field. */
+    /**
+     * The value to display in the input field.
+     */
     value?: number | string;
 
     /** The callback invoked when the value changes due to a button click. */
@@ -166,7 +168,6 @@ export interface INumericInputState {
     currentImeInputInvalid: boolean;
     prevMinProp?: number;
     prevMaxProp?: number;
-    prevValueProp?: number | string;
     shouldSelectAfterUpdate: boolean;
     stepMaxPrecision: number;
     value: string;
@@ -218,7 +219,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const nextState = {
             prevMaxProp: props.max,
             prevMinProp: props.min,
-            prevValueProp: props.value,
         };
 
         const didMinChange = props.min !== state.prevMinProp;
