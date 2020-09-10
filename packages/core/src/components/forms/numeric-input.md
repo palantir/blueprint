@@ -98,7 +98,7 @@ numeric input supports arbitrary text entry--not just numeric digits–-so the
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 
 When handling changes in controlled mode, always use the _second_ parameter of the
-`onChange` callback, which provides the value as a string. This allows users to type
+`onValueChange` callback, which provides the value as a string. This allows users to type
 non-numeric characters like decimal points (".") without the component eagerly coercing
 those values to parsed numbers.
 
