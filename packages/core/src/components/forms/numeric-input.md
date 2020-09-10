@@ -93,7 +93,16 @@ export class NumericInputExample extends React.Component {
 If you prefer to have more control over your numeric input's behavior, you can
 specify the `value` property to use the component in **controlled mode**.
 numeric input supports arbitrary text entry--not just numeric digits–-so the
-`value` can be provided as either a number or a string.
+`value` __should always be provided as a string, not a number__.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+
+When handling changes in controlled mode, always use the _second_ parameter of the
+`onValueChange` callback, which provides the value as a string. This allows users to type
+non-numeric characters like decimal points (".") without the component eagerly coercing
+those values to parsed numbers.
+
+</div>
 
 The combined support of arbitrary text entry, controlled mode, and custom
 callbacks makes it possible to extend the numeric input's basic functionality in
@@ -118,6 +127,7 @@ string }> {
     }
 
     private handleValueChange = (_valueAsNumber: number, valueAsString: string) {
+        // Important: use the string value to allow typing decimal places and negative numbers
         const result = SomeLibrary.evaluateMathExpression(valueAsString);
         this.setState({ value: result });
     }
