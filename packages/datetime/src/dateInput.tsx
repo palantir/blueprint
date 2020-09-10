@@ -205,8 +205,16 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         const { value, valueString } = this.state;
         const dateString = this.state.isInputFocused ? valueString : getFormattedDateString(value, this.props);
         const dateValue = isDateValid(value) ? value : null;
-        const dayPickerProps = {
+        const dayPickerProps: DayPickerProps = {
             ...this.props.dayPickerProps,
+            // If the user tabs on first day of the month, close the Popover
+            onDayKeyDown: (day, modifiers, e) => {
+                if (day.getDate() === 1 && e.key === "Tab") {
+                    this.setState({ isOpen: false });
+                } else {
+                    this.props.dayPickerProps.onDayKeyDown?.(day, modifiers, e);
+                }
+            },
             // dom elements for the updated month is not available when
             // onMonthChange is called. setTimeout is necessary to wait
             // for the updated month to be rendered
@@ -416,7 +424,11 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         // Beware: this.popoverContentEl is sometimes null under Chrome
         if (
             relatedTarget == null ||
-            (this.popoverContentEl != null && !this.popoverContentEl.contains(relatedTarget))
+            (this.popoverContentEl != null &&
+                !this.popoverContentEl.contains(relatedTarget) &&
+                // Exclude events that leads to relatedTarget being body, like changing
+                // months (either by change month buttons or using arrow keys on Day element)
+                relatedTarget !== document.body)
         ) {
             this.handleClosePopover();
         } else if (relatedTarget != null) {
