@@ -42,10 +42,9 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     boundary?: PopperBoundary;
 
     /**
-     * When enabled, `preventDefault()` is invoked on `click` events that close
-     * this popover, which will prevent those clicks from closing outer
-     * popovers. When disabled, clicking inside a `Classes.POPOVER_DISMISS`
-     * element will close the parent popover.
+     * When enabled, clicking inside a `Classes.POPOVER_DISMISS`
+     * will only close the parent popover and not outer popovers.
+     * When disabled, both parent outer popovers will be closed.
      *
      * See http://blueprintjs.com/docs/#core/components/popover.closing-on-click
      * @default false
