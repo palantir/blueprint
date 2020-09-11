@@ -96,17 +96,25 @@ export class NumericInputExample extends React.Component {
 
 If you need to have more control over your numeric input's behavior, you can
 specify the `value` property to use the component in **controlled mode**.
+
 Note that NumericInput supports arbitrary text entry (not just numeric digits)
-so the `value` __should always be provided as a string, not a number__. Exceptions
-to this rule may occur if your input only supports _positive integers_, which will not
-have any non-numeric characters.
+so the `value` __should always be provided as a string, not a number__. Accordingly,
+change event handlers should use the same data type, namely the _second_ parameter of
+the `onValueChange` callback. This allows users to type non-numeric characters like decimal
+points (".") without the component eagerly coercing those strings to their parsed numeric
+equivalents (`0.` becomes `0`, fractional data entry impossible).
+
+Exceptions to this rule may occur if your input only supports _positive integers_, which will not
+have any non-numeric characters. See the [precision section](#core/components/numeric-input.precision)
+to learn how to enforce this kind of constraint.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 
 When handling changes in controlled mode, always use the _second_ parameter of the
 `onValueChange` callback, which provides the value as a string. This allows users to type
 non-numeric characters like decimal points (".") without the component eagerly coercing
-those values to parsed numbers.
+those strings to their parsed numeric equivalents (`0.` becomes `0`, fractional data entry
+impossible).
 
 </div>
 
@@ -139,3 +147,13 @@ string }> {
     }
 }
 ```
+
+@### Numeric precision
+
+`NumericInput` determines its maximum precision by looking at both the `minorStepSize` and `stepSize` props.
+If `minorStepSize` is non-null, the number of decimal places in that value will be the maximum precision.
+Otherwise, the component will count the decimal places in `stepSize`.
+
+Configuring these props allows you to expand or constrain the precision of the input. For example, to limit
+the input to only integers, you can simply set `minorStepSize={null}` and allow the default `stepSize` of `1`
+to take precedence.
