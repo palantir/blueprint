@@ -207,13 +207,13 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         const dateValue = isDateValid(value) ? value : null;
         const dayPickerProps: DayPickerProps = {
             ...this.props.dayPickerProps,
-            // If the user tabs on first day of the month, close the Popover
+            // If the user tabs on a DayPicker Day element and the lastElementInPopover is also a DayPicker Day
+            // element, the popover should be closed
             onDayKeyDown: (day, modifiers, e) => {
-                if (day.getDate() === 1 && e.key === "Tab") {
+                if (e.key === "Tab" && !e.shiftKey && this.lastElementInPopover.classList.contains("DayPicker-Day")) {
                     this.setState({ isOpen: false });
-                } else {
-                    this.props.dayPickerProps.onDayKeyDown?.(day, modifiers, e);
                 }
+                this.props.dayPickerProps.onDayKeyDown?.(day, modifiers, e);
             },
             // dom elements for the updated month is not available when
             // onMonthChange is called. setTimeout is necessary to wait
@@ -421,16 +421,23 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             // Support IE11 (#2924)
             relatedTarget = document.activeElement as HTMLElement;
         }
+        const eventTarget = e.target as HTMLElement;
         // Beware: this.popoverContentEl is sometimes null under Chrome
         if (
             relatedTarget == null ||
-            (this.popoverContentEl != null &&
-                !this.popoverContentEl.contains(relatedTarget) &&
-                // Exclude events that leads to relatedTarget being body, like changing
-                // months (either by change month buttons or using arrow keys on Day element)
-                relatedTarget !== document.body)
+            (this.popoverContentEl != null && !this.popoverContentEl.contains(relatedTarget))
         ) {
-            this.handleClosePopover();
+            // Exclude the following blur operations that makes "body" the activeElement
+            // and would close the Popover unexpectedly
+            // - On disabled change months buttons
+            // - DayPicker day elements, their "blur" will be managed at its own onKeyDown
+            // event listener for improving UX
+            const isChangeMonthEvt = eventTarget.classList.contains("DayPicker-NavButton");
+            const isChangeMonthButtonDisabled = isChangeMonthEvt && (eventTarget as HTMLButtonElement).disabled;
+            const isDayPickerDayEvt = eventTarget.classList.contains("DayPicker-Day");
+            if (!isChangeMonthButtonDisabled && !isDayPickerDayEvt) {
+                this.handleClosePopover();
+            }
         } else if (relatedTarget != null) {
             this.unregisterPopoverBlurHandler();
             this.lastElementInPopover = relatedTarget;
@@ -440,26 +447,15 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
 
     private registerPopoverBlurHandler = () => {
         if (this.popoverContentEl != null) {
-            // If current activeElement exists inside popover content, a month
-            // change has triggered and this element should be lastTabbableElement
-            let lastTabbableElement = this.popoverContentEl.contains(document.activeElement)
-                ? document.activeElement
-                : undefined;
             // Popover contents are well structured, but the selector will need
             // to be updated if more focusable components are added in the future
-            if (lastTabbableElement == null) {
-                const tabbableElements = this.popoverContentEl.querySelectorAll(
-                    "input, [tabindex]:not([tabindex='-1'])",
-                );
-                const numOfElements = tabbableElements.length;
-                if (numOfElements > 0) {
-                    // Keep track of the last focusable element in popover and add
-                    // a blur handler, so that when:
-                    // * user tabs to the next element, popover closes
-                    // * focus moves to element within popover, popover stays open
-                    lastTabbableElement = tabbableElements[numOfElements - 1];
-                }
-            }
+            const tabbableElements = this.popoverContentEl.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
+            const numOfElements = tabbableElements.length;
+            // Keep track of the last focusable element in popover and add
+            // a blur handler, so that when:
+            // * user tabs to the next element, popover closes
+            // * focus moves to element within popover, popover stays open
+            const lastTabbableElement = numOfElements > 0 ? tabbableElements[numOfElements - 1] : null;
             this.unregisterPopoverBlurHandler();
             this.lastElementInPopover = lastTabbableElement as HTMLElement;
             this.lastElementInPopover.addEventListener("blur", this.handlePopoverBlur);
