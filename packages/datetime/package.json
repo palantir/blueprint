@@ -9,7 +9,7 @@
     "style": "lib/css/blueprint-datetime.css",
     "unpkg": "dist/datetime.bundle.js",
     "sideEffects": [
-        "*.css"
+        "**/*.css"
     ],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/*",
