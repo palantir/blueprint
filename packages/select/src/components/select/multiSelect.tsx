@@ -17,6 +17,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
@@ -78,7 +79,7 @@ export interface IMultiSelectState {
     isOpen: boolean;
 }
 
-export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IMultiSelectState> {
+export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static defaultProps = {
@@ -182,18 +183,18 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
         if (this.input != null) {
             this.input.focus();
         }
-        Utils.safeInvoke(this.props.onItemSelect, item, evt);
+        this.props.onItemSelect?.(item, evt);
     };
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ isOpen: query.length > 0 || !this.props.openOnKeyDown });
-        Utils.safeInvoke(this.props.onQueryChange, query, evt);
+        this.props.onQueryChange?.(query, evt);
     };
 
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             const isInputFocused = this.input === document.activeElement;
 
             if (this.input != null && !isInputFocused) {
@@ -217,6 +218,8 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+            // eslint-disable-next-line deprecation/deprecation
             const { which } = e;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
@@ -233,7 +236,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             const isTargetingTagRemoveButton = (e.target as HTMLElement).closest(`.${CoreClasses.TAG_REMOVE}`) != null;
 
             if (this.state.isOpen && !isTargetingTagRemoveButton) {
-                Utils.safeInvoke(handleQueryListKeyDown, e);
+                handleQueryListKeyDown?.(e);
             }
         };
     };
@@ -245,7 +248,7 @@ export class MultiSelect<T> extends React.PureComponent<IMultiSelectProps<T>, IM
             // only handle events when the focus is on the actual <input> inside the TagInput, as that's
             // what QueryList is designed to do
             if (this.state.isOpen && isTargetingInput) {
-                Utils.safeInvoke(handleQueryListKeyUp, e);
+                handleQueryListKeyUp?.(e);
             }
         };
     };

@@ -230,7 +230,7 @@ export interface IHeaderState {
     hasValidSelection?: boolean;
 }
 
-const SHALLOW_COMPARE_PROP_KEYS_BLACKLIST: Array<keyof IInternalHeaderProps> = ["focusedCell", "selectedRegions"];
+const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof IInternalHeaderProps> = ["focusedCell", "selectedRegions"];
 
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     protected activationIndex: number;
@@ -251,9 +251,9 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return (
             !CoreUtils.shallowCompareKeys(this.state, nextState) ||
             !CoreUtils.shallowCompareKeys(this.props, nextProps, {
-                exclude: SHALLOW_COMPARE_PROP_KEYS_BLACKLIST,
+                exclude: SHALLOW_COMPARE_PROP_KEYS_DENYLIST,
             }) ||
-            !CoreUtils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_BLACKLIST)
+            !CoreUtils.deepCompareKeys(this.props, nextProps, SHALLOW_COMPARE_PROP_KEYS_DENYLIST)
         );
     }
 
@@ -337,8 +337,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
         const modifiedHandleResizeEnd = (size: number) => this.props.handleResizeEnd(index, size);
-        const modifiedHandleResizeHandleDoubleClick = () =>
-            CoreUtils.safeInvoke(this.props.handleResizeDoubleClick, index);
+        const modifiedHandleResizeHandleDoubleClick = () => this.props.handleResizeDoubleClick?.(index);
 
         const baseChildren = (
             <DragSelectable

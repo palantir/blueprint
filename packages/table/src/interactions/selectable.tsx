@@ -242,7 +242,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
 
         const isLeftClick = Utils.isLeftClick(event);
         const isContextMenuTrigger = isLeftClick && event.ctrlKey && PlatformUtils.isMac();
-        const isDisabled = CoreUtils.safeInvokeOrValue(disabled, event);
+        const isDisabled = typeof disabled === "function" ? disabled(event) : disabled;
 
         return (
             !isLeftClick ||
@@ -341,7 +341,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     // =====
 
     private finishInteraction = () => {
-        CoreUtils.safeInvoke(this.props.onSelectionEnd, this.props.selectedRegions);
+        this.props.onSelectionEnd?.(this.props.selectedRegions);
         this.didExpandSelectionOnActivate = false;
         this.lastEmittedSelectedRegions = null;
     };

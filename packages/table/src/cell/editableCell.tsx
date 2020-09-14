@@ -245,7 +245,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
         // pass through the row and column indices if they were provided as props by the consumer
         const { rowIndex, columnIndex } = this.props;
-        CoreUtils.safeInvoke(callback, value, rowIndex, columnIndex);
+        callback?.(value, rowIndex, columnIndex);
     }
 
     private handleCellActivate = (_event: MouseEvent) => {

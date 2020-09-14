@@ -19,7 +19,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { safeInvoke } from "../../common/utils";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
 import { Popover } from "../popover/popover";
 import { PopperModifiers } from "../popover/popoverSharedProps";
@@ -94,7 +93,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
     }
 
     public hide() {
-        safeInvoke(this.state.onClose);
+        this.state.onClose?.();
         this.setState({ isOpen: false, onClose: undefined });
     }
 
@@ -120,7 +119,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
         if (!nextOpenState) {
             // delay the actual hiding till the event queue clears
             // to avoid flicker of opening twice
-            requestAnimationFrame(() => this.hide());
+            this.requestAnimationFrame(() => this.hide());
         }
     };
 }

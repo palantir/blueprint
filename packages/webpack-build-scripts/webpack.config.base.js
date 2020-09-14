@@ -17,7 +17,6 @@ const path = require("path");
 
 // webpack plugins
 const { CheckerPlugin } = require("awesome-typescript-loader");
-// const CircularDependencyPlugin = require("circular-dependency-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
@@ -38,13 +37,6 @@ const plugins = [
 
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
-
-    // TODO: enable this
-    // Zero tolereance for circular depenendencies
-    // new CircularDependencyPlugin({
-    //     exclude: /.js|node_modules/,
-    //     failOnError: true,
-    // }),
 ];
 
 if (!IS_PRODUCTION) {

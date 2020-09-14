@@ -247,7 +247,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // hooray! so you don't have to!
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
-        Utils.safeInvoke(this.props.onComponentUpdate, this.state.activePageId);
+        this.props.onComponentUpdate?.(this.state.activePageId);
         // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
         document.addEventListener("scroll", this.handleScroll);
@@ -268,7 +268,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
             this.maybeScrollToActivePageMenuItem();
         }
 
-        Utils.safeInvoke(this.props.onComponentUpdate, activePageId);
+        this.props.onComponentUpdate?.(activePageId);
     }
 
     private updateHash() {

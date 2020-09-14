@@ -36,7 +36,7 @@ import {
 import * as Errors from "../../common/errors";
 
 import { ButtonGroup } from "../button/buttonGroup";
-import { AnchorButton } from "../button/buttons";
+import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import {
@@ -160,7 +160,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
      */
     stepSize?: number;
 
-    /** The value to display in the input field. */
+    /**
+     * The value to display in the input field.
+     */
     value?: number | string;
 
     /** The callback invoked when the value changes due to a button click. */
@@ -175,7 +177,6 @@ export interface INumericInputState {
     locale: string;
     prevMinProp?: number;
     prevMaxProp?: number;
-    prevValueProp?: number | string;
     shouldSelectAfterUpdate: boolean;
     stepMaxPrecision: number;
     value: string;
@@ -227,7 +228,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const nextState = {
             prevMaxProp: props.max,
             prevMinProp: props.min,
-            prevValueProp: props.value,
         };
 
         const didMinChange = props.min !== state.prevMinProp;
@@ -390,13 +390,13 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const disabled = this.props.disabled || this.props.readOnly;
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
-                <AnchorButton
+                <Button
                     disabled={disabled || (value !== "" && +value >= max)}
                     icon="chevron-up"
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
-                <AnchorButton
+                <Button
                     disabled={disabled || (value !== "" && +value <= min)}
                     icon="chevron-down"
                     intent={intent}
@@ -432,7 +432,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private inputRef = (input: HTMLInputElement | null) => {
         this.inputElement = input;
-        Utils.safeInvoke(this.props.inputRef, input);
+        this.props.inputRef?.(input);
     };
 
     // Callbacks - Buttons
@@ -482,6 +482,17 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     };
 
     private handleContinuousChange = () => {
+        // If either min or max prop is set, when reaching the limit
+        // the button will be disabled and stopContinuousChange will be never fired,
+        // hence the need to check on each iteration to properly clear the timeout
+        if (this.props.min !== undefined || this.props.max !== undefined) {
+            const min = this.props.min ?? -Infinity;
+            const max = this.props.max ?? Infinity;
+            if (Number(this.state.value) <= min || Number(this.state.value) >= max) {
+                this.stopContinuousChange();
+                return;
+            }
+        }
         const nextValue = this.incrementValue(this.delta);
         this.props.onButtonClick?.(+nextValue, nextValue);
     };
@@ -489,10 +500,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     // Callbacks - Input
     // =================
 
-    private handleInputFocus = (e: React.FocusEvent) => {
+    private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         // update this state flag to trigger update for input selection (see componentDidUpdate)
         this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnFocus });
-        Utils.safeInvoke(this.props.onFocus, e);
+        this.props.onFocus?.(e);
     };
 
     private handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -504,10 +515,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             this.handleNextValue(this.roundAndClampValue(value));
         }
 
-        Utils.safeInvoke(this.props.onBlur, e);
+        this.props.onBlur?.(e);
     };
 
-    private handleInputKeyDown = (e: React.KeyboardEvent) => {
+    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (this.props.disabled || this.props.readOnly) {
             return;
         }
@@ -534,7 +545,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             this.incrementValue(delta);
         }
 
-        Utils.safeInvoke(this.props.onKeyDown, e);
+        this.props.onKeyDown?.(e);
     };
 
     private handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
@@ -556,19 +567,19 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
     };
 
-    private handleInputKeyPress = (e: React.KeyboardEvent) => {
+    private handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         // we prohibit keystrokes in onKeyPress instead of onKeyDown, because
         // e.key is not trustworthy in onKeyDown in all browsers.
         if (this.props.allowNumericCharactersOnly && !isValidNumericKeyboardEvent(e, this.props.locale)) {
             e.preventDefault();
         }
 
-        Utils.safeInvoke(this.props.onKeyPress, e);
+        this.props.onKeyPress?.(e);
     };
 
-    private handleInputPaste = (e: React.ClipboardEvent) => {
+    private handleInputPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
         this.didPasteEventJustOccur = true;
-        Utils.safeInvoke(this.props.onPaste, e);
+        this.props.onPaste?.(e);
     };
 
     private handleInputChange = (e: React.FormEvent) => {

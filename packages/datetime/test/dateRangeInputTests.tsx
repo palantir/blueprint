@@ -37,7 +37,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
-import { DATE_FORMAT } from "./common/dateFormat";
+import { DATETIME_FORMAT, DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
 type WrappedComponentRoot = ReactWrapper<any>;
@@ -92,6 +92,12 @@ describe("<DateRangeInput>", () => {
     const OVERLAPPING_END_DATE = START_DATE_2; // should be earlier then START_DATE
     const OVERLAPPING_START_STR = DateTestUtils.toDateString(OVERLAPPING_START_DATE);
     const OVERLAPPING_END_STR = DateTestUtils.toDateString(OVERLAPPING_END_DATE);
+
+    const OVERLAPPING_START_DATETIME = new Date(2017, Months.JANUARY, 1, 9); // should be same date but later time
+    const OVERLAPPING_END_DATETIME = new Date(2017, Months.JANUARY, 1, 1); // should be same date but earlier time
+    const OVERLAPPING_START_DT_STR = DateTestUtils.toDateHourMinuteString(OVERLAPPING_START_DATETIME);
+    const OVERLAPPING_END_DT_STR = DateTestUtils.toDateHourMinuteString(OVERLAPPING_END_DATETIME);
+    const DATE_RANGE_3 = [OVERLAPPING_END_DATETIME, OVERLAPPING_START_DATETIME] as DateRange; // initial state should be correct
 
     // a custom string representation for `new Date(undefined)` that we use in
     // date-range equality checks just in this file
@@ -853,6 +859,43 @@ describe("<DateRangeInput>", () => {
                 it("in start field", () => runTestFn(getStartInput, Boundary.START, getEndInput));
                 it("in end field", () => runTestFn(getEndInput, Boundary.END, getStartInput));
             }
+        });
+
+        describe("Typing an overlapping date time", () => {
+            let onChange: sinon.SinonSpy;
+            let onError: sinon.SinonSpy;
+            let root: WrappedComponentRoot;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                onError = sinon.spy();
+
+                const result = wrap(
+                    <DateRangeInput
+                        {...DATETIME_FORMAT}
+                        allowSingleDayRange={true}
+                        defaultValue={DATE_RANGE_3}
+                        overlappingDatesMessage={OVERLAPPING_DATES_MESSAGE}
+                        onChange={onChange}
+                        onError={onError}
+                        timePrecision={TimePrecision.MINUTE}
+                    />,
+                );
+                root = result.root;
+            });
+
+            describe("in the end field", () => {
+                it("shows an error message when the start time is later than the end time", () => {
+                    getStartInput(root).simulate("focus");
+                    changeInputText(getStartInput(root), OVERLAPPING_START_DT_STR);
+                    getStartInput(root).simulate("blur");
+                    assertInputTextEquals(getStartInput(root), OVERLAPPING_START_DT_STR);
+                    getEndInput(root).simulate("focus");
+                    changeInputText(getEndInput(root), OVERLAPPING_END_DT_STR);
+                    getEndInput(root).simulate("blur");
+                    assertInputTextEquals(getEndInput(root), OVERLAPPING_DATES_MESSAGE);
+                });
+            });
         });
 
         // this test sub-suite is structured a little differently because of the

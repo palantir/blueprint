@@ -73,11 +73,6 @@
         "error",
         {
             "object": "Object",
-            "property": "assign",
-            "message": "use object spread: { ...a, ...b }"
-        },
-        {
-            "object": "Object",
             "property": "getOwnPropertyNames",
             "message": "use Object.keys()"
         },

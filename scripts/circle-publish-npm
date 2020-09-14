@@ -15,8 +15,8 @@ if [ ! -z "$CIRCLE_TAG" ]; then
     branch='develop'
 fi
 
-if ! [[ "$branch" == "master" || "$branch" == "develop" || "$branch" == "next" || "$branch" == release/* ]]; then
-    echo "Not on master, develop, next, release/* or a tag - not publishing."
+if ! [[ "$branch" == "develop" || "$branch" == "next" || "$branch" == release/* ]]; then
+    echo "Not on develop, next, release/* or a tag - not publishing."
     exit 1
 fi
 

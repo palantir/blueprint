@@ -164,7 +164,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     }
 
     public componentDidMount() {
-        this.moveSelectionIndicator();
+        this.moveSelectionIndicator(false);
     }
 
     public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
@@ -247,6 +247,8 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        // eslint-disable-next-line deprecation/deprecation
         if (targetTabElement != null && Keys.isKeyboardClick(e.which)) {
             e.preventDefault();
             targetTabElement.click();
@@ -254,7 +256,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     };
 
     private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
-        Utils.safeInvoke(this.props.onChange, newTabId, this.state.selectedTabId, event);
+        this.props.onChange?.(newTabId, this.state.selectedTabId, event);
         if (this.props.selectedTabId === undefined) {
             this.setState({ selectedTabId: newTabId });
         }
@@ -264,7 +266,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
      * Calculate the new height, width, and position of the tab indicator.
      * Store the CSS values so the transition animation can start.
      */
-    private moveSelectionIndicator() {
+    private moveSelectionIndicator(animate = true) {
         if (this.tablistElement == null || !this.props.animate) {
             return;
         }
@@ -280,6 +282,10 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
                 transform: `translateX(${Math.floor(offsetLeft)}px) translateY(${Math.floor(offsetTop)}px)`,
                 width: clientWidth,
             };
+
+            if (!animate) {
+                indicatorWrapperStyle.transition = "none";
+            }
         }
         this.setState({ indicatorWrapperStyle });
     }
@@ -320,6 +326,8 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
 }
 
 function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
+    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+    // eslint-disable-next-line deprecation/deprecation
     return codes.indexOf(e.which) >= 0;
 }
 

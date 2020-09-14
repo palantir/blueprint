@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { Utils } from "@blueprintjs/core";
 import { requestIdleCallback } from "./requestIdleCallback";
 
 export type SimpleStringifyable = string | number | null | undefined;
@@ -194,7 +193,7 @@ export class Batcher<T> {
     private handleIdleCallback = () => {
         const callback = this.callback;
         delete this.callback;
-        Utils.safeInvoke(callback);
+        callback?.();
     };
 
     private mapCurrentObjectKey = (key: string) => {

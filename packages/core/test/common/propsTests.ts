@@ -36,7 +36,7 @@ describe("Props", () => {
             };
         });
 
-        it("removes only from curated blacklist when supplied 1 argument", () => {
+        it("removes only from curated denylist when supplied 1 argument", () => {
             assert.deepEqual(removeNonHTMLProps(props), {
                 apple: true,
                 banana: true,
@@ -56,7 +56,7 @@ describe("Props", () => {
             });
         });
 
-        it("removes from the curated blacklist and the supplied array when shouldMerge=true", () => {
+        it("removes from the curated denylist and the supplied array when shouldMerge=true", () => {
             assert.deepEqual(removeNonHTMLProps(props, ["apple", "banana"], true), { cat: true });
         });
     });

@@ -19,7 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
-import { clamp, safeInvoke } from "../../common/utils";
+import { clamp } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
@@ -128,7 +128,7 @@ export interface IEditableTextState {
     value?: string;
 }
 
-const BUFFER_WIDTH_EDGE = 5;
+const BUFFER_WIDTH_DEFAULT = 5;
 const BUFFER_WIDTH_IE = 30;
 
 @polyfill
@@ -258,10 +258,11 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         if (this.props.disabled || (this.props.disabled == null && prevProps.disabled)) {
             state.isEditing = false;
         }
+
         this.setState(state);
 
         if (this.state.isEditing && !prevState.isEditing) {
-            safeInvoke(this.props.onEdit, this.state.value);
+            this.props.onEdit?.(this.state.value);
         }
         this.updateInputDimensions();
     }
@@ -270,16 +271,16 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         const { lastValue, value } = this.state;
         this.setState({ isEditing: false, value: lastValue });
         if (value !== lastValue) {
-            safeInvoke(this.props.onChange, lastValue);
+            this.props.onChange?.(lastValue);
         }
-        safeInvoke(this.props.onCancel, lastValue);
+        this.props.onCancel?.(lastValue);
     };
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
             const { value } = this.state;
             this.setState({ isEditing: false, lastValue: value });
-            safeInvoke(this.props.onConfirm, value);
+            this.props.onConfirm?.(value);
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
@@ -304,10 +305,12 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         if (this.props.value == null) {
             this.setState({ value });
         }
-        safeInvoke(this.props.onChange, value);
+        this.props.onChange?.(value);
     };
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         const { altKey, ctrlKey, metaKey, shiftKey, which } = event;
         if (which === Keys.ESCAPE) {
             this.cancelEditing();
@@ -381,12 +384,10 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             // Chrome's input caret height misaligns text so the line-height must be larger than font-size.
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
             scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement));
-            // IE11 & Edge needs a small buffer so text does not shift prior to resizing
-            if (Browser.isEdge()) {
-                scrollWidth += BUFFER_WIDTH_EDGE;
-            } else if (Browser.isInternetExplorer()) {
-                scrollWidth += BUFFER_WIDTH_IE;
-            }
+            // Need to add a small buffer so text does not shift prior to resizing, causing an infinite loop.
+            // IE needs a larger buffer than other browsers.
+            scrollWidth += Browser.isInternetExplorer() ? BUFFER_WIDTH_IE : BUFFER_WIDTH_DEFAULT;
+
             this.setState({
                 inputHeight: scrollHeight,
                 inputWidth: Math.max(scrollWidth, minWidth),

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
+import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
 import * as Classes from "./common/classes";
@@ -37,32 +37,10 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     canClearSelection?: boolean;
 
     /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
-     * `initialMonth`), `toMonth` (use `maxDate`).
-     *
-     * In case of supplying your owner `renderDay` function, make sure to apply the appropriate
-     * CSS wrapper class to obtain default Blueprint styling.
-     * eg.
-     * `<div className={Classes.DATEPICKER_DAY_WRAPPER}>{CONTENT_HERE}</div>`
-     *
-     */
-    dayPickerProps?: DayPickerProps;
-
-    /**
      * Initial day the calendar will display as selected.
      * This should not be set if `value` is set.
      */
     defaultValue?: Date;
-
-    /**
-     * Whether the current day should be highlighted in the calendar.
-     * @default false
-     */
-    highlightCurrentDay?: boolean;
 
     /**
      * Called when the user selects a day.
@@ -113,7 +91,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      */
-    value?: Date;
+    value?: Date | null;
 }
 
 export interface IDatePickerState {
@@ -233,12 +211,10 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         }
     }
 
-    private isToday = (date: Date) => DateUtils.areSameDay(date, new Date());
-
     private shouldHighlightCurrentDay = (date: Date) => {
         const { highlightCurrentDay } = this.props;
 
-        return highlightCurrentDay && this.isToday(date);
+        return highlightCurrentDay && DateUtils.isToday(date);
     };
 
     private getDatePickerModifiers = () => {
@@ -347,7 +323,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     }
 
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
-        Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
+        this.props.dayPickerProps.onDayClick?.(day, modifiers, e);
         if (modifiers.disabled) {
             return;
         }
@@ -374,7 +350,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         }
 
         const datePickerShortcut = { ...shortcut, date: shortcut.dateRange[0] };
-        Utils.safeInvoke(onShortcutChange, datePickerShortcut, selectedShortcutIndex);
+        onShortcutChange?.(datePickerShortcut, selectedShortcutIndex);
     };
 
     private updateDay = (day: Date) => {
@@ -421,7 +397,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
             this.updateValue(date, false, this.ignoreNextMonthChange);
             this.ignoreNextMonthChange = false;
         }
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, date);
+        this.props.dayPickerProps.onMonthChange?.(date);
     };
 
     private handleTodayClick = () => {
@@ -434,7 +410,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     };
 
     private handleTimeChange = (time: Date) => {
-        Utils.safeInvoke(this.props.timePickerProps.onChange, time);
+        this.props.timePickerProps.onChange?.(time);
         const { value } = this.state;
         const newValue = DateUtils.getDateTime(value != null ? value : new Date(), time);
         this.updateValue(newValue, true);
@@ -445,7 +421,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
      */
     private updateValue(value: Date, isUserChange: boolean, skipOnChange = false) {
         if (!skipOnChange) {
-            Utils.safeInvoke(this.props.onChange, value, isUserChange);
+            this.props.onChange?.(value, isUserChange);
         }
         if (this.props.value === undefined) {
             this.setState({ value });

@@ -20,16 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 import ResizeObserver from "resize-observer-polyfill";
 import { AbstractPureComponent2 } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
-
-/** A parallel type to `ResizeObserverEntry` (from resize-observer-polyfill). */
-export interface IResizeEntry {
-    /** Measured dimensions of the target. */
-    contentRect: DOMRectReadOnly;
-
-    /** The resized element. */
-    target: Element;
-}
+import { IResizeEntry } from "./resizeObserverTypes";
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface IResizeSensorProps {
@@ -63,7 +54,7 @@ export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
     private element: Element | null = null;
-    private observer = new ResizeObserver(entries => safeInvoke(this.props.onResize, entries));
+    private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
 
     public render() {
         // pass-through render of single child

@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    AbstractPureComponent2,
     Button,
     DISPLAYNAME_PREFIX,
     getRef,
@@ -75,7 +76,7 @@ export interface ISelectState {
     isOpen: boolean;
 }
 
-export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState> {
+export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     public static ofType<T>() {
@@ -171,6 +172,8 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         // open popover when arrow key pressed on target while closed
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        // eslint-disable-next-line deprecation/deprecation
         if (event.which === Keys.ARROW_UP || event.which === Keys.ARROW_DOWN) {
             event.preventDefault();
             this.setState({ isOpen: true });
@@ -179,7 +182,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
-        Utils.safeInvoke(this.props.onItemSelect, item, event);
+        this.props.onItemSelect?.(item, event);
     };
 
     private handlePopoverInteraction = (isOpen: boolean) => {
@@ -204,7 +207,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
             this.queryList.scrollActiveItemIntoView();
         }
 
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false && this.inputEl != null) {
@@ -218,7 +221,7 @@ export class Select<T> extends React.PureComponent<ISelectProps<T>, ISelectState
     private handlePopoverClosing = (node: HTMLElement) => {
         // restore focus to saved element.
         // timeout allows popover to begin closing and remove focus handlers beforehand.
-        requestAnimationFrame(() => {
+        this.requestAnimationFrame(() => {
             if (this.previousFocusedElement !== undefined) {
                 this.previousFocusedElement.focus();
                 this.previousFocusedElement = undefined;

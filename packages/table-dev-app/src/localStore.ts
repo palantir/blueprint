@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { defaults } from "lodash";
+import { defaults } from "lodash-es";
 
 /**
  * Simple typed storage API for a JSON serializable object in web local storage

@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
+/** @deprecated use IKeyAllowlist */
+export type IKeyWhitelist<T> = IKeyAllowlist<T>;
+/** @deprecated use IKeyDenylist */
+export type IKeyBlacklist<T> = IKeyDenylist<T>;
+
 // we use the empty object {} a lot in this public API
 /* eslint-disable @typescript-eslint/ban-types */
 
-export interface IKeyWhitelist<T> {
+export interface IKeyAllowlist<T> {
     include: Array<keyof T>;
 }
 
-export interface IKeyBlacklist<T> {
+export interface IKeyDenylist<T> {
     exclude: Array<keyof T>;
 }
 
@@ -46,7 +51,7 @@ export function arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any)
  * of keys will be compared; otherwise, all keys will be compared.
  * @returns true if items are equal.
  */
-export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: IKeyDenylist<T> | IKeyAllowlist<T>) {
     // treat `null` and `undefined` as the same
     if (objA == null && objB == null) {
         return true;
@@ -122,7 +127,7 @@ export function getDeepUnequalKeyValues<T extends {}>(
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function shallowCompareKeysImpl<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+function shallowCompareKeysImpl<T>(objA: T, objB: T, keys: IKeyDenylist<T> | IKeyAllowlist<T>) {
     return filterKeys(objA, objB, keys).every(key => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key];
     });
@@ -141,17 +146,17 @@ function isSimplePrimitiveType(value: any) {
     return typeof value === "number" || typeof value === "string" || typeof value === "boolean";
 }
 
-function filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-    if (isWhitelist(keys)) {
+function filterKeys<T>(objA: T, objB: T, keys: IKeyDenylist<T> | IKeyAllowlist<T>) {
+    if (isAllowlist(keys)) {
         return keys.include;
-    } else if (isBlacklist(keys)) {
+    } else if (isDenylist(keys)) {
         const keysA = Object.keys(objA);
         const keysB = Object.keys(objB);
 
         // merge keys from both objects into a big set for quick access
         const keySet = arrayToObject(keysA.concat(keysB));
 
-        // delete blacklisted keys from the key set
+        // delete denied keys from the key set
         keys.exclude.forEach(key => delete keySet[key]);
 
         // return the remaining keys as an array
@@ -161,12 +166,12 @@ function filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<
     return [];
 }
 
-function isWhitelist<T>(keys: any): keys is IKeyWhitelist<T> {
-    return keys != null && (keys as IKeyWhitelist<T>).include != null;
+function isAllowlist<T>(keys: any): keys is IKeyAllowlist<T> {
+    return keys != null && (keys as IKeyAllowlist<T>).include != null;
 }
 
-function isBlacklist<T>(keys: any): keys is IKeyBlacklist<T> {
-    return keys != null && (keys as IKeyBlacklist<T>).exclude != null;
+function isDenylist<T>(keys: any): keys is IKeyDenylist<T> {
+    return keys != null && (keys as IKeyDenylist<T>).exclude != null;
 }
 
 function arrayToObject(arr: any[]) {

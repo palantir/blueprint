@@ -16,7 +16,7 @@ It is optimized for building complex, data-dense web interfaces for _desktop app
 
 ## Changelog
 
-Blueprint's change log and migration guides for major verions live on the repo's [Github wiki](https://github.com/palantir/blueprint/wiki/3.x-Changelog).
+Blueprint's change log and migration guides for major versions live on the repo's [Github wiki](https://github.com/palantir/blueprint/wiki/3.x-Changelog).
 
 ## Packages
 
@@ -68,7 +68,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 [Lerna](https://lerna.js.org/) manages inter-package dependencies in this monorepo.
 Builds are orchestrated via `lerna run` and NPM scripts.
 
-**Prerequisites**: Node.js v10+, Yarn v1.18+
+**Prerequisites**: Node.js v12+, Yarn v1.22+
 
 ### One-time setup
 

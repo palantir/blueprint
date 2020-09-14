@@ -32,6 +32,7 @@ export interface IDateInputExampleState {
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     timePrecision: TimePrecision | undefined;
+    showTimeArrowButtons: boolean;
 }
 
 export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
@@ -43,6 +44,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         format: FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
+        showTimeArrowButtons: false,
         timePrecision: undefined,
     };
 
@@ -54,9 +56,12 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
+    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
+        this.setState({ showTimeArrowButtons }),
+    );
 
     public render() {
-        const { date, format, ...spreadProps } = this.state;
+        const { date, format, showTimeArrowButtons, timePrecision, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateInput
@@ -65,6 +70,11 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                     defaultValue={new Date()}
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
+                    timePickerProps={
+                        timePrecision === undefined
+                            ? undefined
+                            : { showArrowButtons: showTimeArrowButtons, precision: timePrecision }
+                    }
                 />
                 <MomentDate date={date} />
             </Example>
@@ -80,6 +90,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
             format,
             timePrecision,
             shortcuts,
+            showTimeArrowButtons,
         } = this.state;
         return (
             <>
@@ -95,6 +106,12 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                     label="Time precision"
                     onChange={this.toggleTimePrecision}
                     value={timePrecision}
+                />
+                <Switch
+                    disabled={this.state.timePrecision === undefined}
+                    checked={showTimeArrowButtons}
+                    label="Show timepicker arrow buttons"
+                    onChange={this.toggleTimepickerArrowButtons}
                 />
             </>
         );

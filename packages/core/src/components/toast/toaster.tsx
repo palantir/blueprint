@@ -22,7 +22,7 @@ import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { isNodeEnv, safeInvoke } from "../../common/utils";
+import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
@@ -163,7 +163,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
             toasts: toasts.filter(t => {
                 const matchesKey = t.key === key;
                 if (matchesKey) {
-                    safeInvoke(t.onDismiss, timeoutExpired);
+                    t.onDismiss?.(timeoutExpired);
                 }
                 return !matchesKey;
             }),
@@ -171,7 +171,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     }
 
     public clear() {
-        this.state.toasts.map(t => safeInvoke(t.onDismiss, false));
+        this.state.toasts.forEach(t => t.onDismiss?.(false));
         this.setState({ toasts: [] });
     }
 
@@ -241,6 +241,8 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
 
     private handleClose = (e: React.KeyboardEvent<HTMLElement>) => {
         // NOTE that `e` isn't always a KeyboardEvent but that's the only type we care about
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         if (e.which === ESCAPE) {
             this.clear();
         }

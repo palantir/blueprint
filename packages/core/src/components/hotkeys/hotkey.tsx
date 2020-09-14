@@ -41,7 +41,7 @@ export interface IHotkeyProps extends IProps {
     /**
      * Human-friendly label for the hotkey.
      */
-    label: string;
+    label: React.ReactNode;
 
     /**
      * If `false`, the hotkey is active only when the target is focused. If

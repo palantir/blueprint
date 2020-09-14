@@ -30,10 +30,12 @@ module.exports = Object.assign({}, baseConfig, {
     },
 
     plugins: baseConfig.plugins.concat([
-        new CopyWebpackPlugin([
-            // to: is relative to dist/
-            { from: "src/index.html", to: "." },
-            { from: "src/features.html", to: "." },
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                // to: is relative to dist/
+                { from: "src/index.html", to: "." },
+                { from: "src/features.html", to: "." },
+            ],
+        }),
     ]),
 });

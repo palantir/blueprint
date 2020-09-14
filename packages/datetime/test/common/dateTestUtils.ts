@@ -29,6 +29,13 @@ export function toDateString(date: Date) {
     return [month, day, year].join("/");
 }
 
+export function toDateHourMinuteString(date: Date) {
+    const hour = `${date.getHours()}`.padStart(2, "0");
+    const minute = `${date.getMinutes()}`.padStart(2, "0");
+    const dateString = toDateString(date);
+    return `${dateString} ${hour}:${minute}`;
+}
+
 /**
  * Creates a date object with time only.
  */

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "description": "Node.js build scripts for @blueprintjs packages",
     "scripts": {
         "test": "exit 0"
@@ -15,21 +15,21 @@
         "sass-lint": "./sass-lint.js"
     },
     "dependencies": {
-        "autoprefixer": "^9.8.0",
+        "autoprefixer": "^9.8.6",
         "cross-spawn": "^7.0.3",
-        "eslint": "^7.1.0",
+        "eslint": "^7.6.0",
         "glob": "^7.1.6",
         "node-sass": "^4.14.1",
-        "node-sass-chokidar": "^1.4.0",
+        "node-sass-chokidar": "^1.5.0",
         "node-sass-package-importer": "^5.3.2",
         "postcss-cli": "^7.1.1",
         "postcss-discard-comments": "^4.0.2",
         "strip-css-comments": "^4.1.0",
-        "stylelint": "~13.5.0",
+        "stylelint": "~13.6.1",
         "stylelint-junit-formatter": "^0.2.2",
         "svgo": "^1.3.2",
-        "tslint": "~6.1.2",
-        "typescript": "~3.9.3"
+        "tslint": "~6.1.3",
+        "typescript": "~3.9.7"
     },
     "repository": {
         "type": "git",
