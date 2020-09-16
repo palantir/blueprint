@@ -64,14 +64,15 @@ function transformLocalizedNumberToStringNumber(character: string, locale: strin
     }
 }
 
-export function parseStringToStringNumber(value: string, locale: string): string {
-    if (locale) {
-        if (parseFloat(value).toString() === value) {
-            return value;
-        }
+export function parseStringToStringNumber(value: number | string, locale: string): string {
+    let valueAsString = "" + value;
+    if (parseFloat(valueAsString).toString() === value.toString()) {
+        return value.toString();
+    }
 
+    if (locale) {
         const decimalSeparator = getDecimalSeparator(locale);
-        const sanitizedString = sanitizeNumericInput(value, locale);
+        const sanitizedString = sanitizeNumericInput(valueAsString, locale);
 
         return sanitizedString
             .split("")
@@ -80,7 +81,7 @@ export function parseStringToStringNumber(value: string, locale: string): string
             .replace(decimalSeparator, ".");
     }
 
-    return value;
+    return value.toString();
 }
 
 /** Returns `true` if the string represents a valid numeric value, like "1e6". */
@@ -91,10 +92,10 @@ export function isValueNumeric(value: string, locale: string) {
     // parsed numeric value from the string representation of the value. we
     // need to cast the value to the `any` type to allow this operation
     // between dissimilar types.
+    const stringToStringNumber = parseStringToStringNumber(value, locale);
     return (
         value != null &&
-        (parseStringToStringNumber(value, locale) as any) - parseFloat(parseStringToStringNumber(value, locale)) + 1 >=
-            0
+        (stringToStringNumber as any) - parseFloat(stringToStringNumber) + 1 >= 0
     );
 }
 

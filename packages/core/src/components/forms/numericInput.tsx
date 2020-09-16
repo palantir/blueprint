@@ -35,8 +35,8 @@ import {
 } from "../../common";
 import * as Errors from "../../common/errors";
 
-import { ButtonGroup } from "../button/buttonGroup";
-import { Button } from "../button/buttons";
+import { ButtonGroup } from "..";
+import { Button } from "..";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import {
@@ -267,7 +267,9 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private static getValue(props: INumericInputProps, stateValue: string) {
         if (props.value != null) {
-            return props.value.toString();
+            let valueAsString = parseStringToStringNumber(props.value, props.locale);
+
+            return toLocaleString(Number(valueAsString), props.locale);
         } else {
             return stateValue;
         }
@@ -292,7 +294,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     public state: INumericInputState = {
         currentImeInputInvalid: false,
-        locale: "en-US",
+        locale: this.props.locale,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
         value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue, this.props.locale),
@@ -334,9 +336,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         if ((didBoundsChange && this.state.value !== prevState.value) || didLocaleChange) {
             // we clamped the value due to a bounds change, so we should fire the change callback
-            const valueAsString = parseStringToStringNumber(this.state.value, prevProps.locale);
-            const valueAsNumber = toLocaleString(parseFloat(valueAsString), this.props.locale);
-            this.props.onValueChange?.(+valueAsString, valueAsNumber, this.inputElement);
+            const valueAsString = parseStringToStringNumber(prevState.value, prevProps.locale);
+            const localizedValue = toLocaleString(parseFloat(valueAsString), this.props.locale);
+
+            this.props.onValueChange?.(Number(valueAsString), localizedValue, this.inputElement);
         }
     }
 
@@ -375,7 +378,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
                 0,
                 this.props.locale,
             );
-            if (sanitizedValue !== value.toString()) {
+            let valueDoesNotMatch = sanitizedValue !== value.toString();
+            let localizedValue = toLocaleString(Number(parseStringToStringNumber(value, this.props.locale)), this.props.locale);
+            let isNotLocalized = sanitizedValue !== localizedValue;
+
+            if (valueDoesNotMatch && isNotLocalized) {
                 console.warn(Errors.NUMERIC_INPUT_CONTROLLED_VALUE_INVALID);
             }
         }
@@ -385,19 +392,19 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     // ==============
 
     private renderButtons() {
-        const { intent, max, min } = this.props;
+        const { intent, max, min, locale } = this.props;
         const { value } = this.state;
         const disabled = this.props.disabled || this.props.readOnly;
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
-                    disabled={disabled || (value !== "" && +value >= max)}
+                    disabled={disabled || (value !== "" && Number(parseStringToStringNumber(value, locale)) >= max)}
                     icon="chevron-up"
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
                 <Button
-                    disabled={disabled || (value !== "" && +value <= min)}
+                    disabled={disabled || (value !== "" && Number(parseStringToStringNumber(value, locale)) <= min)}
                     icon="chevron-down"
                     intent={intent}
                     {...this.decrementButtonHandlers}
@@ -458,7 +465,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     private handleButtonClick = (e: React.MouseEvent | React.KeyboardEvent, direction: IncrementDirection) => {
         const delta = this.updateDelta(direction, e);
         const nextValue = this.incrementValue(delta);
-        this.props.onButtonClick?.(+nextValue, nextValue);
+        this.props.onButtonClick?.(Number(parseStringToStringNumber(nextValue, this.props.locale)), nextValue);
     };
 
     private startContinuousChange() {
@@ -488,13 +495,14 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (this.props.min !== undefined || this.props.max !== undefined) {
             const min = this.props.min ?? -Infinity;
             const max = this.props.max ?? Infinity;
-            if (Number(this.state.value) <= min || Number(this.state.value) >= max) {
+            let valueAsNumber = Number(parseStringToStringNumber(this.state.value, this.props.locale));
+            if (valueAsNumber <= min || valueAsNumber >= max) {
                 this.stopContinuousChange();
                 return;
             }
         }
         const nextValue = this.incrementValue(this.delta);
-        this.props.onButtonClick?.(+nextValue, nextValue);
+        this.props.onButtonClick?.(Number(parseStringToStringNumber(nextValue, this.props.locale)), nextValue);
     };
 
     // Callbacks - Input
@@ -603,7 +611,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
 
         this.props.onValueChange?.(
-            +parseStringToStringNumber(valueAsString, this.props.locale),
+            Number(parseStringToStringNumber(valueAsString, this.props.locale)),
             valueAsString,
             this.inputElement,
         );
