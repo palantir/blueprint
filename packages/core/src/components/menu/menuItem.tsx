@@ -97,6 +97,11 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * A space-delimited list of class names to pass along to the text wrapper element.
      */
     textClassName?: string;
+
+    /**
+     * HTML title to be passed to the <Text> component
+     */
+    textTitle?: string;
 }
 
 @polyfill
@@ -126,6 +131,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
             text,
             textClassName,
             tagName = "a",
+            textTitle,
             ...htmlProps
         } = this.props;
         const hasSubmenu = children != null;
@@ -152,7 +158,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
                 className: anchorClasses,
             },
             <Icon icon={icon} />,
-            <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline}>
+            <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={textTitle}>
                 {text}
             </Text>,
             this.maybeRenderLabel(labelElement),

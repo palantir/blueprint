@@ -42,6 +42,11 @@ export interface IPanelViewProps {
 
     /** Whether to show the header with the "back" button. */
     showHeader: boolean;
+
+    /**
+     * HTML title to be passed to the <Text> component
+     */
+    textTitle?: string;
 }
 
 @polyfill
@@ -65,7 +70,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
         return (
             <div className={Classes.PANEL_STACK_HEADER}>
                 <span>{this.maybeRenderBack()}</span>
-                <Text className={Classes.HEADING} ellipsize={true}>
+                <Text className={Classes.HEADING} ellipsize={true} title={this.props.textTitle}>
                     {this.props.panel.title}
                 </Text>
                 <span />

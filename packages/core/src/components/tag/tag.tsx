@@ -97,6 +97,11 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * @default false
      */
     round?: boolean;
+
+    /**
+     * HTML title to be passed to the <Text> component
+     */
+    textTitle?: string;
 }
 
 @polyfill
@@ -119,6 +124,7 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
             rightIcon,
             round,
             tabIndex = 0,
+            textTitle,
             ...htmlProps
         } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
@@ -151,7 +157,7 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
             <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
                 <Icon icon={icon} />
                 {!isReactNodeEmpty(children) && (
-                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
+                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={textTitle}>
                         {children}
                     </Text>
                 )}
