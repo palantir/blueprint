@@ -72,8 +72,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
-        stepSize: 1,
-        value: 1.5,
+        stepSize: 1
     };
 
     private handleMaxChange = handleNumberChange(max => this.setState({ max }));

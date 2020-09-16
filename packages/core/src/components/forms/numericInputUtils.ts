@@ -43,14 +43,8 @@ export function clampValue(value: number, min?: number, max?: number) {
     return clamp(value, adjustedMin, adjustedMax);
 }
 
-export function getValueOrEmptyValue(value: number | string = "", locale: string) {
-    if (!value) {
-        return value.toString();
-    } else {
-        const valueAsString = parseStringToStringNumber(value.toString(), locale);
-
-        return toLocaleString(+valueAsString, locale);
-    }
+export function getValueOrEmptyValue(value: number | string = "") {
+    return value.toString();
 }
 
 function transformLocalizedNumberToStringNumber(character: string, locale: string) {

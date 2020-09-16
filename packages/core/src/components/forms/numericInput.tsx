@@ -246,7 +246,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         // if a new min and max were provided that cause the existing value to fall
         // outside of the new bounds, then clamp the value to the new valid range.
-        if (didBoundsChange && sanitizedValue !== state.value) {
+        if (didBoundsChange || sanitizedValue !== state.value) {
             return { ...nextState, stepMaxPrecision, value: sanitizedValue };
         }
         return { ...nextState, stepMaxPrecision, value };
@@ -295,7 +295,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         locale: this.props.locale,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
-        value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue, this.props.locale),
+        value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue),
     };
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
