@@ -267,9 +267,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private static getValue(props: INumericInputProps, stateValue: string) {
         if (props.value != null) {
-            let valueAsString = parseStringToStringNumber(props.value, props.locale);
-
-            return toLocaleString(Number(valueAsString), props.locale);
+            return props.value.toString();
         } else {
             return stateValue;
         }

@@ -139,7 +139,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                     BUTTON_POSITIONS,
                     this.handleButtonPositionChange,
                 )}
-                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
+                <IntentSelect intent={intent} onChange={this.handleIntentChange}/>
                 {this.renderSelectMenu(
                     "Locale",
                     locale,
@@ -168,5 +168,5 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         );
     }
 
-    private handleValueChange = (value: number) => this.setState({ value });
+    private handleValueChange = (_v: number, value: string) => this.setState({ value });
 }
