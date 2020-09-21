@@ -29,6 +29,11 @@ export interface IPanel<P = {}> {
     component: React.ComponentType<P & IPanelProps>;
 
     /**
+     * HTML title to be passed to the <Text> component
+     */
+    htmlTitle?: string;
+
+    /**
      * The props passed to the component type when it is rendered. The methods
      * in `IPanelProps` will be injected by `PanelStack`.
      */
