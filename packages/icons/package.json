@@ -9,7 +9,7 @@
     "style": "lib/css/blueprint-icons.css",
     "unpkg": "dist/icons.bundle.js",
     "sideEffects": [
-        "*.css"
+        "**/*.css"
     ],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/* && rm -rf src/generated/*",

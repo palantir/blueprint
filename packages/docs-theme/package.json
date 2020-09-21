@@ -9,7 +9,7 @@
     "style": "lib/css/docs-theme.css",
     "unpkg": "dist/docs-theme.bundle.js",
     "sideEffects": [
-        "*.css"
+        "**/*.css"
     ],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/*",

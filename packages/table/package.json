@@ -9,7 +9,7 @@
     "style": "lib/css/table.css",
     "unpkg": "dist/table.bundle.js",
     "sideEffects": [
-        "*.css"
+        "**/*.css"
     ],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/*",
