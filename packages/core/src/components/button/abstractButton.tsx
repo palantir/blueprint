@@ -178,7 +178,9 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
     };
 
     protected handleBlur = (e: React.FocusEvent<any>) => {
-        if (this.state.isActive) this.setState({ isActive: false });
+        if (this.state.isActive) {
+            this.setState({ isActive: false });
+        }
         this.props.onBlur?.(e);
     };
 
