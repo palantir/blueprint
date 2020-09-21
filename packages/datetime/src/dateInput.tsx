@@ -186,7 +186,9 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
 
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private popoverContentEl: HTMLElement | null = null;
-    private lastElementInPopover: HTMLElement | null = null;
+    // Last element in popover that is tabbable, and the one that triggers popover closure
+    // when the user press TAB on it
+    private lastTabbableElement: HTMLElement | null = null;
 
     private refHandlers = {
         input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
@@ -207,13 +209,13 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         const dateValue = isDateValid(value) ? value : null;
         const dayPickerProps: DayPickerProps = {
             ...this.props.dayPickerProps,
-            // If the user presses the TAB key on a DayPicker Day element and the lastElementInPopover is also a DayPicker Day
+            // If the user presses the TAB key on a DayPicker Day element and the lastTabbableElement is also a DayPicker Day
             // element, the popover should be closed
             onDayKeyDown: (day, modifiers, e) => {
                 if (
                     e.key === "Tab" &&
                     !e.shiftKey &&
-                    this.lastElementInPopover.classList.contains(Classes.DATEPICKER_DAY)
+                    this.lastTabbableElement.classList.contains(Classes.DATEPICKER_DAY)
                 ) {
                     this.setState({ isOpen: false });
                 }
@@ -418,6 +420,20 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         this.safeInvokeInputProp("onKeyDown", e);
     };
 
+    private getLastTabbableElement = () => {
+        // Popover contents are well structured, but the selector will need
+        // to be updated if more focusable components are added in the future
+        const tabbableElements = this.popoverContentEl.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
+        const numOfElements = tabbableElements.length;
+        // Keep track of the last focusable element in popover and add
+        // a blur handler, so that when:
+        // * user tabs to the next element, popover closes
+        // * focus moves to element within popover, popover stays open
+        const lastTabbableElement = numOfElements > 0 ? tabbableElements[numOfElements - 1] : null;
+
+        return lastTabbableElement as HTMLElement;
+    };
+
     // focus DOM event listener (not React event)
     private handlePopoverBlur = (e: FocusEvent) => {
         let relatedTarget = e.relatedTarget as HTMLElement;
@@ -443,31 +459,22 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             }
         } else if (relatedTarget != null) {
             this.unregisterPopoverBlurHandler();
-            this.lastElementInPopover = relatedTarget;
-            this.lastElementInPopover.addEventListener("blur", this.handlePopoverBlur);
+            this.lastTabbableElement = this.getLastTabbableElement();
+            this.lastTabbableElement.addEventListener("blur", this.handlePopoverBlur);
         }
     };
 
     private registerPopoverBlurHandler = () => {
         if (this.popoverContentEl != null) {
-            // Popover contents are well structured, but the selector will need
-            // to be updated if more focusable components are added in the future
-            const tabbableElements = this.popoverContentEl.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
-            const numOfElements = tabbableElements.length;
-            // Keep track of the last focusable element in popover and add
-            // a blur handler, so that when:
-            // * user tabs to the next element, popover closes
-            // * focus moves to element within popover, popover stays open
-            const lastTabbableElement = numOfElements > 0 ? tabbableElements[numOfElements - 1] : null;
             this.unregisterPopoverBlurHandler();
-            this.lastElementInPopover = lastTabbableElement as HTMLElement;
-            this.lastElementInPopover.addEventListener("blur", this.handlePopoverBlur);
+            this.lastTabbableElement = this.getLastTabbableElement();
+            this.lastTabbableElement.addEventListener("blur", this.handlePopoverBlur);
         }
     };
 
     private unregisterPopoverBlurHandler = () => {
-        if (this.lastElementInPopover != null) {
-            this.lastElementInPopover.removeEventListener("blur", this.handlePopoverBlur);
+        if (this.lastTabbableElement != null) {
+            this.lastTabbableElement.removeEventListener("blur", this.handlePopoverBlur);
         }
     };
 
