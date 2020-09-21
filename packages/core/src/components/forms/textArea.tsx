@@ -91,6 +91,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
         const { inputRef } = this.props;
         if (prevProps.inputRef !== inputRef) {
             if (isRefObject<HTMLTextAreaElement>(inputRef)) {
+                inputRef.current = (this.textareaRef as IRefObject<HTMLTextAreaElement>).current;
                 this.textareaRef = inputRef;
             } else if (isRefCallback<HTMLTextAreaElement>(inputRef)) {
                 inputRef(this.textareaRef as HTMLTextAreaElement | null);

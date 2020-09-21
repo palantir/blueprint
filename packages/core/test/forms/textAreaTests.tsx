@@ -79,4 +79,17 @@ describe("<TextArea>", () => {
         textAreawrapper.setProps({ inputRef: textAreaNewRefCallback });
         assert.instanceOf(textAreaNew, HTMLTextAreaElement);
     });
+
+    if (typeof React.createRef !== "undefined") {
+        it("accepts object refs created with React.createRef and updates on change", () => {
+            const textAreaRef = React.createRef<HTMLTextAreaElement>();
+            const textAreaNewRef = React.createRef<HTMLTextAreaElement>();
+
+            const textAreawrapper = mount(<TextArea id="textarea" inputRef={textAreaRef} />);
+            assert.instanceOf(textAreaRef.current, HTMLTextAreaElement);
+
+            textAreawrapper.setProps({ inputRef: textAreaNewRef });
+            assert.instanceOf(textAreaNewRef.current, HTMLTextAreaElement);
+        });
+    }
 });
