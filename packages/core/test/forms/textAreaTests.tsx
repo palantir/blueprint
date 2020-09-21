@@ -51,6 +51,7 @@ describe("<TextArea>", () => {
 
         assert.equal((textarea.getDOMNode() as HTMLElement).style.marginTop, "10px");
     });
+
     it("can fit large initial content", () => {
         const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Aenean finibus eget enim non accumsan.
@@ -65,6 +66,7 @@ describe("<TextArea>", () => {
         const scrollHeightInPixels = `${(textarea.getDOMNode() as HTMLElement).scrollHeight}px`;
         assert.equal((textarea.getDOMNode() as HTMLElement).style.height, scrollHeightInPixels);
     });
+
     it("updates on ref change", () => {
         let textArea: HTMLTextAreaElement | null = null;
         let textAreaNew: HTMLTextAreaElement | null = null;
