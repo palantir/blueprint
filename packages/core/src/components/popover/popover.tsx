@@ -103,6 +103,7 @@ export interface IPopoverState {
 @polyfill
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
+    private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
     public static defaultProps: IPopoverProps = {
         boundary: "scrollParent",
@@ -312,6 +313,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             {
                 [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
                 [Classes.MINIMAL]: this.props.minimal,
+                [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
             },
             this.props.popoverClassName,
         );
@@ -319,7 +321,12 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         return (
             <div className={Classes.TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
                 <ResizeSensor onResize={this.reposition}>
-                    <div className={popoverClasses} style={{ transformOrigin }} {...popoverHandlers}>
+                    <div
+                        className={popoverClasses}
+                        style={{ transformOrigin }}
+                        ref={this.popoverRef}
+                        {...popoverHandlers}
+                    >
                         {this.isArrowEnabled() && (
                             <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
                         )}
@@ -495,15 +502,15 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
 
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
+        const eventPopover = eventTarget.closest(`.${Classes.POPOVER}`);
+        const isEventFromSelf = eventPopover === this.popoverRef.current;
+        const isEventPopoverCapturing = eventPopover.classList.contains(Classes.POPOVER_CAPTURING_DISMISS);
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
         const dismissElement = eventTarget.closest(`.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`);
         const shouldDismiss = dismissElement != null && dismissElement.classList.contains(Classes.POPOVER_DISMISS);
         const isDisabled = eventTarget.closest(`:disabled, .${Classes.DISABLED}`) != null;
-        if (shouldDismiss && !isDisabled && !e.isDefaultPrevented()) {
+        if (shouldDismiss && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
             this.setOpenState(false, e);
-            if (this.props.captureDismiss) {
-                e.preventDefault();
-            }
         }
     };
 
