@@ -207,7 +207,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         const dateValue = isDateValid(value) ? value : null;
         const dayPickerProps: DayPickerProps = {
             ...this.props.dayPickerProps,
-            // If the user tabs on a DayPicker Day element and the lastElementInPopover is also a DayPicker Day
+            // If the user presses the TAB key on a DayPicker Day element and the lastElementInPopover is also a DayPicker Day
             // element, the popover should be closed
             onDayKeyDown: (day, modifiers, e) => {
                 if (
@@ -435,7 +435,6 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             // and would close the Popover unexpectedly
             // - On disabled change months buttons
             // - DayPicker day elements, their "blur" will be managed at its own onKeyDown
-            // event listener for improving UX
             const isChangeMonthEvt = eventTarget.classList.contains(Classes.DATEPICKER_NAVBUTTON);
             const isChangeMonthButtonDisabled = isChangeMonthEvt && (eventTarget as HTMLButtonElement).disabled;
             const isDayPickerDayEvt = eventTarget.classList.contains(Classes.DATEPICKER_DAY);
