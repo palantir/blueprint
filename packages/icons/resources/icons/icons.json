@@ -3490,5 +3490,11 @@
         "iconName": "geofence",
         "tags": "region, geo, fence",
         "group": "interface"
+    },
+    {
+        "displayName": "Data Connection",
+        "iconName": "data-connection",
+        "tags": "connectivity, connection, database, data, status, health",
+        "group": "interface"
     }
 ]
