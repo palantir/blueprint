@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import type { DayPickerProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
 import {
