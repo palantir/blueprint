@@ -87,14 +87,13 @@ describe("<DateInput>", () => {
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
-    it("Popover closes when first day of the month is blurred", () => {
+    it("Popover closes when tabbing on first day of the month", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         wrapper.find("input").simulate("focus").simulate("blur");
         // First day of month is the only .DayPicker-Day with tabIndex == 0
         const tabbables = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 });
-        const firstDay = tabbables.getDOMNode() as HTMLElement;
-        firstDay.dispatchEvent(createFocusEvent("blur"));
+        tabbables.simulate("keydown", { key: "Tab" });
         // manually updating wrapper is required with enzyme 3
         // ref: https://github.com/airbnb/enzyme/blob/master/docs/guides/migration-from-2-to-3.md#for-mount-updates-are-sometimes-required-when-they-werent-before
         wrapper.update();
