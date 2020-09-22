@@ -4,7 +4,8 @@
 @import "./common";
 
 // react-day-picker does not conform to our naming scheme
-// stylelint-disable selector-class-pattern
+
+/* stylelint-disable selector-class-pattern */
 .#{$ns}-daterangepicker {
   display: flex;
   white-space: nowrap;
@@ -38,11 +39,12 @@
       border-radius: 0;
 
       // need to disable hover styles for all variants of selected dates
-      // stylelint-disable max-line-length
+
+      /* stylelint-disable max-line-length */
       &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
         background-color: $daterangepicker-range-background-color;
       }
-      // stylelint-enable max-line-length
+      /* stylelint-enable max-line-length */
     }
 
     &--selected-range {
@@ -55,7 +57,8 @@
     }
 
     // need to set rounded corners
-    // stylelint-disable max-line-length
+
+    /* stylelint-disable max-line-length */
     &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
@@ -65,7 +68,7 @@
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
-    // stylelint-enable max-line-length
+    /* stylelint-enable max-line-length */
 
     &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
       border-bottom-right-radius: 0;
@@ -82,11 +85,12 @@
     .DayPicker-Day {
       &--hovered-range {
         // same for dark theme
-        // stylelint-disable max-line-length
+
+        /* stylelint-disable max-line-length */
         &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
           background-color: $dark-daterangepicker-range-background-color;
         }
-        // stylelint-enable max-line-length
+        /* stylelint-enable max-line-length */
       }
 
       &--selected-range {

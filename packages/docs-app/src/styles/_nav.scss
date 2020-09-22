@@ -104,7 +104,7 @@ $dark-package-colors: (
         }
       }
 
-      // stylelint-disable max-nesting-depth
+      /* stylelint-disable max-nesting-depth */
       &:hover,
       &.docs-nav-expanded {
         .#{$ns}-menu-item,
@@ -133,7 +133,7 @@ $dark-package-colors: (
           }
         }
       }
-      // stylelint-enable max-nesting-depth
+      /* stylelint-enable max-nesting-depth */
     }
   }
 

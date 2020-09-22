@@ -191,7 +191,7 @@ Styleguide button-group
 
     .#{$ns}-button {
       // we never want that margin-right when vertical
-      margin-right: 0 !important; // stylelint-disable-line declaration-no-important
+      margin-right: 0 !important; /* stylelint-disable-line declaration-no-important */
       // needed to ensure buttons take up the full width when wrapped in a Popover:
       width: 100%;
     }

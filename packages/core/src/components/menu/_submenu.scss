@@ -15,7 +15,7 @@
 
     &.#{$ns}-popover-open > .#{$ns}-menu-item {
       // keep a trail of hovered items as submenus are opened
-      // stylelint-disable-next-line scss/at-extend-no-missing-placeholder
+      /* stylelint-disable-next-line scss/at-extend-no-missing-placeholder */
       @extend .#{$ns}-menu-item:hover;
     }
   }

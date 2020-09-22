@@ -405,6 +405,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         return {
             // keydown is fired repeatedly when held so it's implicitly continuous
             onKeyDown: evt => {
+                // eslint-disable-next-line deprecation/deprecation
                 if (!this.props.disabled && Keys.isKeyboardClick(evt.keyCode)) {
                     this.handleButtonClick(evt, direction);
                 }
@@ -486,6 +487,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             return;
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         const { keyCode } = e;
 
         let direction: IncrementDirection;

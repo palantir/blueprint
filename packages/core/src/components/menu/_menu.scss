@@ -78,7 +78,7 @@ Styleguide menu
   }
 
   // pt-disable always overrides over styles
-  // stylelint-disable declaration-no-important
+  /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
     background-color: inherit !important;
     color: $pt-text-color-disabled !important;
@@ -92,7 +92,7 @@ Styleguide menu
       color: $pt-icon-color-disabled !important;
     }
   }
-  // stylelint-enable declaration-no-important
+  /* stylelint-enable declaration-no-important */
 
   .#{$ns}-large & {
     @include menu-item-large();
@@ -168,7 +168,7 @@ Styleguide menu-header
     }
 
     // pt-disable always overrides over styles
-    // stylelint-disable declaration-no-important
+    /* stylelint-disable declaration-no-important */
     &.#{$ns}-disabled {
       color: $pt-dark-text-color-disabled !important;
 
@@ -178,7 +178,7 @@ Styleguide menu-header
         color: $pt-dark-icon-color-disabled !important;
       }
     }
-    // stylelint-enable declaration-no-important
+    /* stylelint-enable declaration-no-important */
   }
 
   .#{$ns}-menu-divider,
