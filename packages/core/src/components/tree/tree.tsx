@@ -78,8 +78,8 @@ export interface ITreeProps<T = {}> extends IProps {
 export class Tree<T = {}> extends React.Component<ITreeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tree`;
 
-    public static ofType<T>() {
-        return Tree as new (props: ITreeProps<T>) => Tree<T>;
+    public static ofType<U>() {
+        return Tree as new (props: ITreeProps<U>) => Tree<U>;
     }
 
     public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {

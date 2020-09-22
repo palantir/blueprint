@@ -27,6 +27,7 @@ interface IBigSpaceRock {
 const bigSpaceRocks: IBigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
 export type CellsLoadingConfiguration = "all" | "first-column" | "first-row" | "none" | "random";
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CellsLoadingConfiguration = {
     ALL: "all" as CellsLoadingConfiguration,
     FIRST_COLUMN: "first-column" as CellsLoadingConfiguration,

@@ -39,6 +39,7 @@ export const PopoverInteractionKind = {
     HOVER: "hover" as "hover",
     HOVER_TARGET_ONLY: "hover-target" as "hover-target",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
 export interface IPopoverProps extends IPopoverSharedProps {

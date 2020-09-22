@@ -32,7 +32,6 @@ import {
     Popover,
     PopoverInteractionKind,
     Position,
-    Utils,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -114,8 +113,8 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         resetOnClose: false,
     };
 
-    public static ofType<T>() {
-        return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
+    public static ofType<U>() {
+        return Suggest as new (props: ISuggestProps<U>) => Suggest<U>;
     }
 
     public state: ISuggestState<T> = {
@@ -240,7 +239,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
             this.setState({ isOpen: true });
         }
 
-        Utils.safeInvokeMember(this.props.inputProps, "onFocus", event);
+        this.props.inputProps?.onFocus?.(event);
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
@@ -292,7 +291,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                 // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });
             }
-            Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", nextOpenState);
+            this.props.popoverProps?.onInteraction?.(nextOpenState);
         });
 
     private handlePopoverOpening = (node: HTMLElement) => {
@@ -301,7 +300,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         if (this.props.resetOnClose && this.queryList) {
             this.queryList.setQuery("", true);
         }
-        Utils.safeInvokeMember(this.props.popoverProps, "onOpening", node);
+        this.props.popoverProps?.onOpening?.(node);
     };
 
     private handlePopoverOpened = (node: HTMLElement) => {
@@ -309,7 +308,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         if (this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }
-        Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
+        this.props.popoverProps?.onOpened?.(node);
     };
 
     private getTargetKeyDownHandler = (

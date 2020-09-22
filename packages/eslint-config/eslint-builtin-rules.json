@@ -67,7 +67,6 @@
     "no-multiple-empty-lines": "off",
     "no-new-func": "error",
     "no-new-wrappers": "error",
-    "no-redeclare": "error",
     "no-reserved-keys": "off",
     "no-restricted-properties": [
         "error",
@@ -89,12 +88,6 @@
     ],
     "no-return-await": "error",
     "no-sequences": "error",
-    "no-shadow": [
-        "error",
-        {
-            "hoist": "all"
-        }
-    ],
     "no-space-before-semi": "off",
     "no-spaced-func": "off",
     "no-sparse-arrays": "error",

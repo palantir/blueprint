@@ -5,9 +5,9 @@
   @include focus-outline();
 }
 
+// override any focus outline anywhere
 .#{$ns}-focus-disabled :focus {
-  // override any focus outline anywhere
-  // stylelint-disable declaration-no-important
+  /* stylelint-disable declaration-no-important */
   outline: none !important;
 
   // special override for checkbox etc which render focus on a separate element

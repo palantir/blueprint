@@ -37,6 +37,7 @@ export const TimePrecision = {
     MINUTE: "minute" as "minute",
     SECOND: "second" as "second",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 
 export interface ITimePickerProps extends IProps {
