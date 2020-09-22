@@ -16,7 +16,6 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { shallowCompareKeys } from "../../common/utils";
 
 export interface IAsyncControllableInputProps
     extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -44,6 +43,12 @@ export interface IAsyncControllableInputState {
      * value instead.
      */
     nextValue: InputValue;
+
+    /**
+     * Whether there is a pending update we are expecting from a parent component.
+     * @default false
+     */
+    pendingUpdate: boolean;
 }
 
 /**
@@ -56,13 +61,14 @@ export interface IAsyncControllableInputState {
  * Note: this component does not apply any Blueprint-specific styling.
  */
 @polyfill
-export class AsyncControllableInput extends React.Component<
+export class AsyncControllableInput extends React.PureComponent<
     IAsyncControllableInputProps,
     IAsyncControllableInputState
 > {
     public state: IAsyncControllableInputState = {
         isComposing: false,
         nextValue: this.props.value,
+        pendingUpdate: false,
         value: this.props.value,
     };
 
@@ -70,59 +76,48 @@ export class AsyncControllableInput extends React.Component<
         nextProps: IAsyncControllableInputProps,
         nextState: IAsyncControllableInputState,
     ): Partial<IAsyncControllableInputState> | null {
-        if (nextState.isComposing) {
-            // don't derive anything from props, we'll do that after composition ends
+        if (nextState.isComposing || nextProps.value === undefined) {
+            // don't derive anything from props if:
+            // - in uncontrolled mode, OR
+            // - currently composing, since we'll do that after composition ends
             return null;
         }
 
         const userTriggeredUpdate = nextState.nextValue !== nextState.value;
 
         if (userTriggeredUpdate) {
-            if (nextProps.value !== nextState.nextValue) {
+            if (nextProps.value === nextState.nextValue) {
+                // parent has processed and accepted our update
+                if (nextState.pendingUpdate) {
+                    return { value: nextProps.value, pendingUpdate: false };
+                }
+            } else {
+                if (nextProps.value === nextState.value) {
+                    // we have sent the update to our parent, but it has not been processed yet. just wait.
+                    return { pendingUpdate: true };
+                }
                 // accept controlled update overriding user action
-                return { value: nextProps.value, nextValue: nextProps.value };
+                return { value: nextProps.value, nextValue: nextProps.value, pendingUpdate: false };
             }
         } else {
             // accept controlled update, could be confirming or denying user action
-            return { value: nextProps.value, nextValue: nextProps.value };
+            return { value: nextProps.value, nextValue: nextProps.value, pendingUpdate: false };
         }
 
         return null;
     }
 
-    public shouldComponentUpdate(nextProps: IAsyncControllableInputProps, nextState: IAsyncControllableInputState) {
-        // equivalent to a React.PureComponent
-        const hasShallowDifference =
-            !shallowCompareKeys(this.props, nextProps) || !shallowCompareKeys(this.state, nextState);
-
-        if (this.props.value != null) {
-            // controlled mode
-            if (!nextState.isComposing) {
-                // during composition, we behave like a normal input, so we don't have to worry about async stuff
-                // otherwise, we need special handling for async controlled updates
-
-                const userTriggeredUpdate = nextState.nextValue !== nextState.value;
-                const hasParentFlushedNewValue = nextProps.value === nextState.nextValue;
-
-                if (userTriggeredUpdate && !hasParentFlushedNewValue) {
-                    // async update hasn't flushed down to us yet, so hold off on rendering
-                    // to avoid the side effect of the input cursor jumping to the end
-                    return false;
-                }
-            }
-        }
-
-        return hasShallowDifference;
-    }
-
     public render() {
-        const { isComposing, value, nextValue } = this.state;
+        const { isComposing, pendingUpdate, value, nextValue } = this.state;
         const { inputRef, ...restProps } = this.props;
         return (
             <input
                 {...restProps}
                 ref={inputRef}
-                value={isComposing ? nextValue : value}
+                // render the pending value even if it is not confirmed by a parent's async controlled update
+                // so that the cursor does not jump to the end of input as reported in
+                // https://github.com/palantir/blueprint/issues/4298
+                value={isComposing || pendingUpdate ? nextValue : value}
                 onCompositionStart={this.handleCompositionStart}
                 onCompositionEnd={this.handleCompositionEnd}
                 onChange={this.handleChange}
