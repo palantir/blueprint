@@ -53,9 +53,6 @@ export interface IAsyncControllableInputState {
  * asychronously. This might happen if a component chooses to do async validation of a value
  * returned by the input's `onChange` callback.
  *
- * Implementation adapted from https://jsfiddle.net/m792qtys/ (linked in the above issue thread) and
- * https://jsfiddle.net/CodeMedic42/139sp08k/ (via https://github.com/facebook/react/issues/14904).
- *
  * Note: this component does not apply any Blueprint-specific styling.
  */
 @polyfill
@@ -72,12 +69,25 @@ export class AsyncControllableInput extends React.Component<
     public static getDerivedStateFromProps(
         nextProps: IAsyncControllableInputProps,
         nextState: IAsyncControllableInputState,
-    ): Partial<IAsyncControllableInputState> {
-        let value = nextProps.value ?? "";
-        if (value === nextState.value) {
-            value = nextState.nextValue;
+    ): Partial<IAsyncControllableInputState> | null {
+        if (nextState.isComposing) {
+            // don't derive anything from props, we'll do that after composition ends
+            return null;
         }
-        return { value };
+
+        const userTriggeredUpdate = nextState.nextValue !== nextState.value;
+
+        if (userTriggeredUpdate) {
+            if (nextProps.value !== nextState.nextValue) {
+                // accept controlled update overriding user action
+                return { value: nextProps.value, nextValue: nextProps.value };
+            }
+        } else {
+            // accept controlled update, could be confirming or denying user action
+            return { value: nextProps.value, nextValue: nextProps.value };
+        }
+
+        return null;
     }
 
     public shouldComponentUpdate(nextProps: IAsyncControllableInputProps, nextState: IAsyncControllableInputState) {
@@ -86,7 +96,20 @@ export class AsyncControllableInput extends React.Component<
             !shallowCompareKeys(this.props, nextProps) || !shallowCompareKeys(this.state, nextState);
 
         if (this.props.value != null) {
-            return nextState.value !== this.state.value || hasShallowDifference;
+            // controlled mode
+            if (!nextState.isComposing) {
+                // during composition, we behave like a normal input, so we don't have to worry about async stuff
+                // otherwise, we need special handling for async controlled updates
+
+                const userTriggeredUpdate = nextState.nextValue !== nextState.value;
+                const hasParentFlushedNewValue = nextProps.value === nextState.nextValue;
+
+                if (userTriggeredUpdate && !hasParentFlushedNewValue) {
+                    // async update hasn't flushed down to us yet, so hold off on rendering
+                    // to avoid the side effect of the input cursor jumping to the end
+                    return false;
+                }
+            }
         }
 
         return hasShallowDifference;

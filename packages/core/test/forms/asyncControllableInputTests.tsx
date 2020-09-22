@@ -69,7 +69,7 @@ describe("<AsyncControllableInput>", () => {
             assert.strictEqual(handleChangeSpy.callCount, 2);
         });
 
-        it("external updates do not override in-progress composition", async () => {
+        it("external updates DO NOT override in-progress composition", async () => {
             const wrapper = mount(<AsyncControllableInput type="text" value="hi" />);
             const input = wrapper.find("input");
 
@@ -93,6 +93,7 @@ describe("<AsyncControllableInput>", () => {
             input.simulate("compositionend", { data: " " });
 
             await Promise.resolve();
+            // we are "rejecting" the composition here by supplying a different controlled value
             wrapper.setProps({ value: "bye" }).update();
 
             assert.strictEqual(wrapper.find("input").prop("value"), "bye");
