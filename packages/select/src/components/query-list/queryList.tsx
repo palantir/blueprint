@@ -67,7 +67,7 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
  */
-export interface IQueryListRendererProps<T>  // Omit `createNewItem`, because it's used strictly for internal tracking.
+export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
     extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,
         IProps {
     /**
