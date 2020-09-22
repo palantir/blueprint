@@ -68,7 +68,9 @@ const scssLoaders = [
     {
         loader: require.resolve("postcss-loader"),
         options: {
-            plugins: [require("autoprefixer"), require("cssnano")({ preset: "default" })],
+            postcssOptions: {
+                plugins: [require("autoprefixer"), require("cssnano")({ preset: "default" })],
+            },
         },
     },
     require.resolve("sass-loader"),
