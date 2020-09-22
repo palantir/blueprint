@@ -65,7 +65,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
         return (
             <div className={Classes.PANEL_STACK_HEADER}>
                 <span>{this.maybeRenderBack()}</span>
-                <Text className={Classes.HEADING} ellipsize={true}>
+                <Text className={Classes.HEADING} ellipsize={true} title={this.props.panel.htmlTitle}>
                     {this.props.panel.title}
                 </Text>
                 <span />
@@ -85,6 +85,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
                 onClick={this.handleClose}
                 small={true}
                 text={this.props.previousPanel.title}
+                title={this.props.previousPanel.htmlTitle}
             />
         );
     }

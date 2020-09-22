@@ -33,6 +33,11 @@ export interface ITextProps extends IProps {
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;
+
+    /**
+     * HTML title of the element
+     */
+    title?: string;
 }
 
 export interface ITextState {
@@ -66,14 +71,14 @@ export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
             },
             this.props.className,
         );
-        const { children, tagName = "div" } = this.props;
+        const { children, tagName = "div", title } = this.props;
 
         return React.createElement(
             tagName,
             {
                 className: classes,
                 ref: (ref: HTMLElement | null) => (this.textRef = ref),
-                title: this.state.isContentOverflowing ? this.state.textContent : undefined,
+                title: title ?? (this.state.isContentOverflowing ? this.state.textContent : undefined),
             },
             children,
         );

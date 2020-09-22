@@ -9,7 +9,7 @@
     "style": "lib/css/blueprint-timezone.css",
     "unpkg": "dist/timezone.bundle.js",
     "sideEffects": [
-        "*.css"
+        "**/*.css"
     ],
     "scripts": {
         "clean": "rm -rf dist/* && rm -rf lib/*",

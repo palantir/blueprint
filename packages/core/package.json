@@ -9,7 +9,7 @@
     "style": "lib/css/blueprint.css",
     "unpkg": "dist/core.bundle.js",
     "sideEffects": [
-        "*.css",
+        "**/*.css",
         "lib/esm/components/index.js",
         "lib/esm/common/configureDom4.js",
         "lib/esnext/components/index.js",

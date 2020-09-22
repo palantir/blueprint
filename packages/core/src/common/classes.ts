@@ -208,6 +208,7 @@ export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
+export const POPOVER_CAPTURING_DISMISS = `${POPOVER}-capturing-dismiss`;
 export const POPOVER_CONTENT = `${POPOVER}-content`;
 export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;

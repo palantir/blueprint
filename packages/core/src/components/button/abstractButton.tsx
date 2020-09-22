@@ -127,6 +127,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         return {
             className,
             disabled,
+            onBlur: this.handleBlur,
             onClick: disabled ? undefined : this.props.onClick,
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
@@ -160,6 +161,13 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         }
         this.currentKeyDown = null;
         this.props.onKeyUp?.(e);
+    };
+
+    protected handleBlur = (e: React.FocusEvent<any>) => {
+        if (this.state.isActive) {
+            this.setState({ isActive: false });
+        }
+        this.props.onBlur?.(e);
     };
 
     protected renderChildren(): React.ReactNode {
