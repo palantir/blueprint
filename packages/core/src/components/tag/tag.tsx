@@ -102,6 +102,11 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * HTML title to be passed to the <Text> component
      */
     htmlTitle?: string;
+
+    /**
+     * Ref to associate with the underlying html element.
+     */
+    elementRef?: React.Ref<HTMLSpanElement>;
 }
 
 @polyfill
@@ -125,6 +130,7 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
             round,
             tabIndex = 0,
             htmlTitle,
+            elementRef,
             ...htmlProps
         } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
@@ -154,7 +160,7 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
         ) : null;
 
         return (
-            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
+            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={elementRef}>
                 <Icon icon={icon} />
                 {!isReactNodeEmpty(children) && (
                     <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
