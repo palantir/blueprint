@@ -31,8 +31,8 @@ export interface IOffset {
 interface IContextMenuState {
     isOpen: boolean;
     isDarkTheme: boolean;
-    menu: JSX.Element;
-    offset: IOffset;
+    menu?: JSX.Element;
+    offset?: IOffset;
     onClose?: () => void;
 }
 
@@ -49,8 +49,6 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,
-        menu: null,
-        offset: null,
     };
 
     public render() {
@@ -62,7 +60,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
         // https://github.com/palantir/blueprint/issues/692
         // Generate key based on offset so a new Popover instance is created
         // when offset changes, to force recomputing position.
-        const key = this.state.offset == null ? "" : `${this.state.offset.left}x${this.state.offset.top}`;
+        const key = this.state.offset === undefined ? "" : `${this.state.offset.left}x${this.state.offset.top}`;
 
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
@@ -88,7 +86,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
         );
     }
 
-    public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
+    public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme = false) {
         this.setState({ isOpen: true, menu, offset, onClose, isDarkTheme });
     }
 
@@ -111,7 +109,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
             // if it doesn't, no native menu will show (at least on OSX) :(
             const newTarget = document.elementFromPoint(e.clientX, e.clientY);
             const { view, ...newEventInit } = e;
-            newTarget.dispatchEvent(new MouseEvent("contextmenu", newEventInit));
+            newTarget?.dispatchEvent(new MouseEvent("contextmenu", newEventInit));
         }, TRANSITION_DURATION);
     };
 
@@ -124,8 +122,8 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
     };
 }
 
-let contextMenuElement: HTMLElement;
-let contextMenu: ContextMenu;
+let contextMenuElement: HTMLElement | undefined;
+let contextMenu: ContextMenu | undefined;
 
 /**
  * Show the given menu element at the given offset from the top-left corner of the viewport.
@@ -133,7 +131,7 @@ let contextMenu: ContextMenu;
  * room onscreen. The optional callback will be invoked when this menu closes.
  */
 export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
-    if (contextMenuElement == null) {
+    if (contextMenuElement === undefined) {
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
@@ -143,14 +141,12 @@ export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, i
         ) as ContextMenu;
     }
 
-    contextMenu.show(menu, offset, onClose, isDarkTheme);
+    contextMenu!.show(menu, offset, onClose, isDarkTheme);
 }
 
 /** Hide the open context menu. */
 export function hide() {
-    if (contextMenu != null) {
-        contextMenu.hide();
-    }
+    contextMenu?.hide();
 }
 
 /** Return whether a context menu is currently open. */
@@ -162,7 +158,7 @@ function remove() {
     if (contextMenuElement != null) {
         ReactDOM.unmountComponentAtNode(contextMenuElement);
         contextMenuElement.remove();
-        contextMenuElement = null;
-        contextMenu = null;
+        contextMenuElement = undefined;
+        contextMenu = undefined;
     }
 }

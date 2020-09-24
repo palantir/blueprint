@@ -99,7 +99,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
 
     protected abstract buttonRef: HTMLElement | IRefObject<HTMLElement> | null;
 
-    private currentKeyDown: number = null;
+    private currentKeyDown?: number;
 
     public abstract render(): JSX.Element;
 
@@ -157,9 +157,9 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         /* eslint-disable deprecation/deprecation */
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
-            getRef(this.buttonRef).click();
+            getRef(this.buttonRef)?.click();
         }
-        this.currentKeyDown = null;
+        this.currentKeyDown = undefined;
         this.props.onKeyUp?.(e);
     };
 

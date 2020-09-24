@@ -30,7 +30,7 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];
 
-    constructor(props?: P, context?: any) {
+    constructor(props: P, context?: any) {
         super(props, context);
         if (!isNodeEnv("production")) {
             this.validateProps(this.props);

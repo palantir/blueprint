@@ -201,7 +201,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
-                popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 target={target}
             />
         );

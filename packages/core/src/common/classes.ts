@@ -51,10 +51,10 @@ export const ELEVATION_2 = elevationClass(Elevation.TWO);
 export const ELEVATION_3 = elevationClass(Elevation.THREE);
 export const ELEVATION_4 = elevationClass(Elevation.FOUR);
 
-export const INTENT_PRIMARY = intentClass(Intent.PRIMARY);
-export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
-export const INTENT_WARNING = intentClass(Intent.WARNING);
-export const INTENT_DANGER = intentClass(Intent.DANGER);
+export const INTENT_PRIMARY = intentClass(Intent.PRIMARY)!;
+export const INTENT_SUCCESS = intentClass(Intent.SUCCESS)!;
+export const INTENT_WARNING = intentClass(Intent.WARNING)!;
+export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 
@@ -291,7 +291,7 @@ export function getClassNamespace() {
 }
 
 /** Return CSS class for alignment. */
-export function alignmentClass(alignment: Alignment) {
+export function alignmentClass(alignment: Alignment | undefined) {
     switch (alignment) {
         case Alignment.LEFT:
             return ALIGN_LEFT;
@@ -302,8 +302,8 @@ export function alignmentClass(alignment: Alignment) {
     }
 }
 
-export function elevationClass(elevation: Elevation) {
-    if (elevation == null) {
+export function elevationClass(elevation: Elevation | undefined) {
+    if (elevation === undefined) {
         return undefined;
     }
     return `${NS}-elevation-${elevation}`;
@@ -325,8 +325,8 @@ export function intentClass(intent?: Intent) {
     return `${NS}-intent-${intent.toLowerCase()}`;
 }
 
-export function positionClass(position: Position) {
-    if (position == null) {
+export function positionClass(position: Position | undefined) {
+    if (position === undefined) {
         return undefined;
     }
     return `${NS}-position-${position}`;

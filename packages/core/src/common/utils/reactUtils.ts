@@ -34,6 +34,14 @@ export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boo
 }
 
 /**
+ * Returns true if children are a mappable children array
+ * @internal
+ */
+export function isReactChildrenElementOrElements(children: React.ReactNode): children is JSX.Element[] | JSX.Element {
+    return !isReactNodeEmpty(children, true) && children !== true;
+}
+
+/**
  * Converts a React node to an element: non-empty string or number or
  * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
  * and booleans are discarded.

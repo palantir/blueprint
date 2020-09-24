@@ -98,12 +98,12 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
 
     public state: IInputGroupState = {};
 
-    private leftElement: HTMLElement;
-    private rightElement: HTMLElement;
+    private leftElement: HTMLElement | null = null;
+    private rightElement: HTMLElement | null = null;
 
     private refHandlers = {
-        leftElement: (ref: HTMLSpanElement) => (this.leftElement = ref),
-        rightElement: (ref: HTMLSpanElement) => (this.rightElement = ref),
+        leftElement: (ref: HTMLSpanElement | null) => (this.leftElement = ref),
+        rightElement: (ref: HTMLSpanElement | null) => (this.rightElement = ref),
     };
 
     public render() {

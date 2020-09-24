@@ -28,7 +28,7 @@ export { IButtonProps };
 export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
-    protected buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null;
+    protected buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null = null;
     protected handleRef = isRefObject<HTMLButtonElement>(this.props.elementRef)
         ? (this.buttonRef = this.props.elementRef)
         : (ref: HTMLButtonElement | null) => {
@@ -53,7 +53,7 @@ export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButton
 export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 
-    protected buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null;
+    protected buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null = null;
     protected handleRef = isRefObject<HTMLAnchorElement>(this.props.elementRef)
         ? (this.buttonRef = this.props.elementRef)
         : (ref: HTMLAnchorElement | null) => {
