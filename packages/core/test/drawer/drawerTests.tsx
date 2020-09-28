@@ -92,7 +92,7 @@ describe("<Drawer>", () => {
             );
 
             // vertical size becomes height (opposite test)
-            assert.equal(drawerLeft.find(`.${Classes.DRAWER}`).prop("style").width, 100);
+            assert.equal(drawerLeft.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
             // vertical adds class (opposite test)
             assert.isFalse(drawerLeft.find(`.${Classes.VERTICAL}`).exists());
 
@@ -113,12 +113,12 @@ describe("<Drawer>", () => {
                     </Drawer>,
                 );
                 assert.equal(
-                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style").width,
-                    drawerRight.find(`.${Classes.DRAWER}`).prop("style").width,
+                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style")?.width,
+                    drawerRight.find(`.${Classes.DRAWER}`).prop("style")?.width,
                 );
                 assert.equal(
-                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style").height,
-                    drawerRight.find(`.${Classes.DRAWER}`).prop("style").height,
+                    drawerDefault.find(`.${Classes.DRAWER}`).prop("style")?.height,
+                    drawerRight.find(`.${Classes.DRAWER}`).prop("style")?.height,
                 );
             });
 
@@ -128,7 +128,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").width, 100);
+                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
             });
 
             it("position right, adds appropriate classes (default behavior)", () => {
@@ -148,7 +148,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").height, 100);
+                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
             });
 
             it("position top, adds appropriate classes (vertical, reverse)", () => {
@@ -168,7 +168,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").height, 100);
+                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
             });
 
             it("position bottom, adds appropriate classes (vertical)", () => {
@@ -188,7 +188,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").width, 100);
+                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
             });
 
             it("position left, adds appropriate classes (reverse)", () => {
@@ -208,7 +208,7 @@ describe("<Drawer>", () => {
                 {createDrawerContents()}
             </Drawer>,
         );
-        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").width, 100);
+        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
     });
 
     it("vertical size becomes height", () => {
@@ -217,7 +217,7 @@ describe("<Drawer>", () => {
                 {createDrawerContents()}
             </Drawer>,
         );
-        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style").height, 100);
+        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
     });
 
     it("vertical adds class", () => {

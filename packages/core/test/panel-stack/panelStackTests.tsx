@@ -55,11 +55,8 @@ describe("<PanelStack>", () => {
     });
 
     afterEach(() => {
-        if (panelStackWrapper !== undefined) {
-            panelStackWrapper.unmount();
-            panelStackWrapper.detach();
-            panelStackWrapper = undefined;
-        }
+        panelStackWrapper?.unmount();
+        panelStackWrapper?.detach();
         testsContainerElement.remove();
     });
 
@@ -148,7 +145,7 @@ describe("<PanelStack>", () => {
 
         const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;
         assert.exists(transitionGroupClassName);
-        assert.equal(transitionGroupClassName.indexOf(Classes.PANEL_STACK), 0);
+        assert.equal(transitionGroupClassName!.indexOf(Classes.PANEL_STACK), 0);
     });
 
     it("can render a panel without a title", () => {

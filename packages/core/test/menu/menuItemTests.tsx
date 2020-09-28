@@ -109,7 +109,7 @@ describe("MenuItem", () => {
 
     it("popoverProps (except content) are forwarded to Popover", () => {
         // Ensures that popover props are passed to Popover component, except content property
-        const popoverProps: Partial<IPopoverProps> = {
+        const popoverProps = {
             content: "CUSTOM_CONTENT",
             interactionKind: PopoverInteractionKind.CLICK,
             popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
@@ -121,7 +121,10 @@ describe("MenuItem", () => {
             </MenuItem>,
         );
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
-        assert.notStrictEqual(wrapper.find(Popover).prop("popoverClassName").indexOf(popoverProps.popoverClassName), 0);
+        assert.notStrictEqual(
+            wrapper.find(Popover).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
+            0,
+        );
         assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
     });
 

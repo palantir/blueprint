@@ -17,7 +17,7 @@
 import { ReactWrapper } from "enzyme";
 import { Portal } from "../src";
 
-export function findInPortal(overlay: ReactWrapper, selector: string) {
+export function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
     // React 16: createPortal preserves React tree so simple find works.
     const element = overlay.find(Portal).find(selector);
     if (element.exists()) {

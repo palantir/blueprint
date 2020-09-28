@@ -28,7 +28,7 @@ describe("Buttons:", () => {
 });
 
 function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) {
-    describe(`<${component.displayName.split(".")[1]}>`, () => {
+    describe(`<${component.displayName!.split(".")[1]}>`, () => {
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
             assert.isTrue(wrapper.is(tagName));
@@ -128,7 +128,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         }
 
         it("matches buttonRef with elementRef using callback", done => {
-            let elementRef: HTMLElement = null;
+            let elementRef: HTMLElement | null = null;
             const buttonRefCallback = (ref: HTMLElement) => {
                 elementRef = ref;
             };
@@ -149,7 +149,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         if (typeof React.useRef !== "undefined") {
             it("matches buttonRef with elementRef using useRef", done => {
-                let elementRef: React.MutableRefObject<HTMLElement>;
+                let elementRef: React.RefObject<HTMLElement>;
                 const Component = component;
 
                 const Test = () => {

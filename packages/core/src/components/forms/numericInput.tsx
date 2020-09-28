@@ -321,10 +321,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (min != null && max != null && min > max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
-        if (stepSize == null) {
-            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
-        }
-        if (stepSize <= 0) {
+        if (stepSize! <= 0) {
             throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize <= 0) {
@@ -333,10 +330,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (majorStepSize && majorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         }
-        if (minorStepSize && minorStepSize > stepSize) {
+        if (minorStepSize && minorStepSize > stepSize!) {
             throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         }
-        if (majorStepSize && majorStepSize < stepSize) {
+        if (majorStepSize && majorStepSize < stepSize!) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
 

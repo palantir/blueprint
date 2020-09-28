@@ -42,12 +42,9 @@ describe("<Popover>", () => {
     });
 
     afterEach(() => {
-        if (wrapper !== undefined) {
-            // clean up wrapper to remove Portal element from DOM
-            wrapper.unmount();
-            wrapper.detach();
-            wrapper = undefined;
-        }
+        // clean up wrapper to remove Portal element from DOM
+        wrapper?.unmount();
+        wrapper?.detach();
         testsContainerElement.remove();
         onInteractionSpy.resetHistory();
     });
@@ -90,9 +87,9 @@ describe("<Popover>", () => {
         });
 
         // HACKHACK (https://github.com/palantir/blueprint/issues/3371): this causes an infinite loop stack overflow
-        it.skip("warns if attempting to open a popover with empty content", () => {
+        it("warns if attempting to open a popover with empty content", () => {
             shallow(
-                <Popover content={null} isOpen={true}>
+                <Popover content={undefined} isOpen={true}>
                     {"target"}
                 </Popover>,
             );
@@ -156,9 +153,9 @@ describe("<Popover>", () => {
             popoverClassName: "foo",
             targetClassName: "baz",
         });
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass(wrapper.prop("className")));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass(wrapper.prop("popoverClassName")));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("targetClassName")));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass(wrapper.prop("className")!));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass(wrapper.prop("popoverClassName")!));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("targetClassName")!));
     });
 
     it("adds POPOVER_OPEN class to target when the popover is open", () => {
@@ -253,8 +250,8 @@ describe("<Popover>", () => {
                 .simulateTarget("mouseenter")
                 .simulateTarget("mouseleave");
             const target = wrapper.find("address");
-            assert.isTrue(target.prop("className").indexOf(Classes.POPOVER_TARGET) >= 0);
-            assert.isTrue(target.prop("className").indexOf(targetProps.className) >= 0);
+            assert.isTrue(target.prop("className")!.indexOf(Classes.POPOVER_TARGET) >= 0);
+            assert.isTrue(target.prop("className")!.indexOf(targetProps.className!) >= 0);
             assert.equal(target.prop("tabIndex"), targetProps.tabIndex);
             assert.equal(spy.callCount, 4);
         }
@@ -786,8 +783,8 @@ describe("<Popover>", () => {
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
 
-        wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement;
-        wrapper.targetElement = (wrapper.instance() as Popover).targetElement;
+        wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement!;
+        wrapper.targetElement = (wrapper.instance() as Popover).targetElement!;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
             return wrapper;
