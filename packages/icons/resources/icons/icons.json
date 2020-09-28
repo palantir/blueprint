@@ -3496,5 +3496,11 @@
         "iconName": "data-connection",
         "tags": "connectivity, connection, database, data, status, health",
         "group": "interface"
+    },
+    {
+        "displayName": "Switch",
+        "iconName": "switch",
+        "tags": "switch, electric, electrical",
+        "group": "miscellaneous"
     }
 ]
