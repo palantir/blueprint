@@ -49,6 +49,11 @@ export interface ITextState {
 export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
 
+    public static defaultProps: Partial<ITextProps> = {
+        ellipsize: false,
+        tagName: "div",
+    };
+
     public state: ITextState = {
         isContentOverflowing: false,
         textContent: "",
@@ -71,10 +76,10 @@ export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
             },
             this.props.className,
         );
-        const { children, tagName = "div", title } = this.props;
+        const { children, tagName, title } = this.props;
 
         return React.createElement(
-            tagName,
+            tagName!,
             {
                 className: classes,
                 ref: (ref: HTMLElement | null) => (this.textRef = ref),
@@ -85,11 +90,11 @@ export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
     }
 
     private update() {
-        if (this.textRef == null) {
+        if (this.textRef?.textContent == null) {
             return;
         }
         const newState = {
-            isContentOverflowing: this.props.ellipsize && this.textRef.scrollWidth > this.textRef.clientWidth,
+            isContentOverflowing: this.props.ellipsize! && this.textRef.scrollWidth > this.textRef.clientWidth,
             textContent: this.textRef.textContent,
         };
         this.setState(newState);

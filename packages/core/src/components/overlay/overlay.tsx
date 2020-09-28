@@ -24,6 +24,7 @@ import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import { findDOMNode } from "react-dom";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { LifecycleCompatPolyfill } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 export interface IOverlayableProps extends IOverlayLifecycleProps {
@@ -172,7 +173,7 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-@polyfill
+@(polyfill as LifecycleCompatPolyfill<IOverlayProps, any>)
 export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 

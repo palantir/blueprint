@@ -520,8 +520,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         }
     };
 
-    private handleOverlayClose = (e: React.SyntheticEvent<HTMLElement>) => {
-        if (this.targetElement === null) {
+    private handleOverlayClose = (e?: React.SyntheticEvent<HTMLElement>) => {
+        if (this.targetElement === null || e === undefined) {
             return;
         }
 
@@ -558,7 +558,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 this.props.onInteraction?.(isOpen, e);
             }
             if (!isOpen) {
-                this.props.onClose?.(e);
+                // non-null assertion because the only time `e` is undefined is when in controlled mode
+                // or the rare special case in uncontrolled mode when the `disabled` flag is toggled true
+                this.props.onClose?.(e!);
             }
         }
     }

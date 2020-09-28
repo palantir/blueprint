@@ -89,7 +89,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
 
     public componentDidUpdate(prevProps: IToastProps) {
         if (prevProps.timeout !== this.props.timeout) {
-            if (this.props.timeout > 0) {
+            if (this.props.timeout! > 0) {
                 this.startTimeout();
             } else {
                 this.clearTimeouts();
@@ -111,7 +111,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
     }
 
     private handleActionClick = (e: React.MouseEvent<HTMLElement>) => {
-        this.props.action.onClick?.(e);
+        this.props.action?.onClick?.(e);
         this.triggerDismiss(false);
     };
 
@@ -124,7 +124,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
 
     private startTimeout = () => {
         this.clearTimeouts();
-        if (this.props.timeout > 0) {
+        if (this.props.timeout! > 0) {
             this.setTimeout(() => this.triggerDismiss(true), this.props.timeout);
         }
     };

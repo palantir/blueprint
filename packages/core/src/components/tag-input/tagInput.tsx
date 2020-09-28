@@ -227,7 +227,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         isInputFocused: false,
     };
 
-    private inputElement: HTMLInputElement;
+    private inputElement: HTMLInputElement | null = null;
     private refHandlers = {
         input: (ref: HTMLInputElement) => {
             this.inputElement = ref;
@@ -254,7 +254,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
 
         // use placeholder prop only if it's defined and values list is empty or contains only falsy values
         const isSomeValueDefined = values.some(val => !!val);
-        const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps.placeholder : placeholder;
+        const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps?.placeholder : placeholder;
 
         return (
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
@@ -276,7 +276,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
                         onPaste={this.handleInputPaste}
                         placeholder={resolvedPlaceholder}
                         ref={this.refHandlers.input}
-                        className={classNames(Classes.INPUT_GHOST, inputProps.className)}
+                        className={classNames(Classes.INPUT_GHOST, inputProps?.className)}
                         disabled={disabled}
                     />
                 </div>
@@ -311,7 +311,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
                 data-tag-index={index}
                 key={tag + "__" + index}
                 large={large}
-                onRemove={this.props.disabled ? null : this.handleRemoveTag}
+                onRemove={this.props.disabled ? undefined : this.handleRemoveTag}
                 {...props}
             >
                 {tag}
@@ -376,13 +376,13 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
 
     private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         this.setState({ isInputFocused: true });
-        this.props.inputProps.onFocus?.(event);
+        this.props.inputProps?.onFocus?.(event);
     };
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ activeIndex: NONE, inputValue: event.currentTarget.value });
         this.props.onInputChange?.(event);
-        this.props.inputProps.onChange?.(event);
+        this.props.inputProps?.onChange?.(event);
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -430,7 +430,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
 
         // special case as a UX nicety: if the user pasted only one value with no delimiters in it, leave that value in
         // the input field so that the user can refine it before converting it to a tag manually.
-        if (separator === false || value.split(separator).length === 1) {
+        if (separator === false || value.split(separator!).length === 1) {
             return;
         }
 
@@ -440,7 +440,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
 
     private handleRemoveTag = (event: React.MouseEvent<HTMLSpanElement>) => {
         // using data attribute to simplify callback logic -- one handler for all children
-        const index = +event.currentTarget.parentElement.getAttribute("data-tag-index");
+        const index = +event.currentTarget.parentElement!.getAttribute("data-tag-index")!;
         this.removeIndexFromValues(index);
     };
 
@@ -478,7 +478,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         activeIndex: number,
     ) {
         this.props[propCallbackName]?.(event, activeIndex === NONE ? undefined : activeIndex);
-        this.props.inputProps[propCallbackName]?.(event);
+        this.props.inputProps![propCallbackName]?.(event);
     }
 
     /** Returns whether the given index represents a valid item in `this.props.values`. */
