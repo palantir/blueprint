@@ -128,6 +128,7 @@ export const EDITABLE_TEXT_CONTENT = `${EDITABLE_TEXT}-content`;
 export const EDITABLE_TEXT_EDITING = `${EDITABLE_TEXT}-editing`;
 export const EDITABLE_TEXT_INPUT = `${EDITABLE_TEXT}-input`;
 export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
+export const EDITABLE_TEXT_ACTION = `${EDITABLE_TEXT}-action`;
 
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 

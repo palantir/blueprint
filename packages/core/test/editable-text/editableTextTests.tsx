@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { EditableText } from "../../src";
+import { Classes, EditableText } from "../../src";
 import * as Keys from "../../src/common/keys";
 
 describe("<EditableText>", () => {
@@ -45,6 +45,19 @@ describe("<EditableText>", () => {
         assert.strictEqual(editable.text(), "alphabet");
         editable.setProps({ value: null });
         assert.strictEqual(editable.text(), "placeholder");
+    });
+
+    it(`does not render right element when not editing`, () => {
+        const action = mount(<EditableText isEditing={false} rightElement={<address />} />);
+        assert.lengthOf(action.find("address"), 0);
+    });
+
+    it(`renders right element inside .${Classes.EDITABLE_TEXT_ACTION} after input`, () => {
+        const action = mount(<EditableText isEditing={true} rightElement={<address />} />)
+            .children()
+            .childAt(1);
+        assert.isTrue(action.hasClass(Classes.EDITABLE_TEXT_ACTION));
+        assert.lengthOf(action.find("address"), 1);
     });
 
     describe("when editing", () => {

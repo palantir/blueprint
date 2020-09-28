@@ -154,3 +154,9 @@
     word-wrap: break-word;
   }
 }
+
+.#{$ns}-editable-text-action {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
