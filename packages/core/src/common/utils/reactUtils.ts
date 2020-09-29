@@ -114,5 +114,6 @@ export function createReactRef<T>() {
 /**
  * Replacement type for { polyfill } from "react-lifecycles-compat" useful in some places where
  * the correct type is not inferred automatically. This should be removed once Blueprint depends on React >= 16.
+ * HACKHACK part of https://github.com/palantir/blueprint/issues/4342
  */
 export type LifecycleCompatPolyfill<P, T extends React.ComponentClass<P>> = (Comp: T) => T & { [K in keyof T]: T[K] };

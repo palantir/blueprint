@@ -28,7 +28,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ICollapsibleListExampleState {
     collapseFrom?: Boundary;
@@ -46,7 +46,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
         visibleItemCount: 3,
     };
 
-    private handleChangeCollapse = handleStringChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
+    private handleChangeCollapse = handleValueChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
 
     public render() {
         const options = (

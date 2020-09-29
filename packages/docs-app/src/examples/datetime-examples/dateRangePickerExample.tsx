@@ -19,7 +19,7 @@ import {
     Example,
     handleBooleanChange,
     handleNumberChange,
-    handleStringChange,
+    handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 import moment from "moment";
@@ -84,7 +84,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
     private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
-    private handlePrecisionChange = handleStringChange((timePrecision: TimePrecision | undefined) =>
+    private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | undefined) =>
         this.setState({ timePrecision }),
     );
 

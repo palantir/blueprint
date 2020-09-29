@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Callout, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IDocsExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, IDocsExampleProps } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
@@ -32,7 +32,7 @@ export class CalloutExample extends React.PureComponent<IDocsExampleProps, ICall
     public state: ICalloutExampleState = { showHeader: true };
 
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
-    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {
         const { showHeader, ...calloutProps } = this.state;

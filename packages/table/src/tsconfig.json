@@ -2,6 +2,7 @@
     "extends": "../../../config/tsconfig.base",
     "compilerOptions": {
         "lib": ["dom", "es5", "es6"],
-        "outDir": "../lib/esm"
+        "outDir": "../lib/esm",
+        "strictNullChecks": false
     }
 }

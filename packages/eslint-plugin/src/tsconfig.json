@@ -4,7 +4,6 @@
         "lib": ["es6", "dom"],
         "module": "commonjs",
         "outDir": "../lib",
-        "strict": true,
         "target": "ES2015"
     }
 }
