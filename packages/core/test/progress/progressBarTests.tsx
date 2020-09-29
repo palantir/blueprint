@@ -27,7 +27,7 @@ describe("ProgressBar", () => {
 
     it("does not set width by default", () => {
         const root = mount(<ProgressBar />);
-        assert.isNull(root.find("." + Classes.PROGRESS_METER).prop("style")!.width);
+        assert.isUndefined(root.find("." + Classes.PROGRESS_METER).prop("style")!.width);
     });
 
     it("value sets width percentage", () => {

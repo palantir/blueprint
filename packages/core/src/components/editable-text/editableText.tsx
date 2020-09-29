@@ -262,7 +262,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         this.setState(newState);
 
         if (this.state.isEditing && !prevState.isEditing) {
-            this.props.onEdit?.(newState.value);
+            this.props.onEdit?.(this.state.value);
         }
         this.updateInputDimensions();
     }

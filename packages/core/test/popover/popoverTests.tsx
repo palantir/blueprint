@@ -33,7 +33,7 @@ import { findInPortal } from "../utils";
 
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
-    let wrapper: IPopoverWrapper;
+    let wrapper: IPopoverWrapper | undefined;
     const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
@@ -42,9 +42,12 @@ describe("<Popover>", () => {
     });
 
     afterEach(() => {
-        // clean up wrapper to remove Portal element from DOM
-        wrapper?.unmount();
-        wrapper?.detach();
+        if (wrapper !== undefined) {
+            // clean up wrapper to remove Portal element from DOM
+            wrapper?.unmount();
+            wrapper?.detach();
+            wrapper = undefined;
+        }
         testsContainerElement.remove();
         onInteractionSpy.resetHistory();
     });
@@ -534,7 +537,7 @@ describe("<Popover>", () => {
             wrapper.simulateTarget("mouseenter").assertIsOpen();
             wrapper.findClass(Classes.POPOVER).simulate("mouseenter");
             // Popover defers popover closing, so need to defer this check
-            wrapper.then(() => wrapper.assertIsOpen(false), done);
+            wrapper.then(() => wrapper!.assertIsOpen(false), done);
         });
 
         it("inline HOVER works properly", done => {
@@ -550,7 +553,7 @@ describe("<Popover>", () => {
 
             wrapper.findClass(Classes.POPOVER).simulate("mouseleave");
             // Popover defers popover closing, so need to defer this check
-            wrapper.then(() => wrapper.assertIsOpen(false), done);
+            wrapper.then(() => wrapper!.assertIsOpen(false), done);
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=true", () => {
@@ -655,12 +658,12 @@ describe("<Popover>", () => {
         it("computes transformOrigin with arrow", done => {
             // unreliable to test actual state value as it depends on browser (chrome and karma behave differently).
             // so we'll just check that state was set _at all_ (it starts undefined).
-            renderPopover({ isOpen: true }).then(() => assert.isDefined(wrapper.state("transformOrigin")), done);
+            renderPopover({ isOpen: true }).then(() => assert.isDefined(wrapper!.state("transformOrigin")), done);
         });
 
         it("computes transformOrigin without arrow", done => {
             renderPopover({ minimal: true, isOpen: true }).then(
-                () => assert.equal(wrapper.state("transformOrigin"), "center top"),
+                () => assert.equal(wrapper!.state("transformOrigin"), "center top"),
                 done,
             );
         });
@@ -752,7 +755,7 @@ describe("<Popover>", () => {
             wrapper.then(() => {
                 setOpenStateSpy.resetHistory();
                 // need to trigger a real event because the click handler will be on the document
-                dispatchMouseEvent(wrapper.targetElement);
+                dispatchMouseEvent(wrapper!.targetElement);
 
                 assert(onCloseSpy.notCalled, "onClose prop callback should not be called");
                 assert(setOpenStateSpy.notCalled, "setOpenState private method should not be called");
@@ -786,37 +789,37 @@ describe("<Popover>", () => {
         wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement!;
         wrapper.targetElement = (wrapper.instance() as Popover).targetElement!;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
-            (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
-            return wrapper;
+            (expected ? assert.isTrue : assert.isFalse)(wrapper!.findClass(className).exists(), msg);
+            return wrapper!;
         };
         wrapper.assertIsOpen = (isOpen = true, index = 0) => {
-            const overlay = wrapper.find(Overlay).at(index);
+            const overlay = wrapper!.find(Overlay).at(index);
             assert.equal(overlay.prop("isOpen"), isOpen, "assertIsOpen");
-            return wrapper;
+            return wrapper!;
         };
         wrapper.assertOnInteractionCalled = (called = true) => {
             assert.strictEqual(onInteractionSpy.called, called, "assertOnInteractionCalled");
-            return wrapper;
+            return wrapper!;
         };
-        wrapper.findClass = (className: string) => wrapper.find(`.${className}`).hostNodes();
+        wrapper.findClass = (className: string) => wrapper!.find(`.${className}`).hostNodes();
         wrapper.simulateTarget = (eventName: string) => {
-            wrapper.findClass(Classes.POPOVER_TARGET).simulate(eventName);
-            return wrapper;
+            wrapper!.findClass(Classes.POPOVER_TARGET).simulate(eventName);
+            return wrapper!;
         };
         wrapper.sendEscapeKey = () => {
-            wrapper.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
+            wrapper!.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
                 nativeEvent: new KeyboardEvent("keydown"),
                 which: Keys.ESCAPE,
             });
-            return wrapper;
+            return wrapper!;
         };
         wrapper.then = (next, done) => {
             setTimeout(() => {
-                wrapper.update();
-                next(wrapper);
+                wrapper!.update();
+                next(wrapper!);
                 done();
             });
-            return wrapper;
+            return wrapper!;
         };
         return wrapper;
     }

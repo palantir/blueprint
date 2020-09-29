@@ -69,12 +69,6 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         const { className, disabled, label } = this.props;
         const { isMoving } = this.state;
 
-        // The handle midpoint of RangeSlider is actually shifted by a margin to
-        // be on the edge of the visible handle element. Because the midpoint
-        // calculation does not take this margin into account, we instead
-        // measure the long side (which is equal to the short side plus the
-        // margin).
-
         return (
             <span
                 className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
@@ -151,6 +145,12 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         if (this.handleElement == null) {
             return {};
         }
+
+        // The handle midpoint of RangeSlider is actually shifted by a margin to
+        // be on the edge of the visible handle element. Because the midpoint
+        // calculation does not take this margin into account, we instead
+        // measure the long side (which is equal to the short side plus the
+        // margin).
 
         const { min = 0, tickSizeRatio, value, vertical } = this.props;
         const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);

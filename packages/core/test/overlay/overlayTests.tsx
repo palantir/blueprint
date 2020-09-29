@@ -36,6 +36,7 @@ For shallow mounts, be sure to call `shallowWrapper.unmount()` after the asserti
 */
 describe("<Overlay>", () => {
     let wrapper: ReactWrapper<IOverlayProps, any>;
+    let isMounted = false;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
 
@@ -45,13 +46,17 @@ describe("<Overlay>", () => {
      */
     function mountWrapper(content: JSX.Element) {
         wrapper = mount(content, { attachTo: testsContainerElement });
+        isMounted = true;
         return wrapper;
     }
 
     afterEach(() => {
-        // clean up wrapper after each test, if it was used
-        wrapper?.unmount();
-        wrapper?.detach();
+        if (isMounted) {
+            // clean up wrapper after each test, if it was used
+            wrapper?.unmount();
+            wrapper?.detach();
+            isMounted = false;
+        }
     });
 
     it("renders its content correctly", () => {

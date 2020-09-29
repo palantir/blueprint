@@ -24,7 +24,7 @@ import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import { findDOMNode } from "react-dom";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { LifecycleCompatPolyfill } from "../../common/utils";
+import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 export interface IOverlayableProps extends IOverlayLifecycleProps {
@@ -222,8 +222,8 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         // TransitionGroup types require single array of children; does not support nested arrays.
         // So we must collapse backdrop and children into one array, and every item must be wrapped in a
         // Transition element (no ReactText allowed).
-        const childrenWithTransitions =
-            isOpen && children != null ? React.Children.map(children as React.ReactChild, this.maybeRenderChild) : [];
+        const childrenWithTransitions = isOpen ? React.Children.map(children, this.maybeRenderChild) ?? [] : [];
+
         const maybeBackdrop = this.maybeRenderBackdrop();
         if (maybeBackdrop !== null) {
             childrenWithTransitions.unshift(maybeBackdrop);
@@ -305,17 +305,22 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         });
     }
 
-    private maybeRenderChild = (child?: React.ReactChild) => {
+    private maybeRenderChild = (child?: React.ReactNode) => {
+        if (isFunction(child)) {
+            child = child();
+        }
+
         if (child == null) {
             return null;
         }
+
         // add a special class to each child element that will automatically set the appropriate
         // CSS position mode under the hood. also, make the container focusable so we can
         // trap focus inside it (via `enforceFocus`).
         const decoratedChild =
             typeof child === "object" ? (
-                React.cloneElement(child, {
-                    className: classNames(child.props.className, Classes.OVERLAY_CONTENT),
+                React.cloneElement(child as React.ReactElement, {
+                    className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
                     tabIndex: 0,
                 })
             ) : (

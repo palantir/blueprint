@@ -104,14 +104,13 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
 
     public componentDidUpdate(prevProps: IPortalProps) {
         // update className prop on portal DOM element
-        if (
-            this.portalElement != null &&
-            prevProps.className !== undefined &&
-            prevProps.className !== this.props.className
-        ) {
-            this.portalElement.classList.remove(prevProps.className);
+        if (this.portalElement != null && prevProps.className !== this.props.className) {
+            if (prevProps.className !== undefined) {
+                this.portalElement.classList.remove(prevProps.className);
+            }
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
+
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();
         }
