@@ -112,13 +112,13 @@ export class MethodTable extends React.PureComponent<IMethodTableProps> {
         if (entry == null) {
             return null;
         }
+
         const { renderBlock, renderType } = this.context;
-        const { returnType } = entry;
 
         return (
-            <tr key={name}>
+            <tr key={entry.name}>
                 <td className="docs-prop-name">
-                    <Code className="docs-prop-type">{renderType(returnType)}</Code>
+                    <Code className="docs-prop-type">{renderType(entry.returnType)}</Code>
                 </td>
                 <td className="docs-prop-details">
                     <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
