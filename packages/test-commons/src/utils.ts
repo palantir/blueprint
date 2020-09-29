@@ -102,12 +102,26 @@ function detectBrowser() {
 // tl;dr PhantomJS sucks so we have to manually create click events
 export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
     const event = document.createEvent("MouseEvent");
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
+    let detailArg = 0;
+    switch (eventType) {
+        case "click":
+        case "dblclick":
+            detailArg = 1;
+            break;
+        case "mouseup":
+        case "mousedown":
+            detailArg = 2;
+            break;
+    }
+
     event.initMouseEvent(
         eventType,
         true /* bubble */,
         true /* cancelable */,
-        window,
-        null,
+        window /* viewArg */,
+        detailArg,
         0,
         0,
         clientX,

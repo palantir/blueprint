@@ -29,12 +29,12 @@ export class CssExample extends React.PureComponent<ITag> {
     public static contextTypes = DocumentationContextTypes;
     public static displayName = "Docs2.CssExample";
 
-    public context: IDocumentationContext;
+    public context: IDocumentationContext | undefined;
     public state: ICssExampleState = { modifiers: new Set<string>() };
 
     public render() {
         const { value } = this.props;
-        const { css } = this.context.getDocsData() as IKssPluginData;
+        const { css } = this.context?.getDocsData() as IKssPluginData;
         if (css == null || css[value] == null) {
             return null;
         }

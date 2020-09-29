@@ -173,6 +173,7 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
+// HACKHACK: https://github.com/palantir/blueprint/issues/4342
 @(polyfill as LifecycleCompatPolyfill<IOverlayProps, any>)
 export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;

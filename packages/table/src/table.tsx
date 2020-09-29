@@ -2213,7 +2213,9 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         rowIndex: number,
         columnIndex: number,
     ) {
-        const optionKeys = Object.keys(Table.resizeRowsByApproximateHeightDefaults);
+        const optionKeys = Object.keys(Table.resizeRowsByApproximateHeightDefaults) as Array<
+            keyof IResizeRowsByApproximateHeightOptions
+        >;
         const optionReducer = (
             agg: IResizeRowsByApproximateHeightResolvedOptions,
             key: keyof IResizeRowsByApproximateHeightOptions,

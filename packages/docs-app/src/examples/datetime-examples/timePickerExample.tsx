@@ -15,7 +15,7 @@
  */
 
 import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
-import { Example, handleNumberChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleNumberChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 import { PrecisionSelect } from "./common/precisionSelect";
 
@@ -56,7 +56,7 @@ export class TimePickerExample extends React.PureComponent<IExampleProps, ITimeP
         useAmPm: false,
     };
 
-    private handlePrecisionChange = handleStringChange((precision: TimePrecision) => this.setState({ precision }));
+    private handlePrecisionChange = handleValueChange((precision: TimePrecision) => this.setState({ precision }));
 
     public render() {
         return (
