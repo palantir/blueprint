@@ -25,7 +25,6 @@ import {
     Icon,
     IMenuItemProps,
     IMenuProps,
-    IPopoverProps,
     MenuItem,
     Popover,
     PopoverInteractionKind,

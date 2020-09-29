@@ -160,11 +160,11 @@ describe("<MultiSlider>", () => {
         it("values outside of bounds are clamped", () => {
             const slider = renderSlider({ values: [-1, 5, 12] });
             slider.find(`.${Classes.SLIDER_PROGRESS}`).forEach(progress => {
-                const { left, right } = progress.prop("style");
+                const { left, right } = progress.prop("style")!;
                 // CSS properties are percentage strings, but parsing will ignore trailing "%".
                 // percentages should be in 0-100% range.
-                assert.isAtLeast(parseFloat(left.toString()), 0);
-                assert.isAtMost(parseFloat(right.toString()), 100);
+                assert.isAtLeast(parseFloat(left!.toString()), 0);
+                assert.isAtMost(parseFloat(right!.toString()), 100);
             });
         });
     });
@@ -229,7 +229,7 @@ describe("<MultiSlider>", () => {
 
         it("intentAfter beats intentBefore", () => {
             const intents = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
-                const match = segment.prop("className").match(/-intent-(\w+)/) || [];
+                const match = segment.prop("className")?.match(/-intent-(\w+)/) || [];
                 return match[1];
             });
             // last segment has default intent
@@ -240,7 +240,7 @@ describe("<MultiSlider>", () => {
             slider.setProps({ showTrackFill: false });
             slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
                 // segments rendered but they nave no intent
-                assert.isNull(segment.prop("className").match(/-intent-(\w+)/));
+                assert.isNull(segment.prop("className")?.match(/-intent-(\w+)/));
             });
         });
 
@@ -252,7 +252,7 @@ describe("<MultiSlider>", () => {
                 </MultiSlider>,
             );
             const locations = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
-                const match = segment.prop("style");
+                const match = segment.prop("style")!;
                 return [match.left, match.right];
             });
             assert.deepEqual(locations, [
@@ -280,7 +280,7 @@ describe("<MultiSlider>", () => {
 
             const trackBackgrounds = slider
                 .find(`.${Classes.SLIDER_PROGRESS}`)
-                .map(segment => segment.prop("style").background);
+                .map(segment => segment.prop("style")?.background);
 
             assert.equal(trackBackgrounds[0], "red");
             assert.equal(trackBackgrounds[1], "yellow");

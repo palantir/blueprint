@@ -239,7 +239,7 @@ describe("<TagInput>", () => {
         });
 
         it("does not clear the input if the input is controlled", () => {
-            const wrapper = mountTagInput(undefined, { inputValue: NEW_VALUE });
+            const wrapper = mountTagInput(sinon.stub(), { inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
