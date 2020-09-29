@@ -75,7 +75,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     public render() {
         const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
-        const getTagProps = (_value: string, index: number): ITagProps => ({
+        const getTagProps = (_value: React.ReactNode, index: number): ITagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
         });
