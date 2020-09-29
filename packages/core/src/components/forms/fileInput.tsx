@@ -132,6 +132,6 @@ export class FileInput extends AbstractPureComponent2<IFileInputProps> {
 
     private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         this.props.onInputChange?.(e);
-        this.props.inputProps.onChange?.(e);
+        this.props.inputProps?.onChange?.(e);
     };
 }

@@ -55,7 +55,7 @@ export class ProgressBar extends AbstractPureComponent2<IProgressBarProps> {
             className,
         );
         // don't set width if value is null (rely on default CSS value)
-        const width = value == null ? null : 100 * clamp(value, 0, 1) + "%";
+        const width = value == null ? undefined : 100 * clamp(value, 0, 1) + "%";
 
         return (
             <div className={classes}>

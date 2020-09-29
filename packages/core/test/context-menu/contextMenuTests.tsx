@@ -118,7 +118,7 @@ function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
     // popover is rendered in a Portal
     const popover = getPopover();
     assert.isNotNull(popover);
-    const menuItems = popover.querySelectorAll(`.${Classes.MENU_ITEM}`);
+    const menuItems = popover!.querySelectorAll(`.${Classes.MENU_ITEM}`);
     assert.lengthOf(menuItems, expectedLength);
 }
 

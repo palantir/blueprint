@@ -176,7 +176,7 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
         }
     }
 
-    private handleCancel = (evt: React.SyntheticEvent<HTMLElement>) => this.internalHandleCallbacks(false, evt);
+    private handleCancel = (evt?: React.SyntheticEvent<HTMLElement>) => this.internalHandleCallbacks(false, evt);
     private handleConfirm = (evt: React.SyntheticEvent<HTMLElement>) => this.internalHandleCallbacks(true, evt);
 
     private internalHandleCallbacks(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>) {

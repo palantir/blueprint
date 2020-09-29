@@ -224,10 +224,8 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
         this.requestAnimationFrame(() => {
-            if (this.inputEl != null) {
-                const input = getRef(this.inputEl);
-                input.setSelectionRange(0, input.value.length);
-            }
+            const input = getRef(this.inputEl);
+            input?.setSelectionRange(0, input.value.length);
         });
     };
 
@@ -244,18 +242,16 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         let nextOpenState: boolean;
+
         if (!this.props.closeOnSelect) {
-            if (this.inputEl != null) {
-                getRef(this.inputEl).focus();
-            }
+            getRef(this.inputEl)?.focus();
             this.selectText();
             nextOpenState = true;
         } else {
-            if (this.inputEl != null) {
-                getRef(this.inputEl).blur();
-            }
+            getRef(this.inputEl)?.blur();
             nextOpenState = false;
         }
+
         // the internal state should only change when uncontrolled.
         if (this.props.selectedItem === undefined) {
             this.setState({
@@ -320,9 +316,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
             const { which } = evt;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
-                if (this.inputEl != null) {
-                    getRef(this.inputEl).blur();
-                }
+                getRef(this.inputEl)?.blur();
                 this.setState({ isOpen: false });
             } else if (
                 this.props.openOnKeyDown &&

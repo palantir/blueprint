@@ -47,12 +47,9 @@ describe("<OverflowList>", function (this) {
     });
 
     afterEach(() => {
-        if (wrapper !== undefined) {
-            // clean up wrapper to remove Portal element from DOM
-            wrapper.unmount();
-            wrapper.detach();
-            wrapper = undefined;
-        }
+        // clean up wrapper to remove Portal element from DOM
+        wrapper?.unmount();
+        wrapper?.detach();
         testsContainerElement.remove();
         onOverflowSpy.resetHistory();
     });

@@ -37,7 +37,7 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
     private timeoutIds: number[] = [];
     private requestIds: number[] = [];
 
-    constructor(props?: P, context?: any) {
+    constructor(props: P, context?: any) {
         super(props, context);
         if (!isNodeEnv("production")) {
             this.validateProps(this.props);

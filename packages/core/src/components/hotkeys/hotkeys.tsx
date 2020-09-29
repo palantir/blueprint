@@ -19,7 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
-import { isElementOfType } from "../../common/utils";
+import { isElementOfType, isReactChildrenElementOrElements } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { IHotkeysProps } from "./hotkeysTypes";
@@ -33,6 +33,10 @@ export class Hotkeys extends AbstractPureComponent2<IHotkeysProps> {
     };
 
     public render() {
+        if (!isReactChildrenElementOrElements(this.props.children)) {
+            return null;
+        }
+
         const hotkeys = React.Children.map(
             this.props.children,
             (child: React.ReactElement<IHotkeyProps>) => child.props,
@@ -40,13 +44,13 @@ export class Hotkeys extends AbstractPureComponent2<IHotkeysProps> {
 
         // sort by group label alphabetically, prioritize globals
         hotkeys.sort((a, b) => {
-            if (a.global === b.global) {
+            if (a.global === b.global && a.group && b.group) {
                 return a.group.localeCompare(b.group);
             }
             return a.global ? -1 : 1;
         });
 
-        let lastGroup = null as string;
+        let lastGroup: string | undefined;
         const elems = [] as JSX.Element[];
         for (const hotkey of hotkeys) {
             const groupLabel = hotkey.group;
@@ -61,6 +65,10 @@ export class Hotkeys extends AbstractPureComponent2<IHotkeysProps> {
     }
 
     protected validateProps(props: IHotkeysProps & { children: React.ReactNode }) {
+        if (!isReactChildrenElementOrElements(props.children)) {
+            return;
+        }
+
         React.Children.forEach(props.children, (child: JSX.Element) => {
             if (!isElementOfType(child, Hotkey)) {
                 throw new Error(HOTKEYS_HOTKEY_CHILDREN);

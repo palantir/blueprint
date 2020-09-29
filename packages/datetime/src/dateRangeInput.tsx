@@ -743,9 +743,9 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     // Callbacks - Popover
     // ===================
 
-    private handlePopoverClose = () => {
+    private handlePopoverClose = (event: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
-        this.props.popoverProps.onClose?.();
+        this.props.popoverProps.onClose?.(event);
     };
 
     // Helpers

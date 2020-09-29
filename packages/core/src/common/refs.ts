@@ -31,10 +31,10 @@ export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined)
     return typeof value === "function";
 }
 
-export function getRef<T = HTMLElement>(ref: T | IRefObject<T>) {
-    if (ref && (ref as IRefObject<T>).current) {
-        return (ref as IRefObject<T>).current;
+export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
+    if (ref === null) {
+        return null;
     }
 
-    return ref as T;
+    return (ref as IRefObject<T>).current ?? (ref as T);
 }

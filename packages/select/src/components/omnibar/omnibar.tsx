@@ -103,7 +103,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
         );
     };
 
-    private handleOverlayClose = (event?: React.SyntheticEvent<HTMLElement>) => {
+    private handleOverlayClose = (event: React.SyntheticEvent<HTMLElement>) => {
         this.props.overlayProps?.onClose?.(event);
         this.props.onClose?.(event);
     };

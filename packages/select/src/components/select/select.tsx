@@ -209,8 +209,8 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
         this.requestAnimationFrame(() => {
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
-            if (inputProps.autoFocus !== false && this.inputEl != null) {
-                getRef(this.inputEl).focus();
+            if (inputProps.autoFocus !== false) {
+                getRef(this.inputEl)?.focus();
             }
         });
 

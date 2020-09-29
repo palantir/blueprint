@@ -42,11 +42,11 @@ class HotkeysDialog {
         globalHotkeysGroup: "Global hotkeys",
     } as any) as IHotkeysDialogProps;
 
-    private container: HTMLElement;
+    private container: HTMLElement | null = null;
     private hotkeysQueue = [] as IHotkeyProps[][];
     private isDialogShowing = false;
-    private showTimeoutToken: number;
-    private hideTimeoutToken: number;
+    private showTimeoutToken?: number;
+    private hideTimeoutToken?: number;
 
     public render() {
         if (this.container == null) {
@@ -59,7 +59,7 @@ class HotkeysDialog {
         if (this.container != null) {
             ReactDOM.unmountComponentAtNode(this.container);
             this.container.remove();
-            delete this.container;
+            this.container = null;
         }
     }
 
