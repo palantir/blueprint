@@ -111,13 +111,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         if (typeof React.createRef !== "undefined") {
             it("matches buttonRef with elementRef using createRef", done => {
                 const elementRef = React.createRef<HTMLElement>();
-
-                const wrapper = button(
-                    {
-                        elementRef,
-                    },
-                    true,
-                );
+                const wrapper = button({ elementRef }, true);
 
                 // wait for the whole lifecycle to run
                 setTimeout(() => {
