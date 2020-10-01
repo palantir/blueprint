@@ -40,6 +40,11 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
     return class ContextMenuTargetClass extends WrappedComponent {
         public static displayName = `ContextMenuTarget(${getDisplayName(WrappedComponent)})`;
 
+        /** @internal */
+        public element: Element | null = null;
+        /** @internal */
+        public handleRef = (el: Element | null) => (this.element = el);
+
         public render() {
             const element = super.render();
 
@@ -62,7 +67,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                 if (isFunction(this.renderContextMenu)) {
                     const menu = this.renderContextMenu(e);
                     if (menu != null) {
-                        const darkTheme = isDarkTheme(ReactDOM.findDOMNode(this));
+                        const darkTheme = isDarkTheme(this.element);
                         e.preventDefault();
                         ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, this.onContextMenuClose, darkTheme);
                     }
@@ -71,7 +76,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                 oldOnContextMenu?.(e);
             };
 
-            return React.cloneElement(element, { onContextMenu });
+            return React.cloneElement(element, { ref: this.handleRef, onContextMenu });
         }
     };
 }

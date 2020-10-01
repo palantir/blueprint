@@ -56,22 +56,35 @@ export class Draggable extends React.PureComponent<IDraggableProps> {
         stopPropagation: false,
     };
 
-    private events: DragEvents;
+    private element: HTMLElement | null = null;
+    private handleRef = (el: HTMLElement | null) => (this.element = el);
+    private events?: DragEvents;
 
     public render() {
-        return React.Children.only(this.props.children);
+        const singleChild = React.Children.only(this.props.children);
+        if (!React.isValidElement(singleChild)) {
+            return singleChild;
+        }
+
+        return React.cloneElement(singleChild, { ref: this.handleRef });
     }
 
     public componentDidUpdate(prevProps: IDraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
-        if (this.events && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
-            this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
+        if (
+            this.element != null &&
+            this.events !== undefined &&
+            !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)
+        ) {
+            this.events.attach(this.element, this.props);
         }
     }
 
     public componentDidMount() {
         this.events = new DragEvents();
-        this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
+        if (this.element != null) {
+            this.events.attach(this.element, this.props);
+        }
     }
 
     public componentWillUnmount() {
