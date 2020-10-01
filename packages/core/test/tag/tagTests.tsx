@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
@@ -79,4 +79,17 @@ describe("<Tag>", () => {
         assert.isTrue(handleRemove.args[0][1][DATA_ATTR_FOO] !== undefined);
         assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
     });
+
+    if (typeof React.createRef !== "undefined") {
+        it("supports ref objects", done => {
+            const elementRef = React.createRef<HTMLSpanElement>();
+            const wrapper = mount(<Tag elementRef={elementRef}>Hello</Tag>);
+
+            // wait for the whole lifecycle to run
+            setTimeout(() => {
+                assert.equal(elementRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
+                done();
+            }, 0);
+        });
+    }
 });

@@ -21,6 +21,7 @@ import {
     AbstractPureComponent2,
     Classes,
     DISPLAYNAME_PREFIX,
+    IElementRefProps,
     IIntentProps,
     IProps,
     MaybeElement,
@@ -30,7 +31,11 @@ import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
 
-export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
+export interface ITagProps
+    extends IProps,
+        IIntentProps,
+        IElementRefProps<HTMLSpanElement>,
+        React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Whether the tag should appear in an active state.
      * @default false
@@ -102,11 +107,6 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * HTML title to be passed to the <Text> component
      */
     htmlTitle?: string;
-
-    /**
-     * Ref to associate with the underlying html element.
-     */
-    elementRef?: React.Ref<HTMLSpanElement>;
 }
 
 @polyfill
