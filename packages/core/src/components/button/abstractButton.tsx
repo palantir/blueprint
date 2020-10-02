@@ -23,7 +23,7 @@ import {
     Classes,
     getRef,
     IActionProps,
-    IRef,
+    IElementRefProps,
     IRefObject,
     Keys,
     MaybeElement,
@@ -32,7 +32,7 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
-export interface IButtonProps extends IActionProps {
+export interface IButtonProps extends IActionProps, IElementRefProps<any> {
     /**
      * If set to `true`, the button will display in an active state.
      * This is equivalent to setting `className={Classes.ACTIVE}`.
@@ -48,9 +48,6 @@ export interface IButtonProps extends IActionProps {
      * @default Alignment.CENTER
      */
     alignText?: Alignment;
-
-    /** A ref handler or a ref object that receives the native HTML element backing this component. */
-    elementRef?: IRef<any>;
 
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
@@ -99,7 +96,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
 
     protected abstract buttonRef: HTMLElement | IRefObject<HTMLElement> | null;
 
-    private currentKeyDown: number = null;
+    private currentKeyDown?: number;
 
     public abstract render(): JSX.Element;
 
@@ -127,6 +124,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         return {
             className,
             disabled,
+            onBlur: this.handleBlur,
             onClick: disabled ? undefined : this.props.onClick,
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
@@ -156,10 +154,17 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>
         /* eslint-disable deprecation/deprecation */
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
-            getRef(this.buttonRef).click();
+            getRef(this.buttonRef)?.click();
         }
-        this.currentKeyDown = null;
+        this.currentKeyDown = undefined;
         this.props.onKeyUp?.(e);
+    };
+
+    protected handleBlur = (e: React.FocusEvent<any>) => {
+        if (this.state.isActive) {
+            this.setState({ isActive: false });
+        }
+        this.props.onBlur?.(e);
     };
 
     protected renderChildren(): React.ReactNode {

@@ -401,7 +401,7 @@ describe("<Tabs>", () => {
         assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
         const node = wrapper.getDOMNode();
         const expected = (node.querySelector(`${TAB}[data-tab-id='${selectedTabId}']`) as HTMLLIElement).offsetLeft;
-        assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
+        assert.isTrue(style?.transform?.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
     function getTabsContents(tabIds: string[] = TAB_IDS): Array<React.ReactElement<any>> {

@@ -28,7 +28,6 @@ import {
     Position,
     TagInput,
     TagInputAddMethod,
-    Utils,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -87,8 +86,8 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
         placeholder: "Search...",
     };
 
-    public static ofType<T>() {
-        return MultiSelect as new (props: IMultiSelectProps<T>) => MultiSelect<T>;
+    public static ofType<U>() {
+        return MultiSelect as new (props: IMultiSelectProps<U>) => MultiSelect<U>;
     }
 
     public state: IMultiSelectState = {
@@ -101,7 +100,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
-            Utils.safeInvokeMember(this.props.tagInputProps, "inputRef", ref);
+            this.props.tagInputProps?.inputRef?.(ref);
         },
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
@@ -213,7 +212,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
             // scroll active item into view after popover transition completes and all dimensions are stable.
             this.queryList.scrollActiveItemIntoView();
         }
-        Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
+        this.props.popoverProps?.onOpened?.(node);
     };
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {

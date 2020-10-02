@@ -33,6 +33,11 @@ export interface ITextProps extends IProps {
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;
+
+    /**
+     * HTML title of the element
+     */
+    title?: string;
 }
 
 export interface ITextState {
@@ -43,6 +48,11 @@ export interface ITextState {
 @polyfill
 export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
+
+    public static defaultProps: Partial<ITextProps> = {
+        ellipsize: false,
+        tagName: "div",
+    };
 
     public state: ITextState = {
         isContentOverflowing: false,
@@ -66,25 +76,25 @@ export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
             },
             this.props.className,
         );
-        const { children, tagName = "div" } = this.props;
+        const { children, tagName, title } = this.props;
 
         return React.createElement(
-            tagName,
+            tagName!,
             {
                 className: classes,
                 ref: (ref: HTMLElement | null) => (this.textRef = ref),
-                title: this.state.isContentOverflowing ? this.state.textContent : undefined,
+                title: title ?? (this.state.isContentOverflowing ? this.state.textContent : undefined),
             },
             children,
         );
     }
 
     private update() {
-        if (this.textRef == null) {
+        if (this.textRef?.textContent == null) {
             return;
         }
         const newState = {
-            isContentOverflowing: this.props.ellipsize && this.textRef.scrollWidth > this.textRef.clientWidth,
+            isContentOverflowing: this.props.ellipsize! && this.textRef.scrollWidth > this.textRef.clientWidth,
             textContent: this.textRef.textContent,
         };
         this.setState(newState);

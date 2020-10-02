@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Children, ReactElement, ReactNode } from "react";
+import { Children, ReactNode } from "react";
 import { isElementOfType } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
@@ -49,7 +49,7 @@ export class HotkeysEvents {
 
     public setHotkeys(props: IHotkeysProps & { children?: ReactNode }) {
         const actions = [] as IHotkeyAction[];
-        Children.forEach(props.children, (child: ReactElement<any>) => {
+        Children.forEach(props.children, (child: ReactNode) => {
             if (isElementOfType(child, Hotkey) && this.isScope(child.props)) {
                 actions.push({
                     combo: parseKeyCombo(child.props.combo),

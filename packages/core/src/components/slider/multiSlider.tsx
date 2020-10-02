@@ -106,11 +106,11 @@ export interface IMultiSliderProps extends ISliderBaseProps {
 }
 
 export interface ISliderState {
-    labelPrecision?: number;
+    labelPrecision: number;
     /** the client size, in pixels, of one tick */
-    tickSize?: number;
+    tickSize: number;
     /** the size of one tick as a ratio of the component's client size */
-    tickSizeRatio?: number;
+    tickSizeRatio: number;
 }
 
 @polyfill
@@ -140,7 +140,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
 
     private static getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
         // infer default label precision from stepSize because that's how much the handle moves.
-        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
+        return labelPrecision == null ? Utils.countDecimalPlaces(stepSize!) : labelPrecision;
     }
 
     public state: ISliderState = {
@@ -150,7 +150,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     };
 
     private handleElements: Handle[] = [];
-    private trackElement: HTMLElement | null;
+    private trackElement: HTMLElement | null = null;
 
     public getSnapshotBeforeUpdate(prevProps: IMultiSliderProps): null {
         const prevHandleProps = getSortedInteractiveHandleProps(prevProps);
@@ -193,10 +193,10 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     }
 
     protected validateProps(props: React.PropsWithChildren<IMultiSliderProps>) {
-        if (props.stepSize <= 0) {
+        if (props.stepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
-        if (props.labelStepSize <= 0) {
+        if (props.labelStepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
 
@@ -212,10 +212,10 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         }
     }
 
-    private formatLabel(value: number): React.ReactChild {
+    private formatLabel(value: number) {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
-            return null;
+            return undefined;
         } else if (Utils.isFunction(labelRenderer)) {
             return labelRenderer(value);
         } else {
@@ -230,13 +230,13 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         const { labelStepSize, max, min } = this.props;
 
         const labels: JSX.Element[] = [];
-        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize;
+        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize!;
         // step size lends itself naturally to a `for` loop
         // eslint-disable-line one-var, no-sequences
         for (
-            let i = min, offsetRatio = 0;
-            i < max || Utils.approxEqual(i, max);
-            i += labelStepSize, offsetRatio += stepSizeRatio
+            let i = min!, offsetRatio = 0;
+            i < max! || Utils.approxEqual(i, max!);
+            i += labelStepSize!, offsetRatio += stepSizeRatio
         ) {
             const offsetPercentage = formatPercentage(offsetRatio);
             const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
@@ -251,10 +251,10 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
 
     private renderTracks() {
         const trackStops = getSortedHandleProps(this.props);
-        trackStops.push({ value: this.props.max });
+        trackStops.push({ value: this.props.max! });
 
         // render from current to previous, then increment previous
-        let previous: IHandleProps = { value: this.props.min };
+        let previous: IHandleProps = { value: this.props.min! };
         const handles: JSX.Element[] = [];
         for (let index = 0; index < trackStops.length; index++) {
             const current = trackStops[index];
@@ -301,16 +301,16 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
                 disabled={disabled}
                 key={`${index}-${handleProps.length}`}
                 label={this.formatLabel(value)}
-                max={max}
-                min={min}
+                max={max!}
+                min={min!}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}
                 onRelease={this.getHandlerForIndex(index, this.handleRelease)}
                 ref={this.addHandleRef}
-                stepSize={stepSize}
+                stepSize={stepSize!}
                 tickSize={this.state.tickSize}
                 tickSizeRatio={this.state.tickSizeRatio}
                 value={value}
-                vertical={vertical}
+                vertical={vertical!}
             />
         ));
     }
@@ -420,7 +420,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     };
 
     private getOffsetRatio(value: number) {
-        return Utils.clamp((value - this.props.min) * this.state.tickSizeRatio, 0, 1);
+        return Utils.clamp((value - this.props.min!) * this.state.tickSizeRatio, 0, 1);
     }
 
     private getTrackIntent(start: IHandleProps, end?: IHandleProps): Intent {
@@ -432,7 +432,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         } else if (end !== undefined && end.intentBefore !== undefined) {
             return end.intentBefore;
         }
-        return this.props.defaultTrackIntent;
+        return this.props.defaultTrackIntent!;
     }
 
     private updateTickSize() {
@@ -445,7 +445,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     }
 }
 
-function getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
+function getLabelPrecision({ labelPrecision, stepSize = MultiSlider.defaultSliderProps.stepSize! }: IMultiSliderProps) {
     // infer default label precision from stepSize because that's how much the handle moves.
     return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
 }

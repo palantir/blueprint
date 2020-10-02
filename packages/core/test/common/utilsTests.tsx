@@ -101,8 +101,6 @@ describe("Utils", () => {
     });
 
     it("clamp", () => {
-        assert.strictEqual(Utils.clamp(undefined, 0, 20), undefined, "value undefined");
-        assert.strictEqual(Utils.clamp(null, 0, 20), null, "value null");
         assert.strictEqual(Utils.clamp(10, 0, 20), 10, "value between min/max");
         assert.strictEqual(Utils.clamp(0, 10, 20), 10, "value below min");
         assert.strictEqual(Utils.clamp(40, 0, 20), 20, "value above max");
@@ -127,8 +125,8 @@ describe("Utils", () => {
         });
 
         it("wraps strings & numbers", () => {
-            assert.strictEqual(Utils.ensureElement("foo").type, "span");
-            assert.strictEqual(Utils.ensureElement(1234).type, "span");
+            assert.strictEqual(Utils.ensureElement("foo")?.type, "span");
+            assert.strictEqual(Utils.ensureElement(1234)?.type, "span");
         });
 
         it("returns undefined for whitespace strings", () => {
@@ -148,7 +146,7 @@ describe("Utils", () => {
                         one <em>two</em> three
                     </>,
                 );
-                assert.strictEqual(el.type, "span");
+                assert.strictEqual(el?.type, "span");
             });
         }
     });
@@ -164,7 +162,6 @@ describe("Utils", () => {
         });
 
         afterEach(() => {
-            callback = undefined;
             fakeEvent = undefined;
         });
 

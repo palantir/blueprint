@@ -121,17 +121,12 @@ describe("<NumericInput>", () => {
             expect(component.find(ButtonGroup).exists()).to.be.false;
         });
 
-        it("does not render the buttons when buttonPosition is null", () => {
-            const component = shallow(<NumericInput buttonPosition={null} />);
-            expect(component.find(ButtonGroup).exists()).to.be.false;
-        });
-
         it(`always renders the children in a ControlGroup`, () => {
             // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
             const component = shallow(<NumericInput />);
             expect(component.find(ControlGroup).exists()).to.be.true;
-            component.setProps({ buttonPosition: null });
+            component.setProps({ buttonPosition: "none" });
             expect(component.find(ControlGroup).exists()).to.be.true;
         });
     });
@@ -792,10 +787,6 @@ describe("<NumericInput>", () => {
             expectPropValidationError(NumericInput, { min: 2, max: 1 }, Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
-        it("throws an error if stepSize is null", () => {
-            expectPropValidationError(NumericInput, { stepSize: null }, Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
-        });
-
         it("throws an error if stepSize <= 0", () => {
             expectPropValidationError(NumericInput, { stepSize: -1 }, Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
@@ -1390,7 +1381,7 @@ describe("<NumericInput>", () => {
 /**
  * Wraps NumericInput to make it behave like a controlled component, treating props.value as a default value
  */
-class ControlledNumericInput extends React.PureComponent<INumericInputProps, { value: string }> {
+class ControlledNumericInput extends React.PureComponent<INumericInputProps, { value?: string }> {
     public state = {
         // treat value as "defaultValue"
         value: this.props.value?.toString(),

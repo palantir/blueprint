@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ITagExampleState {
@@ -49,7 +49,7 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
 
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
     private handleIconChange = handleBooleanChange(icon => this.setState({ icon }));
-    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
     private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));

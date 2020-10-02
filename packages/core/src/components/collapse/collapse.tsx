@@ -162,7 +162,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
     };
 
     // The element containing the contents of the collapse.
-    private contents: HTMLElement;
+    private contents: HTMLElement | null = null;
 
     public render() {
         const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
@@ -185,7 +185,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         };
 
         return React.createElement(
-            this.props.component,
+            this.props.component!,
             {
                 className: classNames(Classes.COLLAPSE, this.props.className),
                 style: containerStyle,
@@ -211,6 +211,10 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
     }
 
     public componentDidUpdate() {
+        if (this.contents == null) {
+            return;
+        }
+
         const { transitionDuration } = this.props;
         const { animationState } = this.state;
 
@@ -235,7 +239,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         }
     }
 
-    private contentsRefHandler = (el: HTMLElement) => {
+    private contentsRefHandler = (el: HTMLElement | null) => {
         this.contents = el;
         if (this.contents != null) {
             const height = this.contents.clientHeight;

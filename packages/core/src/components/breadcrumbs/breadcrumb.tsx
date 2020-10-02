@@ -51,8 +51,8 @@ export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbP
         <a
             className={classes}
             href={breadcrumbProps.href}
-            onClick={breadcrumbProps.disabled ? null : breadcrumbProps.onClick}
-            tabIndex={breadcrumbProps.disabled ? null : 0}
+            onClick={breadcrumbProps.disabled ? undefined : breadcrumbProps.onClick}
+            tabIndex={breadcrumbProps.disabled ? undefined : 0}
             target={breadcrumbProps.target}
         >
             {icon}

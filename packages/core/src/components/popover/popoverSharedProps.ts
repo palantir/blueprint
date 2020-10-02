@@ -29,6 +29,7 @@ export const PopoverPosition = {
     AUTO_END: "auto-end" as "auto-end",
     AUTO_START: "auto-start" as "auto-start",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
 
 /** Props shared between `Popover` and `Tooltip`. */
@@ -42,12 +43,10 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     boundary?: PopperBoundary;
 
     /**
-     * When enabled, `preventDefault()` is invoked on `click` events that close
-     * this popover, which will prevent those clicks from closing outer
-     * popovers. When disabled, clicking inside a `Classes.POPOVER_DISMISS`
-     * element will close the parent popover.
-     *
-     * See http://blueprintjs.com/docs/#core/components/popover.closing-on-click
+     * When enabled, clicks inside a `Classes.POPOVER_DISMISS` element
+     * will only close the current popover and not outer popovers.
+     * When disabled, the current popover and any ancestor popovers will be closed.
+     * @see http://blueprintjs.com/docs/#core/components/popover.closing-on-click
      * @default false
      */
     captureDismiss?: boolean;

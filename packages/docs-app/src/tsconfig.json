@@ -4,6 +4,7 @@
         "declaration": false,
         "lib": ["dom", "es5", "es6"],
         "outDir": "../dist",
-        "sourceMap": false
+        "sourceMap": false,
+        "strictNullChecks": false
     }
 }

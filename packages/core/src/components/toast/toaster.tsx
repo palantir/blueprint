@@ -26,7 +26,7 @@ import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
-export type IToastOptions = IToastProps & { key?: string };
+export type IToastOptions = IToastProps & { key: string };
 export type ToasterPosition =
     | typeof Position.TOP
     | typeof Position.TOP_LEFT
@@ -133,8 +133,8 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         return toaster;
     }
 
-    public state = {
-        toasts: [] as IToastOptions[],
+    public state: IToasterState = {
+        toasts: [],
     };
 
     // auto-incrementing identifier for un-keyed toasts
@@ -202,9 +202,9 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         );
     }
 
-    protected validateProps(props: IToasterProps) {
+    protected validateProps({ maxToasts }: IToasterProps) {
         // maximum number of toasts should not be a number less than 1
-        if (props.maxToasts < 1) {
+        if (maxToasts !== undefined && maxToasts < 1) {
             throw new Error(TOASTER_MAX_TOASTS_INVALID);
         }
     }
@@ -216,7 +216,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     private dismissIfAtLimit() {
         if (this.state.toasts.length === this.props.maxToasts) {
             // dismiss the oldest toast to stay within the maxToasts limit
-            this.dismiss(this.state.toasts[this.state.toasts.length - 1].key);
+            this.dismiss(this.state.toasts[this.state.toasts.length - 1].key!);
         }
     }
 
@@ -230,7 +230,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     }
 
     private getPositionClasses() {
-        const positions = this.props.position.split("-");
+        const positions = this.props.position!.split("-");
         // NOTE that there is no -center class because that's the default style
         return positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
     }
@@ -239,11 +239,11 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         this.dismiss(toast.key, timeoutExpired);
     };
 
-    private handleClose = (e: React.KeyboardEvent<HTMLElement>) => {
+    private handleClose = (e: React.SyntheticEvent<HTMLElement>) => {
         // NOTE that `e` isn't always a KeyboardEvent but that's the only type we care about
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
         /* eslint-disable-next-line deprecation/deprecation */
-        if (e.which === ESCAPE) {
+        if ((e as React.KeyboardEvent<HTMLElement>).which === ESCAPE) {
             this.clear();
         }
     };

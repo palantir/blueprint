@@ -83,7 +83,7 @@ export interface ITabsProps extends IProps {
     /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
-    onChange?(newTabId: TabId, prevTabId: TabId, event: React.MouseEvent<HTMLElement>): void;
+    onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
 }
 
 export interface ITabsState {
@@ -91,7 +91,8 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
-@polyfill
+// HACKHACK: https://github.com/palantir/blueprint/issues/4342
+@(polyfill as Utils.LifecycleCompatPolyfill<ITabsProps, any>)
 export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
@@ -115,12 +116,12 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
         return null;
     }
 
-    private tablistElement: HTMLDivElement;
+    private tablistElement: HTMLDivElement | null = null;
     private refHandlers = {
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };
 
-    constructor(props?: ITabsProps) {
+    constructor(props: ITabsProps) {
         super(props);
         const selectedTabId = this.getInitialSelectedTabId();
         this.state = { selectedTabId };
@@ -225,7 +226,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const focusedElement = document.activeElement.closest(TAB_SELECTOR);
+        const focusedElement = document.activeElement?.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
             return;
@@ -309,7 +310,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
         );
     };
 
-    private renderTabTitle = (child: React.ReactChild) => {
+    private renderTabTitle = (child: React.ReactNode) => {
         if (isTabElement(child)) {
             const { id } = child.props;
             return (

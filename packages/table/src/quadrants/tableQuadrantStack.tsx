@@ -437,7 +437,14 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
             agg[key] = (ref: HTMLElement) => (this.quadrantRefs[quadrantType][key] = ref);
             return agg;
         };
-        return ["columnHeader", "menu", "quadrant", "rowHeader", "scrollContainer"].reduce(reducer, {});
+        const refHandlers: Array<keyof IQuadrantRefHandlers> = [
+            "columnHeader",
+            "menu",
+            "quadrant",
+            "rowHeader",
+            "scrollContainer",
+        ];
+        return refHandlers.reduce(reducer, {});
     }
 
     // Quadrant-specific renderers

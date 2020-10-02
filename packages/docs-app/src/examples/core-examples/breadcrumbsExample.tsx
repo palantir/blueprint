@@ -59,7 +59,9 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
         width: 50,
     };
 
-    private handleChangeCollapse = handleStringChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
+    private handleChangeCollapse = handleStringChange(collapseFrom =>
+        this.setState({ collapseFrom: collapseFrom as Boundary }),
+    );
 
     public render() {
         const options = (

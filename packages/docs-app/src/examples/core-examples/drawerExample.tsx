@@ -29,7 +29,13 @@ import {
     Position,
     Switch,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    handleBooleanChange,
+    handleStringChange,
+    handleValueChange,
+    IExampleProps,
+} from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IDrawerExampleState {
@@ -61,7 +67,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
-    private handlePositionChange = handleStringChange((position: Position) => this.setState({ position }));
+    private handlePositionChange = handleValueChange((position: Position) => this.setState({ position }));
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
     private handleSizeChange = handleStringChange(size => this.setState({ size }));
 

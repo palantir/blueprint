@@ -32,7 +32,6 @@ import {
     Popover,
     PopoverInteractionKind,
     Position,
-    Utils,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -114,8 +113,8 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         resetOnClose: false,
     };
 
-    public static ofType<T>() {
-        return Suggest as new (props: ISuggestProps<T>) => Suggest<T>;
+    public static ofType<U>() {
+        return Suggest as new (props: ISuggestProps<U>) => Suggest<U>;
     }
 
     public state: ISuggestState<T> = {
@@ -225,10 +224,8 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
         this.requestAnimationFrame(() => {
-            if (this.inputEl != null) {
-                const input = getRef(this.inputEl);
-                input.setSelectionRange(0, input.value.length);
-            }
+            const input = getRef(this.inputEl);
+            input?.setSelectionRange(0, input.value.length);
         });
     };
 
@@ -240,23 +237,21 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
             this.setState({ isOpen: true });
         }
 
-        Utils.safeInvokeMember(this.props.inputProps, "onFocus", event);
+        this.props.inputProps?.onFocus?.(event);
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         let nextOpenState: boolean;
+
         if (!this.props.closeOnSelect) {
-            if (this.inputEl != null) {
-                getRef(this.inputEl).focus();
-            }
+            getRef(this.inputEl)?.focus();
             this.selectText();
             nextOpenState = true;
         } else {
-            if (this.inputEl != null) {
-                getRef(this.inputEl).blur();
-            }
+            getRef(this.inputEl)?.blur();
             nextOpenState = false;
         }
+
         // the internal state should only change when uncontrolled.
         if (this.props.selectedItem === undefined) {
             this.setState({
@@ -292,7 +287,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                 // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });
             }
-            Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", nextOpenState);
+            this.props.popoverProps?.onInteraction?.(nextOpenState);
         });
 
     private handlePopoverOpening = (node: HTMLElement) => {
@@ -301,7 +296,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         if (this.props.resetOnClose && this.queryList) {
             this.queryList.setQuery("", true);
         }
-        Utils.safeInvokeMember(this.props.popoverProps, "onOpening", node);
+        this.props.popoverProps?.onOpening?.(node);
     };
 
     private handlePopoverOpened = (node: HTMLElement) => {
@@ -309,7 +304,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         if (this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }
-        Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
+        this.props.popoverProps?.onOpened?.(node);
     };
 
     private getTargetKeyDownHandler = (
@@ -321,9 +316,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
             const { which } = evt;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
-                if (this.inputEl != null) {
-                    getRef(this.inputEl).blur();
-                }
+                getRef(this.inputEl)?.blur();
                 this.setState({ isOpen: false });
             } else if (
                 this.props.openOnKeyDown &&

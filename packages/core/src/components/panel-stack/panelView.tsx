@@ -26,13 +26,13 @@ export interface IPanelViewProps {
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose: (removedPanel: IPanel) => void;
+    onClose: (removedPanel: IPanel<any>) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen: (addedPanel: IPanel) => void;
+    onOpen: (addedPanel: IPanel<any>) => void;
 
     /** The panel to be displayed. */
     panel: IPanel;
@@ -65,7 +65,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
         return (
             <div className={Classes.PANEL_STACK_HEADER}>
                 <span>{this.maybeRenderBack()}</span>
-                <Text className={Classes.HEADING} ellipsize={true}>
+                <Text className={Classes.HEADING} ellipsize={true} title={this.props.panel.htmlTitle}>
                     {this.props.panel.title}
                 </Text>
                 <span />
@@ -85,6 +85,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
                 onClick={this.handleClose}
                 small={true}
                 text={this.props.previousPanel.title}
+                title={this.props.previousPanel.htmlTitle}
             />
         );
     }

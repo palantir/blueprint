@@ -51,7 +51,7 @@ Styleguide form-group
     margin-top: $pt-grid-size / 2;
   }
 
-  // stylelint-disable-next-line order/declaration-block-order
+  /* stylelint-disable-next-line order/declaration-block-order */
   @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-form-helper-text {
@@ -80,7 +80,7 @@ Styleguide form-group
     .#{$ns}-text-muted,
     .#{$ns}-form-helper-text {
       // disabled state always overrides over styles
-      // stylelint-disable-next-line declaration-no-important
+      /* stylelint-disable-next-line declaration-no-important */
       color: $pt-text-color-disabled !important;
     }
   }
@@ -103,7 +103,7 @@ Styleguide form-group
       .#{$ns}-text-muted,
       .#{$ns}-form-helper-text {
         // disabled state always overrides over styles
-        // stylelint-disable-next-line declaration-no-important
+        /* stylelint-disable-next-line declaration-no-important */
         color: $pt-dark-text-color-disabled !important;
       }
     }

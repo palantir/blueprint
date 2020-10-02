@@ -30,6 +30,15 @@ describe("<Text>", () => {
         assert.strictEqual(element.text(), textContent, "content incorrect value");
     });
 
+    it("uses given title", () => {
+        const textContent = "textContent";
+        const title = "Test title";
+        const wrapper = mount(<Text title={title}>{textContent}</Text>);
+        const element = wrapper.find("div").first();
+        const actualTitle = element.prop("title");
+        assert.strictEqual(actualTitle, title, "component title should equal title prop");
+    });
+
     describe("if ellipsize true", () => {
         it("truncates string children", () => {
             const textContent = "textContent";
@@ -82,6 +91,21 @@ describe("<Text>", () => {
                 wrapper = wrapper.update();
                 const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
                 assert.strictEqual(actualTitle, undefined, "title should be undefined");
+            });
+
+            it("uses given title even if text overflows", () => {
+                const textContent = new Array(100).join("this will overflow ");
+                const title = "Test title";
+                const wrapper = mount(
+                    <Text ellipsize={true} title={title}>
+                        {textContent}
+                    </Text>,
+                    {
+                        attachTo: testsContainerElement,
+                    },
+                );
+                const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
+                assert.strictEqual(actualTitle, title, "component title should equal title prop");
             });
         });
     });

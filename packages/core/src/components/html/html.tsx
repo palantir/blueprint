@@ -16,12 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { IElementRefProps } from "../../common";
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
-
-export interface IElementRefProps<E extends HTMLElement> {
-    /** Ref handler to access the instance of the internal HTML element. */
-    elementRef?: (ref: E | null) => void;
-}
 
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,

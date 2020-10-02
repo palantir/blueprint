@@ -15,7 +15,7 @@
     color: $pt-icon-color;
 
     .#{$ns}-dark & {
-      // stylelint-disable-next-line declaration-no-important
+      /* stylelint-disable-next-line declaration-no-important */
       color: $pt-dark-icon-color !important;
     }
   }

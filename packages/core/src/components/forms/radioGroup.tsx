@@ -100,7 +100,7 @@ export class RadioGroup extends AbstractPureComponent2<IRadioGroupProps> {
     }
 
     private renderOptions() {
-        return this.props.options.map(option => (
+        return this.props.options?.map(option => (
             <Radio {...this.getRadioProps(option)} key={option.value} labelElement={option.label || option.value} />
         ));
     }

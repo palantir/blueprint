@@ -7,7 +7,7 @@
   @include pt-button-base();
   @include pt-button();
 
-  // stylelint-disable property-no-vendor-prefix
+  /* stylelint-disable property-no-vendor-prefix */
   -moz-appearance: none;
   -webkit-appearance: none;
   border-radius: $pt-border-radius;
@@ -15,7 +15,7 @@
   padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
   // fill parent container
   width: 100%;
-  // stylelint-enable property-no-vendor-prefix
+  /* stylelint-enable property-no-vendor-prefix */
 }
 
 %pt-select-minimal {

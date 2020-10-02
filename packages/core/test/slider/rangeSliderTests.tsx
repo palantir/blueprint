@@ -54,8 +54,14 @@ describe("<RangeSlider>", () => {
     });
 
     it("throws error if range value contains null", () => {
-        expectPropValidationError(RangeSlider, { value: [null, 5] });
-        expectPropValidationError(RangeSlider, { value: [100, null] });
+        expectPropValidationError(RangeSlider, {
+            // @ts-expect-error
+            value: [null, 5],
+        });
+        expectPropValidationError(RangeSlider, {
+            // @ts-expect-error
+            value: [100, null],
+        });
     });
 
     it("disabled slider does not respond to key presses", () => {

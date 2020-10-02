@@ -19,7 +19,7 @@
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import dedent from "dedent";
-import { classesConstantsRule } from "../classes-constants";
+import { classesConstantsRule } from "../src/rules/classes-constants";
 
 const ruleTester = new TSESLint.RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
@@ -31,6 +31,7 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
+console.info("Testing classes-constants rule...");
 ruleTester.run("classes-constants", classesConstantsRule, {
     invalid: [
         // literal string

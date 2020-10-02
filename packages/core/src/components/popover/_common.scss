@@ -9,6 +9,7 @@ $dark-popover-background-color: $dark-gray4 !default;
 
 // $arrow-offset: amount to shift arrow along edge of popover
 // $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
+
 @mixin popover-sizing($arrow-square-size, $arrow-offset, $arrow-target-offset) {
   // since this is a 45-45-90 triangle, half hypotenuse === side * sqrt(2) / 2 === side / sqrt(2)
   // fun fact: there's no built-in square root function in SASS
@@ -104,7 +105,7 @@ $dark-popover-background-color: $dark-gray4 !default;
   // offset arrow away from corner spots so it appears centered in target
   @each $side in (top, right, left, bottom) {
     // giant selector is 1 character too long :(
-    // stylelint-disable-next-line max-line-length
+    /* stylelint-disable-next-line max-line-length */
     .#{$ns}-tether-element-attached-#{$side}.#{$ns}-tether-target-attached-#{$side} > & > .#{$ns}-popover-arrow {
       #{$side}: $computed-arrow-offset;
     }
@@ -126,6 +127,7 @@ $dark-popover-background-color: $dark-gray4 !default;
 
 // set background and text colors. also set box-shadow if provided (so modifier styles don't have to
 // reassign default shadows).
+
 @mixin popover-appearance(
   $background-color,
   $text-color,

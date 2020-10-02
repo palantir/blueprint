@@ -32,7 +32,6 @@ import {
     Keys,
     Popover,
     Position,
-    Utils,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -79,8 +78,8 @@ export interface ISelectState {
 export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
-    public static ofType<T>() {
-        return Select as new (props: ISelectProps<T>) => Select<T>;
+    public static ofType<U>() {
+        return Select as new (props: ISelectProps<U>) => Select<U>;
     }
 
     public state: ISelectState = { isOpen: false };
@@ -187,7 +186,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
 
     private handlePopoverInteraction = (isOpen: boolean) => {
         this.setState({ isOpen });
-        Utils.safeInvokeMember(this.props.popoverProps, "onInteraction", isOpen);
+        this.props.popoverProps?.onInteraction?.(isOpen);
     };
 
     private handlePopoverOpening = (node: HTMLElement) => {
@@ -198,7 +197,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             this.resetQuery();
         }
 
-        Utils.safeInvokeMember(this.props.popoverProps, "onOpening", node);
+        this.props.popoverProps?.onOpening?.(node);
     };
 
     private handlePopoverOpened = (node: HTMLElement) => {
@@ -210,12 +209,12 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
         this.requestAnimationFrame(() => {
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
-            if (inputProps.autoFocus !== false && this.inputEl != null) {
-                getRef(this.inputEl).focus();
+            if (inputProps.autoFocus !== false) {
+                getRef(this.inputEl)?.focus();
             }
         });
 
-        Utils.safeInvokeMember(this.props.popoverProps, "onOpened", node);
+        this.props.popoverProps?.onOpened?.(node);
     };
 
     private handlePopoverClosing = (node: HTMLElement) => {
@@ -228,7 +227,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             }
         });
 
-        Utils.safeInvokeMember(this.props.popoverProps, "onClosing", node);
+        this.props.popoverProps?.onClosing?.(node);
     };
 
     private resetQuery = () => this.queryList && this.queryList.setQuery("", true);

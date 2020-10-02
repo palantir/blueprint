@@ -116,7 +116,7 @@ describe("<TagInput>", () => {
         const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
         wrapper.find("button").at(1).simulate("click");
         assert.isTrue(onRemove.calledOnce);
-        assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+        assert.sameMembers(onRemove.args[0], [VALUES[1], 1, VALUES[1]]);
     });
 
     describe("onAdd", () => {
@@ -239,7 +239,7 @@ describe("<TagInput>", () => {
         });
 
         it("does not clear the input if the input is controlled", () => {
-            const wrapper = mountTagInput(undefined, { inputValue: NEW_VALUE });
+            const wrapper = mountTagInput(sinon.stub(), { inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
@@ -294,7 +294,7 @@ describe("<TagInput>", () => {
             assert.equal(wrapper.state("activeIndex"), VALUES.length - 2);
             assert.isTrue(onRemove.calledOnce);
             const lastIndex = VALUES.length - 1;
-            assert.sameMembers(onRemove.args[0], [VALUES[lastIndex], lastIndex]);
+            assert.sameMembers(onRemove.args[0], [VALUES[lastIndex], lastIndex, VALUES[lastIndex]]);
         });
 
         it("pressing left arrow key navigates active item and backspace removes it", () => {
@@ -309,7 +309,7 @@ describe("<TagInput>", () => {
 
             assert.equal(wrapper.state("activeIndex"), 0);
             assert.isTrue(onRemove.calledOnce);
-            assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+            assert.sameMembers(onRemove.args[0], [VALUES[1], 1, VALUES[1]]);
         });
 
         it("pressing left arrow key navigates active item and delete removes it", () => {
@@ -326,7 +326,7 @@ describe("<TagInput>", () => {
             // we rather "take the place" of the item we just removed
             assert.equal(wrapper.state("activeIndex"), 1);
             assert.isTrue(onRemove.calledOnce);
-            assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+            assert.sameMembers(onRemove.args[0], [VALUES[1], 1, VALUES[1]]);
         });
 
         it("pressing delete with no selection does nothing", () => {

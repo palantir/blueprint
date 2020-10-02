@@ -726,8 +726,7 @@ export class CanvasBuffer {
         if (bounds == null) {
             bounds = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
         }
-        const args = [].concat([this.ctx.canvas]).concat(bounds).concat(bounds);
-        ctx.drawImage.apply(ctx, args);
+        ctx.drawImage(this.ctx.canvas, ...bounds, ...bounds);
     }
 }
 
