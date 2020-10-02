@@ -170,6 +170,12 @@ describe("<MultiSlider>", () => {
     });
 
     describe("labels", () => {
+        it("renders label with labelStepSize fallback of 1 when not provided", () => {
+            // [0 1 2 3 4 5]
+            const wrapper = renderSlider({ min: 0, max: 5 });
+            assertLabelCount(wrapper, 6);
+        });
+
         it("renders label for value and for each labelStepSize", () => {
             // [0  10  20  30  40  50]
             const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: 10 });

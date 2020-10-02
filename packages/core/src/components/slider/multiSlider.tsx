@@ -44,13 +44,13 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * Increment between successive labels. Must be greater than zero.
      * @default inferred 1
      */
-    labelStepSize?: number;
+    labelStepSize?: number | null;
 
     /**
      * Array of specific values for the label placement. This prop is mutually exclusive with
      * `labelStepSize`.
      */
-    labelValues?: number[];
+    labelValues?: number[] | null;
 
     /**
      * Number of decimal places to use when rendering label value. Default value is the number of
@@ -206,7 +206,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (props.labelStepSize !== null && props.labelValues !== null) {
             throw new Error(Errors.MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX);
         }
-        if (props.labelStepSize !== null && props.labelStepSize <= 0) {
+        if (props.labelStepSize !== null && props.labelStepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
 
@@ -238,7 +238,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
             return null;
         }
 
-        const values = getLabelValues(this.props);
+        const values = this.getLabelValues();
         const { max, min } = this.props;
         const labels = values.map((step, i) => {
             const offsetPercentage = formatPercentage((step - min!) / (max! - min!));
@@ -423,6 +423,19 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         });
     };
 
+    private getLabelValues() {
+        const { labelStepSize, labelValues, min, max } = this.props;
+        let values: number[] = [];
+        if (labelValues) values = labelValues;
+        else {
+            for (let i = min!; i < max! || Utils.approxEqual(i, max!); i += labelStepSize ?? 1) {
+                values.push(i);
+            }
+        }
+
+        return values;
+    }
+
     private getOffsetRatio(value: number) {
         return Utils.clamp((value - this.props.min!) * this.state.tickSizeRatio, 0, 1);
     }
@@ -447,18 +460,6 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
             this.setState({ tickSize, tickSizeRatio });
         }
     }
-}
-
-function getLabelValues({ labelStepSize = 1, labelValues, min, max }: IMultiSliderProps) {
-    let values: number[] = [];
-    if (labelValues) values = labelValues;
-    else {
-        for (let i = min; i < max || Utils.approxEqual(i, max); i += labelStepSize) {
-            values.push(i);
-        }
-    }
-
-    return values;
 }
 
 function getLabelPrecision({ labelPrecision, stepSize = MultiSlider.defaultSliderProps.stepSize! }: IMultiSliderProps) {
