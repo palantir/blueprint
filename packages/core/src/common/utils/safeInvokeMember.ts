@@ -49,8 +49,9 @@ export function safeInvokeMember<T extends { [k in K]?: () => R }, K extends key
  * ```js
  * // example usage
  * safeInvokeMember(this.props.inputProps, "onChange", evt);
- * @deprecated use TypeScript 3.7+ optional chaining and optional call operator obj?[key]?.()
  * ```
+ *
+ * @deprecated use TypeScript 3.7+ optional chaining and optional call operator obj?[key]?.()
  */
 export function safeInvokeMember<T extends { [k in K]?: (a: A) => R }, K extends keyof T, A, R = void>(
     obj: T | undefined,

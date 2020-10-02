@@ -3,7 +3,6 @@
     "compilerOptions": {
         "declaration": false,
         "module": "commonjs",
-        "noEmit": true,
-        "strict": true
+        "noEmit": true
     }
 }

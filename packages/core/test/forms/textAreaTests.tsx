@@ -51,6 +51,7 @@ describe("<TextArea>", () => {
 
         assert.equal((textarea.getDOMNode() as HTMLElement).style.marginTop, "10px");
     });
+
     it("can fit large initial content", () => {
         const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Aenean finibus eget enim non accumsan.
@@ -65,6 +66,7 @@ describe("<TextArea>", () => {
         const scrollHeightInPixels = `${(textarea.getDOMNode() as HTMLElement).scrollHeight}px`;
         assert.equal((textarea.getDOMNode() as HTMLElement).style.height, scrollHeightInPixels);
     });
+
     it("updates on ref change", () => {
         let textArea: HTMLTextAreaElement | null = null;
         let textAreaNew: HTMLTextAreaElement | null = null;
@@ -77,4 +79,17 @@ describe("<TextArea>", () => {
         textAreawrapper.setProps({ inputRef: textAreaNewRefCallback });
         assert.instanceOf(textAreaNew, HTMLTextAreaElement);
     });
+
+    if (typeof React.createRef !== "undefined") {
+        it("accepts object refs created with React.createRef and updates on change", () => {
+            const textAreaRef = React.createRef<HTMLTextAreaElement>();
+            const textAreaNewRef = React.createRef<HTMLTextAreaElement>();
+
+            const textAreawrapper = mount(<TextArea id="textarea" inputRef={textAreaRef} />);
+            assert.instanceOf(textAreaRef.current, HTMLTextAreaElement);
+
+            textAreawrapper.setProps({ inputRef: textAreaNewRef });
+            assert.instanceOf(textAreaNewRef.current, HTMLTextAreaElement);
+        });
+    }
 });

@@ -30,7 +30,7 @@ import {
     Example,
     handleBooleanChange,
     handleNumberChange,
-    handleStringChange,
+    handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 
@@ -76,8 +76,8 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
 
     private handleMaxChange = handleNumberChange(max => this.setState({ max }));
     private handleMinChange = handleNumberChange(min => this.setState({ min }));
-    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
-    private handleButtonPositionChange = handleStringChange((buttonPosition: INumericInputProps["buttonPosition"]) =>
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleButtonPositionChange = handleValueChange((buttonPosition: INumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),
     );
 

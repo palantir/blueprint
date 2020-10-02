@@ -121,7 +121,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         // entry.type looks like "{ [name: string]: (date: Date) => boolean }"
         const [signature, returnType] = entry.type.slice(2, -2).split("]: ");
         return (
-            <tr key={name}>
+            <tr key={entry.name}>
                 <td className="docs-prop-name">
                     <code>{renderType(signature)}]</code>
                 </td>

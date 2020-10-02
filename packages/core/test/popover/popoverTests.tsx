@@ -33,7 +33,7 @@ import { findInPortal } from "../utils";
 
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
-    let wrapper: IPopoverWrapper;
+    let wrapper: IPopoverWrapper | undefined;
     const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
@@ -44,8 +44,8 @@ describe("<Popover>", () => {
     afterEach(() => {
         if (wrapper !== undefined) {
             // clean up wrapper to remove Portal element from DOM
-            wrapper.unmount();
-            wrapper.detach();
+            wrapper?.unmount();
+            wrapper?.detach();
             wrapper = undefined;
         }
         testsContainerElement.remove();
@@ -90,9 +90,9 @@ describe("<Popover>", () => {
         });
 
         // HACKHACK (https://github.com/palantir/blueprint/issues/3371): this causes an infinite loop stack overflow
-        it.skip("warns if attempting to open a popover with empty content", () => {
+        it("warns if attempting to open a popover with empty content", () => {
             shallow(
-                <Popover content={null} isOpen={true}>
+                <Popover content={undefined} isOpen={true}>
                     {"target"}
                 </Popover>,
             );
@@ -156,9 +156,9 @@ describe("<Popover>", () => {
             popoverClassName: "foo",
             targetClassName: "baz",
         });
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass(wrapper.prop("className")));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass(wrapper.prop("popoverClassName")));
-        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("targetClassName")));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_WRAPPER).hasClass(wrapper.prop("className")!));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER).hasClass(wrapper.prop("popoverClassName")!));
+        assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(wrapper.prop("targetClassName")!));
     });
 
     it("adds POPOVER_OPEN class to target when the popover is open", () => {
@@ -253,8 +253,8 @@ describe("<Popover>", () => {
                 .simulateTarget("mouseenter")
                 .simulateTarget("mouseleave");
             const target = wrapper.find("address");
-            assert.isTrue(target.prop("className").indexOf(Classes.POPOVER_TARGET) >= 0);
-            assert.isTrue(target.prop("className").indexOf(targetProps.className) >= 0);
+            assert.isTrue(target.prop("className")!.indexOf(Classes.POPOVER_TARGET) >= 0);
+            assert.isTrue(target.prop("className")!.indexOf(targetProps.className!) >= 0);
             assert.equal(target.prop("tabIndex"), targetProps.tabIndex);
             assert.equal(spy.callCount, 4);
         }
@@ -537,7 +537,7 @@ describe("<Popover>", () => {
             wrapper.simulateTarget("mouseenter").assertIsOpen();
             wrapper.findClass(Classes.POPOVER).simulate("mouseenter");
             // Popover defers popover closing, so need to defer this check
-            wrapper.then(() => wrapper.assertIsOpen(false), done);
+            wrapper.then(() => wrapper!.assertIsOpen(false), done);
         });
 
         it("inline HOVER works properly", done => {
@@ -553,7 +553,7 @@ describe("<Popover>", () => {
 
             wrapper.findClass(Classes.POPOVER).simulate("mouseleave");
             // Popover defers popover closing, so need to defer this check
-            wrapper.then(() => wrapper.assertIsOpen(false), done);
+            wrapper.then(() => wrapper!.assertIsOpen(false), done);
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=true", () => {
@@ -658,12 +658,12 @@ describe("<Popover>", () => {
         it("computes transformOrigin with arrow", done => {
             // unreliable to test actual state value as it depends on browser (chrome and karma behave differently).
             // so we'll just check that state was set _at all_ (it starts undefined).
-            renderPopover({ isOpen: true }).then(() => assert.isDefined(wrapper.state("transformOrigin")), done);
+            renderPopover({ isOpen: true }).then(() => assert.isDefined(wrapper!.state("transformOrigin")), done);
         });
 
         it("computes transformOrigin without arrow", done => {
             renderPopover({ minimal: true, isOpen: true }).then(
-                () => assert.equal(wrapper.state("transformOrigin"), "center top"),
+                () => assert.equal(wrapper!.state("transformOrigin"), "center top"),
                 done,
             );
         });
@@ -755,7 +755,7 @@ describe("<Popover>", () => {
             wrapper.then(() => {
                 setOpenStateSpy.resetHistory();
                 // need to trigger a real event because the click handler will be on the document
-                dispatchMouseEvent(wrapper.targetElement);
+                dispatchMouseEvent(wrapper!.targetElement);
 
                 assert(onCloseSpy.notCalled, "onClose prop callback should not be called");
                 assert(setOpenStateSpy.notCalled, "setOpenState private method should not be called");
@@ -786,40 +786,40 @@ describe("<Popover>", () => {
             { attachTo: testsContainerElement },
         ) as IPopoverWrapper;
 
-        wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement;
-        wrapper.targetElement = (wrapper.instance() as Popover).targetElement;
+        wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement!;
+        wrapper.targetElement = (wrapper.instance() as Popover).targetElement!;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
-            (expected ? assert.isTrue : assert.isFalse)(wrapper.findClass(className).exists(), msg);
-            return wrapper;
+            (expected ? assert.isTrue : assert.isFalse)(wrapper!.findClass(className).exists(), msg);
+            return wrapper!;
         };
         wrapper.assertIsOpen = (isOpen = true, index = 0) => {
-            const overlay = wrapper.find(Overlay).at(index);
+            const overlay = wrapper!.find(Overlay).at(index);
             assert.equal(overlay.prop("isOpen"), isOpen, "assertIsOpen");
-            return wrapper;
+            return wrapper!;
         };
         wrapper.assertOnInteractionCalled = (called = true) => {
             assert.strictEqual(onInteractionSpy.called, called, "assertOnInteractionCalled");
-            return wrapper;
+            return wrapper!;
         };
-        wrapper.findClass = (className: string) => wrapper.find(`.${className}`).hostNodes();
+        wrapper.findClass = (className: string) => wrapper!.find(`.${className}`).hostNodes();
         wrapper.simulateTarget = (eventName: string) => {
-            wrapper.findClass(Classes.POPOVER_TARGET).simulate(eventName);
-            return wrapper;
+            wrapper!.findClass(Classes.POPOVER_TARGET).simulate(eventName);
+            return wrapper!;
         };
         wrapper.sendEscapeKey = () => {
-            wrapper.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
+            wrapper!.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
                 nativeEvent: new KeyboardEvent("keydown"),
                 which: Keys.ESCAPE,
             });
-            return wrapper;
+            return wrapper!;
         };
         wrapper.then = (next, done) => {
             setTimeout(() => {
-                wrapper.update();
-                next(wrapper);
+                wrapper!.update();
+                next(wrapper!);
                 done();
             });
-            return wrapper;
+            return wrapper!;
         };
         return wrapper;
     }

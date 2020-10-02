@@ -78,7 +78,12 @@ export interface IPanelStackState {
 export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelStackState> {
     public state: IPanelStackState = {
         direction: "push",
-        stack: this.props.stack != null ? this.props.stack.slice().reverse() : [this.props.initialPanel],
+        stack:
+            this.props.stack != null
+                ? this.props.stack.slice().reverse()
+                : this.props.initialPanel !== undefined
+                ? [this.props.initialPanel]
+                : [],
     };
 
     public componentDidUpdate(prevProps: IPanelStackProps, prevState: IPanelStackState) {
@@ -86,7 +91,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
 
         // Always update local stack if stack prop changes
         if (this.props.stack !== prevProps.stack && prevProps.stack != null) {
-            this.setState({ stack: this.props.stack.slice().reverse() });
+            this.setState({ stack: this.props.stack!.slice().reverse() });
         }
 
         // Only update animation direction if stack length changes
@@ -94,7 +99,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         const prevStackLength = prevProps.stack != null ? prevProps.stack.length : 0;
         if (stackLength !== prevStackLength && prevProps.stack != null) {
             this.setState({
-                direction: prevProps.stack.length - this.props.stack.length < 0 ? "push" : "pop",
+                direction: prevProps.stack.length - this.props.stack!.length < 0 ? "push" : "pop",
             });
         }
     }

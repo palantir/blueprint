@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { DayPickerProps } from "react-day-picker";
+import DayPicker from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
 import {
@@ -75,16 +75,6 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * @default true
      */
     contiguousCalendarMonths?: boolean;
-
-    /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
-     * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
-     */
-    dayPickerProps?: DayPickerProps;
 
     /**
      * The default date range to be used in the component when uncontrolled.
@@ -239,8 +229,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
-    private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null;
-    private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null;
+    private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private refHandlers = {
         endInputRef: isRefObject<HTMLInputElement>(this.props.endInputProps.inputRef)
             ? (this.endInputRef = this.props.endInputProps.inputRef)
@@ -544,33 +534,39 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     };
 
     private handleInputEvent = (e: InputEvent, boundary: Boundary) => {
+        const inputProps = this.getInputProps(boundary);
+
         switch (e.type) {
             case "blur":
                 this.handleInputBlur(e, boundary);
+                inputProps.onBlur?.(e as React.FocusEvent<HTMLInputElement>);
                 break;
             case "change":
                 this.handleInputChange(e, boundary);
+                inputProps.onChange?.(e as React.ChangeEvent<HTMLInputElement>);
                 break;
             case "click":
-                this.handleInputClick(e as React.MouseEvent<HTMLInputElement>);
+                e = e as React.MouseEvent<HTMLInputElement>;
+                this.handleInputClick(e);
+                inputProps.onClick?.(e);
                 break;
             case "focus":
                 this.handleInputFocus(e, boundary);
+                inputProps.onFocus?.(e as React.FocusEvent<HTMLInputElement>);
                 break;
             case "keydown":
-                this.handleInputKeyDown(e as React.KeyboardEvent<HTMLInputElement>);
+                e = e as React.KeyboardEvent<HTMLInputElement>;
+                this.handleInputKeyDown(e);
+                inputProps.onKeyDown?.(e);
                 break;
             case "mousedown":
+                e = e as React.MouseEvent<HTMLInputElement>;
                 this.handleInputMouseDown();
+                inputProps.onMouseDown?.(e);
                 break;
             default:
                 break;
         }
-
-        const inputProps = this.getInputProps(boundary);
-        const callbackFn = this.getInputGroupCallbackForEvent(e, inputProps);
-
-        callbackFn?.(e);
     };
 
     // add a keydown listener to persistently change focus when tabbing:
@@ -753,9 +749,9 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     // Callbacks - Popover
     // ===================
 
-    private handlePopoverClose = () => {
+    private handlePopoverClose = (event: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
-        this.props.popoverProps.onClose?.();
+        this.props.popoverProps.onClose?.(event);
     };
 
     // Helpers
@@ -820,29 +816,6 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
             const fallbackDate = fallbackRange != null ? fallbackRange[index] : undefined;
             return this.isDateValidAndInRange(selectedBound) ? selectedBound : fallbackDate;
         }) as DateRange;
-    };
-
-    private getInputGroupCallbackForEvent: (
-        e: React.SyntheticEvent<HTMLInputElement>,
-        inputProps: HTMLInputProps & IInputGroupProps,
-    ) => ((event: InputEvent) => void) | undefined = (e, inputProps) => {
-        // use explicit switch cases to ensure callback function names remain grep-able in the codebase.
-        switch (e.type) {
-            case "blur":
-                return inputProps.onBlur;
-            case "change":
-                return inputProps.onChange;
-            case "click":
-                return inputProps.onClick;
-            case "focus":
-                return inputProps.onFocus;
-            case "keydown":
-                return inputProps.onKeyDown;
-            case "mousedown":
-                return inputProps.onMouseDown;
-            default:
-                return undefined;
-        }
     };
 
     private getInputDisplayString = (boundary: Boundary) => {

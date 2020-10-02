@@ -27,7 +27,7 @@ interface ITimezone {
 
 const LOCAL_TIMEZONE_OFFSET_MSEC = new Date().getTimezoneOffset() * 60 * 1000;
 
-const TIME_ZONES: ITimezone[] = [
+const TIME_ZONES: ITimezone[] = ([
     ["-12:00", -12.0, "Etc/GMT+12"],
     ["-11:00", -11.0, "Pacific/Midway"],
     ["-10:00", -10.0, "Pacific/Honolulu"],
@@ -67,7 +67,7 @@ const TIME_ZONES: ITimezone[] = [
     ["+12:45", 12.75, "Pacific/Chatham"],
     ["+13:00", 13.0, "Pacific/Tongatapu"],
     ["+14:00", 14.0, "Pacific/Kiritimati"],
-].map((arr: [string, number, string]) => {
+] as Array<[string, number, string]>).map(arr => {
     return {
         name: arr[2],
         offsetMsec: (arr[1] as number) * 60 * 60 * 1000 + LOCAL_TIMEZONE_OFFSET_MSEC,

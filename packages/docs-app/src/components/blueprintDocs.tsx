@@ -164,7 +164,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     // run non-React code on the newly rendered sections.
     private handleComponentUpdate = () => {
         // indeterminate checkbox styles must be applied via JavaScript.
-        Array.from(document.querySelectorAll(`.${Classes.CHECKBOX} input[indeterminate]`)).forEach(
+        Array.from(document.querySelectorAll<HTMLInputElement>(`.${Classes.CHECKBOX} input[indeterminate]`)).forEach(
             (el: HTMLInputElement) => (el.indeterminate = true),
         );
     };

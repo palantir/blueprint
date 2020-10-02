@@ -127,7 +127,7 @@ export function getDeepUnequalKeyValues<T extends {}>(
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function shallowCompareKeysImpl<T>(objA: T, objB: T, keys: IKeyDenylist<T> | IKeyAllowlist<T>) {
+function shallowCompareKeysImpl<T extends object>(objA: T, objB: T, keys: IKeyDenylist<T> | IKeyAllowlist<T>) {
     return filterKeys(objA, objB, keys).every(key => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key];
     });

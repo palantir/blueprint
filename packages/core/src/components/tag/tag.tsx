@@ -21,6 +21,7 @@ import {
     AbstractPureComponent2,
     Classes,
     DISPLAYNAME_PREFIX,
+    IElementRefProps,
     IIntentProps,
     IProps,
     MaybeElement,
@@ -30,7 +31,11 @@ import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
 
-export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
+export interface ITagProps
+    extends IProps,
+        IIntentProps,
+        IElementRefProps<HTMLSpanElement>,
+        React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Whether the tag should appear in an active state.
      * @default false
@@ -97,6 +102,11 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * @default false
      */
     round?: boolean;
+
+    /**
+     * HTML title to be passed to the <Text> component
+     */
+    htmlTitle?: string;
 }
 
 @polyfill
@@ -119,6 +129,8 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
             rightIcon,
             round,
             tabIndex = 0,
+            htmlTitle,
+            elementRef,
             ...htmlProps
         } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
@@ -148,10 +160,10 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
         ) : null;
 
         return (
-            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
+            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={elementRef}>
                 <Icon icon={icon} />
                 {!isReactNodeEmpty(children) && (
-                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
+                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
                         {children}
                     </Text>
                 )}

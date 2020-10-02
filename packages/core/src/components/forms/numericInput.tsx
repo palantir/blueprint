@@ -36,7 +36,7 @@ import {
 import * as Errors from "../../common/errors";
 
 import { ButtonGroup } from "../button/buttonGroup";
-import { AnchorButton } from "../button/buttons";
+import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import {
@@ -152,7 +152,9 @@ export interface INumericInputProps extends IIntentProps, IProps {
      */
     stepSize?: number;
 
-    /** The value to display in the input field. */
+    /**
+     * The value to display in the input field.
+     */
     value?: number | string;
 
     /** The callback invoked when the value changes due to a button click. */
@@ -166,7 +168,6 @@ export interface INumericInputState {
     currentImeInputInvalid: boolean;
     prevMinProp?: number;
     prevMaxProp?: number;
-    prevValueProp?: number | string;
     shouldSelectAfterUpdate: boolean;
     stepMaxPrecision: number;
     value: string;
@@ -218,7 +219,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const nextState = {
             prevMaxProp: props.max,
             prevMinProp: props.min,
-            prevValueProp: props.value,
         };
 
         const didMinChange = props.min !== state.prevMinProp;
@@ -253,11 +253,17 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (props.minorStepSize != null) {
             return Utils.countDecimalPlaces(props.minorStepSize);
         } else {
-            return Utils.countDecimalPlaces(props.stepSize);
+            return Utils.countDecimalPlaces(props.stepSize!);
         }
     }
 
-    private static roundAndClampValue(value: string, stepMaxPrecision: number, min: number, max: number, delta = 0) {
+    private static roundAndClampValue(
+        value: string,
+        stepMaxPrecision: number,
+        min: number | undefined,
+        max: number | undefined,
+        delta = 0,
+    ) {
         if (!isValueNumeric(value)) {
             return NumericInput.VALUE_EMPTY;
         }
@@ -276,7 +282,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     private didPasteEventJustOccur = false;
     private delta = 0;
     private inputElement: HTMLInputElement | null = null;
-    private intervalId: number | null = null;
+    private intervalId?: number;
 
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
@@ -298,7 +304,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         super.componentDidUpdate(prevProps, prevState);
 
         if (this.state.shouldSelectAfterUpdate) {
-            this.inputElement.setSelectionRange(0, this.state.value.length);
+            this.inputElement?.setSelectionRange(0, this.state.value.length);
         }
 
         const didMinChange = this.props.min !== prevProps.min;
@@ -315,10 +321,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (min != null && max != null && min > max) {
             throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
-        if (stepSize == null) {
-            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
-        }
-        if (stepSize <= 0) {
+        if (stepSize! <= 0) {
             throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize <= 0) {
@@ -327,10 +330,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (majorStepSize && majorStepSize <= 0) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         }
-        if (minorStepSize && minorStepSize > stepSize) {
+        if (minorStepSize && minorStepSize > stepSize!) {
             throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         }
-        if (majorStepSize && majorStepSize < stepSize) {
+        if (majorStepSize && majorStepSize < stepSize!) {
             throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
 
@@ -351,16 +354,18 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const { intent, max, min } = this.props;
         const { value } = this.state;
         const disabled = this.props.disabled || this.props.readOnly;
+        const isIncrementDisabled = max !== undefined && value !== "" && +value >= max;
+        const isDecrementDisabled = min !== undefined && value !== "" && +value <= min;
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
-                <AnchorButton
-                    disabled={disabled || (value !== "" && +value >= max)}
+                <Button
+                    disabled={disabled || isIncrementDisabled}
                     icon="chevron-up"
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
-                <AnchorButton
-                    disabled={disabled || (value !== "" && +value <= min)}
+                <Button
+                    disabled={disabled || isDecrementDisabled}
                     icon="chevron-down"
                     intent={intent}
                     {...this.decrementButtonHandlers}
@@ -405,6 +410,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         return {
             // keydown is fired repeatedly when held so it's implicitly continuous
             onKeyDown: evt => {
+                // eslint-disable-next-line deprecation/deprecation
                 if (!this.props.disabled && Keys.isKeyboardClick(evt.keyCode)) {
                     this.handleButtonClick(evt, direction);
                 }
@@ -445,6 +451,17 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     };
 
     private handleContinuousChange = () => {
+        // If either min or max prop is set, when reaching the limit
+        // the button will be disabled and stopContinuousChange will be never fired,
+        // hence the need to check on each iteration to properly clear the timeout
+        if (this.props.min !== undefined || this.props.max !== undefined) {
+            const min = this.props.min ?? -Infinity;
+            const max = this.props.max ?? Infinity;
+            if (Number(this.state.value) <= min || Number(this.state.value) >= max) {
+                this.stopContinuousChange();
+                return;
+            }
+        }
         const nextValue = this.incrementValue(this.delta);
         this.props.onButtonClick?.(+nextValue, nextValue);
     };
@@ -454,7 +471,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         // update this state flag to trigger update for input selection (see componentDidUpdate)
-        this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnFocus });
+        this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnFocus! });
         this.props.onFocus?.(e);
     };
 
@@ -475,9 +492,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             return;
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         const { keyCode } = e;
 
-        let direction: IncrementDirection;
+        let direction: IncrementDirection | undefined;
 
         if (keyCode === Keys.ARROW_UP) {
             direction = IncrementDirection.UP;
@@ -485,7 +503,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             direction = IncrementDirection.DOWN;
         }
 
-        if (direction != null) {
+        if (direction !== undefined) {
             // when the input field has focus, some key combinations will modify
             // the field's selection range. we'll actually want to select all
             // text in the field after we modify the value on the following
@@ -565,7 +583,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         if (nextValue !== this.state.value) {
             this.handleNextValue(nextValue);
-            this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement });
+            this.setState({ shouldSelectAfterUpdate: this.props.selectAllOnIncrement! });
         }
 
         // return value used in continuous change updates
@@ -580,7 +598,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         } else if (isAltKeyPressed && minorStepSize != null) {
             return direction * minorStepSize;
         } else {
-            return direction * stepSize;
+            return direction * stepSize!;
         }
     }
 

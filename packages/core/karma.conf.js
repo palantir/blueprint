@@ -14,6 +14,10 @@ module.exports = function (config) {
             "src/accessibility/*",
             "src/common/abstractComponent*",
             "src/common/abstractPureComponent*",
+            "src/compatibility/*",
+            // deprecations
+            "src/common/utils/functionUtils.ts",
+            "src/common/utils/safeInvokeMember.ts",
         ],
     });
     config.set(baseConfig);

@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
@@ -34,6 +34,10 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
         iconSize: Icon.SIZE_STANDARD,
         intent: Intent.NONE,
     };
+
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
+    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
     public render() {
         const { icon, iconSize, intent } = this.state;
@@ -61,11 +65,6 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
             </Example>
         );
     }
-
-    // eslint-disable-line @typescript-eslint/member-ordering
-    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
-    private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
-    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 }
 
 const MAX_ICON_SIZE = 100;

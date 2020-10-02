@@ -51,10 +51,10 @@ export const ELEVATION_2 = elevationClass(Elevation.TWO);
 export const ELEVATION_3 = elevationClass(Elevation.THREE);
 export const ELEVATION_4 = elevationClass(Elevation.FOUR);
 
-export const INTENT_PRIMARY = intentClass(Intent.PRIMARY);
-export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
-export const INTENT_WARNING = intentClass(Intent.WARNING);
-export const INTENT_DANGER = intentClass(Intent.DANGER);
+export const INTENT_PRIMARY = intentClass(Intent.PRIMARY)!;
+export const INTENT_SUCCESS = intentClass(Intent.SUCCESS)!;
+export const INTENT_WARNING = intentClass(Intent.WARNING)!;
+export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 
@@ -208,6 +208,7 @@ export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
+export const POPOVER_CAPTURING_DISMISS = `${POPOVER}-capturing-dismiss`;
 export const POPOVER_CONTENT = `${POPOVER}-content`;
 export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
@@ -290,7 +291,7 @@ export function getClassNamespace() {
 }
 
 /** Return CSS class for alignment. */
-export function alignmentClass(alignment: Alignment) {
+export function alignmentClass(alignment: Alignment | undefined) {
     switch (alignment) {
         case Alignment.LEFT:
             return ALIGN_LEFT;
@@ -301,15 +302,17 @@ export function alignmentClass(alignment: Alignment) {
     }
 }
 
-export function elevationClass(elevation: Elevation) {
-    if (elevation == null) {
+export function elevationClass(elevation: Elevation): string;
+export function elevationClass(elevation: Elevation | undefined) {
+    if (elevation === undefined) {
         return undefined;
     }
     return `${NS}-elevation-${elevation}`;
 }
 
 /** Returns CSS class for icon name. */
-export function iconClass(iconName?: string) {
+export function iconClass(iconName: string): string;
+export function iconClass(iconName: string | undefined) {
     if (iconName == null) {
         return undefined;
     }
@@ -317,15 +320,18 @@ export function iconClass(iconName?: string) {
 }
 
 /** Return CSS class for intent. */
-export function intentClass(intent?: Intent) {
+export function intentClass(intent: Intent | undefined) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;
     }
     return `${NS}-intent-${intent.toLowerCase()}`;
 }
 
-export function positionClass(position: Position) {
-    if (position == null) {
+export function positionClass(position: Position): string;
+export function positionClass(position: undefined): undefined;
+export function positionClass(position: Position | undefined): string | undefined;
+export function positionClass(position: Position | undefined) {
+    if (position === undefined) {
         return undefined;
     }
     return `${NS}-position-${position}`;

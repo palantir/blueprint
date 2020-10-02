@@ -128,7 +128,7 @@ describe("<Handle>", () => {
         value: number,
         props: Partial<IInternalHandleProps> = {},
     ): ReactWrapper<IInternalHandleProps, IHandleState> {
-        return mount(<Handle {...HANDLE_PROPS} label={value} value={value} {...props} />, {
+        return mount(<Handle {...HANDLE_PROPS} label={value.toString()} value={value} {...props} />, {
             attachTo: testsContainerElement,
         });
     }

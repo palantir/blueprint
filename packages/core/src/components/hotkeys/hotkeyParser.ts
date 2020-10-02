@@ -186,7 +186,7 @@ export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
 export const parseKeyCombo = (combo: string): IKeyCombo => {
     const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
-    let key = null as string;
+    let key: string | undefined;
     for (let piece of pieces) {
         if (piece === "") {
             throw new Error(`Failed to parse key combo "${combo}".
@@ -252,7 +252,7 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
  * event.
  */
 export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
-    let key = null as string;
+    let key: string | undefined;
     // HACKHACK: https://github.com/palantir/blueprint/issues/4165
     // eslint-disable-next-line deprecation/deprecation
     const { which } = e;

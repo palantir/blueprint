@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, HandleInteractionKind, Intent, MultiSlider, Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 interface ISliderValues {
     dangerStart: number;
@@ -54,10 +54,10 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
 
     private toggleTrackFill = handleBooleanChange(showTrackFill => this.setState({ showTrackFill }));
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
-    private handleInteractionKindChange = handleStringChange((interactionKind: HandleInteractionKind) =>
+    private handleInteractionKindChange = handleValueChange((interactionKind: HandleInteractionKind) =>
         this.setState({ interactionKind }),
     );
-    private handleShownIntentsChange = handleStringChange((shownIntents: ShownIntents) =>
+    private handleShownIntentsChange = handleValueChange((shownIntents: ShownIntents) =>
         this.setState({ shownIntents }),
     );
 
@@ -139,7 +139,7 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
     private handleChange = (rawValues: number[]) => {
         // newValues is always in sorted order, and handled cannot be unsorted by dragging with lock/push interactions.
         const newValuesMap = { ...this.state.values, ...this.getUpdatedHandles(rawValues) };
-        const newValues = Object.keys(newValuesMap).map((key: keyof ISliderValues) => newValuesMap[key]);
+        const newValues = Object.keys(newValuesMap).map((key: string) => newValuesMap[key as keyof ISliderValues]);
         newValues.sort((a, b) => a - b);
         const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
         this.setState({ values: { dangerStart, warningStart, warningEnd, dangerEnd } });

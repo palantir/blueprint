@@ -61,7 +61,7 @@ export class Card extends AbstractPureComponent2<ICardProps> {
         const classes = classNames(
             Classes.CARD,
             { [Classes.INTERACTIVE]: interactive },
-            Classes.elevationClass(elevation),
+            Classes.elevationClass(elevation!),
             className,
         );
         return <div className={classes} {...htmlProps} />;

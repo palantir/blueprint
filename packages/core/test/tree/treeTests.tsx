@@ -40,8 +40,8 @@ describe("<Tree>", () => {
         assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
     });
 
-    it("handles null input well", () => {
-        const tree = renderTree({ contents: null });
+    it("handles undefined input well", () => {
+        const tree = renderTree({ contents: undefined });
         assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
     });
 
@@ -270,7 +270,7 @@ describe("<Tree>", () => {
 
         assert.strictEqual(
             tree.getNodeContentElement(5),
-            wrapper.getDOMNode().querySelector(`.c5 > .${Classes.TREE_NODE_CONTENT}`),
+            wrapper.getDOMNode().querySelector<HTMLElement>(`.c5 > .${Classes.TREE_NODE_CONTENT}`),
         );
         assert.isUndefined(tree.getNodeContentElement(100));
 

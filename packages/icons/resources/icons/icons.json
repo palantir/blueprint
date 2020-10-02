@@ -3490,5 +3490,53 @@
         "iconName": "geofence",
         "tags": "region, geo, fence",
         "group": "interface"
+    },
+    {
+        "displayName": "Data Connection",
+        "iconName": "data-connection",
+        "tags": "connectivity, connection, database, data, status, health",
+        "group": "interface"
+    },
+    {
+        "displayName": "Switch",
+        "iconName": "switch",
+        "tags": "switch, electric, electrical",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Array",
+        "iconName": "array",
+        "tags": "array",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Boolean Array",
+        "iconName": "array-boolean",
+        "tags": "array, boolean",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Date Array",
+        "iconName": "array-date",
+        "tags": "array, date",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Numeric Array",
+        "iconName": "array-numeric",
+        "tags": "array, numeric, number",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "String Array",
+        "iconName": "array-string",
+        "tags": "array, string",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Timestamp Array",
+        "iconName": "array-timestamp",
+        "tags": "array, timestamp",
+        "group": "miscellaneous"
     }
 ]

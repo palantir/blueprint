@@ -37,7 +37,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     private timeoutIds: number[] = [];
     private requestIds: number[] = [];
 
-    constructor(props?: P, context?: any) {
+    constructor(props: P, context?: any) {
         super(props, context);
         if (!isNodeEnv("production")) {
             this.validateProps(this.props);

@@ -81,7 +81,7 @@ $tab-indicator-width: 3px !default;
   position: relative;
 
   // this is fine.
-  // stylelint-disable-next-line selector-no-universal
+  /* stylelint-disable-next-line selector-no-universal */
   > *:not(:last-child) {
     margin-right: $pt-grid-size * 2;
   }
@@ -108,10 +108,10 @@ $tab-indicator-width: 3px !default;
   .#{$ns}-tab-indicator-wrapper ~ & {
     // these properties are only for static markup, therefore
     // we never want them if there's a tab indicator
-    // stylelint-disable declaration-no-important
+    /* stylelint-disable declaration-no-important */
     background-color: transparent !important;
     box-shadow: none !important;
-    // stylelint-enable declaration-no-important
+    /* stylelint-enable declaration-no-important */
   }
 
   &[aria-disabled="true"] {
