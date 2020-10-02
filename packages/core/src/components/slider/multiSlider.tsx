@@ -206,7 +206,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (props.labelStepSize !== null && props.labelValues !== null) {
             throw new Error(Errors.MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX);
         }
-        if (props.labelStepSize <= 0) {
+        if (props.labelStepSize <= 0 && props.labelStepSize !== null) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
 
