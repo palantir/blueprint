@@ -182,7 +182,7 @@ describe("<MultiSlider>", () => {
             assertLabelCount(wrapper, 6);
         });
 
-        it("renders label for value and for each labelValues entry", () => {
+        it("renders labels provided in labelValues prop", () => {
             const labelValues = [0, 30, 50, 60];
             const wrapper = renderSlider({ min: 0, max: 50, labelValues });
             assertLabelCount(wrapper, 4);

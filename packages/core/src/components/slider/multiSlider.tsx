@@ -42,15 +42,15 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
 
     /**
      * Increment between successive labels. Must be greater than zero.
-     * @default inferred 1
+     * @default inferred (if labelStepSize is undefined)
      */
-    labelStepSize?: number | null;
+    labelStepSize?: number;
 
     /**
      * Array of specific values for the label placement. This prop is mutually exclusive with
      * `labelStepSize`.
      */
-    labelValues?: number[] | null;
+    labelValues?: number[];
 
     /**
      * Number of decimal places to use when rendering label value. Default value is the number of
@@ -123,8 +123,6 @@ export interface ISliderState {
 export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
-        labelStepSize: null,
-        labelValues: null,
         max: 10,
         min: 0,
         showTrackFill: true,
@@ -203,10 +201,10 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (props.stepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
-        if (props.labelStepSize !== null && props.labelValues !== null) {
+        if (props.labelStepSize !== undefined && props.labelValues !== undefined) {
             throw new Error(Errors.MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX);
         }
-        if (props.labelStepSize !== null && props.labelStepSize! <= 0) {
+        if (props.labelStepSize !== undefined && props.labelStepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
 
@@ -426,8 +424,9 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     private getLabelValues() {
         const { labelStepSize, labelValues, min, max } = this.props;
         let values: number[] = [];
-        if (labelValues) values = labelValues;
-        else {
+        if (labelValues !== undefined) {
+            values = labelValues;
+        } else {
             for (let i = min!; i < max! || Utils.approxEqual(i, max!); i += labelStepSize ?? 1) {
                 values.push(i);
             }
