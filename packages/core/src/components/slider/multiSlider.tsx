@@ -42,9 +42,15 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
 
     /**
      * Increment between successive labels. Must be greater than zero.
-     * @default 1
+     * @default inferred (if labelStepSize is undefined)
      */
     labelStepSize?: number;
+
+    /**
+     * Array of specific values for the label placement. This prop is mutually exclusive with
+     * `labelStepSize`.
+     */
+    labelValues?: number[];
 
     /**
      * Number of decimal places to use when rendering label value. Default value is the number of
@@ -117,7 +123,6 @@ export interface ISliderState {
 export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
-        labelStepSize: 1,
         max: 10,
         min: 0,
         showTrackFill: true,
@@ -196,7 +201,10 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (props.stepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
-        if (props.labelStepSize! <= 0) {
+        if (props.labelStepSize !== undefined && props.labelValues !== undefined) {
+            throw new Error(Errors.MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX);
+        }
+        if (props.labelStepSize !== undefined && props.labelStepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
 
@@ -227,25 +235,19 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         if (this.props.labelRenderer === false) {
             return null;
         }
-        const { labelStepSize, max, min } = this.props;
 
-        const labels: JSX.Element[] = [];
-        const stepSizeRatio = this.state.tickSizeRatio * labelStepSize!;
-        // step size lends itself naturally to a `for` loop
-        // eslint-disable-line one-var, no-sequences
-        for (
-            let i = min!, offsetRatio = 0;
-            i < max! || Utils.approxEqual(i, max!);
-            i += labelStepSize!, offsetRatio += stepSizeRatio
-        ) {
-            const offsetPercentage = formatPercentage(offsetRatio);
+        const values = this.getLabelValues();
+        const { max, min } = this.props;
+        const labels = values.map((step, i) => {
+            const offsetPercentage = formatPercentage((step - min!) / (max! - min!));
             const style = this.props.vertical ? { bottom: offsetPercentage } : { left: offsetPercentage };
-            labels.push(
+            return (
                 <div className={Classes.SLIDER_LABEL} key={i} style={style}>
-                    {this.formatLabel(i)}
-                </div>,
+                    {this.formatLabel(step)}
+                </div>
             );
-        }
+        });
+
         return labels;
     }
 
@@ -418,6 +420,20 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
             handle.onRelease?.(newValues[index]);
         });
     };
+
+    private getLabelValues() {
+        const { labelStepSize, labelValues, min, max } = this.props;
+        let values: number[] = [];
+        if (labelValues !== undefined) {
+            values = labelValues;
+        } else {
+            for (let i = min!; i < max! || Utils.approxEqual(i, max!); i += labelStepSize ?? 1) {
+                values.push(i);
+            }
+        }
+
+        return values;
+    }
 
     private getOffsetRatio(value: number) {
         return Utils.clamp((value - this.props.min!) * this.state.tickSizeRatio, 0, 1);
