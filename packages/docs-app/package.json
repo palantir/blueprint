@@ -25,7 +25,7 @@
         "@blueprintjs/table": "^3.8.16",
         "@blueprintjs/test-commons": "^0.10.7",
         "@blueprintjs/timezone": "^3.7.2",
-        "@documentalist/client": "~2.5.0",
+        "@documentalist/client": "~3.0.0",
         "chroma-js": "^2.1.0",
         "classnames": "^2.2",
         "dom4": "^2.1.5",
