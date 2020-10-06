@@ -3538,5 +3538,11 @@
         "iconName": "array-timestamp",
         "tags": "array, timestamp",
         "group": "miscellaneous"
-    }
+    },
+    {
+        "displayName": "Layer Outline",
+        "iconName": "layer-outline",
+        "tags": "zone, level, outline",
+        "group": "interface"
+    },
 ]
