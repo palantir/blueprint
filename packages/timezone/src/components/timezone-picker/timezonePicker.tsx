@@ -163,6 +163,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
                 inputProps={finalInputProps}
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
+                query={this.props.inputProps.value}
             >
                 {children != null ? children : this.renderButton()}
             </TypedSelect>
@@ -224,5 +225,10 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
 
     private handleItemSelect = (timezone: ITimezoneItem) => this.props.onChange?.(timezone.timezone);
 
-    private handleQueryChange = (query: string) => this.setState({ query });
+    private handleQueryChange = (query: string, event: React.ChangeEvent<HTMLInputElement>) => {
+        if (this.props.inputProps.onChange) {
+            this.props.inputProps.onChange(event);
+        }
+        this.setState({ query });
+    };
 }
