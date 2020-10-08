@@ -339,9 +339,10 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     };
 
     private renderInput(value: string | undefined) {
-        const { maxLength, multiline, type, placeholder } = this.props;
+        const { disabled, maxLength, multiline, type, placeholder } = this.props;
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
+            disabled,
             maxLength,
             onBlur: this.toggleEditing,
             onChange: this.handleTextChange,
