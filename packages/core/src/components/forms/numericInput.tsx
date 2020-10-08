@@ -174,7 +174,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
 export interface INumericInputState {
     currentImeInputInvalid: boolean;
-    locale: string;
+    locale?: string;
     prevMinProp?: number;
     prevMaxProp?: number;
     shouldSelectAfterUpdate: boolean;
@@ -279,7 +279,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         min: number | undefined,
         max: number | undefined,
         delta = 0,
-        locale: string,
+        locale: string | undefined,
     ) {
         if (!isValueNumeric(value, locale)) {
             return NumericInput.VALUE_EMPTY;
@@ -388,20 +388,20 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private renderButtons() {
         const { intent, max, min, locale } = this.props;
-        const { value } = this.state;
+        const value = Number(parseStringToStringNumber(this.state.value, locale));
         const disabled = this.props.disabled || this.props.readOnly;
-        const isIncrementDisabled = max !== undefined && value !== "" && +value >= max;
-        const isDecrementDisabled = min !== undefined && value !== "" && +value <= min;
+        const isIncrementDisabled = max !== undefined && +value >= max;
+        const isDecrementDisabled = min !== undefined && +value <= min;
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
-                    disabled={disabled || (value !== "" && Number(parseStringToStringNumber(value, locale)) >= max) || isIncrementDisabled}
+                    disabled={disabled || isIncrementDisabled}
                     icon="chevron-up"
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
                 <Button
-                    disabled={disabled || (value !== "" && Number(parseStringToStringNumber(value, locale)) <= min) || isDecrementDisabled}
+                    disabled={disabled || isDecrementDisabled}
                     icon="chevron-down"
                     intent={intent}
                     {...this.decrementButtonHandlers}

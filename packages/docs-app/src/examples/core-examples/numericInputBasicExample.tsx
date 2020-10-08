@@ -30,6 +30,7 @@ import {
     Example,
     handleBooleanChange,
     handleNumberChange,
+    handleStringChange,
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";

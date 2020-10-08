@@ -24,9 +24,9 @@ function getDecimalSeparator(locale: string) {
     const nine = (9).toLocaleString(locale);
     const pattern = `${one}(.+)${nine}`;
 
-    const [, decimalSeparator] = new RegExp(pattern).exec(testText);
+    const result = new RegExp(pattern).exec(testText);
 
-    return decimalSeparator;
+    return result && result[1] || ".";
 }
 
 export function toLocaleString(num: number, locale?: string) {
@@ -58,7 +58,7 @@ function transformLocalizedNumberToStringNumber(character: string, locale: strin
     }
 }
 
-export function parseStringToStringNumber(value: number | string, locale: string): string {
+export function parseStringToStringNumber(value: number | string, locale: string | undefined): string {
     let valueAsString = "" + value;
     if (parseFloat(valueAsString).toString() === value.toString()) {
         return value.toString();
@@ -79,7 +79,7 @@ export function parseStringToStringNumber(value: number | string, locale: string
 }
 
 /** Returns `true` if the string represents a valid numeric value, like "1e6". */
-export function isValueNumeric(value: string, locale: string) {
+export function isValueNumeric(value: string, locale: string | undefined) {
     // checking if a string is numeric in Typescript is a big pain, because
     // we can't simply toss a string parameter to isFinite. below is the
     // essential approach that jQuery uses, which involves subtracting a
@@ -93,7 +93,7 @@ export function isValueNumeric(value: string, locale: string) {
     );
 }
 
-export function isValidNumericKeyboardEvent(e: React.KeyboardEvent, locale: string) {
+export function isValidNumericKeyboardEvent(e: React.KeyboardEvent, locale: string | undefined) {
     // unit tests may not include e.key. don't bother disabling those events.
     if (e.key == null) {
         return true;
@@ -131,7 +131,7 @@ export function isValidNumericKeyboardEvent(e: React.KeyboardEvent, locale: stri
  * See here for the input[type="number"].value spec:
  * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
  */
-function isFloatingPointNumericCharacter(character: string, locale: string) {
+function isFloatingPointNumericCharacter(character: string, locale: string | undefined) {
     if (locale) {
         const decimalSeparator = getDecimalSeparator(locale).replace(".", "\\.");
         const numbers = new Array(10)
@@ -175,7 +175,7 @@ function convertFullWidthNumbersToAscii(value: string) {
 /**
  * Convert full-width (Japanese) numbers to ASCII, and strip all characters that are not valid floating-point numeric characters
  */
-export function sanitizeNumericInput(value: string, locale: string) {
+export function sanitizeNumericInput(value: string, locale: string | undefined) {
     const valueChars = convertFullWidthNumbersToAscii(value).split("");
     const sanitizedValueChars = valueChars.filter(valueChar => isFloatingPointNumericCharacter(valueChar, locale));
 
