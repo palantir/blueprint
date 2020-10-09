@@ -279,7 +279,9 @@ export const TREE_NODE_SELECTED = `${TREE_NODE}-selected`;
 export const TREE_ROOT = `${NS}-tree-root`;
 
 export const ICON = `${NS}-icon`;
+/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_STANDARD = `${ICON}-standard`;
+/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_LARGE = `${ICON}-large`;
 
 /**
@@ -310,7 +312,14 @@ export function elevationClass(elevation: Elevation | undefined) {
     return `${NS}-elevation-${elevation}`;
 }
 
-/** Returns CSS class for icon name. */
+/**
+ * Returns CSS class for icon name.
+ *
+ * @deprecated These CSS classes rely on Blueprint's icon fonts, which are a legacy feature and will be
+ * removed the next major version (4.x). Use the `<Icon>` React component and `iconName` string enum prop
+ * APIs instead – they render SVGs, which do not suffer from the blurriness of icon fonts and have
+ * equivalent browser support.
+ */
 export function iconClass(iconName: string): string;
 export function iconClass(iconName: string | undefined) {
     if (iconName == null) {
