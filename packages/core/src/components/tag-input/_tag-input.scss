@@ -159,7 +159,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
 
   &:focus {
     // remove focus state too
-    // stylelint-disable-next-line declaration-no-important
+    /* stylelint-disable-next-line declaration-no-important */
     outline: none !important;
   }
 }

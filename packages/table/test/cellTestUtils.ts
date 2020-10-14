@@ -22,6 +22,7 @@ import * as Classes from "../src/common/classes";
 
 // Redefining TableLoadingOption for unit test clarity
 export type CellType = TableLoadingOption;
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CellType = {
     BODY_CELL: TableLoadingOption.CELLS,
     COLUMN_HEADER: TableLoadingOption.COLUMN_HEADERS,

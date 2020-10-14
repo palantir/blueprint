@@ -80,7 +80,7 @@ describe("Spinner", () => {
     function assertStrokePercent(wrapper: ReactWrapper<any>, percent: number) {
         const head = wrapper.find(`.${Classes.SPINNER_HEAD}`);
         // NOTE: strokeDasharray is string "X X", but parseInt terminates at non-numeric character
-        const pathLength = parseInt(head.prop("strokeDasharray").toString(), 10);
+        const pathLength = parseInt(head.prop("strokeDasharray")!.toString(), 10);
         const offset = head.prop("strokeDashoffset");
         assert.strictEqual(offset, pathLength * (1 - percent));
     }

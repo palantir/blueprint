@@ -67,7 +67,7 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
  */
-export interface IQueryListRendererProps<T>  // Omit `createNewItem`, because it's used strictly for internal tracking.
+export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
     extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,
         IProps {
     /**
@@ -143,8 +143,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         resetOnQuery: true,
     };
 
-    public static ofType<T>() {
-        return QueryList as new (props: IQueryListProps<T>) => QueryList<T>;
+    public static ofType<U>() {
+        return QueryList as new (props: IQueryListProps<U>) => QueryList<U>;
     }
 
     private itemsParentRef?: HTMLElement | null;
@@ -478,6 +478,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     };
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+        // eslint-disable-next-line deprecation/deprecation
         const { keyCode } = event;
         if (keyCode === Keys.ARROW_UP || keyCode === Keys.ARROW_DOWN) {
             event.preventDefault();
@@ -496,6 +497,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         const { onKeyUp } = this.props;
         const { activeItem } = this.state;
 
+        // eslint-disable-next-line deprecation/deprecation
         if (event.keyCode === Keys.ENTER && this.isEnterKeyPressed) {
             // We handle ENTER in keyup here to play nice with the Button component's keyboard
             // clicking. Button is commonly used as the only child of Select. If we were to

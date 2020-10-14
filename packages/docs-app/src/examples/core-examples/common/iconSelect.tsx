@@ -26,7 +26,7 @@ export interface IIconSelectProps {
 
 const NONE = "(none)";
 type IconType = IconName | typeof NONE;
-const ICON_NAMES = Object.keys(IconNames).map<IconType>((name: keyof typeof IconNames) => IconNames[name]);
+const ICON_NAMES = Object.keys(IconNames).map<IconType>((name: string) => IconNames[name as keyof typeof IconNames]);
 ICON_NAMES.push(NONE);
 
 const TypedSelect = Select.ofType<IconType>();
@@ -58,11 +58,19 @@ export class IconSelect extends React.PureComponent<IIconSelectProps> {
         );
     }
 
-    private renderIconItem: ItemRenderer<IconName> = (icon, { handleClick, modifiers }) => {
+    private renderIconItem: ItemRenderer<IconName | typeof NONE> = (icon, { handleClick, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        return <MenuItem active={modifiers.active} icon={icon} key={icon} onClick={handleClick} text={icon} />;
+        return (
+            <MenuItem
+                active={modifiers.active}
+                icon={icon === NONE ? undefined : icon}
+                key={icon}
+                onClick={handleClick}
+                text={icon}
+            />
+        );
     };
 
     private filterIconName = (query: string, iconName: IconName | typeof NONE) => {

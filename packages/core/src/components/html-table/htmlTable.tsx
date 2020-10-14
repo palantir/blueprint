@@ -17,8 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { AbstractPureComponent2, Classes } from "../../common";
-import { IElementRefProps } from "../html/html";
+import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common";
 
 export interface IHTMLTableProps
     extends React.TableHTMLAttributes<HTMLTableElement>,

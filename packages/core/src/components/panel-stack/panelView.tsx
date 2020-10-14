@@ -26,13 +26,13 @@ export interface IPanelViewProps {
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose: (removedPanel: IPanel) => void;
+    onClose: (removedPanel: IPanel<any>) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen: (addedPanel: IPanel) => void;
+    onOpen: (addedPanel: IPanel<any>) => void;
 
     /** The panel to be displayed. */
     panel: IPanel;

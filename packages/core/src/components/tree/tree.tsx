@@ -78,15 +78,15 @@ export interface ITreeProps<T = {}> extends IProps {
 export class Tree<T = {}> extends React.Component<ITreeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tree`;
 
-    public static ofType<T>() {
-        return Tree as new (props: ITreeProps<T>) => Tree<T>;
+    public static ofType<U>() {
+        return Tree as new (props: ITreeProps<U>) => Tree<U>;
     }
 
-    public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
+    public static nodeFromPath<U>(path: number[], treeNodes?: Array<ITreeNode<U>>): ITreeNode<U> {
         if (path.length === 1) {
-            return treeNodes[path[0]];
+            return treeNodes![path[0]];
         } else {
-            return Tree.nodeFromPath(path.slice(1), treeNodes[path[0]].childNodes);
+            return Tree.nodeFromPath(path.slice(1), treeNodes![path[0]].childNodes);
         }
     }
 
@@ -109,13 +109,13 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>> {
         return this.nodeRefs[nodeId];
     }
 
-    private renderNodes(treeNodes: Array<ITreeNode<T>>, currentPath?: number[], className?: string): JSX.Element {
+    private renderNodes(treeNodes: Array<ITreeNode<T>> | undefined, currentPath?: number[], className?: string) {
         if (treeNodes == null) {
             return null;
         }
 
         const nodeItems = treeNodes.map((node, i) => {
-            const elementPath = currentPath.concat(i);
+            const elementPath = currentPath!.concat(i);
             const TypedTreeNode = TreeNode.ofType<T>();
             return (
                 <TypedTreeNode
@@ -177,7 +177,11 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>> {
         this.handlerHelper(this.props.onNodeMouseLeave, node, e);
     };
 
-    private handlerHelper(handlerFromProps: TreeEventHandler, node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) {
+    private handlerHelper(
+        handlerFromProps: TreeEventHandler<T> | undefined,
+        node: TreeNode<T>,
+        e: React.MouseEvent<HTMLElement>,
+    ) {
         if (isFunction(handlerFromProps)) {
             const nodeData = Tree.nodeFromPath(node.props.path, this.props.contents);
             handlerFromProps(nodeData, node.props.path, e);

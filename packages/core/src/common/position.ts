@@ -28,6 +28,7 @@ export const Position = {
     TOP_LEFT: "top-left" as "top-left",
     TOP_RIGHT: "top-right" as "top-right",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Position = typeof Position[keyof typeof Position];
 
 export function isPositionHorizontal(position: Position) {

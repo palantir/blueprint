@@ -63,14 +63,14 @@ describe("Hotkeys", () => {
     });
 
     describe("Local/Global @HotkeysTarget", () => {
-        let localKeyDownSpy: SinonSpy = null;
-        let localKeyUpSpy: SinonSpy = null;
+        let localKeyDownSpy: SinonSpy;
+        let localKeyUpSpy: SinonSpy;
 
-        let globalKeyDownSpy: SinonSpy = null;
-        let globalKeyUpSpy: SinonSpy = null;
+        let globalKeyDownSpy: SinonSpy;
+        let globalKeyUpSpy: SinonSpy;
 
-        let attachTo: HTMLElement = null;
-        let comp: ReactWrapper<any, any> = null;
+        let attachTo: HTMLElement;
+        let comp: ReactWrapper<any, any>;
 
         interface ITestComponentProps {
             allowInInput?: boolean;
@@ -176,8 +176,8 @@ describe("Hotkeys", () => {
             // wait for the dialog to animate in
             setTimeout(() => {
                 expect(document.querySelector("." + Classes.HOTKEY_COLUMN)).to.exist;
-                expect(document.querySelector("." + Classes.OVERLAY_OPEN).classList.contains(Classes.OVERLAY_INLINE)).to
-                    .be.false;
+                expect(document.querySelector("." + Classes.OVERLAY_OPEN)?.classList.contains(Classes.OVERLAY_INLINE))
+                    .to.be.false;
                 hideHotkeysDialog();
                 comp.detach();
                 attachTo.remove();
@@ -198,8 +198,8 @@ describe("Hotkeys", () => {
                 );
 
                 expect(document.querySelector("." + Classes.HOTKEY_COLUMN)).to.exist;
-                expect(document.querySelector("." + Classes.OVERLAY_OPEN).classList.contains(Classes.OVERLAY_INLINE)).to
-                    .be.false;
+                expect(document.querySelector("." + Classes.OVERLAY_OPEN)?.classList.contains(Classes.OVERLAY_INLINE))
+                    .to.be.false;
                 expect(hotkeyLabels).to.deep.equal(["sorted 1", "sorted 2", "global hotkey", "local hotkey"]);
                 hideHotkeysDialog();
                 comp.detach();
@@ -275,10 +275,10 @@ describe("Hotkeys", () => {
                 const unhotkeyed = comp.getDOMNode().querySelector(".unhotkeyed");
                 (unhotkeyed as HTMLElement).focus();
 
-                dispatchTestKeyboardEvent(unhotkeyed, eventName, "1");
+                dispatchTestKeyboardEvent(unhotkeyed!, eventName, "1");
                 expect(getLocalSpy(eventName).called).to.be.false;
 
-                dispatchTestKeyboardEvent(unhotkeyed, eventName, "2");
+                dispatchTestKeyboardEvent(unhotkeyed!, eventName, "2");
                 expect(getGlobalSpy(eventName).called).to.be.true;
             });
 
@@ -373,10 +373,10 @@ describe("Hotkeys", () => {
 
                 (input as HTMLElement).focus();
 
-                dispatchTestKeyboardEvent(input, eventName, "1");
+                dispatchTestKeyboardEvent(input!, eventName, "1");
                 expect(getLocalSpy(eventName).called).to.equal(allowsKeys);
 
-                dispatchTestKeyboardEvent(input, eventName, "2");
+                dispatchTestKeyboardEvent(input!, eventName, "2");
                 expect(getGlobalSpy(eventName).called).to.equal(allowsKeys);
             }
         }

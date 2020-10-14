@@ -58,6 +58,7 @@ export class NumericInputExtendedExample extends React.PureComponent<IExamplePro
     };
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // eslint-disable-next-line deprecation/deprecation
         if (e.keyCode === Keys.ENTER) {
             this.handleConfirm((e.target as HTMLInputElement).value);
         }

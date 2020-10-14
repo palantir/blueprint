@@ -112,7 +112,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     onConfirm?(value: string): void;
 
     /** Callback invoked after the user enters edit mode. */
-    onEdit?(value: string): void;
+    onEdit?(value: string | undefined): void;
 }
 
 export interface IEditableTextState {
@@ -148,13 +148,13 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         type: "text",
     };
 
-    private inputElement?: HTMLInputElement | HTMLTextAreaElement;
-    private valueElement: HTMLSpanElement;
+    private inputElement: HTMLInputElement | HTMLTextAreaElement | null = null;
+    private valueElement: HTMLSpanElement | null = null;
     private refHandlers = {
-        content: (spanElement: HTMLSpanElement) => {
+        content: (spanElement: HTMLSpanElement | null) => {
             this.valueElement = spanElement;
         },
-        input: (input: HTMLInputElement | HTMLTextAreaElement) => {
+        input: (input: HTMLInputElement | HTMLTextAreaElement | null) => {
             if (input != null) {
                 this.inputElement = input;
 
@@ -177,7 +177,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         },
     };
 
-    public constructor(props?: IEditableTextProps, context?: any) {
+    public constructor(props: IEditableTextProps, context?: any) {
         super(props, context);
 
         const value = props.value == null ? props.defaultValue : props.value;
@@ -192,7 +192,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
 
     public render() {
         const { alwaysRenderInput, disabled, multiline } = this.props;
-        const value = this.props.value == null ? this.state.value : this.props.value;
+        const value = this.props.value ?? this.state.value;
         const hasValue = value != null && value !== "";
 
         const classes = classNames(
@@ -211,12 +211,12 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         if (multiline) {
             // set height only in multiline mode when not editing
             // otherwise we're measuring this element to determine appropriate height of text
-            contentStyle = { height: !this.state.isEditing ? this.state.inputHeight : null };
+            contentStyle = { height: !this.state.isEditing ? this.state.inputHeight : undefined };
         } else {
             // minWidth only applies in single line mode (multiline == width 100%)
             contentStyle = {
                 height: this.state.inputHeight,
-                lineHeight: this.state.inputHeight != null ? `${this.state.inputHeight}px` : null,
+                lineHeight: this.state.inputHeight != null ? `${this.state.inputHeight}px` : undefined,
                 minWidth: this.props.minWidth,
             };
         }
@@ -224,7 +224,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         // If we are always rendering an input, then NEVER make the container div focusable.
         // Otherwise, make container div focusable when not editing, so it can still be tabbed
         // to focus (when the input is rendered, it is itself focusable so container div doesn't need to be)
-        const tabIndex = alwaysRenderInput || this.state.isEditing || disabled ? null : 0;
+        const tabIndex = alwaysRenderInput || this.state.isEditing || disabled ? undefined : 0;
 
         // we need the contents to be rendered while editing so that we can measure their height
         // and size the container element responsively
@@ -247,19 +247,19 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     }
 
     public componentDidUpdate(prevProps: IEditableTextProps, prevState: IEditableTextState) {
-        const state: IEditableTextState = {};
+        const newState: IEditableTextState = {};
         // allow setting the value to undefined/null in controlled mode
         if (this.props.value !== prevProps.value && (prevProps.value != null || this.props.value != null)) {
-            state.value = this.props.value;
+            newState.value = this.props.value;
         }
         if (this.props.isEditing != null && this.props.isEditing !== prevProps.isEditing) {
-            state.isEditing = this.props.isEditing;
+            newState.isEditing = this.props.isEditing;
         }
         if (this.props.disabled || (this.props.disabled == null && prevProps.disabled)) {
-            state.isEditing = false;
+            newState.isEditing = false;
         }
 
-        this.setState(state);
+        this.setState(newState);
 
         if (this.state.isEditing && !prevState.isEditing) {
             this.props.onEdit?.(this.state.value);
@@ -271,16 +271,16 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         const { lastValue, value } = this.state;
         this.setState({ isEditing: false, value: lastValue });
         if (value !== lastValue) {
-            this.props.onChange?.(lastValue);
+            this.props.onChange?.(lastValue!);
         }
-        this.props.onCancel?.(lastValue);
+        this.props.onCancel?.(lastValue!);
     };
 
     public toggleEditing = () => {
         if (this.state.isEditing) {
             const { value } = this.state;
             this.setState({ isEditing: false, lastValue: value });
-            this.props.onConfirm?.(value);
+            this.props.onConfirm?.(value!);
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
@@ -338,7 +338,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         }
     };
 
-    private renderInput(value: string) {
+    private renderInput(value: string | undefined) {
         const { maxLength, multiline, type, placeholder } = this.props;
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
@@ -354,7 +354,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         if (inputHeight !== 0 && inputWidth !== 0) {
             props.style = {
                 height: inputHeight,
-                lineHeight: !multiline && inputHeight != null ? `${inputHeight}px` : null,
+                lineHeight: !multiline && inputHeight != null ? `${inputHeight}px` : undefined,
                 width: multiline ? "100%" : inputWidth,
             };
         }
@@ -374,27 +374,27 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             const lineHeight = getLineHeight(this.valueElement);
             // add one line to computed <span> height if text ends in newline
             // because <span> collapses that trailing whitespace but <textarea> shows it
-            if (multiline && this.state.isEditing && /\n$/.test(textContent)) {
+            if (multiline && this.state.isEditing && /\n$/.test(textContent ?? "")) {
                 scrollHeight += lineHeight;
             }
             if (lineHeight > 0) {
                 // line height could be 0 if the isNaN block from getLineHeight kicks in
-                scrollHeight = clamp(scrollHeight, minLines * lineHeight, maxLines * lineHeight);
+                scrollHeight = clamp(scrollHeight, minLines! * lineHeight, maxLines! * lineHeight);
             }
             // Chrome's input caret height misaligns text so the line-height must be larger than font-size.
             // The computed scrollHeight must also account for a larger inherited line-height from the parent.
-            scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement));
+            scrollHeight = Math.max(scrollHeight, getFontSize(this.valueElement) + 1, getLineHeight(parentElement!));
             // Need to add a small buffer so text does not shift prior to resizing, causing an infinite loop.
             // IE needs a larger buffer than other browsers.
             scrollWidth += Browser.isInternetExplorer() ? BUFFER_WIDTH_IE : BUFFER_WIDTH_DEFAULT;
 
             this.setState({
                 inputHeight: scrollHeight,
-                inputWidth: Math.max(scrollWidth, minWidth),
+                inputWidth: Math.max(scrollWidth, minWidth!),
             });
             // synchronizes the ::before pseudo-element's height while editing for Chrome 53
             if (multiline && this.state.isEditing) {
-                this.setTimeout(() => (parentElement.style.height = `${scrollHeight}px`));
+                this.setTimeout(() => (parentElement!.style.height = `${scrollHeight}px`));
             }
         }
     }

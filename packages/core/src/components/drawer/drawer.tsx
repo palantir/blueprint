@@ -100,7 +100,6 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
-        position: null,
         style: {},
         vertical: false,
     };
@@ -112,13 +111,13 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation
         const { size, style, position, vertical } = this.props;
-        const realPosition = position ? getPositionIgnoreAngles(position) : null;
+        const realPosition = position ? getPositionIgnoreAngles(position) : undefined;
 
         const classes = classNames(
             Classes.DRAWER,
             {
                 [Classes.VERTICAL]: !realPosition && vertical,
-                [realPosition ? Classes.positionClass(realPosition) : ""]: true,
+                [Classes.positionClass(realPosition) ?? ""]: true,
             },
             this.props.className,
         );

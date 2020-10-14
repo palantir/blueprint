@@ -119,8 +119,8 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         minVisibleItems: 0,
     };
 
-    public static ofType<T>() {
-        return OverflowList as new (props: IOverflowListProps<T>) => OverflowList<T>;
+    public static ofType<U>() {
+        return OverflowList as new (props: IOverflowListProps<U>) => OverflowList<U>;
     }
 
     public state: IOverflowListState<T> = {
@@ -238,7 +238,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
         } else if (this.spacer.getBoundingClientRect().width < 0.9) {
             // spacer has flex-shrink and width 1px so if it's much smaller then we know to shrink
             this.setState(state => {
-                if (state.visible.length <= this.props.minVisibleItems) {
+                if (state.visible.length <= this.props.minVisibleItems!) {
                     return null;
                 }
                 const collapseFromStart = this.props.collapseFrom === Boundary.START;

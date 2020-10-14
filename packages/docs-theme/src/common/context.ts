@@ -97,7 +97,7 @@ export const DocumentationContextTypes = {
 // simple alternative to prop-types dependency
 function assertFunctionProp<T>(obj: T, key: keyof T) {
     if (obj[key] != null && Utils.isFunction(obj[key])) {
-        return undefined;
+        return null;
     }
     return new Error(`[Blueprint] Documentation context ${key} must be function.`);
 }

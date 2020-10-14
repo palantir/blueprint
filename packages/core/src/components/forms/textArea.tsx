@@ -80,9 +80,9 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
     };
 
     public componentDidMount() {
-        if (this.props.growVertically) {
+        if (this.props.growVertically && this.textareaRef !== null) {
             this.setState({
-                height: getRef(this.textareaRef).scrollHeight,
+                height: getRef(this.textareaRef)!.scrollHeight,
             });
         }
     }

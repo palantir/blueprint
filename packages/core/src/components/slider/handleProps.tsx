@@ -27,6 +27,7 @@ export const HandleType = {
     /** An end handle appears as the right or bottom half of a square. */
     END: "end" as "end",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleType = typeof HandleType[keyof typeof HandleType];
 
 export const HandleInteractionKind = {
@@ -42,6 +43,7 @@ export const HandleInteractionKind = {
      */
     NONE: "none" as "none",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = typeof HandleInteractionKind[keyof typeof HandleInteractionKind];
 
 export interface IHandleProps extends IProps {

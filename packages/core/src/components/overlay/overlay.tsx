@@ -24,6 +24,7 @@ import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import { findDOMNode } from "react-dom";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 export interface IOverlayableProps extends IOverlayLifecycleProps {
@@ -101,7 +102,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * mouse or key event). Note that, since this component is controlled by the `isOpen` prop, it
      * will not actually close itself until that prop becomes `false`.
      */
-    onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
+    onClose?: (event: React.SyntheticEvent<HTMLElement>) => void;
 }
 
 export interface IOverlayLifecycleProps {
@@ -172,7 +173,8 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-@polyfill
+// HACKHACK: https://github.com/palantir/blueprint/issues/4342
+@(polyfill as LifecycleCompatPolyfill<IOverlayProps, any>)
 export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
@@ -200,16 +202,15 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     private static openStack: Overlay[] = [];
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
 
-    // an HTMLElement that contains the backdrop and any children, to query for focus target
-    public containerElement: HTMLElement;
-    private refHandlers = {
-        container: (ref: React.ReactInstance) => (this.containerElement = findDOMNode(ref) as HTMLElement),
+    public state: IOverlayState = {
+        hasEverOpened: this.props.isOpen,
     };
 
-    public constructor(props?: IOverlayProps, context?: any) {
-        super(props, context);
-        this.state = { hasEverOpened: props.isOpen };
-    }
+    // an HTMLElement that contains the backdrop and any children, to query for focus target
+    public containerElement: HTMLElement | null = null;
+    private refHandlers = {
+        container: (ref: TransitionGroup) => (this.containerElement = findDOMNode(ref) as HTMLElement),
+    };
 
     public render() {
         // oh snap! no reason to render anything at all if we're being truly lazy
@@ -222,8 +223,12 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         // TransitionGroup types require single array of children; does not support nested arrays.
         // So we must collapse backdrop and children into one array, and every item must be wrapped in a
         // Transition element (no ReactText allowed).
-        const childrenWithTransitions = isOpen ? React.Children.map(children, this.maybeRenderChild) : [];
-        childrenWithTransitions.unshift(this.maybeRenderBackdrop());
+        const childrenWithTransitions = isOpen ? React.Children.map(children, this.maybeRenderChild) ?? [] : [];
+
+        const maybeBackdrop = this.maybeRenderBackdrop();
+        if (maybeBackdrop !== null) {
+            childrenWithTransitions.unshift(maybeBackdrop);
+        }
 
         const containerClasses = classNames(
             Classes.OVERLAY,
@@ -301,17 +306,22 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         });
     }
 
-    private maybeRenderChild = (child?: React.ReactChild) => {
+    private maybeRenderChild = (child?: React.ReactNode) => {
+        if (isFunction(child)) {
+            child = child();
+        }
+
         if (child == null) {
             return null;
         }
+
         // add a special class to each child element that will automatically set the appropriate
         // CSS position mode under the hood. also, make the container focusable so we can
         // trap focus inside it (via `enforceFocus`).
         const decoratedChild =
             typeof child === "object" ? (
-                React.cloneElement(child, {
-                    className: classNames(child.props.className, Classes.OVERLAY_CONTENT),
+                React.cloneElement(child as React.ReactElement, {
+                    className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
                     tabIndex: 0,
                 })
             ) : (
@@ -333,6 +343,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
                 onExiting={onClosing}
                 onExited={onClosed}
                 timeout={transitionDuration}
+                addEndListener={this.handleTransitionAddEnd}
             >
                 {decoratedChild}
             </CSSTransitionImplicit>
@@ -351,12 +362,17 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
         if (hasBackdrop && isOpen) {
             return (
-                <CSSTransition classNames={transitionName} key="__backdrop" timeout={transitionDuration}>
+                <CSSTransition
+                    classNames={transitionName}
+                    key="__backdrop"
+                    timeout={transitionDuration}
+                    addEndListener={this.handleTransitionAddEnd}
+                >
                     <div
                         {...backdropProps}
-                        className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps.className)}
+                        className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
                         onMouseDown={this.handleBackdropMouseDown}
-                        tabIndex={this.props.canOutsideClickClose ? 0 : null}
+                        tabIndex={this.props.canOutsideClickClose ? 0 : undefined}
                     />
                 </CSSTransition>
             );
@@ -419,7 +435,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             // make sure document.activeElement is updated before bringing the focus back
             this.bringFocusInsideOverlay();
         }
-        backdropProps.onMouseDown?.(e);
+        backdropProps?.onMouseDown?.(e);
     };
 
     private handleDocumentClick = (e: MouseEvent) => {
@@ -467,5 +483,9 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
         }
+    };
+
+    private handleTransitionAddEnd = () => {
+        // no-op
     };
 }

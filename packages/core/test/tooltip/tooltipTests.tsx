@@ -31,8 +31,8 @@ describe("<Tooltip>", () => {
             isOpen: true,
             popoverClassName: "foo",
         });
-        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")), "tooltip");
-        assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")), "wrapper");
+        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")!), "tooltip");
+        assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")!), "wrapper");
     });
 
     it("wrapperTagName & targetTagName render the right elements", () => {
@@ -84,7 +84,7 @@ describe("<Tooltip>", () => {
             const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ isOpen: true });
 
-            function assertDisabledPopover(content?: string) {
+            function assertDisabledPopover(content: string) {
                 tooltip.setProps({ content });
                 assert.isFalse(tooltip.find(Overlay).prop("isOpen"), `"${content}"`);
                 assert.isTrue(warnSpy.calledOnce, "spy not called once");
@@ -93,6 +93,7 @@ describe("<Tooltip>", () => {
 
             assertDisabledPopover("");
             assertDisabledPopover("   ");
+            // @ts-expect-error
             assertDisabledPopover(null);
             warnSpy.restore();
         });

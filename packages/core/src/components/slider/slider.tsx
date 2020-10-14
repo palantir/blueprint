@@ -57,13 +57,13 @@ export class Slider extends AbstractPureComponent2<ISliderProps> {
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
-                    value={value}
-                    intentAfter={value < initialValue ? intent : undefined}
-                    intentBefore={value >= initialValue ? intent : undefined}
+                    value={value!}
+                    intentAfter={value! < initialValue! ? intent : undefined}
+                    intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
                 />
-                <MultiSlider.Handle value={initialValue} interactionKind="none" />
+                <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>
         );
     }

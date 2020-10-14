@@ -29,11 +29,8 @@ describe("<ResizeSensor>", () => {
 
     afterEach(() => {
         // clean up wrapper after each test, if it was used
-        if (wrapper !== undefined) {
-            wrapper.unmount();
-            wrapper.detach();
-            wrapper = undefined;
-        }
+        wrapper?.unmount();
+        wrapper?.detach();
     });
     after(() => testsContainerElement.remove());
 
@@ -63,7 +60,7 @@ describe("<ResizeSensor>", () => {
         await resize({ width: 200, id: 1 });
 
         const onResize2 = spy();
-        wrapper.setProps({ onResize: onResize2 });
+        wrapper!.setProps({ onResize: onResize2 });
         await resize({ height: 100, id: 2 });
         await resize({ width: 55, id: 3 });
 
@@ -80,7 +77,7 @@ describe("<ResizeSensor>", () => {
     }
 
     function resize(size: ISizeProps) {
-        wrapper.setProps(size);
+        wrapper!.setProps(size);
         return new Promise(resolve => setTimeout(resolve, 30));
     }
 

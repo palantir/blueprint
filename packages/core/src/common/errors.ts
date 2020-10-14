@@ -50,7 +50,6 @@ export const NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires majorStepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires stepSize to be strictly greater than zero.`;
-export const NUMERIC_INPUT_STEP_SIZE_NULL = ns + ` <NumericInput> requires stepSize to be defined.`;
 export const NUMERIC_INPUT_CONTROLLED_VALUE_INVALID =
     ns + ` <NumericInput> controlled value prop does not adhere to stepSize, min, and/or max constraints.`;
 
@@ -87,6 +86,9 @@ export const SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than ze
 export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 export const MULTISLIDER_INVALID_CHILD = ns + ` <MultiSlider> children must be <SliderHandle>s or <SliderTrackStop>s`;
+export const MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX =
+    ns +
+    ` <MultiSlider> labelStepSize and labelValues prop are mutually exclusive, with labelStepSize taking priority.`;
 
 export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE are ignored if size prop is set.`;
 
