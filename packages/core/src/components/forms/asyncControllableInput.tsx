@@ -90,6 +90,8 @@ export class AsyncControllableInput extends React.PureComponent<
                 // parent has processed and accepted our update
                 if (nextState.pendingUpdate) {
                     return { value: nextProps.value, pendingUpdate: false };
+                } else {
+                    return { value: nextState.nextValue };
                 }
             } else {
                 if (nextProps.value === nextState.value) {
@@ -103,8 +105,6 @@ export class AsyncControllableInput extends React.PureComponent<
             // accept controlled update, could be confirming or denying user action
             return { value: nextProps.value, nextValue: nextProps.value, pendingUpdate: false };
         }
-
-        return null;
     }
 
     public render() {
