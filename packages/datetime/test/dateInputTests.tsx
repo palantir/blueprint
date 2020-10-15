@@ -674,8 +674,10 @@ describe("<DateInput>", () => {
         it("parseDate returns false renders invalid date", () => {
             const invalidParse = sinon.stub().returns(false);
             const wrapper = mount(<DateInput {...props} parseDate={invalidParse} />);
-            wrapper.find("input").simulate("change", { target: { value: "invalid" } });
-            assert.strictEqual(wrapper.find("input").prop("value"), "");
+            const input = wrapper.find("input");
+            input.simulate("change", { target: { value: "invalid" } });
+            input.simulate("blur");
+            assert.strictEqual(wrapper.find("input").prop("value"), DateInput.defaultProps.invalidDateMessage);
         });
     });
 
