@@ -139,7 +139,7 @@ export interface ITagInputProps extends IIntentProps, IProps {
      * Callback invoked when the user clicks the X button on a tag.
      * Receives value and index of removed tag.
      */
-    onRemove?: (valueAsString: string, index: number, value: React.ReactNode) => void;
+    onRemove?: (value: React.ReactNode, index: number) => void;
 
     /**
      * Input placeholder text which will not appear if `values` contains any items
@@ -466,7 +466,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     /** Remove the item at the given index by invoking `onRemove` and `onChange` accordingly. */
     private removeIndexFromValues(index: number) {
         const { onChange, onRemove, values } = this.props;
-        onRemove?.(values[index]?.toString() ?? "", index, values[index]);
+        onRemove?.(values[index], index);
         if (Utils.isFunction(onChange)) {
             onChange(values.filter((_, i) => i !== index));
         }
