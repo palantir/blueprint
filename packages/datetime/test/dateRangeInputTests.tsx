@@ -1161,11 +1161,6 @@ describe("<DateRangeInput>", () => {
                         assertEndInputFocused(root);
                     });
 
-                    it("sets selection to [null, <hoveredDate>] on click", () => {
-                        getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("click");
-                        assertInputTextsEqual(root, "", HOVER_TEST_DATE_CONFIG.str);
-                    });
-
                     describe("on click", () => {
                         beforeEach(() => {
                             getDayElement(HOVER_TEST_DATE_CONFIG.day).simulate("click");
