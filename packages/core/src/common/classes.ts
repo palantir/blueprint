@@ -305,6 +305,8 @@ export function alignmentClass(alignment: Alignment | undefined) {
 }
 
 export function elevationClass(elevation: Elevation): string;
+export function elevationClass(elevation: undefined): undefined;
+export function elevationClass(elevation: Elevation | undefined): string | undefined;
 export function elevationClass(elevation: Elevation | undefined) {
     if (elevation === undefined) {
         return undefined;
@@ -321,6 +323,8 @@ export function elevationClass(elevation: Elevation | undefined) {
  * equivalent browser support.
  */
 export function iconClass(iconName: string): string;
+export function iconClass(iconName: undefined): undefined;
+export function iconClass(iconName: string | undefined): string | undefined;
 export function iconClass(iconName: string | undefined) {
     if (iconName == null) {
         return undefined;
@@ -329,6 +333,9 @@ export function iconClass(iconName: string | undefined) {
 }
 
 /** Return CSS class for intent. */
+export function intentClass(intent: Intent): string;
+export function intentClass(intent: typeof Intent.NONE | undefined): undefined;
+export function intentClass(intent: Intent | undefined): Intent | undefined;
 export function intentClass(intent: Intent | undefined) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;
