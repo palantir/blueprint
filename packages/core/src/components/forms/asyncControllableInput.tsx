@@ -96,7 +96,9 @@ export class AsyncControllableInput extends React.PureComponent<
             } else {
                 if (nextProps.value === nextState.value) {
                     // we have sent the update to our parent, but it has not been processed yet. just wait.
-                    return { nextValue: nextProps.value, pendingUpdate: true };
+                    // DO NOT set nextValue here, since that will temporarily render a potentially stale controlled value,
+                    // causing the cursor to jump once the new value is accepted
+                    return { pendingUpdate: true };
                 }
                 // accept controlled update overriding user action
                 return { value: nextProps.value, nextValue: nextProps.value, pendingUpdate: false };
