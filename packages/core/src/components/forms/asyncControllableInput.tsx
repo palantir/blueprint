@@ -39,8 +39,7 @@ export interface IAsyncControllableInputState {
     value: InputValue;
 
     /**
-     * The latest input value, which updates during IME composition. If undefined, we use
-     * value instead.
+     * The latest input value, which updates during IME composition. Defaults to props.value.
      */
     nextValue: InputValue;
 
@@ -48,7 +47,7 @@ export interface IAsyncControllableInputState {
      * Whether there is a pending update we are expecting from a parent component.
      * @default false
      */
-    pendingUpdate: boolean;
+    hasPendingUpdate: boolean;
 }
 
 /**
@@ -66,9 +65,9 @@ export class AsyncControllableInput extends React.PureComponent<
     IAsyncControllableInputState
 > {
     public state: IAsyncControllableInputState = {
+        hasPendingUpdate: false,
         isComposing: false,
         nextValue: this.props.value,
-        pendingUpdate: false,
         value: this.props.value,
     };
 
@@ -88,8 +87,8 @@ export class AsyncControllableInput extends React.PureComponent<
         if (userTriggeredUpdate) {
             if (nextProps.value === nextState.nextValue) {
                 // parent has processed and accepted our update
-                if (nextState.pendingUpdate) {
-                    return { value: nextProps.value, pendingUpdate: false };
+                if (nextState.hasPendingUpdate) {
+                    return { value: nextProps.value, hasPendingUpdate: false };
                 } else {
                     return { value: nextState.nextValue };
                 }
@@ -98,19 +97,19 @@ export class AsyncControllableInput extends React.PureComponent<
                     // we have sent the update to our parent, but it has not been processed yet. just wait.
                     // DO NOT set nextValue here, since that will temporarily render a potentially stale controlled value,
                     // causing the cursor to jump once the new value is accepted
-                    return { pendingUpdate: true };
+                    return { hasPendingUpdate: true };
                 }
                 // accept controlled update overriding user action
-                return { value: nextProps.value, nextValue: nextProps.value, pendingUpdate: false };
+                return { value: nextProps.value, nextValue: nextProps.value, hasPendingUpdate: false };
             }
         } else {
             // accept controlled update, could be confirming or denying user action
-            return { value: nextProps.value, nextValue: nextProps.value, pendingUpdate: false };
+            return { value: nextProps.value, nextValue: nextProps.value, hasPendingUpdate: false };
         }
     }
 
     public render() {
-        const { isComposing, pendingUpdate, value, nextValue } = this.state;
+        const { isComposing, hasPendingUpdate: pendingUpdate, value, nextValue } = this.state;
         const { inputRef, ...restProps } = this.props;
         return (
             <input
