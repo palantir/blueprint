@@ -29,9 +29,7 @@ function getDecimalSeparator(locale: string) {
     return result && result[1] || ".";
 }
 
-export function toLocaleString(num: number, locale?: string) {
-    locale = locale || "en-US";
-
+export function toLocaleString(num: number, locale: string = "en-US") {
     return sanitizeNumericInput(num.toLocaleString(locale), locale);
 }
 
@@ -48,14 +46,15 @@ export function getValueOrEmptyValue(value: number | string = "") {
 }
 
 function transformLocalizedNumberToStringNumber(character: string, locale: string) {
-    const charactersMap = new Array(10).fill("").map((_value, index) => index.toLocaleString(locale));
-    const jsNumber = charactersMap.indexOf(character);
+    const jsNumber = new Array(10).fill("")
+        .map(value => value.toLocaleString(locale))
+        .indexOf(character);
 
-    if (jsNumber !== -1) {
-        return jsNumber;
-    } else {
+    if (jsNumber === -1) {
         return character;
     }
+
+    return jsNumber;
 }
 
 export function parseStringToStringNumber(value: number | string, locale: string | undefined): string {

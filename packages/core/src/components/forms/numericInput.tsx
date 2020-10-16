@@ -266,11 +266,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     }
 
     private static getValue(props: INumericInputProps, stateValue: string) {
-        if (props.value != null) {
-            return props.value.toString();
-        } else {
+        if (props.value === null || props.value === undefined) {
             return stateValue;
         }
+
+        return props.value.toString();
     }
 
     private static roundAndClampValue(
@@ -331,13 +331,14 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const didMaxChange = this.props.max !== prevProps.max;
         const didBoundsChange = didMinChange || didMaxChange;
         const didLocaleChange = this.props.locale !== prevProps.locale;
+        const didValueChange = this.state.value !== prevState.value;
 
-        if ((didBoundsChange && this.state.value !== prevState.value) || didLocaleChange) {
+        if ((didBoundsChange && didValueChange) || didLocaleChange) {
             // we clamped the value due to a bounds change, so we should fire the change callback
             const valueAsString = parseStringToStringNumber(prevState.value, prevProps.locale);
             const localizedValue = toLocaleString(parseFloat(valueAsString), this.props.locale);
 
-            this.props.onValueChange?.(Number(valueAsString), localizedValue, this.inputElement);
+            this.props.onValueChange?.(+valueAsString, localizedValue, this.inputElement);
         }
     }
 
@@ -390,8 +391,9 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const { intent, max, min, locale } = this.props;
         const value = Number(parseStringToStringNumber(this.state.value, locale));
         const disabled = this.props.disabled || this.props.readOnly;
-        const isIncrementDisabled = max !== undefined && +value >= max;
-        const isDecrementDisabled = min !== undefined && +value <= min;
+        const isIncrementDisabled = max !== undefined && value >= max;
+        const isDecrementDisabled = min !== undefined && value <= min;
+
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
