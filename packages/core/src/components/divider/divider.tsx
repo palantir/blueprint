@@ -35,7 +35,7 @@ export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement>
 export class Divider extends AbstractPureComponent2<IDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 
-    public render() {
+    public render(): JSX.Element {
         const { className, tagName = "div", ...htmlProps } = this.props;
         const classes = classNames(DIVIDER, className);
         return React.createElement(tagName, {
