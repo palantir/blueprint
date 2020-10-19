@@ -73,7 +73,8 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
-        stepSize: 1
+        stepSize: 1,
+        value: "",
     };
 
     private handleMaxChange = handleNumberChange(max => this.setState({ max }));
@@ -100,7 +101,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     public render() {
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <NumericInput {...this.state} placeholder="Enter a number..." onValueChange={this.handleValueChange} />
+                <NumericInput {...this.state} placeholder="Enter a number..." onValueChange={this.handleValueChange}/>
             </Example>
         );
     }
@@ -151,7 +152,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     }
 
     private renderSwitch(label: string, checked: boolean, onChange: React.FormEventHandler<HTMLElement>) {
-        return <Switch checked={checked} label={label} onChange={onChange} />;
+        return <Switch checked={checked} label={label} onChange={onChange}/>;
     }
 
     private renderSelectMenu(

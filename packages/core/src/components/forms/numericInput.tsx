@@ -285,7 +285,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             return NumericInput.VALUE_EMPTY;
         }
         const currentValue = parseStringToStringNumber(value, locale);
-        const nextValue = toMaxPrecision(parseFloat(currentValue) + delta, stepMaxPrecision);
+        const nextValue = toMaxPrecision(Number(currentValue) + delta, stepMaxPrecision);
         const clampedValue = clampValue(nextValue, min, max);
         return toLocaleString(clampedValue, locale);
     }
@@ -336,7 +336,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if ((didBoundsChange && didValueChange) || didLocaleChange) {
             // we clamped the value due to a bounds change, so we should fire the change callback
             const valueAsString = parseStringToStringNumber(prevState.value, prevProps.locale);
-            const localizedValue = toLocaleString(parseFloat(valueAsString), this.props.locale);
+            const localizedValue = toLocaleString(+valueAsString, this.props.locale);
 
             this.props.onValueChange?.(+valueAsString, localizedValue, this.inputElement);
         }
@@ -374,9 +374,9 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
                 0,
                 this.props.locale,
             );
-            let valueDoesNotMatch = sanitizedValue !== value.toString();
-            let localizedValue = toLocaleString(Number(parseStringToStringNumber(value, this.props.locale)), this.props.locale);
-            let isNotLocalized = sanitizedValue !== localizedValue;
+            const valueDoesNotMatch = sanitizedValue !== value.toString();
+            const localizedValue = toLocaleString(Number(parseStringToStringNumber(value, this.props.locale)), this.props.locale);
+            const isNotLocalized = sanitizedValue !== localizedValue;
 
             if (valueDoesNotMatch && isNotLocalized) {
                 console.warn(Errors.NUMERIC_INPUT_CONTROLLED_VALUE_INVALID);
@@ -495,7 +495,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         if (this.props.min !== undefined || this.props.max !== undefined) {
             const min = this.props.min ?? -Infinity;
             const max = this.props.max ?? Infinity;
-            let valueAsNumber = Number(parseStringToStringNumber(this.state.value, this.props.locale));
+            const valueAsNumber = Number(parseStringToStringNumber(this.state.value, this.props.locale));
             if (valueAsNumber <= min || valueAsNumber >= max) {
                 this.stopContinuousChange();
                 return;

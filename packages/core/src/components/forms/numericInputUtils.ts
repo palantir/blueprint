@@ -46,19 +46,18 @@ export function getValueOrEmptyValue(value: number | string = "") {
 }
 
 function transformLocalizedNumberToStringNumber(character: string, locale: string) {
-    const jsNumber = new Array(10).fill("")
-        .map(value => value.toLocaleString(locale))
-        .indexOf(character);
+    const charactersMap = new Array(10).fill("").map((_value, index) => index.toLocaleString(locale));
+    const jsNumber = charactersMap.indexOf(character);
 
-    if (jsNumber === -1) {
+    if (jsNumber !== -1) {
+        return jsNumber;
+    } else {
         return character;
     }
-
-    return jsNumber;
 }
 
 export function parseStringToStringNumber(value: number | string, locale: string | undefined): string {
-    let valueAsString = "" + value;
+    const valueAsString = "" + value;
     if (parseFloat(valueAsString).toString() === value.toString()) {
         return value.toString();
     }
