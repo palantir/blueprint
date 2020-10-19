@@ -51,6 +51,12 @@ describe("<Tooltip>", () => {
         assert.isTrue(onOpening.calledOnce);
     });
 
+    it("applies minimal class & hides arrow when minimal is true", () => {
+        const tooltip = renderTooltip({minimal: true});
+        assert.isTrue(tooltip.find(Popover).hasClass(Classes.MINIMAL));
+        assert.isFalse(tooltip.find(Popover).props().modifiers!.arrowOffset!.enabled);
+    })
+
     describe("in uncontrolled mode", () => {
         it("defaultIsOpen determines initial open state", () => {
             assert.lengthOf(renderTooltip({ defaultIsOpen: true }).find(TOOLTIP_SELECTOR), 1);

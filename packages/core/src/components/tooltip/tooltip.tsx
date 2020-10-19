@@ -61,6 +61,14 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
      * @default 100
      */
     transitionDuration?: number;
+
+    /**
+     * Whether to apply minimal styles to this tooltip, which includes removing
+     * the arrow and adding `Classes.MINIMAL` to minimize and accelerate the
+     * transitions.
+     * @default false
+     */
+    minimal?: boolean;
 }
 
 @polyfill
@@ -71,17 +79,19 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         transitionDuration: 100,
+        minimal: false,
     };
 
     private popover: Popover | null = null;
 
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
-        const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName);
+        const classes = classNames(Classes.TOOLTIP, this.props.minimal ?? Classes.MINIMAL, Classes.intentClass(intent), popoverClassName);
 
         return (
             <Popover
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
+                modifiers={{arrowOffset: {enabled: !this.props.minimal}}}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
