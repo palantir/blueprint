@@ -78,8 +78,8 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
     public static defaultProps: Partial<ITooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
-        transitionDuration: 100,
         minimal: false,
+        transitionDuration: 100,
     };
 
     private popover: Popover | null = null;
