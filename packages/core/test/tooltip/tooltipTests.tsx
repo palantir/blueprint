@@ -52,13 +52,13 @@ describe("<Tooltip>", () => {
     });
 
     it("applies minimal class & hides arrow when minimal is true", () => {
-        const tooltip = renderTooltip({ minimal: true });
+        const tooltip = renderTooltip({  isOpen: true, minimal: true });
         assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
         assert.isFalse(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
     });
 
     it("does not apply minimal class & shows arrow when minimal is false", () => {
-        const tooltip = renderTooltip();
+        const tooltip = renderTooltip({ isOpen: true });
         // Minimal should be false by default.
         assert.isFalse(tooltip.props().minimal);
         assert.isFalse(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
