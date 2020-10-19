@@ -86,7 +86,7 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
 
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
-        const classes = classNames(Classes.TOOLTIP, this.props.minimal ?? Classes.MINIMAL, Classes.intentClass(intent), popoverClassName);
+        const classes = classNames(Classes.TOOLTIP, { [Classes.MINIMAL]: this.props.minimal }, Classes.intentClass(intent), popoverClassName);
 
         return (
             <Popover
