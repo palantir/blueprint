@@ -96,7 +96,7 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
         return (
             <Popover
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
-                modifiers={{ arrowOffset: { enabled: !this.props.minimal } }}
+                modifiers={{ arrow: { enabled: !this.props.minimal } }}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
