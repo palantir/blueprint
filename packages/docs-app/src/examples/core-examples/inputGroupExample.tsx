@@ -100,6 +100,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
             <Example options={this.renderOptions()} {...this.props}>
                 <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
                     <InputGroup
+                        asyncControl={true}
                         disabled={disabled}
                         large={large}
                         leftIcon="filter"
