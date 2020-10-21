@@ -30,10 +30,11 @@ all valid props for HTML `<input>` elements and proxies them to that element in
 the DOM; the most common ones are detailed below.
 
 If controlled with the `value` prop, `InputGroup` has support for _asynchronous updates_, which may
-occur with some form handling libraries like `redux-form`. This is not generally encouraged (a value
-returned from `onChange` should generally be sent back to the component as a controlled `value` synchronously),
-but there is basic support for it. Note that the input cursor may jump to the end of the input if the speed
-of text entry (time between change events) is faster than the speed of the async update.
+occur with some form handling libraries like `redux-form`. This is not broadly encouraged (a value
+returned from `onChange` should be sent back to the component as a controlled `value` synchronously),
+but there is basic support for it using the `asyncControl` prop. Note that the input cursor may jump
+to the end of the input if the speed of text entry (time between change events) is faster than the
+speed of the async update.
 
 @interface IInputGroupProps
 
