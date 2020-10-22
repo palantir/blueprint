@@ -35,6 +35,14 @@ import { AsyncControllableInput } from "./asyncControllableInput";
 // Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
 export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
     /**
+     * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
+     * These may occur if you do not immediately call setState in a parent component with the value from
+     * the `onChange` handler, or if working with certain libraries like __redux-form__.
+     * @default false
+     */
+    asyncControl?: boolean;
+
+    /**
      * Whether the input is non-interactive.
      * Note that `rightElement` must be disabled separately; this prop will not affect it.
      * @default false
@@ -107,8 +115,8 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
     };
 
     public render() {
-        const { className, disabled, fill, inputRef, intent, large, small, round } = this.props;
-        const classes = classNames(
+        const { asyncControl = false, className, disabled, fill, inputRef, intent, large, small, round } = this.props;
+        const inputGroupClasses = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
@@ -120,23 +128,26 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
             },
             className,
         );
-
         const style: React.CSSProperties = {
             ...this.props.style,
             paddingLeft: this.state.leftElementWidth,
             paddingRight: this.state.rightElementWidth,
         };
+        const inputProps = {
+            type: "text",
+            ...removeNonHTMLProps(this.props),
+            className: Classes.INPUT,
+            style,
+        };
 
         return (
-            <div className={classes}>
+            <div className={inputGroupClasses}>
                 {this.maybeRenderLeftElement()}
-                <AsyncControllableInput
-                    type="text"
-                    {...removeNonHTMLProps(this.props)}
-                    className={Classes.INPUT}
-                    inputRef={inputRef}
-                    style={style}
-                />
+                {asyncControl ? (
+                    <AsyncControllableInput {...inputProps} inputRef={inputRef} />
+                ) : (
+                    <input {...inputProps} ref={inputRef} />
+                )}
                 {this.maybeRenderRightElement()}
             </div>
         );
