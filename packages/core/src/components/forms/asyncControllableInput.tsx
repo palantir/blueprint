@@ -16,6 +16,7 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 export interface IAsyncControllableInputProps
     extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -64,6 +65,8 @@ export class AsyncControllableInput extends React.PureComponent<
     IAsyncControllableInputProps,
     IAsyncControllableInputState
 > {
+    public static displayName = `${DISPLAYNAME_PREFIX}.AsyncControllableInput`;
+
     public state: IAsyncControllableInputState = {
         hasPendingUpdate: false,
         isComposing: false,
