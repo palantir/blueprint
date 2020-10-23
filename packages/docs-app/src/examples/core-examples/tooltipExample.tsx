@@ -59,6 +59,16 @@ export class TooltipExample extends React.PureComponent<IExampleProps, { isOpen:
                     This line's tooltip{" "}
                     <Tooltip
                         className={Classes.TOOLTIP_INDICATOR}
+                        content={<span>This tooltip has the minimal style applied!</span>}
+                        minimal={true}
+                    >
+                        is minimal.
+                    </Tooltip>
+                </div>
+                <div>
+                    This line's tooltip{" "}
+                    <Tooltip
+                        className={Classes.TOOLTIP_INDICATOR}
                         content={<span>BRRAAAIINS</span>}
                         isOpen={this.state.isOpen}
                     >

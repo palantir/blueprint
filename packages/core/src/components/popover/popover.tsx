@@ -76,14 +76,6 @@ export interface IPopoverProps extends IPopoverSharedProps {
     hasBackdrop?: boolean;
 
     /**
-     * Whether to apply minimal styles to this popover, which includes removing
-     * the arrow and adding `Classes.MINIMAL` to minimize and accelerate the
-     * transitions.
-     * @default false
-     */
-    minimal?: boolean;
-
-    /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: (ref: HTMLElement | null) => void;

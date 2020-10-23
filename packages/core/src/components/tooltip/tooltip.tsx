@@ -61,14 +61,6 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
      * @default 100
      */
     transitionDuration?: number;
-
-    /**
-     * Whether to apply minimal styles to this tooltip, which includes removing
-     * the arrow and adding `Classes.MINIMAL` to minimize and accelerate the
-     * transitions.
-     * @default false
-     */
-    minimal?: boolean;
 }
 
 @polyfill
