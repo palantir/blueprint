@@ -70,6 +70,7 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
     public static defaultProps: Partial<ITooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
+        minimal: false,
         transitionDuration: 100,
     };
 
@@ -77,11 +78,17 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
 
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
-        const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName);
+        const classes = classNames(
+            Classes.TOOLTIP,
+            { [Classes.MINIMAL]: this.props.minimal },
+            Classes.intentClass(intent),
+            popoverClassName,
+        );
 
         return (
             <Popover
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
+                modifiers={{ arrow: { enabled: !this.props.minimal } }}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
