@@ -96,9 +96,8 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     isOpen?: boolean;
 
     /**
-     * Whether to apply minimal styles to this tooltip, which includes removing
-     * the arrow and adding `Classes.MINIMAL` to minimize and accelerate the
-     * transitions.
+     * Whether to apply minimal styling to this popover or tooltip. Minimal popovers
+     * do not have an arrow pointing to their target and use a subtler animation.
      * @default false
      */
     minimal?: boolean;
