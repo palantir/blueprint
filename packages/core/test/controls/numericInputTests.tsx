@@ -956,7 +956,7 @@ describe("<NumericInput>", () => {
 
             expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
 
-            const incrementButton = component.find(AnchorButton).first();
+            const incrementButton = component.find("AnchorButton").first();
             incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
@@ -975,7 +975,7 @@ describe("<NumericInput>", () => {
 
             expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
 
-            const incrementButton = component.find(AnchorButton).last();
+            const incrementButton = component.find("AnchorButton").last();
             incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
