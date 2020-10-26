@@ -29,7 +29,9 @@ function getDecimalSeparator(locale: string) {
     return result && result[1] || ".";
 }
 
-export function toLocaleString(num: number, locale: string = "en-US") {
+export function toLocaleString(num: number, locale?: string) {
+    locale = locale || "en-US";
+
     return sanitizeNumericInput(num.toLocaleString(locale), locale);
 }
 
