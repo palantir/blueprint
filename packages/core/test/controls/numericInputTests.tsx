@@ -971,7 +971,10 @@ describe("<NumericInput>", () => {
             const valueAfterDecrement = "6,9";
             const valueNumberAfterDecrement = 6.9;
 
-            component.find("input").first().simulate("change", { target: { value: nextValue } });
+            component
+                .find("input")
+                .first()
+                .simulate("change", { target: { value: nextValue } });
 
             expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
 
