@@ -35,8 +35,8 @@ import {
 } from "../../common";
 import * as Errors from "../../common/errors";
 
-import { ButtonGroup } from "..";
-import { Button } from "..";
+import { ButtonGroup } from "../button/buttonGroup";
+import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import {
