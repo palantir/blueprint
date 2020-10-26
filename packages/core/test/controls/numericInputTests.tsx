@@ -956,7 +956,7 @@ describe("<NumericInput>", () => {
 
             expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
 
-            const incrementButton = component.find("AnchorButton").first();
+            const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
@@ -971,12 +971,12 @@ describe("<NumericInput>", () => {
             const valueAfterDecrement = "6,9";
             const valueNumberAfterDecrement = 6.9;
 
-            component.find("input").simulate("change", { target: { value: nextValue } });
+            component.find("input").first().simulate("change", { target: { value: nextValue } });
 
             expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
 
-            const incrementButton = component.find("AnchorButton").last();
-            incrementButton.simulate("mousedown");
+            const decrementButton = component.find(Button).last();
+            decrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
             expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;

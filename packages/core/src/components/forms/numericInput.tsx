@@ -335,7 +335,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         if ((didBoundsChange && didValueChange) || didLocaleChange) {
             // we clamped the value due to a bounds change, so we should fire the change callback
-            const valueAsString = parseStringToStringNumber(prevState.value, prevProps.locale);
+            const valueToParse = didLocaleChange ? prevState.value : this.state.value;
+            const valueAsString = parseStringToStringNumber(valueToParse, prevProps.locale);
             const localizedValue = toLocaleString(+valueAsString, this.props.locale);
 
             this.props.onValueChange?.(+valueAsString, localizedValue, this.inputElement);
@@ -392,10 +393,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private renderButtons() {
         const { intent, max, min, locale } = this.props;
-        const value = Number(parseStringToStringNumber(this.state.value, locale));
+        const value = parseStringToStringNumber(this.state.value, locale);
         const disabled = this.props.disabled || this.props.readOnly;
-        const isIncrementDisabled = max !== undefined && value >= max;
-        const isDecrementDisabled = min !== undefined && value <= min;
+        const isIncrementDisabled = max !== undefined && value !== "" && +value >= max;
+        const isDecrementDisabled = min !== undefined && value !== "" && +value <= min;
 
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
