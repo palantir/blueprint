@@ -375,7 +375,10 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
                 this.props.locale,
             );
             const valueDoesNotMatch = sanitizedValue !== value.toString();
-            const localizedValue = toLocaleString(Number(parseStringToStringNumber(value, this.props.locale)), this.props.locale);
+            const localizedValue = toLocaleString(
+                Number(parseStringToStringNumber(value, this.props.locale)),
+                this.props.locale,
+            );
             const isNotLocalized = sanitizedValue !== localizedValue;
 
             if (valueDoesNotMatch && isNotLocalized) {

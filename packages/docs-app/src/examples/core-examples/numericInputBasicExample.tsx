@@ -101,7 +101,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     public render() {
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <NumericInput {...this.state} placeholder="Enter a number..." onValueChange={this.handleValueChange}/>
+                <NumericInput {...this.state} placeholder="Enter a number..." onValueChange={this.handleValueChange} />
             </Example>
         );
     }
@@ -140,7 +140,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                     BUTTON_POSITIONS,
                     this.handleButtonPositionChange,
                 )}
-                <IntentSelect intent={intent} onChange={this.handleIntentChange}/>
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
                 {this.renderSelectMenu(
                     "Locale",
                     locale,
@@ -152,7 +152,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     }
 
     private renderSwitch(label: string, checked: boolean, onChange: React.FormEventHandler<HTMLElement>) {
-        return <Switch checked={checked} label={label} onChange={onChange}/>;
+        return <Switch checked={checked} label={label} onChange={onChange} />;
     }
 
     private renderSelectMenu(

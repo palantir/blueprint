@@ -26,7 +26,7 @@ function getDecimalSeparator(locale: string) {
 
     const result = new RegExp(pattern).exec(testText);
 
-    return result && result[1] || ".";
+    return (result && result[1]) || ".";
 }
 
 export function toLocaleString(num: number, locale?: string) {
@@ -87,10 +87,7 @@ export function isValueNumeric(value: string, locale: string | undefined) {
     // need to cast the value to the `any` type to allow this operation
     // between dissimilar types.
     const stringToStringNumber = parseStringToStringNumber(value, locale);
-    return (
-        value != null &&
-        (stringToStringNumber as any) - parseFloat(stringToStringNumber) + 1 >= 0
-    );
+    return value != null && (stringToStringNumber as any) - parseFloat(stringToStringNumber) + 1 >= 0;
 }
 
 export function isValidNumericKeyboardEvent(e: React.KeyboardEvent, locale: string | undefined) {
