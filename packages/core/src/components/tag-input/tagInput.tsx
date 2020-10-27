@@ -103,14 +103,6 @@ export interface ITagInputProps extends IIntentProps, IProps {
      *
      * This callback essentially implements basic `onAdd` and `onRemove` functionality and merges
      * the two handlers into one to simplify controlled usage.
-     *
-     * **Note about typed usage:** Your handler can declare a subset type of `React.ReactNode[]`,
-     * such as `string[]` or `Array<string | JSX.Element>`, to match the type of your `values` array:
-     * ```tsx
-     * <TagInput
-     *     onChange={(values: string[]) => this.setState({ values })}
-     *     values={["apple", "banana", "cherry"]}
-     * />
      * ```
      */
     onChange?: (values: React.ReactNode[]) => boolean | void;
