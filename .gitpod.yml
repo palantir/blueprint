@@ -1,0 +1,14 @@
+tasks:
+  - init: |
+        yarn --network-timeout 100000
+        yarn compile
+    command: yarn run dev
+
+ports:
+  - port: 9000
+    onOpen: open-preview
+  - port: 8080
+
+vscode:
+  extensions:
+    - esbenp.prettier-vscode@5.7.1:4Zx39KyQMoIz7x94PSmDmQ==

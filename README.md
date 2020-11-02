@@ -1,6 +1,6 @@
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/workflows/blueprint)
+# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/workflows/blueprint) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
 
 Blueprint is a React-based UI toolkit for the web.
 
@@ -80,6 +80,12 @@ After cloning this repo, run:
     1. Ensure `bash` is your configured script-shell by running:<br />
        `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
 1. `yarn verify` to ensure you have all the build tooling working properly.
+
+### Online one-click setup
+
+You can use Gitpod(an Online IDE which is free for Open Source) for contributing. With a single click it will launch a workspace and automatically: clone the `Blueprint` repo, install the dependencies, run `yarn compile` and `yarn dev`.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ### Incorporating upstream changes
 

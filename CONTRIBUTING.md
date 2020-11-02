@@ -20,6 +20,12 @@ yarn
 yarn verify
 ```
 
+### Online one-click setup
+
+You can use Gitpod(an Online IDE which is free for Open Source) for contributing. With a single click it will launch a workspace and automatically: clone the `Blueprint` repo, install the dependencies, run `yarn compile` and `yarn dev`.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+
 ## Developing
 
 A typical contributor workflow looks like this:
