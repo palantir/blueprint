@@ -395,7 +395,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         const { activeItem } = this.state;
         if (this.itemsParentRef != null) {
             if (isCreateNewItem(activeItem)) {
-                return this.itemsParentRef.children.item(this.state.filteredItems.length) as HTMLElement;
+                const index = this.props.createNewItemPosition === "first" ? 0 : this.state.filteredItems.length;
+                return this.itemsParentRef.children.item(index) as HTMLElement;
             } else {
                 const activeIndex = this.getActiveIndex();
                 return this.itemsParentRef.children.item(activeIndex) as HTMLElement;
