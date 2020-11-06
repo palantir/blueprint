@@ -181,6 +181,13 @@ export interface IListItemsProps<T> extends IProps {
     ) => JSX.Element | undefined;
 
     /**
+     * Determines the position of the `createNewItem` within the list: first or
+     * last. Only relevant when `createNewItemRenderer` is defined.
+     * @default 'last'
+     */
+    createNewItemPosition?: "first" | "last";
+
+    /**
      * Whether the active item should be reset to the first matching item _every
      * time the query changes_ (via prop or by user input).
      * @default true

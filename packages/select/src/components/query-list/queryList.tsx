@@ -311,7 +311,12 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             isItemDisabled(getActiveItem(this.state.activeItem), activeIndex, props.itemDisabled);
 
         if (shouldUpdateActiveItem) {
-            this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
+            // if the `createNewItem` is at the top, that should be the first active item.
+            if (this.isCreateItemRendered() && this.props.createNewItemPosition === "first") {
+                this.setActiveItem(getCreateNewItem());
+            } else {
+                this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
+            }
         }
     }
 
@@ -332,7 +337,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
 
     /** default `itemListRenderer` implementation */
     private renderItemList = (listProps: IItemListRendererProps<T>) => {
-        const { initialContent, noResults } = this.props;
+        const { createNewItemPosition, initialContent, noResults } = this.props;
 
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
         const createItemView = listProps.renderCreateItem();
@@ -341,10 +346,12 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         if (menuContent == null && createItemView == null) {
             return null;
         }
+        const createFirst = createNewItemPosition === "first";
         return (
             <Menu ulRef={listProps.itemsParentRef}>
+                {createFirst && createItemView}
                 {menuContent}
-                {createItemView}
+                {!createFirst && createItemView}
             </Menu>
         );
     };
