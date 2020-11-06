@@ -29,6 +29,7 @@ import {
 } from "../src";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
+import { Menu } from "@blueprintjs/core";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 
 type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
@@ -193,6 +194,20 @@ describe("<QueryList>", () => {
             };
             const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
             assert(filmQueryList.state().activeItem === null);
+        });
+
+        it("createNewItemPosition affects position of create new item", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                createNewItemFromQuery: sinon.spy(),
+                createNewItemRenderer: () => <article />,
+                items: TOP_100_FILMS.slice(0, 4),
+                query: "the",
+            };
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            assert(filmQueryList.find(Menu).children().children().last().is("article"));
+            filmQueryList.setProps({ createNewItemPosition: "first" });
+            assert(filmQueryList.find(Menu).children().children().first().is("article"));
         });
     });
 
