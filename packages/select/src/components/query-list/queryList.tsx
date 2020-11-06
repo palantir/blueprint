@@ -311,7 +311,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             isItemDisabled(getActiveItem(this.state.activeItem), activeIndex, props.itemDisabled);
 
         if (shouldUpdateActiveItem) {
-            // if the `createNewItem` is at the top, that should be the first active item.
+            // if the `createNewItem` is first, that should be the first active item.
             if (this.isCreateItemRendered() && this.isCreateItemFirst()) {
                 this.setActiveItem(getCreateNewItem());
             } else {

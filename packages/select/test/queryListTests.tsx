@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Menu } from "@blueprintjs/core";
 import { IQueryListProps } from "@blueprintjs/select";
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
@@ -29,7 +30,6 @@ import {
 } from "../src";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { Menu } from "@blueprintjs/core";
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 
 type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
