@@ -2,10 +2,10 @@ version: 2
 
 aliases:
   - &docker-node-lts
-    - image: circleci/node:lts
+    - image: circleci/node:12
 
   - &docker-node-browsers
-    - image: circleci/node:lts-browsers
+    - image: circleci/node:12-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
