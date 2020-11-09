@@ -2,32 +2,32 @@ version: 2
 
 aliases:
   - &docker-node-lts
-    - image: circleci/node:lts
+    - image: circleci/node:12
 
   - &docker-node-browsers
-    - image: circleci/node:lts-browsers
+    - image: circleci/node:12-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v2-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v3-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &restore-yarn-cache
     name: Restore yarnpkg cache
-    key: v2-yarn-cache
+    key: v3-yarn-cache
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v2-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v3-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
     name: Save yarnpkg cache
     paths:
       - ~/.cache/yarn
-    key: v2-yarn-cache
+    key: v3-yarn-cache
 
 references:
   reports_path: &reports_path
