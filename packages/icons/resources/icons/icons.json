@@ -3544,5 +3544,11 @@
         "iconName": "layer-outline",
         "tags": "zone, level, outline",
         "group": "interface"
+    },
+    {
+        "displayName": "Notifications: snooze",
+        "iconName": "notifications-snooze",
+        "tags": "notification, information, message, snooze, suppress",
+        "group": "interface"
     }
 ]
