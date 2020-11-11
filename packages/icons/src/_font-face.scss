@@ -21,6 +21,8 @@
 //
 // @argument {string} $style
 //
+// @argument {string} $font-display
+//
 // @content
 //   Any additional CSS properties that are included in the `@include`
 //   directive will be output within the `@font-face` declaration, e.g. you can
@@ -30,9 +32,11 @@
   $file-path,
   $file-formats,
   $font-weight: normal,
-  $font-style: normal
+  $font-style: normal,
+  $font-display: swap
 ) {
   @font-face {
+    font-display: $font-display;
     font-family: $font-family;
     font-style: $font-style;
     font-weight: $font-weight;
