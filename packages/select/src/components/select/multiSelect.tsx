@@ -32,12 +32,24 @@ import {
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
+// N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
+
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
      */
     fill?: boolean;
+
+    /**
+     * Callback invoked when an item is removed from the selection by
+     * removing its tag in the TagInput. This is generally more useful than
+     * `tagInputProps.onRemove`  because it receives the removed value instead of
+     * the value's rendered `ReactNode` tag.
+     *
+     * It is not recommended to supply _both_ this prop and `tagInputProps.onRemove`.
+     */
+    onRemove?: (value: T, index: number) => void;
 
     /**
      * If true, the component waits until a keydown event in the TagInput
@@ -168,6 +180,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
                         inputValue={listProps.query}
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
+                        onRemove={this.handleTagRemove}
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
@@ -213,6 +226,12 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
             this.queryList.scrollActiveItemIntoView();
         }
         this.props.popoverProps?.onOpened?.(node);
+    };
+
+    private handleTagRemove = (tag: React.ReactNode, index: number) => {
+        const { selectedItems = [], onRemove, tagInputProps } = this.props;
+        onRemove?.(selectedItems[index], index);
+        tagInputProps?.onRemove?.(tag, index);
     };
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
