@@ -113,10 +113,7 @@ const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.WHEN_TRUNCATED_APPROX,
 ];
 
-const FOCUS_STYLES: FocusStyle[] = [
-    FocusStyle.TAB,
-    FocusStyle.TAB_OR_CLICK,
-];
+const FOCUS_STYLES: FocusStyle[] = [FocusStyle.TAB, FocusStyle.TAB_OR_CLICK];
 
 const TRUNCATION_LENGTHS: number[] = [20, 80, 100, 1000];
 const TRUNCATION_LENGTH_DEFAULT_INDEX = 1;
