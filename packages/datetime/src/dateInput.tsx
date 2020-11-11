@@ -413,15 +413,15 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     private getLastTabbableElement = () => {
         // Popover contents are well structured, but the selector will need
         // to be updated if more focusable components are added in the future
-        const tabbableElements = this.popoverContentEl.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
-        const numOfElements = tabbableElements.length;
+        const tabbableElements = this.popoverContentEl?.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
+        const numOfElements = tabbableElements?.length ?? 0;
         // Keep track of the last focusable element in popover and add
         // a blur handler, so that when:
         // * user tabs to the next element, popover closes
         // * focus moves to element within popover, popover stays open
         const lastTabbableElement = numOfElements > 0 ? tabbableElements[numOfElements - 1] : null;
 
-        return lastTabbableElement as HTMLElement;
+        return lastTabbableElement as HTMLElement | null;
     };
 
     // focus DOM event listener (not React event)
@@ -450,7 +450,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         } else if (relatedTarget != null) {
             this.unregisterPopoverBlurHandler();
             this.lastTabbableElement = this.getLastTabbableElement();
-            this.lastTabbableElement.addEventListener("blur", this.handlePopoverBlur);
+            this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
         }
     };
 
@@ -458,14 +458,12 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         if (this.popoverContentEl != null) {
             this.unregisterPopoverBlurHandler();
             this.lastTabbableElement = this.getLastTabbableElement();
-            this.lastTabbableElement.addEventListener("blur", this.handlePopoverBlur);
+            this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
         }
     };
 
     private unregisterPopoverBlurHandler = () => {
-        if (this.lastTabbableElement != null) {
-            this.lastTabbableElement.removeEventListener("blur", this.handlePopoverBlur);
-        }
+        this.lastTabbableElement?.removeEventListener("blur", this.handlePopoverBlur);
     };
 
     private handleShortcutChange = (_: IDatePickerShortcut, selectedShortcutIndex: number) => {
