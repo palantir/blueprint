@@ -611,28 +611,28 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "renderMode",
             RENDER_MODES,
             this.toRenderModeLabel,
-            this.handleNumberStateChange,
+            this.handleStringStateChange,
         );
         const selectedRegionTransformPresetMenu = this.renderSelectMenu(
             "Selection",
             "selectedRegionTransformPreset",
             SELECTION_MODES,
             this.toSelectedRegionTransformPresetLabel,
-            this.handleSelectedRegionTransformPresetChange,
+            this.handleStringStateChange,
         );
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
             CELL_CONTENTS,
             this.toCellContentLabel,
-            this.handleNumberStateChange,
+            this.handleStringStateChange,
         );
         const truncatedPopoverModeMenu = this.renderSelectMenu(
             "Popover",
             "cellTruncatedPopoverMode",
             TRUNCATED_POPOVER_MODES,
             this.toTruncatedPopoverModeLabel,
-            this.handleNumberStateChange,
+            this.handleStringStateChange,
             "enableCellTruncation",
             true,
         );
@@ -1104,7 +1104,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return handleNumberChange(value => this.setState({ [stateKey]: value }));
     };
 
-    private handleSelectedRegionTransformPresetChange = (stateKey: keyof IMutableTableState) => {
+    private handleStringStateChange = (stateKey: keyof IMutableTableState) => {
         return handleStringChange(value => this.setState({ [stateKey]: value }));
     };
 
