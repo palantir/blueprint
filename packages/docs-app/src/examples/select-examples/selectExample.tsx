@@ -34,6 +34,7 @@ const FilmSelect = Select.ofType<IFilm>();
 
 export interface ISelectExampleState {
     allowCreate: boolean;
+    createFirst: boolean;
     createdItems: IFilm[];
     film: IFilm;
     filterable: boolean;
@@ -50,6 +51,7 @@ export interface ISelectExampleState {
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
     public state: ISelectExampleState = {
         allowCreate: false,
+        createFirst: false,
         createdItems: [],
         disableItems: false,
         disabled: false,
@@ -64,6 +66,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     };
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+    private handleCreateFirstChange = this.handleSwitchChange("createFirst");
     private handleDisabledChange = this.handleSwitchChange("disabled");
     private handleFilterableChange = this.handleSwitchChange("filterable");
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
@@ -89,6 +92,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     {...flags}
                     createNewItemFromQuery={maybeCreateNewItemFromQuery}
                     createNewItemRenderer={maybeCreateNewItemRenderer}
+                    createNewItemPosition={this.state.createFirst ? "first" : "last"}
                     disabled={disabled}
                     itemDisabled={this.isItemDisabled}
                     itemsEqual={areFilmsEqual}
@@ -146,6 +150,12 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     label="Allow creating new items"
                     checked={this.state.allowCreate}
                     onChange={this.handleAllowCreateChange}
+                />
+                <Switch
+                    label="Create new position: first"
+                    disabled={!this.state.allowCreate}
+                    checked={this.state.createFirst}
+                    onChange={this.handleCreateFirstChange}
                 />
                 <H5>Popover props</H5>
                 <Switch

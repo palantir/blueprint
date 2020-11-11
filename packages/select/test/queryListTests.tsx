@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Menu } from "@blueprintjs/core";
 import { IQueryListProps } from "@blueprintjs/select";
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
@@ -193,6 +194,20 @@ describe("<QueryList>", () => {
             };
             const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
             assert(filmQueryList.state().activeItem === null);
+        });
+
+        it("createNewItemPosition affects position of create new item", () => {
+            const props: IQueryListProps<IFilm> = {
+                ...testProps,
+                createNewItemFromQuery: sinon.spy(),
+                createNewItemRenderer: () => <article />,
+                items: TOP_100_FILMS.slice(0, 4),
+                query: "the",
+            };
+            const filmQueryList: FilmQueryListWrapper = mount(<FilmQueryList {...props} />);
+            assert(filmQueryList.find(Menu).children().children().last().is("article"));
+            filmQueryList.setProps({ createNewItemPosition: "first" });
+            assert(filmQueryList.find(Menu).children().children().first().is("article"));
         });
     });
 

@@ -311,7 +311,12 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             isItemDisabled(getActiveItem(this.state.activeItem), activeIndex, props.itemDisabled);
 
         if (shouldUpdateActiveItem) {
-            this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
+            // if the `createNewItem` is first, that should be the first active item.
+            if (this.isCreateItemRendered() && this.isCreateItemFirst()) {
+                this.setActiveItem(getCreateNewItem());
+            } else {
+                this.setActiveItem(getFirstEnabledItem(filteredItems, props.itemDisabled));
+            }
         }
     }
 
@@ -341,10 +346,12 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         if (menuContent == null && createItemView == null) {
             return null;
         }
+        const createFirst = this.isCreateItemFirst();
         return (
             <Menu ulRef={listProps.itemsParentRef}>
+                {createFirst && createItemView}
                 {menuContent}
-                {createItemView}
+                {!createFirst && createItemView}
             </Menu>
         );
     };
@@ -388,7 +395,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         const { activeItem } = this.state;
         if (this.itemsParentRef != null) {
             if (isCreateNewItem(activeItem)) {
-                return this.itemsParentRef.children.item(this.state.filteredItems.length) as HTMLElement;
+                const index = this.isCreateItemFirst() ? 0 : this.state.filteredItems.length;
+                return this.itemsParentRef.children.item(index) as HTMLElement;
             } else {
                 const activeIndex = this.getActiveIndex();
                 return this.itemsParentRef.children.item(activeIndex) as HTMLElement;
@@ -548,6 +556,10 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
             // existing item is much clearer.
             !this.wouldCreatedItemMatchSomeExistingItem()
         );
+    }
+
+    private isCreateItemFirst(): boolean {
+        return this.props.createNewItemPosition === "first";
     }
 
     private canCreateItems(): boolean {
