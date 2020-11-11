@@ -60,7 +60,6 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
      * the `onChange` handler.
-     * @default false
      */
     asyncControl?: boolean;
 
