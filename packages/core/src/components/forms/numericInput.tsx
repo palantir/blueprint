@@ -57,6 +57,14 @@ export interface INumericInputProps extends IIntentProps, IProps {
     allowNumericCharactersOnly?: boolean;
 
     /**
+     * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
+     * These may occur if you do not immediately call setState in a parent component with the value from
+     * the `onChange` handler.
+     * @default false
+     */
+    asyncControl?: boolean;
+
+    /**
      * The position of the buttons with respect to the input field.
      * @default Position.RIGHT
      */
@@ -378,6 +386,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const inputGroupHtmlProps = removeNonHTMLProps(this.props, NON_HTML_PROPS, true);
         return (
             <InputGroup
+                asyncControl={this.props.asyncControl}
                 autoComplete="off"
                 {...inputGroupHtmlProps}
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
