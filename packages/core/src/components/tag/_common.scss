@@ -192,8 +192,7 @@ $tag-round-adjustment: 2px !default;
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
     margin-right: -$tag-padding-large !important;
-    padding: ($tag-height-large - $pt-icon-size-large) / 2;
-    padding-left: 0;
+    padding: 0 ($tag-padding-large / 2) 0 0;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);
