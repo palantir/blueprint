@@ -462,7 +462,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         const { canEscapeKeyClose, onClose } = this.props;
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165
         /* eslint-disable-next-line deprecation/deprecation */
-        if (e.which === Keys.ESCAPE && canEscapeKeyClose) {
+        if (e.key === "Escape" && canEscapeKeyClose) {
             onClose?.(e);
             // prevent browser-specific escape key behavior (Safari exits fullscreen)
             e.preventDefault();
