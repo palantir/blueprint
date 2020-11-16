@@ -29,9 +29,7 @@ function getDecimalSeparator(locale: string) {
     return (result && result[1]) || ".";
 }
 
-export function toLocaleString(num: number, locale?: string) {
-    locale = locale || "en-US";
-
+export function toLocaleString(num: number, locale: string = "en-US") {
     return sanitizeNumericInput(num.toLocaleString(locale), locale);
 }
 
@@ -47,8 +45,9 @@ export function getValueOrEmptyValue(value: number | string = "") {
     return value.toString();
 }
 
+/** Transform the localized character (ex. "") to a javascript recognizable string number (ex. "10.99")  */
 function transformLocalizedNumberToStringNumber(character: string, locale: string) {
-    const charactersMap = new Array(10).fill("").map((_value, index) => index.toLocaleString(locale));
+    const charactersMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => value.toLocaleString(locale));
     const jsNumber = charactersMap.indexOf(character);
 
     if (jsNumber !== -1) {
@@ -58,13 +57,14 @@ function transformLocalizedNumberToStringNumber(character: string, locale: strin
     }
 }
 
+/** Transforms the localized number (ex. "10,99") to a javascript recognizable string number (ex. "10.99")  */
 export function parseStringToStringNumber(value: number | string, locale: string | undefined): string {
     const valueAsString = "" + value;
     if (parseFloat(valueAsString).toString() === value.toString()) {
         return value.toString();
     }
 
-    if (locale) {
+    if (locale !== undefined) {
         const decimalSeparator = getDecimalSeparator(locale);
         const sanitizedString = sanitizeNumericInput(valueAsString, locale);
 
@@ -129,11 +129,10 @@ export function isValidNumericKeyboardEvent(e: React.KeyboardEvent, locale: stri
  * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
  */
 function isFloatingPointNumericCharacter(character: string, locale: string | undefined) {
-    if (locale) {
+    if (locale !== undefined) {
         const decimalSeparator = getDecimalSeparator(locale).replace(".", "\\.");
-        const numbers = new Array(10)
-            .fill("")
-            .map((_value, index) => index.toLocaleString(locale || "en-US"))
+        const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            .map((_value, index) => index.toLocaleString(locale))
             .join("");
         const localeFloatingPointNumericCharacterRegex = new RegExp(
             "^[Ee" + numbers + "\\+\\-" + decimalSeparator + "]$",

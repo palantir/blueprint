@@ -109,6 +109,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * The locale name, which is passed to the component to format the number and allowing to type the number in the specific locale.
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation
      * @default ""
      */
     locale?: string;
@@ -174,7 +175,6 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
 export interface INumericInputState {
     currentImeInputInvalid: boolean;
-    locale?: string;
     prevMinProp?: number;
     prevMaxProp?: number;
     shouldSelectAfterUpdate: boolean;
@@ -236,7 +236,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
         // in controlled mode, use props.value
         // in uncontrolled mode, if state.value has not been assigned yet (upon initial mount), use props.defaultValue
-        const value = NumericInput.getValue(props, state.value);
+        const value = props.value?.toString() ?? state.value;
         const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
 
         const sanitizedValue =
@@ -265,14 +265,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         }
     }
 
-    private static getValue(props: INumericInputProps, stateValue: string) {
-        if (props.value === null || props.value === undefined) {
-            return stateValue;
-        }
-
-        return props.value.toString();
-    }
-
     private static roundAndClampValue(
         value: string,
         stepMaxPrecision: number,
@@ -292,7 +284,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     public state: INumericInputState = {
         currentImeInputInvalid: false,
-        locale: this.props.locale,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
         value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue),
