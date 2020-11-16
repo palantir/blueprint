@@ -116,7 +116,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * The locale name, which is passed to the component to format the number and allowing to type the number in the specific locale.
-     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation
+     * [See MDN documentation for more info about browser locale identification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
      * @default ""
      */
     locale?: string;
@@ -331,7 +331,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
         const didLocaleChange = this.props.locale !== prevProps.locale;
         const didValueChange = this.state.value !== prevState.value;
 
-        if ((didBoundsChange && didValueChange) || didLocaleChange) {
+        if ((didBoundsChange && didValueChange) || (didLocaleChange && prevState.value !== NumericInput.VALUE_EMPTY)) {
             // we clamped the value due to a bounds change, so we should fire the change callback
             const valueToParse = didLocaleChange ? prevState.value : this.state.value;
             const valueAsString = parseStringToStringNumber(valueToParse, prevProps.locale);
