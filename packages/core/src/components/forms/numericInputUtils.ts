@@ -47,7 +47,7 @@ export function getValueOrEmptyValue(value: number | string = "") {
 
 /** Transform the localized character (ex. "") to a javascript recognizable string number (ex. "10.99")  */
 function transformLocalizedNumberToStringNumber(character: string, locale: string) {
-    const charactersMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => value.toLocaleString(locale));
+    const charactersMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => value.toLocaleString(locale));
     const jsNumber = charactersMap.indexOf(character);
 
     if (jsNumber !== -1) {
@@ -131,9 +131,7 @@ export function isValidNumericKeyboardEvent(e: React.KeyboardEvent, locale: stri
 function isFloatingPointNumericCharacter(character: string, locale: string | undefined) {
     if (locale !== undefined) {
         const decimalSeparator = getDecimalSeparator(locale).replace(".", "\\.");
-        const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-            .map((_value, index) => index.toLocaleString(locale))
-            .join("");
+        const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => value.toLocaleString(locale)).join("");
         const localeFloatingPointNumericCharacterRegex = new RegExp(
             "^[Ee" + numbers + "\\+\\-" + decimalSeparator + "]$",
         );
