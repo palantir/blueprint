@@ -116,6 +116,7 @@ export interface IOptionProps extends IProps {
 const INVALID_PROPS = [
     "active",
     "alignText",
+    "asyncControl", // IInputGroupProps
     "containerRef",
     "current",
     "elementRef",

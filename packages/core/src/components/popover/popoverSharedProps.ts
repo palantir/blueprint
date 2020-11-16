@@ -96,6 +96,13 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     isOpen?: boolean;
 
     /**
+     * Whether to apply minimal styling to this popover or tooltip. Minimal popovers
+     * do not have an arrow pointing to their target and use a subtler animation.
+     * @default false
+     */
+    minimal?: boolean;
+
+    /**
      * Popper modifier options, passed directly to internal Popper instance. See
      * https://popper.js.org/docs/modifiers/ for complete
      * details.

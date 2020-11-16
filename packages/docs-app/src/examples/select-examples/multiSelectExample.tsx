@@ -185,7 +185,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         );
     };
 
-    private handleTagRemove = (_tag: string, index: number) => {
+    private handleTagRemove = (_tag: React.ReactNode, index: number) => {
         this.deselectFilm(index);
     };
 

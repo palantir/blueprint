@@ -113,6 +113,8 @@ const TRUNCATED_POPOVER_MODES: TruncatedPopoverMode[] = [
     TruncatedPopoverMode.WHEN_TRUNCATED_APPROX,
 ];
 
+const FOCUS_STYLES: FocusStyle[] = [FocusStyle.TAB, FocusStyle.TAB_OR_CLICK];
+
 const TRUNCATION_LENGTHS: number[] = [20, 80, 100, 1000];
 const TRUNCATION_LENGTH_DEFAULT_INDEX = 1;
 
@@ -611,28 +613,28 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "renderMode",
             RENDER_MODES,
             this.toRenderModeLabel,
-            this.handleNumberStateChange,
+            this.handleStringStateChange,
         );
         const selectedRegionTransformPresetMenu = this.renderSelectMenu(
             "Selection",
             "selectedRegionTransformPreset",
             SELECTION_MODES,
             this.toSelectedRegionTransformPresetLabel,
-            this.handleSelectedRegionTransformPresetChange,
+            this.handleStringStateChange,
         );
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
             CELL_CONTENTS,
             this.toCellContentLabel,
-            this.handleNumberStateChange,
+            this.handleStringStateChange,
         );
         const truncatedPopoverModeMenu = this.renderSelectMenu(
             "Popover",
             "cellTruncatedPopoverMode",
             TRUNCATED_POPOVER_MODES,
             this.toTruncatedPopoverModeLabel,
-            this.handleNumberStateChange,
+            this.handleStringStateChange,
             "enableCellTruncation",
             true,
         );
@@ -644,6 +646,14 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             this.handleNumberStateChange,
             "enableCellTruncationFixed",
             true,
+        );
+
+        const renderFocusStyleSelectMenu = this.renderSelectMenu(
+            "Focus outlines",
+            "selectedFocusStyle",
+            FOCUS_STYLES,
+            this.toFocusStyleLabel,
+            this.handleStringStateChange,
         );
 
         return (
@@ -713,7 +723,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
                 <H4>Page</H4>
                 <H6>Display</H6>
-                {this.renderFocusStyleSelectMenu()}
+                {renderFocusStyleSelectMenu}
                 <H6>Perf</H6>
                 {this.renderSwitch("Slow layout", "enableSlowLayout")}
                 {this.renderSwitch("Isolate layout boundary", "enableLayoutBoundary")}
@@ -739,7 +749,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "scrollToRegionType",
             REGION_CARDINALITIES,
             this.getRegionCardinalityLabel,
-            this.handleRegionCardinalityChange,
+            this.handleStringStateChange,
         );
         const scrollToRowSelectMenu = this.renderSelectMenu(
             "Row",
@@ -812,19 +822,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         } else {
             return child;
         }
-    }
-
-    private renderFocusStyleSelectMenu() {
-        const { selectedFocusStyle } = this.state;
-        return (
-            <label className={classNames(Classes.LABEL, Classes.INLINE, "tbl-select-label")}>
-                Focus outlines
-                <HTMLSelect onChange={this.updateFocusStyleState()} value={selectedFocusStyle}>
-                    <option value="tab">On tab</option>
-                    <option value="tabOrClick">On tab or click</option>
-                </HTMLSelect>
-            </label>
-        );
     }
 
     private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
@@ -942,6 +939,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 return "Truncated approx";
             default:
                 return "";
+        }
+    }
+
+    private toFocusStyleLabel(focusStyle: FocusStyle) {
+        switch (focusStyle) {
+            case FocusStyle.TAB:
+                return "On tab";
+            default:
+                return "On tab or click";
         }
     }
 
@@ -1100,19 +1106,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         return handleNumberChange(value => this.setState({ [stateKey]: value }));
     };
 
-    private handleRegionCardinalityChange = (stateKey: keyof IMutableTableState) => {
-        return handleNumberChange(value => this.setState({ [stateKey]: value }));
-    };
-
-    private handleSelectedRegionTransformPresetChange = (stateKey: keyof IMutableTableState) => {
+    private handleStringStateChange = (stateKey: keyof IMutableTableState) => {
         return handleStringChange(value => this.setState({ [stateKey]: value }));
-    };
-
-    private updateFocusStyleState = () => {
-        return handleStringChange((value: string) => {
-            const selectedFocusStyle = value === "tab" ? FocusStyle.TAB : FocusStyle.TAB_OR_CLICK;
-            this.setState({ selectedFocusStyle });
-        });
     };
 
     private renderBodyContextMenu = () => {

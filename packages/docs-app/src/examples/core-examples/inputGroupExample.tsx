@@ -55,7 +55,9 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
     private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
-    private handleFilterChange = handleStringChange(filterValue => this.setState({ filterValue }));
+    private handleFilterChange = handleStringChange(filterValue =>
+        window.setTimeout(() => this.setState({ filterValue }), 10),
+    );
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
@@ -96,16 +98,19 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <InputGroup
-                    disabled={disabled}
-                    large={large}
-                    leftIcon="filter"
-                    onChange={this.handleFilterChange}
-                    placeholder="Filter histogram..."
-                    rightElement={maybeSpinner}
-                    small={small}
-                    value={filterValue}
-                />
+                <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
+                    <InputGroup
+                        asyncControl={true}
+                        disabled={disabled}
+                        large={large}
+                        leftIcon="filter"
+                        onChange={this.handleFilterChange}
+                        placeholder="Filter histogram..."
+                        rightElement={maybeSpinner}
+                        small={small}
+                        value={filterValue}
+                    />
+                </Tooltip>
                 <InputGroup
                     disabled={disabled}
                     large={large}

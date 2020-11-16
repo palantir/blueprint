@@ -32,3 +32,7 @@ export function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
     }
     return portalChildren.find(selector);
 }
+
+export async function sleep(timeout?: number) {
+    return new Promise(resolve => window.setTimeout(resolve, timeout));
+}

@@ -114,6 +114,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
+        // eslint-disable-next-line deprecation/deprecation
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 

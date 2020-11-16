@@ -75,6 +75,8 @@ describe("<MultiSelect>", () => {
         assert.equal(wrapper.find(Tag).find("strong").length, 1);
     });
 
+    // N.B. this is not good behavior, we shouldn't support this since the component is controlled.
+    // we keep it around for backcompat but expect that nobody actually uses the component this way.
     it("selectedItems is optional", () => {
         assert.doesNotThrow(() => multiselect({ selectedItems: undefined }));
     });
@@ -93,6 +95,16 @@ describe("<MultiSelect>", () => {
         // where the first item in the dropdown list would get selected upon hitting Enter inside
         // a TAG_REMOVE button
         assert.isFalse(itemSelectSpy.calledWith(TOP_100_FILMS[0]));
+    });
+
+    it("triggers onRemove", () => {
+        const handleRemove = sinon.spy();
+        const wrapper = multiselect({
+            onRemove: handleRemove,
+            selectedItems: [TOP_100_FILMS[2], TOP_100_FILMS[3], TOP_100_FILMS[4]],
+        });
+        wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(1).simulate("click");
+        assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
     function multiselect(props: Partial<IMultiSelectProps<IFilm>> = {}, query?: string) {
