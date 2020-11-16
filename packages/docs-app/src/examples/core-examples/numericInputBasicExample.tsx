@@ -30,11 +30,13 @@ import {
     Example,
     handleBooleanChange,
     handleNumberChange,
+    handleStringChange,
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
+import { LOCALES } from "./common/locales";
 
 const MIN_VALUES = [
     { label: "None", value: -Infinity },
@@ -80,7 +82,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     private handleButtonPositionChange = handleValueChange((buttonPosition: INumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),
     );
-
+    private handleLocaleChange = handleStringChange(locale => this.setState({ locale }));
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
     private toggleLeftIcon = handleBooleanChange(leftIcon =>
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
@@ -116,6 +118,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
             fill,
             large,
             leftIcon,
+            locale,
         } = this.state;
 
         return (
@@ -137,6 +140,12 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                     this.handleButtonPositionChange,
                 )}
                 <IntentSelect intent={intent} onChange={this.handleIntentChange} />
+                {this.renderSelectMenu(
+                    "Locale",
+                    locale,
+                    [{ label: "Default", value: "" }, ...LOCALES],
+                    this.handleLocaleChange,
+                )}
             </>
         );
     }
