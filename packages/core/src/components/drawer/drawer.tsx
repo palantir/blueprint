@@ -108,6 +108,8 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static readonly SIZE_STANDARD = "50%";
     public static readonly SIZE_LARGE = "90%";
 
+    private lastActiveElementBeforeOpened: Element | null | undefined;
+
     public render() {
         // eslint-disable-next-line deprecation/deprecation
         const { size, style, position, vertical } = this.props;
@@ -130,7 +132,12 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
                       [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
                   };
         return (
-            <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
+            <Overlay
+                {...this.props}
+                className={Classes.OVERLAY_CONTAINER}
+                onOpening={this.handleOpening}
+                onClosed={this.handleClosed}
+            >
                 <div className={classes} style={styleProp}>
                     {this.maybeRenderHeader()}
                     {this.props.children}
@@ -190,4 +197,16 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
             </div>
         );
     }
+
+    private handleOpening = (node: HTMLElement) => {
+        this.lastActiveElementBeforeOpened = document.activeElement;
+        this.props.onOpening?.(node);
+    };
+
+    private handleClosed = (node: HTMLElement) => {
+        if (this.lastActiveElementBeforeOpened instanceof HTMLElement) {
+            this.lastActiveElementBeforeOpened.focus();
+        }
+        this.props.onClosed?.(node);
+    };
 }
