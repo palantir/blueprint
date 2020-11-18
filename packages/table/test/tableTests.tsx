@@ -47,7 +47,7 @@ describe("<Table>", function (this) {
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
-    const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+    const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
 
     const harness = new ReactHarness();
 
@@ -541,7 +541,7 @@ describe("<Table>", function (this) {
         }
 
         function selectFullTable(table: ReactWrapper<any>, ...mouseEventArgs: any[]) {
-            const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
+            const menu = table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_MENU}`);
             menu.simulate("mousedown", ...mouseEventArgs).simulate("mouseup", ...mouseEventArgs);
         }
     });
@@ -813,7 +813,7 @@ describe("<Table>", function (this) {
             // and expect a non-zero height.
             table.scrollToRegion(Regions.column(columnWidths.length - 1));
 
-            const quadrantSelector = `.${Classes.TABLE_QUADRANT_LEFT}`;
+            const quadrantSelector = `.${Classes.TABLE_QUADRANT_TOP}`;
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
 

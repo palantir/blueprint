@@ -90,8 +90,6 @@ describe("TableQuadrantStack", () => {
         };
 
         expect(isMainQuadrantChild(quadrantRef)).to.be.true;
-        expect(isMainQuadrantChild(rowHeaderRef)).to.be.true;
-        expect(isMainQuadrantChild(columnHeaderRef)).to.be.true;
         expect(isMainQuadrantChild(scrollContainerRef)).to.be.true;
     });
 
@@ -200,7 +198,7 @@ describe("TableQuadrantStack", () => {
             const bodyRenderer = sinon.spy();
             const menuRenderer = sinon.spy();
             mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} menuRenderer={menuRenderer} />);
-            expect(menuRenderer.callCount).to.equal(4);
+            expect(menuRenderer.callCount).to.equal(1);
         });
 
         it("invokes columnHeaderCellRenderer once for each quadrant on mount", () => {
@@ -213,7 +211,7 @@ describe("TableQuadrantStack", () => {
                     columnHeaderCellRenderer={columnHeaderCellRenderer}
                 />,
             );
-            expect(columnHeaderCellRenderer.callCount).to.equal(4);
+            expect(columnHeaderCellRenderer.callCount).to.equal(2);
         });
 
         it("invokes rowHeaderCellRenderer once for each quadrant on mount", () => {
@@ -226,7 +224,7 @@ describe("TableQuadrantStack", () => {
                     rowHeaderCellRenderer={rowHeaderCellRenderer}
                 />,
             );
-            expect(rowHeaderCellRenderer.callCount).to.equal(4);
+            expect(rowHeaderCellRenderer.callCount).to.equal(2);
         });
 
         it("does not render LEFT/TOP_LEFT quadrants if row header not shown and no frozen columns", () => {

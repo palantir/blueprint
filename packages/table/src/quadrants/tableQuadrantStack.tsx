@@ -717,9 +717,9 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         this.maybeSetQuadrantSizes(leftQuadrantWidth, adjustedTopQuadrantHeight);
 
         // Quadrant-offset syncing
-        this.maybeSetQuadrantPositionOffset(QuadrantType.MAIN, "left", rowHeaderWidth);
+        this.maybeSetQuadrantPositionOffset(QuadrantType.MAIN, "paddingLeft", rowHeaderWidth);
         this.maybeSetQuadrantPositionOffset(QuadrantType.TOP, "left", rowHeaderWidth);
-        this.maybeSetQuadrantPositionOffset(QuadrantType.MAIN, "top", columnHeaderHeight);
+        this.maybeSetQuadrantPositionOffset(QuadrantType.MAIN, "paddingTop", columnHeaderHeight);
         this.maybeSetQuadrantPositionOffset(QuadrantType.LEFT, "top", columnHeaderHeight);
 
         // Scrollbar clearance: tweak the quadrant bottom/right offsets to
@@ -749,7 +749,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
     private maybeSetQuadrantPositionOffset = (
         quadrantType: QuadrantType,
-        side: "top" | "right" | "bottom" | "left",
+        side: "top" | "right" | "bottom" | "left" | "paddingTop" | "paddingLeft",
         value: number,
     ) => {
         const { quadrant } = this.quadrantRefs[quadrantType];
