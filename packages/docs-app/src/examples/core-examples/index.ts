@@ -34,6 +34,7 @@ export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
 export * from "./fileInputExample";
 export * from "./focusExample";
+export * from "./formExample";
 export * from "./formGroupExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";

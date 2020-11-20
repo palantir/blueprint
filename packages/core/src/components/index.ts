@@ -36,6 +36,7 @@ export * from "./editable-text/editableText";
 export * from "./forms/controlGroup";
 export * from "./forms/controls";
 export * from "./forms/fileInput";
+export * from "./forms/form";
 export * from "./forms/formGroup";
 export * from "./forms/inputGroup";
 export * from "./forms/numericInput";

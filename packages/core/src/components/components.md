@@ -31,6 +31,7 @@
 
 @## Form controls
 
+@page form
 @page form-group
 @page control-group
 @page label
