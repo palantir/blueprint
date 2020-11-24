@@ -108,8 +108,12 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     /** Callback invoked when user changes input in any way. */
     onChange?(value: string): void;
 
-    /** Callback invoked when user confirms value with `enter` key or by blurring input. */
-    onConfirm?(value: string): void;
+    /**
+     * Callback invoked when user confirms value with `enter` key or by blurring input.
+     * If user presses `enter`, `triggerSource` will be `TriggerSource.ENTER`.
+     * If input is blurred in any other way, `triggerSource` will be `TriggerSource.BLUR`
+     */
+    onConfirm?(value: string, triggerSource: TriggerSource): void;
 
     /** Callback invoked after the user enters edit mode. */
     onEdit?(value: string | undefined): void;
@@ -130,6 +134,11 @@ export interface IEditableTextState {
 
 const BUFFER_WIDTH_DEFAULT = 5;
 const BUFFER_WIDTH_IE = 30;
+
+export enum TriggerSource {
+    ENTER = "enter",
+    BLUR = "blur",
+}
 
 @polyfill
 export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEditableTextState> {
@@ -276,11 +285,11 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         this.props.onCancel?.(lastValue!);
     };
 
-    public toggleEditing = () => {
+    public toggleEditing = (triggerSource: TriggerSource) => {
         if (this.state.isEditing) {
             const { value } = this.state;
             this.setState({ isEditing: false, lastValue: value });
-            this.props.onConfirm?.(value!);
+            this.props.onConfirm?.(value!, triggerSource);
         } else if (!this.props.disabled) {
             this.setState({ isEditing: true });
         }
@@ -330,10 +339,10 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
                     insertAtCaret(event.target as HTMLTextAreaElement, "\n");
                     this.handleTextChange(event);
                 } else {
-                    this.toggleEditing();
+                    this.toggleEditing(TriggerSource.ENTER);
                 }
             } else if (!this.props.multiline || hasModifierKey) {
-                this.toggleEditing();
+                this.toggleEditing(TriggerSource.ENTER);
             }
         }
     };
@@ -344,7 +353,9 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
             className: Classes.EDITABLE_TEXT_INPUT,
             disabled,
             maxLength,
-            onBlur: this.toggleEditing,
+            onBlur: () => {
+                this.toggleEditing(TriggerSource.BLUR);
+            },
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
             placeholder,
