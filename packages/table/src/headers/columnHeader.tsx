@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { IRef } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -48,7 +49,7 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumn
      * Ref handler that receives the HTML element that should be measured to
      * indicate the fluid height of the column header.
      */
-    measurableElementRef?: (ref: HTMLElement | null) => void;
+    measurableElementRef?: IRef<HTMLDivElement>;
 
     /**
      * A callback invoked when user is done resizing the column

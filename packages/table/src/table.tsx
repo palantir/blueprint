@@ -21,6 +21,7 @@ import {
     Hotkeys,
     HotkeysTarget,
     IProps,
+    IRef,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 import classNames from "classnames";
@@ -1306,7 +1307,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
-    private renderMenu = (refHandler: (ref: HTMLElement) => void) => {
+    private renderMenu = (refHandler: IRef<HTMLDivElement>) => {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: Table.isSelectionModeEnabled(this.props, RegionCardinality.FULL_TABLE),
         });
@@ -1317,7 +1318,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         );
     };
 
-    private handleMenuMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+    private handleMenuMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         // the shift+click interaction expands the region from the focused cell.
         // thus, if shift is pressed we shouldn't move the focused cell.
         this.selectAll(!e.shiftKey);
@@ -1383,7 +1384,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     };
 
     private renderColumnHeader = (
-        refHandler: (ref: HTMLElement) => void,
+        refHandler: IRef<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[]) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
@@ -1443,7 +1444,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     };
 
     private renderRowHeader = (
-        refHandler: (ref: HTMLElement) => void,
+        refHandler: IRef<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[]) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,
