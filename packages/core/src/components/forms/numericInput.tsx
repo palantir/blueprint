@@ -27,6 +27,7 @@ import {
     IIntentProps,
     Intent,
     IProps,
+    IRef,
     Keys,
     MaybeElement,
     Position,
@@ -99,7 +100,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * Ref handler that receives HTML `<input>` element backing this component.
      */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    inputRef?: IRef<HTMLInputElement>;
 
     /**
      * If set to `true`, the input will display with larger styling.
@@ -441,7 +442,11 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private inputRef = (input: HTMLInputElement | null) => {
         this.inputElement = input;
-        this.props.inputRef?.(input);
+        if (typeof this.props.inputRef === "function") {
+            this.props.inputRef(input);
+        } else if (typeof this.props.inputRef === "object" && this.props.inputRef !== null) {
+            this.props.inputRef.current = input;
+        }
     };
 
     // Callbacks - Buttons

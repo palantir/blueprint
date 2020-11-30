@@ -39,6 +39,7 @@ import {
     Position,
 } from "../../src";
 import * as Errors from "../../src/common/errors";
+import { createReactRef } from "../../src/common/utils";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
@@ -214,6 +215,17 @@ describe("<NumericInput>", () => {
             decrementButton.simulate("mousedown");
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([0, "0"]);
+        });
+
+        it("supports ref", () => {
+            let inputRefFn: HTMLInputElement | null = null;
+            // tslint:disable-next-line:jsx-no-lambda
+            mount(<NumericInput inputRef={ref => (inputRefFn = ref)} />);
+            assert.instanceOf(inputRefFn, HTMLInputElement);
+
+            const inputRefObj = createReactRef<HTMLInputElement>();
+            mount(<NumericInput inputRef={inputRefObj} />);
+            assert.instanceOf(inputRefObj.current, HTMLInputElement);
         });
     });
 
