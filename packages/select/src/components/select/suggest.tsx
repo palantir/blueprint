@@ -25,13 +25,12 @@ import {
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
-    IRefCallback,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
     PopoverInteractionKind,
     Position,
+    refHandler,
 } from "@blueprintjs/core";
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -126,12 +125,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private queryList: QueryList<T> | null = null;
     private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps!.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
+        input: refHandler(this.props.inputProps?.inputRef, this, "inputEl"),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
