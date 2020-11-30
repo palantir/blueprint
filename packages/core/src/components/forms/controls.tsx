@@ -22,7 +22,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Alignment, Classes } from "../../common";
+import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 
 export interface IControlProps extends IProps, HTMLInputProps {
@@ -47,7 +47,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    inputRef?: IRef<HTMLInputElement>;
 
     /** Whether the control should appear as an inline element. */
     inline?: boolean;
@@ -282,8 +282,5 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
         this.props.onChange?.(evt);
     };
 
-    private handleInputRef = (ref: HTMLInputElement | null) => {
-        this.input = ref;
-        this.props.inputRef?.(ref);
-    };
+    private handleInputRef = refHandler(this.props.inputRef, this, "input");
 }

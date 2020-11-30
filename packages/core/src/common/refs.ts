@@ -27,7 +27,7 @@ export function isRefObject<T extends HTMLElement>(value: IRef<T> | undefined | 
 
 export type IRefCallback<T = HTMLElement> = (ref: T | null) => any;
 
-export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined): value is IRefCallback<T> {
+export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined | null): value is IRefCallback<T> {
     return typeof value === "function";
 }
 
@@ -37,4 +37,33 @@ export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
     }
 
     return (ref as IRefObject<T>).current ?? (ref as T);
+}
+
+export function setRef<T extends HTMLElement>(refTarget: IRef<T>, ref: T | null) {
+    if (isRefObject<T>(refTarget)) {
+        refTarget.current = ref;
+    }
+    if (isRefCallback(refTarget)) {
+        refTarget(ref);
+    }
+}
+
+export function refHandler<T extends HTMLElement>(
+    refProp: IRef<T> | undefined | null,
+    refTargetParent: Record<string, any>,
+    refTargetKey: string,
+) {
+    if (!(refTargetKey in refTargetParent)) {
+        throw new Error(`${refTargetKey} does not exists in ${Object.keys(refTargetParent)}`);
+    }
+    if (isRefObject<T>(refProp)) {
+        refTargetParent[refTargetKey] = refProp;
+        return refProp;
+    }
+    return (ref: T | null) => {
+        refTargetParent[refTargetKey] = ref;
+        if (isRefCallback(refProp)) {
+            refProp(ref);
+        }
+    };
 }

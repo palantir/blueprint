@@ -22,10 +22,10 @@ import {
     Classes,
     getRef,
     IRef,
-    IRefCallback,
     IRefObject,
     isRefCallback,
     isRefObject,
+    refHandler,
 } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
@@ -71,12 +71,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
     private textareaRef: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
 
     private refHandlers = {
-        textarea: isRefObject<HTMLTextAreaElement>(this.props.inputRef)
-            ? (this.textareaRef = this.props.inputRef)
-            : (ref: HTMLTextAreaElement | null) => {
-                  this.textareaRef = ref;
-                  (this.props.inputRef as IRefCallback<HTMLTextAreaElement>)?.(ref);
-              },
+        textarea: refHandler(this.props.inputRef, this, "textareaRef"),
     };
 
     public componentDidMount() {

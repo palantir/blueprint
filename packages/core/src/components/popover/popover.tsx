@@ -20,7 +20,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, refHandler } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -78,7 +78,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: (ref: HTMLElement | null) => void;
+    popoverRef?: IRef<HTMLElement>;
 
     /**
      * The target to which the popover content is attached. This can instead be
@@ -148,10 +148,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     private popperScheduleUpdate?: () => void;
 
     private refHandlers = {
-        popover: (ref: HTMLElement) => {
-            this.popoverElement = ref;
-            this.props.popoverRef?.(ref);
-        },
+        popover: refHandler(this.props.popoverRef, this, "popoverElement"),
         target: (ref: HTMLElement) => (this.targetElement = ref),
     };
 

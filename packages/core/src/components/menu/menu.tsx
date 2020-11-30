@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { MenuDivider } from "./menuDivider";
 // eslint-disable-next-line import/no-cycle
@@ -28,7 +28,7 @@ export interface IMenuProps extends IProps, React.HTMLAttributes<HTMLUListElemen
     large?: boolean;
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
-    ulRef?: (ref: HTMLUListElement | null) => any;
+    ulRef?: IRef<HTMLUListElement>;
 }
 
 @polyfill
