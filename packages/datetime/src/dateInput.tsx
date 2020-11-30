@@ -29,11 +29,10 @@ import {
     Intent,
     IPopoverProps,
     IProps,
-    IRefCallback,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
+    refHandler,
 } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
@@ -181,12 +180,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     private lastTabbableElement: HTMLElement | null = null;
 
     private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
+        input: refHandler(this.props.inputProps?.inputRef, this, "inputEl"),
     };
 
     public componentWillUnmount() {

@@ -31,12 +31,11 @@ import {
     Intent,
     IPopoverProps,
     IProps,
-    IRefCallback,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
     Position,
+    refHandler,
 } from "@blueprintjs/core";
 
 import { DateRange } from "./common/dateRange";
@@ -232,18 +231,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
     private refHandlers = {
-        endInputRef: isRefObject<HTMLInputElement>(this.props.endInputProps.inputRef)
-            ? (this.endInputRef = this.props.endInputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.endInputRef = ref;
-                  (this.props.endInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-        startInputRef: isRefObject<HTMLInputElement>(this.props.startInputProps.inputRef)
-            ? (this.startInputRef = this.props.startInputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.startInputRef = ref;
-                  (this.props.startInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
+        endInputRef: refHandler(this.props.endInputProps.inputRef, this, "endInputRef"),
+        startInputRef: refHandler(this.props.startInputProps.inputRef, this, "startInputRef"),
     };
 
     public constructor(props: IDateRangeInputProps, context?: any) {
