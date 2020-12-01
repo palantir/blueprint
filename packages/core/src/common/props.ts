@@ -86,9 +86,6 @@ export interface IControlledProps {
     /** Initial value of the input, for uncontrolled usage. */
     defaultValue?: string;
 
-    /** Change event handler. Use `event.target.value` for new value. */
-    onChange?: React.FormEventHandler<HTMLElement>;
-
     /** Form value of the input, for controlled usage. */
     value?: string;
 }
