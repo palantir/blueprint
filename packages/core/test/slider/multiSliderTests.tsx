@@ -66,8 +66,8 @@ describe("<MultiSlider>", () => {
                 </MultiSlider>,
                 { attachTo: testsContainerElement },
             );
-            assert.lengthOf(slider.find('span.testClass'), 1);
-        })
+            assert.lengthOf(slider.find("span.testClass"), 1);
+        });
 
         it("moving mouse on the first handle updates the first value", () => {
             const slider = renderSlider({ onChange });
