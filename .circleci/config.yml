@@ -113,7 +113,7 @@ jobs:
     docker: *docker-node-browsers
     environment:
       JUNIT_REPORT_PATH: reports
-    parallelism: 6
+    parallelism: 7
     steps:
       - checkout
       - restore_cache: *restore-node-modules-cache
@@ -131,6 +131,7 @@ jobs:
             3) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
             4) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
             5) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
+            6) yarn lerna run --scope "@blueprintjs/popover2" test:karma ;; \
             esac
           when: always
       - store_test_results: { path: ./reports }

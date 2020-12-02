@@ -1132,6 +1132,11 @@
   dependencies:
     "@types/node" ">= 8"
 
+"@popperjs/core@^2.5.4":
+  version "2.5.4"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/@popperjs/core/-/core-2.5.4.tgz#de25b5da9f727985a3757fd59b5d028aba75841a"
+  integrity sha1-3iW12p9yeYWjdX/Vm10Cirp1hBo=
+
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.6.0", "@sinonjs/commons@^1.7.0", "@sinonjs/commons@^1.7.2":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"
@@ -10257,6 +10262,11 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
+react-fast-compare@^3.0.1:
+  version "3.2.0"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
+  integrity sha1-ZBqdqBtqYyDycOiXJPtFoLOeQ7s=
+
 react-is@^16.13.1, react-is@^16.8.1, react-is@^16.8.6:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -10278,6 +10288,14 @@ react-popper@^1.3.7:
     popper.js "^1.14.4"
     prop-types "^15.6.1"
     typed-styles "^0.0.7"
+    warning "^4.0.2"
+
+react-popper@^2.2.4:
+  version "2.2.4"
+  resolved "https://artifactory.palantir.build/artifactory/api/npm/all-npm/react-popper/-/react-popper-2.2.4.tgz#d2ad3d2474ac9f1abf93df3099d408e5aa6a2e22"
+  integrity sha1-0q09JHSsnxq/k98wmdQI5apqLiI=
+  dependencies:
+    react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
 react-test-renderer@^15.6.0:
