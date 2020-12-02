@@ -813,7 +813,7 @@ describe("<Table>", function (this) {
             // and expect a non-zero height.
             table.scrollToRegion(Regions.column(columnWidths.length - 1));
 
-            const quadrantSelector = `.${Classes.TABLE_QUADRANT_TOP}`;
+            const quadrantSelector = `.${Classes.TABLE_QUADRANT_TOP_LEFT}`;
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
 
@@ -856,7 +856,7 @@ describe("<Table>", function (this) {
         }
 
         function getRowHeadersWrapper(table: ElementHarness) {
-            return table.find(`.${Classes.TABLE_ROW_HEADERS}`);
+            return table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_ROW_HEADERS}`);
         }
 
         function getResizeHandle(header: ElementHarness, index: number) {

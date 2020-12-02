@@ -652,8 +652,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
 
     private emitRefs() {
         this.props.quadrantRef?.(this.quadrantRefs[QuadrantType.MAIN].quadrant);
-        this.props.rowHeaderRef?.(this.quadrantRefs[QuadrantType.MAIN].rowHeader);
-        this.props.columnHeaderRef?.(this.quadrantRefs[QuadrantType.MAIN].columnHeader);
+        this.props.rowHeaderRef?.(this.quadrantRefs[QuadrantType.LEFT].rowHeader);
+        this.props.columnHeaderRef?.(this.quadrantRefs[QuadrantType.TOP].columnHeader);
         this.props.scrollContainerRef?.(this.quadrantRefs[QuadrantType.MAIN].scrollContainer);
     }
 
@@ -716,11 +716,11 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         this.maybeSetQuadrantMenuElementSizes(rowHeaderWidth, adjustedColumnHeaderHeight);
         this.maybeSetQuadrantSizes(leftQuadrantWidth, adjustedTopQuadrantHeight);
 
-        // Quadrant-offset syncing
-        this.maybeSetQuadrantPositionOffset(QuadrantType.MAIN, "paddingLeft", rowHeaderWidth);
-        this.maybeSetQuadrantPositionOffset(QuadrantType.TOP, "left", rowHeaderWidth);
-        this.maybeSetQuadrantPositionOffset(QuadrantType.MAIN, "paddingTop", columnHeaderHeight);
-        this.maybeSetQuadrantPositionOffset(QuadrantType.LEFT, "top", columnHeaderHeight);
+        // Scroll container padding syncing
+        this.maybeSetQuadrantScrollContainerPadding(QuadrantType.MAIN, "paddingLeft", rowHeaderWidth);
+        this.maybeSetQuadrantScrollContainerPadding(QuadrantType.TOP, "paddingLeft", rowHeaderWidth);
+        this.maybeSetQuadrantScrollContainerPadding(QuadrantType.MAIN, "paddingTop", columnHeaderHeight);
+        this.maybeSetQuadrantScrollContainerPadding(QuadrantType.LEFT, "paddingTop", columnHeaderHeight);
 
         // Scrollbar clearance: tweak the quadrant bottom/right offsets to
         // reveal the MAIN-quadrant scrollbars if they're visible.
@@ -747,14 +747,21 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         }
     };
 
-    private maybeSetQuadrantPositionOffset = (
-        quadrantType: QuadrantType,
-        side: "top" | "right" | "bottom" | "left" | "paddingTop" | "paddingLeft",
-        value: number,
-    ) => {
+    private maybeSetQuadrantPositionOffset = (quadrantType: QuadrantType, side: "right" | "bottom", value: number) => {
         const { quadrant } = this.quadrantRefs[quadrantType];
         if (quadrant != null) {
             quadrant.style[side] = `${value}px`;
+        }
+    };
+
+    private maybeSetQuadrantScrollContainerPadding = (
+        quadrantType: QuadrantType,
+        side: "paddingTop" | "paddingLeft",
+        value: number,
+    ) => {
+        const { scrollContainer } = this.quadrantRefs[quadrantType];
+        if (scrollContainer != null) {
+            scrollContainer.style[side] = `${value}px`;
         }
     };
 
@@ -845,17 +852,15 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
      * contents.
      */
     private measureDesiredRowHeaderWidth() {
-        // the MAIN row header serves as the source of truth
-        const mainRowHeader = this.quadrantRefs[QuadrantType.LEFT].rowHeader;
+        const leftRowHeader = this.quadrantRefs[QuadrantType.LEFT].rowHeader;
 
-        if (mainRowHeader == null) {
+        if (leftRowHeader == null) {
             return 0;
         } else {
             // (alas, we must force a reflow to measure the row header's "desired" width)
-            mainRowHeader.style.width = "auto";
+            leftRowHeader.style.width = "auto";
 
-            const desiredRowHeaderWidth = mainRowHeader.clientWidth;
-            return desiredRowHeaderWidth;
+            return leftRowHeader.clientWidth;
         }
     }
 
@@ -867,8 +872,8 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
         // unlike the row headers, the column headers are in a display-flex
         // layout and are not actually bound by any fixed `height` that we set,
         // so they'll grow freely to their necessary size. makes measuring easy!
-        const mainColumnHeader = this.quadrantRefs[QuadrantType.TOP].columnHeader;
-        return mainColumnHeader == null ? 0 : mainColumnHeader.clientHeight;
+        const topColumnHeader = this.quadrantRefs[QuadrantType.TOP].columnHeader;
+        return topColumnHeader == null ? 0 : topColumnHeader.clientHeight;
     }
 
     private shouldRenderLeftQuadrants(props: ITableQuadrantStackProps = this.props) {
