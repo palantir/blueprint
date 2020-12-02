@@ -1827,20 +1827,18 @@ describe("<Table>", function (this) {
             component.simulate("mousedown").simulate("mouseup");
         }
 
-        function find(selector: string) {
-            return table.find(`.${Classes.TABLE_QUADRANT_MAIN} ${selector}`);
-        }
-
         function clickRowHeaderCell() {
-            click(find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(CELL_INDEX));
+            const selector = `.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
+            click(table.find(selector).at(CELL_INDEX));
         }
 
         function clickColumnHeaderCell() {
-            click(find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(CELL_INDEX));
+            const selector = `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+            click(table.find(selector).at(CELL_INDEX));
         }
 
         function clickTableMenu() {
-            click(find(`.${Classes.TABLE_MENU}`));
+            click(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_MENU}`));
         }
 
         function expectNoSelectedRegions() {
