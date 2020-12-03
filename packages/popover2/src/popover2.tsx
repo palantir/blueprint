@@ -23,7 +23,7 @@ import {
     ResizeSensor,
     Utils,
 } from "@blueprintjs/core";
-import { State } from "@popperjs/core";
+import { State as PopperState } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
@@ -42,11 +42,14 @@ export const PopoverInteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
-export interface IPopover2TargetProps extends React.HTMLProps<HTMLElement> {
+/**
+ * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
+ */
+export interface IPopover2TargetProps {
     ref: React.Ref<any>;
 }
 
-export interface IPopover2Props extends IPopover2SharedProps {
+export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends IPopover2SharedProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
     /**
@@ -76,7 +79,7 @@ export interface IPopover2Props extends IPopover2SharedProps {
      */
     popoverRef?: (ref: HTMLElement | null) => void;
 
-    renderTarget: (props: IPopover2TargetProps) => JSX.Element;
+    renderTarget: (props: IPopover2TargetProps & TProps) => JSX.Element;
 }
 
 export interface IPopover2State {
@@ -85,7 +88,10 @@ export interface IPopover2State {
     hasDarkParent: boolean;
 }
 
-export class Popover2 extends AbstractPureComponent2<IPopover2Props, IPopover2State> {
+/**
+ * T: target props inteface
+ */
+export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
     private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
@@ -142,6 +148,9 @@ export class Popover2 extends AbstractPureComponent2<IPopover2Props, IPopover2St
     // element on the same page.
     private lostFocusOnSamePage = true;
 
+    // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
+    private popperScheduleUpdate?: () => Promise<Partial<PopperState>>;
+
     private isControlled = () => this.props.isOpen !== undefined;
     private isArrowEnabled = () => {
         // TODO(adahiya)
@@ -157,7 +166,7 @@ export class Popover2 extends AbstractPureComponent2<IPopover2Props, IPopover2St
         );
     };
 
-    private getIsOpen(props: IPopover2Props) {
+    private getIsOpen(props: IPopover2Props<T>) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {
             return false;
@@ -173,7 +182,7 @@ export class Popover2 extends AbstractPureComponent2<IPopover2Props, IPopover2St
 
         return (
             <Manager>
-                <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>,
+                <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
                 <Overlay
                     autoFocus={this.props.autoFocus}
                     backdropClassName={Classes.POPOVER2_BACKDROP}
@@ -197,6 +206,7 @@ export class Popover2 extends AbstractPureComponent2<IPopover2Props, IPopover2St
                     <Popper
                         innerRef={this.refHandlers.popover}
                         placement={this.props.placement}
+                        strategy="fixed"
                         modifiers={this.getPopperModifiers()}
                     >
                         {this.renderPopover}
@@ -210,7 +220,7 @@ export class Popover2 extends AbstractPureComponent2<IPopover2Props, IPopover2St
         this.updateDarkParent();
     }
 
-    public componentDidUpdate(props: IPopover2Props, state: IPopover2State) {
+    public componentDidUpdate(props: IPopover2Props<T>, state: IPopover2State) {
         super.componentDidUpdate(props, state);
         this.updateDarkParent();
 
@@ -227,16 +237,58 @@ export class Popover2 extends AbstractPureComponent2<IPopover2Props, IPopover2St
         }
     }
 
+    /**
+     * Instance method to instruct the `Popover` to recompute its position.
+     *
+     * This method should only be used if you are updating the target in a way
+     * that does not cause it to re-render, such as changing its _position_
+     * without changing its _size_ (since `Popover` already repositions when it
+     * detects a resize).
+     */
+    public reposition = () => this.popperScheduleUpdate?.();
+
     private renderTarget = (referenceProps: ReferenceChildrenProps) => {
         const { renderTarget } = this.props;
-        return renderTarget({
+        const { isOpen } = this.state;
+        const isControlled = this.isControlled();
+        const isHoverInteractionKind = this.isHoverInteractionKind();
+
+        const targetProps = isHoverInteractionKind
+            ? {
+                  // HOVER handlers
+                  onBlur: this.handleTargetBlur,
+                  onFocus: this.handleTargetFocus,
+                  onMouseEnter: this.handleMouseEnter,
+                  onMouseLeave: this.handleMouseLeave,
+              }
+            : {
+                  // CLICK needs only one handler
+                  onClick: this.handleTargetClick,
+              };
+
+        const target = renderTarget({
+            className: classNames(Classes.POPOVER2_TARGET, {
+                [Classes.POPOVER2_OPEN]: isOpen,
+                // this class is mainly useful for button targets; we should only apply it for uncontrolled popovers
+                // when they are opened by a user interaction
+                [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+            }),
+            // force disable single Tooltip child when popover is open (BLUEPRINT-552)
+            // TODO(adahiya)
+            // disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
             ref: referenceProps.ref,
+            ...((targetProps as unknown) as T),
         });
+
+        return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
         const { usePortal, interactionKind } = this.props;
         const { transformOrigin } = this.state;
+
+        // Need to update our reference to this on every render as it will change.
+        this.popperScheduleUpdate = popperProps.update;
 
         const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class

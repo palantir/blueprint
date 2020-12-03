@@ -24,6 +24,7 @@ import {
     FormGroup,
     H5,
     HTMLSelect,
+    IButtonProps,
     Intent,
     Label,
     Menu,
@@ -43,7 +44,7 @@ import {
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
-import { IPopover2TargetProps, Popover2, PopperBoundary } from "@blueprintjs/popover2";
+import { Popover2, PopperBoundary } from "@blueprintjs/popover2";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
@@ -142,17 +143,16 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
-                    <Popover2
+                    <Popover2<IButtonProps>
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
                         enforceFocus={false}
                         isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
                         content={this.getContents(exampleIndex)}
-                        renderTarget={this.renderTarget}
-                    >
-                        <Button intent={Intent.PRIMARY} text="Popover target" />
-                    </Popover2>
+                        // tslint:disable-next-line jsx-no-lambda
+                        renderTarget={props => <Button intent={Intent.PRIMARY} text="Popover target" {...props} />}
+                    />
                     <p>
                         Scroll around this container to experiment
                         <br />
@@ -161,10 +161,6 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                 </div>
             </Example>
         );
-    }
-
-    private renderTarget(props: IPopover2TargetProps) {
-        return <Button intent={Intent.PRIMARY} text="Popover target" {...props} />;
     }
 
     private renderOptions() {
