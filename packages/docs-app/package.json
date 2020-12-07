@@ -30,22 +30,22 @@
         "classnames": "^2.2",
         "dom4": "^2.1.5",
         "downloadjs": "^1.4.7",
-        "moment": "^2.29.0",
+        "moment": "^2.29.1",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.1",
         "tslib": "~1.13.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.4.0",
         "@blueprintjs/webpack-build-scripts": "^1.1.0",
-        "@types/chroma-js": "^2.1.0",
+        "@types/chroma-js": "^2.1.2",
         "@types/downloadjs": "^1.4.2",
-        "copy-webpack-plugin": "^6.1.1",
+        "copy-webpack-plugin": "^6.4.0",
         "npm-run-all": "^4.1.5",
-        "webpack-cli": "^3.3.12",
+        "webpack-cli": "^4.2.0",
         "webpack-dev-server": "^3.11.0"
     },
     "repository": {
