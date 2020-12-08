@@ -32,7 +32,7 @@ export const TypescriptExample: React.FunctionComponent<ITag & IProps> = (
     }
     const member = typescript[value];
     if (member === undefined) {
-        throw new Error(`Unknown @interface ${name}`);
+        throw new Error(`Unknown @interface ${value}`);
     } else if (isTsClass(member) || isTsInterface(member)) {
         return <InterfaceTable className={className} data={member} title="Props" />;
     } else if (isTsEnum(member)) {
@@ -40,7 +40,7 @@ export const TypescriptExample: React.FunctionComponent<ITag & IProps> = (
     } else if (isTsTypeAlias(member)) {
         return <TypeAliasTable className={className} data={member} />;
     } else {
-        throw new Error(`"@interface ${name}": unknown member kind "${(member as any).kind}"`);
+        throw new Error(`"@interface ${value}": unknown member kind "${(member as any).kind}"`);
     }
 };
 TypescriptExample.contextTypes = DocumentationContextTypes;
