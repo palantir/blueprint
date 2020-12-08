@@ -70,6 +70,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
             </>
         );
 
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={options} {...this.props}>
                 <CollapsibleList
@@ -87,6 +88,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
                 </CollapsibleList>
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     private renderBreadcrumb(props: IMenuItemProps) {

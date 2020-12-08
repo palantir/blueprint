@@ -46,18 +46,15 @@ if (!IS_PRODUCTION) {
     );
 }
 
-const extractPlugin = {
-    loader: MiniCssExtractPlugin.loader,
-    options: {
-        esModule: true,
-    },
-};
-
 // Module loaders for .scss files, used in reverse order:
 // compile Sass, apply PostCSS, interpret CSS as modules.
 const scssLoaders = [
     // Only extract CSS to separate file in production mode.
-    IS_PRODUCTION ? extractPlugin : require.resolve("style-loader"),
+    IS_PRODUCTION
+        ? {
+              loader: MiniCssExtractPlugin.loader,
+          }
+        : require.resolve("style-loader"),
     {
         loader: require.resolve("css-loader"),
         options: {
