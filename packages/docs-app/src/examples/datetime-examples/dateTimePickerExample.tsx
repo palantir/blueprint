@@ -27,6 +27,7 @@ export class DateTimePickerExample extends React.PureComponent<IExampleProps, { 
     public render() {
         return (
             <Example options={false} {...this.props}>
+                {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateTimePicker
                     className={Classes.ELEVATION_1}
                     value={this.state.date}
