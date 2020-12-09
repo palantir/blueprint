@@ -55,19 +55,19 @@ export interface IDocumentationContext {
      * Get the Documentalist data.
      * Use the `hasTypescriptData` and `hasKssData` typeguards before accessing those plugins' data.
      */
-    getDocsData(): IDocsData;
+    getDocsData: () => IDocsData;
 
     /** Render a block of Documentalist documentation to a React node. */
-    renderBlock(block: IBlock): React.ReactNode;
+    renderBlock: (block: IBlock) => React.ReactNode;
 
     /** Render a Documentalist Typescript type string to a React node. */
-    renderType(type: string): React.ReactNode;
+    renderType: (type: string) => React.ReactNode;
 
     /** Render the text of a "View source" link. */
-    renderViewSourceLinkText(entry: ITsDocBase): React.ReactNode;
+    renderViewSourceLinkText: (entry: ITsDocBase) => React.ReactNode;
 
     /** Open the API browser to the given member name. */
-    showApiDocs(name: string): void;
+    showApiDocs: (name: string) => void;
 }
 
 /**
