@@ -78,7 +78,7 @@ export const Utils = {
      * Note that this isn't technically mathematically equivalent to base 26 since
      * there is no zero element.
      */
-    toBase26Alpha(num: number): string {
+    toBase26Alpha: (num: number) => {
         let str = "";
         while (true) {
             const letter = num % 26;
@@ -96,7 +96,7 @@ export const Utils = {
      * Returns traditional spreadsheet-style cell names
      * e.g. (A1, B2, ..., Z44, AA1) with rows 1-indexed.
      */
-    toBase26CellName(rowIndex: number, columnIndex: number): string {
+    toBase26CellName: (rowIndex: number, columnIndex: number) => {
         return `${Utils.toBase26Alpha(columnIndex)}${rowIndex + 1}`;
     },
 
