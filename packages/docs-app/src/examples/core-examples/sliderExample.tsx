@@ -85,11 +85,11 @@ export class SliderExample extends React.PureComponent<IExampleProps, ISliderExa
         return (value: number) => this.setState({ [key]: value });
     }
 
-    private renderLabel2(val: number) {
+    private renderLabel2 = (val: number) => {
         return `${Math.round(val * 100)}%`;
-    }
+    };
 
-    private renderLabel3(val: number) {
+    private renderLabel3 = (val: number) => {
         return val === 0 ? `£${val}` : `£${val},000`;
-    }
+    };
 }

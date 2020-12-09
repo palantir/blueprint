@@ -28,8 +28,8 @@ import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTargetComponent extends React.Component {
     render(): React.ReactElement<any> | null | undefined;
-    renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element | undefined;
-    onContextMenuClose?(): void;
+    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
+    onContextMenuClose?: () => void;
 }
 
 export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetComponent>>(WrappedComponent: T) {

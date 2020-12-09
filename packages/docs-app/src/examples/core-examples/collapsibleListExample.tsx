@@ -91,13 +91,13 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
         /* eslint-enable deprecation/deprecation */
     }
 
-    private renderBreadcrumb(props: IMenuItemProps) {
+    private renderBreadcrumb = (props: IMenuItemProps) => {
         if (props.href != null) {
             return <a className={Classes.BREADCRUMB}>{props.text}</a>;
         } else {
             return <span className={classNames(Classes.BREADCRUMB, Classes.BREADCRUMB_CURRENT)}>{props.text}</span>;
         }
-    }
+    };
 
     private handleChangeCount = (visibleItemCount: number) => this.setState({ visibleItemCount });
 }

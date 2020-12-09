@@ -220,9 +220,9 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         }
     }
 
-    private renderToast(toast: IToastOptions) {
+    private renderToast = (toast: IToastOptions) => {
         return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
-    }
+    };
 
     private createToastOptions(props: IToastProps, key = `toast-${this.toastId++}`) {
         // clone the object before adding the key prop to avoid leaking the mutation
