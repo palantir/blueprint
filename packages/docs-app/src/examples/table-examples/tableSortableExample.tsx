@@ -166,20 +166,20 @@ class RecordSortableColumn extends AbstractSortableColumn {
         }
     }
 
-    private toWins(a: any) {
+    private toWins = (a: any) => {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
         return match == null ? -1 : parseInt(match[1], 10);
-    }
+    };
 
-    private toTies(a: any) {
+    private toTies = (a: any) => {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
         return match == null || match[3] == null ? -1 : parseInt(match[3], 10);
-    }
+    };
 
-    private toLosses(a: any) {
+    private toLosses = (a: any) => {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
         return match == null ? -1 : parseInt(match[5], 10);
-    }
+    };
 }
 
 export class TableSortableExample extends React.PureComponent<IExampleProps> {

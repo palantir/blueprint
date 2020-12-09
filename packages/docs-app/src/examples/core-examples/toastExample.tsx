@@ -153,10 +153,10 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         );
     }
 
-    private renderToastDemo(toast: IToastDemo, index: number) {
+    private renderToastDemo = (toast: IToastDemo, index: number) => {
         // tslint:disable-next-line:jsx-no-lambda
         return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
-    }
+    };
 
     private renderProgress(amount: number): IToastProps {
         return {
