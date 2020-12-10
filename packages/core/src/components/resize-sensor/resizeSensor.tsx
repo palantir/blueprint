@@ -55,6 +55,7 @@ export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
     private element: Element | null = null;
+
     private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
 
     public render() {

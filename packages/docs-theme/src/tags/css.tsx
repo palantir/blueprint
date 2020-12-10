@@ -27,9 +27,11 @@ export interface ICssExampleState {
 
 export class CssExample extends React.PureComponent<ITag> {
     public static contextTypes = DocumentationContextTypes;
+
     public static displayName = "Docs2.CssExample";
 
     public context: IDocumentationContext | undefined;
+
     public state: ICssExampleState = { modifiers: new Set<string>() };
 
     public render() {

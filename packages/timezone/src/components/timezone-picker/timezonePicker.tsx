@@ -129,6 +129,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
     };
 
     private timezoneItems: ITimezoneItem[];
+
     private initialTimezoneItems: ITimezoneItem[];
 
     constructor(props: ITimezonePickerProps, context?: any) {

@@ -609,6 +609,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     }
 
     public grid: Grid;
+
     public locator: Locator;
 
     private resizeSensorDetach: () => void;
@@ -623,10 +624,15 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     };
 
     private cellContainerElement: HTMLElement;
+
     private columnHeaderElement: HTMLElement;
+
     private quadrantStackInstance: TableQuadrantStack;
+
     private rootTableElement: HTMLElement;
+
     private rowHeaderElement: HTMLElement;
+
     private scrollContainerElement: HTMLElement;
 
     /*
@@ -1168,8 +1174,11 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     // ----------------
 
     private handleSelectionResizeUp = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.UP);
+
     private handleSelectionResizeDown = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.DOWN);
+
     private handleSelectionResizeLeft = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.LEFT);
+
     private handleSelectionResizeRight = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.RIGHT);
 
     private handleSelectionResize = (e: KeyboardEvent, direction: Direction) => {
@@ -1679,12 +1688,19 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     };
 
     private handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+
     private handleFocusMoveLeftInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "left");
+
     private handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+
     private handleFocusMoveRightInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "right");
+
     private handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+
     private handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
+
     private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+
     private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
 
     private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {

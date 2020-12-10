@@ -98,6 +98,7 @@ export interface IPopoverState {
 @polyfill
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
+
     private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
     public static defaultProps: IPopoverProps = {
@@ -127,6 +128,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
      * so this reference can be very useful for testing.
      */
     public popoverElement: HTMLElement | null = null;
+
     /** DOM element that contains the target. */
     public targetElement: HTMLElement | null = null;
 

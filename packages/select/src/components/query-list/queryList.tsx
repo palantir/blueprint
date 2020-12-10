@@ -149,6 +149,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     }
 
     private itemsParentRef?: HTMLElement | null;
+
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
     };

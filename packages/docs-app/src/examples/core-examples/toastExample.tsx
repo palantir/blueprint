@@ -109,13 +109,17 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     ];
 
     private toaster: Toaster;
+
     private refHandlers = {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };
+
     private progressToastInterval?: number;
 
     private handlePositionChange = handleValueChange((position: ToasterPosition) => this.setState({ position }));
+
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
 
     public render() {

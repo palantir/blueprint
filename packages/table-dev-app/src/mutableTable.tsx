@@ -313,6 +313,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
     private tableInstance: Table;
+
     private stateStore: LocalStore<IMutableTableState>;
 
     private refHandlers = {

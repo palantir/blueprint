@@ -70,7 +70,9 @@ export class Spinner extends AbstractPureComponent2<ISpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
     public static readonly SIZE_SMALL = 20;
+
     public static readonly SIZE_STANDARD = 50;
+
     public static readonly SIZE_LARGE = 100;
 
     public componentDidUpdate(prevProps: ISpinnerProps) {

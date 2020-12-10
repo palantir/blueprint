@@ -125,8 +125,11 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     };
 
     private TypedQueryList = QueryList.ofType<T>();
+
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private queryList: QueryList<T> | null = null;
+
     private refHandlers = {
         input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
             ? (this.inputEl = this.props.inputProps!.inputRef)

@@ -223,6 +223,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     };
 
     private inputElement: HTMLInputElement | null = null;
+
     private refHandlers = {
         input: (ref: HTMLInputElement) => {
             this.inputElement = ref;

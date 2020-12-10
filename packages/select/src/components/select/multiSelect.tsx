@@ -108,8 +108,11 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
     };
 
     private TypedQueryList = QueryList.ofType<T>();
+
     private input: HTMLInputElement | null = null;
+
     private queryList: QueryList<T> | null = null;
+
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;

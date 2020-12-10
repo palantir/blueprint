@@ -371,7 +371,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private incrementTime = (unit: TimeUnit) => this.shiftTime(unit, 1);
+
     private decrementTime = (unit: TimeUnit) => this.shiftTime(unit, -1);
+
     private shiftTime(unit: TimeUnit, amount: number) {
         if (this.props.disabled) {
             return;

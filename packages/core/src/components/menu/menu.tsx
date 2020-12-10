@@ -36,6 +36,7 @@ export class Menu extends AbstractPureComponent2<IMenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
     public static Divider = MenuDivider;
+
     public static Item = MenuItem;
 
     public render() {

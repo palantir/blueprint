@@ -295,6 +295,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     // keep throttled event callbacks around as instance variables, so we don't
     // have to continually reinstantiate them.
     private throttledHandleMainQuadrantScroll: (event: React.UIEvent<HTMLElement>) => any;
+
     private throttledHandleWheel: (event: React.WheelEvent<HTMLElement>) => any;
 
     // the interval instance that we maintain to enable debouncing of view

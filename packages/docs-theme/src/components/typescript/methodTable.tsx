@@ -31,6 +31,7 @@ export interface IMethodTableProps extends IProps {
 
 export class MethodTable extends React.PureComponent<IMethodTableProps> {
     public static contextTypes = DocumentationContextTypes;
+
     public static displayName = "Docs2.MethodTable";
 
     public context: IDocumentationContext;

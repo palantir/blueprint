@@ -65,12 +65,19 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     };
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+
     private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
+
     private handleResetChange = this.handleSwitchChange("resetOnSelect");
+
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
+
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
+
     private handleFillChange = this.handleSwitchChange("fill");
+
     private handleIntentChange = this.handleSwitchChange("intent");
+
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
     public render() {

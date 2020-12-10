@@ -41,8 +41,11 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
     };
 
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
+
     private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
+
     private toggleAlwaysRenderInput = handleBooleanChange(alwaysRenderInput => this.setState({ alwaysRenderInput }));
 
     public render() {
@@ -109,6 +112,7 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
     }
 
     private handleReportChange = (report: string) => this.setState({ report });
+
     private handleMaxLengthChange = (maxLength: number) => {
         if (maxLength === 0) {
             this.setState({ maxLength: undefined });

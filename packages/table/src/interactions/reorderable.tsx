@@ -96,6 +96,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
     };
 
     private selectedRegionStartIndex: number;
+
     private selectedRegionLength: number;
 
     public render() {

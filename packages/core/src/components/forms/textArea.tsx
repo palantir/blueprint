@@ -65,6 +65,7 @@ export interface ITextAreaState {
 @polyfill
 export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
+
     public state: ITextAreaState = {};
 
     // keep our own ref so that we can measure and set the height of the component on first mount

@@ -61,13 +61,21 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
     };
 
     private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
+
     private handleAddOnPasteChange = handleBooleanChange(addOnPaste => this.setState({ addOnPaste }));
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+
     private handleLeftIconChange = handleBooleanChange(leftIcon => this.setState({ leftIcon }));
+
     private handleTagIntentsChange = handleBooleanChange(tagIntents => this.setState({ tagIntents }));
+
     private handleTagMinimalChange = handleBooleanChange(tagMinimal => this.setState({ tagMinimal }));
 
     public render() {

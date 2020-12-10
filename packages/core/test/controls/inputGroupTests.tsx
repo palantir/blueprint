@@ -76,9 +76,11 @@ describe("<InputGroup>", () => {
             { value: string }
         > {
             public state = { value: this.props.initialValue };
+
             public render() {
                 return <InputGroup type="text" value={this.state.value} onChange={this.handleChange} />;
             }
+
             private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 this.setState({
                     value: this.props.transformInput(e.target.value),

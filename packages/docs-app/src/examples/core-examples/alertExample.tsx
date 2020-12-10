@@ -38,6 +38,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
     private toaster: IToaster;
 
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyCancel => this.setState({ canEscapeKeyCancel }));
+
     private handleOutsideClickChange = handleBooleanChange(click => this.setState({ canOutsideClickCancel: click }));
 
     public render() {
@@ -97,13 +98,16 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
     }
 
     private handleErrorOpen = () => this.setState({ isOpenError: true });
+
     private handleErrorClose = () => this.setState({ isOpenError: false });
 
     private handleMoveOpen = () => this.setState({ isOpen: true });
+
     private handleMoveConfirm = () => {
         this.setState({ isOpen: false });
         this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
     };
+
     private handleMoveCancel = () => this.setState({ isOpen: false });
 }
 

@@ -40,19 +40,31 @@ export interface IColumnIndices {
  */
 export class Grid {
     public static DEFAULT_BLEED = 3;
+
     public static DEFAULT_MAX_COLUMNS = 50;
+
     public static DEFAULT_MAX_ROWS = 200;
+
     public static DEFAULT_GHOST_HEIGHT = 20;
+
     public static DEFAULT_GHOST_WIDTH = 150;
 
     public numCols: number;
+
     public numRows: number;
+
     private bleed: number;
+
     private columnWidths: number[];
+
     private rowHeights: number[];
+
     private cumulativeColumnWidths: number[];
+
     private cumulativeRowHeights: number[];
+
     private ghostHeight: number;
+
     private ghostWidth: number;
 
     /**

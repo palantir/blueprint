@@ -182,7 +182,9 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     };
 
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private popoverContentEl: HTMLElement | null = null;
+
     // Last element in popover that is tabbable, and the one that triggers popover closure
     // when the user press TAB on it
     private lastTabbableElement: HTMLElement | null = null;

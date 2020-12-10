@@ -46,6 +46,8 @@ export class AlignmentSelect extends React.PureComponent<IAlignSelectProps> {
     }
 
     private handleAlignLeft = () => this.props.onChange(Alignment.LEFT);
+
     private handleAlignCenter = () => this.props.onChange(Alignment.CENTER);
+
     private handleAlignRight = () => this.props.onChange(Alignment.RIGHT);
 }

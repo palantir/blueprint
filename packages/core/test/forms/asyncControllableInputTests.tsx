@@ -108,11 +108,13 @@ describe("<AsyncControllableInput>", () => {
             it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
                 class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
                     public state = { value: this.props.initialValue };
+
                     public render() {
                         return (
                             <AsyncControllableInput type="text" value={this.state.value} onChange={this.handleChange} />
                         );
                     }
+
                     private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                         const newValue = e.target.value;
                         window.setTimeout(() => this.setState({ value: newValue }), 10);

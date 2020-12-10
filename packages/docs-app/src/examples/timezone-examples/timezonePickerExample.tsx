@@ -39,8 +39,11 @@ export class TimezonePickerExample extends React.PureComponent<IExampleProps, IT
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleShowLocalChange = handleBooleanChange(showLocalTimezone => this.setState({ showLocalTimezone }));
+
     private handleCustomChildChange = handleBooleanChange(showCustomTarget => this.setState({ showCustomTarget }));
+
     private handleFormatChange = handleValueChange((targetDisplayFormat: TimezoneDisplayFormat) =>
         this.setState({ targetDisplayFormat }),
     );

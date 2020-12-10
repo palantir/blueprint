@@ -210,6 +210,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     }
 
     private static openStack: Overlay[] = [];
+
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
 
     public state: IOverlayState = {
@@ -218,6 +219,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     public containerElement: HTMLElement | null = null;
+
     private refHandlers = {
         container: (ref: TransitionGroup) => (this.containerElement = findDOMNode(ref) as HTMLElement),
     };

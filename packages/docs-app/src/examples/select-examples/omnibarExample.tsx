@@ -49,9 +49,11 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
     };
 
     private handleAllowCreateChange = handleBooleanChange(allowCreate => this.setState({ allowCreate }));
+
     private handleResetChange = handleBooleanChange(resetOnSelect => this.setState({ resetOnSelect }));
 
     private toaster: Toaster;
+
     private refHandlers = {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };

@@ -40,7 +40,9 @@ export class Navbar extends AbstractPureComponent2<INavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
     public static Divider = NavbarDivider;
+
     public static Group = NavbarGroup;
+
     public static Heading = NavbarHeading;
 
     public render() {

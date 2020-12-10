@@ -54,14 +54,21 @@ export type Callback = () => void;
  */
 export class Batcher<T> {
     public static DEFAULT_ADD_LIMIT = 20;
+
     public static DEFAULT_UPDATE_LIMIT = 20;
+
     public static DEFAULT_REMOVE_LIMIT = 20;
+
     public static ARG_DELIMITER = "|";
 
     private currentObjects: Record<string, T> = {};
+
     private oldObjects: Record<string, T> = {};
+
     private batchArgs: Record<string, any[]> = {};
+
     private done = true;
+
     private callback: Callback;
 
     /**

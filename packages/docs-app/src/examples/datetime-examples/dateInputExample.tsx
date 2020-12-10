@@ -49,13 +49,19 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     };
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
+
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
+
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
+
     private toggleTimePrecision = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
+
     private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
         this.setState({ showTimeArrowButtons }),
     );
@@ -118,5 +124,6 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     }
 
     private handleDateChange = (date: Date | null) => this.setState({ date });
+
     private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
 }

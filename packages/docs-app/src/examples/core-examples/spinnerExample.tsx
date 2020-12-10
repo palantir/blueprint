@@ -35,6 +35,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
     };
 
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
+
     private handleModifierChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {
@@ -81,5 +82,6 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
     private renderLabel = (value: number) => value.toFixed(1);
 
     private handleValueChange = (value: number) => this.setState({ value });
+
     private handleSizeChange = (size: number) => this.setState({ size });
 }

@@ -164,6 +164,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     };
 
     private handleElements: Handle[] = [];
+
     private trackElement: HTMLElement | null = null;
 
     public getSnapshotBeforeUpdate(prevProps: IMultiSliderProps): null {

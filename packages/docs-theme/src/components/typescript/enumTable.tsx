@@ -31,6 +31,7 @@ export interface IEnumTableProps extends IProps {
 
 export class EnumTable extends React.PureComponent<IEnumTableProps> {
     public static contextTypes = DocumentationContextTypes;
+
     public static displayName = "Docs2.EnumTable";
 
     public context: IDocumentationContext;

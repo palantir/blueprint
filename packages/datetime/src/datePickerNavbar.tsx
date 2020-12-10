@@ -59,5 +59,6 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
     }
 
     private handleNextClick = () => this.props.onNextClick();
+
     private handlePreviousClick = () => this.props.onPreviousClick();
 }

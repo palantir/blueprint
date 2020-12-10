@@ -72,7 +72,10 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
 
     // eslint-disable @typescript-eslint/member-ordering
     private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 }

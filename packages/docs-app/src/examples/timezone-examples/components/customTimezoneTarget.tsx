@@ -72,5 +72,6 @@ export class CustomTimezonePickerTarget extends React.PureComponent<
     }
 
     private handleMouseEnter = () => this.setState({ isHovering: true });
+
     private handleMouseLeave = () => this.setState({ isHovering: false });
 }

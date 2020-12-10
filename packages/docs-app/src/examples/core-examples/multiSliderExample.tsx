@@ -53,10 +53,13 @@ export class MultiSliderExample extends React.PureComponent<IExampleProps, IMult
     };
 
     private toggleTrackFill = handleBooleanChange(showTrackFill => this.setState({ showTrackFill }));
+
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+
     private handleInteractionKindChange = handleValueChange((interactionKind: HandleInteractionKind) =>
         this.setState({ interactionKind }),
     );
+
     private handleShownIntentsChange = handleValueChange((shownIntents: ShownIntents) =>
         this.setState({ shownIntents }),
     );

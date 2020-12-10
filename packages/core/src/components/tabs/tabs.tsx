@@ -122,6 +122,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     }
 
     private tablistElement: HTMLDivElement | null = null;
+
     private refHandlers = {
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };

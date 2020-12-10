@@ -101,6 +101,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 @polyfill
 export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
+
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
@@ -109,7 +110,9 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     };
 
     public static readonly SIZE_SMALL = "360px";
+
     public static readonly SIZE_STANDARD = "50%";
+
     public static readonly SIZE_LARGE = "90%";
 
     private lastActiveElementBeforeOpened: Element | null | undefined;

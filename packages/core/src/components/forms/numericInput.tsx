@@ -228,6 +228,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";
+
     public static VALUE_ZERO = "0";
 
     public static defaultProps: INumericInputProps = {
@@ -272,6 +273,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     }
 
     private static CONTINUOUS_CHANGE_DELAY = 300;
+
     private static CONTINUOUS_CHANGE_INTERVAL = 100;
 
     // Value Helpers
@@ -310,11 +312,15 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
+
     private delta = 0;
+
     private inputElement: HTMLInputElement | null = null;
+
     private intervalId?: number;
 
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
+
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
 
     public render() {

@@ -113,6 +113,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
     };
 
     private handleChangeWidth = (width: number) => this.setState({ width });
+
     private handleChangeRenderCurrentAsInput = () =>
         this.setState({ renderCurrentAsInput: !this.state.renderCurrentAsInput });
 

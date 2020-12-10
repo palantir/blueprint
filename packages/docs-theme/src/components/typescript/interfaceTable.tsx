@@ -42,6 +42,7 @@ export interface IInterfaceTableProps extends IProps {
 /* eslint-disable @blueprintjs/html-components */
 export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
     public static contextTypes = DocumentationContextTypes;
+
     public static displayName = "Docs2.InterfaceTable";
 
     public context: IDocumentationContext;

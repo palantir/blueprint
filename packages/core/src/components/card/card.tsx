@@ -51,6 +51,7 @@ export interface ICardProps extends IProps, HTMLDivProps {
 @polyfill
 export class Card extends AbstractPureComponent2<ICardProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
+
     public static defaultProps: ICardProps = {
         elevation: Elevation.ZERO,
         interactive: false,

@@ -90,6 +90,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
+
     public static readonly SIZE_LARGE = 20;
 
     public render(): JSX.Element | null {

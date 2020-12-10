@@ -116,6 +116,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
         shouldDismissPopover: true,
         text: "",
     };
+
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
     public render() {

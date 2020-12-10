@@ -32,12 +32,17 @@ export class DragEvents {
     }
 
     private handler: IDragHandler;
+
     private element: HTMLElement;
 
     private activationCoordinates: IClientCoordinates;
+
     private doubleClickTimeoutToken: number;
+
     private isActivated: boolean;
+
     private isDragging: boolean;
+
     private lastCoordinates: IClientCoordinates;
 
     public attach(element: HTMLElement, handler: IDragHandler) {

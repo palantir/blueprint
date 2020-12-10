@@ -124,7 +124,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     private routeToPage: { [route: string]: string };
 
     private contentElement: HTMLElement;
+
     private navElement: HTMLElement;
+
     private refHandlers = {
         content: (ref: HTMLElement) => (this.contentElement = ref),
         nav: (ref: HTMLElement) => (this.navElement = ref),
@@ -291,6 +293,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     };
 
     private handleCloseNavigator = () => this.setState({ isNavigatorOpen: false });
+
     private handleOpenNavigator = () => this.setState({ isNavigatorOpen: true });
 
     private handleNavigation = (activeSectionId: string) => {
@@ -303,6 +306,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     };
 
     private handleNextSection = () => this.shiftSection(1);
+
     private handlePreviousSection = () => this.shiftSection(-1);
 
     private handleScroll = () => {
@@ -346,6 +350,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
 
     private handleApiBrowserOpen = (activeApiMember: string) =>
         this.setState({ activeApiMember, isApiBrowserOpen: true });
+
     private handleApiBrowserClose = () => this.setState({ isApiBrowserOpen: false });
 }
 

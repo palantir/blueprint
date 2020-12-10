@@ -110,6 +110,7 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
     public state: IInputGroupState = {};
 
     private leftElement: HTMLElement | null = null;
+
     private rightElement: HTMLElement | null = null;
 
     private refHandlers = {

@@ -39,8 +39,11 @@ export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps
     };
 
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {

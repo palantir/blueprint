@@ -82,6 +82,7 @@ class TextSortableColumn extends AbstractSortableColumn {
 
 class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
+
     private static TITLES: { [key: string]: number } = {
         J: 5, // Juryo
         K: 3, // Komusubi

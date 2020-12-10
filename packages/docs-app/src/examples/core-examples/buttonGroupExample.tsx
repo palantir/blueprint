@@ -40,9 +40,13 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
     };
 
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {

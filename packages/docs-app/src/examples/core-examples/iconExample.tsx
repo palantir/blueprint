@@ -36,7 +36,9 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
     };
 
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
+
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
 
     public render() {

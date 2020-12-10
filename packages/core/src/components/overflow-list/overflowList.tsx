@@ -137,6 +137,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
 
     /** A cache containing the widths of all elements being observed to detect growing/shrinking */
     private previousWidths = new Map<Element, number>();
+
     private spacer: Element | null = null;
 
     public componentDidMount() {

@@ -121,6 +121,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     };
 
     private didExpandSelectionOnActivate = false;
+
     private lastEmittedSelectedRegions: IRegion[];
 
     public render() {

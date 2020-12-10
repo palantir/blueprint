@@ -108,6 +108,7 @@ class FormatsTable extends React.Component {
     });
 
     private strings = Utils.times(FormatsTable.ROWS, () => "ABC " + Math.random() * 10000);
+
     private formatsTable: Table;
 
     public render() {
@@ -148,17 +149,21 @@ class FormatsTable extends React.Component {
     }
 
     private renderDefaultCell = (row: number) => <Cell>{this.strings[row]}</Cell>;
+
     private renderDefaultCellWrapped = (row: number) => <Cell wrapText={true}>{this.strings[row]}</Cell>;
+
     private renderJSONCell = (row: number) => (
         <Cell>
             <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
         </Cell>
     );
+
     private renderJSONCellWrappedText = (row: number) => (
         <Cell wrapText={true}>
             <JSONFormat preformatted={true}>{this.objects[row]}</JSONFormat>
         </Cell>
     );
+
     private renderJSONWrappedCell = (row: number) => (
         <Cell>
             <JSONFormat preformatted={false}>{this.objects[row]}</JSONFormat>
@@ -653,9 +658,13 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
     }
 
     private renderLetterCell = (row: number) => <Cell>{this.state.data[row].letter}</Cell>;
+
     private renderFruitCell = (row: number) => <Cell>{this.state.data[row].fruit}</Cell>;
+
     private renderAnimalCell = (row: number) => <Cell>{this.state.data[row].animal}</Cell>;
+
     private renderCountryCell = (row: number) => <Cell>{this.state.data[row].country}</Cell>;
+
     private renderCityCell = (row: number) => <Cell>{this.state.data[row].city}</Cell>;
 
     private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {

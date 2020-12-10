@@ -55,6 +55,7 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     };
 
     private handleElement: HTMLElement | null = null;
+
     private refHandlers = {
         handle: (el: HTMLSpanElement) => (this.handleElement = el),
     };

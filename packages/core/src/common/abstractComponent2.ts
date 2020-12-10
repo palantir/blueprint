@@ -25,8 +25,11 @@ import { isNodeEnv } from "./utils";
 export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
     // unsafe lifecycle methods
     public componentWillUpdate: never;
+
     public componentWillReceiveProps: never;
+
     public componentWillMount: never;
+
     // this should be static, not an instance method
     public getDerivedStateFromProps: never;
 
@@ -35,6 +38,7 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
 
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];
+
     private requestIds: number[] = [];
 
     constructor(props: P, context?: any) {

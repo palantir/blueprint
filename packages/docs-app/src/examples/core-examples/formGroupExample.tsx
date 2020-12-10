@@ -40,10 +40,15 @@ export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGr
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleHelperTextChange = handleBooleanChange(helperText => this.setState({ helperText }));
+
     private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
+
     private handleLabelChange = handleBooleanChange(label => this.setState({ label }));
+
     private handleRequiredLabelChange = handleBooleanChange(requiredLabel => this.setState({ requiredLabel }));
+
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {

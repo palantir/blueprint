@@ -38,6 +38,7 @@ export class BaseExample<S extends {}> extends React.Component<IBaseExampleProps
 
     // Can't put this in state, because the state typing is generic.
     private hasDelayedBeforeInitialRender = false;
+
     private hasCompletedInitialRender = false;
 
     public shouldComponentUpdate(nextProps: IBaseExampleProps, nextState: S) {

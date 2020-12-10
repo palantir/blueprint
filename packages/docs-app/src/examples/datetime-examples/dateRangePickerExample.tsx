@@ -83,7 +83,9 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
     };
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
+
     private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
+
     private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | undefined) =>
         this.setState({ timePrecision }),
     );
@@ -91,9 +93,13 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
     );
+
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
+
     private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
+
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
     private toggleContiguousCalendarMonths = handleBooleanChange(contiguousCalendarMonths => {
         this.setState({ contiguousCalendarMonths });
     });

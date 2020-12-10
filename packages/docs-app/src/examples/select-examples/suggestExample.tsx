@@ -62,12 +62,19 @@ export class SuggestExample extends React.PureComponent<IExampleProps, ISuggestE
     };
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+
     private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
+
     private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
+
     private handleMinimalChange = this.handleSwitchChange("minimal");
+
     private handleFillChange = this.handleSwitchChange("fill");
+
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
+
     private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
+
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {

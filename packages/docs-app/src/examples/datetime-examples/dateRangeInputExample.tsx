@@ -56,16 +56,25 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
     private toggleContiguous = handleBooleanChange(contiguous => {
         this.setState({ contiguousCalendarMonths: contiguous });
     });
+
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
     );
+
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
+
     private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
+
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
+
     private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
+
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
     private toggleTimePicker = handleBooleanChange(enableTimePicker => this.setState({ enableTimePicker }));
+
     private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
         this.setState({ showTimeArrowButtons }),
     );
@@ -142,5 +151,6 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
     }
 
     private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
+
     private handleRangeChange = (range: DateRange) => this.setState({ range });
 }

@@ -72,5 +72,6 @@ export class DocsIcon extends React.PureComponent<IDocsIconProps> {
     }
 
     private handleClick16 = () => downloadIconFile(this.props.iconName, 16);
+
     private handleClick20 = () => downloadIconFile(this.props.iconName, 20);
 }

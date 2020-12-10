@@ -156,7 +156,9 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     };
 
     private inputElement: HTMLInputElement | HTMLTextAreaElement | null = null;
+
     private valueElement: HTMLSpanElement | null = null;
+
     private refHandlers = {
         content: (spanElement: HTMLSpanElement | null) => {
             this.valueElement = spanElement;

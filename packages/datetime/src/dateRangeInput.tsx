@@ -238,7 +238,9 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
     private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private refHandlers = {
         endInputRef: isRefObject<HTMLInputElement>(this.props.endInputProps.inputRef)
             ? (this.endInputRef = this.props.endInputProps.inputRef)

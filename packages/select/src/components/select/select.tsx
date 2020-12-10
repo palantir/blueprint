@@ -90,8 +90,11 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
     private TypedQueryList = QueryList.ofType<T>();
 
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private queryList: QueryList<T> | null = null;
+
     private previousFocusedElement: HTMLElement | undefined;
+
     private refHandlers = {
         input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
             ? (this.inputEl = this.props.inputProps!.inputRef)
