@@ -43,6 +43,7 @@ export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 export interface ITimePickerProps extends IProps {
     /**
      * Whether to focus the first input when it opens initially.
+     *
      * @default false
      */
     autoFocus?: boolean;
@@ -55,6 +56,7 @@ export interface ITimePickerProps extends IProps {
 
     /**
      * Whether the time picker is non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -86,24 +88,28 @@ export interface ITimePickerProps extends IProps {
 
     /**
      * The precision of time the user can set.
+     *
      * @default TimePrecision.MINUTE
      */
     precision?: TimePrecision;
 
     /**
      * Whether all the text in each input should be selected on focus.
+     *
      * @default false
      */
     selectAllOnFocus?: boolean;
 
     /**
      * Whether to show arrows buttons for changing the time.
+     *
      * @default false
      */
     showArrowButtons?: boolean;
 
     /**
      * Whether to use a 12 hour format with an AM/PM dropdown.
+     *
      * @default false
      */
     useAmPm?: boolean;

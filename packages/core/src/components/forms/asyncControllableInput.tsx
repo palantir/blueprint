@@ -28,6 +28,7 @@ type InputValue = IAsyncControllableInputProps["value"];
 export interface IAsyncControllableInputState {
     /**
      * Whether we are in the middle of a composition event.
+     *
      * @default false
      */
     isComposing: boolean;
@@ -35,6 +36,7 @@ export interface IAsyncControllableInputState {
     /**
      * The source of truth for the input value. This is not updated during IME composition.
      * It may be updated by a parent component.
+     *
      * @default ""
      */
     value: InputValue;
@@ -46,6 +48,7 @@ export interface IAsyncControllableInputState {
 
     /**
      * Whether there is a pending update we are expecting from a parent component.
+     *
      * @default false
      */
     hasPendingUpdate: boolean;

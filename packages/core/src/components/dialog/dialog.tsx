@@ -34,6 +34,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * Dialog always has a backdrop so this prop is excluded from the public API.
+     *
      * @internal
      */
     hasBackdrop?: boolean;
@@ -48,12 +49,14 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Whether to show the close button in the dialog's header.
      * Note that the header will only be rendered if `title` is provided.
+     *
      * @default true
      */
     isCloseButtonShown?: boolean;
 
     /**
      * CSS styles to apply to the dialog.
+     *
      * @default {}
      */
     style?: React.CSSProperties;

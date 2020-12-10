@@ -44,6 +44,7 @@ export interface IResizeSensorProps {
      *
      * Only enable this prop if a parent element resizes in a way that does
      * not also cause the child element to resize.
+     *
      * @default false
      */
     observeParents?: boolean;

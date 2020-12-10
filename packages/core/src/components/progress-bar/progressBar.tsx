@@ -24,12 +24,14 @@ import { clamp } from "../../common/utils";
 export interface IProgressBarProps extends IProps, IIntentProps {
     /**
      * Whether the background should animate.
+     *
      * @default true
      */
     animate?: boolean;
 
     /**
      * Whether the background should be striped.
+     *
      * @default true
      */
     stripes?: boolean;

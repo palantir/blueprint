@@ -33,6 +33,7 @@ export interface IHTMLTableProps
 
     /**
      * Use small, condensed appearance for this element and all child elements.
+     *
      * @deprecated
      */
     small?: boolean;

@@ -63,12 +63,14 @@ export interface IToasterProps extends IProps {
      * Whether a toast should acquire application focus when it first opens.
      * This is disabled by default so that toasts do not interrupt the user's flow.
      * Note that `enforceFocus` is always disabled for `Toaster`s.
+     *
      * @default false
      */
     autoFocus?: boolean;
 
     /**
      * Whether pressing the `esc` key should clear all active toasts.
+     *
      * @default true
      */
     canEscapeKeyClear?: boolean;
@@ -79,12 +81,14 @@ export interface IToasterProps extends IProps {
      *
      * This prop is ignored by `Toaster.create()` as that method always appends a new element
      * to the container.
+     *
      * @default true
      */
     usePortal?: boolean;
 
     /**
      * Position of `Toaster` within its container.
+     *
      * @default Position.TOP
      */
     position?: ToasterPosition;
@@ -93,6 +97,7 @@ export interface IToasterProps extends IProps {
      * The maximum number of active toasts that can be displayed at once.
      *
      * When the limit is about to be exceeded, the oldest active toast is removed.
+     *
      * @default undefined
      */
     maxToasts?: number;

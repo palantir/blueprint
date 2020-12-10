@@ -39,6 +39,7 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
+     *
      * @default true
      */
     closeOnSelect?: boolean;
@@ -93,6 +94,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Whether the active item should be reset to the first matching item _when
      * the popover closes_. The query will also be reset to the empty string.
+     *
      * @default false
      */
     resetOnClose?: boolean;

@@ -36,6 +36,7 @@ export interface IButtonProps extends IActionProps, IElementRefProps<any> {
     /**
      * If set to `true`, the button will display in an active state.
      * This is equivalent to setting `className={Classes.ACTIVE}`.
+     *
      * @default false
      */
     active?: boolean;
@@ -45,6 +46,7 @@ export interface IButtonProps extends IActionProps, IElementRefProps<any> {
      * within the button. Passing `"left"` or `"right"` will align the button
      * text to that side and push `icon` and `rightIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
+     *
      * @default Alignment.CENTER
      */
     alignText?: Alignment;
@@ -58,6 +60,7 @@ export interface IButtonProps extends IActionProps, IElementRefProps<any> {
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.
      * The width of the button is not affected by the value of this prop.
+     *
      * @default false
      */
     loading?: boolean;
@@ -77,6 +80,7 @@ export interface IButtonProps extends IActionProps, IElementRefProps<any> {
     /**
      * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.
      * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
+     *
      * @default "button"
      */
     type?: "submit" | "reset" | "button";

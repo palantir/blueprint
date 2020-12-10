@@ -47,6 +47,7 @@ export interface IToastProps extends IProps, IIntentProps {
     /**
      * Milliseconds to wait before automatically dismissing toast.
      * Providing a value less than or equal to 0 will disable the timeout (this is discouraged).
+     *
      * @default 5000
      */
     timeout?: number;

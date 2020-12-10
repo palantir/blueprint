@@ -28,6 +28,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
      * By default, we omit stringifying native JavaScript strings since
      * `JSON.stringify` awkwardly adds double-quotes to the display value.
      * This behavior can be turned off by setting this boolean to `false`.
+     *
      * @default true
      */
     omitQuotesOnStrings?: boolean;

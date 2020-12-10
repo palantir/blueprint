@@ -31,6 +31,7 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
 
     /**
      * Whether the tab is disabled.
+     *
      * @default false
      */
     disabled?: boolean;

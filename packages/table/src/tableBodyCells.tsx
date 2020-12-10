@@ -59,6 +59,7 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
      * `RenderMode.BATCH_ON_UPDATE`, because there are actually multiple updates
      * that need to happen at higher levels before the table is considered fully
      * "mounted"; thus, we let higher components tell us when to switch modes.
+     *
      * @default RenderMode.BATCH
      */
     renderMode?: RenderMode.BATCH | RenderMode.NONE;

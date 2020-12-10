@@ -24,12 +24,14 @@ export interface ICollapseProps extends IProps {
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
+     *
      * @default "div"
      */
     component?: React.ElementType;
 
     /**
      * Whether the component is open or closed.
+     *
      * @default false
      */
     isOpen?: boolean;
@@ -37,6 +39,7 @@ export interface ICollapseProps extends IProps {
     /**
      * Whether the child components will remain mounted when the `Collapse` is closed.
      * Setting to true may improve performance by avoiding re-mounting children.
+     *
      * @default false
      */
     keepChildrenMounted?: boolean;
@@ -46,6 +49,7 @@ export interface ICollapseProps extends IProps {
      * the duration of the animation in CSS. Only set this prop if you override
      * Blueprint's default transitions with new transitions of a different
      * length.
+     *
      * @default 200
      */
     transitionDuration?: number;

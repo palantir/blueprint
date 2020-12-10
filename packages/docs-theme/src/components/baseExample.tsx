@@ -28,6 +28,7 @@ export interface IBaseExampleProps {
 /**
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
+ *
  * @deprecated
  */
 // eslint-disable-next-line @typescript-eslint/ban-types

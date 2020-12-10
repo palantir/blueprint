@@ -34,6 +34,7 @@ const TAB_SELECTOR = `.${Classes.TAB}`;
 export interface ITabsProps extends IProps {
     /**
      * Whether the selected tab indicator should animate its movement.
+     *
      * @default true
      */
     animate?: boolean;
@@ -41,6 +42,7 @@ export interface ITabsProps extends IProps {
     /**
      * Initial selected tab `id`, for uncontrolled usage.
      * Note that this prop refers only to `<Tab>` children; other types of elements are ignored.
+     *
      * @default first tab
      */
     defaultSelectedTabId?: TabId;
@@ -55,6 +57,7 @@ export interface ITabsProps extends IProps {
     /**
      * If set to `true`, the tab titles will display with larger styling.
      * This will apply large styles only to the tabs at this level, not to nested tabs.
+     *
      * @default false
      */
     large?: boolean;
@@ -63,6 +66,7 @@ export interface ITabsProps extends IProps {
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
      * This can be a performance enhancement when rendering many complex panels, but requires
      * careful support for unmounting and remounting.
+     *
      * @default false
      */
     renderActiveTabPanelOnly?: boolean;
@@ -76,6 +80,7 @@ export interface ITabsProps extends IProps {
 
     /**
      * Whether to show tabs stacked vertically on the left side.
+     *
      * @default false
      */
     vertical?: boolean;

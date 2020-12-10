@@ -23,6 +23,7 @@ import { KeyCombo } from "./keyCombo";
 export interface IHotkeyProps extends IProps {
     /**
      * Whether the hotkey should be triggerable when focused in a text input.
+     *
      * @default false
      */
     allowInInput?: boolean;
@@ -34,6 +35,7 @@ export interface IHotkeyProps extends IProps {
 
     /**
      * Whether the hotkey cannot be triggered.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -47,6 +49,7 @@ export interface IHotkeyProps extends IProps {
      * If `false`, the hotkey is active only when the target is focused. If
      * `true`, the hotkey can be triggered regardless of what component is
      * focused.
+     *
      * @default false
      */
     global?: boolean;
@@ -61,6 +64,7 @@ export interface IHotkeyProps extends IProps {
     /**
      * When `true`, invokes `event.preventDefault()` before the respective `onKeyDown` and
      * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
+     *
      * @default false
      */
     preventDefault?: boolean;
@@ -68,6 +72,7 @@ export interface IHotkeyProps extends IProps {
     /**
      * When `true`, invokes `event.stopPropagation()` before the respective `onKeyDown` and
      * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
+     *
      * @default false
      */
     stopPropagation?: boolean;

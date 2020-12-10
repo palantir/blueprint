@@ -70,6 +70,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     *
      * @default false
      */
     multiline?: boolean;
@@ -83,12 +84,14 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 
     /**
      * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
+     *
      * @default true
      */
     shouldDismissPopover?: boolean;
 
     /**
      * Name of the HTML tag that wraps the MenuItem.
+     *
      * @default "a"
      */
     tagName?: keyof JSX.IntrinsicElements;

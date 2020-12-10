@@ -34,6 +34,7 @@ export interface IPortalProps extends IProps {
 
     /**
      * The HTML element that children will be mounted to.
+     *
      * @default document.body
      */
     container?: HTMLElement;

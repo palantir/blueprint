@@ -37,6 +37,7 @@ export interface ISelectableProps {
      * If `false`, only a single region of a single column/row/cell may be
      * selected at one time. Using `ctrl` or `meta` key will have no effect,
      * and a mouse drag will select the current column/row/cell only.
+     *
      * @default false
      */
     enableMultipleSelection?: boolean;
@@ -69,6 +70,7 @@ export interface ISelectableProps {
 
     /**
      * An array containing the table's selection Regions.
+     *
      * @default []
      */
     selectedRegions?: IRegion[];
@@ -92,6 +94,7 @@ export interface IDragSelectableProps extends ISelectableProps {
 
     /**
      * Whether the selection behavior is disabled.
+     *
      * @default false
      */
     disabled?: boolean | ((event: MouseEvent) => boolean);

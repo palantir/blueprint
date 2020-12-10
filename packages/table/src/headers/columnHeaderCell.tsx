@@ -69,6 +69,7 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
 
     /**
      * The icon name or element for the header's menu button.
+     *
      * @default "chevron-down"
      */
     menuIcon?: IconName | JSX.Element;

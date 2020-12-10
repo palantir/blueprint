@@ -67,6 +67,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
     /**
      * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
+     *
      * @default "Search..."
      */
     placeholder?: string;

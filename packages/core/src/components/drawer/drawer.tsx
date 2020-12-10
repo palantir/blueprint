@@ -37,6 +37,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Whether to show the close button in the dialog's header.
      * Note that the header will only be rendered if `title` is provided.
+     *
      * @default true
      */
     isCloseButtonShown?: boolean;
@@ -50,6 +51,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Position of a drawer. All angled positions will be casted into pure positions
      * (TOP, BOTTOM, LEFT or RIGHT).
+     *
      * @default Position.RIGHT
      */
     position?: Position;
@@ -69,6 +71,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * CSS styles to apply to the dialog.
+     *
      * @default {}
      */
     style?: React.CSSProperties;
@@ -88,6 +91,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Whether the drawer should appear with vertical styling.
      * It will be ignored if `position` prop is set
+     *
      * @default false
      * @deprecated use `position` instead
      */

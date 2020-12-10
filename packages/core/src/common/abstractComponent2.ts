@@ -58,6 +58,7 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
     /**
      * Request an animation frame and remember its ID.
      * All pending requests will be canceled when component unmounts.
+     *
      * @returns a "cancel" function that will cancel the request when invoked.
      */
     public requestAnimationFrame(callback: () => void) {
@@ -69,6 +70,7 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
     /**
      * Set a timeout and remember its ID.
      * All stored timeouts will be cleared when component unmounts.
+     *
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {

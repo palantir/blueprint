@@ -36,12 +36,14 @@ MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 export interface ISliderBaseProps extends IProps, IIntentProps {
     /**
      * Whether the slider is non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
 
     /**
      * Increment between successive labels. Must be greater than zero.
+     *
      * @default inferred (if labelStepSize is undefined)
      */
     labelStepSize?: number;
@@ -56,18 +58,21 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * Number of decimal places to use when rendering label value. Default value is the number of
      * decimals used in the `stepSize` prop. This prop has _no effect_ if you supply a custom
      * `labelRenderer` callback.
+     *
      * @default inferred from stepSize
      */
     labelPrecision?: number;
 
     /**
      * Maximum value of the slider.
+     *
      * @default 10
      */
     max?: number;
 
     /**
      * Minimum value of the slider.
+     *
      * @default 0
      */
     min?: number;
@@ -75,12 +80,14 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
     /**
      * Whether a solid bar should be rendered on the track between current and initial values,
      * or between handles for `RangeSlider`.
+     *
      * @default true
      */
     showTrackFill?: boolean;
 
     /**
      * Increment between successive values; amount by which the handle moves. Must be greater than zero.
+     *
      * @default 1
      */
     stepSize?: number;
@@ -89,12 +96,14 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * Callback to render a single label. Useful for formatting numbers as currency or percentages.
      * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
      * If `false`, labels will not be shown.
+     *
      * @default true
      */
     labelRenderer?: boolean | ((value: number) => string | JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
+     *
      * @default false
      */
     vertical?: boolean;

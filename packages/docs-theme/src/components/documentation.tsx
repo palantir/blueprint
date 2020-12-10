@@ -80,6 +80,7 @@ export interface IDocumentationProps extends IProps {
     /**
      * Callback invoked to render "View source" links in Typescript interfaces.
      * The `href` of the link will be `entry.sourceUrl`.
+     *
      * @default "View source"
      */
     renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
@@ -98,6 +99,7 @@ export interface IDocumentationProps extends IProps {
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
+     *
      * @default document.documentElement
      */
     scrollParent?: HTMLElement;

@@ -56,6 +56,7 @@ export interface IReorderableProps {
 
     /**
      * An array containing the table's selection Regions.
+     *
      * @default []
      */
     selectedRegions?: IRegion[];
@@ -64,6 +65,7 @@ export interface IReorderableProps {
 export interface IDragReorderable extends IReorderableProps {
     /**
      * Whether the reordering behavior is disabled.
+     *
      * @default false
      */
     disabled?: boolean | ((event: MouseEvent) => boolean);

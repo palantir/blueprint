@@ -30,6 +30,7 @@ export interface IDateShortcutBase {
      * times as well as the dates. By default, time components of a shortcut are
      * ignored; clicking a shortcut takes the date components of the `dateRange`
      * and combines them with the currently selected time.
+     *
      * @default false
      */
     includeTime?: boolean;
@@ -62,6 +63,7 @@ export interface IShortcutsProps {
     /**
      * The DatePicker component reuses this component for a single date.
      * This changes the default shortcut labels and affects which shortcuts are used.
+     *
      * @default false
      */
     useSingleDateShortcuts?: boolean;

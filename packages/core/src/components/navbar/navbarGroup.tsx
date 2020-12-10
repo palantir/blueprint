@@ -24,6 +24,7 @@ export interface INavbarGroupProps extends IProps, HTMLDivProps {
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.
+     *
      * @default Alignment.LEFT
      */
     align?: Alignment;

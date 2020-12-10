@@ -48,6 +48,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
 
     /**
      * Enables/disables the reordering interaction.
+     *
      * @internal
      * @default false
      */
@@ -55,6 +56,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
 
     /**
      * Enables/disables the resize interaction.
+     *
      * @default true
      */
     isResizable?: boolean;
@@ -67,6 +69,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     /**
      * If true, all header cells render their loading state except for those
      * who have their `loading` prop explicitly set to false.
+     *
      * @default false;
      */
     loading?: boolean;

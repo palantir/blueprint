@@ -52,6 +52,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     /**
      * HTML tag for the two wrapper elements. If rendering a `<Spinner>` inside
      * an `<svg>`, change this to an SVG element like `"g"`.
+     *
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;

@@ -24,6 +24,7 @@ export class DragEvents {
      * event to any existing state. For example, holding CTRL before dragging may select another
      * region in addition to an existing one, while the absence of a modifier key may clear the
      * existing selection first.
+     *
      * @param event the mouse event for the drag interaction
      */
     public static isAdditive(event: MouseEvent) {

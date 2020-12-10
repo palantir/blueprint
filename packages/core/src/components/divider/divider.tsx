@@ -24,6 +24,7 @@ import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement> {
     /**
      * HTML tag to use for element.
+     *
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;

@@ -77,6 +77,7 @@ export interface ITableQuadrantStackProps extends IProps {
 
     /**
      * Whether horizontal scrolling is currently disabled.
+     *
      * @default false
      */
     isHorizontalScrollDisabled?: boolean;
@@ -94,6 +95,7 @@ export interface ITableQuadrantStackProps extends IProps {
 
     /**
      * Whether vertical scrolling is currently disabled.
+     *
      * @default false
      */
     isVerticalScrollDisabled?: boolean;
@@ -199,6 +201,7 @@ export interface ITableQuadrantStackProps extends IProps {
      * Whether "scroll" and "wheel" events should be throttled using
      * requestAnimationFrame. Disabling this can be useful for unit testing,
      * because tests can then be synchronous.
+     *
      * @default true
      */
     throttleScrolling?: boolean;
@@ -208,6 +211,7 @@ export interface ITableQuadrantStackProps extends IProps {
      * synchronizing quadrant sizes and offsets after the user has stopped
      * scrolling. If this value is negative, the updates will happen
      * synchronously (this is helpful for unit testing).
+     *
      * @default 500
      */
     viewSyncDelay?: number;

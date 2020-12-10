@@ -35,6 +35,7 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
     /**
      * Whether the user has made a selection in the input. This will affect the component's
      * text styling. Make sure to set a non-empty value for the text prop as well.
+     *
      * @default false
      */
     hasSelection?: boolean;
@@ -65,12 +66,14 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
 
     /**
      * The text to display.
+     *
      * @default "Choose file..."
      */
     text?: React.ReactNode;
 
     /**
      * The button text.
+     *
      * @default "Browse"
      */
     buttonText?: string;

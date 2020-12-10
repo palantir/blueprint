@@ -25,6 +25,7 @@ export type IIndexedResizeCallback = (index: number, size: number) => void;
 export interface IResizableProps extends IProps, ILockableLayout {
     /**
      * Enables/disables the resize interaction for the column.
+     *
      * @default true
      */
     isResizable?: boolean;

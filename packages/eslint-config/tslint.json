@@ -8,10 +8,6 @@
         "jsx-no-lambda": true,
         "jsx-no-string-ref": true,
         "jsx-self-close": true,
-        "no-invalid-this": {
-            "options": ["check-function-in-method"]
-        },
-        "no-unnecessary-callback-wrapper": true,
         "no-submodule-imports": {
             "options": [
                 "core-js",

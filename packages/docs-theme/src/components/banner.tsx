@@ -24,6 +24,7 @@ export interface IBannerProps extends IProps {
 
     /**
      * Intent color of banner.
+     *
      * @default Intent.PRIMARY
      */
     intent?: Intent;

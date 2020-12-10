@@ -61,6 +61,7 @@ export interface IIconProps extends IIntentProps, IProps {
     /**
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
      * images, and chooses the appropriate resolution based on this prop.
+     *
      * @default Icon.SIZE_STANDARD = 16
      */
     iconSize?: number;
@@ -70,6 +71,7 @@ export interface IIconProps extends IIntentProps, IProps {
 
     /**
      * HTML tag to use for the rendered element.
+     *
      * @default "span"
      */
     tagName?: keyof JSX.IntrinsicElements;
