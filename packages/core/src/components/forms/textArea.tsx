@@ -82,6 +82,8 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
 
     public componentDidMount() {
         if (this.props.growVertically && this.textareaRef !== null) {
+            // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
+            /* eslint-disable-next-line react/no-did-mount-set-state */
             this.setState({
                 height: getRef(this.textareaRef)!.scrollHeight,
             });

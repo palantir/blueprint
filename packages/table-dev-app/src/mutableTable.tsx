@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable react/jsx-no-bind */
+
 import {
     Button,
     Classes,

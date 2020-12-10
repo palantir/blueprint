@@ -182,6 +182,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
                         inputRef={this.refHandlers.input}
                         inputProps={inputProps}
                         inputValue={listProps.query}
+                        /* eslint-disable-next-line react/jsx-no-bind */
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
                         onRemove={this.handleTagRemove}

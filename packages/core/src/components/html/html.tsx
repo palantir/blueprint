@@ -23,6 +23,7 @@ function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
 ): React.FunctionComponent<React.HTMLProps<E> & IElementRefProps<E>> {
+    /* eslint-disable-next-line react/display-name */
     return props => {
         const { className, elementRef, ...htmlProps } = props;
         return React.createElement(tagName, {

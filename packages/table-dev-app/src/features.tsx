@@ -15,7 +15,7 @@
  */
 
 // tslint:disable object-literal-sort-keys
-/* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file, react/display-name, react/jsx-no-bind, react/no-did-mount-set-state */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";

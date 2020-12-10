@@ -18,5 +18,25 @@
     "import/order": "off",
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": "off",
-    "jsdoc/newline-after-description": "error"
+    "jsdoc/newline-after-description": "error",
+    "react/display-name": "error",
+    "react/jsx-boolean-value": ["error", "always"],
+    "react/jsx-key": [
+        "error",
+        {
+            "checkFragmentShorthand": true
+        }
+    ],
+    "react/jsx-no-bind": [
+        "error",
+        {
+            "ignoreDOMComponents": true,
+            "ignoreRefs": true
+        }
+    ],
+    "react/no-did-mount-set-state": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-string-refs": "error",
+    "react/self-closing-comp": "error"
 }

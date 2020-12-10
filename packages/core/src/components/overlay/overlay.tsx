@@ -221,6 +221,8 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     public containerElement: HTMLElement | null = null;
 
     private refHandlers = {
+        // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
+        /* eslint-disable-next-line react/no-find-dom-node */
         container: (ref: TransitionGroup) => (this.containerElement = findDOMNode(ref) as HTMLElement),
     };
 

@@ -100,6 +100,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         }
         this.portalElement = this.createContainerElement();
         this.props.container.appendChild(this.portalElement);
+        /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();

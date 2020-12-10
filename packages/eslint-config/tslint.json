@@ -1,13 +1,6 @@
 {
-    "extends": ["tslint-react"],
     "defaultSeverity": "error",
     "rules": {
-        "jsx-boolean-value": true,
-        "jsx-key": true,
-        "jsx-no-bind": true,
-        "jsx-no-lambda": true,
-        "jsx-no-string-ref": true,
-        "jsx-self-close": true,
         "no-submodule-imports": {
             "options": [
                 "core-js",
