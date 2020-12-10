@@ -23,7 +23,7 @@ const eslintPluginRules = require("./eslint-plugin-rules.json");
  * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
  */
 module.exports = {
-    plugins: ["@blueprintjs", "import", "jsdoc"],
+    plugins: ["@blueprintjs", "header", "import", "jsdoc"],
     extends: ["plugin:@blueprintjs/recommended", "plugin:import/typescript"],
     parserOptions: { ecmaVersion: 2017 },
     rules: {
