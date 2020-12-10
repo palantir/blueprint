@@ -35,6 +35,7 @@
         }
     ],
     "@typescript-eslint/no-this-alias": "error",
+    "@typescript-eslint/no-unnecessary-type-constraint": "error",
     "@typescript-eslint/no-unused-expressions": "error",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-var-requires": "error",
