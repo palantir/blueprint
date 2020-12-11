@@ -21,7 +21,6 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
-
 import { ITabProps, Tab, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
@@ -34,6 +33,7 @@ const TAB_SELECTOR = `.${Classes.TAB}`;
 export interface ITabsProps extends IProps {
     /**
      * Whether the selected tab indicator should animate its movement.
+     *
      * @default true
      */
     animate?: boolean;
@@ -41,6 +41,7 @@ export interface ITabsProps extends IProps {
     /**
      * Initial selected tab `id`, for uncontrolled usage.
      * Note that this prop refers only to `<Tab>` children; other types of elements are ignored.
+     *
      * @default first tab
      */
     defaultSelectedTabId?: TabId;
@@ -55,6 +56,7 @@ export interface ITabsProps extends IProps {
     /**
      * If set to `true`, the tab titles will display with larger styling.
      * This will apply large styles only to the tabs at this level, not to nested tabs.
+     *
      * @default false
      */
     large?: boolean;
@@ -63,6 +65,7 @@ export interface ITabsProps extends IProps {
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
      * This can be a performance enhancement when rendering many complex panels, but requires
      * careful support for unmounting and remounting.
+     *
      * @default false
      */
     renderActiveTabPanelOnly?: boolean;
@@ -76,6 +79,7 @@ export interface ITabsProps extends IProps {
 
     /**
      * Whether to show tabs stacked vertically on the left side.
+     *
      * @default false
      */
     vertical?: boolean;
@@ -117,6 +121,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     }
 
     private tablistElement: HTMLDivElement | null = null;
+
     private refHandlers = {
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };

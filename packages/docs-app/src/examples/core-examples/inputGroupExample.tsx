@@ -53,11 +53,15 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
+
     private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
+
     private handleFilterChange = handleStringChange(filterValue =>
         window.setTimeout(() => this.setState({ filterValue }), 10),
     );
+
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {

@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
+import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
+
 import {
     AbstractComponent2,
     DISPLAYNAME_PREFIX,
@@ -23,9 +27,6 @@ import {
     IProps,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
-import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";
@@ -122,18 +123,21 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
      * moves interaction triggers into it.
+     *
      * @default false
      */
     enableColumnInteractionBar?: boolean;
 
     /**
      * If `false`, disables reordering of columns.
+     *
      * @default false
      */
     enableColumnReordering?: boolean;
 
     /**
      * If `false`, disables resizing of columns.
+     *
      * @default true
      */
     enableColumnResizing?: boolean;
@@ -142,6 +146,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * If `true`, there will be a single "focused" cell at all times,
      * which can be used to interact with the table as though it is a
      * spreadsheet. When false, no such cell will exist.
+     *
      * @default false
      */
     enableFocusedCell?: boolean;
@@ -149,6 +154,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `true`, empty space in the table container will be filled with empty
      * cells instead of a blank background.
+     *
      * @default false
      */
     enableGhostCells?: boolean;
@@ -157,24 +163,28 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * If `false`, only a single region of a single column/row/cell may be
      * selected at one time. Using `ctrl` or `meta` key will have no effect,
      * and a mouse drag will select the current column/row/cell only.
+     *
      * @default true
      */
     enableMultipleSelection?: boolean;
 
     /**
      * If `false`, hides the row headers and settings menu.
+     *
      * @default true
      */
     enableRowHeader?: boolean;
 
     /**
      * If `false`, disables reordering of rows.
+     *
      * @default false
      */
     enableRowReordering?: boolean;
 
     /**
      * If `false`, disables resizing of rows.
+     *
      * @default true
      */
     enableRowResizing?: boolean;
@@ -189,6 +199,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * If `true`, selection state changes will cause the component to re-render.
      * If `false`, selection state is ignored when deciding to re-render.
+     *
      * @default false
      */
     forceRerenderOnSelectionChange?: boolean;
@@ -212,6 +223,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * The number of columns to freeze to the left side of the table, counting
      * from the leftmost column.
+     *
      * @default 0
      */
     numFrozenColumns?: number;
@@ -219,6 +231,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * The number of rows to freeze to the top of the table, counting from the
      * topmost row.
+     *
      * @default 0
      */
     numFrozenRows?: number;
@@ -290,6 +303,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * - `RenderMode.BATCH_ON_UPDATE`: renders cells synchronously on mount and
      *   in batches on update
      * - `RenderMode.NONE`: renders cells synchronously all at once
+     *
      * @default RenderMode.BATCH_ON_UPDATE
      */
     renderMode?: RenderMode;
@@ -596,6 +610,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     }
 
     public grid: Grid;
+
     public locator: Locator;
 
     private resizeSensorDetach: () => void;
@@ -610,10 +625,15 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     };
 
     private cellContainerElement: HTMLElement;
+
     private columnHeaderElement: HTMLElement;
+
     private quadrantStackInstance: TableQuadrantStack;
+
     private rootTableElement: HTMLElement;
+
     private rowHeaderElement: HTMLElement;
+
     private scrollContainerElement: HTMLElement;
 
     /*
@@ -1155,8 +1175,11 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     // ----------------
 
     private handleSelectionResizeUp = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.UP);
+
     private handleSelectionResizeDown = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.DOWN);
+
     private handleSelectionResizeLeft = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.LEFT);
+
     private handleSelectionResizeRight = (e: KeyboardEvent) => this.handleSelectionResize(e, Direction.RIGHT);
 
     private handleSelectionResize = (e: KeyboardEvent, direction: Direction) => {
@@ -1666,12 +1689,19 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     };
 
     private handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+
     private handleFocusMoveLeftInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "left");
+
     private handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+
     private handleFocusMoveRightInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "right");
+
     private handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+
     private handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
+
     private handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+
     private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
 
     private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {

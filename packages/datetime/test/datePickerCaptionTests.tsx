@@ -20,6 +20,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { HTMLSelect } from "@blueprintjs/core";
+
 import { Classes, IDatePickerLocaleUtils } from "../src";
 import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
 

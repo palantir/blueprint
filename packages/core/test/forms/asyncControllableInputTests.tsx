@@ -21,10 +21,9 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { sleep } from "../utils";
-
 // this component is not part of the public API, but we want to test its implementation in isolation
 import { AsyncControllableInput } from "../../src/components/forms/asyncControllableInput";
+import { sleep } from "../utils";
 
 describe("<AsyncControllableInput>", () => {
     describe("uncontrolled mode", () => {
@@ -108,11 +107,13 @@ describe("<AsyncControllableInput>", () => {
             it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
                 class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
                     public state = { value: this.props.initialValue };
+
                     public render() {
                         return (
                             <AsyncControllableInput type="text" value={this.state.value} onChange={this.handleChange} />
                         );
                     }
+
                     private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                         const newValue = e.target.value;
                         window.setTimeout(() => this.setState({ value: newValue }), 10);

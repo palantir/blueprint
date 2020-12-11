@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { MenuDivider } from "./menuDivider";
@@ -36,6 +37,7 @@ export class Menu extends AbstractPureComponent2<IMenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
     public static Divider = MenuDivider;
+
     public static Item = MenuItem;
 
     public render() {

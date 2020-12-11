@@ -43,6 +43,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
     };
 
     private toggleActiveOnly = handleBooleanChange((activePanelOnly: boolean) => this.setState({ activePanelOnly }));
+
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
 
     public render() {

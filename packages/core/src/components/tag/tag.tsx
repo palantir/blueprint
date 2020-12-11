@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import {
     AbstractPureComponent2,
     Classes,
@@ -38,12 +39,14 @@ export interface ITagProps
         React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Whether the tag should appear in an active state.
+     *
      * @default false
      */
     active?: boolean;
 
     /**
      * Whether the tag should take up the full width of its container.
+     *
      * @default false
      */
     fill?: boolean;
@@ -63,12 +66,14 @@ export interface ITagProps
 
     /**
      * Whether this tag should use large styles.
+     *
      * @default false
      */
     large?: boolean;
 
     /**
      * Whether this tag should use minimal styles.
+     *
      * @default false
      */
     minimal?: boolean;
@@ -78,6 +83,7 @@ export interface ITagProps
      * If false, a single line of text will be truncated with an ellipsis if
      * it overflows. Note that icons will be vertically centered relative to
      * multiline text.
+     *
      * @default false
      */
     multiline?: boolean;
@@ -99,6 +105,7 @@ export interface ITagProps
 
     /**
      * Whether this tag should have rounded ends.
+     *
      * @default false
      */
     round?: boolean;

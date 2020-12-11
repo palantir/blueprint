@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import ReactDayPicker from "react-day-picker";
 import * as sinon from "sinon";
 
+import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {

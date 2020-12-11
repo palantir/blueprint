@@ -15,12 +15,13 @@
  */
 
 import { assert } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { mount } from "enzyme";
+
 import { Classes, IToaster, Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 

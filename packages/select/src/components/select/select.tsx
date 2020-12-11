@@ -33,6 +33,7 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
+
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
@@ -40,6 +41,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
+     *
      * @default true
      */
     filterable?: boolean;
@@ -48,6 +50,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * Whether the component is non-interactive.
      * If true, the list's item renderer will not be called.
      * Note that you'll also need to disable the component's children, if appropriate.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -66,6 +69,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the active item should be reset to the first matching item _when
      * the popover closes_. The query will also be reset to the empty string.
+     *
      * @default false
      */
     resetOnClose?: boolean;
@@ -87,8 +91,11 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
     private TypedQueryList = QueryList.ofType<T>();
 
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private queryList: QueryList<T> | null = null;
+
     private previousFocusedElement: HTMLElement | undefined;
+
     private refHandlers = {
         input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
             ? (this.inputEl = this.props.inputProps!.inputRef)

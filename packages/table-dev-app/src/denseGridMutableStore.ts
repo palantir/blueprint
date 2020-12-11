@@ -28,8 +28,11 @@ type Data<T> = Array<IDataRow<T>>;
 
 export class DenseGridMutableStore<T> {
     private data: Data<T>;
+
     private columnNameDict: IColumnNameDict<T>;
+
     private orderedColumnKeys: string[];
+
     private DEFAULT_CELL_VALUE: T = undefined;
 
     public constructor() {

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";

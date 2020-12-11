@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { IProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
+
+import { IProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
 export interface IFileMenuProps extends IProps {
     shouldDismissPopover?: boolean;

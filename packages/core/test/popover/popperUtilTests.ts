@@ -16,6 +16,7 @@
 
 import { expect } from "chai";
 import { Data, Placement, Position } from "popper.js";
+
 import { arrowOffsetModifier, getAlignment, getOppositePosition } from "../../src/components/popover/popperUtils";
 
 describe("Popper utils", () => {

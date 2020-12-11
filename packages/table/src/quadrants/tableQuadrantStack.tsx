@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
@@ -77,6 +78,7 @@ export interface ITableQuadrantStackProps extends IProps {
 
     /**
      * Whether horizontal scrolling is currently disabled.
+     *
      * @default false
      */
     isHorizontalScrollDisabled?: boolean;
@@ -94,6 +96,7 @@ export interface ITableQuadrantStackProps extends IProps {
 
     /**
      * Whether vertical scrolling is currently disabled.
+     *
      * @default false
      */
     isVerticalScrollDisabled?: boolean;
@@ -199,6 +202,7 @@ export interface ITableQuadrantStackProps extends IProps {
      * Whether "scroll" and "wheel" events should be throttled using
      * requestAnimationFrame. Disabling this can be useful for unit testing,
      * because tests can then be synchronous.
+     *
      * @default true
      */
     throttleScrolling?: boolean;
@@ -208,6 +212,7 @@ export interface ITableQuadrantStackProps extends IProps {
      * synchronizing quadrant sizes and offsets after the user has stopped
      * scrolling. If this value is negative, the updates will happen
      * synchronously (this is helpful for unit testing).
+     *
      * @default 500
      */
     viewSyncDelay?: number;
@@ -291,6 +296,7 @@ export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackPr
     // keep throttled event callbacks around as instance variables, so we don't
     // have to continually reinstantiate them.
     private throttledHandleMainQuadrantScroll: (event: React.UIEvent<HTMLElement>) => any;
+
     private throttledHandleWheel: (event: React.WheelEvent<HTMLElement>) => any;
 
     // the interval instance that we maintain to enable debouncing of view

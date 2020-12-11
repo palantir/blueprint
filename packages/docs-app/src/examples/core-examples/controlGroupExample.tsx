@@ -33,6 +33,7 @@ export class ControlGroupExample extends React.PureComponent<IExampleProps, ICon
     };
 
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
+
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {

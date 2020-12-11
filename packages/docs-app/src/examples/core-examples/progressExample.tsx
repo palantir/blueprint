@@ -34,6 +34,7 @@ export class ProgressExample extends React.PureComponent<IExampleProps, IProgres
     };
 
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
+
     private handleModifierChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {

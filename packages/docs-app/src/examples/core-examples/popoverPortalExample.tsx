@@ -29,7 +29,9 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
     };
 
     private scrollContainerLeftRef: HTMLDivElement;
+
     private scrollContainerRightRef: HTMLDivElement;
+
     private refHandlers = {
         scrollContainerLeft: (ref: HTMLDivElement) => (this.scrollContainerLeftRef = ref),
         scrollContainerRight: (ref: HTMLDivElement) => (this.scrollContainerRightRef = ref),

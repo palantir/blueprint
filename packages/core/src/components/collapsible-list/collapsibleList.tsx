@@ -48,6 +48,7 @@ export interface ICollapsibleListProps extends IProps {
 
     /**
      * Which direction the items should collapse from: start or end of the children.
+     *
      * @default Boundary.START
      */
     collapseFrom?: Boundary;
@@ -59,6 +60,7 @@ export interface ICollapsibleListProps extends IProps {
 
     /**
      * Exact number of visible items.
+     *
      * @default 3
      */
     visibleItemCount?: number;

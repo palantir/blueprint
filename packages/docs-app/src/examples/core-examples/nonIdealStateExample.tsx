@@ -33,7 +33,9 @@ export class NonIdealStateExample extends React.PureComponent<IExampleProps, INo
     };
 
     private toggleAction = handleBooleanChange(action => this.setState({ action }));
+
     private toggleIcon = handleBooleanChange(icon => this.setState({ icon }));
+
     private toggleDescription = handleBooleanChange(description => this.setState({ description }));
 
     public render() {

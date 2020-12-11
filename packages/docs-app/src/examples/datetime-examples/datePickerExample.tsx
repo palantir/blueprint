@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Classes, H5, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
 
+import { Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
@@ -44,12 +45,17 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
     };
 
     private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
+
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
+
     private handlePrecisionChange = handleValueChange((p: TimePrecision | "none") =>
         this.setState({ timePrecision: p === "none" ? undefined : p }),
     );
+
     private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
         this.setState({ showTimeArrowButtons }),
     );

@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
@@ -37,6 +38,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Whether to show the close button in the dialog's header.
      * Note that the header will only be rendered if `title` is provided.
+     *
      * @default true
      */
     isCloseButtonShown?: boolean;
@@ -50,6 +52,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Position of a drawer. All angled positions will be casted into pure positions
      * (TOP, BOTTOM, LEFT or RIGHT).
+     *
      * @default Position.RIGHT
      */
     position?: Position;
@@ -69,6 +72,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * CSS styles to apply to the dialog.
+     *
      * @default {}
      */
     style?: React.CSSProperties;
@@ -88,6 +92,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     /**
      * Whether the drawer should appear with vertical styling.
      * It will be ignored if `position` prop is set
+     *
      * @default false
      * @deprecated use `position` instead
      */
@@ -97,6 +102,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 @polyfill
 export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
+
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
@@ -105,7 +111,9 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     };
 
     public static readonly SIZE_SMALL = "360px";
+
     public static readonly SIZE_STANDARD = "50%";
+
     public static readonly SIZE_LARGE = "90%";
 
     private lastActiveElementBeforeOpened: Element | null | undefined;

@@ -15,6 +15,7 @@
  */
 
 import { DayPickerProps, LocaleUtils } from "react-day-picker";
+
 import { Months } from "./common/months";
 import { ITimePickerProps, TimePrecision } from "./timePicker";
 
@@ -47,6 +48,7 @@ export interface IDatePickerBaseProps {
 
     /**
      * Whether the current day should be highlighted in the calendar.
+     *
      * @default false
      */
     highlightCurrentDay?: boolean;
@@ -69,12 +71,14 @@ export interface IDatePickerBaseProps {
 
     /**
      * The latest date the user can select.
+     *
      * @default Dec. 31st of this year.
      */
     maxDate?: Date;
 
     /**
      * The earliest date the user can select.
+     *
      * @default Jan. 1st, 20 years in the past.
      */
     minDate?: Date;
@@ -89,6 +93,7 @@ export interface IDatePickerBaseProps {
     /**
      * If `true`, the month menu will appear to the left of the year menu.
      * Otherwise, the month menu will apear to the right of the year menu.
+     *
      * @default false
      */
     reverseMonthAndYearMenus?: boolean;

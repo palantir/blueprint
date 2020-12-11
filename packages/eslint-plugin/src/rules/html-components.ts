@@ -17,6 +17,7 @@
 // tslint:disable: object-literal-sort-keys
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
 import { FixList } from "./utils/fixList";

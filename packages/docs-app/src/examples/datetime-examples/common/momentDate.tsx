@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Icon, Intent, IProps, Tag } from "@blueprintjs/core";
-import { DateRange } from "@blueprintjs/datetime";
 import classNames from "classnames";
 import moment from "moment";
 import * as React from "react";
+
+import { Icon, Intent, IProps, Tag } from "@blueprintjs/core";
+import { DateRange } from "@blueprintjs/datetime";
 
 const FORMAT = "dddd, LL";
 const FORMAT_TIME = "dddd, LL LT";

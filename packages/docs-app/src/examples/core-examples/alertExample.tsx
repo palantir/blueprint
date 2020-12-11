@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Alert, Button, H5, Intent, IToaster, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IAlertExampleState {
@@ -38,6 +39,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
     private toaster: IToaster;
 
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyCancel => this.setState({ canEscapeKeyCancel }));
+
     private handleOutsideClickChange = handleBooleanChange(click => this.setState({ canOutsideClickCancel: click }));
 
     public render() {
@@ -97,13 +99,16 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
     }
 
     private handleErrorOpen = () => this.setState({ isOpenError: true });
+
     private handleErrorClose = () => this.setState({ isOpenError: false });
 
     private handleMoveOpen = () => this.setState({ isOpen: true });
+
     private handleMoveConfirm = () => {
         this.setState({ isOpen: false });
         this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
     };
+
     private handleMoveCancel = () => this.setState({ isOpen: false });
 }
 

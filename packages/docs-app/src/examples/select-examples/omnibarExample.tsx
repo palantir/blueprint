@@ -30,6 +30,7 @@ import {
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
+
 import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./films";
 
 const FilmOmnibar = Omnibar.ofType<IFilm>();
@@ -49,9 +50,11 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
     };
 
     private handleAllowCreateChange = handleBooleanChange(allowCreate => this.setState({ allowCreate }));
+
     private handleResetChange = handleBooleanChange(resetOnSelect => this.setState({ resetOnSelect }));
 
     private toaster: Toaster;
+
     private refHandlers = {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };

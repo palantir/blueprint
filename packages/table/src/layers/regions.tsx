@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
+
 import * as Classes from "../common/classes";
 import { QuadrantType } from "../quadrants/tableQuadrant";
 import { IRegion, Regions } from "../regions";

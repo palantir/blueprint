@@ -32,24 +32,28 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 
     /**
      * Whether the button group should take up the full width of its container.
+     *
      * @default false
      */
     fill?: boolean;
 
     /**
      * Whether the child buttons should appear with minimal styling.
+     *
      * @default false
      */
     minimal?: boolean;
 
     /**
      * Whether the child buttons should appear with large styling.
+     *
      * @default false
      */
     large?: boolean;
 
     /**
      * Whether the button group should appear with vertical styling.
+     *
      * @default false
      */
     vertical?: boolean;
