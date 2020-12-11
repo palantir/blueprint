@@ -18,14 +18,14 @@ import * as React from "react";
 
 import {
     Button,
+    Classes,
     Code,
     H5,
+    IMultistepDialogPanelProps,
+    ISubmitButtonProps,
     MultistepDialog,
     Step,
-    IMultistepDialogPanelProps,
     Switch,
-    Classes,
-    ISubmitButtonProps,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { IBlueprintExampleData } from "../../tags/types";
@@ -61,8 +61,8 @@ export class MultistepDialogExample extends React.PureComponent<
     public render() {
         const submitButtonProps: ISubmitButtonProps = {
             intent: "danger",
-            text: "Submit",
             onClick: this.handleClose,
+            text: "Submit",
         };
         return (
             <Example options={this.renderOptions()} {...this.props}>
