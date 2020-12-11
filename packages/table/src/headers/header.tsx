@@ -361,9 +361,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                     isResizable={this.props.isResizable}
                     maxSize={this.props.maxSize}
                     minSize={this.props.minSize}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onDoubleClick={modifiedHandleResizeHandleDoubleClick}
                     onLayoutLock={this.props.onLayoutLock}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onResizeEnd={modifiedHandleResizeEnd}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onSizeChanged={modifiedHandleSizeChanged}
                     orientation={this.props.resizeOrientation}
                     size={this.props.getCellSize(index)}

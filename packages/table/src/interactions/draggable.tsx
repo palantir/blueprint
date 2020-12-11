@@ -65,12 +65,16 @@ export class Draggable extends React.PureComponent<IDraggableProps> {
     public componentDidUpdate(prevProps: IDraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
         if (this.events && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
+            // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
+            // eslint-disable-next-line react/no-find-dom-node
             this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
         }
     }
 
     public componentDidMount() {
         this.events = new DragEvents();
+        // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
+        // eslint-disable-next-line react/no-find-dom-node
         this.events.attach(ReactDOM.findDOMNode(this) as HTMLElement, this.props);
     }
 
