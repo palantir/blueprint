@@ -1,0 +1,92 @@
+// Copyright 2020 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "~@blueprintjs/icons/src/icons";
+@import "../../common/mixins";
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+$dialog-border-radius: $pt-border-radius * 2 !default;
+
+.#{$ns}-multistep-dialog-panels {
+  border-radius: 0 $dialog-border-radius;
+  display: flex;
+}
+
+.#{$ns}-multistep-dialog-left-panel {
+  background-color: $light-gray4;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > :first-child {
+    margin-top: 1px;
+  }
+}
+
+.#{$ns}-multistep-dialog-right-panel {
+  background-color: $light-gray5;
+  border-left: 1px solid $pt-divider-black;
+  border-radius: 0 0 $dialog-border-radius 0;
+  flex: 2;
+}
+
+.#{$ns}-multistep-dialog-footer {
+  background-color: $white;
+  border-radius: 0  0 $dialog-border-radius 0;
+  border-top: 1px solid $pt-divider-black;
+  padding: 10px;
+}
+
+.#{$ns}-step-container {
+  background-color: $light-gray5;
+  border-bottom: 1px solid $pt-divider-black;
+
+  &.#{$ns}-active {
+    background-color: $white;
+  }
+}
+
+.#{$ns}-step {
+  align-items: center;
+  background-color: $light-gray5;
+  border-radius: 6px;
+  cursor: not-allowed;
+  display: flex;
+  margin: 4px;
+  padding: 6px;
+
+  &.#{$ns}-active {
+    background-color: $white;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: $light-gray5;
+  }
+}
+
+.#{$ns}-step-icon {
+  align-items: center;
+  background-color: $light-gray1;
+  border-radius: 50%;
+  color: $white;
+  display: flex;
+  height: 25px;
+  justify-content: center;
+  padding-right: 0;
+  width: 25px;
+
+  &.#{$ns}-active {
+    background-color: $blue4;
+  }
+}
+
+.#{$ns}-step-title {
+  color: $gray1;
+  padding-left: 10px;
+
+  &.#{$ns}-active {
+    color: $blue4;
+  }
+}

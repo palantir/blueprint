@@ -179,6 +179,12 @@ export const MENU_SUBMENU = `${NS}-submenu`;
 export const MENU_DIVIDER = `${MENU}-divider`;
 export const MENU_HEADER = `${MENU}-header`;
 
+export const MULTISTEP_DIALOG = `${NS}-multistep-dialog`;
+export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
+export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
+export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
+export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
+
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
 export const NAVBAR_HEADING = `${NAVBAR}-heading`;
@@ -241,6 +247,11 @@ export const SPINNER_ANIMATION = `${SPINNER}-animation`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
+
+export const STEP = `${NS}-step`;
+export const STEP_CONTAINER = `${STEP}-container`;
+export const STEP_TITLE = `${STEP}-title`;
+export const STEP_ICON = `${STEP}-icon`;
 
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
