@@ -17,7 +17,6 @@
 import { Placement } from "popper.js";
 
 import { Position } from "../../common/position";
-
 import { PopoverPosition } from "./popoverSharedProps";
 
 /**

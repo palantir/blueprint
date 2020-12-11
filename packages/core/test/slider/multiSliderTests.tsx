@@ -23,7 +23,6 @@ import * as sinon from "sinon";
 
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
-
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;

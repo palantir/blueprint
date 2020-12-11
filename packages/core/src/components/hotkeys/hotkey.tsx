@@ -19,7 +19,6 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
-
 import { KeyCombo } from "./keyCombo";
 
 export interface IHotkeyProps extends IProps {

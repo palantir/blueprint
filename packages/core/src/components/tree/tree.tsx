@@ -20,7 +20,6 @@ import * as React from "react";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";
-
 import { ITreeNode, TreeNode } from "./treeNode";
 
 // eslint-disable-next-line @typescript-eslint/ban-types

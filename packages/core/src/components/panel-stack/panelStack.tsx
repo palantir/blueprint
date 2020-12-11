@@ -22,7 +22,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
-
 import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 

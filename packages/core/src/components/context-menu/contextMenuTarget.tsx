@@ -24,7 +24,6 @@ import {
 } from "../../common/errors";
 import { getDisplayName, isFunction } from "../../common/utils";
 import { isDarkTheme } from "../../common/utils/isDarkTheme";
-
 import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTargetComponent extends React.Component {

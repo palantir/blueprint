@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -23,7 +24,6 @@ import { Classes, RangeSlider } from "../../src";
 import { ARROW_DOWN } from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 
-import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 const STEP_SIZE = 20;
 

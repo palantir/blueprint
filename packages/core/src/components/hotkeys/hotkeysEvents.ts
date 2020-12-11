@@ -17,7 +17,6 @@
 import { Children, ReactNode } from "react";
 
 import { isElementOfType } from "../../common/utils";
-
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "./hotkeyParser";
 import { hideHotkeysDialogAfterDelay, isHotkeysDialogShowing, showHotkeysDialog } from "./hotkeysDialog";

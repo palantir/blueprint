@@ -21,7 +21,6 @@ import * as sinon from "sinon";
 
 import { ARROW_DOWN, ARROW_UP } from "../../src/common/keys";
 import { Handle, IHandleState, IInternalHandleProps } from "../../src/components/slider/handle";
-
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
 const HANDLE_PROPS: IInternalHandleProps = {

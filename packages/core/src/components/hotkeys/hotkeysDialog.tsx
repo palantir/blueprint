@@ -20,7 +20,6 @@ import * as ReactDOM from "react-dom";
 
 import { Classes } from "../../common";
 import { Dialog, IDialogProps } from "../../components";
-
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
 

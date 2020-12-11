@@ -22,7 +22,6 @@ import { AbstractPureComponent2, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
-
 import { Handle } from "./handle";
 import { HandleInteractionKind, HandleType, IHandleProps } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";

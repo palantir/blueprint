@@ -22,7 +22,6 @@ import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX } from "../../commo
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType, isReactChildrenElementOrElements } from "../../common/utils";
 import { H4 } from "../html/html";
-
 import { Hotkey, IHotkeyProps } from "./hotkey";
 import { IHotkeysProps } from "./hotkeysTypes";
 

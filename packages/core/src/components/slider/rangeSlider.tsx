@@ -20,7 +20,6 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
 export type NumberRange = [number, number];

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -23,7 +24,6 @@ import { spy } from "sinon";
 import { Classes, IToaster, Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 
-import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 describe("Toaster", () => {
     let testsContainerElement: HTMLElement;

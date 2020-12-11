@@ -21,7 +21,6 @@ import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { IRefCallback, IRefObject, isRefObject } from "../../common/refs";
-
 import { AbstractButton, IButtonProps } from "./abstractButton";
 
 export { IButtonProps };

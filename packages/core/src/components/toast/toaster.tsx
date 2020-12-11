@@ -25,7 +25,6 @@ import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
-
 import { IToastProps, Toast } from "./toast";
 
 export type IToastOptions = IToastProps & { key: string };
