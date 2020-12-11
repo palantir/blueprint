@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { IconName } from "@blueprintjs/icons";
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
+import { IconName } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent2,

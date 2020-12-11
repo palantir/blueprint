@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
+
+import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
+
 import {
     areFilmsEqual,
     createFilm,

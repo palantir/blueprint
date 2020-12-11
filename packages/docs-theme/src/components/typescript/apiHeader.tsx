@@ -16,6 +16,7 @@
 
 import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
 import * as React from "react";
+
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 
 export class ApiHeader extends React.PureComponent<ITsDocBase> {

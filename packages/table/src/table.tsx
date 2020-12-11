@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
+import * as React from "react";
+import { polyfill } from "react-lifecycles-compat";
+
 import {
     AbstractComponent2,
     DISPLAYNAME_PREFIX,
@@ -23,9 +27,6 @@ import {
     IProps,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
-import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { ICellProps } from "./cell/cell";
 import { Column, IColumnProps } from "./column";

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";

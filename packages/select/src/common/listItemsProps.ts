@@ -15,6 +15,7 @@
  */
 
 import { IProps, Utils } from "@blueprintjs/core";
+
 import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
 import { ICreateNewItem } from "./listItemsUtils";

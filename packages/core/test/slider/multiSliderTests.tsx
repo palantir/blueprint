@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
+
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";

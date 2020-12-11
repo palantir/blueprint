@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
-import * as React from "react";
+
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;

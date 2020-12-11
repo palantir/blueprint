@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+
+import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
 import { IDragHandler } from "./dragTypes";

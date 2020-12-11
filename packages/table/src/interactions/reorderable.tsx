@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as React from "react";
+
+import { Utils as CoreUtils } from "@blueprintjs/core";
+
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
 import { IRegion, RegionCardinality, Regions } from "../regions";

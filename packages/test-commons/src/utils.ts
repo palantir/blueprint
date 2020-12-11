@@ -27,7 +27,7 @@ import * as React from "react";
  * chrome tests.
  */
 export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, shift = false) {
-    return dispatchTestKeyboardEventWithCode(target, eventType, key, key.charCodeAt(0), shift);
+    dispatchTestKeyboardEventWithCode(target, eventType, key, key.charCodeAt(0), shift);
 }
 
 /**

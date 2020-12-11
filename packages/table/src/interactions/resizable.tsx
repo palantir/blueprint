@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractPureComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+
 import { Utils } from "../common/index";
 import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 

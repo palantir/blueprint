@@ -15,6 +15,7 @@
  */
 
 import * as moment from "moment-timezone";
+
 import { getTimezoneMetadata } from "./timezoneMetadata";
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";

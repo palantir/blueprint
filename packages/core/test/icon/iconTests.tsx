@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { IconName } from "@blueprintjs/icons";
 import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+
+import { IconName } from "@blueprintjs/icons";
 
 import { Classes, Icon, IIconProps, Intent } from "../../src";
 

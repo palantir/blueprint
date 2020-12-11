@@ -19,6 +19,7 @@ import * as React from "react";
 import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
+
 import {
     areFilmsEqual,
     createFilm,

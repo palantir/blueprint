@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes, Intent, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes, Intent, IProps } from "@blueprintjs/core";
 
 export interface IBannerProps extends IProps {
     /** Link URL. */

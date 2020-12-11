@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
+import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
+
 import * as DateClasses from "./common/classes";
 import { DateRange } from "./common/dateRange";
 import * as DateUtils from "./common/dateUtils";
-
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
 import { DatePickerCaption } from "./datePickerCaption";

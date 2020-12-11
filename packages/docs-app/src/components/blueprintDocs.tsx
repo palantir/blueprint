@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
-import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
+
+import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
+import { IDocsCompleteData } from "@blueprintjs/docs-data";
+import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 

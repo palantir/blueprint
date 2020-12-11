@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, IProps, Keys } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, IProps, Keys } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";

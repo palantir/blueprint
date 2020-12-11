@@ -16,6 +16,9 @@
 
 /* eslint-disable react/jsx-no-bind */
 
+import classNames from "classnames";
+import * as React from "react";
+
 import {
     Button,
     Classes,
@@ -30,9 +33,6 @@ import {
     MenuItem,
     Switch,
 } from "@blueprintjs/core";
-import classNames from "classnames";
-import * as React from "react";
-
 import {
     Cell,
     Column,
@@ -50,11 +50,11 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-
 import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
 import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
 import { IRegion } from "@blueprintjs/table/src/regions";
+
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
 import { SlowLayoutStack } from "./slowLayoutStack";

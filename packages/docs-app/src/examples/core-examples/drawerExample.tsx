@@ -36,6 +36,7 @@ import {
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
+
 import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IDrawerExampleState {

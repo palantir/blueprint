@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 import * as React from "react";
+
+import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 
 export interface IContextMenuTargetWrapper extends IProps {
     renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element;

@@ -16,11 +16,12 @@
 
 /* eslint-disable max-classes-per-file */
 
-import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { SinonSpy, spy } from "sinon";
+
+import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {
     Classes,

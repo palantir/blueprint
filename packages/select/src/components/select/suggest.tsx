@@ -33,6 +33,7 @@ import {
     PopoverInteractionKind,
     Position,
 } from "@blueprintjs/core";
+
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 

@@ -15,7 +15,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Classes from "../common/classes";
 
 import {
     Classes as CoreClasses,
@@ -25,6 +24,7 @@ import {
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
+import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";

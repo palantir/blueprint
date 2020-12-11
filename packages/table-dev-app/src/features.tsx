@@ -21,7 +21,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-
 import {
     Cell,
     Column,

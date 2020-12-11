@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
 import {
     isTag,
     isTsProperty,
@@ -26,6 +25,9 @@ import {
 } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
+
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";

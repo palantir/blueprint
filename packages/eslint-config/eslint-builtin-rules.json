@@ -45,9 +45,12 @@
     "no-comma-dangle": "off",
     "no-cond-assign": "error",
     "no-confusing-arrow": "off",
-    "no-console": ["error", {
-        "allow": ["warn", "assert", "debug", "info", "error"]
-    }],
+    "no-console": [
+        "error",
+        {
+            "allow": ["warn", "assert", "debug", "info", "error"]
+        }
+    ],
     "no-debugger": "error",
     "no-duplicate-case": "error",
     "no-duplicate-imports": "error",

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { H5, Position, Switch } from "@blueprintjs/core";
 import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
-import * as React from "react";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { MomentDate } from "./common/momentDate";

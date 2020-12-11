@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import React from "react";
+
 import { Colors, Icon, Intent, Tooltip } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { getTimezoneMetadata } from "@blueprintjs/timezone";
-import React from "react";
 
 export interface ICustomTimezonePickerTargetProps {
     timezone: string;

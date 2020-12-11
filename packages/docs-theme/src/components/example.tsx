@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { IProps } from "@blueprintjs/core";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface IExampleProps<T = {}> extends IProps {

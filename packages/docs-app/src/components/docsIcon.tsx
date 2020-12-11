@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
 import classNames from "classnames";
 import download from "downloadjs";
 import * as React from "react";
+
+import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
+
 import { ClickToCopy } from "./clickToCopy";
 
 export interface IDocsIconProps {

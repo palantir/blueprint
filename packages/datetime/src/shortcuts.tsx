@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes, Menu, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
+
+import { Classes, Menu, MenuItem } from "@blueprintjs/core";
+
 import { DATERANGEPICKER_SHORTCUTS } from "./common/classes";
 import { DateRange } from "./common/dateRange";
 import { clone, isDayRangeInRange } from "./common/dateUtils";

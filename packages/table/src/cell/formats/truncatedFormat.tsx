@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { DISPLAYNAME_PREFIX, Icon, IProps, Popover, Position } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
+import { DISPLAYNAME_PREFIX, Icon, IProps, Popover, Position } from "@blueprintjs/core";
+
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
-
 import { Locator } from "../../locator";
 
 // amount in pixels that the content div width changes when truncated vs when

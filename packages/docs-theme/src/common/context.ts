@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { Utils } from "@blueprintjs/core";
 import {
     IBlock,
     IKssPluginData,
@@ -23,6 +22,8 @@ import {
     ITsDocBase,
     ITypescriptPluginData,
 } from "@documentalist/client";
+
+import { Utils } from "@blueprintjs/core";
 
 /* eslint-disable @typescript-eslint/ban-types */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
