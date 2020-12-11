@@ -1,23 +1,17 @@
 {
     "@typescript-eslint/adjacent-overload-signatures": "error",
-    "@typescript-eslint/array-type": [
-        "error",
-        {
-            "default": "array-simple"
-        }
-    ],
+    "@typescript-eslint/array-type": ["error", {
+        "default": "array-simple"
+    }],
     "@typescript-eslint/ban-types": "error",
     "@typescript-eslint/consistent-type-assertions": "error",
     "@typescript-eslint/dot-notation": "error",
-    "@typescript-eslint/explicit-member-accessibility": [
-        "error",
-        {
-            "accessibility": "explicit",
-            "overrides": {
-                "constructors": "off"
-            }
+    "@typescript-eslint/explicit-member-accessibility": ["error", {
+        "accessibility": "explicit",
+        "overrides": {
+            "constructors": "off"
         }
-    ],
+    }],
     "@typescript-eslint/lines-between-class-members": "error",
     "@typescript-eslint/no-confusing-non-null-assertion": "error",
     "@typescript-eslint/no-empty-function": "error",
@@ -28,12 +22,9 @@
     "@typescript-eslint/no-namespace": "error",
     "@typescript-eslint/no-parameter-properties": "off",
     "@typescript-eslint/no-redeclare": "error",
-    "@typescript-eslint/no-shadow": [
-        "error",
-        {
-            "hoist": "all"
-        }
-    ],
+    "@typescript-eslint/no-shadow": ["error", {
+        "hoist": "all"
+    }],
     "@typescript-eslint/no-this-alias": "error",
     "@typescript-eslint/no-unnecessary-type-constraint": "error",
     "@typescript-eslint/no-unused-expressions": "error",
@@ -42,19 +33,13 @@
     "@typescript-eslint/prefer-for-of": "error",
     "@typescript-eslint/prefer-function-type": "error",
     "@typescript-eslint/prefer-namespace-keyword": "error",
-    "@typescript-eslint/triple-slash-reference": [
-        "error",
-        {
-            "path": "always",
-            "types": "prefer-import",
-            "lib": "always"
-        }
-    ],
-    "@typescript-eslint/unbound-method": [
-        "error",
-        {
-            "ignoreStatic": true
-        }
-    ],
+    "@typescript-eslint/triple-slash-reference": ["error", {
+        "path": "always",
+        "types": "prefer-import",
+        "lib": "always"
+    }],
+    "@typescript-eslint/unbound-method": [ "error", {
+        "ignoreStatic": true
+    }],
     "@typescript-eslint/unified-signatures": "error"
 }

@@ -9,31 +9,28 @@
         2
     ],
     "import/no-default-export": "error",
-    "import/no-extraneous-dependencies": [
-        "error",
-        {
-            "devDependencies": ["**/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}"]
-        }
-    ],
-    "import/order": "off",
+    "import/no-extraneous-dependencies": ["error", {
+        "devDependencies": ["**/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}"]
+    }],
+    "import/order": ["error", {
+        "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+        },
+        "newlines-between": "always"
+    }],
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": "off",
     "jsdoc/newline-after-description": "error",
     "react/display-name": "error",
     "react/jsx-boolean-value": ["error", "always"],
-    "react/jsx-key": [
-        "error",
-        {
-            "checkFragmentShorthand": true
-        }
-    ],
-    "react/jsx-no-bind": [
-        "error",
-        {
-            "ignoreDOMComponents": true,
-            "ignoreRefs": true
-        }
-    ],
+    "react/jsx-key": ["error", {
+        "checkFragmentShorthand": true
+    }],
+    "react/jsx-no-bind": ["error", {
+        "ignoreDOMComponents": true,
+        "ignoreRefs": true
+    }],
     "react/no-did-mount-set-state": "error",
     "react/no-direct-mutation-state": "error",
     "react/no-find-dom-node": "error",

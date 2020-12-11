@@ -15,13 +15,6 @@
         "only-arrow-functions": {
             "options": ["allow-declarations", "allow-named-functions"]
         },
-        "ordered-imports": {
-            "options": {
-                "import-sources-order": "case-insensitive",
-                "module-source-path": "full",
-                "named-imports-order": "case-insensitive"
-            }
-        },
         "variable-name": {
             "options": ["allow-leading-underscore", "allow-pascal-case", "ban-keywords", "check-format"]
         }
