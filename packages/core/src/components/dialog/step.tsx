@@ -23,7 +23,7 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 export type StepId = string | number;
 
 export interface IMultistepDialogPanelProps {
-    updateDialog: (state: { enableNextButton: boolean }) => void
+    updateDialog: (state: { enableNextButton: boolean }) => void;
 }
 
 export interface IStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
@@ -54,7 +54,6 @@ export interface IStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | 
      * Can also be set via React `children`.
      */
     title?: React.ReactNode;
-
 }
 
 @polyfill
@@ -67,7 +66,7 @@ export class Step extends AbstractPureComponent2<IStepProps> {
         const { className } = this.props;
         return (
             <div className={Classes.STEP_CONTAINER}>
-                <div className={classNames(Classes.STEP, className)} role="steplist"/>
+                <div className={classNames(Classes.STEP, className)} role="steplist" />
             </div>
         );
     }
