@@ -16,6 +16,7 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 export interface IAsyncControllableInputProps

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+import { IconName } from "@blueprintjs/icons";
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { IconName } from "@blueprintjs/icons";
 import {
     AbstractPureComponent2,
     Classes,
@@ -34,9 +34,9 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-
 import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
+
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import {

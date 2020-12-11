@@ -18,9 +18,11 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
+
 import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 

@@ -16,12 +16,12 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { findDOMNode } from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 // tslint:disable-next-line no-submodule-imports
 import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
-import { findDOMNode } from "react-dom";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";

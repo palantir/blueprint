@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
 import {
@@ -29,6 +30,7 @@ import {
     removeNonHTMLProps,
 } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
+
 import { AsyncControllableInput } from "./asyncControllableInput";
 
 // NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.

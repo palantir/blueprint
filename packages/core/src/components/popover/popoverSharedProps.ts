@@ -15,6 +15,7 @@
  */
 
 import { Boundary as PopperBoundary, Modifiers as PopperModifiers } from "popper.js";
+
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
 import { IOverlayableProps } from "../overlay/overlay";

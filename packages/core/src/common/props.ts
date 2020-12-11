@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+import { IconName } from "@blueprintjs/icons";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
 import { Intent } from "./intent";
 import { IRef } from "./refs";
 

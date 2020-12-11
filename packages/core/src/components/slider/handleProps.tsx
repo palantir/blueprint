@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+
 import { Intent, IProps } from "../../common";
 
 export const HandleType = {

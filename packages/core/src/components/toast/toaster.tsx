@@ -18,12 +18,14 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
+
 import { IToastProps, Toast } from "./toast";
 
 export type IToastOptions = IToastProps & { key: string };

@@ -16,8 +16,8 @@
 
 import classNames from "classnames";
 import * as React from "react";
-
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2 } from "../../common";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";

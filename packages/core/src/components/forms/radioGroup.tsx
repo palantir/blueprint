@@ -16,10 +16,12 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IOptionProps, IProps } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
+
 import { IRadioProps, Radio } from "./controls";
 
 export interface IRadioGroupProps extends IProps {

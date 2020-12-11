@@ -20,6 +20,7 @@ import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+
 import { getPosition } from "./popperUtils";
 
 // these paths come from the Core Kit Sketch file

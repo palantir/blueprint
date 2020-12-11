@@ -17,9 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
+
 import { IHandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 

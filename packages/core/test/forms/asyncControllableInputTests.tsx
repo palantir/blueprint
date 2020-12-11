@@ -21,10 +21,9 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { sleep } from "../utils";
-
 // this component is not part of the public API, but we want to test its implementation in isolation
 import { AsyncControllableInput } from "../../src/components/forms/asyncControllableInput";
+import { sleep } from "../utils";
 
 describe("<AsyncControllableInput>", () => {
     describe("uncontrolled mode", () => {

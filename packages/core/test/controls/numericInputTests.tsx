@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 import { assert, expect } from "chai";
 import {
     mount as untypedMount,
@@ -23,8 +24,6 @@ import {
 } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
-
-import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {
     Button,

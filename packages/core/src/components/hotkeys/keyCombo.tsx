@@ -17,8 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { Icon, IconName } from "../icon/icon";
+
 import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KeyIcons: { [key: string]: IconName } = {

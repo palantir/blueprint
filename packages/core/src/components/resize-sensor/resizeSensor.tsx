@@ -18,8 +18,10 @@ import * as React from "react";
 import { findDOMNode } from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import ResizeObserver from "resize-observer-polyfill";
+
 import { AbstractPureComponent2 } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+
 import { IResizeEntry } from "./resizeObserverTypes";
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */

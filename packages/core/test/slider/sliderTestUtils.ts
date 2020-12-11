@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 import { ReactWrapper } from "enzyme";
+
 import { Handle, IInternalHandleProps } from "../../src/components/slider/handle";
+
+import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 
 interface IMoveOptions {
     /** Size in pixels of one drag event. Direction of drag is determined by `vertical` option. */

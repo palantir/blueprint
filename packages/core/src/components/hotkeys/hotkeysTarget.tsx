@@ -19,6 +19,7 @@ import * as React from "react";
 import { IConstructor } from "../../common/constructor";
 import { HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT, HOTKEYS_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
 import { getDisplayName, isFunction } from "../../common/utils";
+
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
 import { IHotkeysProps } from "./hotkeysTypes";
 

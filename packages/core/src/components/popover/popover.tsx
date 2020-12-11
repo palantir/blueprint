@@ -28,6 +28,7 @@ import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
+
 import { PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
 import { IPopoverSharedProps, PopperModifiers } from "./popoverSharedProps";

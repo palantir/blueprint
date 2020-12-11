@@ -15,6 +15,7 @@
  */
 
 import { Children, ReactNode } from "react";
+
 import { isElementOfType } from "../../common/utils";
 
 import { Hotkey, IHotkeyProps } from "./hotkey";
