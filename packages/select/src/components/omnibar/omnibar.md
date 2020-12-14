@@ -4,5 +4,6 @@
 
 @reactExample OmnibarExample
 
-@interface IOmnibarProps
+@reactExample OmnibarAsyncExample
 
+@interface IOmnibarProps

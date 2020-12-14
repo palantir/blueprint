@@ -18,3 +18,4 @@ export * from "./multiSelectExample";
 export * from "./omnibarExample";
 export * from "./selectExample";
 export * from "./suggestExample";
+export * from "./omnibarAsyncExample";
