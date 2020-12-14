@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-export * from "./multiSelectExample";
-export * from "./omnibarExample";
-export * from "./selectExample";
-export * from "./suggestExample";
-export * from "./omnibarAsyncExample";
+/* Loading props */
+export type ILoadingProps = {
+    loading?: boolean;
+    loadingRenderer?: () => JSX.Element;
+};

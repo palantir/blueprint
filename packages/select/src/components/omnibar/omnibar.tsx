@@ -26,10 +26,10 @@ import {
     Overlay,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, IListItemsProps, ILoadingProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface IOmnibarProps<T> extends IListItemsProps<T> {
+export interface IOmnibarProps<T> extends IListItemsProps<T>, ILoadingProps {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
@@ -73,7 +73,13 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
         const { isOpen, inputProps, overlayProps, ...restProps } = this.props;
         const initialContent = "initialContent" in this.props ? this.props.initialContent : null;
 
-        return <this.TypedQueryList {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
+        return (
+            <this.TypedQueryList
+                {...restProps}
+                initialContent={initialContent}
+                renderer={this.renderQueryList}
+            />
+        );
     }
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {

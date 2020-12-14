@@ -15,12 +15,13 @@
  */
 
 import { ICreateNewItem } from "./listItemsUtils";
+import { ILoadingProps } from "./loadingProps";
 
 /**
  * An object describing how to render the list of items.
  * An `itemListRenderer` receives this object as its sole argument.
  */
-export interface IItemListRendererProps<T> {
+export interface IItemListRendererProps<T> extends Required<ILoadingProps> {
     /**
      * The currently focused item (for keyboard interactions), or `null` to
      * indicate that no item is active.

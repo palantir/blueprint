@@ -26,11 +26,13 @@ import {
     IItemListRendererProps,
     IItemModifiers,
     IListItemsProps,
+    ILoadingProps,
     isCreateNewItem,
     renderFilteredItems,
+    defaultLoadingRenderer,
 } from "../../common";
 
-export interface IQueryListProps<T> extends IListItemsProps<T> {
+export interface IQueryListProps<T> extends IListItemsProps<T>, ILoadingProps {
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but
      * not activeItem.
@@ -71,7 +73,8 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
  */
 export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
     extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,
-        IProps {
+        IProps,
+        ILoadingProps {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -203,8 +206,16 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     }
 
     public render() {
-        const { className, items, renderer, itemListRenderer = this.renderItemList } = this.props;
+        const {
+            className,
+            items,
+            renderer,
+            itemListRenderer = this.renderItemList,
+            loading = false,
+            loadingRenderer = defaultLoadingRenderer,
+        } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
+
         return renderer({
             ...spreadableState,
             className,
@@ -219,6 +230,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
                 itemsParentRef: this.refHandlers.itemsParent,
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
+                loading,
+                loadingRenderer,
             }),
         });
     }
@@ -345,7 +358,9 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
         const createItemView = listProps.renderCreateItem();
         const maybeNoResults = createItemView != null ? null : noResults;
-        const menuContent = renderFilteredItems(listProps, maybeNoResults, initialContent);
+        const menuContent = listProps.loading
+            ? listProps.loadingRenderer()
+            : renderFilteredItems(listProps, maybeNoResults, initialContent);
         if (menuContent == null && createItemView == null) {
             return null;
         }
