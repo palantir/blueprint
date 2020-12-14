@@ -29,6 +29,7 @@ import {
     TagInput,
     TagInputAddMethod,
 } from "@blueprintjs/core";
+
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
@@ -67,6 +68,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
     /**
      * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
+     *
      * @default "Search..."
      */
     placeholder?: string;
@@ -107,8 +109,11 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
     };
 
     private TypedQueryList = QueryList.ofType<T>();
+
     private input: HTMLInputElement | null = null;
+
     private queryList: QueryList<T> | null = null;
+
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
@@ -178,6 +183,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
                         inputRef={this.refHandlers.input}
                         inputProps={inputProps}
                         inputValue={listProps.query}
+                        /* eslint-disable-next-line react/jsx-no-bind */
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
                         onRemove={this.handleTagRemove}

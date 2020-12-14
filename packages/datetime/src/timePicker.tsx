@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, IProps, Keys } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, IProps, Keys } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -43,6 +44,7 @@ export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 export interface ITimePickerProps extends IProps {
     /**
      * Whether to focus the first input when it opens initially.
+     *
      * @default false
      */
     autoFocus?: boolean;
@@ -55,6 +57,7 @@ export interface ITimePickerProps extends IProps {
 
     /**
      * Whether the time picker is non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -86,24 +89,28 @@ export interface ITimePickerProps extends IProps {
 
     /**
      * The precision of time the user can set.
+     *
      * @default TimePrecision.MINUTE
      */
     precision?: TimePrecision;
 
     /**
      * Whether all the text in each input should be selected on focus.
+     *
      * @default false
      */
     selectAllOnFocus?: boolean;
 
     /**
      * Whether to show arrows buttons for changing the time.
+     *
      * @default false
      */
     showArrowButtons?: boolean;
 
     /**
      * Whether to use a 12 hour format with an AM/PM dropdown.
+     *
      * @default false
      */
     useAmPm?: boolean;
@@ -365,7 +372,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     }
 
     private incrementTime = (unit: TimeUnit) => this.shiftTime(unit, 1);
+
     private decrementTime = (unit: TimeUnit) => this.shiftTime(unit, -1);
+
     private shiftTime(unit: TimeUnit, amount: number) {
         if (this.props.disabled) {
             return;

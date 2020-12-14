@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+
 import { Intent, IProps } from "../../common";
 
 export const HandleType = {
@@ -64,6 +65,7 @@ export interface IHandleProps extends IProps {
 
     /**
      * How this handle interacts with other handles.
+     *
      * @default "lock"
      */
     interactionKind?: HandleInteractionKind;
@@ -80,6 +82,7 @@ export interface IHandleProps extends IProps {
 
     /**
      * Handle appearance type.
+     *
      * @default "full"
      */
     type?: HandleType;

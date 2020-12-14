@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { Classes, Menu } from "@blueprintjs/core";
 import { expect } from "chai";
 import * as React from "react";
 import * as sinon from "sinon";
+
+import { Classes, Menu } from "@blueprintjs/core";
 
 import { Clipboard } from "../src/common/clipboard";
 import { CopyCellsMenuItem, MenuContext } from "../src/interactions/menus";

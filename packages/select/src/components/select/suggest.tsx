@@ -33,12 +33,14 @@ import {
     PopoverInteractionKind,
     Position,
 } from "@blueprintjs/core";
+
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
+     *
      * @default true
      */
     closeOnSelect?: boolean;
@@ -93,6 +95,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Whether the active item should be reset to the first matching item _when
      * the popover closes_. The query will also be reset to the empty string.
+     *
      * @default false
      */
     resetOnClose?: boolean;
@@ -123,8 +126,11 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     };
 
     private TypedQueryList = QueryList.ofType<T>();
+
     private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private queryList: QueryList<T> | null = null;
+
     private refHandlers = {
         input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
             ? (this.inputEl = this.props.inputProps!.inputRef)

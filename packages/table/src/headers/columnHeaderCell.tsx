@@ -69,6 +69,7 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
 
     /**
      * The icon name or element for the header's menu button.
+     *
      * @default "chevron-down"
      */
     menuIcon?: IconName | JSX.Element;
@@ -110,6 +111,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
     }
 
     public context: IColumnInteractionBarContextTypes;
+
     public state = {
         isActive: false,
     };
@@ -219,5 +221,6 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
     }
 
     private handlePopoverOpened = () => this.setState({ isActive: true });
+
     private handlePopoverClosing = () => this.setState({ isActive: false });
 }

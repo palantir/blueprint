@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
@@ -24,12 +25,14 @@ import { clamp } from "../../common/utils";
 export interface IProgressBarProps extends IProps, IIntentProps {
     /**
      * Whether the background should animate.
+     *
      * @default true
      */
     animate?: boolean;
 
     /**
      * Whether the background should be striped.
+     *
      * @default true
      */
     stripes?: boolean;

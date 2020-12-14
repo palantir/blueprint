@@ -16,6 +16,7 @@
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import dedent from "dedent";
+
 import { htmlComponentsRule } from "../src/rules/html-components";
 
 // tslint:disable object-literal-sort-keys

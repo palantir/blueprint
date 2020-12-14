@@ -19,6 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
 
 export { IconName };
@@ -61,6 +62,7 @@ export interface IIconProps extends IIntentProps, IProps {
     /**
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
      * images, and chooses the appropriate resolution based on this prop.
+     *
      * @default Icon.SIZE_STANDARD = 16
      */
     iconSize?: number;
@@ -70,6 +72,7 @@ export interface IIconProps extends IIntentProps, IProps {
 
     /**
      * HTML tag to use for the rendered element.
+     *
      * @default "span"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -88,6 +91,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
+
     public static readonly SIZE_LARGE = 20;
 
     public render(): JSX.Element | null {

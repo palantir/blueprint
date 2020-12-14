@@ -47,12 +47,19 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
     };
 
     private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+
     private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
+
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+
     private handleOutlinedChange = handleBooleanChange(outlined => this.setState({ outlined }));
+
     private handleIntentChange = handleStringChange(intent => this.setState({ intent: intent as Intent }));
 
     private wiggleTimeoutId: number;

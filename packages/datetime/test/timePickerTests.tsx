@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { Classes as CoreClasses, Intent, Keys } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
+
+import { Classes as CoreClasses, Intent, Keys } from "@blueprintjs/core";
 
 import { Classes, ITimePickerProps, TimePicker, TimePrecision } from "../src";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";

@@ -42,13 +42,13 @@
         "@blueprintjs/node-build-scripts": "^1.4.0",
         "@blueprintjs/test-commons": "^0.10.7",
         "enzyme": "^3.11.0",
-        "mocha": "^8.1.3",
+        "mocha": "^8.2.1",
         "npm-run-all": "^4.1.5",
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1",
-        "react-test-renderer": "^16.13.1",
-        "typescript": "~4.0.3",
-        "webpack-cli": "^3.3.12"
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
+        "react-test-renderer": "^16.14.0",
+        "typescript": "~4.1.2",
+        "webpack-cli": "^4.2.0"
     },
     "repository": {
         "type": "git",

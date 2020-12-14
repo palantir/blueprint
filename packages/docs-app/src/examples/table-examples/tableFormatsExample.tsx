@@ -87,6 +87,7 @@ const FORMAT_OPTIONS = {
 
 export class TableFormatsExample extends React.PureComponent<IExampleProps> {
     private data = TIME_ZONES;
+
     private date = new Date();
 
     public render() {

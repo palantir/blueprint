@@ -17,6 +17,7 @@
 import * as React from "react";
 
 import { IconName } from "@blueprintjs/icons";
+
 import { Intent } from "./intent";
 import { IRef } from "./refs";
 
@@ -146,6 +147,7 @@ const INVALID_PROPS = [
  * Typically applied to HTMLElements to filter out disallowed props. When applied to a Component,
  * can filter props from being passed down to the children. Can also filter by a combined list of
  * supplied prop keys and the denylist (only appropriate for HTMLElements).
+ *
  * @param props The original props object to filter down.
  * @param {string[]} invalidProps If supplied, overwrites the default denylist.
  * @param {boolean} shouldMerge If true, will merge supplied invalidProps and denylist together.

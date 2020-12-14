@@ -33,6 +33,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     /**
      * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
+     *
      * @default false
      */
     canEscapeKeyCancel?: boolean;
@@ -40,6 +41,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     /**
      * Whether clicking outside the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
+     *
      * @default false
      */
     canOutsideClickCancel?: boolean;
@@ -53,6 +55,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     /**
      * The text for the confirm (right-most) button.
      * This button will always appear, and uses the value of the `intent` prop below.
+     *
      * @default "OK"
      */
     confirmButtonText?: string;
@@ -81,6 +84,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
      * This is used by React `CSSTransition` to know when a transition completes and must match
      * the duration of the animation in CSS. Only set this prop if you override Blueprint's default
      * transitions with new transitions of a different length.
+     *
      * @default 300
      */
     transitionDuration?: number;
@@ -88,6 +92,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     /**
      * The container element into which the overlay renders its contents, when `usePortal` is `true`.
      * This prop is ignored if `usePortal` is `false`.
+     *
      * @default document.body
      */
     portalContainer?: HTMLElement;
@@ -177,6 +182,7 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
     }
 
     private handleCancel = (evt?: React.SyntheticEvent<HTMLElement>) => this.internalHandleCallbacks(false, evt);
+
     private handleConfirm = (evt: React.SyntheticEvent<HTMLElement>) => this.internalHandleCallbacks(true, evt);
 
     private internalHandleCallbacks(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>) {

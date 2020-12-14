@@ -17,8 +17,8 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-
 import { spy } from "sinon";
+
 import { IOverflowListProps, IOverflowListState, OverflowList } from "../../src/components/overflow-list/overflowList";
 
 type OverflowProps = IOverflowListProps<ITestItem>;

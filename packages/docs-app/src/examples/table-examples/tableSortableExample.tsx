@@ -82,6 +82,7 @@ class TextSortableColumn extends AbstractSortableColumn {
 
 class RankSortableColumn extends AbstractSortableColumn {
     private static RANK_PATTERN = /([YOSKMJ])([0-9]+)(e|w)/i;
+
     private static TITLES: { [key: string]: number } = {
         J: 5, // Juryo
         K: 3, // Komusubi
@@ -166,20 +167,20 @@ class RecordSortableColumn extends AbstractSortableColumn {
         }
     }
 
-    private toWins(a: any) {
+    private toWins = (a: any) => {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
         return match == null ? -1 : parseInt(match[1], 10);
-    }
+    };
 
-    private toTies(a: any) {
+    private toTies = (a: any) => {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
         return match == null || match[3] == null ? -1 : parseInt(match[3], 10);
-    }
+    };
 
-    private toLosses(a: any) {
+    private toLosses = (a: any) => {
         const match = RecordSortableColumn.WIN_LOSS_PATTERN.exec(a);
         return match == null ? -1 : parseInt(match[5], 10);
-    }
+    };
 }
 
 export class TableSortableExample extends React.PureComponent<IExampleProps> {

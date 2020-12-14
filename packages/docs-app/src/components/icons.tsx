@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
-import * as React from "react";
+
 import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
@@ -67,7 +69,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
         );
     }
 
-    private maybeRenderIconGroup(groupName: string, index: number) {
+    private maybeRenderIconGroup = (groupName: string, index: number) => {
         const { iconRenderer } = this.props;
         const iconElements = this.getFilteredIcons(groupName).map(iconRenderer);
         if (iconElements.length === 0) {
@@ -84,7 +86,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
                 {iconElements}
             </div>
         );
-    }
+    };
 
     private renderZeroState() {
         return <NonIdealState className={Classes.TEXT_MUTED} icon="zoom-out" description="No icons found" />;

@@ -17,8 +17,8 @@
         "glob": "^7.1.6",
         "highlights": "^3.1.4",
         "language-less": "github:atom/language-less",
-        "marked": "^1.2.0",
-        "semver": "^7.3.2",
+        "marked": "^1.2.5",
+        "semver": "^7.3.4",
         "tree-sitter-typescript": "~0.16.1"
     },
     "repository": {

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
+import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
+
 import * as DateClasses from "./common/classes";
 import { DateRange } from "./common/dateRange";
 import * as DateUtils from "./common/dateUtils";
-
 import * as Errors from "./common/errors";
 import { MonthAndYear } from "./common/monthAndYear";
 import { DatePickerCaption } from "./datePickerCaption";
@@ -46,6 +46,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
      * If `false`, clicking a selected date will clear the selection.
+     *
      * @default false
      */
     allowSingleDayRange?: boolean;
@@ -61,6 +62,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Whether displayed months in the calendar are contiguous.
      * If false, each side of the calendar can move independently to non-contiguous months.
+     *
      * @default true
      */
     contiguousCalendarMonths?: boolean;
@@ -96,6 +98,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
      * If an array is provided, the custom shortcuts will be displayed.
+     *
      * @default true
      */
     shortcuts?: boolean | IDateRangeShortcut[];
@@ -108,6 +111,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Whether to show only a single month calendar.
+     *
      * @default false
      */
     singleMonthOnly?: boolean;

@@ -789,7 +789,12 @@ describe("<Popover>", () => {
         wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement!;
         wrapper.targetElement = (wrapper.instance() as Popover).targetElement!;
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
-            (expected ? assert.isTrue : assert.isFalse)(wrapper!.findClass(className).exists(), msg);
+            const actual = wrapper!.findClass(className);
+            if (expected) {
+                assert.isTrue(actual.exists(), msg);
+            } else {
+                assert.isFalse(actual.exists(), msg);
+            }
             return wrapper!;
         };
         wrapper.assertIsOpen = (isOpen = true, index = 0) => {

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
-import { Example, handleNumberChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
-import { PrecisionSelect } from "./common/precisionSelect";
 
+import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
 import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
+import { Example, handleNumberChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+
+import { PrecisionSelect } from "./common/precisionSelect";
 
 export interface ITimePickerExampleState {
     autoFocus: boolean;

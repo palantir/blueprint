@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import {
     AbstractPureComponent2,
     Classes,
@@ -65,6 +66,7 @@ export interface ITextAreaState {
 @polyfill
 export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
+
     public state: ITextAreaState = {};
 
     // keep our own ref so that we can measure and set the height of the component on first mount
@@ -81,6 +83,8 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
 
     public componentDidMount() {
         if (this.props.growVertically && this.textareaRef !== null) {
+            // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
+            /* eslint-disable-next-line react/no-did-mount-set-state */
             this.setState({
                 height: getRef(this.textareaRef)!.scrollHeight,
             });

@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
 import * as React from "react";
+
+import { DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
+
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer } from "./headers/columnHeader";
 import { IColumnNameProps } from "./headers/columnHeaderCell";

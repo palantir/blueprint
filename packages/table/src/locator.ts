@@ -65,6 +65,7 @@ export class Locator implements ILocator {
     // cell if table is scrolled, but it will always map to cell (0,0) if there
     // are active frozen rows and columns.
     private numFrozenRows: number;
+
     private numFrozenColumns: number;
 
     public constructor(
