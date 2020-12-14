@@ -4,6 +4,8 @@
 
 @reactExample OmnibarExample
 
+Omnibar with `loading` props
+
 @reactExample OmnibarAsyncExample
 
 @interface IOmnibarProps

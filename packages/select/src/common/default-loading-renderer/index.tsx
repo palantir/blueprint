@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-export { Classes };
+import React from "react";
 
-export * from "./itemListRenderer";
-export * from "./itemRenderer";
-export * from "./listItemsProps";
-export * from "./listItemsUtils";
-export * from "./predicate";
-export * from "./loadingProps";
+import { Spinner } from "@blueprintjs/core";
+import { DEFAULT_LOADING } from "../classes";
 
-export { defaultLoadingRenderer } from "./default-loading-renderer";
+export const defaultLoadingRenderer = () => {
+    return <Spinner size={Spinner.SIZE_SMALL} className={DEFAULT_LOADING} />;
+};

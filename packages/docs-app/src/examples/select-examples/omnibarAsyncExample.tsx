@@ -19,13 +19,7 @@ import * as React from "react";
 import { Button, MenuItem, Position, Toaster } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
-import {
-    areFilmsEqual,
-    filterFilm,
-    IFilm,
-    renderFilm,
-    TOP_100_FILMS,
-} from "./films";
+import { areFilmsEqual, filterFilm, IFilm, renderFilm, TOP_100_FILMS } from "./films";
 
 const FilmOmnibar = Omnibar.ofType<IFilm>();
 
@@ -36,6 +30,7 @@ export interface IOmnibarAsyncExampleState {
 
     // items - supplied externally from async operation
     filmItems: IFilm[];
+    loading: boolean;
 }
 
 export class OmnibarAsyncExample extends React.PureComponent<IExampleProps, IOmnibarAsyncExampleState> {
@@ -44,6 +39,7 @@ export class OmnibarAsyncExample extends React.PureComponent<IExampleProps, IOmn
     public state: IOmnibarAsyncExampleState = {
         isOpen: false,
         filmItems: [],
+        loading: false,
     };
 
     private toaster: Toaster;
@@ -70,6 +66,7 @@ export class OmnibarAsyncExample extends React.PureComponent<IExampleProps, IOmn
                     onQueryChange={query => {
                         this.mockAsyncOperation(query);
                     }}
+                    loading={this.state.loading}
                 />
                 <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
             </Example>
@@ -78,11 +75,17 @@ export class OmnibarAsyncExample extends React.PureComponent<IExampleProps, IOmn
 
     private mockAsyncOperation = (query: string) => {
         window.clearTimeout(this.mockAsyncOperationTimeout);
+
+        if (!this.state.loading) {
+            this.setState({ loading: true });
+        }
+
         this.mockAsyncOperationTimeout = window.setTimeout(() => {
             this.setState({
                 filmItems: TOP_100_FILMS.filter(film => {
                     return filterFilm(query, film, 0, false);
                 }),
+                loading: false,
             });
         }, MOCK_ASYNC_OPS_DURATION);
     };

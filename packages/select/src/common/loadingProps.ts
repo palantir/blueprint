@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-export { Classes };
-
-export * from "./itemListRenderer";
-export * from "./itemRenderer";
-export * from "./listItemsProps";
-export * from "./listItemsUtils";
-export * from "./predicate";
-export * from "./loadingProps";
-
-export { defaultLoadingRenderer } from "./default-loading-renderer";
+/* Loading props */
+export type ILoadingProps = {
+    loading?: boolean;
+    loadingRenderer?: () => JSX.Element;
+};
