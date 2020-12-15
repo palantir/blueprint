@@ -345,7 +345,12 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 name: "computeStyles",
                 options: {
                     adaptive: true,
-                    gpuAcceleration: true,
+                    // We disable the built-in gpuAcceleration so that
+                    // Popper.js will return us easy to interpolate values
+                    // (top, left instead of transform: translate3d)
+                    // We'll then use these values to generate the needed
+                    // css transform values blended with the react-spring values
+                    gpuAcceleration: false,
                 },
             },
             // {

@@ -139,8 +139,8 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
                         content={this.getContents(exampleIndex)}
                         // tslint:disable-next-line jsx-no-lambda
-                        renderTarget={props => (
-                            <Button intent={Intent.PRIMARY} text="Popover target" {...props} elementRef={props.ref} />
+                        renderTarget={({ ref, ...props }) => (
+                            <Button intent={Intent.PRIMARY} text="Popover target" {...props} elementRef={ref} />
                         )}
                     />
                     <p>
