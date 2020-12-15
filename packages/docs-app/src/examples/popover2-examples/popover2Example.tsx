@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import {
     AnchorButton,
     Button,
@@ -45,6 +43,7 @@ import {
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 import { Popover2, PopperBoundary } from "@blueprintjs/popover2";
+import * as React from "react";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
@@ -110,23 +109,30 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     };
 
     private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
+
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
+
     private handleInteractionChange = handleValueChange((interactionKind: PopoverInteractionKind) => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
+
     private handlePositionChange = handleValueChange((position: PopoverPosition) => this.setState({ position }));
     // private handleBoundaryChange = handleValueChange((boundary: PopperBoundary) => this.setState({ boundary }));
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
+
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
+
     private toggleUsePortal = handleBooleanChange(usePortal => {
         if (usePortal) {
             this.setState({ hasBackdrop: false, inheritDarkTheme: false });
         }
         this.setState({ usePortal });
     });
+
     private getModifierChangeHandler(name: keyof PopperModifiers) {
         return handleBooleanChange(enabled => {
             this.setState({

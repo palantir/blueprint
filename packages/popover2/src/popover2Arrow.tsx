@@ -19,6 +19,7 @@ import * as React from "react";
 import { PopperArrowProps } from "react-popper";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
+
 import * as Classes from "./classes";
 import { getPosition } from "./utils";
 

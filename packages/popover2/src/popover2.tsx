@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+import { State as PopperState } from "@popperjs/core";
+import classNames from "classnames";
+import * as React from "react";
+import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
+
 import {
     AbstractPureComponent2,
     Classes as CoreClasses,
@@ -23,10 +28,6 @@ import {
     ResizeSensor,
     Utils,
 } from "@blueprintjs/core";
-import { State as PopperState } from "@popperjs/core";
-import classNames from "classnames";
-import * as React from "react";
-import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import * as Classes from "./classes";
 import { Popover2Arrow } from "./popover2Arrow";
@@ -60,6 +61,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
 
     /**
      * The kind of interaction that triggers the display of the popover.
+     *
      * @default "click"
      */
     interactionKind?: PopoverInteractionKind;
@@ -70,6 +72,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
      * closed. This prop is only available when `interactionKind` is
      * `PopoverInteractionKind.CLICK`. When popovers with backdrop are opened,
      * they become focused.
+     *
      * @default false
      */
     hasBackdrop?: boolean;
@@ -93,6 +96,7 @@ export interface IPopover2State {
  */
 export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
+
     private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
     public static defaultProps: IPopover2Props = {
@@ -127,6 +131,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
      * so this reference can be very useful for testing.
      */
     public popoverElement: HTMLElement | null = null;
+
     /** DOM element that contains the target. */
     public targetElement: HTMLElement | null = null;
 
@@ -152,6 +157,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private popperScheduleUpdate?: () => Promise<Partial<PopperState>>;
 
     private isControlled = () => this.props.isOpen !== undefined;
+
     private isArrowEnabled = () => {
         // TODO(adahiya)
         // const { minimal, modifiers } = this.props;
@@ -159,6 +165,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         // return !minimal && (modifiers?.arrow == null || modifiers.arrow.enabled);
         return true;
     };
+
     private isHoverInteractionKind = () => {
         return (
             this.props.interactionKind === PopoverInteractionKind.HOVER ||
