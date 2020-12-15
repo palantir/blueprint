@@ -35,6 +35,7 @@ one item.
  * Safely invoke the member function with no arguments, if the object
  * exists and the given key is indeed a function, and return its value.
  * Otherwise, return `undefined`.
+ *
  * @deprecated use TypeScript 3.7+ optional chaining and optional call operator obj?[key]?.()
  */
 export function safeInvokeMember<T extends { [k in K]?: () => R }, K extends keyof T, R = void>(
@@ -62,6 +63,7 @@ export function safeInvokeMember<T extends { [k in K]?: (a: A) => R }, K extends
  * Safely invoke the member function with two arguments, if the object
  * exists and the given key is indeed a function, and return its value.
  * Otherwise, return `undefined`.
+ *
  * @deprecated use TypeScript 3.7+ optional chaining and optional call operator obj?[key]?.()
  */
 export function safeInvokeMember<T extends { [k in K]?: (a: A, b: B) => R }, K extends keyof T, A, B, R = void>(
@@ -74,6 +76,7 @@ export function safeInvokeMember<T extends { [k in K]?: (a: A, b: B) => R }, K e
  * Safely invoke the member function with three arguments, if the object
  * exists and the given key is indeed a function, and return its value.
  * Otherwise, return undefined.
+ *
  * @deprecated use TypeScript 3.7+ optional chaining and optional call operator obj?[key]?.()
  */
 export function safeInvokeMember<

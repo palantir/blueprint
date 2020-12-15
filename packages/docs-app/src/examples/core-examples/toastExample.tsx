@@ -34,6 +34,7 @@ import {
     ToasterPosition,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IBlueprintExampleData } from "../../tags/types";
 
 type IToastDemo = IToastProps & { button: string };
@@ -109,13 +110,17 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     ];
 
     private toaster: Toaster;
+
     private refHandlers = {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };
+
     private progressToastInterval?: number;
 
     private handlePositionChange = handleValueChange((position: ToasterPosition) => this.setState({ position }));
+
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
 
     public render() {
@@ -153,10 +158,10 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         );
     }
 
-    private renderToastDemo(toast: IToastDemo, index: number) {
+    private renderToastDemo = (toast: IToastDemo, index: number) => {
         // tslint:disable-next-line:jsx-no-lambda
         return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
-    }
+    };
 
     private renderProgress(amount: number): IToastProps {
         return {

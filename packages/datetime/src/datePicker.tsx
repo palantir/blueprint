@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -32,6 +33,7 @@ import { TimePicker } from "./timePicker";
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
+     *
      * @default true
      */
     canClearSelection?: boolean;
@@ -58,6 +60,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.
+     *
      * @default false
      */
     showActionsBar?: boolean;
@@ -78,12 +81,14 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Text for the today button in the action bar.
+     *
      * @default "Today"
      */
     todayButtonText?: string;
 
     /**
      * Text for the reset button in the action bar.
+     *
      * @default "Clear"
      */
     clearButtonText?: string;

@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IDialogExampleState {
@@ -39,9 +40,13 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
+
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
+
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
@@ -123,5 +128,6 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
     }
 
     private handleOpen = () => this.setState({ isOpen: true });
+
     private handleClose = () => this.setState({ isOpen: false });
 }

@@ -29,6 +29,7 @@ export interface IDateTimePickerProps extends IProps {
     /**
      * The initial date and time value that will be set.
      * This will be ignored if `value` is set.
+     *
      * @default Date.now()
      */
     defaultValue?: Date;
@@ -57,6 +58,7 @@ export interface IDateTimePickerProps extends IProps {
 
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
+     *
      * @default true
      */
     canClearSelection?: boolean;

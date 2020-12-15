@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
-import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
+
+import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
+import { IDocsCompleteData } from "@blueprintjs/docs-data";
+import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
@@ -115,7 +117,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions(page: IPageData) {
+    private renderPageActions = (page: IPageData) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -125,7 +127,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
                 text="Edit this page"
             />
         );
-    }
+    };
 
     private maybeRenderPageTag(reference: string) {
         const tag = this.props.docs.pages[reference].metadata.tag;
@@ -139,9 +141,9 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         );
     }
 
-    private renderViewSourceLinkText(entry: ITsDocBase) {
+    private renderViewSourceLinkText = (entry: ITsDocBase) => {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
-    }
+    };
 
     private maybeRenderPackageLink(packageName: string) {
         const pkg = this.getNpmPackage(packageName);

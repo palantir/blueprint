@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { IMenuItemProps, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
+
+import { IMenuItemProps, MenuItem } from "@blueprintjs/core";
 
 import { Clipboard } from "../../common/clipboard";
 import { Regions } from "../../regions";

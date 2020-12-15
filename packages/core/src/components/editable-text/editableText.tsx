@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
@@ -32,6 +33,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
      *
      * This behavior can help in certain applications where, for example, a custom right-click
      * context menu is used to supply clipboard copy and paste functionality.
+     *
      * @default false
      */
     alwaysRenderInput?: boolean;
@@ -40,6 +42,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
      * If `true` and in multiline mode, the `enter` key will trigger onConfirm and `mod+enter`
      * will insert a newline. If `false`, the key bindings are inverted such that `enter`
      * adds a newline.
+     *
      * @default false
      */
     confirmOnEnterKey?: boolean;
@@ -49,6 +52,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
 
     /**
      * Whether the text can be edited.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -65,6 +69,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     /**
      * Whether the component supports multiple lines of text.
      * This prop should not be changed during the component's lifetime.
+     *
      * @default false
      */
     multiline?: boolean;
@@ -76,12 +81,14 @@ export interface IEditableTextProps extends IIntentProps, IProps {
 
     /**
      * Minimum number of lines (essentially minimum height), when `multiline`.
+     *
      * @default 1
      */
     minLines?: number;
 
     /**
      * Placeholder text when there is no value.
+     *
      * @default "Click to Edit"
      */
     placeholder?: string;
@@ -90,6 +97,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
      * Whether the entire text field should be selected on focus.
      * If `false`, the cursor is placed at the end of the text.
      * This prop is ignored on inputs with type other then text, search, url, tel and password. See https://html.spec.whatwg.org/multipage/input.html#do-not-apply for details.
+     *
      * @default false
      */
     selectAllOnFocus?: boolean;
@@ -149,7 +157,9 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
     };
 
     private inputElement: HTMLInputElement | HTMLTextAreaElement | null = null;
+
     private valueElement: HTMLSpanElement | null = null;
+
     private refHandlers = {
         content: (spanElement: HTMLSpanElement | null) => {
             this.valueElement = spanElement;

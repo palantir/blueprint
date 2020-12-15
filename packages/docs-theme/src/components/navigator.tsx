@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Classes, Icon, IInputGroupProps, MenuItem } from "@blueprintjs/core";
-import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
-
 import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
+
+import { Classes, Icon, IInputGroupProps, MenuItem } from "@blueprintjs/core";
+import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/utils";
 

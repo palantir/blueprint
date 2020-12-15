@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { spy } from "sinon";
 
-import { mount, ReactWrapper } from "enzyme";
 import { Classes, ITreeNode, ITreeProps, Tree } from "../../src";
 
 describe("<Tree>", () => {

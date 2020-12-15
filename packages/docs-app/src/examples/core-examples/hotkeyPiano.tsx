@@ -35,12 +35,17 @@ class Oscillator {
 
 class Envelope {
     public amplitude: AudioParam;
+
     public gain: GainNode;
 
     private attackLevel = 0.8;
+
     private attackTime = 0.1;
+
     private sustainLevel = 0.3;
+
     private sustainTime = 0.1;
+
     private releaseTime = 0.4;
 
     public constructor(private context: AudioContext) {
@@ -110,6 +115,7 @@ interface IPianoKeyProps {
 
 class PianoKey extends React.Component<IPianoKeyProps> {
     private oscillator: Oscillator;
+
     private envelope: Envelope;
 
     public constructor(props: IPianoKeyProps) {

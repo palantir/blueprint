@@ -49,6 +49,7 @@ export function arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any)
 /**
  * Shallow comparison between objects. If `keys` is provided, just that subset
  * of keys will be compared; otherwise, all keys will be compared.
+ *
  * @returns true if items are equal.
  */
 export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: IKeyDenylist<T> | IKeyAllowlist<T>) {
@@ -75,6 +76,7 @@ export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: IKeyDe
 /**
  * Deep comparison between objects. If `keys` is provided, just that subset of
  * keys will be compared; otherwise, all keys will be compared.
+ *
  * @returns true if items are equal.
  */
 export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | number | symbol>): boolean {

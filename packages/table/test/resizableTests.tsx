@@ -15,10 +15,10 @@
  */
 
 import { expect } from "chai";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { mount } from "enzyme";
 import * as Classes from "../src/common/classes";
 import { IResizableProps, IResizeableState, Resizable } from "../src/interactions/resizable";
 import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";

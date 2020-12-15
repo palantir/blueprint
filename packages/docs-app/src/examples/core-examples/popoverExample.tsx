@@ -110,16 +110,22 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
     };
 
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
+
     private handleInteractionChange = handleValueChange((interactionKind: PopoverInteractionKind) => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
+
     private handlePositionChange = handleValueChange((position: PopoverPosition) => this.setState({ position }));
+
     private handleBoundaryChange = handleValueChange((boundary: PopperBoundary) => this.setState({ boundary }));
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
+
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
+
     private toggleUsePortal = handleBooleanChange(usePortal => {
         if (usePortal) {
             this.setState({ hasBackdrop: false, inheritDarkTheme: false });

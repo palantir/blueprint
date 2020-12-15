@@ -37,6 +37,7 @@ export interface ITagInputProps extends IIntentProps, IProps {
     /**
      * If true, `onAdd` will be invoked when the input loses focus.
      * Otherwise, `onAdd` is only invoked when `enter` is pressed.
+     *
      * @default false
      */
     addOnBlur?: boolean;
@@ -58,6 +59,7 @@ export interface ITagInputProps extends IIntentProps, IProps {
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
      * if appropriate.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -153,6 +155,7 @@ export interface ITagInputProps extends IIntentProps, IProps {
     /**
      * Separator pattern used to split input text into multiple values. Default value splits on commas and newlines.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
+     *
      * @default /[,\n\r]/
      */
     separator?: string | RegExp | false;
@@ -220,6 +223,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     };
 
     private inputElement: HTMLInputElement | null = null;
+
     private refHandlers = {
         input: (ref: HTMLInputElement) => {
             this.inputElement = ref;

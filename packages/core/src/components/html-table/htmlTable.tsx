@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common";
 
 export interface IHTMLTableProps
@@ -33,6 +34,7 @@ export interface IHTMLTableProps
 
     /**
      * Use small, condensed appearance for this element and all child elements.
+     *
      * @deprecated
      */
     small?: boolean;

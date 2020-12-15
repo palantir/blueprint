@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
@@ -63,12 +64,14 @@ export interface IToasterProps extends IProps {
      * Whether a toast should acquire application focus when it first opens.
      * This is disabled by default so that toasts do not interrupt the user's flow.
      * Note that `enforceFocus` is always disabled for `Toaster`s.
+     *
      * @default false
      */
     autoFocus?: boolean;
 
     /**
      * Whether pressing the `esc` key should clear all active toasts.
+     *
      * @default true
      */
     canEscapeKeyClear?: boolean;
@@ -79,12 +82,14 @@ export interface IToasterProps extends IProps {
      *
      * This prop is ignored by `Toaster.create()` as that method always appends a new element
      * to the container.
+     *
      * @default true
      */
     usePortal?: boolean;
 
     /**
      * Position of `Toaster` within its container.
+     *
      * @default Position.TOP
      */
     position?: ToasterPosition;
@@ -93,6 +98,7 @@ export interface IToasterProps extends IProps {
      * The maximum number of active toasts that can be displayed at once.
      *
      * When the limit is about to be exceeded, the oldest active toast is removed.
+     *
      * @default undefined
      */
     maxToasts?: number;
@@ -220,9 +226,9 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         }
     }
 
-    private renderToast(toast: IToastOptions) {
+    private renderToast = (toast: IToastOptions) => {
         return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
-    }
+    };
 
     private createToastOptions(props: IToastProps, key = `toast-${this.toastId++}`) {
         // clone the object before adding the key prop to avoid leaking the mutation

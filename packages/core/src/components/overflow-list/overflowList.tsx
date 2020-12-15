@@ -37,6 +37,7 @@ export interface IOverflowListProps<T> extends IProps {
      * Which direction the items should collapse from: start or end of the
      * children. This also determines whether `overflowRenderer` appears before
      * (`START`) or after (`END`) the visible items.
+     *
      * @default Boundary.START
      */
     collapseFrom?: Boundary;
@@ -50,6 +51,7 @@ export interface IOverflowListProps<T> extends IProps {
     /**
      * The minimum number of visible items that should never collapse into the
      * overflow menu, regardless of DOM dimensions.
+     *
      * @default 0
      */
     minVisibleItems?: number;
@@ -62,6 +64,7 @@ export interface IOverflowListProps<T> extends IProps {
      * Only enable this prop if the overflow should be recalculated when a
      * parent element resizes in a way that does not also cause the
      * `OverflowList` to resize.
+     *
      * @default false
      */
     observeParents?: boolean;
@@ -88,6 +91,7 @@ export interface IOverflowListProps<T> extends IProps {
 
     /**
      * HTML tag name for the container element.
+     *
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -102,6 +106,7 @@ export interface IOverflowListProps<T> extends IProps {
 export interface IOverflowListState<T> {
     /**
      * Direction of current overflow operation. An overflow can take several frames to settle.
+     *
      * @internal don't expose the type
      */
     direction: OverflowDirection;
@@ -132,6 +137,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
 
     /** A cache containing the widths of all elements being observed to detect growing/shrinking */
     private previousWidths = new Map<Element, number>();
+
     private spacer: Element | null = null;
 
     public componentDidMount() {

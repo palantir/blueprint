@@ -34,6 +34,7 @@ export interface IPortalProps extends IProps {
 
     /**
      * The HTML element that children will be mounted to.
+     *
      * @default document.body
      */
     container?: HTMLElement;
@@ -64,12 +65,15 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  */
 export class Portal extends React.Component<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
+
     public static contextTypes = REACT_CONTEXT_TYPES;
+
     public static defaultProps: IPortalProps = {
         container: typeof document !== "undefined" ? document.body : undefined,
     };
 
     public context: IPortalContext = {};
+
     public state: IPortalState = { hasMounted: false };
 
     private portalElement: HTMLElement | null = null;
@@ -96,6 +100,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         }
         this.portalElement = this.createContainerElement();
         this.props.container.appendChild(this.portalElement);
+        /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();

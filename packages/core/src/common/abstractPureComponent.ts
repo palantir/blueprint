@@ -15,11 +15,13 @@
  */
 
 import * as React from "react";
+
 import { isNodeEnv } from "./utils";
 
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
+ *
  * @deprecated componentWillReceiveProps is deprecated in React 16.9; use AbstractPureComponent2 instead
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -50,6 +52,7 @@ export abstract class AbstractPureComponent<P, S = {}> extends React.PureCompone
     /**
      * Set a timeout and remember its ID.
      * All stored timeouts will be cleared when component unmounts.
+     *
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {
