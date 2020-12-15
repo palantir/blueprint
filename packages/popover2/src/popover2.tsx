@@ -244,13 +244,13 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
-    private renderTarget = (referenceProps: ReferenceChildrenProps) => {
+    private renderTarget = ({ ref }: ReferenceChildrenProps) => {
         const { renderTarget } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
-        const targetProps = isHoverInteractionKind
+        const targetEventHandlers = isHoverInteractionKind
             ? {
                   // HOVER handlers
                   onBlur: this.handleTargetBlur,
@@ -273,16 +273,22 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
             // TODO(adahiya)
             // disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
-            ref: referenceProps.ref,
-            ...((targetProps as unknown) as T),
+            ref,
+            ...((targetEventHandlers as unknown) as T),
         });
 
-        return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
+        // return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
+        return target;
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
+        console.info("rendering popover", popperProps.style);
         const { usePortal, interactionKind } = this.props;
-        const { transformOrigin } = this.state;
+        // const { transformOrigin } = this.state;
+        const transformOrigin = getTransformOrigin(
+            popperProps.placement,
+            this.isArrowEnabled() ? (popperProps.arrowProps.style as any) : undefined,
+        );
 
         // Need to update our reference to this on every render as it will change.
         this.popperScheduleUpdate = popperProps.update;
@@ -311,19 +317,14 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
         return (
             <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                <ResizeSensor onResize={this.handleContentResize}>
-                    <div
-                        className={popoverClasses}
-                        style={{ transformOrigin }}
-                        ref={this.popoverRef}
-                        {...popoverHandlers}
-                    >
-                        {this.isArrowEnabled() && (
-                            <Popover2Arrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
-                        )}
-                        <div className={Classes.POPOVER2_CONTENT}>{this.renderContent()}</div>
-                    </div>
-                </ResizeSensor>
+                {/* <ResizeSensor onResize={this.handleContentResize}> */}
+                <div className={popoverClasses} style={{ transformOrigin }} ref={this.popoverRef} {...popoverHandlers}>
+                    {this.isArrowEnabled() && (
+                        <Popover2Arrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
+                    )}
+                    <div className={Classes.POPOVER2_CONTENT}>{this.renderContent()}</div>
+                </div>
+                {/* </ResizeSensor> */}
             </div>
         );
     };
@@ -333,40 +334,44 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         return <div>Content</div>;
     };
 
-    private getPopperModifiers(): Array<Modifier<"arrowOffset" | "flip" | "preventOverflow" | "updatePopoverState">> {
+    private getPopperModifiers(): Array<
+        Modifier<"computeStyles" | "arrowOffset" | "flip" | "preventOverflow" | "updatePopoverState">
+    > {
         // TODO(adahiya)
         // const { boundary /* , modifiers */ } = this.props;
         // const { flip = {}, preventOverflow = {} } = modifiers!;
         return [
-            // ...modifiers,
             {
-                name: "arrowOffset",
+                name: "computeStyles",
                 options: {
-                    enabled: this.isArrowEnabled(),
-                    fn: arrowOffsetModifier,
-                    order: 510,
+                    adaptive: true,
+                    gpuAcceleration: true,
                 },
             },
+            // {
+            //     name: "arrowOffset",
+            //     options: {
+            //         enabled: this.isArrowEnabled(),
+            //         fn: arrowOffsetModifier,
+            //         // order: 510,
+            //     },
+            // },
             {
                 name: "flip",
-                options: {
-                    // boundariesElement: boundary,
-                },
+                options: { boundary: this.props.boundary },
             },
             {
                 name: "preventOverflow",
-                options: {
-                    // boundariesElement: boundary,
-                },
+                options: { boundary: this.props.boundary },
             },
-            {
-                name: "updatePopoverState",
-                options: {
-                    enabled: true,
-                    fn: this.updatePopoverState,
-                    order: 900,
-                },
-            },
+            // {
+            //     name: "updatePopoverState",
+            //     options: {
+            //         enabled: true,
+            //         fn: this.updatePopoverState,
+            //         order: 900,
+            //     },
+            // },
         ];
     }
 
@@ -505,9 +510,10 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: (state: PopperState) => PopperState = state => {
-        // always set string; let shouldComponentUpdate determine if update is necessary
-        this.setState({ transformOrigin: getTransformOrigin(state) });
-        return state;
-    };
+    // private updatePopoverState: (state: PopperState) => PopperState = state => {
+    //     // always set string; let shouldComponentUpdate determine if update is necessary
+    //     console.log("got popper state", state);
+    //     this.setState({ transformOrigin: getTransformOrigin(state) });
+    //     return state;
+    // };
 }

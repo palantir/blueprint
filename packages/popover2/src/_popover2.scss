@@ -82,11 +82,6 @@ $popover2-width: $pt-grid-size * 35 !default;
   transform: rotate(45deg);
 }
 
-// remove arrow when popover2 is pinned inside its container
-.#{$ns}-tether-pinned .#{$ns}-popover2-arrow {
-  display: none;
-}
-
 .#{$ns}-popover2-backdrop {
   background: rgba($white, 0);
 }
@@ -109,9 +104,9 @@ $popover2-width: $pt-grid-size * 35 !default;
   }
 
   // Popper.js applies this attribute when the target fully leaves boundaries
-  &[data-x-out-of-boundaries] {
-    display: none;
-  }
+  // &[data-x-out-of-boundaries] {
+  //   display: none;
+  // }
 }
 
 span.#{$ns}-popover2-target {
@@ -120,8 +115,4 @@ span.#{$ns}-popover2-target {
 
   // this is important for span tag as default inline display height only includes text.
   // div tag can be used for display: block, which works fine.
-}
-
-.#{$ns}-popover2-wrapper.#{$ns}-fill {
-  width: 100%;
 }

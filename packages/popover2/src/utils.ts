@@ -60,20 +60,20 @@ export function getAlignment(placement: BasePlacement) {
 // ================
 
 /** Modifier helper function to compute popper transform-origin based on arrow position */
-export function getTransformOrigin(state: State) {
-    const position = getPosition(state.placement);
-    if (state.elements.arrow == null) {
+export function getTransformOrigin(placement: Placement, arrowStyles: { left: number; top: number } | undefined) {
+    const position = getPosition(placement);
+    if (arrowStyles === undefined) {
         return isVerticalPosition(position)
             ? `${getOppositePosition(position)} ${getAlignment(position)}`
             : `${getAlignment(position)} ${getOppositePosition(position)}`;
     } else {
-        const arrowSizeShift = state.elements.arrow.clientHeight / 2;
-        const { arrow } = state.modifiersData;
+        // const arrowSizeShift = state.elements.arrow.clientHeight / 2;
+        const arrowSizeShift = 30 / 2;
         // can use keyword for dimension without the arrow, to ease computation burden.
         // move origin by half arrow's height to keep it centered.
         return isVerticalPosition(position)
-            ? `${getOppositePosition(position)} ${arrow.y + arrowSizeShift}px`
-            : `${arrow.x + arrowSizeShift}px ${getOppositePosition(position)}`;
+            ? `${getOppositePosition(position)} ${arrowStyles.top + arrowSizeShift}px`
+            : `${arrowStyles.left + arrowSizeShift}px ${getOppositePosition(position)}`;
     }
 }
 
