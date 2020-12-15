@@ -132,9 +132,9 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     popoverClassName?: string;
 
     /**
-     * The position (relative to the target) at which the popover should appear.
+     * The placement (relative to the target) at which the popover should appear.
      *
-     * The default value of `"auto"` will choose the best position when opened
+     * The default value of `"auto"` will choose the best placement when opened
      * and will allow the popover to reposition itself to remain onscreen as the
      * user scrolls around.
      *

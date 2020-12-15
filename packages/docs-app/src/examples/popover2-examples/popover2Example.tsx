@@ -17,7 +17,7 @@
 import {
     AnchorButton,
     Button,
-    Classes,
+    Classes as CoreClasses,
     Code,
     FormGroup,
     H5,
@@ -29,7 +29,6 @@ import {
     MenuDivider,
     MenuItem,
     PopoverInteractionKind,
-    PopoverPosition,
     PopperModifiers,
     RadioGroup,
     Slider,
@@ -42,7 +41,8 @@ import {
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
-import { Popover2, PopperBoundary } from "@blueprintjs/popover2";
+import { Classes, Popover2, PopperBoundary } from "@blueprintjs/popover2";
+import { Placement, placements as PLACEMENT_OPTIONS } from "@popperjs/core";
 import * as React from "react";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
@@ -52,24 +52,6 @@ const INTERACTION_KINDS = [
     { label: "Click (target only)", value: PopoverInteractionKind.CLICK_TARGET_ONLY.toString() },
     { label: "Hover", value: PopoverInteractionKind.HOVER.toString() },
     { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
-];
-
-const VALID_POSITIONS: PopoverPosition[] = [
-    PopoverPosition.AUTO,
-    PopoverPosition.AUTO_START,
-    PopoverPosition.AUTO_END,
-    PopoverPosition.TOP_LEFT,
-    PopoverPosition.TOP,
-    PopoverPosition.TOP_RIGHT,
-    PopoverPosition.RIGHT_TOP,
-    PopoverPosition.RIGHT,
-    PopoverPosition.RIGHT_BOTTOM,
-    PopoverPosition.BOTTOM_LEFT,
-    PopoverPosition.BOTTOM,
-    PopoverPosition.BOTTOM_RIGHT,
-    PopoverPosition.LEFT_TOP,
-    PopoverPosition.LEFT,
-    PopoverPosition.LEFT_BOTTOM,
 ];
 
 export interface IPopover2ExampleState {
@@ -82,7 +64,7 @@ export interface IPopover2ExampleState {
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperModifiers;
-    position?: PopoverPosition;
+    placement?: Placement;
     sliderValue?: number;
     usePortal?: boolean;
 }
@@ -103,7 +85,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
             keepTogether: { enabled: true },
             preventOverflow: { enabled: true },
         },
-        position: "auto",
+        placement: "auto",
         sliderValue: 5,
         usePortal: true,
     };
@@ -117,7 +99,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         this.setState({ interactionKind, hasBackdrop });
     });
 
-    private handlePositionChange = handleValueChange((position: PopoverPosition) => this.setState({ position }));
+    private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
     // private handleBoundaryChange = handleValueChange((boundary: PopperBoundary) => this.setState({ boundary }));
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
@@ -150,14 +132,16 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
                     <Popover2<IButtonProps>
-                        popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
+                        popoverClassName={exampleIndex <= 2 ? Classes.POPOVER2_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
                         enforceFocus={false}
                         isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
                         content={this.getContents(exampleIndex)}
                         // tslint:disable-next-line jsx-no-lambda
-                        renderTarget={props => <Button intent={Intent.PRIMARY} text="Popover target" {...props} />}
+                        renderTarget={props => (
+                            <Button intent={Intent.PRIMARY} text="Popover target" {...props} elementRef={props.ref} />
+                        )}
                     />
                     <p>
                         Scroll around this container to experiment
@@ -180,9 +164,9 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                     labelFor="position"
                 >
                     <HTMLSelect
-                        value={this.state.position}
-                        onChange={this.handlePositionChange}
-                        options={VALID_POSITIONS}
+                        value={this.state.placement}
+                        onChange={this.handlePlacementChange}
+                        options={PLACEMENT_OPTIONS}
                     />
                 </FormGroup>
                 <Label>
@@ -257,18 +241,18 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                 <H5>Confirm deletion</H5>
                 <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
-                    <Button className={Classes.POPOVER_DISMISS} style={{ marginRight: 10 }}>
+                    <Button className={Classes.POPOVER2_DISMISS} style={{ marginRight: 10 }}>
                         Cancel
                     </Button>
-                    <Button intent={Intent.DANGER} className={Classes.POPOVER_DISMISS}>
+                    <Button intent={Intent.DANGER} className={Classes.POPOVER2_DISMISS}>
                         Delete
                     </Button>
                 </div>
             </div>,
             <div key="input">
-                <label className={Classes.LABEL}>
+                <label className={CoreClasses.LABEL}>
                     Enter some text
-                    <input autoFocus={true} className={Classes.INPUT} type="text" />
+                    <input autoFocus={true} className={CoreClasses.INPUT} type="text" />
                 </label>
             </div>,
             <Slider key="slider" min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />,
