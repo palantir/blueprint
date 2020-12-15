@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-import { State as PopperState } from "@popperjs/core";
-import classNames from "classnames";
-import * as React from "react";
-import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
-
 import {
     AbstractPureComponent2,
     Classes as CoreClasses,
@@ -28,29 +23,26 @@ import {
     ResizeSensor,
     Utils,
 } from "@blueprintjs/core";
+import { State as PopperState } from "@popperjs/core";
+import classNames from "classnames";
+import * as React from "react";
+import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import * as Classes from "./classes";
 import { Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
 import { arrowOffsetModifier, getTransformOrigin } from "./utils";
 
-export const PopoverInteractionKind = {
+export const Popover2InteractionKind = {
     CLICK: "click" as "click",
     CLICK_TARGET_ONLY: "click-target" as "click-target",
     HOVER: "hover" as "hover",
     HOVER_TARGET_ONLY: "hover-target" as "hover-target",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
+export type PopoverInteractionKind = typeof Popover2InteractionKind[keyof typeof Popover2InteractionKind];
 
-/**
- * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
- */
-export interface IPopover2TargetProps {
-    ref: React.Ref<any>;
-}
-
-export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends IPopover2SharedProps {
+export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends IPopover2SharedProps<TProps> {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
     /**
@@ -81,8 +73,6 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
      * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: (ref: HTMLElement | null) => void;
-
-    renderTarget: (props: IPopover2TargetProps & TProps) => JSX.Element;
 }
 
 export interface IPopover2State {
@@ -109,7 +99,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
         inheritDarkTheme: true,
-        interactionKind: PopoverInteractionKind.CLICK,
+        interactionKind: Popover2InteractionKind.CLICK,
         minimal: false,
         // modifiers: {},
         openOnTargetFocus: true,
@@ -168,8 +158,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
     private isHoverInteractionKind = () => {
         return (
-            this.props.interactionKind === PopoverInteractionKind.HOVER ||
-            this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
+            this.props.interactionKind === Popover2InteractionKind.HOVER ||
+            this.props.interactionKind === Popover2InteractionKind.HOVER_TARGET_ONLY
         );
     };
 
@@ -195,7 +185,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                     backdropClassName={Classes.POPOVER2_BACKDROP}
                     backdropProps={this.props.backdropProps}
                     canEscapeKeyClose={this.props.canEscapeKeyClose}
-                    canOutsideClickClose={this.props.interactionKind === PopoverInteractionKind.CLICK}
+                    canOutsideClickClose={this.props.interactionKind === Popover2InteractionKind.CLICK}
                     className={this.props.portalClassName}
                     enforceFocus={this.props.enforceFocus}
                     hasBackdrop={this.props.hasBackdrop}
@@ -302,8 +292,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
             onClick: this.handlePopoverClick,
         };
         if (
-            interactionKind === PopoverInteractionKind.HOVER ||
-            (!usePortal && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)
+            interactionKind === Popover2InteractionKind.HOVER ||
+            (!usePortal && interactionKind === Popover2InteractionKind.HOVER_TARGET_ONLY)
         ) {
             popoverHandlers.onMouseEnter = this.handleMouseEnter;
             popoverHandlers.onMouseLeave = this.handleMouseLeave;
@@ -413,7 +403,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         if (
             !this.props.usePortal &&
             this.isElementInPopover(e.target as Element) &&
-            this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY &&
+            this.props.interactionKind === Popover2InteractionKind.HOVER_TARGET_ONLY &&
             !this.props.openOnTargetFocus
         ) {
             this.handleMouseLeave(e);
@@ -515,7 +505,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     }
 
     /** Popper modifier that updates React state (for style properties) based on latest data. */
-    private updatePopoverState: (state: State) => State = state => {
+    private updatePopoverState: (state: PopperState) => PopperState = state => {
         // always set string; let shouldComponentUpdate determine if update is necessary
         this.setState({ transformOrigin: getTransformOrigin(state) });
         return state;

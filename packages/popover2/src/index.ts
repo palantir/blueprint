@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export { PopperBoundary } from "./popover2SharedProps";
-export { IPopover2TargetProps, Popover2 } from "./popover2";
+export { IPopover2TargetProps, PopperBoundary } from "./popover2SharedProps";
+export { Popover2 } from "./popover2";
 export { Tooltip2 } from "./tooltip2";

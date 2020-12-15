@@ -19,8 +19,15 @@ import { Boundary, Placement } from "@popperjs/core";
 
 export { Boundary as PopperBoundary };
 
+/**
+ * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
+ */
+export interface IPopover2TargetProps {
+    ref: React.Ref<any>;
+}
+
 /** Props shared between `Popover2` and `Tooltip2`. */
-export interface IPopover2SharedProps extends IOverlayableProps, IProps {
+export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps {
     /**
      * TODO(adahiya)
      */
@@ -113,6 +120,11 @@ export interface IPopover2SharedProps extends IOverlayableProps, IProps {
      * @default true
      */
     openOnTargetFocus?: boolean;
+
+    /**
+     * TODO(adahiya)
+     */
+    renderTarget: (props: IPopover2TargetProps & TProps) => JSX.Element;
 
     /**
      * A space-delimited string of class names applied to the popover element.
