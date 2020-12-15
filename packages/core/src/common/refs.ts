@@ -38,3 +38,10 @@ export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
 
     return (ref as IRefObject<T>).current ?? (ref as T);
 }
+
+export function combineRefs<T = HTMLElement>(ref1: IRefCallback<T>, ref2: IRefCallback<T>) {
+    return (el: T) => {
+        ref1(el);
+        ref2(el);
+    };
+}

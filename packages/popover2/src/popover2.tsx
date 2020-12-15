@@ -20,7 +20,9 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
     Overlay,
-    ResizeSensor,
+    // ResizeSensor,
+    isRefCallback,
+    combineRefs,
     Utils,
 } from "@blueprintjs/core";
 import { State as PopperState } from "@popperjs/core";
@@ -31,7 +33,7 @@ import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChi
 import * as Classes from "./classes";
 import { Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
-import { arrowOffsetModifier, getTransformOrigin } from "./utils";
+import { getTransformOrigin } from "./utils";
 
 export const Popover2InteractionKind = {
     CLICK: "click" as "click",
@@ -40,7 +42,7 @@ export const Popover2InteractionKind = {
     HOVER_TARGET_ONLY: "hover-target" as "hover-target",
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverInteractionKind = typeof Popover2InteractionKind[keyof typeof Popover2InteractionKind];
+export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeof Popover2InteractionKind];
 
 export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends IPopover2SharedProps<TProps> {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
@@ -56,7 +58,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
      *
      * @default "click"
      */
-    interactionKind?: PopoverInteractionKind;
+    interactionKind?: Popover2InteractionKind;
 
     /**
      * Enables an invisible overlay beneath the popover that captures clicks and
@@ -179,7 +181,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
         return (
             <Manager>
-                <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>
+                <Reference>{this.renderTarget}</Reference>
                 <Overlay
                     autoFocus={this.props.autoFocus}
                     backdropClassName={Classes.POPOVER2_BACKDROP}
@@ -249,6 +251,9 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
+        if (isRefCallback(ref)) {
+            ref = combineRefs(ref, this.refHandlers.target);
+        }
 
         const targetEventHandlers = isHoverInteractionKind
             ? {
@@ -282,7 +287,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        console.info("rendering popover", popperProps.style);
         const { usePortal, interactionKind } = this.props;
         // const { transformOrigin } = this.state;
         const transformOrigin = getTransformOrigin(

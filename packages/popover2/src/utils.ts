@@ -60,7 +60,7 @@ export function getAlignment(placement: BasePlacement) {
 // ================
 
 /** Modifier helper function to compute popper transform-origin based on arrow position */
-export function getTransformOrigin(placement: Placement, arrowStyles: { left: number; top: number } | undefined) {
+export function getTransformOrigin(placement: Placement, arrowStyles: { left: string; top: string } | undefined) {
     const position = getPosition(placement);
     if (arrowStyles === undefined) {
         return isVerticalPosition(position)
@@ -72,8 +72,8 @@ export function getTransformOrigin(placement: Placement, arrowStyles: { left: nu
         // can use keyword for dimension without the arrow, to ease computation burden.
         // move origin by half arrow's height to keep it centered.
         return isVerticalPosition(position)
-            ? `${getOppositePosition(position)} ${arrowStyles.top + arrowSizeShift}px`
-            : `${arrowStyles.left + arrowSizeShift}px ${getOppositePosition(position)}`;
+            ? `${getOppositePosition(position)} ${parseInt(arrowStyles.top, 10) + arrowSizeShift}px`
+            : `${parseInt(arrowStyles.left, 10) + arrowSizeShift}px ${getOppositePosition(position)}`;
     }
 }
 
