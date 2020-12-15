@@ -170,7 +170,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     }
 
     private renderOptions() {
-        const { arrow, flip, preventOverflow } = this.state.modifiers;
+        const { arrow, flip /* , preventOverflow */ } = this.state.modifiers;
         return (
             <>
                 <H5>Appearance</H5>
