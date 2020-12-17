@@ -18,9 +18,7 @@ const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        icons: [
-            "./src/index.ts"
-        ],
+        icons: ["./src/index.ts"],
     },
 
     externals: COMMON_EXTERNALS,
@@ -29,7 +27,7 @@ module.exports = Object.assign({}, baseConfig, {
         filename: "[name].bundle.js",
         library: ["Blueprint", "Icons"],
         libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist")
+        path: path.resolve(__dirname, "./dist"),
     },
 
     performance: {
