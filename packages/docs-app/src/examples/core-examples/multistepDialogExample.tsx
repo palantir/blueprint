@@ -25,7 +25,7 @@ import {
     IMultistepDialogPanelProps,
     Switch,
     Classes,
-    ISubmitButtonProps
+    IFinalButtonProps,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
@@ -64,7 +64,7 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const submitButtonProps: ISubmitButtonProps = {
+        const submitButtonProps: IFinalButtonProps = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",
@@ -81,8 +81,8 @@ export class MultistepDialogExample extends React.PureComponent<
                     title="Palantir Foundry"
                     {...this.state}
                 >
-                    <Step id="one" renderPanel={this.renderPanelOne} title="Part 1" nextButtonEnabledByDefault={true} />
-                    <Step id="two" renderPanel={this.renderPanelTwo} title="Part 2" nextButtonEnabledByDefault={false} />
+                    {/* <Step id="one" renderPanel={this.renderPanelOne} title="Part 1" nextButtonEnabledByDefault={true} />
+                    <Step id="two" renderPanel={this.renderPanelTwo} title="Part 2" nextButtonEnabledByDefault={false} /> */}
                 </MultistepDialog>
             </Example>
         );

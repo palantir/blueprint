@@ -20,7 +20,6 @@ import * as React from "react";
 
 import { Classes, IMultistepDialogPanelProps, MultistepDialog, Step } from "../../src";
 
-
 const NEXT_BUTTON = "[text='Next']";
 const BACK_BUTTON = "[text='Back']";
 const SUBMIT_BUTTON = "[text='Submit']";
@@ -28,7 +27,7 @@ const SUBMIT_BUTTON = "[text='Submit']";
 describe("<MultistepDialog>", () => {
     it("renders its content correctly", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true} usePortal={false} >
+            <MultistepDialog isOpen={true} usePortal={false}>
                 <Step id="one" title="Step 1" renderPanel={renderPanel} />
             </MultistepDialog>,
         );
@@ -42,7 +41,7 @@ describe("<MultistepDialog>", () => {
             Classes.STEP_CONTAINER,
             Classes.STEP_ICON,
             Classes.STEP_TITLE,
-            Classes.DIALOG_FOOTER_ACTIONS
+            Classes.DIALOG_FOOTER_ACTIONS,
         ].forEach(className => {
             assert.lengthOf(dialog.find(`.${className}`), 1, `missing ${className}`);
         });
@@ -98,7 +97,7 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(newSteps.at(0).find(`.${Classes.ACTIVE}`).length, 4);
         assert.strictEqual(newSteps.at(1).find(`.${Classes.ACTIVE}`).length, 3);
         dialog.unmount();
-    })
+    });
 
     it("footer on last step of multiple steps should contain back and submit buttons", () => {
         const dialog = mount(
@@ -113,7 +112,7 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.find(NEXT_BUTTON).length, 0);
         assert.strictEqual(dialog.find(SUBMIT_BUTTON).length, 1);
         dialog.unmount();
-    })
+    });
 
     it("footer on first step of multiple steps should contain next button only", () => {
         const dialog = mount(
@@ -128,7 +127,7 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.find(NEXT_BUTTON).length, 1);
         assert.strictEqual(dialog.find(SUBMIT_BUTTON).length, 0);
         dialog.unmount();
-    })
+    });
 
     it("footer on first step of single step should contain submit button only", () => {
         const dialog = mount(
@@ -142,7 +141,7 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.find(NEXT_BUTTON).length, 0);
         assert.strictEqual(dialog.find(SUBMIT_BUTTON).length, 1);
         dialog.unmount();
-    })
+    });
 
     it("selecting older step should leave already viewed steps active", () => {
         const dialog = mount(
@@ -150,7 +149,6 @@ describe("<MultistepDialog>", () => {
                 <Step id="one" title="Step 1" renderPanel={renderPanel} />
                 <Step id="two" title="Step 2" renderPanel={renderPanel} />
             </MultistepDialog>,
-
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.find(NEXT_BUTTON).simulate("click");
@@ -162,11 +160,11 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 4);
         assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 3);
         dialog.unmount();
-    })
+    });
 
     it("gets by without children", () => {
-        assert.doesNotThrow(() => mount(<MultistepDialog isOpen={true}/>))
-    })
+        assert.doesNotThrow(() => mount(<MultistepDialog isOpen={true} />));
+    });
 
     it("supports non-existent children", () => {
         assert.doesNotThrow(() =>
@@ -204,28 +202,28 @@ describe("<MultistepDialog>", () => {
     });
 
     const renderDisableDialogPanel = (props: IMultistepDialogPanelProps) => {
-        return <DisableNext {...props}/>
-    }
+        return <DisableNext {...props} />;
+    };
 
     const renderEnableDialogPanel = (props: IMultistepDialogPanelProps) => {
-        return <EnableNext {...props}/>
-    }
+        return <EnableNext {...props} />;
+    };
 });
 
 const renderPanel = (_props: IMultistepDialogPanelProps) => {
     return <div>panel</div>;
-}
+};
 
 const EnableNext: React.FunctionComponent<IMultistepDialogPanelProps> = ({ updateDialog }) => {
     React.useEffect(() => {
-        updateDialog({enableNextButton: true});
-    }, [])
-    return <strong>panel</strong>
+        updateDialog({ enableNextButton: true });
+    }, []);
+    return <strong>panel</strong>;
 };
 
 const DisableNext: React.FunctionComponent<IMultistepDialogPanelProps> = ({ updateDialog }) => {
     React.useEffect(() => {
-        updateDialog({enableNextButton: false});
-    }, [])
-    return <strong>panel</strong>
+        updateDialog({ enableNextButton: false });
+    }, []);
+    return <strong>panel</strong>;
 };

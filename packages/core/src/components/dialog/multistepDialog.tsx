@@ -86,10 +86,10 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     private getDefaultState() {
         const steps = this.getStepChildren();
         return {
-            enableNextButton: steps.length > 0 ? isNextButtonEnabled(steps[0]) : true,
+            enableNextButton: steps.length > 0 ? isNextButtonEnabled(steps[0]) : false,
             lastViewedIndex: 0,
             selectedIndex: 0,
-        }
+        };
     }
 
     private getDialogStyle() {
@@ -114,9 +114,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
                     className={classNames(Classes.STEP, hasBeenViewed && Classes.ACTIVE)}
                     onClick={this.handleClickStep(index)}
                 >
-                    <div className={classNames(Classes.STEP_ICON, hasBeenViewed && Classes.ACTIVE)}>
-                        {stepNumber}
-                    </div>
+                    <div className={classNames(Classes.STEP_ICON, hasBeenViewed && Classes.ACTIVE)}>{stepNumber}</div>
                     <div className={classNames(Classes.STEP_TITLE, currentlySelected && Classes.ACTIVE)}>
                         {step.props.title}
                     </div>
@@ -133,7 +131,12 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     };
 
     private maybeRenderRightPanel() {
-        const stepProp = this.getStepChildren()[this.state.selectedIndex].props;
+        const steps = this.getStepChildren();
+        if (steps.length <= this.state.selectedIndex) {
+            return null;
+        }
+
+        const stepProp = steps[this.state.selectedIndex].props;
         if (stepProp.renderPanel === undefined) {
             return null;
         }
@@ -173,7 +176,15 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         if (this.state.selectedIndex === this.getStepChildren().length - 1) {
             buttons.push(this.getFinalButton());
         } else {
-            buttons.push(<Button disabled={!this.state.enableNextButton} intent="primary" key="next" onClick={this.handleClickNext()} text="Next" />);
+            buttons.push(
+                <Button
+                    disabled={!this.state.enableNextButton}
+                    intent="primary"
+                    key="next"
+                    onClick={this.handleClickNext()}
+                    text="Next"
+                />,
+            );
         }
 
         return buttons;
@@ -181,11 +192,11 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
 
     private handleClickBack() {
         return this.handleChangeStep(this.state.selectedIndex - 1);
-    };
+    }
 
     private handleClickNext() {
         return this.handleChangeStep(this.state.selectedIndex + 1);
-    };
+    }
 
     private handleChangeStep(index: number) {
         return (event: React.MouseEvent<HTMLElement>) => {
@@ -199,7 +210,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
                 lastViewedIndex: Math.max(this.state.lastViewedIndex, index),
                 selectedIndex: index,
             });
-        }
+        };
     }
 
     private getFinalButton() {
