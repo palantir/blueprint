@@ -54,7 +54,6 @@
 @page alert
 @page context-menu
 @page dialog
-@page multistep-dialog
 @page drawer
 @page popover
 @page toast

@@ -25,9 +25,10 @@ import {
     IMultistepDialogPanelProps,
     Switch,
     Classes,
-    ISubmitButtonProps,
+    ISubmitButtonProps
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IMultistepDialogExampleState {
@@ -53,16 +54,20 @@ export class MultistepDialogExample extends React.PureComponent<
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
+
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
+
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
         const submitButtonProps: ISubmitButtonProps = {
-            intent: "danger",
-            text: "Submit",
+            intent: "primary",
             onClick: this.handleClose,
+            text: "Close",
         };
         return (
             <Example options={this.renderOptions()} {...this.props}>
@@ -70,25 +75,20 @@ export class MultistepDialogExample extends React.PureComponent<
                 <MultistepDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
-                    id={"md"}
+                    id="multistep-dialog"
                     onClose={this.handleClose}
                     submitButtonProps={submitButtonProps}
                     title="Palantir Foundry"
                     {...this.state}
                 >
-                    <Step id={"s1"} renderPanel={this.renderPanel} title={"Step 1"} nextButtonEnabledByDefault={true} />
-                    <Step
-                        id={"s2"}
-                        renderPanel={this.renderPanel}
-                        title={"Step 2"}
-                        nextButtonEnabledByDefault={false}
-                    />
+                    <Step id="one" renderPanel={this.renderPanelOne} title="Part 1" nextButtonEnabledByDefault={true} />
+                    <Step id="two" renderPanel={this.renderPanelTwo} title="Part 2" nextButtonEnabledByDefault={false} />
                 </MultistepDialog>
             </Example>
         );
     }
 
-    private renderPanel = (_props: IMultistepDialogPanelProps) => {
+    private renderPanelOne = (_props: IMultistepDialogPanelProps) => {
         return (
             <div className={Classes.DIALOG_BODY}>
                 <p>
@@ -108,6 +108,13 @@ export class MultistepDialogExample extends React.PureComponent<
                     git-style versioning semantics, granular access controls, branching, transformation authoring, and
                     more. But these powers are not limited to the back-end IT shop.
                 </p>
+            </div>
+        );
+    };
+
+    private renderPanelTwo = (_props: IMultistepDialogPanelProps) => {
+        return (
+            <div className={Classes.DIALOG_BODY}>
                 <p>
                     In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
                     integrations in their own right. Access controls, transformation logic, and data quality flow from
@@ -141,5 +148,6 @@ export class MultistepDialogExample extends React.PureComponent<
     }
 
     private handleOpen = () => this.setState({ isOpen: true });
+
     private handleClose = () => this.setState({ isOpen: false });
 }
