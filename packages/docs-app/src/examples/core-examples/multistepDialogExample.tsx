@@ -64,7 +64,7 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const submitButtonProps: IFinalButtonProps = {
+        const finalButtonProps: IFinalButtonProps = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",
@@ -75,9 +75,8 @@ export class MultistepDialogExample extends React.PureComponent<
                 <MultistepDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
-                    id="multistep-dialog"
                     onClose={this.handleClose}
-                    submitButtonProps={submitButtonProps}
+                    finalButtonProps={finalButtonProps}
                     title="Palantir Foundry"
                     {...this.state}
                 >
