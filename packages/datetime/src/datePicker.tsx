@@ -212,7 +212,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         }
 
         if (value != null && !DateUtils.isDayInRange(value, [minDate, maxDate])) {
-            throw new Error(Errors.DATEPICKER_VALUE_INVALID);
+            console.warn(Errors.DATEPICKER_VALUE_INVALID);
         }
     }
 
