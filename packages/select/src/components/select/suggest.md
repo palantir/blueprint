@@ -7,6 +7,10 @@ using `inputProps`.
 
 @reactExample SuggestExample
 
+Async operation
+
+@reactExample SuggestAsyncExample
+
 @interface ISuggestProps
 
 @interface ISelectItemRendererProps

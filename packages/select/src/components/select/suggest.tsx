@@ -33,10 +33,10 @@ import {
     PopoverInteractionKind,
     Position,
 } from "@blueprintjs/core";
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, IListItemsProps, ILoadingProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface ISuggestProps<T> extends IListItemsProps<T> {
+export interface ISuggestProps<T> extends IListItemsProps<T>, ILoadingProps {
     /**
      * Whether the popover should close after selecting an item.
      * @default true
