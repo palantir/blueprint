@@ -33,10 +33,10 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
-import { Classes, IListItemsProps } from "../../common";
+import { Classes, IListItemsProps, ILoadingProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface ISelectProps<T> extends IListItemsProps<T> {
+export interface ISelectProps<T> extends IListItemsProps<T>, ILoadingProps {
     /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.

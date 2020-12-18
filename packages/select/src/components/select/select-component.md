@@ -203,6 +203,10 @@ ReactDOM.render(
 );
 ```
 
+@## Async operation
+
+@reactExample SelectAsyncExample
+
 @## JavaScript API
 
 @interface ISelectProps

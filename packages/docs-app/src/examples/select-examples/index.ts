@@ -19,3 +19,5 @@ export * from "./omnibarExample";
 export * from "./selectExample";
 export * from "./suggestExample";
 export * from "./omnibarAsyncExample";
+
+export * from "./async-examples";
