@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, IMultistepDialogPanelProps, MultistepDialog, Step } from "../../src";
+import { Classes, MultistepDialog, Step } from "../../src";
 
 const NEXT_BUTTON = "[text='Next']";
 const BACK_BUTTON = "[text='Back']";
@@ -28,7 +28,7 @@ describe("<MultistepDialog>", () => {
     it("renders its content correctly", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
+                <Step id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
         );
         [
@@ -50,9 +50,9 @@ describe("<MultistepDialog>", () => {
 
     it("initially selected step is first step", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
@@ -64,9 +64,9 @@ describe("<MultistepDialog>", () => {
 
     it("clicking next should select the next element", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         dialog.find(NEXT_BUTTON).simulate("click");
@@ -79,9 +79,9 @@ describe("<MultistepDialog>", () => {
 
     it("clicking back should select the prev element", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
 
@@ -101,9 +101,9 @@ describe("<MultistepDialog>", () => {
 
     it("footer on last step of multiple steps should contain back and submit buttons", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         dialog.find(NEXT_BUTTON).simulate("click");
@@ -116,9 +116,9 @@ describe("<MultistepDialog>", () => {
 
     it("footer on first step of multiple steps should contain next button only", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
 
@@ -131,8 +131,8 @@ describe("<MultistepDialog>", () => {
 
     it("footer on first step of single step should contain submit button only", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
         );
 
@@ -145,9 +145,9 @@ describe("<MultistepDialog>", () => {
 
     it("selecting older step should leave already viewed steps active", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
@@ -179,51 +179,27 @@ describe("<MultistepDialog>", () => {
         );
     });
 
-    it("enables next if disableNext is called", () => {
+    it("enables next by default", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderEnableDialogPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), false);
+        assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), undefined);
         dialog.unmount();
     });
 
-    it("disables next if disableNext is called", () => {
+    it("disables next if disableNext is set to true", () => {
         const dialog = mount(
-            <MultistepDialog isOpen={true}>
-                <Step id="one" title="Step 1" renderPanel={renderDisableDialogPanel} />
-                <Step id="two" title="Step 2" renderPanel={renderPanel} />
+            <MultistepDialog disableNext={true} isOpen={true} usePortal={false}>
+                <Step id="one" title="Step 1" panel={<Panel />} />
+                <Step id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), true);
         dialog.unmount();
     });
-
-    const renderDisableDialogPanel = (props: IMultistepDialogPanelProps) => {
-        return <DisableNext {...props} />;
-    };
-
-    const renderEnableDialogPanel = (props: IMultistepDialogPanelProps) => {
-        return <EnableNext {...props} />;
-    };
 });
 
-const renderPanel = (_props: IMultistepDialogPanelProps) => {
-    return <div>panel</div>;
-};
-
-const EnableNext: React.FunctionComponent<IMultistepDialogPanelProps> = ({ updateDialog }) => {
-    React.useEffect(() => {
-        updateDialog({ enableNextButton: true });
-    }, []);
-    return <strong>panel</strong>;
-};
-
-const DisableNext: React.FunctionComponent<IMultistepDialogPanelProps> = ({ updateDialog }) => {
-    React.useEffect(() => {
-        updateDialog({ enableNextButton: false });
-    }, []);
-    return <strong>panel</strong>;
-};
+const Panel: React.FunctionComponent = () => <strong> panel</strong>;

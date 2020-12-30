@@ -14,7 +14,6 @@ $step-radius: $pt-border-radius * 2 !default;
 }
 
 .#{$ns}-multistep-dialog-left-panel {
-  border-radius: 0 $dialog-border-radius 0 0;
   display: flex;
   flex: 1;
   flex-direction: column;

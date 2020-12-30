@@ -39,15 +39,15 @@ export interface IStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | 
     nextButtonEnabledByDefault?: boolean;
 
     /**
+     * Panel content, rendered by the parent `MultistepDialog` when this step is active.
+     * If omitted, no panel will be rendered for this step.
+     */
+    panel?: JSX.Element;
+
+    /**
      * Space-delimited string of class names applied to multistep dialog panel container.
      */
     panelClassName?: string;
-
-    /**
-     * Renders Panel content, rendered by the parent `MultistepDialog` when this step is active.
-     * If omitted, no panel will be rendered for this step.
-     */
-    renderPanel?(props: IMultistepDialogPanelProps): JSX.Element;
 
     /**
      * Content of step title element, rendered in a list left of the active panel.
@@ -57,7 +57,7 @@ export interface IStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | 
 
 @polyfill
 export class Step extends AbstractPureComponent2<IStepProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Tab`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.Step`;
 
     // this component is never rendered directly; see MultistepDialog#renderStepPanel()
     /* istanbul ignore next */

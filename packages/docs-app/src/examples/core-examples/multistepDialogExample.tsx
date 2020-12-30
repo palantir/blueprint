@@ -16,17 +16,7 @@
 
 import * as React from "react";
 
-import {
-    Button,
-    Code,
-    H5,
-    MultistepDialog,
-    Step,
-    IMultistepDialogPanelProps,
-    Switch,
-    Classes,
-    IFinalButtonProps,
-} from "@blueprintjs/core";
+import { Button, Code, H5, MultistepDialog, Step, Switch, Classes, IButtonProps } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
@@ -64,7 +54,7 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const finalButtonProps: IFinalButtonProps = {
+        const finalButtonProps: Partial<IButtonProps> = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",
@@ -80,56 +70,12 @@ export class MultistepDialogExample extends React.PureComponent<
                     title="Palantir Foundry"
                     {...this.state}
                 >
-                    <Step id="one" renderPanel={this.renderPanelOne} title="Part 1" nextButtonEnabledByDefault={true} />
-                    <Step
-                        id="two"
-                        renderPanel={this.renderPanelTwo}
-                        title="Part 2"
-                        nextButtonEnabledByDefault={false}
-                    />
+                    <Step id="one" nextButtonEnabledByDefault={true} panel={<PanelOne />} title="Part 1" />
+                    <Step id="two" nextButtonEnabledByDefault={false} panel={<PanelTwo />} title="Part 2" />
                 </MultistepDialog>
             </Example>
         );
     }
-
-    private renderPanelOne = (_props: IMultistepDialogPanelProps) => {
-        return (
-            <div className={Classes.DIALOG_BODY}>
-                <p>
-                    <strong>
-                        Data integration is the seminal problem of the digital age. For over ten years, we’ve helped the
-                        world’s premier organizations rise to the challenge.
-                    </strong>
-                </p>
-                <p>
-                    Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and
-                    extending the power of data integration. With Foundry, anyone can source, fuse, and transform data
-                    into any shape they desire. Business analysts become data engineers — and leaders in their
-                    organization’s data revolution.
-                </p>
-                <p>
-                    Foundry’s back end includes a suite of best-in-class data integration capabilities: data provenance,
-                    git-style versioning semantics, granular access controls, branching, transformation authoring, and
-                    more. But these powers are not limited to the back-end IT shop.
-                </p>
-            </div>
-        );
-    };
-
-    private renderPanelTwo = (_props: IMultistepDialogPanelProps) => {
-        return (
-            <div className={Classes.DIALOG_BODY}>
-                <p>
-                    In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
-                    integrations in their own right. Access controls, transformation logic, and data quality flow from
-                    original data source to intermediate analysis to presentation in real time. Every end product
-                    created in Foundry becomes a new data source that other users can build upon. And the enterprise
-                    data foundation goes where the business drives it.
-                </p>
-                <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
-            </div>
-        );
-    };
 
     private renderOptions() {
         const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal } = this.state;
@@ -155,3 +101,39 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleClose = () => this.setState({ isOpen: false });
 }
+
+const PanelOne: React.FunctionComponent = () => (
+    <div className={Classes.DIALOG_BODY}>
+        <p>
+            <strong>
+                Data integration is the seminal problem of the digital age. For over ten years, we’ve helped the world’s
+                premier organizations rise to the challenge.
+            </strong>
+        </p>
+        <p>
+            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and extending the
+            power of data integration. With Foundry, anyone can source, fuse, and transform data into any shape they
+            desire. Business analysts become data engineers — and leaders in their organization’s data revolution.
+        </p>
+        <p>
+            Foundry’s back end includes a suite of best-in-class data integration capabilities: data provenance,
+            git-style versioning semantics, granular access controls, branching, transformation authoring, and more. But
+            these powers are not limited to the back-end IT shop.
+        </p>
+    </div>
+);
+
+const PanelTwo: React.FunctionComponent = () => {
+    return (
+        <div className={Classes.DIALOG_BODY}>
+            <p>
+                In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data integrations
+                in their own right. Access controls, transformation logic, and data quality flow from original data
+                source to intermediate analysis to presentation in real time. Every end product created in Foundry
+                becomes a new data source that other users can build upon. And the enterprise data foundation goes where
+                the business drives it.
+            </p>
+            <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+        </div>
+    );
+};
