@@ -3550,5 +3550,17 @@
         "iconName": "notifications-snooze",
         "tags": "notification, information, message, snooze, suppress",
         "group": "interface"
+    },
+    {
+        "displayName": "High Priority",
+        "iconName": "high-priority",
+        "tags": "notification, message",
+        "group": "interface"
+    },
+    {
+        "displayName": "Emoji",
+        "iconName": "emoji",
+        "tags": "message, chat, reaction",
+        "group": "interface"
     }
 ]
