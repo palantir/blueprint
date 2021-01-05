@@ -99,7 +99,7 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      *
      * @default true
      */
-    labelRenderer?: boolean | ((value: number) => string | JSX.Element);
+    labelRenderer?: boolean | ((value: number, isHandle?: boolean) => string | JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
@@ -230,12 +230,12 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         }
     }
 
-    private formatLabel(value: number) {
+    private formatLabel(value: number, isHandle: boolean = false) {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
             return undefined;
         } else if (Utils.isFunction(labelRenderer)) {
-            return labelRenderer(value);
+            return labelRenderer(value, isHandle);
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
@@ -312,7 +312,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
                 })}
                 disabled={disabled}
                 key={`${index}-${handleProps.length}`}
-                label={this.formatLabel(value)}
+                label={this.formatLabel(value, true)}
                 max={max!}
                 min={min!}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}
