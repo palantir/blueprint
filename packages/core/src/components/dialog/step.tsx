@@ -23,20 +23,11 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export type StepId = string | number;
 
-export interface IMultistepDialogPanelProps {
-    updateDialog: (state: { enableNextButton: boolean }) => void;
-}
-
 export interface IStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
-     * Unique identifier used to control which step is selected.
+     * Unique identifier used to identify which step is selected.
      */
     id: StepId;
-
-    /**
-     * Indicates whether the next button should be enabled by default on this step
-     */
-    nextButtonEnabledByDefault?: boolean;
 
     /**
      * Panel content, rendered by the parent `MultistepDialog` when this step is active.

@@ -52,6 +52,11 @@ const PADDING_BOTTOM = 0;
 
 const MIN_WIDTH = 800;
 
+const INITIAL_STATE = {
+    lastViewedIndex: 0,
+    selectedIndex: 0,
+};
+
 @polyfill
 export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProps, IMultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
@@ -63,7 +68,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
 
     public constructor(props: IMultistepDialogProps) {
         super(props);
-        this.state = this.getDefaultState();
+        this.state = INITIAL_STATE;
     }
 
     public render() {
@@ -79,17 +84,8 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
 
     public componentDidUpdate(prevProps: IMultistepDialogProps) {
         if (!prevProps.isOpen && this.props.isOpen) {
-            this.setState(this.getDefaultState());
+            this.setState(INITIAL_STATE);
         }
-    }
-
-    private getDefaultState() {
-        const steps = this.getStepChildren();
-        return {
-            enableNextButton: steps.length > 0 ? isNextButtonEnabled(steps[0]) : false,
-            lastViewedIndex: 0,
-            selectedIndex: 0,
-        };
     }
 
     private getDialogStyle() {
@@ -217,10 +213,6 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     private getStepChildren(props: IMultistepDialogProps & { children?: React.ReactNode } = this.props) {
         return React.Children.toArray(props.children).filter(isStepElement);
     }
-}
-
-function isNextButtonEnabled(step: StepElement) {
-    return step.props.nextButtonEnabledByDefault ?? true;
 }
 
 function isStepElement(child: any): child is StepElement {
