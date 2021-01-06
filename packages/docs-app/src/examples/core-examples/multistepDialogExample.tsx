@@ -70,8 +70,8 @@ export class MultistepDialogExample extends React.PureComponent<
                     title="Palantir Foundry"
                     {...this.state}
                 >
-                    <Step id="one" nextButtonEnabledByDefault={true} panel={<PanelOne />} title="Part 1" />
-                    <Step id="two" nextButtonEnabledByDefault={false} panel={<PanelTwo />} title="Part 2" />
+                    <Step id="one" panel={<PanelOne />} title="Part 1" />
+                    <Step id="two" panel={<PanelTwo />} title="Part 2" />
                 </MultistepDialog>
             </Example>
         );
