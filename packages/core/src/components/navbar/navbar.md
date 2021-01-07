@@ -65,7 +65,7 @@ the full range of HTML `<div>` props.
 Use the following classes to construct a navbar:
 
 * `nav.@ns-navbar` &ndash; The parent element. Use a `<nav>` element for accessibility.
-* `.@ns-navbar-group.@ns-align-(left|right)` &ndash; Left- or right-aligned group.
+* `.@ns-navbar-group.@ns-align-(left|right|center)` &ndash; Left, center, or right-aligned group.
 * `.@ns-navbar-heading` &ndash; Larger text for your application title.
 * `.@ns-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
 
