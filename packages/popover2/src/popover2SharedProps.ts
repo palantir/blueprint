@@ -24,12 +24,19 @@ export { Boundary as PopperBoundary };
  */
 export interface IPopover2TargetProps {
     ref: React.Ref<any>;
+
+    /** Whether the popover or tooltip is currently open. */
+    isOpen: boolean;
 }
 
-/** Props shared between `Popover2` and `Tooltip2`. */
+/**
+ * Props shared between `Popover2` and `Tooltip2`.
+ *
+ * @template TProps HTML props interface for target element
+ */
 export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps {
     /**
-     * TODO(adahiya)
+     * TODO(adahiya): prop documentation
      */
     boundary?: Boundary;
 
@@ -102,7 +109,7 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     minimal?: boolean;
 
     /**
-     * TODO(adahiya)
+     * TODO(adahiya): allow modifiers customization
      */
     // modifiers?: PopperModifiers;
 
@@ -122,7 +129,7 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     openOnTargetFocus?: boolean;
 
     /**
-     * TODO(adahiya)
+     * TODO(adahiya): prop documentation
      */
     renderTarget: (props: IPopover2TargetProps & TProps) => JSX.Element;
 

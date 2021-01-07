@@ -17,12 +17,12 @@
 import {
     AbstractPureComponent2,
     Classes as CoreClasses,
+    combineRefs,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    Overlay,
-    // ResizeSensor,
     isRefCallback,
-    combineRefs,
+    Overlay,
+    ResizeSensor,
     Utils,
 } from "@blueprintjs/core";
 import { State as PopperState } from "@popperjs/core";
@@ -47,6 +47,7 @@ export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeo
 export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends IPopover2SharedProps<TProps> {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
+
     /**
      * The content displayed inside the popover. This can instead be provided as
      * the _second_ element in `children` (first is `target`).
@@ -148,13 +149,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
     private isControlled = () => this.props.isOpen !== undefined;
 
-    private isArrowEnabled = () => {
-        // TODO(adahiya)
-        // const { minimal, modifiers } = this.props;
-        // // omitting `arrow` from `modifiers` uses Popper default, which does show an arrow.
-        // return !minimal && (modifiers?.arrow == null || modifiers.arrow.enabled);
-        return true;
-    };
+    private isArrowEnabled = () => !this.props.minimal;
 
     private isHoverInteractionKind = () => {
         return (
@@ -273,15 +268,14 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 // when they are opened by a user interaction
                 [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
             }),
-            // force disable single Tooltip child when popover is open (BLUEPRINT-552)
-            // TODO(adahiya)
-            // disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
+            // if the consumer renders a <Tooltip> target, it's their responsibility to disable that <Tooltip>
+            // when _this_ popover is open
+            isOpen: this.state.isOpen,
             ref,
             ...((targetEventHandlers as unknown) as T),
         });
 
-        // return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
-        return target;
+        return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
@@ -318,27 +312,24 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
         return (
             <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                {/* <ResizeSensor onResize={this.handleContentResize}> */}
-                <div className={popoverClasses} style={{ transformOrigin }} ref={this.popoverRef} {...popoverHandlers}>
-                    {this.isArrowEnabled() && (
-                        <Popover2Arrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
-                    )}
-                    <div className={Classes.POPOVER2_CONTENT}>{this.renderContent()}</div>
-                </div>
-                {/* </ResizeSensor> */}
+                <ResizeSensor onResize={this.reposition}>
+                    <div
+                        className={popoverClasses}
+                        style={{ transformOrigin }}
+                        ref={this.popoverRef}
+                        {...popoverHandlers}
+                    >
+                        {this.isArrowEnabled() && (
+                            <Popover2Arrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
+                        )}
+                        <div className={Classes.POPOVER2_CONTENT}>{this.props.content}</div>
+                    </div>
+                </ResizeSensor>
             </div>
         );
     };
 
-    private renderContent = () => {
-        // TODO(adahiya)
-        return <div>Content</div>;
-    };
-
     private getPopperModifiers(): Array<Modifier<"computeStyles" | "offset" | "flip" | "preventOverflow">> {
-        // TODO(adahiya)
-        // const { boundary /* , modifiers */ } = this.props;
-        // const { flip = {}, preventOverflow = {} } = modifiers!;
         return [
             {
                 name: "computeStyles",
@@ -467,10 +458,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         }
     };
 
-    private handleContentResize = () => {
-        // TODO(adahiya)
-    };
-
     // a wrapper around setState({isOpen}) that will call props.onInteraction instead when in controlled mode.
     // starts a timeout to delay changing the state if a non-zero duration is provided.
     private setOpenState(isOpen: boolean, e?: React.SyntheticEvent<HTMLElement>, timeout?: number) {
@@ -494,9 +481,9 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
     private updateDarkParent() {
         if (this.props.usePortal && this.state.isOpen) {
-            // TODO(adahiya)
-            // const hasDarkParent = this.targetElement != null && this.targetElement.closest(`.${Classes.DARK}`) != null;
-            // this.setState({ hasDarkParent });
+            const hasDarkParent =
+                this.targetElement != null && this.targetElement.closest(`.${CoreClasses.DARK}`) != null;
+            this.setState({ hasDarkParent });
         }
     }
 
