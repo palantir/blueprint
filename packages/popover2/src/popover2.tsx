@@ -78,7 +78,6 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
 }
 
 export interface IPopover2State {
-    transformOrigin: string;
     isOpen: boolean;
     hasDarkParent: boolean;
 }
@@ -114,7 +113,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     public state: IPopover2State = {
         hasDarkParent: false,
         isOpen: this.getIsOpen(this.props),
-        transformOrigin: "",
     };
 
     /**
@@ -288,7 +286,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
         const { usePortal, interactionKind } = this.props;
-        // const { transformOrigin } = this.state;
         const transformOrigin = getTransformOrigin(
             popperProps.placement,
             this.isArrowEnabled() ? (popperProps.arrowProps.style as any) : undefined,
@@ -338,9 +335,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         return <div>Content</div>;
     };
 
-    private getPopperModifiers(): Array<
-        Modifier<"computeStyles" | "offset" | "flip" | "preventOverflow" | "updatePopoverState">
-    > {
+    private getPopperModifiers(): Array<Modifier<"computeStyles" | "offset" | "flip" | "preventOverflow">> {
         // TODO(adahiya)
         // const { boundary /* , modifiers */ } = this.props;
         // const { flip = {}, preventOverflow = {} } = modifiers!;
@@ -372,14 +367,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 name: "preventOverflow",
                 options: { boundary: this.props.boundary },
             },
-            // {
-            //     name: "updatePopoverState",
-            //     options: {
-            //         enabled: true,
-            //         fn: this.updatePopoverState,
-            //         order: 900,
-            //     },
-            // },
         ];
     }
 
@@ -516,12 +503,4 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private isElementInPopover(element: Element) {
         return this.popoverElement != null && this.popoverElement.contains(element);
     }
-
-    /** Popper modifier that updates React state (for style properties) based on latest data. */
-    // private updatePopoverState: (state: PopperState) => PopperState = state => {
-    //     // always set string; let shouldComponentUpdate determine if update is necessary
-    //     console.log("got popper state", state);
-    //     this.setState({ transformOrigin: getTransformOrigin(state) });
-    //     return state;
-    // };
 }
