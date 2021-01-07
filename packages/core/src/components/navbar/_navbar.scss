@@ -35,12 +35,12 @@ $dark-navbar-background-color: $dark-gray5 !default;
 .#{$ns}-navbar {
   background-color: $navbar-background-color;
   box-shadow: $pt-elevation-shadow-1;
+  display: flex;
   height: $pt-navbar-height;
   padding: 0 $navbar-padding;
   position: relative;
   width: 100%;
   z-index: $pt-z-index-content;
-  display: flex;
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
@@ -71,9 +71,9 @@ $dark-navbar-background-color: $dark-gray5 !default;
 }
 
 .#{$ns}-navbar-group {
-  height: $pt-navbar-height;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: $pt-navbar-height;
   justify-content: center;
 
   &.#{$ns}-align-left {
@@ -87,8 +87,8 @@ $dark-navbar-background-color: $dark-gray5 !default;
   }
 
   &.#{$ns}-align-right {
-    margin-left: auto;
     flex: 0;
+    margin-left: auto;
     order: 2;
   }
 }
