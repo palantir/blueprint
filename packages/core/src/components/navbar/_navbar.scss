@@ -40,6 +40,7 @@ $dark-navbar-background-color: $dark-gray5 !default;
   position: relative;
   width: 100%;
   z-index: $pt-z-index-content;
+  display: flex;
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
@@ -70,16 +71,25 @@ $dark-navbar-background-color: $dark-gray5 !default;
 }
 
 .#{$ns}-navbar-group {
-  align-items: center;
-  display: flex;
   height: $pt-navbar-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &.#{$ns}-align-left {
-    float: left;
+    flex: 0;
+    order: 0;
+  }
+
+  &.#{$ns}-align-center {
+    flex: 1;
+    order: 1;
   }
 
   &.#{$ns}-align-right {
-    float: right;
+    margin-left: auto;
+    flex: 0;
+    order: 2;
   }
 }
 
