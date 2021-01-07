@@ -20,7 +20,7 @@ import * as React from "react";
 import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "./classes";
-import { getPosition } from "./utils";
+import { ARROW_SVG_SIZE, getArrowStyle, getPosition } from "./utils";
 
 // these paths come from the Core Kit Sketch file
 // https://github.com/palantir/blueprint/blob/develop/resources/sketch/Core%20Kit.sketch
@@ -58,8 +58,11 @@ export const Popover2Arrow: React.FunctionComponent<IPopoverArrowProps> = ({
     arrowProps: { ref, style },
     placement,
 }) => (
-    <div className={Classes.POPOVER2_ARROW} ref={ref} style={style?.left == null || isNaN(+style.left) ? {} : style}>
-        <svg viewBox="0 0 30 30" style={{ transform: `rotate(${getArrowAngle(placement)}deg)` }}>
+    <div className={Classes.POPOVER2_ARROW} ref={ref} style={getArrowStyle(placement)}>
+        <svg
+            viewBox={`0 0 ${ARROW_SVG_SIZE} ${ARROW_SVG_SIZE}`}
+            style={{ transform: `rotate(${getArrowAngle(placement)}deg)` }}
+        >
             <path className={Classes.POPOVER2_ARROW + "-border"} d={SVG_SHADOW_PATH} />
             <path className={Classes.POPOVER2_ARROW + "-fill"} d={SVG_ARROW_PATH} />
         </svg>

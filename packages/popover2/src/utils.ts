@@ -79,6 +79,29 @@ export function getTransformOrigin(placement: Placement, arrowStyles: { left: st
 
 // additional space between arrow and edge of target
 const ARROW_SPACING = 4;
+export const ARROW_SVG_SIZE = 30;
+
+export function getArrowStyle(placement: Placement): React.CSSProperties {
+    const style: React.CSSProperties = {};
+    const offset = ARROW_SVG_SIZE / 2 - ARROW_SPACING; // 11px
+    switch (getPosition(placement)) {
+        case "top":
+            style.bottom = -offset;
+            style.left = ARROW_SVG_SIZE;
+            break;
+        case "left":
+            style.right = -offset;
+            break;
+        case "bottom":
+            style.top = -offset;
+            style.left = ARROW_SVG_SIZE;
+            break;
+        default:
+            style.left = -offset;
+            break;
+    }
+    return style;
+}
 
 /** Popper modifier that offsets popper and arrow so arrow points out of the correct side */
 export const arrowOffsetModifier: (state: State) => State = state => {

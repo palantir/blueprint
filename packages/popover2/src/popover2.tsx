@@ -33,7 +33,7 @@ import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChi
 import * as Classes from "./classes";
 import { Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
-import { getTransformOrigin } from "./utils";
+import { getTransformOrigin, ARROW_SVG_SIZE } from "./utils";
 
 export const Popover2InteractionKind = {
     CLICK: "click" as "click",
@@ -339,7 +339,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     };
 
     private getPopperModifiers(): Array<
-        Modifier<"computeStyles" | "arrowOffset" | "flip" | "preventOverflow" | "updatePopoverState">
+        Modifier<"computeStyles" | "offset" | "flip" | "preventOverflow" | "updatePopoverState">
     > {
         // TODO(adahiya)
         // const { boundary /* , modifiers */ } = this.props;
@@ -357,14 +357,13 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                     gpuAcceleration: false,
                 },
             },
-            // {
-            //     name: "arrowOffset",
-            //     options: {
-            //         enabled: this.isArrowEnabled(),
-            //         fn: arrowOffsetModifier,
-            //         // order: 510,
-            //     },
-            // },
+            {
+                enabled: this.isArrowEnabled(),
+                name: "offset",
+                options: {
+                    offset: [0, ARROW_SVG_SIZE / 2],
+                },
+            },
             {
                 name: "flip",
                 options: { boundary: this.props.boundary },
