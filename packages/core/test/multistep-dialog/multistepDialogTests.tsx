@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, MultistepDialog, Step } from "../../src";
+import { Classes, MultistepDialog, DialogStep } from "../../src";
 
 const NEXT_BUTTON = "[text='Next']";
 const BACK_BUTTON = "[text='Back']";
@@ -28,7 +28,7 @@ describe("<MultistepDialog>", () => {
     it("renders its content correctly", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
         );
         [
@@ -37,10 +37,10 @@ describe("<MultistepDialog>", () => {
             Classes.MULTISTEP_DIALOG_LEFT_PANEL,
             Classes.MULTISTEP_DIALOG_RIGHT_PANEL,
             Classes.MULTISTEP_DIALOG_FOOTER,
-            Classes.STEP,
-            Classes.STEP_CONTAINER,
-            Classes.STEP_ICON,
-            Classes.STEP_TITLE,
+            Classes.DIALOG_STEP,
+            Classes.DIALOG_STEP_CONTAINER,
+            Classes.DIALOG_STEP_ICON,
+            Classes.DIALOG_STEP_TITLE,
             Classes.DIALOG_FOOTER_ACTIONS,
         ].forEach(className => {
             assert.lengthOf(dialog.find(`.${className}`), 1, `missing ${className}`);
@@ -51,13 +51,13 @@ describe("<MultistepDialog>", () => {
     it("initially selected step is first step", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        const steps = dialog.find(`.${Classes.STEP_CONTAINER}`);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 4);
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 2);
         assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 0);
         dialog.unmount();
     });
@@ -65,45 +65,45 @@ describe("<MultistepDialog>", () => {
     it("clicking next should select the next element", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         dialog.find(NEXT_BUTTON).simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const steps = dialog.find(`.${Classes.STEP_CONTAINER}`);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 3);
-        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 4);
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
+        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 2);
         dialog.unmount();
     });
 
     it("clicking back should select the prev element", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
 
         dialog.find(NEXT_BUTTON).simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const steps = dialog.find(`.${Classes.STEP_CONTAINER}`);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 3);
-        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 4);
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
+        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 2);
 
         dialog.find(BACK_BUTTON).simulate("click");
-        const newSteps = dialog.find(`.${Classes.STEP_CONTAINER}`);
+        const newSteps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(newSteps.at(0).find(`.${Classes.ACTIVE}`).length, 4);
-        assert.strictEqual(newSteps.at(1).find(`.${Classes.ACTIVE}`).length, 3);
+        assert.strictEqual(newSteps.at(0).find(`.${Classes.ACTIVE}`).length, 2);
+        assert.strictEqual(newSteps.at(1).find(`.${Classes.ACTIVE}`).length, 1);
         dialog.unmount();
     });
 
     it("footer on last step of multiple steps should contain back and submit buttons", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         dialog.find(NEXT_BUTTON).simulate("click");
@@ -117,8 +117,8 @@ describe("<MultistepDialog>", () => {
     it("footer on first step of multiple steps should contain next button only", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
 
@@ -132,7 +132,7 @@ describe("<MultistepDialog>", () => {
     it("footer on first step of single step should contain submit button only", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
         );
 
@@ -146,19 +146,19 @@ describe("<MultistepDialog>", () => {
     it("selecting older step should leave already viewed steps active", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.find(NEXT_BUTTON).simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const step = dialog.find(`.${Classes.STEP}`);
+        const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("click");
-        const steps = dialog.find(`.${Classes.STEP_CONTAINER}`);
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 4);
-        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 3);
+        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 2);
+        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 1);
         dialog.unmount();
     });
 
@@ -171,9 +171,9 @@ describe("<MultistepDialog>", () => {
             mount(
                 <MultistepDialog>
                     {null}
-                    <Step id="one" />
+                    <DialogStep id="one" panel={<Panel />} />
                     {undefined}
-                    <Step id="two" />
+                    <DialogStep id="two" panel={<Panel />} />
                 </MultistepDialog>,
             ),
         );
@@ -182,19 +182,19 @@ describe("<MultistepDialog>", () => {
     it("enables next by default", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), undefined);
         dialog.unmount();
     });
 
-    it("disables next if disableNext is set to true", () => {
+    it("disables next if disabled on nextButtonProps is set to true", () => {
         const dialog = mount(
-            <MultistepDialog disableNext={true} isOpen={true} usePortal={false}>
-                <Step id="one" title="Step 1" panel={<Panel />} />
-                <Step id="two" title="Step 2" panel={<Panel />} />
+            <MultistepDialog nextButtonProps={{ disabled: true }} isOpen={true} usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
         assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), true);

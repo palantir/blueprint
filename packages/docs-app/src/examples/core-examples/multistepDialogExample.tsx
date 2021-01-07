@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Code, H5, MultistepDialog, Step, Switch, Classes, IButtonProps } from "@blueprintjs/core";
+import { Button, Code, H5, MultistepDialog, DialogStep, Switch, Classes, IButtonProps } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
@@ -70,8 +70,8 @@ export class MultistepDialogExample extends React.PureComponent<
                     title="Palantir Foundry"
                     {...this.state}
                 >
-                    <Step id="one" panel={<PanelOne />} title="Part 1" />
-                    <Step id="two" panel={<PanelTwo />} title="Part 2" />
+                    <DialogStep id="one" panel={<PanelOne />} title="Part 1" />
+                    <DialogStep id="two" panel={<PanelTwo />} title="Part 2" />
                 </MultistepDialog>
             </Example>
         );

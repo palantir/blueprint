@@ -31,7 +31,7 @@ export * from "./collapsible-list/collapsibleList";
 export * from "./context-menu/contextMenuTarget";
 export * from "./dialog/dialog";
 export * from "./dialog/multistepDialog";
-export * from "./dialog/step";
+export * from "./dialog/dialogStep";
 export * from "./divider/divider";
 export * from "./drawer/drawer";
 export * from "./editable-text/editableText";

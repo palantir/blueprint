@@ -116,6 +116,11 @@ export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
 
+export const DIALOG_STEP = `${NS}-dialog-step`;
+export const DIALOG_STEP_CONTAINER = `${DIALOG_STEP}-container`;
+export const DIALOG_STEP_TITLE = `${DIALOG_STEP}-title`;
+export const DIALOG_STEP_ICON = `${DIALOG_STEP}-icon`;
+
 export const DIVIDER = `${NS}-divider`;
 
 export const DRAWER = `${NS}-drawer`;
@@ -247,11 +252,6 @@ export const SPINNER_ANIMATION = `${SPINNER}-animation`;
 export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
-
-export const STEP = `${NS}-step`;
-export const STEP_CONTAINER = `${STEP}-container`;
-export const STEP_TITLE = `${STEP}-title`;
-export const STEP_ICON = `${STEP}-icon`;
 
 export const TAB = `${NS}-tab`;
 export const TAB_INDICATOR = `${TAB}-indicator`;

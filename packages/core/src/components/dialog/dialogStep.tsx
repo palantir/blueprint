@@ -21,19 +21,18 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
-export type StepId = string | number;
+export type DialogStepId = string | number;
 
-export interface IStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
+export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Unique identifier used to identify which step is selected.
      */
-    id: StepId;
+    id: DialogStepId;
 
     /**
      * Panel content, rendered by the parent `MultistepDialog` when this step is active.
-     * If omitted, no panel will be rendered for this step.
      */
-    panel?: JSX.Element;
+    panel: JSX.Element;
 
     /**
      * Space-delimited string of class names applied to multistep dialog panel container.
@@ -47,16 +46,16 @@ export interface IStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | 
 }
 
 @polyfill
-export class Step extends AbstractPureComponent2<IStepProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Step`;
+export class DialogStep extends AbstractPureComponent2<IDialogStepProps> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
 
-    // this component is never rendered directly; see MultistepDialog#renderStepPanel()
+    // this component is never rendered directly; see MultistepDialog#renderDialogStepPanel()
     /* istanbul ignore next */
     public render() {
         const { className } = this.props;
         return (
-            <div className={Classes.STEP_CONTAINER}>
-                <div className={classNames(Classes.STEP, className)} role="steplist" />
+            <div className={Classes.DIALOG_STEP_CONTAINER}>
+                <div className={classNames(Classes.DIALOG_STEP, className)} role="dialogsteplist" />
             </div>
         );
     }

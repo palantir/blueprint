@@ -65,6 +65,6 @@ Children of the `MultistepDialog` are filtered down to only `Step` components an
 `Step` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
 parent `MultistepDialog` wrapper. Step title text can be set via the `title` prop.
 
-The associated step panel will be visible when the `Step` is active.
+The associated step panel will be visible when the `Step` is selected.
 
 @interface IStepProps

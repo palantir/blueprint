@@ -22,15 +22,15 @@ import { AbstractPureComponent2, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, IButtonProps } from "../button/buttons";
 import { Dialog, IDialogProps } from "./dialog";
-import { IStepProps, Step, StepId } from "./step";
+import { IDialogStepProps, DialogStep, DialogStepId } from "./dialogStep";
 
-type StepElement = React.ReactElement<IStepProps & { children: React.ReactNode }>;
+type DialogStepElement = React.ReactElement<IDialogStepProps & { children: React.ReactNode }>;
 
 export interface IMultistepDialogProps extends IDialogProps {
     /**
-     * Whether to disable the next button in the panel footer.
+     * Props for the next button.
      */
-    disableNext?: boolean;
+    nextButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
 
     /**
      * Props for the button to display on the final step.
@@ -40,7 +40,17 @@ export interface IMultistepDialogProps extends IDialogProps {
     /**
      * A callback that is invoked when the user selects a different step by clicking on back, next, or a step itself.
      */
-    onChange?(newStepId: StepId, prevStepId: StepId | undefined, event: React.MouseEvent<HTMLElement>): void;
+    onChange?(
+        newDialogStepId: DialogStepId,
+        prevDialogStepId: DialogStepId | undefined,
+        event: React.MouseEvent<HTMLElement>,
+    ): void;
+
+    /**
+     * Whether to reset the dialog state to its initial state on close.
+     * By default, closing the dialog will reset its state.
+     */
+    resetOnClose?: boolean;
 }
 
 interface IMultistepDialogState {
@@ -64,12 +74,10 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     public static defaultProps: Partial<IMultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
+        resetOnClose: true,
     };
 
-    public constructor(props: IMultistepDialogProps) {
-        super(props);
-        this.state = INITIAL_STATE;
-    }
+    public state: IMultistepDialogState = INITIAL_STATE;
 
     public render() {
         return (
@@ -83,7 +91,11 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     }
 
     public componentDidUpdate(prevProps: IMultistepDialogProps) {
-        if (!prevProps.isOpen && this.props.isOpen) {
+        if (
+            (prevProps.resetOnClose === undefined || prevProps.resetOnClose) &&
+            !prevProps.isOpen &&
+            this.props.isOpen
+        ) {
             this.setState(INITIAL_STATE);
         }
     }
@@ -95,25 +107,20 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     private renderLeftPanel() {
         return (
             <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL}>
-                {this.getStepChildren().filter(isStepElement).map(this.renderStep)}
+                {this.getDialogStepChildren().filter(isDialogStepElement).map(this.renderDialogStep)}
             </div>
         );
     }
 
-    private renderStep = (step: StepElement, index: number) => {
+    private renderDialogStep = (step: DialogStepElement, index: number) => {
         const stepNumber = index + 1;
         const hasBeenViewed = this.state.lastViewedIndex >= index;
         const currentlySelected = this.state.selectedIndex === index;
         return (
-            <div className={classNames(Classes.STEP_CONTAINER, { [Classes.ACTIVE]: hasBeenViewed })} key={index}>
-                <div
-                    className={classNames(Classes.STEP, { [Classes.ACTIVE]: hasBeenViewed })}
-                    onClick={this.handleClickStep(index)}
-                >
-                    <div className={classNames(Classes.STEP_ICON, { [Classes.ACTIVE]: hasBeenViewed })}>
-                        {stepNumber}
-                    </div>
-                    <div className={classNames(Classes.STEP_TITLE, { [Classes.ACTIVE]: currentlySelected })}>
+            <div className={classNames(Classes.DIALOG_STEP_CONTAINER, { [Classes.ACTIVE]: hasBeenViewed })} key={index}>
+                <div className={Classes.DIALOG_STEP} onClick={this.handleClickDialogStep(index)}>
+                    <div className={Classes.DIALOG_STEP_ICON}>{stepNumber}</div>
+                    <div className={classNames(Classes.DIALOG_STEP_TITLE, { [Classes.ACTIVE]: currentlySelected })}>
                         {step.props.title}
                     </div>
                 </div>
@@ -121,15 +128,15 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         );
     };
 
-    private handleClickStep = (index: number) => {
+    private handleClickDialogStep = (index: number) => {
         if (index > this.state.lastViewedIndex) {
-            return undefined;
+            return;
         }
-        return this.handleChangeStep(index);
+        return this.getDialogStepChangeHandler(index);
     };
 
     private maybeRenderRightPanel() {
-        const steps = this.getStepChildren();
+        const steps = this.getDialogStepChildren();
         if (steps.length <= this.state.selectedIndex) {
             return null;
         }
@@ -141,10 +148,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
 
         const { className, panelClassName } = stepProp;
         return (
-            <div
-                className={classNames(Classes.MULTISTEP_DIALOG_RIGHT_PANEL, className, panelClassName)}
-                role="steppanel"
-            >
+            <div className={classNames(Classes.MULTISTEP_DIALOG_RIGHT_PANEL, className, panelClassName)}>
                 {stepProp.panel}
                 {this.renderFooter()}
             </div>
@@ -162,19 +166,19 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     private renderButtons() {
         const buttons = [];
         if (this.state.selectedIndex > 0) {
-            buttons.push(<Button key="back" onClick={this.handleClickBack()} text="Back" />);
+            buttons.push(<Button key="back" onClick={this.getBackClickHandler()} text="Back" />);
         }
 
-        if (this.state.selectedIndex === this.getStepChildren().length - 1) {
-            buttons.push(this.getFinalButton());
+        if (this.state.selectedIndex === this.getDialogStepChildren().length - 1) {
+            buttons.push(this.renderFinalButton());
         } else {
             buttons.push(
                 <Button
-                    disabled={this.props.disableNext}
                     intent="primary"
                     key="next"
-                    onClick={this.handleClickNext()}
+                    onClick={this.getNextClickHandler()}
                     text="Next"
+                    {...this.props.nextButtonProps}
                 />,
             );
         }
@@ -182,18 +186,18 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         return buttons;
     }
 
-    private handleClickBack() {
-        return this.handleChangeStep(this.state.selectedIndex - 1);
+    private getBackClickHandler() {
+        return this.getDialogStepChangeHandler(this.state.selectedIndex - 1);
     }
 
-    private handleClickNext() {
-        return this.handleChangeStep(this.state.selectedIndex + 1);
+    private getNextClickHandler() {
+        return this.getDialogStepChangeHandler(this.state.selectedIndex + 1);
     }
 
-    private handleChangeStep(index: number) {
+    private getDialogStepChangeHandler(index: number) {
         return (event: React.MouseEvent<HTMLElement>) => {
             if (this.props.onChange !== undefined) {
-                const steps = this.getStepChildren();
+                const steps = this.getDialogStepChildren();
                 const prevStepId = steps[this.state.selectedIndex].props.id;
                 const newStepId = steps[index].props.id;
                 this.props.onChange(newStepId, prevStepId, event);
@@ -205,16 +209,16 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         };
     }
 
-    private getFinalButton() {
+    private renderFinalButton() {
         return <Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />;
     }
 
-    /** Filters children to only `<Step>`s */
-    private getStepChildren(props: IMultistepDialogProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(isStepElement);
+    /** Filters children to only `<DialogStep>`s */
+    private getDialogStepChildren(props: IMultistepDialogProps & { children?: React.ReactNode } = this.props) {
+        return React.Children.toArray(props.children).filter(isDialogStepElement);
     }
 }
 
-function isStepElement(child: any): child is StepElement {
-    return Utils.isElementOfType(child, Step);
+function isDialogStepElement(child: any): child is DialogStepElement {
+    return Utils.isElementOfType(child, DialogStep);
 }
