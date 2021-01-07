@@ -97,9 +97,12 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
      * If `false`, labels will not be shown.
      *
+     * The callback is provided a numeric value and optional rendering options, which include:
+     * - isHandleTooltip: whether this label is being rendered within a handle tooltip
+     *
      * @default true
      */
-    labelRenderer?: boolean | ((value: number, isHandle?: boolean) => string | JSX.Element);
+    labelRenderer?: boolean | ((value: number, opts?: { isHandleTooltip: boolean }) => string | JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
@@ -230,12 +233,12 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         }
     }
 
-    private formatLabel(value: number, isHandle: boolean = false) {
+    private formatLabel(value: number, isHandleTooltip: boolean = false) {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
             return undefined;
         } else if (Utils.isFunction(labelRenderer)) {
-            return labelRenderer(value, isHandle);
+            return labelRenderer(value, { isHandleTooltip });
         } else {
             return value.toFixed(this.state.labelPrecision);
         }

@@ -54,7 +54,8 @@ describe("<Slider>", () => {
     });
 
     it("renders result of labelRenderer() in each label and differently in handle", () => {
-        const labelRenderer = (val: number, isHandle?: boolean) => (isHandle ? val + "!" : val + "#");
+        const labelRenderer = (val: number, opts?: { isHandleTooltip: boolean }) =>
+            val + (opts?.isHandleTooltip ? "!" : "#");
         const wrapper = renderSlider(
             <Slider min={0} max={50} value={10} labelStepSize={10} labelRenderer={labelRenderer} />,
         );
