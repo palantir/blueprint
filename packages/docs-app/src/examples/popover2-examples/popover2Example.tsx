@@ -29,7 +29,6 @@ import {
     MenuDivider,
     MenuItem,
     PopoverInteractionKind,
-    PopperModifiers,
     RadioGroup,
     Slider,
     Switch,
@@ -41,7 +40,7 @@ import {
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
-import { Classes, Popover2, PopperBoundary } from "@blueprintjs/popover2";
+import { Classes, IPopover2SharedProps, Popover2, StrictModifierNames } from "@blueprintjs/popover2";
 import { Placement, placements as PLACEMENT_OPTIONS } from "@popperjs/core";
 import * as React from "react";
 
@@ -55,7 +54,7 @@ const INTERACTION_KINDS = [
 ];
 
 export interface IPopover2ExampleState {
-    boundary?: PopperBoundary;
+    boundary?: "scrollParent" | "body" | "clippingParents";
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
     hasBackdrop?: boolean;
@@ -63,7 +62,7 @@ export interface IPopover2ExampleState {
     interactionKind?: PopoverInteractionKind;
     isOpen?: boolean;
     minimal?: boolean;
-    modifiers?: PopperModifiers;
+    modifiers?: IPopover2SharedProps<HTMLElement>["modifiers"];
     placement?: Placement;
     sliderValue?: number;
     usePortal?: boolean;
@@ -71,7 +70,7 @@ export interface IPopover2ExampleState {
 
 export class Popover2Example extends React.PureComponent<IExampleProps, IPopover2ExampleState> {
     public state: IPopover2ExampleState = {
-        // boundary: "viewport",
+        boundary: "scrollParent",
         canEscapeKeyClose: true,
         exampleIndex: 0,
         hasBackdrop: false,
@@ -82,13 +81,15 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         modifiers: {
             arrow: { enabled: true },
             flip: { enabled: true },
-            keepTogether: { enabled: true },
             preventOverflow: { enabled: true },
         },
         placement: "auto",
         sliderValue: 5,
         usePortal: true,
     };
+
+    private scrollParentElement: HTMLElement | null = null;
+    private bodyElement: HTMLElement | null = null;
 
     private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
 
@@ -100,7 +101,9 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     });
 
     private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
-    // private handleBoundaryChange = handleValueChange((boundary: PopperBoundary) => this.setState({ boundary }));
+    private handleBoundaryChange = handleValueChange((boundary: IPopover2ExampleState["boundary"]) =>
+        this.setState({ boundary }),
+    );
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
 
@@ -115,7 +118,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         this.setState({ usePortal });
     });
 
-    private getModifierChangeHandler(name: keyof PopperModifiers) {
+    private getModifierChangeHandler<Name extends StrictModifierNames>(name: Name) {
         return handleBooleanChange(enabled => {
             this.setState({
                 modifiers: {
@@ -126,8 +129,12 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         });
     }
 
+    public componentDidMount() {
+        this.bodyElement = document.body;
+    }
+
     public render() {
-        const { exampleIndex, sliderValue, ...popoverProps } = this.state;
+        const { boundary, exampleIndex, sliderValue, ...popoverProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
@@ -135,6 +142,13 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER2_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
+                        boundary={
+                            boundary === "scrollParent"
+                                ? this.scrollParentElement ?? undefined
+                                : boundary === "body"
+                                ? this.bodyElement ?? undefined
+                                : boundary
+                        }
                         enforceFocus={false}
                         isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
                         content={this.getContents(exampleIndex)}
@@ -154,7 +168,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     }
 
     private renderOptions() {
-        const { arrow, flip /* , preventOverflow */ } = this.state.modifiers;
+        const { arrow, flip, preventOverflow } = this.state.modifiers;
         return (
             <>
                 <H5>Appearance</H5>
@@ -201,7 +215,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                 <H5>Modifiers</H5>
                 <Switch checked={arrow.enabled} label="Arrow" onChange={this.getModifierChangeHandler("arrow")} />
                 <Switch checked={flip.enabled} label="Flip" onChange={this.getModifierChangeHandler("flip")} />
-                {/* <Switch
+                <Switch
                     checked={preventOverflow.enabled}
                     label="Prevent overflow"
                     onChange={this.getModifierChangeHandler("preventOverflow")}
@@ -214,10 +228,9 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         onChange={this.handleBoundaryChange}
                     >
                         <option value="scrollParent">scrollParent</option>
-                        <option value="viewport">viewport</option>
                         <option value="window">window</option>
                     </HTMLSelect>
-                </Switch> */}
+                </Switch>
                 <Label>
                     <AnchorButton
                         href={POPPER_DOCS_URL}
@@ -278,6 +291,8 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     }
 
     private centerScroll = (div: HTMLDivElement) => {
+        this.scrollParentElement = div;
+
         if (div != null) {
             // if we don't requestAnimationFrame, this function apparently executes
             // before styles are applied to the page, so the centering is way off.

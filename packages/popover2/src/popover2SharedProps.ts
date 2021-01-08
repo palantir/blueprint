@@ -15,9 +15,12 @@
  */
 
 import { IOverlayableProps, IProps } from "@blueprintjs/core";
-import { Boundary, Placement } from "@popperjs/core";
+import { Boundary, Placement, StrictModifiers } from "@popperjs/core";
+import { StrictModifier } from "react-popper";
 
 export { Boundary as PopperBoundary };
+// copied from @popperjs/core, where it is not exported as public
+export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 
 /**
  * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
@@ -109,9 +112,18 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     minimal?: boolean;
 
     /**
-     * TODO(adahiya): allow modifiers customization
+     * Overrides for Popper.js built-in modifiers.
+     * Each override is is a full modifier object (omitting its name), keyed by its modifier name.
+     *
+     * For example, the arrow modifier can be disabled by providing `{ arrow: { enabled: false } }`.
+     *
+     * @see https://popper.js.org/docs/v2/modifiers/
      */
-    // modifiers?: PopperModifiers;
+    modifiers?: Partial<
+        {
+            [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
+        }
+    >;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*

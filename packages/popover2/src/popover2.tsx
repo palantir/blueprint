@@ -28,7 +28,7 @@ import {
 import { State as PopperState } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
+import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
 
 import * as Classes from "./classes";
 import { ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
@@ -149,7 +149,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
     private isControlled = () => this.props.isOpen !== undefined;
 
-    private isArrowEnabled = () => !this.props.minimal;
+    // arrow is disabled if minimal, or if the arrow modifier was explicitly disabled
+    private isArrowEnabled = () => !this.props.minimal && this.props.modifiers?.arrow !== false;
 
     private isHoverInteractionKind = () => {
         return (
@@ -329,11 +330,12 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         );
     };
 
-    private getPopperModifiers(): Array<Modifier<"arrow" | "computeStyles" | "flip" | "offset" | "preventOverflow">> {
+    private getPopperModifiers(): StrictModifier[] {
         return [
             {
                 enabled: this.isArrowEnabled(),
                 name: "arrow",
+                ...this.props.modifiers?.arrow,
             },
             {
                 name: "computeStyles",
@@ -346,6 +348,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                     // css transform values blended with the react-spring values
                     gpuAcceleration: false,
                 },
+                ...this.props.modifiers?.computeStyles,
             },
             {
                 enabled: this.isArrowEnabled(),
@@ -353,14 +356,17 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 options: {
                     offset: [0, ARROW_SVG_SIZE / 2],
                 },
+                ...this.props.modifiers?.offset,
             },
             {
                 name: "flip",
                 options: { boundary: this.props.boundary },
+                ...this.props.modifiers?.flip,
             },
             {
                 name: "preventOverflow",
                 options: { boundary: this.props.boundary },
+                ...this.props.modifiers?.preventOverflow,
             },
         ];
     }
