@@ -48,14 +48,11 @@ export function setRef<T extends HTMLElement>(refTarget: IRef<T>, ref: T | null)
     }
 }
 
-export function refHandler<T extends HTMLElement>(
+export function refHandler<T extends HTMLElement, K extends string>(
     refProp: IRef<T> | undefined | null,
-    refTargetParent: Record<string, any>,
-    refTargetKey: string,
+    refTargetParent: { [k in K]: T | IRefObject<T> | null },
+    refTargetKey: K,
 ) {
-    if (!(refTargetKey in refTargetParent)) {
-        throw new Error(`${refTargetKey} does not exists in ${Object.keys(refTargetParent)}`);
-    }
     if (isRefObject<T>(refProp)) {
         refTargetParent[refTargetKey] = refProp;
         return refProp;
@@ -66,4 +63,8 @@ export function refHandler<T extends HTMLElement>(
             refProp(ref);
         }
     };
+}
+
+export interface IRefHandlerContainer<T extends HTMLElement> {
+    [key: string]: IRef<T>;
 }

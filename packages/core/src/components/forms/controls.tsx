@@ -243,7 +243,8 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
     };
 
     // must maintain internal reference for `indeterminate` support
-    private input: HTMLInputElement | null = null;
+    public input: HTMLInputElement | null = null;
+    private handleInputRef: IRef<HTMLInputElement> = refHandler(this.props.inputRef, this, "input");
 
     public render() {
         const { defaultIndeterminate, indeterminate, ...controlProps } = this.props;
@@ -281,6 +282,4 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
         // otherwise wait for props change. always invoke handler.
         this.props.onChange?.(evt);
     };
-
-    private handleInputRef = refHandler(this.props.inputRef, this, "input");
 }

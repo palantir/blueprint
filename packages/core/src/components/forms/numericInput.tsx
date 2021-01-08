@@ -301,7 +301,8 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
     private delta = 0;
-    private inputElement: HTMLInputElement | null = null;
+    public inputElement: HTMLInputElement | null = null;
+    private inputRef: IRef<HTMLInputElement> = refHandler(this.props.inputRef, this, "inputElement");
     private intervalId?: number;
 
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
@@ -440,8 +441,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             />
         );
     }
-
-    private inputRef = refHandler(this.props.inputRef, this, "inputElement");
 
     // Callbacks - Buttons
     // ===================

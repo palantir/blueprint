@@ -20,7 +20,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes, IRef, refHandler } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, IRefHandlerContainer, refHandler } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -147,9 +147,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => void;
 
-    private refHandlers = {
+    private refHandlers: IRefHandlerContainer<HTMLElement> = {
         popover: refHandler(this.props.popoverRef, this, "popoverElement"),
-        target: (ref: HTMLElement) => (this.targetElement = ref),
+        target: (ref: HTMLElement | null) => (this.targetElement = ref),
     };
 
     public render() {
