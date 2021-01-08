@@ -31,9 +31,9 @@ import * as React from "react";
 import { Manager, Modifier, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
 import * as Classes from "./classes";
-import { Popover2Arrow } from "./popover2Arrow";
+import { ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
-import { getTransformOrigin, ARROW_SVG_SIZE } from "./utils";
+import { getTransformOrigin } from "./utils";
 
 export const Popover2InteractionKind = {
     CLICK: "click" as "click",
@@ -329,8 +329,12 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         );
     };
 
-    private getPopperModifiers(): Array<Modifier<"computeStyles" | "offset" | "flip" | "preventOverflow">> {
+    private getPopperModifiers(): Array<Modifier<"arrow" | "computeStyles" | "flip" | "offset" | "preventOverflow">> {
         return [
+            {
+                enabled: this.isArrowEnabled(),
+                name: "arrow",
+            },
             {
                 name: "computeStyles",
                 options: {

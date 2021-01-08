@@ -20,7 +20,7 @@ import * as React from "react";
 import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "./classes";
-import { ARROW_SVG_SIZE, getArrowStyle, getPosition } from "./utils";
+import { getPosition } from "./utils";
 
 // these paths come from the Core Kit Sketch file
 // https://github.com/palantir/blueprint/blob/develop/resources/sketch/Core%20Kit.sketch
@@ -30,6 +30,10 @@ const SVG_SHADOW_PATH =
 const SVG_ARROW_PATH =
     "M8.787 7.036c1.22-1.125 2.21-3.376 2.21-5.03V0v30-2.005" +
     "c0-1.654-.983-3.9-2.21-5.03l-7.183-6.616c-.81-.746-.802-1.96 0-2.7l7.183-6.614z";
+
+// additional space between arrow and edge of target
+const ARROW_SPACING = 4;
+export const ARROW_SVG_SIZE = 30;
 
 /** Modifier helper function to compute arrow rotate() transform */
 function getArrowAngle(placement?: Placement) {
@@ -49,6 +53,24 @@ function getArrowAngle(placement?: Placement) {
     }
 }
 
+/**
+ * Popper's builtin "arrow" modifier options.padding doesn't seem to work for us, so we
+ * need to compute our own offset in the direction of the popover relative to the reference.
+ */
+function getArrowReferenceOffsetStyle(placement: Placement) {
+    const offset = ARROW_SVG_SIZE / 2 - ARROW_SPACING;
+    switch (getPosition(placement)) {
+        case "top":
+            return { bottom: -offset };
+        case "left":
+            return { right: -offset };
+        case "bottom":
+            return { top: -offset };
+        default:
+            return { left: -offset };
+    }
+}
+
 export interface IPopoverArrowProps {
     arrowProps: PopperArrowProps;
     placement: Placement;
@@ -58,7 +80,16 @@ export const Popover2Arrow: React.FunctionComponent<IPopoverArrowProps> = ({
     arrowProps: { ref, style },
     placement,
 }) => (
-    <div className={Classes.POPOVER2_ARROW} ref={ref} style={getArrowStyle(placement)}>
+    // data attribute allows popper.js to position the arrow
+    <div
+        className={Classes.POPOVER2_ARROW}
+        data-popper-arrow={true}
+        ref={ref}
+        style={{
+            ...style,
+            ...getArrowReferenceOffsetStyle(placement),
+        }}
+    >
         <svg
             viewBox={`0 0 ${ARROW_SVG_SIZE} ${ARROW_SVG_SIZE}`}
             style={{ transform: `rotate(${getArrowAngle(placement)}deg)` }}

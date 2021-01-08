@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BasePlacement, Placement, State } from "@popperjs/core";
+import { BasePlacement, Placement } from "@popperjs/core";
 
 // Popper placement utils
 // ======================
@@ -76,57 +76,3 @@ export function getTransformOrigin(placement: Placement, arrowStyles: { left: st
             : `${parseInt(arrowStyles.left, 10) + arrowSizeShift}px ${getOppositePosition(position)}`;
     }
 }
-
-// additional space between arrow and edge of target
-const ARROW_SPACING = 4;
-export const ARROW_SVG_SIZE = 30;
-
-export function getArrowStyle(placement: Placement): React.CSSProperties {
-    const style: React.CSSProperties = {};
-    const offset = ARROW_SVG_SIZE / 2 - ARROW_SPACING; // 11px
-    switch (getPosition(placement)) {
-        case "top":
-            style.bottom = -offset;
-            style.left = ARROW_SVG_SIZE;
-            break;
-        case "left":
-            style.right = -offset;
-            break;
-        case "bottom":
-            style.top = -offset;
-            style.left = ARROW_SVG_SIZE;
-            break;
-        default:
-            style.left = -offset;
-            break;
-    }
-    return style;
-}
-
-/** Popper modifier that offsets popper and arrow so arrow points out of the correct side */
-export const arrowOffsetModifier: (state: State) => State = state => {
-    if (state.elements.arrow == null) {
-        return state;
-    }
-    // our arrows have equal width and height
-    const arrowSize = state.elements.arrow.clientWidth;
-    // this logic borrowed from original Popper arrow modifier itself
-    const position = getPosition(state.placement);
-    const isVertical = isVerticalPosition(position);
-    const len = isVertical ? "width" : "height";
-    const offsetSide = isVertical ? "left" : "top";
-
-    const arrowOffsetSize = Math.round(arrowSize / 2 / Math.sqrt(2));
-    // offset popover by arrow size, offset arrow in the opposite direction
-    if (position === "top" || position === "left") {
-        // the "up & back" directions require negative popper offsets
-        state.modifiersData.offsets.popper[offsetSide] -= arrowOffsetSize + ARROW_SPACING;
-        // can only use left/top on arrow so gotta get clever with 100% + X
-        state.modifiersData.offsets.arrow[offsetSide] =
-            state.modifiersData.offsets.popper[len] - arrowSize + arrowOffsetSize;
-    } else {
-        state.modifiersData.offsets.popper[offsetSide] += arrowOffsetSize + ARROW_SPACING;
-        state.modifiersData.offsets.arrow[offsetSide] = -arrowOffsetSize;
-    }
-    return state;
-};
