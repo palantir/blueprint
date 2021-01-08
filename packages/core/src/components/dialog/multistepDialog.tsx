@@ -28,14 +28,14 @@ type DialogStepElement = React.ReactElement<IDialogStepProps & { children: React
 
 export interface IMultistepDialogProps extends IDialogProps {
     /**
-     * Props for the next button.
-     */
-    nextButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
-
-    /**
      * Props for the button to display on the final step.
      */
     finalButtonProps?: Partial<IButtonProps>;
+
+    /**
+     * Props for the next button.
+     */
+    nextButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
 
     /**
      * A callback that is invoked when the user selects a different step by clicking on back, next, or a step itself.
@@ -74,7 +74,6 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     public static defaultProps: Partial<IMultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
-        resetOnClose: true,
     };
 
     public state: IMultistepDialogState = INITIAL_STATE;
@@ -101,7 +100,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     }
 
     private getDialogStyle() {
-        return { paddingBottom: PADDING_BOTTOM, minWidth: MIN_WIDTH, ...this.props.style };
+        return { minWidth: MIN_WIDTH, paddingBottom: PADDING_BOTTOM, ...this.props.style };
     }
 
     private renderLeftPanel() {
@@ -141,15 +140,10 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
             return null;
         }
 
-        const stepProp = steps[this.state.selectedIndex].props;
-        if (stepProp.panel === undefined) {
-            return null;
-        }
-
-        const { className, panelClassName } = stepProp;
+        const { className, panel, panelClassName } = steps[this.state.selectedIndex].props;
         return (
             <div className={classNames(Classes.MULTISTEP_DIALOG_RIGHT_PANEL, className, panelClassName)}>
-                {stepProp.panel}
+                {panel}
                 {this.renderFooter()}
             </div>
         );

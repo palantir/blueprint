@@ -81,6 +81,7 @@ $step-radius: $pt-border-radius * 2 !default;
   color: $gray1;
   padding-left: 10px;
 
+  // by default, step title is active only when the step is selected
   &.#{$ns}-active {
     color: $blue4;
   }
