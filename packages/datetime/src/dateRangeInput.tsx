@@ -31,6 +31,7 @@ import {
     Intent,
     IPopoverProps,
     IProps,
+    IRefHandlerContainer,
     IRefObject,
     Keys,
     Popover,
@@ -228,9 +229,9 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
-    private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
-    private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
-    private refHandlers = {
+    public startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    private refHandlers: IRefHandlerContainer<HTMLInputElement> = {
         endInputRef: refHandler(this.props.endInputProps.inputRef, this, "endInputRef"),
         startInputRef: refHandler(this.props.startInputProps.inputRef, this, "startInputRef"),
     };
