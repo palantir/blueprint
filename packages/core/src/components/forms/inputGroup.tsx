@@ -32,6 +32,8 @@ import { Icon, IconName } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 
 /** @deprecated use IInputGroupProps2 */
+// NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
+// Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
 export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
@@ -225,14 +227,14 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps2, IInput
         this.updateInputWidth();
     }
 
-    public componentDidUpdate(prevProps: IInputGroupProps & HTMLInputProps) {
+    public componentDidUpdate(prevProps: IInputGroupProps2) {
         const { leftElement, rightElement } = this.props;
         if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
             this.updateInputWidth();
         }
     }
 
-    protected validateProps(props: IInputGroupProps) {
+    protected validateProps(props: IInputGroupProps2) {
         if (props.leftElement != null && props.leftIcon != null) {
             console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }
