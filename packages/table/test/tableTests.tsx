@@ -47,7 +47,7 @@ describe("<Table>", function (this) {
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
-    const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+    const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
 
     const harness = new ReactHarness();
 
@@ -541,7 +541,7 @@ describe("<Table>", function (this) {
         }
 
         function selectFullTable(table: ReactWrapper<any>, ...mouseEventArgs: any[]) {
-            const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
+            const menu = table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_MENU}`);
             menu.simulate("mousedown", ...mouseEventArgs).simulate("mouseup", ...mouseEventArgs);
         }
     });
@@ -813,7 +813,7 @@ describe("<Table>", function (this) {
             // and expect a non-zero height.
             table.scrollToRegion(Regions.column(columnWidths.length - 1));
 
-            const quadrantSelector = `.${Classes.TABLE_QUADRANT_LEFT}`;
+            const quadrantSelector = `.${Classes.TABLE_QUADRANT_TOP_LEFT}`;
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
 
@@ -856,7 +856,7 @@ describe("<Table>", function (this) {
         }
 
         function getRowHeadersWrapper(table: ElementHarness) {
-            return table.find(`.${Classes.TABLE_ROW_HEADERS}`);
+            return table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_ROW_HEADERS}`);
         }
 
         function getResizeHandle(header: ElementHarness, index: number) {
@@ -1827,20 +1827,18 @@ describe("<Table>", function (this) {
             component.simulate("mousedown").simulate("mouseup");
         }
 
-        function find(selector: string) {
-            return table.find(`.${Classes.TABLE_QUADRANT_MAIN} ${selector}`);
-        }
-
         function clickRowHeaderCell() {
-            click(find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`).at(CELL_INDEX));
+            const selector = `.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
+            click(table.find(selector).at(CELL_INDEX));
         }
 
         function clickColumnHeaderCell() {
-            click(find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`).at(CELL_INDEX));
+            const selector = `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
+            click(table.find(selector).at(CELL_INDEX));
         }
 
         function clickTableMenu() {
-            click(find(`.${Classes.TABLE_MENU}`));
+            click(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_MENU}`));
         }
 
         function expectNoSelectedRegions() {

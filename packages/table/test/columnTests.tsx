@@ -41,7 +41,7 @@ describe("Column", () => {
                 <Column />
             </Table>,
         );
-        const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
+        const selector = `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
         expect(table.find(selector, 0).element).to.exist;
         expect(table.find(selector, 1).element).to.exist;
         expect(table.find(selector, 2).element).to.exist;
@@ -57,7 +57,7 @@ describe("Column", () => {
             </Table>,
         );
 
-        const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
+        const selector = `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
 
         expect(table.find(selector, 0).text()).to.equal("Zero"); // custom
         expect(table.find(selector, 1).text()).to.equal("One"); // custom
