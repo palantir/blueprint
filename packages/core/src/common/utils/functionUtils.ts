@@ -23,6 +23,7 @@ export function isFunction(value: any): value is Function {
 /**
  * Safely invoke the function with the given arguments, if it is indeed a
  * function, and return its value. Otherwise, return undefined.
+ *
  * @deprecated use TypeScript 3.7+ optional call operator func?.()
  */
 export function safeInvoke<R>(func: (() => R) | undefined): R | undefined;
@@ -52,6 +53,7 @@ export function safeInvoke(func: Function | undefined, ...args: any[]) {
 /**
  * Safely invoke the provided entity if it is a function; otherwise, return the
  * entity itself.
+ *
  * @deprecated use TypeScript 3.7+ optional call operator func?.()
  */
 export function safeInvokeOrValue<R>(funcOrValue: (() => R) | R | undefined): R;

@@ -116,6 +116,11 @@ export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
 
+export const DIALOG_STEP = `${NS}-dialog-step`;
+export const DIALOG_STEP_CONTAINER = `${DIALOG_STEP}-container`;
+export const DIALOG_STEP_TITLE = `${DIALOG_STEP}-title`;
+export const DIALOG_STEP_ICON = `${DIALOG_STEP}-icon`;
+
 export const DIVIDER = `${NS}-divider`;
 
 export const DRAWER = `${NS}-drawer`;
@@ -178,6 +183,12 @@ export const MENU_ITEM_LABEL = `${MENU_ITEM}-label`;
 export const MENU_SUBMENU = `${NS}-submenu`;
 export const MENU_DIVIDER = `${MENU}-divider`;
 export const MENU_HEADER = `${MENU}-header`;
+
+export const MULTISTEP_DIALOG = `${NS}-multistep-dialog`;
+export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
+export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
+export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
+export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;

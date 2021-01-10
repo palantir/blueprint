@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
-import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
+
+import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
+import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";

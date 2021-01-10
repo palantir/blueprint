@@ -15,6 +15,7 @@
  */
 
 import { expect } from "chai";
+
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { Utils } from "../src/common/utils";

@@ -13,6 +13,9 @@
     "peerDependencies": {
         "tslint": "^6.0.0"
     },
+    "devDependencies": {
+        "tslint": "~6.1.3"
+    },
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",

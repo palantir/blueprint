@@ -17,6 +17,7 @@
 import * as React from "react";
 
 import { AbstractComponent2, DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
+
 import {
     executeItemsEqual,
     getActiveItem,
@@ -58,6 +59,7 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
 
     /**
      * Whether the list is disabled.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -148,6 +150,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     }
 
     private itemsParentRef?: HTMLElement | null;
+
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
     };
@@ -532,6 +535,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     /**
      * Get the next enabled item, moving in the given direction from the start
      * index. A `null` return value means no suitable item was found.
+     *
      * @param direction amount to move in each iteration, typically +/-1
      * @param startIndex item to start iteration
      */
@@ -631,6 +635,7 @@ function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListIt
 /**
  * Get the next enabled item, moving in the given direction from the start
  * index. A `null` return value means no suitable item was found.
+ *
  * @param items the list of items
  * @param itemDisabled callback to determine if a given item is disabled
  * @param direction amount to move in each iteration, typically +/-1

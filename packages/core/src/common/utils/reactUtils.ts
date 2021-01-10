@@ -35,6 +35,7 @@ export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boo
 
 /**
  * Returns true if children are a mappable children array
+ *
  * @internal
  */
 export function isReactChildrenElementOrElements(children: React.ReactNode): children is JSX.Element[] | JSX.Element {
@@ -88,6 +89,7 @@ export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
  * NOTE: This function only checks equality of `displayName` for performance and
  * to tolerate multiple minor versions of a component being included in one
  * application bundle.
+ *
  * @param element JSX element in question
  * @param ComponentType desired component type of element
  */

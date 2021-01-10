@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Utils } from "@blueprintjs/core";
 
 export const WARNING_BASE_EXAMPLE_DEPRECATED = `[Blueprint] BaseExample is deprecated and will be removed in the next beta. Compose new Example component instead of extending BaseExample.`;
 
@@ -28,6 +29,7 @@ export interface IBaseExampleProps {
 /**
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
+ *
  * @deprecated
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -37,6 +39,7 @@ export class BaseExample<S extends {}> extends React.Component<IBaseExampleProps
 
     // Can't put this in state, because the state typing is generic.
     private hasDelayedBeforeInitialRender = false;
+
     private hasCompletedInitialRender = false;
 
     public shouldComponentUpdate(nextProps: IBaseExampleProps, nextState: S) {

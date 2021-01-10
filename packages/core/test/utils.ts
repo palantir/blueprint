@@ -15,6 +15,7 @@
  */
 
 import { ReactWrapper } from "enzyme";
+
 import { Portal } from "../src";
 
 export function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {

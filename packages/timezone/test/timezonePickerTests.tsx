@@ -31,6 +31,7 @@ import {
     Position,
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
+
 import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
 import {
     getInitialTimezoneItems,

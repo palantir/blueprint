@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { InputGroup, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
+
+import { InputGroup, Popover } from "@blueprintjs/core";
 
 import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src";

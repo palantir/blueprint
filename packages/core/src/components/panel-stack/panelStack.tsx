@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
@@ -49,12 +50,14 @@ export interface IPanelStackProps extends IProps {
      * If false, PanelStack will render all panels in the stack to the DOM, allowing their
      * React component trees to maintain state as a user navigates through the stack.
      * Panels other than the currently active one will be invisible.
+     *
      * @default true
      */
     renderActivePanelOnly?: boolean;
 
     /**
      * Whether to show the header with the "back" button in each panel.
+     *
      * @default true
      */
     showPanelHeader?: boolean;

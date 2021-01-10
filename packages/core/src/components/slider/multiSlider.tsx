@@ -36,12 +36,14 @@ MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 export interface ISliderBaseProps extends IProps, IIntentProps {
     /**
      * Whether the slider is non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
 
     /**
      * Increment between successive labels. Must be greater than zero.
+     *
      * @default inferred (if labelStepSize is undefined)
      */
     labelStepSize?: number;
@@ -56,18 +58,21 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * Number of decimal places to use when rendering label value. Default value is the number of
      * decimals used in the `stepSize` prop. This prop has _no effect_ if you supply a custom
      * `labelRenderer` callback.
+     *
      * @default inferred from stepSize
      */
     labelPrecision?: number;
 
     /**
      * Maximum value of the slider.
+     *
      * @default 10
      */
     max?: number;
 
     /**
      * Minimum value of the slider.
+     *
      * @default 0
      */
     min?: number;
@@ -75,12 +80,14 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
     /**
      * Whether a solid bar should be rendered on the track between current and initial values,
      * or between handles for `RangeSlider`.
+     *
      * @default true
      */
     showTrackFill?: boolean;
 
     /**
      * Increment between successive values; amount by which the handle moves. Must be greater than zero.
+     *
      * @default 1
      */
     stepSize?: number;
@@ -89,12 +96,17 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * Callback to render a single label. Useful for formatting numbers as currency or percentages.
      * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
      * If `false`, labels will not be shown.
+     *
+     * The callback is provided a numeric value and optional rendering options, which include:
+     * - isHandleTooltip: whether this label is being rendered within a handle tooltip
+     *
      * @default true
      */
-    labelRenderer?: boolean | ((value: number) => string | JSX.Element);
+    labelRenderer?: boolean | ((value: number, opts?: { isHandleTooltip: boolean }) => string | JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
+     *
      * @default false
      */
     vertical?: boolean;
@@ -155,6 +167,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     };
 
     private handleElements: Handle[] = [];
+
     private trackElement: HTMLElement | null = null;
 
     public getSnapshotBeforeUpdate(prevProps: IMultiSliderProps): null {
@@ -220,12 +233,12 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         }
     }
 
-    private formatLabel(value: number) {
+    private formatLabel(value: number, isHandleTooltip: boolean = false) {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
             return undefined;
         } else if (Utils.isFunction(labelRenderer)) {
-            return labelRenderer(value);
+            return labelRenderer(value, { isHandleTooltip });
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
@@ -302,7 +315,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
                 })}
                 disabled={disabled}
                 key={`${index}-${handleProps.length}`}
-                label={this.formatLabel(value)}
+                label={this.formatLabel(value, true)}
                 max={max!}
                 min={min!}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}

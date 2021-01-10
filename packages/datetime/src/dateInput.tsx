@@ -47,6 +47,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.
+     *
      * @default true
      */
     canClearSelection?: boolean;
@@ -54,18 +55,21 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     /**
      * Text for the reset button in the date picker action bar.
      * Passed to `DatePicker` component.
+     *
      * @default "Clear"
      */
     clearButtonText?: string;
 
     /**
      * Whether the calendar popover should close when a date is selected.
+     *
      * @default true
      */
     closeOnSelection?: boolean;
 
     /**
      * Whether the date input is non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -116,6 +120,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
 
     /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
+     *
      * @default false
      */
     showActionsBar?: boolean;
@@ -125,6 +130,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
      * If an array is provided, the custom shortcuts will be displayed.
+     *
      * @default false
      */
     shortcuts?: boolean | IDatePickerShortcut[];
@@ -139,6 +145,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     /**
      * Text for the today button in the date picker action bar.
      * Passed to `DatePicker` component.
+     *
      * @default "Today"
      */
     todayButtonText?: string;
@@ -175,7 +182,9 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     };
 
     public inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private popoverContentEl: HTMLElement | null = null;
+
     // Last element in popover that is tabbable, and the one that triggers popover closure
     // when the user press TAB on it
     private lastTabbableElement: HTMLElement | null = null;

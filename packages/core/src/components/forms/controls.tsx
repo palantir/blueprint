@@ -30,6 +30,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
 
     /**
      * Alignment of the indicator within container.
+     *
      * @default Alignment.LEFT
      */
     alignIndicator?: Alignment;
@@ -146,6 +147,7 @@ export interface ISwitchProps extends IControlProps {
      * Text to display inside the switch indicator when checked.
      * If `innerLabel` is provided and this prop is omitted, then `innerLabel`
      * will be used for both states.
+     *
      * @default innerLabel
      */
     innerLabelChecked?: string;
@@ -244,6 +246,7 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
 
     // must maintain internal reference for `indeterminate` support
     public input: HTMLInputElement | null = null;
+
     private handleInputRef: IRef<HTMLInputElement> = refHandler(this.props.inputRef, this, "input");
 
     public render() {

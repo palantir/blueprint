@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Callout, Card } from "@blueprintjs/core";
 import download from "downloadjs";
 import * as React from "react";
+
+import { Callout, Card } from "@blueprintjs/core";
 
 const URL_BASE = "https://raw.githubusercontent.com/palantir/blueprint/develop/resources/sketch";
 

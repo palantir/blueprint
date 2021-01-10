@@ -17,6 +17,7 @@
 import { expect } from "chai";
 
 import { Classes as CoreClasses } from "@blueprintjs/core";
+
 import { TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 

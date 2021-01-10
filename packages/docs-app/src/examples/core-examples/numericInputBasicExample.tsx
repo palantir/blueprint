@@ -77,22 +77,33 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     };
 
     private handleMaxChange = handleNumberChange(max => this.setState({ max }));
+
     private handleMinChange = handleNumberChange(min => this.setState({ min }));
+
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private handleButtonPositionChange = handleValueChange((buttonPosition: INumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),
     );
+
     private handleLocaleChange = handleStringChange(locale => this.setState({ locale }));
+
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private toggleLeftIcon = handleBooleanChange(leftIcon =>
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
     );
+
     private toggleFullWidth = handleBooleanChange(fill => this.setState({ fill }));
+
     private toggleLargeSize = handleBooleanChange(large => this.setState({ large }));
+
     private toggleNumericCharsOnly = handleBooleanChange(allowNumericCharactersOnly =>
         this.setState({ allowNumericCharactersOnly }),
     );
+
     private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
+
     private toggleSelectAllOnIncrement = handleBooleanChange(selectAllOnIncrement => {
         this.setState({ selectAllOnIncrement });
     });

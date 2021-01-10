@@ -15,7 +15,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Classes from "../common/classes";
 
 import {
     Classes as CoreClasses,
@@ -26,6 +25,7 @@ import {
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
+import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
@@ -44,6 +44,7 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * If `true`, the cell will be rendered above overlay layers to enable mouse
      * interactions within the cell.
+     *
      * @default false
      */
     interactive?: boolean;
@@ -51,6 +52,7 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * An optional native tooltip that is displayed on hover.
      * If `true`, content will be replaced with a fixed-height skeleton.
+     *
      * @default false
      */
     loading?: boolean;
@@ -69,6 +71,7 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * If `true`, the cell contents will be wrapped in a `div` with
      * styling that will prevent the content from overflowing the cell.
+     *
      * @default true
      */
     truncated?: boolean;
@@ -76,6 +79,7 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * If `true`, the cell contents will be wrapped in a `div` with
      * styling that will cause text to wrap, rather than displaying it on a single line.
+     *
      * @default false
      */
     wrapText?: boolean;

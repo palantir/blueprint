@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { IRef } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { IRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { IColumnIndices } from "../common/grid";

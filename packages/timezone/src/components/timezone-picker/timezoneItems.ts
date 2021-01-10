@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { IconName } from "@blueprintjs/core";
 import * as moment from "moment-timezone";
+
+import { IconName } from "@blueprintjs/core";
+
 import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
 
 /** Timezone-specific QueryList item */
@@ -38,6 +40,7 @@ export interface ITimezoneItem {
 
 /**
  * Get a list of all timezone items.
+ *
  * @param date the date to use when determining timezone offsets
  */
 export function getTimezoneItems(date: Date): ITimezoneItem[] {
@@ -52,6 +55,7 @@ export function getTimezoneItems(date: Date): ITimezoneItem[] {
  * Get a list of timezone items where there is one timezone per offset
  * and optionally the local timezone as the first item.
  * The most populous timezone for each offset is chosen.
+ *
  * @param date the date to use when determining timezone offsets
  * @param includeLocalTimezone whether to include the local timezone
  */
@@ -63,6 +67,7 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
 
 /**
  * Get the timezone item for the user's local timezone.
+ *
  * @param date the date to use when determining timezone offsets
  */
 export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
@@ -86,6 +91,7 @@ export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
 /**
  * Get one timezone item per offset, using the most populous region when there is more
  * than one region for the offset.
+ *
  * @param date the date to use when determining timezone offsets
  */
 function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {

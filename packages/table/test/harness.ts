@@ -16,10 +16,11 @@
 
 /* eslint-disable  max-classes-per-file */
 
-// tslint:disable-next-line:no-submodule-imports
-import { Browser } from "@blueprintjs/core/lib/esm/compatibility";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+
+// tslint:disable-next-line:no-submodule-imports
+import { Browser } from "@blueprintjs/core/lib/esm/compatibility";
 
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
 export type KeyboardEventType = "keypress" | "keydown" | "keyup";

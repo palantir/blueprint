@@ -62,6 +62,7 @@ export interface ITableQuadrantProps extends IProps {
 
     /**
      * If `false`, hides the row headers and settings menu.
+     *
      * @default true
      */
     enableRowHeader?: boolean;

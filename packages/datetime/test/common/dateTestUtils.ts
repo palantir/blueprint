@@ -16,6 +16,7 @@
 
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
+
 import * as Classes from "../../src/common/classes";
 
 /**

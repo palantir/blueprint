@@ -19,6 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { IconName } from "@blueprintjs/icons";
+
 import {
     AbstractPureComponent2,
     Classes,
@@ -36,7 +37,6 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-
 import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
@@ -56,6 +56,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * Whether to allow only floating-point number characters in the field,
      * mimicking the native `input[type="number"]`.
+     *
      * @default true
      */
     allowNumericCharactersOnly?: boolean;
@@ -69,6 +70,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * The position of the buttons with respect to the input field.
+     *
      * @default Position.RIGHT
      */
     buttonPosition?: typeof Position.LEFT | typeof Position.RIGHT | "none";
@@ -77,6 +79,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * Whether the value should be clamped to `[min, max]` on blur.
      * The value will be clamped to each bound only if the bound is defined.
      * Note that native `input[type="number"]` controls do *NOT* clamp on blur.
+     *
      * @default false
      */
     clampValueOnBlur?: boolean;
@@ -85,12 +88,14 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * In uncontrolled mode, this sets the default value of the input.
      * Note that this value is only used upon component instantiation and changes to this prop
      * during the component lifecycle will be ignored.
+     *
      * @default ""
      */
     defaultValue?: number | string;
 
     /**
      * Whether the input is non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -107,6 +112,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
      * If set to `true`, the input will display with larger styling.
      * This is equivalent to setting `Classes.LARGE` via className on the
      * parent control group and on the child input group.
+     *
      * @default false
      */
     large?: boolean;
@@ -119,6 +125,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * The locale name, which is passed to the component to format the number and allowing to type the number in the specific locale.
      * [See MDN documentation for more info about browser locale identification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+     *
      * @default ""
      */
     locale?: string;
@@ -126,6 +133,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * The increment between successive values when <kbd>shift</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
+     *
      * @default 10
      */
     majorStepSize?: number | null;
@@ -139,6 +147,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * The increment between successive values when <kbd>alt</kbd> is held.
      * Pass explicit `null` value to disable this interaction.
+     *
      * @default 0.1
      */
     minorStepSize?: number | null;
@@ -154,18 +163,21 @@ export interface INumericInputProps extends IIntentProps, IProps {
 
     /**
      * Whether the entire text field should be selected on focus.
+     *
      * @default false
      */
     selectAllOnFocus?: boolean;
 
     /**
      * Whether the entire text field should be selected on increment.
+     *
      * @default false
      */
     selectAllOnIncrement?: boolean;
 
     /**
      * The increment between successive values when no modifier keys are held.
+     *
      * @default 1
      */
     stepSize?: number;
@@ -218,6 +230,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";
+
     public static VALUE_ZERO = "0";
 
     public static defaultProps: INumericInputProps = {
@@ -262,6 +275,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     }
 
     private static CONTINUOUS_CHANGE_DELAY = 300;
+
     private static CONTINUOUS_CHANGE_INTERVAL = 100;
 
     // Value Helpers
@@ -300,12 +314,17 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     // updating these flags need not trigger re-renders, so don't include them in this.state.
     private didPasteEventJustOccur = false;
+
     private delta = 0;
+
     public inputElement: HTMLInputElement | null = null;
+
     private inputRef: IRef<HTMLInputElement> = refHandler(this.props.inputRef, this, "inputElement");
+
     private intervalId?: number;
 
     private incrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.UP);
+
     private decrementButtonHandlers = this.getButtonEventHandlers(IncrementDirection.DOWN);
 
     public render() {

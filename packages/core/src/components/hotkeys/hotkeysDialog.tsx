@@ -43,9 +43,13 @@ class HotkeysDialog {
     } as any) as IHotkeysDialogProps;
 
     private container: HTMLElement | null = null;
+
     private hotkeysQueue = [] as IHotkeyProps[][];
+
     private isDialogShowing = false;
+
     private showTimeoutToken?: number;
+
     private hideTimeoutToken?: number;
 
     public render() {

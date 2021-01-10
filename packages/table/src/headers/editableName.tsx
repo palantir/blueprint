@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
+
 import * as Classes from "../common/classes";
 
 export interface IEditableNameProps extends IIntentProps, IProps {

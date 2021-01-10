@@ -30,6 +30,7 @@ export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButton
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
     public buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null = null;
+
     protected handleRef: IRef<HTMLButtonElement> = refHandler(this.props.elementRef, this, "buttonRef");
 
     public render() {
@@ -51,6 +52,7 @@ export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTML
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
     public buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null = null;
+
     protected handleRef: IRef<HTMLAnchorElement> = refHandler(this.props.elementRef, this, "buttonRef");
 
     public render() {

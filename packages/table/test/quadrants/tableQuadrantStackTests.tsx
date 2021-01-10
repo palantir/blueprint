@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { IRef } from "@blueprintjs/core";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
+
+import { IRef } from "@blueprintjs/core";
 
 import * as Classes from "../../src/common/classes";
 import { Grid } from "../../src/common/grid";

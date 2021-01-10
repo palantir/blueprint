@@ -59,12 +59,14 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
      * If `false`, clicking a selected date will clear the selection.
+     *
      * @default false
      */
     allowSingleDayRange?: boolean;
 
     /**
      * Whether the calendar popover should close when a date range is fully selected.
+     *
      * @default true
      */
     closeOnSelection?: boolean;
@@ -72,6 +74,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     /**
      * Whether displayed months in the calendar are contiguous.
      * If false, each side of the calendar can move independently to non-contiguous months.
+     *
      * @default true
      */
     contiguousCalendarMonths?: boolean;
@@ -84,6 +87,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
 
     /**
      * Whether the text inputs are non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -115,6 +119,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     /**
      * The error message to display when the selected dates overlap.
      * This can only happen when typing dates in the input field.
+     *
      * @default "Overlapping dates"
      */
     overlappingDatesMessage?: string;
@@ -127,6 +132,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
 
     /**
      * Whether the entire text field should be selected on focus.
+     *
      * @default false
      */
     selectAllOnFocus?: boolean;
@@ -136,12 +142,14 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
      * If an array is provided, the custom shortcuts will be displayed.
+     *
      * @default true
      */
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
      * Whether to show only a single month calendar.
+     *
      * @default false
      */
     singleMonthOnly?: boolean;
@@ -230,7 +238,9 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
     public startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     public endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
     private refHandlers: IRefHandlerContainer<HTMLInputElement> = {
         endInputRef: refHandler(this.props.endInputProps.inputRef, this, "endInputRef"),
         startInputRef: refHandler(this.props.startInputProps.inputRef, this, "startInputRef"),

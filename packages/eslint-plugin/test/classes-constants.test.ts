@@ -19,6 +19,7 @@
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
 import dedent from "dedent";
+
 import { classesConstantsRule } from "../src/rules/classes-constants";
 
 const ruleTester = new TSESLint.RuleTester({
