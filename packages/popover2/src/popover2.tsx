@@ -171,7 +171,13 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     }
 
     public render() {
+        const { content } = this.props;
         const { isOpen } = this.state;
+
+        if (content == null || content === "") {
+            // just render the target without a content overlay if there is no content to display
+            return this.renderTarget({ ref: noop });
+        }
 
         return (
             <Manager>
@@ -500,4 +506,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private isElementInPopover(element: Element) {
         return this.popoverElement != null && this.popoverElement.contains(element);
     }
+}
+
+function noop() {
+    // no-op
 }
