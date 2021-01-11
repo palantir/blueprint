@@ -69,17 +69,17 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
 
     public state: ITextAreaState = {};
 
-    // keep our own ref so that we can measure and set the height of the component on first mount
-    public textareaEl: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
+    // used to measure and set the height of the component on first mount
+    public textareaElement: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
 
-    private handleRef: IRef<HTMLTextAreaElement> = refHandler(this, "textareaEl", this.props.inputRef);
+    private handleRef: IRef<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
 
     public componentDidMount() {
-        if (this.props.growVertically && this.textareaEl !== null) {
+        if (this.props.growVertically && this.textareaElement !== null) {
             // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
             /* eslint-disable-next-line react/no-did-mount-set-state */
             this.setState({
-                height: getRef(this.textareaEl)!.scrollHeight,
+                height: getRef(this.textareaElement)!.scrollHeight,
             });
         }
     }
@@ -88,10 +88,10 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
         const { inputRef } = this.props;
         if (prevProps.inputRef !== inputRef) {
             if (isRefObject<HTMLTextAreaElement>(inputRef)) {
-                inputRef.current = (this.textareaEl as IRefObject<HTMLTextAreaElement>).current;
-                this.textareaEl = inputRef;
+                inputRef.current = (this.textareaElement as IRefObject<HTMLTextAreaElement>).current;
+                this.textareaElement = inputRef;
             } else if (isRefCallback<HTMLTextAreaElement>(inputRef)) {
-                inputRef(this.textareaEl as HTMLTextAreaElement | null);
+                inputRef(this.textareaElement as HTMLTextAreaElement | null);
             }
         }
     }
