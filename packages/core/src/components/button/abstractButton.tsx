@@ -32,7 +32,7 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
-export interface IButtonProps extends IActionProps, IElementRefProps<any> {
+export interface IButtonProps<E extends HTMLElement> extends IActionProps, IElementRefProps<E> {
     /**
      * If set to `true`, the button will display in an active state.
      * This is equivalent to setting `className={Classes.ACTIVE}`.
@@ -90,8 +90,11 @@ export interface IButtonState {
     isActive: boolean;
 }
 
-export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>> extends AbstractPureComponent2<
-    IButtonProps & H,
+export abstract class AbstractButton<E extends HTMLElement> extends AbstractPureComponent2<
+    IButtonProps<E> &
+        (E extends HTMLButtonElement
+            ? React.ButtonHTMLAttributes<HTMLButtonElement>
+            : React.AnchorHTMLAttributes<HTMLAnchorElement>),
     IButtonState
 > {
     public state = {

@@ -90,16 +90,15 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    public inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
     private queryList: QueryList<T> | null = null;
 
     private previousFocusedElement: HTMLElement | undefined;
 
-    private refHandlers: { input: IRef<HTMLInputElement>; queryList: IRef<QueryList<T>> } = {
-        input: refHandler(this.props.inputProps?.inputRef, this, "inputEl"),
-        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
-    };
+    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+
+    private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -109,7 +108,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             <this.TypedQueryList
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
-                ref={this.refHandlers.queryList}
+                ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
             />
         );
@@ -131,7 +130,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
-                inputRef={this.refHandlers.input}
+                inputRef={this.handleInputRef}
                 onChange={listProps.handleQueryChange}
                 value={listProps.query}
             />
@@ -212,7 +211,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false) {
-                getRef(this.inputEl)?.focus();
+                getRef(this.inputElement)?.focus();
             }
         });
 

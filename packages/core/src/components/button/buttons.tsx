@@ -25,13 +25,13 @@ import { AbstractButton, IButtonProps } from "./abstractButton";
 
 export { IButtonProps };
 
-export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
+export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
     public buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null = null;
 
-    protected handleRef: IRef<HTMLButtonElement> = refHandler(this.props.elementRef, this, "buttonRef");
+    protected handleRef: IRef<HTMLButtonElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
     public render() {
         return (
@@ -47,13 +47,13 @@ export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButton
     }
 }
 
-export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
     public buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null = null;
 
-    protected handleRef: IRef<HTMLAnchorElement> = refHandler(this.props.elementRef, this, "buttonRef");
+    protected handleRef: IRef<HTMLAnchorElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
     public render() {
         const { href, tabIndex = 0 } = this.props;

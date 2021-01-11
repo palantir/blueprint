@@ -23,7 +23,6 @@ import {
     Classes,
     getRef,
     IRef,
-    IRefHandlerContainer,
     IRefObject,
     isRefCallback,
     isRefObject,
@@ -71,18 +70,16 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
     public state: ITextAreaState = {};
 
     // keep our own ref so that we can measure and set the height of the component on first mount
-    public textareaRef: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
+    public textareaEl: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
 
-    private refHandlers: IRefHandlerContainer<HTMLTextAreaElement> = {
-        textarea: refHandler(this.props.inputRef, this, "textareaRef"),
-    };
+    private handleRef: IRef<HTMLTextAreaElement> = refHandler(this, "textareaEl", this.props.inputRef);
 
     public componentDidMount() {
-        if (this.props.growVertically && this.textareaRef !== null) {
+        if (this.props.growVertically && this.textareaEl !== null) {
             // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
             /* eslint-disable-next-line react/no-did-mount-set-state */
             this.setState({
-                height: getRef(this.textareaRef)!.scrollHeight,
+                height: getRef(this.textareaEl)!.scrollHeight,
             });
         }
     }
@@ -91,10 +88,10 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
         const { inputRef } = this.props;
         if (prevProps.inputRef !== inputRef) {
             if (isRefObject<HTMLTextAreaElement>(inputRef)) {
-                inputRef.current = (this.textareaRef as IRefObject<HTMLTextAreaElement>).current;
-                this.textareaRef = inputRef;
+                inputRef.current = (this.textareaEl as IRefObject<HTMLTextAreaElement>).current;
+                this.textareaEl = inputRef;
             } else if (isRefCallback<HTMLTextAreaElement>(inputRef)) {
-                inputRef(this.textareaRef as HTMLTextAreaElement | null);
+                inputRef(this.textareaEl as HTMLTextAreaElement | null);
             }
         }
     }
@@ -129,7 +126,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
                 {...htmlProps}
                 className={rootClasses}
                 onChange={this.handleChange}
-                ref={this.refHandlers.textarea}
+                ref={this.handleRef}
                 style={style}
             />
         );

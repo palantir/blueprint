@@ -319,7 +319,7 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     public inputElement: HTMLInputElement | null = null;
 
-    private inputRef: IRef<HTMLInputElement> = refHandler(this.props.inputRef, this, "inputElement");
+    private inputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     private intervalId?: number;
 

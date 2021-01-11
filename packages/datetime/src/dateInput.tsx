@@ -29,7 +29,7 @@ import {
     Intent,
     IPopoverProps,
     IProps,
-    IRefHandlerContainer,
+    IRef,
     IRefObject,
     Keys,
     Popover,
@@ -181,7 +181,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         valueString: null,
     };
 
-    public inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
     private popoverContentEl: HTMLElement | null = null;
 
@@ -189,9 +189,11 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     // when the user press TAB on it
     private lastTabbableElement: HTMLElement | null = null;
 
-    private refHandlers: IRefHandlerContainer<HTMLInputElement> = {
-        input: refHandler(this.props.inputProps?.inputRef, this, "inputEl"),
-    };
+    private handleRef = refHandler<HTMLInputElement, "inputElement">(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
 
     public componentWillUnmount() {
         this.unregisterPopoverBlurHandler();
@@ -260,7 +262,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
                     type="text"
                     {...inputProps}
                     disabled={this.props.disabled}
-                    inputRef={this.refHandlers.input}
+                    inputRef={this.handleRef}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
@@ -409,7 +411,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
-            getRef(this.inputEl).blur();
+            getRef(this.inputElement).blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };

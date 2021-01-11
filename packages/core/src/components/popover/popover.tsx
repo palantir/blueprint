@@ -20,7 +20,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes, IRef, IRefHandlerContainer, refHandler } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, refHandler } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -151,10 +151,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => void;
 
-    private refHandlers: IRefHandlerContainer<HTMLElement> = {
-        popover: refHandler(this.props.popoverRef, this, "popoverElement"),
-        target: (ref: HTMLElement | null) => (this.targetElement = ref),
-    };
+    private handlePopoverRef: IRef<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+
+    private handleTargetRef = (ref: HTMLElement | null) => (this.targetElement = ref);
 
     public render() {
         // rename wrapper tag to begin with uppercase letter so it's recognized
@@ -182,7 +181,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         const wrapper = React.createElement(
             wrapperTagName!,
             { className: wrapperClasses },
-            <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>,
+            <Reference innerRef={this.handleTargetRef}>{this.renderTarget}</Reference>,
             <Overlay
                 autoFocus={this.props.autoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
@@ -204,7 +203,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 portalContainer={this.props.portalContainer}
             >
                 <Popper
-                    innerRef={this.refHandlers.popover}
+                    innerRef={this.handlePopoverRef}
                     placement={positionToPlacement(this.props.position!)}
                     modifiers={this.getPopperModifiers()}
                 >

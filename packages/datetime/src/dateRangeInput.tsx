@@ -31,7 +31,7 @@ import {
     Intent,
     IPopoverProps,
     IProps,
-    IRefHandlerContainer,
+    IRef,
     IRefObject,
     Keys,
     Popover,
@@ -237,14 +237,21 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
-    public startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public startInputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
-    public endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public endInputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
-    private refHandlers: IRefHandlerContainer<HTMLInputElement> = {
-        endInputRef: refHandler(this.props.endInputProps.inputRef, this, "endInputRef"),
-        startInputRef: refHandler(this.props.startInputProps.inputRef, this, "startInputRef"),
-    };
+    private handleStartInputRef = refHandler<HTMLInputElement, "startInputElement">(
+        this,
+        "startInputElement",
+        this.props.startInputProps.inputRef,
+    );
+
+    private handleEndInputRef = refHandler<HTMLInputElement, "endInputElement">(
+        this,
+        "endInputElement",
+        this.props.endInputProps.inputRef,
+    );
 
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
@@ -270,8 +277,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         super.componentDidUpdate(prevProps, prevState);
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
-        const startInputRef = getRef(this.startInputRef);
-        const endInputRef = getRef(this.endInputRef);
+        const startInputRef = getRef(this.startInputElement);
+        const endInputRef = getRef(this.endInputElement);
 
         const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, startInputRef);
         const shouldFocusEndInput = this.shouldFocusInputRef(isEndInputFocused, endInputRef);
@@ -859,7 +866,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     };
 
     private getInputRef = (boundary: Boundary) => {
-        return boundary === Boundary.START ? this.refHandlers.startInputRef : this.refHandlers.endInputRef;
+        return boundary === Boundary.START ? this.handleStartInputRef : this.handleEndInputRef;
     };
 
     private getStateKeysAndValuesForBoundary = (boundary: Boundary): IStateKeysAndValuesObject => {
