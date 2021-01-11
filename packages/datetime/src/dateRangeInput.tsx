@@ -31,7 +31,6 @@ import {
     Intent,
     IPopoverProps,
     IProps,
-    IRef,
     IRefObject,
     Keys,
     Popover,

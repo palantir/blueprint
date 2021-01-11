@@ -58,6 +58,15 @@ export function setRef<T extends HTMLElement>(refTarget: IRef<T>, ref: T | null)
  * If provided, it will also update the given `refProp` with the value of the ref.
  */
 export function refHandler<T extends HTMLElement, K extends string>(
+    refTargetParent: { [k in K]: T | null },
+    refTargetKey: K,
+): IRefCallback<T>;
+export function refHandler<T extends HTMLElement, K extends string>(
+    refTargetParent: { [k in K]: T | IRefObject<T> | null },
+    refTargetKey: K,
+    refProp: IRef<T> | undefined | null,
+): IRef<T>;
+export function refHandler<T extends HTMLElement, K extends string>(
     refTargetParent: { [k in K]: T | IRefObject<T> | null },
     refTargetKey: K,
     refProp?: IRef<T> | undefined | null,
