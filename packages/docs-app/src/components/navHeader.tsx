@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { INpmPackage } from "@documentalist/client";
+import * as React from "react";
+
 import {
     Classes,
     Hotkey,
@@ -27,8 +30,7 @@ import {
     Tag,
 } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
-import { INpmPackage } from "@documentalist/client";
-import * as React from "react";
+
 import { Logo } from "./logo";
 
 export interface INavHeaderProps {

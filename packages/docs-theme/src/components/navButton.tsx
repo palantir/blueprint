@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes, Icon, IconName, KeyCombo } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes, Icon, IconName, KeyCombo } from "@blueprintjs/core";
 
 export interface INavButtonProps {
     icon: IconName;

@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Button } from "@blueprintjs/core";
+import classNames from "classnames";
 import * as React from "react";
 import { NavbarElementProps } from "react-day-picker";
 
-import classNames from "classnames";
+import { Button } from "@blueprintjs/core";
+
 import * as Classes from "./common/classes";
 import { areSameMonth } from "./common/dateUtils";
 
@@ -59,5 +60,6 @@ export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps
     }
 
     private handleNextClick = () => this.props.onNextClick();
+
     private handlePreviousClick = () => this.props.onPreviousClick();
 }

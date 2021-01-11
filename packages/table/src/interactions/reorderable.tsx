@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import { Utils as CoreUtils } from "@blueprintjs/core";
 import * as React from "react";
+
+import { Utils as CoreUtils } from "@blueprintjs/core";
+
 import { IFocusedCellCoordinates } from "../common/cell";
 import { Utils } from "../common/utils";
 import { IRegion, RegionCardinality, Regions } from "../regions";
@@ -56,6 +58,7 @@ export interface IReorderableProps {
 
     /**
      * An array containing the table's selection Regions.
+     *
      * @default []
      */
     selectedRegions?: IRegion[];
@@ -64,6 +67,7 @@ export interface IReorderableProps {
 export interface IDragReorderable extends IReorderableProps {
     /**
      * Whether the reordering behavior is disabled.
+     *
      * @default false
      */
     disabled?: boolean | ((event: MouseEvent) => boolean);
@@ -94,6 +98,7 @@ export class DragReorderable extends React.PureComponent<IDragReorderable> {
     };
 
     private selectedRegionStartIndex: number;
+
     private selectedRegionLength: number;
 
     public render() {

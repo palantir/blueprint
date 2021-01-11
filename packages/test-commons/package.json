@@ -15,10 +15,10 @@
     },
     "dependencies": {
         "chai": "^4.2.0",
-        "core-js": "^3.6.5",
+        "core-js": "^3.8.1",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-15": "^1.4.2",
-        "enzyme-adapter-react-16": "^1.15.4"
+        "enzyme-adapter-react-16": "^1.15.5"
     },
     "peerDependencies": {
         "react": ">=15.3.0"

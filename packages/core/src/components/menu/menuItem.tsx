@@ -15,10 +15,10 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-
 import { Modifiers } from "popper.js";
+import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -70,6 +70,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     *
      * @default false
      */
     multiline?: boolean;
@@ -83,12 +84,14 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 
     /**
      * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
+     *
      * @default true
      */
     shouldDismissPopover?: boolean;
 
     /**
      * Name of the HTML tag that wraps the MenuItem.
+     *
      * @default "a"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -113,6 +116,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
         shouldDismissPopover: true,
         text: "",
     };
+
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
     public render() {

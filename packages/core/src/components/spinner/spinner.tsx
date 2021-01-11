@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
@@ -52,6 +53,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     /**
      * HTML tag for the two wrapper elements. If rendering a `<Spinner>` inside
      * an `<svg>`, change this to an SVG element like `"g"`.
+     *
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -69,7 +71,9 @@ export class Spinner extends AbstractPureComponent2<ISpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
     public static readonly SIZE_SMALL = 20;
+
     public static readonly SIZE_STANDARD = 50;
+
     public static readonly SIZE_LARGE = 100;
 
     public componentDidUpdate(prevProps: ISpinnerProps) {

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { Grid } from "../common";
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -48,6 +49,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
 
     /**
      * Enables/disables the reordering interaction.
+     *
      * @internal
      * @default false
      */
@@ -55,6 +57,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
 
     /**
      * Enables/disables the resize interaction.
+     *
      * @default true
      */
     isResizable?: boolean;
@@ -67,6 +70,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     /**
      * If true, all header cells render their loading state except for those
      * who have their `loading` prop explicitly set to false.
+     *
      * @default false;
      */
     loading?: boolean;
@@ -358,9 +362,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                     isResizable={this.props.isResizable}
                     maxSize={this.props.maxSize}
                     minSize={this.props.minSize}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onDoubleClick={modifiedHandleResizeHandleDoubleClick}
                     onLayoutLock={this.props.onLayoutLock}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onResizeEnd={modifiedHandleResizeEnd}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onSizeChanged={modifiedHandleSizeChanged}
                     orientation={this.props.resizeOrientation}
                     size={this.props.getCellSize(index)}

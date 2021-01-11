@@ -17,18 +17,21 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface IControlGroupProps extends IProps, HTMLDivProps {
     /**
      * Whether the control group should take up the full width of its container.
+     *
      * @default false
      */
     fill?: boolean;
 
     /**
      * Whether the control group should appear with vertical styling.
+     *
      * @default false
      */
     vertical?: boolean;

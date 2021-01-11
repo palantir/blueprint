@@ -19,6 +19,7 @@ import * as React from "react";
 import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
+
 import {
     areFilmsEqual,
     createFilm,
@@ -66,14 +67,23 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     };
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+
     private handleCreateFirstChange = this.handleSwitchChange("createFirst");
+
     private handleDisabledChange = this.handleSwitchChange("disabled");
+
     private handleFilterableChange = this.handleSwitchChange("filterable");
+
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
+
     private handleItemDisabledChange = this.handleSwitchChange("disableItems");
+
     private handleMinimalChange = this.handleSwitchChange("minimal");
+
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
+
     private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
+
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {

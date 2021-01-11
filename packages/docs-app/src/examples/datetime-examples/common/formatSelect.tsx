@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+import moment from "moment";
+import * as React from "react";
+
 import { Radio, RadioGroup } from "@blueprintjs/core";
 import { IDateFormatProps } from "@blueprintjs/datetime";
 import { handleNumberChange } from "@blueprintjs/docs-theme";
-import moment from "moment";
-import * as React from "react";
 
 export interface IFormatSelectProps {
     /** Selected formatter. */

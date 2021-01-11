@@ -30,7 +30,7 @@ export interface IHotkeysTargetComponent extends React.Component {
      * Components decorated with the `@HotkeysTarget` decorator must implement
      * this method, and it must return a `Hotkeys` React element.
      */
-    renderHotkeys(): React.ReactElement<IHotkeysProps>;
+    renderHotkeys: () => React.ReactElement<IHotkeysProps>;
 }
 
 export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(WrappedComponent: T) {

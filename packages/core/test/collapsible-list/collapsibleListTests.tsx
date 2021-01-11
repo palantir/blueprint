@@ -152,11 +152,13 @@ describe("<CollapsibleList>", () => {
     }
 
     function renderCollapsibleList(broodSize: number, props?: Partial<ICollapsibleListProps>) {
+        /* eslint-disable deprecation/deprecation */
         return mount(
             <CollapsibleList dropdownTarget={<button />} visibleItemRenderer={renderItem} {...props}>
                 {withItems(broodSize)}
             </CollapsibleList>,
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     function assertListItems(list: ReactWrapper<any>, expVisibleCount: number, expCollapsedCount: number) {

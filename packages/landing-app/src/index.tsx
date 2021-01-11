@@ -15,6 +15,7 @@
  */
 
 import { FocusStyleManager } from "@blueprintjs/core";
+
 import { initializeLogo } from "./logo";
 import { initializeSVGs } from "./svgs";
 

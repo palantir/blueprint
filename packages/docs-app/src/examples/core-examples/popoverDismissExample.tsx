@@ -24,6 +24,7 @@ export class PopoverDismissExample extends React.PureComponent<
     { captureDismiss: boolean; isOpen: boolean }
 > {
     public state = { captureDismiss: true, isOpen: true };
+
     private timeoutId: number;
 
     public componentWillUnmount() {
@@ -69,6 +70,7 @@ export class PopoverDismissExample extends React.PureComponent<
     }
 
     private handleInteraction = (isOpen: boolean) => this.setState({ isOpen });
+
     private handleDismissChange = (event: React.ChangeEvent<HTMLInputElement>) =>
         this.setState({ captureDismiss: event.target.checked });
 

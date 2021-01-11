@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Alignment, AnchorButton, Button, ButtonGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface IButtonGroupExampleState {
@@ -40,9 +41,13 @@ export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButt
     };
 
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {

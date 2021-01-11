@@ -28,6 +28,7 @@ export * from "./collapsibleListExample";
 export * from "./contextMenuExample";
 export * from "./controlGroupExample";
 export * from "./dialogExample";
+export * from "./multistepDialogExample";
 export * from "./dividerExample";
 export * from "./drawerExample";
 export * from "./dropdownMenuExample";

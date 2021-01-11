@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
 import {
@@ -39,6 +40,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
      * the `onChange` handler, or if working with certain libraries like __redux-form__.
+     *
      * @default false
      */
     asyncControl?: boolean;
@@ -46,6 +48,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     /**
      * Whether the input is non-interactive.
      * Note that `rightElement` must be disabled separately; this prop will not affect it.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -160,6 +163,7 @@ export interface IInputGroupProps2
 
     /**
      * HTML `input` type attribute.
+     *
      * @default "text"
      */
     type?: string;
@@ -177,6 +181,7 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps2, IInput
     public state: IInputGroupState = {};
 
     private leftElement: HTMLElement | null = null;
+
     private rightElement: HTMLElement | null = null;
 
     private refHandlers = {

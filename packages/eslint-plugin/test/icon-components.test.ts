@@ -15,6 +15,7 @@
  */
 
 import { TSESLint } from "@typescript-eslint/experimental-utils";
+
 import { iconComponentsRule, OPTION_COMPONENT, OPTION_LITERAL } from "../src/rules/icon-components";
 
 // tslint:disable object-literal-sort-keys

@@ -57,6 +57,7 @@ export interface ITreeNode<T = {}> extends IProps {
 
     /**
      * Whether this node is selected.
+     *
      * @default false
      */
     isSelected?: boolean;

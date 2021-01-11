@@ -30,6 +30,7 @@ export type IMatrixTuple = number[];
 
 export class Matrix {
     private static POOL: IMatrixTuple = new Array<number>(16);
+
     private static IDENTITY: IMatrixTuple = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
     private saved: IMatrixTuple;
@@ -155,6 +156,7 @@ export class Quaternion {
     }
 
     private static PIXELS_PER_RADIAN = 2000;
+
     private static POOL = new Quaternion();
 
     public constructor(public x = 0, public y = 0, public z = 0, public w = 0) {}
@@ -312,14 +314,23 @@ export class Face extends Transformable<Face> {
     }
 
     public fill: string;
+
     public stroke: string;
+
     public overlays: ICompositeOverlays;
+
     public projected: Point[];
+
     public projectedCenter: Point;
+
     public dropShadowOf: Face;
+
     public bounds: IBounds;
+
     public lineDash: number[];
+
     public lineDashOffset: number;
+
     public order: number;
 
     public constructor(public points: Point[]) {
@@ -435,6 +446,7 @@ export class Corner extends Transformable<Corner> {
     }
 
     public projected: ISegment[];
+
     public projectedCenter: Point;
 
     public constructor(public segments: ISegment[], public center: Point) {
@@ -464,6 +476,7 @@ export class SceneModel extends Transformable<SceneModel> {
     })();
 
     public children: Array<Transformable<any>> = [];
+
     public xform = M();
 
     public constructor() {
@@ -566,6 +579,7 @@ export type IRenderCallback = () => void;
 
 export class Accumulator implements ITickable {
     public alpha = 0.08; // convergence ratio
+
     public value: number;
 
     public constructor(public target: number, public callback?: IAnimatedCallback) {
@@ -638,7 +652,9 @@ export class Ticker implements ITickable {
 
 export class Animator {
     private tickables: ITickable[] = [];
+
     private startTime: number = 0;
+
     private frameId: number | undefined;
 
     public constructor(private render: IRenderCallback) {}
@@ -747,7 +763,9 @@ export abstract class CanvasRenderer {
     public abstract render: () => void;
 
     public retinaScale: number;
+
     protected width: number;
+
     protected height: number;
 
     public constructor(protected ctx: CanvasRenderingContext2D) {

@@ -89,6 +89,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     };
 
     private cellRef: HTMLElement;
+
     private refHandlers = {
         cell: (ref: HTMLElement) => {
             this.cellRef = ref;

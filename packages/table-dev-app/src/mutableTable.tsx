@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/* eslint-disable react/jsx-no-bind */
+
+import classNames from "classnames";
+import * as React from "react";
+
 import {
     Button,
     Classes,
@@ -28,9 +33,6 @@ import {
     MenuItem,
     Switch,
 } from "@blueprintjs/core";
-import classNames from "classnames";
-import * as React from "react";
-
 import {
     Cell,
     Column,
@@ -48,11 +50,11 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-
 import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
 import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
 import { IRegion } from "@blueprintjs/table/src/regions";
+
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
 import { SlowLayoutStack } from "./slowLayoutStack";
@@ -134,6 +136,7 @@ const LARGE_JSON_PROP_COUNT = 3;
 const LARGE_JSON_OBJECT_DEPTH = 2;
 
 const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => string | Record<string, unknown> } = {
+    /* eslint-disable-next-line @typescript-eslint/unbound-method */
     [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
@@ -312,6 +315,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
     private tableInstance: Table;
+
     private stateStore: LocalStore<IMutableTableState>;
 
     private refHandlers = {
@@ -612,28 +616,28 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "Render mode",
             "renderMode",
             RENDER_MODES,
-            this.toRenderModeLabel,
+            toRenderModeLabel,
             this.handleStringStateChange,
         );
         const selectedRegionTransformPresetMenu = this.renderSelectMenu(
             "Selection",
             "selectedRegionTransformPreset",
             SELECTION_MODES,
-            this.toSelectedRegionTransformPresetLabel,
+            toSelectedRegionTransformPresetLabel,
             this.handleStringStateChange,
         );
         const cellContentMenu = this.renderSelectMenu(
             "Cell content",
             "cellContent",
             CELL_CONTENTS,
-            this.toCellContentLabel,
+            toCellContentLabel,
             this.handleStringStateChange,
         );
         const truncatedPopoverModeMenu = this.renderSelectMenu(
             "Popover",
             "cellTruncatedPopoverMode",
             TRUNCATED_POPOVER_MODES,
-            this.toTruncatedPopoverModeLabel,
+            toTruncatedPopoverModeLabel,
             this.handleStringStateChange,
             "enableCellTruncation",
             true,
@@ -642,7 +646,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "Length",
             "cellTruncationLength",
             TRUNCATION_LENGTHS,
-            this.toValueLabel,
+            toValueLabel,
             this.handleNumberStateChange,
             "enableCellTruncationFixed",
             true,
@@ -652,7 +656,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "Focus outlines",
             "selectedFocusStyle",
             FOCUS_STYLES,
-            this.toFocusStyleLabel,
+            toFocusStyleLabel,
             this.handleStringStateChange,
         );
 
@@ -748,7 +752,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
             "Region type",
             "scrollToRegionType",
             REGION_CARDINALITIES,
-            this.getRegionCardinalityLabel,
+            getRegionCardinalityLabel,
             this.handleStringStateChange,
         );
         const scrollToRowSelectMenu = this.renderSelectMenu(
@@ -784,21 +788,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private getRegionCardinalityLabel(cardinality: RegionCardinality) {
-        switch (cardinality) {
-            case RegionCardinality.CELLS:
-                return "Cell";
-            case RegionCardinality.FULL_ROWS:
-                return "Row";
-            case RegionCardinality.FULL_COLUMNS:
-                return "Column";
-            case RegionCardinality.FULL_TABLE:
-                return "Full table";
-            default:
-                return "";
-        }
-    }
-
     private renderSwitch(
         label: string,
         stateKey: keyof IMutableTableState,
@@ -825,7 +814,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
-        return this.renderSelectMenu(label, stateKey, values, this.toValueLabel, this.handleNumberStateChange);
+        return this.renderSelectMenu(label, stateKey, values, toValueLabel, this.handleNumberStateChange);
     }
 
     private renderSelectMenu<T>(
@@ -883,76 +872,6 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     ) {
         // Blueprint Tooltip affects the layout, so just show a native title on hover
         return <div title={`Requires ${prereqStateKey}=${prereqStateKeyValue}`}>{element}</div>;
-    }
-
-    // Select menu - label generators
-    // ==============================
-
-    private toRenderModeLabel(renderMode: RenderMode) {
-        switch (renderMode) {
-            case RenderMode.BATCH:
-                return "Batch";
-            case RenderMode.BATCH_ON_UPDATE:
-                return "Batch on update";
-            default:
-                return "None";
-        }
-    }
-
-    private toSelectedRegionTransformPresetLabel(selectedRegionTransformPreset: SelectedRegionTransformPreset) {
-        switch (selectedRegionTransformPreset) {
-            case SelectedRegionTransformPreset.CELL:
-                return "Unconstrained";
-            case SelectedRegionTransformPreset.ROW:
-                return "Whole rows only";
-            case SelectedRegionTransformPreset.COLUMN:
-                return "Whole columns only";
-            default:
-                return "None";
-        }
-    }
-
-    private toCellContentLabel(cellContent: CellContent) {
-        switch (cellContent) {
-            case CellContent.CELL_NAMES:
-                return "Cell names";
-            case CellContent.EMPTY:
-                return "Empty";
-            case CellContent.LONG_TEXT:
-                return "Long text";
-            case CellContent.LARGE_JSON:
-                return "Large JSON (~5KB)";
-            default:
-                return "";
-        }
-    }
-
-    private toTruncatedPopoverModeLabel(truncatedPopoverMode: TruncatedPopoverMode) {
-        switch (truncatedPopoverMode) {
-            case TruncatedPopoverMode.ALWAYS:
-                return "Always";
-            case TruncatedPopoverMode.NEVER:
-                return "Never";
-            case TruncatedPopoverMode.WHEN_TRUNCATED:
-                return "When truncated";
-            case TruncatedPopoverMode.WHEN_TRUNCATED_APPROX:
-                return "Truncated approx";
-            default:
-                return "";
-        }
-    }
-
-    private toFocusStyleLabel(focusStyle: FocusStyle) {
-        switch (focusStyle) {
-            case FocusStyle.TAB:
-                return "On tab";
-            default:
-                return "On tab or click";
-        }
-    }
-
-    private toValueLabel(value: any) {
-        return value.toString();
     }
 
     // Callbacks
@@ -1190,4 +1109,89 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                   },
               ] as IStyledRegionGroup[]);
     }
+}
+
+// Select menu - label generators
+// ==============================
+
+function toRenderModeLabel(renderMode: RenderMode) {
+    switch (renderMode) {
+        case RenderMode.BATCH:
+            return "Batch";
+        case RenderMode.BATCH_ON_UPDATE:
+            return "Batch on update";
+        default:
+            return "None";
+    }
+}
+
+function toSelectedRegionTransformPresetLabel(selectedRegionTransformPreset: SelectedRegionTransformPreset) {
+    switch (selectedRegionTransformPreset) {
+        case SelectedRegionTransformPreset.CELL:
+            return "Unconstrained";
+        case SelectedRegionTransformPreset.ROW:
+            return "Whole rows only";
+        case SelectedRegionTransformPreset.COLUMN:
+            return "Whole columns only";
+        default:
+            return "None";
+    }
+}
+
+function toCellContentLabel(cellContent: CellContent) {
+    switch (cellContent) {
+        case CellContent.CELL_NAMES:
+            return "Cell names";
+        case CellContent.EMPTY:
+            return "Empty";
+        case CellContent.LONG_TEXT:
+            return "Long text";
+        case CellContent.LARGE_JSON:
+            return "Large JSON (~5KB)";
+        default:
+            return "";
+    }
+}
+
+function toTruncatedPopoverModeLabel(truncatedPopoverMode: TruncatedPopoverMode) {
+    switch (truncatedPopoverMode) {
+        case TruncatedPopoverMode.ALWAYS:
+            return "Always";
+        case TruncatedPopoverMode.NEVER:
+            return "Never";
+        case TruncatedPopoverMode.WHEN_TRUNCATED:
+            return "When truncated";
+        case TruncatedPopoverMode.WHEN_TRUNCATED_APPROX:
+            return "Truncated approx";
+        default:
+            return "";
+    }
+}
+
+function toFocusStyleLabel(focusStyle: FocusStyle) {
+    switch (focusStyle) {
+        case FocusStyle.TAB:
+            return "On tab";
+        default:
+            return "On tab or click";
+    }
+}
+
+function getRegionCardinalityLabel(cardinality: RegionCardinality) {
+    switch (cardinality) {
+        case RegionCardinality.CELLS:
+            return "Cell";
+        case RegionCardinality.FULL_ROWS:
+            return "Row";
+        case RegionCardinality.FULL_COLUMNS:
+            return "Column";
+        case RegionCardinality.FULL_TABLE:
+            return "Full table";
+        default:
+            return "";
+    }
+}
+
+function toValueLabel(value: any) {
+    return value.toString();
 }

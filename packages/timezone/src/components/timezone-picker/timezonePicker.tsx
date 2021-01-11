@@ -54,6 +54,7 @@ export interface ITimezonePickerProps extends IProps {
     /**
      * The date to use when formatting timezone offsets.
      * An offset date is necessary to account for DST, but typically the default value of `now` will be sufficient.
+     *
      * @default now
      */
     date?: Date;
@@ -61,12 +62,14 @@ export interface ITimezonePickerProps extends IProps {
     /**
      * Whether this component is non-interactive.
      * This prop will be ignored if `children` is provided.
+     *
      * @default false
      */
     disabled?: boolean;
 
     /**
      * Whether to show the local timezone at the top of the list of initial timezone suggestions.
+     *
      * @default true
      */
     showLocalTimezone?: boolean;
@@ -74,6 +77,7 @@ export interface ITimezonePickerProps extends IProps {
     /**
      * Format to use when displaying the selected (or default) timezone within the target element.
      * This prop will be ignored if `children` is provided.
+     *
      * @default TimezoneDisplayFormat.OFFSET
      */
     valueDisplayFormat?: TimezoneDisplayFormat;
@@ -81,6 +85,7 @@ export interface ITimezonePickerProps extends IProps {
     /**
      * Text to show when no timezone has been selected (`value === undefined`).
      * This prop will be ignored if `children` is provided.
+     *
      * @default "Select timezone..."
      */
     placeholder?: string;
@@ -124,6 +129,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
     };
 
     private timezoneItems: ITimezoneItem[];
+
     private initialTimezoneItems: ITimezoneItem[];
 
     constructor(props: ITimezonePickerProps, context?: any) {
