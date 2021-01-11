@@ -39,7 +39,8 @@ export interface IPopover2TargetProps {
  */
 export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps {
     /**
-     * TODO(adahiya): prop documentation
+     * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
+     * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
      */
     boundary?: Boundary;
 
@@ -141,7 +142,8 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     openOnTargetFocus?: boolean;
 
     /**
-     * TODO(adahiya): prop documentation
+     * Target renderer which receives props injected by Popover2 which should be spread onto
+     * the rendered element. This function should return a single React node.
      */
     renderTarget: (props: IPopover2TargetProps & TProps) => JSX.Element;
 
