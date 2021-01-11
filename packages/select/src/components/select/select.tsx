@@ -26,12 +26,12 @@ import {
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
-    IRefCallback,
+    IRef,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
     Position,
+    refHandler,
 } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
@@ -90,19 +90,14 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
     private queryList: QueryList<T> | null = null;
 
     private previousFocusedElement: HTMLElement | undefined;
 
-    private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps!.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
+    private refHandlers: { input: IRef<HTMLInputElement>; queryList: IRef<QueryList<T>> } = {
+        input: refHandler(this.props.inputProps?.inputRef, this, "inputEl"),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 

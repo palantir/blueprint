@@ -23,10 +23,11 @@ import {
     Classes,
     getRef,
     IRef,
-    IRefCallback,
+    IRefHandlerContainer,
     IRefObject,
     isRefCallback,
     isRefObject,
+    refHandler,
 } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
@@ -70,15 +71,10 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
     public state: ITextAreaState = {};
 
     // keep our own ref so that we can measure and set the height of the component on first mount
-    private textareaRef: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
+    public textareaRef: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
 
-    private refHandlers = {
-        textarea: isRefObject<HTMLTextAreaElement>(this.props.inputRef)
-            ? (this.textareaRef = this.props.inputRef)
-            : (ref: HTMLTextAreaElement | null) => {
-                  this.textareaRef = ref;
-                  (this.props.inputRef as IRefCallback<HTMLTextAreaElement>)?.(ref);
-              },
+    private refHandlers: IRefHandlerContainer<HTMLTextAreaElement> = {
+        textarea: refHandler(this.props.inputRef, this, "textareaRef"),
     };
 
     public componentDidMount() {

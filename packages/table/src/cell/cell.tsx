@@ -21,6 +21,7 @@ import {
     DISPLAYNAME_PREFIX,
     IIntentProps,
     IProps,
+    IRef,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
@@ -106,7 +107,7 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
-    cellRef?: (ref: HTMLElement | null) => void;
+    cellRef?: IRef<HTMLDivElement>;
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
