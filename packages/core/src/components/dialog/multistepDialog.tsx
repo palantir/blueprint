@@ -30,12 +30,12 @@ export interface IMultistepDialogProps extends IDialogProps {
     /**
      * Props for the button to display on the final step.
      */
-    finalButtonProps?: Partial<IButtonProps<HTMLButtonElement>>;
+    finalButtonProps?: Partial<IButtonProps>;
 
     /**
      * Props for the next button.
      */
-    nextButtonProps?: Partial<Pick<IButtonProps<HTMLButtonElement>, "disabled" | "text">>;
+    nextButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
 
     /**
      * A callback that is invoked when the user selects a different step by clicking on back, next, or a step itself.
