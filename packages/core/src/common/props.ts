@@ -82,8 +82,11 @@ export interface ILinkProps {
     target?: string;
 }
 
-/** @deprecated use IControlledProps2 */
-/** Interface for a controlled input. */
+/**
+ * @deprecated use IControlledProps2.
+ *
+ * Interface for a controlled input.
+ */
 export interface IControlledProps {
     /** Initial value of the input, for uncontrolled usage. */
     defaultValue?: string;
@@ -126,7 +129,7 @@ export interface IOptionProps extends IProps {
 const INVALID_PROPS = [
     "active",
     "alignText",
-    "asyncControl", // IInputGroupProps
+    "asyncControl", // IInputGroupProps2
     "containerRef",
     "current",
     "elementRef",

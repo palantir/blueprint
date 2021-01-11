@@ -33,10 +33,18 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 
-/** @deprecated use IInputGroupProps2 */
-// NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
-// Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
-export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
+/**
+ * @deprecated use IInputGroupProps2.
+ *
+ * NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
+ * Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
+ */
+
+export interface IInputGroupProps
+    // eslint-disable-next-line deprecation/deprecation
+    extends IControlledProps,
+        IIntentProps,
+        IProps {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from

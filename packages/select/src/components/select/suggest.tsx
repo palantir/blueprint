@@ -21,8 +21,7 @@ import {
     AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
     getRef,
-    HTMLInputProps,
-    IInputGroupProps,
+    IInputGroupProps2,
     InputGroup,
     IPopoverProps,
     IRef,
@@ -59,7 +58,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: IInputGroupProps2;
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
