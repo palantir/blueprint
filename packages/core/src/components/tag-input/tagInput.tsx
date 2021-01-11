@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, Keys, Utils } from "../../common";
+import { AbstractPureComponent2, Classes, IRefHandlerContainer, Keys, refHandler, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -222,13 +222,10 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         isInputFocused: false,
     };
 
-    private inputElement: HTMLInputElement | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
-    private refHandlers = {
-        input: (ref: HTMLInputElement) => {
-            this.inputElement = ref;
-            this.props.inputRef?.(ref);
-        },
+    private refHandlers: IRefHandlerContainer<HTMLInputElement> = {
+        input: refHandler(this.props.inputRef, this, "inputElement"),
     };
 
     public render() {
