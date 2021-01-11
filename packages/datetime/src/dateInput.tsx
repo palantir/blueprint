@@ -29,7 +29,7 @@ import {
     Intent,
     IPopoverProps,
     IProps,
-    IRefHandlerContainer,
+    IRefCallback,
     IRefObject,
     Keys,
     Popover,
@@ -181,17 +181,21 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         valueString: null,
     };
 
-    public inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
-    private popoverContentEl: HTMLElement | null = null;
+    public popoverContentElement: HTMLDivElement | null = null;
 
     // Last element in popover that is tabbable, and the one that triggers popover closure
     // when the user press TAB on it
     private lastTabbableElement: HTMLElement | null = null;
 
-    private refHandlers: IRefHandlerContainer<HTMLInputElement> = {
-        input: refHandler(this.props.inputProps?.inputRef, this, "inputEl"),
-    };
+    private handleInputRef = refHandler<HTMLInputElement, "inputElement">(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
+
+    private handlePopoverContentRef: IRefCallback<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
     public componentWillUnmount() {
         this.unregisterPopoverBlurHandler();
@@ -225,7 +229,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         };
 
         const wrappedPopoverContent = (
-            <div ref={ref => (this.popoverContentEl = ref)}>
+            <div ref={this.handlePopoverContentRef}>
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
@@ -260,7 +264,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
                     type="text"
                     {...inputProps}
                     disabled={this.props.disabled}
-                    inputRef={this.refHandlers.input}
+                    inputRef={this.handleInputRef}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
@@ -409,7 +413,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
-            getRef(this.inputEl).blur();
+            getRef(this.inputElement).blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
@@ -417,7 +421,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     private getLastTabbableElement = () => {
         // Popover contents are well structured, but the selector will need
         // to be updated if more focusable components are added in the future
-        const tabbableElements = this.popoverContentEl?.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
+        const tabbableElements = this.popoverContentElement?.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
         const numOfElements = tabbableElements?.length ?? 0;
         // Keep track of the last focusable element in popover and add
         // a blur handler, so that when:
@@ -436,10 +440,10 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             relatedTarget = document.activeElement as HTMLElement;
         }
         const eventTarget = e.target as HTMLElement;
-        // Beware: this.popoverContentEl is sometimes null under Chrome
+        // Beware: this.popoverContentElement is sometimes null under Chrome
         if (
             relatedTarget == null ||
-            (this.popoverContentEl != null && !this.popoverContentEl.contains(relatedTarget))
+            (this.popoverContentElement != null && !this.popoverContentElement.contains(relatedTarget))
         ) {
             // Exclude the following blur operations that makes "body" the activeElement
             // and would close the Popover unexpectedly
@@ -459,7 +463,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     };
 
     private registerPopoverBlurHandler = () => {
-        if (this.popoverContentEl != null) {
+        if (this.popoverContentElement != null) {
             this.unregisterPopoverBlurHandler();
             this.lastTabbableElement = this.getLastTabbableElement();
             this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);

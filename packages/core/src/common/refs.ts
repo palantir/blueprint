@@ -39,6 +39,9 @@ export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
     return (ref as IRefObject<T>).current ?? (ref as T);
 }
 
+/**
+ * Assign the given ref to a target, either a React ref object or a callback which takes the ref as its first argument.
+ */
 export function setRef<T extends HTMLElement>(refTarget: IRef<T>, ref: T | null) {
     if (isRefObject<T>(refTarget)) {
         refTarget.current = ref;
@@ -48,10 +51,25 @@ export function setRef<T extends HTMLElement>(refTarget: IRef<T>, ref: T | null)
     }
 }
 
+/**
+ * Creates a ref handler which assigns the ref returned by React for a mounted component to a field on the target object.
+ * The target object is usually a component class.
+ *
+ * If provided, it will also update the given `refProp` with the value of the ref.
+ */
 export function refHandler<T extends HTMLElement, K extends string>(
-    refProp: IRef<T> | undefined | null,
+    refTargetParent: { [k in K]: T | null },
+    refTargetKey: K,
+): IRefCallback<T>;
+export function refHandler<T extends HTMLElement, K extends string>(
     refTargetParent: { [k in K]: T | IRefObject<T> | null },
     refTargetKey: K,
+    refProp: IRef<T> | undefined | null,
+): IRef<T>;
+export function refHandler<T extends HTMLElement, K extends string>(
+    refTargetParent: { [k in K]: T | IRefObject<T> | null },
+    refTargetKey: K,
+    refProp?: IRef<T> | undefined | null,
 ) {
     if (isRefObject<T>(refProp)) {
         refTargetParent[refTargetKey] = refProp;
@@ -63,8 +81,4 @@ export function refHandler<T extends HTMLElement, K extends string>(
             refProp(ref);
         }
     };
-}
-
-export interface IRefHandlerContainer<T extends HTMLElement> {
-    [key: string]: IRef<T>;
 }
