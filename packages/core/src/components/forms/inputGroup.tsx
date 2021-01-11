@@ -24,6 +24,7 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IControlledProps,
+    IControlledProps2,
     IIntentProps,
     IProps,
     MaybeElement,
@@ -80,9 +81,6 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     /** Whether this input should use small styles. */
     small?: boolean;
 
-    /** Change event handler. Use `event.target.value` for new value. */
-    onChange?: React.FormEventHandler<HTMLElement>;
-
     /** Placeholder text in the absence of any value. */
     placeholder?: string;
 
@@ -97,20 +95,22 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
 
     /**
      * HTML `input` type attribute.
+     *
      * @default "text"
      */
     type?: string;
 }
 
 export interface IInputGroupProps2
-    extends Omit<HTMLInputProps, keyof IControlledProps>,
-        IControlledProps,
+    extends Omit<HTMLInputProps, keyof IControlledProps2>,
+        IControlledProps2,
         IIntentProps,
         IProps {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
      * the `onChange` handler, or if working with certain libraries like __redux-form__.
+     *
      * @default false
      */
     asyncControl?: boolean;
@@ -118,6 +118,7 @@ export interface IInputGroupProps2
     /**
      * Whether the input is non-interactive.
      * Note that `rightElement` must be disabled separately; this prop will not affect it.
+     *
      * @default false
      */
     disabled?: boolean;

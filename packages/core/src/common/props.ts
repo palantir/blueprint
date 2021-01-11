@@ -82,8 +82,20 @@ export interface ILinkProps {
     target?: string;
 }
 
+/** @deprecated use IControlledProps2 */
 /** Interface for a controlled input. */
 export interface IControlledProps {
+    /** Initial value of the input, for uncontrolled usage. */
+    defaultValue?: string;
+
+    /** Change event handler. Use `event.target.value` for new value. */
+    onChange?: React.FormEventHandler<HTMLElement>;
+
+    /** Form value of the input, for controlled usage. */
+    value?: string;
+}
+
+export interface IControlledProps2 {
     /** Initial value of the input, for uncontrolled usage. */
     defaultValue?: string;
 
