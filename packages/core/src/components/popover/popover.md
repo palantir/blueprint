@@ -1,5 +1,17 @@
 @# Popover
 
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">
+
+Deprecated: use [Popover2](#popover2/popover2)
+</h4>
+
+This component is **deprecated since @blueprintjs/core v3.38.0** in favor of the new
+Popover2 component available in the `@blueprintjs/popover2` package. You should migrate
+to the new API which will become the standard in Blueprint v4.
+
+</div>
+
 Popovers display floating content next to a target element.
 
 `Popover` is built on top of the [__Popper.js__](https://popper.js.org) library.
