@@ -94,6 +94,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     public static defaultProps: IPopover2Props = {
         boundary: "clippingParents",
         captureDismiss: false,
+        // closeOnTargetHidden: true,
         defaultIsOpen: false,
         disabled: false,
         // TODO(adahiya): fill prop
@@ -172,7 +173,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
 
     public render() {
         const { content } = this.props;
-        const { isOpen } = this.state;
 
         if (content == null || content === "") {
             // just render the target without a content overlay if there is no content to display
@@ -182,35 +182,14 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         return (
             <Manager>
                 <Reference>{this.renderTarget}</Reference>
-                <Overlay
-                    autoFocus={this.props.autoFocus}
-                    backdropClassName={Classes.POPOVER2_BACKDROP}
-                    backdropProps={this.props.backdropProps}
-                    canEscapeKeyClose={this.props.canEscapeKeyClose}
-                    canOutsideClickClose={this.props.interactionKind === Popover2InteractionKind.CLICK}
-                    className={this.props.portalClassName}
-                    enforceFocus={this.props.enforceFocus}
-                    hasBackdrop={this.props.hasBackdrop}
-                    isOpen={isOpen}
-                    onClose={this.handleOverlayClose}
-                    onClosed={this.props.onClosed}
-                    onClosing={this.props.onClosing}
-                    onOpened={this.props.onOpened}
-                    onOpening={this.props.onOpening}
-                    transitionDuration={this.props.transitionDuration}
-                    transitionName={Classes.POPOVER2}
-                    usePortal={this.props.usePortal}
-                    portalContainer={this.props.portalContainer}
+                <Popper
+                    innerRef={this.refHandlers.popover}
+                    placement={this.props.placement}
+                    strategy="fixed"
+                    modifiers={this.computePopperModifiers()}
                 >
-                    <Popper
-                        innerRef={this.refHandlers.popover}
-                        placement={this.props.placement}
-                        strategy="fixed"
-                        modifiers={this.computePopperModifiers()}
-                    >
-                        {this.renderPopover}
-                    </Popper>
-                </Overlay>
+                    {this.renderPopover}
+                </Popper>
             </Manager>
         );
     }
@@ -286,13 +265,19 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { usePortal, interactionKind } = this.props;
+        const { interactionKind, usePortal } = this.props;
+        const { isOpen } = this.state;
+        // TODO(adahiya)
+        // const shouldCloseBecauseTargetIsHidden =
+        //     !this.isControlled() && this.props.closeOnTargetHidden && popperProps.isReferenceHidden;
+
+        // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
             popperProps.placement,
             this.isArrowEnabled() ? (popperProps.arrowProps.style as any) : undefined,
         );
 
-        // Need to update our reference to this on every render as it will change.
+        // need to update our reference to this function on every render as it will change.
         this.popperScheduleUpdate = popperProps.update;
 
         const popoverHandlers: HTMLDivProps = {
@@ -318,21 +303,42 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         );
 
         return (
-            <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                <ResizeSensor onResize={this.reposition}>
-                    <div
-                        className={popoverClasses}
-                        style={{ transformOrigin }}
-                        ref={this.popoverRef}
-                        {...popoverHandlers}
-                    >
-                        {this.isArrowEnabled() && (
-                            <Popover2Arrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
-                        )}
-                        <div className={Classes.POPOVER2_CONTENT}>{this.props.content}</div>
-                    </div>
-                </ResizeSensor>
-            </div>
+            <Overlay
+                autoFocus={this.props.autoFocus}
+                backdropClassName={Classes.POPOVER2_BACKDROP}
+                backdropProps={this.props.backdropProps}
+                canEscapeKeyClose={this.props.canEscapeKeyClose}
+                canOutsideClickClose={this.props.interactionKind === Popover2InteractionKind.CLICK}
+                className={this.props.portalClassName}
+                enforceFocus={this.props.enforceFocus}
+                hasBackdrop={this.props.hasBackdrop}
+                isOpen={isOpen /* && !shouldCloseBecauseTargetIsHidden */}
+                onClose={this.handleOverlayClose}
+                onClosed={this.props.onClosed}
+                onClosing={this.props.onClosing}
+                onOpened={this.props.onOpened}
+                onOpening={this.props.onOpening}
+                transitionDuration={this.props.transitionDuration}
+                transitionName={Classes.POPOVER2}
+                usePortal={this.props.usePortal}
+                portalContainer={this.props.portalContainer}
+            >
+                <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
+                    <ResizeSensor onResize={this.reposition}>
+                        <div
+                            className={popoverClasses}
+                            style={{ transformOrigin }}
+                            ref={this.popoverRef}
+                            {...popoverHandlers}
+                        >
+                            {this.isArrowEnabled() && (
+                                <Popover2Arrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
+                            )}
+                            <div className={Classes.POPOVER2_CONTENT}>{this.props.content}</div>
+                        </div>
+                    </ResizeSensor>
+                </div>
+            </Overlay>
         );
     };
 

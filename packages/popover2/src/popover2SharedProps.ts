@@ -55,6 +55,15 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     captureDismiss?: boolean;
 
     /**
+     * In uncontrolled mode, whether the popover should automatically be closed when
+     * the target is fully clipped and hidden from view within its scroll container.
+     *
+     * @default true
+     */
+    // TODO(adahiya)
+    // closeOnTargetHidden?: boolean;
+
+    /**
      * Initial opened state when uncontrolled.
      *
      * @default false

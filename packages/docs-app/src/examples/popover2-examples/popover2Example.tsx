@@ -217,6 +217,13 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                     label="Can escape key close"
                     onChange={this.toggleEscapeKey}
                 />
+                {/* TODO(adahiya) */}
+                {/* <Switch
+                    checked={this.state.canEscapeKeyClose}
+                    disabled={this.state.isOpen}
+                    label="Close when target is hidden/clipped inside its scroll container"
+                    onChange={this.toggleEscapeKey}
+                /> */}
 
                 <H5>Modifiers</H5>
                 <Switch checked={arrow.enabled} label="Arrow" onChange={this.getModifierChangeHandler("arrow")} />
