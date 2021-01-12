@@ -3,11 +3,12 @@
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">
 
-Coming here from [Popover](#core/popover)?
+Migrating from [Popover](#core/popover)?
 </h4>
 
-This component is a replacement for Popover and will become the standard Popover API in Blueprint core v4.
+Popover2 is a replacement for Popover and will become the standard Popover API in Blueprint core v4.
 You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
+See the full [migration guide](https://github.com/palantir/blueprint/wiki/Popover2-migration) on the wiki.
 
 </div>
 
