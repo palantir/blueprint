@@ -22,7 +22,7 @@ import * as sinon from "sinon";
 
 import {
     Button,
-    IButtonProps,
+    IButtonProps2,
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
@@ -211,14 +211,14 @@ describe("<TimezonePicker>", () => {
     });
 
     it("button can be controlled with button props", () => {
-        const buttonProps: IButtonProps = {
+        const buttonProps: IButtonProps2 = {
             disabled: true,
             rightIcon: "airplane",
         };
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} buttonProps={buttonProps} />);
         const button = timezonePicker.find(Button);
         for (const key of Object.keys(buttonProps)) {
-            assert.deepEqual(button.prop(key), buttonProps[key as keyof IButtonProps]);
+            assert.deepEqual(button.prop(key), buttonProps[key as keyof IButtonProps2]);
         }
     });
 

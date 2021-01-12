@@ -19,7 +19,7 @@ import { mount, shallow, ShallowWrapper } from "enzyme";
 import * as React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
-import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src";
+import { Alert, Button, Classes, IAlertProps, IButtonProps2, Icon, Intent, Keys } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
@@ -127,7 +127,7 @@ describe("<Alert>", () => {
         const onCancel = spy();
         const onClose = spy();
         let wrapper: ShallowWrapper<IAlertProps, any>;
-        let cancelButton: ShallowWrapper<IButtonProps, any>;
+        let cancelButton: ShallowWrapper<IButtonProps2, any>;
 
         beforeEach(() => {
             onCancel.resetHistory();

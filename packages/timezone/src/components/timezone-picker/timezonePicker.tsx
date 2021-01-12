@@ -24,7 +24,7 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
-    IButtonProps,
+    IButtonProps2,
     IInputGroupProps,
     IPopoverProps,
     IProps,
@@ -94,7 +94,7 @@ export interface ITimezonePickerProps extends IProps {
      * Props to spread to the target `Button`.
      * This prop will be ignored if `children` is provided.
      */
-    buttonProps?: Partial<IButtonProps>;
+    buttonProps?: Partial<IButtonProps2>;
 
     /**
      * Props to spread to the filter `InputGroup`.

@@ -21,9 +21,13 @@ import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { IRef, IRefObject, refHandler } from "../../common/refs";
-import { AbstractButton, IButtonProps } from "./abstractButton";
+import { AbstractButton, IButtonProps, IButtonProps2 } from "./abstractButton";
 
-export { IButtonProps };
+export {
+    // eslint-disable-next-line deprecation/deprecation
+    IButtonProps,
+    IButtonProps2,
+};
 
 export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;

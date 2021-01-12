@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Code, H5, MultistepDialog, DialogStep, Switch, Classes, IButtonProps } from "@blueprintjs/core";
+import { Button, Code, H5, MultistepDialog, DialogStep, Switch, Classes, IButtonProps2 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
@@ -54,7 +54,7 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const finalButtonProps: Partial<IButtonProps> = {
+        const finalButtonProps: Partial<IButtonProps2> = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",

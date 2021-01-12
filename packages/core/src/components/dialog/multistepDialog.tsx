@@ -20,7 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { Button, IButtonProps } from "../button/buttons";
+import { Button, IButtonProps2 } from "../button/buttons";
 import { Dialog, IDialogProps } from "./dialog";
 import { DialogStep, DialogStepId, IDialogStepProps } from "./dialogStep";
 
@@ -30,12 +30,12 @@ export interface IMultistepDialogProps extends IDialogProps {
     /**
      * Props for the button to display on the final step.
      */
-    finalButtonProps?: Partial<IButtonProps>;
+    finalButtonProps?: Partial<IButtonProps2>;
 
     /**
      * Props for the next button.
      */
-    nextButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
+    nextButtonProps?: Partial<Pick<IButtonProps2, "disabled" | "text">>;
 
     /**
      * A callback that is invoked when the user selects a different step by clicking on back, next, or a step itself.
