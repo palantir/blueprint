@@ -17,6 +17,12 @@
 import * as Classes from "./classes";
 
 export { Classes };
-export { IPopover2SharedProps, IPopover2TargetProps, PopperBoundary, StrictModifierNames } from "./popover2SharedProps";
-export { IPopover2Props, Popover2 } from "./popover2";
+export {
+    IPopover2SharedProps,
+    IPopover2TargetProps,
+    PopperBoundary,
+    PopperPlacement,
+    StrictModifierNames,
+} from "./popover2SharedProps";
+export { IPopover2Props, Popover2, Popover2InteractionKind } from "./popover2";
 export { ITooltip2Props, Tooltip2 } from "./tooltip2";

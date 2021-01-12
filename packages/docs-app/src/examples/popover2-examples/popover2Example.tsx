@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,7 +137,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         const { boundary, exampleIndex, sliderValue, ...popoverProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <div className="docs-popover-example-scroll" ref={this.centerScroll}>
+                <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
                     <Popover2<IButtonProps>
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER2_CONTENT_SIZING : ""}
                         portalClassName="foo"
@@ -154,7 +154,13 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         content={this.getContents(exampleIndex)}
                         // tslint:disable-next-line jsx-no-lambda
                         renderTarget={({ ref, isOpen, ...props }) => (
-                            <Button intent={Intent.PRIMARY} text="Popover target" {...props} elementRef={ref} />
+                            <Button
+                                {...props}
+                                active={isOpen}
+                                elementRef={ref}
+                                intent={Intent.PRIMARY}
+                                text="Popover target"
+                            />
                         )}
                     />
                     <p>

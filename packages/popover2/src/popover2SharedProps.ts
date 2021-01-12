@@ -18,7 +18,7 @@ import { IOverlayableProps, IProps } from "@blueprintjs/core";
 import { Boundary, Placement, StrictModifiers } from "@popperjs/core";
 import { StrictModifier } from "react-popper";
 
-export { Boundary as PopperBoundary };
+export { Boundary as PopperBoundary, Placement as PopperPlacement };
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 

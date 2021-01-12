@@ -84,7 +84,7 @@ export interface IPopover2State {
 }
 
 /**
- * T: target props inteface
+ * @template T target component props inteface
  */
 export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
@@ -96,6 +96,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         captureDismiss: false,
         defaultIsOpen: false,
         disabled: false,
+        // TODO(adahiya): fill prop
         // fill: false,
         hasBackdrop: false,
         hoverCloseDelay: 300,
