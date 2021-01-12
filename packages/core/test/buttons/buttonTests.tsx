@@ -110,7 +110,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         if (typeof React.createRef !== "undefined") {
             it("matches buttonRef with elementRef using createRef", done => {
-                const elementRef = React.createRef<HTMLElement>();
+                const elementRef = React.createRef<HTMLButtonElement>();
                 const wrapper = button({ elementRef }, true);
 
                 // wait for the whole lifecycle to run
@@ -123,13 +123,9 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         it("matches buttonRef with elementRef using callback", done => {
             let elementRef: HTMLElement | null = null;
-            const buttonRefCallback = (ref: HTMLElement) => {
-                elementRef = ref;
-            };
-
             const wrapper = button(
                 {
-                    elementRef: buttonRefCallback,
+                    elementRef: (ref: HTMLButtonElement | null) => (elementRef = ref),
                 },
                 true,
             );

@@ -25,13 +25,13 @@ import {
     IInputGroupProps,
     InputGroup,
     IPopoverProps,
-    IRefCallback,
+    IRef,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
     PopoverInteractionKind,
     Position,
+    refHandler,
 } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
@@ -127,19 +127,13 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
     private queryList: QueryList<T> | null = null;
 
-    private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps!.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
-    };
+    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+
+    private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -149,7 +143,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                 {...restProps}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
-                ref={this.refHandlers.queryList}
+                ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
             />
         );
@@ -212,7 +206,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                     autoComplete={autoComplete}
                     disabled={this.props.disabled}
                     {...inputProps}
-                    inputRef={this.refHandlers.input}
+                    inputRef={this.handleInputRef}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
@@ -230,7 +224,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
         this.requestAnimationFrame(() => {
-            const input = getRef(this.inputEl);
+            const input = getRef(this.inputElement);
             input?.setSelectionRange(0, input.value.length);
         });
     };
@@ -250,11 +244,11 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         let nextOpenState: boolean;
 
         if (!this.props.closeOnSelect) {
-            getRef(this.inputEl)?.focus();
+            getRef(this.inputElement)?.focus();
             this.selectText();
             nextOpenState = true;
         } else {
-            getRef(this.inputEl)?.blur();
+            getRef(this.inputElement)?.blur();
             nextOpenState = false;
         }
 
@@ -287,9 +281,9 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = getRef(this.inputEl) === document.activeElement;
+            const isInputFocused = getRef(this.inputElement) === document.activeElement;
 
-            if (this.inputEl != null && !isInputFocused) {
+            if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });
             }
@@ -322,7 +316,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
             const { which } = evt;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
-                getRef(this.inputEl)?.blur();
+                getRef(this.inputElement)?.blur();
                 this.setState({ isOpen: false });
             } else if (
                 this.props.openOnKeyDown &&

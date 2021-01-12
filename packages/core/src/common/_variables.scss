@@ -64,6 +64,7 @@ $pt-navbar-height: $pt-grid-size * 5 !default;
 $pt-z-index-base: 0 !default;
 $pt-z-index-content: $pt-z-index-base + 10 !default;
 $pt-z-index-overlay: $pt-z-index-content + 10 !default;
+$pt-z-index-dialog-header: $pt-z-index-overlay + 10 !default;
 
 // Shadow opacities
 $pt-border-shadow-opacity: 0.1 !default;
