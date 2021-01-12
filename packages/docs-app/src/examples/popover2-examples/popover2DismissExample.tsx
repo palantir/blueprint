@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Button, Callout, Classes, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
+import * as React from "react";
 
 export class Popover2DismissExample extends React.PureComponent<
     IExampleProps,
@@ -36,6 +35,9 @@ export class Popover2DismissExample extends React.PureComponent<
         return (
             <Example options={false} {...this.props}>
                 <Popover2
+                    // don't autofocus because it is open by default on the page,
+                    // and it will make users scroll to this example if autofocused
+                    autoFocus={false}
                     isOpen={this.state.isOpen}
                     onInteraction={this.handleInteraction}
                     onClosed={this.reopen}
@@ -52,6 +54,7 @@ export class Popover2DismissExample extends React.PureComponent<
                                     onChange={this.handleDismissChange}
                                 />
                                 <Popover2
+                                    autoFocus={false}
                                     captureDismiss={this.state.captureDismiss}
                                     content={POPOVER_CONTENTS}
                                     placement="right"

@@ -151,7 +151,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private isControlled = () => this.props.isOpen !== undefined;
 
     // arrow is disabled if minimal, or if the arrow modifier was explicitly disabled
-    private isArrowEnabled = () => !this.props.minimal && this.props.modifiers?.arrow !== false;
+    private isArrowEnabled = () => !this.props.minimal && this.props.modifiers?.arrow?.enabled !== false;
 
     private isHoverInteractionKind = () => {
         return (
@@ -185,7 +185,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 <Popper
                     innerRef={this.refHandlers.popover}
                     placement={this.props.placement}
-                    strategy="fixed"
+                    strategy="absolute"
                     modifiers={this.computePopperModifiers()}
                 >
                     {this.renderPopover}

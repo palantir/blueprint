@@ -259,6 +259,7 @@
     max-height: 700px;
     overflow: scroll;
     padding: 0;
+    position: relative; // create a stacking context for when usePortal={false}
   }
 
   .docs-popover2-example-scroll,

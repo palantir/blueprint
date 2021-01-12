@@ -41,7 +41,7 @@ import {
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 import { Classes, IPopover2SharedProps, Popover2, StrictModifierNames } from "@blueprintjs/popover2";
-import { Placement, placements as PLACEMENT_OPTIONS } from "@popperjs/core";
+import { Placement, placements, placements as PLACEMENT_OPTIONS } from "@popperjs/core";
 import * as React from "react";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
@@ -89,6 +89,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     };
 
     private scrollParentElement: HTMLElement | null = null;
+
     private bodyElement: HTMLElement | null = null;
 
     private handleSliderChange = (value: number) => this.setState({ sliderValue: value });
@@ -101,6 +102,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     });
 
     private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
+
     private handleBoundaryChange = handleValueChange((boundary: IPopover2ExampleState["boundary"]) =>
         this.setState({ boundary }),
     );
@@ -174,7 +176,12 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     }
 
     private renderOptions() {
-        const { arrow, flip, preventOverflow } = this.state.modifiers;
+        const { modifiers, placement } = this.state;
+        const { arrow, flip, preventOverflow } = modifiers;
+
+        // popper.js requires this modiifer for "auto" placement
+        const forceFlipEnabled = placement.startsWith("auto");
+
         return (
             <>
                 <H5>Appearance</H5>
@@ -227,7 +234,12 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
 
                 <H5>Modifiers</H5>
                 <Switch checked={arrow.enabled} label="Arrow" onChange={this.getModifierChangeHandler("arrow")} />
-                <Switch checked={flip.enabled} label="Flip" onChange={this.getModifierChangeHandler("flip")} />
+                <Switch
+                    checked={flip.enabled || forceFlipEnabled}
+                    disabled={forceFlipEnabled}
+                    label="Flip"
+                    onChange={this.getModifierChangeHandler("flip")}
+                />
                 <Switch
                     checked={preventOverflow.enabled}
                     label="Prevent overflow"
@@ -304,7 +316,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     }
 
     private centerScroll = (overflowingDiv: HTMLDivElement) => {
-        this.scrollParentElement = overflowingDiv.parentElement;
+        this.scrollParentElement = overflowingDiv?.parentElement;
 
         if (overflowingDiv != null) {
             // if we don't requestAnimationFrame, this function apparently executes
