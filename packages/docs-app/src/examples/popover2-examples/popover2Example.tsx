@@ -41,7 +41,7 @@ import {
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 import { Classes, IPopover2SharedProps, Popover2, StrictModifierNames } from "@blueprintjs/popover2";
-import { Placement, placements, placements as PLACEMENT_OPTIONS } from "@popperjs/core";
+import { Placement, placements as PLACEMENT_OPTIONS } from "@popperjs/core";
 import * as React from "react";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
