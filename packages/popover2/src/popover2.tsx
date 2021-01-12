@@ -92,7 +92,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
     public static defaultProps: IPopover2Props = {
-        // boundary: "scrollParent",
+        boundary: "clippingParents",
         captureDismiss: false,
         defaultIsOpen: false,
         disabled: false,
@@ -103,7 +103,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         inheritDarkTheme: true,
         interactionKind: Popover2InteractionKind.CLICK,
         minimal: false,
-        // modifiers: {},
         openOnTargetFocus: true,
         placement: "auto",
         renderTarget: undefined as any,
@@ -206,7 +205,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                         innerRef={this.refHandlers.popover}
                         placement={this.props.placement}
                         strategy="fixed"
-                        modifiers={this.getPopperModifiers()}
+                        modifiers={this.computePopperModifiers()}
                     >
                         {this.renderPopover}
                     </Popper>
@@ -336,15 +335,18 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         );
     };
 
-    private getPopperModifiers(): StrictModifier[] {
+    // TODO(adahiya): test these modifier overrides
+    private computePopperModifiers(): StrictModifier[] {
+        const { modifiers } = this.props;
         return [
             {
                 enabled: this.isArrowEnabled(),
                 name: "arrow",
-                ...this.props.modifiers?.arrow,
+                ...modifiers?.arrow,
             },
             {
                 name: "computeStyles",
+                ...modifiers?.computeStyles,
                 options: {
                     adaptive: true,
                     // We disable the built-in gpuAcceleration so that
@@ -353,26 +355,33 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                     // We'll then use these values to generate the needed
                     // css transform values blended with the react-spring values
                     gpuAcceleration: false,
+                    ...modifiers?.computeStyles?.options,
                 },
-                ...this.props.modifiers?.computeStyles,
             },
             {
                 enabled: this.isArrowEnabled(),
                 name: "offset",
+                ...modifiers?.offset,
                 options: {
                     offset: [0, ARROW_SVG_SIZE / 2],
+                    ...modifiers?.offset?.options,
                 },
-                ...this.props.modifiers?.offset,
             },
             {
                 name: "flip",
-                options: { boundary: this.props.boundary },
-                ...this.props.modifiers?.flip,
+                ...modifiers?.flip,
+                options: {
+                    boundary: this.props.boundary,
+                    ...modifiers?.flip?.options,
+                },
             },
             {
                 name: "preventOverflow",
-                options: { boundary: this.props.boundary },
-                ...this.props.modifiers?.preventOverflow,
+                ...modifiers?.preventOverflow,
+                options: {
+                    boundary: this.props.boundary,
+                    ...modifiers?.preventOverflow?.options,
+                },
             },
         ];
     }
