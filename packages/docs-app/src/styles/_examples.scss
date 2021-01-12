@@ -252,20 +252,24 @@
   height: 200%;
 }
 
+#{example("Popover2Example")},
 #{example("PopoverExample")} {
   .docs-example {
     display: block;
     max-height: 700px;
     overflow: scroll;
+    padding: 0;
   }
 
+  .docs-popover2-example-scroll,
   .docs-popover-example-scroll {
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 1500px;
+    height: 1600px;
     justify-content: center;
-    width: 1000px;
+    margin: 0;
+    width: 1600px;
 
     > p {
       margin-top: $pt-grid-size;

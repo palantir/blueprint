@@ -303,16 +303,16 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         ][index];
     }
 
-    private centerScroll = (div: HTMLDivElement) => {
-        this.scrollParentElement = div;
+    private centerScroll = (overflowingDiv: HTMLDivElement) => {
+        this.scrollParentElement = overflowingDiv.parentElement;
 
-        if (div != null) {
+        if (overflowingDiv != null) {
             // if we don't requestAnimationFrame, this function apparently executes
             // before styles are applied to the page, so the centering is way off.
             requestAnimationFrame(() => {
-                const container = div.parentElement;
-                container.scrollTop = div.clientHeight / 4;
-                container.scrollLeft = div.clientWidth / 4;
+                const container = overflowingDiv.parentElement;
+                container.scrollLeft = overflowingDiv.clientWidth / 2 - container.clientWidth / 2;
+                container.scrollTop = overflowingDiv.clientHeight / 2 - container.clientHeight / 2;
             });
         }
     };
