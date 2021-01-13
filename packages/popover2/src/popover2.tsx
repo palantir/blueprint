@@ -312,6 +312,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 className={this.props.portalClassName}
                 enforceFocus={this.props.enforceFocus}
                 hasBackdrop={this.props.hasBackdrop}
+                // TODO(adahiya)
                 isOpen={isOpen /* && !shouldCloseBecauseTargetIsHidden */}
                 onClose={this.handleOverlayClose}
                 onClosed={this.props.onClosed}
