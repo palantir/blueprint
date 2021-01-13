@@ -148,7 +148,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
 
-    private isControlled = () => this.props.isOpen !== undefined;
+    // private isControlled = () => this.props.isOpen !== undefined;
 
     // arrow is disabled if minimal, or if the arrow modifier was explicitly disabled
     private isArrowEnabled = () => !this.props.minimal && this.props.modifiers?.arrow?.enabled !== false;
@@ -226,7 +226,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private renderTarget = ({ ref }: ReferenceChildrenProps) => {
         const { renderTarget } = this.props;
         const { isOpen } = this.state;
-        const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
         if (isRefCallback(ref)) {
             ref = combineRefs(ref, this.refHandlers.target);
@@ -248,13 +247,12 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         const target = renderTarget({
             className: classNames(Classes.POPOVER2_TARGET, {
                 [Classes.POPOVER2_OPEN]: isOpen,
-                // this class is mainly useful for button targets; we should only apply it for uncontrolled popovers
-                // when they are opened by a user interaction
-                [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+                // this class is mainly useful for button targets
+                [CoreClasses.ACTIVE]: isOpen && !isHoverInteractionKind,
             }),
             // if the consumer renders a <Tooltip> target, it's their responsibility to disable that <Tooltip>
-            // when _this_ popover is open
-            isOpen: this.state.isOpen,
+            // when *this* popover is open
+            isOpen,
             ref,
             ...((targetEventHandlers as unknown) as T),
         });

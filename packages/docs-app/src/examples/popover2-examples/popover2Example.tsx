@@ -60,6 +60,7 @@ export interface IPopover2ExampleState {
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
     interactionKind?: PopoverInteractionKind;
+    isControlled: boolean;
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: IPopover2SharedProps<HTMLElement>["modifiers"];
@@ -76,6 +77,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         hasBackdrop: false,
         inheritDarkTheme: true,
         interactionKind: PopoverInteractionKind.CLICK,
+        isControlled: false,
         isOpen: false,
         minimal: false,
         modifiers: {
@@ -108,6 +110,8 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
     );
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+
+    private toggleIsControlled = handleBooleanChange(isControlled => this.setState({ isControlled }));
 
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
 
@@ -152,7 +156,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                                 : boundary
                         }
                         enforceFocus={false}
-                        isOpen={this.state.isOpen === true ? /* Controlled */ true : /* Uncontrolled */ undefined}
+                        isOpen={this.state.isControlled ? this.state.isOpen : undefined}
                         content={this.getContents(exampleIndex)}
                         // tslint:disable-next-line jsx-no-lambda
                         renderTarget={({ ref, isOpen, ...props }) => (
@@ -210,7 +214,15 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                     Use <Code>Portal</Code>
                 </Switch>
                 <Switch checked={this.state.minimal} label="Minimal appearance" onChange={this.toggleMinimal} />
-                <Switch checked={this.state.isOpen} label="Open (controlled mode)" onChange={this.toggleIsOpen} />
+
+                <H5>Control</H5>
+                <Switch checked={this.state.isControlled} label="Is controlled" onChange={this.toggleIsControlled} />
+                <Switch
+                    checked={this.state.isOpen}
+                    disabled={!this.state.isControlled}
+                    label="Open"
+                    onChange={this.toggleIsOpen}
+                />
 
                 <H5>Interactions</H5>
                 <RadioGroup

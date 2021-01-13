@@ -256,7 +256,7 @@
 #{example("PopoverExample")} {
   .docs-example {
     display: block;
-    max-height: 700px;
+    max-height: 785px;
     overflow: scroll;
     padding: 0;
     position: relative; // create a stacking context for when usePortal={false}
