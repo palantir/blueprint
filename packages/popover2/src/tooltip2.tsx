@@ -12,10 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
-import { Classes, DISPLAYNAME_PREFIX, IIntentProps } from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, IIntentProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
+import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover2, Popover2InteractionKind } from "./popover2";
 import { IPopover2SharedProps } from "./popover2SharedProps";
@@ -67,7 +68,7 @@ export interface ITooltip2Props<TProps = React.HTMLProps<HTMLElement>>
 }
 
 export class Tooltip2<T> extends React.PureComponent<ITooltip2Props<T>> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip2`;
 
     public static defaultProps: Partial<ITooltip2Props> = {
         hoverCloseDelay: 0,
@@ -81,16 +82,16 @@ export class Tooltip2<T> extends React.PureComponent<ITooltip2Props<T>> {
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(
-            Classes.TOOLTIP,
-            { [Classes.MINIMAL]: this.props.minimal },
-            Classes.intentClass(intent),
+            Classes.TOOLTIP2,
+            { [CoreClasses.MINIMAL]: this.props.minimal },
+            CoreClasses.intentClass(intent),
             popoverClassName,
         );
 
         return (
             <Popover2
                 interactionKind={Popover2InteractionKind.HOVER_TARGET_ONLY}
-                // modifiers={{ arrow: { enabled: !this.props.minimal } }}
+                modifiers={{ arrow: { enabled: !this.props.minimal } }}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}

@@ -3,7 +3,7 @@
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
     <h4 class="@ns-heading">
 
-Migrating from [Popover](#core/popover)?
+Migrating from [Popover](#core/components/popover)?
 
 </h4>
 
@@ -45,8 +45,9 @@ its **target** (via the `renderTarget` prop).
 The **target** is rendered at the location of the Popover2 component in the React component tree. It acts
 as the trigger for the popover; user interaction will show the popover based on the `interactionKind` prop.
 In Popper.js terms, this is the popper "reference". In order to add its interaction logic to the target,
-Popover2 supplies an object of props to the `renderTarget` function. These props should be rendered out
-to the `JSX.Element` you return from `renderTarget`.
+Popover2 supplies an object of props to the `renderTarget` function. These props should be
+[spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
+out to the `JSX.Element` returned from `renderTarget`.
 
 The **content** will be shown inside the popover itself. When opened, the popover will always be
 positioned on the page next to the target; the `position` prop determines its relative position (on

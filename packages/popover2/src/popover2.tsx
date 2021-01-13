@@ -33,6 +33,7 @@ import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps
 import * as Classes from "./classes";
 import { ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
+import { Tooltip2 } from "./tooltip2";
 import { getTransformOrigin } from "./utils";
 
 export const Popover2InteractionKind = {
@@ -53,6 +54,12 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
      * the _second_ element in `children` (first is `target`).
      */
     content?: string | JSX.Element;
+
+    /**
+     * Whether the wrapper and target should take up the full width of their container.
+     * Note that supplying `true` for this prop will force  `targetTagName="div"`.
+     */
+    fill?: boolean;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -97,8 +104,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         // closeOnTargetHidden: true,
         defaultIsOpen: false,
         disabled: false,
-        // TODO(adahiya): fill prop
-        // fill: false,
+        fill: false,
         hasBackdrop: false,
         hoverCloseDelay: 300,
         hoverOpenDelay: 150,
@@ -108,6 +114,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         openOnTargetFocus: true,
         placement: "auto",
         renderTarget: undefined as any,
+        targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,
     };
@@ -148,7 +155,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
 
-    // private isControlled = () => this.props.isOpen !== undefined;
+    private isControlled = () => this.props.isOpen !== undefined;
 
     // arrow is disabled if minimal, or if the arrow modifier was explicitly disabled
     private isArrowEnabled = () => !this.props.minimal && this.props.modifiers?.arrow?.enabled !== false;
@@ -224,9 +231,15 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     public reposition = () => this.popperScheduleUpdate?.();
 
     private renderTarget = ({ ref }: ReferenceChildrenProps) => {
-        const { renderTarget } = this.props;
+        const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
         const { isOpen } = this.state;
+        const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
+        let { targetTagName } = this.props;
+        if (fill) {
+            targetTagName = "div";
+        }
+
         if (isRefCallback(ref)) {
             ref = combineRefs(ref, this.refHandlers.target);
         }
@@ -243,19 +256,54 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
               };
-
-        const target = renderTarget({
+        const targetProps = {
             className: classNames(Classes.POPOVER2_TARGET, {
                 [Classes.POPOVER2_OPEN]: isOpen,
                 // this class is mainly useful for button targets
                 [CoreClasses.ACTIVE]: isOpen && !isHoverInteractionKind,
             }),
-            // if the consumer renders a <Tooltip> target, it's their responsibility to disable that <Tooltip>
-            // when *this* popover is open
-            isOpen,
             ref,
             ...((targetEventHandlers as unknown) as T),
-        });
+        };
+
+        let target: JSX.Element | undefined;
+
+        if (renderTarget !== undefined) {
+            target = renderTarget({
+                ...targetProps,
+                // if the consumer renders a <Tooltip> target, it's their responsibility to disable that <Tooltip>
+                // when *this* popover is open
+                isOpen,
+            });
+        } else {
+            const rawTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
+
+            // TODO(adahiya): validateProps should guard against undefined children
+            if (rawTarget === undefined) {
+                return null;
+            }
+
+            const rawTabIndex = rawTarget.props.tabIndex;
+            // ensure target is focusable if relevant prop enabled
+            const tabIndex = rawTabIndex == null && openOnTargetFocus && isHoverInteractionKind ? 0 : rawTabIndex;
+            const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
+                className: classNames(className, rawTarget.props.className, {
+                    // this class is mainly useful for button targets; we should only apply it for uncontrolled popovers
+                    // when they are opened by a user interaction
+                    [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+                }),
+                // force disable single Tooltip2 child when popover is open
+                disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip2) ? true : rawTarget.props.disabled,
+                tabIndex,
+            });
+            target = React.createElement(
+                targetTagName!,
+                {
+                    ...targetProps,
+                },
+                clonedTarget,
+            );
+        }
 
         return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
     };

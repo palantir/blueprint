@@ -153,8 +153,10 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     /**
      * Target renderer which receives props injected by Popover2 which should be spread onto
      * the rendered element. This function should return a single React node.
+     *
+     * Mutually exclusive with children, targetClassName, and targetTagName.
      */
-    renderTarget: (props: IPopover2TargetProps & TProps) => JSX.Element;
+    renderTarget?: (props: IPopover2TargetProps & TProps) => JSX.Element;
 
     /**
      * A space-delimited string of class names applied to the popover element.
@@ -171,6 +173,19 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
      * @default "auto"
      */
     placement?: Placement;
+
+    /**
+     * HTML tag name for the target element. This must be an HTML element to
+     * ensure that it supports the necessary DOM event handlers.
+     *
+     * By default, a `<span>` tag is used so popovers appear as inline-block
+     * elements and can be nested in text. Use `<div>` tag for a block element.
+     *
+     * Mutually exclusive with renderTarget.
+     *
+     * @default "span" ("div" if fill={true})
+     */
+    targetTagName?: keyof JSX.IntrinsicElements;
 
     /**
      * Whether the popover should be rendered inside a `Portal` attached to

@@ -29,3 +29,6 @@ export const POPOVER2_DISMISS_OVERRIDE = `${POPOVER2_DISMISS}-override`;
 export const POPOVER2_OPEN = `${POPOVER2}-open`;
 export const POPOVER2_TARGET = `${POPOVER2}-target`;
 export const POPOVER2_TRANSITION_CONTAINER = `${POPOVER2}-transition-container`;
+
+export const TOOLTIP2 = `${NS}-tooltip2`;
+export const TOOLTIP2_INDICATOR = `${TOOLTIP2}-indicator`;
