@@ -74,6 +74,15 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
      */
     isOpen: boolean;
 
+
+    /**
+     * If set to `true`, the confirm button will be set to its loading state. The cancel button, if
+     * visible, will be disabled.
+     *
+     * @default false
+     */
+    loading?: boolean;
+
     /**
      * CSS styles to apply to the alert.
      */
@@ -129,6 +138,7 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
         canOutsideClickCancel: false,
         confirmButtonText: "OK",
         isOpen: false,
+        loading: false,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Alert`;
@@ -141,6 +151,7 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
             className,
             icon,
             intent,
+            loading,
             cancelButtonText,
             confirmButtonText,
             onClose,
@@ -160,8 +171,8 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>
-                    <Button intent={intent} text={confirmButtonText} onClick={this.handleConfirm} />
-                    {cancelButtonText && <Button text={cancelButtonText} onClick={this.handleCancel} />}
+                    <Button loading={loading} intent={intent} text={confirmButtonText} onClick={this.handleConfirm} />
+                    {cancelButtonText && <Button text={cancelButtonText} disabled={loading} onClick={this.handleCancel} />}
                 </div>
             </Dialog>
         );
