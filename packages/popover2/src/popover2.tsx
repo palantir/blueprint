@@ -128,11 +128,11 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     public targetElement: HTMLElement | null = null;
 
     private refHandlers = {
-        popover: (ref: HTMLElement) => {
+        popover: (ref: HTMLElement | null) => {
             this.popoverElement = ref;
             this.props.popoverRef?.(ref);
         },
-        target: (ref: HTMLElement) => (this.targetElement = ref),
+        target: (ref: HTMLElement | null) => (this.targetElement = ref),
     };
 
     private cancelOpenTimeout?: () => void;
@@ -146,7 +146,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private lostFocusOnSamePage = true;
 
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
-    private popperScheduleUpdate?: () => Promise<Partial<PopperState>>;
+    private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
 
     private isControlled = () => this.props.isOpen !== undefined;
 
@@ -164,10 +164,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         // disabled popovers should never be allowed to open.
         if (props.disabled) {
             return false;
-        } else if (props.isOpen != null) {
-            return props.isOpen;
         } else {
-            return props.defaultIsOpen!;
+            return props.isOpen ?? props.defaultIsOpen!;
         }
     }
 
