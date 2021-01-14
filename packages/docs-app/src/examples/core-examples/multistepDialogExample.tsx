@@ -119,7 +119,7 @@ export class MultistepDialogExample extends React.PureComponent<
         );
     }
 
-    private handleOpen = () => this.setState({ disableNextButton: true, isOpen: true, value: undefined });
+    private handleOpen = () => this.setState({ isOpen: true, value: undefined });
 
     private handleClose = () => this.setState({ isOpen: false });
 
