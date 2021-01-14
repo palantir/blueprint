@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-
-export { Classes };
+export * as Classes from "./classes";
+export * as Errors from "./errors";
 export {
     IPopover2SharedProps,
     IPopover2TargetProps,

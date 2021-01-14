@@ -291,6 +291,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                     // this class is mainly useful for button targets; we should only apply it for uncontrolled popovers
                     // when they are opened by a user interaction
                     [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+                    [CoreClasses.FILL]: fill,
                 }),
                 // force disable single Tooltip2 child when popover is open
                 disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip2) ? true : rawTarget.props.disabled,
