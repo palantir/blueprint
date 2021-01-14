@@ -54,7 +54,7 @@ import { Popover2, Tooltip2 } from "@blueprintjs/popover";
 
 @## Props
 
-`Tooltip2` simply passes its props to [`Popover2`](#popover2/popover2), with
+`Tooltip2` simply passes its props to [`Popover2`](#popover2-package/popover2), with
 some exceptions. Notably, it only supports hover interactions.
 
 When creating a tooltip, you must specify both its **content** (via the `content` prop) and

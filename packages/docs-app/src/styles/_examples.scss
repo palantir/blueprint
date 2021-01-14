@@ -267,7 +267,7 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 1600px;
+    height: 1700px;
     justify-content: center;
     margin: 0;
     width: 1600px;
@@ -289,6 +289,7 @@
 
   .#{$ns}-popover2-content,
   .#{$ns}-popover-content {
+    min-width: 300px;
     padding: $pt-grid-size * 2;
 
     .#{$ns}-button:not(:first-child) {
@@ -431,6 +432,7 @@
     flex: 1 1 auto;
     overflow-x: scroll;
     overflow-y: hidden;
+    position: relative;
 
     .#{$ns}-dark & {
       background: $dark-gray5;

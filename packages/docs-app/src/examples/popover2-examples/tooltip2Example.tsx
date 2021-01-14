@@ -24,6 +24,8 @@ export interface ITooltip2ExampleState {
 }
 
 export class Tooltip2Example extends React.PureComponent<IExampleProps, ITooltip2ExampleState> {
+    public static displayName = "Tooltip2Example";
+
     public state: ITooltip2ExampleState = {
         isOpen: false,
     };

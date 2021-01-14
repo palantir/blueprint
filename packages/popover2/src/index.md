@@ -4,11 +4,11 @@ reference: popover2-package
 
 @# Popover2
 
-The [__@blueprintjs/popover2__ NPM package](https://www.npmjs.com/package/@blueprintjs/popover2)
+The [**@blueprintjs/popover2** NPM package](https://www.npmjs.com/package/@blueprintjs/popover2)
 provides successors to Popover and Tooltip in `@blueprintjs/core`:
 
-- [`Popover2`](#popover2/popover2)
-- [`Tooltip2`](#popover2/tooltip2)
+-   [`Popover2`](#popover2-package/popover2)
+-   [`Tooltip2`](#popover2-package/tooltip2)
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
@@ -16,7 +16,7 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 npm install --save @blueprintjs/popover2
 ```
 
-Import CSS with a JS bundler like webpack:
+Import CSS with a bundler like webpack:
 
 ```js
 @import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";

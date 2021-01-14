@@ -70,6 +70,8 @@ export interface IPopover2ExampleState {
 }
 
 export class Popover2Example extends React.PureComponent<IExampleProps, IPopover2ExampleState> {
+    public static displayName = "Popover2Example";
+
     public state: IPopover2ExampleState = {
         boundary: "scrollParent",
         canEscapeKeyClose: true,

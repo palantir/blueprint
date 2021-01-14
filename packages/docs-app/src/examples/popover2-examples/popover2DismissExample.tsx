@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-import { Button, Callout, Classes, Switch } from "@blueprintjs/core";
+import { Button, Callout, Classes as CoreClasses, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Classes, Popover2 } from "@blueprintjs/popover2";
 import * as React from "react";
 
 export class Popover2DismissExample extends React.PureComponent<
     IExampleProps,
     { captureDismiss: boolean; isOpen: boolean }
 > {
+    public static displayName = "Popover2DismissExample";
+
     public state = { captureDismiss: true, isOpen: true };
 
     private timeoutId: number;
@@ -79,7 +81,7 @@ export class Popover2DismissExample extends React.PureComponent<
                     )}
                 />
                 <p className="docs-reopen-message">
-                    <em className={Classes.TEXT_MUTED}>Popover will reopen...</em>
+                    <em className={CoreClasses.TEXT_MUTED}>Popover will reopen...</em>
                 </p>
             </Example>
         );
@@ -100,13 +102,13 @@ const POPOVER_CONTENTS = (
     <>
         <div>
             <Button text="Default" />
-            <Button className={Classes.POPOVER_DISMISS} intent="danger" text="Dismiss" />
-            <Button className={Classes.POPOVER_DISMISS} intent="danger" text="No dismiss" disabled={true} />
+            <Button className={Classes.POPOVER2_DISMISS} intent="danger" text="Dismiss" />
+            <Button className={Classes.POPOVER2_DISMISS} intent="danger" text="No dismiss" disabled={true} />
         </div>
-        <Callout intent="warning" className={Classes.POPOVER_DISMISS}>
+        <Callout intent="warning" className={Classes.POPOVER2_DISMISS}>
             <p>Click callout to dismiss.</p>
             <div>
-                <Button className={Classes.POPOVER_DISMISS_OVERRIDE} intent="success" text="Dismiss override" />
+                <Button className={Classes.POPOVER2_DISMISS_OVERRIDE} intent="success" text="Dismiss override" />
                 <Button disabled={true} text="Nope" />
             </div>
         </Callout>

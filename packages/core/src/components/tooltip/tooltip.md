@@ -3,7 +3,7 @@
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
     <h4 class="@ns-heading">
 
-Deprecated: use [Tooltip2](#popover2/tooltip2)
+Deprecated: use [Tooltip2](#popover2-package/tooltip2)
 
 </h4>
 

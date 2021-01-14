@@ -242,7 +242,7 @@ describe whether click events should dismiss the enclosing popover.
 
 To mark an element (and its children) as "dismiss elements", simply add the
 class `Classes.POPOVER2_DISMISS`. For example, the **Cancel** and **Delete** buttons in the
-top-level [Popover2 example](#popover2/popover2) have this class, and all
+top-level [Popover2 example](#popover2-package/popover2) have this class, and all
 `MenuItem`s receive this class by default (see `shouldDismissPopover` prop). To
 enable this behavior on the entire popover body, pass
 `popoverClassName={Classes.POPOVER2_DISMISS}`.
@@ -337,7 +337,7 @@ same class to itself. You can also explicitly apply the dark theme to the React 
 `popoverClassName="@ns-dark"`.
 
 As a result, any component that you place inside a `Popover2` (such as a `Menu`) automatically
-inherits the dark theme styles. Note that [`Tooltip2`](#popover2/tooltip2) uses `Popover2` internally,
+inherits the dark theme styles. Note that [`Tooltip2`](#popover2-package/tooltip2) uses `Popover2` internally,
 so it also benefits from this behavior.
 
 This behavior can be disabled (if the `Popover2` uses a `Portal`) via the `inheritDarkTheme` prop.
@@ -400,7 +400,7 @@ zeroing the default hover delays.
 
 #### Rendering delays
 
-`Popover2` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](#popover2/popover2.interactions). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
+`Popover2` delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to the target, which may require special handling depending on the current [`interactionKind`](#popover2-package/popover2.interactions). Popper.js also throttles rendering updates to improve performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
 import { Overlay } from "@blueprintjs/core";

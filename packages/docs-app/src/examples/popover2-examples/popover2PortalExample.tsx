@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Button, Code, H5, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { IPopover2Props, Popover2 } from "@blueprintjs/popover2";
+import * as React from "react";
 
 const POPOVER2_PROPS: Partial<IPopover2Props> = {
     autoFocus: false,
@@ -36,6 +35,8 @@ export interface IPopover2PortalExampleState {
 }
 
 export class Popover2PortalExample extends React.PureComponent<IExampleProps, IPopover2PortalExampleState> {
+    public static displayName = "Popover2PortalExample";
+
     public state: IPopover2PortalExampleState = {
         isOpen: true,
     };
@@ -95,9 +96,12 @@ export class Popover2PortalExample extends React.PureComponent<IExampleProps, IP
                             content="I am an inline popover."
                             isOpen={this.state.isOpen}
                             usePortal={false}
+                            modifiers={{
+                                preventOverflow: { enabled: false },
+                            }}
                             // tslint:disable-next-line jsx-no-lambda
                             renderTarget={({ isOpen, ref, ...p }) => (
-                                <Code {...p} elementRef={ref}>{`usePortal={true}`}</Code>
+                                <Code {...p} elementRef={ref}>{`usePortal={false}`}</Code>
                             )}
                         />
                     </div>
