@@ -20,7 +20,7 @@ import * as React from "react";
 import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "./classes";
-import { getPosition } from "./utils";
+import { getBasePlacement } from "./utils";
 
 // these paths come from the Core Kit Sketch file
 // https://github.com/palantir/blueprint/blob/develop/resources/sketch/Core%20Kit.sketch
@@ -42,7 +42,7 @@ function getArrowAngle(placement?: Placement) {
         return 0;
     }
     // can only be top/left/bottom/right - auto is resolved internally
-    switch (getPosition(placement)) {
+    switch (getBasePlacement(placement)) {
         case "top":
             return -90;
         case "left":
@@ -60,7 +60,7 @@ function getArrowAngle(placement?: Placement) {
  */
 function getArrowReferenceOffsetStyle(placement: Placement) {
     const offset = POPOVER_ARROW_SVG_SIZE / 2 - ARROW_SPACING;
-    switch (getPosition(placement)) {
+    switch (getBasePlacement(placement)) {
         case "top":
             return { bottom: -offset };
         case "left":

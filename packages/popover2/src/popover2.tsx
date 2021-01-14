@@ -34,7 +34,7 @@ import * as Classes from "./classes";
 import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
 import { Tooltip2 } from "./tooltip2";
-import { getTransformOrigin } from "./utils";
+import { getBasePlacement, getTransformOrigin } from "./utils";
 
 export const Popover2InteractionKind = {
     CLICK: "click" as "click",
@@ -337,7 +337,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
             popoverHandlers.onMouseLeave = this.handleMouseLeave;
         }
 
-        const basePlacement = popperProps.placement.split("-")[0];
+        const basePlacement = getBasePlacement(popperProps.placement);
         const popoverClasses = classNames(
             Classes.POPOVER2,
             {

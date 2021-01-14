@@ -20,17 +20,17 @@ import { BasePlacement, Placement } from "@popperjs/core";
 // ======================
 
 /** Converts a full placement to one of the four positions by stripping text after the `-`. */
-export function getPosition(placement: Placement) {
+export function getBasePlacement(placement: Placement) {
     return placement.split("-")[0] as BasePlacement;
 }
 
 /** Returns true if position is left or right. */
-export function isVerticalPosition(side: BasePlacement) {
+export function isVerticalPlacement(side: BasePlacement) {
     return ["left", "right"].indexOf(side) !== -1;
 }
 
 /** Returns the opposite position. */
-export function getOppositePosition(side: BasePlacement) {
+export function getOppositePlacement(side: BasePlacement) {
     switch (side) {
         case "top":
             return "bottom";
@@ -44,7 +44,7 @@ export function getOppositePosition(side: BasePlacement) {
 }
 
 /** Returns the CSS alignment keyword corresponding to given placement. */
-export function getAlignment(placement: BasePlacement) {
+export function getAlignment(placement: Placement) {
     const align = placement.split("-")[1] as "start" | "end" | undefined;
     switch (align) {
         case "start":
@@ -61,18 +61,18 @@ export function getAlignment(placement: BasePlacement) {
 
 /** Modifier helper function to compute popper transform-origin based on arrow position */
 export function getTransformOrigin(placement: Placement, arrowStyles: { left: string; top: string } | undefined) {
-    const position = getPosition(placement);
+    const basePlacement = getBasePlacement(placement);
     if (arrowStyles === undefined) {
-        return isVerticalPosition(position)
-            ? `${getOppositePosition(position)} ${getAlignment(position)}`
-            : `${getAlignment(position)} ${getOppositePosition(position)}`;
+        return isVerticalPlacement(basePlacement)
+            ? `${getOppositePlacement(basePlacement)} ${getAlignment(basePlacement)}`
+            : `${getAlignment(basePlacement)} ${getOppositePlacement(basePlacement)}`;
     } else {
         // const arrowSizeShift = state.elements.arrow.clientHeight / 2;
         const arrowSizeShift = 30 / 2;
         // can use keyword for dimension without the arrow, to ease computation burden.
         // move origin by half arrow's height to keep it centered.
-        return isVerticalPosition(position)
-            ? `${getOppositePosition(position)} ${parseInt(arrowStyles.top, 10) + arrowSizeShift}px`
-            : `${parseInt(arrowStyles.left, 10) + arrowSizeShift}px ${getOppositePosition(position)}`;
+        return isVerticalPlacement(basePlacement)
+            ? `${getOppositePlacement(basePlacement)} ${parseInt(arrowStyles.top, 10) + arrowSizeShift}px`
+            : `${parseInt(arrowStyles.left, 10) + arrowSizeShift}px ${getOppositePlacement(basePlacement)}`;
     }
 }
