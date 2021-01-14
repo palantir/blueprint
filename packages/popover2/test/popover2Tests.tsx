@@ -21,11 +21,11 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Errors, Classes } from "../../src";
-import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../../src/popover2";
-import { Popover2Arrow } from "../../src/popover2Arrow";
-import { Tooltip2 } from "../../src/tooltip2";
-import { findInPortal } from "../utils";
+import { Errors, Classes } from "../src";
+import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
+import { Popover2Arrow } from "../src/popover2Arrow";
+import { Tooltip2 } from "../src/tooltip2";
+import { findInPortal } from "./utils";
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;

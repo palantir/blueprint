@@ -20,9 +20,9 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy, stub } from "sinon";
 
-import { Classes } from "../../src";
-import { Popover2 } from "../../src/popover2";
-import { ITooltip2Props, Tooltip2 } from "../../src/tooltip2";
+import { Classes } from "../src";
+import { Popover2 } from "../src/popover2";
+import { ITooltip2Props, Tooltip2 } from "../src/tooltip2";
 
 const TARGET_SELECTOR = `.${Classes.POPOVER2_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP2}`;
