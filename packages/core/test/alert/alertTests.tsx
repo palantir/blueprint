@@ -205,6 +205,38 @@ describe("<Alert>", () => {
         });
     });
 
+    describe("loadState", () => {
+        let wrapper: ShallowWrapper<IAlertProps, any>;
+        let cancelButton: ShallowWrapper<IButtonProps, any>;
+        let submitButton: ShallowWrapper<IButtonProps, any>;
+
+        beforeEach(() => {
+            wrapper = shallow(
+                <Alert
+                    icon="warning-sign"
+                    intent={Intent.PRIMARY}
+                    isOpen={true}
+                    loading={true}
+                    cancelButtonText="Cancel"
+                    confirmButtonText="Delete"
+                >
+                    <p>Are you sure you want to delete this file?</p>
+                    <p>There is no going back.</p>
+                </Alert>,
+            );
+            submitButton = wrapper.find(Button).first();
+            cancelButton = wrapper.find(Button).last();
+        });
+
+        it("Properly displays buttons when set to load-state", () => {
+            assert.isTrue(cancelButton.prop("disabled"));
+            assert.isTrue(submitButton.prop("loading"));
+            wrapper.setProps({loading: false});
+            assert.isFalse(cancelButton.prop("disabled"));
+            assert.isFalse(submitButton.prop("loading"));
+        });
+    })
+
     describe("warnings", () => {
         let warnSpy: SinonStub;
         before(() => (warnSpy = stub(console, "warn")));
