@@ -129,7 +129,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
         const close = () => {
             this.setState({ isLoading: false, isOpen: false });
             this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
-        }
+        };
         if (this.state.willLoad) {
             this.setState({ isLoading: true });
             setTimeout(close, 2000);

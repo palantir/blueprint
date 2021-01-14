@@ -231,11 +231,11 @@ describe("<Alert>", () => {
         it("Properly displays buttons when set to load-state", () => {
             assert.isTrue(cancelButton.prop("disabled"));
             assert.isTrue(submitButton.prop("loading"));
-            wrapper.setProps({loading: false});
+            wrapper.setProps({ loading: false });
             assert.isFalse(cancelButton.prop("disabled"));
             assert.isFalse(submitButton.prop("loading"));
         });
-    })
+    });
 
     describe("warnings", () => {
         let warnSpy: SinonStub;
