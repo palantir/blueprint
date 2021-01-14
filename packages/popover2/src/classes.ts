@@ -23,6 +23,7 @@ export const POPOVER2_ARROW = `${POPOVER2}-arrow`;
 export const POPOVER2_BACKDROP = `${POPOVER2}-backdrop`;
 export const POPOVER2_CAPTURING_DISMISS = `${POPOVER2}-capturing-dismiss`;
 export const POPOVER2_CONTENT = `${POPOVER2}-content`;
+export const POPOVER2_CONTENT_PLACEMENT = `${POPOVER2}-placement`;
 export const POPOVER2_CONTENT_SIZING = `${POPOVER2_CONTENT}-sizing`;
 export const POPOVER2_DISMISS = `${POPOVER2}-dismiss`;
 export const POPOVER2_DISMISS_OVERRIDE = `${POPOVER2_DISMISS}-override`;

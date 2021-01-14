@@ -38,6 +38,12 @@ $tooltip2-padding-horizontal: 1.2 * $pt-grid-size !default;
     padding: $tooltip2-padding-vertical $tooltip2-padding-horizontal;
   }
 
+  // // need to adjust arrow placement a little bit for tooltips
+  &.#{$ns}-popover2-placement-top .#{$ns}-popover2-arrow { transform: translateY(-3px); }
+  &.#{$ns}-popover2-placement-left .#{$ns}-popover2-arrow { transform: translateX(-3px); }
+  &.#{$ns}-popover2-placement-bottom .#{$ns}-popover2-arrow { transform: translateY(3px); }
+  &.#{$ns}-popover2-placement-right .#{$ns}-popover2-arrow { transform: translateX(3px); }
+
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover2-appearance(

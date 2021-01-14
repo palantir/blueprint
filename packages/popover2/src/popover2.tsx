@@ -31,7 +31,7 @@ import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
 
 import * as Classes from "./classes";
-import { ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
+import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
 import { Tooltip2 } from "./tooltip2";
 import { getTransformOrigin } from "./utils";
@@ -336,6 +336,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
             popoverHandlers.onMouseLeave = this.handleMouseLeave;
         }
 
+        const basePlacement = popperProps.placement.split("-")[0];
         const popoverClasses = classNames(
             Classes.POPOVER2,
             {
@@ -343,6 +344,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 [CoreClasses.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER2_CAPTURING_DISMISS]: this.props.captureDismiss,
             },
+            `${Classes.POPOVER2_CONTENT_PLACEMENT}-${basePlacement}`,
             this.props.popoverClassName,
         );
 
@@ -415,7 +417,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 name: "offset",
                 ...modifiers?.offset,
                 options: {
-                    offset: [0, ARROW_SVG_SIZE / 2],
+                    offset: [0, POPOVER_ARROW_SVG_SIZE / 2],
                     ...modifiers?.offset?.options,
                 },
             },

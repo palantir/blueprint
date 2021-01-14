@@ -33,7 +33,8 @@ const SVG_ARROW_PATH =
 
 // additional space between arrow and edge of target
 const ARROW_SPACING = 4;
-export const ARROW_SVG_SIZE = 30;
+export const POPOVER_ARROW_SVG_SIZE = 30;
+export const TOOLTIP_ARROW_SVG_SIZE = 22;
 
 /** Modifier helper function to compute arrow rotate() transform */
 function getArrowAngle(placement?: Placement) {
@@ -58,7 +59,7 @@ function getArrowAngle(placement?: Placement) {
  * need to compute our own offset in the direction of the popover relative to the reference.
  */
 function getArrowReferenceOffsetStyle(placement: Placement) {
-    const offset = ARROW_SVG_SIZE / 2 - ARROW_SPACING;
+    const offset = POPOVER_ARROW_SVG_SIZE / 2 - ARROW_SPACING;
     switch (getPosition(placement)) {
         case "top":
             return { bottom: -offset };
@@ -91,7 +92,7 @@ export const Popover2Arrow: React.FunctionComponent<IPopoverArrowProps> = ({
         }}
     >
         <svg
-            viewBox={`0 0 ${ARROW_SVG_SIZE} ${ARROW_SVG_SIZE}`}
+            viewBox={`0 0 ${POPOVER_ARROW_SVG_SIZE} ${POPOVER_ARROW_SVG_SIZE}`}
             style={{ transform: `rotate(${getArrowAngle(placement)}deg)` }}
         >
             <path className={Classes.POPOVER2_ARROW + "-border"} d={SVG_SHADOW_PATH} />

@@ -19,6 +19,7 @@ import * as React from "react";
 import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover2, Popover2InteractionKind } from "./popover2";
+import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
 
 export interface ITooltip2Props<TProps = React.HTMLProps<HTMLElement>>
@@ -91,7 +92,16 @@ export class Tooltip2<T> extends React.PureComponent<ITooltip2Props<T>> {
         return (
             <Popover2
                 interactionKind={Popover2InteractionKind.HOVER_TARGET_ONLY}
-                modifiers={{ arrow: { enabled: !this.props.minimal } }}
+                modifiers={{
+                    arrow: {
+                        enabled: !this.props.minimal,
+                    },
+                    offset: {
+                        options: {
+                            offset: [0, TOOLTIP_ARROW_SVG_SIZE / 2],
+                        },
+                    },
+                }}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
