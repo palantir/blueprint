@@ -37,7 +37,6 @@ export interface IMultistepDialogExampleState {
     autoFocus: boolean;
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
-    disableNextButton: boolean;
     enforceFocus: boolean;
     isOpen: boolean;
     usePortal: boolean;
@@ -52,7 +51,6 @@ export class MultistepDialogExample extends React.PureComponent<
         autoFocus: true,
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
-        disableNextButton: true,
         enforceFocus: true,
         isOpen: false,
         usePortal: true,
@@ -136,7 +134,7 @@ export interface ISelectPanelProps {
 const SelectPanel: React.FunctionComponent<ISelectPanelProps> = props => (
     <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
         <p>Use this dialog to divide content into multiple sequential steps.</p>
-        <p>For example, select one of the options below in order to proceed to the next step:</p>
+        <p>Select one of the options below in order to proceed to the next step:</p>
         <RadioGroup onChange={props.onChange} selectedValue={props.selectedValue}>
             <Radio label="Option A" value="A" />
             <Radio label="Option B" value="B" />
