@@ -72,8 +72,8 @@ module.exports = {
             rules: {
                 "react/display-name": "off",
                 "react/jsx-no-bind": "off",
-                "react/no-find-dom-node": "off"
-            }
+                "react/no-find-dom-node": "off",
+            },
         },
     ],
 };
