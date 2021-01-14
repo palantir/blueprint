@@ -25,7 +25,7 @@ import { Errors, Classes } from "../src";
 import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
 import { Tooltip2 } from "../src/tooltip2";
-import { findInPortal } from "./utils";
+import { findInPortal } from "./testUtils";
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
@@ -133,7 +133,7 @@ describe("<Popover2>", () => {
         });
     });
 
-    describe.skip("rendering", () => {
+    describe("rendering", () => {
         it("adds POPOVER2_OPEN class to target when the popover is open", () => {
             wrapper = renderPopover();
             assert.isFalse(wrapper.findClass(Classes.POPOVER2_TARGET).hasClass(Classes.POPOVER2_OPEN));
