@@ -205,10 +205,10 @@ describe("<Alert>", () => {
         });
     });
 
-    describe("loadState", () => {
+    describe("load state", () => {
         let wrapper: ShallowWrapper<IAlertProps, any>;
-        let cancelButton: ShallowWrapper<IButtonProps, any>;
-        let submitButton: ShallowWrapper<IButtonProps, any>;
+        let findCancelButton: () => ShallowWrapper<IButtonProps, any>;
+        let findSubmitButton: () => ShallowWrapper<IButtonProps, any>;
 
         beforeEach(() => {
             wrapper = shallow(
@@ -224,16 +224,16 @@ describe("<Alert>", () => {
                     <p>There is no going back.</p>
                 </Alert>,
             );
-            submitButton = wrapper.find(Button).first();
-            cancelButton = wrapper.find(Button).last();
+            findSubmitButton = () => wrapper.find(Button).first();
+            findCancelButton = () => wrapper.find(Button).last();
         });
 
-        it("Properly displays buttons when set to load-state", () => {
-            assert.isTrue(cancelButton.prop("disabled"));
-            assert.isTrue(submitButton.prop("loading"));
+        it("Properly displays buttons when set to loading", () => {
+            assert.isTrue(findCancelButton().prop("disabled"));
+            assert.isTrue(findSubmitButton().prop("loading"));
             wrapper.setProps({ loading: false });
-            assert.isFalse(cancelButton.prop("disabled"));
-            assert.isFalse(submitButton.prop("loading"));
+            assert.isFalse(findCancelButton().prop("disabled"));
+            assert.isFalse(findSubmitButton().prop("loading"));
         });
     });
 
