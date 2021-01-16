@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Code, H5, MultistepDialog, DialogStep, Switch, Classes, IButtonProps } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import {
+    Button,
+    Code,
+    H5,
+    MultistepDialog,
+    DialogStep,
+    Switch,
+    Classes,
+    IButtonProps,
+    RadioGroup,
+    Radio,
+} from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IBlueprintExampleData } from "../../tags/types";
 
@@ -28,6 +40,7 @@ export interface IMultistepDialogExampleState {
     enforceFocus: boolean;
     isOpen: boolean;
     usePortal: boolean;
+    value?: string;
 }
 
 export class MultistepDialogExample extends React.PureComponent<
@@ -66,12 +79,21 @@ export class MultistepDialogExample extends React.PureComponent<
                     className={this.props.data.themeName}
                     icon="info-sign"
                     onClose={this.handleClose}
+                    nextButtonProps={{ disabled: this.state.value === undefined }}
                     finalButtonProps={finalButtonProps}
-                    title="Palantir Foundry"
+                    title="Multistep dialog"
                     {...this.state}
                 >
-                    <DialogStep id="one" panel={<PanelOne />} title="Part 1" />
-                    <DialogStep id="two" panel={<PanelTwo />} title="Part 2" />
+                    <DialogStep
+                        id="select"
+                        panel={<SelectPanel onChange={this.handleSelectionChange} selectedValue={this.state.value} />}
+                        title="Select"
+                    />
+                    <DialogStep
+                        id="confirm"
+                        panel={<ConfirmPanel selectedValue={this.state.value} />}
+                        title="Confirm"
+                    />
                 </MultistepDialog>
             </Example>
         );
@@ -97,43 +119,44 @@ export class MultistepDialogExample extends React.PureComponent<
         );
     }
 
-    private handleOpen = () => this.setState({ isOpen: true });
+    private handleOpen = () => this.setState({ isOpen: true, value: undefined });
 
     private handleClose = () => this.setState({ isOpen: false });
+
+    private handleSelectionChange = handleStringChange(value => this.setState({ value }));
 }
 
-const PanelOne: React.FunctionComponent = () => (
-    <div className={Classes.DIALOG_BODY}>
-        <p>
-            <strong>
-                Data integration is the seminal problem of the digital age. For over ten years, we’ve helped the world’s
-                premier organizations rise to the challenge.
-            </strong>
-        </p>
-        <p>
-            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and extending the
-            power of data integration. With Foundry, anyone can source, fuse, and transform data into any shape they
-            desire. Business analysts become data engineers — and leaders in their organization’s data revolution.
-        </p>
-        <p>
-            Foundry’s back end includes a suite of best-in-class data integration capabilities: data provenance,
-            git-style versioning semantics, granular access controls, branching, transformation authoring, and more. But
-            these powers are not limited to the back-end IT shop.
-        </p>
+export interface ISelectPanelProps {
+    selectedValue: string;
+    onChange: (event: React.FormEvent<HTMLInputElement>) => void;
+}
+
+const SelectPanel: React.FunctionComponent<ISelectPanelProps> = props => (
+    <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
+        <p>Use this dialog to divide content into multiple sequential steps.</p>
+        <p>Select one of the options below in order to proceed to the next step:</p>
+        <RadioGroup onChange={props.onChange} selectedValue={props.selectedValue}>
+            <Radio label="Option A" value="A" />
+            <Radio label="Option B" value="B" />
+            <Radio label="Option C" value="C" />
+        </RadioGroup>
     </div>
 );
 
-const PanelTwo: React.FunctionComponent = () => {
+export interface IConfirmPanelProps {
+    selectedValue: string;
+}
+
+const ConfirmPanel: React.FunctionComponent<IConfirmPanelProps> = props => {
     return (
-        <div className={Classes.DIALOG_BODY}>
+        <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
             <p>
-                In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data integrations
-                in their own right. Access controls, transformation logic, and data quality flow from original data
-                source to intermediate analysis to presentation in real time. Every end product created in Foundry
-                becomes a new data source that other users can build upon. And the enterprise data foundation goes where
-                the business drives it.
+                You selected <strong>Option {props.selectedValue}</strong>.
             </p>
-            <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+            <p>
+                To make changes, click the "Back" button or click on the "Select" step. Otherwise, click "Close" to
+                complete your selection.
+            </p>
         </div>
     );
 };

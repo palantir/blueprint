@@ -61,6 +61,10 @@
   max-width: 280px;
 }
 
+.docs-multistep-dialog-example-step {
+  min-height: 150px;
+}
+
 #{example("TagExample")} {
   .docs-example {
     flex-direction: column;
