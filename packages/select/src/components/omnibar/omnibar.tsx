@@ -17,14 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    DISPLAYNAME_PREFIX,
-    HTMLInputProps,
-    IInputGroupProps,
-    InputGroup,
-    IOverlayProps,
-    Overlay,
-} from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, IInputGroupProps2, InputGroup, IOverlayProps, Overlay } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -35,7 +28,7 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
      * to control this input.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: IInputGroupProps2;
 
     /**
      * Toggles the visibility of the omnibar.
