@@ -24,16 +24,20 @@ import { IBlueprintExampleData } from "../../tags/types";
 export interface IAlertExampleState {
     canEscapeKeyCancel: boolean;
     canOutsideClickCancel: boolean;
+    isLoading: boolean;
     isOpen: boolean;
     isOpenError: boolean;
+    willLoad: boolean;
 }
 
 export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IAlertExampleState> {
     public state: IAlertExampleState = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
+        isLoading: false,
         isOpen: false,
         isOpenError: false,
+        willLoad: false,
     };
 
     private toaster: IToaster;
@@ -42,8 +46,10 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
 
     private handleOutsideClickChange = handleBooleanChange(click => this.setState({ canOutsideClickCancel: click }));
 
+    private handleWillLoadChange = handleBooleanChange(click => this.setState({ willLoad: click }));
+
     public render() {
-        const { isOpen, isOpenError, ...alertProps } = this.state;
+        const { isLoading, isOpen, isOpenError, ...alertProps } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
@@ -57,6 +63,11 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
                     label="Can outside click cancel"
                     onChange={this.handleOutsideClickChange}
                 />
+                <Switch
+                    checked={this.state.willLoad}
+                    label="Does alert use loading state"
+                    onChange={this.handleWillLoadChange}
+                />
             </>
         );
         return (
@@ -67,6 +78,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
                     className={this.props.data.themeName}
                     confirmButtonText="Okay"
                     isOpen={isOpenError}
+                    loading={isLoading}
                     onClose={this.handleErrorClose}
                 >
                     <p>
@@ -84,6 +96,7 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
                     icon="trash"
                     intent={Intent.DANGER}
                     isOpen={isOpen}
+                    loading={isLoading}
                     onCancel={this.handleMoveCancel}
                     onConfirm={this.handleMoveConfirm}
                 >
@@ -100,13 +113,29 @@ export class AlertExample extends React.PureComponent<IExampleProps<IBlueprintEx
 
     private handleErrorOpen = () => this.setState({ isOpenError: true });
 
-    private handleErrorClose = () => this.setState({ isOpenError: false });
+    private handleErrorClose = () => {
+        const close = () => this.setState({ isLoading: false, isOpenError: false });
+        if (this.state.willLoad) {
+            this.setState({ isLoading: true });
+            setTimeout(close, 2000);
+        } else {
+            close();
+        }
+    };
 
     private handleMoveOpen = () => this.setState({ isOpen: true });
 
     private handleMoveConfirm = () => {
-        this.setState({ isOpen: false });
-        this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
+        const close = () => {
+            this.setState({ isLoading: false, isOpen: false });
+            this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
+        };
+        if (this.state.willLoad) {
+            this.setState({ isLoading: true });
+            setTimeout(close, 2000);
+        } else {
+            close();
+        }
     };
 
     private handleMoveCancel = () => this.setState({ isOpen: false });
