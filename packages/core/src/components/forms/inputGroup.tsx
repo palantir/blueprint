@@ -24,6 +24,7 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IControlledProps,
+    IControlledProps2,
     IIntentProps,
     IProps,
     MaybeElement,
@@ -32,9 +33,87 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 
-// NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
-// Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
-export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps {
+/**
+ * @deprecated use IInputGroupProps2.
+ *
+ * NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
+ * Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
+ */
+
+export interface IInputGroupProps
+    // eslint-disable-next-line deprecation/deprecation
+    extends IControlledProps,
+        IIntentProps,
+        IProps {
+    /**
+     * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
+     * These may occur if you do not immediately call setState in a parent component with the value from
+     * the `onChange` handler, or if working with certain libraries like __redux-form__.
+     *
+     * @default false
+     */
+    asyncControl?: boolean;
+
+    /**
+     * Whether the input is non-interactive.
+     * Note that `rightElement` must be disabled separately; this prop will not affect it.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+
+    /**
+     * Whether the component should take up the full width of its container.
+     */
+    fill?: boolean;
+
+    /** Ref handler or a ref object that receives HTML `<input>` element backing this component. */
+    inputRef?: IRef<HTMLInputElement>;
+
+    /**
+     * Element to render on the left side of input.  This prop is mutually exclusive
+     * with `leftIcon`.
+     */
+    leftElement?: JSX.Element;
+
+    /**
+     * Name of a Blueprint UI icon to render on the left side of the input group,
+     * before the user's cursor.  This prop is mutually exclusive with `leftElement`.
+     * Usage with content is deprecated.  Use `leftElement` for elements.
+     */
+    leftIcon?: IconName | MaybeElement;
+
+    /** Whether this input should use large styles. */
+    large?: boolean;
+
+    /** Whether this input should use small styles. */
+    small?: boolean;
+
+    /** Placeholder text in the absence of any value. */
+    placeholder?: string;
+
+    /**
+     * Element to render on right side of input.
+     * For best results, use a minimal button, tag, or small spinner.
+     */
+    rightElement?: JSX.Element;
+
+    /** Whether the input (and any buttons) should appear with rounded caps. */
+    round?: boolean;
+
+    /**
+     * HTML `input` type attribute.
+     *
+     * @default "text"
+     */
+    type?: string;
+}
+
+export interface IInputGroupProps2
+    extends Omit<HTMLInputProps, keyof IControlledProps2>,
+        IControlledProps2,
+        IIntentProps,
+        IProps {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
@@ -105,7 +184,7 @@ export interface IInputGroupState {
 }
 
 @polyfill
-export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLInputProps, IInputGroupState> {
+export class InputGroup extends AbstractPureComponent2<IInputGroupProps2, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
     public state: IInputGroupState = {};
@@ -162,14 +241,14 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps & HTMLIn
         this.updateInputWidth();
     }
 
-    public componentDidUpdate(prevProps: IInputGroupProps & HTMLInputProps) {
+    public componentDidUpdate(prevProps: IInputGroupProps2) {
         const { leftElement, rightElement } = this.props;
         if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
             this.updateInputWidth();
         }
     }
 
-    protected validateProps(props: IInputGroupProps) {
+    protected validateProps(props: IInputGroupProps2) {
         if (props.leftElement != null && props.leftIcon != null) {
             console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }

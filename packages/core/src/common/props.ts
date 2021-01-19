@@ -82,13 +82,25 @@ export interface ILinkProps {
     target?: string;
 }
 
-/** Interface for a controlled input. */
+/**
+ * @deprecated use IControlledProps2.
+ *
+ * Interface for a controlled input.
+ */
 export interface IControlledProps {
     /** Initial value of the input, for uncontrolled usage. */
     defaultValue?: string;
 
     /** Change event handler. Use `event.target.value` for new value. */
     onChange?: React.FormEventHandler<HTMLElement>;
+
+    /** Form value of the input, for controlled usage. */
+    value?: string;
+}
+
+export interface IControlledProps2 {
+    /** Initial value of the input, for uncontrolled usage. */
+    defaultValue?: string;
 
     /** Form value of the input, for controlled usage. */
     value?: string;
@@ -117,7 +129,7 @@ export interface IOptionProps extends IProps {
 const INVALID_PROPS = [
     "active",
     "alignText",
-    "asyncControl", // IInputGroupProps
+    "asyncControl", // IInputGroupProps2
     "containerRef",
     "current",
     "elementRef",

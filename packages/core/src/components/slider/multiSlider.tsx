@@ -307,12 +307,15 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
             return null;
         }
 
-        return handleProps.map(({ value, type }, index) => (
+        return handleProps.map(({ value, type, className }, index) => (
             <Handle
-                className={classNames({
-                    [Classes.START]: type === HandleType.START,
-                    [Classes.END]: type === HandleType.END,
-                })}
+                className={classNames(
+                    {
+                        [Classes.START]: type === HandleType.START,
+                        [Classes.END]: type === HandleType.END,
+                    },
+                    className,
+                )}
                 disabled={disabled}
                 key={`${index}-${handleProps.length}`}
                 label={this.formatLabel(value, true)}
