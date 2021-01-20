@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { Classes as CoreClasses, Keys, Overlay, Portal } from "@blueprintjs/core";
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
+
+import { Classes as CoreClasses, Keys, Overlay, Portal } from "@blueprintjs/core";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Errors, Classes } from "../src";
 import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";

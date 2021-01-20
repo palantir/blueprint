@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+import { State as PopperState } from "@popperjs/core";
+import classNames from "classnames";
+import * as React from "react";
+import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
+
 import {
     AbstractPureComponent2,
     Classes as CoreClasses,
@@ -25,15 +30,12 @@ import {
     ResizeSensor,
     Utils,
 } from "@blueprintjs/core";
-import { State as PopperState } from "@popperjs/core";
-import classNames from "classnames";
-import * as React from "react";
-import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
 
 import * as Classes from "./classes";
 import * as Errors from "./errors";
 import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
+// eslint-disable-next-line import/no-cycle
 import { Tooltip2 } from "./tooltip2";
 import { getBasePlacement, getTransformOrigin } from "./utils";
 

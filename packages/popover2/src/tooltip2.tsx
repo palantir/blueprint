@@ -12,9 +12,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, IIntentProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, IIntentProps } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle

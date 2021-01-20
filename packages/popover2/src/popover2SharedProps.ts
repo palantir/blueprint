@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { IOverlayableProps, IProps } from "@blueprintjs/core";
 import { Boundary, Placement, StrictModifiers } from "@popperjs/core";
 import { StrictModifier } from "react-popper";
+
+import { IOverlayableProps, IProps } from "@blueprintjs/core";
 
 export { Boundary as PopperBoundary, Placement as PopperPlacement };
 // copied from @popperjs/core, where it is not exported as public

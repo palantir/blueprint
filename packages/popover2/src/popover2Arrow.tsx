@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import { Placement } from "@popperjs/core";
 import * as React from "react";
 import { PopperArrowProps } from "react-popper";
+
+import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import { getBasePlacement } from "./utils";

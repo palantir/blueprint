@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Button, Classes as CoreClasses, Overlay } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import { spy, stub } from "sinon";
+
+import { Button, Classes as CoreClasses, Overlay } from "@blueprintjs/core";
 
 import { Classes } from "../src";
 import { Popover2 } from "../src/popover2";

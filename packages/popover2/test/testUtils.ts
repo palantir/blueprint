@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { Portal } from "@blueprintjs/core";
 import { ReactWrapper } from "enzyme";
+
+import { Portal } from "@blueprintjs/core";
 
 export function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
     // React 16: createPortal preserves React tree so simple find works.
