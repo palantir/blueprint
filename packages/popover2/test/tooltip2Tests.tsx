@@ -26,9 +26,10 @@ import { ITooltip2Props, Tooltip2 } from "../src/tooltip2";
 
 const TARGET_SELECTOR = `.${Classes.POPOVER2_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP2}`;
+const TEST_TARGET_ID = "test-target";
 
 describe("<Tooltip2>", () => {
-    describe.skip("rendering", () => {
+    describe("rendering", () => {
         it("propogates class names correctly", () => {
             const tooltip = renderTooltip({
                 className: "bar",
@@ -62,7 +63,7 @@ describe("<Tooltip2>", () => {
         });
     });
 
-    describe.skip("basic functionality", () => {
+    describe("basic functionality", () => {
         it("supports overlay lifecycle props", () => {
             const onOpening = spy();
             renderTooltip({ isOpen: true, onOpening });
@@ -70,7 +71,7 @@ describe("<Tooltip2>", () => {
         });
     });
 
-    describe.skip("in uncontrolled mode", () => {
+    describe("in uncontrolled mode", () => {
         it("defaultIsOpen determines initial open state", () => {
             assert.lengthOf(renderTooltip({ defaultIsOpen: true }).find(TOOLTIP_SELECTOR), 1);
         });
@@ -101,11 +102,11 @@ describe("<Tooltip2>", () => {
 
         it("empty content disables Popover2 and warns", () => {
             const warnSpy = stub(console, "warn");
-            const tooltip = renderTooltip({ isOpen: true });
+            const tooltip = renderTooltip({ isOpen: true, content: "" });
 
             function assertDisabledPopover(content: string) {
                 tooltip.setProps({ content });
-                assert.isFalse(tooltip.find(Overlay).prop("isOpen"), `"${content}"`);
+                assert.isFalse(tooltip.find(Overlay).exists(), `"${content}"`);
                 assert.isTrue(warnSpy.calledOnce, "spy not called once");
                 warnSpy.resetHistory();
             }
@@ -124,7 +125,7 @@ describe("<Tooltip2>", () => {
         });
     });
 
-    describe.skip("in controlled mode", () => {
+    describe("in controlled mode", () => {
         it("renders when open", () => {
             const tooltip = renderTooltip({ isOpen: true });
             assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
@@ -138,7 +139,7 @@ describe("<Tooltip2>", () => {
         it("empty content disables Popover2 and warns", () => {
             const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
-            assert.isFalse(tooltip.find(Overlay).prop("isOpen"));
+            assert.isFalse(tooltip.find(Overlay).exists());
             assert.isTrue(warnSpy.calledOnce);
             warnSpy.restore();
         });
@@ -158,7 +159,7 @@ describe("<Tooltip2>", () => {
     function renderTooltip(props?: Partial<ITooltip2Props>) {
         return mount<ITooltip2Props>(
             <Tooltip2 content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
-                <Button text="target" />
+                <Button id={TEST_TARGET_ID} text="target" />
             </Tooltip2>,
         );
     }

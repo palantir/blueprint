@@ -31,6 +31,7 @@ import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
 
 import * as Classes from "./classes";
+import * as Errors from "./errors";
 import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { IPopover2SharedProps } from "./popover2SharedProps";
 import { Tooltip2 } from "./tooltip2";
@@ -177,9 +178,16 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     }
 
     public render() {
-        const { content } = this.props;
+        const { disabled, content } = this.props;
+        const { isOpen } = this.state;
 
-        if (content == null || content === "") {
+        const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
+        if (isContentEmpty) {
+            // need to do this check in render(), because `isOpen` is derived from
+            // state, and state can't necessarily be accessed in validateProps.
+            if (!disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
+                console.warn(Errors.POPOVER2_WARN_EMPTY_CONTENT);
+            }
             // just render the target without a content overlay if there is no content to display
             return this.renderTarget({ ref: noop });
         }
@@ -220,6 +228,31 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         }
     }
 
+    protected validateProps(props: IPopover2Props & { children?: React.ReactNode }) {
+        if (props.isOpen == null && props.onInteraction != null) {
+            console.warn(Errors.POPOVER2_WARN_UNCONTROLLED_ONINTERACTION);
+        }
+        if (props.hasBackdrop && !props.usePortal) {
+            console.warn(Errors.POPOVER2_WARN_HAS_BACKDROP_INLINE);
+        }
+        if (props.hasBackdrop && props.interactionKind !== Popover2InteractionKind.CLICK) {
+            console.warn(Errors.POPOVER2_HAS_BACKDROP_INTERACTION);
+        }
+
+        const childrenCount = React.Children.count(props.children);
+        const hasRenderTargetPropp = props.renderTarget !== undefined;
+
+        if (childrenCount === 0 && !hasRenderTargetPropp) {
+            console.warn(Errors.POPOVER2_REQUIRES_TARGET);
+        }
+        if (childrenCount > 1) {
+            console.warn(Errors.POPOVER2_WARN_TOO_MANY_CHILDREN);
+        }
+        if (childrenCount > 0 && hasRenderTargetPropp) {
+            console.warn(Errors.POPOVER2_WARN_DOUBLE_TARGET);
+        }
+    }
+
     /**
      * Instance method to instruct the `Popover` to recompute its position.
      *
@@ -257,10 +290,13 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                   onClick: this.handleTargetClick,
               };
         const targetProps = {
-            className: classNames(Classes.POPOVER2_TARGET, {
+            // N.B. this.props.className is passed along to renderTarget even though the user would have access to it
+            // otherwise, if target is provided as a child, this.props.className is applied to the generated target
+            // wrapper element
+            className: classNames(className, Classes.POPOVER2_TARGET, {
                 [Classes.POPOVER2_OPEN]: isOpen,
                 // this class is mainly useful for button targets
-                [CoreClasses.ACTIVE]: isOpen && !isHoverInteractionKind,
+                [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
             ...((targetEventHandlers as unknown) as T),
@@ -287,7 +323,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
             // ensure target is focusable if relevant prop enabled
             const tabIndex = rawTabIndex == null && openOnTargetFocus && isHoverInteractionKind ? 0 : rawTabIndex;
             const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
-                className: classNames(className, rawTarget.props.className, {
+                className: classNames(rawTarget.props.className, {
                     // this class is mainly useful for button targets; we should only apply it for uncontrolled popovers
                     // when they are opened by a user interaction
                     [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
