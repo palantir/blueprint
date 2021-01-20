@@ -43,8 +43,7 @@
         "tslib": "~1.13.0"
     },
     "peerDependencies": {
-        "react": "16 || 17",
-        "react-dom": "16 || 17"
+        "react": "^16.8.0 || ^17"
     },
     "devDependencies": {
         "@blueprintjs/karma-build-scripts": "^1.0.3",
