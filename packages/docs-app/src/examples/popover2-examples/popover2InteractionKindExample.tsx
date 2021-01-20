@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Button, Intent } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2, Popover2InteractionKind } from "@blueprintjs/popover2";
-import * as React from "react";
 
 import { FileMenu } from "../core-examples/common/fileMenu";
 

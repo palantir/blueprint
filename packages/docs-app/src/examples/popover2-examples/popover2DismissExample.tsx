@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Button, Callout, Classes as CoreClasses, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Classes, Popover2 } from "@blueprintjs/popover2";
-import * as React from "react";
 
 export class Popover2DismissExample extends React.PureComponent<
     IExampleProps,

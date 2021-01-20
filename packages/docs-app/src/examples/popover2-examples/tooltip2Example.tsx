@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Button, H1, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Classes, Popover2, Tooltip2 } from "@blueprintjs/popover2";
-import * as React from "react";
 
 export interface ITooltip2ExampleState {
     isOpen: boolean;

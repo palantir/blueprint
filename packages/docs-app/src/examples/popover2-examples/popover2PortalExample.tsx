@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Button, Code, H5, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { IPopover2Props, Popover2 } from "@blueprintjs/popover2";
-import * as React from "react";
 
 const POPOVER2_PROPS: Partial<IPopover2Props> = {
     autoFocus: false,

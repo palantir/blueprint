@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { Button, Classes, Code } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2, PopperPlacement } from "@blueprintjs/popover2";
-import * as React from "react";
 
 const EXAMPLE_CLASS = "docs-popover2-placement-example";
 const SIDE_LABEL_CLASS = "docs-popover2-placement-label-side";
