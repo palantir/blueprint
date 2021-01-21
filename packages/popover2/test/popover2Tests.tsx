@@ -332,7 +332,7 @@ describe("<Popover2>", () => {
             openOnTargetFocus?: boolean,
         ) {
             wrapper = renderPopover({ interactionKind, openOnTargetFocus, usePortal: true });
-            const targetElement = wrapper.findClass(Classes.POPOVER2_TARGET).childAt(0).getDOMNode();
+            const targetElement = wrapper.findClass(Classes.POPOVER2_TARGET).getDOMNode();
 
             if (shouldTabIndexExist) {
                 assert.equal(targetElement.getAttribute("tabindex"), "0");
