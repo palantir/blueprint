@@ -35,7 +35,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.36.0",
+        "@blueprintjs/core": "^3.38.0",
         "@popperjs/core": "^2.5.4",
         "classnames": "^2.2",
         "dom4": "^2.1.5",
