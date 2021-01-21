@@ -104,7 +104,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     public static defaultProps: IPopover2Props = {
         boundary: "clippingParents",
         captureDismiss: false,
-        // closeOnTargetHidden: true,
         defaultIsOpen: false,
         disabled: false,
         fill: false,
@@ -292,15 +291,17 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                   onClick: this.handleTargetClick,
               };
         const targetProps = {
-            // N.B. this.props.className is passed along to renderTarget even though the user would have access to it
-            // otherwise, if target is provided as a child, this.props.className is applied to the generated target
-            // wrapper element
+            // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
+            // If renderTarget is undefined and the target is provided as a child, this.props.className is applied to
+            // the generated target wrapper element
             className: classNames(className, Classes.POPOVER2_TARGET, {
                 [Classes.POPOVER2_OPEN]: isOpen,
                 // this class is mainly useful for button targets
                 [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
+            // ensure target is focusable if relevant prop enabled
+            tabIndex: openOnTargetFocus && isHoverInteractionKind ? 0 : undefined,
             ...((targetEventHandlers as unknown) as T),
         };
 
@@ -316,32 +317,30 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         } else {
             const rawTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
 
-            // TODO(adahiya): validateProps should guard against undefined children
             if (rawTarget === undefined) {
                 return null;
             }
 
             const rawTabIndex = rawTarget.props.tabIndex;
-            // ensure target is focusable if relevant prop enabled
-            const tabIndex = rawTabIndex == null && openOnTargetFocus && isHoverInteractionKind ? 0 : rawTabIndex;
+            if (rawTabIndex != null) {
+                targetProps.tabIndex = rawTabIndex;
+            }
+
+            const targetModifierClasses = {
+                // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
+                // uncontrolled popovers when they are opened by a user interaction
+                [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+                // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
+                [CoreClasses.FILL]: fill,
+            };
             const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
-                className: classNames(rawTarget.props.className, {
-                    // this class is mainly useful for button targets; we should only apply it for uncontrolled popovers
-                    // when they are opened by a user interaction
-                    [CoreClasses.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
-                    [CoreClasses.FILL]: fill,
-                }),
+                className: classNames(rawTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip2 child when popover is open
                 disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip2) ? true : rawTarget.props.disabled,
-                tabIndex,
             });
-            target = React.createElement(
-                targetTagName!,
-                {
-                    ...targetProps,
-                },
-                clonedTarget,
-            );
+            // apply tabIndex to the wrapper because that's the element which has event handlers
+            const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
+            target = wrappedTarget;
         }
 
         return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
@@ -350,9 +349,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     private renderPopover = (popperProps: PopperChildrenProps) => {
         const { interactionKind, usePortal } = this.props;
         const { isOpen } = this.state;
-        // TODO(adahiya)
-        // const shouldCloseBecauseTargetIsHidden =
-        //     !this.isControlled() && this.props.closeOnTargetHidden && popperProps.isReferenceHidden;
 
         // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
@@ -397,8 +393,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 className={this.props.portalClassName}
                 enforceFocus={this.props.enforceFocus}
                 hasBackdrop={this.props.hasBackdrop}
-                // TODO(adahiya)
-                isOpen={isOpen /* && !shouldCloseBecauseTargetIsHidden */}
+                isOpen={isOpen}
                 onClose={this.handleOverlayClose}
                 onClosed={this.props.onClosed}
                 onClosing={this.props.onClosing}
@@ -428,7 +423,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         );
     };
 
-    // TODO(adahiya): test these modifier overrides
     private computePopperModifiers(): StrictModifier[] {
         const { modifiers } = this.props;
         return [
@@ -576,7 +570,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         }
     };
 
-    // a wrapper around setState({isOpen}) that will call props.onInteraction instead when in controlled mode.
+    // a wrapper around setState({ isOpen }) that will call props.onInteraction instead when in controlled mode.
     // starts a timeout to delay changing the state if a non-zero duration is provided.
     private setOpenState(isOpen: boolean, e?: React.SyntheticEvent<HTMLElement>, timeout?: number) {
         // cancel any existing timeout because we have new state

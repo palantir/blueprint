@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
-
-import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Portal } from "../../src";
 import * as Classes from "../../src/common/classes";
@@ -89,7 +88,6 @@ describe("<Popover>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
         });
 
-        // HACKHACK (https://github.com/palantir/blueprint/issues/3371): this causes an infinite loop stack overflow
         it("warns if attempting to open a popover with empty content", () => {
             shallow(
                 <Popover content={undefined} isOpen={true}>
@@ -298,7 +296,6 @@ describe("<Popover>", () => {
             });
 
             it("closes popover on target blur if autoFocus={false}", () => {
-                // TODO (clewis): This is really tricky to test given the setTimeout in the onBlur implementation.
                 assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK, false, {
                     autoFocus: false,
                 });
@@ -368,6 +365,7 @@ describe("<Popover>", () => {
             },
         ) {
             wrapper = renderPopover({
+                autoFocus: extraProps?.autoFocus,
                 interactionKind,
                 openOnTargetFocus: extraProps?.openOnTargetFocus,
                 usePortal: true,

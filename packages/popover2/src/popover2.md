@@ -40,14 +40,29 @@ guides.
 @### Structure
 
 When creating a popover, you must specify both its **content** (via the `content` prop) and
-its **target** (via the `renderTarget` prop).
+its **target** (via the `renderTarget` prop or a single child element).
 
 The **target** is rendered at the location of the Popover2 component in the React component tree. It acts
 as the trigger for the popover; user interaction will show the popover based on the `interactionKind` prop.
-In Popper.js terms, this is the popper "reference". In order to add its interaction logic to the target,
-Popover2 supplies an object of props to the `renderTarget` function. These props should be
-[spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
-out to the `JSX.Element` returned from `renderTarget`.
+In Popper.js terms, this is the popper "reference". There are two ways to render a Popover2 target, resulting
+in different DOM layout depending on your application's needs:
+
+-   The simplest way is with `children`, an API unchanged from `<Popover>`. Provide a single React child to
+    `<Popover2>` and the component will render that child wrapped in a `@ns-popover2-target` HTML element.
+    This wrapper is configured with event handling logic necessary for the Popover to function. Its tag name
+    (e.g. `div`, `span`) can be customized with the `targetTagName` prop.
+
+-   A more advanced API is available through the `renderTarget` prop. Here, Popover2 provides you with all the
+    information necessary to render a functional popover with a [render prop](https://reactjs.org/docs/render-props.html).
+    You are responsible for then propogating that information with an
+    [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
+    to the `JSX.Element` returned from `renderTarget`.
+
+    -   If the rendered element is _not_ a native HTML element, you must ensure that it supports the
+        `className`, `ref`, and `tabIndex` props (i.e. renders them out to the DOM).
+
+    -   The benefit to this approach is a simplified DOM structure without an extra wrapper element around
+        your popover target.
 
 The **content** will be shown inside the popover itself. When opened, the popover will always be
 positioned on the page next to the target; the `position` prop determines its relative position (on
@@ -65,26 +80,26 @@ See the [callout here](#core/components/button.props) for more details.
 
 ```tsx
 import { Button } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Classes, Popover2 } from "@blueprintjs/popover2";
 
 export class PopoverExample extends React.PureComponent {
     public render() {
-        // popover content gets no padding by default; add the "@ns-popover-content-sizing"
+        // popover content gets no padding by default; add the "@ns-popover2-content-sizing"
         // class to the popover to set nice padding between its border and content.
         return (
             <Popover2
                 interactionKind="click"
-                popoverClassName="@ns-popover-content-sizing"
+                popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
                 placement="bottom"
                 content={
                     <div>
                         <h5>Popover title</h5>
                         <p>...</p>
-                        <Button className="@ns-popover-dismiss">Dismiss</Button>
+                        <Button className={Classes.POPOVER2_DISMISS} text="Dismiss" />
                     </div>
                 }
-                renderTarget={({ isOpen, ...targetProps }) => (
-                    <Button {...targetProps} intent="primary" text="Popover target" />
+                renderTarget={({ isOpen, ref, ...targetProps }) => (
+                    <Button {...targetProps} elementRef={ref} intent="primary" text="Popover target" />
                 )}
             />
         );
@@ -157,7 +172,7 @@ user interaction under the current `interactionKind`.
 Note that there are cases where `onInteraction` is invoked with an unchanged open state.
 It is important to pay attention to the value of the `nextOpenState` parameter and determine
 in your application logic whether you should care about a particular invocation (for instance,
-if the `nextOpenState` is not the same as the `Popover`'s current state).
+if the `nextOpenState` is not the same as the `Popover2`'s current state).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h4 class="@ns-heading">Disabling controlled popovers</h4>
@@ -171,7 +186,7 @@ The popover will re-open when `disabled` is set to `false`.
 
 ```tsx
 import { Button } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Classes, Popover2 } from "@blueprintjs/popover2";
 
 export class ControlledPopoverExample extends React.Component<{}, { isOpen: boolean }> {
     public state = { isOpen: false };
@@ -183,17 +198,16 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
                     <div>
                         <h5>Popover Title</h5>
                         <p>...</p>
-                        <Button className="@ns-popover-dismiss" text="Close popover" />
+                        <Button className={Classes.POPOVER2_DISMISS} text="Close popover" />
                     </div>
                 }
-                interactionKind={PopoverInteractionKind.CLICK}
+                interactionKind="click"
                 isOpen={this.state.isOpen}
                 onInteraction={state => this.handleInteraction(state)}
                 placement="right"
-                renderTarget={({ isOpen, ...targetProps }) => (
-                    <Button {...targetProps} active={isOpen} intent="primary" text="Popover target" />
-                )}
-            />
+            >
+                <Button intent="primary" text="Popover target" />
+            </Popover2>
         );
     }
 
@@ -393,9 +407,9 @@ Hover interactions can also be tricky due to delays and transitions; this can be
 zeroing the default hover delays.
 
 ```tsx
-<Popover {...yourProps} usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0}>
+<Popover2 {...yourProps} usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0}>
     {yourTarget}
-</Popover>
+</Popover2>
 ```
 
 #### Rendering delays
@@ -410,12 +424,9 @@ import { mount } from "enzyme";
 import { Target } from "react-popper";
 
 wrapper = mount(
-    <Popover2
-        usePortal={false}
-        interactionKind="hover"
-        renderTarget={({ isOpen, ...targetProps }) => <div {...targetProps}>Target</div>}
-        content={<div>Content</div>}
-    />,
+    <Popover2 usePortal={false} interactionKind="hover" content={<div>Content</div>}>
+        <div>Target</div>
+    </Popover2>,
 );
 
 wrapper.find(Target).simulate("mouseenter");

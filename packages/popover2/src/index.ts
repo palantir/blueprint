@@ -20,7 +20,8 @@ export {
     IPopover2SharedProps,
     IPopover2TargetProps,
     PopperBoundary,
-    PopperPlacement,
+    Placement,
+    PlacementOptions,
     StrictModifierNames,
 } from "./popover2SharedProps";
 export { IPopover2Props, Popover2, Popover2InteractionKind } from "./popover2";

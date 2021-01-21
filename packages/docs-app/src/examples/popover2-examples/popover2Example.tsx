@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { Placement, placements as PLACEMENT_OPTIONS } from "@popperjs/core";
 import * as React from "react";
 
 import {
@@ -31,7 +30,6 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
-    PopoverInteractionKind,
     RadioGroup,
     Slider,
     Switch,
@@ -43,15 +41,23 @@ import {
     handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
-import { Classes, IPopover2SharedProps, Popover2, StrictModifierNames } from "@blueprintjs/popover2";
+import {
+    Classes,
+    IPopover2SharedProps,
+    Placement,
+    PlacementOptions,
+    Popover2,
+    Popover2InteractionKind,
+    StrictModifierNames,
+} from "@blueprintjs/popover2";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
 const INTERACTION_KINDS = [
-    { label: "Click", value: PopoverInteractionKind.CLICK.toString() },
-    { label: "Click (target only)", value: PopoverInteractionKind.CLICK_TARGET_ONLY.toString() },
-    { label: "Hover", value: PopoverInteractionKind.HOVER.toString() },
-    { label: "Hover (target only)", value: PopoverInteractionKind.HOVER_TARGET_ONLY.toString() },
+    { label: "Click", value: "click" },
+    { label: "Click (target only)", value: "click-target" },
+    { label: "Hover", value: "hover" },
+    { label: "Hover (target only)", value: "hover-target" },
 ];
 
 export interface IPopover2ExampleState {
@@ -60,7 +66,7 @@ export interface IPopover2ExampleState {
     exampleIndex?: number;
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
-    interactionKind?: PopoverInteractionKind;
+    interactionKind?: Popover2InteractionKind;
     isControlled: boolean;
     isOpen?: boolean;
     minimal?: boolean;
@@ -79,7 +85,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         exampleIndex: 0,
         hasBackdrop: false,
         inheritDarkTheme: true,
-        interactionKind: PopoverInteractionKind.CLICK,
+        interactionKind: "click",
         isControlled: false,
         isOpen: false,
         minimal: false,
@@ -101,8 +107,8 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
 
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
 
-    private handleInteractionChange = handleValueChange((interactionKind: PopoverInteractionKind) => {
-        const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
+    private handleInteractionChange = handleValueChange((interactionKind: Popover2InteractionKind) => {
+        const hasBackdrop = this.state.hasBackdrop && interactionKind === "click";
         this.setState({ interactionKind, hasBackdrop });
     });
 
@@ -147,7 +153,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover2-example-scroll" ref={this.centerScroll}>
-                    <Popover2<IButtonProps>
+                    <Popover2
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER2_CONTENT_SIZING : ""}
                         portalClassName="foo"
                         {...popoverProps}
@@ -161,17 +167,9 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         enforceFocus={false}
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
                         content={this.getContents(exampleIndex)}
-                        // tslint:disable-next-line jsx-no-lambda
-                        renderTarget={({ ref, isOpen, ...props }) => (
-                            <Button
-                                {...props}
-                                active={isOpen}
-                                elementRef={ref}
-                                intent={Intent.PRIMARY}
-                                text="Popover target"
-                            />
-                        )}
-                    />
+                    >
+                        <Button intent={Intent.PRIMARY} text="Popover target" />
+                    </Popover2>
                     <p>
                         Scroll around this container to experiment
                         <br />
@@ -200,7 +198,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                     <HTMLSelect
                         value={this.state.placement}
                         onChange={this.handlePlacementChange}
-                        options={PLACEMENT_OPTIONS}
+                        options={PlacementOptions}
                     />
                 </FormGroup>
                 <Label>
@@ -239,13 +237,6 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                     label="Can escape key close"
                     onChange={this.toggleEscapeKey}
                 />
-                {/* TODO(adahiya) */}
-                {/* <Switch
-                    checked={this.state.canEscapeKeyClose}
-                    disabled={this.state.isOpen}
-                    label="Close when target is hidden/clipped inside its scroll container"
-                    onChange={this.toggleEscapeKey}
-                /> */}
 
                 <H5>Modifiers</H5>
                 <Switch checked={arrow.enabled} label="Arrow" onChange={this.getModifierChangeHandler("arrow")} />

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Button, Code, H5, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { IPopover2Props, Popover2 } from "@blueprintjs/popover2";
+import * as React from "react";
 
 const POPOVER2_PROPS: Partial<IPopover2Props> = {
     autoFocus: false,
@@ -78,7 +77,6 @@ export class Popover2PortalExample extends React.PureComponent<IExampleProps, IP
                             content="I am in a Portal (default)."
                             isOpen={this.state.isOpen}
                             usePortal={true}
-                            // TODO(adahiya): should isOpen be omitted for controlled popovers with some clever typedefs?
                             // tslint:disable-next-line jsx-no-lambda
                             renderTarget={({ isOpen, ref, ...p }) => (
                                 <Code {...p} elementRef={ref}>{`usePortal={true}`}</Code>

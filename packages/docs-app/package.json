@@ -27,7 +27,6 @@
         "@blueprintjs/test-commons": "^0.10.8",
         "@blueprintjs/timezone": "^3.8.1",
         "@documentalist/client": "~3.0.0",
-        "@popperjs/core": "^2.6.0",
         "chroma-js": "^2.1.0",
         "classnames": "^2.2",
         "dom4": "^2.1.5",

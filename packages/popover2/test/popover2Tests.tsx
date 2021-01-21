@@ -26,7 +26,6 @@ import { Errors, Classes } from "../src";
 import { IPopover2Props, IPopover2State, Popover2, Popover2InteractionKind } from "../src/popover2";
 import { Popover2Arrow } from "../src/popover2Arrow";
 import { Tooltip2 } from "../src/tooltip2";
-import { findInPortal } from "./testUtils";
 
 describe("<Popover2>", () => {
     let testsContainerElement: HTMLElement;
@@ -77,7 +76,6 @@ describe("<Popover2>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER2_WARN_DOUBLE_TARGET));
         });
 
-        // HACKHACK (https://github.com/palantir/blueprint/issues/3371): this causes an infinite loop stack overflow
         it("warns if attempting to open a popover with empty content", () => {
             shallow(
                 <Popover2 content={undefined} isOpen={true}>
@@ -195,7 +193,7 @@ describe("<Popover2>", () => {
         it("inherits dark theme from trigger ancestor", () => {
             testsContainerElement.classList.add(CoreClasses.DARK);
             wrapper = renderPopover({ inheritDarkTheme: true, isOpen: true, usePortal: true });
-            assert.exists(findInPortal(wrapper, `.${CoreClasses.DARK}`));
+            assert.exists(wrapper.find(Portal).find(`.${CoreClasses.DARK}`));
             testsContainerElement.classList.remove(CoreClasses.DARK);
         });
 
@@ -250,7 +248,6 @@ describe("<Popover2>", () => {
             });
 
             it("closes popover on target blur if autoFocus={false}", () => {
-                // TODO (clewis): This is really tricky to test given the setTimeout in the onBlur implementation.
                 assertPopoverOpenStateForInteractionKind("click", false, {
                     autoFocus: false,
                 });
@@ -527,7 +524,7 @@ describe("<Popover2>", () => {
                 { defaultIsOpen: true, usePortal: true },
                 <button className={Classes.POPOVER2_DISMISS}>Dismiss</button>,
             );
-            findInPortal(wrapper, `.${Classes.POPOVER2_DISMISS}`).simulate("click");
+            wrapper.find(Portal).find(`.${Classes.POPOVER2_DISMISS}`).simulate("click");
             wrapper.update().assertIsOpen(false);
         });
 

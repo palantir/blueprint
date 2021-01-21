@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Boundary, Placement, StrictModifiers } from "@popperjs/core";
+import { Boundary, Placement, placements, StrictModifiers } from "@popperjs/core";
 import { StrictModifier } from "react-popper";
 
 import { IOverlayableProps, IProps } from "@blueprintjs/core";
 
-export { Boundary as PopperBoundary, Placement as PopperPlacement };
+export { Boundary as PopperBoundary, Placement, placements as PlacementOptions };
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 
@@ -36,7 +36,8 @@ export interface IPopover2TargetProps {
 /**
  * Props shared between `Popover2` and `Tooltip2`.
  *
- * @template TProps HTML props interface for target element
+ * @template TProps HTML props interface for target element,
+ *                  defaults to props for HTMLElement in IPopover2Props and ITooltip2Props
  */
 export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps {
     /**
@@ -54,15 +55,6 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
      * @default false
      */
     captureDismiss?: boolean;
-
-    /**
-     * In uncontrolled mode, whether the popover should automatically be closed when
-     * the target is fully clipped and hidden from view within its scroll container.
-     *
-     * @default true
-     */
-    // TODO(adahiya)
-    // closeOnTargetHidden?: boolean;
 
     /**
      * Initial opened state when uncontrolled.
