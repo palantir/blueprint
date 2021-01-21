@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,37 @@
  * limitations under the License.
  */
 
-import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
+import { Boundary, Placement, placements, StrictModifiers } from "@popperjs/core";
+import { StrictModifier } from "react-popper";
 
-import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
-import { IOverlayableProps } from "../overlay/overlay";
+import { IOverlayableProps, IProps } from "@blueprintjs/core";
 
-// re-export symbols for library consumers
-export { PopperBoundary, PopperModifiers };
+export { Boundary as PopperBoundary, Placement, placements as PlacementOptions };
+// copied from @popperjs/core, where it is not exported as public
+export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 
-/** `Position` with `"auto"` values, used by `Popover` and `Tooltip`. */
-export const PopoverPosition = {
-    ...Position,
-    AUTO: "auto" as "auto",
-    AUTO_END: "auto-end" as "auto-end",
-    AUTO_START: "auto-start" as "auto-start",
-};
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
+/**
+ * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
+ */
+export interface IPopover2TargetProps {
+    ref: React.Ref<any>;
 
-/** Props shared between `Popover` and `Tooltip`. */
-export interface IPopoverSharedProps extends IOverlayableProps, IProps {
+    /** Whether the popover or tooltip is currently open. */
+    isOpen: boolean;
+}
+
+/**
+ * Props shared between `Popover2` and `Tooltip2`.
+ *
+ * @template TProps HTML props interface for target element,
+ *                  defaults to props for HTMLElement in IPopover2Props and ITooltip2Props
+ */
+export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps {
     /**
-     * Determines the boundary element used by Popper for its `flip` and
-     * `preventOverflow` modifiers. Three shorthand keywords are supported;
-     * Popper will find the correct DOM element itself.
-     *
-     * @default "scrollParent"
+     * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
+     * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
      */
-    boundary?: PopperBoundary;
+    boundary?: Boundary;
 
     /**
      * When enabled, clicks inside a `Classes.POPOVER_DISMISS` element
@@ -113,11 +115,18 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     minimal?: boolean;
 
     /**
-     * Popper modifier options, passed directly to internal Popper instance. See
-     * https://popper.js.org/docs/modifiers/ for complete
-     * details.
+     * Overrides for Popper.js built-in modifiers.
+     * Each override is is a full modifier object (omitting its name), keyed by its modifier name.
+     *
+     * For example, the arrow modifier can be disabled by providing `{ arrow: { enabled: false } }`.
+     *
+     * @see https://popper.js.org/docs/v2/modifiers/
      */
-    modifiers?: PopperModifiers;
+    modifiers?: Partial<
+        {
+            [M in StrictModifierNames]: Partial<Omit<StrictModifier<M>, "name">>;
+        }
+    >;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*
@@ -135,16 +144,12 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     openOnTargetFocus?: boolean;
 
     /**
-     * The placement (relative to the target) at which the popover should appear.
+     * Target renderer which receives props injected by Popover2 which should be spread onto
+     * the rendered element. This function should return a single React node.
      *
-     * The default value of `"auto"` will choose the best placement when opened
-     * and will allow the popover to reposition itself to remain onscreen as the
-     * user scrolls around.
-     *
-     * @see https://popper.js.org/docs/v1/#Popper.placements
-     * @default "auto"
+     * Mutually exclusive with children, targetClassName, and targetTagName.
      */
-    placement?: Placement;
+    renderTarget?: (props: IPopover2TargetProps & TProps) => JSX.Element;
 
     /**
      * A space-delimited string of class names applied to the popover element.
@@ -152,27 +157,15 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     popoverClassName?: string;
 
     /**
-     * The position (relative to the target) at which the popover should appear.
+     * The placement (relative to the target) at which the popover should appear.
      *
-     * The default value of `"auto"` will choose the best position when opened
+     * The default value of `"auto"` will choose the best placement when opened
      * and will allow the popover to reposition itself to remain onscreen as the
      * user scrolls around.
      *
      * @default "auto"
-     * @deprecated use placement instead
      */
-    position?: PopoverPosition;
-
-    /**
-     * Space-delimited string of class names applied to the target element.
-     */
-    targetClassName?: string;
-
-    /**
-     * HTML props to spread to target element. Use `targetTagName` to change
-     * the type of element rendered. Note that `ref` is not supported.
-     */
-    targetProps?: React.HTMLAttributes<HTMLElement>;
+    placement?: Placement;
 
     /**
      * HTML tag name for the target element. This must be an HTML element to
@@ -181,7 +174,9 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * By default, a `<span>` tag is used so popovers appear as inline-block
      * elements and can be nested in text. Use `<div>` tag for a block element.
      *
-     * @default "span"
+     * Mutually exclusive with renderTarget.
+     *
+     * @default "span" ("div" if fill={true})
      */
     targetTagName?: keyof JSX.IntrinsicElements;
 
@@ -201,12 +196,4 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * @default true
      */
     usePortal?: boolean;
-
-    /**
-     * HTML tag name for the wrapper element, which also receives the
-     * `className` prop.
-     *
-     * @default "span"
-     */
-    wrapperTagName?: keyof JSX.IntrinsicElements;
 }

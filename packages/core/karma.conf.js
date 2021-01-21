@@ -3,8 +3,6 @@
  */
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
-const fs = require("fs");
-const path = require("path");
 
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({

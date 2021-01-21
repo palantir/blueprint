@@ -31,6 +31,13 @@ export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined 
     return typeof value === "function";
 }
 
+export function combineRefs<T = HTMLElement>(ref1: IRefCallback<T>, ref2: IRefCallback<T>) {
+    return (el: T) => {
+        ref1(el);
+        ref2(el);
+    };
+}
+
 export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
     if (ref === null) {
         return null;

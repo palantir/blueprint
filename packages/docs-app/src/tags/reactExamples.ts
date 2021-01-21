@@ -21,6 +21,7 @@ import { IExampleMap, IExampleProps } from "@blueprintjs/docs-theme";
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
 import * as DateExamples from "../examples/datetime-examples";
+import * as Popover2Examples from "../examples/popover2-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
 import * as TimezoneExamples from "../examples/timezone-examples";
@@ -51,5 +52,6 @@ export const reactExamples: IExampleMap = (() => {
         ...getPackageExamples("select", SelectExamples as any),
         ...getPackageExamples("table", TableExamples as any),
         ...getPackageExamples("timezone", TimezoneExamples as any),
+        ...getPackageExamples("popover2", Popover2Examples as any),
     };
 })();
