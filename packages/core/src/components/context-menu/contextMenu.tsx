@@ -65,6 +65,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
 
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
+        /* eslint-disable deprecation/deprecation */
         return (
             <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
                 <Popover
@@ -85,6 +86,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
                 />
             </div>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme = false) {

@@ -97,6 +97,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
         let collapsedPopover: JSX.Element | undefined;
         if (collapsedChildren.length > 0) {
             const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
+            /* eslint-disable deprecation/deprecation */
             collapsedPopover = (
                 <li className={this.props.visibleItemClassName}>
                     <Popover
@@ -108,6 +109,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
                     </Popover>
                 </li>
             );
+            /* eslint-enable deprecation/deprecation */
         }
 
         return (

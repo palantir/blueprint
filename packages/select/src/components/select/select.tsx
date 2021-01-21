@@ -137,6 +137,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 enforceFocus={false}
@@ -161,6 +162,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
                     {filterable ? input : undefined}
                     {listProps.itemList}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };

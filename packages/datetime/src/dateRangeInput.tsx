@@ -334,6 +334,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
@@ -348,6 +349,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
                     {this.renderInputGroup(Boundary.START)}
                     {this.renderInputGroup(Boundary.END)}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     }

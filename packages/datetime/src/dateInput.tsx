@@ -244,6 +244,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         const { inputProps = {}, popoverProps = {} } = this.props;
         const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
                 fill={this.props.fill}
@@ -271,6 +272,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
                     onKeyDown={this.handleInputKeyDown}
                     value={dateString}
                 />
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     }

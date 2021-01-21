@@ -193,6 +193,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
         }
         const { disabled, popoverProps } = this.props;
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 captureDismiss={false}
