@@ -292,15 +292,16 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
               };
         const targetProps = {
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
-            // If renderTarget is undefined and the target is provided as a child, this.props.className is applied to
-            // the generated target wrapper element
+            // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
+            // applied to the generated target wrapper element.
             className: classNames(className, Classes.POPOVER2_TARGET, {
                 [Classes.POPOVER2_OPEN]: isOpen,
                 // this class is mainly useful for button targets
                 [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
-            // ensure target is focusable if relevant prop enabled
+            // Ensure target is focusable if relevant prop enabled. When renderTarget is undefined, we apply
+            // tabIndex to the wrapper because that's the element which has event handlers.
             tabIndex: openOnTargetFocus && isHoverInteractionKind ? 0 : undefined,
             ...((targetEventHandlers as unknown) as T),
         };
@@ -310,7 +311,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         if (renderTarget !== undefined) {
             target = renderTarget({
                 ...targetProps,
-                // if the consumer renders a <Tooltip> target, it's their responsibility to disable that <Tooltip>
+                // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
                 // when *this* popover is open
                 isOpen,
             });
@@ -338,7 +339,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 // force disable single Tooltip2 child when popover is open
                 disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip2) ? true : rawTarget.props.disabled,
             });
-            // apply tabIndex to the wrapper because that's the element which has event handlers
             const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
             target = wrappedTarget;
         }

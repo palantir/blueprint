@@ -135,6 +135,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
 
     public render() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
@@ -156,6 +157,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                 </div>
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     private renderOptions() {
