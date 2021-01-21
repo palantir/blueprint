@@ -16,8 +16,9 @@
 
 import * as React from "react";
 
-import { Classes, Icon, Intent, ITreeNode, Position, Tooltip, Tree } from "@blueprintjs/core";
+import { Classes, Icon, Intent, ITreeNode, Tree } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Tooltip2 } from "@blueprintjs/popover2";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
@@ -86,9 +87,9 @@ const INITIAL_STATE: ITreeNode[] = [
         icon: "folder-close",
         isExpanded: true,
         label: (
-            <Tooltip content="I'm a folder <3" position={Position.RIGHT}>
+            <Tooltip2 content="I'm a folder <3" placement="right">
                 Folder 1
-            </Tooltip>
+            </Tooltip2>
         ),
         childNodes: [
             {
@@ -96,9 +97,9 @@ const INITIAL_STATE: ITreeNode[] = [
                 icon: "document",
                 label: "Item 0",
                 secondaryLabel: (
-                    <Tooltip content="An eye!">
+                    <Tooltip2 content="An eye!">
                         <Icon icon="eye-open" />
-                    </Tooltip>
+                    </Tooltip2>
                 ),
             },
             {
@@ -111,9 +112,9 @@ const INITIAL_STATE: ITreeNode[] = [
                 hasCaret: true,
                 icon: "folder-close",
                 label: (
-                    <Tooltip content="foo" position={Position.RIGHT}>
+                    <Tooltip2 content="foo" placement="right">
                         Folder 2
-                    </Tooltip>
+                    </Tooltip2>
                 ),
                 childNodes: [
                     { id: 5, label: "No-Icon Item" },

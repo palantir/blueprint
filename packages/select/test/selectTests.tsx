@@ -53,17 +53,20 @@ describe("<Select>", () => {
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
         assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
     });
 
@@ -90,6 +93,7 @@ describe("<Select>", () => {
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { onOpening, modifiers } });
         wrapper.find("article").simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
     });

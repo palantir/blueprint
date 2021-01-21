@@ -31,6 +31,8 @@ import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { findInPortal } from "../utils";
 
+/* eslint-disable deprecation/deprecation */
+
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper | undefined;

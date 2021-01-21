@@ -70,6 +70,7 @@ describe("<TimezonePicker>", () => {
         // remove isOpen from popoverProps so it's
         const timezonePicker = mount(<TimezonePicker {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
         timezonePicker.find(Button).simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
     });
 
@@ -78,6 +79,7 @@ describe("<TimezonePicker>", () => {
             <TimezonePicker {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
         );
         timezonePicker.find(Button).simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
     });
 
@@ -243,6 +245,7 @@ describe("<TimezonePicker>", () => {
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {
+        /* eslint-disable-next-line deprecation/deprecation */
         return findQueryList(timezonePicker).shallow().find(Popover);
     }
 

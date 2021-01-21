@@ -68,6 +68,7 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
     transitionDuration?: number;
 }
 
+/** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
 @polyfill
 export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
@@ -79,6 +80,7 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
         transitionDuration: 100,
     };
 
+    // eslint-disable-next-line deprecation/deprecation
     private popover: Popover | null = null;
 
     public render() {
@@ -91,6 +93,7 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
         );
 
         return (
+            /* eslint-disable deprecation/deprecation */
             <Popover
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 modifiers={{ arrow: { enabled: !this.props.minimal } }}

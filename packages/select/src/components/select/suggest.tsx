@@ -157,9 +157,9 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
-            setTimeout(() => {
-                this.maybeResetActiveItemToSelectedItem();
-            }, this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration);
+            /* eslint-disable-next-line deprecation/deprecation */
+            const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
+            setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
@@ -188,6 +188,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         }
 
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 enforceFocus={false}
@@ -216,6 +217,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };
