@@ -24,7 +24,6 @@ import {
     FormGroup,
     H5,
     HTMLSelect,
-    IButtonProps,
     Intent,
     Label,
     Menu,

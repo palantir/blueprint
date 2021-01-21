@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Button, Classes, Code } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2, PopperPlacement } from "@blueprintjs/popover2";
+import { Popover2, Placement } from "@blueprintjs/popover2";
 
 const EXAMPLE_CLASS = "docs-popover2-placement-example";
 const SIDE_LABEL_CLASS = "docs-popover2-placement-label-side";
@@ -74,7 +74,7 @@ export class Popover2PlacementExample extends React.PureComponent<IExampleProps>
         );
     }
 
-    private renderPopover(placement: PopperPlacement) {
+    private renderPopover(placement: Placement) {
         const [sideLabel, alignmentLabel] = placement.split("-");
         const sideSpan = <span className={SIDE_LABEL_CLASS}>{sideLabel}</span>;
 
