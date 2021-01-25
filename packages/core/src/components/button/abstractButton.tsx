@@ -88,6 +88,8 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
     type?: "submit" | "reset" | "button";
 }
 
+export type IAnchorButtonProps = IButtonProps<HTMLAnchorElement>;
+
 export interface IButtonState {
     isActive: boolean;
 }
