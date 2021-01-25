@@ -49,11 +49,13 @@ export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
 /**
  * Assign the given ref to a target, either a React ref object or a callback which takes the ref as its first argument.
  */
-export function setRef<T extends HTMLElement>(refTarget: IRef<T>, ref: T | null) {
+export function setRef<T extends HTMLElement>(refTarget: IRef<T> | undefined, ref: T | null) {
+    if (refTarget === undefined) {
+        return;
+    }
     if (isRefObject<T>(refTarget)) {
         refTarget.current = ref;
-    }
-    if (isRefCallback(refTarget)) {
+    } else if (isRefCallback(refTarget)) {
         refTarget(ref);
     }
 }
