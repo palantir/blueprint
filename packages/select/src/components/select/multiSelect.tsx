@@ -159,6 +159,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
         };
 
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 canEscapeKeyClose={true}
@@ -193,6 +194,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };

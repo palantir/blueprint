@@ -60,8 +60,6 @@ export const PANEL_STACK_REQUIRES_PANEL = ns + ` <PanelStack> requires at least 
 export const OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED =
     ns + ` <OverflowList> does not support changing observeParents after mounting.`;
 
-// TODO (clewis): Migrate old Popover validation errors to the component formerly known as Popover2.
-// See: https://github.com/palantir/blueprint/issues/1940
 export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
 export const POPOVER_HAS_BACKDROP_INTERACTION =
     ns + ` <Popover hasBackdrop={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;

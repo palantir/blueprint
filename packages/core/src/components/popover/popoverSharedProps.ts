@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Boundary as PopperBoundary, Modifiers as PopperModifiers } from "popper.js";
+import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
 
 import { Position } from "../../common/position";
 import { IProps } from "../../common/props";
@@ -135,6 +135,18 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     openOnTargetFocus?: boolean;
 
     /**
+     * The placement (relative to the target) at which the popover should appear.
+     *
+     * The default value of `"auto"` will choose the best placement when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
+     *
+     * @see https://popper.js.org/docs/v1/#Popper.placements
+     * @default "auto"
+     */
+    placement?: Placement;
+
+    /**
      * A space-delimited string of class names applied to the popover element.
      */
     popoverClassName?: string;
@@ -147,6 +159,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * user scrolls around.
      *
      * @default "auto"
+     * @deprecated use placement instead
      */
     position?: PopoverPosition;
 

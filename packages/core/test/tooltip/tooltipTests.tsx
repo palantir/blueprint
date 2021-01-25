@@ -24,6 +24,8 @@ import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src";
 const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
+/* eslint-disable deprecation/deprecation */
+
 describe("<Tooltip>", () => {
     it("propogates class names correctly", () => {
         const tooltip = renderTooltip({

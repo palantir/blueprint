@@ -47,6 +47,7 @@ describe("<CollapsibleList>", () => {
             },
             dropdownTarget: <strong />,
         });
+        /* eslint-disable-next-line deprecation/deprecation */
         const popover = list.find(Popover);
         assert.strictEqual(popover.prop("position"), Position.TOP_LEFT);
     });
@@ -59,6 +60,7 @@ describe("<CollapsibleList>", () => {
                 .childAt(0) // li
                 .childAt(0) // Popover
                 .type(),
+            /* eslint-disable-next-line deprecation/deprecation */
             Popover,
         );
     });
@@ -72,6 +74,7 @@ describe("<CollapsibleList>", () => {
                 .last() // li
                 .childAt(0) // Popover
                 .type(),
+            /* eslint-disable-next-line deprecation/deprecation */
             Popover,
         );
     });

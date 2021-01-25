@@ -59,6 +59,17 @@ describe("<MultiSlider>", () => {
             assert.deepEqual(onRelease.firstCall.args[0], [0, 5, 10]);
         });
 
+        it("propagates className to the handles", () => {
+            const slider = mount(
+                <MultiSlider>
+                    <MultiSlider.Handle value={3} className="testClass" />
+                    <MultiSlider.Handle value={5} />
+                </MultiSlider>,
+                { attachTo: testsContainerElement },
+            );
+            assert.lengthOf(slider.find("span.testClass"), 1);
+        });
+
         it("moving mouse on the first handle updates the first value", () => {
             const slider = renderSlider({ onChange });
             simulateMovement(slider, { dragSize: STEP_SIZE, dragTimes: 4, handleIndex: 0 });

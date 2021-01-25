@@ -27,8 +27,15 @@ export function isRefObject<T extends HTMLElement>(value: IRef<T> | undefined | 
 
 export type IRefCallback<T = HTMLElement> = (ref: T | null) => any;
 
-export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined): value is IRefCallback<T> {
+export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined | null): value is IRefCallback<T> {
     return typeof value === "function";
+}
+
+export function combineRefs<T = HTMLElement>(ref1: IRefCallback<T>, ref2: IRefCallback<T>) {
+    return (el: T) => {
+        ref1(el);
+        ref2(el);
+    };
 }
 
 export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
@@ -37,4 +44,50 @@ export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
     }
 
     return (ref as IRefObject<T>).current ?? (ref as T);
+}
+
+/**
+ * Assign the given ref to a target, either a React ref object or a callback which takes the ref as its first argument.
+ */
+export function setRef<T extends HTMLElement>(refTarget: IRef<T> | undefined, ref: T | null) {
+    if (refTarget === undefined) {
+        return;
+    }
+    if (isRefObject<T>(refTarget)) {
+        refTarget.current = ref;
+    } else if (isRefCallback(refTarget)) {
+        refTarget(ref);
+    }
+}
+
+/**
+ * Creates a ref handler which assigns the ref returned by React for a mounted component to a field on the target object.
+ * The target object is usually a component class.
+ *
+ * If provided, it will also update the given `refProp` with the value of the ref.
+ */
+export function refHandler<T extends HTMLElement, K extends string>(
+    refTargetParent: { [k in K]: T | null },
+    refTargetKey: K,
+): IRefCallback<T>;
+export function refHandler<T extends HTMLElement, K extends string>(
+    refTargetParent: { [k in K]: T | IRefObject<T> | null },
+    refTargetKey: K,
+    refProp: IRef<T> | undefined | null,
+): IRef<T>;
+export function refHandler<T extends HTMLElement, K extends string>(
+    refTargetParent: { [k in K]: T | IRefObject<T> | null },
+    refTargetKey: K,
+    refProp?: IRef<T> | undefined | null,
+) {
+    if (isRefObject<T>(refProp)) {
+        refTargetParent[refTargetKey] = refProp;
+        return refProp;
+    }
+    return (ref: T | null) => {
+        refTargetParent[refTargetKey] = ref;
+        if (isRefCallback(refProp)) {
+            refProp(ref);
+        }
+    };
 }

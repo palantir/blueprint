@@ -22,16 +22,15 @@ import {
     Button,
     DISPLAYNAME_PREFIX,
     getRef,
-    HTMLInputProps,
-    IInputGroupProps,
+    IInputGroupProps2,
     InputGroup,
     IPopoverProps,
-    IRefCallback,
+    IRef,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
     Position,
+    refHandler,
 } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
@@ -60,7 +59,7 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
      * to control this input.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: IInputGroupProps2;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -90,21 +89,15 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
     private queryList: QueryList<T> | null = null;
 
     private previousFocusedElement: HTMLElement | undefined;
 
-    private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps!.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
-    };
+    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+
+    private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -114,7 +107,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             <this.TypedQueryList
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
-                ref={this.refHandlers.queryList}
+                ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
             />
         );
@@ -136,7 +129,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
-                inputRef={this.refHandlers.input}
+                inputRef={this.handleInputRef}
                 onChange={listProps.handleQueryChange}
                 value={listProps.query}
             />
@@ -144,6 +137,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 enforceFocus={false}
@@ -168,6 +162,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
                     {filterable ? input : undefined}
                     {listProps.itemList}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };
@@ -217,7 +212,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false) {
-                getRef(this.inputEl)?.focus();
+                getRef(this.inputElement)?.focus();
             }
         });
 

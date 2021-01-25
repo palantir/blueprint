@@ -26,6 +26,9 @@ module.exports = {
     plugins: ["@blueprintjs", "header", "import", "jsdoc", "react"],
     extends: ["plugin:@blueprintjs/recommended", "plugin:import/typescript"],
     parserOptions: { ecmaVersion: 2017 },
+    settings: {
+        "import/internal-regex": "^@blueprintjs",
+    },
     rules: {
         // HACKHACK: this rule impl has too many false positives
         "@blueprintjs/classes-constants": "off",
@@ -72,8 +75,8 @@ module.exports = {
             rules: {
                 "react/display-name": "off",
                 "react/jsx-no-bind": "off",
-                "react/no-find-dom-node": "off"
-            }
+                "react/no-find-dom-node": "off",
+            },
         },
     ],
 };

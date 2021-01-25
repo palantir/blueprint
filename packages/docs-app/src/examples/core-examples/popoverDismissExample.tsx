@@ -32,6 +32,7 @@ export class PopoverDismissExample extends React.PureComponent<
     }
 
     public render() {
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={false} {...this.props}>
                 <Popover
@@ -67,6 +68,7 @@ export class PopoverDismissExample extends React.PureComponent<
                 </p>
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     private handleInteraction = (isOpen: boolean) => this.setState({ isOpen });

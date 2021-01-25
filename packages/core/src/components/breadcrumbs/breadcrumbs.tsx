@@ -110,6 +110,8 @@ export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
             // order.
             orderedItems = items.slice().reverse();
         }
+
+        /* eslint-disable deprecation/deprecation */
         return (
             <li>
                 <Popover position={position} {...this.props.popoverProps}>
@@ -118,6 +120,7 @@ export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
                 </Popover>
             </li>
         );
+        /* eslint-enable deprecation/deprecation */
     };
 
     private renderOverflowBreadcrumb = (props: IBreadcrumbProps, index: number) => {

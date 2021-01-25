@@ -31,6 +31,8 @@ import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { findInPortal } from "../utils";
 
+/* eslint-disable deprecation/deprecation */
+
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: IPopoverWrapper | undefined;
@@ -89,7 +91,6 @@ describe("<Popover>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
         });
 
-        // HACKHACK (https://github.com/palantir/blueprint/issues/3371): this causes an infinite loop stack overflow
         it("warns if attempting to open a popover with empty content", () => {
             shallow(
                 <Popover content={undefined} isOpen={true}>
@@ -297,8 +298,10 @@ describe("<Popover>", () => {
                 assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK_TARGET_ONLY, false);
             });
 
-            it.skip("closes popover on target blur if autoFocus={false}", () => {
-                // TODO (clewis): This is really tricky to test given the setTimeout in the onBlur implementation.
+            it("closes popover on target blur if autoFocus={false}", () => {
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK, false, {
+                    autoFocus: false,
+                });
             });
 
             it("popover remains open after target focus if autoFocus={true}", () => {
@@ -332,30 +335,42 @@ describe("<Popover>", () => {
             });
 
             it("does not open popover on target focus when interactionKind is HOVER", () => {
-                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER, false, false);
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER, false, {
+                    openOnTargetFocus: false,
+                });
             });
 
             it("does not open popover on target focus when interactionKind is HOVER_TARGET_ONLY", () => {
-                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER_TARGET_ONLY, false, false);
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.HOVER_TARGET_ONLY, false, {
+                    openOnTargetFocus: false,
+                });
             });
 
             it("does not open popover on target focus when interactionKind is CLICK", () => {
-                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK, false, false);
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK, false, {
+                    openOnTargetFocus: false,
+                });
             });
 
             it("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
-                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK_TARGET_ONLY, false, false);
+                assertPopoverOpenStateForInteractionKind(PopoverInteractionKind.CLICK_TARGET_ONLY, false, {
+                    openOnTargetFocus: false,
+                });
             });
         });
 
         function assertPopoverOpenStateForInteractionKind(
             interactionKind: PopoverInteractionKind,
             isOpen: boolean,
-            openOnTargetFocus?: boolean,
+            extraProps?: {
+                autoFocus?: boolean;
+                openOnTargetFocus?: boolean;
+            },
         ) {
             wrapper = renderPopover({
+                autoFocus: extraProps?.autoFocus,
                 interactionKind,
-                openOnTargetFocus,
+                openOnTargetFocus: extraProps?.openOnTargetFocus,
                 usePortal: true,
             });
             const targetElement = wrapper.findClass(Classes.POPOVER_TARGET);
