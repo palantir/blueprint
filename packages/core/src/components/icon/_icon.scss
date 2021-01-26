@@ -3,6 +3,12 @@
 
 @import "~@blueprintjs/icons/src/icons";
 
+$icon-classes: (
+  ".#{$ns}-icon",
+  ".#{$ns}-icon-standard",
+  ".#{$ns}-icon-large"
+) !default;
+
 // the icon class which will contain an SVG icon
 .#{$ns}-icon {
   // ensure icons sit inline with text & isolate svg from surrounding elements
