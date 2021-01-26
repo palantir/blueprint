@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+import { iconNameToPathsRecordKey } from "./iconUtils";
 
 export { IconName };
 
@@ -137,12 +138,12 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
     }
 
     /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
-    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
+    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element | null {
         const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathStrings = svgPathsRecord[iconName];
-        if (pathStrings == null) {
+        const pathString = svgPathsRecord[iconNameToPathsRecordKey(iconName)];
+        if (pathString == null) {
             return null;
         }
-        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+        return <path d={pathString} fillRule="evenodd" />;
     }
 }

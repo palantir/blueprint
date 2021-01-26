@@ -186,7 +186,7 @@ $tag-round-adjustment: 2px !default;
   // CSS API support
   &:empty::before {
     @include pt-icon();
-    content: $pt-icon-small-cross;
+    content: map-get($blueprint-icon-codepoints, "small-cross");
   }
 
   .#{$ns}-large & {
