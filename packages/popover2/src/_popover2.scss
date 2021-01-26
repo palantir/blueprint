@@ -86,7 +86,7 @@ $popover2-width: $pt-grid-size * 35 !default;
   background: rgba($white, 0);
 }
 
-.#{$ns}-transition-container {
+.#{$ns}-popover2-transition-container {
   @include fade-transition();
 
   // ensure element size exactly equals its children, no edge-case 4px spacing!
