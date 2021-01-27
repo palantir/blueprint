@@ -20,6 +20,13 @@ export function iconNameToPathsRecordKey(name: IconName): keyof (typeof IconSvgP
     return kebabCaseToCamelCase(name);
 }
 
+/**
+ * Type safe string literal conversion of snake-case strings to camelCase strings.
+ * Note that this requires TypeScript 4.1+.
+ *
+ * Implementation and template literal mapped types borrowed from
+ * https://davidtimms.github.io/programming-languages/typescript/2020/11/20/exploring-template-literal-types-in-typescript-4.1.html
+ */
 function kebabCaseToCamelCase<S extends string>(
     snakeCaseString: S,
 ): KebabCaseToCamelCase<S> {
