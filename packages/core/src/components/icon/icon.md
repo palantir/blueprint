@@ -6,16 +6,6 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 
 </div>
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">SVG icons in 2.0</h4>
-
-Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
-The `Icon` component renders SVG paths and the icon classes are no longer used by any Blueprint React component.
-Icon font support has been preserved but should be considered a legacy feature that will be removed in a
-future major version.
-
-</div>
-
 This section describes two ways of using the UI icon font: via React `Icon`
 component to render SVG images or via CSS classes to use the icon font.
 
@@ -55,12 +45,18 @@ import { IconNames } from "@blueprintjs/icons";
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
 ```
 
-```html
+The following React component:
+
+```tsx
 <Icon icon="globe" iconSize={30} />
-<!-- renders the following HTML markup: -->
+```
+
+...renders this HTML markup:
+
+```html
 <svg class="@ns-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
     <title>globe</title>
-    <path ... />
+    <path d="..."></path>
 </svg>
 ```
 
