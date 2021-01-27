@@ -475,9 +475,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<
-        IColumnInteractionBarContextTypes
-    > = columnInteractionBarContextTypes;
+    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
 
     public static getDerivedStateFromProps(props: ITableProps, state: ITableState) {
         const {
