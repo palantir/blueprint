@@ -32,7 +32,7 @@ function kebabCaseToCamelCase<S extends string>(
 ): KebabCaseToCamelCase<S> {
     return (
         snakeCaseString
-        .split("_")
+        .split("-")
         .map((word, i) =>
             i === 0 ?
                 word.toLowerCase() :
