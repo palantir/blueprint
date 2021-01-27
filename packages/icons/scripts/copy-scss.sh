@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# Usage: scss-dist
-# set INPUT / OUTPUT env varibles to change directories
+# Reason: provide a public API to import Sass variables
+# Usage: copy-scss
+#   set INPUT / OUTPUT env varibles to change directories
 
 INPUT="${INPUT:-src}"
 OUTPUT="${OUTPUT:-lib/scss}"

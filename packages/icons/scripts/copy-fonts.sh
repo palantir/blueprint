@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# Usage: fonts-dist
-# set INPUT / OUTPUT env varibles to change directories
-# fonts must exist in output dir for CSS to reference them
+# Reason: fonts must exist in output dir for CSS to reference them
+# Usage: copy-fonts
+#   set INPUT / OUTPUT env varibles to change directories
 
 INPUT="${INPUT:-src/generated}"
 OUTPUT="${OUTPUT:-lib/css}"
