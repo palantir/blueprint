@@ -16,7 +16,7 @@
 
 import { IconName, IconSvgPaths16 } from "@blueprintjs/icons";
 
-export function iconNameToPathsRecordKey(name: IconName): keyof (typeof IconSvgPaths16) {
+export function iconNameToPathsRecordKey(name: IconName): keyof typeof IconSvgPaths16 {
     return kebabCaseToCamelCase(name);
 }
 
@@ -27,27 +27,17 @@ export function iconNameToPathsRecordKey(name: IconName): keyof (typeof IconSvgP
  * Implementation and template literal mapped types borrowed from
  * https://davidtimms.github.io/programming-languages/typescript/2020/11/20/exploring-template-literal-types-in-typescript-4.1.html
  */
-function kebabCaseToCamelCase<S extends string>(
-    snakeCaseString: S,
-): KebabCaseToCamelCase<S> {
-    return (
-        snakeCaseString
+function kebabCaseToCamelCase<S extends string>(snakeCaseString: S): KebabCaseToCamelCase<S> {
+    return snakeCaseString
         .split("-")
-        .map((word, i) =>
-            i === 0 ?
-                word.toLowerCase() :
-                word && (word[0].toUpperCase() + word.slice(1).toLowerCase())
-        )
-        .join("")
-    ) as KebabCaseToCamelCase<S>
+        .map((word, i) => (i === 0 ? word.toLowerCase() : word && word[0].toUpperCase() + word.slice(1).toLowerCase()))
+        .join("") as KebabCaseToCamelCase<S>;
 }
 
-type KebabCaseToCamelCase<S extends string> =
-    S extends `${infer FirstWord}-${infer Rest}` ?
-        `${Lowercase<FirstWord>}${KebabCaseToPascalCase<Rest>}` :
-        `${Lowercase<S>}`;
+type KebabCaseToCamelCase<S extends string> = S extends `${infer FirstWord}-${infer Rest}`
+    ? `${Lowercase<FirstWord>}${KebabCaseToPascalCase<Rest>}`
+    : `${Lowercase<S>}`;
 
-type KebabCaseToPascalCase<S extends string> =
-    S extends `${infer FirstWord}-${infer Rest}` ?
-        `${Capitalize<Lowercase<FirstWord>>}${KebabCaseToPascalCase<Rest>}` :
-        Capitalize<Lowercase<S>>;
+type KebabCaseToPascalCase<S extends string> = S extends `${infer FirstWord}-${infer Rest}`
+    ? `${Capitalize<Lowercase<FirstWord>>}${KebabCaseToPascalCase<Rest>}`
+    : Capitalize<Lowercase<S>>;
