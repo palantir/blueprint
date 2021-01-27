@@ -345,9 +345,9 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
         // a breaking change in react-transition-group types requires us to be explicit about the type overload here,
         // using a technique similar to Select.ofType() in @blueprintjs/select
-        const CSSTransitionImplicit = CSSTransition as new (props: CSSTransitionProps<undefined>) => CSSTransition<
-            undefined
-        >;
+        const CSSTransitionImplicit = CSSTransition as new (
+            props: CSSTransitionProps<undefined>,
+        ) => CSSTransition<undefined>;
 
         return (
             <CSSTransitionImplicit
