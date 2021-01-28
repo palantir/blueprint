@@ -459,6 +459,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 ...modifiers?.flip,
                 options: {
                     boundary: this.props.boundary,
+                    rootBoundary: this.props.rootBoundary,
                     ...modifiers?.flip?.options,
                 },
             },
@@ -467,6 +468,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 ...modifiers?.preventOverflow,
                 options: {
                     boundary: this.props.boundary,
+                    rootBoundary: this.props.rootBoundary,
                     ...modifiers?.preventOverflow?.options,
                 },
             },
