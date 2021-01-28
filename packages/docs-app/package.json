@@ -21,7 +21,7 @@
         "@blueprintjs/docs-data": "^3.38.1",
         "@blueprintjs/docs-theme": "^3.9.3",
         "@blueprintjs/icons": "^3.24.0",
-        "@blueprintjs/popover2": "^0.1.1",
+        "@blueprintjs/popover2": "^0.1.2",
         "@blueprintjs/select": "^3.15.3",
         "@blueprintjs/table": "^3.8.21",
         "@blueprintjs/test-commons": "^0.10.8",
