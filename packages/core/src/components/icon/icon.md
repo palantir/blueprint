@@ -31,21 +31,20 @@ which SVG is rendered and `iconSize` determines which pixel grid is used:
 grid.
 
 ```tsx
-import { Icon, Intent } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
+import { Icon } from "@blueprintjs/core";
 
-// string literals are supported through IconName union type
+// icon name string literals are type checked
 <Icon icon="cross" />
 <Icon icon="globe" iconSize={20} />
 
-// constants are provided for name and size
-<Icon icon={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} />
+// constants are provided for standard sizes
+<Icon icon="graph" iconSize={Icon.SIZE_LARGE} intent="primary" />
 
-// can pass all valid HTML props
+// you can also pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
 ```
 
-The following React component:
+Custom sizes are supported. The following React component:
 
 ```tsx
 <Icon icon="globe" iconSize={30} />
@@ -63,17 +62,6 @@ The following React component:
 @interface IIconProps
 
 @## CSS
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Icon fonts are legacy in 2.0</h4>
-
-Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
-The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
-support is equivalent.
-
-__Important__: Blueprint icons added after `@blueprintjs/icons@3.14.0` do not have icon font support.
-
-</div>
 
 The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
 
