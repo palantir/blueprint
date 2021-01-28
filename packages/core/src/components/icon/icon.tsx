@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
+import { iconNameToPathsRecordKey } from "./iconUtils";
 
 export { IconName };
 
@@ -139,7 +140,6 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
-        // eslint-disable-next-line deprecation/deprecation
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
@@ -159,12 +159,12 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
     }
 
     /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
-    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
+    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element | null {
         const svgPathsRecord = pathsSize === IconSize.STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathStrings = svgPathsRecord[iconName];
-        if (pathStrings == null) {
+        const pathString = svgPathsRecord[iconNameToPathsRecordKey(iconName)];
+        if (pathString == null) {
             return null;
         }
-        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+        return <path d={pathString} fillRule="evenodd" />;
     }
 }

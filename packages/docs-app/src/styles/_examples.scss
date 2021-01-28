@@ -1,8 +1,9 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
 @import "~@blueprintjs/core/src/common/react-transition";
+@import "~@blueprintjs/core/src/components/icon/icon-mixins";
 
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "$=") {
@@ -93,7 +94,7 @@
     &::before {
       @include pt-icon($icon-size, 16);
       color: $white;
-      content: $pt-icon-envelope;
+      content: map-get($blueprint-icon-codepoints, "envelope");
       left: ($node-size - $icon-size) / 2 - $node-border-width;
       position: relative;
       top: ($node-size - $icon-size) / 2 - $node-border-width;

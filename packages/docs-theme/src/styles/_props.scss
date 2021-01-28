@@ -52,7 +52,7 @@
   color: $red3;
 
   &::after {
-    content: $pt-icon-small-cross;
+    content: map-get($blueprint-icon-codepoints, "small-cross");
   }
 }
 
@@ -64,7 +64,7 @@
   }
 
   &::after {
-    content: $pt-icon-small-tick;
+    content: map-get($blueprint-icon-codepoints, "small-tick");
   }
 }
 
