@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "~@blueprintjs/core/src/components/forms/common";
+@import "~@blueprintjs/core/src/components/icon/icon-mixins";
 @import "./common";
 
 $timepicker-input-row-height: $pt-grid-size * 3 !default;

@@ -17,7 +17,6 @@
 import React from "react";
 
 import { Colors, Icon, Intent } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
 import { Tooltip2 } from "@blueprintjs/popover2";
 import { getTimezoneMetadata } from "@blueprintjs/timezone";
 
@@ -48,9 +47,9 @@ export class CustomTimezonePickerTarget extends React.PureComponent<
                     onMouseLeave={this.handleMouseLeave}
                     style={{ cursor: "pointer" }}
                 >
-                    <Icon icon={IconNames.GLOBE} intent={isHovering ? Intent.PRIMARY : undefined} />
+                    <Icon icon="globe" intent={isHovering ? Intent.PRIMARY : undefined} />
                     &nbsp;
-                    <Icon color={Colors.GRAY1} icon={IconNames.CARET_DOWN} />
+                    <Icon color={Colors.GRAY1} icon="caret-down" />
                 </div>
             </Tooltip2>
         );

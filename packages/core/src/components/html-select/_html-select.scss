@@ -99,6 +99,6 @@ Styleguide select
   &::after {
     @extend %pt-select-arrow;
     @include pt-icon();
-    content: $pt-icon-double-caret-vertical;
+    content: map-get($blueprint-icon-codepoints, "double-caret-vertical");
   }
 }
