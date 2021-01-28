@@ -216,19 +216,31 @@ describe("<Popover2>", () => {
     describe("openOnTargetFocus", () => {
         describe("if true (default)", () => {
             it('adds tabindex="0" to target\'s child node when interactionKind is HOVER', () => {
-                assertPopoverTargetTabIndex("hover", true, true);
+                assertPopoverTargetTabIndex(true, {
+                    interactionKind: "hover",
+                    openOnTargetFocus: true,
+                });
             });
 
             it('adds tabindex="0" to target\'s child node when interactionKind is HOVER_TARGET_ONLY', () => {
-                assertPopoverTargetTabIndex("hover-target", true, true);
+                assertPopoverTargetTabIndex(true, {
+                    interactionKind: "hover-target",
+                    openOnTargetFocus: true,
+                });
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
-                assertPopoverTargetTabIndex("click", false, true);
+                assertPopoverTargetTabIndex(false, {
+                    interactionKind: "click",
+                    openOnTargetFocus: true,
+                });
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
-                assertPopoverTargetTabIndex("click-target", false, true);
+                assertPopoverTargetTabIndex(false, {
+                    interactionKind: "click-target",
+                    openOnTargetFocus: true,
+                });
             });
 
             it("opens popover on target focus when interactionKind is HOVER", () => {
@@ -268,19 +280,31 @@ describe("<Popover2>", () => {
 
         describe("if false", () => {
             it("does not add tabindex to target's child node when interactionKind is HOVER", () => {
-                assertPopoverTargetTabIndex("hover", false, false);
+                assertPopoverTargetTabIndex(false, {
+                    interactionKind: "hover",
+                    openOnTargetFocus: false,
+                });
             });
 
             it("does not add tabindex to target's child node when interactionKind is HOVER_TARGET_ONLY", () => {
-                assertPopoverTargetTabIndex("hover-target", false, false);
+                assertPopoverTargetTabIndex(false, {
+                    interactionKind: "hover-target",
+                    openOnTargetFocus: false,
+                });
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
-                assertPopoverTargetTabIndex("click", false, false);
+                assertPopoverTargetTabIndex(false, {
+                    interactionKind: "click",
+                    openOnTargetFocus: false,
+                });
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
-                assertPopoverTargetTabIndex("click-target", false, false);
+                assertPopoverTargetTabIndex(false, {
+                    interactionKind: "click-target",
+                    openOnTargetFocus: false,
+                });
             });
 
             it("does not open popover on target focus when interactionKind is HOVER", () => {
@@ -326,12 +350,8 @@ describe("<Popover2>", () => {
             assert.equal(wrapper.state("isOpen"), isOpen);
         }
 
-        function assertPopoverTargetTabIndex(
-            interactionKind: Popover2InteractionKind,
-            shouldTabIndexExist: boolean,
-            openOnTargetFocus?: boolean,
-        ) {
-            wrapper = renderPopover({ interactionKind, openOnTargetFocus, usePortal: true });
+        function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<IPopover2Props>) {
+            wrapper = renderPopover({ ...popoverProps, usePortal: true });
             const targetElement = wrapper.findClass(Classes.POPOVER2_TARGET).getDOMNode();
 
             if (shouldTabIndexExist) {
