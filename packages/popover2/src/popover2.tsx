@@ -393,7 +393,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}
                 canOutsideClickClose={this.props.interactionKind === Popover2InteractionKind.CLICK}
-                className={this.props.portalClassName}
                 enforceFocus={this.props.enforceFocus}
                 hasBackdrop={this.props.hasBackdrop}
                 isOpen={isOpen}
@@ -405,6 +404,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 transitionDuration={this.props.transitionDuration}
                 transitionName={Classes.POPOVER2}
                 usePortal={this.props.usePortal}
+                portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
