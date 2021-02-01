@@ -18,14 +18,22 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+import { IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
-import { iconNameToPathsRecordKey } from "./iconUtils";
+// TODO(adahiya)
+// import { iconNameToPathsRecordKey } from "./iconUtils";
 
 export { IconName };
 
 export interface IIconProps extends IIntentProps, IProps {
+    /**
+     * Whether the component should automatically load icon contents using an async import.
+     *
+     * @default true
+     */
+    autoLoad?: boolean;
+
     /** This component does not support custom children. Use the `icon` prop. */
     children?: never;
 
@@ -87,13 +95,50 @@ export interface IIconProps extends IIntentProps, IProps {
     title?: string | false | null;
 }
 
+interface IIconState {
+    /**
+     * Icon contents path string
+     */
+    iconContents: [string, string] | undefined;
+}
+
 @polyfill
-export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>> {
+export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>, IIconState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
-    public static readonly SIZE_STANDARD = 16;
+    public static defaultProps: Partial<IIconProps> = {
+        autoLoad: true,
+    };
 
-    public static readonly SIZE_LARGE = 20;
+    public static readonly SIZE_STANDARD = ICON_SIZE_STANDARD;
+
+    public static readonly SIZE_LARGE = ICON_SIZE_LARGE;
+
+    public state: IIconState = {
+        iconContents: undefined,
+    };
+
+    // this component may have unmounted by the time iconContents load, so make sure we don't try to setState
+    private hasUnmounted = false;
+
+    public async componentDidMount() {
+        this.hasUnmounted = false;
+
+        const { icon } = this.props;
+
+        if (typeof icon === "string") {
+            await this.loadAndSetIconContents(icon);
+        }
+    }
+
+    public async componentDidUpdate(prevProps: IIconProps, _prevState: IIconState) {
+        const { icon } = this.props;
+
+        if (prevProps.icon !== icon && typeof icon === "string") {
+            // reload the module to get the component, but it will be cached if it's the same icon
+            await this.loadAndSetIconContents(icon);
+        }
+    }
 
     public render(): JSX.Element | null {
         const { icon } = this.props;
@@ -104,6 +149,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
         }
 
         const {
+            autoLoad,
             className,
             color,
             htmlTitle,
@@ -116,9 +162,6 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
 
         // choose which pixel grid is most appropriate for given icon size
         const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
-        // render path elements, or nothing if icon name is unknown.
-        const paths = this.renderSvgPaths(pixelGridSize, icon);
-
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
@@ -131,18 +174,35 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
             },
             <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
                 {title && <desc>{title}</desc>}
-                {paths}
+                {this.renderSvgPath(iconSize)}
             </svg>,
         );
     }
 
-    /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
-    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element | null {
-        const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathString = svgPathsRecord[iconNameToPathsRecordKey(iconName)];
-        if (pathString == null) {
+    /**
+     * Render `<path>` elements for the given icon name.
+     * Returns `null` if name is unknown or icon contents have not yet been loaded.
+     * You can load icons using the APIs found in { Icons } from "@blueprintjs/icons"
+     */
+    private renderSvgPath(pathsSize: number): JSX.Element | null {
+        const { iconContents } = this.state;
+
+        if (iconContents === undefined) {
             return null;
         }
-        return <path d={pathString} fillRule="evenodd" />;
+
+        const [icon16, icon20] = iconContents;
+
+        return <path d={pathsSize <= Icon.SIZE_LARGE ? icon16 : icon20} fillRule="evenodd" />;
+    }
+
+    private async loadAndSetIconContents(iconName: IconName) {
+        if (this.props.autoLoad && !this.hasUnmounted) {
+            // if it's already been loaded, this is a no-op
+            await Icons.load(iconName);
+        }
+
+        const iconContents = Icons.getContents(iconName);
+        this.setState({ iconContents });
     }
 }

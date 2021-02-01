@@ -22,6 +22,11 @@ import * as ReactDOM from "react-dom";
 
 import { docsData } from "@blueprintjs/docs-data";
 import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs-theme";
+import { Icons } from "@blueprintjs/icons";
+
+// this loads all the module chunks up front, so that async Icon.load() calls don't block
+// tslint:disable-next-line no-submodule-imports
+import "@blueprintjs/icons/lib/esm/all";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";
@@ -35,6 +40,8 @@ const tagRenderers = {
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
 };
+
+Icons.loadAll();
 
 ReactDOM.render(
     <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,

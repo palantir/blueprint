@@ -14,5 +14,13 @@
  * limitations under the License.
  */
 
-export { Icons, IconLoaderOptions, IconContentsLoader } from "./loader";
-export * from "./constants";
+// icon sets should be identical aside from SVG paths, so we just import the info for the 16px set
+import {
+    BlueprintIcons_16 as IconNames,
+    BlueprintIcons_16Id as IconName,
+    BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints,
+} from "./generated/16px/blueprint-icons-16";
+import * as IconSvgPaths16 from "./generated/16px/paths";
+import * as IconSvgPaths20 from "./generated/20px/paths";
+
+export { IconCodepoints, IconName, IconNames, IconSvgPaths16, IconSvgPaths20 };
