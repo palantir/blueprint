@@ -336,7 +336,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             typeof child === "object" ? (
                 React.cloneElement(child as React.ReactElement, {
                     className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
-                    tabIndex: 0,
+                    tabIndex: this.props.enforceFocus || this.props.autoFocus ? 0 : undefined,
                 })
             ) : (
                 <span className={Classes.OVERLAY_CONTENT}>{child}</span>
