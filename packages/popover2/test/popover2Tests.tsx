@@ -748,7 +748,7 @@ describe("<Popover2>", () => {
     });
 
     // these tests can be removed once Popover2 is merged into core in v4.0
-    describe.only("compatibility", () => {
+    describe("compatibility", () => {
         it("MenuItem from core package is able to dismiss open Popover2", () => {
             wrapper = renderPopover(
                 { defaultIsOpen: true, usePortal: false },
@@ -756,7 +756,7 @@ describe("<Popover2>", () => {
                     <MenuItem text="Close" />
                 </Menu>,
             );
-            wrapper.find(MenuItem).simulate("click");
+            wrapper.find(`.${CoreClasses.MENU_ITEM}`).simulate("click");
             wrapper.assertIsOpen(false);
         });
     });
