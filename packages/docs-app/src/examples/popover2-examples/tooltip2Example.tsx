@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, H1, Switch } from "@blueprintjs/core";
+import { Button, ButtonGroup, H1, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { Classes, Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
@@ -140,6 +140,19 @@ export class Tooltip2Example extends React.PureComponent<IExampleProps, ITooltip
                         <Button intent="success" text="Hover and click me" />
                     </Tooltip2>
                 </Popover2>
+                <br />
+
+                <ButtonGroup>
+                    <Tooltip2 content="Each" placement="bottom">
+                        <Button intent="primary" text="Group" />
+                    </Tooltip2>
+                    <Tooltip2 content="has" placement="bottom">
+                        <Button intent="primary" text="of" />
+                    </Tooltip2>
+                    <Tooltip2 content="a tooltip" placement="bottom">
+                        <Button intent="primary" text="buttons" />
+                    </Tooltip2>
+                </ButtonGroup>
             </Example>
         );
     }

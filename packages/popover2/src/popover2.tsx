@@ -316,15 +316,16 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 isOpen,
             });
         } else {
-            const rawTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
+            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
 
-            if (rawTarget === undefined) {
+            if (childTarget === undefined) {
                 return null;
             }
 
-            const rawTabIndex = rawTarget.props.tabIndex;
-            if (rawTabIndex != null) {
-                targetProps.tabIndex = rawTabIndex;
+            // if there is a tabIndex set on the child target, we are going to promote it to the wrapper element
+            const childTargetTabIndex = childTarget.props.tabIndex;
+            if (childTargetTabIndex != null) {
+                targetProps.tabIndex = childTargetTabIndex;
             }
 
             const targetModifierClasses = {
@@ -334,10 +335,12 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
                 [CoreClasses.FILL]: fill,
             };
-            const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
-                className: classNames(rawTarget.props.className, targetModifierClasses),
+            const clonedTarget: JSX.Element = React.cloneElement(childTarget, {
+                className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip2 child when popover is open
-                disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip2) ? true : rawTarget.props.disabled,
+                disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip2) ? true : childTarget.props.disabled,
+                // avoid having two nested elements which are focussable via keyboard navigation
+                tabIndex: targetProps.tabIndex !== undefined ? -1 : undefined,
             });
             const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
             target = wrappedTarget;
