@@ -541,13 +541,23 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER2}`);
         const isEventFromSelf = eventPopover === this.popoverRef.current;
         const isEventPopoverCapturing = eventPopover?.classList.contains(Classes.POPOVER2_CAPTURING_DISMISS);
+
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
         const dismissElement = eventTarget.closest(
             `.${Classes.POPOVER2_DISMISS}, .${Classes.POPOVER2_DISMISS_OVERRIDE}`,
         );
-        const shouldDismiss = dismissElement != null && dismissElement.classList.contains(Classes.POPOVER2_DISMISS);
+        const shouldDismiss = dismissElement?.classList.contains(Classes.POPOVER2_DISMISS);
+
+        // dismiss selectors from the "V1" version of Popover in the core pacakge
+        // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover2
+        // this can be removed once Popover2 is merged into core in v4.0
+        const dismissElementV1 = eventTarget.closest(
+            `.${CoreClasses.POPOVER_DISMISS}, .${CoreClasses.POPOVER_DISMISS_OVERRIDE}`,
+        );
+        const shouldDismissV1 = dismissElementV1?.classList.contains(CoreClasses.POPOVER_DISMISS);
+
         const isDisabled = eventTarget.closest(`:disabled, .${CoreClasses.DISABLED}`) != null;
-        if (shouldDismiss && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
+        if ((shouldDismiss || shouldDismissV1) && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
             this.setOpenState(false, e);
         }
     };

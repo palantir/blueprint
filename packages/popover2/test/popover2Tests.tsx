@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { Classes as CoreClasses, Keys, Overlay, Portal } from "@blueprintjs/core";
+import { Classes as CoreClasses, Keys, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Errors, Classes } from "../src";
@@ -744,6 +744,20 @@ describe("<Popover2>", () => {
 
                 setOpenStateSpy.restore();
             }, done);
+        });
+    });
+
+    // these tests can be removed once Popover2 is merged into core in v4.0
+    describe.only("compatibility", () => {
+        it("MenuItem from core package is able to dismiss open Popover2", () => {
+            wrapper = renderPopover(
+                { defaultIsOpen: true, usePortal: false },
+                <Menu>
+                    <MenuItem text="Close" />
+                </Menu>,
+            );
+            wrapper.find(MenuItem).simulate("click");
+            wrapper.assertIsOpen(false);
         });
     });
 
