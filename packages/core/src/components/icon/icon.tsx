@@ -193,7 +193,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
 
         const [icon16, icon20] = iconContents;
 
-        return <path d={pathsSize <= Icon.SIZE_LARGE ? icon16 : icon20} fillRule="evenodd" />;
+        return <path d={pathsSize < Icon.SIZE_LARGE ? icon16 : icon20} fillRule="evenodd" />;
     }
 
     private async loadAndSetIconContents(iconName: IconName) {
