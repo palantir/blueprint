@@ -15,8 +15,13 @@
  */
 
 import { IconName, IconSize, IconNames } from "./constants";
+import { isNodeEnv, wrapWithTimer } from "./utils";
 
+/** Given an icon name and size, loads the icon path contents from the generated source module in this package. */
 export type IconContentsLoader = (iconName: IconName, size: IconSize) => Promise<string>;
+
+/** [16px, 20px] icon paths */
+export type IconContents = [string, string];
 
 export interface IconLoaderOptions {
     /*
@@ -26,8 +31,12 @@ export interface IconLoaderOptions {
     loader?: IconContentsLoader;
 }
 
-const loadIconContents: IconContentsLoader = async (name, size) => {
-    // see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
+/**
+ * The default icon contents loader implementation, optimized for webpack.
+ *
+ * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
+ */
+const defaultIconContentsLoader: IconContentsLoader = async (name, size) => {
     return (
         await import(
             /* webpackInclude: /\.js$/ */
@@ -37,6 +46,9 @@ const loadIconContents: IconContentsLoader = async (name, size) => {
     ).default;
 };
 
+/**
+ * Icons loader.
+ */
 export class Icons {
     /**
      * Values are tuples containing 16px and 20px icon contents
@@ -59,12 +71,13 @@ export class Icons {
     }
 
     public static async loadAll(options?: IconLoaderOptions) {
-        return this.load(Object.values(IconNames), options);
+        const allIcons = Object.values(IconNames);
+        wrapWithTimer("loading all icons", () => this.load(allIcons, options));
     }
 
     public static getContents(icon: IconName): [string, string] | undefined {
         if (!singleton.loadedIcons.has(icon)) {
-            console.error(`Icon '${icon}' not loaded yet, did you call Icons.load()?`);
+            console.error(`[Blueprint] Icon '${icon}' not loaded yet, did you call Icons.load('${icon}')?`);
             return undefined;
         }
 
@@ -73,17 +86,19 @@ export class Icons {
 
     private static async loadImpl(icon: IconName, options?: IconLoaderOptions) {
         if (singleton.loadedIcons.has(icon)) {
+            // already loaded, no-op
             return;
         }
 
-        const load = options?.loader ?? loadIconContents;
+        // use a custom loader if specified, otherwise use the default one
+        const load = options?.loader ?? defaultIconContentsLoader;
 
         try {
-            const icon16 = await load(icon, 16);
-            const icon20 = await load(icon, 20);
+            // load both sizes in parallel
+            const [icon16, icon20] = await Promise.all([load(icon, 16), load(icon, 20)]);
             singleton.loadedIcons.set(icon, [icon16, icon20]);
         } catch (e) {
-            console.error(`Unable to load icon '${icon}'`, e);
+            console.error(`[Blueprint] Unable to load icon '${icon}'`, e);
         }
     }
 }

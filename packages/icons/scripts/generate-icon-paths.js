@@ -36,7 +36,8 @@ for (const iconSize of [16, 20]) {
     console.info(`Parsing SVG glyphs from generated ${iconSize}px SVG icon font...`);
     parseIconGlyphs(iconFontSvgDocument, (iconName, iconPath) => {
         icons.push(iconName);
-        writeLinesToFile(`${iconSize}px/paths/${iconName}.ts`, `const path = "${iconPath}"`, "export default path;");
+        const lines = [`const path = "${iconPath}"`, "export default path;"];
+        writeLinesToFile(`${iconSize}px/paths/${iconName}.ts`, ...lines);
     });
     console.info(`Parsed ${icons.length} icons.`);
 

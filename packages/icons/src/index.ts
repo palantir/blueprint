@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export { Icons, IconLoaderOptions, IconContentsLoader } from "./loader";
+export { Icons, IconLoaderOptions, IconContentsLoader } from "./iconLoader";
 export * from "./constants";
