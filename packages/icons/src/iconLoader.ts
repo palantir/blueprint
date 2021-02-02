@@ -15,7 +15,7 @@
  */
 
 import { IconName, IconSize, IconNames } from "./constants";
-import { isNodeEnv, wrapWithTimer } from "./utils";
+import { wrapWithTimer } from "./loaderUtils";
 
 /** Given an icon name and size, loads the icon path contents from the generated source module in this package. */
 export type IconContentsLoader = (iconName: IconName, size: IconSize) => Promise<string>;
@@ -40,24 +40,26 @@ const defaultIconContentsLoader: IconContentsLoader = async (name, size) => {
     return (
         await import(
             /* webpackInclude: /\.js$/ */
-            /* webpackMode: "lazy" */
+            /* webpackMode: "lazy-once" */
             `./generated/${size}px/paths/${name}`
         )
     ).default;
 };
 
 /**
- * Icons loader.
+ * Blueprint icons loader.
  */
 export class Icons {
-    /**
-     * Values are tuples containing 16px and 20px icon contents
-     *
-     * @internal
-     */
-    public loadedIcons: Map<IconName, [string, string]> = new Map();
+    /** @internal */
+    public loadedIcons: Map<IconName, IconContents> = new Map();
 
+    /**
+     * Load a single icon for use in Blueprint components.
+     */
     public static async load(icon: IconName, options?: IconLoaderOptions): Promise<void>;
+    /**
+     * Load a set of icons for use in Blueprint components.
+     */
     // buggy rule implementation for TS
     // eslint-disable-next-line @typescript-eslint/unified-signatures
     public static async load(icons: IconName[], options?: IconLoaderOptions): Promise<void>;
@@ -70,11 +72,17 @@ export class Icons {
         return;
     }
 
+    /**
+     * Load all available icons for use in Blueprint components.
+     */
     public static async loadAll(options?: IconLoaderOptions) {
         const allIcons = Object.values(IconNames);
-        wrapWithTimer("loading all icons", () => this.load(allIcons, options));
+        wrapWithTimer(`[Blueprint] loading all icons`, () => this.load(allIcons, options));
     }
 
+    /**
+     * Get the 16px and 20px variants of an icon's SVG paths.
+     */
     public static getContents(icon: IconName): [string, string] | undefined {
         if (!singleton.loadedIcons.has(icon)) {
             console.error(`[Blueprint] Icon '${icon}' not loaded yet, did you call Icons.load('${icon}')?`);

@@ -21,18 +21,24 @@ export function isNodeEnv(env: string) {
     return typeof process !== "undefined" && process.env?.NODE_ENV === env;
 }
 
+/**
+ * Wraps an async task with a performance timer. Only logs to console in development.
+ */
 export async function wrapWithTimer(taskDescription: string, task: () => Promise<void>) {
+    const shouldMeasure = isNodeEnv("development") && typeof performance !== "undefined";
+    let start: number;
+
     /* eslint-disable no-console */
-    if (isNodeEnv("development")) {
-        console.info(`[Blueprint] Started '${taskDescription}'...`);
-        console.time(taskDescription);
+    if (shouldMeasure) {
+        start = performance.now();
+        console.info(`Started '${taskDescription}'...`);
     }
 
     await task();
 
-    if (isNodeEnv("development")) {
-        console.info(`[Blueprint] finished '${taskDescription}'...`);
-        console.timeEnd(taskDescription);
+    if (shouldMeasure) {
+        const time = Math.round(performance.now() - start!);
+        console.info(`Finished '${taskDescription}' in ${time}ms`);
     }
     return;
     /* eslint-enable no-console */

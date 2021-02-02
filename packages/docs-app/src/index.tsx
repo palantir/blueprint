@@ -41,7 +41,17 @@ const tagRenderers = {
     reactExample: reactExample.render,
 };
 
-Icons.loadAll();
+Icons.loadAll({
+    loader: async (name, size) => {
+        return (
+            await import(
+                /* webpackInclude: /\.js$/ */
+                /* webpackMode: "weak" */
+                `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
+            )
+        ).default;
+    },
+});
 
 ReactDOM.render(
     <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,
