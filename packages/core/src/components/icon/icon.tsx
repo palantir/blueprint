@@ -21,8 +21,6 @@ import { polyfill } from "react-lifecycles-compat";
 import { IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE } from "@blueprintjs/icons";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
-// TODO(adahiya)
-// import { iconNameToPathsRecordKey } from "./iconUtils";
 
 export { IconName };
 
