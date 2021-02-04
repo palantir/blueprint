@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-import { IconName, IconSize, IconNames } from "./constants";
+import React from "react";
+
+import { IconName, IconNames } from "./constants";
 import { wrapWithTimer } from "./loaderUtils";
+import { SVGIconProps } from "./svgIconProps";
 
-/** Given an icon name and size, loads the icon path contents from the generated source module in this package. */
-export type IconContentsLoader = (iconName: IconName, size: IconSize) => Promise<string>;
+export type IconComponent = React.FC<SVGIconProps>;
 
-/** [16px, 20px] icon paths */
-export type IconContents = [string, string];
+/** Given an icon name and size, loads the icon component from the generated source module in this package. */
+export type IconComponentLoader = (iconName: IconName) => Promise<IconComponent>;
 
 export interface IconLoaderOptions {
     /*
      * Optional custom loader for icon contents, useful if the default loader which uses a
      * webpack-configured dynamic import() is not suitable for some reason.
      */
-    loader?: IconContentsLoader;
+    loader?: IconComponentLoader;
 }
 
 /**
@@ -36,12 +38,12 @@ export interface IconLoaderOptions {
  *
  * @see https://webpack.js.org/api/module-methods/#magic-comments for dynamic import() reference
  */
-const defaultIconContentsLoader: IconContentsLoader = async (name, size) => {
+const defaultIconContentsLoader: IconComponentLoader = async name => {
     return (
         await import(
             /* webpackInclude: /\.js$/ */
             /* webpackMode: "lazy-once" */
-            `./generated/${size}px/paths/${name}`
+            `./generated/components/${name}`
         )
     ).default;
 };
@@ -51,7 +53,7 @@ const defaultIconContentsLoader: IconContentsLoader = async (name, size) => {
  */
 export class Icons {
     /** @internal */
-    public loadedIcons: Map<IconName, IconContents> = new Map();
+    public loadedIcons: Map<IconName, IconComponent> = new Map();
 
     /**
      * Load a single icon for use in Blueprint components.
@@ -81,9 +83,9 @@ export class Icons {
     }
 
     /**
-     * Get the 16px and 20px variants of an icon's SVG paths.
+     * Get the icon SVG component.
      */
-    public static getContents(icon: IconName): [string, string] | undefined {
+    public static getComponent(icon: IconName): IconComponent | undefined {
         if (!singleton.loadedIcons.has(icon)) {
             console.error(`[Blueprint] Icon '${icon}' not loaded yet, did you call Icons.load('${icon}')?`);
             return undefined;
@@ -103,8 +105,8 @@ export class Icons {
 
         try {
             // load both sizes in parallel
-            const [icon16, icon20] = await Promise.all([load(icon, 16), load(icon, 20)]);
-            singleton.loadedIcons.set(icon, [icon16, icon20]);
+            const component = await load(icon);
+            singleton.loadedIcons.set(icon, component);
         } catch (e) {
             console.error(`[Blueprint] Unable to load icon '${icon}'`, e);
         }

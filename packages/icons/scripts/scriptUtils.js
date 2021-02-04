@@ -1,6 +1,5 @@
 /*
  * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,12 +13,17 @@
  * limitations under the License.
  */
 
-// icon sets should be identical aside from SVG paths, so we just import the info for the 16px set
-import {
-    BlueprintIcons_16 as IconNames,
-    BlueprintIcons_16Id as IconName,
-    BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints,
-} from "./generated/16px/blueprint-icons-16";
+// @ts-check
 
-export { IconCodepoints, IconName, IconNames };
-export * from "./generated/components";
+const path = require("path");
+
+const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
+const COPYRIGHT_HEADER = "/*\n * Copyright 2021 Palantir Technologies, Inc. All rights reserved.\n */\n";
+/** @type { [16, 20] } */
+const ICON_SIZES = [16, 20];
+
+module.exports = {
+    COPYRIGHT_HEADER,
+    GENERATED_SRC_DIR,
+    ICON_SIZES,
+};

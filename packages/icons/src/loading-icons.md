@@ -9,7 +9,7 @@ approaches.
 See the [**`Icon` component documentation**](#core/components/icon) (in the `@blueprintjs/core` package) for React API details.
 </div>
 
-@## Using static ES imports
+@## Using static imports
 
 Blueprint's icon prop APIs accept a JSX element. When you use this type, you are expected to supply an SVG React element imported
 from the icons package.
@@ -31,7 +31,7 @@ This approach has benefits and tradeoffs:
 - You do have to explicitly import each icon you use as an ES import.
 - You do have to take care to specify the correct icon size (if it is not the default 16px size) depending on the usage context.
 
-@## Using Blueprint's dynamic imports
+@## Using dynamic imports
 
 Blueprint's icon props APIs _also_ accept a type-safe icon name string literal. This approach has some benefits:
 
@@ -51,7 +51,8 @@ ReactDOM.render(
 ```
 
 These usability benefits do come at the cost of some some extra work for Blueprint (and some extra configuration for you, the
-Blueprint user) in order for these icons to be available at runtime. Let's take a look at this required configuration.
+Blueprint user) in order for these icons to be available at runtime. With the string literal API, **Blueprint code is
+importing icon modules for you**.  Let's take a look at this required configuration.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 
@@ -73,12 +74,12 @@ to its available APIs.
   ```ts
   Icons.loadAll({
       // specify a custom loader function optimized for loading all icons statically
-      loader: async (name, size) => {
+      loader: async name => {
           return (
               await import(
                   /* webpackInclude: /\.js$/ */
                   /* webpackMode: "weak" */
-                  `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
+                  `@blueprintjs/icons/lib/esm/generated/components/${name}`
               )
           ).default;
       },

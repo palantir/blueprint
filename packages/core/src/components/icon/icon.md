@@ -38,10 +38,10 @@ import { Icon } from "@blueprintjs/core";
 
 // icon name string literals are type checked
 <Icon icon="cross" />
-<Icon icon="globe" iconSize={20} />
+<Icon icon="globe" size={20} />
 
 // constants are provided for standard sizes
-<Icon icon="graph" iconSize={Icon.SIZE_LARGE} intent="primary" />
+<Icon icon="graph" size={Icon.SIZE_LARGE} intent="primary" />
 
 // you can also pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
@@ -50,7 +50,7 @@ import { Icon } from "@blueprintjs/core";
 Custom sizes are supported. The following React component:
 
 ```tsx
-<Icon icon="globe" iconSize={30} />
+<Icon icon="globe" size={30} />
 ```
 
 ...renders this HTML markup:

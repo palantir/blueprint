@@ -1,0 +1,66 @@
+/*
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import React from "react";
+import { SVGIconProps } from "../../svgIconProps";
+import { ICON_SIZE_STANDARD, ICON_SIZE_LARGE } from "../../constants";
+import * as Classes from "../../classes";
+
+export const {{pascalCase iconName}}: React.FC<SVGIconProps> = ({
+    className,
+    color,
+    size = ICON_SIZE_STANDARD,
+    title = "{{iconName}}",
+    htmlTitle = title,
+    tagName = "span",
+    ...htmlProps
+}) => {
+    const isLarge = size >= ICON_SIZE_LARGE;
+    const pixelGridSize =  isLarge ? ICON_SIZE_LARGE : ICON_SIZE_STANDARD;
+    const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
+    const path = (
+        <path
+            d={
+                isLarge
+                    ? "{{icon20pxPath}}"
+                    : "{{icon16pxPath}}"
+            }
+            fillRule="evenodd"
+        />
+    );
+
+    if (tagName === null) {
+        return (
+            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox} {...htmlProps}>
+                {title && <desc>{title}</desc>}
+                {path}
+            </svg>
+        );
+    } else {
+        return React.createElement(
+            tagName,
+            {
+                ...htmlProps,
+                className: `${className} ${Classes.ICON}`,
+                title: htmlTitle,
+            },
+            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox}>
+                {title && <desc>{title}</desc>}
+                {path}
+            </svg>
+        );
+    }
+};
+export default {{pascalCase iconName}};

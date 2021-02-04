@@ -42,12 +42,12 @@ const tagRenderers = {
 };
 
 Icons.loadAll({
-    loader: async (name, size) => {
+    loader: async name => {
         return (
             await import(
                 /* webpackInclude: /\.js$/ */
                 /* webpackMode: "weak" */
-                `@blueprintjs/icons/lib/esm/generated/${size}px/paths/${name}`
+                `@blueprintjs/icons/lib/esm/generated/components/${name}`
             )
         ).default;
     },

@@ -252,7 +252,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
                 <Icon
                     className={Classes.TAG_INPUT_ICON}
                     icon={leftIcon}
-                    iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
+                    size={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
                 />
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}
