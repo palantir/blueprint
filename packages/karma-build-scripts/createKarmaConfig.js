@@ -3,9 +3,10 @@
  */
 
 const path = require("path");
-const webpack = require("webpack");
-const coreManifest = require("../core/package.json");
+
 const webpackBuildScripts = require("@blueprintjs/webpack-build-scripts");
+
+const coreManifest = require("../core/package.json");
 
 const COVERAGE_PERCENT = 80;
 const COVERAGE_PERCENT_HIGH = 90;
@@ -63,7 +64,7 @@ module.exports = function createKarmaConfig(
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
-        frameworks: ["mocha"],
+        frameworks: ["mocha", "webpack"],
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
@@ -97,7 +98,7 @@ module.exports = function createKarmaConfig(
         // disable mocha reporter on circle for HUGE performance increase
         config.reporters = ["dots", "junit"];
         config.junitReporter = {
-            outputDir: outputDir,
+            outputDir,
             outputFile: "report.xml",
             useBrowserName: false,
         };
