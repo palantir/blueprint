@@ -79,7 +79,8 @@ module.exports = function createKarmaConfig(
     if (process.env.JUNIT_REPORT_PATH) {
         const outputDir = path.join(__dirname, "../..", process.env.JUNIT_REPORT_PATH, path.basename(dirname));
         console.info(`Karma report will appear in ${outputDir}`);
-        // disable mocha reporter on circle for HUGE performance increase
+        config.plugins.push(require("karma-junit-reporter"));
+        // disable other reporters on circle for performance boost
         config.reporters = ["dots", "junit"];
         config.junitReporter = {
             outputDir,
