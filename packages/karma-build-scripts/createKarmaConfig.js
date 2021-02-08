@@ -68,6 +68,13 @@ module.exports = function createKarmaConfig(
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
+        plugins: [
+            "karma-chrome-launcher",
+            "karma-mocha",
+            require("karma-helpful-reporter"),
+            "karma-sourcemap-loader",
+            "karma-webpack",
+        ],
         port: KARMA_SERVER_PORT,
         preprocessors: {
             [path.join(dirname, "test/**/*.ts")]: ["sourcemap"],
@@ -79,7 +86,7 @@ module.exports = function createKarmaConfig(
             html: "./coverage/html",
             cobertura: "./coverage/cobertura.xml",
         },
-        reporters: ["mocha"],
+        reporters: ["helpful"],
         singleRun: true,
         webpack: webpackBuildScripts.karmaConfig,
         webpackMiddleware: {
@@ -105,6 +112,7 @@ module.exports = function createKarmaConfig(
     }
 
     if (coverage) {
+        config.plugins.push("karma-coverage", "karma-remap-coverage");
         // enable coverage. these plugins are already configured above.
         config.reporters.push("coverage", "remap-coverage");
     }
