@@ -38,9 +38,9 @@ const plugins = [
                   async: false,
                   typescript: {
                       configFile: "src/tsconfig.json",
+                      useTypescriptIncrementalApi: true,
+                      memoryLimit: 4096,
                   },
-                  memoryLimit: 4096,
-                  useTypescriptIncrementalApi: true,
               }
             : {
                   typescript: {
