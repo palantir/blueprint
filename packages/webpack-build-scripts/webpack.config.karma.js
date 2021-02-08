@@ -4,6 +4,7 @@
 
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const path = require("path");
+const webpack = require("webpack");
 
 const REACT = process.env.REACT || "16";
 
@@ -74,6 +75,10 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.ProvidePlugin({
+            process: "process/browser",
+        }),
+
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: "test/tsconfig.json",

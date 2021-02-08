@@ -32,23 +32,6 @@ module.exports = function createKarmaConfig(
         client: {
             useIframe: false,
         },
-        coverageReporter: {
-            check: {
-                each: {
-                    lines: COVERAGE_PERCENT,
-                    statements: COVERAGE_PERCENT,
-                    excludes: coverageExcludes,
-                    overrides: coverageOverrides,
-                },
-            },
-            includeAllSources: true,
-            // save interim raw coverage report in memory. remapCoverage will output final report.
-            type: "in-memory",
-            watermarks: {
-                lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
-                statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
-            },
-        },
         files: [
             {
                 included: true,
@@ -77,14 +60,8 @@ module.exports = function createKarmaConfig(
         ],
         port: KARMA_SERVER_PORT,
         preprocessors: {
-            [path.join(dirname, "test/**/*.ts")]: ["sourcemap"],
-            [path.join(dirname, "test/index.ts")]: ["webpack", "sourcemap"],
-        },
-        // define where to save final remapped coverage reports
-        remapCoverageReporter: {
-            "text-summary": null,
-            html: "./coverage/html",
-            cobertura: "./coverage/cobertura.xml",
+            "src/index.ts": ["coverage"],
+            "test/index.ts": ["webpack", "sourcemap"],
         },
         reporters: ["helpful"],
         singleRun: true,
@@ -112,9 +89,31 @@ module.exports = function createKarmaConfig(
     }
 
     if (coverage) {
-        config.plugins.push("karma-coverage", "karma-remap-coverage");
-        // enable coverage. these plugins are already configured above.
-        config.reporters.push("coverage", "remap-coverage");
+        config.plugins.push("karma-coverage");
+        config.reporters.push("coverage");
+        config.coverageReporter = {
+            check: {
+                each: {
+                    lines: COVERAGE_PERCENT,
+                    statements: COVERAGE_PERCENT,
+                    excludes: coverageExcludes,
+                    overrides: coverageOverrides,
+                },
+            },
+            includeAllSources: true,
+            dir: "./coverage",
+            reporters: [
+                // reporters not supporting the `file` property
+                { type: "html", subdir: "html" },
+                // reporters supporting the `file` property, use `subdir` to directly
+                // output them in the `dir` directory
+                { type: "cobertura", subdir: ".", file: "cobertura.txt" },
+            ],
+            watermarks: {
+                lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
+                statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
+            },
+        };
     }
 
     return config;
