@@ -316,15 +316,16 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 isOpen,
             });
         } else {
-            const rawTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
+            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
 
-            if (rawTarget === undefined) {
+            if (childTarget === undefined) {
                 return null;
             }
 
-            const rawTabIndex = rawTarget.props.tabIndex;
-            if (rawTabIndex != null) {
-                targetProps.tabIndex = rawTabIndex;
+            // if there is a tabIndex set on the child target, we are going to promote it to the wrapper element
+            const childTargetTabIndex = childTarget.props.tabIndex;
+            if (childTargetTabIndex != null) {
+                targetProps.tabIndex = childTargetTabIndex;
             }
 
             const targetModifierClasses = {
@@ -334,10 +335,12 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
                 [CoreClasses.FILL]: fill,
             };
-            const clonedTarget: JSX.Element = React.cloneElement(rawTarget, {
-                className: classNames(rawTarget.props.className, targetModifierClasses),
+            const clonedTarget: JSX.Element = React.cloneElement(childTarget, {
+                className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip2 child when popover is open
-                disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip2) ? true : rawTarget.props.disabled,
+                disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip2) ? true : childTarget.props.disabled,
+                // avoid having two nested elements which are focussable via keyboard navigation
+                tabIndex: targetProps.tabIndex !== undefined ? -1 : undefined,
             });
             const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
             target = wrappedTarget;
@@ -390,7 +393,6 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 backdropProps={this.props.backdropProps}
                 canEscapeKeyClose={this.props.canEscapeKeyClose}
                 canOutsideClickClose={this.props.interactionKind === Popover2InteractionKind.CLICK}
-                className={this.props.portalClassName}
                 enforceFocus={this.props.enforceFocus}
                 hasBackdrop={this.props.hasBackdrop}
                 isOpen={isOpen}
@@ -402,6 +404,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 transitionDuration={this.props.transitionDuration}
                 transitionName={Classes.POPOVER2}
                 usePortal={this.props.usePortal}
+                portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
@@ -459,6 +462,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 ...modifiers?.flip,
                 options: {
                     boundary: this.props.boundary,
+                    rootBoundary: this.props.rootBoundary,
                     ...modifiers?.flip?.options,
                 },
             },
@@ -467,6 +471,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 ...modifiers?.preventOverflow,
                 options: {
                     boundary: this.props.boundary,
+                    rootBoundary: this.props.rootBoundary,
                     ...modifiers?.preventOverflow?.options,
                 },
             },
@@ -536,13 +541,23 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER2}`);
         const isEventFromSelf = eventPopover === this.popoverRef.current;
         const isEventPopoverCapturing = eventPopover?.classList.contains(Classes.POPOVER2_CAPTURING_DISMISS);
+
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
         const dismissElement = eventTarget.closest(
             `.${Classes.POPOVER2_DISMISS}, .${Classes.POPOVER2_DISMISS_OVERRIDE}`,
         );
-        const shouldDismiss = dismissElement != null && dismissElement.classList.contains(Classes.POPOVER2_DISMISS);
+        const shouldDismiss = dismissElement?.classList.contains(Classes.POPOVER2_DISMISS);
+
+        // dismiss selectors from the "V1" version of Popover in the core pacakge
+        // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover2
+        // this can be removed once Popover2 is merged into core in v4.0
+        const dismissElementV1 = eventTarget.closest(
+            `.${CoreClasses.POPOVER_DISMISS}, .${CoreClasses.POPOVER_DISMISS_OVERRIDE}`,
+        );
+        const shouldDismissV1 = dismissElementV1?.classList.contains(CoreClasses.POPOVER_DISMISS);
+
         const isDisabled = eventTarget.closest(`:disabled, .${CoreClasses.DISABLED}`) != null;
-        if (shouldDismiss && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
+        if ((shouldDismiss || shouldDismissV1) && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
             this.setOpenState(false, e);
         }
     };
