@@ -19,6 +19,7 @@
         "postcss": "^8.2.4",
         "postcss-discard-comments": "^4.0.2",
         "postcss-loader": "^5.0.0",
+        "process": "^0.11.10",
         "react-refresh": "^0.9.0",
         "sass-loader": "^11.0.0",
         "source-map-loader": "^2.0.0",
@@ -35,8 +36,5 @@
         "directory": "packages/webpack-build-scripts"
     },
     "author": "Palantir Technologies",
-    "license": "Apache-2.0",
-    "devDependencies": {
-        "process": "^0.11.10"
-    }
+    "license": "Apache-2.0"
 }

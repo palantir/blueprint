@@ -52,11 +52,13 @@ module.exports = function createKarmaConfig(
             "text/x-typescript": ["ts", "tsx"],
         },
         plugins: [
-            "karma-chrome-launcher",
-            "karma-mocha",
-            require("karma-helpful-reporter"),
-            "karma-sourcemap-loader",
             "karma-webpack",
+            "karma-mocha",
+            require("karma-coverage"),
+            require("karma-helpful-reporter"),
+            require("karma-junit-reporter"),
+            "karma-sourcemap-loader",
+            "karma-chrome-launcher",
         ],
         port: KARMA_SERVER_PORT,
         preprocessors: {
@@ -79,7 +81,6 @@ module.exports = function createKarmaConfig(
     if (process.env.JUNIT_REPORT_PATH) {
         const outputDir = path.join(__dirname, "../..", process.env.JUNIT_REPORT_PATH, path.basename(dirname));
         console.info(`Karma report will appear in ${outputDir}`);
-        config.plugins.push(require("karma-junit-reporter"));
         // disable other reporters on circle for performance boost
         config.reporters = ["dots", "junit"];
         config.junitReporter = {
@@ -90,7 +91,6 @@ module.exports = function createKarmaConfig(
     }
 
     if (coverage) {
-        config.plugins.push("karma-coverage");
         config.reporters.push("coverage");
         config.coverageReporter = {
             check: {
