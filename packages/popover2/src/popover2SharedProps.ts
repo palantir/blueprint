@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Boundary, Placement, placements, StrictModifiers } from "@popperjs/core";
+import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
 import { StrictModifier } from "react-popper";
 
 import { IOverlayableProps, IProps } from "@blueprintjs/core";
@@ -43,6 +43,8 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
     /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
      * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
+     *
+     * @see https://popper.js.org/docs/v2/utils/detect-overflow/#boundary
      */
     boundary?: Boundary;
 
@@ -150,6 +152,14 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
      * Mutually exclusive with children, targetClassName, and targetTagName.
      */
     renderTarget?: (props: IPopover2TargetProps & TProps) => JSX.Element;
+
+    /**
+     * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.
+     * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
+     *
+     * @see https://popper.js.org/docs/v2/utils/detect-overflow/#rootboundary
+     */
+    rootBoundary?: RootBoundary;
 
     /**
      * A space-delimited string of class names applied to the popover element.
