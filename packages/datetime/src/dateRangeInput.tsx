@@ -25,18 +25,16 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     getRef,
-    HTMLInputProps,
-    IInputGroupProps,
+    IInputGroupProps2,
     InputGroup,
     Intent,
     IPopoverProps,
     IProps,
-    IRefCallback,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
     Position,
+    refHandler,
 } from "@blueprintjs/core";
 
 import { DateRange } from "./common/dateRange";
@@ -59,12 +57,14 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
      * If `false`, clicking a selected date will clear the selection.
+     *
      * @default false
      */
     allowSingleDayRange?: boolean;
 
     /**
      * Whether the calendar popover should close when a date range is fully selected.
+     *
      * @default true
      */
     closeOnSelection?: boolean;
@@ -72,6 +72,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     /**
      * Whether displayed months in the calendar are contiguous.
      * If false, each side of the calendar can move independently to non-contiguous months.
+     *
      * @default true
      */
     contiguousCalendarMonths?: boolean;
@@ -84,6 +85,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
 
     /**
      * Whether the text inputs are non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -93,7 +95,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    endInputProps?: HTMLInputProps & IInputGroupProps;
+    endInputProps?: IInputGroupProps2;
 
     /**
      * Called when the user selects a day.
@@ -115,6 +117,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     /**
      * The error message to display when the selected dates overlap.
      * This can only happen when typing dates in the input field.
+     *
      * @default "Overlapping dates"
      */
     overlappingDatesMessage?: string;
@@ -127,6 +130,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
 
     /**
      * Whether the entire text field should be selected on focus.
+     *
      * @default false
      */
     selectAllOnFocus?: boolean;
@@ -136,12 +140,14 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
      * If an array is provided, the custom shortcuts will be displayed.
+     *
      * @default true
      */
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
      * Whether to show only a single month calendar.
+     *
      * @default false
      */
     singleMonthOnly?: boolean;
@@ -151,7 +157,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    startInputProps?: HTMLInputProps & IInputGroupProps;
+    startInputProps?: IInputGroupProps2;
 
     /**
      * The currently selected date range.
@@ -229,22 +235,21 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
-    private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
-    private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
-    private refHandlers = {
-        endInputRef: isRefObject<HTMLInputElement>(this.props.endInputProps.inputRef)
-            ? (this.endInputRef = this.props.endInputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.endInputRef = ref;
-                  (this.props.endInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-        startInputRef: isRefObject<HTMLInputElement>(this.props.startInputProps.inputRef)
-            ? (this.startInputRef = this.props.startInputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.startInputRef = ref;
-                  (this.props.startInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-    };
+    public startInputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
+    public endInputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
+    private handleStartInputRef = refHandler<HTMLInputElement, "startInputElement">(
+        this,
+        "startInputElement",
+        this.props.startInputProps.inputRef,
+    );
+
+    private handleEndInputRef = refHandler<HTMLInputElement, "endInputElement">(
+        this,
+        "endInputElement",
+        this.props.endInputProps.inputRef,
+    );
 
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
@@ -270,8 +275,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         super.componentDidUpdate(prevProps, prevState);
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
-        const startInputRef = getRef(this.startInputRef);
-        const endInputRef = getRef(this.endInputRef);
+        const startInputRef = getRef(this.startInputElement);
+        const endInputRef = getRef(this.endInputElement);
 
         const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, startInputRef);
         const shouldFocusEndInput = this.shouldFocusInputRef(isEndInputFocused, endInputRef);
@@ -329,6 +334,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
@@ -343,6 +349,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
                     {this.renderInputGroup(Boundary.START)}
                     {this.renderInputGroup(Boundary.END)}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     }
@@ -859,7 +866,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     };
 
     private getInputRef = (boundary: Boundary) => {
-        return boundary === Boundary.START ? this.refHandlers.startInputRef : this.refHandlers.endInputRef;
+        return boundary === Boundary.START ? this.handleStartInputRef : this.handleEndInputRef;
     };
 
     private getStateKeysAndValuesForBoundary = (boundary: Boundary): IStateKeysAndValuesObject => {

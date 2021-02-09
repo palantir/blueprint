@@ -32,10 +32,13 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
-export interface IButtonProps extends IActionProps, IElementRefProps<any> {
+export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
+    extends IActionProps,
+        IElementRefProps<E> {
     /**
      * If set to `true`, the button will display in an active state.
      * This is equivalent to setting `className={Classes.ACTIVE}`.
+     *
      * @default false
      */
     active?: boolean;
@@ -45,6 +48,7 @@ export interface IButtonProps extends IActionProps, IElementRefProps<any> {
      * within the button. Passing `"left"` or `"right"` will align the button
      * text to that side and push `icon` and `rightIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
+     *
      * @default Alignment.CENTER
      */
     alignText?: Alignment;
@@ -58,6 +62,7 @@ export interface IButtonProps extends IActionProps, IElementRefProps<any> {
     /**
      * If set to `true`, the button will display a centered loading spinner instead of its contents.
      * The width of the button is not affected by the value of this prop.
+     *
      * @default false
      */
     loading?: boolean;
@@ -77,17 +82,23 @@ export interface IButtonProps extends IActionProps, IElementRefProps<any> {
     /**
      * HTML `type` attribute of button. Accepted values are `"button"`, `"submit"`, and `"reset"`.
      * Note that this prop has no effect on `AnchorButton`; it only affects `Button`.
+     *
      * @default "button"
      */
     type?: "submit" | "reset" | "button";
 }
 
+export type IAnchorButtonProps = IButtonProps<HTMLAnchorElement>;
+
 export interface IButtonState {
     isActive: boolean;
 }
 
-export abstract class AbstractButton<H extends React.HTMLAttributes<HTMLElement>> extends AbstractPureComponent2<
-    IButtonProps & H,
+export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorElement> extends AbstractPureComponent2<
+    IButtonProps<E> &
+        (E extends HTMLButtonElement
+            ? React.ButtonHTMLAttributes<HTMLButtonElement>
+            : React.AnchorHTMLAttributes<HTMLAnchorElement>),
     IButtonState
 > {
     public state = {

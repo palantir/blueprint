@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
 
 $palette-spacing: $pt-grid-size * 2;
 $palette-border-radius: 4px;
@@ -10,7 +10,7 @@ $swatch-height: $pt-input-height-large;
 $swatch-hover-offset: -4px;
 
 $swatch-hover-message: "Click to copy hex code";
-$swatch-copied-message: "#{$pt-icon-tick} Copied to clipboard";
+$swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied to clipboard";
 
 @function palette-width($columns) {
   @return (102% - 2% * $columns) / $columns;

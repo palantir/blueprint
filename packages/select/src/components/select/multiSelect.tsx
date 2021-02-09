@@ -29,8 +29,11 @@ import {
     TagInput,
     TagInputAddMethod,
 } from "@blueprintjs/core";
+
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+
+// N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /**
@@ -38,6 +41,16 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
      */
     fill?: boolean;
+
+    /**
+     * Callback invoked when an item is removed from the selection by
+     * removing its tag in the TagInput. This is generally more useful than
+     * `tagInputProps.onRemove`  because it receives the removed value instead of
+     * the value's rendered `ReactNode` tag.
+     *
+     * It is not recommended to supply _both_ this prop and `tagInputProps.onRemove`.
+     */
+    onRemove?: (value: T, index: number) => void;
 
     /**
      * If true, the component waits until a keydown event in the TagInput
@@ -55,6 +68,7 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
     /**
      * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
+     *
      * @default "Search..."
      */
     placeholder?: string;
@@ -95,8 +109,11 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
     };
 
     private TypedQueryList = QueryList.ofType<T>();
+
     private input: HTMLInputElement | null = null;
+
     private queryList: QueryList<T> | null = null;
+
     private refHandlers = {
         input: (ref: HTMLInputElement | null) => {
             this.input = ref;
@@ -142,6 +159,7 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
         };
 
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 canEscapeKeyClose={true}
@@ -166,14 +184,17 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
                         inputRef={this.refHandlers.input}
                         inputProps={inputProps}
                         inputValue={listProps.query}
+                        /* eslint-disable-next-line react/jsx-no-bind */
                         onAdd={handleTagInputAdd}
                         onInputChange={listProps.handleQueryChange}
+                        onRemove={this.handleTagRemove}
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     };
@@ -213,6 +234,12 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
             this.queryList.scrollActiveItemIntoView();
         }
         this.props.popoverProps?.onOpened?.(node);
+    };
+
+    private handleTagRemove = (tag: React.ReactNode, index: number) => {
+        const { selectedItems = [], onRemove, tagInputProps } = this.props;
+        onRemove?.(selectedItems[index], index);
+        tagInputProps?.onRemove?.(tag, index);
     };
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {

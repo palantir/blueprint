@@ -3,8 +3,6 @@
  */
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
-const fs = require("fs");
-const path = require("path");
 
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
@@ -18,6 +16,8 @@ module.exports = function (config) {
             // deprecations
             "src/common/utils/functionUtils.ts",
             "src/common/utils/safeInvokeMember.ts",
+            // HACKHACK: for karma upgrade only
+            "src/common/refs.ts",
         ],
     });
     config.set(baseConfig);

@@ -16,8 +16,10 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch, Tooltip } from "@blueprintjs/core";
+import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Tooltip2 } from "@blueprintjs/popover2";
+
 import { IBlueprintExampleData } from "../../tags/types";
 
 export interface IDialogExampleState {
@@ -39,9 +41,13 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+
     private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
+
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
+
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
@@ -85,9 +91,9 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
                     </div>
                     <div className={Classes.DIALOG_FOOTER}>
                         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                            <Tooltip content="This button is hooked up to close the dialog.">
+                            <Tooltip2 content="This button is hooked up to close the dialog.">
                                 <Button onClick={this.handleClose}>Close</Button>
-                            </Tooltip>
+                            </Tooltip2>
                             <AnchorButton
                                 intent={Intent.PRIMARY}
                                 href="https://www.palantir.com/palantir-foundry/"
@@ -123,5 +129,6 @@ export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintE
     }
 
     private handleOpen = () => this.setState({ isOpen: true });
+
     private handleClose = () => this.setState({ isOpen: false });
 }

@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
 import { Popover } from "../popover/popover";
@@ -64,6 +65,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
 
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
+        /* eslint-disable deprecation/deprecation */
         return (
             <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
                 <Popover
@@ -84,6 +86,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
                 />
             </div>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme = false) {

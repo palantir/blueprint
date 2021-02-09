@@ -143,6 +143,27 @@ jobs:
       JUNIT_REPORT_PATH: reports
       REACT: 15 # use React 15 for this job
 
+  test-react-16-only:
+    # test packages which only work with React 16
+    docker: *docker-node-browsers
+    environment:
+      JUNIT_REPORT_PATH: reports
+    parallelism: 1
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: mkdir ./reports
+      - run:
+          command: |
+            case $CIRCLE_NODE_INDEX in \
+            0) yarn lerna run --scope "@blueprintjs/popover2" test:karma ;; \
+            esac
+          when: always
+      - store_test_results: { path: ./reports }
+      - store_artifacts: { path: ./reports }
+
+
   test-iso-react-16: &test-iso
     docker: *docker-node-lts
     environment:
@@ -203,6 +224,8 @@ workflows:
           requires: [compile]
       - test-react-16:
           requires: [compile]
+      - test-react-16-only:
+          requires: [compile]
       - test-iso-react-15:
           requires: [compile]
       - test-iso-react-16:
@@ -216,6 +239,7 @@ workflows:
               lint,
               test-react-15,
               test-react-16,
+              test-react-16-only,
               test-iso-react-15,
               test-iso-react-16,
             ]

@@ -1,7 +1,14 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
+@import "icon-mixins";
+
+$icon-classes: (
+  ".#{$ns}-icon",
+  ".#{$ns}-icon-standard",
+  ".#{$ns}-icon-large"
+) !default;
 
 // the icon class which will contain an SVG icon
 .#{$ns}-icon {
@@ -24,6 +31,9 @@
   > svg {
     // prevent extra vertical whitespace
     display: block;
+    // paths parsed by generate-icon-paths.js are mirrored vertically, so we need
+    // to flip them upright here
+    transform: scaleY(-1);
 
     // inherit text color unless explicit fill is set
     &:not([fill]) {
@@ -61,7 +71,7 @@ span.#{$ns}-icon-large {
 
 // only apply icon font styles when <svg> image is not present
 span.#{$ns}-icon:empty {
-  font-family: $icons20-family;
+  font-family: $blueprint-icons-20-font;
   font-size: inherit;
   font-style: normal;
   font-weight: 400;
@@ -72,8 +82,8 @@ span.#{$ns}-icon:empty {
   }
 }
 
-@each $name, $content in $icons {
+@each $name, $codepoint in $blueprint-icon-codepoints {
   .#{$ns}-icon-#{$name}::before {
-    content: $content;
+    content: $codepoint;
   }
 }

@@ -48,6 +48,7 @@ export interface ICollapsibleListProps extends IProps {
 
     /**
      * Which direction the items should collapse from: start or end of the children.
+     *
      * @default Boundary.START
      */
     collapseFrom?: Boundary;
@@ -59,6 +60,7 @@ export interface ICollapsibleListProps extends IProps {
 
     /**
      * Exact number of visible items.
+     *
      * @default 3
      */
     visibleItemCount?: number;
@@ -95,6 +97,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
         let collapsedPopover: JSX.Element | undefined;
         if (collapsedChildren.length > 0) {
             const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
+            /* eslint-disable deprecation/deprecation */
             collapsedPopover = (
                 <li className={this.props.visibleItemClassName}>
                     <Popover
@@ -106,6 +109,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
                     </Popover>
                 </li>
             );
+            /* eslint-enable deprecation/deprecation */
         }
 
         return (

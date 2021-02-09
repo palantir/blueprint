@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
+
+import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";

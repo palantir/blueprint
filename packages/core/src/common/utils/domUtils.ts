@@ -24,6 +24,7 @@ export function elementIsOrContains(element: HTMLElement, testElement: HTMLEleme
  * Throttle an event on an EventTarget by wrapping it in a
  * `requestAnimationFrame` call. Returns the event handler that was bound to
  * given eventName so you can clean up after yourself.
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
@@ -41,6 +42,7 @@ export interface IThrottledReactEventOptions {
 /**
  * Throttle a callback by wrapping it in a `requestAnimationFrame` call. Returns
  * the throttled function.
+ *
  * @see https://www.html5rocks.com/en/tutorials/speed/animations/
  */
 export function throttleReactEventCallback<E extends React.SyntheticEvent = React.SyntheticEvent>(

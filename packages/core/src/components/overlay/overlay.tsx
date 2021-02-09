@@ -16,12 +16,12 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { findDOMNode } from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 // tslint:disable-next-line no-submodule-imports
 import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
-import { findDOMNode } from "react-dom";
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";
@@ -30,12 +30,14 @@ import { Portal } from "../portal/portal";
 export interface IOverlayableProps extends IOverlayLifecycleProps {
     /**
      * Whether the overlay should acquire application focus when it first opens.
+     *
      * @default true
      */
     autoFocus?: boolean;
 
     /**
      * Whether pressing the `esc` key should invoke `onClose`.
+     *
      * @default true
      */
     canEscapeKeyClose?: boolean;
@@ -45,6 +47,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * to focus an element outside the overlay and this prop is enabled, then the overlay will
      * immediately bring focus back to itself. If you are nesting overlay components, either disable
      * this prop on the "outermost" overlays or mark the nested ones `usePortal={false}`.
+     *
      * @default true
      */
     enforceFocus?: boolean;
@@ -54,6 +57,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * to the DOM when the overlay is opened for the first time; otherwise this happens when the
      * component mounts. Lazy mounting provides noticeable performance improvements if you have lots
      * of overlays at once, such as on each row of a table.
+     *
      * @default true
      */
     lazy?: boolean;
@@ -63,6 +67,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * This is used by React `CSSTransition` to know when a transition completes and must match
      * the duration of the animation in CSS. Only set this prop if you override Blueprint's default
      * transitions with new transitions of a different length.
+     *
      * @default 300
      */
     transitionDuration?: number;
@@ -77,6 +82,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      *
      * Set this prop to `false` on nested overlays (such as `Dialog` or `Popover`) to ensure that they
      * are rendered above their parents.
+     *
      * @default true
      */
     usePortal?: boolean;
@@ -90,6 +96,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
     /**
      * The container element into which the overlay renders its contents, when `usePortal` is `true`.
      * This prop is ignored if `usePortal` is `false`.
+     *
      * @default document.body
      */
     portalContainer?: HTMLElement;
@@ -143,12 +150,14 @@ export interface IBackdropProps {
     /**
      * Whether clicking outside the overlay element (either on backdrop when present or on document)
      * should invoke `onClose`.
+     *
      * @default true
      */
     canOutsideClickClose?: boolean;
 
     /**
      * Whether a container-spanning backdrop element should be rendered behind the contents.
+     *
      * @default true
      */
     hasBackdrop?: boolean;
@@ -164,6 +173,7 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
     /**
      * Name of the transition for internal `CSSTransition`.
      * Providing your own name here will require defining new CSS transition properties.
+     *
      * @default Classes.OVERLAY
      */
     transitionName?: string;
@@ -200,6 +210,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
     }
 
     private static openStack: Overlay[] = [];
+
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
 
     public state: IOverlayState = {
@@ -208,7 +219,10 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     public containerElement: HTMLElement | null = null;
+
     private refHandlers = {
+        // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
+        /* eslint-disable-next-line react/no-find-dom-node */
         container: (ref: TransitionGroup) => (this.containerElement = findDOMNode(ref) as HTMLElement),
     };
 
@@ -322,7 +336,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             typeof child === "object" ? (
                 React.cloneElement(child as React.ReactElement, {
                     className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
-                    tabIndex: 0,
+                    tabIndex: this.props.enforceFocus || this.props.autoFocus ? 0 : undefined,
                 })
             ) : (
                 <span className={Classes.OVERLAY_CONTENT}>{child}</span>
@@ -331,9 +345,9 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
         // a breaking change in react-transition-group types requires us to be explicit about the type overload here,
         // using a technique similar to Select.ofType() in @blueprintjs/select
-        const CSSTransitionImplicit = CSSTransition as new (props: CSSTransitionProps<undefined>) => CSSTransition<
-            undefined
-        >;
+        const CSSTransitionImplicit = CSSTransition as new (
+            props: CSSTransitionProps<undefined>,
+        ) => CSSTransition<undefined>;
 
         return (
             <CSSTransitionImplicit

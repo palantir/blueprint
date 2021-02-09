@@ -22,7 +22,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Alignment, Classes } from "../../common";
+import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 
 export interface IControlProps extends IProps, HTMLInputProps {
@@ -30,6 +30,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
 
     /**
      * Alignment of the indicator within container.
+     *
      * @default Alignment.LEFT
      */
     alignIndicator?: Alignment;
@@ -47,7 +48,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    inputRef?: IRef<HTMLInputElement>;
 
     /** Whether the control should appear as an inline element. */
     inline?: boolean;
@@ -146,6 +147,7 @@ export interface ISwitchProps extends IControlProps {
      * Text to display inside the switch indicator when checked.
      * If `innerLabel` is provided and this prop is omitted, then `innerLabel`
      * will be used for both states.
+     *
      * @default innerLabel
      */
     innerLabelChecked?: string;
@@ -243,7 +245,9 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
     };
 
     // must maintain internal reference for `indeterminate` support
-    private input: HTMLInputElement | null = null;
+    public input: HTMLInputElement | null = null;
+
+    private handleInputRef: IRef<HTMLInputElement> = refHandler(this, "input", this.props.inputRef);
 
     public render() {
         const { defaultIndeterminate, indeterminate, ...controlProps } = this.props;
@@ -280,10 +284,5 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
         }
         // otherwise wait for props change. always invoke handler.
         this.props.onChange?.(evt);
-    };
-
-    private handleInputRef = (ref: HTMLInputElement | null) => {
-        this.input = ref;
-        this.props.inputRef?.(ref);
     };
 }

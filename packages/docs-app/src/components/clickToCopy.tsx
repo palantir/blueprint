@@ -23,6 +23,7 @@ import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 export interface IClickToCopyProps extends IProps, HTMLDivProps {
     /**
      * Additional class names to apply after value has been copied
+     *
      * @default "docs-clipboard-copied"
      */
     copiedClassName?: string;

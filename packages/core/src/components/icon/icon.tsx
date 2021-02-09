@@ -19,7 +19,9 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+import { iconNameToPathsRecordKey } from "./iconUtils";
 
 export { IconName };
 
@@ -61,6 +63,7 @@ export interface IIconProps extends IIntentProps, IProps {
     /**
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
      * images, and chooses the appropriate resolution based on this prop.
+     *
      * @default Icon.SIZE_STANDARD = 16
      */
     iconSize?: number;
@@ -70,6 +73,7 @@ export interface IIconProps extends IIntentProps, IProps {
 
     /**
      * HTML tag to use for the rendered element.
+     *
      * @default "span"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -88,6 +92,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
+
     public static readonly SIZE_LARGE = 20;
 
     public render(): JSX.Element | null {
@@ -114,7 +119,6 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
-        // eslint-disable-next-line deprecation/deprecation
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
@@ -133,12 +137,12 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
     }
 
     /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
-    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
+    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element | null {
         const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathStrings = svgPathsRecord[iconName];
-        if (pathStrings == null) {
+        const pathString = svgPathsRecord[iconNameToPathsRecordKey(iconName)];
+        if (pathString == null) {
             return null;
         }
-        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+        return <path d={pathString} fillRule="evenodd" />;
     }
 }

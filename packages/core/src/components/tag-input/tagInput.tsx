@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, Keys, Utils } from "../../common";
+import { AbstractPureComponent2, Classes, getRef, IRef, IRefObject, Keys, refHandler, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -37,6 +37,7 @@ export interface ITagInputProps extends IIntentProps, IProps {
     /**
      * If true, `onAdd` will be invoked when the input loses focus.
      * Otherwise, `onAdd` is only invoked when `enter` is pressed.
+     *
      * @default false
      */
     addOnBlur?: boolean;
@@ -58,6 +59,7 @@ export interface ITagInputProps extends IIntentProps, IProps {
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
      * if appropriate.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -153,6 +155,7 @@ export interface ITagInputProps extends IIntentProps, IProps {
     /**
      * Separator pattern used to split input text into multiple values. Default value splits on commas and newlines.
      * Explicit `false` value disables splitting (note that `onAdd` will still receive an array of length 1).
+     *
      * @default /[,\n\r]/
      */
     separator?: string | RegExp | false;
@@ -219,13 +222,9 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         isInputFocused: false,
     };
 
-    private inputElement: HTMLInputElement | null = null;
-    private refHandlers = {
-        input: (ref: HTMLInputElement) => {
-            this.inputElement = ref;
-            this.props.inputRef?.(ref);
-        },
-    };
+    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
+    private handleRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     public render() {
         const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
@@ -267,7 +266,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
                         onKeyUp={this.handleInputKeyUp}
                         onPaste={this.handleInputPaste}
                         placeholder={resolvedPlaceholder}
-                        ref={this.refHandlers.input}
+                        ref={this.handleRef}
                         className={classNames(Classes.INPUT_GHOST, inputProps?.className)}
                         disabled={disabled}
                     />
@@ -348,9 +347,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     }
 
     private handleContainerClick = () => {
-        if (this.inputElement != null) {
-            this.inputElement.focus();
-        }
+        getRef(this.inputElement)?.focus();
     };
 
     private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {

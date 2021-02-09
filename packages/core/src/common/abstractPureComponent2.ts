@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+
 import { isNodeEnv } from "./utils";
 
 /**
@@ -25,8 +26,11 @@ import { isNodeEnv } from "./utils";
 export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
     // unsafe lifecycle method
     public componentWillUpdate: never;
+
     public componentWillReceiveProps: never;
+
     public componentWillMount: never;
+
     // this should be static, not an instance method
     public getDerivedStateFromProps: never;
 
@@ -35,6 +39,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
 
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];
+
     private requestIds: number[] = [];
 
     constructor(props: P, context?: any) {
@@ -58,6 +63,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     /**
      * Request an animation frame and remember its ID.
      * All pending requests will be canceled when component unmounts.
+     *
      * @returns a "cancel" function that will cancel the request when invoked.
      */
     public requestAnimationFrame(callback: () => void) {
@@ -69,6 +75,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     /**
      * Set a timeout and remember its ID.
      * All pending timeouts will be cleared when component unmounts.
+     *
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {

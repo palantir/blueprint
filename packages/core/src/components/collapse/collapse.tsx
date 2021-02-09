@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
@@ -24,12 +25,14 @@ export interface ICollapseProps extends IProps {
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
+     *
      * @default "div"
      */
     component?: React.ElementType;
 
     /**
      * Whether the component is open or closed.
+     *
      * @default false
      */
     isOpen?: boolean;
@@ -37,6 +40,7 @@ export interface ICollapseProps extends IProps {
     /**
      * Whether the child components will remain mounted when the `Collapse` is closed.
      * Setting to true may improve performance by avoiding re-mounting children.
+     *
      * @default false
      */
     keepChildrenMounted?: boolean;
@@ -46,6 +50,7 @@ export interface ICollapseProps extends IProps {
      * the duration of the animation in CSS. Only set this prop if you override
      * Blueprint's default transitions with new transitions of a different
      * length.
+     *
      * @default 200
      */
     transitionDuration?: number;
@@ -203,11 +208,14 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
     public componentDidMount() {
         this.forceUpdate();
+        // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
+        /* eslint-disable react/no-did-mount-set-state */
         if (this.props.isOpen) {
             this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
         } else {
             this.setState({ animationState: AnimationStates.CLOSED, height: "0px" });
         }
+        /* eslint-disable react/no-did-mount-set-state */
     }
 
     public componentDidUpdate() {

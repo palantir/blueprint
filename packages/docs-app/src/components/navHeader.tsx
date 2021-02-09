@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-import {
-    Classes,
-    Hotkey,
-    Hotkeys,
-    HotkeysTarget,
-    Menu,
-    MenuItem,
-    NavbarHeading,
-    Popover,
-    Position,
-    Tag,
-} from "@blueprintjs/core";
-import { NavButton } from "@blueprintjs/docs-theme";
 import { INpmPackage } from "@documentalist/client";
 import * as React from "react";
+
+import { Classes, Hotkey, Hotkeys, HotkeysTarget, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
+import { NavButton } from "@blueprintjs/docs-theme";
+import { Popover2 } from "@blueprintjs/popover2";
+
 import { Logo } from "./logo";
 
 export interface INavHeaderProps {
@@ -95,12 +87,11 @@ export class NavHeader extends React.PureComponent<INavHeaderProps> {
             .filter(v => +major(v) > 0)
             .map(v => <MenuItem href={v === current ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />);
         return (
-            <Popover position={Position.BOTTOM}>
+            <Popover2 content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">
                 <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
                     v{major(current)}
                 </Tag>
-                <Menu className="docs-version-list">{releaseItems}</Menu>
-            </Popover>
+            </Popover2>
         );
     }
 

@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Button, H5, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IntentSelect } from "./common/intentSelect";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
@@ -61,13 +62,21 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
     };
 
     private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
+
     private handleAddOnPasteChange = handleBooleanChange(addOnPaste => this.setState({ addOnPaste }));
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+
     private handleLeftIconChange = handleBooleanChange(leftIcon => this.setState({ leftIcon }));
+
     private handleTagIntentsChange = handleBooleanChange(tagIntents => this.setState({ tagIntents }));
+
     private handleTagMinimalChange = handleBooleanChange(tagMinimal => this.setState({ tagMinimal }));
 
     public render() {

@@ -17,6 +17,7 @@
 /* eslint-disable max-classes-per-file */
 
 import { expect } from "chai";
+
 import { IKeyAllowlist, IKeyDenylist } from "../../../src/common/utils";
 import * as CompareUtils from "../../../src/common/utils/compareUtils";
 

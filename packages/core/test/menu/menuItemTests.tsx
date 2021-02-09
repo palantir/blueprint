@@ -66,6 +66,7 @@ describe("MenuItem", () => {
                 <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(wrapper.find(Popover).prop("disabled"));
     });
 
@@ -97,11 +98,13 @@ describe("MenuItem", () => {
     it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
         const handleClose = spy();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
+        /* eslint-disable deprecation/deprecation */
         const wrapper = mount(
             <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
                 <Button />
             </Popover>,
         );
+        /* eslint-enable deprecation/deprecation */
         wrapper.find(MenuItem).find("a").simulate("click");
         assert.isTrue(handleClose.notCalled);
     });
@@ -119,12 +122,14 @@ describe("MenuItem", () => {
                 <MenuItem text="two" />
             </MenuItem>,
         );
+        /* eslint-disable deprecation/deprecation */
         assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
             wrapper.find(Popover).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
             0,
         );
         assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
+        /* eslint-enable deprecation/deprecation */
     });
 
     it("multiline prop determines if long content is ellipsized", () => {
@@ -151,6 +156,7 @@ describe("MenuItem", () => {
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
+    /* eslint-disable-next-line deprecation/deprecation */
     return wrapper.find(Popover).prop("content") as React.ReactElement<
         IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }
     >;

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/tslint-config",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "TSLint configuration for @blueprintjs packages",
     "scripts": {
         "compile": "tsc -p ./src",
@@ -12,6 +12,9 @@
     },
     "peerDependencies": {
         "tslint": "^6.0.0"
+    },
+    "devDependencies": {
+        "tslint": "~6.1.3"
     },
     "repository": {
         "type": "git",

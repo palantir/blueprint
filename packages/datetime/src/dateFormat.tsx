@@ -20,6 +20,7 @@ import { IDatePickerBaseProps } from "./datePickerCore";
 export interface IDateFormatProps {
     /**
      * The error message to display when the date selected is invalid.
+     *
      * @default "Invalid date"
      */
     invalidDateMessage?: string;
@@ -31,6 +32,7 @@ export interface IDateFormatProps {
 
     /**
      * The error message to display when the date selected is out of range.
+     *
      * @default "Out of range"
      */
     outOfRangeMessage?: string;

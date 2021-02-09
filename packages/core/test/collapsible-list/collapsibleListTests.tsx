@@ -47,6 +47,7 @@ describe("<CollapsibleList>", () => {
             },
             dropdownTarget: <strong />,
         });
+        /* eslint-disable-next-line deprecation/deprecation */
         const popover = list.find(Popover);
         assert.strictEqual(popover.prop("position"), Position.TOP_LEFT);
     });
@@ -59,6 +60,7 @@ describe("<CollapsibleList>", () => {
                 .childAt(0) // li
                 .childAt(0) // Popover
                 .type(),
+            /* eslint-disable-next-line deprecation/deprecation */
             Popover,
         );
     });
@@ -72,6 +74,7 @@ describe("<CollapsibleList>", () => {
                 .last() // li
                 .childAt(0) // Popover
                 .type(),
+            /* eslint-disable-next-line deprecation/deprecation */
             Popover,
         );
     });
@@ -152,11 +155,13 @@ describe("<CollapsibleList>", () => {
     }
 
     function renderCollapsibleList(broodSize: number, props?: Partial<ICollapsibleListProps>) {
+        /* eslint-disable deprecation/deprecation */
         return mount(
             <CollapsibleList dropdownTarget={<button />} visibleItemRenderer={renderItem} {...props}>
                 {withItems(broodSize)}
             </CollapsibleList>,
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     function assertListItems(list: ReactWrapper<any>, expVisibleCount: number, expCollapsedCount: number) {

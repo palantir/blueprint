@@ -103,10 +103,12 @@ export class PopoverPositionExample extends React.PureComponent<IExampleProps> {
             </div>
         );
 
+        /* eslint-disable deprecation/deprecation */
         return (
             <Popover content={content} position={position} usePortal={false}>
                 <Button className={Classes.MONOSPACE_TEXT}>{buttonLabel}</Button>
             </Popover>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 }

@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
@@ -24,6 +25,7 @@ export interface INavbarGroupProps extends IProps, HTMLDivProps {
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.
+     *
      * @default Alignment.LEFT
      */
     align?: Alignment;

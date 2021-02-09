@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+
 import { IElementRefProps } from "../../common";
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
@@ -23,6 +24,7 @@ function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
 ): React.FunctionComponent<React.HTMLProps<E> & IElementRefProps<E>> {
+    /* eslint-disable-next-line react/display-name */
     return props => {
         const { className, elementRef, ...htmlProps } = props;
         return React.createElement(tagName, {

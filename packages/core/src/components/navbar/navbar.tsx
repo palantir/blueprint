@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 import { NavbarDivider } from "./navbarDivider";
@@ -40,7 +41,9 @@ export class Navbar extends AbstractPureComponent2<INavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
     public static Divider = NavbarDivider;
+
     public static Group = NavbarGroup;
+
     public static Heading = NavbarHeading;
 
     public render() {

@@ -28,8 +28,8 @@ import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTargetComponent extends React.Component {
     render(): React.ReactElement<any> | null | undefined;
-    renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element | undefined;
-    onContextMenuClose?(): void;
+    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
+    onContextMenuClose?: () => void;
 }
 
 export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetComponent>>(WrappedComponent: T) {
@@ -62,6 +62,8 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                 if (isFunction(this.renderContextMenu)) {
                     const menu = this.renderContextMenu(e);
                     if (menu != null) {
+                        // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
+                        /* eslint-disable-next-line react/no-find-dom-node */
                         const darkTheme = isDarkTheme(ReactDOM.findDOMNode(this));
                         e.preventDefault();
                         ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, this.onContextMenuClose, darkTheme);

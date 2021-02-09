@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Button, Intent, Popover, PopoverInteractionKind, Position } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { FileMenu } from "./common/fileMenu";
 
 export class PopoverInteractionKindExample extends React.PureComponent<IExampleProps> {
@@ -38,6 +39,8 @@ export class PopoverInteractionKindExample extends React.PureComponent<IExampleP
         // MenuItem's default shouldDismissPopover={true} behavior is confusing
         // in this example, since it introduces an additional way popovers can
         // close. set it to false here for clarity.
+
+        /* eslint-disable deprecation/deprecation */
         return (
             <Popover
                 content={<FileMenu shouldDismissPopover={false} />}
@@ -48,5 +51,6 @@ export class PopoverInteractionKindExample extends React.PureComponent<IExampleP
                 <Button intent={Intent.PRIMARY}>{buttonLabel}</Button>
             </Popover>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 }
