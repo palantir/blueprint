@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
@@ -54,7 +54,7 @@ describe("Breadcrumb", () => {
     });
 
     it("renders an icon if one is provided", () => {
-        assert.lengthOf(shallow(<Breadcrumb />).find(Icon), 0);
-        assert.lengthOf(shallow(<Breadcrumb icon={<FolderClose />} />).find(FolderClose), 1);
+        assert.lengthOf(mount(<Breadcrumb />).find(Icon), 0);
+        assert.lengthOf(mount(<Breadcrumb icon={<FolderClose />} />).find(FolderClose), 1);
     });
 });
