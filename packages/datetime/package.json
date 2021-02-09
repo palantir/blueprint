@@ -31,7 +31,7 @@
         "test:typeCheck": "tsc -p ./test",
         "test:iso": "mocha test/isotest.js",
         "test:karma": "karma start",
-        "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
+        "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
