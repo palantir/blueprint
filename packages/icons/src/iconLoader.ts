@@ -86,7 +86,10 @@ export class Icons {
      * Get the icon SVG component.
      */
     public static getComponent(icon: IconName): IconComponent | undefined {
-        if (!singleton.loadedIcons.has(icon)) {
+        if (!this.isValidIconName(icon)) {
+            // don't warn, since this.load() will have warned already
+            return undefined;
+        } else if (!singleton.loadedIcons.has(icon)) {
             console.error(`[Blueprint] Icon '${icon}' not loaded yet, did you call Icons.load('${icon}')?`);
             return undefined;
         }
@@ -95,7 +98,10 @@ export class Icons {
     }
 
     private static async loadImpl(icon: IconName, options?: IconLoaderOptions) {
-        if (singleton.loadedIcons.has(icon)) {
+        if (!this.isValidIconName(icon)) {
+            console.error(`[Blueprint] Unknown icon '${icon}'`);
+            return;
+        } else if (singleton.loadedIcons.has(icon)) {
             // already loaded, no-op
             return;
         }
@@ -110,6 +116,11 @@ export class Icons {
         } catch (e) {
             console.error(`[Blueprint] Unable to load icon '${icon}'`, e);
         }
+    }
+
+    private static isValidIconName(icon: IconName): boolean {
+        const allIcons: IconName[] = Object.values(IconNames);
+        return allIcons.indexOf(icon) >= 0;
     }
 }
 

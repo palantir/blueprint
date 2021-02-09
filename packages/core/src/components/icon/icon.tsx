@@ -126,7 +126,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
         } else {
             return (
                 <Component
-                    className={classNames(Classes.ICON, Classes.intentClass(intent), className)}
+                    className={classNames(Classes.intentClass(intent), className)}
                     color={color}
                     size={size}
                     tagName={tagName}
