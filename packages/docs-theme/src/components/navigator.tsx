@@ -18,7 +18,8 @@ import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
 
-import { Classes, Icon, IInputGroupProps2, MenuItem } from "@blueprintjs/core";
+import { Classes, IInputGroupProps2, MenuItem } from "@blueprintjs/core";
+import { CaretRight } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/utils";
@@ -100,7 +101,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
 
         // insert caret-right between each path element
         const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
-            elems.push(el, <Icon key={el} icon="caret-right" />);
+            elems.push(el, <CaretRight key={el} />);
             return elems;
         }, []);
         pathElements.pop();

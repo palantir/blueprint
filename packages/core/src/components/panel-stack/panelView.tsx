@@ -17,6 +17,8 @@
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
+import { ChevronLeft } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
@@ -81,7 +83,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
         return (
             <Button
                 className={Classes.PANEL_STACK_HEADER_BACK}
-                icon="chevron-left"
+                icon={<ChevronLeft />}
                 minimal={true}
                 onClick={this.handleClose}
                 small={true}

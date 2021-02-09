@@ -64,7 +64,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
 
         return (
             <Example options={options} {...this.props}>
-                <Icon icon={icon} iconSize={iconSize} intent={intent} />
+                <Icon icon={icon} size={iconSize} intent={intent} />
             </Example>
         );
     }

@@ -18,6 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
+import { SmallCross } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
@@ -116,7 +118,7 @@ export class Dialog extends AbstractPureComponent2<IDialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
+                    icon={<SmallCross size={Icon.SIZE_LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -133,7 +135,7 @@ export class Dialog extends AbstractPureComponent2<IDialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
+                <Icon icon={icon} size={Icon.SIZE_LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>

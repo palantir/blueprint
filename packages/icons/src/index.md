@@ -4,16 +4,32 @@ reference: icons
 
 @# Icons
 
-Blueprint provides over 300 vector UI icons in two sizes (16px and 20px) and two formats (SVG and fonts).
-It's easy to change their color or apply effects like text shadows via standard SVG or CSS properties.
-
-Many Blueprint components support an `icon` prop which accepts an icon name (such as `"history"`) or a JSX element to use as the icon.
+The [**@blueprintjs/icons** NPM package](https://www.npmjs.com/package/@blueprintjs/icons)
+provides  provides over 500 vector UI icons in two sizes (16px and 20px) and two formats (SVG and fonts).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-See the [**`Icon` component documentation**](#core/components/icon) for full API details.
+See the [**`Icon` component documentation**](#core/components/icon) (in the `@blueprintjs/core` package) for React API details.
 </div>
 
-@reactExample IconExample
+```sh
+npm install --save @blueprintjs/icons
+```
 
-@reactDocs Icons
+Import CSS with a bundler like webpack:
+
+```js
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+```
+
+...or in plain HTML:
+
+```html
+<link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
+```
+
+Be sure to check out the [docs for loading icons](#icons/loading-icons) and the
+[full list of available icons](#icons/icons-list).
+
+@page loading-icons
+@page icons-list

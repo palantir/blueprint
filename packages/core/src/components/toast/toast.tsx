@@ -18,6 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
+import { Cross } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
@@ -79,7 +81,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
                 <span className={Classes.TOAST_MESSAGE}>{message}</span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    <Button icon="cross" onClick={this.handleCloseClick} />
+                    <Button icon={<Cross />} onClick={this.handleCloseClick} />
                 </ButtonGroup>
             </div>
         );

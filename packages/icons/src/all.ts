@@ -1,5 +1,6 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +14,12 @@
  * limitations under the License.
  */
 
-// @ts-check
+// icon sets should be identical aside from SVG paths, so we just import the info for the 16px set
+import {
+    BlueprintIcons_16 as IconNames,
+    BlueprintIcons_16Id as IconName,
+    BLUEPRINT_ICONS_16_CODEPOINTS as IconCodepoints,
+} from "./generated/16px/blueprint-icons-16";
 
-const React = require("react");
-
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-require("@blueprintjs/test-commons/bootstrap");
-
-const Icons = require("../lib/cjs/generated");
-
-describe("Icons isomorphic rendering", () => {
-    generateIsomorphicTests(Icons, {}, { excludedSymbols: ["Icons"], testFunctionComponents: true });
-});
+export { IconCodepoints, IconName, IconNames };
+export * from "./generated/components";

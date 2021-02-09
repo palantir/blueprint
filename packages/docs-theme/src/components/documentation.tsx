@@ -19,6 +19,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Drawer, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
+import { Search } from "@blueprintjs/icons";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
@@ -184,7 +185,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                             {this.props.header}
                             <div className="docs-nav-divider" />
                             <NavButton
-                                icon="search"
+                                icon={<Search />}
                                 hotkey="shift + s"
                                 text="Search..."
                                 onClick={this.handleOpenNavigator}

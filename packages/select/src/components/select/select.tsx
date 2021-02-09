@@ -32,6 +32,7 @@ import {
     Position,
     refHandler,
 } from "@blueprintjs/core";
+import { Cross, Search } from "@blueprintjs/icons";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -125,7 +126,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
 
         const input = (
             <InputGroup
-                leftIcon="search"
+                leftIcon={<Search />}
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
@@ -168,7 +169,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
     };
 
     private maybeRenderClearButton(query: string) {
-        return query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
+        return query.length > 0 ? <Button icon={<Cross />} minimal={true} onClick={this.resetQuery} /> : undefined;
     }
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {

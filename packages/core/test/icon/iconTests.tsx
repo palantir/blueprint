@@ -15,90 +15,119 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
+import { Icons, IconName } from "@blueprintjs/icons";
 
 import { Classes, Icon, IIconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
-    it("tagName dictates HTML tag", () => {
-        const icon = shallow(<Icon icon="calendar" />);
-        assert.isTrue(icon.is("span"));
-        assert.isTrue(icon.setProps({ tagName: "article" }).is("article"));
+    before(async () => {
+        await Icons.load(["graph", "add", "calendar", "airplane"]);
     });
 
-    it("iconSize=16 renders standard size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
-
-    it("iconSize=20 renders large size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
-
-    it("renders intent class", () =>
-        assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
-
-    it("renders icon name", () => {
-        assertIcon(<Icon icon="calendar" />, "calendar");
+    it("tagName dictates HTML tag", async () => {
+        const wrapper = mount(<Icon icon="calendar" tagName="i" />);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        assert.isTrue(wrapper.find("i").exists());
     });
 
-    it("renders icon without color", () => {
+    it("size=16 renders standard size", async () =>
+        assertIconSize(<Icon icon="graph" size={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
+
+    it("size=20 renders large size", async () =>
+        assertIconSize(<Icon icon="graph" size={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
+
+    it("renders intent class", async () => {
+        const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);
+        assert.isTrue(wrapper.find(`.${Classes.INTENT_DANGER}`).exists());
+    });
+
+    it("renders icon name", async () => {
+        assertIconHasPath(<Icon icon="calendar" />, "calendar");
+    });
+
+    it("renders icon without color", async () => {
         assertIconColor(<Icon icon="add" />);
     });
 
-    it("renders icon color", () => {
+    it("renders icon color", async () => {
         assertIconColor(<Icon icon="add" color="red" />, "red");
     });
 
-    it("unknown icon name renders blank icon", () => {
-        assert.lengthOf(shallow(<Icon icon={"unknown" as any} />).find("path"), 0);
+    it("unknown icon name renders blank icon", async () => {
+        const wrapper = mount(<Icon icon={"unknown" as any} />);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        assert.lengthOf(wrapper.find("path"), 0);
     });
 
-    it("prefixed icon renders blank icon", () => {
-        assert.lengthOf(shallow(<Icon icon={Classes.iconClass("airplane") as any} />).find("path"), 0);
+    it("prefixed icon renders blank icon", async () => {
+        const wrapper = mount(<Icon icon={Classes.iconClass("airplane") as any} />);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        assert.lengthOf(wrapper.find("path"), 0);
     });
 
-    it("icon element passes through unchanged", () => {
+    it("icon element passes through unchanged", async () => {
         // NOTE: This is supported to simplify usage of this component in other
         // Blueprint components which accept `icon?: IconName | JSX.Element`.
         const onClick = () => true;
-        const icon = shallow(<Icon icon={<article onClick={onClick} />} />);
-        assert.isTrue(icon.is("article"));
-        assert.strictEqual(icon.find("article").prop("onClick"), onClick);
+        const wrapper = mount(<Icon icon={<article onClick={onClick} />} />);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        assert.isTrue(wrapper.childAt(0).is("article"));
+        assert.strictEqual(wrapper.find("article").prop("onClick"), onClick);
     });
 
-    it("icon=undefined renders nothing", () => {
-        const icon = shallow(<Icon icon={undefined} />);
-        assert.isTrue(icon.isEmptyRender());
+    it("icon=undefined renders nothing", async () => {
+        const wrapper = mount(<Icon icon={undefined} />);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        assert.isTrue(wrapper.isEmptyRender());
     });
 
-    it("title sets content of <desc> element", () => {
-        const icon = shallow(<Icon icon="airplane" title="bird" />);
-        assert.equal(icon.find("desc").text(), "bird");
+    it("title sets content of <desc> element", async () => {
+        const wrapper = mount(<Icon icon="airplane" title="bird" />);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        assert.equal(wrapper.find("desc").text(), "bird");
     });
 
-    it("desc defaults to icon name", () => {
-        const icon = shallow(<Icon icon="airplane" />);
-        assert.equal(icon.find("desc").text(), "airplane");
+    it("desc defaults to icon name", async () => {
+        const wrapper = mount(<Icon icon="airplane" />);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        assert.equal(wrapper.find("desc").text(), "airplane");
     });
 
-    /** Asserts that rendered icon has given className. */
-    function assertIcon(icon: React.ReactElement<IIconProps>, iconName: IconName) {
-        const wrapper = shallow(icon);
+    /** Asserts that rendered icon has an SVG path. */
+    async function assertIconHasPath(icon: React.ReactElement<IIconProps>, iconName: IconName) {
+        const wrapper = mount(icon);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
         assert.strictEqual(wrapper.text(), iconName);
         assert.isAbove(wrapper.find("path").length, 0, "should find at least one path element");
     }
 
     /** Asserts that rendered icon has width/height equal to size. */
-    function assertIconSize(icon: React.ReactElement<IIconProps>, size: number) {
-        const svg = shallow(icon).find("svg");
+    async function assertIconSize(icon: React.ReactElement<IIconProps>, size: number) {
+        const wrapper = mount(icon);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        const svg = wrapper.find("svg");
         assert.strictEqual(svg.prop("width"), size);
         assert.strictEqual(svg.prop("height"), size);
     }
 
     /** Asserts that rendered icon has color equal to color. */
-    function assertIconColor(icon: React.ReactElement<IIconProps>, color?: string) {
-        const svg = shallow(icon).find("svg");
+    async function assertIconColor(icon: React.ReactElement<IIconProps>, color?: string) {
+        const wrapper = mount(icon);
+        await wrapper.instance().componentDidMount!();
+        wrapper.update();
+        const svg = wrapper.find("svg");
         assert.deepEqual(svg.prop("fill"), color);
     }
 });
