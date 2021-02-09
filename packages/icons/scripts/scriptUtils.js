@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +15,15 @@
 
 // @ts-check
 
-const React = require("react");
+const path = require("path");
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-require("@blueprintjs/test-commons/bootstrap");
+const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
+const COPYRIGHT_HEADER = "/*\n * Copyright 2021 Palantir Technologies, Inc. All rights reserved.\n */\n";
+/** @type { [16, 20] } */
+const ICON_SIZES = [16, 20];
 
-const Icons = require("../lib/cjs/generated");
-
-describe("Icons isomorphic rendering", () => {
-    generateIsomorphicTests(Icons, {}, { excludedSymbols: ["Icons"], testFunctionComponents: true });
-});
+module.exports = {
+    COPYRIGHT_HEADER,
+    GENERATED_SRC_DIR,
+    ICON_SIZES,
+};

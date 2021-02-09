@@ -1,5 +1,6 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +14,11 @@
  * limitations under the License.
  */
 
-// @ts-check
+import { BlueprintIcons_16Id as IconName, BlueprintIcons_16 as IconNames } from "./generated/16px/blueprint-icons-16";
 
-const React = require("react");
+export { IconName, IconNames };
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-require("@blueprintjs/test-commons/bootstrap");
+export type IconSize = 16 | 20;
 
-const Icons = require("../lib/cjs/generated");
-
-describe("Icons isomorphic rendering", () => {
-    generateIsomorphicTests(Icons, {}, { excludedSymbols: ["Icons"], testFunctionComponents: true });
-});
+export const ICON_SIZE_STANDARD: IconSize = 16;
+export const ICON_SIZE_LARGE: IconSize = 20;

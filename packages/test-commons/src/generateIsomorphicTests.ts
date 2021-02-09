@@ -17,6 +17,11 @@ function isReactClass(Component: any): Component is React.ComponentClass<any> {
     );
 }
 
+/** Janky heuristic for detecting function components. */
+function isReactFunctionComponent(Component: any, name: string): Component is React.FC<any> {
+    return typeof Component === "function" && name.charAt(0) === name.charAt(0).toUpperCase();
+}
+
 export interface IIsomorphicTestConfig {
     /** Required `children` for successful render. */
     children?: React.ReactNode;
@@ -36,6 +41,13 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
     Components: T,
     /** Configuration per component. This is a mapped type supporting all keys in `Components`. */
     config: { [P in keyof T]?: IIsomorphicTestConfig } = {},
+    /** Test generator options */
+    options: {
+        /** Exclude these exports from being tested */
+        excludedSymbols?: string[];
+        /** Whether to try and detect and test function components */
+        testFunctionComponents?: boolean;
+    } = {},
 ) {
     function render(name: string, extraProps?: Record<string, unknown>) {
         const { children, props }: IIsomorphicTestConfig = config[name] || {};
@@ -47,9 +59,16 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
         return Enzyme.render(element);
     }
 
+    const { excludedSymbols = [], testFunctionComponents = false } = options;
+
     Object.keys(Components)
         .sort()
-        .filter(name => isReactClass(Components[name]))
+        .filter(
+            name =>
+                excludedSymbols.indexOf(name) === -1 &&
+                (isReactClass(Components[name]) ||
+                    (testFunctionComponents && isReactFunctionComponent(Components[name], name))),
+        )
         .forEach(componentName => {
             const { className, skip }: IIsomorphicTestConfig = config[componentName] || {};
             if (skip) {

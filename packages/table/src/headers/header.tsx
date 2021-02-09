@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils } from "@blueprintjs/core";
+import { DragHandleVertical } from "@blueprintjs/icons";
 
 import { Grid } from "../common";
 import { IFocusedCellCoordinates } from "../common/cell";
@@ -396,7 +397,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                       <div
                           className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}
                       >
-                          <Icon icon="drag-handle-vertical" />
+                          <DragHandleVertical />
                       </div>
                   </div>,
                   false,

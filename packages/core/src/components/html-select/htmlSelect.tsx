@@ -18,10 +18,11 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
+import { DoubleCaretVertical, SVGIconProps } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2 } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { IElementRefProps, IOptionProps } from "../../common/props";
-import { Icon, IIconProps } from "../icon/icon";
 
 export interface IHTMLSelectProps
     extends IElementRefProps<HTMLSelectElement>,
@@ -32,8 +33,8 @@ export interface IHTMLSelectProps
     /** Whether this element should fill its container. */
     fill?: boolean;
 
-    /** Props to spread to the `<Icon>` element. */
-    iconProps?: Partial<IIconProps>;
+    /** Props to spread to the icon element. */
+    iconProps?: Partial<SVGIconProps>;
 
     /** Whether to use large styles. */
     large?: boolean;
@@ -96,7 +97,7 @@ export class HTMLSelect extends AbstractPureComponent2<IHTMLSelectProps> {
                     {optionChildren}
                     {htmlProps.children}
                 </select>
-                <Icon icon="double-caret-vertical" {...iconProps} />
+                <DoubleCaretVertical {...iconProps} />
             </div>
         );
     }
