@@ -47,7 +47,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
         excludedSymbols?: string[];
         /** Whether to try and detect and test function components */
         testFunctionComponents?: boolean;
-    },
+    } = {},
 ) {
     function render(name: string, extraProps?: Record<string, unknown>) {
         const { children, props }: IIsomorphicTestConfig = config[name] || {};
