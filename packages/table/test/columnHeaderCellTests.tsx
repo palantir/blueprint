@@ -120,7 +120,7 @@ describe("<ColumnHeaderCell>", () => {
         function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
             return (
                 <Menu>
-                    <MenuItem icon="export" onClick={menuClickSpy} text="Teleport" />
+                    <MenuItem className="export-item" icon="export" onClick={menuClickSpy} text="Teleport" />
                     <MenuItem icon="sort-alphabetical-desc" onClick={menuClickSpy} text="Down with ZA!" />
                     <MenuItem icon="curved-range-chart" onClick={menuClickSpy} text="Psi" />
                 </Menu>
@@ -130,7 +130,7 @@ describe("<ColumnHeaderCell>", () => {
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
             table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`).mouse("click");
-            ElementHarness.document().find('[data-icon="export"]').mouse("click");
+            ElementHarness.document().find(".export-item").mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }
     });
