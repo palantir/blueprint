@@ -21,12 +21,14 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
+import { AlignLeft, AlignCenter, AlignRight } from "@blueprintjs/icons";
+
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src";
 
 const MENU_ITEMS = [
-    <MenuItem key="left" icon="align-left" text="Align Left" />,
-    <MenuItem key="center" icon="align-center" text="Align Center" />,
-    <MenuItem key="right" icon="align-right" text="Align Right" />,
+    <MenuItem key="left" icon={<AlignLeft />} text="Align Left" />,
+    <MenuItem key="center" icon={<AlignCenter />} text="Align Center" />,
+    <MenuItem key="right" icon={<AlignRight />} text="Align Right" />,
 ];
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
 

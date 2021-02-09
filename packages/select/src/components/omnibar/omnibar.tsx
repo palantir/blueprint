@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, IInputGroupProps2, InputGroup, IOverlayProps, Overlay } from "@blueprintjs/core";
+import { Search } from "@blueprintjs/icons";
 
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -86,7 +87,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
                     <InputGroup
                         autoFocus={true}
                         large={true}
-                        leftIcon="search"
+                        leftIcon={<Search />}
                         placeholder="Search..."
                         {...inputProps}
                         onChange={listProps.handleQueryChange}

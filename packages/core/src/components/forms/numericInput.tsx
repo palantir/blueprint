@@ -19,6 +19,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { IconName } from "@blueprintjs/icons";
+import { ChevronDown, ChevronUp } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent2,
@@ -422,13 +423,13 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
                     disabled={disabled || isIncrementDisabled}
-                    icon="chevron-up"
+                    icon={<ChevronUp />}
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
                 <Button
                     disabled={disabled || isDecrementDisabled}
-                    icon="chevron-down"
+                    icon={<ChevronDown />}
                     intent={intent}
                     {...this.decrementButtonHandlers}
                 />

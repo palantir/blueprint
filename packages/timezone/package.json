@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^3.38.2",
+        "@blueprintjs/icons": "^3.24.0",
         "@blueprintjs/select": "^3.15.4",
         "classnames": "^2.2",
         "moment": "^2.29.0",

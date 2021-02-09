@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^3.38.2",
+        "@blueprintjs/icons": "^3.24.0",
         "classnames": "^2.2",
         "react-day-picker": "7.4.8",
         "react-lifecycles-compat": "^3.0.4",

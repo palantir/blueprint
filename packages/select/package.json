@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "^3.38.2",
+        "@blueprintjs/icons": "^3.24.0",
         "classnames": "^2.2",
         "tslib": "~1.13.0"
     },

@@ -29,6 +29,7 @@ import {
     IProps,
     MenuItem,
 } from "@blueprintjs/core";
+import { CaretDown } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
@@ -200,7 +201,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         ) : (
             <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
         );
-        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
+        return <Button rightIcon={<CaretDown />} disabled={disabled} text={buttonContent} {...buttonProps} />;
     }
 
     private filterItems: ItemListPredicate<ITimezoneItem> = (query, items) => {

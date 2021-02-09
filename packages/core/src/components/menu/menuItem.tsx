@@ -19,6 +19,8 @@ import { Modifiers } from "popper.js";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
+import { CaretRight } from "@blueprintjs/icons";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -167,7 +169,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
                 {text}
             </Text>,
             this.maybeRenderLabel(labelElement),
-            hasSubmenu ? <Icon icon="caret-right" /> : undefined,
+            hasSubmenu ? <CaretRight /> : undefined,
         );
 
         const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });

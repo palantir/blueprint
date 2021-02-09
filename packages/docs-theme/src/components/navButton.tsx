@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Icon, IconName, KeyCombo } from "@blueprintjs/core";
+import { Classes, KeyCombo } from "@blueprintjs/core";
 
 export interface INavButtonProps {
-    icon: IconName;
+    icon: JSX.Element;
     hotkey: string;
     text: string;
     onClick: () => void;
@@ -28,7 +28,7 @@ export interface INavButtonProps {
 
 export const NavButton: React.FunctionComponent<INavButtonProps> = props => (
     <div className={classNames("docs-nav-button", Classes.TEXT_MUTED)} onClick={props.onClick}>
-        <Icon icon={props.icon} />
+        {props.icon}
         <span className={Classes.FILL}>{props.text}</span>
         <div style={{ opacity: 0.5 }}>
             <KeyCombo combo={props.hotkey} minimal={true} />
