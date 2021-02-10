@@ -29,8 +29,8 @@ class GraphNode extends React.PureComponent<any, { isContextMenuOpen: boolean }>
     public state = { isContextMenuOpen: false };
 
     public render() {
-        const classes = classNames("context-menu-node", {
-            "context-menu-open": this.state.isContextMenuOpen,
+        const classes = classNames("docs-context-menu-node", {
+            "docs-context-menu-open": this.state.isContextMenuOpen,
         });
         return <div className={classes} onContextMenu={this.showContextMenu} />;
     }

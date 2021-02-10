@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-export * as Classes from "./classes";
-export * as Errors from "./errors";
-export { ContextMenu2 } from "./contextMenu2";
-export {
-    IPopover2SharedProps,
-    IPopover2TargetProps,
-    PopperBoundary,
-    Placement,
-    PlacementOptions,
-    StrictModifierNames,
-} from "./popover2SharedProps";
-export { IPopover2Props, Popover2, Popover2InteractionKind } from "./popover2";
-export { ITooltip2Props, Tooltip2 } from "./tooltip2";
+import { assert } from "chai";
+import { mount } from "enzyme";
+import * as React from "react";
+import { spy } from "sinon";
+
+describe("ContextMenu2", () => {
+    before(() => {
+        console.log("before");
+    });
+
+    it("renders children", () => {
+        assert(true);
+    });
+});
