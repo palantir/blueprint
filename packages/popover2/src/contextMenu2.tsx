@@ -19,6 +19,7 @@ import React from "react";
 import { IOverlayLifecycleProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
+import { useSafeAnimationFrame, useSafeTimeout } from "./hooks";
 import { Popover2 } from "./popover2";
 import { IPopover2TargetProps } from "./popover2SharedProps";
 
@@ -72,7 +73,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
         e.preventDefault();
         // wait for backdrop to disappear so we can find the "real" element at event coordinates.
         // timeout duration is equivalent to transition duration so we know it's animated out.
-        setTimeout(() => {
+        useSafeTimeout(() => {
             // retrigger context menu event at the element beneath the backdrop.
             // if it has a `contextmenu` event handler then it'll be invoked.
             // if it doesn't, no native menu will show (at least on OSX) :(
@@ -86,7 +87,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
         if (!nextOpenState) {
             // delay the actual hiding till the event queue clears
             // to avoid flicker of opening twice
-            requestAnimationFrame(hide);
+            useSafeAnimationFrame(hide);
         }
     }, []);
 
