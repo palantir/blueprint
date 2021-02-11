@@ -54,6 +54,11 @@ export const ContextMenu2Example: React.FC<IExampleProps> = props => {
 };
 
 const GraphNode: React.FC = () => {
+    const children = React.useCallback(
+        ({ isOpen }) => <div className={classNames("docs-context-menu-node", { "docs-context-menu-open": isOpen })} />,
+        [],
+    );
+
     return (
         <ContextMenu2
             content={
@@ -67,9 +72,7 @@ const GraphNode: React.FC = () => {
                 </Menu>
             }
         >
-            {({ isOpen }) => (
-                <div className={classNames("docs-context-menu-node", { "docs-context-menu-open": isOpen })} />
-            )}
+            {children}
         </ContextMenu2>
     );
 };
