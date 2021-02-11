@@ -54,8 +54,6 @@ export const ContextMenu2Example: React.FC<IExampleProps> = props => {
 };
 
 const GraphNode: React.FC = () => {
-    const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
     return (
         <ContextMenu2
             content={
@@ -68,10 +66,10 @@ const GraphNode: React.FC = () => {
                     <MenuItem disabled={true} text="Clicked on node" />
                 </Menu>
             }
-            onOpened={() => setIsOpen(true)}
-            onClosed={() => setIsOpen(false)}
         >
-            <div className={classNames("docs-context-menu-node", { "docs-context-menu-open": isOpen })} />
+            {({ isOpen }) => (
+                <div className={classNames("docs-context-menu-node", { "docs-context-menu-open": isOpen })} />
+            )}
         </ContextMenu2>
     );
 };

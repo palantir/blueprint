@@ -27,8 +27,23 @@ type Offset = {
     top: number;
 };
 
+export interface ContextMenu2RenderProps {
+    isOpen: boolean;
+    targetOffset: Offset;
+}
+
 interface ContextMenu2Props extends IOverlayLifecycleProps {
-    content: JSX.Element | ((offset: Offset) => JSX.Element);
+    /**
+     * Menu content. This will usually be a Blueprint `<Menu>` component.
+     * This optionally functions as a render prop so you can use component state to render content.
+     */
+    content: JSX.Element | ((props: ContextMenu2RenderProps) => JSX.Element);
+
+    /**
+     * The context menu target. This may optionally be a render function so you can use
+     * component state to render the target.
+     */
+    children: React.ReactNode | ((props: ContextMenu2RenderProps) => React.ReactNode);
 }
 
 const TRANSITION_DURATION = 100;
@@ -85,6 +100,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
     // Generate key based on offset so a new Popover instance is created
     // when offset changes, to force recomputing position.
     const key = `${targetOffset.left}x${targetOffset.top}`;
+    const renderProps: ContextMenu2RenderProps = { isOpen, targetOffset };
 
     return (
         <div className={Classes.CONTEXT_MENU2} onContextMenu={handleContextMenu}>
@@ -94,7 +110,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
                 content={
                     // prevent right-clicking inside our context menu
                     <div onContextMenu={cancelContextMenu}>
-                        {CoreUtils.isFunction(content) ? content(targetOffset) : content}
+                        {CoreUtils.isFunction(content) ? content(renderProps) : content}
                     </div>
                 }
                 enforceFocus={false}
@@ -108,8 +124,8 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
                 renderTarget={renderTarget}
                 transitionDuration={TRANSITION_DURATION}
             />
-            {children}
+            {CoreUtils.isFunction(children) ? children(renderProps) : children}
         </div>
     );
 };
-ContextMenu2.displayName = "Blueprint2.ContextMenu2";
+ContextMenu2.displayName = "Blueprint.ContextMenu2";

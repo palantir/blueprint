@@ -20,9 +20,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 describe("ContextMenu2", () => {
-    before(() => {
-        console.log("before");
-    });
+    before(() => {});
 
     it("renders children", () => {
         assert(true);
