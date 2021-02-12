@@ -15,14 +15,43 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-import { spy } from "sinon";
+
+import { Menu, MenuItem } from "@blueprintjs/core";
+
+import { ContextMenu2, ContextMenu2Props, Popover2 } from "../src";
+
+const MENU_ITEMS = [
+    <MenuItem key="left" icon="align-left" text="Align Left" />,
+    <MenuItem key="center" icon="align-center" text="Align Center" />,
+    <MenuItem key="right" icon="align-right" text="Align Right" />,
+];
+const MENU = <Menu>{MENU_ITEMS}</Menu>;
+const TARGET_CLASSNAME = "test-target";
 
 describe("ContextMenu2", () => {
-    before(() => {});
-
-    it("renders children", () => {
-        assert(true);
+    it("renders children and Popover2", () => {
+        const ctxMenu = mountTestMenu();
+        assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
+        assert.isTrue(ctxMenu.find(Popover2).exists());
     });
+
+    it("opens popover on right click", () => {
+        const ctxMenu = mountTestMenu();
+        openCtxMenu(ctxMenu);
+        assert.isTrue(ctxMenu.find(Popover2).prop("isOpen"));
+    });
+
+    function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
+        return mount(
+            <ContextMenu2 content={MENU} transitionDuration={0} {...props}>
+                <div className={TARGET_CLASSNAME} />
+            </ContextMenu2>,
+        );
+    }
+
+    function openCtxMenu(ctxMenu: ReactWrapper) {
+        ctxMenu.find(`.${TARGET_CLASSNAME}`).simulate("contextmenu").update();
+    }
 });

@@ -19,8 +19,7 @@ import React from "react";
 import { IOverlayLifecycleProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
-import { useSafeAnimationFrame, useSafeTimeout } from "./hooks";
-import { Popover2 } from "./popover2";
+import { IPopover2Props, Popover2 } from "./popover2";
 import { IPopover2TargetProps } from "./popover2SharedProps";
 
 type Offset = {
@@ -33,7 +32,7 @@ export interface ContextMenu2RenderProps {
     targetOffset: Offset;
 }
 
-interface ContextMenu2Props extends IOverlayLifecycleProps {
+export interface ContextMenu2Props extends IOverlayLifecycleProps, Pick<IPopover2Props, "transitionDuration"> {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
@@ -47,13 +46,14 @@ interface ContextMenu2Props extends IOverlayLifecycleProps {
     children: React.ReactNode | ((props: ContextMenu2RenderProps) => React.ReactNode);
 }
 
-const TRANSITION_DURATION = 100;
-
-export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, ...restProps }) => {
+export const ContextMenu2: React.FC<ContextMenu2Props> = ({
+    content,
+    children,
+    transitionDuration = 100,
+    ...restProps
+}) => {
     const [targetOffset, setTargetOffset] = React.useState<Offset>({ left: 0, top: 0 });
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
-    const hide = () => setIsOpen(false);
 
     const handleContextMenu = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         // support nested menus (inner menu target would have called preventDefault())
@@ -62,32 +62,16 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
         }
 
         e.preventDefault();
-        setTargetOffset({ left: e.clientX, top: e.clientY });
+        const newTargetOffset = { left: e.clientX, top: e.clientY };
+        setTargetOffset(newTargetOffset);
         setIsOpen(true);
     }, []);
 
     const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
 
-    const handleBackdropContextMenu = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        e.persist();
-        e.preventDefault();
-        // wait for backdrop to disappear so we can find the "real" element at event coordinates.
-        // timeout duration is equivalent to transition duration so we know it's animated out.
-        useSafeTimeout(() => {
-            // retrigger context menu event at the element beneath the backdrop.
-            // if it has a `contextmenu` event handler then it'll be invoked.
-            // if it doesn't, no native menu will show (at least on OSX) :(
-            const newTarget = document.elementFromPoint(e.clientX, e.clientY);
-            const { view, ...newEventInit } = e;
-            newTarget?.dispatchEvent(new MouseEvent("contextmenu", newEventInit));
-        }, TRANSITION_DURATION);
-    }, []);
-
     const handlePopoverInteraction = React.useCallback((nextOpenState: boolean) => {
         if (!nextOpenState) {
-            // delay the actual hiding till the event queue clears
-            // to avoid flicker of opening twice
-            useSafeAnimationFrame(hide);
+            setIsOpen(false);
         }
     }, []);
 
@@ -107,7 +91,6 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
         <div className={Classes.CONTEXT_MENU2} onContextMenu={handleContextMenu}>
             <Popover2
                 {...restProps}
-                backdropProps={{ onContextMenu: handleBackdropContextMenu }}
                 content={
                     // prevent right-clicking inside our context menu
                     <div onContextMenu={cancelContextMenu}>
@@ -123,7 +106,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({ content, children, .
                 placement="right-start"
                 rootBoundary="viewport"
                 renderTarget={renderTarget}
-                transitionDuration={TRANSITION_DURATION}
+                transitionDuration={transitionDuration}
             />
             {CoreUtils.isFunction(children) ? children(renderProps) : children}
         </div>

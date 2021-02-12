@@ -19,11 +19,11 @@ import React from "react";
 
 import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { ContextMenu2 } from "@blueprintjs/popover2";
+import { ContextMenu2, ContextMenu2RenderProps } from "@blueprintjs/popover2";
 
 export const ContextMenu2Example: React.FC<IExampleProps> = props => {
     const renderContent = React.useCallback(
-        offset => (
+        ({ targetOffset }: ContextMenu2RenderProps) => (
             <Menu>
                 <MenuItem icon="select" text="Select all" />
                 <MenuItem icon="insert" text="Insert...">
@@ -37,7 +37,7 @@ export const ContextMenu2Example: React.FC<IExampleProps> = props => {
                     <MenuItem icon="layout-grid" text="Grid" />
                 </MenuItem>
                 <MenuDivider />
-                <MenuItem disabled={true} text={`Clicked at (${offset.left}, ${offset.top})`} />
+                <MenuItem disabled={true} text={`Clicked at (${targetOffset.left}, ${targetOffset.top})`} />
             </Menu>
         ),
         [],
