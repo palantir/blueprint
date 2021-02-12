@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import React from "react";
 
-import { IOverlayLifecycleProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, IOverlayLifecycleProps, Utils as CoreUtils, mergeRefs } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import { IPopover2Props, Popover2 } from "./popover2";
@@ -75,12 +76,18 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
         }
     }, []);
 
+    const targetRef = React.useRef<HTMLDivElement>();
     const renderTarget = React.useCallback(
         ({ ref }: IPopover2TargetProps) => (
-            <div className={Classes.CONTEXT_MENU2_POPOVER_TARGET} style={targetOffset} ref={ref} />
+            <div
+                className={Classes.CONTEXT_MENU2_POPOVER_TARGET}
+                style={targetOffset}
+                ref={mergeRefs(ref, targetRef)}
+            />
         ),
         [targetOffset],
     );
+    const isDarkTheme = React.useMemo(() => CoreUtils.isDarkTheme(targetRef?.current), [targetRef.current]);
 
     // Generate key based on offset so a new Popover instance is created
     // when offset changes, to force recomputing position.
@@ -103,6 +110,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
                 isOpen={isOpen}
                 minimal={true}
                 onInteraction={handlePopoverInteraction}
+                popoverClassName={classNames({ [CoreClasses.DARK]: isDarkTheme })}
                 placement="right-start"
                 rootBoundary="viewport"
                 renderTarget={renderTarget}

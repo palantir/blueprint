@@ -18,6 +18,6 @@ import "../configureDom4";
 
 import { Classes } from "../";
 
-export function isDarkTheme(element: Element | Text | null): boolean {
-    return element instanceof Element && element.closest(`.${Classes.DARK}`) != null;
+export function isDarkTheme(element: Element | Text | null | undefined): boolean {
+    return element != null && element instanceof Element && element.closest(`.${Classes.DARK}`) != null;
 }
