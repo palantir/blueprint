@@ -30,3 +30,4 @@ Import CSS with a bundler like webpack:
 
 @page popover2
 @page tooltip2
+@page context-menu2

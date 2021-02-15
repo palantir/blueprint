@@ -77,7 +77,7 @@
     height: $pt-grid-size * 25;
   }
 
-  .context-menu-node {
+  .docs-context-menu-node {
     $node-size: $pt-grid-size * 8;
     $icon-size: $pt-icon-size-standard * 2;
     $node-border-width: 4px;
@@ -99,7 +99,7 @@
       top: ($node-size - $icon-size) / 2 - $node-border-width;
     }
 
-    &.context-menu-open {
+    &.docs-context-menu-open {
       box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
     }
   }

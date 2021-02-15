@@ -15,6 +15,7 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
+import "./contextMenu2Tests";
 import "./popover2Tests";
 import "./tooltip2Tests";
 import "./utilsTests";

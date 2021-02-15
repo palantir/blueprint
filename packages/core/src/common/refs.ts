@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-export type IRef<T = HTMLElement> = IRefObject<T> | IRefCallback<T>;
+export type IRef<T extends HTMLElement = HTMLElement> = IRefObject<T> | IRefCallback<T>;
 
 // compatible with React.Ref type in @types/react@^16
-export interface IRefObject<T = HTMLElement> {
+export interface IRefObject<T extends HTMLElement = HTMLElement> {
     current: T | null;
 }
 
@@ -31,14 +31,23 @@ export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined 
     return typeof value === "function";
 }
 
-export function combineRefs<T = HTMLElement>(ref1: IRefCallback<T>, ref2: IRefCallback<T>) {
-    return (el: T) => {
-        ref1(el);
-        ref2(el);
+export function combineRefs<T extends HTMLElement>(ref1: IRefCallback<T>, ref2: IRefCallback<T>) {
+    return mergeRefs(ref1, ref2);
+}
+
+export function mergeRefs<T extends HTMLElement>(...refs: Array<IRef<T> | null>): IRefCallback<T> {
+    return value => {
+        refs.forEach(ref => {
+            if (isRefCallback(ref)) {
+                ref(value);
+            } else if (isRefObject(ref)) {
+                ref.current = value;
+            }
+        });
     };
 }
 
-export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
+export function getRef<T extends HTMLElement>(ref: T | IRefObject<T> | null) {
     if (ref === null) {
         return null;
     }
