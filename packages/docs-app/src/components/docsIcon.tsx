@@ -35,6 +35,7 @@ function downloadIconFile(iconName: IconName, iconSize: 16 | 20) {
     download(`${GITHUB_RAW_PATH}/${iconSize}px/${iconName}.svg`);
 }
 
+// eslint-disable-next-line deprecation/deprecation
 @ContextMenuTarget
 export class DocsIcon extends React.PureComponent<IDocsIconProps> {
     public render() {
