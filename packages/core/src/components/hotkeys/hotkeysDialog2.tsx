@@ -16,4 +16,4 @@
 
 import React from "react";
 
-export const Hotkeys2: React.FC = () => <div />;
+export const HotkeysDialog2: React.FC = () => <div />;

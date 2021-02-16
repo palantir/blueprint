@@ -42,14 +42,13 @@ export const PianoKey: React.FC<IPianoKeyProps> = ({ context, hotkey, note, pres
     }
 
     useEffect(() => {
-        if (envelope !== undefined) {
-            if (pressed) {
-                envelope.on();
-            } else {
-                envelope.off();
-            }
+        if (pressed) {
+            envelope?.on();
+        } else {
+            envelope?.off();
         }
-    }, [pressed]);
+        return () => envelope?.off();
+    }, [envelope, pressed]);
 
     const classes = classNames("piano-key", {
         "piano-key-pressed": pressed,

@@ -19,15 +19,15 @@ export class Envelope {
 
     public gain: GainNode;
 
-    private attackLevel = 0.8;
+    private attackLevel = 0.4;
 
     private attackTime = 0.1;
 
-    private sustainLevel = 0.3;
+    private sustainLevel = 0.2;
 
     private sustainTime = 0.1;
 
-    private releaseTime = 0.4;
+    private releaseTime = 0.2;
 
     public constructor(private context: AudioContext) {
         this.gain = this.context.createGain();

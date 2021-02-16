@@ -39,6 +39,7 @@ export * from "./focusExample";
 export * from "./formGroupExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
+export { HotkeysTarget2Example } from "./hotkeysTarget2Example";
 export * from "./iconExample";
 export * from "./menuExample";
 export * from "./multiSliderExample";
@@ -70,3 +71,5 @@ export * from "./tagExample";
 export * from "./toastExample";
 export * from "./tooltipExample";
 export * from "./treeExample";
+
+export { UseHotkeysExample } from "./useHotkeysExample";

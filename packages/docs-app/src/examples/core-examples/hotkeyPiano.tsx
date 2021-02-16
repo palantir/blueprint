@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
-
 import React from "react";
 
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";

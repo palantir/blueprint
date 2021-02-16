@@ -18,3 +18,4 @@ Be sure to include the icons CSS file in your app alongside the core CSS file.
 @page typography
 @page variables
 @page components
+@page hooks

@@ -32,9 +32,11 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
+// HACKHACK: this is brittle
 // detect Components page and subheadings
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
-const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route);
+const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route) || HOOKS_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {

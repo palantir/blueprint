@@ -103,6 +103,9 @@ export function useHotkeys(keys: IHotkeyProps[]) {
     return { handleKeyDown: handleLocalKeyDown, handleKeyUp: handleLocalKeyUp };
 }
 
+/**
+ * @returns true if the event target is a text input which should take priority over hotkey bindings
+ */
 function isTargetATextInput(e: KeyboardEvent) {
     const elem = e.target as HTMLElement;
     // we check these cases for unit testing, but this should not happen
