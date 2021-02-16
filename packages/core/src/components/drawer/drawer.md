@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Drawer
 
 Drawers overlay content over existing parts of the UI and are anchored to the edge of the screen.
