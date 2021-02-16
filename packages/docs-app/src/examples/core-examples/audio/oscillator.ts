@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-export * from "./accessibility";
-export * from "./common";
-export * from "./components";
-export * from "./hooks";
+export class Oscillator {
+    public oscillator: OscillatorNode;
+
+    public constructor(private context: AudioContext, freq: number) {
+        this.oscillator = this.context.createOscillator();
+        this.oscillator.type = "sine";
+        this.oscillator.frequency.value = freq;
+        this.oscillator.start(0);
+    }
+}
