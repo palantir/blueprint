@@ -451,6 +451,8 @@ export interface ITableSnapshot {
     nextScrollLeft?: number;
 }
 
+// HACKHACK(adahiya): fix for Blueprint 4.0
+// eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 @polyfill
 export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSnapshot> {

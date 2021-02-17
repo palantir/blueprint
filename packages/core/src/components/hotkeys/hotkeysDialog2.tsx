@@ -14,6 +14,38 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import React from "react";
 
-export const HotkeysDialog2: React.FC = () => <div />;
+import { Classes } from "../../common";
+import { Dialog, IDialogProps } from "../dialog/dialog";
+import { IHotkeyProps, Hotkey } from "./hotkey";
+import { Hotkeys } from "./hotkeys";
+
+export interface HotkeysDialog2Props extends IDialogProps {
+    /**
+     * This string displayed as the group name in the hotkeys dialog for all
+     * global hotkeys.
+     */
+    globalGroupName?: string;
+
+    hotkeys: IHotkeyProps[];
+}
+
+export const HotkeysDialog2: React.FC<HotkeysDialog2Props> = ({ globalGroupName = "Global", hotkeys, ...props }) => {
+    return (
+        <Dialog {...props} className={classNames(Classes.HOTKEY_DIALOG, props.className)}>
+            <div className={Classes.DIALOG_BODY}>
+                <Hotkeys>
+                    {hotkeys.map((hotkey, index) => (
+                        <Hotkey
+                            key={index}
+                            {...hotkey}
+                            group={hotkey.global === true && hotkey.group == null ? globalGroupName : hotkey.group}
+                        />
+                    ))}
+                </Hotkeys>
+            </div>
+        </Dialog>
+    );
+};

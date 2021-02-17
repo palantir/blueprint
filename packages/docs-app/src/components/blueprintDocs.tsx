@@ -18,7 +18,7 @@ import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/
 import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
+import { AnchorButton, Classes, HotkeysProvider, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 
@@ -80,17 +80,19 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             />
         );
         return (
-            <Documentation
-                {...this.props}
-                className={this.state.themeName}
-                footer={footer}
-                header={header}
-                navigatorExclude={isNavSection}
-                onComponentUpdate={this.handleComponentUpdate}
-                renderNavMenuItem={this.renderNavMenuItem}
-                renderPageActions={this.renderPageActions}
-                renderViewSourceLinkText={this.renderViewSourceLinkText}
-            />
+            <HotkeysProvider>
+                <Documentation
+                    {...this.props}
+                    className={this.state.themeName}
+                    footer={footer}
+                    header={header}
+                    navigatorExclude={isNavSection}
+                    onComponentUpdate={this.handleComponentUpdate}
+                    renderNavMenuItem={this.renderNavMenuItem}
+                    renderPageActions={this.renderPageActions}
+                    renderViewSourceLinkText={this.renderViewSourceLinkText}
+                />
+            </HotkeysProvider>
         );
     }
 

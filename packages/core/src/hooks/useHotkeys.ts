@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 
 import { IHotkeyProps } from "../components/hotkeys/hotkey";
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../components/hotkeys/hotkeyParser";
-import { HotkeysEvents, HotkeyScope } from "../components/hotkeys/hotkeysEvents";
+import { HotkeysContext } from "../context/hotkeysProvider";
 
-export function useHotkeys(keys: IHotkeyProps[]) {
-    const localHotkeysEvents = useMemo(() => new HotkeysEvents(HotkeyScope.LOCAL), []);
-    const globalHotkeysEvents = useMemo(() => new HotkeysEvents(HotkeyScope.GLOBAL), []);
+export interface UseHotkeysOptions {
+    /**
+     * The key combo which will trigger the hotkeys dialog to open.
+     *
+     * @default "?"
+     */
+    showDialogKeyCombo?: string;
+}
 
+export function useHotkeys(keys: IHotkeyProps[], { showDialogKeyCombo = "?" }: UseHotkeysOptions = {}) {
     const localKeys = useMemo(
         () =>
             keys
@@ -32,7 +38,7 @@ export function useHotkeys(keys: IHotkeyProps[]) {
                     combo: parseKeyCombo(k.combo),
                     props: k,
                 })),
-        keys,
+        [keys],
     );
     const globalKeys = useMemo(
         () =>
@@ -42,8 +48,16 @@ export function useHotkeys(keys: IHotkeyProps[]) {
                     combo: parseKeyCombo(k.combo),
                     props: k,
                 })),
-        keys,
+        [keys],
     );
+
+    // register keys with global context
+    const [, dispatch] = useContext(HotkeysContext);
+    useEffect(() => {
+        const payload = [...globalKeys.map(k => k.props), ...localKeys.map(k => k.props)];
+        dispatch({ type: "ADD_HOTKEYS", payload });
+        return () => dispatch({ type: "REMOVE_HOTKEYS", payload });
+    }, [keys]);
 
     const invokeNamedCallbackIfComboRecognized = (
         global: boolean,
@@ -69,7 +83,16 @@ export function useHotkeys(keys: IHotkeyProps[]) {
     };
 
     const handleGlobalKeyDown = useCallback(
-        (e: KeyboardEvent) => invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyDown", e),
+        (e: KeyboardEvent) => {
+            // special case for global keydown: if '?' is pressed, open the hotkeys dialog
+            const combo = getKeyCombo(e);
+            const isTextInput = isTargetATextInput(e);
+            if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
+                dispatch({ type: "OPEN_DIALOG" });
+            } else {
+                invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyDown", e);
+            }
+        },
         [globalKeys],
     );
     const handleGlobalKeyUp = useCallback(
@@ -94,9 +117,6 @@ export function useHotkeys(keys: IHotkeyProps[]) {
         return () => {
             document.removeEventListener("keydown", handleGlobalKeyDown);
             document.removeEventListener("keyup", handleGlobalKeyUp);
-
-            globalHotkeysEvents.clear();
-            localHotkeysEvents.clear();
         };
     }, []);
 

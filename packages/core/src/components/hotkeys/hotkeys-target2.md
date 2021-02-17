@@ -39,7 +39,7 @@ export default class extends React.PureComponent {
 
     public render() {
         return (
-            <HotkeysTarget2 hotkeys={hotkeys}>
+            <HotkeysTarget2 hotkeys={this.hotkeys}>
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Need help?

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import { useHotkeys } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
@@ -40,158 +40,186 @@ export const UseHotkeysExample: React.FC<IExampleProps> = props => {
             setPressed,
         }));
 
-    const { handleKeyDown, handleKeyUp } = useHotkeys([
-        {
-            combo: "shift + P",
-            global: true,
-            label: "Focus the piano",
-            onKeyDown: focusPiano,
-        },
-        {
-            combo: "Q",
-            label: "Play a C5",
-            onKeyDown: () => keys[0].setPressed(true),
-            onKeyUp: () => keys[0].setPressed(false),
-        },
-        {
-            combo: "2",
-            label: "Play a C#5",
-            onKeyDown: () => keys[1].setPressed(true),
-            onKeyUp: () => keys[1].setPressed(false),
-        },
-        {
-            combo: "W",
-            label: "Play a D5",
-            onKeyDown: () => keys[2].setPressed(true),
-            onKeyUp: () => keys[2].setPressed(false),
-        },
-        {
-            combo: "3",
-            label: "Play a D#5",
-            onKeyDown: () => keys[3].setPressed(true),
-            onKeyUp: () => keys[3].setPressed(false),
-        },
-        {
-            combo: "E",
-            label: "Play a E5",
-            onKeyDown: () => keys[4].setPressed(true),
-            onKeyUp: () => keys[4].setPressed(false),
-        },
-        {
-            combo: "R",
-            label: "Play a F5",
-            onKeyDown: () => keys[5].setPressed(true),
-            onKeyUp: () => keys[5].setPressed(false),
-        },
-        {
-            combo: "5",
-            label: "Play a F#5",
-            onKeyDown: () => keys[6].setPressed(true),
-            onKeyUp: () => keys[6].setPressed(false),
-        },
-        {
-            combo: "T",
-            label: "Play a G5",
-            onKeyDown: () => keys[7].setPressed(true),
-            onKeyUp: () => keys[7].setPressed(false),
-        },
-        {
-            combo: "6",
-            label: "Play a G#5",
-            onKeyDown: () => keys[8].setPressed(true),
-            onKeyUp: () => keys[8].setPressed(false),
-        },
-        {
-            combo: "Y",
-            label: "Play a A5",
-            onKeyDown: () => keys[9].setPressed(true),
-            onKeyUp: () => keys[9].setPressed(false),
-        },
-        {
-            combo: "7",
-            label: "Play a A#5",
-            onKeyDown: () => keys[10].setPressed(true),
-            onKeyUp: () => keys[10].setPressed(false),
-        },
-        {
-            combo: "U",
-            label: "Play a B5",
-            onKeyDown: () => keys[11].setPressed(true),
-            onKeyUp: () => keys[11].setPressed(false),
-        },
-        {
-            combo: "Z",
-            label: "Play a C4",
-            onKeyDown: () => keys[12].setPressed(true),
-            onKeyUp: () => keys[12].setPressed(false),
-        },
-        {
-            combo: "S",
-            label: "Play a C#4",
-            onKeyDown: () => keys[13].setPressed(true),
-            onKeyUp: () => keys[13].setPressed(false),
-        },
-        {
-            combo: "X",
-            label: "Play a D4",
-            onKeyDown: () => keys[14].setPressed(true),
-            onKeyUp: () => keys[14].setPressed(false),
-        },
-        {
-            combo: "D",
-            label: "Play a D#4",
-            onKeyDown: () => keys[15].setPressed(true),
-            onKeyUp: () => keys[15].setPressed(false),
-        },
-        {
-            combo: "C",
-            label: "Play a E4",
-            onKeyDown: () => keys[16].setPressed(true),
-            onKeyUp: () => keys[16].setPressed(false),
-        },
-        {
-            combo: "V",
-            label: "Play a F4",
-            onKeyDown: () => keys[17].setPressed(true),
-            onKeyUp: () => keys[17].setPressed(false),
-        },
-        {
-            combo: "G",
-            label: "Play a F#4",
-            onKeyDown: () => keys[18].setPressed(true),
-            onKeyUp: () => keys[18].setPressed(false),
-        },
-        {
-            combo: "B",
-            label: "Play a G4",
-            onKeyDown: () => keys[19].setPressed(true),
-            onKeyUp: () => keys[19].setPressed(false),
-        },
-        {
-            combo: "H",
-            label: "Play a G#4",
-            onKeyDown: () => keys[20].setPressed(true),
-            onKeyUp: () => keys[20].setPressed(false),
-        },
-        {
-            combo: "N",
-            label: "Play a A4",
-            onKeyDown: () => keys[21].setPressed(true),
-            onKeyUp: () => keys[21].setPressed(false),
-        },
-        {
-            combo: "J",
-            label: "Play a A#4",
-            onKeyDown: () => keys[22].setPressed(true),
-            onKeyUp: () => keys[22].setPressed(false),
-        },
-        {
-            combo: "M",
-            label: "Play a B4",
-            onKeyDown: () => keys[23].setPressed(true),
-            onKeyUp: () => keys[23].setPressed(false),
-        },
-    ]);
+    const hotkeys = useMemo(
+        () => [
+            {
+                combo: "shift + P",
+                global: true,
+                label: "Focus the piano",
+                onKeyDown: focusPiano,
+            },
+            {
+                combo: "Q",
+                group: "useHotkeys Example",
+                label: "Play a C5",
+                onKeyDown: () => keys[0].setPressed(true),
+                onKeyUp: () => keys[0].setPressed(false),
+            },
+            {
+                combo: "2",
+                group: "useHotkeys Example",
+                label: "Play a C#5",
+                onKeyDown: () => keys[1].setPressed(true),
+                onKeyUp: () => keys[1].setPressed(false),
+            },
+            {
+                combo: "W",
+                group: "useHotkeys Example",
+                label: "Play a D5",
+                onKeyDown: () => keys[2].setPressed(true),
+                onKeyUp: () => keys[2].setPressed(false),
+            },
+            {
+                combo: "3",
+                group: "useHotkeys Example",
+                label: "Play a D#5",
+                onKeyDown: () => keys[3].setPressed(true),
+                onKeyUp: () => keys[3].setPressed(false),
+            },
+            {
+                combo: "E",
+                group: "useHotkeys Example",
+                label: "Play a E5",
+                onKeyDown: () => keys[4].setPressed(true),
+                onKeyUp: () => keys[4].setPressed(false),
+            },
+            {
+                combo: "R",
+                group: "useHotkeys Example",
+                label: "Play a F5",
+                onKeyDown: () => keys[5].setPressed(true),
+                onKeyUp: () => keys[5].setPressed(false),
+            },
+            {
+                combo: "5",
+                group: "useHotkeys Example",
+                label: "Play a F#5",
+                onKeyDown: () => keys[6].setPressed(true),
+                onKeyUp: () => keys[6].setPressed(false),
+            },
+            {
+                combo: "T",
+                group: "useHotkeys Example",
+                label: "Play a G5",
+                onKeyDown: () => keys[7].setPressed(true),
+                onKeyUp: () => keys[7].setPressed(false),
+            },
+            {
+                combo: "6",
+                group: "useHotkeys Example",
+                label: "Play a G#5",
+                onKeyDown: () => keys[8].setPressed(true),
+                onKeyUp: () => keys[8].setPressed(false),
+            },
+            {
+                combo: "Y",
+                group: "useHotkeys Example",
+                label: "Play a A5",
+                onKeyDown: () => keys[9].setPressed(true),
+                onKeyUp: () => keys[9].setPressed(false),
+            },
+            {
+                combo: "7",
+                group: "useHotkeys Example",
+                label: "Play a A#5",
+                onKeyDown: () => keys[10].setPressed(true),
+                onKeyUp: () => keys[10].setPressed(false),
+            },
+            {
+                combo: "U",
+                group: "useHotkeys Example",
+                label: "Play a B5",
+                onKeyDown: () => keys[11].setPressed(true),
+                onKeyUp: () => keys[11].setPressed(false),
+            },
+            {
+                combo: "Z",
+                group: "useHotkeys Example",
+                label: "Play a C4",
+                onKeyDown: () => keys[12].setPressed(true),
+                onKeyUp: () => keys[12].setPressed(false),
+            },
+            {
+                combo: "S",
+                group: "useHotkeys Example",
+                label: "Play a C#4",
+                onKeyDown: () => keys[13].setPressed(true),
+                onKeyUp: () => keys[13].setPressed(false),
+            },
+            {
+                combo: "X",
+                group: "useHotkeys Example",
+                label: "Play a D4",
+                onKeyDown: () => keys[14].setPressed(true),
+                onKeyUp: () => keys[14].setPressed(false),
+            },
+            {
+                combo: "D",
+                group: "useHotkeys Example",
+                label: "Play a D#4",
+                onKeyDown: () => keys[15].setPressed(true),
+                onKeyUp: () => keys[15].setPressed(false),
+            },
+            {
+                combo: "C",
+                group: "useHotkeys Example",
+                label: "Play a E4",
+                onKeyDown: () => keys[16].setPressed(true),
+                onKeyUp: () => keys[16].setPressed(false),
+            },
+            {
+                combo: "V",
+                group: "useHotkeys Example",
+                label: "Play a F4",
+                onKeyDown: () => keys[17].setPressed(true),
+                onKeyUp: () => keys[17].setPressed(false),
+            },
+            {
+                combo: "G",
+                group: "useHotkeys Example",
+                label: "Play a F#4",
+                onKeyDown: () => keys[18].setPressed(true),
+                onKeyUp: () => keys[18].setPressed(false),
+            },
+            {
+                combo: "B",
+                group: "useHotkeys Example",
+                label: "Play a G4",
+                onKeyDown: () => keys[19].setPressed(true),
+                onKeyUp: () => keys[19].setPressed(false),
+            },
+            {
+                combo: "H",
+                group: "useHotkeys Example",
+                label: "Play a G#4",
+                onKeyDown: () => keys[20].setPressed(true),
+                onKeyUp: () => keys[20].setPressed(false),
+            },
+            {
+                combo: "N",
+                group: "useHotkeys Example",
+                label: "Play a A4",
+                onKeyDown: () => keys[21].setPressed(true),
+                onKeyUp: () => keys[21].setPressed(false),
+            },
+            {
+                combo: "J",
+                group: "useHotkeys Example",
+                label: "Play a A#4",
+                onKeyDown: () => keys[22].setPressed(true),
+                onKeyUp: () => keys[22].setPressed(false),
+            },
+            {
+                combo: "M",
+                group: "useHotkeys Example",
+                label: "Play a B4",
+                onKeyDown: () => keys[23].setPressed(true),
+                onKeyUp: () => keys[23].setPressed(false),
+            },
+        ],
+        [],
+    );
+    const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
     return (
         <Example className="docs-use-hotkeys-example" options={false} {...props}>

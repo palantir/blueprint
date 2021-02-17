@@ -115,7 +115,7 @@ export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {
 
     protected validateProps(props: IHotkeyProps) {
         if (props.global !== true && props.group == null) {
-            throw new Error("non-global <Hotkey>s must define a group");
+            console.error("non-global <Hotkey>s must define a group");
         }
     }
 }

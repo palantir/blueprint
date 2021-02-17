@@ -28,6 +28,7 @@ export interface IHotkeyPianoState {
 // eslint-disable-next-line @typescript-eslint/dot-notation
 const AUDIO_CONTEXT = (window as any)["AudioContext"] != null ? new AudioContext() : null;
 
+// eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 export class HotkeyPiano extends React.PureComponent<IExampleProps, IHotkeyPianoState> {
     public state: IHotkeyPianoState = {
