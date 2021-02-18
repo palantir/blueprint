@@ -16,19 +16,19 @@
 
 import React, { createContext, useReducer, Dispatch, useCallback } from "react";
 
-import { IHotkeyProps, HotkeysDialog2 } from "../components";
-import { HotkeysDialog2Props } from "../components/hotkeys/hotkeysDialog2";
+import { HotkeysDialog2, HotkeysDialog2Props } from "../../components/hotkeys/hotkeysDialog2";
+import { HotkeyConfig } from "../../hooks";
 
 interface HotkeysContextState {
     /** List of hotkeys accessible in the current scope, registered by currently mounted components, can be global or local. */
-    hotkeys: IHotkeyProps[];
+    hotkeys: HotkeyConfig[];
 
     /** Whether the global hotkeys dialog is open. */
     isDialogOpen: boolean;
 }
 
 type HotkeysAction =
-    | { type: "ADD_HOTKEYS" | "REMOVE_HOTKEYS"; payload: IHotkeyProps[] }
+    | { type: "ADD_HOTKEYS" | "REMOVE_HOTKEYS"; payload: HotkeyConfig[] }
     | { type: "CLOSE_DIALOG" | "OPEN_DIALOG" };
 
 const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: false };
@@ -70,6 +70,9 @@ export interface HotkeysProviderProps {
     renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
 }
 
+/**
+ * Hotkeys context provider, necessary for the `useHotkeys` hook.
+ */
 export const HotkeysProvider = ({ children, dialogProps, renderDialog }: HotkeysProviderProps) => {
     const [state, dispatch] = useReducer(hotkeysReducer, initialHotkeysState);
     const handleDialogClose = useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);

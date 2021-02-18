@@ -16,9 +16,9 @@
 
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
 
-import { IHotkeyProps } from "../components/hotkeys/hotkey";
-import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../components/hotkeys/hotkeyParser";
-import { HotkeysContext } from "../context/hotkeysProvider";
+import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
+import { HotkeysContext } from "../../context";
+import { HotkeyConfig } from "./hotkeyConfig";
 
 export interface UseHotkeysOptions {
     /**
@@ -29,14 +29,26 @@ export interface UseHotkeysOptions {
     showDialogKeyCombo?: string;
 }
 
-export function useHotkeys(keys: IHotkeyProps[], { showDialogKeyCombo = "?" }: UseHotkeysOptions = {}) {
+export interface UseHotkeysReturnValue {
+    handleKeyDown: React.KeyboardEventHandler<HTMLElement>;
+    handleKeyUp: React.KeyboardEventHandler<HTMLElement>;
+}
+
+/**
+ * React hook to register global and local hotkeys for a component.
+ *
+ * @param keys list of hotkeys to configure
+ * @param options hook options
+ */
+export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
+    const { showDialogKeyCombo = "?" } = options;
     const localKeys = useMemo(
         () =>
             keys
                 .filter(k => !k.global)
                 .map(k => ({
                     combo: parseKeyCombo(k.combo),
-                    props: k,
+                    config: k,
                 })),
         [keys],
     );
@@ -46,7 +58,7 @@ export function useHotkeys(keys: IHotkeyProps[], { showDialogKeyCombo = "?" }: U
                 .filter(k => k.global)
                 .map(k => ({
                     combo: parseKeyCombo(k.combo),
-                    props: k,
+                    config: k,
                 })),
         [keys],
     );
@@ -54,7 +66,7 @@ export function useHotkeys(keys: IHotkeyProps[], { showDialogKeyCombo = "?" }: U
     // register keys with global context
     const [, dispatch] = useContext(HotkeysContext);
     useEffect(() => {
-        const payload = [...globalKeys.map(k => k.props), ...localKeys.map(k => k.props)];
+        const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
         dispatch({ type: "ADD_HOTKEYS", payload });
         return () => dispatch({ type: "REMOVE_HOTKEYS", payload });
     }, [keys]);
@@ -66,18 +78,18 @@ export function useHotkeys(keys: IHotkeyProps[], { showDialogKeyCombo = "?" }: U
         e: KeyboardEvent,
     ) => {
         const isTextInput = isTargetATextInput(e);
-        for (const action of global ? globalKeys : localKeys) {
-            const shouldIgnore = (isTextInput && !action.props.allowInInput) || action.props.disabled;
-            if (!shouldIgnore && comboMatches(action.combo, combo)) {
-                if (action.props.preventDefault) {
+        for (const key of global ? globalKeys : localKeys) {
+            const shouldIgnore = (isTextInput && !key.config.allowInInput) || key.config.disabled;
+            if (!shouldIgnore && comboMatches(key.combo, combo)) {
+                if (key.config.preventDefault) {
                     e.preventDefault();
                 }
-                if (action.props.stopPropagation) {
+                if (key.config.stopPropagation) {
                     // set a flag just for unit testing. not meant to be referenced in feature work.
                     (e as any).isPropagationStopped = true;
                     e.stopPropagation();
                 }
-                action.props[callbackName]?.(e);
+                key.config[callbackName]?.(e);
             }
         }
     };

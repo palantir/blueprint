@@ -3,12 +3,12 @@
 <div class="@ns-callout @ns-intent-danger @ns-icon-error">
     <h4 class="@ns-heading">
 
-Deprecated: use [useHotkeys](#core/hooks/useHotkeys)
+Deprecated: use [useHotkeys](#core/hooks/use-hotkeys)
 
 </h4>
 
 This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
-[`useHotkeys` hook](#core/hooks/useHotkeys) and
+[`useHotkeys` hook](#core/hooks/use-hotkeys) and
 [HotkeysTarget2 component](#core/components/hokeys-target2) available to React 16.8+ users.
 You should migrate to one of these new APIs, as they will become the standard in Blueprint v4.
 

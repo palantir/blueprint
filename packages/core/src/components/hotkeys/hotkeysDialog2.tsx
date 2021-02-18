@@ -18,8 +18,9 @@ import classNames from "classnames";
 import React from "react";
 
 import { Classes } from "../../common";
+import { HotkeyConfig } from "../../hooks";
 import { Dialog, IDialogProps } from "../dialog/dialog";
-import { IHotkeyProps, Hotkey } from "./hotkey";
+import { Hotkey } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
 
 export interface HotkeysDialog2Props extends IDialogProps {
@@ -29,7 +30,7 @@ export interface HotkeysDialog2Props extends IDialogProps {
      */
     globalGroupName?: string;
 
-    hotkeys: IHotkeyProps[];
+    hotkeys: HotkeyConfig[];
 }
 
 export const HotkeysDialog2: React.FC<HotkeysDialog2Props> = ({ globalGroupName = "Global", hotkeys, ...props }) => {

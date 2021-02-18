@@ -18,8 +18,7 @@ import React, { useEffect } from "react";
 
 import * as Errors from "../../common/errors";
 import { isNodeEnv } from "../../common/utils";
-import { useHotkeys } from "../../hooks/useHotkeys";
-import { IHotkeyProps } from "./hotkey";
+import { HotkeyConfig, useHotkeys, UseHotkeysOptions } from "../../hooks";
 
 /** Identical to the return type of `useHotkeys` hook. */
 export interface HotkeysTarget2RenderProps {
@@ -35,15 +34,18 @@ export interface HotkeysTarget2Props {
     children: JSX.Element | ((props: HotkeysTarget2RenderProps) => JSX.Element);
 
     /** Hotkey definitions. */
-    hotkeys: IHotkeyProps[];
+    hotkeys: HotkeyConfig[];
+
+    /** Hook customization options. */
+    options?: UseHotkeysOptions;
 }
 
 /**
  * Utility component which allows consumers to use the new `useHotkeys` hook inside
  * React component classes. The implementation simply passes through to the hook.
  */
-export const HotkeysTarget2 = ({ children, hotkeys }: HotkeysTarget2Props): JSX.Element => {
-    const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
+export const HotkeysTarget2 = ({ children, hotkeys, options }: HotkeysTarget2Props): JSX.Element => {
+    const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys, options);
 
     // run props validation
     useEffect(() => {

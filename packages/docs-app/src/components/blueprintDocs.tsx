@@ -18,7 +18,7 @@ import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/
 import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Classes, HotkeysProvider, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
+import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 
@@ -35,8 +35,10 @@ const NPM_URL = "https://www.npmjs.com/package";
 // HACKHACK: this is brittle
 // detect Components page and subheadings
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
+const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
-const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route) || HOOKS_PATTERN.test(route);
+const isNavSection = ({ route }: IHeadingNode) =>
+    COMPONENTS_PATTERN.test(route) || CONTEXT_PATTERN.test(route) || HOOKS_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -178,7 +180,6 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     private handleToggleDark = (useDark: boolean) => {
         const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
         setTheme(nextThemeName);
-        setHotkeysDialogProps({ className: nextThemeName });
         this.setState({ themeName: nextThemeName });
     };
 }

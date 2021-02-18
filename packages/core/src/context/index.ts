@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export { HotkeysProvider, HotkeysProviderProps } from "./hotkeysProvider";
+export { HotkeysContext, HotkeysProvider, HotkeysProviderProps } from "./hotkeys/hotkeysProvider";
