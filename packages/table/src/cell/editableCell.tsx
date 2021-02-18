@@ -79,6 +79,8 @@ export interface IEditableCellState {
     dirtyValue?: string;
 }
 
+// HACKHACK(adahiya): fix for Blueprint 4.0
+// eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
