@@ -35,7 +35,10 @@ const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: fa
 const noOpDispatch: Dispatch<HotkeysAction> = () => null;
 
 // we can remove this guard once Blueprint depends on React 16
-export const HotkeysContext = createContext?.([initialHotkeysState, noOpDispatch]);
+export const HotkeysContext = createContext?.<[HotkeysContextState, Dispatch<HotkeysAction>]>([
+    initialHotkeysState,
+    noOpDispatch,
+]);
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {
