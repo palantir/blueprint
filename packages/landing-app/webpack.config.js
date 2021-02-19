@@ -44,7 +44,6 @@ module.exports = Object.assign({}, baseConfig, {
             patterns: [
                 // to: is relative to dist/
                 { from: "src/assets", to: "assets" },
-                { from: "src/index.html", to: "." },
             ],
         }),
     ]),

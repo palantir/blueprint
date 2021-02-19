@@ -34,7 +34,6 @@ module.exports = Object.assign({}, baseConfig, {
         new CopyWebpackPlugin({
             patterns: [
                 // to: is relative to dist/
-                { from: "src/index.html", to: "." },
                 { from: "src/features.html", to: "." },
             ],
         }),
