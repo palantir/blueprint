@@ -124,6 +124,10 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.js$/,
+                use: require.resolve("source-map-loader"),
+            },
+            {
                 test: /\.tsx?$/,
                 loader: require.resolve("ts-loader"),
                 options: {
