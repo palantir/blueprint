@@ -30,7 +30,7 @@ popover is open is open, thus preventing both elements from appearing at the sam
 
 ```tsx
 import { Button, combineRefs } from "@blueprintjs/core";
-import { Popover2, Tooltip2 } from "@blueprintjs/popover";
+import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 <Popover2
     content={<h1>Popover!</h1>}
