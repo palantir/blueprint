@@ -13,10 +13,24 @@
  * limitations under the License.
  */
 
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
+
+const plugins = [
+    ...baseConfig.plugins.filter(p => !(p instanceof HtmlWebpackPlugin)),
+    new HtmlWebpackPlugin({
+        chunks: ["index"],
+        filename: "index.html",
+        template: "src/index.html",
+    }),
+    new HtmlWebpackPlugin({
+        chunks: ["features"],
+        filename: "features.html",
+        template: "src/features.html",
+    }),
+];
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
@@ -30,12 +44,5 @@ module.exports = Object.assign({}, baseConfig, {
         path: path.resolve(__dirname, "./dist"),
     },
 
-    plugins: baseConfig.plugins.concat([
-        new CopyWebpackPlugin({
-            patterns: [
-                // to: is relative to dist/
-                { from: "src/features.html", to: "." },
-            ],
-        }),
-    ]),
+    plugins,
 });

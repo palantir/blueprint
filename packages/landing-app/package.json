@@ -6,7 +6,7 @@
     "scripts": {
         "bundle": "webpack --config ./webpack.config.js",
         "clean": "rm -rf dist/*",
-        "dev": "webpack-dev-server --config ./webpack.config.js",
+        "dev": "webpack-dev-server --config ./webpack.config.js --host 0.0.0.0",
         "dist": "cross-env NODE_ENV=production yarn bundle",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
