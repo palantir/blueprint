@@ -52,7 +52,6 @@ const plugins = [
 
     hasIndexHtml() &&
         new HtmlWebpackPlugin({
-            filename: "dist/index.html",
             template: "src/index.html",
         }),
 
