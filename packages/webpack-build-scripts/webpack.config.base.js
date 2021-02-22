@@ -22,7 +22,7 @@ const path = require("path");
 const webpack = require("webpack");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
-const { getPackageName } = require("./utils");
+const { getPackageName, hasIndexHtml } = require("./utils");
 
 // globals
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -50,10 +50,11 @@ const plugins = [
               },
     ),
 
-    new HtmlWebpackPlugin({
-        filename: "dist/index.html",
-        template: "src/index.html",
-    }),
+    hasIndexHtml() &&
+        new HtmlWebpackPlugin({
+            filename: "dist/index.html",
+            template: "src/index.html",
+        }),
 
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
@@ -64,7 +65,7 @@ const plugins = [
         BLUEPRINT_NAMESPACE: null,
         REACT_APP_BLUEPRINT_NAMESPACE: null,
     }),
-];
+].filter(Boolean);
 
 if (!IS_PRODUCTION) {
     plugins.push(
@@ -146,7 +147,7 @@ module.exports = {
                             transpileOnly: true,
                         },
                     },
-                ],
+                ].filter(Boolean),
             },
             {
                 test: /\.scss$/,
