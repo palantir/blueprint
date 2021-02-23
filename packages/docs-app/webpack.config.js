@@ -37,4 +37,12 @@ module.exports = Object.assign({}, baseConfig, {
             ],
         }),
     ]),
+
+    resolve: {
+        ...baseConfig.resolve,
+        alias: {
+            react: require.resolve("react", { paths: [__dirname] }),
+            "react-dom": require.resolve("react-dom", { paths: [__dirname] }),
+        },
+    },
 });
