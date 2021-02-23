@@ -15,7 +15,6 @@
  */
 
 const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
-const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
@@ -28,6 +27,5 @@ module.exports = Object.assign({}, baseConfig, {
         filename: "[name].bundle.js",
         library: ["Blueprint", "Popover2"],
         libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist"),
     },
 });

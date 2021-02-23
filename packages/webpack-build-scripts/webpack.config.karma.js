@@ -68,8 +68,8 @@ module.exports = {
                 },
             },
             {
-                test: /\.(eot|ttf|woff|woff2|svg|png)$/,
-                loader: require.resolve("file-loader"),
+                test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,
+                type: "asset/resource",
             },
         ],
     },

@@ -14,13 +14,10 @@
  */
 
 const { baseConfig, COMMON_EXTERNALS } = require("@blueprintjs/webpack-build-scripts");
-const path = require("path");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        timezone: [
-            "./src/index.ts"
-        ],
+        timezone: "./src/index.ts",
     },
 
     externals: COMMON_EXTERNALS,
@@ -29,6 +26,5 @@ module.exports = Object.assign({}, baseConfig, {
         filename: "[name].bundle.js",
         library: ["Blueprint", "Timezone"],
         libraryTarget: "umd",
-        path: path.resolve(__dirname, "./dist")
     },
 });

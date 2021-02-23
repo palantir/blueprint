@@ -41,7 +41,6 @@ module.exports = Object.assign({}, baseConfig, {
     output: {
         filename: "[name].bundle.js",
         publicPath: "",
-        path: path.resolve(__dirname, "./dist"),
     },
 
     plugins,
