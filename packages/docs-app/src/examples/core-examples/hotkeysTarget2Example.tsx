@@ -239,7 +239,7 @@ export class HotkeysTarget2Example extends React.PureComponent<IExampleProps, IH
 
         return (
             <Example className="docs-hotkeys-target-2-example" options={false} {...this.props}>
-                <HotkeysTarget2 hotkeys={this.hotkeys}>
+                {/* <HotkeysTarget2 hotkeys={this.hotkeys}>
                     {({ handleKeyDown, handleKeyUp }) => (
                         <div
                             tabIndex={0}
@@ -279,7 +279,7 @@ export class HotkeysTarget2Example extends React.PureComponent<IExampleProps, IH
                             </div>
                         </div>
                     )}
-                </HotkeysTarget2>
+                </HotkeysTarget2> */}
             </Example>
         );
     }

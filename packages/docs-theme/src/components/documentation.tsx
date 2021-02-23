@@ -175,80 +175,80 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         );
         const apiClasses = classNames("docs-api-drawer", this.props.className);
         return (
-            <HotkeysTarget2
-                hotkeys={[
-                    {
-                        combo: "shift+s",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Open navigator",
-                        onKeyDown: this.handleOpenNavigator,
-                        preventDefault: true,
-                    },
-                    {
-                        combo: "[",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Previous section",
-                        onKeyDown: this.handlePreviousSection,
-                    },
-                    {
-                        combo: "]",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Next section",
-                        onKeyDown: this.handleNextSection,
-                    },
-                ]}
-            >
-                <div className={rootClasses}>
-                    {this.props.banner}
-                    <div className="docs-app">
-                        <div className="docs-nav-wrapper">
-                            <div className="docs-nav" ref={this.refHandlers.nav}>
-                                {this.props.header}
-                                <div className="docs-nav-divider" />
-                                <NavButton
-                                    icon="search"
-                                    hotkey="shift + s"
-                                    text="Search..."
-                                    onClick={this.handleOpenNavigator}
-                                />
-                                <div className="docs-nav-divider" />
-                                <NavMenu
-                                    activePageId={activePageId}
-                                    activeSectionId={activeSectionId}
-                                    items={nav}
-                                    level={0}
-                                    onItemClick={this.handleNavigation}
-                                    renderNavMenuItem={this.props.renderNavMenuItem}
-                                />
-                                {this.props.footer}
-                            </div>
-                        </div>
-                        <main
-                            className={classNames("docs-content-wrapper", Classes.FILL)}
-                            ref={this.refHandlers.content}
-                            role="main"
-                        >
-                            <Page
-                                page={pages[activePageId]}
-                                renderActions={this.props.renderPageActions}
-                                tagRenderers={this.props.tagRenderers}
+            // <HotkeysTarget2
+            //     hotkeys={[
+            //         {
+            //             combo: "shift+s",
+            //             global: true,
+            //             group: "Navigation (global)",
+            //             label: "Open navigator",
+            //             onKeyDown: this.handleOpenNavigator,
+            //             preventDefault: true,
+            //         },
+            //         {
+            //             combo: "[",
+            //             global: true,
+            //             group: "Navigation (global)",
+            //             label: "Previous section",
+            //             onKeyDown: this.handlePreviousSection,
+            //         },
+            //         {
+            //             combo: "]",
+            //             global: true,
+            //             group: "Navigation (global)",
+            //             label: "Next section",
+            //             onKeyDown: this.handleNextSection,
+            //         },
+            //     ]}
+            // >
+            <div className={rootClasses}>
+                {this.props.banner}
+                <div className="docs-app">
+                    <div className="docs-nav-wrapper">
+                        <div className="docs-nav" ref={this.refHandlers.nav}>
+                            {this.props.header}
+                            <div className="docs-nav-divider" />
+                            <NavButton
+                                icon="search"
+                                hotkey="shift + s"
+                                text="Search..."
+                                onClick={this.handleOpenNavigator}
                             />
-                        </main>
+                            <div className="docs-nav-divider" />
+                            <NavMenu
+                                activePageId={activePageId}
+                                activeSectionId={activeSectionId}
+                                items={nav}
+                                level={0}
+                                onItemClick={this.handleNavigation}
+                                renderNavMenuItem={this.props.renderNavMenuItem}
+                            />
+                            {this.props.footer}
+                        </div>
                     </div>
-                    <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
-                        <TypescriptExample tag="typescript" value={activeApiMember} />
-                    </Drawer>
-                    <Navigator
-                        isOpen={this.state.isNavigatorOpen}
-                        items={nav}
-                        itemExclude={this.props.navigatorExclude}
-                        onClose={this.handleCloseNavigator}
-                    />
+                    <main
+                        className={classNames("docs-content-wrapper", Classes.FILL)}
+                        ref={this.refHandlers.content}
+                        role="main"
+                    >
+                        <Page
+                            page={pages[activePageId]}
+                            renderActions={this.props.renderPageActions}
+                            tagRenderers={this.props.tagRenderers}
+                        />
+                    </main>
                 </div>
-            </HotkeysTarget2>
+                <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                    <TypescriptExample tag="typescript" value={activeApiMember} />
+                </Drawer>
+                <Navigator
+                    isOpen={this.state.isNavigatorOpen}
+                    items={nav}
+                    itemExclude={this.props.navigatorExclude}
+                    onClose={this.handleCloseNavigator}
+                />
+            </div>
+            // </HotkeysTarget2>
         );
     }
 
@@ -332,7 +332,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`);
+        const navItemElement = this.navElement?.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`);
         if (navItemElement != null) {
             const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
             if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
