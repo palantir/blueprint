@@ -54,38 +54,38 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         return (
-            // <HotkeysTarget2
-            //     hotkeys={[
-            //         {
-            //             combo: "shift + o",
-            //             global: true,
-            //             label: "Show Omnibar",
-            //             onKeyDown: this.handleToggle,
-            //             // prevent typing "O" in omnibar input
-            //             preventDefault: true,
-            //         },
-            //     ]}
-            // >
-            <Example options={this.renderOptions()} {...this.props}>
-                <span>
-                    <Button text="Click to show Omnibar" onClick={this.handleClick} />
-                    {" or press "}
-                    <KeyCombo combo="shift + o" />
-                </span>
+            <HotkeysTarget2
+                hotkeys={[
+                    {
+                        combo: "shift + o",
+                        global: true,
+                        label: "Show Omnibar",
+                        onKeyDown: this.handleToggle,
+                        // prevent typing "O" in omnibar input
+                        preventDefault: true,
+                    },
+                ]}
+            >
+                <Example options={this.renderOptions()} {...this.props}>
+                    <span>
+                        <Button text="Click to show Omnibar" onClick={this.handleClick} />
+                        {" or press "}
+                        <KeyCombo combo="shift + o" />
+                    </span>
 
-                <FilmOmnibar
-                    {...filmSelectProps}
-                    {...this.state}
-                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
-                    createNewItemRenderer={maybeCreateNewItemRenderer}
-                    itemsEqual={areFilmsEqual}
-                    noResults={<MenuItem disabled={true} text="No results." />}
-                    onItemSelect={this.handleItemSelect}
-                    onClose={this.handleClose}
-                />
-                <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
-            </Example>
-            // </HotkeysTarget2>
+                    <FilmOmnibar
+                        {...filmSelectProps}
+                        {...this.state}
+                        createNewItemFromQuery={maybeCreateNewItemFromQuery}
+                        createNewItemRenderer={maybeCreateNewItemRenderer}
+                        itemsEqual={areFilmsEqual}
+                        noResults={<MenuItem disabled={true} text="No results." />}
+                        onItemSelect={this.handleItemSelect}
+                        onClose={this.handleClose}
+                    />
+                    <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
+                </Example>
+            </HotkeysTarget2>
         );
     }
 
