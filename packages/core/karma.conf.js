@@ -27,7 +27,7 @@ module.exports = function (config) {
 
     if (REACT === "15") {
         // features require React 16.8+
-        coverageExcludes.push("src/context/*", "src/hooks/*", "src/components/panel-stack2");
+        coverageExcludes.push("src/context/*", "src/hooks/*", "src/components/panel-stack2/*");
     }
 
     const baseConfig = createKarmaConfig({

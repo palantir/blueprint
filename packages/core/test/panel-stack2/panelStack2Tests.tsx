@@ -36,6 +36,11 @@ const TestPanel: React.FC<PanelActions<EmptyProps>> = props => {
 };
 
 describe("<PanelStack2>", () => {
+    if (React.version.startsWith("15")) {
+        it("skipped tests for backwards-incompatible component", () => assert(true));
+        return;
+    }
+
     let testsContainerElement: HTMLElement;
     let panelStackWrapper: PanelStack2Wrapper<EmptyProps>;
 
