@@ -22,6 +22,8 @@ import { Button } from "../button/buttons";
 import { Text } from "../text/text";
 import { IPanel } from "./panelProps";
 
+/* eslint-disable deprecation/deprecation */
+
 export interface IPanelViewProps {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
