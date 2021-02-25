@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
 import { Example, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";

@@ -16,7 +16,7 @@
 
 /* eslint-disable deprecation/deprecation, max-classes-per-file */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";

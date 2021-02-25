@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, Callout, Classes as CoreClasses, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";

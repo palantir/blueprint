@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, H5, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";

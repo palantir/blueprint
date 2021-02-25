@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import download from "downloadjs";
-import * as React from "react";
+import React from "react";
 
 import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
 

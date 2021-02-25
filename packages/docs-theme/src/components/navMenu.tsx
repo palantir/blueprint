@@ -16,7 +16,7 @@
 
 import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { Classes, IProps } from "@blueprintjs/core";
 

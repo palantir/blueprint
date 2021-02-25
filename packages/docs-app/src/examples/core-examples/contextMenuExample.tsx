@@ -17,7 +17,7 @@
 /* eslint-disable max-classes-per-file */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";

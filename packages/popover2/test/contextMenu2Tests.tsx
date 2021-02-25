@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 

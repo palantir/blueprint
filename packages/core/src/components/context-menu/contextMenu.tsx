@@ -15,8 +15,8 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";

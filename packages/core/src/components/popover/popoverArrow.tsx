@@ -15,7 +15,7 @@
  */
 
 import { Placement } from "popper.js";
-import * as React from "react";
+import React from "react";
 import { PopperArrowProps } from "react-popper";
 
 import * as Classes from "../../common/classes";

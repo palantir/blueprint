@@ -15,7 +15,7 @@
  */
 
 import { IPageData } from "@documentalist/client";
-import * as React from "react";
+import React from "react";
 
 import { Classes } from "@blueprintjs/core";
 

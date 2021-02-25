@@ -16,8 +16,8 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 

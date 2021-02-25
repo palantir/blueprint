@@ -16,8 +16,8 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { Classes, Slider } from "../../src";
 import { ARROW_UP } from "../../src/common/keys";

@@ -16,7 +16,7 @@
 
 import { ITsEnum, ITsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { IProps } from "@blueprintjs/core";
 

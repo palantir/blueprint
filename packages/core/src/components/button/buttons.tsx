@@ -17,7 +17,7 @@
 // HACKHACK: these components should go in separate files
 /* eslint-disable max-classes-per-file */
 
-import * as React from "react";
+import React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { IRef, IRefObject, refHandler } from "../../common/refs";

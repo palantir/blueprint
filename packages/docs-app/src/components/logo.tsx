@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 export const Logo: React.FunctionComponent = () => (
     <svg width="65" height="76" xmlns="http://www.w3.org/2000/svg">

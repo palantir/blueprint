@@ -16,7 +16,7 @@
 
 import { IKssPluginData, ITag } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 

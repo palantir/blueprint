@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";

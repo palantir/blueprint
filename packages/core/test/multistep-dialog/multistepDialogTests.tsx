@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import React from "react";
 
 import { Classes, MultistepDialog, DialogStep } from "../../src";
 

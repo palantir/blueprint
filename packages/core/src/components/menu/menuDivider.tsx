@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
