@@ -48,7 +48,6 @@
         "@types/react-lifecycles-compat": "3.0.1",
         "@types/react-transition-group": "4.4.0",
         "@types/sinon": "9.0.9",
-        "@types/webpack": "4.41.25",
         "chai": "^4.2.0",
         "circle-github-bot": "^2.1.0",
         "cross-env": "^7.0.3",

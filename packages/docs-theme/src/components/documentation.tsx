@@ -16,9 +16,9 @@
 
 import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
-import { Classes, Drawer, FocusStyleManager, Hotkey, Hotkeys, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, IProps, Utils } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
@@ -117,7 +117,6 @@ export interface IDocumentationState {
     isNavigatorOpen: boolean;
 }
 
-@HotkeysTarget
 export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
     public static childContextTypes = DocumentationContextTypes;
 
@@ -177,69 +176,80 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         );
         const apiClasses = classNames("docs-api-drawer", this.props.className);
         return (
-            <div className={rootClasses}>
-                {this.props.banner}
-                <div className="docs-app">
-                    <div className="docs-nav-wrapper">
-                        <div className="docs-nav" ref={this.refHandlers.nav}>
-                            {this.props.header}
-                            <div className="docs-nav-divider" />
-                            <NavButton
-                                icon={<Search />}
-                                hotkey="shift + s"
-                                text="Search..."
-                                onClick={this.handleOpenNavigator}
-                            />
-                            <div className="docs-nav-divider" />
-                            <NavMenu
-                                activePageId={activePageId}
-                                activeSectionId={activeSectionId}
-                                items={nav}
-                                level={0}
-                                onItemClick={this.handleNavigation}
-                                renderNavMenuItem={this.props.renderNavMenuItem}
-                            />
-                            {this.props.footer}
+            <HotkeysTarget2
+                hotkeys={[
+                    {
+                        combo: "shift+s",
+                        global: true,
+                        group: "Navigation (global)",
+                        label: "Open navigator",
+                        onKeyDown: this.handleOpenNavigator,
+                        preventDefault: true,
+                    },
+                    {
+                        combo: "[",
+                        global: true,
+                        group: "Navigation (global)",
+                        label: "Previous section",
+                        onKeyDown: this.handlePreviousSection,
+                    },
+                    {
+                        combo: "]",
+                        global: true,
+                        group: "Navigation (global)",
+                        label: "Next section",
+                        onKeyDown: this.handleNextSection,
+                    },
+                ]}
+            >
+                <div className={rootClasses}>
+                    {this.props.banner}
+                    <div className="docs-app">
+                        <div className="docs-nav-wrapper">
+                            <div className="docs-nav" ref={this.refHandlers.nav}>
+                                {this.props.header}
+                                <div className="docs-nav-divider" />
+                                <NavButton
+                                    icon={<Search />}
+                                    hotkey="shift + s"
+                                    text="Search..."
+                                    onClick={this.handleOpenNavigator}
+                                />
+                                <div className="docs-nav-divider" />
+                                <NavMenu
+                                    activePageId={activePageId}
+                                    activeSectionId={activeSectionId}
+                                    items={nav}
+                                    level={0}
+                                    onItemClick={this.handleNavigation}
+                                    renderNavMenuItem={this.props.renderNavMenuItem}
+                                />
+                                {this.props.footer}
+                            </div>
+                            <main
+                                className={classNames("docs-content-wrapper", Classes.FILL)}
+                                ref={this.refHandlers.content}
+                                role="main"
+                            >
+                                <Page
+                                    page={pages[activePageId]}
+                                    renderActions={this.props.renderPageActions}
+                                    tagRenderers={this.props.tagRenderers}
+                                />
+                            </main>
                         </div>
-                    </div>
-                    <main
-                        className={classNames("docs-content-wrapper", Classes.FILL)}
-                        ref={this.refHandlers.content}
-                        role="main"
-                    >
-                        <Page
-                            page={pages[activePageId]}
-                            renderActions={this.props.renderPageActions}
-                            tagRenderers={this.props.tagRenderers}
+                        <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
+                            <TypescriptExample tag="typescript" value={activeApiMember} />
+                        </Drawer>
+                        <Navigator
+                            isOpen={this.state.isNavigatorOpen}
+                            items={nav}
+                            itemExclude={this.props.navigatorExclude}
+                            onClose={this.handleCloseNavigator}
                         />
-                    </main>
+                    </div>
                 </div>
-                <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
-                    <TypescriptExample tag="typescript" value={activeApiMember} />
-                </Drawer>
-                <Navigator
-                    isOpen={this.state.isNavigatorOpen}
-                    items={nav}
-                    itemExclude={this.props.navigatorExclude}
-                    onClose={this.handleCloseNavigator}
-                />
-            </div>
-        );
-    }
-
-    public renderHotkeys() {
-        return (
-            <Hotkeys>
-                <Hotkey
-                    global={true}
-                    combo="shift+s"
-                    label="Open navigator"
-                    onKeyDown={this.handleOpenNavigator}
-                    preventDefault={true}
-                />
-                <Hotkey global={true} combo="[" label="Previous section" onKeyDown={this.handlePreviousSection} />
-                <Hotkey global={true} combo="]" label="Next section" onKeyDown={this.handleNextSection} />
-            </Hotkeys>
+            </HotkeysTarget2>
         );
     }
 

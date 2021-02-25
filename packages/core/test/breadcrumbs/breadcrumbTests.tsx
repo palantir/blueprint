@@ -15,8 +15,8 @@
  */
 
 import { assert } from "chai";
-import { shallow, mount } from "enzyme";
-import * as React from "react";
+import { mount, shallow } from "enzyme";
+import React from "react";
 import { spy } from "sinon";
 
 import { FolderClose } from "@blueprintjs/icons";

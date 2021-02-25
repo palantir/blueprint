@@ -18,7 +18,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import { AlignLeft, AlignCenter, AlignRight } from "@blueprintjs/icons";
@@ -47,6 +47,7 @@ describe("ContextMenu", () => {
             }
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         const TargettedTestComponent = ContextMenuTarget(TestComponent);
 
         // it's not the same Component
@@ -124,6 +125,7 @@ function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
     assert.lengthOf(menuItems, expectedLength);
 }
 
+// eslint-disable-next-line deprecation/deprecation
 @ContextMenuTarget
 class RightClickMe extends React.Component<{ items?: JSX.Element[] }> {
     public static defaultProps = {

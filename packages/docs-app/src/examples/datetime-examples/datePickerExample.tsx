@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, TimePrecision } from "@blueprintjs/datetime";

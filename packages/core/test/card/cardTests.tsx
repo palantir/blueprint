@@ -16,8 +16,8 @@
 
 import { assert } from "chai";
 import { shallow } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { Card, Classes, H4 } from "../../src";
 

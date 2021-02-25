@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { DISPLAYNAME_PREFIX, IProps, Popover, Position } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";

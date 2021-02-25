@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import { IConstructor } from "../../common/constructor";
 import {
@@ -32,6 +32,7 @@ export interface IContextMenuTargetComponent extends React.Component {
     onContextMenuClose?: () => void;
 }
 
+/** @deprecated use ContextMenu2 */
 export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderContextMenu)) {
         console.warn(CONTEXTMENU_WARN_DECORATOR_NO_METHOD);

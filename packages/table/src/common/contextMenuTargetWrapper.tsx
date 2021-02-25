@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+/* eslint-disable deprecation/deprecation */
+
+import React from "react";
 
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 

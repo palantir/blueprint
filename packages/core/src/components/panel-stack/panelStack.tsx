@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
@@ -24,6 +24,8 @@ import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
+
+/* eslint-disable deprecation/deprecation */
 
 export interface IPanelStackProps extends IProps {
     /**
@@ -77,6 +79,7 @@ export interface IPanelStackState {
     stack: IPanel[];
 }
 
+/** @deprecated use `PanelStack2<T>` */
 @polyfill
 export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelStackState> {
     public state: IPanelStackState = {

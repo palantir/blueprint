@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { IConstructor } from "../../common/constructor";
 import { HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT, HOTKEYS_WARN_DECORATOR_NO_METHOD } from "../../common/errors";
@@ -33,6 +33,7 @@ export interface IHotkeysTargetComponent extends React.Component {
     renderHotkeys: () => React.ReactElement<IHotkeysProps>;
 }
 
+/** @deprecated use `useHotkeys` hook or `<HotkeysTarget2>` component */
 export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderHotkeys)) {
         console.warn(HOTKEYS_WARN_DECORATOR_NO_METHOD);

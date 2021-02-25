@@ -16,7 +16,7 @@
 
 import { IHeadingTag } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { Classes } from "@blueprintjs/core";
 import { Link } from "@blueprintjs/icons";

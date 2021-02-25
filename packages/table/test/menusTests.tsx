@@ -15,8 +15,8 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { Classes, Menu } from "@blueprintjs/core";
 

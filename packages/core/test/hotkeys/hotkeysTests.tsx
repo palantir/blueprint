@@ -18,7 +18,7 @@
 
 import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { SinonSpy, spy } from "sinon";
 
 import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
@@ -56,6 +56,7 @@ describe("Hotkeys", () => {
             }
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         const TargettedTestComponent = HotkeysTarget(TestComponent);
 
         // it's not the same Component
@@ -81,6 +82,7 @@ describe("Hotkeys", () => {
             onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         @HotkeysTarget
         class TestComponent extends React.Component<ITestComponentProps> {
             public static defaultProps: ITestComponentProps = {
@@ -212,6 +214,7 @@ describe("Hotkeys", () => {
             const combo = "shift + x";
             const handleKeyDown = spy();
 
+            // eslint-disable-next-line deprecation/deprecation
             @HotkeysTarget
             class ComboComponent extends React.Component {
                 public renderHotkeys() {

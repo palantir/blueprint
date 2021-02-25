@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Keys, NumericInput } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";

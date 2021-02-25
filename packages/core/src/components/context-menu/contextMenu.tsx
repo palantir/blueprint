@@ -15,8 +15,8 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
@@ -45,6 +45,7 @@ const TRANSITION_DURATION = 100;
 type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
+/** @deprecated use ContextMenu2 */
 @polyfill
 class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
@@ -126,6 +127,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
 }
 
 let contextMenuElement: HTMLElement | undefined;
+// eslint-disable-next-line deprecation/deprecation
 let contextMenu: ContextMenu | undefined;
 
 /**
@@ -138,10 +140,12 @@ export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, i
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
+        /* eslint-disable deprecation/deprecation */
         contextMenu = ReactDOM.render<IContextMenuProps>(
             <ContextMenu onClosed={remove} />,
             contextMenuElement,
         ) as ContextMenu;
+        /* eslint-enable deprecation/deprecation */
     }
 
     contextMenu!.show(menu, offset, onClose, isDarkTheme);

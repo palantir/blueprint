@@ -1,5 +1,18 @@
 @# Context menu
 
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">
+
+Deprecated: use [ContextMenu2](#popover2-package/context-menu2)
+
+</h4>
+
+This API is **deprecated since @blueprintjs/core v3.39.0** in favor of the new
+ContextMenu2 component available in the `@blueprintjs/popover2` package. You should migrate
+to the new API which will become the standard in Blueprint v4.
+
+</div>
+
 Context menus present the user with a list of actions upon a right-click.
 
 You can create context menus in either of the following ways:

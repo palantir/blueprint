@@ -17,7 +17,7 @@
 /* eslint-disable react/jsx-no-bind */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import {
     Button,

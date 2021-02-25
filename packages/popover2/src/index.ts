@@ -16,6 +16,7 @@
 
 export * as Classes from "./classes";
 export * as Errors from "./errors";
+export { ContextMenu2, ContextMenu2Props, ContextMenu2RenderProps } from "./contextMenu2";
 export {
     IPopover2SharedProps,
     IPopover2TargetProps,

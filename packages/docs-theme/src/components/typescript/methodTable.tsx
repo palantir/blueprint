@@ -16,7 +16,7 @@
 
 import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { Code, Intent, IProps, Tag } from "@blueprintjs/core";
 

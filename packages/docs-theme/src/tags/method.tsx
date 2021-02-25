@@ -15,7 +15,7 @@
  */
 
 import { isTsClass, isTsMethod, ITag, ITsClass, ITypescriptPluginData } from "@documentalist/client";
-import * as React from "react";
+import React from "react";
 
 import { IProps } from "@blueprintjs/core";
 

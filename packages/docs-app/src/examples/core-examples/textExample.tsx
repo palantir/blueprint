@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Text, TextArea } from "@blueprintjs/core";
 import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";

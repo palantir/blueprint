@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { IconComponent, IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE, SVGIconProps } from "@blueprintjs/icons";
