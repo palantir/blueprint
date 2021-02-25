@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
 import { Example, handleStringChange } from "@blueprintjs/docs-theme";

@@ -16,6 +16,7 @@
 
 import React, { createContext, useReducer, Dispatch, useCallback } from "react";
 
+import { DISPLAYNAME_PREFIX } from "../../common";
 import { HotkeysDialog2, HotkeysDialog2Props } from "../../components/hotkeys/hotkeysDialog2";
 import { HotkeyConfig } from "../../hooks";
 
@@ -39,6 +40,7 @@ export const HotkeysContext = createContext?.<[HotkeysContextState, Dispatch<Hot
     initialHotkeysState,
     noOpDispatch,
 ]);
+HotkeysContext.displayName = `${DISPLAYNAME_PREFIX}.HotkeysContext`;
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {

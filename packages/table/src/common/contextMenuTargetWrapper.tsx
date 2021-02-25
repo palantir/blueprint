@@ -16,7 +16,7 @@
 
 /* eslint-disable deprecation/deprecation */
 
-import * as React from "react";
+import React from "react";
 
 import { ContextMenuTarget, IProps } from "@blueprintjs/core";
 

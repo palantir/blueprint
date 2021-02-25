@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
 import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src";

@@ -16,7 +16,7 @@
 
 import { State as PopperState } from "@popperjs/core";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
 
 import {

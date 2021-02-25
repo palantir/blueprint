@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { FileInput, FormGroup, H5, InputGroup } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";

@@ -18,7 +18,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src";

@@ -16,8 +16,8 @@
 
 import { expect } from "chai";
 import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";

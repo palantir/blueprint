@@ -15,8 +15,8 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import * as ScrollUtils from "../../../src/common/internal/scrollUtils";
 import { IRegion, Regions } from "../../../src/regions";

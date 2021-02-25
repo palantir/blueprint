@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import * as sinon from "sinon";
 
 import { Classes, FileInput } from "../../src";

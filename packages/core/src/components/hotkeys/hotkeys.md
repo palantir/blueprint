@@ -30,7 +30,7 @@ and attach the appropriate key listeners.
 
 ```tsx
 import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
-import * as React from "react";
+import React from "react";
 
 @HotkeysTarget
 export class MyComponent extends React.Component {
