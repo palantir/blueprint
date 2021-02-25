@@ -21,7 +21,7 @@ export interface Panel<P> {
     /**
      * The renderer for this panelZ.
      */
-    renderPanel: (props: P & PanelActions<P>) => JSX.Element;
+    renderPanel: (props: P & PanelActions<P>) => JSX.Element | null;
 
     /**
      * HTML title to be passed to the <Text> component
@@ -61,7 +61,7 @@ export interface PanelActions<P> {
      * Remember that the panel header always contains a "back" button that
      * closes this panel on click (unless there is only one panel on the stack).
      */
-    closePanel(removedPanel: Panel<P>): void;
+    closePanel(): void;
 
     /**
      * Call this method to open a new panel on the top of the stack.

@@ -32,14 +32,14 @@ export interface PanelStack2Props<T> extends IProps {
     initialPanel?: Panel<T>;
 
     /**
-     * Callback invoked when the user presses the back button or a panel invokes
-     * the `closePanel()` injected prop method.
+     * Callback invoked when the user presses the back button or a panel
+     * closes itself with a `closePanel()` action.
      */
     onClose?: (removedPanel: Panel<T>) => void;
 
     /**
-     * Callback invoked when a panel invokes the `openPanel(panel)` injected
-     * prop method.
+     * Callback invoked when a panel opens a new panel with an `openPanel(panel)`
+     * action.
      */
     onOpen?: (addedPanel: Panel<T>) => void;
 
@@ -74,13 +74,9 @@ interface PanelStack2Component {
 export const PanelStack2: PanelStack2Component = <T,>(props: PanelStack2Props<T>) => {
     const { renderActivePanelOnly = true, showPanelHeader = true } = props;
     const [direction, setDirection] = useState("push");
-    const [stack, setStack] = useState(
-        props.stack != null
-            ? props.stack.slice().reverse()
-            : props.initialPanel !== undefined
-            ? [props.initialPanel]
-            : [],
-    );
+
+    const [localStack, setLocalStack] = useState(props.initialPanel !== undefined ? [props.initialPanel] : []);
+    const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
 
     if (stack.length === 0) {
         return null;
@@ -91,7 +87,7 @@ export const PanelStack2: PanelStack2Component = <T,>(props: PanelStack2Props<T>
             props.onOpen?.(panel);
             if (props.stack == null) {
                 setDirection("push");
-                setStack(prevStack => [panel, ...prevStack]);
+                setLocalStack(prevStack => [panel, ...prevStack]);
             }
         },
         [props.onOpen],
@@ -105,7 +101,7 @@ export const PanelStack2: PanelStack2Component = <T,>(props: PanelStack2Props<T>
             props.onClose?.(panel);
             if (props.stack == null) {
                 setDirection("pop");
-                setStack(prevStack => prevStack.slice(1));
+                setLocalStack(prevStack => prevStack.slice(1));
             }
         },
         [stack, props.onClose],

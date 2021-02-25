@@ -57,7 +57,6 @@ new one on top of it during the panel's lifecycle.
 
 @## Props
 
-The panel stack cannot be controlled but `onClose` and `onOpen` callbacks are
-available to listen for changes.
+PanelStack2 can be operated as a controlled or uncontrolled component.
 
 @interface PanelStack2Props

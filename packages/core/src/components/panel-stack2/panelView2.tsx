@@ -65,16 +65,15 @@ export const PanelView2: PanelView2Component = <T,>(props: PanelView2Props<T>) =
             />
         );
     const panelActions: PanelActions<T> = {
-        closePanel: props.onClose,
+        closePanel: handleClose,
         openPanel: props.onOpen,
     };
 
-    // two <span> tags in header ensure title is centered as long as
-    // possible, due to `flex: 1` magic.
     return (
         <div className={Classes.PANEL_STACK2_VIEW}>
             {props.showHeader && (
                 <div className={Classes.PANEL_STACK2_HEADER}>
+                    {/* two <span> tags here ensure title is centered as long as possible, with `flex: 1` styling */}
                     <span>{maybeBackButton}</span>
                     <Text className={Classes.HEADING} ellipsize={true} title={props.panel.htmlTitle}>
                         {props.panel.title}

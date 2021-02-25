@@ -59,8 +59,7 @@ class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> 
 
 @## Props
 
-The panel stack cannot be controlled but `onClose` and `onOpen` callbacks are
-available to listen for changes.
+PanelStack can be operated as a controlled or uncontrolled component.
 
 @interface IPanelStackProps
 

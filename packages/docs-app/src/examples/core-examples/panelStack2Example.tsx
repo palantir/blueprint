@@ -32,6 +32,7 @@ const PanelExample: React.FC<PanelExampleProps & PanelActions<PanelExampleProps>
             renderPanel: PanelExample,
             title: `Panel ${panelNumber}`,
         });
+        // eslint-disable-next-line @typescript-eslint/unbound-method
     }, [props.panelNumber, props.openPanel]);
 
     return (
