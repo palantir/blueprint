@@ -25,6 +25,8 @@ import { IProps } from "../../common/props";
 import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 
+/* eslint-disable deprecation/deprecation */
+
 export interface IPanelStackProps extends IProps {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
@@ -77,6 +79,7 @@ export interface IPanelStackState {
     stack: IPanel[];
 }
 
+/** @deprecated use `PanelStack2<T>` */
 @polyfill
 export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelStackState> {
     public state: IPanelStackState = {

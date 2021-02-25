@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
+/* eslint-disable deprecation/deprecation, max-classes-per-file */
 
 import * as React from "react";
 
