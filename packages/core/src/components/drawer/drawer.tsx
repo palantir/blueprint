@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { SmallCross } from "@blueprintjs/icons";
 
@@ -101,7 +100,6 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     vertical?: boolean;
 }
 
-@polyfill
 export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 

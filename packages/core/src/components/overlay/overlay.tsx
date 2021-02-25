@@ -17,14 +17,13 @@
 import classNames from "classnames";
 import React from "react";
 import { findDOMNode } from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 // tslint:disable-next-line no-submodule-imports
 import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";
+import { isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 export interface IOverlayableProps extends IOverlayLifecycleProps {
@@ -183,8 +182,6 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-// HACKHACK: https://github.com/palantir/blueprint/issues/4342
-@(polyfill as LifecycleCompatPolyfill<IOverlayProps, any>)
 export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 

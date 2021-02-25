@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
@@ -59,7 +58,6 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     title?: string;
 }
 
-@polyfill
 export class Callout extends AbstractPureComponent2<ICalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 

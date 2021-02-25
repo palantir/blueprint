@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { IconComponent, IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE, SVGIconProps } from "@blueprintjs/icons";
 
@@ -54,7 +53,6 @@ interface IIconState {
     iconComponent: IconComponent | undefined;
 }
 
-@polyfill
 export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>, IIconState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 

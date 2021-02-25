@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import React from "react";
 import DayPicker from "react-day-picker";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
@@ -212,7 +211,6 @@ interface IStateKeysAndValuesObject {
     };
 }
 
-@polyfill
 export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: Partial<IDateRangeInputProps> = {
         allowSingleDayRange: false,

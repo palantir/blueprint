@@ -15,7 +15,6 @@
  */
 
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { ChevronLeft } from "@blueprintjs/icons";
 
@@ -49,7 +48,6 @@ export interface IPanelViewProps {
     showHeader: boolean;
 }
 
-@polyfill
 export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
     public render() {
         const { panel, onOpen } = this.props;

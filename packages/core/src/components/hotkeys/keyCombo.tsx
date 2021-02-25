@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { Icon, IconName } from "../icon/icon";
@@ -50,7 +49,6 @@ export interface IKeyComboProps extends IProps {
     minimal?: boolean;
 }
 
-@polyfill
 export class KeyCombo extends AbstractPureComponent2<IKeyComboProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
 
