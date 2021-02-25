@@ -19,7 +19,7 @@
  */
 export interface Panel<P> {
     /**
-     * The renderer for this panelZ.
+     * The renderer for this panel.
      */
     renderPanel: (props: PanelProps<P>) => JSX.Element | null;
 
@@ -41,19 +41,7 @@ export interface Panel<P> {
     title?: React.ReactNode;
 }
 
-/**
- * Use this interface in your panel component's props type to access these
- * panel action callbacks which are injected by `PanelStack2`.
- *
- * ```tsx
- * import { PanelProps } from "@blueprintjs/core";
- * type SettingsPanelInfo = { ... };
- * const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
- *     // ...
- * }
- * ```
- */
-export type PanelProps<P> = P & {
+export interface PanelActions<P> {
     /**
      * Call this method to programatically close this panel. If this is the only
      * panel on the stack then this method will do nothing.
@@ -67,4 +55,18 @@ export type PanelProps<P> = P & {
      * Call this method to open a new panel on the top of the stack.
      */
     openPanel(panel: Panel<P>): void;
-};
+}
+
+/**
+ * Use this interface in your panel component's props type to access these
+ * panel action callbacks which are injected by `PanelStack2`.
+ *
+ * ```tsx
+ * import { PanelProps } from "@blueprintjs/core";
+ * type SettingsPanelInfo = { ... };
+ * const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
+ *     // ...
+ * }
+ * ```
+ */
+export type PanelProps<P> = P & PanelActions<P>;

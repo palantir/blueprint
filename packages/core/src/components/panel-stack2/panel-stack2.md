@@ -66,7 +66,7 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 
 @interface Panel
 
-@interface PanelProps
+@interface PanelActions
 
 @## Props
 
