@@ -17,7 +17,7 @@
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";

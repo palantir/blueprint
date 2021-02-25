@@ -18,7 +18,7 @@ import { expect } from "chai";
 import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
 import React from "react";
 import ReactDOM from "react-dom";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";

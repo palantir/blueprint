@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Classes } from "../../src/common";
 import { Boundary } from "../../src/common/boundary";

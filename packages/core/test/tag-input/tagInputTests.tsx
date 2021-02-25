@@ -23,7 +23,7 @@ import {
     ShallowWrapper,
 } from "enzyme";
 import React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src";
 

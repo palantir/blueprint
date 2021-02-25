@@ -17,7 +17,7 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 

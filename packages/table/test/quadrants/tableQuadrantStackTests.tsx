@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { IRef } from "@blueprintjs/core";
 
