@@ -19,7 +19,7 @@ import React, { useCallback } from "react";
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
-import { Panel, PanelActions } from "./panelTypes";
+import { Panel, PanelProps } from "./panelTypes";
 
 export interface PanelView2Props<T> {
     /**
@@ -64,10 +64,6 @@ export const PanelView2: PanelView2Component = <T,>(props: PanelView2Props<T>) =
                 title={props.previousPanel.htmlTitle}
             />
         );
-    const panelActions: PanelActions<T> = {
-        closePanel: handleClose,
-        openPanel: props.onOpen,
-    };
 
     return (
         <div className={Classes.PANEL_STACK2_VIEW}>
@@ -88,9 +84,10 @@ export const PanelView2: PanelView2Component = <T,>(props: PanelView2Props<T>) =
              * component type safe, so it's ok to do this...
              */}
             {props.panel.renderPanel({
-                ...panelActions,
+                closePanel: handleClose,
+                openPanel: props.onOpen,
                 ...props.panel.props,
-            } as T & PanelActions<T>)}
+            } as PanelProps<T>)}
         </div>
     );
 };

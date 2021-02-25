@@ -19,11 +19,11 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { Classes, Panel, PanelActions, PanelStack2Props, PanelStack2 } from "../../src";
+import { Classes, Panel, PanelProps, PanelStack2Props, PanelStack2 } from "../../src";
 
-type EmptyProps = Record<string, never>;
+type EmptyObject = Record<string, never>;
 
-const TestPanel: React.FC<PanelActions<EmptyProps>> = props => {
+const TestPanel: React.FC<PanelProps<EmptyObject>> = props => {
     const newPanel = { renderPanel: TestPanel, title: "New Panel 1" };
 
     return (
@@ -42,15 +42,15 @@ describe("<PanelStack2>", () => {
     }
 
     let testsContainerElement: HTMLElement;
-    let panelStackWrapper: PanelStack2Wrapper<EmptyProps>;
+    let panelStackWrapper: PanelStack2Wrapper<EmptyObject>;
 
-    const initialPanel: Panel<EmptyProps> = {
+    const initialPanel: Panel<EmptyObject> = {
         props: {},
         renderPanel: TestPanel,
         title: "Test Title",
     };
 
-    const emptyTitleInitialPanel: Panel<EmptyProps> = {
+    const emptyTitleInitialPanel: Panel<EmptyObject> = {
         props: {},
         renderPanel: TestPanel,
     };
@@ -208,7 +208,7 @@ describe("<PanelStack2>", () => {
     });
 
     it("can render a panel stack with multiple initial panels and close one", () => {
-        let stack: Array<Panel<EmptyProps>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
+        let stack: Array<Panel<EmptyObject>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
         panelStackWrapper = renderPanelStack({
             onClose: () => {
                 const newStack = stack.slice();
@@ -265,10 +265,10 @@ describe("<PanelStack2>", () => {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(props: PanelStack2Props<EmptyProps>): PanelStack2Wrapper<EmptyProps> {
+    function renderPanelStack(props: PanelStack2Props<EmptyObject>): PanelStack2Wrapper<EmptyObject> {
         panelStackWrapper = mount(<PanelStack2 {...props} />, {
             attachTo: testsContainerElement,
-        }) as PanelStack2Wrapper<EmptyProps>;
+        }) as PanelStack2Wrapper<EmptyObject>;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }

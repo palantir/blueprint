@@ -16,14 +16,14 @@
 
 import React, { useCallback, useState } from "react";
 
-import { Button, H5, Intent, Panel, PanelActions, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
+import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-interface PanelExampleProps {
+interface PanelExampleInfo {
     panelNumber: number;
 }
 
-const PanelExample: React.FC<PanelExampleProps & PanelActions<PanelExampleProps>> = props => {
+const PanelExample: React.FC<PanelProps<PanelExampleInfo>> = props => {
     const [counter, setCounter] = useState(0);
     const openNewPanel = useCallback(() => {
         const panelNumber = props.panelNumber + 1;
@@ -43,7 +43,7 @@ const PanelExample: React.FC<PanelExampleProps & PanelActions<PanelExampleProps>
     );
 };
 
-const initialPanel: Panel<PanelExampleProps> = {
+const initialPanel: Panel<PanelExampleInfo> = {
     props: {
         panelNumber: 1,
     },
@@ -59,7 +59,7 @@ export const PanelStack2Example: React.FC<IExampleProps> = props => {
     const toggleActiveOnly = useCallback(handleBooleanChange(setActivePanelOnly), []);
     const toggleShowHeader = useCallback(handleBooleanChange(setShowHeader), []);
     const addToPanelStack = useCallback(
-        (newPanel: Panel<PanelExampleProps>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
+        (newPanel: Panel<PanelExampleInfo>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
         [],
     );
     const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);

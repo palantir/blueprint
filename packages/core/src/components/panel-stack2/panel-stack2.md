@@ -47,13 +47,26 @@ This breakdown allows the component to avoid cloning elements.
 Note that each panel is only mounted when it is atop the stack and is unmounted when
 it is closed or when a panel opens above it.
 
-`PanelStack2` injects `PanelActions` callbacks into each panel renderer in addition to
-the `props` defined by `Panel<T>` which allow you to close the current panel or open a
-new one on top of it during the panel's lifecycle.
+`PanelStack2` injects panel action callbacks into each panel renderer in addition to
+the `props` defined by `Panel<T>`. These allow you to close the current panel or open a
+new one on top of it during the panel's lifecycle. For example:
+
+```tsx
+import { PanelProps } from "@blueprintjs/core";
+
+type SettingsPanelInfo = {
+    // ...
+};
+
+const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
+    const { openPanel, closePanel, ...info } = props;
+    // ...
+}
+```
 
 @interface Panel
 
-@interface PanelActions
+@interface PanelProps
 
 @## Props
 
