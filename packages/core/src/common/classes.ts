@@ -19,7 +19,11 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-const NS = process.env.BLUEPRINT_NAMESPACE || process.env.REACT_APP_BLUEPRINT_NAMESPACE || "bp3";
+// injected by webpack.DefinePlugin
+declare let BLUEPRINT_NAMESPACE: string | undefined;
+declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
+
+const NS = BLUEPRINT_NAMESPACE || REACT_APP_BLUEPRINT_NAMESPACE || "bp3";
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
@@ -300,7 +304,7 @@ export const ICON_LARGE = `${ICON}-large`;
 
 /**
  * Returns the namespace prefix for all Blueprint CSS classes.
- * Customize this namespace at build time with the `process.env.BLUEPRINT_NAMESPACE` environment variable.
+ * Customize this namespace at build time by defining it with `webpack.DefinePlugin`.
  */
 export function getClassNamespace() {
     return NS;
