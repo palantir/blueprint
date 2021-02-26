@@ -79,6 +79,12 @@ module.exports = {
             process: "process/browser",
         }),
 
+        new webpack.DefinePlugin({
+            NODE_ENV: JSON.stringify("test"),
+            BLUEPRINT_NAMESPACE: JSON.stringify(process.env.BLUEPRINT_NAMESPACE),
+            REACT_APP_BLUEPRINT_NAMESPACE: JSON.stringify(process.env.REACT_APP_BLUEPRINT_NAMESPACE),
+        }),
+
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: "test/tsconfig.json",
