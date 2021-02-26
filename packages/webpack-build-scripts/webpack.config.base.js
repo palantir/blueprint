@@ -53,8 +53,6 @@ const plugins = [
 
     new webpack.DefinePlugin({
         NODE_ENV: JSON.stringify(NODE_ENV),
-        BLUEPRINT_NAMESPACE: JSON.stringify(process.env.BLUEPRINT_NAMESPACE),
-        REACT_APP_BLUEPRINT_NAMESPACE: JSON.stringify(process.env.REACT_APP_BLUEPRINT_NAMESPACE),
     }),
 ];
 
