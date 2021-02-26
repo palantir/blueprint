@@ -163,7 +163,7 @@ describe("<PanelStack2>", () => {
         newPanelButton.simulate("click");
 
         const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
-        assert.equal(backButtonWithoutTitle.text(), "chevron-left");
+        assert.exists(backButtonWithoutTitle);
 
         const newPanelButtonOnNotEmpty = panelStackWrapper.find("#new-panel-button").hostNodes().at(1);
         assert.exists(newPanelButtonOnNotEmpty);

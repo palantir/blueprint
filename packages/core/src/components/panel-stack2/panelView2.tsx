@@ -16,6 +16,8 @@
 
 import React, { useCallback } from "react";
 
+import { ChevronLeft } from "@blueprintjs/icons";
+
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
@@ -56,7 +58,7 @@ export const PanelView2: PanelView2Component = <T,>(props: PanelView2Props<T>) =
         props.previousPanel === undefined ? null : (
             <Button
                 className={Classes.PANEL_STACK_HEADER_BACK}
-                icon="chevron-left"
+                icon={<ChevronLeft />}
                 minimal={true}
                 onClick={handleClose}
                 small={true}
