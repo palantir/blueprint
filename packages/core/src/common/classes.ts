@@ -23,7 +23,13 @@ import { Position } from "./position";
 declare let BLUEPRINT_NAMESPACE: string | undefined;
 declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
 
-const NS = BLUEPRINT_NAMESPACE || REACT_APP_BLUEPRINT_NAMESPACE || "bp3";
+let NS = "b3";
+
+if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
+    NS = BLUEPRINT_NAMESPACE;
+} else if (typeof REACT_APP_BLUEPRINT_NAMESPACE !== "undefined") {
+    NS = REACT_APP_BLUEPRINT_NAMESPACE;
+}
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
