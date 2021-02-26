@@ -62,14 +62,8 @@ to its available APIs.
 
 1. Load all icons statically, similar to Blueprint v3.x behavior. This results in the largest bundle size for your main chunk.
 
-  In the entry point for your bundle, use the following deep import:
-
-  ```ts
-  import "@blueprintjs/icons/lib/esm/all";
-  ```
-
-  In the same module, specify an annotated icon loader function to ensure that webpack will use the statically-imported
-  icon modules at runtime ([relevant Webpack docs here](https://webpack.js.org/api/module-methods/#magic-comments)):
+  In the entry point for your bundle, specify an annotated icon loader function to ensure that webpack will bundle all the
+  icon modules in your main chunk ([relevant Webpack docs here](https://webpack.js.org/api/module-methods/#magic-comments)):
 
   ```ts
   Icons.loadAll({
@@ -78,7 +72,7 @@ to its available APIs.
           return (
               await import(
                   /* webpackInclude: /\.js$/ */
-                  /* webpackMode: "weak" */
+                  /* webpackMode: "eager" */
                   `@blueprintjs/icons/lib/esm/generated/components/${name}`
               )
           ).default;
