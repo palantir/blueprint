@@ -53,7 +53,7 @@ export default class extends React.PureComponent {
             global: true,
             label: "Refresh data",
             onKeyDown: () => console.info("Refreshing data..."),
-        }
+        },
         {
             combo: "F",
             group: "Input",
