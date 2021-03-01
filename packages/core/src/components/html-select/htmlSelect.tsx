@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { DoubleCaretVertical, SVGIconProps } from "@blueprintjs/icons";
 
@@ -61,7 +60,7 @@ export interface IHTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
+
 export class HTMLSelect extends AbstractPureComponent2<IHTMLSelectProps> {
     public render() {
         const {

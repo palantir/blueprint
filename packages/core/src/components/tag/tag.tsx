@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { SmallCross } from "@blueprintjs/icons";
 
@@ -118,7 +117,6 @@ export interface ITagProps
     htmlTitle?: string;
 }
 
-@polyfill
 export class Tag extends AbstractPureComponent2<ITagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 

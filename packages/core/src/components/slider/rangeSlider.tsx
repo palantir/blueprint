@@ -15,7 +15,6 @@
  */
 
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Intent } from "../../common";
 import * as Errors from "../../common/errors";
@@ -44,7 +43,6 @@ export interface IRangeSliderProps extends ISliderBaseProps {
     onRelease?(value: NumberRange): void;
 }
 
-@polyfill
 export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
     public static defaultProps: IRangeSliderProps = {
         ...MultiSlider.defaultSliderProps,

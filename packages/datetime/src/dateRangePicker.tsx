@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 
@@ -133,7 +132,6 @@ export interface IDateRangePickerState {
     selectedShortcutIndex?: number;
 }
 
-@polyfill
 export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProps, IDateRangePickerState> {
     public static defaultProps: IDateRangePickerProps = {
         allowSingleDayRange: false,

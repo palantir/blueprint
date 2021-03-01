@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
@@ -183,7 +182,6 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-@polyfill
 export class InputGroup extends AbstractPureComponent2<IInputGroupProps2, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 

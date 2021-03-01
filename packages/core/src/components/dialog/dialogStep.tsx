@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
@@ -45,7 +44,6 @@ export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "tit
     title?: React.ReactNode;
 }
 
-@polyfill
 export class DialogStep extends AbstractPureComponent2<IDialogStepProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
 

@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
@@ -131,7 +130,6 @@ export interface ISliderState {
     tickSizeRatio: number;
 }
 
-@polyfill
 export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
