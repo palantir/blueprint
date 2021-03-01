@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
@@ -92,7 +91,6 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     "aria-describedby"?: string;
 }
 
-@polyfill
 export class Dialog extends AbstractPureComponent2<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,

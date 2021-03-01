@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Boundary, Classes, Props, Position, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
@@ -80,7 +79,6 @@ export interface IBreadcrumbsProps extends Props {
     popoverProps?: IPopoverProps;
 }
 
-@polyfill
 export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
     public static defaultProps: Partial<BreadcrumbsProps> = {
         collapseFrom: Boundary.START,

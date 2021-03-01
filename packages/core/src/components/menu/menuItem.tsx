@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
@@ -111,7 +110,6 @@ export interface IMenuItemProps extends ActionProps, LinkProps {
     htmlTitle?: string;
 }
 
-@polyfill
 export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: MenuItemProps = {
         disabled: false,

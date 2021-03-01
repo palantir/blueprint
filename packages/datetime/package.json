@@ -38,12 +38,11 @@
         "@blueprintjs/core": "^3.50.4",
         "classnames": "^2.2",
         "react-day-picker": "7.4.9",
-        "react-lifecycles-compat": "^3.0.4",
         "tslib": "~1.13.0"
     },
     "peerDependencies": {
-        "react": "^15.3.0 || 16 || 17",
-        "react-dom": "^15.3.0 || 16 || 17"
+        "react": "^16.8 || 17",
+        "react-dom": "^16.8 || 17"
     },
     "devDependencies": {
         "@blueprintjs/colors": "^4.0.0-alpha.1",

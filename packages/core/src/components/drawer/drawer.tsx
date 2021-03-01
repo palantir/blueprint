@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
@@ -108,7 +107,6 @@ export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
     vertical?: boolean;
 }
 
-@polyfill
 export class Drawer extends AbstractPureComponent2<DrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 

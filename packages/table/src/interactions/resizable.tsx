@@ -15,9 +15,8 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractPureComponent2, Props } from "@blueprintjs/core";
 
 import { Utils } from "../common/index";
 import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
@@ -87,9 +86,6 @@ export interface IResizeableState {
     unclampedSize?: number;
 }
 
-// HACKHACK: https://github.com/palantir/blueprint/issues/4342
-// eslint-disable-next-line deprecation/deprecation
-@(polyfill as CoreUtils.LifecycleCompatPolyfill<IResizableProps, any>)
 export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeableState> {
     public static defaultProps = {
         isResizable: true,

@@ -40,12 +40,11 @@
         "classnames": "^2.2",
         "moment": "^2.29.0",
         "moment-timezone": "^0.5.31",
-        "react-lifecycles-compat": "^3.0.4",
         "tslib": "~1.13.0"
     },
     "peerDependencies": {
-        "react": "^15.3.0 || 16 || 17",
-        "react-dom": "^15.3.0 || 16 || 17"
+        "react": "^16.8 || 17",
+        "react-dom": "^16.8 || 17"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.6.1",

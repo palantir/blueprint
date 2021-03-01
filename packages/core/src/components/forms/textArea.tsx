@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef, IRefCallback, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
@@ -57,7 +56,6 @@ export interface ITextAreaState {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
 export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 

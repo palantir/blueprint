@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 
@@ -104,7 +103,6 @@ export interface IIconProps extends IntentProps, Props {
     title?: string | false | null;
 }
 
-@polyfill
 export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 

@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractPureComponent2,
@@ -116,7 +115,6 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<TimezoneItem>();
 
-@polyfill
 export class TimezonePicker extends AbstractPureComponent2<TimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 

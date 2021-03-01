@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common";
 
@@ -49,7 +48,6 @@ export interface IHTMLTableProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
 export class HTMLTable extends AbstractPureComponent2<HTMLTableProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation

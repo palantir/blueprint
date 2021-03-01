@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
@@ -75,7 +74,6 @@ export interface ISpinnerProps extends Props, IntentProps {
     value?: number;
 }
 
-@polyfill
 export class Spinner extends AbstractPureComponent2<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 

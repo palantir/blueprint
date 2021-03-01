@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
@@ -71,7 +70,6 @@ export interface IDateTimePickerState {
 }
 
 /** @deprecated since 3.4.0. Prefer `<DatePicker>` with `timePrecision` and `timePickerProps`. */
-@polyfill
 export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps, IDateTimePickerState> {
     public static defaultProps: IDateTimePickerProps = {
         canClearSelection: true,

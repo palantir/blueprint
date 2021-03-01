@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
@@ -46,7 +45,7 @@ type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
 /** @deprecated use ContextMenu2 */
-@polyfill
+
 class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,

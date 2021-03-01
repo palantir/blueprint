@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
@@ -36,7 +35,6 @@ export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement
     ulRef?: IRef<HTMLUListElement>;
 }
 
-@polyfill
 export class Menu extends AbstractPureComponent2<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
