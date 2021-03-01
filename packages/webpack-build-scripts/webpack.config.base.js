@@ -23,17 +23,16 @@ const WebpackNotifierPlugin = require("webpack-notifier");
 
 const { getPackageName } = require("./utils");
 
-// globals
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
-const DEV_PORT = process.env.PORT || 9000;
 const PACKAGE_NAME = getPackageName();
+const { NODE_ENV = "development", PORT = 9000 } = process.env;
+const isProductionBuild = NODE_ENV === "production";
 
 /**
  * Configure plugins loaded based on environment.
  */
 const plugins = [
     new ForkTsCheckerWebpackPlugin(
-        IS_PRODUCTION
+        isProductionBuild
             ? {
                   async: false,
                   typescript: {
@@ -52,15 +51,12 @@ const plugins = [
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
 
-    // pipe env variables to FE build, setting defaults where appropriate (null means optional)
-    new webpack.EnvironmentPlugin({
-        NODE_ENV: "development",
-        BLUEPRINT_NAMESPACE: null,
-        REACT_APP_BLUEPRINT_NAMESPACE: null,
+    new webpack.DefinePlugin({
+        NODE_ENV: JSON.stringify(NODE_ENV),
     }),
 ];
 
-if (!IS_PRODUCTION) {
+if (!isProductionBuild) {
     plugins.push(
         new ReactRefreshWebpackPlugin(),
         new ForkTsCheckerNotifierWebpackPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
@@ -73,7 +69,7 @@ if (!IS_PRODUCTION) {
 // compile Sass, apply PostCSS, interpret CSS as modules.
 const scssLoaders = [
     // Only extract CSS to separate file in production mode.
-    IS_PRODUCTION
+    isProductionBuild
         ? {
               loader: MiniCssExtractPlugin.loader,
           }
@@ -100,7 +96,7 @@ module.exports = {
     // to automatically find tsconfig.json
     context: process.cwd(),
 
-    devtool: IS_PRODUCTION ? false : "inline-source-map",
+    devtool: isProductionBuild ? false : "inline-source-map",
 
     devServer: {
         contentBase: "./src",
@@ -116,10 +112,10 @@ module.exports = {
             warnings: true,
             errors: true,
         },
-        port: DEV_PORT,
+        port: PORT,
     },
 
-    mode: IS_PRODUCTION ? "production" : "development",
+    mode: isProductionBuild ? "production" : "development",
 
     module: {
         rules: [

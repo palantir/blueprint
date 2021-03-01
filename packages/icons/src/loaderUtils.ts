@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-// only accessible within this file
-declare let process: { env: any };
-
-export function isNodeEnv(env: string) {
-    return typeof process !== "undefined" && process.env?.NODE_ENV === env;
-}
+// injected by webpack.DefinePlugin
+declare let NODE_ENV: string;
 
 /**
  * Wraps an async task with a performance timer. Only logs to console in development.
  */
 export async function wrapWithTimer(taskDescription: string, task: () => Promise<void>) {
-    const shouldMeasure = isNodeEnv("development") && typeof performance !== "undefined";
+    const shouldMeasure = NODE_ENV === "development" && typeof performance !== "undefined";
     let start: number;
 
     /* eslint-disable no-console */

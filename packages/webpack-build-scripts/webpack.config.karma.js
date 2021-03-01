@@ -79,6 +79,10 @@ module.exports = {
             process: "process/browser",
         }),
 
+        new webpack.DefinePlugin({
+            NODE_ENV: JSON.stringify("test"),
+        }),
+
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: "test/tsconfig.json",

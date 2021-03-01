@@ -10,8 +10,6 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.39.0",
-        "@blueprintjs/docs-theme": "^3.9.5",
         "@documentalist/compiler": "~3.0.0",
         "better-handlebars": "github:wmeldon/better-handlebars",
         "glob": "^7.1.6",
