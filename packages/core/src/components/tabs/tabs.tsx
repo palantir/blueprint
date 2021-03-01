@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
@@ -95,8 +94,6 @@ export interface ITabsState {
     selectedTabId?: TabId;
 }
 
-// HACKHACK: https://github.com/palantir/blueprint/issues/4342
-@(polyfill as Utils.LifecycleCompatPolyfill<ITabsProps, any>)
 export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;

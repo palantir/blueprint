@@ -16,7 +16,6 @@
 
 import React from "react";
 import { findDOMNode } from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
 import ResizeObserver from "resize-observer-polyfill";
 
 import { AbstractPureComponent2 } from "../../common";
@@ -51,7 +50,6 @@ export interface IResizeSensorProps {
     observeParents?: boolean;
 }
 
-@polyfill
 export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 

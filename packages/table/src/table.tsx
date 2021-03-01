@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
     AbstractComponent2,
@@ -454,7 +453,6 @@ export interface ITableSnapshot {
 // HACKHACK(adahiya): fix for Blueprint 4.0
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
-@polyfill
 export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 

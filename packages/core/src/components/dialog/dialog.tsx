@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { SmallCross } from "@blueprintjs/icons";
 
@@ -77,7 +76,6 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     transitionName?: string;
 }
 
-@polyfill
 export class Dialog extends AbstractPureComponent2<IDialogProps> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,

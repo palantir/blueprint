@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
@@ -33,7 +32,6 @@ export interface ITabTitleProps extends ITabProps {
     selected: boolean;
 }
 
-@polyfill
 export class TabTitle extends AbstractPureComponent2<ITabTitleProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 

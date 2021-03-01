@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, IProps, MaybeElement } from "../../common";
 import {
@@ -130,7 +129,6 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
-@polyfill
 export class Alert extends AbstractPureComponent2<IAlertProps> {
     public static defaultProps: IAlertProps = {
         canEscapeKeyCancel: false,

@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { Cross } from "@blueprintjs/icons";
 
@@ -56,7 +55,6 @@ export interface IToastProps extends IProps, IIntentProps {
     timeout?: number;
 }
 
-@polyfill
 export class Toast extends AbstractPureComponent2<IToastProps> {
     public static defaultProps: IToastProps = {
         className: "",

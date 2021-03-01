@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import { Modifiers } from "popper.js";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { CaretRight } from "@blueprintjs/icons";
 
@@ -110,7 +109,6 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     htmlTitle?: string;
 }
 
-@polyfill
 export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
     public static defaultProps: IMenuItemProps = {
         disabled: false,

@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, getRef, IRef, IRefObject, Keys, refHandler, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
@@ -191,7 +190,6 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-@polyfill
 export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 

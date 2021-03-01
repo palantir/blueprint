@@ -15,7 +15,6 @@
  */
 
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -44,7 +43,6 @@ export interface ISliderProps extends ISliderBaseProps {
     onRelease?(value: number): void;
 }
 
-@polyfill
 export class Slider extends AbstractPureComponent2<ISliderProps> {
     public static defaultProps: ISliderProps = {
         ...MultiSlider.defaultSliderProps,

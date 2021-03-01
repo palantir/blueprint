@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
@@ -61,7 +60,6 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
     title?: React.ReactNode;
 }
 
-@polyfill
 export class Tab extends AbstractPureComponent2<ITabProps> {
     public static defaultProps: Partial<ITabProps> = {
         disabled: false,
