@@ -30,7 +30,7 @@ interface ITestItem {
 const IDS = [0, 1, 2, 3, 4, 5];
 const ITEMS: ITestItem[] = IDS.map(id => ({ id }));
 
-const TestItem: React.FunctionComponent<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
+const TestItem: React.FunctionComponent<ITestItem> = () => <div style={{ height: 10, width: 10, flex: "0 0 auto" }} />;
 const TestOverflow: React.FunctionComponent<{ items: ITestItem[] }> = () => <div />;
 
 describe("<OverflowList>", function (this) {
@@ -190,7 +190,7 @@ describe("<OverflowList>", function (this) {
                 onOverflow={onOverflowSpy}
                 overflowRenderer={renderOverflow}
                 visibleItemRenderer={renderVisibleItem}
-                style={{ width: initialWidth }}
+                style={{ height: 10, width: initialWidth }}
                 {...props}
             />,
             // measuring elements only works in the DOM, so this element actually needs to be attached
