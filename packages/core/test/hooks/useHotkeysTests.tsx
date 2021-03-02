@@ -80,6 +80,11 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
 };
 
 describe("useHotkeys", () => {
+    if (React.version.startsWith("15")) {
+        it("skipped tests for backwards-incompatible component", () => expect(true).to.be.true);
+        return;
+    }
+
     const onKeyASpy = spy();
     const onKeyBSpy = spy();
 
