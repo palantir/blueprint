@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 

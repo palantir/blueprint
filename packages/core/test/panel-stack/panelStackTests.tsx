@@ -16,10 +16,12 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import { Classes, IPanel, IPanelProps, IPanelStackProps, PanelStack } from "../../src";
+
+/* eslint-disable deprecation/deprecation */
 
 export class TestPanel extends React.Component<IPanelProps> {
     public render() {

@@ -61,6 +61,8 @@ export * from "./overlay/overlay";
 export * from "./text/text";
 export * from "./panel-stack/panelProps";
 export * from "./panel-stack/panelStack";
+export { PanelStack2, PanelStack2Props } from "./panel-stack2/panelStack2";
+export { Panel, PanelProps } from "./panel-stack2/panelTypes";
 export * from "./popover/popover";
 export * from "./popover/popoverSharedProps";
 export * from "./portal/portal";

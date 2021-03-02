@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractComponent2, IProps, IRef, setRef, Utils as CoreUtils } from "@blueprintjs/core";
