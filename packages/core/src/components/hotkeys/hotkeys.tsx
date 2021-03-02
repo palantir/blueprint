@@ -72,7 +72,7 @@ export class Hotkeys extends AbstractPureComponent2<IHotkeysProps> {
 
         React.Children.forEach(props.children, (child: JSX.Element) => {
             if (!isElementOfType(child, Hotkey)) {
-                throw new Error(HOTKEYS_HOTKEY_CHILDREN);
+                console.error(HOTKEYS_HOTKEY_CHILDREN);
             }
         });
     }

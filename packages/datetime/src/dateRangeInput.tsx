@@ -356,7 +356,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     protected validateProps(props: IDateRangeInputProps) {
         if (props.value === null) {
-            throw new Error(Errors.DATERANGEINPUT_NULL_VALUE);
+            console.error(Errors.DATERANGEINPUT_NULL_VALUE);
         }
     }
 

@@ -989,23 +989,23 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
 
         // do cheap error-checking first.
         if (numRows != null && numRows < 0) {
-            throw new Error(Errors.TABLE_NUM_ROWS_NEGATIVE);
+            console.error(Errors.TABLE_NUM_ROWS_NEGATIVE);
         }
         if (numFrozenRows != null && numFrozenRows < 0) {
-            throw new Error(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+            console.error(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
         }
         if (numFrozenColumns != null && numFrozenColumns < 0) {
-            throw new Error(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
+            console.error(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE);
         }
         if (numRows != null && rowHeights != null && rowHeights.length !== numRows) {
-            throw new Error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
+            console.error(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH);
         }
         if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
-            throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
+            console.error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
         React.Children.forEach(children, child => {
             if (!CoreUtils.isElementOfType(child, Column)) {
-                throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
+                console.error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             }
         });
 

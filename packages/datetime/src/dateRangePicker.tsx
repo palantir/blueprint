@@ -270,23 +270,23 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         const dateRange: DateRange = [minDate, maxDate];
 
         if (defaultValue != null && !DateUtils.isDayRangeInRange(defaultValue, dateRange)) {
-            throw new Error(Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID);
+            console.error(Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID);
         }
 
         if (initialMonth != null && !DateUtils.isMonthInRange(initialMonth, dateRange)) {
-            throw new Error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
+            console.error(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
         }
 
         if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
-            throw new Error(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
+            console.error(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         }
 
         if (value != null && !DateUtils.isDayRangeInRange(value, dateRange)) {
-            throw new Error(Errors.DATERANGEPICKER_VALUE_INVALID);
+            console.error(Errors.DATERANGEPICKER_VALUE_INVALID);
         }
 
         if (boundaryToModify != null && boundaryToModify !== Boundary.START && boundaryToModify !== Boundary.END) {
-            throw new Error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
+            console.error(Errors.DATERANGEPICKER_PREFERRED_BOUNDARY_TO_MODIFY_INVALID);
         }
     }
 

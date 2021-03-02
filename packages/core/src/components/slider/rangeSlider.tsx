@@ -67,7 +67,7 @@ export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
     protected validateProps(props: IRangeSliderProps) {
         const { value } = props;
         if (value == null || value[RangeIndex.START] == null || value[RangeIndex.END] == null) {
-            throw new Error(Errors.RANGESLIDER_NULL_VALUE);
+            console.error(Errors.RANGESLIDER_NULL_VALUE);
         }
     }
 }

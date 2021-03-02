@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -23,6 +23,7 @@ import sinon from "sinon";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
+import * as Errors from "../../src/common/errors";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -319,19 +320,32 @@ describe("<MultiSlider>", () => {
     });
 
     describe("validation", () => {
+        let consoleError: sinon.SinonStub;
+
+        before(() => (consoleError = sinon.stub(console, "warn")));
+        afterEach(() => consoleError.resetHistory());
+        after(() => consoleError.restore());
+
         it("throws an error if a child is not a slider handle", () => {
-            expectPropValidationError(MultiSlider, { children: (<span>Bad</span>) as any });
+            mount(
+                <MultiSlider>
+                    <span>Bad</span>
+                </MultiSlider>,
+            );
+            expect(consoleError.calledOnceWithExactly(Errors.MULTISLIDER_INVALID_CHILD)).to.be.true;
         });
 
         it("throws error if stepSize <= 0", () => {
             [0, -10].forEach(stepSize => {
-                expectPropValidationError(MultiSlider, { stepSize }, "greater than zero");
+                mount(<MultiSlider stepSize={stepSize} />);
+                expect(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_STEP)).to.be.true;
             });
         });
 
         it("throws error if labelStepSize <= 0", () => {
             [0, -10].forEach(labelStepSize => {
-                expectPropValidationError(MultiSlider, { labelStepSize }, "greater than zero");
+                mount(<MultiSlider labelStepSize={labelStepSize} />);
+                expect(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_LABEL_STEP)).to.be.true;
             });
         });
     });
