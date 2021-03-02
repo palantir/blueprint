@@ -226,18 +226,18 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                                 />
                                 {this.props.footer}
                             </div>
-                            <main
-                                className={classNames("docs-content-wrapper", Classes.FILL)}
-                                ref={this.refHandlers.content}
-                                role="main"
-                            >
-                                <Page
-                                    page={pages[activePageId]}
-                                    renderActions={this.props.renderPageActions}
-                                    tagRenderers={this.props.tagRenderers}
-                                />
-                            </main>
                         </div>
+                        <main
+                            className={classNames("docs-content-wrapper", Classes.FILL)}
+                            ref={this.refHandlers.content}
+                            role="main"
+                        >
+                            <Page
+                                page={pages[activePageId]}
+                                renderActions={this.props.renderPageActions}
+                                tagRenderers={this.props.tagRenderers}
+                            />
+                        </main>
                         <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
                             <TypescriptExample tag="typescript" value={activeApiMember} />
                         </Drawer>
