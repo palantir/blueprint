@@ -21,7 +21,6 @@ module.exports = function (config) {
         // HACKHACK: need to add hotkeys v2 tests
         "src/components/hotkeys/hotkeysDialog2.tsx",
         "src/components/hotkeys/hotkeysTarget2.tsx",
-        "src/hooks/hotkeys/useHotkeys.ts",
         "src/context/hotkeys/hotkeysProvider.tsx",
     ];
 

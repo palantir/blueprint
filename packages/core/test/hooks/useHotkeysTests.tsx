@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import React, { useMemo } from "react";
 import { spy } from "sinon";
 
+import { InputGroup } from "@blueprintjs/core";
+// N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
+// work with our hotkey parser implementation (worth investigating...)
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+
 import { useHotkeys } from "../../src/hooks";
 
-interface TestComponentProps {
+interface TestComponentProps extends TestComponentContainerProps {
     onKeyA: () => void;
     onKeyB: () => void;
 }
 
-const TestComponent: React.FC<TestComponentProps> = ({ onKeyA, onKeyB }) => {
-    const hotkeys = useMemo(
-        () => [
+interface TestComponentContainerProps {
+    bindExtraKeys?: boolean;
+    isInputReadOnly?: boolean;
+}
+
+const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputReadOnly, onKeyA, onKeyB }) => {
+    const hotkeys = useMemo(() => {
+        const keys = [
             {
                 combo: "A",
                 label: "A",
@@ -40,23 +50,44 @@ const TestComponent: React.FC<TestComponentProps> = ({ onKeyA, onKeyB }) => {
                 label: "B",
                 onKeyDown: onKeyB,
             },
-        ],
-        [],
-    );
+        ];
+        if (bindExtraKeys) {
+            keys.push(
+                {
+                    combo: "shift+A",
+                    label: "shift+A",
+                    onKeyDown: onKeyA,
+                },
+                {
+                    combo: "shift+B",
+                    global: true,
+                    label: "shift+B",
+                    onKeyDown: onKeyB,
+                },
+            );
+        }
+        return keys;
+    }, [bindExtraKeys]);
+
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
-    return <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} />;
+    return (
+        <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+            <div data-testid="target-inside-component" />
+            <InputGroup data-testid="input-target" readOnly={isInputReadOnly} />
+        </div>
+    );
 };
 
-describe.only("useHotkeys", () => {
+describe("useHotkeys", () => {
     const onKeyASpy = spy();
     const onKeyBSpy = spy();
 
-    const TestComponentContainer = () => {
+    const TestComponentContainer = (props: TestComponentContainerProps) => {
         return (
             <>
                 <div data-testid="target-outside-component" />
-                <TestComponent onKeyA={onKeyASpy} onKeyB={onKeyBSpy} />
+                <TestComponent {...props} onKeyA={onKeyASpy} onKeyB={onKeyBSpy} />
             </>
         );
     };
@@ -68,10 +99,61 @@ describe.only("useHotkeys", () => {
 
     it("binds local hotkey", () => {
         render(<TestComponentContainer />);
-        const target = screen.getByTestId("target-outside-component");
-        fireEvent.keyDown(target, { currentTarget: target, which: "A".charCodeAt(0) });
+        const target = screen.getByTestId("target-inside-component");
+        dispatchTestKeyboardEvent(target, "keydown", "A");
         expect(onKeyASpy.calledOnce).to.be.true;
     });
 
-    it("binds global hotkey", () => {});
+    it("binds global hotkey", () => {
+        render(<TestComponentContainer />);
+        const target = screen.getByTestId("target-outside-component");
+        dispatchTestKeyboardEvent(target, "keydown", "B");
+        expect(onKeyBSpy.calledOnce).to.be.true;
+    });
+
+    it("binds new local hotkeys when hook arg is updated", () => {
+        const { rerender } = render(<TestComponentContainer />);
+        rerender(<TestComponentContainer bindExtraKeys={true} />);
+        const target = screen.getByTestId("target-inside-component");
+        dispatchTestKeyboardEvent(target, "keydown", "A", true);
+        expect(onKeyASpy.calledOnce).to.be.true;
+    });
+
+    it("binds new global hotkeys when hook arg is updated", () => {
+        const { rerender } = render(<TestComponentContainer />);
+        rerender(<TestComponentContainer bindExtraKeys={true} />);
+        const target = screen.getByTestId("target-outside-component");
+        dispatchTestKeyboardEvent(target, "keydown", "B", true);
+        expect(onKeyBSpy.calledOnce).to.be.true;
+    });
+
+    it("removes local hotkeys when hook arg is updated", () => {
+        const { rerender } = render(<TestComponentContainer bindExtraKeys={true} />);
+        rerender(<TestComponentContainer />);
+        const target = screen.getByTestId("target-inside-component");
+        dispatchTestKeyboardEvent(target, "keydown", "A", true);
+        expect(onKeyASpy.notCalled).to.be.true;
+    });
+
+    it("removes global hotkeys when hook arg is updated", () => {
+        const { rerender } = render(<TestComponentContainer bindExtraKeys={true} />);
+        rerender(<TestComponentContainer />);
+        const target = screen.getByTestId("target-outside-component");
+        dispatchTestKeyboardEvent(target, "keydown", "B", true);
+        expect(onKeyBSpy.notCalled).to.be.true;
+    });
+
+    it("does not trigger hotkeys inside text inputs", () => {
+        render(<TestComponentContainer />);
+        const target = screen.getByTestId("input-target");
+        dispatchTestKeyboardEvent(target, "keydown", "A");
+        expect(onKeyASpy.notCalled).to.be.true;
+    });
+
+    it("does trigger hotkeys inside readonly text inputs", () => {
+        render(<TestComponentContainer isInputReadOnly={true} />);
+        const target = screen.getByTestId("input-target");
+        dispatchTestKeyboardEvent(target, "keydown", "A");
+        expect(onKeyASpy.calledOnce).to.be.true;
+    });
 });
