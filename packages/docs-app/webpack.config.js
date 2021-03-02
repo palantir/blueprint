@@ -14,7 +14,6 @@
  */
 
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const path = require("path");
 
 const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 
@@ -24,18 +23,23 @@ module.exports = Object.assign({}, baseConfig, {
     },
 
     output: {
-        filename: "[name].js",
         publicPath: "",
-        path: path.resolve(__dirname, "./dist"),
     },
 
     plugins: baseConfig.plugins.concat([
         new CopyWebpackPlugin({
             patterns: [
                 // to: is relative to dist/
-                { from: "src/index.html", to: "." },
                 { from: "src/assets/favicon.png", to: "assets" },
             ],
         }),
     ]),
+
+    resolve: {
+        ...baseConfig.resolve,
+        alias: {
+            react: require.resolve("react", { paths: [__dirname] }),
+            "react-dom": require.resolve("react-dom", { paths: [__dirname] }),
+        },
+    },
 });

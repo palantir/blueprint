@@ -193,6 +193,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
             return this.renderTarget({ ref: noop });
         }
 
+        // return this.renderTarget({ ref: noop });
         return (
             <Manager>
                 <Reference>{this.renderTarget}</Reference>

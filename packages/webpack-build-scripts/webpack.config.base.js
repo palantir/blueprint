@@ -16,12 +16,12 @@
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const ForkTsCheckerNotifierWebpackPlugin = require("fork-ts-checker-notifier-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const path = require("path");
 const webpack = require("webpack");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
-const { getPackageName } = require("./utils");
+const { getPackageName, hasIndexHtml } = require("./utils");
 
 // globals
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
@@ -49,6 +49,11 @@ const plugins = [
               },
     ),
 
+    hasIndexHtml() &&
+        new HtmlWebpackPlugin({
+            template: "src/index.html",
+        }),
+
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
 
@@ -58,14 +63,14 @@ const plugins = [
         BLUEPRINT_NAMESPACE: null,
         REACT_APP_BLUEPRINT_NAMESPACE: null,
     }),
-];
+].filter(Boolean);
 
 if (!IS_PRODUCTION) {
     plugins.push(
-        new ReactRefreshWebpackPlugin(),
         new ForkTsCheckerNotifierWebpackPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
         new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
         new webpack.HotModuleReplacementPlugin(),
+        new ReactRefreshWebpackPlugin(),
     );
 }
 
@@ -103,20 +108,16 @@ module.exports = {
     devtool: IS_PRODUCTION ? false : "inline-source-map",
 
     devServer: {
-        contentBase: "./src",
-        disableHostCheck: true,
+        firewall: false,
         historyApiFallback: true,
         https: false,
-        hot: true,
-        index: path.resolve(__dirname, "src/index.html"),
-        inline: true,
-        stats: "errors-only",
         open: false,
         overlay: {
             warnings: true,
             errors: true,
         },
         port: DEV_PORT,
+        static: "./dist",
     },
 
     mode: IS_PRODUCTION ? "production" : "development",
@@ -129,11 +130,22 @@ module.exports = {
             },
             {
                 test: /\.tsx?$/,
-                loader: require.resolve("ts-loader"),
-                options: {
-                    configFile: "src/tsconfig.json",
-                    transpileOnly: true,
-                },
+                use: [
+                    // we need babel for react-refresh to work
+                    !IS_PRODUCTION && {
+                        loader: require.resolve("babel-loader"),
+                        options: {
+                            plugins: ["react-refresh/babel"],
+                        },
+                    },
+                    {
+                        loader: require.resolve("ts-loader"),
+                        options: {
+                            configFile: "src/tsconfig.json",
+                            transpileOnly: true,
+                        },
+                    },
+                ].filter(Boolean),
             },
             {
                 test: /\.scss$/,
@@ -141,10 +153,9 @@ module.exports = {
             },
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,
-                loader: require.resolve("file-loader"),
-                options: {
-                    name: "[name].[ext]?[hash]",
-                    outputPath: "assets/",
+                type: "asset/resource",
+                generator: {
+                    filename: "assets/[name].[ext]?[hash]",
                 },
             },
         ],
@@ -155,4 +166,6 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"],
     },
+
+    stats: "errors-only",
 };

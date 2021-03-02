@@ -82,19 +82,19 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             />
         );
         return (
-            <HotkeysProvider>
-                <Documentation
-                    {...this.props}
-                    className={this.state.themeName}
-                    footer={footer}
-                    header={header}
-                    navigatorExclude={isNavSection}
-                    onComponentUpdate={this.handleComponentUpdate}
-                    renderNavMenuItem={this.renderNavMenuItem}
-                    renderPageActions={this.renderPageActions}
-                    renderViewSourceLinkText={this.renderViewSourceLinkText}
-                />
-            </HotkeysProvider>
+            // <HotkeysProvider>
+            <Documentation
+                {...this.props}
+                className={this.state.themeName}
+                footer={footer}
+                header={header}
+                navigatorExclude={isNavSection}
+                onComponentUpdate={this.handleComponentUpdate}
+                renderNavMenuItem={this.renderNavMenuItem}
+                renderPageActions={this.renderPageActions}
+                renderViewSourceLinkText={this.renderViewSourceLinkText}
+            />
+            // </HotkeysProvider>
         );
     }
 

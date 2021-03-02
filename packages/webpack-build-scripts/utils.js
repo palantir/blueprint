@@ -2,6 +2,7 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
+const fs = require("fs");
 const path = require("path");
 
 /**
@@ -22,6 +23,11 @@ function getPackageName() {
     return name;
 }
 
+function hasIndexHtml() {
+    return fs.existsSync(path.join(process.cwd(), "src/index.html"));
+}
+
 module.exports = {
     getPackageName,
+    hasIndexHtml,
 };

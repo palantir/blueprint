@@ -109,6 +109,12 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
 
     private hasDelayedInitialRender = false;
 
+    private animationFrameId: number | undefined;
+
+    public componentWillUnmount() {
+        window.cancelAnimationFrame(this.animationFrameId);
+    }
+
     public render() {
         const {
             children,
@@ -155,7 +161,7 @@ export class Example extends React.PureComponent<IDocsExampleProps> {
         // that causes components to mis-measure themselves on first render.
         // Delay initial render till the DOM loads with a requestAnimationFrame.
         if (this.props.forceUpdate) {
-            requestAnimationFrame(() => {
+            this.animationFrameId = requestAnimationFrame(() => {
                 this.hasDelayedInitialRender = true;
                 this.forceUpdate();
             });

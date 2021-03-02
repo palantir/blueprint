@@ -74,7 +74,7 @@ export class MultistepDialogExample extends React.PureComponent<
         };
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Button onClick={this.handleOpen}>Show dialog</Button>
+                <Button onClick={this.handleOpen} icon="modal" text="Open dialog" />
                 <MultistepDialog
                     className={this.props.data.themeName}
                     icon="info-sign"
