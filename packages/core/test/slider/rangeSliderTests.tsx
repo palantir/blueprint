@@ -63,20 +63,20 @@ describe("<RangeSlider>", () => {
     describe("validation", () => {
         let consoleError: sinon.SinonStub;
 
-        before(() => (consoleError = sinon.stub(console, "warn")));
+        before(() => (consoleError = sinon.stub(console, "error")));
         afterEach(() => consoleError.resetHistory());
         after(() => consoleError.restore());
 
         it("logs error if range value starts with null", () => {
             // @ts-expect-error
             renderSlider(<RangeSlider value={[null, 5]} />);
-            assert.isTrue(consoleError.calledOnceWithExactly(Errors.RANGESLIDER_NULL_VALUE));
+            assert.isTrue(consoleError.calledWith(Errors.RANGESLIDER_NULL_VALUE));
         });
 
         it("logs error if range value ends with null", () => {
             // @ts-expect-error
             renderSlider(<RangeSlider value={[100, null]} />);
-            assert.isTrue(consoleError.calledOnceWithExactly(Errors.RANGESLIDER_NULL_VALUE));
+            assert.isTrue(consoleError.calledWith(Errors.RANGESLIDER_NULL_VALUE));
         });
     });
 

@@ -52,12 +52,12 @@ describe("Hotkeys", () => {
                     <div />
                 </Hotkeys>,
             );
-            expect(consoleError.calledOnceWithExactly(HOTKEYS_HOTKEY_CHILDREN)).to.be.true;
+            expect(consoleError.calledWith(HOTKEYS_HOTKEY_CHILDREN)).to.be.true;
         });
 
         it("logs error if given string child", () => {
             mount(<Hotkeys>{"string contents"}</Hotkeys>);
-            expect(consoleError.calledOnceWithExactly(HOTKEYS_HOTKEY_CHILDREN)).to.be.true;
+            expect(consoleError.calledWith(HOTKEYS_HOTKEY_CHILDREN)).to.be.true;
         });
     });
 

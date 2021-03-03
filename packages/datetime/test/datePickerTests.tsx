@@ -266,13 +266,13 @@ describe("<DatePicker>", () => {
         describe("validation", () => {
             let consoleError: sinon.SinonStub;
 
-            before(() => (consoleError = sinon.stub(console, "warn")));
+            before(() => (consoleError = sinon.stub(console, "error")));
             afterEach(() => consoleError.resetHistory());
             after(() => consoleError.restore());
 
             it("maxDate must be later than minDate", () => {
                 mount(<DatePicker maxDate={MIN_DATE} minDate={MAX_DATE} />);
-                assert.isTrue(consoleError.calledOnceWithExactly(Errors.DATEPICKER_MAX_DATE_INVALID));
+                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_MAX_DATE_INVALID));
             });
 
             it("an error is logged if defaultValue is outside bounds", () => {
@@ -283,12 +283,12 @@ describe("<DatePicker>", () => {
                         minDate={MIN_DATE}
                     />,
                 );
-                assert.isTrue(consoleError.calledOnceWithExactly(Errors.DATEPICKER_DEFAULT_VALUE_INVALID));
+                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_DEFAULT_VALUE_INVALID));
             });
 
             it("an error is logged if value is outside bounds", () => {
                 mount(<DatePicker value={new Date(2015, Months.JANUARY, 20)} maxDate={MAX_DATE} minDate={MIN_DATE} />);
-                assert.isTrue(consoleError.calledOnceWithExactly(Errors.DATEPICKER_VALUE_INVALID));
+                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_VALUE_INVALID));
             });
 
             it("an error is logged if initialMonth is outside month bounds", () => {
@@ -299,7 +299,7 @@ describe("<DatePicker>", () => {
                         minDate={MIN_DATE}
                     />,
                 );
-                assert.isTrue(consoleError.calledOnceWithExactly(Errors.DATEPICKER_INITIAL_MONTH_INVALID));
+                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_INITIAL_MONTH_INVALID));
             });
 
             it("an error is not logged if initialMonth is outside day bounds but inside month bounds", () => {

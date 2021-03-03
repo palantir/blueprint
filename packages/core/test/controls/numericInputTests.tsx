@@ -791,32 +791,32 @@ describe("<NumericInput>", () => {
 
         it("logs an error if min >= max", () => {
             mount(<NumericInput min={2} max={1} />);
-            expect(consoleError.calledOnceWithExactly(Errors.NUMERIC_INPUT_MIN_MAX)).to.be.true;
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MIN_MAX)).to.be.true;
         });
 
         it("logs an error if stepSize <= 0", () => {
             mount(<NumericInput stepSize={-1} />);
-            expect(consoleError.calledOnceWithExactly(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE)).to.be.true;
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
         it("logs an error if minorStepSize <= 0", () => {
             mount(<NumericInput minorStepSize={-0.1} />);
-            expect(consoleError.calledOnceWithExactly(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
         it("logs an error if majorStepSize <= 0", () => {
             mount(<NumericInput majorStepSize={-0.1} />);
-            expect(consoleError.calledOnceWithExactly(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
         it("logs an error if majorStepSize <= stepSize", () => {
             mount(<NumericInput majorStepSize={0.5} />);
-            expect(consoleError.calledOnceWithExactly(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND)).to.be.true;
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
         it("logs an error if stepSize <= minorStepSize", () => {
             mount(<NumericInput minorStepSize={2} />);
-            expect(consoleError.calledOnceWithExactly(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND)).to.be.true;
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
         it("clears the field if the value is invalid when incrementing", () => {

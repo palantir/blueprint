@@ -154,7 +154,7 @@ describe("Toaster", () => {
 
         it("logs an error when max toast is set to a number less than 1", () => {
             mount(<Toaster maxToasts={0} />);
-            assert.isTrue(consoleError.calledOnceWithExactly(TOASTER_MAX_TOASTS_INVALID));
+            assert.isTrue(consoleError.calledWith(TOASTER_MAX_TOASTS_INVALID));
         });
     });
 

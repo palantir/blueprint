@@ -320,7 +320,7 @@ describe("<MultiSlider>", () => {
     describe("validation", () => {
         let consoleError: sinon.SinonStub;
 
-        before(() => (consoleError = sinon.stub(console, "warn")));
+        before(() => (consoleError = sinon.stub(console, "error")));
         afterEach(() => consoleError.resetHistory());
         after(() => consoleError.restore());
 
@@ -330,20 +330,20 @@ describe("<MultiSlider>", () => {
                     <span>Bad</span>
                 </MultiSlider>,
             );
-            assert.isTrue(consoleError.calledOnceWithExactly(Errors.MULTISLIDER_INVALID_CHILD));
+            assert.isTrue(consoleError.calledWith(Errors.MULTISLIDER_INVALID_CHILD));
         });
 
         it("throws error if stepSize <= 0", () => {
             [0, -10].forEach(stepSize => {
                 mount(<MultiSlider stepSize={stepSize} />);
-                assert.isTrue(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_STEP));
+                assert.isTrue(consoleError.calledWith(Errors.SLIDER_ZERO_STEP));
             });
         });
 
         it("throws error if labelStepSize <= 0", () => {
             [0, -10].forEach(labelStepSize => {
                 mount(<MultiSlider labelStepSize={labelStepSize} />);
-                assert.isTrue(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_LABEL_STEP));
+                assert.isTrue(consoleError.calledWith(Errors.SLIDER_ZERO_LABEL_STEP));
             });
         });
     });

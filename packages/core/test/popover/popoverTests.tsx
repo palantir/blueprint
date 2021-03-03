@@ -73,7 +73,7 @@ describe("<Popover>", () => {
 
         it("logs error if given no target", () => {
             mount(<Popover />);
-            assert.isTrue(consoleError.calledOnceWithExactly(Errors.POPOVER_REQUIRES_TARGET));
+            assert.isTrue(consoleError.calledWith(Errors.POPOVER_REQUIRES_TARGET));
         });
 
         it("warns if given > 2 target elements", () => {
@@ -150,7 +150,7 @@ describe("<Popover>", () => {
             function runErrorTest(interactionKindKey: keyof typeof PopoverInteractionKind) {
                 it(interactionKindKey, () => {
                     mount(<Popover hasBackdrop={true} interactionKind={PopoverInteractionKind[interactionKindKey]} />);
-                    assert.isTrue(consoleWarn.calledOnceWithExactly(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
+                    assert.isTrue(consoleWarn.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
                 });
             }
         });

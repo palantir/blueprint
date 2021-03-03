@@ -142,7 +142,7 @@ describe("<DateRangeInput>", () => {
     describe("validation", () => {
         let consoleError: sinon.SinonStub;
 
-        before(() => (consoleError = sinon.stub(console, "warn")));
+        before(() => (consoleError = sinon.stub(console, "error")));
         afterEach(() => consoleError.resetHistory());
         after(() => consoleError.restore());
 
