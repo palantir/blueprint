@@ -87,7 +87,7 @@ export interface IIconProps extends IIntentProps, IProps {
 }
 
 @polyfill
-export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>> {
+export class Icon extends AbstractPureComponent2<IIconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
