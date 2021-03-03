@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
+import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
 import sinon from "sinon";
@@ -73,7 +73,7 @@ describe("<Popover>", () => {
 
         it("logs error if given no target", () => {
             mount(<Popover />);
-            expect(consoleError.calledOnceWithExactly(Errors.POPOVER_REQUIRES_TARGET)).to.be.true;
+            assert.isTrue(consoleError.calledOnceWithExactly(Errors.POPOVER_REQUIRES_TARGET));
         });
 
         it("warns if given > 2 target elements", () => {
@@ -150,7 +150,7 @@ describe("<Popover>", () => {
             function runErrorTest(interactionKindKey: keyof typeof PopoverInteractionKind) {
                 it(interactionKindKey, () => {
                     mount(<Popover hasBackdrop={true} interactionKind={PopoverInteractionKind[interactionKindKey]} />);
-                    expect(consoleWarn.calledOnceWithExactly(Errors.POPOVER_HAS_BACKDROP_INTERACTION)).to.be.true;
+                    assert.isTrue(consoleWarn.calledOnceWithExactly(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
                 });
             }
         });

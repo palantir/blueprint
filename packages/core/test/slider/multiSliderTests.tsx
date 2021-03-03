@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
+import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
-
-import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
 import * as Errors from "../../src/common/errors";
@@ -332,20 +330,20 @@ describe("<MultiSlider>", () => {
                     <span>Bad</span>
                 </MultiSlider>,
             );
-            expect(consoleError.calledOnceWithExactly(Errors.MULTISLIDER_INVALID_CHILD)).to.be.true;
+            assert.isTrue(consoleError.calledOnceWithExactly(Errors.MULTISLIDER_INVALID_CHILD));
         });
 
         it("throws error if stepSize <= 0", () => {
             [0, -10].forEach(stepSize => {
                 mount(<MultiSlider stepSize={stepSize} />);
-                expect(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_STEP)).to.be.true;
+                assert.isTrue(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_STEP));
             });
         });
 
         it("throws error if labelStepSize <= 0", () => {
             [0, -10].forEach(labelStepSize => {
                 mount(<MultiSlider labelStepSize={labelStepSize} />);
-                expect(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_LABEL_STEP)).to.be.true;
+                assert.isTrue(consoleError.calledOnceWithExactly(Errors.SLIDER_ZERO_LABEL_STEP));
             });
         });
     });

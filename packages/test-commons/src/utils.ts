@@ -159,6 +159,8 @@ export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart"
  * Helper utility to test validateProps behavior.
  * We can't simply call mount() here since React 16 throws before we can even validate the errors thrown
  * in component constructors.
+ *
+ * @deprecated as of @blueprintjs/core@3.40.0 we no loger throw validation errors, just log them to the console
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function expectPropValidationError<P extends object>(
