@@ -33,6 +33,7 @@ import {
     Popover,
     Position,
 } from "@blueprintjs/core";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
@@ -139,17 +140,8 @@ describe("<DateRangeInput>", () => {
         assertInputValuesEqual(root, "", "");
     });
 
-    describe("validation", () => {
-        let consoleError: sinon.SinonStub;
-
-        before(() => (consoleError = sinon.stub(console, "error")));
-        afterEach(() => consoleError.resetHistory());
-        after(() => consoleError.restore());
-
-        it("logs error if value === null", () => {
-            mount(<DateRangeInput {...DATE_FORMAT} value={null} />);
-            expect(consoleError.calledOnce).to.be.true;
-        });
+    it("throws error if value === null", () => {
+        expectPropValidationError(DateRangeInput, { ...DATE_FORMAT, value: null });
     });
 
     describe("timePrecision prop", () => {
