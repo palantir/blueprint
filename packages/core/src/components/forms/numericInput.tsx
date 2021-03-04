@@ -366,22 +366,22 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
-            throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
+            console.error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize! <= 0) {
-            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+            console.error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize <= 0) {
-            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
+            console.error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         }
         if (majorStepSize && majorStepSize <= 0) {
-            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+            console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize > stepSize!) {
-            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+            console.error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         }
         if (majorStepSize && majorStepSize < stepSize!) {
-            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+            console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
 
         // controlled mode

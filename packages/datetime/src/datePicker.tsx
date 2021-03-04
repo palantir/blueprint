@@ -200,19 +200,19 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     protected validateProps(props: IDatePickerProps) {
         const { defaultValue, initialMonth, maxDate, minDate, value } = props;
         if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate, maxDate])) {
-            throw new Error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
+            console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
         }
 
         if (initialMonth != null && !DateUtils.isMonthInRange(initialMonth, [minDate, maxDate])) {
-            throw new Error(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
+            console.error(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
         }
 
         if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
-            throw new Error(Errors.DATEPICKER_MAX_DATE_INVALID);
+            console.error(Errors.DATEPICKER_MAX_DATE_INVALID);
         }
 
         if (value != null && !DateUtils.isDayInRange(value, [minDate, maxDate])) {
-            throw new Error(Errors.DATEPICKER_VALUE_INVALID);
+            console.error(Errors.DATEPICKER_VALUE_INVALID);
         }
     }
 
