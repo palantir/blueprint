@@ -21,7 +21,7 @@ import ReactDOM from "react-dom";
 import sinon from "sinon";
 
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
@@ -1597,49 +1597,52 @@ describe("<Table>", function (this) {
     describe("Validation", () => {
         describe("on mount", () => {
             describe("errors", () => {
-                let consoleError: sinon.SinonStub;
-                before(() => (consoleError = sinon.stub(console, "error")));
-                afterEach(() => consoleError.resetHistory());
-                after(() => consoleError.restore());
-
-                it("logs an error if numRows < 0", () => {
-                    mount(<Table numRows={-1} />);
-                    expect(consoleError.calledWith(Errors.TABLE_NUM_ROWS_NEGATIVE));
+                it("throws an error if numRows < 0", () => {
+                    expectPropValidationError(Table, { numRows: -1 }, Errors.TABLE_NUM_ROWS_NEGATIVE);
                 });
 
-                it("logs an error if numFrozenRows < 0", () => {
-                    mount(<Table numFrozenRows={-1} />);
-                    expect(consoleError.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE));
+                it("throws an error if numFrozenRows < 0", () => {
+                    expectPropValidationError(Table, { numFrozenRows: -1 }, Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
                 });
 
-                it("logs an error if numFrozenColumns < 0", () => {
-                    mount(<Table numFrozenColumns={-1} />);
-                    expect(consoleError.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE));
-                });
-
-                it("logs an error if rowHeights.length !== numRows", () => {
-                    mount(<Table numRows={3} rowHeights={[1, 2]} />);
-                    expect(consoleError.calledWith(Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH));
-                });
-
-                it("logs an error if columnWidths.length !== number of <Column>s", () => {
-                    mount(
-                        <Table columnWidths={[1, 2]}>
-                            <Column key={0} />
-                            <Column key={1} />
-                            <Column key={2} />
-                        </Table>,
+                it("throws an error if numFrozenColumns < 0", () => {
+                    expectPropValidationError(
+                        Table,
+                        { numFrozenColumns: -1 },
+                        Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE,
                     );
-                    expect(consoleError.calledWith(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH));
                 });
 
-                it("logs an error if a non-<Column> child is provided", () => {
-                    mount(
-                        <Table columnWidths={[1, 2]}>
-                            <span>I'm a span, not a column</span>
-                        </Table>,
+                it("throws an error if rowHeights.length !== numRows", () => {
+                    expectPropValidationError(
+                        Table,
+                        { numRows: 3, rowHeights: [1, 2] },
+                        Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH,
                     );
-                    expect(consoleError.calledWith(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING));
+                });
+
+                it("throws an error if columnWidths.length !== number of <Column>s", () => {
+                    expectPropValidationError(
+                        Table,
+                        {
+                            children: [<Column key={0} />, <Column key={1} />, <Column key={2} />],
+                            columnWidths: [1, 2],
+                        },
+                        Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH,
+                    );
+                });
+
+                it("throws an error if a non-<Column> child is provided", () => {
+                    // we were printing a warning before, but the Table would
+                    // eventually throw an error from deep inside, so might as
+                    // well just throw a clear error at the outset.
+                    expectPropValidationError(
+                        Table,
+                        {
+                            children: <span>I'm a span, not a column</span>,
+                        },
+                        Errors.TABLE_NON_COLUMN_CHILDREN_WARNING,
+                    );
                 });
             });
 
