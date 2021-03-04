@@ -785,7 +785,7 @@ describe("<NumericInput>", () => {
     describe("Validation", () => {
         let consoleError: SinonStub;
 
-        before(() => (consoleError = stub(console, "warn")));
+        before(() => (consoleError = stub(console, "error")));
         afterEach(() => consoleError.resetHistory());
         after(() => consoleError.restore());
 

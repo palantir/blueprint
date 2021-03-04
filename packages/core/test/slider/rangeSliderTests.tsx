@@ -19,8 +19,9 @@ import { mount } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import { Classes, RangeSlider } from "../../src";
-import * as Errors from "../../src/common/errors";
 import { ARROW_DOWN } from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
 
@@ -52,32 +53,23 @@ describe("<RangeSlider>", () => {
         assert.equal(track.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
     });
 
+    it("throws error if range value contains null", () => {
+        expectPropValidationError(RangeSlider, {
+            // @ts-expect-error
+            value: [null, 5],
+        });
+        expectPropValidationError(RangeSlider, {
+            // @ts-expect-error
+            value: [100, null],
+        });
+    });
+
     it("disabled slider does not respond to key presses", () => {
         const changeSpy = sinon.spy();
         const handles = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />).find(Handle);
         handles.first().simulate("keydown", { which: ARROW_DOWN });
         handles.last().simulate("keydown", { which: ARROW_DOWN });
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
-    });
-
-    describe("validation", () => {
-        let consoleError: sinon.SinonStub;
-
-        before(() => (consoleError = sinon.stub(console, "error")));
-        afterEach(() => consoleError.resetHistory());
-        after(() => consoleError.restore());
-
-        it("logs error if range value starts with null", () => {
-            // @ts-expect-error
-            renderSlider(<RangeSlider value={[null, 5]} />);
-            assert.isTrue(consoleError.calledWith(Errors.RANGESLIDER_NULL_VALUE));
-        });
-
-        it("logs error if range value ends with null", () => {
-            // @ts-expect-error
-            renderSlider(<RangeSlider value={[100, null]} />);
-            assert.isTrue(consoleError.calledWith(Errors.RANGESLIDER_NULL_VALUE));
-        });
     });
 
     function renderSlider(slider: JSX.Element) {

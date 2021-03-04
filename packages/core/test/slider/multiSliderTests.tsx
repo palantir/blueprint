@@ -20,8 +20,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import sinon from "sinon";
 
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
-import * as Errors from "../../src/common/errors";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -318,32 +319,19 @@ describe("<MultiSlider>", () => {
     });
 
     describe("validation", () => {
-        let consoleError: sinon.SinonStub;
-
-        before(() => (consoleError = sinon.stub(console, "error")));
-        afterEach(() => consoleError.resetHistory());
-        after(() => consoleError.restore());
-
         it("throws an error if a child is not a slider handle", () => {
-            mount(
-                <MultiSlider>
-                    <span>Bad</span>
-                </MultiSlider>,
-            );
-            assert.isTrue(consoleError.calledWith(Errors.MULTISLIDER_INVALID_CHILD));
+            expectPropValidationError(MultiSlider, { children: (<span>Bad</span>) as any });
         });
 
         it("throws error if stepSize <= 0", () => {
             [0, -10].forEach(stepSize => {
-                mount(<MultiSlider stepSize={stepSize} />);
-                assert.isTrue(consoleError.calledWith(Errors.SLIDER_ZERO_STEP));
+                expectPropValidationError(MultiSlider, { stepSize }, "greater than zero");
             });
         });
 
         it("throws error if labelStepSize <= 0", () => {
             [0, -10].forEach(labelStepSize => {
-                mount(<MultiSlider labelStepSize={labelStepSize} />);
-                assert.isTrue(consoleError.calledWith(Errors.SLIDER_ZERO_LABEL_STEP));
+                expectPropValidationError(MultiSlider, { labelStepSize }, "greater than zero");
             });
         });
     });

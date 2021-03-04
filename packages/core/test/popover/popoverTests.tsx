@@ -142,15 +142,14 @@ describe("<Popover>", () => {
             runErrorTest("CLICK_TARGET_ONLY");
 
             it("doesn't throw error for CLICK", () => {
-                assert.doesNotThrow(() => (
-                    <Popover hasBackdrop={true} interactionKind={PopoverInteractionKind.CLICK} />
-                ));
+                mount(<Popover hasBackdrop={true} interactionKind={PopoverInteractionKind.CLICK} />);
+                assert.isFalse(consoleError.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
             });
 
             function runErrorTest(interactionKindKey: keyof typeof PopoverInteractionKind) {
                 it(interactionKindKey, () => {
                     mount(<Popover hasBackdrop={true} interactionKind={PopoverInteractionKind[interactionKindKey]} />);
-                    assert.isTrue(consoleWarn.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
+                    assert.isTrue(consoleError.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
                 });
             }
         });

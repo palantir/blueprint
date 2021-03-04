@@ -212,13 +212,13 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
 
     protected validateProps(props: React.PropsWithChildren<IMultiSliderProps>) {
         if (props.stepSize! <= 0) {
-            console.error(Errors.SLIDER_ZERO_STEP);
+            throw new Error(Errors.SLIDER_ZERO_STEP);
         }
         if (props.labelStepSize !== undefined && props.labelValues !== undefined) {
-            console.error(Errors.MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX);
+            throw new Error(Errors.MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX);
         }
         if (props.labelStepSize !== undefined && props.labelStepSize! <= 0) {
-            console.error(Errors.SLIDER_ZERO_LABEL_STEP);
+            throw new Error(Errors.SLIDER_ZERO_LABEL_STEP);
         }
 
         let anyInvalidChildren = false;
@@ -229,7 +229,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
             }
         });
         if (anyInvalidChildren) {
-            console.error(Errors.MULTISLIDER_INVALID_CHILD);
+            throw new Error(Errors.MULTISLIDER_INVALID_CHILD);
         }
     }
 

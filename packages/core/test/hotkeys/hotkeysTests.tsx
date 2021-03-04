@@ -19,9 +19,9 @@
 import { assert, expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
-import { SinonSpy, SinonStub, spy, stub } from "sinon";
+import { SinonSpy, spy } from "sinon";
 
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchTestKeyboardEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {
     Classes,
@@ -39,26 +39,10 @@ import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
 import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
 
 describe("Hotkeys", () => {
-    describe("validation", () => {
-        let consoleError: SinonStub;
-
-        before(() => (consoleError = stub(console, "warn")));
-        afterEach(() => consoleError.resetHistory());
-        after(() => consoleError.restore());
-
-        it("logs error if given non-Hotkey child", () => {
-            mount(
-                <Hotkeys>
-                    <div />
-                </Hotkeys>,
-            );
-            expect(consoleError.calledWith(HOTKEYS_HOTKEY_CHILDREN)).to.be.true;
-        });
-
-        it("logs error if given string child", () => {
-            mount(<Hotkeys>{"string contents"}</Hotkeys>);
-            expect(consoleError.calledWith(HOTKEYS_HOTKEY_CHILDREN)).to.be.true;
-        });
+    it("throws error if given non-Hotkey child", () => {
+        expectPropValidationError(Hotkeys, { children: <div /> }, HOTKEYS_HOTKEY_CHILDREN, "element");
+        expectPropValidationError(Hotkeys, { children: "string contents" }, HOTKEYS_HOTKEY_CHILDREN, "string");
+        expectPropValidationError(Hotkeys, { children: [undefined, null] }, HOTKEYS_HOTKEY_CHILDREN, "undefined");
     });
 
     it("Decorator does not mutate the original class", () => {

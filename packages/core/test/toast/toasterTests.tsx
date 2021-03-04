@@ -18,7 +18,9 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
 import ReactDOM from "react-dom";
-import { spy, stub, SinonStub } from "sinon";
+import { spy } from "sinon";
+
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, IToaster, Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
@@ -146,15 +148,8 @@ describe("Toaster", () => {
     });
 
     describe("validation", () => {
-        let consoleError: SinonStub;
-
-        before(() => (consoleError = stub(console, "warn")));
-        afterEach(() => consoleError.resetHistory());
-        after(() => consoleError.restore());
-
-        it("logs an error when max toast is set to a number less than 1", () => {
-            mount(<Toaster maxToasts={0} />);
-            assert.isTrue(consoleError.calledWith(TOASTER_MAX_TOASTS_INVALID));
+        it("throws an error when max toast is set to a number less than 1", () => {
+            expectPropValidationError(Toaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);
         });
     });
 
