@@ -3076,5 +3076,17 @@
         "iconName": "emoji",
         "tags": "message, chat, reaction",
         "group": "interface"
+    },
+    {
+        "displayName": "Add Location",
+        "iconName": "add-location",
+        "tags": "location, add,",
+        "group": "interface"
+    },
+    {
+        "displayName": "Shapes",
+        "iconName": "shapes",
+        "tags": "shapes, geometric,",
+        "group": "interface"
     }
 ]

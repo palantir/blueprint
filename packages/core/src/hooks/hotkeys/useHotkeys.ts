@@ -130,7 +130,7 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
             document.removeEventListener("keydown", handleGlobalKeyDown);
             document.removeEventListener("keyup", handleGlobalKeyUp);
         };
-    }, []);
+    }, [handleGlobalKeyDown, handleGlobalKeyUp]);
 
     return { handleKeyDown: handleLocalKeyDown, handleKeyUp: handleLocalKeyUp };
 }

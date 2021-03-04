@@ -53,7 +53,10 @@ interface IIconState {
     iconComponent: IconComponent | undefined;
 }
 
-export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>, IIconState> {
+export class Icon extends AbstractPureComponent2<
+    IIconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
+    IIconState
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static defaultProps: Partial<IIconProps> = {

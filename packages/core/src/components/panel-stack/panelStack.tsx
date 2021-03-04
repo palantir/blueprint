@@ -127,10 +127,10 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
             (props.initialPanel == null && props.stack == null) ||
             (props.initialPanel != null && props.stack != null)
         ) {
-            throw new Error(Errors.PANEL_STACK_INITIAL_PANEL_STACK_MUTEX);
+            console.error(Errors.PANEL_STACK_INITIAL_PANEL_STACK_MUTEX);
         }
         if (props.stack != null && props.stack.length === 0) {
-            throw new Error(Errors.PANEL_STACK_REQUIRES_PANEL);
+            console.error(Errors.PANEL_STACK_REQUIRES_PANEL);
         }
     }
 

@@ -15,6 +15,7 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
+// components
 import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbsTests";
 import "./breadcrumbs/breadcrumbTests";
@@ -67,3 +68,6 @@ import "./toast/toasterTests";
 import "./toast/toastTests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";
+
+// hooks
+import "./hooks/useHotkeysTests";

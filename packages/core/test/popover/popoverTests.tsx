@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Portal } from "../../src";
 import * as Classes from "../../src/common/classes";
@@ -55,13 +55,25 @@ describe("<Popover>", () => {
     });
 
     describe("validation:", () => {
-        let warnSpy: sinon.SinonStub;
-        before(() => (warnSpy = sinon.stub(console, "warn")));
-        beforeEach(() => warnSpy.resetHistory());
-        after(() => warnSpy.restore());
+        let consoleWarn: sinon.SinonStub;
+        let consoleError: sinon.SinonStub;
 
-        it("throws error if given no target", () => {
-            expectPropValidationError(Popover, {}, Errors.POPOVER_REQUIRES_TARGET);
+        before(() => {
+            consoleWarn = sinon.stub(console, "warn");
+            consoleError = sinon.stub(console, "error");
+        });
+        beforeEach(() => {
+            consoleWarn.resetHistory();
+            consoleError.resetHistory();
+        });
+        after(() => {
+            consoleWarn.restore();
+            consoleError.restore();
+        });
+
+        it("logs error if given no target", () => {
+            mount(<Popover />);
+            assert.isTrue(consoleError.calledWith(Errors.POPOVER_REQUIRES_TARGET));
         });
 
         it("warns if given > 2 target elements", () => {
@@ -73,12 +85,12 @@ describe("<Popover>", () => {
                     {"h3"}
                 </Popover>,
             );
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
+            assert.isTrue(consoleWarn.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
         });
 
         it("warns if given children and target prop", () => {
             shallow(<Popover target="boom">pow</Popover>);
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
+            assert.isTrue(consoleWarn.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
         });
 
         it("warns if given two children and content prop", () => {
@@ -88,7 +100,7 @@ describe("<Popover>", () => {
                     {"jab"}
                 </Popover>,
             );
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
+            assert.isTrue(consoleWarn.calledWith(Errors.POPOVER_WARN_DOUBLE_CONTENT));
         });
 
         it("warns if attempting to open a popover with empty content", () => {
@@ -97,7 +109,7 @@ describe("<Popover>", () => {
                     {"target"}
                 </Popover>,
             );
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT));
+            assert.isTrue(consoleWarn.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT));
         });
 
         it("warns if backdrop enabled when rendering inline", () => {
@@ -107,7 +119,7 @@ describe("<Popover>", () => {
                     {"content"}
                 </Popover>,
             );
-            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE));
+            assert.isTrue(consoleWarn.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE));
         });
 
         it("warns and disables if given empty content", () => {
@@ -117,34 +129,27 @@ describe("<Popover>", () => {
                 </Popover>,
             );
             assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for undefined content");
-            assert.equal(warnSpy.callCount, 1);
+            assert.equal(consoleWarn.callCount, 1);
 
             popover.setProps({ content: "    " });
             assert.isFalse(popover.find(Overlay).prop("isOpen"), "not open for white-space string content");
-            assert.equal(warnSpy.callCount, 2);
+            assert.equal(consoleWarn.callCount, 2);
         });
 
-        describe("throws error if backdrop enabled with non-CLICK interactionKind", () => {
+        describe("logs error if backdrop enabled with non-CLICK interactionKind", () => {
             runErrorTest("HOVER");
             runErrorTest("HOVER_TARGET_ONLY");
             runErrorTest("CLICK_TARGET_ONLY");
 
             it("doesn't throw error for CLICK", () => {
-                assert.doesNotThrow(() => (
-                    <Popover hasBackdrop={true} interactionKind={PopoverInteractionKind.CLICK} />
-                ));
+                mount(<Popover hasBackdrop={true} interactionKind={PopoverInteractionKind.CLICK} />);
+                assert.isFalse(consoleError.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
             });
 
             function runErrorTest(interactionKindKey: keyof typeof PopoverInteractionKind) {
                 it(interactionKindKey, () => {
-                    expectPropValidationError(
-                        Popover,
-                        {
-                            hasBackdrop: true,
-                            interactionKind: PopoverInteractionKind[interactionKindKey],
-                        },
-                        Errors.POPOVER_HAS_BACKDROP_INTERACTION,
-                    );
+                    mount(<Popover hasBackdrop={true} interactionKind={PopoverInteractionKind[interactionKindKey]} />);
+                    assert.isTrue(consoleError.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION));
                 });
             }
         });

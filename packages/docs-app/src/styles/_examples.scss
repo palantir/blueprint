@@ -500,6 +500,13 @@
   }
 }
 
+#{example("ToastExample")} {
+  .docs-example {
+    // necessary for inline Toaster (usePortal={false})
+    position: relative;
+  }
+}
+
 //
 // DATETIME
 //

@@ -21,13 +21,13 @@ module.exports = function (config) {
         // HACKHACK: need to add hotkeys v2 tests
         "src/components/hotkeys/hotkeysDialog2.tsx",
         "src/components/hotkeys/hotkeysTarget2.tsx",
-        "src/hooks/hotkeys/useHotkeys.ts",
         "src/context/hotkeys/hotkeysProvider.tsx",
     ];
 
     if (REACT === "15") {
+        console.info("Excluding features which require React 16 from coverage requiremenst...");
         // features require React 16.8+
-        coverageExcludes.push("src/context/*", "src/hooks/*", "src/components/panel-stack2/*");
+        coverageExcludes.push("src/context/**/*.ts*", "src/hooks/**/*.ts*", "src/components/panel-stack2/*");
     }
 
     const baseConfig = createKarmaConfig({

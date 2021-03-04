@@ -27,6 +27,8 @@ module.exports = function createKarmaConfig(
 
     const config = {
         basePath: dirname,
+        browserDisconnectTimeout: 10000,
+        browserDisconnectTolerance: 2,
         browserNoActivityTimeout: 100000,
         browsers: ["ChromeHeadless"],
         client: {

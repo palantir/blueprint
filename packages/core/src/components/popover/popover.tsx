@@ -257,7 +257,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             console.warn(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE);
         }
         if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
-            throw new Error(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
+            console.error(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
         }
 
         const childrenCount = React.Children.count(props.children);
@@ -265,7 +265,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         const hasTargetProp = props.target !== undefined;
 
         if (childrenCount === 0 && !hasTargetProp) {
-            throw new Error(Errors.POPOVER_REQUIRES_TARGET);
+            console.error(Errors.POPOVER_REQUIRES_TARGET);
         }
         if (childrenCount > 2) {
             console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
