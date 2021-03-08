@@ -28,6 +28,11 @@ type DialogStepElement = React.ReactElement<IDialogStepProps & { children: React
 
 export interface IMultistepDialogProps extends IDialogProps {
     /**
+     * Props for the back button.
+     */
+    backButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
+
+    /**
      * Props for the button to display on the final step.
      */
     finalButtonProps?: Partial<IButtonProps>;
@@ -158,19 +163,27 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     }
 
     private renderButtons() {
+        const { selectedIndex } = this.state;
         const buttons = [];
         if (this.state.selectedIndex > 0) {
-            buttons.push(<Button key="back" onClick={this.getBackClickHandler()} text="Back" />);
+            buttons.push(
+                <Button
+                    key="back"
+                    onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
+                    text="Back"
+                    {...this.props.backButtonProps}
+                />,
+            );
         }
 
-        if (this.state.selectedIndex === this.getDialogStepChildren().length - 1) {
-            buttons.push(this.renderFinalButton());
+        if (selectedIndex === this.getDialogStepChildren().length - 1) {
+            buttons.push(<Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />);
         } else {
             buttons.push(
                 <Button
                     intent="primary"
                     key="next"
-                    onClick={this.getNextClickHandler()}
+                    onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
                     text="Next"
                     {...this.props.nextButtonProps}
                 />,
@@ -178,14 +191,6 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         }
 
         return buttons;
-    }
-
-    private getBackClickHandler() {
-        return this.getDialogStepChangeHandler(this.state.selectedIndex - 1);
-    }
-
-    private getNextClickHandler() {
-        return this.getDialogStepChangeHandler(this.state.selectedIndex + 1);
     }
 
     private getDialogStepChangeHandler(index: number) {
@@ -201,10 +206,6 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
                 selectedIndex: index,
             });
         };
-    }
-
-    private renderFinalButton() {
-        return <Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />;
     }
 
     /** Filters children to only `<DialogStep>`s */
