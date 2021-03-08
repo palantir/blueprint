@@ -139,7 +139,7 @@ function wrapForParent(statement: string, node: TSESTree.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace(/(pt|bp3)-/, "")
+        .replace(/(pt|bp3|bp4)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;
