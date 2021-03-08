@@ -23,7 +23,7 @@ import { Position } from "./position";
 declare let BLUEPRINT_NAMESPACE: string | undefined;
 declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
 
-let NS = "bp3";
+let NS = "bp4";
 
 if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
     NS = BLUEPRINT_NAMESPACE;
