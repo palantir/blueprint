@@ -19,7 +19,7 @@
 /* eslint-disable max-classes-per-file, @typescript-eslint/no-empty-interface */
 
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler } from "../../common";

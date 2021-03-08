@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 import { findDOMNode } from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import ResizeObserver from "resize-observer-polyfill";

@@ -15,7 +15,7 @@
  */
 
 import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
-import React from "react";
+import * as React from "react";
 
 /**
  * Removes leading indents from a template string without removing all leading whitespace.

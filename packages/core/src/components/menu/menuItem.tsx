@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import { Modifiers } from "popper.js";
-import React from "react";
+import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";

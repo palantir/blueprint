@@ -16,8 +16,8 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
-import sinon from "sinon";
+import * as React from "react";
+import * as sinon from "sinon";
 
 import { ARROW_DOWN, ARROW_UP } from "../../src/common/keys";
 import { Handle, IHandleState, IInternalHandleProps } from "../../src/components/slider/handle";

@@ -14,7 +14,7 @@
  */
 
 import * as PropTypes from "prop-types";
-import React from "react";
+import * as React from "react";
 
 export interface IColumnInteractionBarContextTypes {
     enableColumnInteractionBar: boolean;

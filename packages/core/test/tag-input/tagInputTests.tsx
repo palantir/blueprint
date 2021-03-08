@@ -22,8 +22,8 @@ import {
     ShallowRendererProps,
     ShallowWrapper,
 } from "enzyme";
-import React from "react";
-import sinon from "sinon";
+import * as React from "react";
+import * as sinon from "sinon";
 
 import { Button, Classes, Intent, ITagInputProps, Keys, Tag, TagInput } from "../../src";
 

@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import { ModifierFn } from "popper.js";
-import React from "react";
+import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 

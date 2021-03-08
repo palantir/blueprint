@@ -15,8 +15,8 @@
  */
 
 import { expect } from "chai";
-import React from "react";
-import sinon from "sinon";
+import * as React from "react";
+import * as sinon from "sinon";
 
 import { Regions } from "../src/";
 import { DragReorderable } from "../src/interactions/reorderable";

@@ -16,9 +16,9 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import ReactDayPicker from "react-day-picker";
-import sinon from "sinon";
+import * as sinon from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import moment from "moment-timezone";
+import * as moment from "moment-timezone";
 
 // non-empty abbreviations that do not begin with -/+
 const ABBR_REGEX = /^[^-+]/;

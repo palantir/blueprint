@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { shallow } from "enzyme";
-import React from "react";
+import * as React from "react";
 
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src";
 

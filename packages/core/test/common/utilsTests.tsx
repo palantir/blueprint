@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import React from "react";
+import * as React from "react";
 import { SinonSpy, spy } from "sinon";
 
 import * as Utils from "../../src/common/utils";

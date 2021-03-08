@@ -15,7 +15,7 @@
  */
 
 import download from "downloadjs";
-import React from "react";
+import * as React from "react";
 
 import { Callout, Card } from "@blueprintjs/core";
 

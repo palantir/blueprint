@@ -17,8 +17,8 @@
 // tslint:disable object-literal-sort-keys
 /* eslint-disable max-classes-per-file, react/display-name, react/jsx-no-bind, react/no-did-mount-set-state */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import {

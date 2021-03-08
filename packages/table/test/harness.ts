@@ -16,8 +16,8 @@
 
 /* eslint-disable  max-classes-per-file */
 
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 // tslint:disable-next-line:no-submodule-imports
 import { Browser } from "@blueprintjs/core/lib/esm/compatibility";

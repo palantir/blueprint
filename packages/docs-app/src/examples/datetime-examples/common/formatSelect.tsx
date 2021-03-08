@@ -15,7 +15,7 @@
  */
 
 import moment from "moment";
-import React from "react";
+import * as React from "react";
 
 import { Radio, RadioGroup } from "@blueprintjs/core";
 import { IDateFormatProps } from "@blueprintjs/datetime";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
 

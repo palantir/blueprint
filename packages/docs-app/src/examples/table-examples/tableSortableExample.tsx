@@ -16,7 +16,7 @@
 
 /* eslint-disable max-classes-per-file */
 
-import React from "react";
+import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";

@@ -16,9 +16,9 @@
 
 import { assert } from "chai";
 import { mount, shallow as untypedShallow, ShallowRendererProps, ShallowWrapper } from "enzyme";
-import moment from "moment-timezone";
-import React from "react";
-import sinon from "sinon";
+import * as moment from "moment-timezone";
+import * as React from "react";
+import * as sinon from "sinon";
 
 import {
     Button,

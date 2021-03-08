@@ -21,7 +21,7 @@ import {
     shallow as untypedShallow,
     ShallowRendererProps,
 } from "enzyme";
-import React from "react";
+import * as React from "react";
 import { spy, stub, SinonStub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";

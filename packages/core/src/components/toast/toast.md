@@ -102,7 +102,7 @@ export const AppToaster = Toaster.create({
 #### `application.ts`
 ```tsx
 import { Button } from "@blueprintjs/core";
-import React from "react";
+import * as React from "react";
 import { AppToaster } from "./toaster";
 
 export class App extends React.PureComponent {
@@ -128,7 +128,7 @@ optionally attach a `ref` handler to access the instance methods, but we strongl
 
 ```tsx
 import { Button, Position, Toast, Toaster } from "@blueprintjs/core";
-import React from "react";
+import * as React from "react";
 
 class MyComponent extends React.PureComponent {
     public state = { toasts: [ /* IToastProps[] */ ] }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Card, H4, Icon, IconName } from "@blueprintjs/core";
 
