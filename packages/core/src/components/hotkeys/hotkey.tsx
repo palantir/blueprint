@@ -21,9 +21,9 @@ import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../
 import { HotkeyConfig } from "../../hooks";
 import { KeyCombo } from "./keyCombo";
 
-export type IHotkeyProps = IProps & HotkeyConfig;
+export type HotkeyProps = IProps & HotkeyConfig;
 
-export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {
+export class Hotkey extends AbstractPureComponent2<HotkeyProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
 
     public static defaultProps = {
@@ -46,7 +46,7 @@ export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {
         );
     }
 
-    protected validateProps(props: IHotkeyProps) {
+    protected validateProps(props: HotkeyProps) {
         if (props.global !== true && props.group == null) {
             console.error("non-global <Hotkey>s must define a group");
         }

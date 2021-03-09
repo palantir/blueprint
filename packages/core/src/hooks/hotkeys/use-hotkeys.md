@@ -16,7 +16,7 @@ Migrating from [HotkeysTarget](#core/components/hotkeys)?
 </h4>
 
 `useHotkeys` is a replacement for HotkeysTarget. You are encouraged to use this new API in your function
-components, or the [HotkeysTarget2 component](#core/components/hotkeys-target2) in your component classes,
+components, or the [HotkeysTarget component](#core/components/hotkeys-target2) in your component classes,
 as they will become the standard APIs in Blueprint v4. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/useHotkeys-migration) on the wiki.
 
