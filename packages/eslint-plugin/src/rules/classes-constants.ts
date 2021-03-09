@@ -24,8 +24,8 @@ import { FixList } from "./utils/fixList";
 import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
-// currently support pt- and bp3- prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]?((pt|bp3)-(?!icon-?)[\w-]+)/g;
+// currently support "pt-", "bp3-", "bp4-" prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]?((pt|bp3|bp4)-(?!icon-?)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
@@ -139,7 +139,7 @@ function wrapForParent(statement: string, node: TSESTree.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace(/(pt|bp3)-/, "")
+        .replace(/(pt|bp3|bp4)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;
