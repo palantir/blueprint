@@ -71,11 +71,8 @@ All Blueprint CSS classes begin with a namespace prefix to isolate our styles
 from other frameworks: `.button` is a very common name, but only Blueprint
 defines `.@ns-button`.
 
-Beginning with Blueprint 3.0, this namespace will be versioned by major version
-of the library so two major versions can be used together on a single page. This
-means the namespace at the beginning of every class _will change in each
-subsequent major version_. In Blueprint 1.x and 2.x this namespace was `pt-`,
-but in Blueprint 3.0 it will change to `bp3-` and increase accordingly.
+This CSS namespace is versioned by major version of the library so two major versions of Blueprint
+can be used together on a single page.
 
 ### Custom namespace
 

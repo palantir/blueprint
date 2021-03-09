@@ -25,7 +25,7 @@ const path = require("path");
 const RESOURCES_DIR = path.resolve(__dirname, "../../../resources/icons");
 const GENERATED_SRC_DIR = path.resolve(__dirname, "../src/generated");
 const logger = getLogger();
-const NS = "bp3";
+const NS = "bp4";
 
 logger.start();
 
