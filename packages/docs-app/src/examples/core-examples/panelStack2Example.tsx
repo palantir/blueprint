@@ -19,35 +19,61 @@ import React, { useCallback, useState } from "react";
 import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-interface PanelExampleInfo {
-    panelNumber: number;
+/**
+ * Panel stacks typically have heterogenous panels, each with different information and actions,
+ * so it's important to represent that kind of use case in the docs example. Here, we do that
+ * by having two panel types which we alternate between as the stack increases in size.
+ * Panel1 renders Panel2, and vice-versa.
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Panel1Info {
+    // empty
 }
 
-const PanelExample: React.FC<PanelProps<PanelExampleInfo>> = props => {
+const Panel1: React.FC<PanelProps<Panel1Info>> = props => {
     const [counter, setCounter] = useState(0);
-    const openNewPanel = useCallback(() => {
-        const panelNumber = props.panelNumber + 1;
+    const openNewPanel = () => {
         props.openPanel({
-            props: { panelNumber },
-            renderPanel: PanelExample,
-            title: `Panel ${panelNumber}`,
+            props: { counter },
+            renderPanel: Panel2,
+            title: `Panel 2`,
         });
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-    }, [props.panelNumber, props.openPanel]);
+    };
 
     return (
         <div className="docs-panel-stack-contents-example">
-            <Button intent={Intent.PRIMARY} onClick={openNewPanel} text="Open new panel" />
+            <Button intent={Intent.PRIMARY} onClick={openNewPanel} text="Open panel 2" />
             <NumericInput value={counter} stepSize={1} onValueChange={setCounter} />
         </div>
     );
 };
 
-const initialPanel: Panel<PanelExampleInfo> = {
+interface Panel2Info {
+    counter: number;
+}
+
+const Panel2: React.FC<PanelProps<Panel2Info>> = props => {
+    const openNewPanel = () => {
+        props.openPanel({
+            props: {},
+            renderPanel: Panel1,
+            title: `Panel 1`,
+        });
+    };
+
+    return (
+        <div className="docs-panel-stack-contents-example">
+            <Button intent={Intent.PRIMARY} onClick={openNewPanel} text="Open panel 1" />
+        </div>
+    );
+};
+
+const initialPanel: Panel<Panel1Info> = {
     props: {
         panelNumber: 1,
     },
-    renderPanel: PanelExample,
+    renderPanel: Panel1,
     title: "Panel 1",
 };
 
@@ -59,7 +85,7 @@ export const PanelStack2Example: React.FC<IExampleProps> = props => {
     const toggleActiveOnly = useCallback(handleBooleanChange(setActivePanelOnly), []);
     const toggleShowHeader = useCallback(handleBooleanChange(setShowHeader), []);
     const addToPanelStack = useCallback(
-        (newPanel: Panel<PanelExampleInfo>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
+        (newPanel: Panel<Panel1Info>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
         [],
     );
     const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);
