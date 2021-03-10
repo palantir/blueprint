@@ -22,7 +22,7 @@ import {
     AbstractPureComponent,
     DISPLAYNAME_PREFIX,
     getRef,
-    IInputGroupProps2,
+    IInputGroupProps,
     InputGroup,
     Intent,
     IPopoverProps,
@@ -87,7 +87,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
      */
-    inputProps?: IInputGroupProps2;
+    inputProps?: IInputGroupProps;
 
     /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
@@ -478,7 +478,7 @@ export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInput
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
-    private safeInvokeInputProp(name: keyof IInputGroupProps2, e: React.SyntheticEvent<HTMLElement>) {
+    private safeInvokeInputProp(name: keyof IInputGroupProps, e: React.SyntheticEvent<HTMLElement>) {
         const { inputProps = {} } = this.props;
         inputProps[name]?.(e);
     }

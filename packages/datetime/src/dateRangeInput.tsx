@@ -24,7 +24,7 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     getRef,
-    IInputGroupProps2,
+    IInputGroupProps,
     InputGroup,
     Intent,
     IPopoverProps,
@@ -94,7 +94,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    endInputProps?: IInputGroupProps2;
+    endInputProps?: IInputGroupProps;
 
     /**
      * Called when the user selects a day.
@@ -156,7 +156,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    startInputProps?: IInputGroupProps2;
+    startInputProps?: IInputGroupProps;
 
     /**
      * The currently selected date range.

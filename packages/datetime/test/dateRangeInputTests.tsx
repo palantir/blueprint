@@ -26,7 +26,7 @@ import {
     Classes as CoreClasses,
     HTMLDivProps,
     HTMLInputProps,
-    IInputGroupProps2,
+    IInputGroupProps,
     InputGroup,
     IPopoverProps,
     Keys,
@@ -263,7 +263,7 @@ describe("<DateRangeInput>", () => {
 
         function runTestSuite(
             inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-            mountFn: (inputGroupProps: IInputGroupProps2) => any,
+            mountFn: (inputGroupProps: IInputGroupProps) => any,
         ) {
             it("allows custom placeholder text", () => {
                 const root = mountFn({ placeholder: "Hello" });

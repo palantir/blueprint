@@ -23,7 +23,7 @@ import sinon from "sinon";
 import {
     Button,
     IButtonProps,
-    IInputGroupProps2,
+    IInputGroupProps,
     InputGroup,
     IPopoverProps,
     MenuItem,
@@ -200,7 +200,7 @@ describe("<TimezonePicker>", () => {
     });
 
     it("input can be controlled with input props", () => {
-        const inputProps: IInputGroupProps2 = {
+        const inputProps: IInputGroupProps = {
             disabled: true,
             leftIcon: "airplane",
             placeholder: "test placeholder",
@@ -208,7 +208,7 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} inputProps={inputProps} />);
         const inputGroup = findInputGroup(timezonePicker);
         for (const key of Object.keys(inputProps)) {
-            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof IInputGroupProps2]);
+            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof IInputGroupProps]);
         }
     });
 
