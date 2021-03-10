@@ -81,6 +81,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
 
     public static defaultProps = {
+        tabIndex: 0,
         truncated: true,
         wrapText: false,
     };
