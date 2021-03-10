@@ -48,7 +48,7 @@ export class Hotkey extends AbstractPureComponent<HotkeyProps> {
 
     protected validateProps(props: HotkeyProps) {
         if (props.global !== true && props.group == null) {
-            console.error("non-global <Hotkey>s must define a group");
+            console.error("non-global Hotkeys must define a group");
         }
     }
 }

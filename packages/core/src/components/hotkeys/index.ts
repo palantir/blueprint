@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-export * from "./hotkeys";
 export { Hotkey, HotkeyProps } from "./hotkey";
 export { KeyCombo, IKeyComboProps } from "./keyCombo";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";

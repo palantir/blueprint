@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# HotkeysTarget
 
 

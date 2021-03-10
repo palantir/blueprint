@@ -49,7 +49,7 @@ function generateDocumentalistData() {
         markdown: { renderer: docsUtils.markedRenderer },
         sourceBaseDir: ROOT_DIR,
         // must mark our @Decorator APIs as reserved so we can use them in code samples
-        reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
+        reservedTags: ["import", "ContextMenuTarget"],
     })
         .use(".md", new dm.MarkdownPlugin({ navPage: NAV_PAGE_NAME }))
         .use(
