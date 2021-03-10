@@ -264,13 +264,11 @@ describe("<PanelStack2>", () => {
     });
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    interface PanelStack2Wrapper<T extends Panel<object>> extends ReactWrapper<PanelStack2Props<T, T>, any> {
+    interface PanelStack2Wrapper<T extends Panel<object>> extends ReactWrapper<PanelStack2Props<T>, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(
-        props: PanelStack2Props<TestPanelType, TestPanelType>,
-    ): PanelStack2Wrapper<TestPanelType> {
+    function renderPanelStack(props: PanelStack2Props<TestPanelType>): PanelStack2Wrapper<TestPanelType> {
         panelStackWrapper = mount(<PanelStack2 {...props} />, {
             attachTo: testsContainerElement,
         }) as PanelStack2Wrapper<TestPanelType>;
