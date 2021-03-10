@@ -184,8 +184,8 @@ export class QueryList<T> extends AbstractComponent<IQueryListProps<T>, IQueryLi
      */
     private isEnterKeyPressed = false;
 
-    public constructor(props: IQueryListProps<T>, context?: any) {
-        super(props, context);
+    public constructor(props: IQueryListProps<T>) {
+        super(props);
 
         const { query = "" } = props;
         const createNewItem = props.createNewItemFromQuery?.(query);

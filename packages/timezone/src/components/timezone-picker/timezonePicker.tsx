@@ -130,8 +130,8 @@ export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, 
 
     private initialTimezoneItems: ITimezoneItem[];
 
-    constructor(props: ITimezonePickerProps, context?: any) {
-        super(props, context);
+    constructor(props: ITimezonePickerProps) {
+        super(props);
 
         const { date = new Date(), showLocalTimezone, inputProps = {} } = props;
         this.state = { query: inputProps.value || "" };

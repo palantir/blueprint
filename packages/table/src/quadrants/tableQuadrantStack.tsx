@@ -306,8 +306,8 @@ export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackPro
     // Public
     // ======
 
-    public constructor(props: ITableQuadrantStackProps, context?: any) {
-        super(props, context);
+    public constructor(props: ITableQuadrantStackProps) {
+        super(props);
 
         // callbacks trigger too frequently unless we throttle scroll and wheel
         // events. declare these functions on the component instance since

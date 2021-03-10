@@ -185,8 +185,8 @@ export class DateRangePicker extends AbstractPureComponent<IDateRangePickerProps
         },
     };
 
-    public constructor(props: IDateRangePickerProps, context?: any) {
-        super(props, context);
+    public constructor(props: IDateRangePickerProps) {
+        super(props);
         const value = getInitialValue(props);
         const time: DateRange = value;
         const initialMonth = getInitialMonth(props, value);

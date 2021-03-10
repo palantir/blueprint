@@ -240,8 +240,8 @@ const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof IInternalHeaderProps> = ["
 export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
     protected activationIndex: number;
 
-    public constructor(props?: IInternalHeaderProps, context?: any) {
-        super(props, context);
+    public constructor(props?: IInternalHeaderProps) {
+        super(props);
         this.state = { hasValidSelection: this.isSelectedRegionsControlledAndNonEmpty(props) };
     }
 

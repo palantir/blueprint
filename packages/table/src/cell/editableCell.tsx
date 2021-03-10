@@ -93,8 +93,8 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
         },
     };
 
-    public constructor(props: IEditableCellProps, context?: any) {
-        super(props, context);
+    public constructor(props: IEditableCellProps) {
+        super(props);
         this.state = {
             isEditing: false,
             savedValue: props.value,

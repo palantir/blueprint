@@ -125,8 +125,8 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private ignoreNextMonthChange = false;
 
-    public constructor(props: IDatePickerProps, context?: any) {
-        super(props, context);
+    public constructor(props: IDatePickerProps) {
+        super(props);
         const value = getInitialValue(props);
         const initialMonth = getInitialMonth(props, value);
         this.state = {
