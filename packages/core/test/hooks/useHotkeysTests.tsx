@@ -19,11 +19,11 @@ import { expect } from "chai";
 import React, { useMemo } from "react";
 import { spy } from "sinon";
 
-import { InputGroup } from "@blueprintjs/core";
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
 // work with our hotkey parser implementation (worth investigating...)
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
+import { InputGroup } from "../../src/components/forms/inputGroup";
 import { useHotkeys } from "../../src/hooks";
 
 interface TestComponentProps extends TestComponentContainerProps {
