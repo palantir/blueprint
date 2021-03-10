@@ -16,7 +16,7 @@
 
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
-import React, { useMemo } from "react";
+import * as React from "react";
 import { spy } from "sinon";
 
 import { InputGroup } from "@blueprintjs/core";
@@ -37,7 +37,7 @@ interface TestComponentContainerProps {
 }
 
 const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputReadOnly, onKeyA, onKeyB }) => {
-    const hotkeys = useMemo(() => {
+    const hotkeys = React.useMemo(() => {
         const keys = [
             {
                 combo: "A",
