@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { useMemo } from "react";
+import * as React from "react";
 
 import { useHotkeys } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
@@ -40,7 +40,7 @@ export const UseHotkeysExample: React.FC<IExampleProps> = props => {
             setPressed,
         }));
 
-    const hotkeys = useMemo(
+    const hotkeys = React.useMemo(
         () => [
             {
                 combo: "shift + P",

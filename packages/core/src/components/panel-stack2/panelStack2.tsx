@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { useCallback, useState } from "react";
+import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
@@ -85,16 +85,18 @@ interface PanelStack2Component {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
     const { renderActivePanelOnly = true, showPanelHeader = true } = props;
-    const [direction, setDirection] = useState("push");
+    const [direction, setDirection] = React.useState("push");
 
-    const [localStack, setLocalStack] = useState<T[]>(props.initialPanel !== undefined ? [props.initialPanel] : []);
+    const [localStack, setLocalStack] = React.useState<T[]>(
+        props.initialPanel !== undefined ? [props.initialPanel] : [],
+    );
     const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
 
     if (stack.length === 0) {
         return null;
     }
 
-    const handlePanelOpen = useCallback(
+    const handlePanelOpen = React.useCallback(
         (panel: T) => {
             props.onOpen?.(panel);
             if (props.stack == null) {
@@ -104,7 +106,7 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         },
         [props.onOpen],
     );
-    const handlePanelClose = useCallback(
+    const handlePanelClose = React.useCallback(
         (panel: T) => {
             // only remove this panel if it is at the top and not the only one.
             if (stack[0] !== panel || stack.length <= 1) {

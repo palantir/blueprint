@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { useCallback } from "react";
+import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
@@ -53,7 +53,7 @@ interface PanelView2Component {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: PanelView2Props<T>) => {
-    const handleClose = useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
+    const handleClose = React.useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
 
     const maybeBackButton =
         props.previousPanel === undefined ? null : (

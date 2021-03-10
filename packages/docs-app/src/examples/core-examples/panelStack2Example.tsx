@@ -21,7 +21,7 @@
  * Panel1 renders either a new Panel2 or Panel3. Panel2 and Panel3 both render a new Panel1.
  */
 
-import React, { useCallback, useState } from "react";
+import * as React from "react";
 
 import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
@@ -32,7 +32,7 @@ interface Panel1Info {
 }
 
 const Panel1: React.FC<PanelProps<Panel1Info>> = props => {
-    const [counter, setCounter] = useState(0);
+    const [counter, setCounter] = React.useState(0);
     const shouldOpenPanelType2 = counter % 2 === 0;
 
     const openNewPanel = () => {
@@ -113,19 +113,19 @@ const initialPanel: Panel<Panel1Info> = {
 };
 
 export const PanelStack2Example: React.FC<IExampleProps> = props => {
-    const [activePanelOnly, setActivePanelOnly] = useState(true);
-    const [showHeader, setShowHeader] = useState(true);
-    const [currentPanelStack, setCurrentPanelStack] = useState<Array<Panel<Panel1Info | Panel2Info | Panel3Info>>>([
-        initialPanel,
-    ]);
+    const [activePanelOnly, setActivePanelOnly] = React.useState(true);
+    const [showHeader, setShowHeader] = React.useState(true);
+    const [currentPanelStack, setCurrentPanelStack] = React.useState<
+        Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
+    >([initialPanel]);
 
-    const toggleActiveOnly = useCallback(handleBooleanChange(setActivePanelOnly), []);
-    const toggleShowHeader = useCallback(handleBooleanChange(setShowHeader), []);
-    const addToPanelStack = useCallback(
+    const toggleActiveOnly = React.useCallback(handleBooleanChange(setActivePanelOnly), []);
+    const toggleShowHeader = React.useCallback(handleBooleanChange(setShowHeader), []);
+    const addToPanelStack = React.useCallback(
         (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
         [],
     );
-    const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);
+    const removeFromPanelStack = React.useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);
 
     const stackList = (
         <>
