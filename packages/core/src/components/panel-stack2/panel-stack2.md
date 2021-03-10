@@ -52,15 +52,46 @@ the `props` defined by `Panel<T>`. These allow you to close the current panel or
 new one on top of it during the panel's lifecycle. For example:
 
 ```tsx
-import { PanelProps } from "@blueprintjs/core";
+import { Button, PanelProps } from "@blueprintjs/core";
 
-type SettingsPanelInfo = {
-    // ...
+type SettingsPanelInfo = { /* ...  */ };
+type AccountSettingsPanelInfo = { /* ...  */ };
+type NotificationSettingsPanelInfo = { /* ...  */ };
+
+const AccountSettingsPanel: React.FC<PanelProps<AccountSettingsPanelInfo>> = props => {
+    // implementation
+};
+
+const NotificationSettingsPanel: React.FC<PanelProps<NotificationSettingsPanelInfo>> = props => {
+    // implementation
 };
 
 const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
     const { openPanel, closePanel, ...info } = props;
-    // ...
+
+    const openAccountSettings = () =>
+        openPanel({
+            props: {
+                /* ... */
+            },
+            renderPanel: AccountSettingsPanel,
+            title: "Account settings",
+        });
+    const openNotificationSettings = () =>
+        openPanel({
+            props: {
+                /* ... */
+            },
+            renderPanel: NotificationSettingsPanel,
+            title: "Notification settings",
+        });
+
+    return (
+        <>
+            <Button onClick={openAccountSettings} text="Account settings" />
+            <Button onClick={openNotificationSettings} text="Notification settings" />
+        </>
+    );
 }
 ```
 

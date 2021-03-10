@@ -14,52 +14,115 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview
+ * Panel stacks typically have heterogenous panels, each with different information and actions,
+ * so it's important to represent that kind of use case in the docs example. Here, we have 3 panel types.
+ * Panel1 renders either a new Panel2 or Panel3. Panel2 and Panel3 both render a new Panel1.
+ */
+
 import * as React from "react";
 
 import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 
-interface PanelExampleInfo {
-    panelNumber: number;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Panel1Info {
+    // empty
 }
 
-const PanelExample: React.FC<PanelProps<PanelExampleInfo>> = props => {
+const Panel1: React.FC<PanelProps<Panel1Info>> = props => {
     const [counter, setCounter] = React.useState(0);
-    const openNewPanel = React.useCallback(() => {
-        const panelNumber = props.panelNumber + 1;
-        props.openPanel({
-            props: { panelNumber },
-            renderPanel: PanelExample,
-            title: `Panel ${panelNumber}`,
-        });
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-    }, [props.panelNumber, props.openPanel]);
+    const shouldOpenPanelType2 = counter % 2 === 0;
+
+    const openNewPanel = () => {
+        if (shouldOpenPanelType2) {
+            props.openPanel({
+                props: { counter },
+                renderPanel: Panel2,
+                title: `Panel 2`,
+            });
+        } else {
+            props.openPanel({
+                props: { intent: counter % 3 === 0 ? Intent.SUCCESS : Intent.WARNING },
+                renderPanel: Panel3,
+                title: `Panel 3`,
+            });
+        }
+    };
 
     return (
         <div className="docs-panel-stack-contents-example">
-            <Button intent={Intent.PRIMARY} onClick={openNewPanel} text="Open new panel" />
+            <Button
+                intent={Intent.PRIMARY}
+                onClick={openNewPanel}
+                text={`Open panel type ${shouldOpenPanelType2 ? 2 : 3}`}
+            />
             <NumericInput value={counter} stepSize={1} onValueChange={setCounter} />
         </div>
     );
 };
 
-const initialPanel: Panel<PanelExampleInfo> = {
+interface Panel2Info {
+    counter: number;
+}
+
+const Panel2: React.FC<PanelProps<Panel2Info>> = props => {
+    const openNewPanel = () => {
+        props.openPanel({
+            props: {},
+            renderPanel: Panel1,
+            title: `Panel 1`,
+        });
+    };
+
+    return (
+        <div className="docs-panel-stack-contents-example">
+            <H5>Parent counter was {props.counter}</H5>
+            <Button intent={Intent.PRIMARY} onClick={openNewPanel} text="Open panel type 1" />
+        </div>
+    );
+};
+
+interface Panel3Info {
+    intent: Intent;
+}
+
+const Panel3: React.FC<PanelProps<Panel3Info>> = props => {
+    const openNewPanel = () => {
+        props.openPanel({
+            props: {},
+            renderPanel: Panel1,
+            title: `Panel 1`,
+        });
+    };
+
+    return (
+        <div className="docs-panel-stack-contents-example">
+            <Button intent={props.intent} onClick={openNewPanel} text="Open panel type 1" />
+        </div>
+    );
+};
+
+const initialPanel: Panel<Panel1Info> = {
     props: {
         panelNumber: 1,
     },
-    renderPanel: PanelExample,
+    renderPanel: Panel1,
     title: "Panel 1",
 };
 
 export const PanelStack2Example: React.FC<IExampleProps> = props => {
     const [activePanelOnly, setActivePanelOnly] = React.useState(true);
     const [showHeader, setShowHeader] = React.useState(true);
-    const [currentPanelStack, setCurrentPanelStack] = React.useState([initialPanel]);
+    const [currentPanelStack, setCurrentPanelStack] = React.useState<
+        Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
+    >([initialPanel]);
 
     const toggleActiveOnly = React.useCallback(handleBooleanChange(setActivePanelOnly), []);
     const toggleShowHeader = React.useCallback(handleBooleanChange(setShowHeader), []);
     const addToPanelStack = React.useCallback(
-        (newPanel: Panel<PanelExampleInfo>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
+        (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
         [],
     );
     const removeFromPanelStack = React.useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);
@@ -80,7 +143,7 @@ export const PanelStack2Example: React.FC<IExampleProps> = props => {
         <Example options={stackList} {...props}>
             <PanelStack2
                 className="docs-panel-stack-example"
-                initialPanel={currentPanelStack[0]}
+                initialPanel={initialPanel}
                 onOpen={addToPanelStack}
                 onClose={removeFromPanelStack}
                 renderActivePanelOnly={activePanelOnly}
