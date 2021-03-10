@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { Colors, Icon, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
