@@ -14,9 +14,6 @@ provides several components for interacting with dates and times:
 - [`TimePicker`](#datetime/timepicker) for selecting a time (hour, minute, second,
   millisecond).
 
-- [`DateTimePicker`](#datetime/datetimepicker), which composes `DatePicker` and
-  `TimePicker` to select a date and time together.
-
 - [`DateInput`](#datetime/dateinput), which composes a text input with a `DatePicker` in
   a `Popover`, for use in forms.
 
@@ -44,6 +41,5 @@ Import CSS with a JS bundler like webpack:
 @page datepicker
 @page daterangepicker
 @page timepicker
-@page datetimepicker
 @page dateinput
 @page daterangeinput
