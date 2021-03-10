@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
@@ -28,7 +28,7 @@ export interface INavbarHeadingProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class NavbarHeading extends AbstractPureComponent2<INavbarHeadingProps> {
+export class NavbarHeading extends AbstractPureComponent<INavbarHeadingProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
 
     public render() {

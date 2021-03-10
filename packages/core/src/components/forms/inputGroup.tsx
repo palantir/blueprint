@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, IRef } from "../../common";
+import { AbstractPureComponent, Classes, IRef } from "../../common";
 import * as Errors from "../../common/errors";
 import {
     DISPLAYNAME_PREFIX,
@@ -182,7 +182,7 @@ export interface IInputGroupState {
     rightElementWidth?: number;
 }
 
-export class InputGroup extends AbstractPureComponent2<IInputGroupProps2, IInputGroupState> {
+export class InputGroup extends AbstractPureComponent<IInputGroupProps2, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
     public state: IInputGroupState = {};

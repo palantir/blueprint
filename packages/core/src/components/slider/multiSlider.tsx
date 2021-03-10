@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, Intent } from "../../common";
+import { AbstractPureComponent, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -130,7 +130,7 @@ export interface ISliderState {
     tickSizeRatio: number;
 }
 
-export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
+export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISliderState> {
     public static defaultSliderProps: ISliderBaseProps = {
         disabled: false,
         max: 10,

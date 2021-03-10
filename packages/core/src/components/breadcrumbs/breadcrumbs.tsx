@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Boundary, Classes, IProps, Position, removeNonHTMLProps } from "../../common";
+import { AbstractPureComponent, Boundary, Classes, IProps, Position, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { IOverflowListProps, OverflowList } from "../overflow-list/overflowList";
@@ -76,7 +76,7 @@ export interface IBreadcrumbsProps extends IProps {
     popoverProps?: IPopoverProps;
 }
 
-export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
+export class Breadcrumbs extends AbstractPureComponent<IBreadcrumbsProps> {
     public static defaultProps: Partial<IBreadcrumbsProps> = {
         collapseFrom: Boundary.START,
     };

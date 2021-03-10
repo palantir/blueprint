@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType, isReactChildrenElementOrElements } from "../../common/utils";
 import { H4 } from "../html/html";
@@ -35,7 +35,7 @@ export interface HotkeysProps extends IProps {
     tabIndex?: number;
 }
 
-export class Hotkeys extends AbstractPureComponent2<HotkeysProps> {
+export class Hotkeys extends AbstractPureComponent<HotkeysProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkeys`;
 
     public static defaultProps = {

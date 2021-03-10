@@ -15,9 +15,7 @@
  */
 
 export * from "./abstractComponent";
-export * from "./abstractComponent2";
 export * from "./abstractPureComponent";
-export * from "./abstractPureComponent2";
 export * from "./alignment";
 export * from "./boundary";
 export * from "./colors";

@@ -19,7 +19,7 @@ import React from "react";
 import type { DayPickerProps } from "react-day-picker";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     DISPLAYNAME_PREFIX,
     getRef,
     IInputGroupProps2,
@@ -157,7 +157,7 @@ export interface IDateInputState {
     selectedShortcutIndex?: number;
 }
 
-export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInputState> {
+export class DateInput extends AbstractPureComponent<IDateInputProps, IDateInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
     public static defaultProps: Partial<IDateInputProps> = {

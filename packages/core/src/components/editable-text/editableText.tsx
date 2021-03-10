@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { Browser } from "../../compatibility";
@@ -138,7 +138,7 @@ export interface IEditableTextState {
 const BUFFER_WIDTH_DEFAULT = 5;
 const BUFFER_WIDTH_IE = 30;
 
-export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractPureComponent<IEditableTextProps, IEditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
     public static defaultProps: IEditableTextProps = {
@@ -185,8 +185,8 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         },
     };
 
-    public constructor(props: IEditableTextProps, context?: any) {
-        super(props, context);
+    public constructor(props: IEditableTextProps) {
+        super(props);
 
         const value = props.value == null ? props.defaultValue : props.value;
         this.state = {

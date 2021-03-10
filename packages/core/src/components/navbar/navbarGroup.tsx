@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Alignment, Classes } from "../../common";
+import { AbstractPureComponent, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface INavbarGroupProps extends IProps, HTMLDivProps {
@@ -33,7 +33,7 @@ export interface INavbarGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class NavbarGroup extends AbstractPureComponent2<INavbarGroupProps> {
+export class NavbarGroup extends AbstractPureComponent<INavbarGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarGroup`;
 
     public static defaultProps: INavbarGroupProps = {

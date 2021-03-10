@@ -19,7 +19,7 @@ import React from "react";
 
 import { SmallCross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
@@ -100,7 +100,7 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     vertical?: boolean;
 }
 
-export class Drawer extends AbstractPureComponent2<IDrawerProps> {
+export class Drawer extends AbstractPureComponent<IDrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 
     public static defaultProps: IDrawerProps = {

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { ITabProps, TabId } from "./tab";
 
@@ -32,7 +32,7 @@ export interface ITabTitleProps extends ITabProps {
     selected: boolean;
 }
 
-export class TabTitle extends AbstractPureComponent2<ITabTitleProps> {
+export class TabTitle extends AbstractPureComponent<ITabTitleProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {

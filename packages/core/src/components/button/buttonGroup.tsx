@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Alignment, Classes } from "../../common";
+import { AbstractPureComponent, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface IButtonGroupProps extends IProps, HTMLDivProps {
@@ -61,7 +61,7 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class ButtonGroup extends AbstractPureComponent2<IButtonGroupProps> {
+export class ButtonGroup extends AbstractPureComponent<IButtonGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 
     public render() {

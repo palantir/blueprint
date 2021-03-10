@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     DISPLAYNAME_PREFIX,
     getRef,
     IInputGroupProps2,
@@ -105,7 +105,7 @@ export interface ISuggestState<T> {
     selectedItem: T | null;
 }
 
-export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISuggestState<T>> {
+export class Suggest<T> extends AbstractPureComponent<ISuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
     public static defaultProps: Partial<ISuggestProps<any>> = {

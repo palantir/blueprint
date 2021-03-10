@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { AbstractComponent2, DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
+import { AbstractComponent, DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
 
 import {
     executeItemsEqual,
@@ -137,7 +137,7 @@ export interface IQueryListState<T> {
     query: string;
 }
 
-export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryListState<T>> {
+export class QueryList<T> extends AbstractComponent<IQueryListProps<T>, IQueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, getRef, IRef, IRefObject, Keys, refHandler, Utils } from "../../common";
+import { AbstractPureComponent, Classes, getRef, IRef, IRefObject, Keys, refHandler, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -190,7 +190,7 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputState> {
+export class TagInput extends AbstractPureComponent<ITagInputProps, ITagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<ITagInputProps> = {

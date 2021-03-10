@@ -20,7 +20,7 @@ import React from "react";
 import { IconName, ChevronDown, ChevronUp } from "@blueprintjs/icons";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
@@ -224,7 +224,7 @@ const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
 
 type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
 
-export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumericInputProps, INumericInputState> {
+export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";

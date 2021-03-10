@@ -19,7 +19,7 @@ import React from "react";
 
 import { Cross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
@@ -55,7 +55,7 @@ export interface IToastProps extends IProps, IIntentProps {
     timeout?: number;
 }
 
-export class Toast extends AbstractPureComponent2<IToastProps> {
+export class Toast extends AbstractPureComponent<IToastProps> {
     public static defaultProps: IToastProps = {
         className: "",
         message: "",

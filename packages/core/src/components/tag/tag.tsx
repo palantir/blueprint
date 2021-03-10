@@ -20,7 +20,7 @@ import React from "react";
 import { SmallCross } from "@blueprintjs/icons";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     IElementRefProps,
@@ -117,7 +117,7 @@ export interface ITagProps
     htmlTitle?: string;
 }
 
-export class Tag extends AbstractPureComponent2<ITagProps> {
+export class Tag extends AbstractPureComponent<ITagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {

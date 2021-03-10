@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Button,
     DISPLAYNAME_PREFIX,
     getRef,
@@ -79,7 +79,7 @@ export interface ISelectState {
     isOpen: boolean;
 }
 
-export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectState> {
+export class Select<T> extends AbstractPureComponent<ISelectProps<T>, ISelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     public static ofType<U>() {

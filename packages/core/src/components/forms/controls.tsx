@@ -21,7 +21,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler } from "../../common";
+import { AbstractPureComponent, Alignment, Classes, IRef, refHandler } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 
 export interface IControlProps extends IProps, HTMLInputProps {
@@ -157,7 +157,7 @@ export interface ISwitchProps extends IControlProps {
     innerLabel?: string;
 }
 
-export class Switch extends AbstractPureComponent2<ISwitchProps> {
+export class Switch extends AbstractPureComponent<ISwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
     public render() {
@@ -192,7 +192,7 @@ export class Switch extends AbstractPureComponent2<ISwitchProps> {
 
 export type IRadioProps = IControlProps;
 
-export class Radio extends AbstractPureComponent2<IRadioProps> {
+export class Radio extends AbstractPureComponent<IRadioProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
     public render() {
@@ -224,7 +224,7 @@ export interface ICheckboxState {
     indeterminate: boolean;
 }
 
-export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxState> {
+export class Checkbox extends AbstractPureComponent<ICheckboxProps, ICheckboxState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
 
     public static getDerivedStateFromProps({ indeterminate }: ICheckboxProps): ICheckboxState | null {

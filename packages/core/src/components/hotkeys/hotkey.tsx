@@ -17,13 +17,13 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { HotkeyConfig } from "../../hooks";
 import { KeyCombo } from "./keyCombo";
 
 export type HotkeyProps = IProps & HotkeyConfig;
 
-export class Hotkey extends AbstractPureComponent2<HotkeyProps> {
+export class Hotkey extends AbstractPureComponent<HotkeyProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
 
     public static defaultProps = {

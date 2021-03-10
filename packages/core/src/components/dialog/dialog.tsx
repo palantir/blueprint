@@ -19,7 +19,7 @@ import React from "react";
 
 import { SmallCross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
@@ -76,7 +76,7 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     transitionName?: string;
 }
 
-export class Dialog extends AbstractPureComponent2<IDialogProps> {
+export class Dialog extends AbstractPureComponent<IDialogProps> {
     public static defaultProps: IDialogProps = {
         canOutsideClickClose: true,
         isOpen: false,

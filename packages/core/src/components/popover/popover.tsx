@@ -19,7 +19,7 @@ import { ModifierFn } from "popper.js";
 import React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes, IRef, refHandler } from "../../common";
+import { AbstractPureComponent, Classes, IRef, refHandler } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -96,7 +96,7 @@ export interface IPopoverState {
 
 /** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
 
-export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
+export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     private popoverRef = Utils.createReactRef<HTMLDivElement>();

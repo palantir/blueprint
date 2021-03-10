@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface IFormGroupProps extends IIntentProps, IProps {
@@ -61,7 +61,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 }
 
-export class FormGroup extends AbstractPureComponent2<IFormGroupProps> {
+export class FormGroup extends AbstractPureComponent<IFormGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 
     public render() {

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { AbstractPureComponent2, Classes, Position } from "../../common";
+import { AbstractPureComponent, Classes, Position } from "../../common";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
 import { Popover } from "../popover/popover";
 import { PopperModifiers } from "../popover/popoverSharedProps";
@@ -46,7 +46,7 @@ type IContextMenuProps = IOverlayLifecycleProps;
 /* istanbul ignore next */
 /** @deprecated use ContextMenu2 */
 
-class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
+class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
         isDarkTheme: false,
         isOpen: false,

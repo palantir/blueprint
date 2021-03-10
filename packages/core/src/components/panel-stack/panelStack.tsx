@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import { IPanel } from "./panelProps";
@@ -80,7 +80,7 @@ export interface IPanelStackState {
 
 /** @deprecated use `PanelStack2<T>` */
 
-export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelStackState> {
+export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelStackState> {
     public state: IPanelStackState = {
         direction: "push",
         stack:

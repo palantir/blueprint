@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
 import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
@@ -49,7 +49,7 @@ export interface IKeyComboProps extends IProps {
     minimal?: boolean;
 }
 
-export class KeyCombo extends AbstractPureComponent2<IKeyComboProps> {
+export class KeyCombo extends AbstractPureComponent<IKeyComboProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
 
     public render() {

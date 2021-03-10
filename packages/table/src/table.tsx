@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractComponent2,
+    AbstractComponent,
     DISPLAYNAME_PREFIX,
     Hotkey,
     Hotkeys,
@@ -453,7 +453,7 @@ export interface ITableSnapshot {
 // HACKHACK(adahiya): fix for Blueprint 4.0
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
-export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSnapshot> {
+export class Table extends AbstractComponent<ITableProps, ITableState, ITableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: ITableProps = {

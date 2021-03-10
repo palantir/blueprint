@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { AbstractComponent2, IProps, IRef, setRef, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, IProps, IRef, setRef, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
@@ -258,7 +258,7 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof ITableQuadrantStackProps> = [
     "enableColumnInteractionBar",
 ];
 
-export class TableQuadrantStack extends AbstractComponent2<ITableQuadrantStackProps> {
+export class TableQuadrantStack extends AbstractComponent<ITableQuadrantStackProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantStackProps> = {
