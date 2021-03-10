@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
-
 import { expect } from "chai";
-import React from "react";
 
-import { expectPropValidationError } from "@blueprintjs/test-commons";
+import {
+    comboMatches,
+    getKeyCombo,
+    getKeyComboString,
+    normalizeKeyCombo,
+    IKeyCombo,
+    parseKeyCombo,
+} from "../../src/components/hotkeys/hotkeyParser";
 
-import { comboMatches, getKeyCombo, getKeyComboString, Hotkeys, IKeyCombo, parseKeyCombo } from "../../src";
-import { HOTKEYS_HOTKEY_CHILDREN } from "../../src/common/errors";
-import { normalizeKeyCombo } from "../../src/components/hotkeys/hotkeyParser";
-
-describe("Hotkeys", () => {
-    it("throws error if given non-Hotkey child", () => {
-        expectPropValidationError(Hotkeys, { children: <div /> }, HOTKEYS_HOTKEY_CHILDREN, "element");
-        expectPropValidationError(Hotkeys, { children: "string contents" }, HOTKEYS_HOTKEY_CHILDREN, "string");
-        expectPropValidationError(Hotkeys, { children: [undefined, null] }, HOTKEYS_HOTKEY_CHILDREN, "undefined");
-    });
-
+describe("HotkeysParser", () => {
     describe("KeyCombo parser", () => {
         interface IComboTest {
             combo: string;
