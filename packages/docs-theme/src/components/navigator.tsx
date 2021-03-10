@@ -22,7 +22,7 @@ import { Classes, IInputGroupProps, MenuItem } from "@blueprintjs/core";
 import { CaretRight } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
-import { eachLayoutNode } from "../common/utils";
+import { eachLayoutNode } from "../common/documentalistUtils";
 
 export interface INavigatorProps {
     /** Whether navigator is open. */

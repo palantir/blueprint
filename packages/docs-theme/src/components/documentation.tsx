@@ -22,7 +22,7 @@ import { Classes, Drawer, FocusStyleManager, HotkeysTarget, IProps, Utils } from
 import { Search } from "@blueprintjs/icons";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
-import { eachLayoutNode } from "../common/utils";
+import { eachLayoutNode } from "../common/documentalistUtils";
 import { ITagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { NavButton } from "./navButton";
