@@ -23,30 +23,29 @@ import { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
 
 /**
- * @template A type union of all possible panels in this stack
- * @template I intial panel
+ * @template T type union of all possible panels in this stack
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface PanelStack2Props<A extends Panel<object>, I extends A> extends IProps {
+export interface PanelStack2Props<T extends Panel<object>> extends IProps {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
      * This prop is only used in uncontrolled mode and is thus mutually
      * exclusive with the `stack` prop.
      */
-    initialPanel?: I;
+    initialPanel?: T;
 
     /**
      * Callback invoked when the user presses the back button or a panel
      * closes itself with a `closePanel()` action.
      */
-    onClose?: (removedPanel: A) => void;
+    onClose?: (removedPanel: T) => void;
 
     /**
      * Callback invoked when a panel opens a new panel with an `openPanel(panel)`
      * action.
      */
-    onOpen?: (addedPanel: A) => void;
+    onOpen?: (addedPanel: T) => void;
 
     /**
      * If false, PanelStack will render all panels in the stack to the DOM, allowing their
@@ -68,19 +67,23 @@ export interface PanelStack2Props<A extends Panel<object>, I extends A> extends 
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
-    stack?: A[];
+    stack?: T[];
 }
 
 interface PanelStack2Component {
+    /**
+     * @template T type union of all possible panels in this stack
+     */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>, U extends T>(props: PanelStack2Props<T, U>): JSX.Element | null;
+    <T extends Panel<object>>(props: PanelStack2Props<T>): JSX.Element | null;
     displayName: string;
 }
 
+/**
+ * @template T type union of all possible panels in this stack
+ */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const PanelStack2: PanelStack2Component = <T extends Panel<object>, U extends T>(
-    props: PanelStack2Props<T, U>,
-) => {
+export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
     const { renderActivePanelOnly = true, showPanelHeader = true } = props;
     const [direction, setDirection] = useState("push");
 

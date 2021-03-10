@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview
+ * Panel stacks typically have heterogenous panels, each with different information and actions,
+ * so it's important to represent that kind of use case in the docs example. Here, we have 3 panel types.
+ * Panel1 renders either a new Panel2 or Panel3. Panel2 and Panel3 both render a new Panel1.
+ */
+
 import React, { useCallback, useState } from "react";
 
 import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
-
-/**
- * Panel stacks typically have heterogenous panels, each with different information and actions,
- * so it's important to represent that kind of use case in the docs example. Here, we do that
- * by having two panel types which we alternate between as the stack increases in size.
- * Panel1 renders either a new Panel2 or Panel3. Panel2 and Panel3 both render a new Panel1.
- */
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Panel1Info {
