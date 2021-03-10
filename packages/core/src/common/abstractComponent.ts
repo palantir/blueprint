@@ -23,7 +23,7 @@ import { isNodeEnv } from "./utils";
  * in order to add some common functionality like runtime props validation.
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
+export abstract class AbstractComponent<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
     // unsafe lifecycle methods
     public componentWillUpdate: never;
 

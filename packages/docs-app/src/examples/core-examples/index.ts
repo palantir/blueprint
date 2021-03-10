@@ -38,7 +38,7 @@ export * from "./focusExample";
 export * from "./formGroupExample";
 export * from "./hotkeyPiano";
 export * from "./hotkeyTester";
-export { HotkeysTargetExample } from "./hotkeysTarget2Example";
+export { HotkeysTargetExample } from "./hotkeysTargetExample";
 export * from "./iconExample";
 export * from "./menuExample";
 export * from "./multiSliderExample";
