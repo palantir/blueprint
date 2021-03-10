@@ -111,8 +111,6 @@ export const CARD = `${NS}-card`;
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
 
-export const COLLAPSIBLE_LIST = `${NS}-collapse-list`;
-
 export const CONTEXT_MENU = `${NS}-context-menu`;
 export const CONTEXT_MENU_POPOVER_TARGET = `${CONTEXT_MENU}-popover-target`;
 
@@ -147,8 +145,6 @@ export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
 export const HTML_SELECT = `${NS}-html-select`;
-/** @deprecated prefer `<HTMLSelect>` component */
-export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;

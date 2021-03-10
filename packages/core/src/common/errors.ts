@@ -24,8 +24,6 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enbaled without onCancel or onClose handler.`;
 
-export const COLLAPSIBLE_LIST_INVALID_CHILD = ns + ` <CollapsibleList> children must be <MenuItem>s`;
-
 export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD =
     ns + ` @ContextMenuTarget-decorated class should implement renderContextMenu.`;
 export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT =

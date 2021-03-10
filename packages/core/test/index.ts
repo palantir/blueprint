@@ -23,7 +23,6 @@ import "./buttons/buttonTests";
 import "./callout/calloutTests";
 import "./card/cardTests";
 import "./collapse/collapseTests";
-import "./collapsible-list/collapsibleListTests";
 import "./common/propsTests";
 import "./common/utils/compareUtilsTests";
 import "./common/utilsTests";
