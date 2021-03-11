@@ -21,17 +21,17 @@ import { spy } from "sinon";
 
 import { OverflowListProps, OverflowListState, OverflowList } from "../../src/components/overflow-list/overflowList";
 
-type OverflowProps = OverflowListProps<TestItem>;
+type OverflowProps = OverflowListProps<TestItemProps>;
 
-interface TestItem {
+interface TestItemProps {
     id: number;
 }
 
 const IDS = [0, 1, 2, 3, 4, 5];
-const ITEMS: TestItem[] = IDS.map(id => ({ id }));
+const ITEMS: TestItemProps[] = IDS.map(id => ({ id }));
 
-const TestItem: React.FunctionComponent<TestItem> = () => <div style={{ height: 10, width: 10, flex: "0 0 auto" }} />;
-const TestOverflow: React.FunctionComponent<{ items: TestItem[] }> = () => <div />;
+const TestItem: React.FC<TestItemProps> = () => <div style={{ height: 10, width: 10, flex: "0 0 auto" }} />;
+const TestOverflow: React.FC<{ items: TestItemProps[] }> = () => <div />;
 
 describe("<OverflowList>", function (this) {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
@@ -164,15 +164,15 @@ describe("<OverflowList>", function (this) {
         });
     });
 
-    function renderOverflow(items: TestItem[]) {
+    function renderOverflow(items: TestItemProps[]) {
         return <TestOverflow items={items} />;
     }
 
-    function renderVisibleItem(item: TestItem, index: number) {
+    function renderVisibleItem(item: TestItemProps, index: number) {
         return <TestItem key={index} {...item} />;
     }
 
-    interface OverflowListWrapper extends ReactWrapper<OverflowListProps<TestItem>, OverflowListState<TestItem>> {
+    interface OverflowListWrapper extends ReactWrapper<OverflowListProps<TestItemProps>, OverflowListState<TestItemProps>> {
         assertHasOverflow(exists: boolean): OverflowListWrapper;
         assertLastOnOverflowArgs(ids: number[]): OverflowListWrapper;
         assertVisibleItemSplit(visibleCount: number): OverflowListWrapper;
@@ -184,7 +184,7 @@ describe("<OverflowList>", function (this) {
     }
 
     function overflowList(initialWidth = 45, props: Partial<OverflowProps> = {}) {
-        wrapper = mount<OverflowProps, OverflowListState<TestItem>>(
+        wrapper = mount<OverflowProps, OverflowListState<TestItemProps>>(
             <OverflowList
                 items={ITEMS}
                 onOverflow={onOverflowSpy}
@@ -206,7 +206,7 @@ describe("<OverflowList>", function (this) {
         /** Asserts that the last call to `onOverflow` received the given item Ds. */
         wrapper.assertLastOnOverflowArgs = (ids: number[]) => {
             assert.sameMembers(
-                onOverflowSpy.lastCall.args[0].map((i: TestItem) => i.id),
+                onOverflowSpy.lastCall.args[0].map((i: TestItemProps) => i.id),
                 ids,
             );
             return wrapper;

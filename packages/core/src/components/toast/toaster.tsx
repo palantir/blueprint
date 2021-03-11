@@ -36,7 +36,7 @@ export type ToasterPosition =
     | typeof Position.BOTTOM_RIGHT;
 
 /** Instance methods available on a `<Toaster>` component instance. */
-export interface Toaster {
+export interface ToasterInstance {
     /**
      * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
      *
@@ -107,7 +107,7 @@ export interface ToasterState {
     toasts: ToastOptions[];
 }
 
-export class Toaster extends AbstractPureComponent<ToasterProps, ToasterState> implements Toaster {
+export class Toaster extends AbstractPureComponent<ToasterProps, ToasterState> implements ToasterInstance {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 
     public static defaultProps: ToasterProps = {
@@ -121,14 +121,14 @@ export class Toaster extends AbstractPureComponent<ToasterProps, ToasterState> i
      * Create a new `Toaster` instance that can be shared around your application.
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
-    public static create(props?: ToasterProps, container = document.body): Toaster {
+    public static create(props?: ToasterProps, container = document.body): ToasterInstance {
         if (props != null && props.usePortal != null && !isNodeEnv("production")) {
             console.warn(TOASTER_WARN_INLINE);
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
         const toaster = ReactDOM.render<ToasterProps>(
-            <Toaster {...props} usePortal={false} />,
+            <Toaster{...props} usePortal={false} />,
             containerElement,
         ) as Toaster;
         if (toaster == null) {
