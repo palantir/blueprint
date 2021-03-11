@@ -20,32 +20,32 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { IProps } from "../../common/props";
-import { IPanel } from "./panelProps";
+import { Props } from "../../common/props";
+import { Panel } from "./panelProps";
 import { PanelView } from "./panelView";
 
 /* eslint-disable deprecation/deprecation */
 
-export interface IPanelStackProps extends IProps {
+export interface PanelStackProps extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
      * This prop is only used in uncontrolled mode and is thus mutually
      * exclusive with the `stack` prop.
      */
-    initialPanel?: IPanel<any>;
+    initialPanel?: Panel<any>;
 
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose?: (removedPanel: IPanel) => void;
+    onClose?: (removedPanel: Panel) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen?: (addedPanel: IPanel) => void;
+    onOpen?: (addedPanel: Panel) => void;
 
     /**
      * If false, PanelStack will render all panels in the stack to the DOM, allowing their
@@ -67,21 +67,21 @@ export interface IPanelStackProps extends IProps {
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
-    stack?: Array<IPanel<any>>;
+    stack?: Array<Panel<any>>;
 }
 
-export interface IPanelStackState {
+export interface PanelStackState {
     /** Whether the stack is currently animating the push or pop of a panel. */
     direction: "push" | "pop";
 
     /** The current stack of panels. The first panel in the stack will be displayed. */
-    stack: IPanel[];
+    stack: Panel[];
 }
 
 /** @deprecated use `PanelStack2<T>` */
 
-export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelStackState> {
-    public state: IPanelStackState = {
+export class PanelStack extends AbstractPureComponent<PanelStackProps, PanelStackState> {
+    public state: PanelStackState = {
         direction: "push",
         stack:
             this.props.stack != null
@@ -91,7 +91,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
                 : [],
     };
 
-    public componentDidUpdate(prevProps: IPanelStackProps, prevState: IPanelStackState) {
+    public componentDidUpdate(prevProps: PanelStackProps, prevState: PanelStackState) {
         super.componentDidUpdate(prevProps, prevState);
 
         // Always update local stack if stack prop changes
@@ -122,7 +122,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
         );
     }
 
-    protected validateProps(props: IPanelStackProps) {
+    protected validateProps(props: PanelStackProps) {
         if (
             (props.initialPanel == null && props.stack == null) ||
             (props.initialPanel != null && props.stack != null)
@@ -145,7 +145,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
         return panelViews;
     }
 
-    private renderPanel = (panel: IPanel, index: number) => {
+    private renderPanel = (panel: Panel, index: number) => {
         const { renderActivePanelOnly, showPanelHeader = true } = this.props;
         const { stack } = this.state;
 
@@ -171,7 +171,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
         );
     };
 
-    private handlePanelClose = (panel: IPanel) => {
+    private handlePanelClose = (panel: Panel) => {
         const { stack } = this.state;
         // only remove this panel if it is at the top and not the only one.
         if (stack[0] !== panel || stack.length <= 1) {
@@ -186,7 +186,7 @@ export class PanelStack extends AbstractPureComponent<IPanelStackProps, IPanelSt
         }
     };
 
-    private handlePanelOpen = (panel: IPanel) => {
+    private handlePanelOpen = (panel: Panel) => {
         this.props.onOpen?.(panel);
         if (this.props.stack == null) {
             this.setState(state => ({

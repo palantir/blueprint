@@ -17,14 +17,14 @@
 import React from "react";
 
 import { Text, TextArea } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface ITextExampleState {
+export interface TextExampleState {
     textContent: string;
 }
 
-export class TextExample extends React.PureComponent<IExampleProps, ITextExampleState> {
-    public state: ITextExampleState = {
+export class TextExample extends React.PureComponent<ExampleProps, TextExampleState> {
+    public state: TextExampleState = {
         textContent:
             "You can change the text in the input below. Hover to see full text. " +
             "If the text is long enough, then the content will overflow. This is done by setting " +

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IClientCoordinates, ICoordinateData, IDragHandler } from "./dragTypes";
+import { ClientCoordinates, CoordinateData, DragHandler } from "./dragTypes";
 
 export class DragEvents {
     public static DOUBLE_CLICK_TIMEOUT_MSEC = 500;
@@ -31,11 +31,11 @@ export class DragEvents {
         return event.ctrlKey || event.metaKey;
     }
 
-    private handler: IDragHandler;
+    private handler: DragHandler;
 
     private element: HTMLElement;
 
-    private activationCoordinates: IClientCoordinates;
+    private activationCoordinates: ClientCoordinates;
 
     private doubleClickTimeoutToken: number;
 
@@ -43,9 +43,9 @@ export class DragEvents {
 
     private isDragging: boolean;
 
-    private lastCoordinates: IClientCoordinates;
+    private lastCoordinates: ClientCoordinates;
 
-    public attach(element: HTMLElement, handler: IDragHandler) {
+    public attach(element: HTMLElement, handler: DragHandler) {
         this.detach();
         this.handler = handler;
         this.element = element;
@@ -63,7 +63,7 @@ export class DragEvents {
         }
     }
 
-    private isValidDragHandler(handler: IDragHandler) {
+    private isValidDragHandler(handler: DragHandler) {
         return (
             handler != null &&
             (handler.onActivate != null ||
@@ -99,7 +99,7 @@ export class DragEvents {
             currentCoordinates[0] - this.activationCoordinates[0],
             currentCoordinates[1] - this.activationCoordinates[1],
         ];
-        const data: ICoordinateData = {
+        const data: CoordinateData = {
             activation: this.activationCoordinates,
             current: currentCoordinates,
             delta: deltaCoordinates,

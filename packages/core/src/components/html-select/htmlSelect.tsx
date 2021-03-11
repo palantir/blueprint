@@ -21,10 +21,10 @@ import { DoubleCaretVertical, SVGIconProps } from "@blueprintjs/icons";
 
 import { AbstractPureComponent } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { IElementRefProps, IOptionProps } from "../../common/props";
+import { ElementRefProps, OptionProps } from "../../common/props";
 
-export interface IHTMLSelectProps
-    extends IElementRefProps<HTMLSelectElement>,
+export interface HTMLSelectProps
+    extends ElementRefProps<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
     /** Whether this element is non-interactive. */
     disabled?: boolean;
@@ -52,7 +52,7 @@ export interface IHTMLSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | IOptionProps>;
+    options?: Array<string | number | OptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;
@@ -61,7 +61,7 @@ export interface IHTMLSelectProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class HTMLSelect extends AbstractPureComponent<IHTMLSelectProps> {
+export class HTMLSelect extends AbstractPureComponent<HTMLSelectProps> {
     public render() {
         const {
             className,
@@ -86,7 +86,7 @@ export class HTMLSelect extends AbstractPureComponent<IHTMLSelectProps> {
         );
 
         const optionChildren = options.map(option => {
-            const props: IOptionProps = typeof option === "object" ? option : { value: option };
+            const props: OptionProps = typeof option === "object" ? option : { value: option };
             return <option {...props} key={props.value} children={props.label || props.value} />;
         });
 

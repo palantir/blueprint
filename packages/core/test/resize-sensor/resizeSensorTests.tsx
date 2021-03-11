@@ -19,11 +19,11 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { IResizeSensorProps, ResizeSensor } from "../../src/components/resize-sensor/resizeSensor";
+import { ResizeSensorProps, ResizeSensor } from "../../src/components/resize-sensor/resizeSensor";
 
 describe("<ResizeSensor>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()
-    let wrapper: ReactWrapper<IResizeTesterProps, any> | undefined;
+    let wrapper: ReactWrapper<ResizeTesterProps, any> | undefined;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
 
@@ -68,15 +68,15 @@ describe("<ResizeSensor>", () => {
         assert.equal(onResize2.callCount, 2);
     });
 
-    function mountResizeSensor(onResize: IResizeSensorProps["onResize"]) {
-        return (wrapper = mount<IResizeTesterProps>(
+    function mountResizeSensor(onResize: ResizeSensorProps["onResize"]) {
+        return (wrapper = mount<ResizeTesterProps>(
             <ResizeTester onResize={onResize} />,
             // must be in the DOM for measurement
             { attachTo: testsContainerElement },
         ));
     }
 
-    function resize(size: ISizeProps) {
+    function resize(size: SizeProps) {
         wrapper!.setProps(size);
         return new Promise(resolve => setTimeout(resolve, 30));
     }
@@ -91,15 +91,15 @@ describe("<ResizeSensor>", () => {
     }
 });
 
-interface ISizeProps {
+interface SizeProps {
     /** Used as React `key`, so changing it will force a new element to be created. */
     id?: number;
     width?: number;
     height?: number;
 }
 
-type IResizeTesterProps = IResizeSensorProps & ISizeProps;
-const ResizeTester: React.FunctionComponent<IResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
+type ResizeTesterProps = ResizeSensorProps & SizeProps;
+const ResizeTester: React.FunctionComponent<ResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
     <ResizeSensor {...resizeProps}>
         <div key={id} style={{ width, height }} />
     </ResizeSensor>

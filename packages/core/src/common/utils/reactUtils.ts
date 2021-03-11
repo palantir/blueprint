@@ -75,12 +75,12 @@ export function isReactElement<T = any>(child: React.ReactNode): child is React.
 /**
  * Represents anything that has a `name` property such as Functions.
  */
-export interface INamed {
+export interface Named {
     name?: string;
 }
 
-export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
-    return (ComponentClass as React.ComponentType).displayName || (ComponentClass as INamed).name || "Unknown";
+export function getDisplayName(ComponentClass: React.ComponentType | Named) {
+    return (ComponentClass as React.ComponentType).displayName || (ComponentClass as Named).name || "Unknown";
 }
 
 /**

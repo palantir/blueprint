@@ -17,13 +17,13 @@
 import classNames from "classnames";
 import React from "react";
 
-import { IElementRefProps } from "../../common";
+import { ElementRefProps } from "../../common";
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
-): React.FunctionComponent<React.HTMLProps<E> & IElementRefProps<E>> {
+): React.FunctionComponent<React.HTMLProps<E> & ElementRefProps<E>> {
     /* eslint-disable-next-line react/display-name */
     return props => {
         const { className, elementRef, ...htmlProps } = props;

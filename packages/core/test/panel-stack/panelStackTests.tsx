@@ -19,11 +19,11 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { Classes, IPanel, IPanelProps, IPanelStackProps, PanelStack } from "../../src";
+import { Classes, Panel, PanelProps, PanelStackProps, PanelStack } from "../../src";
 
 /* eslint-disable deprecation/deprecation */
 
-export class TestPanel extends React.Component<IPanelProps> {
+export class TestPanel extends React.Component<PanelProps> {
     public render() {
         return (
             <div>
@@ -38,15 +38,15 @@ export class TestPanel extends React.Component<IPanelProps> {
 
 describe("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
-    let panelStackWrapper: IPanelStackWrapper;
+    let panelStackWrapper: PanelStackWrapper;
 
-    const initialPanel: IPanel = {
+    const initialPanel: Panel = {
         component: TestPanel,
         props: {},
         title: "Test Title",
     };
 
-    const emptyTitleInitialPanel: IPanel = {
+    const emptyTitleInitialPanel: Panel = {
         component: TestPanel,
         props: {},
     };
@@ -204,7 +204,7 @@ describe("<PanelStack>", () => {
     });
 
     it("can render a panel stack with multiple initial panels and close one", () => {
-        let stack: Array<IPanel<any>> = [initialPanel, { component: TestPanel, title: "New Panel 1" }];
+        let stack: Array<Panel<any>> = [initialPanel, { component: TestPanel, title: "New Panel 1" }];
         panelStackWrapper = renderPanelStack({
             onClose: () => {
                 const newStack = stack.slice();
@@ -257,14 +257,14 @@ describe("<PanelStack>", () => {
         assert.equal(panelHeaders.at(1).text(), stack[1].title);
     });
 
-    interface IPanelStackWrapper extends ReactWrapper<IPanelStackProps, any> {
+    interface PanelStackWrapper extends ReactWrapper<PanelStackProps, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(props: IPanelStackProps): IPanelStackWrapper {
+    function renderPanelStack(props: PanelStackProps): PanelStackWrapper {
         panelStackWrapper = mount(<PanelStack {...props} />, {
             attachTo: testsContainerElement,
-        }) as IPanelStackWrapper;
+        }) as PanelStackWrapper;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }

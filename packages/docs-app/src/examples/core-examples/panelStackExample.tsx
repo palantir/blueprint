@@ -18,17 +18,17 @@
 
 import React from "react";
 
-import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface IPanelStackExampleState {
+export interface PanelStackExampleState {
     activePanelOnly: boolean;
-    currentPanelStack: Array<IPanel<IPanelExampleProps>>;
+    currentPanelStack: Array<Panel<PanelExampleProps>>;
     showHeader: boolean;
 }
 
-export class PanelStackExample extends React.PureComponent<IExampleProps, IPanelStackExampleState> {
-    public initialPanel: IPanel<IPanelExampleProps> = {
+export class PanelStackExample extends React.PureComponent<ExampleProps, PanelStackExampleState> {
+    public initialPanel: Panel<PanelExampleProps> = {
         component: PanelExample,
         props: {
             panelNumber: 1,
@@ -77,30 +77,30 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
         );
     }
 
-    private addToPanelStack = (newPanel: IPanel) => {
+    private addToPanelStack = (newPanel: Panel) => {
         this.setState(state => ({
             // HACKHACK: https://github.com/palantir/blueprint/issues/4272
-            currentPanelStack: [(newPanel as unknown) as IPanel<IPanelExampleProps>, ...state.currentPanelStack],
+            currentPanelStack: [(newPanel as unknown) as Panel<PanelExampleProps>, ...state.currentPanelStack],
         }));
     };
 
-    private removeFromPanelStack = (_lastPanel: IPanel) => {
+    private removeFromPanelStack = (_lastPanel: Panel) => {
         // In this example, the last panel is always the one closed.
         // Using `this.props.closePanel()` is one way to violate this.
         this.setState(state => ({ currentPanelStack: state.currentPanelStack.slice(1) }));
     };
 }
 
-interface IPanelExampleProps {
+interface PanelExampleProps {
     panelNumber: number;
 }
 
-interface IPanelExampleState {
+interface PanelExampleState {
     counter: number;
 }
 
-class PanelExample extends React.PureComponent<IPanelExampleProps & IPanelProps> {
-    public state: IPanelExampleState = {
+class PanelExample extends React.PureComponent<PanelExampleProps & PanelProps> {
+    public state: PanelExampleState = {
         counter: 0,
     };
 

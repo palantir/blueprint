@@ -18,10 +18,10 @@ import classNames from "classnames";
 import React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { H6 } from "../html/html";
 
-export interface IMenuDividerProps extends IProps {
+export interface MenuDividerProps extends Props {
     /** This component does not support children. */
     children?: never;
 
@@ -29,7 +29,7 @@ export interface IMenuDividerProps extends IProps {
     title?: React.ReactNode;
 }
 
-export class MenuDivider extends React.Component<IMenuDividerProps> {
+export class MenuDivider extends React.Component<MenuDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
 
     public render() {

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/client";
+import { HeadingNode, PageData, isPageNode, TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
-import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import { DocsCompleteData } from "@blueprintjs/docs-data";
+import { Documentation, DocumentationProps, NavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -37,7 +37,7 @@ const NPM_URL = "https://www.npmjs.com/package";
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
-const isNavSection = ({ route }: IHeadingNode) =>
+const isNavSection = ({ route }: HeadingNode) =>
     COMPONENTS_PATTERN.test(route) || CONTEXT_PATTERN.test(route) || HOOKS_PATTERN.test(route);
 
 /** Return the current theme className. */
@@ -50,15 +50,15 @@ export function setTheme(themeName: string) {
     localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
 }
 
-export interface IBlueprintDocsProps {
-    docs: IDocsCompleteData;
-    defaultPageId: IDocumentationProps["defaultPageId"];
-    tagRenderers: IDocumentationProps["tagRenderers"];
+export interface BlueprintDocsProps {
+    docs: DocsCompleteData;
+    defaultPageId: DocumentationProps["defaultPageId"];
+    tagRenderers: DocumentationProps["tagRenderers"];
     /** Whether to use `next` versions for packages (as opposed to `latest`). */
     useNextVersion: boolean;
 }
 
-export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeName: string }> {
+export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeName: string }> {
     public state = { themeName: getTheme() };
 
     public render() {
@@ -98,7 +98,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         );
     }
 
-    private renderNavMenuItem = (props: INavMenuItemProps) => {
+    private renderNavMenuItem = (props: NavMenuItemProps) => {
         const { route, title } = props.section;
         if (isNavSection(props.section)) {
             // non-interactive header that expands its menu
@@ -123,7 +123,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions = (page: IPageData) => {
+    private renderPageActions = (page: PageData) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -147,7 +147,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         );
     }
 
-    private renderViewSourceLinkText = (entry: ITsDocBase) => {
+    private renderViewSourceLinkText = (entry: TsDocBase) => {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     };
 

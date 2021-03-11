@@ -21,13 +21,13 @@ import { SmallCross } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
-import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
+import { BackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 
-export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps {
+export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -76,8 +76,8 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
     transitionName?: string;
 }
 
-export class Dialog extends AbstractPureComponent<IDialogProps> {
-    public static defaultProps: IDialogProps = {
+export class Dialog extends AbstractPureComponent<DialogProps> {
+    public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
     };
@@ -97,7 +97,7 @@ export class Dialog extends AbstractPureComponent<IDialogProps> {
         );
     }
 
-    protected validateProps(props: IDialogProps) {
+    protected validateProps(props: DialogProps) {
         if (props.title == null) {
             if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);

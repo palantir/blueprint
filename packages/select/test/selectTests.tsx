@@ -21,20 +21,20 @@ import sinon from "sinon";
 
 import { InputGroup, Popover } from "@blueprintjs/core";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IItemRendererProps, ISelectProps, ISelectState, Select } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { ItemRendererProps, SelectProps, SelectState, Select } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<Select>", () => {
-    const FilmSelect = Select.ofType<IFilm>();
+    const FilmSelect = Select.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[IFilm, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 
@@ -46,7 +46,7 @@ describe("<Select>", () => {
         };
     });
 
-    selectComponentSuite<ISelectProps<IFilm>, ISelectState>(props =>
+    selectComponentSuite<SelectProps<Film>, SelectState>(props =>
         mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
     );
 
@@ -100,7 +100,7 @@ describe("<Select>", () => {
 
     it("returns focus to focusable target after popover closed");
 
-    function select(props: Partial<ISelectProps<IFilm>> = {}, query?: string) {
+    function select(props: Partial<SelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <FilmSelect {...defaultProps} {...handlers} {...props}>
                 <article />
@@ -113,6 +113,6 @@ describe("<Select>", () => {
     }
 });
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }

@@ -21,34 +21,34 @@ import { ChevronLeft } from "@blueprintjs/icons";
 import { AbstractPureComponent, Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
-import { IPanel } from "./panelProps";
+import { Panel } from "./panelProps";
 
 /* eslint-disable deprecation/deprecation */
 
-export interface IPanelViewProps {
+export interface PanelViewProps {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose: (removedPanel: IPanel<any>) => void;
+    onClose: (removedPanel: Panel<any>) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen: (addedPanel: IPanel<any>) => void;
+    onOpen: (addedPanel: Panel<any>) => void;
 
     /** The panel to be displayed. */
-    panel: IPanel;
+    panel: Panel;
 
     /** The previous panel in the stack, for rendering the "back" button. */
-    previousPanel?: IPanel;
+    previousPanel?: Panel;
 
     /** Whether to show the header with the "back" button. */
     showHeader: boolean;
 }
 
-export class PanelView extends AbstractPureComponent<IPanelViewProps> {
+export class PanelView extends AbstractPureComponent<PanelViewProps> {
     public render() {
         const { panel, onOpen } = this.props;
         // two <span> tags in header ensure title is centered as long as

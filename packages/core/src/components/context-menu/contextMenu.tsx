@@ -19,20 +19,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
-import { IOverlayLifecycleProps } from "../overlay/overlay";
+import { OverlayLifecycleProps } from "../overlay/overlay";
 import { Popover } from "../popover/popover";
 import { PopperModifiers } from "../popover/popoverSharedProps";
 
-export interface IOffset {
+export interface Offset {
     left: number;
     top: number;
 }
 
-interface IContextMenuState {
+interface ContextMenuState {
     isOpen: boolean;
     isDarkTheme: boolean;
     menu?: JSX.Element;
-    offset?: IOffset;
+    offset?: Offset;
     onClose?: () => void;
 }
 
@@ -41,13 +41,13 @@ const POPPER_MODIFIERS: PopperModifiers = {
 };
 const TRANSITION_DURATION = 100;
 
-type IContextMenuProps = IOverlayLifecycleProps;
+type ContextMenuProps = OverlayLifecycleProps;
 
 /* istanbul ignore next */
 /** @deprecated use ContextMenu2 */
 
-class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuState> {
-    public state: IContextMenuState = {
+class ContextMenu extends AbstractPureComponent<ContextMenuProps, ContextMenuState> {
+    public state: ContextMenuState = {
         isDarkTheme: false,
         isOpen: false,
     };
@@ -89,7 +89,7 @@ class ContextMenu extends AbstractPureComponent<IContextMenuProps, IContextMenuS
         /* eslint-enable deprecation/deprecation */
     }
 
-    public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme = false) {
+    public show(menu: JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme = false) {
         this.setState({ isOpen: true, menu, offset, onClose, isDarkTheme });
     }
 
@@ -134,13 +134,13 @@ let contextMenu: ContextMenu | undefined;
  * The menu will appear below-right of this point and will flip to below-left if there is not enough
  * room onscreen. The optional callback will be invoked when this menu closes.
  */
-export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
+export function show(menu: JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme?: boolean) {
     if (contextMenuElement === undefined) {
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
         /* eslint-disable deprecation/deprecation */
-        contextMenu = ReactDOM.render<IContextMenuProps>(
+        contextMenu = ReactDOM.render<ContextMenuProps>(
             <ContextMenu onClosed={remove} />,
             contextMenuElement,
         ) as ContextMenu;

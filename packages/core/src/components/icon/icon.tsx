@@ -19,11 +19,11 @@ import React from "react";
 
 import { IconComponent, IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE, SVGIconProps } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
 export { IconName };
 
-export interface IIconProps extends IIntentProps, IProps, SVGIconProps {
+export interface IconProps extends IntentProps, Props, SVGIconProps {
     /**
      * Whether the component should automatically load icon contents using an async import.
      *
@@ -49,17 +49,17 @@ export interface IIconProps extends IIntentProps, IProps, SVGIconProps {
     icon: IconName | MaybeElement;
 }
 
-interface IIconState {
+interface IconState {
     iconComponent: IconComponent | undefined;
 }
 
 export class Icon extends AbstractPureComponent<
-    IIconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
-    IIconState
+    IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
+    IconState
 > {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
-    public static defaultProps: Partial<IIconProps> = {
+    public static defaultProps: Partial<IconProps> = {
         autoLoad: true,
         tagName: "span",
     };
@@ -68,7 +68,7 @@ export class Icon extends AbstractPureComponent<
 
     public static readonly SIZE_LARGE = ICON_SIZE_LARGE;
 
-    public state: IIconState = {
+    public state: IconState = {
         iconComponent: undefined,
     };
 
@@ -85,7 +85,7 @@ export class Icon extends AbstractPureComponent<
         }
     }
 
-    public async componentDidUpdate(prevProps: IIconProps, _prevState: IIconState) {
+    public async componentDidUpdate(prevProps: IconProps, _prevState: IconState) {
         const { icon } = this.props;
 
         if (prevProps.icon !== icon && typeof icon === "string") {

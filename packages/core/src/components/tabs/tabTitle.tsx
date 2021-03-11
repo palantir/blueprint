@@ -19,9 +19,9 @@ import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { ITabProps, TabId } from "./tab";
+import { TabProps, TabId } from "./tab";
 
-export interface ITabTitleProps extends ITabProps {
+export interface TabTitleProps extends TabProps {
     /** Handler invoked when this tab is clicked. */
     onClick: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;
 
@@ -32,7 +32,7 @@ export interface ITabTitleProps extends ITabProps {
     selected: boolean;
 }
 
-export class TabTitle extends AbstractPureComponent<ITabTitleProps> {
+export class TabTitle extends AbstractPureComponent<TabTitleProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TabTitle`;
 
     public render() {

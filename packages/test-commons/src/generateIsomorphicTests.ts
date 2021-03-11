@@ -22,7 +22,7 @@ function isReactFunctionComponent(Component: any, name: string): Component is Re
     return typeof Component === "function" && name.charAt(0) === name.charAt(0).toUpperCase();
 }
 
-export interface IIsomorphicTestConfig {
+export interface IsomorphicTestConfig {
     /** Required `children` for successful render. */
     children?: React.ReactNode;
     /** Whether to test `className`. */
@@ -40,7 +40,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
     /** Namespace import of all components to test. */
     Components: T,
     /** Configuration per component. This is a mapped type supporting all keys in `Components`. */
-    config: { [P in keyof T]?: IIsomorphicTestConfig } = {},
+    config: { [P in keyof T]?: IsomorphicTestConfig } = {},
     /** Test generator options */
     options: {
         /** Exclude these exports from being tested */
@@ -50,7 +50,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
     } = {},
 ) {
     function render(name: string, extraProps?: Record<string, unknown>) {
-        const { children, props }: IIsomorphicTestConfig = config[name] || {};
+        const { children, props }: IsomorphicTestConfig = config[name] || {};
         const finalProps = extraProps ? { ...props, ...extraProps } : props;
         // Render to static HTML, just as a server would.
         // We care merely that `render()` succeeds: it can be server-rendered.
@@ -70,7 +70,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
                     (testFunctionComponents && isReactFunctionComponent(Components[name], name))),
         )
         .forEach(componentName => {
-            const { className, skip }: IIsomorphicTestConfig = config[componentName] || {};
+            const { className, skip }: IsomorphicTestConfig = config[componentName] || {};
             if (skip) {
                 it.skip(`<${componentName}>`);
                 return;

@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-import { ITsEnum, ITsEnumMember } from "@documentalist/client";
+import { TsEnum, TsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IEnumTableProps extends IProps {
-    data: ITsEnum;
+export interface EnumTableProps extends Props {
+    data: TsEnum;
 }
 
-export class EnumTable extends React.PureComponent<IEnumTableProps> {
+export class EnumTable extends React.PureComponent<EnumTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.EnumTable";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { data } = this.props;
@@ -52,7 +52,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         );
     }
 
-    private renderPropRow = (entry: ITsEnumMember) => {
+    private renderPropRow = (entry: TsEnumMember) => {
         // this is inside RUNNING_TEXT
         /* eslint-disable @blueprintjs/html-components */
         const { renderBlock } = this.context;
@@ -82,7 +82,7 @@ export class EnumTable extends React.PureComponent<IEnumTableProps> {
         );
     };
 
-    private renderTags(entry: ITsEnumMember) {
+    private renderTags(entry: TsEnumMember) {
         const {
             flags: { isDeprecated },
         } = entry;

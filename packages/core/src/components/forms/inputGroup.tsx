@@ -17,25 +17,25 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, IRef } from "../../common";
+import { AbstractPureComponent, Classes, Ref } from "../../common";
 import * as Errors from "../../common/errors";
 import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
-    IControlledProps,
-    IIntentProps,
-    IProps,
+    ControlledProps,
+    IntentProps,
+    Props,
     MaybeElement,
     removeNonHTMLProps,
 } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 
-export interface IInputGroupProps
-    extends Omit<HTMLInputProps, keyof IControlledProps>,
-        IControlledProps,
-        IIntentProps,
-        IProps {
+export interface InputGroupProps
+    extends Omit<HTMLInputProps, keyof ControlledProps>,
+        ControlledProps,
+        IntentProps,
+        Props {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
@@ -59,7 +59,7 @@ export interface IInputGroupProps
     fill?: boolean;
 
     /** Ref handler or a ref object that receives HTML `<input>` element backing this component. */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: Ref<HTMLInputElement>;
 
     /**
      * Element to render on the left side of input.  This prop is mutually exclusive
@@ -100,15 +100,15 @@ export interface IInputGroupProps
     type?: string;
 }
 
-export interface IInputGroupState {
+export interface InputGroupState {
     leftElementWidth?: number;
     rightElementWidth?: number;
 }
 
-export class InputGroup extends AbstractPureComponent<IInputGroupProps, IInputGroupState> {
+export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
-    public state: IInputGroupState = {};
+    public state: InputGroupState = {};
 
     private leftElement: HTMLElement | null = null;
 
@@ -162,14 +162,14 @@ export class InputGroup extends AbstractPureComponent<IInputGroupProps, IInputGr
         this.updateInputWidth();
     }
 
-    public componentDidUpdate(prevProps: IInputGroupProps) {
+    public componentDidUpdate(prevProps: InputGroupProps) {
         const { leftElement, rightElement } = this.props;
         if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
             this.updateInputWidth();
         }
     }
 
-    protected validateProps(props: IInputGroupProps) {
+    protected validateProps(props: InputGroupProps) {
         if (props.leftElement != null && props.leftIcon != null) {
             console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }

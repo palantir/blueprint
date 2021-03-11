@@ -19,7 +19,7 @@ import { mount, shallow } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { AnchorButton, Button, Classes, IButtonProps, Icon, Spinner } from "../../src";
+import { AnchorButton, Button, Classes, ButtonProps, Icon, Spinner } from "../../src";
 import * as Keys from "../../src/common/keys";
 
 describe("Buttons:", () => {
@@ -158,14 +158,14 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             });
         }
 
-        function button(props: IButtonProps, useMount = false, ...children: React.ReactNode[]) {
+        function button(props: ButtonProps, useMount = false, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
             return useMount ? mount(element) : shallow(element);
         }
 
         function checkClickTriggeredOnKeyUp(
             done: Mocha.Done,
-            buttonProps: Partial<IButtonProps>,
+            buttonProps: Partial<ButtonProps>,
             keyEventProps: Partial<React.KeyboardEvent<any>>,
         ) {
             const wrapper = button(buttonProps, true);
@@ -187,7 +187,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
             const callback = spy();
 
-            // IButtonProps doesn't include onKeyDown or onKeyUp in its
+            // ButtonProps doesn't include onKeyDown or onKeyUp in its
             // definition, even though Buttons support those props. Casting as
             // `any` gets around that for the purpose of these tests.
             const wrapper = button({ [callbackPropName]: callback } as any);

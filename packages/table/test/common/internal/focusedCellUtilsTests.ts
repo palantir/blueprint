@@ -18,9 +18,9 @@
 
 import { expect } from "chai";
 
-import { ICellCoordinates, IFocusedCellCoordinates } from "../../../src/common/cell";
+import { CellCoordinates, FocusedCellCoordinates } from "../../../src/common/cell";
 import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
-import { IRegion, Regions } from "../../../src/regions";
+import { Region, Regions } from "../../../src/regions";
 
 describe("FocusedCellUtils", () => {
     describe("expandFocusedRegion", () => {
@@ -133,11 +133,11 @@ describe("FocusedCellUtils", () => {
             checkEqual(result, Regions.table());
         });
 
-        function checkEqual(result: IRegion, expected: IRegion) {
+        function checkEqual(result: Region, expected: Region) {
             expect(result).to.deep.equal(expected);
         }
 
-        function toCellCoords(row: number, col: number): IFocusedCellCoordinates {
+        function toCellCoords(row: number, col: number): FocusedCellCoordinates {
             return { row, col, focusSelectionIndex: 0 };
         }
     });
@@ -220,7 +220,7 @@ describe("FocusedCellUtils", () => {
             expect(focusedCell).to.deep.equal(expectedFocusedCell);
         });
 
-        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): IFocusedCellCoordinates {
+        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): FocusedCellCoordinates {
             return { row, col, focusSelectionIndex };
         }
     });
@@ -559,13 +559,13 @@ describe("FocusedCellUtils", () => {
 
     describe("toFullCoordinates", () => {
         it("applies focusSelectionIndex=0 by default", () => {
-            const cellCoords: ICellCoordinates = { row: 2, col: 3 };
+            const cellCoords: CellCoordinates = { row: 2, col: 3 };
             const result = FocusedCellUtils.toFullCoordinates(cellCoords);
             expect(result).to.deep.equal({ ...result, focusSelectionIndex: 0 });
         });
 
         it("applies a custom focusSelectionIndex if provided", () => {
-            const cellCoords: ICellCoordinates = { row: 2, col: 3 };
+            const cellCoords: CellCoordinates = { row: 2, col: 3 };
             const INDEX = 1;
             const result = FocusedCellUtils.toFullCoordinates(cellCoords, INDEX);
             expect(result).to.deep.equal({ ...result, focusSelectionIndex: INDEX });

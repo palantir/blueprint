@@ -18,9 +18,9 @@
 
 import React from "react";
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+import { ContextMenuTarget, Props } from "@blueprintjs/core";
 
-export interface IContextMenuTargetWrapper extends IProps {
+export interface ContextMenuTargetWrapperProps extends Props {
     renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element;
     style: React.CSSProperties;
 }
@@ -32,7 +32,7 @@ export interface IContextMenuTargetWrapper extends IProps {
  * chains.
  */
 @ContextMenuTarget
-export class ContextMenuTargetWrapper extends React.PureComponent<IContextMenuTargetWrapper> {
+export class ContextMenuTargetWrapper extends React.PureComponent<ContextMenuTargetWrapperProps> {
     public render() {
         const { className, children, style } = this.props;
         return (

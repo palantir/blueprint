@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-export interface IKeyCodeTable {
+export interface KeyCodeTable {
     [code: number]: string;
 }
 
-export interface IKeyCodeReverseTable {
+export interface KeyCodeReverseTable {
     [key: string]: number;
 }
 
-export interface IKeyMap {
+export interface KeyMap {
     [key: string]: string;
 }
 
-export const KeyCodes: IKeyCodeTable = {
+export const KeyCodes: KeyCodeTable = {
     8: "backspace",
     9: "tab",
     13: "enter",
@@ -100,7 +100,7 @@ export const KeyCodes: IKeyCodeTable = {
     222: "'",
 };
 
-export const Modifiers: IKeyCodeTable = {
+export const Modifiers: KeyCodeTable = {
     16: "shift",
     17: "ctrl",
     18: "alt",
@@ -109,14 +109,14 @@ export const Modifiers: IKeyCodeTable = {
     224: "meta",
 };
 
-export const ModifierBitMasks: IKeyCodeReverseTable = {
+export const ModifierBitMasks: KeyCodeReverseTable = {
     alt: 1,
     ctrl: 2,
     meta: 4,
     shift: 8,
 };
 
-export const Aliases: IKeyMap = {
+export const Aliases: KeyMap = {
     cmd: "meta",
     command: "meta",
     escape: "esc",
@@ -130,7 +130,7 @@ export const Aliases: IKeyMap = {
 
 // alph sorting is unintuitive here
 // tslint:disable object-literal-sort-keys
-export const ShiftKeys: IKeyMap = {
+export const ShiftKeys: KeyMap = {
     "~": "`",
     "!": "1",
     "@": "2",
@@ -165,12 +165,12 @@ for (let i = 0; i <= 9; ++i) {
     KeyCodes[96 + i] = "num" + i.toString();
 }
 
-export interface IKeyCombo {
+export interface KeyCombo {
     key?: string;
     modifiers: number;
 }
 
-export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
+export function comboMatches(a: KeyCombo, b: KeyCombo) {
     return a.modifiers === b.modifiers && a.key === b.key;
 }
 
@@ -183,7 +183,7 @@ export function comboMatches(a: IKeyCombo, b: IKeyCombo) {
  * necessary `shift` modifier and automatically convert the action key to the
  * unshifted version. For example, `@` is equivalent to `shift+2`.
  */
-export const parseKeyCombo = (combo: string): IKeyCombo => {
+export const parseKeyCombo = (combo: string): KeyCombo => {
     const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
     let key: string | undefined;
@@ -251,7 +251,7 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
  * action key, which we determine from the `e.which` property of the keyboard
  * event.
  */
-export const getKeyCombo = (e: KeyboardEvent): IKeyCombo => {
+export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
     // HACKHACK: https://github.com/palantir/blueprint/issues/4165
     // eslint-disable-next-line deprecation/deprecation

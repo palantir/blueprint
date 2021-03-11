@@ -24,10 +24,10 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
-    IIntentProps,
+    IntentProps,
     Intent,
-    IProps,
-    IRef,
+    Props,
+    Ref,
     Keys,
     MaybeElement,
     Position,
@@ -51,7 +51,7 @@ import {
     toMaxPrecision,
 } from "./numericInputUtils";
 
-export interface INumericInputProps extends IIntentProps, IProps {
+export interface NumericInputProps extends IntentProps, Props {
     /**
      * Whether to allow only floating-point number characters in the field,
      * mimicking the native `input[type="number"]`.
@@ -105,7 +105,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * Ref handler that receives HTML `<input>` element backing this component.
      */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: Ref<HTMLInputElement>;
 
     /**
      * If set to `true`, the input will display with larger styling.
@@ -193,7 +193,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     onValueChange?(valueAsNumber: number, valueAsString: string, inputElement: HTMLInputElement | null): void;
 }
 
-export interface INumericInputState {
+export interface NumericInputState {
     currentImeInputInvalid: boolean;
     prevMinProp?: number;
     prevMaxProp?: number;
@@ -207,7 +207,7 @@ enum IncrementDirection {
     UP = +1,
 }
 
-const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
+const NON_HTML_PROPS: Array<keyof NumericInputProps> = [
     "allowNumericCharactersOnly",
     "buttonPosition",
     "clampValueOnBlur",
@@ -224,14 +224,14 @@ const NON_HTML_PROPS: Array<keyof INumericInputProps> = [
 
 type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<Element>, "onKeyDown" | "onMouseDown">>;
 
-export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumericInputProps, INumericInputState> {
+export class NumericInput extends AbstractPureComponent<HTMLInputProps & NumericInputProps, NumericInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";
 
     public static VALUE_ZERO = "0";
 
-    public static defaultProps: INumericInputProps = {
+    public static defaultProps: NumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
         clampValueOnBlur: false,
@@ -244,7 +244,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         stepSize: 1,
     };
 
-    public static getDerivedStateFromProps(props: INumericInputProps, state: INumericInputState) {
+    public static getDerivedStateFromProps(props: NumericInputProps, state: NumericInputState) {
         const nextState = {
             prevMaxProp: props.max,
             prevMinProp: props.min,
@@ -278,7 +278,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     // Value Helpers
     // =============
-    private static getStepMaxPrecision(props: HTMLInputProps & INumericInputProps) {
+    private static getStepMaxPrecision(props: HTMLInputProps & NumericInputProps) {
         if (props.minorStepSize != null) {
             return Utils.countDecimalPlaces(props.minorStepSize);
         } else {
@@ -303,7 +303,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         return toLocaleString(clampedValue, locale);
     }
 
-    public state: INumericInputState = {
+    public state: NumericInputState = {
         currentImeInputInvalid: false,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
@@ -317,7 +317,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
 
     public inputElement: HTMLInputElement | null = null;
 
-    private inputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
+    private inputRef: Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     private intervalId?: number;
 
@@ -338,7 +338,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         );
     }
 
-    public componentDidUpdate(prevProps: INumericInputProps, prevState: INumericInputState) {
+    public componentDidUpdate(prevProps: NumericInputProps, prevState: NumericInputState) {
         super.componentDidUpdate(prevProps, prevState);
 
         if (this.state.shouldSelectAfterUpdate) {
@@ -361,7 +361,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & INumeri
         }
     }
 
-    protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
+    protected validateProps(nextProps: HTMLInputProps & NumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
             console.error(Errors.NUMERIC_INPUT_MIN_MAX);

@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { spy, stub } from "sinon";
 
-import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src";
+import { Classes, TooltipProps, Overlay, Popover, Tooltip } from "../../src";
 
 const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
@@ -152,8 +152,8 @@ describe("<Tooltip>", () => {
         });
     });
 
-    function renderTooltip(props?: Partial<ITooltipProps>) {
-        return mount<ITooltipProps>(
+    function renderTooltip(props?: Partial<TooltipProps>) {
+        return mount<TooltipProps>(
             <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
                 <button>Target</button>
             </Tooltip>,

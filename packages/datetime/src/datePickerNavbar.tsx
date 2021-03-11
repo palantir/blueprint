@@ -24,7 +24,7 @@ import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 import * as Classes from "./common/classes";
 import { areSameMonth } from "./common/dateUtils";
 
-export interface IDatePickerNavbarProps extends NavbarElementProps {
+export interface DatePickerNavbarProps extends NavbarElementProps {
     maxDate: Date;
     minDate: Date;
 
@@ -32,7 +32,7 @@ export interface IDatePickerNavbarProps extends NavbarElementProps {
     hideRightNavButton?: boolean;
 }
 
-export class DatePickerNavbar extends React.PureComponent<IDatePickerNavbarProps> {
+export class DatePickerNavbar extends React.PureComponent<DatePickerNavbarProps> {
     public render() {
         const { classNames: classes, month, maxDate, minDate } = this.props;
 

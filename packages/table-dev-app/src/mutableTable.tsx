@@ -26,7 +26,7 @@ import {
     H4,
     H6,
     HTMLSelect,
-    IButtonProps,
+    ButtonProps,
     Intent,
     Menu,
     MenuDivider,
@@ -39,7 +39,7 @@ import {
     ColumnHeaderCell,
     EditableCell,
     EditableName,
-    IStyledRegionGroup,
+    StyledRegionGroup,
     JSONFormat,
     RegionCardinality,
     Regions,
@@ -50,10 +50,10 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
-import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
+import { FocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
+import { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
-import { IRegion } from "@blueprintjs/table/src/regions";
+import { Region } from "@blueprintjs/table/src/regions";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
@@ -77,8 +77,8 @@ export enum SelectedRegionTransformPreset {
     COLUMN = "column",
 }
 
-type IMutableStateUpdateCallback = (
-    stateKey: keyof IMutableTableState,
+type MutableStateUpdateCallback = (
+    stateKey: keyof MutableTableState,
 ) => (event: React.FormEvent<HTMLElement>) => void;
 
 const COLUMN_COUNTS = [0, 1, 5, 20, 100, 1000];
@@ -206,17 +206,17 @@ function contains(arr: any[], value: any) {
     return arr.indexOf(value) >= 0;
 }
 
-function enforceWholeColumnSelection(region: IRegion) {
+function enforceWholeColumnSelection(region: Region) {
     delete region.rows;
     return region;
 }
 
-function enforceWholeRowSelection(region: IRegion) {
+function enforceWholeRowSelection(region: Region) {
     delete region.cols;
     return region;
 }
 
-export interface IMutableTableState {
+export interface MutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
     cellTruncationLength?: number;
@@ -248,7 +248,7 @@ export interface IMutableTableState {
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
     selectedRegionTransformPreset?: SelectedRegionTransformPreset;
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -263,7 +263,7 @@ export interface IMutableTableState {
     showZebraStriping?: boolean;
 }
 
-const DEFAULT_STATE: IMutableTableState = {
+const DEFAULT_STATE: MutableTableState = {
     cellContent: CellContent.LONG_TEXT,
     cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
     cellTruncationLength: TRUNCATION_LENGTHS[TRUNCATION_LENGTH_DEFAULT_INDEX],
@@ -311,12 +311,12 @@ const DEFAULT_STATE: IMutableTableState = {
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export class MutableTable extends React.Component<{}, IMutableTableState> {
+export class MutableTable extends React.Component<{}, MutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
     private tableInstance: Table;
 
-    private stateStore: LocalStore<IMutableTableState>;
+    private stateStore: LocalStore<MutableTableState>;
 
     private refHandlers = {
         table: (ref: Table) => (this.tableInstance = ref),
@@ -324,7 +324,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     public constructor(props: any) {
         super(props);
-        this.stateStore = new LocalStore<IMutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
+        this.stateStore = new LocalStore<MutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
         this.state = this.stateStore.getWithDefaults(DEFAULT_STATE);
     }
 
@@ -359,7 +359,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     }
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    public componentWillUpdate(_nextProps: {}, nextState: IMutableTableState) {
+    public componentWillUpdate(_nextProps: {}, nextState: MutableTableState) {
         if (
             nextState.cellContent !== this.state.cellContent ||
             nextState.numRows !== this.state.numRows ||
@@ -741,7 +741,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderButton(label: string, props: IButtonProps) {
+    private renderButton(label: string, props: ButtonProps) {
         return <Button fill={true} intent={Intent.PRIMARY} text={label} {...props} />;
     }
 
@@ -790,8 +790,8 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderSwitch(
         label: string,
-        stateKey: keyof IMutableTableState,
-        prereqStateKey?: keyof IMutableTableState,
+        stateKey: keyof MutableTableState,
+        prereqStateKey?: keyof MutableTableState,
         prereqStateKeyValue?: any,
     ) {
         const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
@@ -813,17 +813,17 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     }
 
-    private renderNumberSelectMenu(label: string, stateKey: keyof IMutableTableState, values: number[]) {
+    private renderNumberSelectMenu(label: string, stateKey: keyof MutableTableState, values: number[]) {
         return this.renderSelectMenu(label, stateKey, values, toValueLabel, this.handleNumberStateChange);
     }
 
     private renderSelectMenu<T>(
         label: string,
-        stateKey: keyof IMutableTableState,
+        stateKey: keyof MutableTableState,
         values: T[],
         generateValueLabel: (value: any) => string,
-        handleChange: IMutableStateUpdateCallback,
-        prereqStateKey?: keyof IMutableTableState,
+        handleChange: MutableStateUpdateCallback,
+        prereqStateKey?: keyof MutableTableState,
         prereqStateKeyValue?: any,
     ) {
         const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
@@ -861,13 +861,13 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     // Disabled control helpers
     // ========================
 
-    private isPrereqStateKeySatisfied(key?: keyof IMutableTableState, value?: any) {
+    private isPrereqStateKeySatisfied(key?: keyof MutableTableState, value?: any) {
         return key == null || this.state[key] === value;
     }
 
     private wrapDisabledControlWithTooltip(
         element: JSX.Element,
-        prereqStateKey: keyof IMutableTableState,
+        prereqStateKey: keyof MutableTableState,
         prereqStateKeyValue: any,
     ) {
         // Blueprint Tooltip affects the layout, so just show a native title on hover
@@ -881,7 +881,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback("[onCompleteRender]");
     };
 
-    private onSelection = (selectedRegions: IRegion[]) => {
+    private onSelection = (selectedRegions: Region[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
         this.setState({ selectedRegions });
     };
@@ -906,7 +906,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback(`[onRowHeightChanged] index = ${index} size = ${size}`);
     };
 
-    private onFocus = (focusedCell: IFocusedCellCoordinates) => {
+    private onFocus = (focusedCell: FocusedCellCoordinates) => {
         this.maybeLogCallback("[onFocusedCell] focusedCell =", focusedCell);
     };
 
@@ -914,7 +914,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback(`[onCopy] success = ${success}`);
     };
 
-    private onVisibleCellsChange = (rowIndices: IRowIndices, columnIndices: IColumnIndices) => {
+    private onVisibleCellsChange = (rowIndices: RowIndices, columnIndices: ColumnIndices) => {
         const { rowIndexStart, rowIndexEnd } = rowIndices;
         const { columnIndexStart, columnIndexEnd } = columnIndices;
         this.maybeLogCallback(
@@ -946,7 +946,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private handleScrollToButtonClick = () => {
         const { scrollToRowIndex, scrollToColumnIndex, scrollToRegionType } = this.state;
 
-        let region: IRegion;
+        let region: Region;
         switch (scrollToRegionType) {
             case RegionCardinality.CELLS:
                 region = Regions.cell(scrollToRowIndex, scrollToColumnIndex);
@@ -1017,15 +1017,15 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         }
     };
 
-    private handleBooleanStateChange = (stateKey: keyof IMutableTableState) => {
+    private handleBooleanStateChange = (stateKey: keyof MutableTableState) => {
         return handleBooleanChange(value => this.setState({ [stateKey]: value }));
     };
 
-    private handleNumberStateChange = (stateKey: keyof IMutableTableState) => {
+    private handleNumberStateChange = (stateKey: keyof MutableTableState) => {
         return handleNumberChange(value => this.setState({ [stateKey]: value }));
     };
 
-    private handleStringStateChange = (stateKey: keyof IMutableTableState) => {
+    private handleStringStateChange = (stateKey: keyof MutableTableState) => {
         return handleStringChange(value => this.setState({ [stateKey]: value }));
     };
 
@@ -1107,7 +1107,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                       className: "tbl-styled-region-danger",
                       regions: [Regions.cell(5, 3, 7, 7)],
                   },
-              ] as IStyledRegionGroup[]);
+              ] as StyledRegionGroup[]);
     }
 }
 

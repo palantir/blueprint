@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/client";
+import { isTag, TsMethod, TsParameter, TsSignature } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
-import { Code, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Code, Intent, Props, Tag } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IMethodTableProps extends IProps {
-    data: ITsMethod;
+export interface MethodTableProps extends Props {
+    data: TsMethod;
 }
 
-export class MethodTable extends React.PureComponent<IMethodTableProps> {
+export class MethodTable extends React.PureComponent<MethodTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.MethodTable";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { data } = this.props;
         const propRows = [...data.signatures]
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map((entry: ITsSignature) => entry.parameters.map(parameter => this.renderPropRow(parameter)));
+            .map((entry: TsSignature) => entry.parameters.map(parameter => this.renderPropRow(parameter)));
         return (
             <div className={classNames("docs-modifiers", this.props.className)}>
                 <ApiHeader {...data} />
@@ -56,7 +56,7 @@ export class MethodTable extends React.PureComponent<IMethodTableProps> {
         );
     }
 
-    private renderPropRow = (parameter: ITsParameter) => {
+    private renderPropRow = (parameter: TsParameter) => {
         const { renderBlock, renderType } = this.context;
         const {
             flags: { isDeprecated, isExternal, isOptional },
@@ -99,7 +99,7 @@ export class MethodTable extends React.PureComponent<IMethodTableProps> {
         );
     };
 
-    private renderTags(entry: ITsParameter) {
+    private renderTags(entry: TsParameter) {
         const {
             flags: { isDeprecated, isOptional },
         } = entry;
@@ -111,7 +111,7 @@ export class MethodTable extends React.PureComponent<IMethodTableProps> {
         );
     }
 
-    private renderReturnSignature(entry?: ITsSignature) {
+    private renderReturnSignature(entry?: TsSignature) {
         if (entry == null) {
             return null;
         }

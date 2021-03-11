@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "@documentalist/client";
+import { HeadingNode, PageData, PageNode, isPageNode, TsDocBase, linkify } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget, IProps, Utils } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget, Props, Utils } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
-import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
+import { DocumentationContextTypes, hasTypescriptData, DocsData, DocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
-import { ITagRendererMap, TypescriptExample } from "../tags";
+import { TagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
-import { INavMenuItemProps } from "./navMenuItem";
+import { NavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
 import { ApiLink } from "./typescript/apiLink";
 
-export interface IDocumentationProps extends IProps {
+export interface DocumentationProps extends Props {
     /**
      * An element to place above the documentation, along the top of the viewport.
      * For best results, use a `Banner` from this package.
@@ -49,7 +49,7 @@ export interface IDocumentationProps extends IProps {
      * All the docs data from Documentalist.
      * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
      */
-    docs: IDocsData;
+    docs: DocsData;
 
     /**
      * Elements to render on the bottom of the sidebar, below the nav menu.
@@ -69,7 +69,7 @@ export interface IDocumentationProps extends IProps {
      * searchable in the navigator. Returning `true` will exclude the item from
      * the navigator search results.
      */
-    navigatorExclude?: (node: IPageNode | IHeadingNode) => boolean;
+    navigatorExclude?: (node: PageNode | HeadingNode) => boolean;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -84,19 +84,19 @@ export interface IDocumentationProps extends IProps {
      *
      * @default "View source"
      */
-    renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
+    renderViewSourceLinkText?: (entry: TsDocBase) => React.ReactNode;
 
     /**
      * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
      * The default implementation renders a `NavMenuItem` element, which is exported from this package.
      */
-    renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
+    renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
 
     /**
      * Callback invoked to render actions for a documentation page.
      * Actions appear in an element in the upper-right corner of the page.
      */
-    renderPageActions?: (page: IPageData) => React.ReactNode;
+    renderPageActions?: (page: PageData) => React.ReactNode;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
@@ -106,10 +106,10 @@ export interface IDocumentationProps extends IProps {
     scrollParent?: HTMLElement;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
-    tagRenderers: ITagRendererMap;
+    tagRenderers: TagRendererMap;
 }
 
-export interface IDocumentationState {
+export interface DocumentationState {
     activeApiMember: string;
     activePageId: string;
     activeSectionId: string;
@@ -117,7 +117,7 @@ export interface IDocumentationState {
     isNavigatorOpen: boolean;
 }
 
-export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
+export class Documentation extends React.PureComponent<DocumentationProps, DocumentationState> {
     public static childContextTypes = DocumentationContextTypes;
 
     /** Map of section route to containing page reference. */
@@ -132,7 +132,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         nav: (ref: HTMLElement) => (this.navElement = ref),
     };
 
-    public constructor(props: IDocumentationProps) {
+    public constructor(props: DocumentationProps) {
         super(props);
         this.state = {
             activeApiMember: "",
@@ -150,7 +150,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         });
     }
 
-    public getChildContext(): IDocumentationContext {
+    public getChildContext(): DocumentationContext {
         const { docs, renderViewSourceLinkText } = this.props;
         return {
             getDocsData: () => docs,
@@ -274,7 +274,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate(_prevProps: IDocumentationProps, prevState: IDocumentationState) {
+    public componentDidUpdate(_prevProps: DocumentationProps, prevState: DocumentationState) {
         const { activePageId } = this.state;
 
         // only scroll to heading when switching pages, but always check if nav item needs scrolling.

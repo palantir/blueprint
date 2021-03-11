@@ -17,12 +17,12 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, ContextMenuTarget, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
-export interface IHeaderCellProps extends IProps {
+export interface HeaderCellProps extends Props {
     /**
      * The index of the cell in the header. If provided, this will be passed as an argument to any
      * callbacks when they are invoked.
@@ -72,7 +72,7 @@ export interface IHeaderCellProps extends IProps {
     style?: React.CSSProperties;
 }
 
-export interface IInternalHeaderCellProps extends IHeaderCellProps {
+export interface InternalHeaderCellProps extends HeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
      *
@@ -86,18 +86,18 @@ export interface IInternalHeaderCellProps extends IHeaderCellProps {
     isSelected?: boolean;
 }
 
-export interface IHeaderCellState {
+export interface HeaderCellState {
     isActive: boolean;
 }
 
 // eslint-disable-next-line deprecation/deprecation
 @ContextMenuTarget
-export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
-    public state: IHeaderCellState = {
+export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderCellState> {
+    public state: HeaderCellState = {
         isActive: false,
     };
 
-    public shouldComponentUpdate(nextProps: IHeaderCellProps) {
+    public shouldComponentUpdate(nextProps: HeaderCellProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, ["style"])

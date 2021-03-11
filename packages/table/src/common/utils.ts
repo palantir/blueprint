@@ -29,10 +29,10 @@ const CSS_FONT_PROPERTIES = ["font-style", "font-variant", "font-weight", "font-
 
 // the functions using these interfaces now live in core. it's not clear how to
 // import interfaces from core and re-export them here, so just redefine them.
-export interface IKeyAllowlist<T> {
+export interface KeyAllowlist<T> {
     include: Array<keyof T>;
 }
-export interface IKeyDenylist<T> {
+export interface KeyDenylist<T> {
     exclude: Array<keyof T>;
 }
 

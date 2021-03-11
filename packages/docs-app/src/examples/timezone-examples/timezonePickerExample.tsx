@@ -17,12 +17,12 @@
 import React from "react";
 
 import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
 
 import { CustomTimezonePickerTarget } from "./components";
 
-export interface ITimezonePickerExampleState {
+export interface TimezonePickerExampleState {
     disabled: boolean;
     showCustomTarget: boolean;
     showLocalTimezone: boolean;
@@ -30,8 +30,8 @@ export interface ITimezonePickerExampleState {
     timezone: string;
 }
 
-export class TimezonePickerExample extends React.PureComponent<IExampleProps, ITimezonePickerExampleState> {
-    public state: ITimezonePickerExampleState = {
+export class TimezonePickerExample extends React.PureComponent<ExampleProps, TimezonePickerExampleState> {
+    public state: TimezonePickerExampleState = {
         disabled: false,
         showCustomTarget: false,
         showLocalTimezone: true,

@@ -14,34 +14,34 @@
  * limitations under the License.
  */
 
-import { IProps, Utils } from "@blueprintjs/core";
+import { Props, Utils } from "@blueprintjs/core";
 
 import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
-import { ICreateNewItem } from "./listItemsUtils";
+import { CreateNewItem } from "./listItemsUtils";
 import { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /**
- * Equality test comparator to determine if two {@link IListItemsProps} items are equivalent.
+ * Equality test comparator to determine if two {@link ListItemsProps} items are equivalent.
  *
  * @return `true` if the two items are equivalent.
  */
 export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
 
 /**
- * Union of all possible types for {@link IListItemsProps#itemsEqual}.
+ * Union of all possible types for {@link ListItemsProps#itemsEqual}.
  */
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
-export interface IListItemsProps<T> extends IProps {
+export interface ListItemsProps<T> extends Props {
     /**
      * The currently focused item for keyboard interactions, or `null` to
      * indicate that no item is active. If omitted or `undefined`, this prop will be
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
-    activeItem?: T | ICreateNewItem | null;
+    activeItem?: T | CreateNewItem | null;
 
     /** Array of items in the list. */
     items: T[];
@@ -226,7 +226,7 @@ export interface IListItemsProps<T> extends IProps {
 }
 
 /**
- * Utility function for executing the {@link IListItemsProps#itemsEqual} prop to test
+ * Utility function for executing the {@link ListItemsProps#itemsEqual} prop to test
  * for equality between two items.
  *
  * @return `true` if the two items are equivalent according to `itemsEqualProp`.

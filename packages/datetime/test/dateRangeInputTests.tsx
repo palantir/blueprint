@@ -26,9 +26,9 @@ import {
     Classes as CoreClasses,
     HTMLDivProps,
     HTMLInputProps,
-    IInputGroupProps,
+    InputGroupProps,
     InputGroup,
-    IPopoverProps,
+    PopoverProps,
     Keys,
     Popover,
     Position,
@@ -263,7 +263,7 @@ describe("<DateRangeInput>", () => {
 
         function runTestSuite(
             inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-            mountFn: (inputGroupProps: IInputGroupProps) => any,
+            mountFn: (inputGroupProps: InputGroupProps) => any,
         ) {
             it("allows custom placeholder text", () => {
                 const root = mountFn({ placeholder: "Hello" });
@@ -523,7 +523,7 @@ describe("<DateRangeInput>", () => {
 
     describe("popoverProps", () => {
         it("accepts custom popoverProps", () => {
-            const popoverProps: Partial<IPopoverProps> = {
+            const popoverProps: Partial<PopoverProps> = {
                 backdropProps: {},
                 position: Position.TOP_LEFT,
                 usePortal: false,
@@ -1065,7 +1065,7 @@ describe("<DateRangeInput>", () => {
                 str: HOVER_TEST_STR_5,
             };
 
-            interface IHoverTextDateConfig {
+            interface HoverTextDateConfig {
                 day: number;
                 date: Date;
                 str: string;
@@ -1099,14 +1099,14 @@ describe("<DateRangeInput>", () => {
                 changeInputText(getEndInput(root), "");
             });
 
-            function setSelectedRangeForHoverTest(selectedDateConfigs: IHoverTextDateConfig[]) {
+            function setSelectedRangeForHoverTest(selectedDateConfigs: HoverTextDateConfig[]) {
                 const [startConfig, endConfig] = selectedDateConfigs;
                 changeInputText(getStartInput(root), startConfig == null ? "" : startConfig.str);
                 changeInputText(getEndInput(root), endConfig == null ? "" : endConfig.str);
             }
 
             describe("when selected date range is [null, null]", () => {
-                const SELECTED_RANGE = [null, null] as IHoverTextDateConfig[];
+                const SELECTED_RANGE = [null, null] as HoverTextDateConfig[];
                 const HOVER_TEST_DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                 beforeEach(() => {

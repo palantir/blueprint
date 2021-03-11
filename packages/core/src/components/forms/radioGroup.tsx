@@ -18,11 +18,11 @@ import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IOptionProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
-import { IRadioProps, Radio } from "./controls";
+import { RadioProps, Radio } from "./controls";
 
-export interface IRadioGroupProps extends IProps {
+export interface RadioGroupProps extends Props {
     /**
      * Whether the group and _all_ its radios are disabled.
      * Individual radios can be disabled using their `disabled` prop.
@@ -55,7 +55,7 @@ export interface IRadioGroupProps extends IProps {
      * with `children`: either provide an array of `IOptionProps` objects or
      * provide `<Radio>` children elements.
      */
-    options?: IOptionProps[];
+    options?: OptionProps[];
 
     /** Value of the selected radio. The child with this value will be `:checked`. */
     selectedValue?: string | number;
@@ -66,7 +66,7 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
-export class RadioGroup extends AbstractPureComponent<IRadioGroupProps> {
+export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 
     // a unique name for this group, which can be overridden by `name` prop.
@@ -91,7 +91,7 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps> {
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
             if (isElementOfType(child, Radio)) {
-                return React.cloneElement(child, this.getRadioProps(child.props as IOptionProps));
+                return React.cloneElement(child, this.getRadioProps(child.props as OptionProps));
             } else {
                 return child;
             }
@@ -104,7 +104,7 @@ export class RadioGroup extends AbstractPureComponent<IRadioGroupProps> {
         ));
     }
 
-    private getRadioProps(optionProps: IOptionProps): IRadioProps {
+    private getRadioProps(optionProps: OptionProps): RadioProps {
         const { name } = this.props;
         const { className, disabled, value } = optionProps;
         return {

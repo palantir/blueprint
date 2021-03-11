@@ -22,32 +22,32 @@ import sinon from "sinon";
 
 import {
     Button,
-    IButtonProps,
-    IInputGroupProps,
+    ButtonProps,
+    InputGroupProps,
     InputGroup,
-    IPopoverProps,
+    PopoverProps,
     MenuItem,
     Popover,
     Position,
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
 
-import { ITimezonePickerProps, ITimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
+import { TimezonePickerProps, TimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
 import {
     getInitialTimezoneItems,
     getLocalTimezoneItem,
     getTimezoneItems,
-    ITimezoneItem,
+    TimezoneItem,
 } from "../src/components/timezone-picker/timezoneItems";
 
-type TimezonePickerShallowWrapper = ShallowWrapper<ITimezonePickerProps, ITimezonePickerState>;
+type TimezonePickerShallowWrapper = ShallowWrapper<TimezonePickerProps, TimezonePickerState>;
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
 // tslint:disable-next-line no-unnecessary-callback-wrapper
 const shallow = (
-    el: React.ReactElement<ITimezonePickerProps>,
+    el: React.ReactElement<TimezonePickerProps>,
     options?: ShallowRendererProps,
 ): TimezonePickerShallowWrapper => untypedShallow<TimezonePicker>(el, options);
 
@@ -55,7 +55,7 @@ const VALUE = "America/Los_Angeles";
 
 describe("<TimezonePicker>", () => {
     const onChange = sinon.spy();
-    const DEFAULT_PROPS: ITimezonePickerProps = {
+    const DEFAULT_PROPS: TimezonePickerProps = {
         onChange,
         popoverProps: {
             isOpen: true,
@@ -187,7 +187,7 @@ describe("<TimezonePicker>", () => {
     });
 
     it("popover can be controlled with popover props", () => {
-        const popoverProps: IPopoverProps = {
+        const popoverProps: PopoverProps = {
             isOpen: true,
             position: Position.RIGHT,
             usePortal: false,
@@ -195,12 +195,12 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);
         for (const key of Object.keys(popoverProps)) {
-            assert.deepEqual(popover.prop(key), popoverProps[key as keyof IPopoverProps]);
+            assert.deepEqual(popover.prop(key), popoverProps[key as keyof PopoverProps]);
         }
     });
 
     it("input can be controlled with input props", () => {
-        const inputProps: IInputGroupProps = {
+        const inputProps: InputGroupProps = {
             disabled: true,
             leftIcon: "airplane",
             placeholder: "test placeholder",
@@ -208,19 +208,19 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} inputProps={inputProps} />);
         const inputGroup = findInputGroup(timezonePicker);
         for (const key of Object.keys(inputProps)) {
-            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof IInputGroupProps]);
+            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof InputGroupProps]);
         }
     });
 
     it("button can be controlled with button props", () => {
-        const buttonProps: IButtonProps = {
+        const buttonProps: ButtonProps = {
             disabled: true,
             rightIcon: "airplane",
         };
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} buttonProps={buttonProps} />);
         const button = timezonePicker.find(Button);
         for (const key of Object.keys(buttonProps)) {
-            assert.deepEqual(button.prop(key), buttonProps[key as keyof IButtonProps]);
+            assert.deepEqual(button.prop(key), buttonProps[key as keyof ButtonProps]);
         }
     });
 
@@ -237,11 +237,11 @@ describe("<TimezonePicker>", () => {
     });
 
     function findSelect(timezonePicker: TimezonePickerShallowWrapper) {
-        return timezonePicker.find(Select.ofType<ITimezoneItem>());
+        return timezonePicker.find(Select.ofType<TimezoneItem>());
     }
 
     function findQueryList(timezonePicker: TimezonePickerShallowWrapper) {
-        return findSelect(timezonePicker).shallow().find(QueryList.ofType<ITimezoneItem>());
+        return findSelect(timezonePicker).shallow().find(QueryList.ofType<TimezoneItem>());
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {

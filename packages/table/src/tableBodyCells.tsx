@@ -17,26 +17,26 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
-import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
+import { emptyCellRenderer, CellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
-import { IFocusedCellCoordinates } from "./common/cell";
+import { FocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
-import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
+import { Grid, ColumnIndices, RowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 
-export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProps {
+export interface TableBodyCellsProps extends RowIndices, ColumnIndices, Props {
     /**
      * A cell renderer for the cells in the body.
      */
-    cellRenderer: ICellRenderer;
+    cellRenderer: CellRenderer;
 
     /**
      * The coordinates of the currently focused cell, for setting the "isFocused" prop on cells.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -73,20 +73,20 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
     viewportRect: Rect;
 }
 
-const SHALLOW_COMPARE_DENYLIST: Array<keyof ITableBodyCellsProps> = ["viewportRect"];
+const SHALLOW_COMPARE_DENYLIST: Array<keyof TableBodyCellsProps> = ["viewportRect"];
 
 /**
  * We don't want to reset the batcher when this set of keys changes. Any other
  * changes should reset the batcher's internal cache.
  */
-const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof ITableBodyCellsProps> = [
+const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof TableBodyCellsProps> = [
     "columnIndexEnd",
     "columnIndexStart",
     "rowIndexEnd",
     "rowIndexStart",
 ];
 
-export class TableBodyCells extends AbstractComponent<ITableBodyCellsProps> {
+export class TableBodyCells extends AbstractComponent<TableBodyCellsProps> {
     public static defaultProps = {
         renderMode: RenderMode.BATCH,
     };
@@ -101,7 +101,7 @@ export class TableBodyCells extends AbstractComponent<ITableBodyCellsProps> {
         this.maybeInvokeOnCompleteRender();
     }
 
-    public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
+    public shouldComponentUpdate(nextProps?: TableBodyCellsProps) {
         return (
             !CoreUtils.shallowCompareKeys(nextProps, this.props, {
                 exclude: SHALLOW_COMPARE_DENYLIST,
@@ -112,7 +112,7 @@ export class TableBodyCells extends AbstractComponent<ITableBodyCellsProps> {
         );
     }
 
-    public componentDidUpdate(prevProps: ITableBodyCellsProps) {
+    public componentDidUpdate(prevProps: TableBodyCellsProps) {
         const shouldResetBatcher = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
             exclude: BATCHER_RESET_PROP_KEYS_DENYLIST,
         });

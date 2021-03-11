@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 
 import { Classes } from "../../src";
-import { Checkbox, IControlProps, Radio, Switch } from "../../src/components/forms/controls";
+import { Checkbox, ControlProps, Radio, Switch } from "../../src/components/forms/controls";
 
 type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
 
@@ -111,7 +111,7 @@ describe("Controls:", () => {
             }
         });
 
-        function mountControl(props?: IControlProps, ...children: React.ReactNode[]) {
+        function mountControl(props?: ControlProps, ...children: React.ReactNode[]) {
             return mount(React.createElement(classType, props, children));
         }
     }

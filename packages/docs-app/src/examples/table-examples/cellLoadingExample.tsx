@@ -16,15 +16,15 @@
 import React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "@blueprintjs/table";
 
-interface IBigSpaceRock {
+interface BigSpaceRock {
     [key: string]: number | string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const bigSpaceRocks: IBigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
+const bigSpaceRocks: BigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
 export type CellsLoadingConfiguration = "all" | "first-column" | "first-row" | "none" | "random";
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -44,13 +44,13 @@ const CONFIGURATIONS = [
     { label: "None", value: CellsLoadingConfiguration.NONE },
 ];
 
-export interface ICellLoadingExampleState {
+export interface CellLoadingExampleState {
     configuration?: CellsLoadingConfiguration;
     randomNumbers?: number[];
 }
 
-export class CellLoadingExample extends React.PureComponent<IExampleProps, ICellLoadingExampleState> {
-    public state: ICellLoadingExampleState = {
+export class CellLoadingExample extends React.PureComponent<ExampleProps, CellLoadingExampleState> {
+    public state: CellLoadingExampleState = {
         configuration: CellsLoadingConfiguration.ALL,
     };
 

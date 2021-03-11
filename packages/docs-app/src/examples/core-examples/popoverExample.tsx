@@ -43,7 +43,7 @@ import {
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
+    ExampleProps,
 } from "@blueprintjs/docs-theme";
 
 const INTERACTION_KINDS = [
@@ -73,7 +73,7 @@ const VALID_POSITIONS: PopoverPosition[] = [
 
 const POPPER_DOCS = "https://popper.js.org/popper-documentation.html#modifiers";
 
-export interface IPopoverExampleState {
+export interface PopoverExampleState {
     boundary?: PopperBoundary;
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
@@ -88,8 +88,8 @@ export interface IPopoverExampleState {
     usePortal?: boolean;
 }
 
-export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverExampleState> {
-    public state: IPopoverExampleState = {
+export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExampleState> {
+    public state: PopoverExampleState = {
         boundary: "viewport",
         canEscapeKeyClose: true,
         exampleIndex: 0,

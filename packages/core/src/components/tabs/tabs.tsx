@@ -18,18 +18,18 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractPureComponent, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
-import { ITabProps, Tab, TabId } from "./tab";
+import { TabProps, Tab, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
 export const Expander: React.FunctionComponent = () => <div className={Classes.FLEX_EXPANDER} />;
 
-type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
+type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
 
-export interface ITabsProps extends IProps {
+export interface TabsProps extends Props {
     /**
      * Whether the selected tab indicator should animate its movement.
      *
@@ -47,7 +47,7 @@ export interface ITabsProps extends IProps {
 
     /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
-     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
+     * `Tab` child to generate ARIA accessibility attributes. Dsare required and should be
      * unique on the page to support server-side rendering.
      */
     id: TabId;
@@ -89,18 +89,18 @@ export interface ITabsProps extends IProps {
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
 }
 
-export interface ITabsState {
+export interface TabsState {
     indicatorWrapperStyle?: React.CSSProperties;
     selectedTabId?: TabId;
 }
 
-export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
+export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
 
     public static Tab = Tab;
 
-    public static defaultProps: Partial<ITabsProps> = {
+    public static defaultProps: Partial<TabsProps> = {
         animate: true,
         large: false,
         renderActiveTabPanelOnly: false,
@@ -109,7 +109,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 
-    public static getDerivedStateFromProps({ selectedTabId }: ITabsProps) {
+    public static getDerivedStateFromProps({ selectedTabId }: TabsProps) {
         if (selectedTabId !== undefined) {
             // keep state in sync with controlled prop, so state is canonical source of truth
             return { selectedTabId };
@@ -123,7 +123,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };
 
-    constructor(props: ITabsProps) {
+    constructor(props: TabsProps) {
         super(props);
         const selectedTabId = this.getInitialSelectedTabId();
         this.state = { selectedTabId };
@@ -170,7 +170,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         this.moveSelectionIndicator(false);
     }
 
-    public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
+    public componentDidUpdate(prevProps: TabsProps, prevState: TabsState) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
@@ -210,12 +210,12 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         return undefined;
     }
 
-    private getTabChildrenProps(props: ITabsProps & { children?: React.ReactNode } = this.props) {
+    private getTabChildrenProps(props: TabsProps & { children?: React.ReactNode } = this.props) {
         return this.getTabChildren(props).map(child => child.props);
     }
 
     /** Filters children to only `<Tab>`s */
-    private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
+    private getTabChildren(props: TabsProps & { children?: React.ReactNode } = this.props) {
         return React.Children.toArray(props.children).filter(isTabElement);
     }
 

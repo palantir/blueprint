@@ -26,7 +26,7 @@ import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 import { Overlay } from "../../src/components/overlay/overlay";
-import { IPopoverProps, IPopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
+import { PopoverProps, PopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 import { findInPortal } from "../utils";
@@ -35,7 +35,7 @@ import { findInPortal } from "../utils";
 
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
-    let wrapper: IPopoverWrapper | undefined;
+    let wrapper: PopoverWrapper | undefined;
     const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
@@ -785,7 +785,7 @@ describe("<Popover>", () => {
         });
     });
 
-    interface IPopoverWrapper extends ReactWrapper<IPopoverProps, IPopoverState> {
+    interface PopoverWrapper extends ReactWrapper<PopoverProps, PopoverState> {
         popoverElement: HTMLElement;
         targetElement: HTMLElement;
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
@@ -794,17 +794,17 @@ describe("<Popover>", () => {
         simulateTarget(eventName: string): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: IPopoverWrapper) => void, done: Mocha.Done): this;
+        then(next: (wrap: PopoverWrapper) => void, done: Mocha.Done): this;
     }
 
-    function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
+    function renderPopover(props: Partial<PopoverProps> = {}, content?: any) {
         wrapper = mount(
             <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>
                 <div>Text {content}</div>
             </Popover>,
             { attachTo: testsContainerElement },
-        ) as IPopoverWrapper;
+        ) as PopoverWrapper;
 
         wrapper.popoverElement = (wrapper.instance() as Popover).popoverElement!;
         wrapper.targetElement = (wrapper.instance() as Popover).targetElement!;

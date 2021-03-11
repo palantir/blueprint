@@ -15,34 +15,34 @@
  */
 
 import {
-    IBlock,
-    IKssPluginData,
-    IMarkdownPluginData,
-    INpmPluginData,
-    ITsDocBase,
-    ITypescriptPluginData,
+    Block,
+    KssPluginData,
+    MarkdownPluginData,
+    NpmPluginData,
+    TsDocBase,
+    TypescriptPluginData,
 } from "@documentalist/client";
 
 import { Utils } from "@blueprintjs/core";
 
 /* eslint-disable @typescript-eslint/ban-types */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
-export type IDocsData = IMarkdownPluginData &
+export type DocsData = MarkdownPluginData &
     (ITypescriptPluginData | {}) &
     (IKssPluginData | {}) &
     (INpmPluginData | {});
 /* eslint-enable @typescript-eslint/ban-types */
 
-export function hasTypescriptData(docs: IDocsData): docs is IMarkdownPluginData & ITypescriptPluginData {
-    return docs != null && (docs as ITypescriptPluginData).typescript != null;
+export function hasTypescriptData(docs: DocsData): docs is MarkdownPluginData & TypescriptPluginData {
+    return docs != null && (docs as TypescriptPluginData).typescript != null;
 }
 
-export function hasNpmData(docs: IDocsData): docs is IMarkdownPluginData & INpmPluginData {
-    return docs != null && (docs as INpmPluginData).npm != null;
+export function hasNpmData(docs: DocsData): docs is MarkdownPluginData & NpmPluginData {
+    return docs != null && (docs as NpmPluginData).npm != null;
 }
 
-export function hasKssData(docs: IDocsData): docs is IMarkdownPluginData & IKssPluginData {
-    return docs != null && (docs as IKssPluginData).css != null;
+export function hasKssData(docs: DocsData): docs is MarkdownPluginData & KssPluginData {
+    return docs != null && (docs as KssPluginData).css != null;
 }
 
 /**
@@ -51,21 +51,21 @@ export function hasKssData(docs: IDocsData): docs is IMarkdownPluginData & IKssP
  * `Documentation` component is exposed to its children so those in the know can speak
  * directly to their parent.
  */
-export interface IDocumentationContext {
+export interface DocumentationContext {
     /**
      * Get the Documentalist data.
      * Use the `hasTypescriptData` and `hasKssData` typeguards before accessing those plugins' data.
      */
-    getDocsData: () => IDocsData;
+    getDocsData: () => DocsData;
 
     /** Render a block of Documentalist documentation to a React node. */
-    renderBlock: (block: IBlock) => React.ReactNode;
+    renderBlock: (block: Block) => React.ReactNode;
 
     /** Render a Documentalist Typescript type string to a React node. */
     renderType: (type: string) => React.ReactNode;
 
     /** Render the text of a "View source" link. */
-    renderViewSourceLinkText: (entry: ITsDocBase) => React.ReactNode;
+    renderViewSourceLinkText: (entry: TsDocBase) => React.ReactNode;
 
     /** Open the API browser to the given member name. */
     showApiDocs: (name: string) => void;
@@ -75,9 +75,9 @@ export interface IDocumentationContext {
  * To enable context access in a React component, assign `static contextTypes` and declare `context` type:
  *
  * ```tsx
- * export class ContextComponent extends React.PureComponent<IApiLinkProps> {
+ * export class ContextComponent extends React.PureComponent<ApiLinkProps> {
  *     public static contextTypes = DocumentationContextTypes;
- *     public context: IDocumentationContext;
+ *     public context: DocumentationContext;
  *
  *     public render() {
  *         return this.context.renderBlock(this.props.block);

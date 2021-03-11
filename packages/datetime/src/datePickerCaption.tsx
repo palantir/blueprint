@@ -17,13 +17,13 @@
 import React from "react";
 import { CaptionElementProps } from "react-day-picker";
 
-import { AbstractPureComponent, Divider, HTMLSelect, Icon, IOptionProps } from "@blueprintjs/core";
+import { AbstractPureComponent, Divider, HTMLSelect, Icon, OptionProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
 import { measureTextWidth } from "./common/utils";
 
-export interface IDatePickerCaptionProps extends CaptionElementProps {
+export interface DatePickerCaptionProps extends CaptionElementProps {
     maxDate: Date;
     minDate: Date;
     onMonthChange?: (month: number) => void;
@@ -33,12 +33,12 @@ export interface IDatePickerCaptionProps extends CaptionElementProps {
     reverseMonthAndYearMenus?: boolean;
 }
 
-export interface IDatePickerCaptionState {
+export interface DatePickerCaptionState {
     monthRightOffset: number;
 }
 
-export class DatePickerCaption extends AbstractPureComponent<IDatePickerCaptionProps, IDatePickerCaptionState> {
-    public state: IDatePickerCaptionState = { monthRightOffset: 0 };
+export class DatePickerCaption extends AbstractPureComponent<DatePickerCaptionProps, DatePickerCaptionState> {
+    public state: DatePickerCaptionState = { monthRightOffset: 0 };
 
     private containerElement: HTMLElement;
 
@@ -59,10 +59,10 @@ export class DatePickerCaption extends AbstractPureComponent<IDatePickerCaptionP
         const startMonth = displayYear === minYear ? minDate.getMonth() : 0;
         const endMonth = displayYear === maxYear ? maxDate.getMonth() + 1 : undefined;
         const monthOptionElements = months
-            .map<IOptionProps>((month, i) => ({ label: month, value: i }))
+            .map<OptionProps>((month, i) => ({ label: month, value: i }))
             .slice(startMonth, endMonth);
 
-        const years: Array<number | IOptionProps> = [minYear];
+        const years: Array<number | OptionProps> = [minYear];
         for (let year = minYear + 1; year <= maxYear; ++year) {
             years.push(year);
         }

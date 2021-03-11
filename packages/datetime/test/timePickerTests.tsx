@@ -23,7 +23,7 @@ import sinon from "sinon";
 
 import { Classes as CoreClasses, Intent, Keys } from "@blueprintjs/core";
 
-import { Classes, ITimePickerProps, TimePicker, TimePrecision } from "../src";
+import { Classes, TimePickerProps, TimePicker, TimePrecision } from "../src";
 import { assertTimeIs, createTimeObject } from "./common/dateTestUtils";
 
 describe("<TimePicker>", () => {
@@ -709,8 +709,8 @@ describe("<TimePicker>", () => {
         TestUtils.Simulate.blur(input);
     }
 
-    function renderTimePicker(props?: Partial<ITimePickerProps>) {
-        timePicker = ReactDOM.render<ITimePickerProps>(
+    function renderTimePicker(props?: Partial<TimePickerProps>) {
+        timePicker = ReactDOM.render<TimePickerProps>(
             <TimePicker onChange={onTimePickerChange} {...props} />,
             testsContainerElement,
         ) as TimePicker;

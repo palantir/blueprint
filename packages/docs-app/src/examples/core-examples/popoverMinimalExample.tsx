@@ -16,14 +16,14 @@
 
 import React from "react";
 
-import { Button, Intent, IPopoverProps, Popover, Position } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Intent, PopoverProps, Popover, Position } from "@blueprintjs/core";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 
-export class PopoverMinimalExample extends React.PureComponent<IExampleProps> {
+export class PopoverMinimalExample extends React.PureComponent<ExampleProps> {
     public render() {
-        const baseProps: IPopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
+        const baseProps: PopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
 
         /* eslint-disable deprecation/deprecation */
         return (

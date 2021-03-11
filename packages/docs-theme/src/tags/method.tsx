@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsMethod, ITag, ITsClass, ITypescriptPluginData } from "@documentalist/client";
+import { isTsClass, isTsMethod, Tag, TsClass, TypescriptPluginData } from "@documentalist/client";
 import React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../common/context";
 import { MethodTable } from "../components/typescript/methodTable";
 
-export const Method: React.FunctionComponent<ITag & IProps> = (
+export const Method: React.FunctionComponent<Tag & Props> = (
     { className, value },
-    { getDocsData }: IDocumentationContext,
+    { getDocsData }: DocumentationContext,
 ) => {
-    const { typescript } = getDocsData() as ITypescriptPluginData;
+    const { typescript } = getDocsData() as TypescriptPluginData;
     const member = typescript[value];
 
     if (member === undefined) {
         const possibleClass = value.split(".")[0];
         const possibleClassMethod = value.split(".")[1];
-        const classMember = typescript[possibleClass] as ITsClass;
+        const classMember = typescript[possibleClass] as TsClass;
         if (isTsClass(classMember) && possibleClassMethod) {
             const classMethod = classMember.methods.find(method => method.name === possibleClassMethod);
             if (isTsMethod(classMethod)) {

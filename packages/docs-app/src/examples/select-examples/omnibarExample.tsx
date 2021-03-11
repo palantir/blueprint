@@ -17,21 +17,21 @@
 import React from "react";
 
 import { Button, H5, HotkeysTarget, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 
-import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./films";
+import { areFilmsEqual, createFilm, filmSelectProps, Film, renderCreateFilmOption } from "./films";
 
-const FilmOmnibar = Omnibar.ofType<IFilm>();
+const FilmOmnibar = Omnibar.ofType<Film>();
 
-export interface IOmnibarExampleState {
+export interface OmnibarExampleState {
     allowCreate: boolean;
     isOpen: boolean;
     resetOnSelect: boolean;
 }
 
-export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarExampleState> {
-    public state: IOmnibarExampleState = {
+export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExampleState> {
+    public state: OmnibarExampleState = {
         allowCreate: false,
         isOpen: false,
         resetOnSelect: true,
@@ -107,7 +107,7 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
         this.setState({ isOpen: true });
     };
 
-    private handleItemSelect = (film: IFilm) => {
+    private handleItemSelect = (film: Film) => {
         this.setState({ isOpen: false });
 
         this.toaster.show({

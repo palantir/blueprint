@@ -17,30 +17,30 @@
 import React from "react";
 
 import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
 
 import {
     areFilmsEqual,
     createFilm,
     filmSelectProps,
-    IFilm,
+    Film,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmOption,
     TOP_100_FILMS,
 } from "./films";
 
-const FilmSelect = Select.ofType<IFilm>();
+const FilmSelect = Select.ofType<Film>();
 
-export interface ISelectExampleState {
+export interface SelectExampleState {
     allowCreate: boolean;
     createFirst: boolean;
-    createdItems: IFilm[];
-    film: IFilm;
+    createdItems: Film[];
+    film: Film;
     filterable: boolean;
     hasInitialContent: boolean;
-    items: IFilm[];
+    items: Film[];
     minimal: boolean;
     resetOnClose: boolean;
     resetOnQuery: boolean;
@@ -49,8 +49,8 @@ export interface ISelectExampleState {
     disabled: boolean;
 }
 
-export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
-    public state: ISelectExampleState = {
+export class SelectExample extends React.PureComponent<ExampleProps, SelectExampleState> {
+    public state: SelectExampleState = {
         allowCreate: false,
         createFirst: false,
         createdItems: [],
@@ -177,7 +177,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         );
     }
 
-    private handleValueChange = (film: IFilm) => {
+    private handleValueChange = (film: Film) => {
         // Delete the old film from the list if it was newly created.
         const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
             this.state.items,
@@ -193,12 +193,12 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         this.setState({ createdItems: nextCreatedItems, film, items: nextItems });
     };
 
-    private handleSwitchChange(prop: keyof ISelectExampleState) {
+    private handleSwitchChange(prop: keyof SelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
             const checked = event.currentTarget.checked;
             this.setState(state => ({ ...state, [prop]: checked }));
         };
     }
 
-    private isItemDisabled = (film: IFilm) => this.state.disableItems && film.year < 2000;
+    private isItemDisabled = (film: Film) => this.state.disableItems && film.year < 2000;
 }

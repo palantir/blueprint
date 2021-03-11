@@ -21,7 +21,7 @@ import { SinonStub, spy, stub } from "sinon";
 
 import { WarningSign } from "@blueprintjs/icons";
 
-import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src";
+import { Alert, Button, Classes, AlertProps, ButtonProps, Icon, Intent, Keys } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
@@ -87,7 +87,7 @@ describe("<Alert>", () => {
     describe("confirm button", () => {
         const onConfirm = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
 
         beforeEach(() => {
             onConfirm.resetHistory();
@@ -128,8 +128,8 @@ describe("<Alert>", () => {
     describe("cancel button", () => {
         const onCancel = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
-        let cancelButton: ShallowWrapper<IButtonProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
+        let cancelButton: ShallowWrapper<ButtonProps, any>;
 
         beforeEach(() => {
             onCancel.resetHistory();
@@ -169,7 +169,7 @@ describe("<Alert>", () => {
         });
 
         it("canEscapeKeyCancel enables escape key", () => {
-            const alert = mount<IAlertProps>(
+            const alert = mount<AlertProps>(
                 <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
@@ -188,7 +188,7 @@ describe("<Alert>", () => {
         });
 
         it("canOutsideClickCancel enables outside click", () => {
-            const alert = mount<IAlertProps>(
+            const alert = mount<AlertProps>(
                 <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
@@ -208,9 +208,9 @@ describe("<Alert>", () => {
     });
 
     describe("load state", () => {
-        let wrapper: ShallowWrapper<IAlertProps, any>;
-        let findCancelButton: () => ShallowWrapper<IButtonProps, any>;
-        let findSubmitButton: () => ShallowWrapper<IButtonProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
+        let findCancelButton: () => ShallowWrapper<ButtonProps, any>;
+        let findSubmitButton: () => ShallowWrapper<ButtonProps, any>;
 
         beforeEach(() => {
             wrapper = shallow(

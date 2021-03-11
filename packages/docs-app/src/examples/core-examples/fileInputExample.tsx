@@ -16,15 +16,15 @@
 import React from "react";
 
 import { FileInput, FormGroup, H5, InputGroup } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-interface IFileInputExampleState {
+interface FileInputExampleState {
     buttonText?: string;
     text?: string;
 }
 
-export class FileInputExample extends React.PureComponent<IExampleProps, IFileInputExampleState> {
-    public state: IFileInputExampleState = {};
+export class FileInputExample extends React.PureComponent<ExampleProps, FileInputExampleState> {
+    public state: FileInputExampleState = {};
 
     public render() {
         const { text, buttonText } = this.state;

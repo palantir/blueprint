@@ -19,11 +19,11 @@ import React from "react";
 
 import { Classes } from "../../common";
 import { HotkeyConfig } from "../../hooks";
-import { Dialog, IDialogProps } from "../dialog/dialog";
+import { Dialog, DialogProps } from "../dialog/dialog";
 import { Hotkey } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
 
-export interface HotkeysDialogProps extends IDialogProps {
+export interface HotkeysDialogProps extends DialogProps {
     /**
      * This string displayed as the group name in the hotkeys dialog for all
      * global hotkeys.

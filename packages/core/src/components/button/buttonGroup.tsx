@@ -18,9 +18,9 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractPureComponent, Alignment, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface IButtonGroupProps extends IProps, HTMLDivProps {
+export interface ButtonGroupProps extends Props, HTMLDivProps {
     /**
      * Text alignment within button. By default, icons and text will be centered
      * within the button. Passing `"left"` or `"right"` will align the button
@@ -61,7 +61,7 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class ButtonGroup extends AbstractPureComponent<IButtonGroupProps> {
+export class ButtonGroup extends AbstractPureComponent<ButtonGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 
     public render() {

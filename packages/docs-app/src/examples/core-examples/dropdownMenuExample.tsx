@@ -17,10 +17,10 @@
 import React from "react";
 
 import { Button, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
 
-export class DropdownMenuExample extends React.PureComponent<IExampleProps> {
+export class DropdownMenuExample extends React.PureComponent<ExampleProps> {
     public render() {
         const exampleMenu = (
             <Menu>

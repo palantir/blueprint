@@ -72,19 +72,19 @@ const DIVERGING = [
     ["#1D7324", "#9BBF30", "#FFFFFF", "#00B3A4", "#1F4B99"],
 ];
 
-export interface IColorSchemeProps {
+export interface ColorSchemeProps {
     schemes: Array<{ label: string; palettes: string[][]; diverging?: boolean }>;
     steps?: number;
 }
 
-export interface IColorSchemeState {
+export interface ColorSchemeState {
     activePalette?: number;
     activeSchema?: number;
     steps?: number;
 }
 
-export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSchemeState> {
-    public state: IColorSchemeState = {
+export class ColorScheme extends React.PureComponent<ColorSchemeProps, ColorSchemeState> {
+    public state: ColorSchemeState = {
         activePalette: 0,
         activeSchema: 0,
         steps: this.props.steps || 5,

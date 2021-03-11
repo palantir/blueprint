@@ -26,16 +26,16 @@ const EXPLOSION_DELAY = 150;
 
 -------------------------------------------------*/
 
-export type IMatrixTuple = number[];
+export type MatrixTuple = number[];
 
 export class Matrix {
-    private static POOL: IMatrixTuple = new Array<number>(16);
+    private static POOL: MatrixTuple = new Array<number>(16);
 
-    private static IDENTITY: IMatrixTuple = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    private static IDENTITY: MatrixTuple = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
-    private saved: IMatrixTuple;
+    private saved: MatrixTuple;
 
-    public constructor(public m?: IMatrixTuple) {
+    public constructor(public m?: MatrixTuple) {
         if (this.m == null) {
             this.m = Matrix.IDENTITY.slice();
         }
@@ -60,7 +60,7 @@ export class Matrix {
         return this.matrix(m.m);
     }
 
-    public matrix(m: IMatrixTuple) {
+    public matrix(m: MatrixTuple) {
         const c = Matrix.POOL;
         for (const j of [0, 1, 2, 3]) {
             for (const i of [0, 4, 8, 12]) {
@@ -109,7 +109,7 @@ export class Matrix {
     }
 }
 
-const M = (m?: IMatrixTuple) => new Matrix(m);
+const M = (m?: MatrixTuple) => new Matrix(m);
 
 // eslint-disable-line no-shadow
 export abstract class Transformable<T extends Transformable<any>> {
@@ -285,9 +285,9 @@ export const P = (x?: number, y?: number, z?: number) => new Point(x, y, z);
 
 -------------------------------------------------*/
 
-export type IBounds = [number, number, number, number];
+export type Bounds = [number, number, number, number];
 
-export interface ICompositeOverlays {
+export interface CompositeOverlays {
     [composite: string]: string;
 }
 
@@ -305,7 +305,7 @@ export class Face extends Transformable<Face> {
         ctx.closePath();
     }
 
-    public static BOUNDS(points: Point[]): IBounds {
+    public static BOUNDS(points: Point[]): Bounds {
         const minX = -1 + Math.floor(points.reduce((r, p) => (p.x < r.x ? p : r), points[0]).x);
         const maxX = 1 + Math.ceil(points.reduce((r, p) => (p.x > r.x ? p : r), points[0]).x);
         const minY = -1 + Math.floor(points.reduce((r, p) => (p.y < r.y ? p : r), points[0]).y);
@@ -317,7 +317,7 @@ export class Face extends Transformable<Face> {
 
     public stroke: string;
 
-    public overlays: ICompositeOverlays;
+    public overlays: CompositeOverlays;
 
     public projected: Point[];
 
@@ -325,7 +325,7 @@ export class Face extends Transformable<Face> {
 
     public dropShadowOf: Face;
 
-    public bounds: IBounds;
+    public bounds: Bounds;
 
     public lineDash: number[];
 
@@ -423,7 +423,7 @@ export class Shape extends Transformable<Shape> {
     }
 }
 
-export type ISegment = [Point, Point];
+export type Segment = [Point, Point];
 
 export class Corner extends Transformable<Corner> {
     public static CORNER() {
@@ -437,7 +437,7 @@ export class Corner extends Transformable<Corner> {
         );
     }
 
-    public static PATH(ctx: CanvasRenderingContext2D, segments: ISegment[]) {
+    public static PATH(ctx: CanvasRenderingContext2D, segments: Segment[]) {
         ctx.beginPath();
         for (const seg of segments) {
             ctx.moveTo(seg[0].x, seg[0].y);
@@ -445,11 +445,11 @@ export class Corner extends Transformable<Corner> {
         }
     }
 
-    public projected: ISegment[];
+    public projected: Segment[];
 
     public projectedCenter: Point;
 
-    public constructor(public segments: ISegment[], public center: Point) {
+    public constructor(public segments: Segment[], public center: Point) {
         super();
     }
 
@@ -463,7 +463,7 @@ export class Corner extends Transformable<Corner> {
     }
 }
 
-export type IRenderableVisitor = (object: any, transform: Matrix) => void;
+export type RenderableVisitor = (object: any, transform: Matrix) => void;
 
 export class SceneModel extends Transformable<SceneModel> {
     public static ISOMETRIC = (() => {
@@ -509,7 +509,7 @@ export class SceneModel extends Transformable<SceneModel> {
         return model;
     }
 
-    public eachRenderable(transform: Matrix, callback: IRenderableVisitor) {
+    public eachRenderable(transform: Matrix, callback: RenderableVisitor) {
         transform = this.xform.copy().multiply(transform);
         for (const child of this.children) {
             if (child instanceof SceneModel) {
@@ -530,16 +530,16 @@ export class SceneModel extends Transformable<SceneModel> {
 // Transitioners
 // # https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
 export const T = {
-    EASE_IN: (callback: IAnimatedCallback): IAnimatedCallback => {
+    EASE_IN: (callback: AnimatedCallback): AnimatedCallback => {
         return t => callback(t * t * t * t * t);
     },
-    EASE_IN_EXP: (e: number, callback: IAnimatedCallback): IAnimatedCallback => {
+    EASE_IN_EXP: (e: number, callback: AnimatedCallback): AnimatedCallback => {
         return t => callback(t === 0 ? 0 : Math.pow(e, 10 * (t - 1)));
     },
-    EASE_IN_OUT: (callback: IAnimatedCallback): IAnimatedCallback => {
+    EASE_IN_OUT: (callback: AnimatedCallback): AnimatedCallback => {
         return t => callback((t *= 2) < 1 ? (1 / 2) * t * t * t * t : (-1 / 2) * ((t -= 2) * t * t * t - 2));
     },
-    EASE_IN_OUT_EXP: (e: number, callback: IAnimatedCallback): IAnimatedCallback => {
+    EASE_IN_OUT_EXP: (e: number, callback: AnimatedCallback): AnimatedCallback => {
         return t => {
             if (t === 0) {
                 callback(0);
@@ -552,37 +552,37 @@ export const T = {
             }
         };
     },
-    EASE_OUT: (callback: IAnimatedCallback): IAnimatedCallback => {
+    EASE_OUT: (callback: AnimatedCallback): AnimatedCallback => {
         return t => callback((t = t - 1) * t * t * t * t + 1);
     },
-    EASE_OUT_EXP: (e: number, callback: IAnimatedCallback): IAnimatedCallback => {
+    EASE_OUT_EXP: (e: number, callback: AnimatedCallback): AnimatedCallback => {
         return t => callback(t === 1 ? 1 : 1 - Math.pow(e, -10 * t));
     },
-    INTERPOLATE: (from: number, to: number, callback: IAnimatedCallback): IAnimatedCallback => {
+    INTERPOLATE: (from: number, to: number, callback: AnimatedCallback): AnimatedCallback => {
         return (t: number) => callback((to - from) * t + from);
     },
 };
 
-export interface ITickable {
+export interface Tickable {
     tick: (t: number) => boolean;
 }
 
-export type IAnimatedCallback = (t: number) => void;
+export type AnimatedCallback = (t: number) => void;
 
-export interface IKeyFrame {
+export interface KeyFrame {
     duration: number;
-    callback?: IAnimatedCallback;
+    callback?: AnimatedCallback;
     startTime?: number;
 }
 
-export type IRenderCallback = () => void;
+export type RenderCallback = () => void;
 
-export class Accumulator implements ITickable {
+export class Accumulator implements Tickable {
     public alpha = 0.08; // convergence ratio
 
     public value: number;
 
-    public constructor(public target: number, public callback?: IAnimatedCallback) {
+    public constructor(public target: number, public callback?: AnimatedCallback) {
         this.value = this.target;
     }
 
@@ -595,20 +595,20 @@ export class Accumulator implements ITickable {
     }
 }
 
-export class Timeline implements ITickable {
-    private queue: IKeyFrame[] = [];
+export class Timeline implements Tickable {
+    private queue: KeyFrame[] = [];
 
     public reset() {
         this.queue.length = 0;
         return this;
     }
 
-    public after(duration: number, callback?: IRenderCallback) {
+    public after(duration: number, callback?: RenderCallback) {
         this.tween(duration).tween(0, callback);
         return this;
     }
 
-    public tween(duration: number, callback?: IAnimatedCallback) {
+    public tween(duration: number, callback?: AnimatedCallback) {
         this.queue.push({ duration, callback });
         return this;
     }
@@ -641,8 +641,8 @@ export class Timeline implements ITickable {
     }
 }
 
-export class Ticker implements ITickable {
-    public constructor(private callback: IRenderCallback) {}
+export class Ticker implements Tickable {
+    public constructor(private callback: RenderCallback) {}
 
     public tick(_elapsed: number) {
         this.callback();
@@ -651,19 +651,19 @@ export class Ticker implements ITickable {
 }
 
 export class Animator {
-    private tickables: ITickable[] = [];
+    private tickables: Tickable[] = [];
 
     private startTime: number = 0;
 
     private frameId: number | undefined;
 
-    public constructor(private render: IRenderCallback) {}
+    public constructor(private render: RenderCallback) {}
 
     public accumulator(target: number) {
         return this.add(new Accumulator(target));
     }
 
-    public ticker(callback: IRenderCallback) {
+    public ticker(callback: RenderCallback) {
         return this.add(new Ticker(callback));
     }
 
@@ -685,7 +685,7 @@ export class Animator {
         this.frameId = undefined;
     }
 
-    private add<Type extends ITickable>(tickable: Type) {
+    private add<Type extends Tickable>(tickable: Type) {
         this.tickables.push(tickable);
         return tickable;
     }
@@ -721,7 +721,7 @@ export class CanvasBuffer {
         this.ctx = canvas.getContext("2d");
     }
 
-    public clear(color: string, bounds: IBounds) {
+    public clear(color: string, bounds: Bounds) {
         if (bounds == null) {
             bounds = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
         }
@@ -738,7 +738,7 @@ export class CanvasBuffer {
         this.ctx.canvas.height = ctx.canvas.height;
     }
 
-    public copyTo(ctx: CanvasRenderingContext2D, bounds: IBounds) {
+    public copyTo(ctx: CanvasRenderingContext2D, bounds: Bounds) {
         if (bounds == null) {
             bounds = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
         }
@@ -905,7 +905,7 @@ export class SceneRenderer extends CanvasRenderer {
             } else if (object instanceof Corner) {
                 const corner = object;
                 corner.projected = corner.segments.map(
-                    segment => segment.map(p => p.copy().transform(transform)) as ISegment,
+                    segment => segment.map(p => p.copy().transform(transform)) as Segment,
                 );
                 corner.projectedCenter = corner.center.copy().transform(transform);
                 corners.push(corner);

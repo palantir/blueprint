@@ -25,15 +25,15 @@ import {
     DialogStep,
     Switch,
     Classes,
-    IButtonProps,
+    ButtonProps,
     RadioGroup,
     Radio,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
-export interface IMultistepDialogExampleState {
+export interface MultistepDialogExampleState {
     autoFocus: boolean;
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
@@ -44,10 +44,10 @@ export interface IMultistepDialogExampleState {
 }
 
 export class MultistepDialogExample extends React.PureComponent<
-    IExampleProps<IBlueprintExampleData>,
-    IMultistepDialogExampleState
+    ExampleProps<BlueprintExampleData>,
+    MultistepDialogExampleState
 > {
-    public state: IMultistepDialogExampleState = {
+    public state: MultistepDialogExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
@@ -67,7 +67,7 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
     public render() {
-        const finalButtonProps: Partial<IButtonProps> = {
+        const finalButtonProps: Partial<ButtonProps> = {
             intent: "primary",
             onClick: this.handleClose,
             text: "Close",
@@ -126,12 +126,12 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleSelectionChange = handleStringChange(value => this.setState({ value }));
 }
 
-export interface ISelectPanelProps {
+export interface SelectPanelProps {
     selectedValue: string;
     onChange: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
-const SelectPanel: React.FunctionComponent<ISelectPanelProps> = props => (
+const SelectPanel: React.FunctionComponent<SelectPanelProps> = props => (
     <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
         <p>Use this dialog to divide content into multiple sequential steps.</p>
         <p>Select one of the options below in order to proceed to the next step:</p>
@@ -143,11 +143,11 @@ const SelectPanel: React.FunctionComponent<ISelectPanelProps> = props => (
     </div>
 );
 
-export interface IConfirmPanelProps {
+export interface ConfirmPanelProps {
     selectedValue: string;
 }
 
-const ConfirmPanel: React.FunctionComponent<IConfirmPanelProps> = props => {
+const ConfirmPanel: React.FunctionComponent<ConfirmPanelProps> = props => {
     return (
         <div className={classNames(Classes.DIALOG_BODY, "docs-multistep-dialog-example-step")}>
             <p>

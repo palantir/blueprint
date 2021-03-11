@@ -21,17 +21,17 @@ import {
     getKeyCombo,
     getKeyComboString,
     normalizeKeyCombo,
-    IKeyCombo,
+    KeyCombo,
     parseKeyCombo,
 } from "../../src/components/hotkeys/hotkeyParser";
 
 describe("HotkeysParser", () => {
     describe("KeyCombo parser", () => {
-        interface IComboTest {
+        interface ComboTest {
             combo: string;
             stringKeyCombo: string;
-            eventKeyCombo: IKeyCombo;
-            parsedKeyCombo: IKeyCombo;
+            eventKeyCombo: KeyCombo;
+            parsedKeyCombo: KeyCombo;
         }
 
         const makeComboTest = (combo: string, event: KeyboardEvent) => {
@@ -43,7 +43,7 @@ describe("HotkeysParser", () => {
             };
         };
 
-        const verifyCombos = (tests: IComboTest[], verifyStrings = true) => {
+        const verifyCombos = (tests: ComboTest[], verifyStrings = true) => {
             for (const test of tests) {
                 if (verifyStrings) {
                     expect(test.stringKeyCombo).to.equal(test.combo);
@@ -87,7 +87,7 @@ describe("HotkeysParser", () => {
         });
 
         it("matches modifiers only", () => {
-            const tests = [] as IComboTest[];
+            const tests = [] as ComboTest[];
             const ignored = 16;
             tests.push(makeComboTest("shift", { shiftKey: true, which: ignored } as any));
             tests.push(
@@ -109,7 +109,7 @@ describe("HotkeysParser", () => {
         });
 
         it("adds shift to keys that imply it", () => {
-            const tests = [] as IComboTest[];
+            const tests = [] as ComboTest[];
             tests.push(makeComboTest("!", ({ shiftKey: true, which: 49 } as any) as KeyboardEvent));
             tests.push(makeComboTest("@", ({ shiftKey: true, which: 50 } as any) as KeyboardEvent));
             tests.push(makeComboTest("{", ({ shiftKey: true, which: 219 } as any) as KeyboardEvent));

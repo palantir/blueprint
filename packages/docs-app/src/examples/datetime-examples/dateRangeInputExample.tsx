@@ -17,19 +17,19 @@
 import React from "react";
 
 import { H5, Switch } from "@blueprintjs/core";
-import { DateRange, DateRangeInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { DateRange, DateRangeInput, DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { MomentDateRange } from "./common/momentDate";
 
-export interface IDateRangeInputExampleState {
+export interface DateRangeInputExampleState {
     allowSingleDayRange: boolean;
     closeOnSelection: boolean;
     contiguousCalendarMonths: boolean;
     disabled: boolean;
     enableTimePicker: boolean;
-    format: IDateFormatProps;
+    format: DateFormatProps;
     range: DateRange;
     reverseMonthAndYearMenus: boolean;
     selectAllOnFocus: boolean;
@@ -38,8 +38,8 @@ export interface IDateRangeInputExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DateRangeInputExample extends React.PureComponent<IExampleProps, IDateRangeInputExampleState> {
-    public state: IDateRangeInputExampleState = {
+export class DateRangeInputExample extends React.PureComponent<ExampleProps, DateRangeInputExampleState> {
+    public state: DateRangeInputExampleState = {
         allowSingleDayRange: false,
         closeOnSelection: false,
         contiguousCalendarMonths: true,
@@ -151,7 +151,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
         );
     }
 
-    private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
+    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
 
     private handleRangeChange = (range: DateRange) => this.setState({ range });
 }

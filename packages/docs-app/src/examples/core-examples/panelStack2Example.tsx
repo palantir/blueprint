@@ -17,7 +17,7 @@
 import React, { useCallback, useState } from "react";
 
 import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 interface PanelExampleInfo {
     panelNumber: number;
@@ -51,7 +51,7 @@ const initialPanel: Panel<PanelExampleInfo> = {
     title: "Panel 1",
 };
 
-export const PanelStack2Example: React.FC<IExampleProps> = props => {
+export const PanelStack2Example: React.FC<ExampleProps> = props => {
     const [activePanelOnly, setActivePanelOnly] = useState(true);
     const [showHeader, setShowHeader] = useState(true);
     const [currentPanelStack, setCurrentPanelStack] = useState([initialPanel]);

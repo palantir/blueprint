@@ -23,9 +23,9 @@ import {
     AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
-    IElementRefProps,
-    IIntentProps,
-    IProps,
+    ElementRefProps,
+    IntentProps,
+    Props,
     MaybeElement,
     Utils,
 } from "../../common";
@@ -33,10 +33,10 @@ import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
 
-export interface ITagProps
-    extends IProps,
-        IIntentProps,
-        IElementRefProps<HTMLSpanElement>,
+export interface TagProps
+    extends Props,
+        IntentProps,
+        ElementRefProps<HTMLSpanElement>,
         React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Whether the tag should appear in an active state.
@@ -99,7 +99,7 @@ export interface ITagProps
      * Click handler for remove button.
      * The remove button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: TagProps) => void;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the children. */
     rightIcon?: IconName | MaybeElement;
@@ -117,7 +117,7 @@ export interface ITagProps
     htmlTitle?: string;
 }
 
-export class Tag extends AbstractPureComponent<ITagProps> {
+export class Tag extends AbstractPureComponent<TagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {

@@ -19,22 +19,22 @@ import React from "react";
 
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { Button, IButtonProps } from "../button/buttons";
-import { Dialog, IDialogProps } from "./dialog";
-import { DialogStep, DialogStepId, IDialogStepProps } from "./dialogStep";
+import { Button, ButtonProps } from "../button/buttons";
+import { Dialog, DialogProps } from "./dialog";
+import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
 
-type DialogStepElement = React.ReactElement<IDialogStepProps & { children: React.ReactNode }>;
+type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
-export interface IMultistepDialogProps extends IDialogProps {
+export interface MultistepDialogProps extends DialogProps {
     /**
      * Props for the button to display on the final step.
      */
-    finalButtonProps?: Partial<IButtonProps>;
+    finalButtonProps?: Partial<ButtonProps>;
 
     /**
      * Props for the next button.
      */
-    nextButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
+    nextButtonProps?: Partial<Pick<ButtonProps, "disabled" | "text">>;
 
     /**
      * A callback that is invoked when the user selects a different step by clicking on back, next, or a step itself.
@@ -52,7 +52,7 @@ export interface IMultistepDialogProps extends IDialogProps {
     resetOnClose?: boolean;
 }
 
-interface IMultistepDialogState {
+interface MultistepDialogState {
     lastViewedIndex: number;
     selectedIndex: number;
 }
@@ -66,15 +66,15 @@ const INITIAL_STATE = {
     selectedIndex: 0,
 };
 
-export class MultistepDialog extends AbstractPureComponent<IMultistepDialogProps, IMultistepDialogState> {
+export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps, MultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 
-    public static defaultProps: Partial<IMultistepDialogProps> = {
+    public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
     };
 
-    public state: IMultistepDialogState = INITIAL_STATE;
+    public state: MultistepDialogState = INITIAL_STATE;
 
     public render() {
         return (
@@ -87,7 +87,7 @@ export class MultistepDialog extends AbstractPureComponent<IMultistepDialogProps
         );
     }
 
-    public componentDidUpdate(prevProps: IMultistepDialogProps) {
+    public componentDidUpdate(prevProps: MultistepDialogProps) {
         if (
             (prevProps.resetOnClose === undefined || prevProps.resetOnClose) &&
             !prevProps.isOpen &&
@@ -206,7 +206,7 @@ export class MultistepDialog extends AbstractPureComponent<IMultistepDialogProps
     }
 
     /** Filters children to only `<DialogStep>`s */
-    private getDialogStepChildren(props: IMultistepDialogProps & { children?: React.ReactNode } = this.props) {
+    private getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode } = this.props) {
         return React.Children.toArray(props.children).filter(isDialogStepElement);
     }
 }

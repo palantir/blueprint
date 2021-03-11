@@ -20,11 +20,11 @@ import { findDOMNode } from "react-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
-export interface IOverlayableProps extends IOverlayLifecycleProps {
+export interface OverlayableProps extends OverlayLifecycleProps {
     /**
      * Whether the overlay should acquire application focus when it first opens.
      *
@@ -109,7 +109,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
     onClose?: (event: React.SyntheticEvent<HTMLElement>) => void;
 }
 
-export interface IOverlayLifecycleProps {
+export interface OverlayLifecycleProps {
     /**
      * Lifecycle method invoked just before the CSS _close_ transition begins on
      * a child. Receives the DOM element of the child being closed.
@@ -137,7 +137,7 @@ export interface IOverlayLifecycleProps {
     onOpened?: (node: HTMLElement) => void;
 }
 
-export interface IBackdropProps {
+export interface BackdropProps {
     /** CSS class names to apply to backdrop element. */
     backdropClassName?: string;
 
@@ -160,7 +160,7 @@ export interface IBackdropProps {
     hasBackdrop?: boolean;
 }
 
-export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps {
+export interface OverlayProps extends OverlayableProps, BackdropProps, Props {
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -176,14 +176,14 @@ export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps
     transitionName?: string;
 }
 
-export interface IOverlayState {
+export interface OverlayState {
     hasEverOpened?: boolean;
 }
 
-export class Overlay extends AbstractPureComponent<IOverlayProps, IOverlayState> {
+export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
-    public static defaultProps: IOverlayProps = {
+    public static defaultProps: OverlayProps = {
         autoFocus: true,
         backdropProps: {},
         canEscapeKeyClose: true,
@@ -197,7 +197,7 @@ export class Overlay extends AbstractPureComponent<IOverlayProps, IOverlayState>
         usePortal: true,
     };
 
-    public static getDerivedStateFromProps({ isOpen: hasEverOpened }: IOverlayProps) {
+    public static getDerivedStateFromProps({ isOpen: hasEverOpened }: OverlayProps) {
         if (hasEverOpened) {
             return { hasEverOpened };
         }
@@ -208,7 +208,7 @@ export class Overlay extends AbstractPureComponent<IOverlayProps, IOverlayState>
 
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
 
-    public state: IOverlayState = {
+    public state: OverlayState = {
         hasEverOpened: this.props.isOpen,
     };
 
@@ -276,7 +276,7 @@ export class Overlay extends AbstractPureComponent<IOverlayProps, IOverlayState>
         }
     }
 
-    public componentDidUpdate(prevProps: IOverlayProps) {
+    public componentDidUpdate(prevProps: OverlayProps) {
         if (prevProps.isOpen && !this.props.isOpen) {
             this.overlayWillClose();
         } else if (!prevProps.isOpen && this.props.isOpen) {

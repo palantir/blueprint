@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import React from "react";
 
-import { HTMLDivProps, IProps, Keys, removeNonHTMLProps } from "@blueprintjs/core";
+import { HTMLDivProps, Props, Keys, removeNonHTMLProps } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
-export interface IClickToCopyProps extends IProps, HTMLDivProps {
+export interface ClickToCopyProps extends Props, HTMLDivProps {
     /**
      * Additional class names to apply after value has been copied
      *
@@ -32,7 +32,7 @@ export interface IClickToCopyProps extends IProps, HTMLDivProps {
     value: string;
 }
 
-export interface IClickToCopyState {
+export interface ClickToCopyState {
     hasCopied?: boolean;
 }
 
@@ -46,13 +46,13 @@ export interface IClickToCopyState {
  *  - `[data-copied-message="<message>"]` will be shown when the element has been copied.
  * The message is reset to default when the user mouses off the element after copying it.
  */
-export class ClickToCopy extends React.PureComponent<IClickToCopyProps, IClickToCopyState> {
-    public static defaultProps: IClickToCopyProps = {
+export class ClickToCopy extends React.PureComponent<ClickToCopyProps, ClickToCopyState> {
+    public static defaultProps: ClickToCopyProps = {
         copiedClassName: "docs-clipboard-copied",
         value: "",
     };
 
-    public state: IClickToCopyState = {
+    public state: ClickToCopyState = {
         hasCopied: false,
     };
 

@@ -17,14 +17,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
-import { IDragHandler } from "./dragTypes";
+import { DragHandler } from "./dragTypes";
 
-export interface IDraggableProps extends IProps, IDragHandler {}
+export interface DraggableProps extends Props, DragHandler {}
 
-const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof IDraggableProps>;
+const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof DraggableProps>;
 
 /**
  * This component provides a simple interface for combined drag and/or click
@@ -51,7 +51,7 @@ const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof
  * If `false` is returned from the onActivate callback, no further events
  * will be fired until the next activation.
  */
-export class Draggable extends React.PureComponent<IDraggableProps> {
+export class Draggable extends React.PureComponent<DraggableProps> {
     public static defaultProps = {
         preventDefault: true,
         stopPropagation: false,
@@ -63,7 +63,7 @@ export class Draggable extends React.PureComponent<IDraggableProps> {
         return React.Children.only(this.props.children);
     }
 
-    public componentDidUpdate(prevProps: IDraggableProps) {
+    public componentDidUpdate(prevProps: DraggableProps) {
         const propsWhitelist = { include: REATTACH_PROPS_KEYS };
         if (this.events && !CoreUtils.shallowCompareKeys(prevProps, this.props, propsWhitelist)) {
             // HACKHACK: see https://github.com/palantir/blueprint/issues/3979

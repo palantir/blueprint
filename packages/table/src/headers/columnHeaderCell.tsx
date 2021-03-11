@@ -21,19 +21,19 @@ import {
     AbstractPureComponent,
     Icon,
     IconName,
-    IProps,
+    Props,
     Popover,
     Position,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
+import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
-import { HeaderCell, IHeaderCellProps } from "./headerCell";
+import { HeaderCell, HeaderCellProps } from "./headerCell";
 
-export interface IColumnNameProps {
+export interface ColumnNameProps {
     /**
      * The name displayed in the header of the column.
      */
@@ -52,10 +52,10 @@ export interface IColumnNameProps {
      * The callback will also receive the column index if an `index` was originally
      * provided via props.
      */
-    nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
+    nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
-export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
+export interface ColumnHeaderCellProps extends HeaderCellProps, ColumnNameProps {
     /**
      * Specifies if the column is reorderable.
      */
@@ -74,7 +74,7 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
     menuIcon?: IconName | JSX.Element;
 }
 
-export interface IColumnHeaderCellState {
+export interface ColumnHeaderCellState {
     isActive?: boolean;
 }
 
@@ -82,13 +82,13 @@ export function HorizontalCellDivider(): JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }
 
-export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellProps, IColumnHeaderCellState> {
-    public static defaultProps: IColumnHeaderCellProps = {
+export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProps, ColumnHeaderCellState> {
+    public static defaultProps: ColumnHeaderCellProps = {
         isActive: false,
         menuIcon: "chevron-down",
     };
 
-    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
+    public static contextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
@@ -106,7 +106,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
         );
     }
 
-    public context: IColumnInteractionBarContextTypes;
+    public context: ColumnInteractionBarContextTypes;
 
     public state = {
         isActive: false,
@@ -114,16 +114,16 @@ export class ColumnHeaderCell extends AbstractPureComponent<IColumnHeaderCellPro
 
     public render() {
         const {
-            // from IColumnHeaderCellProps
+            // from ColumnHeaderCellProps
             enableColumnReordering,
             isColumnSelected,
             menuIcon,
 
-            // from IColumnNameProps
+            // from ColumnNameProps
             name,
             nameRenderer,
 
-            // from IHeaderProps
+            // from HeaderProps
             ...spreadableProps
         } = this.props;
 

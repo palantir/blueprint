@@ -16,18 +16,18 @@
 
 import React from "react";
 
-import { Classes, Icon, Intent, ITreeNode, Tree } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Classes, Icon, Intent, TreeNode, Tree } from "@blueprintjs/core";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Tooltip2 } from "@blueprintjs/popover2";
 
-export interface ITreeExampleState {
-    nodes: ITreeNode[];
+export interface TreeExampleState {
+    nodes: TreeNode[];
 }
 
 // use Component so it re-renders everytime: `nodes` are not a primitive type
 // and therefore aren't included in shallow prop comparison
-export class TreeExample extends React.Component<IExampleProps, ITreeExampleState> {
-    public state: ITreeExampleState = { nodes: INITIAL_STATE };
+export class TreeExample extends React.Component<ExampleProps, TreeExampleState> {
+    public state: TreeExampleState = { nodes: INITIAL_STATE };
 
     public render() {
         return (
@@ -43,7 +43,7 @@ export class TreeExample extends React.Component<IExampleProps, ITreeExampleStat
         );
     }
 
-    private handleNodeClick = (nodeData: ITreeNode, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
+    private handleNodeClick = (nodeData: TreeNode, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
         const originallySelected = nodeData.isSelected;
         if (!e.shiftKey) {
             this.forEachNode(this.state.nodes, n => (n.isSelected = false));
@@ -52,17 +52,17 @@ export class TreeExample extends React.Component<IExampleProps, ITreeExampleStat
         this.setState(this.state);
     };
 
-    private handleNodeCollapse = (nodeData: ITreeNode) => {
+    private handleNodeCollapse = (nodeData: TreeNode) => {
         nodeData.isExpanded = false;
         this.setState(this.state);
     };
 
-    private handleNodeExpand = (nodeData: ITreeNode) => {
+    private handleNodeExpand = (nodeData: TreeNode) => {
         nodeData.isExpanded = true;
         this.setState(this.state);
     };
 
-    private forEachNode(nodes: ITreeNode[], callback: (node: ITreeNode) => void) {
+    private forEachNode(nodes: TreeNode[], callback: (node: TreeNode) => void) {
         if (nodes == null) {
             return;
         }
@@ -75,7 +75,7 @@ export class TreeExample extends React.Component<IExampleProps, ITreeExampleStat
 }
 
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
-const INITIAL_STATE: ITreeNode[] = [
+const INITIAL_STATE: TreeNode[] = [
     {
         id: 0,
         hasCaret: true,

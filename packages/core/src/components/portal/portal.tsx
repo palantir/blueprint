@@ -20,13 +20,13 @@ import ReactDOM from "react-dom";
 import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isFunction } from "../../common/utils";
 
 /** Detect if `React.createPortal()` API method does not exist. */
 const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
 
-export interface IPortalProps extends IProps {
+export interface PortalProps extends Props {
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */
@@ -40,17 +40,17 @@ export interface IPortalProps extends IProps {
     container?: HTMLElement;
 }
 
-export interface IPortalState {
+export interface PortalState {
     hasMounted: boolean;
 }
 
-export interface IPortalContext {
+export interface PortalContext {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
-    blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
+const REACT_CONTEXT_TYPES: ValidationMap<PortalContext> = {
+    blueprintPortalClassName: (obj: PortalContext, key: keyof PortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
         }
@@ -63,18 +63,18 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
-export class Portal extends React.Component<IPortalProps, IPortalState> {
+export class Portal extends React.Component<PortalProps, PortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 
     public static contextTypes = REACT_CONTEXT_TYPES;
 
-    public static defaultProps: IPortalProps = {
+    public static defaultProps: PortalProps = {
         container: typeof document !== "undefined" ? document.body : undefined,
     };
 
-    public context: IPortalContext = {};
+    public context: PortalContext = {};
 
-    public state: IPortalState = { hasMounted: false };
+    public state: PortalState = { hasMounted: false };
 
     private portalElement: HTMLElement | null = null;
 
@@ -107,7 +107,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         }
     }
 
-    public componentDidUpdate(prevProps: IPortalProps) {
+    public componentDidUpdate(prevProps: PortalProps) {
         // update className prop on portal DOM element
         if (this.portalElement != null && prevProps.className !== this.props.className) {
             if (prevProps.className !== undefined) {

@@ -17,12 +17,12 @@
 import React from "react";
 
 import { Button } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
 
 import { FileMenu } from "../core-examples/common/fileMenu";
 
-export class Popover2SizingExample extends React.PureComponent<IExampleProps> {
+export class Popover2SizingExample extends React.PureComponent<ExampleProps> {
     public static displayName = "Popover2SizingExample";
 
     public render() {

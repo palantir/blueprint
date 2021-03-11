@@ -18,7 +18,7 @@ import classNames from "classnames";
 import moment from "moment";
 import React from "react";
 
-import { Icon, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Icon, Intent, Props, Tag } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";
 
 const FORMAT = "dddd, LL";
@@ -38,7 +38,7 @@ export const MomentDate: React.FunctionComponent<{ date: Date; format?: string; 
 };
 
 export const MomentDateRange: React.FunctionComponent<
-    { range: DateRange; format?: string; withTime?: boolean } & IProps
+    { range: DateRange; format?: string; withTime?: boolean } & Props
 > = ({ className, range: [start, end], withTime = false, format = withTime ? FORMAT_TIME : FORMAT }) => (
     <div className={classNames("docs-date-range", className)}>
         <MomentDate withTime={withTime} date={start} format={format} />

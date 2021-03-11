@@ -18,15 +18,15 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 import { NavbarDivider } from "./navbarDivider";
 import { NavbarGroup } from "./navbarGroup";
 import { NavbarHeading } from "./navbarHeading";
 
-export { INavbarDividerProps } from "./navbarDivider";
+export { NavbarDividerProps } from "./navbarDivider";
 
 // allow the empty interface so we can label it clearly in the docs
-export interface INavbarProps extends IProps, HTMLDivProps {
+export interface NavbarProps extends Props, HTMLDivProps {
     /**
      * Whether this navbar should be fixed to the top of the viewport (using CSS `position: fixed`).
      */
@@ -36,7 +36,7 @@ export interface INavbarProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class Navbar extends AbstractPureComponent<INavbarProps> {
+export class Navbar extends AbstractPureComponent<NavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
     public static Divider = NavbarDivider;

@@ -17,7 +17,7 @@
 import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
 import { StrictModifier } from "react-popper";
 
-import { IOverlayableProps, IProps } from "@blueprintjs/core";
+import { OverlayableProps, Props } from "@blueprintjs/core";
 
 export { Boundary as PopperBoundary, Placement, placements as PlacementOptions };
 // copied from @popperjs/core, where it is not exported as public
@@ -26,7 +26,7 @@ export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 /**
  * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
  */
-export interface IPopover2TargetProps {
+export interface Popover2TargetProps {
     ref: React.Ref<any>;
 
     /** Whether the popover or tooltip is currently open. */
@@ -37,9 +37,9 @@ export interface IPopover2TargetProps {
  * Props shared between `Popover2` and `Tooltip2`.
  *
  * @template TProps HTML props interface for target element,
- *                  defaults to props for HTMLElement in IPopover2Props and ITooltip2Props
+ *                  defaults to props for HTMLElement in Popover2Props and Tooltip2Props
  */
-export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps {
+export interface Popover2SharedProps<TProps> extends OverlayableProps, Props {
     /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
      * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
@@ -151,7 +151,7 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
      *
      * Mutually exclusive with children, targetClassName, and targetTagName.
      */
-    renderTarget?: (props: IPopover2TargetProps & TProps) => JSX.Element;
+    renderTarget?: (props: Popover2TargetProps & TProps) => JSX.Element;
 
     /**
      * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.

@@ -23,8 +23,8 @@ import {
     H5,
     HTMLSelect,
     Intent,
-    IToasterProps,
-    IToastProps,
+    ToasterProps,
+    ToastProps,
     Label,
     NumericInput,
     Position,
@@ -33,11 +33,11 @@ import {
     Toaster,
     ToasterPosition,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
-type IToastDemo = IToastProps & { button: string };
+type ToastDemo = ToastProps & { button: string };
 
 const POSITIONS = [
     Position.TOP_LEFT,
@@ -48,15 +48,15 @@ const POSITIONS = [
     Position.BOTTOM_RIGHT,
 ];
 
-export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IToasterProps> {
-    public state: IToasterProps = {
+export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, ToasterProps> {
+    public state: ToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
         usePortal: true,
     };
 
-    private TOAST_BUILDERS: IToastDemo[] = [
+    private TOAST_BUILDERS: ToastDemo[] = [
         {
             action: {
                 href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
@@ -162,12 +162,12 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         );
     }
 
-    private renderToastDemo = (toast: IToastDemo, index: number) => {
+    private renderToastDemo = (toast: ToastDemo, index: number) => {
         // tslint:disable-next-line:jsx-no-lambda
         return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
     };
 
-    private renderProgress(amount: number): IToastProps {
+    private renderProgress(amount: number): ToastProps {
         return {
             className: this.props.data.themeName,
             icon: "cloud-upload",
@@ -190,7 +190,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         };
     }
 
-    private addToast(toast: IToastProps) {
+    private addToast(toast: ToastProps) {
         toast.className = this.props.data.themeName;
         toast.timeout = 5000;
         this.toaster.show(toast);

@@ -16,8 +16,8 @@
 
 import React from "react";
 
-import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Button, H5, Intent, TagProps, MenuItem, Switch } from "@blueprintjs/core";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
 
 import {
@@ -25,33 +25,33 @@ import {
     arrayContainsFilm,
     createFilm,
     filmSelectProps,
-    IFilm,
+    Film,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmOption,
     TOP_100_FILMS,
 } from "./films";
 
-const FilmMultiSelect = MultiSelect.ofType<IFilm>();
+const FilmMultiSelect = MultiSelect.ofType<Film>();
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
-export interface IMultiSelectExampleState {
+export interface MultiSelectExampleState {
     allowCreate: boolean;
-    createdItems: IFilm[];
+    createdItems: Film[];
     fill: boolean;
-    films: IFilm[];
+    films: Film[];
     hasInitialContent: boolean;
     intent: boolean;
-    items: IFilm[];
+    items: Film[];
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
     resetOnSelect: boolean;
     tagMinimal: boolean;
 }
 
-export class MultiSelectExample extends React.PureComponent<IExampleProps, IMultiSelectExampleState> {
-    public state: IMultiSelectExampleState = {
+export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiSelectExampleState> {
+    public state: MultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],
         fill: false,
@@ -83,7 +83,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     public render() {
         const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
-        const getTagProps = (_value: React.ReactNode, index: number): ITagProps => ({
+        const getTagProps = (_value: React.ReactNode, index: number): TagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
         });
@@ -173,10 +173,10 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         );
     }
 
-    private renderTag = (film: IFilm) => film.title;
+    private renderTag = (film: Film) => film.title;
 
     // NOTE: not using Films.itemRenderer here so we can set icons.
-    private renderFilm: ItemRenderer<IFilm> = (film, { modifiers, handleClick }) => {
+    private renderFilm: ItemRenderer<Film> = (film, { modifiers, handleClick }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -197,19 +197,19 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         this.deselectFilm(index);
     };
 
-    private getSelectedFilmIndex(film: IFilm) {
+    private getSelectedFilmIndex(film: Film) {
         return this.state.films.indexOf(film);
     }
 
-    private isFilmSelected(film: IFilm) {
+    private isFilmSelected(film: Film) {
         return this.getSelectedFilmIndex(film) !== -1;
     }
 
-    private selectFilm(film: IFilm) {
+    private selectFilm(film: Film) {
         this.selectFilms([film]);
     }
 
-    private selectFilms(filmsToSelect: IFilm[]) {
+    private selectFilms(filmsToSelect: Film[]) {
         const { createdItems, films, items } = this.state;
 
         let nextCreatedItems = createdItems.slice();
@@ -251,7 +251,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         });
     }
 
-    private handleFilmSelect = (film: IFilm) => {
+    private handleFilmSelect = (film: Film) => {
         if (!this.isFilmSelected(film)) {
             this.selectFilm(film);
         } else {
@@ -259,13 +259,13 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         }
     };
 
-    private handleFilmsPaste = (films: IFilm[]) => {
+    private handleFilmsPaste = (films: Film[]) => {
         // On paste, don't bother with deselecting already selected values, just
         // add the new ones.
         this.selectFilms(films);
     };
 
-    private handleSwitchChange(prop: keyof IMultiSelectExampleState) {
+    private handleSwitchChange(prop: keyof MultiSelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {
             const checked = event.currentTarget.checked;
             this.setState(state => ({ ...state, [prop]: checked }));

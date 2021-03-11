@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-import { IKssPluginData, ITag } from "@documentalist/client";
+import { KssPluginData, Tag } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../common/context";
 import { Example } from "../components/example";
 
-export interface ICssExampleState {
+export interface CssExampleState {
     modifiers: Set<string>;
 }
 
-export class CssExample extends React.PureComponent<ITag> {
+export class CssExample extends React.PureComponent<Tag> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.CssExample";
 
-    public context: IDocumentationContext | undefined;
+    public context: DocumentationContext | undefined;
 
-    public state: ICssExampleState = { modifiers: new Set<string>() };
+    public state: CssExampleState = { modifiers: new Set<string>() };
 
     public render() {
         const { value } = this.props;
-        const { css } = this.context?.getDocsData() as IKssPluginData;
+        const { css } = this.context?.getDocsData() as KssPluginData;
         if (css == null || css[value] == null) {
             return null;
         }

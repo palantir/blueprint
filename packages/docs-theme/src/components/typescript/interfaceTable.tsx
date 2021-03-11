@@ -17,37 +17,37 @@
 import {
     isTag,
     isTsProperty,
-    ITsClass,
-    ITsInterface,
-    ITsMethod,
-    ITsProperty,
-    ITsSignature,
+    TsClass,
+    TsInterface,
+    TsMethod,
+    TsProperty,
+    TsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Classes, Intent, Props, Tag } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IInterfaceTableProps extends IProps {
-    data: ITsClass | ITsInterface;
+export interface InterfaceTableProps extends Props {
+    data: TsClass | TsInterface;
     title: string;
 }
 
 // rendered inside RUNNING_TEXT
 /* eslint-disable @blueprintjs/html-components */
-export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
+export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.InterfaceTable";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { data, title } = this.props;
@@ -67,7 +67,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         );
     }
 
-    private renderPropRow = (entry: ITsProperty | ITsMethod) => {
+    private renderPropRow = (entry: TsProperty | TsMethod) => {
         const { renderBlock, renderType } = this.context;
         const {
             flags: { isDeprecated, isExternal, isOptional },
@@ -115,7 +115,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         );
     };
 
-    private renderIndexSignature(entry?: ITsSignature) {
+    private renderIndexSignature(entry?: TsSignature) {
         if (entry == null) {
             return null;
         }
@@ -136,7 +136,7 @@ export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
         );
     }
 
-    private renderTags(entry: ITsProperty | ITsMethod) {
+    private renderTags(entry: TsProperty | TsMethod) {
         const { renderType } = this.context;
         const {
             flags: { isDeprecated, isOptional },

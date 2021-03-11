@@ -21,12 +21,12 @@ import * as Classes from "../src/common/classes";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 
-interface ITableLoadingOptionsTesterProps {
+interface TableLoadingOptionsTesterProps {
     columnLoadingOptions: ColumnLoadingOption[];
     tableLoadingOptions: TableLoadingOption[];
 }
 
-class TableLoadingOptionsTester extends React.Component<ITableLoadingOptionsTesterProps> {
+class TableLoadingOptionsTester extends React.Component<TableLoadingOptionsTesterProps> {
     public static isCellLoading = (index: number) => {
         if (index === 0) {
             return true;

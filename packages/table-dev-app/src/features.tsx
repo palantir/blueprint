@@ -28,9 +28,9 @@ import {
     CopyCellsMenuItem,
     EditableCell,
     EditableName,
-    IColumnHeaderCellProps,
-    IMenuContext,
-    IRegion,
+    ColumnHeaderCellProps,
+    MenuContext,
+    Region,
     JSONFormat,
     RegionCardinality,
     Regions,
@@ -172,7 +172,7 @@ class FormatsTable extends React.Component {
 
 ReactDOM.render(<FormatsTable />, document.getElementById("table-formats"));
 
-interface IEditableTableState {
+interface EditableTableState {
     intents: Intent[];
     names: string[];
     sparseCellData: { [key: string]: string };
@@ -180,12 +180,12 @@ interface IEditableTableState {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-class EditableTable extends React.Component<{}, IEditableTableState> {
+class EditableTable extends React.Component<{}, EditableTableState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
 
-    public state: IEditableTableState = {
+    public state: EditableTableState = {
         intents: [],
         names: ["Please", "Rename", "Me"],
         sparseCellData: {},
@@ -363,11 +363,11 @@ class RowSelectableTable extends React.Component {
         this.setState({ selectedRegions: [] });
     };
 
-    private handleSelection = (selectedRegions: IRegion[]) => {
+    private handleSelection = (selectedRegions: Region[]) => {
         this.setState({ selectedRegions });
     };
 
-    private selectedRegionTransform = (region: IRegion) => {
+    private selectedRegionTransform = (region: Region) => {
         // convert cell selection to row selection
         if (Regions.getRegionCardinality(region) === RegionCardinality.CELLS) {
             return Regions.row(region.rows[0], region.rows[1]);
@@ -450,7 +450,7 @@ ReactDOM.render(
     document.getElementById("table-1"),
 );
 
-const bodyContextMenuRenderer = (context: IMenuContext) => {
+const bodyContextMenuRenderer = (context: MenuContext) => {
     const getCellData = (row: number, col: number) => {
         return Utils.toBase26Alpha(col) + (row + 1);
     };
@@ -554,7 +554,7 @@ ReactDOM.render(
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<IColumnHeaderCellProps> {
+class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
     public render() {
         return <ColumnHeaderCell {...this.props}>Hey dawg.</ColumnHeaderCell>;
     }
@@ -612,7 +612,7 @@ ReactDOM.render(
     document.getElementById("table-9"),
 );
 
-interface IReorderableTableExampleState {
+interface ReorderableTableExampleState {
     children?: JSX.Element[];
     data?: any[];
 }
@@ -626,8 +626,8 @@ const REORDERABLE_TABLE_DATA = [
 ].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-class ReorderableTableExample extends React.Component<{}, IReorderableTableExampleState> {
-    public state: IReorderableTableExampleState = {
+class ReorderableTableExample extends React.Component<{}, ReorderableTableExampleState> {
+    public state: ReorderableTableExampleState = {
         data: REORDERABLE_TABLE_DATA,
     };
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { IRegion, RegionCardinality, Regions } from "../../regions";
-import { ICellCoordinates, IFocusedCellCoordinates } from "../cell";
+import { Region, RegionCardinality, Regions } from "../../regions";
+import { CellCoordinates, FocusedCellCoordinates } from "../cell";
 import * as Errors from "../errors";
 
 /**
@@ -23,7 +23,7 @@ import * as Errors from "../errors";
  * property are defined, or the last index of `selectedRegions` otherwise. If
  * `selectedRegions` is empty, the function always returns `undefined`.
  */
-export function getFocusedOrLastSelectedIndex(selectedRegions: IRegion[], focusedCell?: IFocusedCellCoordinates) {
+export function getFocusedOrLastSelectedIndex(selectedRegions: Region[], focusedCell?: FocusedCellCoordinates) {
     if (selectedRegions.length === 0) {
         return undefined;
     } else if (focusedCell != null) {
@@ -38,10 +38,10 @@ export function getFocusedOrLastSelectedIndex(selectedRegions: IRegion[], focuse
  */
 export function getInitialFocusedCell(
     enableFocusedCell: boolean,
-    focusedCellFromProps: IFocusedCellCoordinates,
-    focusedCellFromState: IFocusedCellCoordinates,
-    selectedRegions: IRegion[],
-): IFocusedCellCoordinates {
+    focusedCellFromProps: FocusedCellCoordinates,
+    focusedCellFromState: FocusedCellCoordinates,
+    selectedRegions: Region[],
+): FocusedCellCoordinates {
     if (!enableFocusedCell) {
         return undefined;
     } else if (focusedCellFromProps != null) {
@@ -67,7 +67,7 @@ export function getInitialFocusedCell(
  * Returns `true` if the focused cell is located along the top boundary of the
  * provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionTop(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+export function isFocusedCellAtRegionTop(region: Region, focusedCell: FocusedCellCoordinates) {
     return region.rows != null && focusedCell.row === region.rows[0];
 }
 
@@ -75,7 +75,7 @@ export function isFocusedCellAtRegionTop(region: IRegion, focusedCell: IFocusedC
  * Returns `true` if the focused cell is located along the bottom boundary of
  * the provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionBottom(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+export function isFocusedCellAtRegionBottom(region: Region, focusedCell: FocusedCellCoordinates) {
     return region.rows != null && focusedCell.row === region.rows[1];
 }
 
@@ -83,7 +83,7 @@ export function isFocusedCellAtRegionBottom(region: IRegion, focusedCell: IFocus
  * Returns `true` if the focused cell is located along the left boundary of the
  * provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionLeft(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+export function isFocusedCellAtRegionLeft(region: Region, focusedCell: FocusedCellCoordinates) {
     return region.cols != null && focusedCell.col === region.cols[0];
 }
 
@@ -91,18 +91,18 @@ export function isFocusedCellAtRegionLeft(region: IRegion, focusedCell: IFocused
  * Returns `true` if the focused cell is located along the right boundary of the
  * provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionRight(region: IRegion, focusedCell: IFocusedCellCoordinates) {
+export function isFocusedCellAtRegionRight(region: Region, focusedCell: FocusedCellCoordinates) {
     return region.cols != null && focusedCell.col === region.cols[1];
 }
 
 /**
  * Returns a new cell-coordinates object that includes a focusSelectionIndex property.
- * The returned object will have the proper IFocusedCellCoordinates type.
+ * The returned object will have the proper FocusedCellCoordinates type.
  */
 export function toFullCoordinates(
-    cellCoords: ICellCoordinates,
+    cellCoords: CellCoordinates,
     focusSelectionIndex: number = 0,
-): IFocusedCellCoordinates {
+): FocusedCellCoordinates {
     return { ...cellCoords, focusSelectionIndex };
 }
 
@@ -112,7 +112,7 @@ export function toFullCoordinates(
  * operation. This function is used, for instance, to expand a selected region
  * on shift+click.
  */
-export function expandFocusedRegion(focusedCell: IFocusedCellCoordinates, newRegion: IRegion) {
+export function expandFocusedRegion(focusedCell: FocusedCellCoordinates, newRegion: Region) {
     switch (Regions.getRegionCardinality(newRegion)) {
         case RegionCardinality.FULL_COLUMNS: {
             const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
@@ -133,8 +133,8 @@ export function expandFocusedRegion(focusedCell: IFocusedCellCoordinates, newReg
 }
 
 function getExpandedRegionIndices(
-    focusedCell: IFocusedCellCoordinates,
-    newRegion: IRegion,
+    focusedCell: FocusedCellCoordinates,
+    newRegion: Region,
     focusedCellDimension: "row" | "col",
     regionDimension: "rows" | "cols",
 ) {

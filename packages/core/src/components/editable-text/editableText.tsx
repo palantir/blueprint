@@ -18,11 +18,11 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractPureComponent, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
-export interface IEditableTextProps extends IIntentProps, IProps {
+export interface EditableTextProps extends IntentProps, Props {
     /**
      * EXPERIMENTAL FEATURE.
      *
@@ -122,7 +122,7 @@ export interface IEditableTextProps extends IIntentProps, IProps {
     onEdit?(value: string | undefined): void;
 }
 
-export interface IEditableTextState {
+export interface EditableTextState {
     /** Pixel height of the input, measured from span size */
     inputHeight?: number;
     /** Pixel width of the input, measured from span size */
@@ -138,10 +138,10 @@ export interface IEditableTextState {
 const BUFFER_WIDTH_DEFAULT = 5;
 const BUFFER_WIDTH_IE = 30;
 
-export class EditableText extends AbstractPureComponent<IEditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractPureComponent<EditableTextProps, EditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
-    public static defaultProps: IEditableTextProps = {
+    public static defaultProps: EditableTextProps = {
         alwaysRenderInput: false,
         confirmOnEnterKey: false,
         defaultValue: "",
@@ -185,7 +185,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         },
     };
 
-    public constructor(props: IEditableTextProps) {
+    public constructor(props: EditableTextProps) {
         super(props);
 
         const value = props.value == null ? props.defaultValue : props.value;
@@ -254,8 +254,8 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         this.updateInputDimensions();
     }
 
-    public componentDidUpdate(prevProps: IEditableTextProps, prevState: IEditableTextState) {
-        const newState: IEditableTextState = {};
+    public componentDidUpdate(prevProps: EditableTextProps, prevState: EditableTextState) {
+        const newState: EditableTextState = {};
         // allow setting the value to undefined/null in controlled mode
         if (this.props.value !== prevProps.value && (prevProps.value != null || this.props.value != null)) {
             newState.value = this.props.value;

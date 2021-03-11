@@ -38,11 +38,11 @@ import {
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
+    ExampleProps,
 } from "@blueprintjs/docs-theme";
 import {
     Classes,
-    IPopover2SharedProps,
+    Popover2SharedProps,
     Placement,
     PlacementOptions,
     Popover2,
@@ -59,7 +59,7 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: "hover-target" },
 ];
 
-export interface IPopover2ExampleState {
+export interface Popover2ExampleState {
     boundary?: "scrollParent" | "body" | "clippingParents";
     canEscapeKeyClose?: boolean;
     exampleIndex?: number;
@@ -69,16 +69,16 @@ export interface IPopover2ExampleState {
     isControlled: boolean;
     isOpen?: boolean;
     minimal?: boolean;
-    modifiers?: IPopover2SharedProps<HTMLElement>["modifiers"];
+    modifiers?: Popover2SharedProps<HTMLElement>["modifiers"];
     placement?: Placement;
     sliderValue?: number;
     usePortal?: boolean;
 }
 
-export class Popover2Example extends React.PureComponent<IExampleProps, IPopover2ExampleState> {
+export class Popover2Example extends React.PureComponent<ExampleProps, Popover2ExampleState> {
     public static displayName = "Popover2Example";
 
-    public state: IPopover2ExampleState = {
+    public state: Popover2ExampleState = {
         boundary: "scrollParent",
         canEscapeKeyClose: true,
         exampleIndex: 0,
@@ -113,7 +113,7 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
 
     private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
 
-    private handleBoundaryChange = handleValueChange((boundary: IPopover2ExampleState["boundary"]) =>
+    private handleBoundaryChange = handleValueChange((boundary: Popover2ExampleState["boundary"]) =>
         this.setState({ boundary }),
     );
 

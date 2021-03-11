@@ -24,7 +24,7 @@ import {
     Drawer,
     H5,
     HTMLSelect,
-    IOptionProps,
+    OptionProps,
     Label,
     Position,
     Switch,
@@ -34,12 +34,12 @@ import {
     handleBooleanChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
+    ExampleProps,
 } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
-export interface IDrawerExampleState {
+export interface DrawerExampleState {
     autoFocus: boolean;
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
@@ -50,8 +50,8 @@ export interface IDrawerExampleState {
     size: string;
     usePortal: boolean;
 }
-export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDrawerExampleState> {
-    public state: IDrawerExampleState = {
+export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, DrawerExampleState> {
+    public state: DrawerExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
@@ -165,7 +165,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleClose = () => this.setState({ isOpen: false });
 }
 
-const SIZES: Array<string | IOptionProps> = [
+const SIZES: Array<string | OptionProps> = [
     { label: "Default", value: undefined },
     { label: "Small", value: Drawer.SIZE_SMALL },
     { label: "Standard", value: Drawer.SIZE_STANDARD },

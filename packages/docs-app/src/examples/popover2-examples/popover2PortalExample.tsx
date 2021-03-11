@@ -17,10 +17,10 @@
 import React from "react";
 
 import { Button, Code, H5, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { IPopover2Props, Popover2 } from "@blueprintjs/popover2";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { Popover2Props, Popover2 } from "@blueprintjs/popover2";
 
-const POPOVER2_PROPS: Partial<IPopover2Props> = {
+const POPOVER2_PROPS: Partial<Popover2Props> = {
     autoFocus: false,
     enforceFocus: false,
     modifiers: {
@@ -31,14 +31,14 @@ const POPOVER2_PROPS: Partial<IPopover2Props> = {
     popoverClassName: "docs-popover2-portal-example-popover",
 };
 
-export interface IPopover2PortalExampleState {
+export interface Popover2PortalExampleState {
     isOpen: boolean;
 }
 
-export class Popover2PortalExample extends React.PureComponent<IExampleProps, IPopover2PortalExampleState> {
+export class Popover2PortalExample extends React.PureComponent<ExampleProps, Popover2PortalExampleState> {
     public static displayName = "Popover2PortalExample";
 
-    public state: IPopover2PortalExampleState = {
+    public state: Popover2PortalExampleState = {
         isOpen: true,
     };
 

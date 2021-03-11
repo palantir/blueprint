@@ -17,9 +17,9 @@
 import React from "react";
 
 import { Classes, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export class MenuExample extends React.PureComponent<IExampleProps> {
+export class MenuExample extends React.PureComponent<ExampleProps> {
     public render() {
         return (
             <Example className="docs-menu-example" options={false} {...this.props}>

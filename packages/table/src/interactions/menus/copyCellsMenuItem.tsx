@@ -16,17 +16,17 @@
 
 import React from "react";
 
-import { IMenuItemProps, MenuItem } from "@blueprintjs/core";
+import { MenuItemProps, MenuItem } from "@blueprintjs/core";
 
 import { Clipboard } from "../../common/clipboard";
 import { Regions } from "../../regions";
-import { IMenuContext } from "./menuContext";
+import { MenuContext } from "./menuContext";
 
-export interface ICopyCellsMenuItemProps extends IMenuItemProps {
+export interface CopyCellsMenuItemProps extends MenuItemProps {
     /**
      * The `IMenuContext` that launched the menu.
      */
-    context: IMenuContext;
+    context: MenuContext;
 
     /**
      * A callback that returns the data for a specific cell. This need not
@@ -47,7 +47,7 @@ export interface ICopyCellsMenuItemProps extends IMenuItemProps {
     onCopy?: (success: boolean) => void;
 }
 
-export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemProps> {
+export class CopyCellsMenuItem extends React.PureComponent<CopyCellsMenuItemProps> {
     public render() {
         const { context, getCellData, onCopy, ...menuItemProps } = this.props;
         return <MenuItem {...menuItemProps} onClick={this.handleClick} />;

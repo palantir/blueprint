@@ -19,13 +19,13 @@
 import React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import {
     Cell,
     Column,
     ColumnHeaderCell,
     CopyCellsMenuItem,
-    IMenuContext,
+    MenuContext,
     SelectionModes,
     Table,
     Utils,
@@ -34,17 +34,17 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const sumo: any[] = require("./sumo.json");
 
-export type ICellLookup = (rowIndex: number, columnIndex: number) => any;
-export type ISortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;
+export type CellLookup = (rowIndex: number, columnIndex: number) => any;
+export type SortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;
 
-export interface ISortableColumn {
-    getColumn(getCellData: ICellLookup, sortColumn: ISortCallback): JSX.Element;
+export interface SortableColumn {
+    getColumn(getCellData: CellLookup, sortColumn: SortCallback): JSX.Element;
 }
 
-abstract class AbstractSortableColumn implements ISortableColumn {
+abstract class AbstractSortableColumn implements SortableColumn {
     constructor(protected name: string, protected index: number) {}
 
-    public getColumn(getCellData: ICellLookup, sortColumn: ISortCallback) {
+    public getColumn(getCellData: CellLookup, sortColumn: SortCallback) {
         const cellRenderer = (rowIndex: number, columnIndex: number) => (
             <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
         );
@@ -60,11 +60,11 @@ abstract class AbstractSortableColumn implements ISortableColumn {
         );
     }
 
-    protected abstract renderMenu(sortColumn: ISortCallback): JSX.Element;
+    protected abstract renderMenu(sortColumn: SortCallback): JSX.Element;
 }
 
 class TextSortableColumn extends AbstractSortableColumn {
-    protected renderMenu(sortColumn: ISortCallback) {
+    protected renderMenu(sortColumn: SortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => this.compare(a, b));
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
@@ -92,7 +92,7 @@ class RankSortableColumn extends AbstractSortableColumn {
         Y: 0, // Yokozuna
     };
 
-    protected renderMenu(sortColumn: ISortCallback) {
+    protected renderMenu(sortColumn: SortCallback) {
         const sortAsc = () => sortColumn(this.index, (a, b) => this.compare(a, b));
         const sortDesc = () => sortColumn(this.index, (a, b) => this.compare(b, a));
         return (
@@ -120,7 +120,7 @@ class RankSortableColumn extends AbstractSortableColumn {
 class RecordSortableColumn extends AbstractSortableColumn {
     private static WIN_LOSS_PATTERN = /^([0-9]+)(-([0-9]+))?(-([0-9]+)) ?.*/;
 
-    protected renderMenu(sortColumn: ISortCallback) {
+    protected renderMenu(sortColumn: SortCallback) {
         // tslint:disable:jsx-no-lambda
         return (
             <Menu>
@@ -183,7 +183,7 @@ class RecordSortableColumn extends AbstractSortableColumn {
     };
 }
 
-export class TableSortableExample extends React.PureComponent<IExampleProps> {
+export class TableSortableExample extends React.PureComponent<ExampleProps> {
     public state = {
         columns: [
             new TextSortableColumn("Rikishi", 0),
@@ -199,7 +199,7 @@ export class TableSortableExample extends React.PureComponent<IExampleProps> {
             new RecordSortableColumn("Record - Aki Basho", 10),
             new RankSortableColumn("Rank - Kyūshū Basho", 11),
             new RecordSortableColumn("Record - Kyūshū Basho", 12),
-        ] as ISortableColumn[],
+        ] as SortableColumn[],
         data: sumo,
         sortedIndexMap: [] as number[],
     };
@@ -228,7 +228,7 @@ export class TableSortableExample extends React.PureComponent<IExampleProps> {
         return this.state.data[rowIndex][columnIndex];
     };
 
-    private renderBodyContextMenu = (context: IMenuContext) => {
+    private renderBodyContextMenu = (context: MenuContext) => {
         return (
             <Menu>
                 <CopyCellsMenuItem context={context} getCellData={this.getCellData} text="Copy" />

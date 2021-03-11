@@ -49,12 +49,12 @@ function getArrowAngle(placement?: Placement) {
     }
 }
 
-export interface IPopoverArrowProps {
+export interface PopoverArrowProps {
     arrowProps: PopperArrowProps;
     placement: Placement;
 }
 
-export const PopoverArrow: React.FunctionComponent<IPopoverArrowProps> = ({
+export const PopoverArrow: React.FunctionComponent<PopoverArrowProps> = ({
     arrowProps: { ref, style },
     placement,
 }) => (

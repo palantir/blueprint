@@ -24,15 +24,15 @@ import {
     Card,
     Checkbox,
     H5,
-    IBreadcrumbProps,
+    BreadcrumbProps,
     InputGroup,
     Label,
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface IBreadcrumbsExampleState {
+export interface BreadcrumbsExampleState {
     collapseFrom: Boundary;
     renderCurrentAsInput: boolean;
     width: number;
@@ -43,7 +43,7 @@ const COLLAPSE_FROM_RADIOS = [
     { label: "End", value: Boundary.END.toString() },
 ];
 
-const ITEMS: IBreadcrumbProps[] = [
+const ITEMS: BreadcrumbProps[] = [
     { icon: "folder-close", text: "All files" },
     { icon: "folder-close", text: "Users" },
     { icon: "folder-close", text: "Janet" },
@@ -52,8 +52,8 @@ const ITEMS: IBreadcrumbProps[] = [
     { icon: "document", text: "image.jpg", current: true },
 ];
 
-export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBreadcrumbsExampleState> {
-    public state: IBreadcrumbsExampleState = {
+export class BreadcrumbsExample extends React.PureComponent<ExampleProps, BreadcrumbsExampleState> {
+    public state: BreadcrumbsExampleState = {
         collapseFrom: Boundary.START,
         renderCurrentAsInput: false,
         width: 50,
@@ -117,13 +117,13 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
     private handleChangeRenderCurrentAsInput = () =>
         this.setState({ renderCurrentAsInput: !this.state.renderCurrentAsInput });
 
-    private renderBreadcrumbInput = ({ text }: IBreadcrumbProps) => {
+    private renderBreadcrumbInput = ({ text }: BreadcrumbProps) => {
         return <BreadcrumbInput defaultValue={typeof text === "string" ? text : undefined} />;
     };
 }
 
 /* eslint-disable  max-classes-per-file */
-class BreadcrumbInput extends React.PureComponent<IBreadcrumbProps & { defaultValue: string | undefined }> {
+class BreadcrumbInput extends React.PureComponent<BreadcrumbProps & { defaultValue: string | undefined }> {
     public state = {
         text: this.props.defaultValue ?? "",
     };

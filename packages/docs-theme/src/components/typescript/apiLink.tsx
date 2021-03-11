@@ -16,11 +16,11 @@
 
 import React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 
-export interface IApiLinkProps extends IProps {
+export interface ApiLinkProps extends Props {
     children?: never;
     name: string;
 }
@@ -28,10 +28,10 @@ export interface IApiLinkProps extends IProps {
 /**
  * Renders a link to open a symbol in the API Browser.
  */
-export class ApiLink extends React.PureComponent<IApiLinkProps> {
+export class ApiLink extends React.PureComponent<ApiLinkProps> {
     public static contextTypes = DocumentationContextTypes;
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { className, name } = this.props;

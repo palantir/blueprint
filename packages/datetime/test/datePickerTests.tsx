@@ -22,12 +22,12 @@ import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 
-import { Classes, DatePicker, IDatePickerModifiers, IDatePickerProps, TimePicker, TimePrecision } from "../src";
+import { Classes, DatePicker, DatePickerModifiers, DatePickerProps, TimePicker, TimePrecision } from "../src";
 import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
-import { IDatePickerState } from "../src/datePicker";
-import { IDatePickerShortcut, Shortcuts } from "../src/shortcuts";
+import { DatePickerState } from "../src/datePicker";
+import { DatePickerShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDatesEqual, assertDayDisabled, assertDayHidden } from "./common/dateTestUtils";
 
 describe("<DatePicker>", () => {
@@ -117,27 +117,27 @@ describe("<DatePicker>", () => {
         });
 
         it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
-            const blueprintModifiers: IDatePickerModifiers = {
+            const blueprintModifiers: DatePickerModifiers = {
                 blueprint: () => true,
             };
             const blueprintLocaleUtils = {
                 ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "b",
             };
-            const blueprintProps: IDatePickerProps = {
+            const blueprintProps: DatePickerProps = {
                 locale: "blueprint",
                 localeUtils: blueprintLocaleUtils,
                 modifiers: blueprintModifiers,
             };
 
-            const dayPickerModifiers: IDatePickerModifiers = {
+            const dayPickerModifiers: DatePickerModifiers = {
                 dayPicker: () => true,
             };
             const dayPickerLocaleUtils = {
                 ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "d",
             };
-            const dayPickerProps: IDatePickerProps = {
+            const dayPickerProps: DatePickerProps = {
                 locale: "dayPicker",
                 localeUtils: dayPickerLocaleUtils,
                 modifiers: dayPickerModifiers,
@@ -650,7 +650,7 @@ describe("<DatePicker>", () => {
             const date = DateUtils.clone(defaultValue);
             date.setHours(date.getHours() - 2);
 
-            const shortcuts: IDatePickerShortcut[] = [
+            const shortcuts: DatePickerShortcut[] = [
                 {
                     date,
                     includeTime: true,
@@ -707,7 +707,7 @@ describe("<DatePicker>", () => {
     });
 
     function wrap(datepicker: JSX.Element) {
-        const wrapper = mount<IDatePickerProps, IDatePickerState>(datepicker);
+        const wrapper = mount<DatePickerProps, DatePickerState>(datepicker);
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
             assertSelectedDays: (...days: number[]) =>

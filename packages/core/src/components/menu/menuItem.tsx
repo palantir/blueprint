@@ -21,16 +21,16 @@ import React from "react";
 import { CaretRight } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
-import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
-import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
+import { PopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
 // this cyclic import can be removed in v4.0 (https://github.com/palantir/blueprint/issues/3829)
 // eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
-export interface IMenuItemProps extends IActionProps, ILinkProps {
-    // override from IActionProps to make it required
+export interface MenuItemProps extends ActionProps, LinkProps {
+    // override from ActionProps to make it required
     /** Item text, required for usability. */
     text: React.ReactNode;
 
@@ -82,7 +82,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
      */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<PopoverProps>;
 
     /**
      * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
@@ -109,8 +109,8 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     htmlTitle?: string;
 }
 
-export class MenuItem extends AbstractPureComponent<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
-    public static defaultProps: IMenuItemProps = {
+export class MenuItem extends AbstractPureComponent<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+    public static defaultProps: MenuItemProps = {
         disabled: false,
         multiline: false,
         popoverProps: {},

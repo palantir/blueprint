@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import { ITsTypeAlias } from "@documentalist/client";
+import { TsTypeAlias } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ApiHeader } from "./apiHeader";
 
-export interface ITypeAliasTableProps extends IProps {
-    data: ITsTypeAlias;
+export interface TypeAliasTableProps extends Props {
+    data: TsTypeAlias;
 }
 
-export class TypeAliasTable extends React.PureComponent<ITypeAliasTableProps> {
+export class TypeAliasTable extends React.PureComponent<TypeAliasTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.TypeAliasTable";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { data } = this.props;

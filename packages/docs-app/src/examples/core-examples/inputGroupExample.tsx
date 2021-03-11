@@ -17,10 +17,10 @@
 import React from "react";
 
 import { Button, H5, Icon, InputGroup, Intent, Menu, MenuItem, Spinner, Switch, Tag } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
-export interface IInputGroupExampleState {
+export interface InputGroupExampleState {
     disabled: boolean;
     filterValue: string;
     large: boolean;
@@ -29,8 +29,8 @@ export interface IInputGroupExampleState {
     tagValue: string;
 }
 
-export class InputGroupExample extends React.PureComponent<IExampleProps, IInputGroupExampleState> {
-    public state: IInputGroupExampleState = {
+export class InputGroupExample extends React.PureComponent<ExampleProps, InputGroupExampleState> {
+    public state: InputGroupExampleState = {
         disabled: false,
         filterValue: "",
         large: false,

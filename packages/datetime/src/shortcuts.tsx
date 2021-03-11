@@ -23,7 +23,7 @@ import { DateRange } from "./common/dateRange";
 import { clone, isDayRangeInRange } from "./common/dateUtils";
 import { TimePrecision } from "./timePicker";
 
-export interface IDateShortcutBase {
+export interface DateShortcutBase {
     /** Shortcut label that appears in the list. */
     label: string;
 
@@ -38,7 +38,7 @@ export interface IDateShortcutBase {
     includeTime?: boolean;
 }
 
-export interface IDateRangeShortcut extends IDateShortcutBase {
+export interface DateRangeShortcut extends DateShortcutBase {
     /**
      * Date range represented by this shortcut. Note that time components of a
      * shortcut are ignored by default; set `includeTime: true` to respect them.
@@ -46,7 +46,7 @@ export interface IDateRangeShortcut extends IDateShortcutBase {
     dateRange: DateRange;
 }
 
-export interface IDatePickerShortcut extends IDateShortcutBase {
+export interface DatePickerShortcut extends DateShortcutBase {
     /**
      * Date represented by this shortcut. Note that time components of a
      * shortcut are ignored by default; set `includeTime: true` to respect them.
@@ -54,14 +54,14 @@ export interface IDatePickerShortcut extends IDateShortcutBase {
     date: Date;
 }
 
-export interface IShortcutsProps {
+export interface ShortcutsProps {
     allowSingleDayRange: boolean;
     minDate: Date;
     maxDate: Date;
-    shortcuts: IDateRangeShortcut[] | true;
+    shortcuts: DateRangeShortcut[] | true;
     timePrecision: TimePrecision;
     selectedShortcutIndex?: number;
-    onShortcutClick: (shortcut: IDateRangeShortcut, index: number) => void;
+    onShortcutClick: (shortcut: DateRangeShortcut, index: number) => void;
     /**
      * The DatePicker component reuses this component for a single date.
      * This changes the default shortcut labels and affects which shortcuts are used.
@@ -71,8 +71,8 @@ export interface IShortcutsProps {
     useSingleDateShortcuts?: boolean;
 }
 
-export class Shortcuts extends React.PureComponent<IShortcutsProps> {
-    public static defaultProps: Partial<IShortcutsProps> = {
+export class Shortcuts extends React.PureComponent<ShortcutsProps> {
+    public static defaultProps: Partial<ShortcutsProps> = {
         selectedShortcutIndex: -1,
     };
 
@@ -104,7 +104,7 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
         );
     }
 
-    private getShorcutClickHandler = (shortcut: IDateRangeShortcut, index: number) => () => {
+    private getShorcutClickHandler = (shortcut: DateRangeShortcut, index: number) => () => {
         const { onShortcutClick } = this.props;
 
         onShortcutClick(shortcut, index);
@@ -117,7 +117,7 @@ export class Shortcuts extends React.PureComponent<IShortcutsProps> {
     };
 }
 
-function createShortcut(label: string, dateRange: DateRange): IDateRangeShortcut {
+function createShortcut(label: string, dateRange: DateRange): DateRangeShortcut {
     return { dateRange, label };
 }
 
