@@ -17,11 +17,11 @@
 import {
     isTag,
     isTsProperty,
-    TsClass,
-    TsInterface,
-    TsMethod,
-    TsProperty,
-    TsSignature,
+    ITsClass,
+    ITsInterface,
+    ITsMethod,
+    ITsProperty,
+    ITsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
@@ -36,7 +36,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 export type Renderer<T> = (props: T) => React.ReactNode;
 
 export interface InterfaceTableProps extends Props {
-    data: TsClass | TsInterface;
+    data: ITsClass | ITsInterface;
     title: string;
 }
 
@@ -67,7 +67,7 @@ export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
         );
     }
 
-    private renderPropRow = (entry: TsProperty | TsMethod) => {
+    private renderPropRow = (entry: ITsProperty | ITsMethod) => {
         const { renderBlock, renderType } = this.context;
         const {
             flags: { isDeprecated, isExternal, isOptional },
@@ -115,7 +115,7 @@ export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
         );
     };
 
-    private renderIndexSignature(entry?: TsSignature) {
+    private renderIndexSignature(entry?: ITsSignature) {
         if (entry == null) {
             return null;
         }
@@ -136,7 +136,7 @@ export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
         );
     }
 
-    private renderTags(entry: TsProperty | TsMethod) {
+    private renderTags(entry: ITsProperty | ITsMethod) {
         const { renderType } = this.context;
         const {
             flags: { isDeprecated, isOptional },

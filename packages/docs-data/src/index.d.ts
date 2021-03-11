@@ -3,13 +3,13 @@
  */
 
 import {
-    NpmPluginData,
-    MarkdownPluginData,
-    KssExample,
-    KssPluginData,
-    TypescriptPluginData,
+    INpmPluginData,
+    IMarkdownPluginData,
+    IKssExample,
+    IKssPluginData,
+    ITypescriptPluginData,
 } from "@documentalist/client";
 
-export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginData & TypescriptPluginData;
+export type DocsCompleteData = IMarkdownPluginData & INpmPluginData & IKssPluginData & ITypescriptPluginData;
 
 export const docsData: DocsCompleteData;

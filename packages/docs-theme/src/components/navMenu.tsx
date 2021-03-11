@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HeadingNode, PageNode, isPageNode } from "@documentalist/client";
+import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
@@ -27,7 +27,7 @@ export interface NavMenuProps extends Props {
     activeSectionId: string;
     level: number;
     onItemClick: (reference: string) => void;
-    items: Array<PageNode | HeadingNode>;
+    items: Array<IPageNode | IHeadingNode>;
     renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
 }
 

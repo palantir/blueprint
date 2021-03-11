@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Block } from "@documentalist/client";
+import { IBlock } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
@@ -24,7 +24,7 @@ import { TagRendererMap } from "../tags";
 
 export function renderBlock(
     /** the block to render */
-    block: Block | undefined,
+    block: IBlock | undefined,
     /** known tag renderers */
     tagRenderers: TagRendererMap,
     /** class names to apply to element wrapping string content. */

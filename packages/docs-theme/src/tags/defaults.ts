@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Tag } from "@documentalist/client";
+import { ITag } from "@documentalist/client";
 import React from "react";
 
 import { CssExample } from "./css";
@@ -23,11 +23,11 @@ import { Method } from "./method";
 import { SeeTag } from "./see";
 import { TypescriptExample } from "./typescript";
 
-export function createDefaultRenderers(): Record<string, React.ComponentType<Tag>> {
+export function createDefaultRenderers(): Record<string, React.ComponentType<ITag>> {
     return {
         css: CssExample,
         // HACKHACK https://github.com/palantir/blueprint/issues/4342
-        heading: Heading as React.ComponentType<Tag>,
+        heading: Heading as React.ComponentType<ITag>,
         interface: TypescriptExample,
         method: Method,
         page: () => null,

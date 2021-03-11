@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TsEnum, TsEnumMember } from "@documentalist/client";
+import { ITsEnum, ITsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
@@ -28,7 +28,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 export type Renderer<T> = (props: T) => React.ReactNode;
 
 export interface EnumTableProps extends Props {
-    data: TsEnum;
+    data: ITsEnum;
 }
 
 export class EnumTable extends React.PureComponent<EnumTableProps> {
@@ -52,7 +52,7 @@ export class EnumTable extends React.PureComponent<EnumTableProps> {
         );
     }
 
-    private renderPropRow = (entry: TsEnumMember) => {
+    private renderPropRow = (entry: ITsEnumMember) => {
         // this is inside RUNNING_TEXT
         /* eslint-disable @blueprintjs/html-components */
         const { renderBlock } = this.context;
@@ -82,7 +82,7 @@ export class EnumTable extends React.PureComponent<EnumTableProps> {
         );
     };
 
-    private renderTags(entry: TsEnumMember) {
+    private renderTags(entry: ITsEnumMember) {
         const {
             flags: { isDeprecated },
         } = entry;

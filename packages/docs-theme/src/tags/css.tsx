@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { KssPluginData, Tag } from "@documentalist/client";
+import { IKssPluginData, ITag } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
@@ -27,7 +27,7 @@ export interface CssExampleState {
     modifiers: Set<string>;
 }
 
-export class CssExample extends React.PureComponent<Tag> {
+export class CssExample extends React.PureComponent<ITag> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.CssExample";
@@ -38,7 +38,7 @@ export class CssExample extends React.PureComponent<Tag> {
 
     public render() {
         const { value } = this.props;
-        const { css } = this.context?.getDocsData() as KssPluginData;
+        const { css } = this.context?.getDocsData() as IKssPluginData;
         if (css == null || css[value] == null) {
             return null;
         }

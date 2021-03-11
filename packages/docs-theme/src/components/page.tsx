@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { PageData } from "@documentalist/client";
+import { IPageData } from "@documentalist/client";
 import React from "react";
 
 import { Classes } from "@blueprintjs/core";
@@ -23,8 +23,8 @@ import { TagRendererMap } from "../tags";
 import { renderBlock } from "./block";
 
 export interface PageProps {
-    page: PageData;
-    renderActions: (page: PageData) => React.ReactNode;
+    page: IPageData;
+    renderActions: (page: IPageData) => React.ReactNode;
     tagRenderers: TagRendererMap;
 }
 

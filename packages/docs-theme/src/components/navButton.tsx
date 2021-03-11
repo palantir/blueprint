@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, KeyCombo, Icon } from "@blueprintjs/core";
+import { Classes, KeyboardCombo, Icon } from "@blueprintjs/core";
 import { IconName } from "@blueprintjs/icons";
 
 export interface NavButtonProps {
@@ -32,7 +32,7 @@ export const NavButton: React.FunctionComponent<NavButtonProps> = ({ icon, onCli
         <Icon icon={icon} />
         <span className={Classes.FILL}>{text}</span>
         <div style={{ opacity: 0.5 }}>
-            <KeyCombo combo={hotkey} minimal={true} />
+            <KeyboardCombo combo={hotkey} minimal={true} />
         </div>
     </div>
 );

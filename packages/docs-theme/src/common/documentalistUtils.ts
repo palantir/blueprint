@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { HeadingNode, PageNode, isPageNode } from "@documentalist/client";
+import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
 
 /**
  * Performs an in-order traversal of the layout tree, invoking the callback for each node.
  * Callback receives an array of ancestors with direct parent first in the list.
  */
 export function eachLayoutNode(
-    layout: Array<HeadingNode | PageNode>,
-    callback: (node: HeadingNode | PageNode, parents: PageNode[]) => void,
-    parents: PageNode[] = [],
+    layout: Array<IHeadingNode | IPageNode>,
+    callback: (node: IHeadingNode | IPageNode, parents: IPageNode[]) => void,
+    parents: IPageNode[] = [],
 ) {
     layout.forEach(node => {
         callback(node, parents);

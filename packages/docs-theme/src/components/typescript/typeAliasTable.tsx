@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TsTypeAlias } from "@documentalist/client";
+import { ITsTypeAlias } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
@@ -24,7 +24,7 @@ import { DocumentationContextTypes, DocumentationContext } from "../../common/co
 import { ApiHeader } from "./apiHeader";
 
 export interface TypeAliasTableProps extends Props {
-    data: TsTypeAlias;
+    data: ITsTypeAlias;
 }
 
 export class TypeAliasTable extends React.PureComponent<TypeAliasTableProps> {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HeadingNode, PageNode } from "@documentalist/client";
+import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import React from "react";
 
@@ -29,10 +29,10 @@ export interface NavigatorProps {
     isOpen: boolean;
 
     /** All potentially navigable items. */
-    items: Array<PageNode | HeadingNode>;
+    items: Array<IPageNode | IHeadingNode>;
 
     /** Callback to determine if a given item should be excluded. */
-    itemExclude?: (node: PageNode | HeadingNode) => boolean;
+    itemExclude?: (node: IPageNode | IHeadingNode) => boolean;
 
     /**
      * Callback invoked when the navigator is closed. Navigation is performed by

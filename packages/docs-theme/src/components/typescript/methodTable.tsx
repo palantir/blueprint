@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isTag, TsMethod, TsParameter, TsSignature } from "@documentalist/client";
+import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
@@ -28,7 +28,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 export type Renderer<T> = (props: T) => React.ReactNode;
 
 export interface MethodTableProps extends Props {
-    data: TsMethod;
+    data: ITsMethod;
 }
 
 export class MethodTable extends React.PureComponent<MethodTableProps> {
@@ -42,7 +42,7 @@ export class MethodTable extends React.PureComponent<MethodTableProps> {
         const { data } = this.props;
         const propRows = [...data.signatures]
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map((entry: TsSignature) => entry.parameters.map(parameter => this.renderPropRow(parameter)));
+            .map((entry: ITsSignature) => entry.parameters.map(parameter => this.renderPropRow(parameter)));
         return (
             <div className={classNames("docs-modifiers", this.props.className)}>
                 <ApiHeader {...data} />
@@ -56,7 +56,7 @@ export class MethodTable extends React.PureComponent<MethodTableProps> {
         );
     }
 
-    private renderPropRow = (parameter: TsParameter) => {
+    private renderPropRow = (parameter: ITsParameter) => {
         const { renderBlock, renderType } = this.context;
         const {
             flags: { isDeprecated, isExternal, isOptional },
@@ -99,7 +99,7 @@ export class MethodTable extends React.PureComponent<MethodTableProps> {
         );
     };
 
-    private renderTags(entry: TsParameter) {
+    private renderTags(entry: ITsParameter) {
         const {
             flags: { isDeprecated, isOptional },
         } = entry;
@@ -111,7 +111,7 @@ export class MethodTable extends React.PureComponent<MethodTableProps> {
         );
     }
 
-    private renderReturnSignature(entry?: TsSignature) {
+    private renderReturnSignature(entry?: ITsSignature) {
         if (entry == null) {
             return null;
         }

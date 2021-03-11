@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsEnum, isTsInterface, isTsTypeAlias, Tag, TypescriptPluginData } from "@documentalist/client";
+import { isTsClass, isTsEnum, isTsInterface, isTsTypeAlias, ITag, ITypescriptPluginData } from "@documentalist/client";
 import React from "react";
 
 import { Props } from "@blueprintjs/core";
@@ -24,11 +24,11 @@ import { EnumTable } from "../components/typescript/enumTable";
 import { InterfaceTable } from "../components/typescript/interfaceTable";
 import { TypeAliasTable } from "../components/typescript/typeAliasTable";
 
-export const TypescriptExample: React.FunctionComponent<Tag & Props> = (
+export const TypescriptExample: React.FunctionComponent<ITag & Props> = (
     { className, value },
     { getDocsData }: DocumentationContext,
 ) => {
-    const { typescript } = getDocsData() as TypescriptPluginData;
+    const { typescript } = getDocsData() as ITypescriptPluginData;
     if (typescript == null || typescript[value] == null) {
         return null;
     }

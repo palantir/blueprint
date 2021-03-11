@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsInterface, TsDocBase } from "@documentalist/client";
+import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
 import React from "react";
 
 import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 
-export class ApiHeader extends React.PureComponent<TsDocBase> {
+export class ApiHeader extends React.PureComponent<ITsDocBase> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.ApiHeader";

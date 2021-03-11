@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Tag } from "@documentalist/client";
+import { ITag } from "@documentalist/client";
 
 export interface TagRendererMap {
-    [tagName: string]: React.ComponentType<Tag> | undefined;
+    [tagName: string]: React.ComponentType<ITag> | undefined;
 }
 
 export * from "./css";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HeadingNode, PageData, isPageNode, TsDocBase } from "@documentalist/client";
+import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
@@ -37,7 +37,7 @@ const NPM_URL = "https://www.npmjs.com/package";
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
-const isNavSection = ({ route }: HeadingNode) =>
+const isNavSection = ({ route }: IHeadingNode) =>
     COMPONENTS_PATTERN.test(route) || CONTEXT_PATTERN.test(route) || HOOKS_PATTERN.test(route);
 
 /** Return the current theme className. */
@@ -123,7 +123,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions = (page: PageData) => {
+    private renderPageActions = (page: IPageData) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -147,7 +147,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
         );
     }
 
-    private renderViewSourceLinkText = (entry: TsDocBase) => {
+    private renderViewSourceLinkText = (entry: ITsDocBase) => {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     };
 
