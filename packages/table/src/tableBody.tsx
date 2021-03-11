@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { ICellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
@@ -56,7 +56,7 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
 
 const DEEP_COMPARE_KEYS: Array<keyof ITableBodyProps> = ["selectedRegions"];
 
-export class TableBody extends AbstractComponent2<ITableBodyProps> {
+export class TableBody extends AbstractComponent<ITableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,

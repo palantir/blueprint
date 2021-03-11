@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { AbstractPureComponent2, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
@@ -46,7 +46,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
 }
 
-export class RowHeaderCell extends AbstractPureComponent2<IRowHeaderCellProps> {
+export class RowHeaderCell extends AbstractPureComponent<IRowHeaderCellProps> {
     public render() {
         const {
             // from IRowHeaderCellProps

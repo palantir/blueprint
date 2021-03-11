@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
 // eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
@@ -69,7 +69,7 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
 
 /** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
 
-export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
+export class Tooltip extends AbstractPureComponent<ITooltipProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
     public static defaultProps: Partial<ITooltipProps> = {

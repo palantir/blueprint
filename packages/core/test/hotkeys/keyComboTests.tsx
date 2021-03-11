@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
-export * from "./documentalistUtils";
-export * from "./eventHandlerUtils";
-export * from "./stringUtils";
+import { render, screen } from "@testing-library/react";
+import { expect } from "chai";
+import React from "react";
+
+import { KeyCombo } from "../../src/components/hotkeys";
+
+describe("KeyCombo", () => {
+    it("renders key combo", () => {
+        render(<KeyCombo combo="cmd+C" />);
+        expect(screen.getByText("C")).not.to.be.undefined;
+    });
+});

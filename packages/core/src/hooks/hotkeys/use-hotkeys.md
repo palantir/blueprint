@@ -1,26 +1,4 @@
----
-tag: new
----
-
 @# useHotkeys
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">This API requires React 16.8+</h4>
-</div>
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
-
-Migrating from [HotkeysTarget](#core/components/hotkeys)?
-
-</h4>
-
-`useHotkeys` is a replacement for HotkeysTarget. You are encouraged to use this new API in your function
-components, or the [HotkeysTarget2 component](#core/components/hotkeys-target2) in your component classes,
-as they will become the standard APIs in Blueprint v4. See the full
-[migration guide](https://github.com/palantir/blueprint/wiki/useHotkeys-migration) on the wiki.
-
-</div>
 
 The `useHotkeys` hook adds hotkey / keyboard shortcut interactions to your application using a custom React hook.
 Compared to the deprecated [Hotkeys](#core/components/hotkeys) API, it works with function components and its

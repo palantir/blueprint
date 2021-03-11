@@ -163,8 +163,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 
-    public constructor(props?: ITimePickerProps, context?: any) {
-        super(props, context);
+    public constructor(props?: ITimePickerProps) {
+        super(props);
 
         let value = props.minTime;
         if (props.value != null) {

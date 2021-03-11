@@ -17,7 +17,7 @@
 import React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IBaseExampleProps, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
 
 export interface ITableReorderableExampleState {
@@ -52,7 +52,7 @@ export class TableReorderableExample extends React.PureComponent<IExampleProps, 
         this.setState({ enableColumnInteractionBar }),
     );
 
-    public componentDidUpdate(_nextProps: IBaseExampleProps, nextState: ITableReorderableExampleState) {
+    public componentDidUpdate(_nextProps: IExampleProps, nextState: ITableReorderableExampleState) {
         const { enableColumnInteractionBar } = this.state;
         if (nextState.enableColumnInteractionBar !== enableColumnInteractionBar) {
             const nextColumns = React.Children.map(this.state.columns, (column: JSX.Element) => {

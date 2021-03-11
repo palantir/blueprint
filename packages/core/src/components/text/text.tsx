@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface ITextProps extends IProps {
@@ -47,7 +47,7 @@ export interface ITextState {
     isContentOverflowing: boolean;
 }
 
-export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
+export class Text extends AbstractPureComponent<ITextProps, ITextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
 
     public static defaultProps: Partial<ITextProps> = {

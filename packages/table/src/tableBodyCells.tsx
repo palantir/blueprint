@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
@@ -86,7 +86,7 @@ const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof ITableBodyCellsProps> = [
     "rowIndexStart",
 ];
 
-export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
+export class TableBodyCells extends AbstractComponent<ITableBodyCellsProps> {
     public static defaultProps = {
         renderMode: RenderMode.BATCH,
     };

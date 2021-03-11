@@ -10,5 +10,4 @@ import "./datePickerCaptionTests";
 import "./datePickerTests";
 import "./dateRangeInputTests";
 import "./dateRangePickerTests";
-import "./dateTimePickerTests";
 import "./timePickerTests";

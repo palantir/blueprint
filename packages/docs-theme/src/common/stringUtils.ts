@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
-import React from "react";
-
 /**
  * Removes leading indents from a template string without removing all leading whitespace.
  * Trims resulting string to remove blank first/last lines caused by ` location.
@@ -39,46 +36,4 @@ export function smartSearch(query: string, ...content: string[]) {
     const terms = query.toLowerCase().split(" ");
     const dataToSearch = content.map(s => s.toLowerCase());
     return terms.every(term => dataToSearch.some(d => d.indexOf(term) >= 0));
-}
-
-export interface IKeyEventMap<T = HTMLElement> {
-    /** event handler invoked on all events */
-    all?: React.KeyboardEventHandler<T>;
-
-    /** map keycodes to specific event handlers */
-    [keyCode: number]: React.KeyboardEventHandler<T>;
-}
-
-export function createKeyEventHandler<T = HTMLElement>(actions: IKeyEventMap<T>, preventDefault = false) {
-    return (e: React.KeyboardEvent<T>) => {
-        for (const k of Object.keys(actions)) {
-            const key = Number(k);
-            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-            // eslint-disable-next-line deprecation/deprecation
-            if (e.which === key) {
-                if (preventDefault) {
-                    e.preventDefault();
-                }
-                actions[key](e);
-            }
-        }
-        actions.all?.(e);
-    };
-}
-
-/**
- * Performs an in-order traversal of the layout tree, invoking the callback for each node.
- * Callback receives an array of ancestors with direct parent first in the list.
- */
-export function eachLayoutNode(
-    layout: Array<IHeadingNode | IPageNode>,
-    callback: (node: IHeadingNode | IPageNode, parents: IPageNode[]) => void,
-    parents: IPageNode[] = [],
-) {
-    layout.forEach(node => {
-        callback(node, parents);
-        if (isPageNode(node)) {
-            eachLayoutNode(node.children, callback, [node, ...parents]);
-        }
-    });
 }

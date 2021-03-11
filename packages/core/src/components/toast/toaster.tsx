@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { AbstractPureComponent2, Classes, Position } from "../../common";
+import { AbstractPureComponent, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
@@ -107,7 +107,7 @@ export interface IToasterState {
     toasts: IToastOptions[];
 }
 
-export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState> implements IToaster {
+export class Toaster extends AbstractPureComponent<IToasterProps, IToasterState> implements IToaster {
     public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
 
     public static defaultProps: IToasterProps = {

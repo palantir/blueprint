@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent2, IProps, IRef } from "@blueprintjs/core";
+import { AbstractComponent, IProps, IRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -126,7 +126,7 @@ export interface ITableQuadrantProps extends IProps {
     style?: React.CSSProperties;
 }
 
-export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
+export class TableQuadrant extends AbstractComponent<ITableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
     public static defaultProps: Partial<ITableQuadrantProps> = {

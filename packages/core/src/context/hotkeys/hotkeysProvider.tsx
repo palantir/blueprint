@@ -16,7 +16,7 @@
 
 import React, { createContext, useReducer, Dispatch, useCallback } from "react";
 
-import { HotkeysDialog2, HotkeysDialog2Props } from "../../components/hotkeys/hotkeysDialog2";
+import { HotkeysDialog, HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog";
 import { HotkeyConfig } from "../../hooks";
 
 interface HotkeysContextState {
@@ -66,7 +66,7 @@ export interface HotkeysProviderProps {
     children: React.ReactChild;
 
     /** Optional props to customize the rendered hotkeys dialog. */
-    dialogProps?: Partial<Omit<HotkeysDialog2Props, "hotkeys">>;
+    dialogProps?: Partial<Omit<HotkeysDialogProps, "hotkeys">>;
 
     /** If provided, this dialog render function will be used in place of the default implementation. */
     renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
@@ -80,7 +80,7 @@ export const HotkeysProvider = ({ children, dialogProps, renderDialog }: Hotkeys
     const handleDialogClose = useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
-        <HotkeysDialog2
+        <HotkeysDialog
             {...dialogProps}
             isOpen={state.isDialogOpen}
             hotkeys={state.hotkeys}

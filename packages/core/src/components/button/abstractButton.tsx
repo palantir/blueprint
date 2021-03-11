@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Alignment,
     Classes,
     getRef,
@@ -94,7 +94,7 @@ export interface IButtonState {
     isActive: boolean;
 }
 
-export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorElement> extends AbstractPureComponent2<
+export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorElement> extends AbstractPureComponent<
     IButtonProps<E> &
         (E extends HTMLButtonElement
             ? React.ButtonHTMLAttributes<HTMLButtonElement>

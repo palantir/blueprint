@@ -27,7 +27,6 @@ export * from "./button/buttonGroup";
 export * from "./callout/callout";
 export * from "./card/card";
 export * from "./collapse/collapse";
-export * from "./collapsible-list/collapsibleList";
 export * from "./context-menu/contextMenuTarget";
 export * from "./dialog/dialog";
 export * from "./dialog/multistepDialog";

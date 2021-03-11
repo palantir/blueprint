@@ -8,13 +8,11 @@
 @page callout
 @page card
 @page collapse
-@page collapsible-list
 @page divider
 @page editable-text
 @page html
 @page html-table
-@page hotkeys
-@page hotkeys-target2
+@page hotkeys-target
 @page icon
 @page menu
 @page navbar

@@ -1,36 +1,14 @@
----
-tag: new
----
-
-@# HotkeysTarget2
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">This API requires React 16.8+</h4>
-</div>
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
-
-Migrating from [HotkeysTarget](#core/components/hotkeys)?
-
-</h4>
-
-HotkeysTarget2 is a replacement for HotkeysTarget. You are encouraged to use this new API, or
-the `useHotkeys` hook directly in your function components, as they will become the standard
-APIs in Blueprint v4. See the full
-[migration guide](https://github.com/palantir/blueprint/wiki/useHotkeys-migration) on the wiki.
-
-</div>
+@# HotkeysTarget
 
 
-The `HotkeysTarget2` component is a utility component which allows you to use the new
+The `HotkeysTarget` component is a utility component which allows you to use the
 [`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful
 if you want to switch to the new hotkeys API without refactoring your class components
 into functional components.
 
 Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the "?" key.
 
-@reactExample HotkeysTarget2Example
+@reactExample HotkeysTargetExample
 
 @## Usage
 
@@ -41,7 +19,7 @@ Then, to register hotkeys and generate the relevant event handlers, use the comp
 
 ```tsx
 import React from "react";
-import { HotkeysTarget2, InputGroup } from "@blueprintjs/core";
+import { HotkeysTarget, InputGroup } from "@blueprintjs/core";
 
 export default class extends React.PureComponent {
     private inputEl: HTMLInputElement | null = null;
@@ -64,14 +42,14 @@ export default class extends React.PureComponent {
 
     public render() {
         return (
-            <HotkeysTarget2 hotkeys={this.hotkeys}>
+            <HotkeysTarget hotkeys={this.hotkeys}>
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Press "R" to refresh data, "F" to focus the input...
                         <InputGroup ref={this.handleInputRef} />
                     </div>
                 )}
-            </HotkeysTarget2>
+            </HotkeysTarget>
         )
     }
 }
@@ -84,6 +62,6 @@ The component takes an optional `options` prop which can customize some of the h
 
 @## Props
 
-@interface HotkeysTarget2Props
+@interface HotkeysTargetProps
 
 @interface HotkeyConfig

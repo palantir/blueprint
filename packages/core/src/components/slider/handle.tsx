@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { IHandleProps } from "./handleProps";
@@ -47,7 +47,7 @@ const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
 
-export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandleState> {
+export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 
     public state = {

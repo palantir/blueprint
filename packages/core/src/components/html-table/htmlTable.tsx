@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common";
+import { AbstractPureComponent, Classes, IElementRefProps } from "../../common";
 
 export interface IHTMLTableProps
     extends React.TableHTMLAttributes<HTMLTableElement>,
@@ -45,7 +45,7 @@ export interface IHTMLTableProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class HTMLTable extends AbstractPureComponent2<IHTMLTableProps> {
+export class HTMLTable extends AbstractPureComponent<IHTMLTableProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation
         const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 import { NavbarDivider } from "./navbarDivider";
 import { NavbarGroup } from "./navbarGroup";
@@ -36,7 +36,7 @@ export interface INavbarProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class Navbar extends AbstractPureComponent2<INavbarProps> {
+export class Navbar extends AbstractPureComponent<INavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
     public static Divider = NavbarDivider;

@@ -17,7 +17,7 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IPopoverProps,
@@ -92,7 +92,7 @@ export interface IMultiSelectState {
     isOpen: boolean;
 }
 
-export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>, IMultiSelectState> {
+export class MultiSelect<T> extends AbstractPureComponent<IMultiSelectProps<T>, IMultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static defaultProps = {

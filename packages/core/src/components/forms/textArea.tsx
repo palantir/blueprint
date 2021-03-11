@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes,
     getRef,
     IRef,
@@ -63,7 +63,7 @@ export interface ITextAreaState {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaState> {
+export class TextArea extends AbstractPureComponent<ITextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
     public state: ITextAreaState = {};

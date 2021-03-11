@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IProps, MaybeElement } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -129,7 +129,7 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
-export class Alert extends AbstractPureComponent2<IAlertProps> {
+export class Alert extends AbstractPureComponent<IAlertProps> {
     public static defaultProps: IAlertProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,

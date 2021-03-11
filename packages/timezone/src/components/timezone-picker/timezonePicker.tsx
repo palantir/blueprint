@@ -18,12 +18,12 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     IButtonProps,
-    IInputGroupProps2,
+    IInputGroupProps,
     IPopoverProps,
     IProps,
     MenuItem,
@@ -101,7 +101,7 @@ export interface ITimezonePickerProps extends IProps {
      * If you want to control the filter input, you can pass `value` and `onChange` here
      * to override `Select`'s own behavior.
      */
-    inputProps?: IInputGroupProps2;
+    inputProps?: IInputGroupProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     popoverProps?: Partial<IPopoverProps>;
@@ -113,7 +113,7 @@ export interface ITimezonePickerState {
 
 const TypedSelect = Select.ofType<ITimezoneItem>();
 
-export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps, ITimezonePickerState> {
+export class TimezonePicker extends AbstractPureComponent<ITimezonePickerProps, ITimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
     public static defaultProps: Partial<ITimezonePickerProps> = {
@@ -130,8 +130,8 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
 
     private initialTimezoneItems: ITimezoneItem[];
 
-    constructor(props: ITimezonePickerProps, context?: any) {
-        super(props, context);
+    constructor(props: ITimezonePickerProps) {
+        super(props);
 
         const { date = new Date(), showLocalTimezone, inputProps = {} } = props;
         this.state = { query: inputProps.value || "" };
@@ -144,7 +144,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         const { children, className, disabled, inputProps, popoverProps } = this.props;
         const { query } = this.state;
 
-        const finalInputProps: IInputGroupProps2 = {
+        const finalInputProps: IInputGroupProps = {
             placeholder: "Search for timezones...",
             ...inputProps,
         };

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
@@ -58,7 +58,7 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     title?: string;
 }
 
-export class Callout extends AbstractPureComponent2<ICalloutProps> {
+export class Callout extends AbstractPureComponent<ICalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {

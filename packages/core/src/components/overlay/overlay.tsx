@@ -19,7 +19,7 @@ import React from "react";
 import { findDOMNode } from "react-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
@@ -180,7 +180,7 @@ export interface IOverlayState {
     hasEverOpened?: boolean;
 }
 
-export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
+export class Overlay extends AbstractPureComponent<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
     public static defaultProps: IOverlayProps = {

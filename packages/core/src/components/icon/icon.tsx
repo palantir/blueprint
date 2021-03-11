@@ -19,7 +19,7 @@ import React from "react";
 
 import { IconComponent, IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE, SVGIconProps } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
 
 export { IconName };
 
@@ -53,7 +53,7 @@ interface IIconState {
     iconComponent: IconComponent | undefined;
 }
 
-export class Icon extends AbstractPureComponent2<
+export class Icon extends AbstractPureComponent<
     IIconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
     IIconState
 > {

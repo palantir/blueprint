@@ -61,8 +61,8 @@ export interface IEditableNameState {
 }
 
 export class EditableName extends React.PureComponent<IEditableNameProps, IEditableNameState> {
-    public constructor(props: IEditableNameProps, context?: any) {
-        super(props, context);
+    public constructor(props: IEditableNameProps) {
+        super(props);
         this.state = {
             dirtyName: props.name,
             isEditing: false,

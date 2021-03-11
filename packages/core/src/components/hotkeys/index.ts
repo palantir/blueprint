@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-export * from "./hotkeysTypes";
-export * from "./hotkeys";
-export { Hotkey, IHotkeyProps } from "./hotkey";
+export { Hotkey, HotkeyProps } from "./hotkey";
 export { KeyCombo, IKeyComboProps } from "./keyCombo";
-// eslint-disable-next-line import/no-cycle, deprecation/deprecation
-export { HotkeysTarget, IHotkeysTargetComponent } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
-// eslint-disable-next-line import/no-cycle
-export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";
-
-export { HotkeysDialog2 } from "./hotkeysDialog2";
-export { HotkeysTarget2, HotkeysTarget2Props } from "./hotkeysTarget2";
+export { HotkeysDialog } from "./hotkeysDialog";
+export { HotkeysTarget, HotkeysTargetProps } from "./hotkeysTarget";

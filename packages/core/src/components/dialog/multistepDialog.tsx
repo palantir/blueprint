@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, Utils } from "../../common";
+import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, IButtonProps } from "../button/buttons";
 import { Dialog, IDialogProps } from "./dialog";
@@ -66,7 +66,7 @@ const INITIAL_STATE = {
     selectedIndex: 0,
 };
 
-export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProps, IMultistepDialogState> {
+export class MultistepDialog extends AbstractPureComponent<IMultistepDialogProps, IMultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 
     public static defaultProps: Partial<IMultistepDialogProps> = {

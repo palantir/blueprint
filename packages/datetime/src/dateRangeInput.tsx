@@ -19,12 +19,12 @@ import React from "react";
 import DayPicker from "react-day-picker";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Boundary,
     Classes,
     DISPLAYNAME_PREFIX,
     getRef,
-    IInputGroupProps2,
+    IInputGroupProps,
     InputGroup,
     Intent,
     IPopoverProps,
@@ -94,7 +94,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    endInputProps?: IInputGroupProps2;
+    endInputProps?: IInputGroupProps;
 
     /**
      * Called when the user selects a day.
@@ -156,7 +156,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    startInputProps?: IInputGroupProps2;
+    startInputProps?: IInputGroupProps;
 
     /**
      * The currently selected date range.
@@ -211,7 +211,7 @@ interface IStateKeysAndValuesObject {
     };
 }
 
-export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps, IDateRangeInputState> {
+export class DateRangeInput extends AbstractPureComponent<IDateRangeInputProps, IDateRangeInputState> {
     public static defaultProps: Partial<IDateRangeInputProps> = {
         allowSingleDayRange: false,
         closeOnSelection: true,
@@ -249,8 +249,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         this.props.endInputProps.inputRef,
     );
 
-    public constructor(props: IDateRangeInputProps, context?: any) {
-        super(props, context);
+    public constructor(props: IDateRangeInputProps) {
+        super(props);
         this.reset(props);
     }
 

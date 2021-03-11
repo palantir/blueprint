@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
+import { Button, H5, HotkeysTarget, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 
@@ -54,7 +54,7 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         return (
-            <HotkeysTarget2
+            <HotkeysTarget
                 hotkeys={[
                     {
                         combo: "shift + o",
@@ -85,7 +85,7 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
                     />
                     <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>
-            </HotkeysTarget2>
+            </HotkeysTarget>
         );
     }
 

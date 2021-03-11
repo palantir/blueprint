@@ -18,9 +18,11 @@ module.exports = function (config) {
         "src/common/utils/safeInvokeMember.ts",
         // HACKHACK: for karma upgrade only
         "src/common/refs.ts",
-        // HACKHACK: need to add hotkeys v2 tests
-        "src/components/hotkeys/hotkeysDialog2.tsx",
-        "src/components/hotkeys/hotkeysTarget2.tsx",
+        // HACKHACK: need to add hotkeys tests
+        "src/components/hotkeys/hotkey.tsx",
+        "src/components/hotkeys/hotkeys.tsx",
+        "src/components/hotkeys/hotkeysDialog.tsx",
+        "src/components/hotkeys/hotkeysTarget.tsx",
         "src/context/hotkeys/hotkeysProvider.tsx",
     ];
 

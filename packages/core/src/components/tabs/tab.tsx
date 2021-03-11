@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export type TabId = string | number;
@@ -60,7 +60,7 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
     title?: React.ReactNode;
 }
 
-export class Tab extends AbstractPureComponent2<ITabProps> {
+export class Tab extends AbstractPureComponent<ITabProps> {
     public static defaultProps: Partial<ITabProps> = {
         disabled: false,
     };

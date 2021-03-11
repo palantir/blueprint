@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
 export interface ICollapseProps extends IProps {
@@ -113,7 +113,7 @@ export enum AnimationStates {
     CLOSED,
 }
 
-export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
     public static defaultProps: ICollapseProps = {

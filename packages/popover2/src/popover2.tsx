@@ -20,7 +20,7 @@ import React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Classes as CoreClasses,
     combineRefs,
     DISPLAYNAME_PREFIX,
@@ -96,7 +96,7 @@ export interface IPopover2State {
 /**
  * @template T target component props inteface
  */
-export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopover2State> {
+export class Popover2<T> extends AbstractPureComponent<IPopover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
 
     private popoverRef = Utils.createReactRef<HTMLDivElement>();

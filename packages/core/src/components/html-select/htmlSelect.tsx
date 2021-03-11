@@ -19,7 +19,7 @@ import React from "react";
 
 import { DoubleCaretVertical, SVGIconProps } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2 } from "../../common";
+import { AbstractPureComponent } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { IElementRefProps, IOptionProps } from "../../common/props";
 
@@ -61,7 +61,7 @@ export interface IHTMLSelectProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class HTMLSelect extends AbstractPureComponent2<IHTMLSelectProps> {
+export class HTMLSelect extends AbstractPureComponent<IHTMLSelectProps> {
     public render() {
         const {
             className,

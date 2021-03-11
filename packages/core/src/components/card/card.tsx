@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes, Elevation } from "../../common";
+import { AbstractPureComponent, Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export interface ICardProps extends IProps, HTMLDivProps {
@@ -48,7 +48,7 @@ export interface ICardProps extends IProps, HTMLDivProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export class Card extends AbstractPureComponent2<ICardProps> {
+export class Card extends AbstractPureComponent<ICardProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
 
     public static defaultProps: ICardProps = {

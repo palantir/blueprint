@@ -18,11 +18,11 @@ import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import React from "react";
 
-import { Classes, IInputGroupProps2, MenuItem } from "@blueprintjs/core";
+import { Classes, IInputGroupProps, MenuItem } from "@blueprintjs/core";
 import { CaretRight } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
-import { eachLayoutNode } from "../common/utils";
+import { eachLayoutNode } from "../common/documentalistUtils";
 
 export interface INavigatorProps {
     /** Whether navigator is open. */
@@ -48,7 +48,7 @@ export interface INavigationSection {
 }
 
 const NavOmnibar = Omnibar.ofType<INavigationSection>();
-const INPUT_PROPS: IInputGroupProps2 = { placeholder: "Fuzzy search headings..." };
+const INPUT_PROPS: IInputGroupProps = { placeholder: "Fuzzy search headings..." };
 
 export class Navigator extends React.PureComponent<INavigatorProps> {
     private sections: INavigationSection[];

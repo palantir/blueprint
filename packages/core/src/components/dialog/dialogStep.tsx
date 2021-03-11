@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export type DialogStepId = string | number;
@@ -44,7 +44,7 @@ export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "tit
     title?: React.ReactNode;
 }
 
-export class DialogStep extends AbstractPureComponent2<IDialogStepProps> {
+export class DialogStep extends AbstractPureComponent<IDialogStepProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
 
     // this component is never rendered directly; see MultistepDialog#renderDialogStepPanel()

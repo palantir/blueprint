@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
 
-import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -106,7 +106,7 @@ export interface IDatePickerState {
     selectedShortcutIndex?: number;
 }
 
-export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePickerState> {
+export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
     public static defaultProps: IDatePickerProps = {
         canClearSelection: true,
         clearButtonText: "Clear",
@@ -125,8 +125,8 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
 
     private ignoreNextMonthChange = false;
 
-    public constructor(props: IDatePickerProps, context?: any) {
-        super(props, context);
+    public constructor(props: IDatePickerProps) {
+        super(props);
         const value = getInitialValue(props);
         const initialMonth = getInitialMonth(props, value);
         this.state = {
