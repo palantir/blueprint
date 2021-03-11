@@ -18,7 +18,7 @@ import classNames from "classnames";
 import React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX  } from "../../common/props";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Collapse } from "../collapse/collapse";
 import { Icon } from "../icon/icon";
 import { TreeEventHandler, TreeNodeInfo } from "./treeTypes";

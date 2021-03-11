@@ -86,12 +86,7 @@ describe("CompareUtils", () => {
                 runTest(false, [], [], wl([]));
             });
 
-            function runTest(
-                expectedResult: boolean,
-                a: any,
-                b: any,
-                keys: KeyDenylist<Keys> | KeyAllowlist<Keys>,
-            ) {
+            function runTest(expectedResult: boolean, a: any, b: any, keys: KeyDenylist<Keys> | KeyAllowlist<Keys>) {
                 it(getCompareTestDescription(a, b), () => {
                     expect(CompareUtils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
@@ -124,12 +119,7 @@ describe("CompareUtils", () => {
                 runTest(false, [], [], bl([]));
             });
 
-            function runTest(
-                expectedResult: boolean,
-                a: any,
-                b: any,
-                keys: KeyDenylist<Keys> | KeyAllowlist<Keys>,
-            ) {
+            function runTest(expectedResult: boolean, a: any, b: any, keys: KeyDenylist<Keys> | KeyAllowlist<Keys>) {
                 it(getCompareTestDescription(a, b), () => {
                     expect(CompareUtils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });

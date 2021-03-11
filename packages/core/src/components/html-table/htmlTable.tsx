@@ -19,9 +19,7 @@ import React from "react";
 
 import { AbstractPureComponent, Classes, ElementRefProps } from "../../common";
 
-export interface HTMLTableProps
-    extends React.TableHTMLAttributes<HTMLTableElement>,
-        ElementRefProps<HTMLTableElement> {
+export interface HTMLTableProps extends React.TableHTMLAttributes<HTMLTableElement>, ElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 

@@ -77,9 +77,7 @@ export enum SelectedRegionTransformPreset {
     COLUMN = "column",
 }
 
-type MutableStateUpdateCallback = (
-    stateKey: keyof MutableTableState,
-) => (event: React.FormEvent<HTMLElement>) => void;
+type MutableStateUpdateCallback = (stateKey: keyof MutableTableState) => (event: React.FormEvent<HTMLElement>) => void;
 
 const COLUMN_COUNTS = [0, 1, 5, 20, 100, 1000];
 const ROW_COUNTS = [0, 1, 5, 20, 100, 1000, 100000];

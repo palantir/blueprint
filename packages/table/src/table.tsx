@@ -564,10 +564,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
     // these default values for `resizeRowsByApproximateHeight` have been
     // fine-tuned to work well with default Table font styles.
-    private static resizeRowsByApproximateHeightDefaults: Record<
-        keyof ResizeRowsByApproximateHeightOptions,
-        number
-    > = {
+    private static resizeRowsByApproximateHeightDefaults: Record<keyof ResizeRowsByApproximateHeightOptions, number> = {
         getApproximateCharWidth: 8,
         getApproximateLineHeight: 18,
         getCellHorizontalPadding: 2 * LocatorImpl.CELL_HORIZONTAL_PADDING,

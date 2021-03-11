@@ -17,15 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import {
-    AbstractPureComponent,
-    Icon,
-    IconName,
-    Props,
-    Popover,
-    Position,
-    Utils as CoreUtils,
-} from "@blueprintjs/core";
+import { AbstractPureComponent, Icon, IconName, Props, Popover, Position, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "../common/context";

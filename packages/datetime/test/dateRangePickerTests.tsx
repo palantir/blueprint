@@ -1352,10 +1352,7 @@ describe("<DateRangePicker>", () => {
         return harness;
     }
 
-    function wrapDayPicker(
-        parent: ReactWrapper<DateRangePickerProps, DateRangePickerState>,
-        which: "left" | "right",
-    ) {
+    function wrapDayPicker(parent: ReactWrapper<DateRangePickerProps, DateRangePickerState>, which: "left" | "right") {
         const harness = {
             get wrapper() {
                 // use accessor to ensure it's always the latest reference

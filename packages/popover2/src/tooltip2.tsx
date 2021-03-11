@@ -25,9 +25,7 @@ import { Popover2, Popover2InteractionKind } from "./popover2";
 import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { Popover2SharedProps } from "./popover2SharedProps";
 
-export interface Tooltip2Props<TProps = React.HTMLProps<HTMLElement>>
-    extends Popover2SharedProps<TProps>,
-        IntentProps {
+export interface Tooltip2Props<TProps = React.HTMLProps<HTMLElement>> extends Popover2SharedProps<TProps>, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
