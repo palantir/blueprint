@@ -21,7 +21,7 @@ you must implement it separately in JS.
 <FileInput disabled={true} text="Choose file..." onInputChange={...} />
 ```
 
-@interface IFileInputProps
+@interface FileInputProps
 
 @## CSS
 

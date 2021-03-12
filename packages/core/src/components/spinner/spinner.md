@@ -32,4 +32,4 @@ correctly because they rely on CSS animations.
 
 [msdn-css-svg]: https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csstransitionsforsvgelements/?q=svg
 
-@interface ISpinnerProps
+@interface SpinnerProps

@@ -28,7 +28,7 @@ spacing between each child:
 1. `action`
 1. `children`
 
-@interface INonIdealStateProps
+@interface NonIdealStateProps
 
 @## CSS
 

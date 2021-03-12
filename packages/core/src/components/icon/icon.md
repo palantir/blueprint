@@ -62,7 +62,7 @@ Custom sizes are supported. The following React component:
 </svg>
 ```
 
-@interface IIconProps
+@interface IconProps
 
 @## CSS
 

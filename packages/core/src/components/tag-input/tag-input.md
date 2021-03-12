@@ -63,4 +63,4 @@ and separately disabling the component's `rightElement` as appropriate
 
 </div>
 
-@interface ITagInputProps
+@interface TagInputProps

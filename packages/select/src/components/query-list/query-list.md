@@ -6,7 +6,7 @@
 
 If the `Select` interactions are not sufficient for your use case, you can use `QueryList` directly to render your own components while leveraging basic interactions for keyboard selection and filtering. The `Select` source code is a great place to start when implementing a custom `QueryList` `renderer`.
 
-@interface IQueryListProps
+@interface QueryListProps
 
 @## Renderer API
 
@@ -14,4 +14,4 @@ An object with the following properties will be passed to an `QueryList` `render
 
 This interface is generic, accepting a type parameter `<T>` for an item in the list.
 
-@interface IQueryListRendererProps
+@interface QueryListRendererProps

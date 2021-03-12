@@ -9,7 +9,7 @@ Tags are great for lists of strings.
 `Tag` is a stateless wrapper around its children with support for an optional
 close button. It also supports all HTML `<span>` props.
 
-@interface ITagProps
+@interface TagProps
 
 @## CSS
 

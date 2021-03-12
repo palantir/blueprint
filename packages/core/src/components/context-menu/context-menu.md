@@ -107,7 +107,7 @@ The imperative API provides a single static `ContextMenu` object, enforcing the
 principle that only one context menu can be open at a time. This API is ideal
 for programmatically triggered menus or for non-React apps.
 
--   `ContextMenu.show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean): void`
+-   `ContextMenu.show(menu: JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme?: boolean): void`
 
     Show the given element at the given offset from the top-left corner of the
     viewport. Showing a menu closes the previously shown one automatically. The

@@ -19,4 +19,4 @@ to watch for resizing further up in the DOM tree.
 
 @## Props
 
-@interface IOverflowListProps
+@interface OverflowListProps

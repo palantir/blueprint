@@ -7,7 +7,7 @@ a title, an icon and content. Each intent has a default icon associated with it.
 
 @## Props
 
-@interface ICalloutProps
+@interface CalloutProps
 
 @## CSS
 

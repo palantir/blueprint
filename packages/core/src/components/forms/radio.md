@@ -28,13 +28,13 @@ can use the `RadioGroup` component with a series of `Radio` children.
 `Radio` supports the full range of HTML `<input>` props.
 The most common options are detailed below.
 
-@interface IRadioProps
+@interface RadioProps
 
 @### RadioGroup
 
-@interface IRadioGroupProps
+@interface RadioGroupProps
 
-@interface IOptionProps
+@interface OptionProps
 
 @## CSS
 

@@ -9,4 +9,4 @@ conditionally adding the title attribute and truncating with an ellipsis when co
 
 `Text` accepts and renders arbitrary children. It is intended that these children render as text.
 
-@interface ITextProps
+@interface TextProps

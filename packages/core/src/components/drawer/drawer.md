@@ -14,4 +14,4 @@ Use the `size` prop to set the size of the `Drawer`. This prop sets CSS `width` 
 - `Drawer.SIZE_STANDARD = 50%` (default)
 - `Drawer.SIZE_LARGE = 90%`
 
-@interface IDrawerProps
+@interface DrawerProps

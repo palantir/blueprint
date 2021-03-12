@@ -19,7 +19,7 @@ when the user has stopped interacting with the slider.
 
 @reactExample SliderExample
 
-@interface ISliderProps
+@interface SliderProps
 
 @## Range slider
 
@@ -35,7 +35,7 @@ slider.
 
 @reactExample RangeSliderExample
 
-@interface IRangeSliderProps
+@interface RangeSliderProps
 
 @## Multi slider
 
@@ -45,7 +45,7 @@ implementing more advanced use cases than one or two numbers.
 
 @reactExample MultiSliderExample
 
-@interface IMultiSliderProps
+@interface MultiSliderProps
 
 @### Handle
 
@@ -60,4 +60,4 @@ elements, each with their own `value` and other properties.
 </MultiSlider>
 ```
 
-@interface IHandleProps
+@interface HandleProps
