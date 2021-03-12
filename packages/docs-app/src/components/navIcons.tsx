@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 export const NavIcon: React.FunctionComponent<{ route: string }> = ({ route }) => {
     return (

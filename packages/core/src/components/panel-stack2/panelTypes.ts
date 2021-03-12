@@ -41,7 +41,7 @@ export interface Panel<P> {
     title?: React.ReactNode;
 }
 
-export interface PanelActions<P> {
+export interface PanelActions {
     /**
      * Call this method to programatically close this panel. If this is the only
      * panel on the stack then this method will do nothing.
@@ -54,19 +54,15 @@ export interface PanelActions<P> {
     /**
      * Call this method to open a new panel on the top of the stack.
      */
-    openPanel(panel: Panel<P>): void;
+    openPanel<P>(panel: Panel<P>): void;
 }
 
 /**
  * Use this interface in your panel component's props type to access these
  * panel action callbacks which are injected by `PanelStack2`.
  *
- * ```tsx
- * import { PanelProps } from "@blueprintjs/core";
- * type SettingsPanelInfo = { ... };
- * const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
- *     // ...
- * }
- * ```
+ * See the code example in the docs website.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/panel-stack2
  */
-export type PanelProps<P> = P & PanelActions<P>;
+export type PanelProps<P> = P & PanelActions;

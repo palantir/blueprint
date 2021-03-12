@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { useCallback } from "react";
+import * as React from "react";
 
 import { ChevronLeft } from "@blueprintjs/icons";
 
@@ -23,36 +23,39 @@ import { Button } from "../button/buttons";
 import { Text } from "../text/text";
 import { Panel, PanelProps } from "./panelTypes";
 
-export interface PanelView2Props<T> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface PanelView2Props<T extends Panel<object>> {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose: (removedPanel: Panel<T>) => void;
+    onClose: (removedPanel: T) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen: (addedPanel: Panel<T>) => void;
+    onOpen: (addedPanel: T) => void;
 
     /** The panel to be displayed. */
-    panel: Panel<T>;
+    panel: T;
 
     /** The previous panel in the stack, for rendering the "back" button. */
-    previousPanel?: Panel<T>;
+    previousPanel?: T;
 
     /** Whether to show the header with the "back" button. */
     showHeader: boolean;
 }
 
 interface PanelView2Component {
-    <T>(props: PanelView2Props<T>): JSX.Element | null;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    <T extends Panel<object>>(props: PanelView2Props<T>): JSX.Element | null;
     displayName: string;
 }
 
-export const PanelView2: PanelView2Component = <T,>(props: PanelView2Props<T>) => {
-    const handleClose = useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: PanelView2Props<T>) => {
+    const handleClose = React.useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
 
     const maybeBackButton =
         props.previousPanel === undefined ? null : (
