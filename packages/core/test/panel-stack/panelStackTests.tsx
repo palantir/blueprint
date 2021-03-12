@@ -16,14 +16,16 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import React from "react";
+import * as React from "react";
 import { spy } from "sinon";
 
 import { Classes, Panel, PanelProps, PanelStackProps, PanelStack } from "../../src";
 
-type EmptyObject = Record<string, never>;
+// eslint-disable-next-line @typescript-eslint/ban-types
+type TestPanelInfo = {};
+type TestPanelType = Panel<TestPanelInfo>;
 
-const TestPanel: React.FC<PanelProps<EmptyObject>> = props => {
+const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
     const newPanel = { renderPanel: TestPanel, title: "New Panel 1" };
 
     return (
@@ -36,16 +38,21 @@ const TestPanel: React.FC<PanelProps<EmptyObject>> = props => {
 };
 
 describe("<PanelStack>", () => {
-    let testsContainerElement: HTMLElement;
-    let panelStackWrapper: PanelStackWrapper<EmptyObject>;
+    if (React.version.startsWith("15")) {
+        it("skipped tests for backwards-incompatible component", () => assert(true));
+        return;
+    }
 
-    const initialPanel: Panel<EmptyObject> = {
+    let testsContainerElement: HTMLElement;
+    let panelStackWrapper: PanelStackWrapper<TestPanelType>;
+
+    const initialPanel: Panel<TestPanelInfo> = {
         props: {},
         renderPanel: TestPanel,
         title: "Test Title",
     };
 
-    const emptyTitleInitialPanel: Panel<EmptyObject> = {
+    const emptyTitleInitialPanel: Panel<TestPanelInfo> = {
         props: {},
         renderPanel: TestPanel,
     };
@@ -203,7 +210,7 @@ describe("<PanelStack>", () => {
     });
 
     it("can render a panel stack with multiple initial panels and close one", () => {
-        let stack: Array<Panel<EmptyObject>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
+        let stack: Array<Panel<TestPanelInfo>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
         panelStackWrapper = renderPanelStack({
             onClose: () => {
                 const newStack = stack.slice();
@@ -256,14 +263,15 @@ describe("<PanelStack>", () => {
         assert.equal(panelHeaders.at(1).text(), stack[1].title);
     });
 
-    interface PanelStackWrapper<T> extends ReactWrapper<PanelStackProps<T>, any> {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    interface PanelStackWrapper<T extends Panel<object>> extends ReactWrapper<PanelStackProps<T>, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(props: PanelStackProps<EmptyObject>): PanelStackWrapper<EmptyObject> {
+    function renderPanelStack(props: PanelStackProps<TestPanelType>): PanelStackWrapper<TestPanelType> {
         panelStackWrapper = mount(<PanelStack {...props} />, {
             attachTo: testsContainerElement,
-        }) as PanelStackWrapper<EmptyObject>;
+        }) as PanelStackWrapper<TestPanelType>;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }
