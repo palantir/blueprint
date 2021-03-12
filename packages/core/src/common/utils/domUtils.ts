@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { isFunction } from "./functionUtils";
-
 export function elementIsOrContains(element: HTMLElement, testElement: HTMLElement) {
     return element === testElement || element.contains(testElement);
 }
@@ -79,20 +77,14 @@ function throttleImpl<T extends Function>(
 ) {
     let isRunning = false;
     const func = (...args: any[]) => {
-        // don't use safeInvoke, because we might have more than its max number
-        // of typed params
-        if (isFunction(onBeforeIsRunningCheck)) {
-            onBeforeIsRunningCheck(...args);
-        }
+        onBeforeIsRunningCheck?.(...args);
 
         if (isRunning) {
             return;
         }
         isRunning = true;
 
-        if (isFunction(onAfterIsRunningCheck)) {
-            onAfterIsRunningCheck(...args);
-        }
+        onAfterIsRunningCheck?.(...args);
 
         requestAnimationFrame(() => {
             onAnimationFrameRequested(...args);

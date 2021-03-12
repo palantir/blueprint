@@ -56,10 +56,10 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
      *
      * @default Position.RIGHT
      */
-    position?: Position;
+    position: Position;
 
     /**
-     * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
+     * CSS size of the drawer. This sets `width` if horizontal position (default)
      * and `height` otherwise.
      *
      * Constants are available for common sizes:
@@ -89,15 +89,6 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
      * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
-
-    /**
-     * Whether the drawer should appear with vertical styling.
-     * It will be ignored if `position` prop is set
-     *
-     * @default false
-     * @deprecated use `position` instead
-     */
-    vertical?: boolean;
 }
 
 export class Drawer extends AbstractPureComponent<DrawerProps> {
@@ -106,8 +97,8 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
     public static defaultProps: DrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        position: "right",
         style: {},
-        vertical: false,
     };
 
     public static readonly SIZE_SMALL = "360px";
@@ -119,14 +110,12 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
     private lastActiveElementBeforeOpened: Element | null | undefined;
 
     public render() {
-        // eslint-disable-next-line deprecation/deprecation
-        const { size, style, position, vertical } = this.props;
-        const realPosition = position ? getPositionIgnoreAngles(position) : undefined;
+        const { size, style, position } = this.props;
+        const realPosition = getPositionIgnoreAngles(position);
 
         const classes = classNames(
             Classes.DRAWER,
             {
-                [Classes.VERTICAL]: !realPosition && vertical,
                 [Classes.positionClass(realPosition) ?? ""]: true,
             },
             this.props.className,
@@ -137,7 +126,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
                 ? style
                 : {
                       ...style,
-                      [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
+                      [isPositionHorizontal(realPosition) ? "height" : "width"]: size,
                   };
         return (
             <Overlay
@@ -164,10 +153,6 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
             }
         }
         if (props.position != null) {
-            // eslint-disable-next-line deprecation/deprecation
-            if (props.vertical) {
-                console.warn(Errors.DRAWER_VERTICAL_IS_IGNORED);
-            }
             if (props.position !== getPositionIgnoreAngles(props.position)) {
                 console.warn(Errors.DRAWER_ANGLE_POSITIONS_ARE_CASTED);
             }
