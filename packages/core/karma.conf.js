@@ -4,8 +4,6 @@
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
 
-const REACT = process.env.REACT || "16";
-
 module.exports = function (config) {
     const coverageExcludes = [
         // not worth full coverage
@@ -23,12 +21,6 @@ module.exports = function (config) {
         "src/components/hotkeys/hotkeysTarget2.tsx",
         "src/context/hotkeys/hotkeysProvider.tsx",
     ];
-
-    if (REACT === "15") {
-        console.info("Excluding features which require React 16 from coverage requiremenst...");
-        // features require React 16.8+
-        coverageExcludes.push("src/context/**/*.ts*", "src/hooks/**/*.ts*", "src/components/panel-stack2/*");
-    }
 
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
