@@ -35,13 +35,6 @@ export interface IHTMLTableProps
     /** Enables hover styles on row. */
     interactive?: boolean;
 
-    /**
-     * Use small, condensed appearance for this element and all child elements.
-     *
-     * @deprecated
-     */
-    small?: boolean;
-
     /** Use an alternate background color on odd rows. */
     striped?: boolean;
 }
@@ -51,7 +44,7 @@ export interface IHTMLTableProps
 export class HTMLTable extends AbstractPureComponent2<HTMLTableProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation
-        const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;
+        const { bordered, className, condensed, elementRef, interactive, striped, ...htmlProps } = this.props;
         const classes = classNames(
             Classes.HTML_TABLE,
             {
@@ -59,7 +52,6 @@ export class HTMLTable extends AbstractPureComponent2<HTMLTableProps> {
                 [Classes.HTML_TABLE_CONDENSED]: condensed,
                 [Classes.HTML_TABLE_STRIPED]: striped,
                 [Classes.INTERACTIVE]: interactive,
-                [Classes.SMALL]: small,
             },
             className,
         );

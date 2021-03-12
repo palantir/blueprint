@@ -23,8 +23,6 @@ import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
-// this cyclic import can be removed in v4.0 (https://github.com/palantir/blueprint/issues/3829)
-// eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
 // eslint-disable-next-line deprecation/deprecation

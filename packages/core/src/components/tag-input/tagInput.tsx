@@ -465,9 +465,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
     private removeIndexFromValues(index: number) {
         const { onChange, onRemove, values } = this.props;
         onRemove?.(values[index], index);
-        if (Utils.isFunction(onChange)) {
-            onChange(values.filter((_, i) => i !== index));
-        }
+        onChange?.(values.filter((_, i) => i !== index));
     }
 
     private invokeKeyPressCallback(

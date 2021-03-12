@@ -11,9 +11,6 @@ module.exports = function (config) {
         "src/common/abstractComponent*",
         "src/common/abstractPureComponent*",
         "src/compatibility/*",
-        // deprecations
-        "src/common/utils/functionUtils.ts",
-        "src/common/utils/safeInvokeMember.ts",
         // HACKHACK: for karma upgrade only
         "src/common/refs.ts",
         // HACKHACK: need to add hotkeys v2 tests
