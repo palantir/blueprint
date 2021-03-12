@@ -20,7 +20,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { spy } from "sinon";
 
-import { Classes, TreeNode, TreeProps, Tree } from "../../src";
+import { Classes, TreeNodeInfo, TreeProps, Tree } from "../../src";
 
 describe("<Tree>", () => {
     let testsContainerElement: Element;
@@ -308,7 +308,7 @@ describe("<Tree>", () => {
     }
 
     // tslint:disable object-literal-sort-keys
-    function createDefaultContents(): TreeNode[] {
+    function createDefaultContents(): TreeNodeInfo[] {
         return [
             { id: 0, className: "c0", label: "Item 0" },
             {

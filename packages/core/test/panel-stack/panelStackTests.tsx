@@ -19,11 +19,11 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { Classes, Panel, PanelProps, PanelStackProps, PanelStack } from "../../src";
+import { Classes, IPanel, IPanelProps, PanelStackProps, PanelStack } from "../../src";
 
 /* eslint-disable deprecation/deprecation */
 
-export class TestPanel extends React.Component<PanelProps> {
+export class TestPanel extends React.Component<IPanelProps> {
     public render() {
         return (
             <div>
@@ -40,13 +40,13 @@ describe("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
     let panelStackWrapper: PanelStackWrapper;
 
-    const initialPanel: Panel = {
+    const initialPanel: IPanel = {
         component: TestPanel,
         props: {},
         title: "Test Title",
     };
 
-    const emptyTitleInitialPanel: Panel = {
+    const emptyTitleInitialPanel: IPanel = {
         component: TestPanel,
         props: {},
     };
@@ -72,7 +72,7 @@ describe("<PanelStack>", () => {
 
         const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(newPanelHeader);
-        assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
+        assert.equal(newPanelHeader.at(0).text(), "New IPanel 1");
 
         const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.exists(backButton);
@@ -200,11 +200,11 @@ describe("<PanelStack>", () => {
 
         const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(newPanelHeader);
-        assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
+        assert.equal(newPanelHeader.at(0).text(), "New IPanel 1");
     });
 
     it("can render a panel stack with multiple initial panels and close one", () => {
-        let stack: Array<Panel<any>> = [initialPanel, { component: TestPanel, title: "New Panel 1" }];
+        let stack: Array<IPanel<any>> = [initialPanel, { component: TestPanel, title: "New IPanel 1" }];
         panelStackWrapper = renderPanelStack({
             onClose: () => {
                 const newStack = stack.slice();
@@ -217,7 +217,7 @@ describe("<PanelStack>", () => {
 
         const panelHeader = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(panelHeader);
-        assert.equal(panelHeader.at(0).text(), "New Panel 1");
+        assert.equal(panelHeader.at(0).text(), "New IPanel 1");
 
         const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.exists(backButton);

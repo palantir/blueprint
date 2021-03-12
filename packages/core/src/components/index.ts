@@ -80,6 +80,6 @@ export * from "./tag-input/tagInput";
 export * from "./toast/toast";
 export * from "./toast/toaster";
 export * from "./tooltip/tooltip";
-export { Tree } from "./tree/tree";
+export { Tree, TreeProps } from "./tree/tree";
 export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
 export { TreeNode } from "./tree/treeNode";
