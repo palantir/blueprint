@@ -38,7 +38,7 @@ describe("<MultiSelect>", () => {
     };
     let handlers: {
         itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, ItemRendererProps], JSX.Element | null>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 
