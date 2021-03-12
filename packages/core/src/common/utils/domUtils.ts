@@ -25,6 +25,7 @@ export function elementIsOrContains(element: HTMLElement, testElement: HTMLEleme
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
+/* istanbul ignore next */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
     const throttledFunc = throttleImpl((event: Event) => {
         target.dispatchEvent(new CustomEvent(newEventName, event));
