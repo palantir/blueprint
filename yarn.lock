@@ -192,25 +192,6 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/icons@^3.25.1":
-  version "3.25.1"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.25.1.tgz#530c06a72b759da5c3cfbb01eaf2ab987a67129d"
-  integrity sha512-AppGf5IyjjKa/Zlre4pHWbDnsI7nefurXKku8Yf/B14bDAB2a8lzP6HCoTowAW4fHryTwE5Pzp9zEJYvofkUEg==
-  dependencies:
-    classnames "^2.2"
-    tslib "~1.13.0"
-
-"@blueprintjs/test-commons@^0.10.10":
-  version "0.10.10"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/test-commons/-/test-commons-0.10.10.tgz#9a0461f5e6ee0b7357cc85ffd44ec93a9684c45b"
-  integrity sha512-A4LIt6vzVcNKU5mpRJwfFypIx1P2qUji2PHOA+mA6vlRRT10UrcdqH2ZTJO+GGNm0wLkPR+lMzc2qcK+KLhnig==
-  dependencies:
-    chai "^4.2.0"
-    core-js "^3.8.1"
-    enzyme "^3.11.0"
-    enzyme-adapter-react-15 "^1.4.2"
-    enzyme-adapter-react-16 "^1.15.5"
-
 "@documentalist/client@^3.0.0", "@documentalist/client@~3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@documentalist/client/-/client-3.0.0.tgz#48e51c824946fd4b4e0356fed176bbe80fc7b5b5"

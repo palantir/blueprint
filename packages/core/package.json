@@ -64,7 +64,7 @@
     "devDependencies": {
         "@blueprintjs/karma-build-scripts": "^2.0.0",
         "@blueprintjs/node-build-scripts": "^1.5.0",
-        "@blueprintjs/test-commons": "^0.10.8",
+        "@blueprintjs/test-commons": "^0.10.10",
         "@testing-library/react": "^11.2.5",
         "enzyme": "^3.11.0",
         "karma": "^5.2.3",

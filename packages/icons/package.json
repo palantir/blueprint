@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "3.24.0",
+    "version": "3.25.1",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/generated/index.js",
     "module": "lib/esm/generated/index.js",
@@ -45,7 +45,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.5.0",
-        "@blueprintjs/test-commons": "^0.10.8",
+        "@blueprintjs/test-commons": "^0.10.10",
         "@types/camelcase": "^5.2.0",
         "@types/handlebars": "^4.1.0",
         "camelcase": "^6.2.0",
