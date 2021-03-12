@@ -22,7 +22,7 @@ import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blu
 
 import { ClickToCopy } from "./clickToCopy";
 
-export interface IDocsIconProps {
+export interface DocsIconProps {
     displayName: string;
     group: string;
     iconName: IconName;
@@ -37,7 +37,7 @@ function downloadIconFile(iconName: IconName, iconSize: 16 | 20) {
 
 // eslint-disable-next-line deprecation/deprecation
 @ContextMenuTarget
-export class DocsIcon extends React.PureComponent<IDocsIconProps> {
+export class DocsIcon extends React.PureComponent<DocsIconProps> {
     public render() {
         const { iconName, displayName, tags } = this.props;
         return (

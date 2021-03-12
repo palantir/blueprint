@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, Props, MaybeElement } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -26,9 +26,9 @@ import {
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, IconName } from "../icon/icon";
-import { IOverlayLifecycleProps } from "../overlay/overlay";
+import { OverlayLifecycleProps } from "../overlay/overlay";
 
-export interface IAlertProps extends IOverlayLifecycleProps, IProps {
+export interface AlertProps extends OverlayLifecycleProps, Props {
     /**
      * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
@@ -129,8 +129,8 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
-export class Alert extends AbstractPureComponent<IAlertProps> {
-    public static defaultProps: IAlertProps = {
+export class Alert extends AbstractPureComponent<AlertProps> {
+    public static defaultProps: AlertProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
         confirmButtonText: "OK",
@@ -177,7 +177,7 @@ export class Alert extends AbstractPureComponent<IAlertProps> {
         );
     }
 
-    protected validateProps(props: IAlertProps) {
+    protected validateProps(props: AlertProps) {
         if (props.onClose == null && (props.cancelButtonText == null) !== (props.onCancel == null)) {
             console.warn(ALERT_WARN_CANCEL_PROPS);
         }

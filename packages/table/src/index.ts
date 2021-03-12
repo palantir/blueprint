@@ -14,41 +14,41 @@
  * limitations under the License.
  */
 
-export { Cell, ICellProps, ICellRenderer } from "./cell/cell";
+export { Cell, CellProps, CellRenderer } from "./cell/cell";
 
-export { EditableCell, IEditableCellProps } from "./cell/editableCell";
+export { EditableCell, EditableCellProps } from "./cell/editableCell";
 
-export { JSONFormat, IJSONFormatProps } from "./cell/formats/jsonFormat";
+export { JSONFormat, JSONFormatProps } from "./cell/formats/jsonFormat";
 
-export { TruncatedPopoverMode, TruncatedFormat, ITruncatedFormatProps } from "./cell/formats/truncatedFormat";
+export { TruncatedPopoverMode, TruncatedFormat, TruncatedFormatProps } from "./cell/formats/truncatedFormat";
 
-export { Column, IColumnProps } from "./column";
+export { Column, ColumnProps } from "./column";
 
 export { AnyRect, Clipboard, Grid, Rect, RenderMode, Utils } from "./common/index";
 
-export { IDraggableProps, Draggable } from "./interactions/draggable";
+export { DraggableProps, Draggable } from "./interactions/draggable";
 
-export { IClientCoordinates, ICoordinateData, IDragHandler } from "./interactions/dragTypes";
+export { ClientCoordinates, CoordinateData, DragHandler } from "./interactions/dragTypes";
 
-export { CopyCellsMenuItem, IContextMenuRenderer, IMenuContext } from "./interactions/menus";
+export { CopyCellsMenuItem, ContextMenuRenderer, MenuContext } from "./interactions/menus";
 
-export { ILockableLayout, IResizeHandleProps, Orientation, ResizeHandle } from "./interactions/resizeHandle";
+export { LockableLayout, ResizeHandleProps, Orientation, ResizeHandle } from "./interactions/resizeHandle";
 
-export { ISelectableProps, IDragSelectableProps, DragSelectable } from "./interactions/selectable";
+export { SelectableProps, DragSelectableProps, DragSelectable } from "./interactions/selectable";
 
-export { IColumnHeaderRenderer } from "./headers/columnHeader";
+export { ColumnHeaderRenderer } from "./headers/columnHeader";
 
-export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
+export { ColumnHeaderCell, ColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
-export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
+export { RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 
-export { IEditableNameProps, EditableName } from "./headers/editableName";
+export { EditableNameProps, EditableName } from "./headers/editableName";
 
 export {
     ColumnLoadingOption,
-    ICellInterval,
-    IRegion,
-    IStyledRegionGroup,
+    CellInterval,
+    Region,
+    StyledRegionGroup,
     RegionCardinality,
     Regions,
     RowLoadingOption,
@@ -56,4 +56,4 @@ export {
     TableLoadingOption,
 } from "./regions";
 
-export { ITableProps, Table } from "./table";
+export { TableProps, Table } from "./table";

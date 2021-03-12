@@ -17,12 +17,12 @@
 import classNames from "classnames";
 import React from "react";
 
-import { DISPLAYNAME_PREFIX, IProps, Popover, Position } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Props, Popover, Position } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";
 
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
-import { Locator } from "../../locator";
+import { LocatorImpl } from "../../locator";
 
 // amount in pixels that the content div width changes when truncated vs when
 // not truncated. Note: could be modified by styles
@@ -37,7 +37,7 @@ export enum TruncatedPopoverMode {
     WHEN_TRUNCATED_APPROX = "when-truncated-approx",
 }
 
-export interface ITrucatedFormateMeasureByApproximateOptions {
+export interface TrucatedFormateMeasureByApproximateOptions {
     /**
      * Approximate character width (in pixels), used to determine whether to display the popover in approx truncation mode.
      * The default value should work for normal table styles,
@@ -76,7 +76,7 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
     numBufferLines: number;
 }
 
-export interface ITruncatedFormatProps extends IProps {
+export interface TruncatedFormatProps extends Props {
     children?: string;
 
     /**
@@ -94,7 +94,7 @@ export interface ITruncatedFormatProps extends IProps {
      * enough for default table styles, but may need to be overridden for more accuracy if the default styles or font size, etc
      * are changed.
      */
-    measureByApproxOptions?: ITrucatedFormateMeasureByApproximateOptions;
+    measureByApproxOptions?: TrucatedFormateMeasureByApproximateOptions;
 
     /**
      * Height of the parent cell. Used by shouldComponentUpdate only
@@ -145,20 +145,20 @@ export interface ITruncatedFormatProps extends IProps {
     truncationSuffix?: string;
 }
 
-export interface ITruncatedFormatState {
+export interface TruncatedFormatState {
     isTruncated?: boolean;
     isPopoverOpen?: boolean;
 }
 
-export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, ITruncatedFormatState> {
+export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, TruncatedFormatState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TruncatedFormat`;
 
-    public static defaultProps: ITruncatedFormatProps = {
+    public static defaultProps: TruncatedFormatProps = {
         detectTruncation: false,
         measureByApproxOptions: {
             approximateCharWidth: 8,
             approximateLineHeight: 18,
-            cellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+            cellHorizontalPadding: 2 * LocatorImpl.CELL_HORIZONTAL_PADDING,
             numBufferLines: 0,
         },
         preformatted: false,
@@ -167,7 +167,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
         truncationSuffix: "...",
     };
 
-    public state: ITruncatedFormatState = {
+    public state: TruncatedFormatState = {
         isPopoverOpen: false,
         isTruncated: false,
     };

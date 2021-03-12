@@ -18,11 +18,11 @@ import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import React from "react";
 
-import { KeyCombo } from "../../src/components/hotkeys";
+import { KeyComboTag } from "../../src/components/hotkeys";
 
 describe("KeyCombo", () => {
     it("renders key combo", () => {
-        render(<KeyCombo combo="cmd+C" />);
+        render(<KeyComboTag combo="cmd+C" />);
         expect(screen.getByText("C")).not.to.be.undefined;
     });
 });

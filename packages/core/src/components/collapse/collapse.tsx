@@ -18,9 +18,9 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface ICollapseProps extends IProps {
+export interface CollapseProps extends Props {
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
@@ -55,7 +55,7 @@ export interface ICollapseProps extends IProps {
     transitionDuration?: number;
 }
 
-export interface ICollapseState {
+export interface CollapseState {
     /** The state the element is currently in. */
     animationState: AnimationStates;
 
@@ -113,17 +113,17 @@ export enum AnimationStates {
     CLOSED,
 }
 
-export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
-    public static defaultProps: ICollapseProps = {
+    public static defaultProps: CollapseProps = {
         component: "div",
         isOpen: false,
         keepChildrenMounted: false,
         transitionDuration: 200,
     };
 
-    public static getDerivedStateFromProps(props: ICollapseProps, state: ICollapseState) {
+    public static getDerivedStateFromProps(props: CollapseProps, state: CollapseState) {
         const { isOpen } = props;
         const { animationState } = state;
 
@@ -158,7 +158,7 @@ export class Collapse extends AbstractPureComponent<ICollapseProps, ICollapseSta
         return null;
     }
 
-    public state: ICollapseState = {
+    public state: CollapseState = {
         animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
         height: undefined,
         heightWhenOpen: undefined,

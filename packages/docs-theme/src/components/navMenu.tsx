@@ -18,20 +18,20 @@ import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, IProps } from "@blueprintjs/core";
+import { Classes, Props } from "@blueprintjs/core";
 
-import { INavMenuItemProps, NavMenuItem } from "./navMenuItem";
+import { NavMenuItemProps, NavMenuItem } from "./navMenuItem";
 
-export interface INavMenuProps extends IProps {
+export interface NavMenuProps extends Props {
     activePageId: string;
     activeSectionId: string;
     level: number;
     onItemClick: (reference: string) => void;
     items: Array<IPageNode | IHeadingNode>;
-    renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
+    renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
 }
 
-export const NavMenu: React.FunctionComponent<INavMenuProps> = props => {
+export const NavMenu: React.FunctionComponent<NavMenuProps> = props => {
     const { renderNavMenuItem = NavMenuItem } = props;
     const menu = props.items.map(section => {
         const isActive = props.activeSectionId === section.route;

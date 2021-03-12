@@ -19,9 +19,9 @@ import React from "react";
 
 import { AbstractPureComponent } from "../../common";
 import { DIVIDER } from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement> {
+export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
     /**
      * HTML tag to use for element.
      *
@@ -33,7 +33,7 @@ export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement>
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class Divider extends AbstractPureComponent<IDividerProps> {
+export class Divider extends AbstractPureComponent<DividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 
     public render(): JSX.Element {

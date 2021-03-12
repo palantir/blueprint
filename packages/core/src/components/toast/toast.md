@@ -19,7 +19,7 @@ You can add one additional action button to a toast. You might use this to provi
 
 You can also apply the same visual intent styles to `Toast`s that you can to [`Button`s](#core/components/button.css).
 
-@interface IToastProps
+@interface ToastProps
 
 @### Toaster
 
@@ -53,7 +53,7 @@ enable `autoFocus` for an individual `Toaster` via a prop, if desired.
 </div>
 
 
-@interface IToasterProps
+@interface ToasterProps
 
 @## Static usage
 
@@ -62,7 +62,7 @@ element attached to `<body>`. A `Toaster` instance
 has a collection of methods to show and hide toasts in its given container.
 
 ```ts
-Toaster.create(props?: IToasterProps, container = document.body): IToaster
+Toaster.create(props?: ToasterProps, container = document.body): Toaster
 ```
 
 The `Toaster` will be rendered into a new element appended to the given `container`.
@@ -80,7 +80,7 @@ because the `Toaster` should not be treated as a normal React component.
 
 </div>
 
-@interface IToaster
+@interface Toaster
 
 @### Example
 
@@ -131,7 +131,7 @@ import { Button, Position, Toast, Toaster } from "@blueprintjs/core";
 import React from "react";
 
 class MyComponent extends React.PureComponent {
-    public state = { toasts: [ /* IToastProps[] */ ] }
+    public state = { toasts: [ /* ToastProps[] */ ] }
 
     private toaster: Toaster;
     private refHandlers = {

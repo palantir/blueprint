@@ -17,11 +17,11 @@ import React from "react";
 
 import { Alignment, AnchorButton, Classes, Navbar, Switch } from "@blueprintjs/core";
 
-export interface INavProps {
+export interface NavProps {
     selected: "index" | "features";
 }
 
-export class Nav extends React.PureComponent<INavProps> {
+export class Nav extends React.PureComponent<NavProps> {
     public render() {
         const darkThemeToggleStyles = { marginBottom: 0 };
         const isIndex = this.props.selected === "index";

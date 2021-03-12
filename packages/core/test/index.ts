@@ -39,7 +39,7 @@ import "./forms/fileInputTests";
 import "./forms/formGroupTests";
 import "./forms/textAreaTests";
 import "./hotkeys/hotkeysParserTests";
-import "./hotkeys/keyComboTests";
+import "./hotkeys/keyComboTagTests";
 import "./html-select/htmlSelectTests";
 import "./icon/iconTests";
 import "./menu/menuItemTests";

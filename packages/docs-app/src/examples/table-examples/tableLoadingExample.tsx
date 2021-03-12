@@ -17,24 +17,24 @@
 import React from "react";
 
 import { Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, TableLoadingOption } from "@blueprintjs/table";
 
-interface IBigSpaceRock {
+interface BigSpaceRock {
     [key: string]: number | string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const bigSpaceRocks: IBigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
+const bigSpaceRocks: BigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
-export interface ITableLoadingExampleState {
+export interface TableLoadingExampleState {
     cellsLoading?: boolean;
     columnHeadersLoading?: boolean;
     rowHeadersLoading?: boolean;
 }
 
-export class TableLoadingExample extends React.PureComponent<IExampleProps, ITableLoadingExampleState> {
-    public state: ITableLoadingExampleState = {
+export class TableLoadingExample extends React.PureComponent<ExampleProps, TableLoadingExampleState> {
+    public state: TableLoadingExampleState = {
         cellsLoading: true,
         columnHeadersLoading: true,
         rowHeadersLoading: true,

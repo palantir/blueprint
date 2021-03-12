@@ -26,8 +26,8 @@ import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { MenuContext } from "../src/interactions/menus/menuContext";
-import { IRegion, Regions } from "../src/regions";
-import { ITableBodyProps, TableBody } from "../src/tableBody";
+import { Region, Regions } from "../src/regions";
+import { TableBodyProps, TableBody } from "../src/tableBody";
 
 describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.
@@ -190,7 +190,7 @@ describe("TableBody", () => {
 
         function mountTableBodyForContextMenuTests(
             targetCellCoords: { row: number; col: number },
-            selectedRegions: IRegion[],
+            selectedRegions: Region[],
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
@@ -203,13 +203,13 @@ describe("TableBody", () => {
             });
         }
 
-        function checkOnSelectionCallback(expectedSelectedRegions: IRegion[]) {
+        function checkOnSelectionCallback(expectedSelectedRegions: Region[]) {
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
         }
     });
 
-    function mountTableBody(props: Partial<ITableBodyProps> = {}) {
+    function mountTableBody(props: Partial<TableBodyProps> = {}) {
         const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;
@@ -229,15 +229,15 @@ describe("TableBody", () => {
                 locator={null}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
-                // ISelectableProps
+                // SelectableProps
                 enableMultipleSelection={true}
                 onFocusedCell={noop}
                 onSelection={noop}
                 selectedRegions={[]}
-                // IRowIndices
+                // RowIndices
                 rowIndexStart={0}
                 rowIndexEnd={rowIndexEnd}
-                // IColumnIndices
+                // ColumnIndices
                 columnIndexStart={0}
                 columnIndexEnd={columnIndexEnd}
                 {...spreadableProps}

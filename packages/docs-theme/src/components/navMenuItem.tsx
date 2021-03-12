@@ -20,7 +20,7 @@ import React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
-export interface INavMenuItemProps {
+export interface NavMenuItemProps {
     /** CSS classes to apply to the root element, for proper appearance in the tree. */
     className: string;
 
@@ -40,7 +40,7 @@ export interface INavMenuItemProps {
     section: IPageNode | IHeadingNode;
 }
 
-export const NavMenuItem: React.FunctionComponent<INavMenuItemProps> = props => {
+export const NavMenuItem: React.FunctionComponent<NavMenuItemProps> = props => {
     const { className, isActive, isExpanded, section, ...htmlProps } = props;
     return (
         <a className={classNames(Classes.MENU_ITEM, className)} {...htmlProps}>

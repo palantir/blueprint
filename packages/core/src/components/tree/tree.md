@@ -14,7 +14,7 @@ A variety of interaction callbacks are also exposed as props. All interaction ca
 parameter `nodePath`, which is an array of numbers representing a node's position in the tree. For
 example, `[2, 0]` represents the first child (`0`) of the third top-level node (`2`).
 
-@interface ITreeProps
+@interface TreeProps
 
 @### Instance methods
 
@@ -30,7 +30,7 @@ example, `[2, 0]` represents the first child (`0`) of the third top-level node (
 For example, `icon` controls the icon displayed for the node, and `isExpanded` determines
 whether the node's children are shown.
 
-@interface ITreeNodeProps
+@interface TreeNodeProps
 
 @## CSS
 

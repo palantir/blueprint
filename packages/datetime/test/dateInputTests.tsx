@@ -21,7 +21,7 @@ import sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
 
-import { Classes, DateInput, DatePicker, IDateInputProps, TimePicker, TimePrecision } from "../src";
+import { Classes, DateInput, DatePicker, DateInputProps, TimePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -657,7 +657,7 @@ describe("<DateInput>", () => {
         const formatDate = sinon.stub().returns("custom date");
         const parseDate = sinon.stub().returns(new Date());
         const locale = "LOCALE";
-        const props: IDateInputProps = { formatDate, locale, parseDate };
+        const props: DateInputProps = { formatDate, locale, parseDate };
 
         beforeEach(() => {
             formatDate.resetHistory();
@@ -705,7 +705,7 @@ describe("<DateInput>", () => {
     }
 
     function wrap(dateInput: JSX.Element) {
-        const wrapper = mount<IDateInputProps>(dateInput);
+        const wrapper = mount<DateInputProps>(dateInput);
         return {
             changeSelect: (className: string, value: React.ReactText) => {
                 return wrapper

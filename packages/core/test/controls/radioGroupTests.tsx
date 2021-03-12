@@ -19,7 +19,7 @@ import { EnzymePropSelector, mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy, stub } from "sinon";
 
-import { IOptionProps, Radio, RadioGroup } from "../../src";
+import { OptionProps, Radio, RadioGroup } from "../../src";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
 
 describe("<RadioGroup>", () => {
@@ -61,7 +61,7 @@ describe("<RadioGroup>", () => {
     });
 
     it("renders options as radio buttons", () => {
-        const OPTIONS: IOptionProps[] = [
+        const OPTIONS: OptionProps[] = [
             { className: "foo", label: "A", value: "a" },
             { label: "B", value: "b" },
             { disabled: true, label: "C", value: "c" },

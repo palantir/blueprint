@@ -35,7 +35,7 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 **Custom shortcuts** use the following interface:
 
-@interface IDateRangeShortcut
+@interface DateRangeShortcut
 
 @## Props
 
@@ -53,7 +53,7 @@ import { DateRangePicker } from "@blueprintjs/datetime";
 />
 ```
 
-@interface IDateRangePickerProps
+@interface DateRangePickerProps
 
 @## Localization
 

@@ -23,7 +23,7 @@ import { Button, Classes as CoreClasses, Overlay } from "@blueprintjs/core";
 
 import { Classes } from "../src";
 import { Popover2 } from "../src/popover2";
-import { ITooltip2Props, Tooltip2 } from "../src/tooltip2";
+import { Tooltip2Props, Tooltip2 } from "../src/tooltip2";
 
 const TARGET_SELECTOR = `.${Classes.POPOVER2_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP2}`;
@@ -157,8 +157,8 @@ describe("<Tooltip2>", () => {
         });
     });
 
-    function renderTooltip(props?: Partial<ITooltip2Props>) {
-        return mount<ITooltip2Props>(
+    function renderTooltip(props?: Partial<Tooltip2Props>) {
+        return mount<Tooltip2Props>(
             <Tooltip2 content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
                 <Button id={TEST_TARGET_ID} text="target" />
             </Tooltip2>,

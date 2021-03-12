@@ -23,14 +23,14 @@ import { Envelope } from "./envelope";
 import { Oscillator } from "./oscillator";
 import { Scale } from "./scale";
 
-interface IPianoKeyProps {
+interface PianoKeyProps {
     note: string;
     hotkey: string;
     pressed: boolean;
     context: AudioContext | undefined;
 }
 
-export const PianoKey: React.FC<IPianoKeyProps> = ({ context, hotkey, note, pressed }) => {
+export const PianoKey: React.FC<PianoKeyProps> = ({ context, hotkey, note, pressed }) => {
     const [envelope, setEnvelope] = useState<Envelope>();
 
     // only create oscillator and envelop once on mount

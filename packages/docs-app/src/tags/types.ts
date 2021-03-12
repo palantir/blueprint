@@ -15,7 +15,7 @@
  */
 
 /** Interface for `IExampleProps` `data` in this here Blueprint docs-app. */
-export interface IBlueprintExampleData {
+export interface BlueprintExampleData {
     /** CSS class of theme, typically `""` or `Classes.DARK`. */
     themeName: string;
 }

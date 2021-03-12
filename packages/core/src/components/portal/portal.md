@@ -26,7 +26,7 @@ Blueprint uses the React 15-compatible `getChildContext()` API instead of the ne
 
 </div>
 
-@interface IPortalContext
+@interface PortalContext
 
 @## Props
 
@@ -46,4 +46,4 @@ apply `position: absolute` to the `<body>` tag.
 
 </div>
 
-@interface IPortalProps
+@interface PortalProps

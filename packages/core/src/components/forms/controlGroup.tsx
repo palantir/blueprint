@@ -18,9 +18,9 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface IControlGroupProps extends IProps, HTMLDivProps {
+export interface ControlGroupProps extends Props, HTMLDivProps {
     /**
      * Whether the control group should take up the full width of its container.
      *
@@ -39,7 +39,7 @@ export interface IControlGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class ControlGroup extends AbstractPureComponent<IControlGroupProps> {
+export class ControlGroup extends AbstractPureComponent<ControlGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;
 
     public render() {

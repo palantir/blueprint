@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
@@ -35,7 +35,7 @@ const KeyIcons: { [key: string]: IconName } = {
     up: "arrow-up",
 };
 
-export interface IKeyComboProps extends IProps {
+export interface KeyComboTagProps extends Props {
     /** The key combo to display, such as `"cmd + s"`. */
     combo: string;
 
@@ -49,7 +49,7 @@ export interface IKeyComboProps extends IProps {
     minimal?: boolean;
 }
 
-export class KeyCombo extends AbstractPureComponent<IKeyComboProps> {
+export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
 
     public render() {

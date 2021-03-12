@@ -17,12 +17,12 @@
 import React from "react";
 
 import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IButtonsExampleState {
+export interface ButtonsExampleState {
     active: boolean;
     disabled: boolean;
     iconOnly: boolean;
@@ -34,8 +34,8 @@ export interface IButtonsExampleState {
     wiggling: boolean;
 }
 
-export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsExampleState> {
-    public state: IButtonsExampleState = {
+export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExampleState> {
+    public state: ButtonsExampleState = {
         active: false,
         disabled: false,
         iconOnly: false,

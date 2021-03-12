@@ -14,9 +14,9 @@ an [`OverflowList`](#core/components/overflow-list) to automatically collapse
 breadcrumbs that do not fit in the available space.
 
 ```tsx
-const { Breadcrumbs, IBreadcrumbProps, Icon } = "@blueprintjs/core";
+const { Breadcrumbs, BreadcrumbProps, Icon } = "@blueprintjs/core";
 
-const BREADCRUMBS: IBreadcrumbProps[] = [
+const BREADCRUMBS: BreadcrumbProps[] = [
     { href: "/users", icon: "folder-close", text: "Users" },
     { href: "/users/janet", icon: "folder-close", text: "Janet" },
     { icon: "document", text: "image.jpg" },
@@ -31,14 +31,14 @@ export class BreadcrumbsExample extends React.Component {
              />
         );
     }
-    private renderCurrentBreadcrumb = ({ text, ...restProps }: IBreadcrumbProps) => {
+    private renderCurrentBreadcrumb = ({ text, ...restProps }: BreadcrumbProps) => {
         // customize rendering of last breadcrumb
         return <Breadcrumb {...restProps}>{text} <Icon icon="star" /></Breadcrumb>;
     };
 }
 ```
 
-@interface IBreadcrumbsProps
+@interface BreadcrumbsProps
 
 @### Breadcrumb
 
@@ -47,7 +47,7 @@ The `Breadcrumb` component renders an `a.@ns-breadcrumb` if given an `href` or
 array of `IBreadcrumbProps` to the `<Breadcrumbs items>` prop and only render
 this component directly when defining a custom `breadcrumbRenderer`.
 
-@interface IBreadcrumbProps
+@interface BreadcrumbProps
 
 @## CSS
 

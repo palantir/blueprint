@@ -19,12 +19,12 @@ import React from "react";
 
 import { AbstractPureComponent } from "../../common";
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 
-export interface INonIdealStateProps extends IProps {
+export interface NonIdealStateProps extends Props {
     /** An action to resolve the non-ideal state which appears after `description`. */
     action?: JSX.Element;
 
@@ -47,7 +47,7 @@ export interface INonIdealStateProps extends IProps {
     title?: React.ReactNode;
 }
 
-export class NonIdealState extends AbstractPureComponent<INonIdealStateProps> {
+export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
     public render() {

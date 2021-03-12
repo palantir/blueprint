@@ -42,7 +42,7 @@ the stack and is unmounted when it is closed or when a panel opens above it.
 close the current panel or open a new one on top of it.
 
 ```tsx
-import { Button, IPanelProps, PanelStack } from "@blueprintjs/core";
+import { Button, PanelProps, PanelStack } from "@blueprintjs/core";
 
 class MyPanel extends React.Component<IPanelProps> {
     public render() {
@@ -53,7 +53,7 @@ class MyPanel extends React.Component<IPanelProps> {
         // openPanel (and closePanel) are injected by PanelStack
         this.props.openPanel({
             component: SettingsPanel, // <- class or stateless function type
-            props: { enabled: true }, // <- SettingsPanel props without IPanelProps
+            props: { enabled: true }, // <- SettingsPanel props without PanelProps
             title: "Settings",        // <- appears in header and back button
         });
     }
@@ -66,13 +66,13 @@ class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> 
 <PanelStack initialPanel={{ component: MyPanel, title: "Home" }} />
 ```
 
-@interface IPanel
+@interface Panel
 
-@interface IPanelProps
+@interface PanelProps
 
 @## Props
 
 PanelStack can be operated as a controlled or uncontrolled component.
 
-@interface IPanelStackProps
+@interface PanelStackProps
 

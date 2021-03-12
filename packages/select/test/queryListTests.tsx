@@ -20,12 +20,12 @@ import React from "react";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
-import { IQueryListProps } from "@blueprintjs/select";
+import { QueryListProps } from "@blueprintjs/select";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import {
-    IQueryListRendererProps,
-    IQueryListState,
+    QueryListRendererProps,
+    QueryListState,
     ItemListPredicate,
     ItemListRenderer,
     ItemPredicate,
@@ -34,16 +34,16 @@ import {
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
 
-type FilmQueryListWrapper = ReactWrapper<IQueryListProps<IFilm>, IQueryListState<IFilm>>;
+type FilmQueryListWrapper = ReactWrapper<QueryListProps<Film>, QueryListState<Film>>;
 
 describe("<QueryList>", () => {
-    const FilmQueryList = QueryList.ofType<IFilm>();
+    const FilmQueryList = QueryList.ofType<Film>();
     const testProps = {
         itemRenderer: sinon.spy(renderFilm),
         items: TOP_100_FILMS.slice(0, 20),
         onActiveItemChange: sinon.spy(),
         onItemSelect: sinon.spy(),
-        renderer: sinon.spy((props: IQueryListRendererProps<IFilm>) => <div>{props.itemList}</div>),
+        renderer: sinon.spy((props: QueryListRendererProps<Film>) => <div>{props.itemList}</div>),
     };
 
     beforeEach(() => {
@@ -63,7 +63,7 @@ describe("<QueryList>", () => {
     });
 
     describe("itemListRenderer", () => {
-        const itemListRenderer: ItemListRenderer<IFilm> = props => (
+        const itemListRenderer: ItemListRenderer<Film> = props => (
             <ul className="foo">{props.items.map(props.renderItem)}</ul>
         );
 
@@ -76,20 +76,20 @@ describe("<QueryList>", () => {
 
     describe("filtering", () => {
         it("itemPredicate filters each item by query", () => {
-            const predicate = sinon.spy((query: string, film: IFilm) => film.year === +query);
+            const predicate = sinon.spy((query: string, film: Film) => film.year === +query);
             shallow(<FilmQueryList {...testProps} itemPredicate={predicate} query="1994" />);
 
             assert.equal(predicate.callCount, testProps.items.length, "called once per item");
-            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
             assert.lengthOf(filteredItems, 3, "returns only films from 1994");
         });
 
         it("itemListPredicate filters entire list by query", () => {
-            const predicate = sinon.spy((query: string, films: IFilm[]) => films.filter(f => f.year === +query));
+            const predicate = sinon.spy((query: string, films: Film[]) => films.filter(f => f.year === +query));
             shallow(<FilmQueryList {...testProps} itemListPredicate={predicate} query="1994" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
-            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
             assert.lengthOf(filteredItems, 3, "returns only films from 1994");
         });
 
@@ -111,7 +111,7 @@ describe("<QueryList>", () => {
 
         it("omitting both predicate props is supported", () => {
             shallow(<FilmQueryList {...testProps} query="1980" />);
-            const { filteredItems } = testProps.renderer.args[0][0] as IQueryListRendererProps<IFilm>;
+            const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
             assert.lengthOf(filteredItems, testProps.items.length, "returns all films");
         });
 
@@ -125,7 +125,7 @@ describe("<QueryList>", () => {
 
         it("ensure onActiveItemChange is not called updating props and query doesn't change", () => {
             const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 activeItem: myItem,
                 items: [myItem],
@@ -137,7 +137,7 @@ describe("<QueryList>", () => {
         });
 
         it("ensure activeItem changes on query change", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 items: [TOP_100_FILMS[0]],
                 query: "abc",
@@ -152,7 +152,7 @@ describe("<QueryList>", () => {
         });
 
         it("ensure activeItem changes on when no longer in new items", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 items: [TOP_100_FILMS[0]],
                 query: "abc",
@@ -168,7 +168,7 @@ describe("<QueryList>", () => {
 
     describe("activeItem state initialization", () => {
         it("initializes to first filtered item when uncontrolled", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 // Filter down to only item at index 11, so item at index 11 should be
                 // chosen as default activeItem
@@ -180,7 +180,7 @@ describe("<QueryList>", () => {
         });
 
         it("initializes to controlled activeItem prop (non-null)", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 // List is not filtered, and item at index 11 is explicitly chosen as activeItem
                 activeItem: TOP_100_FILMS[11],
@@ -190,7 +190,7 @@ describe("<QueryList>", () => {
         });
 
         it("initializes to controlled activeItem prop (null)", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 activeItem: null,
             };
@@ -199,7 +199,7 @@ describe("<QueryList>", () => {
         });
 
         it("createNewItemPosition affects position of create new item", () => {
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 createNewItemFromQuery: sinon.spy(),
                 createNewItemRenderer: () => <article />,
@@ -220,19 +220,19 @@ describe("<QueryList>", () => {
     describe("pasting", () => {
         const onItemsPaste = sinon.spy();
 
-        const itemPredicate: ItemPredicate<IFilm> = (query: string, film: IFilm, _i?: number, exactMatch?: boolean) => {
+        const itemPredicate: ItemPredicate<Film> = (query: string, film: Film, _i?: number, exactMatch?: boolean) => {
             return exactMatch === true ? query.toLowerCase() === film.title.toLowerCase() : true;
         };
 
-        function mountForPasteTest(overrideProps: Partial<IQueryListProps<IFilm>> = {}) {
+        function mountForPasteTest(overrideProps: Partial<QueryListProps<Film>> = {}) {
             // Placeholder. This will be overwritten by the mounted component.
             let handlePaste: (queries: string[]) => void;
 
-            const props: IQueryListProps<IFilm> = {
+            const props: QueryListProps<Film> = {
                 ...testProps,
                 itemPredicate,
                 onItemsPaste,
-                renderer: sinon.spy((listItemsProps: IQueryListRendererProps<IFilm>) => {
+                renderer: sinon.spy((listItemsProps: QueryListRendererProps<Film>) => {
                     handlePaste = listItemsProps.handlePaste;
                     return testProps.renderer(listItemsProps);
                 }),
@@ -343,8 +343,8 @@ describe("<QueryList>", () => {
             let triggerInputQueryChange: ((e: any) => void) | undefined;
             const createNewItemFromQuerySpy = sinon.spy();
             const createNewItemRendererSpy = sinon.spy();
-            // we must supply our own renderer so that we can hook into IQueryListRendererProps#handleQueryChange
-            const renderer = sinon.spy((props: IQueryListRendererProps<IFilm>) => {
+            // we must supply our own renderer so that we can hook into QueryListRendererProps#handleQueryChange
+            const renderer = sinon.spy((props: QueryListRendererProps<Film>) => {
                 triggerInputQueryChange = props.handleQueryChange;
                 return <div>{props.itemList}</div>;
             });
@@ -400,7 +400,7 @@ describe("<QueryList>", () => {
 
             // Change the query to something non-empty so we can ensure it wasn't cleared.
             // Ignore this change in the spy.
-            (queryList.instance() as QueryList<IFilm>).setQuery("some query");
+            (queryList.instance() as QueryList<Film>).setQuery("some query");
             onQueryChangeSpy.resetHistory();
 
             assert.isDefined(triggerItemCreate, "query list should pass click handler to createNewItemRenderer");

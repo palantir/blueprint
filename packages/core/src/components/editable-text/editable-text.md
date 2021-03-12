@@ -56,4 +56,4 @@ confirm the current value, or presses `esc` to cancel. Canceling resets the
 field to the last confirmed value. Neither callback is invoked if the value is
 unchanged.
 
-@interface IEditableTextProps
+@interface EditableTextProps

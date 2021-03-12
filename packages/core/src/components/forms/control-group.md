@@ -49,7 +49,7 @@ HTML `<div>` props, in addition to those listed below.
 </ControlGroup>
 ```
 
-@interface IControlGroupProps
+@interface ControlGroupProps
 
 @## CSS
 

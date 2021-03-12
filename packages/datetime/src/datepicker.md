@@ -17,7 +17,7 @@ Some props are managed by the `DatePicker` component, while others are passed
 to the **react-day-picker** library. These passed props are documented in full
 in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker/index.html).
 
-@interface IDatePickerProps
+@interface DatePickerProps
 
 @## Shortcuts
 
@@ -37,7 +37,7 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 **Custom shortcuts** use the following interface:
 
-@interface IDatePickerShortcut
+@interface DatePickerShortcut
 
 @## Modifiers
 

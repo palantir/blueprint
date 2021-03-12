@@ -18,25 +18,25 @@ import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/cli
 import classNames from "classnames";
 import React from "react";
 
-import { Code, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Code, Intent, Props, Tag } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IMethodTableProps extends IProps {
+export interface MethodTableProps extends Props {
     data: ITsMethod;
 }
 
-export class MethodTable extends React.PureComponent<IMethodTableProps> {
+export class MethodTable extends React.PureComponent<MethodTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.MethodTable";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { data } = this.props;

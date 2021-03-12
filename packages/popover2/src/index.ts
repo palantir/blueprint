@@ -18,12 +18,12 @@ export * as Classes from "./classes";
 export * as Errors from "./errors";
 export { ContextMenu2, ContextMenu2Props, ContextMenu2RenderProps } from "./contextMenu2";
 export {
-    IPopover2SharedProps,
-    IPopover2TargetProps,
+    Popover2SharedProps,
+    Popover2TargetProps,
     PopperBoundary,
     Placement,
     PlacementOptions,
     StrictModifierNames,
 } from "./popover2SharedProps";
-export { IPopover2Props, Popover2, Popover2InteractionKind } from "./popover2";
-export { ITooltip2Props, Tooltip2 } from "./tooltip2";
+export { Popover2Props, Popover2, Popover2InteractionKind } from "./popover2";
+export { Tooltip2Props, Tooltip2 } from "./tooltip2";

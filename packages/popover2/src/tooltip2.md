@@ -71,4 +71,4 @@ The **content** will be shown inside the tooltip itself. When opened, the toolti
 positioned on the page next to the target; the `position` prop determines its relative position (on
 which side of the target).
 
-@interface ITooltip2Props
+@interface Tooltip2Props

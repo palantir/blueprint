@@ -20,10 +20,10 @@ import React from "react";
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
-import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
+import { TruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
 /* istanbul ignore next */
-export interface IJSONFormatProps extends ITruncatedFormatProps {
+export interface JSONFormatProps extends TruncatedFormatProps {
     children?: any;
 
     /**
@@ -42,10 +42,10 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     stringify?: (obj: any) => string;
 }
 
-export class JSONFormat extends React.Component<IJSONFormatProps> {
+export class JSONFormat extends React.Component<JSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 
-    public static defaultProps: IJSONFormatProps = {
+    public static defaultProps: JSONFormatProps = {
         omitQuotesOnStrings: true,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),
     };

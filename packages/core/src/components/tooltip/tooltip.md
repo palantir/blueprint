@@ -61,4 +61,4 @@ see the [callout here](#core/components/button.props) for more details.
 
 </div>
 
-@interface ITooltipProps
+@interface TooltipProps

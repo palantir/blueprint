@@ -16,8 +16,10 @@
 // @ts-check
 
 require("@blueprintjs/test-commons/bootstrap");
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
+
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+
 const Core = require("../lib/cjs");
 
 const requiredChild = React.createElement("button");
@@ -40,17 +42,19 @@ describe("Core isomorphic rendering", () => {
         Hotkey: {
             props: hotkeyProps,
         },
-        Hotkeys: {
-            children: React.createElement(Core.Hotkey, hotkeyProps),
-        },
         Icon: {
             props: { icon: "build" },
         },
         MultistepDialog: {
-            props: { isOpen: true, usePortal: false},
-            children: React.createElement(Core.DialogStep, { key: 1, id: 1, title: "Step one", panel: React.createElement('div') }),
+            props: { isOpen: true, usePortal: false },
+            children: React.createElement(Core.DialogStep, {
+                key: 1,
+                id: 1,
+                title: "Step one",
+                panel: React.createElement("div"),
+            }),
         },
-        KeyCombo: {
+        KeyComboTag: {
             props: { combo: "?" },
         },
         OverflowList: {

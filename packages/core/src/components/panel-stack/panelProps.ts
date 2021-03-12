@@ -55,8 +55,8 @@ export interface IPanel<P = {}> {
  * two functions which are injected by `PanelStack`.
  *
  * ```tsx
- * import { IPanelProps } from "@blueprintjs/core";
- * export class SettingsPanel extends React.Component<IPanelProps & ISettingsPanelProps> {...}
+ * import { PanelProps } from "@blueprintjs/core";
+ * export class SettingsPanel extends React.Component<PanelProps & SettingsPanelProps> {...}
  * ```
  *
  * @deprecated use `PanelActions<T>`

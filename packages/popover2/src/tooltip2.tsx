@@ -17,17 +17,15 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, IIntentProps } from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, IntentProps } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover2, Popover2InteractionKind } from "./popover2";
 import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
-import { IPopover2SharedProps } from "./popover2SharedProps";
+import { Popover2SharedProps } from "./popover2SharedProps";
 
-export interface ITooltip2Props<TProps = React.HTMLProps<HTMLElement>>
-    extends IPopover2SharedProps<TProps>,
-        IIntentProps {
+export interface Tooltip2Props<TProps = React.HTMLProps<HTMLElement>> extends Popover2SharedProps<TProps>, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
@@ -71,10 +69,10 @@ export interface ITooltip2Props<TProps = React.HTMLProps<HTMLElement>>
     transitionDuration?: number;
 }
 
-export class Tooltip2<T> extends React.PureComponent<ITooltip2Props<T>> {
+export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip2`;
 
-    public static defaultProps: Partial<ITooltip2Props> = {
+    public static defaultProps: Partial<Tooltip2Props> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         minimal: false,

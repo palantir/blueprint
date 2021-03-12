@@ -16,18 +16,18 @@
 
 import React from "react";
 
-import { DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
-import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
-import { IColumnHeaderRenderer } from "./headers/columnHeader";
-import { IColumnNameProps } from "./headers/columnHeaderCell";
+import { emptyCellRenderer, CellRenderer } from "./cell/cell";
+import { ColumnHeaderRenderer } from "./headers/columnHeader";
+import { ColumnNameProps } from "./headers/columnHeaderCell";
 import { ColumnLoadingOption } from "./regions";
 
-export interface IColumnProps extends IColumnNameProps, IProps {
+export interface ColumnProps extends ColumnNameProps, Props {
     /**
      * A unique ID, similar to React's `key`. This is used, for example, to
      * maintain the width of a column between re-ordering and rendering. If no
-     * IDs are provided, widths will be persisted across renders using a
+     * Dsare provided, widths will be persisted across renders using a
      * column's index only. Columns widths can also be persisted outside the
      * `Table` component, then passed in with the `columnWidths` prop.
      */
@@ -47,19 +47,19 @@ export interface IColumnProps extends IColumnNameProps, IProps {
      * An instance of `ICellRenderer`, a function that takes a row and column
      * index, and returns a `Cell` React element.
      */
-    cellRenderer?: ICellRenderer;
+    cellRenderer?: CellRenderer;
 
     /**
      * An instance of `IColumnHeaderRenderer`, a function that takes a column
      * index and returns a `ColumnHeaderCell` React element.
      */
-    columnHeaderCellRenderer?: IColumnHeaderRenderer;
+    columnHeaderCellRenderer?: ColumnHeaderRenderer;
 }
 
-export class Column extends React.PureComponent<IColumnProps> {
+export class Column extends React.PureComponent<ColumnProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Column`;
 
-    public static defaultProps: IColumnProps = {
+    public static defaultProps: ColumnProps = {
         cellRenderer: emptyCellRenderer,
     };
 }

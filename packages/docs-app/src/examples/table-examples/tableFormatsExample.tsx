@@ -16,10 +16,10 @@
 
 import React from "react";
 
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "@blueprintjs/table";
 
-interface ITimezone {
+interface Timezone {
     name: string;
     offsetMsec: number;
     offsetString: string;
@@ -27,7 +27,7 @@ interface ITimezone {
 
 const LOCAL_TIMEZONE_OFFSET_MSEC = new Date().getTimezoneOffset() * 60 * 1000;
 
-const TIME_ZONES: ITimezone[] = ([
+const TIME_ZONES: Timezone[] = ([
     ["-12:00", -12.0, "Etc/GMT+12"],
     ["-11:00", -11.0, "Pacific/Midway"],
     ["-10:00", -10.0, "Pacific/Honolulu"],
@@ -85,7 +85,7 @@ const FORMAT_OPTIONS = {
     year: "numeric",
 };
 
-export class TableFormatsExample extends React.PureComponent<IExampleProps> {
+export class TableFormatsExample extends React.PureComponent<ExampleProps> {
     private data = TIME_ZONES;
 
     private date = new Date();

@@ -23,22 +23,22 @@ import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IItemRendererProps, IMultiSelectProps, IMultiSelectState, MultiSelect } from "../src";
+import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { ItemRendererProps, MultiSelectProps, MultiSelectState, MultiSelect } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {
-    const FilmMultiSelect = MultiSelect.ofType<IFilm>();
+    const FilmMultiSelect = MultiSelect.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
-        selectedItems: [] as IFilm[],
+        selectedItems: [] as Film[],
         tagRenderer: renderTag,
     };
     let handlers: {
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 
@@ -50,7 +50,7 @@ describe("<MultiSelect>", () => {
         };
     });
 
-    selectComponentSuite<IMultiSelectProps<IFilm>, IMultiSelectState>(props =>
+    selectComponentSuite<MultiSelectProps<Film>, MultiSelectState>(props =>
         mount(<MultiSelect {...props} popoverProps={{ isOpen: true, usePortal: false }} tagRenderer={renderTag} />),
     );
 
@@ -108,7 +108,7 @@ describe("<MultiSelect>", () => {
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
-    function multiselect(props: Partial<IMultiSelectProps<IFilm>> = {}, query?: string) {
+    function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <FilmMultiSelect {...defaultProps} {...handlers} {...props}>
                 <article />
@@ -121,10 +121,10 @@ describe("<MultiSelect>", () => {
     }
 });
 
-function renderTag(film: IFilm) {
+function renderTag(film: Film) {
     return film.title;
 }
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }

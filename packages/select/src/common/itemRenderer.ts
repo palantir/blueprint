@@ -16,7 +16,7 @@
 
 import { MouseEventHandler } from "react";
 
-export interface IItemModifiers {
+export interface ItemModifiers {
     /** Whether this is the "active" (focused) item, meaning keyboard interactions will act upon it. */
     active: boolean;
 
@@ -31,18 +31,18 @@ export interface IItemModifiers {
  * An object describing how to render a particular item.
  * An `itemRenderer` receives the item as its first argument, and this object as its second argument.
  */
-export interface IItemRendererProps {
+export interface ItemRendererProps {
     /** Click event handler to select this item. */
     handleClick: MouseEventHandler<HTMLElement>;
 
     index?: number;
 
     /** Modifiers that describe how to render this item, such as `active` or `disabled`. */
-    modifiers: IItemModifiers;
+    modifiers: ItemModifiers;
 
     /** The current query string used to filter the items. */
     query: string;
 }
 
 /** Type alias for a function that receives an item and props and renders a JSX element (or `null`). */
-export type ItemRenderer<T> = (item: T, itemProps: IItemRendererProps) => JSX.Element | null;
+export type ItemRenderer<T> = (item: T, itemProps: ItemRendererProps) => JSX.Element | null;

@@ -16,14 +16,14 @@
 
 import React from "react";
 
-import { AbstractPureComponent, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, Props } from "@blueprintjs/core";
 
 import { Utils } from "../common/index";
-import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
+import { LockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 
-export type IIndexedResizeCallback = (index: number, size: number) => void;
+export type IndexedResizeCallback = (index: number, size: number) => void;
 
-export interface IResizableProps extends IProps, ILockableLayout {
+export interface ResizableProps extends Props, LockableLayout {
     /**
      * Enables/disables the resize interaction for the column.
      *
@@ -73,7 +73,7 @@ export interface IResizableProps extends IProps, ILockableLayout {
     size: number;
 }
 
-export interface IResizeableState {
+export interface ResizeableState {
     /**
      * The dimensional size, respecting minimum and maximum constraints.
      */
@@ -85,13 +85,13 @@ export interface IResizeableState {
     unclampedSize?: number;
 }
 
-export class Resizable extends AbstractPureComponent<IResizableProps, IResizeableState> {
+export class Resizable extends AbstractPureComponent<ResizableProps, ResizeableState> {
     public static defaultProps = {
         isResizable: true,
         minSize: 0,
     };
 
-    public static getDerivedStateFromProps({ size }: IResizableProps, prevState: IResizeableState) {
+    public static getDerivedStateFromProps({ size }: ResizableProps, prevState: ResizeableState) {
         if (prevState == null) {
             return {
                 size,
@@ -102,9 +102,9 @@ export class Resizable extends AbstractPureComponent<IResizableProps, IResizeabl
         return null;
     }
 
-    public state: IResizeableState = Resizable.getDerivedStateFromProps(this.props, null);
+    public state: ResizeableState = Resizable.getDerivedStateFromProps(this.props, null);
 
-    public componentDidUpdate(prevProps: IResizableProps) {
+    public componentDidUpdate(prevProps: ResizableProps) {
         if (prevProps.size !== this.props.size) {
             this.setState(Resizable.getDerivedStateFromProps(this.props, null));
         }

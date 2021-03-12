@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface IExampleProps<T = {}> extends IProps {
+export interface ExampleProps<T = {}> extends Props {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.
@@ -45,7 +45,7 @@ export interface IExampleProps<T = {}> extends IProps {
  * Props supported by the `Example` component.
  * Additional props will be spread to the root `<div>` element.
  */
-export interface IDocsExampleProps extends IExampleProps {
+export interface DocsExampleProps extends ExampleProps {
     /**
      * Options for the example, which will typically appear in a narrow column
      * to the right of the example.
@@ -83,10 +83,10 @@ export interface IDocsExampleProps extends IExampleProps {
  * Container for an example and its options.
  *
  * ```tsx
- * import { Example, IExampleProps } from "@blueprintjs/docs-theme";
- * // use IExampleProps as your props type,
+ * import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+ * // use ExampleProps as your props type,
  * // then spread it to <Example> below
- * export class MyExample extends React.PureComponent<IExampleProps, [your state]> {
+ * export class MyExample extends React.PureComponent<ExampleProps, [your state]> {
  *     public render() {
  *         const options = (
  *             <>
@@ -101,8 +101,8 @@ export interface IDocsExampleProps extends IExampleProps {
  *     }
  * ```
  */
-export class Example extends React.PureComponent<IDocsExampleProps> {
-    public static defaultProps: Partial<IDocsExampleProps> = {
+export class Example extends React.PureComponent<DocsExampleProps> {
+    public static defaultProps: Partial<DocsExampleProps> = {
         forceUpdate: true,
         showOptionsBelowExample: false,
     };

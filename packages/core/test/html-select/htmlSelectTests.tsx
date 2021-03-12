@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
 
-import { HTMLSelect, IOptionProps } from "../../src";
+import { HTMLSelect, OptionProps } from "../../src";
 
 describe("<HtmlSelect>", () => {
     const emptyHandler = () => true;
@@ -30,7 +30,7 @@ describe("<HtmlSelect>", () => {
     });
 
     it("renders options props", () => {
-        const OPTIONS: IOptionProps[] = [
+        const OPTIONS: OptionProps[] = [
             { value: "a" },
             { value: "b", className: "foo" },
             { value: "c", disabled: true },

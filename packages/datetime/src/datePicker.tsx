@@ -18,18 +18,18 @@ import classNames from "classnames";
 import React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 import * as Errors from "./common/errors";
 import { DatePickerCaption } from "./datePickerCaption";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
+import { getDefaultMaxDate, getDefaultMinDate, DatePickerBaseProps } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
-import { IDatePickerShortcut, IDateRangeShortcut, Shortcuts } from "./shortcuts";
+import { DatePickerShortcut, DateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
+export interface DatePickerProps extends DatePickerBaseProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      *
@@ -55,7 +55,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Called when the `shortcuts` props is enabled and the user changes the shortcut.
      */
-    onShortcutChange?: (shortcut: IDatePickerShortcut, index: number) => void;
+    onShortcutChange?: (shortcut: DatePickerShortcut, index: number) => void;
 
     /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.
@@ -70,7 +70,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
      * If `false`, no shortcuts will be displayed.
      * If an array is provided, the custom shortcuts will be displayed.
      */
-    shortcuts?: boolean | IDatePickerShortcut[];
+    shortcuts?: boolean | DatePickerShortcut[];
 
     /**
      * The currently selected shortcut.
@@ -98,7 +98,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     value?: Date | null;
 }
 
-export interface IDatePickerState {
+export interface DatePickerState {
     displayMonth: number;
     displayYear: number;
     selectedDay: number | null;
@@ -106,8 +106,8 @@ export interface IDatePickerState {
     selectedShortcutIndex?: number;
 }
 
-export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePickerState> {
-    public static defaultProps: IDatePickerProps = {
+export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePickerState> {
+    public static defaultProps: DatePickerProps = {
         canClearSelection: true,
         clearButtonText: "Clear",
         dayPickerProps: {},
@@ -125,7 +125,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
 
     private ignoreNextMonthChange = false;
 
-    public constructor(props: IDatePickerProps) {
+    public constructor(props: DatePickerProps) {
         super(props);
         const value = getInitialValue(props);
         const initialMonth = getInitialMonth(props, value);
@@ -172,7 +172,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         );
     }
 
-    public componentDidUpdate(prevProps: IDatePickerProps, prevState: IDatePickerState) {
+    public componentDidUpdate(prevProps: DatePickerProps, prevState: DatePickerState) {
         super.componentDidUpdate(prevProps, prevState);
         const { value } = this.props;
         if (value === prevProps.value) {
@@ -195,7 +195,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         }
     }
 
-    protected validateProps(props: IDatePickerProps) {
+    protected validateProps(props: DatePickerProps) {
         const { defaultValue, initialMonth, maxDate, minDate, value } = props;
         if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate, maxDate])) {
             console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
@@ -300,7 +300,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         const { selectedShortcutIndex } = this.state;
         const { maxDate, minDate, timePrecision } = this.props;
         // Reuse the existing date range shortcuts and only care about start date
-        const dateRangeShortcuts: IDateRangeShortcut[] | true =
+        const dateRangeShortcuts: DateRangeShortcut[] | true =
             shortcuts === true
                 ? true
                 : shortcuts.map(shortcut => ({
@@ -339,7 +339,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
         this.updateValue(newValue, true);
     };
 
-    private handleShortcutClick = (shortcut: IDateRangeShortcut, selectedShortcutIndex: number) => {
+    private handleShortcutClick = (shortcut: DateRangeShortcut, selectedShortcutIndex: number) => {
         const { onShortcutChange, selectedShortcutIndex: currentShortcutIndex } = this.props;
         const { dateRange, includeTime } = shortcut;
         const newDate = dateRange[0];
@@ -432,7 +432,7 @@ export class DatePicker extends AbstractPureComponent<IDatePickerProps, IDatePic
     }
 }
 
-function getInitialValue(props: IDatePickerProps): Date | null {
+function getInitialValue(props: DatePickerProps): Date | null {
     // !== because `null` is a valid value (no date)
     if (props.value !== undefined) {
         return props.value;
@@ -443,7 +443,7 @@ function getInitialValue(props: IDatePickerProps): Date | null {
     return null;
 }
 
-function getInitialMonth(props: IDatePickerProps, value: Date | null): Date {
+function getInitialMonth(props: DatePickerProps, value: Date | null): Date {
     const today = new Date();
     // != because we must have a real `Date` to begin the calendar on.
     if (props.initialMonth != null) {

@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes as CoreClasses, IOverlayLifecycleProps, Utils as CoreUtils, mergeRefs } from "@blueprintjs/core";
+import { Classes as CoreClasses, OverlayLifecycleProps, Utils as CoreUtils, mergeRefs } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
-import { IPopover2Props, Popover2 } from "./popover2";
-import { IPopover2TargetProps } from "./popover2SharedProps";
+import { Popover2Props, Popover2 } from "./popover2";
+import { Popover2TargetProps } from "./popover2SharedProps";
 
 type Offset = {
     left: number;
@@ -33,7 +33,7 @@ export interface ContextMenu2RenderProps {
     targetOffset: Offset;
 }
 
-export interface ContextMenu2Props extends IOverlayLifecycleProps, Pick<IPopover2Props, "transitionDuration"> {
+export interface ContextMenu2Props extends OverlayLifecycleProps, Pick<Popover2Props, "transitionDuration"> {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
@@ -78,7 +78,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
 
     const targetRef = React.useRef<HTMLDivElement>();
     const renderTarget = React.useCallback(
-        ({ ref }: IPopover2TargetProps) => (
+        ({ ref }: Popover2TargetProps) => (
             <div
                 className={Classes.CONTEXT_MENU2_POPOVER_TARGET}
                 style={targetOffset}

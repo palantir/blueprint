@@ -22,7 +22,7 @@ import sinon from "sinon";
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import { Grid } from "../../src/common/grid";
-import { ITableQuadrantProps, QuadrantType, TableQuadrant } from "../../src/quadrants/tableQuadrant";
+import { TableQuadrantProps, QuadrantType, TableQuadrant } from "../../src/quadrants/tableQuadrant";
 
 /**
  * <TableQuadrant> is responsible for showing a single table "instance" of both
@@ -259,7 +259,7 @@ describe("TableQuadrant", () => {
         return component.getDOMNode() as HTMLElement;
     }
 
-    function mountTableQuadrant(props: Partial<ITableQuadrantProps> = {}) {
+    function mountTableQuadrant(props: Partial<TableQuadrantProps> = {}) {
         return mount(<TableQuadrant grid={grid} bodyRenderer={bodyRenderer} {...props} />);
     }
 });

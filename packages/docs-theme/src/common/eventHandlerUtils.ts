@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export interface IKeyEventMap<T = HTMLElement> {
+export interface KeyEventMap<T = HTMLElement> {
     /** event handler invoked on all events */
     all?: React.KeyboardEventHandler<T>;
 
@@ -22,7 +22,7 @@ export interface IKeyEventMap<T = HTMLElement> {
     [keyCode: number]: React.KeyboardEventHandler<T>;
 }
 
-export function createKeyEventHandler<T = HTMLElement>(actions: IKeyEventMap<T>, preventDefault = false) {
+export function createKeyEventHandler<T = HTMLElement>(actions: KeyEventMap<T>, preventDefault = false) {
     return (e: React.KeyboardEvent<T>) => {
         for (const k of Object.keys(actions)) {
             const key = Number(k);

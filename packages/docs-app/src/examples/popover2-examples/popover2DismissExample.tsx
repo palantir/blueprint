@@ -17,11 +17,11 @@
 import React from "react";
 
 import { Button, Callout, Classes as CoreClasses, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Classes, Popover2 } from "@blueprintjs/popover2";
 
 export class Popover2DismissExample extends React.PureComponent<
-    IExampleProps,
+    ExampleProps,
     { captureDismiss: boolean; isOpen: boolean }
 > {
     public static displayName = "Popover2DismissExample";

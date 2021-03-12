@@ -17,14 +17,14 @@ import classNames from "classnames";
 import React from "react";
 
 import { Button, Classes, Code, H3, H5, Intent, Overlay, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 const OVERLAY_TALL_CLASS = "docs-overlay-example-tall";
 
-export interface IOverlayExampleState {
+export interface OverlayExampleState {
     autoFocus: boolean;
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
@@ -35,8 +35,8 @@ export interface IOverlayExampleState {
     useTallContent: boolean;
 }
 
-export class OverlayExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IOverlayExampleState> {
-    public state: IOverlayExampleState = {
+export class OverlayExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, OverlayExampleState> {
+    public state: OverlayExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
         canOutsideClickClose: true,

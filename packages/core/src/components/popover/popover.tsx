@@ -19,7 +19,7 @@ import { ModifierFn } from "popper.js";
 import React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent, Classes, IRef, refHandler } from "../../common";
+import { AbstractPureComponent, Classes, Ref, refHandler } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -29,7 +29,7 @@ import { ResizeSensor } from "../resize-sensor/resizeSensor";
 import { Tooltip } from "../tooltip/tooltip";
 import { PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverMigrationUtils";
-import { IPopoverSharedProps, PopperModifiers } from "./popoverSharedProps";
+import { PopoverSharedProps, PopperModifiers } from "./popoverSharedProps";
 import { arrowOffsetModifier, getTransformOrigin } from "./popperUtils";
 
 export const PopoverInteractionKind = {
@@ -41,7 +41,7 @@ export const PopoverInteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverInteractionKind = typeof PopoverInteractionKind[keyof typeof PopoverInteractionKind];
 
-export interface IPopoverProps extends IPopoverSharedProps {
+export interface PopoverProps extends PopoverSharedProps {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
@@ -79,7 +79,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: IRef<HTMLElement>;
+    popoverRef?: Ref<HTMLElement>;
 
     /**
      * The target to which the popover content is attached. This can instead be
@@ -88,7 +88,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
     target?: string | JSX.Element;
 }
 
-export interface IPopoverState {
+export interface PopoverState {
     transformOrigin: string;
     isOpen: boolean;
     hasDarkParent: boolean;
@@ -96,12 +96,12 @@ export interface IPopoverState {
 
 /** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
 
-export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState> {
+export class Popover extends AbstractPureComponent<PopoverProps, PopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
     private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
-    public static defaultProps: IPopoverProps = {
+    public static defaultProps: PopoverProps = {
         boundary: "scrollParent",
         captureDismiss: false,
         defaultIsOpen: false,
@@ -134,7 +134,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     /** DOM element that contains the target. */
     public targetElement: HTMLElement | null = null;
 
-    public state: IPopoverState = {
+    public state: PopoverState = {
         hasDarkParent: false,
         isOpen: this.getIsOpen(this.props),
         transformOrigin: "",
@@ -153,7 +153,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => void;
 
-    private handlePopoverRef: IRef<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+    private handlePopoverRef: Ref<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
 
     private handleTargetRef = (ref: HTMLElement | null) => (this.targetElement = ref);
 
@@ -222,7 +222,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
         this.updateDarkParent();
     }
 
-    public componentDidUpdate(props: IPopoverProps, state: IPopoverState) {
+    public componentDidUpdate(props: PopoverProps, state: PopoverState) {
         super.componentDidUpdate(props, state);
         this.updateDarkParent();
 
@@ -249,7 +249,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
-    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+    protected validateProps(props: PopoverProps & { children?: React.ReactNode }) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
         }
@@ -409,7 +409,7 @@ export class Popover extends AbstractPureComponent<IPopoverProps, IPopoverState>
 
     private isControlled = () => this.props.isOpen !== undefined;
 
-    private getIsOpen(props: IPopoverProps) {
+    private getIsOpen(props: PopoverProps) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {
             return false;

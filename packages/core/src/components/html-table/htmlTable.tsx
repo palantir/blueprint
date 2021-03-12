@@ -17,11 +17,9 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, IElementRefProps } from "../../common";
+import { AbstractPureComponent, Classes, ElementRefProps } from "../../common";
 
-export interface IHTMLTableProps
-    extends React.TableHTMLAttributes<HTMLTableElement>,
-        IElementRefProps<HTMLTableElement> {
+export interface HTMLTableProps extends React.TableHTMLAttributes<HTMLTableElement>, ElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 
@@ -45,7 +43,7 @@ export interface IHTMLTableProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class HTMLTable extends AbstractPureComponent<IHTMLTableProps> {
+export class HTMLTable extends AbstractPureComponent<HTMLTableProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation
         const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;

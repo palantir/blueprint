@@ -23,14 +23,14 @@ import { Popover2 } from "@blueprintjs/popover2";
 
 import { Logo } from "./logo";
 
-export interface INavHeaderProps {
+export interface NavHeaderProps {
     onToggleDark: (useDark: boolean) => void;
     useDarkTheme: boolean;
     useNextVersion: boolean;
     packageData: INpmPackage;
 }
 
-export class NavHeader extends React.PureComponent<INavHeaderProps> {
+export class NavHeader extends React.PureComponent<NavHeaderProps> {
     public render() {
         const { useDarkTheme } = this.props;
         return (

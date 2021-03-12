@@ -18,12 +18,12 @@ import React from "react";
 
 import { Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-export interface IDatePickerExampleState {
+export interface DatePickerExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
     reverseMonthAndYearMenus: boolean;
@@ -33,8 +33,8 @@ export interface IDatePickerExampleState {
     showTimeArrowButtons: boolean;
 }
 
-export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
-    public state: IDatePickerExampleState = {
+export class DatePickerExample extends React.PureComponent<ExampleProps, DatePickerExampleState> {
+    public state: DatePickerExampleState = {
         date: null,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,

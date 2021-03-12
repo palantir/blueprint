@@ -22,11 +22,11 @@ function map<T, U>(array: T[], iterator: (item: T, index: number) => U): U[];
 
 // interfaces describe plain objects
 // (we use the convention that interfaces begin with "I")
-interface IOption {
+interface Option {
     label: string;
     value: string;
 }
-const option: IOption = { label: "Name", value: "Gilad" };
+const option: Option = { label: "Name", value: "Gilad" };
 ```
 
 **You do not need to use TypeScript to consume Blueprint** (but major "props" if you do).

@@ -74,7 +74,7 @@ The `Menu` API includes three stateless React components:
 
 A `Menu` is a `<ul>` container for menu items and dividers.
 
-@interface IMenuProps
+@interface MenuProps
 
 @### Menu item
 
@@ -86,13 +86,13 @@ interactive by providing the `href`, `target`, and `onClick` props as necessary.
 Create submenus by nesting `MenuItem`s inside each other as `children`. Use the
 required `text` prop for `MenuItem` content.
 
-@interface IMenuItemProps
+@interface MenuItemProps
 
 @### Menu divider
 
 Use `MenuDivider` to separate menu sections. Optionally, add a title to the divider.
 
-@interface IMenuDividerProps
+@interface MenuDividerProps
 
 @## CSS
 

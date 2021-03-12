@@ -33,7 +33,7 @@ This component is quite powerful and has a wide range of features. Explore the
 [**Concepts**](#core/components/popover.concepts) section below for more advanced
 guides.
 
-@interface IPopover2Props
+@interface Popover2Props
 
 @## Concepts
 

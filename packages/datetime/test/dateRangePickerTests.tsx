@@ -26,8 +26,8 @@ import {
     Classes as DateClasses,
     DateRange,
     DateRangePicker,
-    IDatePickerModifiers,
-    IDateRangePickerProps,
+    DatePickerModifiers,
+    DateRangePickerProps,
     TimePicker,
     TimePrecision,
 } from "../src";
@@ -35,8 +35,8 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { DatePickerNavbar } from "../src/datePickerNavbar";
-import { IDateRangePickerState } from "../src/dateRangePicker";
-import { IDateRangeShortcut, Shortcuts } from "../src/shortcuts";
+import { DateRangePickerState } from "../src/dateRangePicker";
+import { DateRangeShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
@@ -116,27 +116,27 @@ describe("<DateRangePicker>", () => {
         });
 
         it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
-            const blueprintModifiers: IDatePickerModifiers = {
+            const blueprintModifiers: DatePickerModifiers = {
                 blueprint: () => true,
             };
             const blueprintLocaleUtils = {
                 ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "b",
             };
-            const blueprintProps: IDateRangePickerProps = {
+            const blueprintProps: DateRangePickerProps = {
                 locale: "blueprint",
                 localeUtils: blueprintLocaleUtils,
                 modifiers: blueprintModifiers,
             };
 
-            const dayPickerModifiers: IDatePickerModifiers = {
+            const dayPickerModifiers: DatePickerModifiers = {
                 dayPicker: () => true,
             };
             const dayPickerLocaleUtils = {
                 ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "d",
             };
-            const dayPickerProps: IDateRangePickerProps = {
+            const dayPickerProps: DateRangePickerProps = {
                 locale: "dayPicker",
                 localeUtils: dayPickerLocaleUtils,
                 modifiers: dayPickerModifiers,
@@ -1259,7 +1259,7 @@ describe("<DateRangePicker>", () => {
             const startTime = new Date(defaultRange[1].getTime());
             startTime.setHours(startTime.getHours() - 2);
 
-            const shortcuts: IDateRangeShortcut[] = [
+            const shortcuts: DateRangeShortcut[] = [
                 {
                     dateRange: [startTime, endTime] as DateRange,
                     includeTime: true,
@@ -1287,7 +1287,7 @@ describe("<DateRangePicker>", () => {
         return !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE);
     }
 
-    function render(props?: IDateRangePickerProps) {
+    function render(props?: DateRangePickerProps) {
         onChangeSpy = sinon.spy();
         onHoverChangeSpy = sinon.spy();
         const wrapper = wrap(<DateRangePicker onChange={onChangeSpy} onHoverChange={onHoverChangeSpy} {...props} />);
@@ -1295,7 +1295,7 @@ describe("<DateRangePicker>", () => {
     }
 
     function wrap(datepicker: JSX.Element) {
-        const wrapper = mount<IDateRangePickerProps, IDateRangePickerState>(datepicker);
+        const wrapper = mount<DateRangePickerProps, DateRangePickerState>(datepicker);
 
         const findTimeInput = (precision: TimePrecision | "hour", which: "left" | "right") =>
             wrapper.find(`.${DateClasses.TIMEPICKER}-${precision}`).at(which === "left" ? 0 : 1);
@@ -1352,10 +1352,7 @@ describe("<DateRangePicker>", () => {
         return harness;
     }
 
-    function wrapDayPicker(
-        parent: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>,
-        which: "left" | "right",
-    ) {
+    function wrapDayPicker(parent: ReactWrapper<DateRangePickerProps, DateRangePickerState>, which: "left" | "right") {
         const harness = {
             get wrapper() {
                 // use accessor to ensure it's always the latest reference

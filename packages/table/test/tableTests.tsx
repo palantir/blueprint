@@ -23,16 +23,16 @@ import sinon from "sinon";
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
-import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
+import { Cell, Column, TableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
+import { CellCoordinates, FocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
-import { IColumnIndices, IRowIndices } from "../src/common/grid";
+import { ColumnIndices, RowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
-import { IRegion, Regions } from "../src/regions";
-import { ITableState } from "../src/table";
+import { Region, Regions } from "../src/regions";
+import { TableState } from "../src/table";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";
@@ -41,7 +41,7 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
 // tslint:disable-next-line no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement<ITableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
+const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
 describe("<Table>", function (this) {
     // allow retrying failed tests here to reduce flakes.
@@ -145,8 +145,8 @@ describe("<Table>", function (this) {
         // the callback is called quite often even in the course of a single render cycle.
         // don't bother to count the invocations.
         expect(onVisibleCellsChange.called).to.be.true;
-        const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
-        const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
+        const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
+        const columnIndices: ColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
@@ -160,8 +160,8 @@ describe("<Table>", function (this) {
         );
         table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`).simulate("scroll");
         expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
-        const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
-        const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
+        const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
+        const columnIndices: ColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
         expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
     });
 
@@ -197,7 +197,7 @@ describe("<Table>", function (this) {
             });
         });
 
-        function mountTable(tableProps: Partial<ITableProps> = {}) {
+        function mountTable(tableProps: Partial<TableProps> = {}) {
             const containerElement = document.createElement("div");
             containerElement.style.width = `${CONTAINER_WIDTH}px`;
             containerElement.style.height = `${CONTAINER_HEIGHT}px`;
@@ -399,7 +399,7 @@ describe("<Table>", function (this) {
                 checkInstanceMethod(Regions.table(), 0, 0);
             });
 
-            function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
+            function checkInstanceMethod(region: Region, expectedScrollLeft: number, expectedScrollTop: number) {
                 // cast as `any` to access private members
                 const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
                 tableInstance.scrollToRegion(region);
@@ -413,7 +413,7 @@ describe("<Table>", function (this) {
                 tableInstance = ref;
             }
 
-            function mountTable(tableProps: Partial<ITableProps> = {}) {
+            function mountTable(tableProps: Partial<TableProps> = {}) {
                 mount(
                     <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
                         <Table
@@ -837,7 +837,7 @@ describe("<Table>", function (this) {
             document.body.removeChild(containerElement);
         });
 
-        function mountTable(tableProps: Partial<ITableProps> = {}) {
+        function mountTable(tableProps: Partial<TableProps> = {}) {
             return harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
                 <Table
@@ -1035,7 +1035,7 @@ describe("<Table>", function (this) {
             expect(onSelection.firstCall.calledWith([Regions.column(0)]));
         });
 
-        function mountTable(props: Partial<ITableProps>) {
+        function mountTable(props: Partial<TableProps>) {
             const table = harness.mount(
                 <div style={{ width: CONTAINER_WIDTH_IN_PX, height: CONTAINER_HEIGHT_IN_PX }}>
                     <Table
@@ -1085,7 +1085,7 @@ describe("<Table>", function (this) {
         const NUM_COLS = 3;
 
         // center the initial focus cell
-        const DEFAULT_FOCUSED_CELL_COORDS: IFocusedCellCoordinates = { row: 1, col: 1 } as any;
+        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { row: 1, col: 1 } as any;
 
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
@@ -1135,7 +1135,7 @@ describe("<Table>", function (this) {
                 expect(onFocusedCell.called).to.be.false;
             });
 
-            function runFocusCellMoveTest(key: string, keyCode: number, expectedCoords: IFocusedCellCoordinates) {
+            function runFocusCellMoveTest(key: string, keyCode: number, expectedCoords: FocusedCellCoordinates) {
                 it(key, () => {
                     const { component } = mountTable();
                     component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
@@ -1151,11 +1151,11 @@ describe("<Table>", function (this) {
                 key: string,
                 keyCode: number,
                 shiftKey: boolean,
-                focusCellCoords: IFocusedCellCoordinates,
-                expectedCoords: IFocusedCellCoordinates,
+                focusCellCoords: FocusedCellCoordinates,
+                expectedCoords: FocusedCellCoordinates,
             ) {
                 it(name, () => {
-                    const selectedRegions: IRegion[] = [
+                    const selectedRegions: Region[] = [
                         { cols: [0, 1], rows: [0, 1] },
                         { cols: [2, 2], rows: [2, 2] },
                     ];
@@ -1329,8 +1329,8 @@ describe("<Table>", function (this) {
                     expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
                     expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(6);
 
-                    const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
-                    const columnIndices: IColumnIndices = {
+                    const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
+                    const columnIndices: ColumnIndices = {
                         columnIndexEnd: NUM_COLS - 1,
                         columnIndexStart: 0,
                     };
@@ -1377,7 +1377,7 @@ describe("<Table>", function (this) {
     });
 
     describe("Manually scrolling while drag-selecting", () => {
-        const ACTIVATION_CELL_COORDS: ICellCoordinates = { row: 1, col: 1 };
+        const ACTIVATION_CELL_COORDS: CellCoordinates = { row: 1, col: 1 };
 
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
@@ -1417,7 +1417,7 @@ describe("<Table>", function (this) {
             });
         }
 
-        function assertActivationCellUnaffected(nextCellCoords: ICellCoordinates) {
+        function assertActivationCellUnaffected(nextCellCoords: CellCoordinates) {
             // setup
             const table = mountTable();
             const { grid, locator } = table.instance() as Table;
@@ -1724,7 +1724,7 @@ describe("<Table>", function (this) {
             expectHeaderWidth(table3, 2, 51);
         });
 
-        it("remembers width for columns without IDs using index", () => {
+        it("remembers width for columns without Dsusing index", () => {
             const columns = [<Column key="a" id="a" />, <Column key="b" />, <Column key="c" />];
 
             // default and explicit sizes sizes
@@ -1745,13 +1745,13 @@ describe("<Table>", function (this) {
 
             // re-arranging and REMOVING columns
             const table2 = harness.mount(<Table>{[columns[1], columns[0]]}</Table>);
-            expectHeaderWidth(table2, 0, 50); // <= difference when no IDs
+            expectHeaderWidth(table2, 0, 50); // <= difference when no Ds
             expectHeaderWidth(table2, 1, 50);
 
             // re-arranging and ADDING columns
             const table3 = harness.mount(<Table defaultColumnWidth={51}>{columns}</Table>);
             expectHeaderWidth(table3, 0, 50);
-            expectHeaderWidth(table3, 1, 50); // <= difference when no IDs
+            expectHeaderWidth(table3, 1, 50); // <= difference when no Ds
             expectHeaderWidth(table3, 2, 51);
         });
     });
@@ -1760,7 +1760,7 @@ describe("<Table>", function (this) {
         const CELL_INDEX = 0;
         const SELECTED_REGIONS = [Regions.row(0), Regions.column(0), Regions.cell(0, 0), Regions.table()];
 
-        let table: ReactWrapper<ITableProps, ITableState>;
+        let table: ReactWrapper<TableProps, TableState>;
 
         describe("disables all selection modes", () => {
             it("when numRows = 0", () => {
@@ -1810,7 +1810,7 @@ describe("<Table>", function (this) {
             });
         });
 
-        function mountTable(numRows: number, numCols: number, tableProps: Partial<ITableProps> = {}) {
+        function mountTable(numRows: number, numCols: number, tableProps: Partial<TableProps> = {}) {
             // this createTableOfSize API is backwards from the codebase's
             // normal [row, column] parameter order. :/
             return mount(
@@ -1925,7 +1925,7 @@ describe("<Table>", function (this) {
             expect(onSelection.calledOnce).to.be.false;
         });
 
-        function pressKeyWithShiftKey(component: ReactWrapper<ITableProps>, keyCode: number) {
+        function pressKeyWithShiftKey(component: ReactWrapper<TableProps>, keyCode: number) {
             const key = keyCode === Keys.ARROW_LEFT ? "left" : "right";
             component.simulate("keyDown", createKeyEventConfig(component, key, keyCode, true));
         }

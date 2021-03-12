@@ -14,7 +14,7 @@ simulates on/off instead of checked/unchecked.
 This component supports the full range of HTML `<input>` props.
 The most common props are detailed below.
 
-@interface ISwitchProps
+@interface SwitchProps
 
 @## CSS API
 

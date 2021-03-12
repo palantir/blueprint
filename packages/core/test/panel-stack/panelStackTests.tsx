@@ -19,7 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { Classes, IPanel, IPanelProps, IPanelStackProps, PanelStack } from "../../src";
+import { Classes, IPanel, IPanelProps, PanelStackProps, PanelStack } from "../../src";
 
 /* eslint-disable deprecation/deprecation */
 
@@ -38,7 +38,7 @@ export class TestPanel extends React.Component<IPanelProps> {
 
 describe("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
-    let panelStackWrapper: IPanelStackWrapper;
+    let panelStackWrapper: PanelStackWrapper;
 
     const initialPanel: IPanel = {
         component: TestPanel,
@@ -257,14 +257,14 @@ describe("<PanelStack>", () => {
         assert.equal(panelHeaders.at(1).text(), stack[1].title);
     });
 
-    interface IPanelStackWrapper extends ReactWrapper<IPanelStackProps, any> {
+    interface PanelStackWrapper extends ReactWrapper<PanelStackProps, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(props: IPanelStackProps): IPanelStackWrapper {
+    function renderPanelStack(props: PanelStackProps): PanelStackWrapper {
         panelStackWrapper = mount(<PanelStack {...props} />, {
             attachTo: testsContainerElement,
-        }) as IPanelStackWrapper;
+        }) as PanelStackWrapper;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }

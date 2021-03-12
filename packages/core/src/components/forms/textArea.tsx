@@ -21,15 +21,15 @@ import {
     AbstractPureComponent,
     Classes,
     getRef,
-    IRef,
-    IRefObject,
+    Ref,
+    RefObject,
     isRefCallback,
     isRefObject,
     refHandler,
 } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
-export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * Whether the text area should take up the full width of its container.
      */
@@ -53,25 +53,25 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
     /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
-    inputRef?: IRef<HTMLTextAreaElement>;
+    inputRef?: Ref<HTMLTextAreaElement>;
 }
 
-export interface ITextAreaState {
+export interface TextAreaState {
     height?: number;
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class TextArea extends AbstractPureComponent<ITextAreaProps, ITextAreaState> {
+export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
-    public state: ITextAreaState = {};
+    public state: TextAreaState = {};
 
     // used to measure and set the height of the component on first mount
-    public textareaElement: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
+    public textareaElement: HTMLTextAreaElement | RefObject<HTMLTextAreaElement> | null = null;
 
-    private handleRef: IRef<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
+    private handleRef: Ref<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
 
     public componentDidMount() {
         if (this.props.growVertically && this.textareaElement !== null) {
@@ -83,11 +83,11 @@ export class TextArea extends AbstractPureComponent<ITextAreaProps, ITextAreaSta
         }
     }
 
-    public componentDidUpdate(prevProps: ITextAreaProps) {
+    public componentDidUpdate(prevProps: TextAreaProps) {
         const { inputRef } = this.props;
         if (prevProps.inputRef !== inputRef) {
             if (isRefObject<HTMLTextAreaElement>(inputRef)) {
-                inputRef.current = (this.textareaElement as IRefObject<HTMLTextAreaElement>).current;
+                inputRef.current = (this.textareaElement as RefObject<HTMLTextAreaElement>).current;
                 this.textareaElement = inputRef;
             } else if (isRefCallback<HTMLTextAreaElement>(inputRef)) {
                 inputRef(this.textareaElement as HTMLTextAreaElement | null);

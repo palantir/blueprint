@@ -20,8 +20,8 @@ import {
     AbstractPureComponent,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    IPopoverProps,
-    ITagInputProps,
+    PopoverProps,
+    TagInputProps,
     Keys,
     Popover,
     PopoverInteractionKind,
@@ -30,12 +30,12 @@ import {
     TagInputAddMethod,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, ListItemsProps } from "../../common";
+import { QueryListRendererProps, QueryList } from "../query-list/queryList";
 
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
-export interface IMultiSelectProps<T> extends IListItemsProps<T> {
+export interface MultiSelectProps<T> extends ListItemsProps<T> {
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `popoverProps.fill` and `tagInputProps.fill`.
@@ -75,24 +75,24 @@ export interface IMultiSelectProps<T> extends IListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<IPopoverProps> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /** Controlled selected values. */
     selectedItems?: T[];
 
     /** Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    tagInputProps?: Partial<ITagInputProps> & object;
+    tagInputProps?: Partial<TagInputProps> & object;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
 }
 
-export interface IMultiSelectState {
+export interface MultiSelectState {
     isOpen: boolean;
 }
 
-export class MultiSelect<T> extends AbstractPureComponent<IMultiSelectProps<T>, IMultiSelectState> {
+export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, MultiSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSelect`;
 
     public static defaultProps = {
@@ -101,10 +101,10 @@ export class MultiSelect<T> extends AbstractPureComponent<IMultiSelectProps<T>, 
     };
 
     public static ofType<U>() {
-        return MultiSelect as new (props: IMultiSelectProps<U>) => MultiSelect<U>;
+        return MultiSelect as new (props: MultiSelectProps<U>) => MultiSelect<U>;
     }
 
-    public state: IMultiSelectState = {
+    public state: MultiSelectState = {
         isOpen: (this.props.popoverProps && this.props.popoverProps.isOpen) || false,
     };
 
@@ -137,7 +137,7 @@ export class MultiSelect<T> extends AbstractPureComponent<IMultiSelectProps<T>, 
         );
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { fill, tagInputProps = {}, popoverProps = {}, selectedItems = [], placeholder } = this.props;
         const { handlePaste, handleKeyDown, handleKeyUp } = listProps;
 

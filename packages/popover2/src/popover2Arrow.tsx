@@ -73,12 +73,12 @@ function getArrowReferenceOffsetStyle(placement: Placement) {
     }
 }
 
-export interface IPopoverArrowProps {
+export interface PopoverArrowProps {
     arrowProps: PopperArrowProps;
     placement: Placement;
 }
 
-export const Popover2Arrow: React.FunctionComponent<IPopoverArrowProps> = ({
+export const Popover2Arrow: React.FunctionComponent<PopoverArrowProps> = ({
     arrowProps: { ref, style },
     placement,
 }) => (

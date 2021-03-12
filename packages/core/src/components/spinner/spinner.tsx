@@ -19,7 +19,7 @@ import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 // see http://stackoverflow.com/a/18473154/3124288 for calculating arc path
@@ -35,7 +35,7 @@ const MIN_SIZE = 10;
 const STROKE_WIDTH = 4;
 const MIN_STROKE_WIDTH = 16;
 
-export interface ISpinnerProps extends IProps, IIntentProps {
+export interface SpinnerProps extends Props, IntentProps {
     /**
      * Width and height of the spinner in pixels. The size cannot be less than
      * 10px.
@@ -65,7 +65,7 @@ export interface ISpinnerProps extends IProps, IIntentProps {
     value?: number;
 }
 
-export class Spinner extends AbstractPureComponent<ISpinnerProps> {
+export class Spinner extends AbstractPureComponent<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
 
     public static readonly SIZE_SMALL = 20;
@@ -74,7 +74,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps> {
 
     public static readonly SIZE_LARGE = 100;
 
-    public componentDidUpdate(prevProps: ISpinnerProps) {
+    public componentDidUpdate(prevProps: SpinnerProps) {
         if (prevProps.value !== this.props.value) {
             // IE/Edge: re-render after changing value to force SVG update
             this.forceUpdate();
@@ -124,7 +124,7 @@ export class Spinner extends AbstractPureComponent<ISpinnerProps> {
         );
     }
 
-    protected validateProps({ className = "", size }: ISpinnerProps) {
+    protected validateProps({ className = "", size }: SpinnerProps) {
         if (size != null && (className.indexOf(Classes.SMALL) >= 0 || className.indexOf(Classes.LARGE) >= 0)) {
             console.warn(SPINNER_WARN_CLASSES_SIZE);
         }

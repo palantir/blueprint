@@ -17,13 +17,13 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
 import { isElementOfType, isReactChildrenElementOrElements } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Hotkey, HotkeyProps } from "./hotkey";
 
-export interface HotkeysProps extends IProps {
+export interface HotkeysProps extends Props {
     /**
      * In order to make local hotkeys work on elements that are not normally
      * focusable, such as `<div>`s or `<span>`s, we add a `tabIndex` attribute

@@ -22,9 +22,9 @@ import {
     Alignment,
     Classes,
     getRef,
-    IActionProps,
-    IElementRefProps,
-    IRefObject,
+    ActionProps,
+    ElementRefProps,
+    RefObject,
     Keys,
     MaybeElement,
     Utils,
@@ -32,9 +32,9 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
-export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
-    extends IActionProps,
-        IElementRefProps<E> {
+export interface ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
+    extends ActionProps,
+        ElementRefProps<E> {
     /**
      * If set to `true`, the button will display in an active state.
      * This is equivalent to setting `className={Classes.ACTIVE}`.
@@ -88,24 +88,24 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
     type?: "submit" | "reset" | "button";
 }
 
-export type IAnchorButtonProps = IButtonProps<HTMLAnchorElement>;
+export type AnchorButtonProps = ButtonProps<HTMLAnchorElement>;
 
-export interface IButtonState {
+export interface ButtonState {
     isActive: boolean;
 }
 
 export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorElement> extends AbstractPureComponent<
-    IButtonProps<E> &
+    ButtonProps<E> &
         (E extends HTMLButtonElement
             ? React.ButtonHTMLAttributes<HTMLButtonElement>
             : React.AnchorHTMLAttributes<HTMLAnchorElement>),
-    IButtonState
+    ButtonState
 > {
     public state = {
         isActive: false,
     };
 
-    protected abstract buttonRef: HTMLElement | IRefObject<HTMLElement> | null;
+    protected abstract buttonRef: HTMLElement | RefObject<HTMLElement> | null;
 
     private currentKeyDown?: number;
 

@@ -21,7 +21,7 @@ import sinon from "sinon";
 
 import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
@@ -151,7 +151,7 @@ describe("<ColumnHeaderCell>", () => {
             expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
-        function mount(props: Partial<IColumnHeaderCellProps>) {
+        function mount(props: Partial<ColumnHeaderCellProps>) {
             const element = harness.mount(
                 <ColumnHeaderCell
                     enableColumnReordering={props.enableColumnReordering}

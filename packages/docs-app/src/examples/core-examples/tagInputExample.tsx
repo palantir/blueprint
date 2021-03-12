@@ -16,8 +16,8 @@
 
 import React from "react";
 
-import { Button, H5, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Button, H5, Intent, TagProps, Switch, TagInput } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -34,7 +34,7 @@ const VALUES = [
     undefined,
 ];
 
-export interface ITagInputExampleState {
+export interface TagInputExampleState {
     addOnBlur: boolean;
     addOnPaste: boolean;
     disabled: boolean;
@@ -47,8 +47,8 @@ export interface ITagInputExampleState {
     values: React.ReactNode[];
 }
 
-export class TagInputExample extends React.PureComponent<IExampleProps, ITagInputExampleState> {
-    public state: ITagInputExampleState = {
+export class TagInputExample extends React.PureComponent<ExampleProps, TagInputExampleState> {
+    public state: TagInputExampleState = {
         addOnBlur: false,
         addOnPaste: true,
         disabled: false,
@@ -94,7 +94,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
         // define a new function every time so switch changes will cause it to re-render
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
         // example purposes!!
-        const getTagProps = (_v: React.ReactNode, index: number): ITagProps => ({
+        const getTagProps = (_v: React.ReactNode, index: number): TagProps => ({
             intent: tagIntents ? INTENTS[index % INTENTS.length] : Intent.NONE,
             large: props.large,
             minimal: tagMinimal,

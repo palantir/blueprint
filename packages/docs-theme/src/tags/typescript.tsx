@@ -17,16 +17,16 @@
 import { isTsClass, isTsEnum, isTsInterface, isTsTypeAlias, ITag, ITypescriptPluginData } from "@documentalist/client";
 import React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../common/context";
 import { EnumTable } from "../components/typescript/enumTable";
 import { InterfaceTable } from "../components/typescript/interfaceTable";
 import { TypeAliasTable } from "../components/typescript/typeAliasTable";
 
-export const TypescriptExample: React.FunctionComponent<ITag & IProps> = (
+export const TypescriptExample: React.FunctionComponent<ITag & Props> = (
     { className, value },
-    { getDocsData }: IDocumentationContext,
+    { getDocsData }: DocumentationContext,
 ) => {
     const { typescript } = getDocsData() as ITypescriptPluginData;
     if (typescript == null || typescript[value] == null) {

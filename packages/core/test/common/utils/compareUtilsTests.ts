@@ -18,7 +18,7 @@
 
 import { expect } from "chai";
 
-import { IKeyAllowlist, IKeyDenylist } from "../../../src/common/utils";
+import { KeyAllowlist, KeyDenylist } from "../../../src/common/utils";
 import * as CompareUtils from "../../../src/common/utils/compareUtils";
 
 describe("CompareUtils", () => {
@@ -86,12 +86,7 @@ describe("CompareUtils", () => {
                 runTest(false, [], [], wl([]));
             });
 
-            function runTest(
-                expectedResult: boolean,
-                a: any,
-                b: any,
-                keys: IKeyDenylist<IKeys> | IKeyAllowlist<IKeys>,
-            ) {
+            function runTest(expectedResult: boolean, a: any, b: any, keys: KeyDenylist<Keys> | KeyAllowlist<Keys>) {
                 it(getCompareTestDescription(a, b), () => {
                     expect(CompareUtils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
@@ -124,12 +119,7 @@ describe("CompareUtils", () => {
                 runTest(false, [], [], bl([]));
             });
 
-            function runTest(
-                expectedResult: boolean,
-                a: any,
-                b: any,
-                keys: IKeyDenylist<IKeys> | IKeyAllowlist<IKeys>,
-            ) {
+            function runTest(expectedResult: boolean, a: any, b: any, keys: KeyDenylist<Keys> | KeyAllowlist<Keys>) {
                 it(getCompareTestDescription(a, b), () => {
                     expect(CompareUtils.shallowCompareKeys(a, b, keys)).to.equal(expectedResult);
                 });
@@ -316,7 +306,7 @@ function getCompareTestDescription(a?: any, b?: any, keys?: any) {
     return keys != null ? baseResult + ` (keys: ${JSON.stringify(keys)})` : baseResult;
 }
 
-interface IKeys {
+interface Keys {
     a?: any;
     b?: any;
     c?: any;
@@ -326,13 +316,13 @@ interface IKeys {
 /**
  * A compactly named function for converting a string array to a key denylist.
  */
-function bl(keys: string[]): IKeyDenylist<IKeys> {
-    return { exclude: keys as Array<keyof IKeys> };
+function bl(keys: string[]): KeyDenylist<Keys> {
+    return { exclude: keys as Array<keyof Keys> };
 }
 
 /**
  * A compactly named function for converting a string array to a key whitelist.
  */
-function wl(keys: string[]): IKeyAllowlist<IKeys> {
-    return { include: keys as Array<keyof IKeys> };
+function wl(keys: string[]): KeyAllowlist<Keys> {
+    return { include: keys as Array<keyof Keys> };
 }

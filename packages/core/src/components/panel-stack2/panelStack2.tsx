@@ -18,11 +18,11 @@ import classNames from "classnames";
 import React, { useCallback, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
 
-export interface PanelStack2Props<T> extends IProps {
+export interface PanelStack2Props<T> extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.

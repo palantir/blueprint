@@ -22,42 +22,42 @@ import {
     DISPLAYNAME_PREFIX,
     HotkeyProps,
     HotkeysTarget,
-    IProps,
-    IRef,
+    Props,
+    Ref,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
-import { ICellProps } from "./cell/cell";
-import { Column, IColumnProps } from "./column";
-import { IFocusedCellCoordinates } from "./common/cell";
+import { CellProps } from "./cell/cell";
+import { Column, ColumnProps } from "./column";
+import { FocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "./common/context";
+import { columnInteractionBarContextTypes, ColumnInteractionBarContextTypes } from "./common/context";
 import { Direction } from "./common/direction";
 import * as Errors from "./common/errors";
-import { Grid, ICellMapper, IColumnIndices, IRowIndices } from "./common/grid";
+import { Grid, CellMapper, ColumnIndices, RowIndices } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { Utils } from "./common/utils";
-import { ColumnHeader, IColumnWidths } from "./headers/columnHeader";
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeaderCell";
-import { IRowHeaderRenderer, IRowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
-import { IContextMenuRenderer } from "./interactions/menus";
-import { IIndexedResizeCallback } from "./interactions/resizable";
+import { ColumnHeader, ColumnWidths } from "./headers/columnHeader";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "./headers/columnHeaderCell";
+import { RowHeaderRenderer, RowHeights, renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
+import { ContextMenuRenderer } from "./interactions/menus";
+import { IndexedResizeCallback } from "./interactions/resizable";
 import { ResizeSensor } from "./interactions/resizeSensor";
-import { ISelectedRegionTransform } from "./interactions/selectable";
+import { SelectedRegionTransform } from "./interactions/selectable";
 import { GuideLayer } from "./layers/guides";
-import { IRegionStyler, RegionLayer } from "./layers/regions";
-import { Locator } from "./locator";
+import { RegionStyler, RegionLayer } from "./layers/regions";
+import { Locator, LocatorImpl } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
 import {
     ColumnLoadingOption,
-    IRegion,
-    IStyledRegionGroup,
+    Region,
+    StyledRegionGroup,
     RegionCardinality,
     Regions,
     SelectionModes,
@@ -65,42 +65,42 @@ import {
 } from "./regions";
 import { TableBody } from "./tableBody";
 
-export interface IResizeRowsByApproximateHeightOptions {
+export interface ResizeRowsByApproximateHeightOptions {
     /**
      * Approximate width (in pixels) of an average character of text.
      */
-    getApproximateCharWidth?: number | ICellMapper<number>;
+    getApproximateCharWidth?: number | CellMapper<number>;
 
     /**
      * Approximate height (in pixels) of an average line of text.
      */
-    getApproximateLineHeight?: number | ICellMapper<number>;
+    getApproximateLineHeight?: number | CellMapper<number>;
 
     /**
      * Sum of horizontal paddings (in pixels) from the left __and__ right sides
      * of the cell.
      */
-    getCellHorizontalPadding?: number | ICellMapper<number>;
+    getCellHorizontalPadding?: number | CellMapper<number>;
 
     /**
      * Number of extra lines to add in case the calculation is imperfect.
      */
-    getNumBufferLines?: number | ICellMapper<number>;
+    getNumBufferLines?: number | CellMapper<number>;
 }
 
-interface IResizeRowsByApproximateHeightResolvedOptions {
+interface ResizeRowsByApproximateHeightResolvedOptions {
     getApproximateCharWidth?: number;
     getApproximateLineHeight?: number;
     getCellHorizontalPadding?: number;
     getNumBufferLines?: number;
 }
 
-export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
+export interface TableProps extends Props, RowHeights, ColumnWidths {
     /**
      * The children of a `Table` component, which must be React elements
      * that use `IColumnProps`.
      */
-    children?: React.ReactElement<IColumnProps> | Array<React.ReactElement<IColumnProps>>;
+    children?: React.ReactElement<ColumnProps> | Array<React.ReactElement<ColumnProps>>;
 
     /**
      * A sparse number array with a length equal to the number of columns. Any
@@ -117,7 +117,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * contain all selected regions. Otherwise it will have one `IRegion` that
      * represents the clicked cell.
      */
-    bodyContextMenuRenderer?: IContextMenuRenderer;
+    bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
@@ -193,7 +193,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * the focused cell to controlled mode, meaning you are in charge of
      * setting the focus in response to events in the `onFocusedCell` callback.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * If `true`, selection state changes will cause the component to re-render.
@@ -250,7 +250,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * If resizing is enabled, this callback will be invoked when the user
      * finishes drag-resizing a column.
      */
-    onColumnWidthChanged?: IIndexedResizeCallback;
+    onColumnWidthChanged?: IndexedResizeCallback;
 
     /**
      * An optional callback invoked when all cells in view have completely rendered.
@@ -272,13 +272,13 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * A callback called when the focus is changed in the table.
      */
-    onFocusedCell?: (focusedCell: IFocusedCellCoordinates) => void;
+    onFocusedCell?: (focusedCell: FocusedCellCoordinates) => void;
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
      * finishes drag-resizing a row.
      */
-    onRowHeightChanged?: IIndexedResizeCallback;
+    onRowHeightChanged?: IndexedResizeCallback;
 
     /**
      * If reordering is enabled, this callback will be invoked when the user finishes
@@ -289,12 +289,12 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * A callback called when the selection is changed in the table.
      */
-    onSelection?: (selectedRegions: IRegion[]) => void;
+    onSelection?: (selectedRegions: Region[]) => void;
 
     /**
      * A callback called when the visible cell indices change in the table.
      */
-    onVisibleCellsChange?: (rowIndices: IRowIndices, columnIndices: IColumnIndices) => void;
+    onVisibleCellsChange?: (rowIndices: RowIndices, columnIndices: ColumnIndices) => void;
 
     /**
      * Dictates how cells should be rendered. Supported modes are:
@@ -310,7 +310,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * Render each row's header cell.
      */
-    rowHeaderCellRenderer?: IRowHeaderRenderer;
+    rowHeaderCellRenderer?: RowHeaderRenderer;
 
     /**
      * A sparse number array with a length equal to the number of rows. Any
@@ -331,7 +331,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * selection you can pass to the `selectedRegions` prop. Therefore you can,
      * for example, convert cell clicks into row selections.
      */
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
 
     /**
      * An optional transform function that will be applied to the located
@@ -341,7 +341,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * `Region`s while maintaining the existing multi-select and meta-click
      * functionality.
      */
-    selectedRegionTransform?: ISelectedRegionTransform;
+    selectedRegionTransform?: SelectedRegionTransform;
 
     /**
      * A `SelectionModes` enum value indicating the selection mode. You may
@@ -370,10 +370,10 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * Styled region groups are rendered as overlays above the table and are
      * marked with their own `className` for custom styling.
      */
-    styledRegionGroups?: IStyledRegionGroup[];
+    styledRegionGroups?: StyledRegionGroup[];
 }
 
-export interface ITableState {
+export interface TableState {
     /**
      * An array of column widths. These are initialized from the column props
      * and updated when the user drags column header resize handles.
@@ -383,7 +383,7 @@ export interface ITableState {
     /**
      * The coordinates of the currently focused table cell
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the
@@ -425,7 +425,7 @@ export interface ITableState {
     /**
      * An array of Regions representing the selections of the table.
      */
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the
@@ -441,18 +441,18 @@ export interface ITableState {
 
     columnIdToIndex: { [key: string]: number };
 
-    childrenArray: Array<React.ReactElement<IColumnProps>>;
+    childrenArray: Array<React.ReactElement<ColumnProps>>;
 }
 
-export interface ITableSnapshot {
+export interface TableSnapshot {
     nextScrollTop?: number;
     nextScrollLeft?: number;
 }
 
-export class Table extends AbstractComponent<ITableProps, ITableState, ITableSnapshot> {
+export class Table extends AbstractComponent<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
-    public static defaultProps: ITableProps = {
+    public static defaultProps: TableProps = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
         enableFocusedCell: false,
@@ -471,9 +471,9 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         selectionModes: SelectionModes.ALL,
     };
 
-    public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
+    public static childContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
 
-    public static getDerivedStateFromProps(props: ITableProps, state: ITableState) {
+    public static getDerivedStateFromProps(props: TableProps, state: TableState) {
         const {
             children,
             defaultColumnWidth,
@@ -494,7 +494,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
             rowHeights = state.rowHeights;
         }
 
-        const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const didChildrenChange = newChildrenArray !== state.childrenArray;
         const numCols = newChildrenArray.length;
 
@@ -504,7 +504,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
             // column that had the same `ID` prop. If none is found, use the
             // previous width at the same index.
             const previousColumnWidths = newChildrenArray.map(
-                (child: React.ReactElement<IColumnProps>, index: number) => {
+                (child: React.ReactElement<ColumnProps>, index: number) => {
                     const mappedIndex = state.columnIdToIndex[child.props.id];
                     return state.columnWidths[mappedIndex != null ? mappedIndex : index];
                 },
@@ -564,24 +564,21 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
 
     // these default values for `resizeRowsByApproximateHeight` have been
     // fine-tuned to work well with default Table font styles.
-    private static resizeRowsByApproximateHeightDefaults: Record<
-        keyof IResizeRowsByApproximateHeightOptions,
-        number
-    > = {
+    private static resizeRowsByApproximateHeightDefaults: Record<keyof ResizeRowsByApproximateHeightOptions, number> = {
         getApproximateCharWidth: 8,
         getApproximateLineHeight: 18,
-        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+        getCellHorizontalPadding: 2 * LocatorImpl.CELL_HORIZONTAL_PADDING,
         getNumBufferLines: 1,
     };
 
     private static SHALLOW_COMPARE_PROP_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
-    ] as Array<keyof ITableProps>;
+    ] as Array<keyof TableProps>;
 
     private static SHALLOW_COMPARE_STATE_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
         "viewportRect",
-    ] as Array<keyof ITableState>;
+    ] as Array<keyof TableState>;
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: { [key: string]: number } = {};
@@ -595,7 +592,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
     }
 
     private static isSelectionModeEnabled(
-        props: ITableProps,
+        props: TableProps,
         selectionMode: RegionCardinality,
         selectionModes = props.selectionModes,
     ) {
@@ -637,12 +634,12 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
      */
     private didCompletelyMount = false;
 
-    public constructor(props: ITableProps) {
+    public constructor(props: TableProps) {
         super(props);
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = this.props;
 
-        const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<IColumnProps>>;
+        const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const columnIdToIndex = Table.createColumnIdIndex(childrenArray);
 
         // Create height/width arrays using the lengths from props and
@@ -653,7 +650,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         let newRowHeights = Utils.times(numRows, () => defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
-        const selectedRegions = props.selectedRegions == null ? ([] as IRegion[]) : props.selectedRegions;
+        const selectedRegions = props.selectedRegions == null ? ([] as Region[]) : props.selectedRegions;
         const focusedCell = FocusedCellUtils.getInitialFocusedCell(
             props.enableFocusedCell,
             props.focusedCell,
@@ -690,8 +687,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
      * Table font styles.
      */
     public resizeRowsByApproximateHeight(
-        getCellText: ICellMapper<string>,
-        options?: IResizeRowsByApproximateHeightOptions,
+        getCellText: CellMapper<string>,
+        options?: ResizeRowsByApproximateHeightOptions,
     ) {
         const { numRows } = this.props;
         const { columnWidths } = this.state;
@@ -773,7 +770,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
      * simply scroll the target region as close to the top-left as possible until the bottom-right
      * corner is reached.
      */
-    public scrollToRegion(region: IRegion) {
+    public scrollToRegion(region: Region) {
         const { numFrozenColumnsClamped: numFrozenColumns, numFrozenRowsClamped: numFrozenRows } = this.state;
         const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
 
@@ -797,13 +794,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
     // React lifecycle
     // ===============
 
-    public getChildContext(): IColumnInteractionBarContextTypes {
+    public getChildContext(): ColumnInteractionBarContextTypes {
         return {
             enableColumnInteractionBar: this.props.enableColumnInteractionBar,
         };
     }
 
-    public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
+    public shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
         const propKeysDenylist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
         const stateKeysDenylist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
 
@@ -901,7 +898,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
     public componentDidMount() {
         this.validateGrid();
 
-        this.locator = new Locator(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
+        this.locator = new LocatorImpl(this.rootTableElement, this.scrollContainerElement, this.cellContainerElement);
         this.updateLocator();
         this.updateViewportRect(this.locator.getViewportRect());
 
@@ -943,11 +940,11 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         return { nextScrollLeft, nextScrollTop };
     }
 
-    public componentDidUpdate(prevProps: ITableProps, prevState: ITableState, snapshot: ITableSnapshot) {
+    public componentDidUpdate(prevProps: TableProps, prevState: TableState, snapshot: TableSnapshot) {
         super.componentDidUpdate(prevProps, prevState, snapshot);
 
         const didChildrenChange =
-            (React.Children.toArray(this.props.children) as Array<React.ReactElement<IColumnProps>>) !==
+            (React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>) !==
             this.state.childrenArray;
 
         const shouldInvalidateGrid =
@@ -979,7 +976,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         }
     }
 
-    protected validateProps(props: ITableProps) {
+    protected validateProps(props: TableProps) {
         const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
@@ -1170,7 +1167,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
      * Replaces the selected region at the specified array index, with the
      * region provided.
      */
-    private updateSelectedRegionAtIndex(region: IRegion, index: number) {
+    private updateSelectedRegionAtIndex(region: Region, index: number) {
         const { children, numRows } = this.props;
         const { selectedRegions } = this.state;
         const numColumns = React.Children.count(children);
@@ -1190,8 +1187,8 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         primaryAxis: "row" | "col",
         secondaryAxis: "row" | "col",
         isUpOrLeft: boolean,
-        newFocusedCell: IFocusedCellCoordinates,
-        focusCellRegion: IRegion,
+        newFocusedCell: FocusedCellCoordinates,
+        focusCellRegion: Region,
     ) {
         const { selectedRegions } = this.state;
 
@@ -1296,7 +1293,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
 
-    private renderMenu = (refHandler: IRef<HTMLDivElement>) => {
+    private renderMenu = (refHandler: Ref<HTMLDivElement>) => {
         const classes = classNames(Classes.TABLE_MENU, {
             [Classes.TABLE_SELECTION_ENABLED]: Table.isSelectionModeEnabled(this.props, RegionCardinality.FULL_TABLE),
         });
@@ -1335,7 +1332,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
     };
 
     private getColumnProps(columnIndex: number) {
-        const column = this.state.childrenArray[columnIndex] as React.ReactElement<IColumnProps>;
+        const column = this.state.childrenArray[columnIndex] as React.ReactElement<ColumnProps>;
         return column === undefined ? undefined : column.props;
     }
 
@@ -1353,13 +1350,13 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             const columnHeaderCellLoading = columnHeaderCell.props.loading;
 
-            const columnHeaderCellProps: IColumnHeaderCellProps = {
+            const columnHeaderCellProps: ColumnHeaderCellProps = {
                 loading: columnHeaderCellLoading != null ? columnHeaderCellLoading : columnLoading,
             };
             return React.cloneElement(columnHeaderCell, columnHeaderCellProps);
         }
 
-        const baseProps: IColumnHeaderCellProps = {
+        const baseProps: ColumnHeaderCellProps = {
             index: columnIndex,
             loading: columnLoading,
             ...spreadableProps,
@@ -1373,7 +1370,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
     };
 
     private renderColumnHeader = (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[]) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
@@ -1433,7 +1430,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
     };
 
     private renderRowHeader = (
-        refHandler: IRef<HTMLDivElement>,
+        refHandler: Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[]) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,
@@ -1509,7 +1506,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         const cell = cellRenderer(rowIndex, columnIndex);
         const { loading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
 
-        const cellProps: ICellProps = {
+        const cellProps: CellProps = {
             ...restColumnProps,
             loading,
         };
@@ -1619,7 +1616,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
      * the `IRegionStyler` should be a new instance on every render if we
      * intend to redraw the region layer.
      */
-    private maybeRenderRegions(getRegionStyle: IRegionStyler, quadrantType?: QuadrantType) {
+    private maybeRenderRegions(getRegionStyle: RegionStyler, quadrantType?: QuadrantType) {
         if (this.isGuidesShowing() && !this.state.isReordering) {
             // we want to show guides *and* the selection styles when reordering rows or columns
             return undefined;
@@ -1671,7 +1668,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
 
     private handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
 
-    private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {
+    private styleBodyRegion = (region: Region, quadrantType: QuadrantType): React.CSSProperties => {
         const { numFrozenColumns } = this.props;
 
         const cardinality = Regions.getRegionCardinality(region);
@@ -1718,7 +1715,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         }
     };
 
-    private styleMenuRegion = (region: IRegion): React.CSSProperties => {
+    private styleMenuRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
@@ -1741,7 +1738,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         }
     };
 
-    private styleColumnHeaderRegion = (region: IRegion): React.CSSProperties => {
+    private styleColumnHeaderRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
@@ -1764,7 +1761,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         }
     };
 
-    private styleRowHeaderRegion = (region: IRegion): React.CSSProperties => {
+    private styleRowHeaderRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
@@ -1860,7 +1857,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         }
     };
 
-    private clearSelection = (_selectedRegions: IRegion[]) => {
+    private clearSelection = (_selectedRegions: Region[]) => {
         this.handleSelection([]);
     };
 
@@ -2010,7 +2007,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         this.scrollBodyToFocusedCell(newFocusedCell);
     };
 
-    private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
+    private scrollBodyToFocusedCell = (focusedCell: FocusedCellCoordinates) => {
         const { row, col } = focusedCell;
         const { viewportRect } = this.state;
 
@@ -2036,7 +2033,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
         const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
 
-        const ss: ITableSnapshot = {};
+        const ss: TableSnapshot = {};
 
         // keep the top end of an overly tall focused cell in view when moving left and right
         // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
@@ -2062,7 +2059,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         this.syncViewportPosition(ss);
     };
 
-    private syncViewportPosition({ nextScrollLeft, nextScrollTop }: ITableSnapshot) {
+    private syncViewportPosition({ nextScrollLeft, nextScrollTop }: TableSnapshot) {
         const { viewportRect } = this.state;
 
         if (nextScrollLeft !== undefined || nextScrollTop !== undefined) {
@@ -2087,7 +2084,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         }
     }
 
-    private handleFocus = (focusedCell: IFocusedCellCoordinates) => {
+    private handleFocus = (focusedCell: FocusedCellCoordinates) => {
         if (!this.props.enableFocusedCell) {
             // don't set focus state if focus is not allowed
             return;
@@ -2101,7 +2098,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
         this.props.onFocusedCell?.(focusedCell);
     };
 
-    private handleSelection = (selectedRegions: IRegion[]) => {
+    private handleSelection = (selectedRegions: Region[]) => {
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
             this.setState({ selectedRegions });
@@ -2206,16 +2203,16 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
      * (falling back to default values as necessary).
      */
     private resolveResizeRowsByApproximateHeightOptions(
-        options: IResizeRowsByApproximateHeightOptions | null | undefined,
+        options: ResizeRowsByApproximateHeightOptions | null | undefined,
         rowIndex: number,
         columnIndex: number,
     ) {
         const optionKeys = Object.keys(Table.resizeRowsByApproximateHeightDefaults) as Array<
-            keyof IResizeRowsByApproximateHeightOptions
+            keyof ResizeRowsByApproximateHeightOptions
         >;
         const optionReducer = (
-            agg: IResizeRowsByApproximateHeightResolvedOptions,
-            key: keyof IResizeRowsByApproximateHeightOptions,
+            agg: ResizeRowsByApproximateHeightResolvedOptions,
+            key: keyof ResizeRowsByApproximateHeightOptions,
         ) => {
             const valueOrMapper = options?.[key];
             if (typeof valueOrMapper === "function") {
@@ -2228,18 +2225,18 @@ export class Table extends AbstractComponent<ITableProps, ITableState, ITableSna
 
             return agg;
         };
-        const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
+        const resolvedOptions: ResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
         return resolvedOptions;
     }
 }
 
-function clampNumFrozenColumns(props: ITableProps) {
+function clampNumFrozenColumns(props: TableProps) {
     const { numFrozenColumns } = props;
     const numColumns = React.Children.count(props.children);
     return clampPotentiallyNullValue(numFrozenColumns, numColumns);
 }
 
-function clampNumFrozenRows(props: ITableProps) {
+function clampNumFrozenRows(props: TableProps) {
     const { numFrozenRows, numRows } = props;
     return clampPotentiallyNullValue(numFrozenRows, numRows);
 }

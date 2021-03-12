@@ -26,28 +26,28 @@ import {
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Classes, Intent, Props, Tag } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IInterfaceTableProps extends IProps {
+export interface InterfaceTableProps extends Props {
     data: ITsClass | ITsInterface;
     title: string;
 }
 
 // rendered inside RUNNING_TEXT
 /* eslint-disable @blueprintjs/html-components */
-export class InterfaceTable extends React.PureComponent<IInterfaceTableProps> {
+export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.InterfaceTable";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { data, title } = this.props;

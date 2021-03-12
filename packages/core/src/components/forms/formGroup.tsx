@@ -18,9 +18,9 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
-export interface IFormGroupProps extends IIntentProps, IProps {
+export interface FormGroupProps extends IntentProps, Props {
     /**
      * A space-delimited list of class names to pass along to the
      * `Classes.FORM_CONTENT` element that contains `children`.
@@ -61,7 +61,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
     style?: React.CSSProperties;
 }
 
-export class FormGroup extends AbstractPureComponent<IFormGroupProps> {
+export class FormGroup extends AbstractPureComponent<FormGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 
     public render() {

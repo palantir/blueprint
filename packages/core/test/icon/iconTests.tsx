@@ -20,7 +20,7 @@ import React from "react";
 
 import { Icons, IconName } from "@blueprintjs/icons";
 
-import { Classes, Icon, IIconProps, Intent } from "../../src";
+import { Classes, Icon, IconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
     before(async () => {
@@ -104,7 +104,7 @@ describe("<Icon>", () => {
     });
 
     /** Asserts that rendered icon has an SVG path. */
-    async function assertIconHasPath(icon: React.ReactElement<IIconProps>, iconName: IconName) {
+    async function assertIconHasPath(icon: React.ReactElement<IconProps>, iconName: IconName) {
         const wrapper = mount(icon);
         await wrapper.instance().componentDidMount!();
         wrapper.update();
@@ -113,7 +113,7 @@ describe("<Icon>", () => {
     }
 
     /** Asserts that rendered icon has width/height equal to size. */
-    async function assertIconSize(icon: React.ReactElement<IIconProps>, size: number) {
+    async function assertIconSize(icon: React.ReactElement<IconProps>, size: number) {
         const wrapper = mount(icon);
         await wrapper.instance().componentDidMount!();
         wrapper.update();
@@ -123,7 +123,7 @@ describe("<Icon>", () => {
     }
 
     /** Asserts that rendered icon has color equal to color. */
-    async function assertIconColor(icon: React.ReactElement<IIconProps>, color?: string) {
+    async function assertIconColor(icon: React.ReactElement<IconProps>, color?: string) {
         const wrapper = mount(icon);
         await wrapper.instance().componentDidMount!();
         wrapper.update();

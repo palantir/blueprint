@@ -18,15 +18,15 @@ import classNames from "classnames";
 import React from "react";
 
 import * as Classes from "../../common/classes";
-import { IActionProps, ILinkProps } from "../../common/props";
+import { ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 
-export interface IBreadcrumbProps extends IActionProps, ILinkProps {
+export interface BreadcrumbProps extends ActionProps, LinkProps {
     /** Whether this breadcrumb is the current breadcrumb. */
     current?: boolean;
 }
 
-export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbProps => {
+export const Breadcrumb: React.FunctionComponent<BreadcrumbProps> = breadcrumbProps => {
     const classes = classNames(
         Classes.BREADCRUMB,
         {

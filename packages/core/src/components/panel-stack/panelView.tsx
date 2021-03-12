@@ -25,7 +25,7 @@ import { IPanel } from "./panelProps";
 
 /* eslint-disable deprecation/deprecation */
 
-export interface IPanelViewProps {
+export interface PanelViewProps {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
@@ -48,7 +48,7 @@ export interface IPanelViewProps {
     showHeader: boolean;
 }
 
-export class PanelView extends AbstractPureComponent<IPanelViewProps> {
+export class PanelView extends AbstractPureComponent<PanelViewProps> {
     public render() {
         const { panel, onOpen } = this.props;
         // two <span> tags in header ensure title is centered as long as

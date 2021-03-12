@@ -20,7 +20,7 @@ import ReactDOM from "react-dom";
 
 import { Utils } from "../src";
 import { Grid } from "../src/common/grid";
-import { Locator } from "../src/locator";
+import { Locator, LocatorImpl } from "../src/locator";
 
 const N_ROWS = 10;
 const N_COLS = 10;
@@ -66,7 +66,7 @@ describe("Locator", () => {
             containerElement,
         );
 
-        locator = new Locator(
+        locator = new LocatorImpl(
             containerElement.querySelector(".table-wrapper") as HTMLElement,
             containerElement.querySelector(".body") as HTMLElement,
             containerElement.querySelector(".body-client") as HTMLElement,
