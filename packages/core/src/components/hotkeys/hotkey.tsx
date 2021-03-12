@@ -19,7 +19,7 @@ import React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { HotkeyConfig } from "../../hooks";
-import { KeyboardCombo } from "./keyboardCombo";
+import { KeyComboTag } from "./keyComboTag";
 
 export type HotkeyProps = Props & HotkeyConfig;
 
@@ -41,7 +41,7 @@ export class Hotkey extends AbstractPureComponent<HotkeyProps> {
         return (
             <div className={rootClasses}>
                 <div className={Classes.HOTKEY_LABEL}>{label}</div>
-                <KeyboardCombo {...spreadableProps} />
+                <KeyComboTag {...spreadableProps} />
             </div>
         );
     }

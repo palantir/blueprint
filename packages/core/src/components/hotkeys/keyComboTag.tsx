@@ -35,7 +35,7 @@ const KeyIcons: { [key: string]: IconName } = {
     up: "arrow-up",
 };
 
-export interface KeyboardComboProps extends Props {
+export interface KeyComboTagProps extends Props {
     /** The key combo to display, such as `"cmd + s"`. */
     combo: string;
 
@@ -49,7 +49,7 @@ export interface KeyboardComboProps extends Props {
     minimal?: boolean;
 }
 
-export class KeyboardCombo extends AbstractPureComponent<KeyboardComboProps> {
+export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
 
     public render() {

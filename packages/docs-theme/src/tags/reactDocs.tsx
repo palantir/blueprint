@@ -21,7 +21,7 @@ export interface DocsMap {
     [name: string]: React.ComponentClass;
 }
 
-export class ReactDocsITagRenderer {
+export class ReactDocsTagRenderer {
     constructor(private docs: DocsMap) {}
 
     /**

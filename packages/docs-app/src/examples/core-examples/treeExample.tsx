@@ -16,12 +16,12 @@
 
 import React from "react";
 
-import { Classes, Icon, Intent, TreeNode, Tree } from "@blueprintjs/core";
+import { Classes, Icon, Intent, TreeNodeInfo, Tree } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Tooltip2 } from "@blueprintjs/popover2";
 
 export interface TreeExampleState {
-    nodes: TreeNode[];
+    nodes: TreeNodeInfo[];
 }
 
 // use Component so it re-renders everytime: `nodes` are not a primitive type
@@ -43,7 +43,7 @@ export class TreeExample extends React.Component<ExampleProps, TreeExampleState>
         );
     }
 
-    private handleNodeClick = (nodeData: TreeNode, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
+    private handleNodeClick = (nodeData: TreeNodeInfo, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
         const originallySelected = nodeData.isSelected;
         if (!e.shiftKey) {
             this.forEachNode(this.state.nodes, n => (n.isSelected = false));
@@ -52,17 +52,17 @@ export class TreeExample extends React.Component<ExampleProps, TreeExampleState>
         this.setState(this.state);
     };
 
-    private handleNodeCollapse = (nodeData: TreeNode) => {
+    private handleNodeCollapse = (nodeData: TreeNodeInfo) => {
         nodeData.isExpanded = false;
         this.setState(this.state);
     };
 
-    private handleNodeExpand = (nodeData: TreeNode) => {
+    private handleNodeExpand = (nodeData: TreeNodeInfo) => {
         nodeData.isExpanded = true;
         this.setState(this.state);
     };
 
-    private forEachNode(nodes: TreeNode[], callback: (node: TreeNode) => void) {
+    private forEachNode(nodes: TreeNodeInfo[], callback: (node: TreeNodeInfo) => void) {
         if (nodes == null) {
             return;
         }
@@ -75,7 +75,7 @@ export class TreeExample extends React.Component<ExampleProps, TreeExampleState>
 }
 
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
-const INITIAL_STATE: TreeNode[] = [
+const INITIAL_STATE: TreeNodeInfo[] = [
     {
         id: 0,
         hasCaret: true,

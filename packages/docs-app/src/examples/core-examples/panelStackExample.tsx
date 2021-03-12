@@ -18,17 +18,17 @@
 
 import React from "react";
 
-import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
+import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface PanelStackExampleState {
     activePanelOnly: boolean;
-    currentPanelStack: Array<Panel<PanelExampleProps>>;
+    currentPanelStack: Array<IPanel<PanelExampleProps>>;
     showHeader: boolean;
 }
 
 export class PanelStackExample extends React.PureComponent<ExampleProps, PanelStackExampleState> {
-    public initialPanel: Panel<PanelExampleProps> = {
+    public initialPanel: IPanel<PanelExampleProps> = {
         component: PanelExample,
         props: {
             panelNumber: 1,
@@ -77,14 +77,14 @@ export class PanelStackExample extends React.PureComponent<ExampleProps, PanelSt
         );
     }
 
-    private addToPanelStack = (newPanel: Panel) => {
+    private addToPanelStack = (newPanel: IPanel) => {
         this.setState(state => ({
             // HACKHACK: https://github.com/palantir/blueprint/issues/4272
-            currentPanelStack: [(newPanel as unknown) as Panel<PanelExampleProps>, ...state.currentPanelStack],
+            currentPanelStack: [(newPanel as unknown) as IPanel<PanelExampleProps>, ...state.currentPanelStack],
         }));
     };
 
-    private removeFromPanelStack = (_lastPanel: Panel) => {
+    private removeFromPanelStack = (_lastPanel: IPanel) => {
         // In this example, the last panel is always the one closed.
         // Using `this.props.closePanel()` is one way to violate this.
         this.setState(state => ({ currentPanelStack: state.currentPanelStack.slice(1) }));
@@ -99,7 +99,7 @@ interface PanelExampleState {
     counter: number;
 }
 
-class PanelExample extends React.PureComponent<PanelExampleProps & PanelProps> {
+class PanelExample extends React.PureComponent<PanelExampleProps & IPanelProps> {
     public state: PanelExampleState = {
         counter: 0,
     };

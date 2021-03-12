@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { NpmPackage } from "@documentalist/client";
+import { INpmPackage } from "@documentalist/client";
 import React from "react";
 
 import { Classes, HotkeysTarget, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
@@ -27,7 +27,7 @@ export interface NavHeaderProps {
     onToggleDark: (useDark: boolean) => void;
     useDarkTheme: boolean;
     useNextVersion: boolean;
-    packageData: NpmPackage;
+    packageData: INpmPackage;
 }
 
 export class NavHeader extends React.PureComponent<NavHeaderProps> {

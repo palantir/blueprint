@@ -33,7 +33,7 @@ export interface ExampleMap {
     [componentName: string]: ExampleRenderInfo;
 }
 
-export class ReactExampleITagRenderer {
+export class ReactExampleTagRenderer {
     constructor(private examples: ExampleMap) {}
 
     /**
