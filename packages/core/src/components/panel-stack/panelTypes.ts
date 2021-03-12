@@ -15,7 +15,7 @@
  */
 
 /**
- * An object describing a panel in a `PanelStack2`.
+ * An object describing a panel in a `PanelStack`.
  */
 export interface Panel<P> {
     /**
@@ -30,7 +30,7 @@ export interface Panel<P> {
 
     /**
      * The props passed to the component type when it is rendered. The methods
-     * in `PanelActions` will be injected by `PanelStack2`.
+     * in `PanelActions` will be injected by `PanelStack`.
      */
     props?: P;
 
@@ -59,10 +59,10 @@ export interface PanelActions {
 
 /**
  * Use this interface in your panel component's props type to access these
- * panel action callbacks which are injected by `PanelStack2`.
+ * panel action callbacks which are injected by `PanelStack`.
  *
  * See the code example in the docs website.
  *
- * @see https://blueprintjs.com/docs/#core/components/panel-stack2
+ * @see https://blueprintjs.com/docs/#core/components/panel-stack
  */
 export type PanelProps<P> = P & PanelActions;

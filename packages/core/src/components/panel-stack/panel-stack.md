@@ -1,29 +1,6 @@
----
-tag: new
----
+@# Panel stack
 
-@# Panel stack (v2)
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h4 class="@ns-heading">This API requires React 16.8+</h4>
-</div>
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">
-
-Migrating from [PanelStack](#core/components/panel-stack)?
-
-</h4>
-
-PanelStack2 is a replacement for PanelStack. It will become the standard
-API in Blueprint core v4. You are encouraged to use this new API now to ease the
-transition to the next major version of Blueprint. See the full
-[migration guide](https://github.com/palantir/blueprint/wiki/PanelStack2-migration) on the wiki.
-
-</div>
-
-
-`PanelStack2` manages a stack of panels and displays only the topmost panel.
+`PanelStack` manages a stack of panels and displays only the topmost panel.
 
 Each panel appears with a header containing a "back" button to return to the
 previous panel. The bottom-most `initialPanel` cannot be closed or removed from
@@ -37,7 +14,7 @@ transitions between the panels. You can notice this in the example below as
 the numeric counter is reset. To render all panels to the DOM and keep their
 React trees mounted, change the `renderActivePanelOnly` prop.
 
-@reactExample PanelStack2Example
+@reactExample PanelStackExample
 
 @## Panels
 
@@ -47,7 +24,7 @@ This breakdown allows the component to avoid cloning elements.
 Note that each panel is only mounted when it is atop the stack and is unmounted when
 it is closed or when a panel opens above it.
 
-`PanelStack2` injects panel action callbacks into each panel renderer in addition to
+`PanelStack` injects panel action callbacks into each panel renderer in addition to
 the `props` defined by `Panel<T>`. These allow you to close the current panel or open a
 new one on top of it during the panel's lifecycle. For example:
 
@@ -101,6 +78,6 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 
 @## Props
 
-PanelStack2 can be operated as a controlled or uncontrolled component.
+PanelStack can be operated as a controlled or uncontrolled component.
 
-@interface PanelStack2Props
+@interface PanelStackProps

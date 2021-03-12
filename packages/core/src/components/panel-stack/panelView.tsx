@@ -24,7 +24,7 @@ import { Text } from "../text/text";
 import { Panel, PanelProps } from "./panelTypes";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface PanelView2Props<T extends Panel<object>> {
+export interface PanelViewProps<T extends Panel<object>> {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
@@ -47,14 +47,14 @@ export interface PanelView2Props<T extends Panel<object>> {
     showHeader: boolean;
 }
 
-interface PanelView2Component {
+interface PanelViewComponent {
     // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>>(props: PanelView2Props<T>): JSX.Element | null;
+    <T extends Panel<object>>(props: PanelViewProps<T>): JSX.Element | null;
     displayName: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: PanelView2Props<T>) => {
+export const PanelView: PanelViewComponent = <T extends Panel<object>>(props: PanelViewProps<T>) => {
     const handleClose = React.useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
 
     const maybeBackButton =
@@ -71,9 +71,9 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
         );
 
     return (
-        <div className={Classes.PANEL_STACK2_VIEW}>
+        <div className={Classes.PANEL_STACK_VIEW}>
             {props.showHeader && (
-                <div className={Classes.PANEL_STACK2_HEADER}>
+                <div className={Classes.PANEL_STACK_HEADER}>
                     {/* two <span> tags here ensure title is centered as long as possible, with `flex: 1` styling */}
                     <span>{maybeBackButton}</span>
                     <Text className={Classes.HEADING} ellipsize={true} title={props.panel.htmlTitle}>
@@ -96,4 +96,4 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
         </div>
     );
 };
-PanelView2.displayName = `${DISPLAYNAME_PREFIX}.PanelView2`;
+PanelView.displayName = `${DISPLAYNAME_PREFIX}.PanelView`;

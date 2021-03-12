@@ -58,7 +58,7 @@ export * from "./non-ideal-state/nonIdealState";
 export * from "./overflow-list/overflowList";
 export * from "./overlay/overlay";
 export * from "./text/text";
-export { PanelStack2, PanelStack2Props } from "./panel-stack/panelStack2";
+export { PanelStack, PanelStackProps } from "./panel-stack/panelStack";
 export { Panel, PanelProps } from "./panel-stack/panelTypes";
 export * from "./popover/popover";
 export * from "./popover/popoverSharedProps";
