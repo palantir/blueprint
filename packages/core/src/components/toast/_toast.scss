@@ -170,7 +170,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
 
-  &.#{ns}-toast-container-in-portal {
+  &.#{$ns}-toast-container-in-portal {
     position: fixed;
   }
 

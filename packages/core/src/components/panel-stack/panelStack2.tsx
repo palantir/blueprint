@@ -15,33 +15,37 @@
  */
 
 import classNames from "classnames";
-import React, { useCallback, useState } from "react";
+import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
 
-export interface PanelStack2Props<T> extends Props {
+/**
+ * @template T type union of all possible panels in this stack
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface PanelStack2Props<T extends Panel<object>> extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
      * This prop is only used in uncontrolled mode and is thus mutually
      * exclusive with the `stack` prop.
      */
-    initialPanel?: Panel<T>;
+    initialPanel?: T;
 
     /**
      * Callback invoked when the user presses the back button or a panel
      * closes itself with a `closePanel()` action.
      */
-    onClose?: (removedPanel: Panel<T>) => void;
+    onClose?: (removedPanel: T) => void;
 
     /**
      * Callback invoked when a panel opens a new panel with an `openPanel(panel)`
      * action.
      */
-    onOpen?: (addedPanel: Panel<T>) => void;
+    onOpen?: (addedPanel: T) => void;
 
     /**
      * If false, PanelStack will render all panels in the stack to the DOM, allowing their
@@ -63,27 +67,37 @@ export interface PanelStack2Props<T> extends Props {
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
-    stack?: Array<Panel<T>>;
+    stack?: T[];
 }
 
 interface PanelStack2Component {
-    <T>(props: PanelStack2Props<T>): JSX.Element | null;
+    /**
+     * @template T type union of all possible panels in this stack
+     */
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    <T extends Panel<object>>(props: PanelStack2Props<T>): JSX.Element | null;
     displayName: string;
 }
 
-export const PanelStack2: PanelStack2Component = <T,>(props: PanelStack2Props<T>) => {
+/**
+ * @template T type union of all possible panels in this stack
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
     const { renderActivePanelOnly = true, showPanelHeader = true } = props;
-    const [direction, setDirection] = useState("push");
+    const [direction, setDirection] = React.useState("push");
 
-    const [localStack, setLocalStack] = useState(props.initialPanel !== undefined ? [props.initialPanel] : []);
+    const [localStack, setLocalStack] = React.useState<T[]>(
+        props.initialPanel !== undefined ? [props.initialPanel] : [],
+    );
     const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
 
     if (stack.length === 0) {
         return null;
     }
 
-    const handlePanelOpen = useCallback(
-        (panel: Panel<T>) => {
+    const handlePanelOpen = React.useCallback(
+        (panel: T) => {
             props.onOpen?.(panel);
             if (props.stack == null) {
                 setDirection("push");
@@ -92,8 +106,8 @@ export const PanelStack2: PanelStack2Component = <T,>(props: PanelStack2Props<T>
         },
         [props.onOpen],
     );
-    const handlePanelClose = useCallback(
-        (panel: Panel<T>) => {
+    const handlePanelClose = React.useCallback(
+        (panel: T) => {
             // only remove this panel if it is at the top and not the only one.
             if (stack[0] !== panel || stack.length <= 1) {
                 return;
@@ -109,7 +123,7 @@ export const PanelStack2: PanelStack2Component = <T,>(props: PanelStack2Props<T>
 
     const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
     const panels = panelsToRender
-        .map((panel: Panel<T>, index: number) => {
+        .map((panel: T, index: number) => {
             // With renderActivePanelOnly={false} we would keep all the CSSTransitions rendered,
             // therefore they would not trigger the "enter" transition event as they were entered.
             // To force the enter event, we want to change the key, but stack.length is not enough
