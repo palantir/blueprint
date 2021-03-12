@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-import React from "react";
-
-/* eslint-disable deprecation/deprecation */
-
 /**
  * An object describing a panel in a `PanelStack`.
- *
- * @deprecated use `Panel<T>`
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export interface IPanel<P = {}> {
+export interface Panel<P> {
     /**
-     * The component type to render for this panel. This must be a reference to
-     * the component class or SFC, _not_ a JSX element, so it can be re-created
-     * dynamically when needed.
+     * The renderer for this panel.
      */
-    component: React.ComponentType<P & IPanelProps>;
+    renderPanel: (props: PanelProps<P>) => JSX.Element | null;
 
     /**
      * HTML title to be passed to the <Text> component
@@ -39,7 +30,7 @@ export interface IPanel<P = {}> {
 
     /**
      * The props passed to the component type when it is rendered. The methods
-     * in `IPanelProps` will be injected by `PanelStack`.
+     * in `PanelActions` will be injected by `PanelStack`.
      */
     props?: P;
 
@@ -50,18 +41,7 @@ export interface IPanel<P = {}> {
     title?: React.ReactNode;
 }
 
-/**
- * Include this interface in your panel component's props type to access these
- * two functions which are injected by `PanelStack`.
- *
- * ```tsx
- * import { PanelProps } from "@blueprintjs/core";
- * export class SettingsPanel extends React.Component<PanelProps & SettingsPanelProps> {...}
- * ```
- *
- * @deprecated use `PanelActions<T>`
- */
-export interface IPanelProps {
+export interface PanelActions {
     /**
      * Call this method to programatically close this panel. If this is the only
      * panel on the stack then this method will do nothing.
@@ -74,5 +54,15 @@ export interface IPanelProps {
     /**
      * Call this method to open a new panel on the top of the stack.
      */
-    openPanel<P>(panel: IPanel<P>): void;
+    openPanel<P>(panel: Panel<P>): void;
 }
+
+/**
+ * Use this interface in your panel component's props type to access these
+ * panel action callbacks which are injected by `PanelStack`.
+ *
+ * See the code example in the docs website.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/panel-stack
+ */
+export type PanelProps<P> = P & PanelActions;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,84 +14,86 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 
 import { ChevronLeft } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
-import { IPanel } from "./panelProps";
+import { Panel, PanelProps } from "./panelTypes";
 
-/* eslint-disable deprecation/deprecation */
-
-export interface PanelViewProps {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface PanelViewProps<T extends Panel<object>> {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose: (removedPanel: IPanel<any>) => void;
+    onClose: (removedPanel: T) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen: (addedPanel: IPanel<any>) => void;
+    onOpen: (addedPanel: T) => void;
 
     /** The panel to be displayed. */
-    panel: IPanel;
+    panel: T;
 
     /** The previous panel in the stack, for rendering the "back" button. */
-    previousPanel?: IPanel;
+    previousPanel?: T;
 
     /** Whether to show the header with the "back" button. */
     showHeader: boolean;
 }
 
-export class PanelView extends AbstractPureComponent<PanelViewProps> {
-    public render() {
-        const { panel, onOpen } = this.props;
-        // two <span> tags in header ensure title is centered as long as
-        // possible, due to `flex: 1` magic.
-        return (
-            <div className={Classes.PANEL_STACK_VIEW}>
-                {this.maybeRenderHeader()}
-                <panel.component openPanel={onOpen} closePanel={this.handleClose} {...panel.props} />
-            </div>
-        );
-    }
+interface PanelViewComponent {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    <T extends Panel<object>>(props: PanelViewProps<T>): JSX.Element | null;
+    displayName: string;
+}
 
-    private maybeRenderHeader() {
-        if (!this.props.showHeader) {
-            return null;
-        }
-        return (
-            <div className={Classes.PANEL_STACK_HEADER}>
-                <span>{this.maybeRenderBack()}</span>
-                <Text className={Classes.HEADING} ellipsize={true} title={this.props.panel.htmlTitle}>
-                    {this.props.panel.title}
-                </Text>
-                <span />
-            </div>
-        );
-    }
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const PanelView: PanelViewComponent = <T extends Panel<object>>(props: PanelViewProps<T>) => {
+    const handleClose = React.useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
 
-    private maybeRenderBack() {
-        if (this.props.previousPanel === undefined) {
-            return null;
-        }
-        return (
+    const maybeBackButton =
+        props.previousPanel === undefined ? null : (
             <Button
                 className={Classes.PANEL_STACK_HEADER_BACK}
                 icon={<ChevronLeft />}
                 minimal={true}
-                onClick={this.handleClose}
+                onClick={handleClose}
                 small={true}
-                text={this.props.previousPanel.title}
-                title={this.props.previousPanel.htmlTitle}
+                text={props.previousPanel.title}
+                title={props.previousPanel.htmlTitle}
             />
         );
-    }
 
-    private handleClose = () => this.props.onClose(this.props.panel);
-}
+    return (
+        <div className={Classes.PANEL_STACK_VIEW}>
+            {props.showHeader && (
+                <div className={Classes.PANEL_STACK_HEADER}>
+                    {/* two <span> tags here ensure title is centered as long as possible, with `flex: 1` styling */}
+                    <span>{maybeBackButton}</span>
+                    <Text className={Classes.HEADING} ellipsize={true} title={props.panel.htmlTitle}>
+                        {props.panel.title}
+                    </Text>
+                    <span />
+                </div>
+            )}
+            {/*
+             * Cast is required because of error TS2345, where technically `panel.props` could be
+             * instantiated with a type unrelated to our generic constraint `T` here. We know
+             * we're sending the right values here though, and it makes the consumer API for this
+             * component type safe, so it's ok to do this...
+             */}
+            {props.panel.renderPanel({
+                closePanel: handleClose,
+                openPanel: props.onOpen,
+                ...props.panel.props,
+            } as PanelProps<T>)}
+        </div>
+    );
+};
+PanelView.displayName = `${DISPLAYNAME_PREFIX}.PanelView`;
