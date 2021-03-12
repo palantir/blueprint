@@ -128,7 +128,7 @@ export class Toaster extends AbstractPureComponent<ToasterProps, ToasterState> i
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
         const toaster = ReactDOM.render<ToasterProps>(
-            <Toaster{...props} usePortal={false} />,
+            <Toaster {...props} usePortal={false} />,
             containerElement,
         ) as Toaster;
         if (toaster == null) {
