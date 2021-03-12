@@ -18,7 +18,7 @@ import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } f
 import classNames from "classnames";
 import React from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget, Props, Utils } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget, Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
 import { DocumentationContextTypes, hasTypescriptData, DocsData, DocumentationContext } from "../common/context";
@@ -159,9 +159,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                 ? type =>
                       linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />)
                 : type => type,
-            renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
-                ? renderViewSourceLinkText
-                : () => "View source",
+            renderViewSourceLinkText: renderViewSourceLinkText ?? (() => "View source"),
             showApiDocs: this.handleApiBrowserOpen,
         };
     }

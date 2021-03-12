@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-/** @deprecated use KeyAllowlist */
-export type KeyWhitelist<T> = KeyAllowlist<T>;
-/** @deprecated use KeyDenylist */
-export type KeyBlacklist<T> = KeyDenylist<T>;
-
 // we use the empty object {} a lot in this public API
 /* eslint-disable @typescript-eslint/ban-types */
 
