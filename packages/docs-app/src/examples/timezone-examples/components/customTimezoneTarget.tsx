@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Colors, Icon, Intent } from "@blueprintjs/core";
 import { Tooltip2 } from "@blueprintjs/popover2";

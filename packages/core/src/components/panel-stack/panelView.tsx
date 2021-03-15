@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React, { useCallback } from "react";
 
 import { ChevronLeft } from "@blueprintjs/icons";
 
@@ -55,7 +55,7 @@ interface PanelViewComponent {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelView: PanelViewComponent = <T extends Panel<object>>(props: PanelViewProps<T>) => {
-    const handleClose = React.useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
+    const handleClose = useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
 
     const maybeBackButton =
         props.previousPanel === undefined ? null : (

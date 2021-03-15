@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import { Classes, Panel, PanelProps, PanelStackProps, PanelStack } from "../../src";
@@ -38,11 +38,6 @@ const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
 };
 
 describe("<PanelStack>", () => {
-    if (React.version.startsWith("15")) {
-        it("skipped tests for backwards-incompatible component", () => assert(true));
-        return;
-    }
-
     let testsContainerElement: HTMLElement;
     let panelStackWrapper: PanelStackWrapper<TestPanelType>;
 

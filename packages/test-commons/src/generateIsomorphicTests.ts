@@ -5,7 +5,7 @@
  */
 
 import { strictEqual } from "assert";
-import * as Enzyme from "enzyme";
+import Enzyme from "enzyme";
 import React from "react";
 
 function isReactClass(Component: any): Component is React.ComponentClass<any> {

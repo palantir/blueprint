@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
-export const NavIcon: React.FunctionComponent<{ route: string }> = ({ route }) => {
+export const NavIcon: React.FC<{ route: string }> = ({ route }) => {
     return (
         <svg className="docs-nav-package-icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
             {ICON_CONTENTS[route]}

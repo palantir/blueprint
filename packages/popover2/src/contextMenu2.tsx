@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import { Classes as CoreClasses, OverlayLifecycleProps, Utils as CoreUtils, mergeRefs } from "@blueprintjs/core";
 
@@ -53,10 +53,10 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     transitionDuration = 100,
     ...restProps
 }) => {
-    const [targetOffset, setTargetOffset] = React.useState<Offset>({ left: 0, top: 0 });
-    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const [targetOffset, setTargetOffset] = useState<Offset>({ left: 0, top: 0 });
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const handleContextMenu = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const handleContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         // support nested menus (inner menu target would have called preventDefault())
         if (e.defaultPrevented) {
             return;
@@ -68,16 +68,16 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
         setIsOpen(true);
     }, []);
 
-    const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
+    const cancelContextMenu = useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
 
-    const handlePopoverInteraction = React.useCallback((nextOpenState: boolean) => {
+    const handlePopoverInteraction = useCallback((nextOpenState: boolean) => {
         if (!nextOpenState) {
             setIsOpen(false);
         }
     }, []);
 
-    const targetRef = React.useRef<HTMLDivElement>();
-    const renderTarget = React.useCallback(
+    const targetRef = useRef<HTMLDivElement>();
+    const renderTarget = useCallback(
         ({ ref }: Popover2TargetProps) => (
             <div
                 className={Classes.CONTEXT_MENU2_POPOVER_TARGET}
@@ -87,7 +87,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
         ),
         [targetOffset],
     );
-    const isDarkTheme = React.useMemo(() => CoreUtils.isDarkTheme(targetRef?.current), [targetRef.current]);
+    const isDarkTheme = useMemo(() => CoreUtils.isDarkTheme(targetRef?.current), [targetRef.current]);
 
     // Generate key based on offset so a new Popover instance is created
     // when offset changes, to force recomputing position.

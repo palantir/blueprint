@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as chroma from "chroma-js";
+import chroma from "chroma-js";
 import classNames from "classnames";
 import React from "react";
 
