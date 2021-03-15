@@ -37,17 +37,17 @@ describe("<Tree>", () => {
 
     it("renders its contents", () => {
         const tree = renderTree({ contents: [{ id: 0, label: "Node" }] });
-        assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
+        assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
     it("handles undefined input well", () => {
         const tree = renderTree({ contents: undefined });
-        assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
+        assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
     it("handles empty input well", () => {
         const tree = renderTree({ contents: [] });
-        assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
+        assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
     it("hasCaret forces a caret to be/not be displayed", () => {
