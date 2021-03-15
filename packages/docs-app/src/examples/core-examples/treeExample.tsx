@@ -18,7 +18,7 @@ import React, { useCallback, useReducer } from "react";
 
 import { Classes, Icon, Intent, TreeNodeInfo, Tree } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Tooltip2 } from "@blueprintjs/popover2";
+import { Classes as Popover2Classes, ContextMenu2, Tooltip2 } from "@blueprintjs/popover2";
 
 type NodePath = number[];
 
@@ -108,16 +108,22 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         id: 0,
         hasCaret: true,
         icon: "folder-close",
-        label: "Folder 0",
+        label: (
+            <ContextMenu2 popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING} content={<div>Hello there!</div>}>
+                Folder 0
+            </ContextMenu2>
+        ),
     },
     {
         id: 1,
         icon: "folder-close",
         isExpanded: true,
         label: (
-            <Tooltip2 content="I'm a folder <3" placement="right">
-                Folder 1
-            </Tooltip2>
+            <ContextMenu2 popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING} content={<div>Hello there!</div>}>
+                <Tooltip2 content="I'm a folder <3" placement="right">
+                    Folder 1
+                </Tooltip2>
+            </ContextMenu2>
         ),
         childNodes: [
             {
@@ -140,9 +146,14 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 hasCaret: true,
                 icon: "folder-close",
                 label: (
-                    <Tooltip2 content="foo" placement="right">
-                        Folder 2
-                    </Tooltip2>
+                    <ContextMenu2
+                        popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING}
+                        content={<div>Hello there!</div>}
+                    >
+                        <Tooltip2 content="foo" placement="right">
+                            Folder 2
+                        </Tooltip2>
+                    </ContextMenu2>
                 ),
                 childNodes: [
                     { id: 5, label: "No-Icon Item" },
@@ -151,7 +162,14 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                         id: 7,
                         hasCaret: true,
                         icon: "folder-close",
-                        label: "Folder 3",
+                        label: (
+                            <ContextMenu2
+                                popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING}
+                                content={<div>Hello there!</div>}
+                            >
+                                Folder 3
+                            </ContextMenu2>
+                        ),
                         childNodes: [
                             { id: 8, icon: "document", label: "Item 0" },
                             { id: 9, icon: "tag", label: "Item 1" },

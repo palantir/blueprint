@@ -33,7 +33,9 @@ export interface ContextMenu2RenderProps {
     targetOffset: Offset;
 }
 
-export interface ContextMenu2Props extends OverlayLifecycleProps, Pick<Popover2Props, "transitionDuration"> {
+export interface ContextMenu2Props
+    extends OverlayLifecycleProps,
+        Pick<Popover2Props, "popoverClassName" | "transitionDuration"> {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
@@ -51,22 +53,28 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     content,
     children,
     transitionDuration = 100,
+    popoverClassName,
     ...restProps
 }) => {
     const [targetOffset, setTargetOffset] = useState<Offset>({ left: 0, top: 0 });
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const handleContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        // support nested menus (inner menu target would have called preventDefault())
-        if (e.defaultPrevented) {
-            return;
-        }
+    const handleContextMenu = useCallback(
+        (e: React.MouseEvent<HTMLDivElement>) => {
+            // support nested menus (inner menu target would have called preventDefault())
+            if (e.defaultPrevented) {
+                return;
+            }
 
-        e.preventDefault();
-        const newTargetOffset = { left: e.clientX, top: e.clientY };
-        setTargetOffset(newTargetOffset);
-        setIsOpen(true);
-    }, []);
+            e.preventDefault();
+
+            const { left, top } = getContainingBlockOffset(containerRef.current);
+            setTargetOffset({ left: e.clientX - left, top: e.clientY - top });
+            setIsOpen(true);
+        },
+        [containerRef.current],
+    );
 
     const cancelContextMenu = useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
 
@@ -76,18 +84,19 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
         }
     }, []);
 
-    const targetRef = useRef<HTMLDivElement>();
+    const targetRef = useRef<HTMLDivElement>(null);
     const renderTarget = useCallback(
         ({ ref }: Popover2TargetProps) => (
             <div
-                className={Classes.CONTEXT_MENU2_POPOVER_TARGET}
+                className={Classes.CONTEXT_MENU2_POPOVER2_TARGET}
                 style={targetOffset}
+                // style={{ transform: `translate(${targetOffset.left}px, ${targetOffset.top}px)` }}
                 ref={mergeRefs(ref, targetRef)}
             />
         ),
         [targetOffset],
     );
-    const isDarkTheme = useMemo(() => CoreUtils.isDarkTheme(targetRef?.current), [targetRef.current]);
+    const isDarkTheme = useMemo(() => CoreUtils.isDarkTheme(targetRef.current), [targetRef.current]);
 
     // Generate key based on offset so a new Popover instance is created
     // when offset changes, to force recomputing position.
@@ -95,7 +104,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     const renderProps: ContextMenu2RenderProps = { isOpen, targetOffset };
 
     return (
-        <div className={Classes.CONTEXT_MENU2} onContextMenu={handleContextMenu}>
+        <div className={Classes.CONTEXT_MENU2} ref={containerRef} onContextMenu={handleContextMenu}>
             <Popover2
                 {...restProps}
                 content={
@@ -110,8 +119,9 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
                 isOpen={isOpen}
                 minimal={true}
                 onInteraction={handlePopoverInteraction}
-                popoverClassName={classNames({ [CoreClasses.DARK]: isDarkTheme })}
+                popoverClassName={classNames(popoverClassName, { [CoreClasses.DARK]: isDarkTheme })}
                 placement="right-start"
+                positioningStrategy="fixed"
                 rootBoundary="viewport"
                 renderTarget={renderTarget}
                 transitionDuration={transitionDuration}
@@ -121,3 +131,13 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     );
 };
 ContextMenu2.displayName = "Blueprint.ContextMenu2";
+
+function getContainingBlockOffset(targetElement: HTMLElement | null | undefined): { left: number; top: number } {
+    if (targetElement != null) {
+        const containingBlock = targetElement.closest(`.${CoreClasses.FIXED_POSITIONING_CONTAINING_BLOCK}`);
+        if (containingBlock != null) {
+            return containingBlock.getBoundingClientRect();
+        }
+    }
+    return { left: 0, top: 0 };
+}
