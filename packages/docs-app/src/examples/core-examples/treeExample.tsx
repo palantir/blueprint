@@ -14,65 +14,93 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { useCallback, useReducer } from "react";
 
 import { Classes, Icon, Intent, TreeNodeInfo, Tree } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Tooltip2 } from "@blueprintjs/popover2";
 
-export interface TreeExampleState {
-    nodes: TreeNodeInfo[];
-}
+type NodePath = number[];
 
-// use Component so it re-renders everytime: `nodes` are not a primitive type
-// and therefore aren't included in shallow prop comparison
-export class TreeExample extends React.Component<ExampleProps, TreeExampleState> {
-    public state: TreeExampleState = { nodes: INITIAL_STATE };
+type TreeAction =
+    | { type: "SET_IS_EXPANDED"; payload: { path: NodePath; isExpanded: boolean } }
+    | { type: "DESELECT_ALL" }
+    | { type: "SET_IS_SELECTED"; payload: { path: NodePath; isSelected: boolean } };
 
-    public render() {
-        return (
-            <Example options={false} {...this.props}>
-                <Tree
-                    contents={this.state.nodes}
-                    onNodeClick={this.handleNodeClick}
-                    onNodeCollapse={this.handleNodeCollapse}
-                    onNodeExpand={this.handleNodeExpand}
-                    className={Classes.ELEVATION_0}
-                />
-            </Example>
-        );
+function forEachNode(nodes: TreeNodeInfo[], callback: (node: TreeNodeInfo) => void) {
+    if (nodes == null) {
+        return;
     }
 
-    private handleNodeClick = (nodeData: TreeNodeInfo, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
-        const originallySelected = nodeData.isSelected;
+    for (const node of nodes) {
+        callback(node);
+        forEachNode(node.childNodes, callback);
+    }
+}
+
+function forNodeAtPath(nodes: TreeNodeInfo[], path: NodePath, callback: (node: TreeNodeInfo) => void) {
+    callback(Tree.nodeFromPath(path, nodes));
+}
+
+function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
+    switch (action.type) {
+        case "DESELECT_ALL":
+            const newState1 = [...state];
+            forEachNode(newState1, node => (node.isSelected = false));
+            return newState1;
+        case "SET_IS_EXPANDED":
+            const newState2 = [...state];
+            forNodeAtPath(newState2, action.payload.path, node => (node.isExpanded = action.payload.isExpanded));
+            return newState2;
+        case "SET_IS_SELECTED":
+            const newState3 = [...state];
+            forNodeAtPath(newState3, action.payload.path, node => (node.isSelected = action.payload.isSelected));
+            return newState3;
+        default:
+            return state;
+    }
+}
+
+export const TreeExample: React.FC<ExampleProps> = props => {
+    const [nodes, dispatch] = useReducer(treeExampleReducer, INITIAL_STATE);
+
+    const handleNodeClick = useCallback((node: TreeNodeInfo, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
+        const originallySelected = node.isSelected;
         if (!e.shiftKey) {
-            this.forEachNode(this.state.nodes, n => (n.isSelected = false));
+            dispatch({ type: "DESELECT_ALL" });
         }
-        nodeData.isSelected = originallySelected == null ? true : !originallySelected;
-        this.setState(this.state);
-    };
+        dispatch({
+            payload: { path: nodePath, isSelected: originallySelected == null ? true : !originallySelected },
+            type: "SET_IS_SELECTED",
+        });
+    }, []);
 
-    private handleNodeCollapse = (nodeData: TreeNodeInfo) => {
-        nodeData.isExpanded = false;
-        this.setState(this.state);
-    };
+    const handleNodeCollapse = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+        dispatch({
+            payload: { path: nodePath, isExpanded: false },
+            type: "SET_IS_EXPANDED",
+        });
+    }, []);
 
-    private handleNodeExpand = (nodeData: TreeNodeInfo) => {
-        nodeData.isExpanded = true;
-        this.setState(this.state);
-    };
+    const handleNodeExpand = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+        dispatch({
+            payload: { path: nodePath, isExpanded: true },
+            type: "SET_IS_EXPANDED",
+        });
+    }, []);
 
-    private forEachNode(nodes: TreeNodeInfo[], callback: (node: TreeNodeInfo) => void) {
-        if (nodes == null) {
-            return;
-        }
-
-        for (const node of nodes) {
-            callback(node);
-            this.forEachNode(node.childNodes, callback);
-        }
-    }
-}
+    return (
+        <Example options={false} {...props}>
+            <Tree
+                contents={nodes}
+                onNodeClick={handleNodeClick}
+                onNodeCollapse={handleNodeCollapse}
+                onNodeExpand={handleNodeExpand}
+                className={Classes.ELEVATION_0}
+            />
+        </Example>
+    );
+};
 
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
 const INITIAL_STATE: TreeNodeInfo[] = [
