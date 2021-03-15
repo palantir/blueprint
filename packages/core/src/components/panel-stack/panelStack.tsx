@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React, { useCallback, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
@@ -85,18 +85,16 @@ interface PanelStackComponent {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: PanelStackProps<T>) => {
     const { renderActivePanelOnly = true, showPanelHeader = true } = props;
-    const [direction, setDirection] = React.useState("push");
+    const [direction, setDirection] = useState("push");
 
-    const [localStack, setLocalStack] = React.useState<T[]>(
-        props.initialPanel !== undefined ? [props.initialPanel] : [],
-    );
+    const [localStack, setLocalStack] = useState<T[]>(props.initialPanel !== undefined ? [props.initialPanel] : []);
     const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
 
     if (stack.length === 0) {
         return null;
     }
 
-    const handlePanelOpen = React.useCallback(
+    const handlePanelOpen = useCallback(
         (panel: T) => {
             props.onOpen?.(panel);
             if (props.stack == null) {

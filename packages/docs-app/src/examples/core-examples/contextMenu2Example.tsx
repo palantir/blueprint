@@ -15,14 +15,14 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React, { useCallback } from "react";
 
 import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { ContextMenu2, ContextMenu2RenderProps } from "@blueprintjs/popover2";
 
 export const ContextMenu2Example: React.FC<ExampleProps> = props => {
-    const renderContent = React.useCallback(
+    const renderContent = useCallback(
         ({ targetOffset }: ContextMenu2RenderProps) => (
             <Menu>
                 <MenuItem icon="select" text="Select all" />
@@ -54,7 +54,7 @@ export const ContextMenu2Example: React.FC<ExampleProps> = props => {
 };
 
 const GraphNode: React.FC = () => {
-    const children = React.useCallback(
+    const children = useCallback(
         ({ isOpen }) => <div className={classNames("docs-context-menu-node", { "docs-context-menu-open": isOpen })} />,
         [],
     );

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React, { createContext } from "react";
 
 import { HotkeysDialog, HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog";
 import { HotkeyConfig } from "../../hooks";
@@ -34,8 +34,7 @@ type HotkeysAction =
 const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
 
-// we can remove this guard once Blueprint depends on React 16
-export const HotkeysContext = React.createContext?.<[HotkeysContextState, React.Dispatch<HotkeysAction>]>([
+export const HotkeysContext = createContext<[HotkeysContextState, React.Dispatch<HotkeysAction>]>([
     initialHotkeysState,
     noOpDispatch,
 ]);

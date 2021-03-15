@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import * as React from "react";
+import React from "react";
 import sinon from "sinon";
 
 import { ItemListRendererProps, renderFilteredItems } from "../src";

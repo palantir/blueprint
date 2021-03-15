@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { HotkeysTarget, HotkeyProps } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";

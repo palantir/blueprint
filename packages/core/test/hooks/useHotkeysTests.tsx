@@ -16,7 +16,7 @@
 
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
+import React, { useMemo } from "react";
 import { spy } from "sinon";
 
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
@@ -37,7 +37,7 @@ interface TestComponentContainerProps {
 }
 
 const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputReadOnly, onKeyA, onKeyB }) => {
-    const hotkeys = React.useMemo(() => {
+    const hotkeys = useMemo(() => {
         const keys = [
             {
                 combo: "A",
