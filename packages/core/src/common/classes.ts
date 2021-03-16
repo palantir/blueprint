@@ -87,6 +87,10 @@ export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 export const RTL = `${NS}-rtl`;
 
+// layout utilities
+/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block */
+export const FIXED_POSITIONING_CONTAINING_BLOCK = `${NS}-fixed-positioning-containing-block`;
+
 // components
 export const ALERT = `${NS}-alert`;
 export const ALERT_BODY = `${ALERT}-body`;
