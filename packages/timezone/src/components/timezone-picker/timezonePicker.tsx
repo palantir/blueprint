@@ -168,7 +168,7 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
-                {children != null ? children : this.renderButton()}
+                {children ?? this.renderButton()}
             </TypedSelect>
         );
     }
@@ -226,7 +226,11 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
         );
     };
 
-    private handleItemSelect = (timezone: TimezoneItem) => this.props.onChange?.(timezone.timezone);
+    private handleItemSelect = (timezone: TimezoneItem) => {
+        this.props.onChange?.(timezone.timezone);
+    };
 
-    private handleQueryChange = (query: string) => this.setState({ query });
+    private handleQueryChange = (query: string) => {
+        this.setState({ query });
+    };
 }
