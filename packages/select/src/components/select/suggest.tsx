@@ -23,15 +23,13 @@ import {
     getRef,
     InputGroupProps,
     InputGroup,
-    PopoverProps,
     Ref,
     RefObject,
     Keys,
-    Popover,
     PopoverInteractionKind,
-    Position,
     refHandler,
 } from "@blueprintjs/core";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps } from "../../common";
 import { QueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -89,7 +87,7 @@ export interface SuggestProps<T> extends ListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<PopoverProps> & object;
+    popoverProps?: Partial<Popover2Props> & object;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -157,8 +155,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
-            /* eslint-disable-next-line deprecation/deprecation */
-            const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
+            const timeout = this.props.popoverProps?.transitionDuration ?? Popover2.defaultProps.transitionDuration;
             setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
@@ -188,12 +185,11 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         }
 
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
-            <Popover
+            <Popover2
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
-                position={Position.BOTTOM_LEFT}
+                placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 interactionKind={PopoverInteractionKind.CLICK}
@@ -217,8 +213,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
-            </Popover>
+            </Popover2>
         );
     };
 

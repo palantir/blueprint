@@ -20,15 +20,12 @@ import {
     AbstractPureComponent,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    PopoverProps,
     TagInputProps,
     Keys,
-    Popover,
-    PopoverInteractionKind,
-    Position,
     TagInput,
     TagInputAddMethod,
 } from "@blueprintjs/core";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps } from "../../common";
 import { QueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -75,7 +72,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<PopoverProps> & object;
+    popoverProps?: Partial<Popover2Props> & object;
 
     /** Controlled selected values. */
     selectedItems?: T[];
@@ -159,16 +156,15 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         };
 
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
-            <Popover
+            <Popover2
                 autoFocus={false}
                 canEscapeKeyClose={true}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
-                position={Position.BOTTOM_LEFT}
+                placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
-                interactionKind={PopoverInteractionKind.CLICK}
+                interactionKind="click"
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpened={this.handlePopoverOpened}
@@ -194,8 +190,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {listProps.itemList}
                 </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
-            </Popover>
+            </Popover2>
         );
     };
 
