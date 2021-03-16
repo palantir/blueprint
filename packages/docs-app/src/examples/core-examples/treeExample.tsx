@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { cloneDeep } from "lodash-es";
 import React, { useCallback, useReducer } from "react";
 
 import { Classes, Icon, Intent, TreeNodeInfo, Tree } from "@blueprintjs/core";
@@ -27,8 +28,8 @@ type TreeAction =
     | { type: "DESELECT_ALL" }
     | { type: "SET_IS_SELECTED"; payload: { path: NodePath; isSelected: boolean } };
 
-function forEachNode(nodes: TreeNodeInfo[], callback: (node: TreeNodeInfo) => void) {
-    if (nodes == null) {
+function forEachNode(nodes: TreeNodeInfo[] | undefined, callback: (node: TreeNodeInfo) => void) {
+    if (nodes === undefined) {
         return;
     }
 
@@ -45,15 +46,15 @@ function forNodeAtPath(nodes: TreeNodeInfo[], path: NodePath, callback: (node: T
 function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
     switch (action.type) {
         case "DESELECT_ALL":
-            const newState1 = [...state];
+            const newState1 = cloneDeep(state);
             forEachNode(newState1, node => (node.isSelected = false));
             return newState1;
         case "SET_IS_EXPANDED":
-            const newState2 = [...state];
+            const newState2 = cloneDeep(state);
             forNodeAtPath(newState2, action.payload.path, node => (node.isExpanded = action.payload.isExpanded));
             return newState2;
         case "SET_IS_SELECTED":
-            const newState3 = [...state];
+            const newState3 = cloneDeep(state);
             forNodeAtPath(newState3, action.payload.path, node => (node.isSelected = action.payload.isSelected));
             return newState3;
         default:

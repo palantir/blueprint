@@ -90,7 +90,6 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             <div
                 className={Classes.CONTEXT_MENU2_POPOVER2_TARGET}
                 style={targetOffset}
-                // style={{ transform: `translate(${targetOffset.left}px, ${targetOffset.top}px)` }}
                 ref={mergeRefs(ref, targetRef)}
             />
         ),
