@@ -21,18 +21,8 @@ import ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
-import {
-    Boundary,
-    Classes as CoreClasses,
-    HTMLDivProps,
-    HTMLInputProps,
-    InputGroupProps,
-    InputGroup,
-    PopoverProps,
-    Keys,
-    Popover,
-    Position,
-} from "@blueprintjs/core";
+import { Boundary, HTMLDivProps, HTMLInputProps, InputGroupProps, InputGroup, Keys } from "@blueprintjs/core";
+import { Classes as Popover2Classes, Popover2, Popover2Props } from "@blueprintjs/popover2";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker, TimePrecision } from "../src";
@@ -121,7 +111,7 @@ describe("<DateRangeInput>", () => {
         );
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
+        const popoverTarget = wrapper.find(`.${Popover2Classes.POPOVER2_TARGET}`).hostNodes();
         expect(popoverTarget.hasClass(CLASS_1)).to.be.true;
         expect(popoverTarget.hasClass(CLASS_2)).to.be.true;
     });
@@ -155,8 +145,7 @@ describe("<DateRangeInput>", () => {
             );
 
             root.setState({ isOpen: true });
-            /* eslint-disable-next-line deprecation/deprecation */
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+            expect(root.find(Popover2).prop("isOpen")).to.be.true;
 
             keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
             expect(isStartInputFocused(root), "start input focus to be false").to.be.false;
@@ -180,8 +169,7 @@ describe("<DateRangeInput>", () => {
 
             keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP);
             root.update();
-            /* eslint-disable-next-line deprecation/deprecation */
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+            expect(root.find(Popover2).prop("isOpen")).to.be.true;
         });
 
         it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
@@ -195,8 +183,7 @@ describe("<DateRangeInput>", () => {
             root.update();
             keyDownOnInput(DateClasses.TIMEPICKER_HOUR, Keys.ARROW_UP, 1);
             root.update();
-            /* eslint-disable-next-line deprecation/deprecation */
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+            expect(root.find(Popover2).prop("isOpen")).to.be.true;
         });
 
         afterEach(() => {
@@ -222,8 +209,7 @@ describe("<DateRangeInput>", () => {
             const startInput = getStartInput(root);
 
             startInput.simulate("click");
-            /* eslint-disable-next-line deprecation/deprecation */
-            expect(root.find(Popover).prop("isOpen")).to.be.false;
+            expect(root.find(Popover2).prop("isOpen")).to.be.false;
             expect(startInput.prop("disabled")).to.be.true;
         });
 
@@ -238,8 +224,7 @@ describe("<DateRangeInput>", () => {
             const endInput = getEndInput(root);
 
             endInput.simulate("click");
-            /* eslint-disable-next-line deprecation/deprecation */
-            expect(root.find(Popover).prop("isOpen")).to.be.false;
+            expect(root.find(Popover2).prop("isOpen")).to.be.false;
             expect(endInput.prop("disabled")).to.be.true;
         });
 
@@ -364,8 +349,7 @@ describe("<DateRangeInput>", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} disabled={true} />);
         const startInput = getStartInput(root);
         startInput.simulate("click");
-        /* eslint-disable-next-line deprecation/deprecation */
-        expect(root.find(Popover).prop("isOpen")).to.be.false;
+        expect(root.find(Popover2).prop("isOpen")).to.be.false;
         expect(startInput.prop("disabled")).to.be.true;
         expect(getEndInput(root).prop("disabled")).to.be.true;
     });
@@ -523,16 +507,14 @@ describe("<DateRangeInput>", () => {
 
     describe("popoverProps", () => {
         it("accepts custom popoverProps", () => {
-            const popoverProps: Partial<PopoverProps> = {
+            const popoverProps: Partial<Popover2Props> = {
                 backdropProps: {},
-                position: Position.TOP_LEFT,
+                placement: "top-start",
                 usePortal: false,
             };
-            /* eslint-disable-next-line deprecation/deprecation */
-            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover2);
             expect(popover.prop("backdropProps")).to.equal(popoverProps.backdropProps);
-            /* eslint-disable-next-line deprecation/deprecation */
-            expect(popover.prop("position")).to.equal(popoverProps.position);
+            expect(popover.prop("placement")).to.equal(popoverProps.placement);
         });
 
         it("ignores autoFocus, enforceFocus, and content in custom popoverProps", () => {
@@ -543,8 +525,7 @@ describe("<DateRangeInput>", () => {
                 enforceFocus: true,
                 usePortal: false,
             };
-            /* eslint-disable-next-line deprecation/deprecation */
-            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover2);
             // this test assumes the following values will be the defaults internally
             expect(popover.prop("autoFocus")).to.be.false;
             expect(popover.prop("enforceFocus")).to.be.false;

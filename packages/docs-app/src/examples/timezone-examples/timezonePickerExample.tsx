@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import { H5, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { TimezoneDisplayFormat, TimezonePicker } from "@blueprintjs/timezone";
 
@@ -78,7 +78,7 @@ export class TimezonePickerExample extends React.PureComponent<ExampleProps, Tim
                     value={timezone}
                     onChange={this.handleTimezoneChange}
                     valueDisplayFormat={targetDisplayFormat}
-                    popoverProps={{ position: Position.BOTTOM }}
+                    popoverProps={{ placement: "bottom" }}
                     showLocalTimezone={showLocalTimezone}
                     disabled={disabled}
                 >

@@ -164,6 +164,11 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                content={
+                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {listProps.itemList}
+                    </div>
+                }
                 interactionKind="click"
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
@@ -186,9 +191,6 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                         onRemove={this.handleTagRemove}
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
-                </div>
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    {listProps.itemList}
                 </div>
             </Popover2>
         );

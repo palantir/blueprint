@@ -192,6 +192,11 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                 placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                content={
+                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {listProps.itemList}
+                    </div>
+                }
                 interactionKind={PopoverInteractionKind.CLICK}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
@@ -210,9 +215,6 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                     placeholder={inputPlaceholder}
                     value={inputValue}
                 />
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    {listProps.itemList}
-                </div>
             </Popover2>
         );
     };

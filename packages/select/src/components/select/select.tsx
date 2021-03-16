@@ -144,6 +144,12 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                content={
+                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {filterable ? input : undefined}
+                        {listProps.itemList}
+                    </div>
+                }
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
@@ -155,10 +161,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
                     {this.props.children}
-                </div>
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    {filterable ? input : undefined}
-                    {listProps.itemList}
                 </div>
             </Popover2>
         );
