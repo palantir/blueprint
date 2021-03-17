@@ -299,6 +299,8 @@ export class Popover2<T> extends AbstractPureComponent<Popover2Props<T>, Popover
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
               };
+        // Ensure target is focusable if relevant prop enabled
+        const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const targetProps = {
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
@@ -309,9 +311,6 @@ export class Popover2<T> extends AbstractPureComponent<Popover2Props<T>, Popover
                 [CoreClasses.ACTIVE]: !isControlled && isOpen && !isHoverInteractionKind,
             }),
             ref,
-            // Ensure target is focusable if relevant prop enabled. When renderTarget is undefined, we apply
-            // tabIndex to the wrapper because that's the element which has event handlers.
-            tabIndex: openOnTargetFocus && isHoverInteractionKind ? 0 : undefined,
             ...((targetEventHandlers as unknown) as T),
         };
 
@@ -323,18 +322,13 @@ export class Popover2<T> extends AbstractPureComponent<Popover2Props<T>, Popover
                 // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
                 // when *this* popover is open
                 isOpen,
+                tabIndex: targetTabIndex,
             });
         } else {
             const childTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
 
             if (childTarget === undefined) {
                 return null;
-            }
-
-            // if there is a tabIndex set on the child target, we are going to promote it to the wrapper element
-            const childTargetTabIndex = childTarget.props.tabIndex;
-            if (childTargetTabIndex != null) {
-                targetProps.tabIndex = childTargetTabIndex;
             }
 
             const targetModifierClasses = {
@@ -348,8 +342,7 @@ export class Popover2<T> extends AbstractPureComponent<Popover2Props<T>, Popover
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip2 child when popover is open
                 disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip2) ? true : childTarget.props.disabled,
-                // avoid having two nested elements which are focussable via keyboard navigation
-                tabIndex: targetProps.tabIndex !== undefined ? -1 : undefined,
+                tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             });
             const wrappedTarget = React.createElement(targetTagName!, targetProps, clonedTarget);
             target = wrappedTarget;

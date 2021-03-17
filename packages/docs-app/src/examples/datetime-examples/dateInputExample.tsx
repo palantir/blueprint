@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { H5, Position, Switch } from "@blueprintjs/core";
+import { H5, Switch } from "@blueprintjs/core";
 import { DateInput, DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
 import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
@@ -76,7 +76,7 @@ export class DateInputExample extends React.PureComponent<ExampleProps, DateInpu
                     {...format}
                     defaultValue={new Date()}
                     onChange={this.handleDateChange}
-                    popoverProps={{ position: Position.BOTTOM }}
+                    popoverProps={{ placement: "bottom" }}
                     timePickerProps={
                         timePrecision === undefined
                             ? undefined

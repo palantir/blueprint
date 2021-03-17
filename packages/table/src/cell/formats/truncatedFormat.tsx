@@ -17,8 +17,9 @@
 import classNames from "classnames";
 import React from "react";
 
-import { DISPLAYNAME_PREFIX, Props, Popover, Position } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";
+import { Popover2 } from "@blueprintjs/popover2";
 
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
@@ -214,7 +215,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
     private renderPopover() {
         const { children, preformatted } = this.props;
 
-        // `<Popover>` will always check the content's position on update
+        // `<Popover2>` will always check the content's position on update
         // regardless if it is open or not. This negatively affects perf due to
         // layout thrashing. So instead we manage the popover state ourselves
         // and mimic its popover target
@@ -225,22 +226,19 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
-                /* eslint-disable-next-line deprecation/deprecation */
-                <Popover
+                <Popover2
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
-                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
                     content={popoverContent}
-                    position={Position.BOTTOM}
+                    placement="bottom"
                     isOpen={true}
                     onClose={this.handlePopoverClose}
                 >
                     <More />
-                    {/* eslint-disable-next-line deprecation/deprecation */}
-                </Popover>
+                </Popover2>
             );
         } else {
-            // NOTE: This structure matches what `<Popover>` does internally. If
-            // `<Popover>` changes, this must be updated.
+            // NOTE: This structure matches what `<Popover2>` does internally. If
+            // `<Popover2>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
                     <More />

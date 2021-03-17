@@ -24,15 +24,13 @@ import {
     getRef,
     InputGroupProps,
     InputGroup,
-    PopoverProps,
     Ref,
     RefObject,
     Keys,
-    Popover,
-    Position,
     refHandler,
 } from "@blueprintjs/core";
 import { Cross, Search } from "@blueprintjs/icons";
+import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps } from "../../common";
 import { QueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -64,7 +62,7 @@ export interface SelectProps<T> extends ListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<PopoverProps> & object;
+    popoverProps?: Partial<Popover2Props> & object;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -138,15 +136,20 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
-            <Popover
+            <Popover2
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 disabled={disabled}
-                position={Position.BOTTOM_LEFT}
+                placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                content={
+                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {filterable ? input : undefined}
+                        {listProps.itemList}
+                    </div>
+                }
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
@@ -159,12 +162,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 >
                     {this.props.children}
                 </div>
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    {filterable ? input : undefined}
-                    {listProps.itemList}
-                </div>
-                {/* eslint-disable-next-line deprecation/deprecation */}
-            </Popover>
+            </Popover2>
         );
     };
 
