@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { useCallback, useContext, useEffect, useMemo } from "react";
+import * as React from "react";
 
 import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
@@ -42,7 +42,7 @@ export interface UseHotkeysReturnValue {
  */
 export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
     const { showDialogKeyCombo = "?" } = options;
-    const localKeys = useMemo(
+    const localKeys = React.useMemo(
         () =>
             keys
                 .filter(k => !k.global)
@@ -52,7 +52,7 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
                 })),
         [keys],
     );
-    const globalKeys = useMemo(
+    const globalKeys = React.useMemo(
         () =>
             keys
                 .filter(k => k.global)
@@ -64,8 +64,8 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     );
 
     // register keys with global context
-    const [, dispatch] = useContext(HotkeysContext);
-    useEffect(() => {
+    const [, dispatch] = React.useContext(HotkeysContext);
+    React.useEffect(() => {
         const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
         dispatch({ type: "ADD_HOTKEYS", payload });
         return () => dispatch({ type: "REMOVE_HOTKEYS", payload });
@@ -94,7 +94,7 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
         }
     };
 
-    const handleGlobalKeyDown = useCallback(
+    const handleGlobalKeyDown = React.useCallback(
         (e: KeyboardEvent) => {
             // special case for global keydown: if '?' is pressed, open the hotkeys dialog
             const combo = getKeyCombo(e);
@@ -107,23 +107,23 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
         },
         [globalKeys],
     );
-    const handleGlobalKeyUp = useCallback(
+    const handleGlobalKeyUp = React.useCallback(
         (e: KeyboardEvent) => invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyUp", e),
         [globalKeys],
     );
 
-    const handleLocalKeyDown = useCallback(
+    const handleLocalKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent),
         [localKeys],
     );
-    const handleLocalKeyUp = useCallback(
+    const handleLocalKeyUp = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent),
         [localKeys],
     );
 
-    useEffect(() => {
+    React.useEffect(() => {
         document.addEventListener("keydown", handleGlobalKeyDown);
         document.addEventListener("keyup", handleGlobalKeyUp);
         return () => {
