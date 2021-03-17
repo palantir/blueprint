@@ -20,9 +20,9 @@ import moment from "moment-timezone";
 import React from "react";
 import sinon from "sinon";
 
-import { Button, ButtonProps, InputGroupProps, InputGroup, MenuItem } from "@blueprintjs/core";
+import { Classes, Button, ButtonProps, InputGroupProps, InputGroup } from "@blueprintjs/core";
 import { Popover2, Popover2Props } from "@blueprintjs/popover2";
-import { QueryList, Select } from "@blueprintjs/select";
+import { Select } from "@blueprintjs/select";
 
 import { TimezonePickerProps, TimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
 import {
@@ -162,16 +162,21 @@ describe("<TimezonePicker>", () => {
 
     it("invokes the on change prop when a timezone is selected", () => {
         const timezonePicker = mount(<TimezonePicker {...DEFAULT_PROPS} />);
-        clickSecondMenuItem(timezonePicker);
+        timezonePicker.find(`.${Classes.MENU_ITEM}`).at(1).simulate("click");
         assert.isTrue(onChange.calledOnce);
     });
 
     it("if value is non-empty, the selected timezone will stay in sync with that value", () => {
         const value = "Europe/Bratislava";
         const timezonePicker = mount(
-            <TimezonePicker value={value} onChange={onChange} valueDisplayFormat={TimezoneDisplayFormat.NAME} />,
+            <TimezonePicker
+                {...DEFAULT_PROPS}
+                value={value}
+                onChange={onChange}
+                valueDisplayFormat={TimezoneDisplayFormat.NAME}
+            />,
         );
-        clickSecondMenuItem(timezonePicker);
+        timezonePicker.find(`.${Classes.MENU_ITEM}`).at(1).simulate("click");
         assert.isTrue(onChange.calledOnce);
         assert.strictEqual(timezonePicker.find(Button).prop("text"), value);
     });
@@ -236,10 +241,5 @@ describe("<TimezonePicker>", () => {
 
     function findInputGroup(timezonePicker: TimezonePickerWrapper) {
         return timezonePicker.find(InputGroup);
-    }
-
-    // first menu item may be the current timezone
-    function clickSecondMenuItem(timezonePicker: TimezonePickerWrapper): void {
-        timezonePicker.find(MenuItem).at(1).simulate("click");
     }
 });
