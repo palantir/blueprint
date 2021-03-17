@@ -19,7 +19,7 @@ import { shallow } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
+import { H4, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ColumnHeaderCell, ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
@@ -84,7 +84,7 @@ describe("<ColumnHeaderCell>", () => {
 
         it("renders custom menu items", () => {
             const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
+            const menu = renderMenu(menuClickSpy);
             const renderMenuFn = () => menu;
 
             const columnHeaderCellRenderer = (columnIndex: number) => {
@@ -96,7 +96,7 @@ describe("<ColumnHeaderCell>", () => {
 
         it("renders custom menu items with a menuRenderer callback", () => {
             const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
+            const menu = renderMenu(menuClickSpy);
             const menuRenderer = sinon.stub().returns(menu);
 
             const columnHeaderCellRenderer = (columnIndex: number) => (
@@ -117,7 +117,7 @@ describe("<ColumnHeaderCell>", () => {
             );
         });
 
-        function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
+        function renderMenu(menuClickSpy: sinon.SinonSpy) {
             return (
                 <Menu>
                     <MenuItem className="export-item" icon="export" onClick={menuClickSpy} text="Teleport" />
@@ -129,7 +129,8 @@ describe("<ColumnHeaderCell>", () => {
 
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`).mouse("click");
+            // menu element is the popover target
+            table.find(`.${Classes.TABLE_TH_MENU}`).mouse("click");
             ElementHarness.document().find(".export-item").mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }
