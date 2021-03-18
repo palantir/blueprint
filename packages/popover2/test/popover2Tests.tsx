@@ -352,7 +352,7 @@ describe("<Popover2>", () => {
 
         function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<IPopover2Props>) {
             wrapper = renderPopover({ ...popoverProps, usePortal: true });
-            const targetElement = wrapper.findClass(Classes.POPOVER2_TARGET).getDOMNode();
+            const targetElement = wrapper.find("[data-testid='target-button']").getDOMNode();
 
             if (shouldTabIndexExist) {
                 assert.equal(targetElement.getAttribute("tabindex"), "0");
@@ -782,7 +782,7 @@ describe("<Popover2>", () => {
                 hoverOpenDelay={0}
                 content={<div>Text {content}</div>}
             >
-                <button>Target</button>
+                <button data-testid="target-button">Target</button>
             </Popover2>,
             { attachTo: testsContainerElement },
         ) as IPopover2Wrapper;
