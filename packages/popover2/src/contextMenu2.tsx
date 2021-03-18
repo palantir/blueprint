@@ -125,10 +125,8 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             <Popover2
                 {...restProps}
                 content={
-                    menu === undefined ? undefined : (
-                        // this prevents right-clicking inside our context menu
-                        <div onContextMenu={cancelContextMenu}>{menu}</div>
-                    )
+                    // this prevents right-clicking inside our context menu
+                    <div onContextMenu={cancelContextMenu}>{menu}</div>
                 }
                 enforceFocus={false}
                 // Generate key based on offset so a new Popover instance is created
