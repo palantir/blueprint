@@ -3550,5 +3550,11 @@
         "iconName": "notifications-snooze",
         "tags": "notification, information, message, snooze, suppress",
         "group": "interface"
+    },
+    {
+        "displayName": "Shared Filter",
+        "iconName": "shared-filter",
+        "tags": "notification, filter, shared",
+        "group": "interface"
     }
 ]
