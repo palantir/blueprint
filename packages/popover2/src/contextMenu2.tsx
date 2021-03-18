@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 
-import { Classes as CoreClasses, OverlayLifecycleProps, Utils as CoreUtils, mergeRefs } from "@blueprintjs/core";
+import { Classes as CoreClasses, OverlayLifecycleProps, Props, Utils as CoreUtils, mergeRefs } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import { Popover2Props, Popover2 } from "./popover2";
@@ -29,18 +29,26 @@ type Offset = {
 };
 
 export interface ContextMenu2RenderProps {
+    /** Whether the context menu is currently open */
     isOpen: boolean;
+
+    /** The computed target offset (x, y) coordinates for the context menu click event */
     targetOffset: Offset;
+
+    /** The context menu click event. If isOpen is false, this will be undefined. */
+    mouseEvent: React.MouseEvent<HTMLDivElement> | undefined;
 }
 
 export interface ContextMenu2Props
     extends OverlayLifecycleProps,
-        Pick<Popover2Props, "popoverClassName" | "transitionDuration"> {
+        Pick<Popover2Props, "popoverClassName" | "transitionDuration">,
+        Props {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
+     * If undefined, or the function returns undefined, the context menu will be disabled.
      */
-    content: JSX.Element | ((props: ContextMenu2RenderProps) => JSX.Element);
+    content: JSX.Element | ((props: ContextMenu2RenderProps) => JSX.Element | undefined) | undefined;
 
     /**
      * The context menu target. This may optionally be a render function so you can use
@@ -50,13 +58,15 @@ export interface ContextMenu2Props
 }
 
 export const ContextMenu2: React.FC<ContextMenu2Props> = ({
-    content,
+    className,
     children,
+    content,
     transitionDuration = 100,
     popoverClassName,
     ...restProps
 }) => {
     const [targetOffset, setTargetOffset] = useState<Offset>({ left: 0, top: 0 });
+    const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLDivElement>>();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -72,6 +82,8 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             const { left, top } = getContainingBlockOffset(containerRef.current);
             setTargetOffset({ left: e.clientX - left, top: e.clientY - top });
             setIsOpen(true);
+            e.persist();
+            setMouseEvent(e);
         },
         [containerRef.current],
     );
@@ -81,6 +93,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     const handlePopoverInteraction = useCallback((nextOpenState: boolean) => {
         if (!nextOpenState) {
             setIsOpen(false);
+            setMouseEvent(undefined);
         }
     }, []);
 
@@ -100,17 +113,21 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     // Generate key based on offset so a new Popover instance is created
     // when offset changes, to force recomputing position.
     const key = `${targetOffset.left}x${targetOffset.top}`;
-    const renderProps: ContextMenu2RenderProps = { isOpen, targetOffset };
+    const renderProps: ContextMenu2RenderProps = { isOpen, mouseEvent, targetOffset };
+    const popoverContent = CoreUtils.isFunction(content) ? content(renderProps) : content;
 
     return (
-        <div className={Classes.CONTEXT_MENU2} ref={containerRef} onContextMenu={handleContextMenu}>
+        <div
+            className={classNames(className, Classes.CONTEXT_MENU2)}
+            ref={containerRef}
+            onContextMenu={handleContextMenu}
+        >
             <Popover2
+                disabled={popoverContent === undefined}
                 {...restProps}
                 content={
-                    // prevent right-clicking inside our context menu
-                    <div onContextMenu={cancelContextMenu}>
-                        {CoreUtils.isFunction(content) ? content(renderProps) : content}
-                    </div>
+                    // this prevents right-clicking inside our context menu
+                    <div onContextMenu={cancelContextMenu}>{popoverContent}</div>
                 }
                 enforceFocus={false}
                 key={key}

@@ -18,31 +18,29 @@
 
 import React from "react";
 
-import { ContextMenuTarget, Props } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
+import { ContextMenu2, ContextMenu2RenderProps } from "@blueprintjs/popover2";
 
 export interface ContextMenuTargetWrapperProps extends Props {
-    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element;
+    renderContextMenu: (props: ContextMenu2RenderProps) => JSX.Element;
     style: React.CSSProperties;
 }
 
 /**
- * Since the ContextMenuTarget uses the `onContextMenu` prop instead
+ * Since ContextMenu2 uses the `onContextMenu` prop instead of
  * `element.addEventListener`, the prop can be lost. This wrapper helps us
  * maintain context menu fuctionality when doing fancy React.cloneElement
  * chains.
  */
-@ContextMenuTarget
 export class ContextMenuTargetWrapper extends React.PureComponent<ContextMenuTargetWrapperProps> {
     public render() {
-        const { className, children, style } = this.props;
+        const { className, children, renderContextMenu, style } = this.props;
         return (
-            <div className={className} style={style}>
-                {children}
-            </div>
+            <ContextMenu2 content={renderContextMenu}>
+                <div className={className} style={style}>
+                    {children}
+                </div>
+            </ContextMenu2>
         );
-    }
-
-    public renderContextMenu(e: React.MouseEvent<HTMLElement>) {
-        return this.props.renderContextMenu(e);
     }
 }

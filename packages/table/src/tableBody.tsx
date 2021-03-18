@@ -18,10 +18,10 @@ import classNames from "classnames";
 import React from "react";
 
 import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
+import { ContextMenu2, ContextMenu2RenderProps } from "@blueprintjs/popover2";
 
 import { CellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
-import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
 import { CoordinateData } from "./interactions/dragTypes";
 import { ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
@@ -98,38 +98,40 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
             >
-                <ContextMenuTargetWrapper
-                    className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
-                    renderContextMenu={this.renderContextMenu}
-                    style={style}
-                >
-                    <TableBodyCells
-                        cellRenderer={this.props.cellRenderer}
-                        focusedCell={this.props.focusedCell}
-                        grid={grid}
-                        loading={this.props.loading}
-                        onCompleteRender={this.props.onCompleteRender}
-                        renderMode={this.props.renderMode}
-                        columnIndexStart={this.props.columnIndexStart}
-                        columnIndexEnd={this.props.columnIndexEnd}
-                        rowIndexStart={this.props.rowIndexStart}
-                        rowIndexEnd={this.props.rowIndexEnd}
-                        viewportRect={this.props.viewportRect}
-                    />
-                </ContextMenuTargetWrapper>
+                <ContextMenu2 content={this.renderContextMenu}>
+                    <div
+                        className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
+                        style={style}
+                    >
+                        <TableBodyCells
+                            cellRenderer={this.props.cellRenderer}
+                            focusedCell={this.props.focusedCell}
+                            grid={grid}
+                            loading={this.props.loading}
+                            onCompleteRender={this.props.onCompleteRender}
+                            renderMode={this.props.renderMode}
+                            columnIndexStart={this.props.columnIndexStart}
+                            columnIndexEnd={this.props.columnIndexEnd}
+                            rowIndexStart={this.props.rowIndexStart}
+                            rowIndexEnd={this.props.rowIndexEnd}
+                            viewportRect={this.props.viewportRect}
+                        />
+                    </div>
+                </ContextMenu2>
             </DragSelectable>
         );
     }
 
-    public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+    public renderContextMenu = ({ mouseEvent }: ContextMenu2RenderProps) => {
         const { grid, onFocusedCell, onSelection, bodyContextMenuRenderer, selectedRegions } = this.props;
         const { numRows, numCols } = grid;
 
-        if (bodyContextMenuRenderer == null) {
+        if (bodyContextMenuRenderer == null || mouseEvent == null) {
+            // either context menu is disabled, or it was just closed by the ContextMenu2 component
             return undefined;
         }
 
-        const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
+        const targetRegion = this.locateClick(mouseEvent.nativeEvent as MouseEvent);
 
         let nextSelectedRegions: Region[] = selectedRegions;
 
@@ -138,14 +140,17 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
         const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
         if (foundIndex < 0) {
             nextSelectedRegions = [targetRegion];
-            onSelection(nextSelectedRegions);
-
             // move the focused cell to the new region.
             const nextFocusedCell = {
                 ...Regions.getFocusCellCoordinatesFromRegion(targetRegion),
                 focusSelectionIndex: 0,
             };
-            onFocusedCell(nextFocusedCell);
+            // we are in a render code path for ContextMenu2, so we can't set state directly right now.
+            // instead, wait for the end of the current call stack:
+            this.setTimeout(() => {
+                onSelection(nextSelectedRegions);
+                onFocusedCell(nextFocusedCell);
+            });
         }
 
         const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
