@@ -43,16 +43,6 @@ describe("ContextMenu2", () => {
         assert.isTrue(ctxMenu.find(Popover2).prop("isOpen"));
     });
 
-    it("does not render menu if content is undefined", () => {
-        const ctxMenu = mount(
-            <ContextMenu2 content={undefined} transitionDuration={0}>
-                <div className={TARGET_CLASSNAME} />
-            </ContextMenu2>,
-        );
-        openCtxMenu(ctxMenu);
-        assert.isFalse(ctxMenu.find(Menu).exists());
-    });
-
     function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
         return mount(
             <ContextMenu2 content={MENU} transitionDuration={0} {...props}>
