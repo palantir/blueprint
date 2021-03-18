@@ -19,6 +19,7 @@ import React from "react";
 
 import {
     AbstractComponent,
+    Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HotkeyProps,
     HotkeysTarget,
@@ -118,6 +119,13 @@ export interface TableProps extends Props, RowHeights, ColumnWidths {
      * represents the clicked cell.
      */
     bodyContextMenuRenderer?: ContextMenuRenderer;
+
+    /**
+     * Whether the body context menu is enabled.
+     *
+     * @default true if bodyContextMenuRenderer is defined
+     */
+    enableBodyContextMenu?: boolean;
 
     /**
      * If `true`, adds an interaction bar on top of all column header cells, and
@@ -830,6 +838,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
         const classes = classNames(
             Classes.TABLE_CONTAINER,
+            CoreClasses.FIXED_POSITIONING_CONTAINING_BLOCK,
             {
                 [Classes.TABLE_REORDERING]: this.state.isReordering,
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),
@@ -1527,6 +1536,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             viewportRect,
         } = this.state;
         const {
+            enableBodyContextMenu,
             enableMultipleSelection,
             enableGhostCells,
             loadingOptions,
@@ -1554,6 +1564,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         return (
             <div>
                 <TableBody
+                    enableBodyContextMenu={enableBodyContextMenu ?? bodyContextMenuRenderer != null}
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}

@@ -112,8 +112,8 @@ describe("TableBody", () => {
 
     describe("bodyContextMenuRenderer", () => {
         // 0-indexed coordinates
-        const TARGET_ROW = 1;
-        const TARGET_COLUMN = 1;
+        const TARGET_ROW = 0;
+        const TARGET_COLUMN = 0;
         const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
@@ -129,7 +129,7 @@ describe("TableBody", () => {
 
         describe("on right-click", () => {
             const simulateAction = (tableBody: ReactWrapper<any, any>) => {
-                tableBody.simulate("contextmenu");
+                tableBody.simulate("contextmenu", { clientX: COLUMN_WIDTH / 2, clientY: ROW_HEIGHT / 2 });
             };
             runTestSuite(simulateAction);
         });
@@ -147,7 +147,8 @@ describe("TableBody", () => {
             it("selects a right-clicked cell if there is no active selection", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                checkOnSelectionCallback([TARGET_REGION]);
+                expect(onSelection.calledOnce).to.be.true;
+                expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
             });
 
             it("doesn't change the selected regions if the right-clicked cell is contained in one", () => {
@@ -167,12 +168,14 @@ describe("TableBody", () => {
                 ];
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
                 simulateAction(tableBody);
-                checkOnSelectionCallback([TARGET_REGION]);
+                expect(onSelection.calledOnce).to.be.true;
+                expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
             });
 
             it("renders context menu using new selection if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
+                expect(bodyContextMenuRenderer.calledOnce).to.be.true;
                 const menuContext = bodyContextMenuRenderer.firstCall.args[0] as MenuContext;
                 expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
             });
@@ -194,6 +197,7 @@ describe("TableBody", () => {
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
+                enableBodyContextMenu: true,
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
@@ -201,11 +205,6 @@ describe("TableBody", () => {
                 onSelection,
                 selectedRegions,
             });
-        }
-
-        function checkOnSelectionCallback(expectedSelectedRegions: Region[]) {
-            expect(onSelection.calledOnce).to.be.true;
-            expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
         }
     });
 

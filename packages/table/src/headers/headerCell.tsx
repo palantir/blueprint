@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { ContextMenu2 } from "@blueprintjs/popover2";
 
 import * as Classes from "../common/classes";
 import { ResizeHandle } from "../interactions/resizeHandle";
@@ -90,8 +91,6 @@ export interface HeaderCellState {
     isActive: boolean;
 }
 
-// eslint-disable-next-line deprecation/deprecation
-@ContextMenuTarget
 export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderCellState> {
     public state: HeaderCellState = {
         isActive: false,
@@ -104,7 +103,7 @@ export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderC
         );
     }
 
-    public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
+    public renderContextMenu() {
         const { menuRenderer } = this.props;
 
         if (CoreUtils.isFunction(menuRenderer)) {
@@ -116,20 +115,23 @@ export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderC
     }
 
     public render() {
+        const { children, index, isActive, isSelected, loading, menuRenderer, style } = this.props;
         const classes = classNames(
             Classes.TABLE_HEADER,
             {
-                [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
-                [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
-                [CoreClasses.LOADING]: this.props.loading,
+                [Classes.TABLE_HEADER_ACTIVE]: isActive || isActive,
+                [Classes.TABLE_HEADER_SELECTED]: isSelected,
+                [CoreClasses.LOADING]: loading,
             },
             this.props.className,
         );
 
         return (
-            <div className={classes} style={this.props.style}>
-                {this.props.children}
-            </div>
+            <ContextMenu2 content={menuRenderer?.(index) ?? undefined}>
+                <div className={classes} style={style}>
+                    {children}
+                </div>
+            </ContextMenu2>
         );
     }
 }
