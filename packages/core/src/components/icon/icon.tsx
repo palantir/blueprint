@@ -94,6 +94,10 @@ export class Icon extends AbstractPureComponent<
         }
     }
 
+    public componentWillUnmount() {
+        this.hasUnmounted = true;
+    }
+
     public render(): JSX.Element | null {
         const { icon } = this.props;
         if (icon == null || typeof icon === "boolean") {

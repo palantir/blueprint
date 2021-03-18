@@ -121,6 +121,13 @@ export interface TableProps extends Props, RowHeights, ColumnWidths {
     bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
+     * Whether the body context menu is enabled.
+     *
+     * @default true if bodyContextMenuRenderer is defined
+     */
+    enableBodyContextMenu?: boolean;
+
+    /**
      * If `true`, adds an interaction bar on top of all column header cells, and
      * moves interaction triggers into it.
      *
@@ -1529,6 +1536,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             viewportRect,
         } = this.state;
         const {
+            enableBodyContextMenu,
             enableMultipleSelection,
             enableGhostCells,
             loadingOptions,
@@ -1556,6 +1564,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         return (
             <div>
                 <TableBody
+                    enableBodyContextMenu={enableBodyContextMenu ?? bodyContextMenuRenderer != null}
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}

@@ -387,6 +387,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
         return (
             <Table
                 bodyContextMenuRenderer={this.renderBodyContextMenu}
+                enableBodyContextMenu={this.state.enableContextMenu}
                 enableColumnInteractionBar={this.state.showTableInteractionBar}
                 enableColumnReordering={this.state.enableColumnReordering}
                 enableColumnResizing={this.state.enableColumnResizing}
@@ -1028,7 +1029,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
     };
 
     private renderBodyContextMenu = () => {
-        const menu = (
+        return (
             <Menu>
                 <MenuItem icon="search-around" text="Item 1" />
                 <MenuItem icon="search" text="Item 2" />
@@ -1038,7 +1039,6 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 <MenuItem disabled={true} text="Disabled item" />
             </Menu>
         );
-        return this.state.enableContextMenu ? menu : undefined;
     };
 
     private getEnabledSelectionModes() {
