@@ -112,8 +112,8 @@ describe("TableBody", () => {
 
     describe("bodyContextMenuRenderer", () => {
         // 0-indexed coordinates
-        const TARGET_ROW = 1;
-        const TARGET_COLUMN = 1;
+        const TARGET_ROW = 0;
+        const TARGET_COLUMN = 0;
         const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
@@ -129,7 +129,7 @@ describe("TableBody", () => {
 
         describe("on right-click", () => {
             const simulateAction = (tableBody: ReactWrapper<any, any>) => {
-                tableBody.simulate("contextmenu");
+                tableBody.simulate("contextmenu", { clientX: COLUMN_WIDTH / 2, clientY: ROW_HEIGHT / 2 });
             };
             runTestSuite(simulateAction);
         });
@@ -144,46 +144,58 @@ describe("TableBody", () => {
         });
 
         function runTestSuite(simulateAction: (tableBody: ReactWrapper<any, any>) => void) {
-            it("selects a right-clicked cell if there is no active selection", () => {
+            it("selects a right-clicked cell if there is no active selection", async () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                checkOnSelectionCallback([TARGET_REGION]);
+                await onSelectionUpdated(tableBody, () => {
+                    expect(onSelection.calledOnce).to.be.true;
+                    expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
+                });
             });
 
-            it("doesn't change the selected regions if the right-clicked cell is contained in one", () => {
+            it("doesn't change the selected regions if the right-clicked cell is contained in one", async () => {
                 const selectedRegions = [
                     Regions.row(TARGET_ROW + 1), // some other row
                     Regions.cell(0, 0, TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
                 ];
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
                 simulateAction(tableBody);
-                expect(onSelection.called).to.be.false;
+                await onSelectionUpdated(tableBody, () => {
+                    expect(onSelection.called).to.be.false;
+                });
             });
 
-            it("clears selections and select the right-clicked cell if it isn't within any existing selection", () => {
+            it("clears selections and select the right-clicked cell if it isn't within any existing selection", async () => {
                 const selectedRegions = [
                     Regions.row(TARGET_ROW + 1), // some other row
                     Regions.cell(TARGET_ROW + 1, TARGET_COLUMN + 1), // includes the target cell
                 ];
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
                 simulateAction(tableBody);
-                checkOnSelectionCallback([TARGET_REGION]);
+                await onSelectionUpdated(tableBody, () => {
+                    expect(onSelection.calledOnce).to.be.true;
+                    expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
+                });
             });
 
-            it("renders context menu using new selection if selection changed on right-click", () => {
+            it("renders context menu using new selection if selection changed on right-click", async () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                const menuContext = bodyContextMenuRenderer.firstCall.args[0] as MenuContext;
-                expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
+                await onSelectionUpdated(tableBody, () => {
+                    const menuContext = bodyContextMenuRenderer.firstCall.args[0] as MenuContext;
+                    expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
+                });
             });
 
-            it("moves focused cell to right-clicked cell if selection changed on right-click", () => {
+            it("moves focused cell to right-clicked cell if selection changed on right-click", async () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                expect(onFocusedCell.calledOnce).to.be.true;
-                expect(onFocusedCell.firstCall.args[0]).to.deep.equal({
-                    ...TARGET_CELL_COORDS,
-                    focusSelectionIndex: 0,
+                await onSelectionUpdated(tableBody, () => {
+                    expect(onFocusedCell.calledOnce).to.be.true;
+                    expect(onFocusedCell.firstCall.args[0]).to.deep.equal({
+                        ...TARGET_CELL_COORDS,
+                        focusSelectionIndex: 0,
+                    });
                 });
             });
         }
@@ -203,9 +215,24 @@ describe("TableBody", () => {
             });
         }
 
-        function checkOnSelectionCallback(expectedSelectedRegions: Region[]) {
-            expect(onSelection.calledOnce).to.be.true;
-            expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
+        /**
+         * Because of ContextMenu2's render lifecycle, TableBody defers setting selection and cell focus state
+         * until the end of the render call stack. In order to test selection state, we need to defer the assertions.
+         */
+        async function onSelectionUpdated(
+            tableBody: ReactWrapper,
+            assertionCallback: () => void,
+            // expectedSelectedRegions: Region[],
+        ): Promise<void> {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    tableBody.update();
+                    assertionCallback();
+                    // expect(onSelection.calledOnce).to.be.true;
+                    // expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
+                    resolve();
+                });
+            });
         }
     });
 
