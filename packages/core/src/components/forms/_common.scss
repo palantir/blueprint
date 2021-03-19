@@ -102,7 +102,7 @@ $control-group-stack: (
 
   &:focus,
   &.#{$ns}-active {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    box-shadow: input-transition-shadow($input-shadow-color-focus, true);
   }
 
   &[type="search"],
