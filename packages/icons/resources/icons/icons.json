@@ -3551,6 +3551,7 @@
         "tags": "notification, information, message, snooze, suppress",
         "group": "interface"
     },
+    {
         "displayName": "High Priority",
         "iconName": "high-priority",
         "tags": "notification, message",
