@@ -18,7 +18,7 @@ import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/
 import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
+import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
 import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 
@@ -32,9 +32,13 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
+// HACKHACK: this is brittle
 // detect Components page and subheadings
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
-const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route);
+const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
+const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const isNavSection = ({ route }: IHeadingNode) =>
+    COMPONENTS_PATTERN.test(route) || CONTEXT_PATTERN.test(route) || HOOKS_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -78,17 +82,19 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             />
         );
         return (
-            <Documentation
-                {...this.props}
-                className={this.state.themeName}
-                footer={footer}
-                header={header}
-                navigatorExclude={isNavSection}
-                onComponentUpdate={this.handleComponentUpdate}
-                renderNavMenuItem={this.renderNavMenuItem}
-                renderPageActions={this.renderPageActions}
-                renderViewSourceLinkText={this.renderViewSourceLinkText}
-            />
+            <HotkeysProvider>
+                <Documentation
+                    {...this.props}
+                    className={this.state.themeName}
+                    footer={footer}
+                    header={header}
+                    navigatorExclude={isNavSection}
+                    onComponentUpdate={this.handleComponentUpdate}
+                    renderNavMenuItem={this.renderNavMenuItem}
+                    renderPageActions={this.renderPageActions}
+                    renderViewSourceLinkText={this.renderViewSourceLinkText}
+                />
+            </HotkeysProvider>
         );
     }
 
@@ -174,7 +180,6 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     private handleToggleDark = (useDark: boolean) => {
         const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
         setTheme(nextThemeName);
-        setHotkeysDialogProps({ className: nextThemeName });
         this.setState({ themeName: nextThemeName });
     };
 }

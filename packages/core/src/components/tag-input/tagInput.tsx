@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, Keys, Utils } from "../../common";
+import { AbstractPureComponent2, Classes, getRef, IRef, IRefObject, Keys, refHandler, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -222,14 +222,9 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         isInputFocused: false,
     };
 
-    private inputElement: HTMLInputElement | null = null;
+    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
 
-    private refHandlers = {
-        input: (ref: HTMLInputElement) => {
-            this.inputElement = ref;
-            this.props.inputRef?.(ref);
-        },
-    };
+    private handleRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     public render() {
         const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
@@ -271,7 +266,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
                         onKeyUp={this.handleInputKeyUp}
                         onPaste={this.handleInputPaste}
                         placeholder={resolvedPlaceholder}
-                        ref={this.refHandlers.input}
+                        ref={this.handleRef}
                         className={classNames(Classes.INPUT_GHOST, inputProps?.className)}
                         disabled={disabled}
                     />
@@ -352,9 +347,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     }
 
     private handleContainerClick = () => {
-        if (this.inputElement != null) {
-            this.inputElement.focus();
-        }
+        getRef(this.inputElement)?.focus();
     };
 
     private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {

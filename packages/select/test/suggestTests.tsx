@@ -62,6 +62,7 @@ describe("Suggest", () => {
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
+            /* eslint-disable-next-line deprecation/deprecation */
             const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
@@ -240,6 +241,7 @@ describe("Suggest", () => {
             const modifiers = {}; // our own instance
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
+            /* eslint-disable-next-line deprecation/deprecation */
             assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
             assert.isTrue(onOpening.calledOnce);
         });

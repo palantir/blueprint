@@ -1,0 +1,78 @@
+{
+    "name": "@blueprintjs/popover2",
+    "version": "0.3.3",
+    "description": "Popover2 and dependent components",
+    "main": "lib/cjs/index.js",
+    "module": "lib/esm/index.js",
+    "esnext": "lib/esnext/index.js",
+    "typings": "lib/esm/index.d.ts",
+    "style": "lib/css/blueprint-popover2.css",
+    "unpkg": "dist/popover2.bundle.js",
+    "sideEffects": [
+        "**/*.css"
+    ],
+    "scripts": {
+        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p ./src",
+        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "compile:css": "sass-compile ./src",
+        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dist": "run-s \"dist:*\"",
+        "dist:bundle": "cross-env NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css/*.css",
+        "dist:verify": "assert-package-layout",
+        "lint": "run-p lint:scss lint:es",
+        "lint:scss": "sass-lint",
+        "lint:es": "es-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "run-s test:typeCheck test:iso test:karma",
+        "test:typeCheck": "tsc -p ./test",
+        "test:iso": "mocha test/isotest.js",
+        "test:karma": "karma start",
+        "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
+        "verify": "npm-run-all compile -p dist test lint"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^3.41.0",
+        "@popperjs/core": "^2.5.4",
+        "classnames": "^2.2",
+        "dom4": "^2.1.5",
+        "react-popper": "^2.2.4",
+        "tslib": "~1.13.0"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0 || ^17"
+    },
+    "devDependencies": {
+        "@blueprintjs/karma-build-scripts": "^2.0.1",
+        "@blueprintjs/node-build-scripts": "^1.4.0",
+        "@blueprintjs/test-commons": "^0.10.10",
+        "enzyme": "^3.11.0",
+        "karma": "^5.2.2",
+        "mocha": "^8.1.3",
+        "npm-run-all": "^4.1.5",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-test-renderer": "^16.13.1",
+        "sass-inline-svg": "^1.2.3",
+        "typescript": "~4.0.3",
+        "webpack-cli": "^3.3.12"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/core"
+    },
+    "keywords": [
+        "palantir",
+        "blueprint",
+        "components",
+        "styles",
+        "theme",
+        "ui"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}

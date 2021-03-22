@@ -16,18 +16,7 @@
 
 import * as React from "react";
 
-import {
-    Button,
-    H5,
-    Hotkey,
-    Hotkeys,
-    HotkeysTarget,
-    KeyCombo,
-    MenuItem,
-    Position,
-    Switch,
-    Toaster,
-} from "@blueprintjs/core";
+import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 
@@ -41,7 +30,6 @@ export interface IOmnibarExampleState {
     resetOnSelect: boolean;
 }
 
-@HotkeysTarget
 export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarExampleState> {
     public state: IOmnibarExampleState = {
         allowCreate: false,
@@ -59,21 +47,6 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
         toaster: (ref: Toaster) => (this.toaster = ref),
     };
 
-    public renderHotkeys() {
-        return (
-            <Hotkeys>
-                <Hotkey
-                    global={true}
-                    combo="shift + o"
-                    label="Show Omnibar"
-                    onKeyDown={this.handleToggle}
-                    // prevent typing "O" in omnibar input
-                    preventDefault={true}
-                />
-            </Hotkeys>
-        );
-    }
-
     public render() {
         const { allowCreate } = this.state;
 
@@ -81,25 +54,38 @@ export class OmnibarExample extends React.PureComponent<IExampleProps, IOmnibarE
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <span>
-                    <Button text="Click to show Omnibar" onClick={this.handleClick} />
-                    {" or press "}
-                    <KeyCombo combo="shift + o" />
-                </span>
+            <HotkeysTarget2
+                hotkeys={[
+                    {
+                        combo: "shift + o",
+                        global: true,
+                        label: "Show Omnibar",
+                        onKeyDown: this.handleToggle,
+                        // prevent typing "O" in omnibar input
+                        preventDefault: true,
+                    },
+                ]}
+            >
+                <Example options={this.renderOptions()} {...this.props}>
+                    <span>
+                        <Button text="Click to show Omnibar" onClick={this.handleClick} />
+                        {" or press "}
+                        <KeyCombo combo="shift + o" />
+                    </span>
 
-                <FilmOmnibar
-                    {...filmSelectProps}
-                    {...this.state}
-                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
-                    createNewItemRenderer={maybeCreateNewItemRenderer}
-                    itemsEqual={areFilmsEqual}
-                    noResults={<MenuItem disabled={true} text="No results." />}
-                    onItemSelect={this.handleItemSelect}
-                    onClose={this.handleClose}
-                />
-                <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
-            </Example>
+                    <FilmOmnibar
+                        {...filmSelectProps}
+                        {...this.state}
+                        createNewItemFromQuery={maybeCreateNewItemFromQuery}
+                        createNewItemRenderer={maybeCreateNewItemRenderer}
+                        itemsEqual={areFilmsEqual}
+                        noResults={<MenuItem disabled={true} text="No results." />}
+                        onItemSelect={this.handleItemSelect}
+                        onClose={this.handleClose}
+                    />
+                    <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
+                </Example>
+            </HotkeysTarget2>
         );
     }
 

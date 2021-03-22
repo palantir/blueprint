@@ -23,7 +23,7 @@ import * as sinon from "sinon";
 import {
     Button,
     IButtonProps,
-    IInputGroupProps,
+    IInputGroupProps2,
     InputGroup,
     IPopoverProps,
     MenuItem,
@@ -70,6 +70,7 @@ describe("<TimezonePicker>", () => {
         // remove isOpen from popoverProps so it's
         const timezonePicker = mount(<TimezonePicker {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
         timezonePicker.find(Button).simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
     });
 
@@ -78,6 +79,7 @@ describe("<TimezonePicker>", () => {
             <TimezonePicker {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
         );
         timezonePicker.find(Button).simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
     });
 
@@ -198,7 +200,7 @@ describe("<TimezonePicker>", () => {
     });
 
     it("input can be controlled with input props", () => {
-        const inputProps: IInputGroupProps = {
+        const inputProps: IInputGroupProps2 = {
             disabled: true,
             leftIcon: "airplane",
             placeholder: "test placeholder",
@@ -206,7 +208,7 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = shallow(<TimezonePicker {...DEFAULT_PROPS} inputProps={inputProps} />);
         const inputGroup = findInputGroup(timezonePicker);
         for (const key of Object.keys(inputProps)) {
-            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof IInputGroupProps]);
+            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof IInputGroupProps2]);
         }
     });
 
@@ -243,6 +245,7 @@ describe("<TimezonePicker>", () => {
     }
 
     function findPopover(timezonePicker: TimezonePickerShallowWrapper) {
+        /* eslint-disable-next-line deprecation/deprecation */
         return findQueryList(timezonePicker).shallow().find(Popover);
     }
 

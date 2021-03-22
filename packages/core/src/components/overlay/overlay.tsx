@@ -336,7 +336,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
             typeof child === "object" ? (
                 React.cloneElement(child as React.ReactElement, {
                     className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
-                    tabIndex: 0,
+                    tabIndex: this.props.enforceFocus || this.props.autoFocus ? 0 : undefined,
                 })
             ) : (
                 <span className={Classes.OVERLAY_CONTENT}>{child}</span>
@@ -345,9 +345,9 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
 
         // a breaking change in react-transition-group types requires us to be explicit about the type overload here,
         // using a technique similar to Select.ofType() in @blueprintjs/select
-        const CSSTransitionImplicit = CSSTransition as new (props: CSSTransitionProps<undefined>) => CSSTransition<
-            undefined
-        >;
+        const CSSTransitionImplicit = CSSTransition as new (
+            props: CSSTransitionProps<undefined>,
+        ) => CSSTransition<undefined>;
 
         return (
             <CSSTransitionImplicit

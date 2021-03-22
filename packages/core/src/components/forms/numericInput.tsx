@@ -28,9 +28,11 @@ import {
     IIntentProps,
     Intent,
     IProps,
+    IRef,
     Keys,
     MaybeElement,
     Position,
+    refHandler,
     removeNonHTMLProps,
     Utils,
 } from "../../common";
@@ -104,7 +106,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * Ref handler that receives HTML `<input>` element backing this component.
      */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    inputRef?: IRef<HTMLInputElement>;
 
     /**
      * If set to `true`, the input will display with larger styling.
@@ -315,7 +317,9 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     private delta = 0;
 
-    private inputElement: HTMLInputElement | null = null;
+    public inputElement: HTMLInputElement | null = null;
+
+    private inputRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     private intervalId?: number;
 
@@ -362,22 +366,22 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
     protected validateProps(nextProps: HTMLInputProps & INumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
-            throw new Error(Errors.NUMERIC_INPUT_MIN_MAX);
+            console.error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
         if (stepSize! <= 0) {
-            throw new Error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+            console.error(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize <= 0) {
-            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
+            console.error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         }
         if (majorStepSize && majorStepSize <= 0) {
-            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
+            console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         }
         if (minorStepSize && minorStepSize > stepSize!) {
-            throw new Error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+            console.error(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         }
         if (majorStepSize && majorStepSize < stepSize!) {
-            throw new Error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+            console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
 
         // controlled mode
@@ -456,11 +460,6 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
             />
         );
     }
-
-    private inputRef = (input: HTMLInputElement | null) => {
-        this.inputElement = input;
-        this.props.inputRef?.(input);
-    };
 
     // Callbacks - Buttons
     // ===================

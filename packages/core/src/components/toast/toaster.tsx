@@ -186,7 +186,6 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     }
 
     public render() {
-        // $pt-transition-duration * 3 + $pt-transition-duration / 2
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
             <Overlay
@@ -198,6 +197,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
+                // $pt-transition-duration * 3 + $pt-transition-duration / 2
                 transitionDuration={350}
                 transitionName={Classes.TOAST}
                 usePortal={this.props.usePortal}
@@ -238,7 +238,10 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     private getPositionClasses() {
         const positions = this.props.position!.split("-");
         // NOTE that there is no -center class because that's the default style
-        return positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
+        return [
+            ...positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`),
+            `${Classes.TOAST_CONTAINER}-${this.props.usePortal ? "in-portal" : "inline"}`,
+        ];
     }
 
     private getDismissHandler = (toast: IToastOptions) => (timeoutExpired: boolean) => {

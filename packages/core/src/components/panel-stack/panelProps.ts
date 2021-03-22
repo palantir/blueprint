@@ -16,8 +16,12 @@
 
 import * as React from "react";
 
+/* eslint-disable deprecation/deprecation */
+
 /**
  * An object describing a panel in a `PanelStack`.
+ *
+ * @deprecated use `Panel<T>`
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface IPanel<P = {}> {
@@ -54,6 +58,8 @@ export interface IPanel<P = {}> {
  * import { IPanelProps } from "@blueprintjs/core";
  * export class SettingsPanel extends React.Component<IPanelProps & ISettingsPanelProps> {...}
  * ```
+ *
+ * @deprecated use `PanelActions<T>`
  */
 export interface IPanelProps {
     /**

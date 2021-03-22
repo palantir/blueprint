@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/select",
-    "version": "3.15.0",
+    "version": "3.15.8",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -31,11 +31,11 @@
         "test:typeCheck": "tsc -p ./test",
         "test:iso": "mocha test/isotest.js",
         "test:karma": "karma start",
-        "test:karma:debug": "karma start --single-run=false --reporters=mocha --debug",
+        "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.36.0",
+        "@blueprintjs/core": "^3.41.0",
         "classnames": "^2.2",
         "tslib": "~1.13.0"
     },
@@ -44,8 +44,8 @@
         "react-dom": "^15.3.0 || 16 || 17"
     },
     "devDependencies": {
-        "@blueprintjs/karma-build-scripts": "^1.0.3",
-        "@blueprintjs/node-build-scripts": "^1.4.0",
+        "@blueprintjs/karma-build-scripts": "^2.0.1",
+        "@blueprintjs/node-build-scripts": "^1.5.0",
         "enzyme": "^3.11.0",
         "karma": "^5.2.3",
         "mocha": "^8.2.1",

@@ -165,11 +165,18 @@ $toast-margin: $pt-grid-size * 2 !default;
   // container will not block clicks on elements behind it
   pointer-events: none;
 
-  position: fixed;
   right: 0;
 
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
+
+  &.#{$ns}-toast-container-in-portal {
+    position: fixed;
+  }
+
+  &.#{$ns}-toast-container-inline {
+    position: absolute;
+  }
 
   &.#{$ns}-toast-container-top {
     top: 0;

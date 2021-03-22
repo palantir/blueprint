@@ -97,9 +97,12 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
      * If `false`, labels will not be shown.
      *
+     * The callback is provided a numeric value and optional rendering options, which include:
+     * - isHandleTooltip: whether this label is being rendered within a handle tooltip
+     *
      * @default true
      */
-    labelRenderer?: boolean | ((value: number) => string | JSX.Element);
+    labelRenderer?: boolean | ((value: number, opts?: { isHandleTooltip: boolean }) => string | JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
@@ -230,12 +233,12 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         }
     }
 
-    private formatLabel(value: number) {
+    private formatLabel(value: number, isHandleTooltip: boolean = false) {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
             return undefined;
         } else if (Utils.isFunction(labelRenderer)) {
-            return labelRenderer(value);
+            return labelRenderer(value, { isHandleTooltip });
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
@@ -304,15 +307,18 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
             return null;
         }
 
-        return handleProps.map(({ value, type }, index) => (
+        return handleProps.map(({ value, type, className }, index) => (
             <Handle
-                className={classNames({
-                    [Classes.START]: type === HandleType.START,
-                    [Classes.END]: type === HandleType.END,
-                })}
+                className={classNames(
+                    {
+                        [Classes.START]: type === HandleType.START,
+                        [Classes.END]: type === HandleType.END,
+                    },
+                    className,
+                )}
                 disabled={disabled}
                 key={`${index}-${handleProps.length}`}
-                label={this.formatLabel(value)}
+                label={this.formatLabel(value, true)}
                 max={max!}
                 min={min!}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}

@@ -45,6 +45,7 @@ const TRANSITION_DURATION = 100;
 type IContextMenuProps = IOverlayLifecycleProps;
 
 /* istanbul ignore next */
+/** @deprecated use ContextMenu2 */
 @polyfill
 class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
     public state: IContextMenuState = {
@@ -65,6 +66,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
 
         // wrap the popover in a positioned div to make sure it is properly
         // offset on the screen.
+        /* eslint-disable deprecation/deprecation */
         return (
             <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
                 <Popover
@@ -85,6 +87,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
                 />
             </div>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme = false) {
@@ -124,6 +127,7 @@ class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenu
 }
 
 let contextMenuElement: HTMLElement | undefined;
+// eslint-disable-next-line deprecation/deprecation
 let contextMenu: ContextMenu | undefined;
 
 /**
@@ -136,10 +140,12 @@ export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, i
         contextMenuElement = document.createElement("div");
         contextMenuElement.classList.add(Classes.CONTEXT_MENU);
         document.body.appendChild(contextMenuElement);
+        /* eslint-disable deprecation/deprecation */
         contextMenu = ReactDOM.render<IContextMenuProps>(
             <ContextMenu onClosed={remove} />,
             contextMenuElement,
         ) as ContextMenu;
+        /* eslint-enable deprecation/deprecation */
     }
 
     contextMenu!.show(menu, offset, onClose, isDarkTheme);

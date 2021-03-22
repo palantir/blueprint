@@ -20,7 +20,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, refHandler } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -80,7 +80,7 @@ export interface IPopoverProps extends IPopoverSharedProps {
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: (ref: HTMLElement | null) => void;
+    popoverRef?: IRef<HTMLElement>;
 
     /**
      * The target to which the popover content is attached. This can instead be
@@ -95,6 +95,7 @@ export interface IPopoverState {
     hasDarkParent: boolean;
 }
 
+/** @deprecated use { Popover2 } from "@blueprintjs/popover2" */
 @polyfill
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
@@ -115,6 +116,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
+        // N.B. we don't set a default for `placement` here because that would override
+        // the deprecated `position` prop
         position: "auto",
         targetTagName: "span",
         transitionDuration: 300,
@@ -151,20 +154,16 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => void;
 
-    private refHandlers = {
-        popover: (ref: HTMLElement) => {
-            this.popoverElement = ref;
-            this.props.popoverRef?.(ref);
-        },
-        target: (ref: HTMLElement) => (this.targetElement = ref),
-    };
+    private handlePopoverRef: IRef<HTMLElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+
+    private handleTargetRef = (ref: HTMLElement | null) => (this.targetElement = ref);
 
     public render() {
         // rename wrapper tag to begin with uppercase letter so it's recognized
         // as JSX component instead of intrinsic element. but because of its
         // type, tsc actually recognizes that it is _any_ intrinsic element, so
         // it can typecheck the HTML props!!
-        const { className, disabled, fill } = this.props;
+        const { className, disabled, fill, placement } = this.props;
         const { isOpen } = this.state;
         let { wrapperTagName } = this.props;
         if (fill) {
@@ -185,7 +184,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         const wrapper = React.createElement(
             wrapperTagName!,
             { className: wrapperClasses },
-            <Reference innerRef={this.refHandlers.target}>{this.renderTarget}</Reference>,
+            <Reference innerRef={this.handleTargetRef}>{this.renderTarget}</Reference>,
             <Overlay
                 autoFocus={this.props.autoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
@@ -207,8 +206,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 portalContainer={this.props.portalContainer}
             >
                 <Popper
-                    innerRef={this.refHandlers.popover}
-                    placement={positionToPlacement(this.props.position!)}
+                    innerRef={this.handlePopoverRef}
+                    // eslint-disable-next-line deprecation/deprecation
+                    placement={placement ?? positionToPlacement(this.props.position!)}
                     modifiers={this.getPopperModifiers()}
                 >
                     {this.renderPopover}
@@ -258,7 +258,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             console.warn(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE);
         }
         if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
-            throw new Error(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
+            console.error(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
         }
 
         const childrenCount = React.Children.count(props.children);
@@ -266,7 +266,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         const hasTargetProp = props.target !== undefined;
 
         if (childrenCount === 0 && !hasTargetProp) {
-            throw new Error(Errors.POPOVER_REQUIRES_TARGET);
+            console.error(Errors.POPOVER_REQUIRES_TARGET);
         }
         if (childrenCount > 2) {
             console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
@@ -380,6 +380,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 [Classes.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
             }),
             // force disable single Tooltip child when popover is open (BLUEPRINT-552)
+            /* eslint-disable-next-line deprecation/deprecation */
             disabled: isOpen && Utils.isElementOfType(rawTarget, Tooltip) ? true : rawTarget.props.disabled,
             tabIndex,
         });

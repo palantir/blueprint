@@ -20,23 +20,18 @@
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { IRefCallback, IRefObject, isRefObject } from "../../common/refs";
-import { AbstractButton, IButtonProps } from "./abstractButton";
+import { IRef, IRefObject, refHandler } from "../../common/refs";
+import { AbstractButton, IButtonProps, IAnchorButtonProps } from "./abstractButton";
 
-export { IButtonProps };
+export { IAnchorButtonProps, IButtonProps };
 
-export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButtonElement>> {
+export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
-    protected buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null = null;
+    public buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null = null;
 
-    protected handleRef = isRefObject<HTMLButtonElement>(this.props.elementRef)
-        ? (this.buttonRef = this.props.elementRef)
-        : (ref: HTMLButtonElement | null) => {
-              this.buttonRef = ref;
-              (this.props.elementRef as IRefCallback)?.(ref);
-          };
+    protected handleRef: IRef<HTMLButtonElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
     public render() {
         return (
@@ -52,18 +47,13 @@ export class Button extends AbstractButton<React.ButtonHTMLAttributes<HTMLButton
     }
 }
 
-export class AnchorButton extends AbstractButton<React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
-    protected buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null = null;
+    public buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null = null;
 
-    protected handleRef = isRefObject<HTMLAnchorElement>(this.props.elementRef)
-        ? (this.buttonRef = this.props.elementRef)
-        : (ref: HTMLAnchorElement | null) => {
-              this.buttonRef = ref;
-              (this.props.elementRef as IRefCallback)?.(ref);
-          };
+    protected handleRef: IRef<HTMLAnchorElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
     public render() {
         const { href, tabIndex = 0 } = this.props;

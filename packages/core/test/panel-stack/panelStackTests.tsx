@@ -21,6 +21,8 @@ import { spy } from "sinon";
 
 import { Classes, IPanel, IPanelProps, IPanelStackProps, PanelStack } from "../../src";
 
+/* eslint-disable deprecation/deprecation */
+
 export class TestPanel extends React.Component<IPanelProps> {
     public render() {
         return (

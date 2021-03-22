@@ -970,28 +970,28 @@
         "iconName": "arrow-up",
         "tags": "direction, north",
         "group": "interface",
-        "content": "\\2191 "
+        "content": "\\2191"
     },
     {
         "displayName": "Arrow: down",
         "iconName": "arrow-down",
         "tags": "direction, south",
         "group": "interface",
-        "content": "\\2193 "
+        "content": "\\2193"
     },
     {
         "displayName": "Arrows: horizontal",
         "iconName": "arrows-horizontal",
         "tags": "direction, level",
         "group": "interface",
-        "content": "\\2194 "
+        "content": "\\2194"
     },
     {
         "displayName": "Arrows: vertical",
         "iconName": "arrows-vertical",
         "tags": "direction, level",
         "group": "interface",
-        "content": "\\2195 "
+        "content": "\\2195"
     },
     {
         "displayName": "Resolve",
@@ -3549,6 +3549,29 @@
         "displayName": "Notifications: snooze",
         "iconName": "notifications-snooze",
         "tags": "notification, information, message, snooze, suppress",
+        "group": "interface"
+    },
+        "displayName": "High Priority",
+        "iconName": "high-priority",
+        "tags": "notification, message",
+        "group": "interface"
+    },
+    {
+        "displayName": "Emoji",
+        "iconName": "emoji",
+        "tags": "message, chat, reaction",
+        "group": "interface"
+    },
+    {
+        "displayName": "Add Location",
+        "iconName": "add-location",
+        "tags": "location, add,",
+        "group": "interface"
+    },
+    {
+        "displayName": "Shapes",
+        "iconName": "shapes",
+        "tags": "shapes, geometric,",
         "group": "interface"
     },
     {

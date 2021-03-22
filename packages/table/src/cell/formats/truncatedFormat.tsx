@@ -224,6 +224,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
+                /* eslint-disable-next-line deprecation/deprecation */
                 <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     modifiers={{ preventOverflow: { boundariesElement: "window" } }}
@@ -233,6 +234,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                     onClose={this.handlePopoverClose}
                 >
                     <Icon icon="more" />
+                    {/* eslint-disable-next-line deprecation/deprecation */}
                 </Popover>
             );
         } else {

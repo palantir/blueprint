@@ -15,7 +15,7 @@
  */
 
 import { expect } from "chai";
-import React from "react";
+import * as React from "react";
 import sinon from "sinon";
 
 import { IFocusedCellCoordinates } from "../src/common/cell";
