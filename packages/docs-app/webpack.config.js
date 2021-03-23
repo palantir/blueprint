@@ -20,7 +20,18 @@ const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "docs-app": ["./src/index.tsx", "./src/index.scss"],
+        "docs-app": [
+            // polyfills required by popper.js
+            "core-js/features/array/find",
+            "core-js/features/object/assign",
+            "core-js/features/promise",
+            // polyfills required by Blueprint components
+            "@blueprintjs/test-commons/polyfill",
+            "dom4",
+            // entry points
+            "./src/index.tsx",
+            "./src/index.scss",
+        ],
     },
 
     output: {
