@@ -13,9 +13,18 @@
  * limitations under the License.
  */
 
-// tslint:disable-next-line:no-submodule-imports
+// tslint:disable no-submodule-imports
+
+// polyfills required by Blueprint components
 import "@blueprintjs/test-commons/polyfill";
 import "dom4";
+
+// polyfills required by popper.js
+import "core-js/features/array/find";
+import "core-js/features/object/assign";
+import "core-js/features/promise";
+
+// tslint:enable
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
