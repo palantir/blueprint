@@ -67,11 +67,12 @@ Blueprint components require the following ES2015 features:
 
 -   `Map`
 -   `Set`
--   `Array.fill`
--   `Array.from`
+-   `Array.prototype.fill`
+-   `Array.prototype.from`
+-   `String.prototype.startsWith`
 
-We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
-[core-js](https://github.com/zloirock/core-js).
+Popper.js also has some polyfill requirements, [see the docs here](https://popper.js.org/docs/v2/browser-support/).
+We recommend polyfilling these features using [core-js](https://github.com/zloirock/core-js).
 
 @### DOM4
 
