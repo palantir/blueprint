@@ -18,8 +18,8 @@ import { Classes } from "@blueprintjs/core";
 
 const NS = Classes.getClassNamespace();
 
-export const CONTEXT_MENU2 = `${NS}-context-menu`;
-export const CONTEXT_MENU2_POPOVER_TARGET = `${CONTEXT_MENU2}-popover-target`;
+export const CONTEXT_MENU2 = `${NS}-context-menu2`;
+export const CONTEXT_MENU2_POPOVER2_TARGET = `${CONTEXT_MENU2}-popover2-target`;
 
 export const POPOVER2 = `${NS}-popover2`;
 export const POPOVER2_ARROW = `${POPOVER2}-arrow`;

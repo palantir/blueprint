@@ -52,4 +52,8 @@ pattern, so you may use information about the context menu's state to in your re
 
 @## Props
 
+To enable/disable the context menu popover, use the `disabled` prop. Note that it is inadvisable to change
+the value of this prop inside the `onContextMenu` callback for this component; doing so can lead to unpredictable
+behavior.
+
 @interface ContextMenu2Props
