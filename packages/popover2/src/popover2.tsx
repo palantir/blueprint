@@ -53,8 +53,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
     /**
-     * The content displayed inside the popover. This can instead be provided as
-     * the _second_ element in `children` (first is `target`).
+     * The content displayed inside the popover.
      */
     content?: string | JSX.Element;
 
