@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { State as PopperState } from "@popperjs/core";
+import { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
@@ -86,6 +86,14 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends I
      * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: (ref: HTMLElement | null) => void;
+
+    /**
+     * Popper.js positioning strategy.
+     *
+     * @see https://popper.js.org/docs/v2/constructors/#strategy
+     * @default "absolute"
+     */
+    positioningStrategy?: PositioningStrategy;
 }
 
 export interface IPopover2State {
@@ -115,6 +123,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         minimal: false,
         openOnTargetFocus: true,
         placement: "auto",
+        positioningStrategy: "absolute",
         renderTarget: undefined as any,
         targetTagName: "span",
         transitionDuration: 300,
@@ -199,7 +208,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 <Popper
                     innerRef={this.refHandlers.popover}
                     placement={this.props.placement}
-                    strategy="absolute"
+                    strategy={this.props.positioningStrategy}
                     modifiers={this.computePopperModifiers()}
                 >
                     {this.renderPopover}

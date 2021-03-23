@@ -54,6 +54,12 @@ $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) / 2 !default;
       }
     }
   }
+
+  &.#{$ns}-fixed-positioning-containing-block {
+    // use the same transform as the Collapse component, to mimic the behavior of creating a new
+    // containing block for children which are position: fixed (like ContextMenu2 targets)
+    transform: translateY(0);
+  }
 }
 
 .#{$ns}-tree-node-list {
