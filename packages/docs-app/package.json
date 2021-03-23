@@ -29,16 +29,19 @@
         "@documentalist/client": "~3.0.0",
         "chroma-js": "^2.1.0",
         "classnames": "^2.2",
+        "core-js": "^3.8.1",
         "dom4": "^2.1.5",
         "downloadjs": "^1.4.7",
         "lodash-es": "^4.17.15",
         "moment": "^2.29.1",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
-        "react": "^16.14.0",
+        "promise": "^8.1.0",
         "react-dom": "^16.14.0",
         "react-transition-group": "^4.4.1",
-        "tslib": "~1.13.0"
+        "react": "^16.14.0",
+        "tslib": "~1.13.0",
+        "whatwg-fetch": "^3.4.1"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.5.0",
