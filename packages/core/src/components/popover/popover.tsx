@@ -116,8 +116,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
-        // N.B. we don't set a default for `placement` here because that would override
-        // the deprecated `position` prop
+        // N.B. we don't set a default for `placement` here because that would override the `position` prop
         position: "auto",
         targetTagName: "span",
         transitionDuration: 300,
@@ -207,7 +206,6 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             >
                 <Popper
                     innerRef={this.handlePopoverRef}
-                    // eslint-disable-next-line deprecation/deprecation
                     placement={placement ?? positionToPlacement(this.props.position!)}
                     modifiers={this.getPopperModifiers()}
                 >
@@ -259,6 +257,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         }
         if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
             console.error(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
+        }
+        if (props.placement !== undefined && props.position !== undefined) {
+            console.warn(Errors.POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX);
         }
 
         const childrenCount = React.Children.count(props.children);
