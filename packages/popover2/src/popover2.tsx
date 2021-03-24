@@ -123,8 +123,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         interactionKind: Popover2InteractionKind.CLICK,
         minimal: false,
         openOnTargetFocus: true,
-        // N.B. we don't set a default for `placement` here because that would override the `position` prop
-        position: "auto",
+        // N.B. we don't set a default for `placement` or `position` here because that would trigger
+        // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
         renderTarget: undefined as any,
         targetTagName: "span",
@@ -190,7 +190,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     }
 
     public render() {
-        const { disabled, content, placement } = this.props;
+        const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
         const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
@@ -209,8 +209,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 <Reference>{this.renderTarget}</Reference>
                 <Popper
                     innerRef={this.refHandlers.popover}
-                    placement={placement ?? positionToPlacement(this.props.position!)}
-                    strategy={this.props.positioningStrategy}
+                    placement={placement ?? positionToPlacement(position)}
+                    strategy={positioningStrategy}
                     modifiers={this.computePopperModifiers()}
                 >
                     {this.renderPopover}
