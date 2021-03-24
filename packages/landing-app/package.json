@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/landing-app",
-    "version": "3.17.22",
+    "version": "3.17.23",
     "description": "Blueprint landing page",
     "private": true,
     "scripts": {
@@ -16,13 +16,13 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.41.0",
+        "@blueprintjs/core": "^3.42.0",
         "classnames": "^2.2",
         "react": "^16.14.0",
         "react-dom": "^16.14.0"
     },
     "devDependencies": {
-        "@blueprintjs/webpack-build-scripts": "^2.0.1",
+        "@blueprintjs/webpack-build-scripts": "^2.0.2",
         "copy-webpack-plugin": "^7.0.0",
         "npm-run-all": "^4.1.5",
         "raw-loader": "^4.0.2",
