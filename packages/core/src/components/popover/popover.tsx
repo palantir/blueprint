@@ -116,9 +116,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         minimal: false,
         modifiers: {},
         openOnTargetFocus: true,
-        // N.B. we don't set a default for `placement` here because that would override
-        // the deprecated `position` prop
-        position: "auto",
+        // N.B. we don't set a default for `placement` or `position` here because that would trigger
+        // a warning in validateProps if the other prop is specified by a user of this component
         targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,
@@ -163,7 +162,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         // as JSX component instead of intrinsic element. but because of its
         // type, tsc actually recognizes that it is _any_ intrinsic element, so
         // it can typecheck the HTML props!!
-        const { className, disabled, fill, placement } = this.props;
+        const { className, disabled, fill, placement, position = "auto" } = this.props;
         const { isOpen } = this.state;
         let { wrapperTagName } = this.props;
         if (fill) {
@@ -207,8 +206,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
             >
                 <Popper
                     innerRef={this.handlePopoverRef}
-                    // eslint-disable-next-line deprecation/deprecation
-                    placement={placement ?? positionToPlacement(this.props.position!)}
+                    placement={placement ?? positionToPlacement(position)}
                     modifiers={this.getPopperModifiers()}
                 >
                     {this.renderPopover}
@@ -259,6 +257,9 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         }
         if (props.hasBackdrop && props.interactionKind !== PopoverInteractionKind.CLICK) {
             console.error(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
+        }
+        if (props.placement !== undefined && props.position !== undefined) {
+            console.warn(Errors.POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX);
         }
 
         const childrenCount = React.Children.count(props.children);

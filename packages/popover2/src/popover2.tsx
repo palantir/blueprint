@@ -34,6 +34,7 @@ import {
 import * as Classes from "./classes";
 import * as Errors from "./errors";
 import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
+import { positionToPlacement } from "./popover2PlacementUtils";
 import { IPopover2SharedProps } from "./popover2SharedProps";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip2 } from "./tooltip2";
@@ -121,7 +122,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         interactionKind: Popover2InteractionKind.CLICK,
         minimal: false,
         openOnTargetFocus: true,
-        placement: "auto",
+        // N.B. we don't set a default for `placement` or `position` here because that would trigger
+        // a warning in validateProps if the other prop is specified by a user of this component
         positioningStrategy: "absolute",
         renderTarget: undefined as any,
         targetTagName: "span",
@@ -187,7 +189,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
     }
 
     public render() {
-        const { disabled, content } = this.props;
+        const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
         const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
@@ -206,8 +208,8 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
                 <Reference>{this.renderTarget}</Reference>
                 <Popper
                     innerRef={this.refHandlers.popover}
-                    placement={this.props.placement}
-                    strategy={this.props.positioningStrategy}
+                    placement={placement ?? positionToPlacement(position)}
+                    strategy={positioningStrategy}
                     modifiers={this.computePopperModifiers()}
                 >
                     {this.renderPopover}
@@ -246,6 +248,9 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         }
         if (props.hasBackdrop && props.interactionKind !== Popover2InteractionKind.CLICK) {
             console.warn(Errors.POPOVER2_HAS_BACKDROP_INTERACTION);
+        }
+        if (props.placement !== undefined && props.position !== undefined) {
+            console.warn(Errors.POPOVER2_WARN_PLACEMENT_AND_POSITION_MUTEX);
         }
 
         const childrenCount = React.Children.count(props.children);
