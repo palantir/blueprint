@@ -42,10 +42,9 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
         const context = this.context as IWindowOverrideContext | undefined;
         if (context != null && context.windowOverride != null) {
             return context.windowOverride;
-        } else if (typeof window !== "undefined") {
+        } else {
             return window;
         }
-        return undefined;
     }
 
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
@@ -81,9 +80,9 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
      * @returns a "cancel" function that will cancel the request when invoked.
      */
     public requestAnimationFrame(callback: () => void) {
-        const handle = window.requestAnimationFrame(callback);
+        const handle = this.window.requestAnimationFrame(callback);
         this.requestIds.push(handle);
-        return () => window.cancelAnimationFrame(handle);
+        return () => this.window.cancelAnimationFrame(handle);
     }
 
     /**
@@ -116,7 +115,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     public cancelAnimationFrames = () => {
         if (this.requestIds.length > 0) {
             for (const requestId of this.requestIds) {
-                window.cancelAnimationFrame(requestId);
+                this.window.cancelAnimationFrame(requestId);
             }
             this.requestIds = [];
         }
