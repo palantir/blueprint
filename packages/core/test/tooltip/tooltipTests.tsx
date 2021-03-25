@@ -19,9 +19,8 @@ import { mount } from "enzyme";
 import React from "react";
 import { spy, stub } from "sinon";
 
-import { Button, Classes as CoreClasses, Overlay } from "@blueprintjs/core";
-
-import { Classes } from "../../src";
+import { Classes } from "../../src/common";
+import { Button, Overlay } from "../../src/components";
 import { Popover } from "../../src/components/popover/popover";
 import { TooltipProps, Tooltip } from "../../src/components/tooltip/tooltip";
 
@@ -51,7 +50,7 @@ describe("<Tooltip2>", () => {
 
         it("applies minimal class & hides arrow when minimal is true", () => {
             const tooltip = renderTooltip({ isOpen: true, minimal: true });
-            assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(CoreClasses.MINIMAL));
+            assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
             assert.isFalse(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
         });
 
@@ -59,7 +58,7 @@ describe("<Tooltip2>", () => {
             const tooltip = renderTooltip({ isOpen: true });
             // Minimal should be false by default.
             assert.isFalse(tooltip.props().minimal);
-            assert.isFalse(tooltip.find(TOOLTIP_SELECTOR).hasClass(CoreClasses.MINIMAL));
+            assert.isFalse(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
             assert.isTrue(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
         });
     });

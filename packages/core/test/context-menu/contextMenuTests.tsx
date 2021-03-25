@@ -18,9 +18,7 @@ import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 
-import { Menu, MenuItem } from "@blueprintjs/core";
-
-import { ContextMenu, ContextMenuProps, Popover } from "../../src";
+import { ContextMenu, ContextMenuProps, Menu, MenuItem, Popover } from "../../src";
 
 const MENU_ITEMS = [
     <MenuItem key="left" icon="align-left" text="Align Left" />,

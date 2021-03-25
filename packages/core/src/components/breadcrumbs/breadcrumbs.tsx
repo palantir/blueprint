@@ -111,9 +111,12 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
 
         return (
             <li>
-                <Popover position={position} {...this.props.popoverProps}>
+                <Popover
+                    content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
+                    position={position}
+                    {...this.props.popoverProps}
+                >
                     <span className={Classes.BREADCRUMBS_COLLAPSED} />
-                    <Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>
                 </Popover>
             </li>
         );

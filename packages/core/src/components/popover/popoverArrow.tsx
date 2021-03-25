@@ -35,6 +35,7 @@ const ARROW_SPACING = 4;
 export const POPOVER_ARROW_SVG_SIZE = 30;
 export const TOOLTIP_ARROW_SVG_SIZE = 22;
 
+/* istanbul ignore next */
 /** Modifier helper function to compute arrow rotate() transform */
 function getArrowAngle(placement?: Placement) {
     if (placement == null) {
@@ -53,6 +54,7 @@ function getArrowAngle(placement?: Placement) {
     }
 }
 
+/* istanbul ignore next */
 /**
  * Popper's builtin "arrow" modifier options.padding doesn't seem to work for us, so we
  * need to compute our own offset in the direction of the popover relative to the reference.

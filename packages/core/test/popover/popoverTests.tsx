@@ -19,11 +19,11 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { Classes as CoreClasses, Keys, Menu, MenuItem, Overlay, Portal } from "@blueprintjs/core";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes } from "../../src";
+import { Classes, Keys } from "../../src/common";
 import * as Errors from "../../src/common/errors";
+import { Menu, MenuItem, Overlay, Portal } from "../../src/components";
 import { PopoverProps, PopoverState, Popover, PopoverInteractionKind } from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
@@ -51,6 +51,8 @@ describe("<Popover>", () => {
 
     describe("validation", () => {
         let warnSpy: sinon.SinonStub;
+
+        // use sinon.stub to prevent warnings from appearing in the test logs
         before(() => (warnSpy = sinon.stub(console, "warn")));
         beforeEach(() => warnSpy.resetHistory());
         after(() => warnSpy.restore());
@@ -60,13 +62,11 @@ describe("<Popover>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_REQUIRES_TARGET));
         });
 
-        it("warns if given > 2 target elements", () => {
-            // use sinon.stub to prevent warnings from appearing in the test logs
+        it("warns if given > 1 target elements", () => {
             shallow(
                 <Popover>
                     <button />
                     <article />
-                    {"h3"}
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
@@ -88,9 +88,8 @@ describe("<Popover>", () => {
 
         it("warns if backdrop enabled when rendering inline", () => {
             shallow(
-                <Popover hasBackdrop={true} usePortal={false}>
+                <Popover content={"content"} hasBackdrop={true} usePortal={false}>
                     {"target"}
-                    {"content"}
                 </Popover>,
             );
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE));
@@ -183,28 +182,28 @@ describe("<Popover>", () => {
         it("allows user to apply dark theme explicitly", () => {
             const { popoverElement } = renderPopover({
                 isOpen: true,
-                popoverClassName: CoreClasses.DARK,
+                popoverClassName: Classes.DARK,
                 usePortal: false,
             });
-            assert.isNotNull(popoverElement.matches(`.${CoreClasses.DARK}`));
+            assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
         });
     });
 
     describe("basic functionality", () => {
         it("inherits dark theme from trigger ancestor", () => {
-            testsContainerElement.classList.add(CoreClasses.DARK);
+            testsContainerElement.classList.add(Classes.DARK);
             wrapper = renderPopover({ inheritDarkTheme: true, isOpen: true, usePortal: true });
-            assert.exists(wrapper.find(Portal).find(`.${CoreClasses.DARK}`));
-            testsContainerElement.classList.remove(CoreClasses.DARK);
+            assert.exists(wrapper.find(Portal).find(`.${Classes.DARK}`));
+            testsContainerElement.classList.remove(Classes.DARK);
         });
 
         it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
-            testsContainerElement.classList.add(CoreClasses.DARK);
+            testsContainerElement.classList.add(Classes.DARK);
             renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true }).assertFindClass(
-                CoreClasses.DARK,
+                Classes.DARK,
                 false,
             );
-            testsContainerElement.classList.remove(CoreClasses.DARK);
+            testsContainerElement.classList.remove(Classes.DARK);
         });
 
         it("supports overlay lifecycle props", () => {
@@ -479,7 +478,7 @@ describe("<Popover>", () => {
                 interactionKind: "click",
                 isOpen: true,
             });
-            wrapper.assertFindClass(CoreClasses.ACTIVE, false);
+            wrapper.assertFindClass(Classes.ACTIVE, false);
         });
     });
 
@@ -594,7 +593,7 @@ describe("<Popover>", () => {
         it("does apply active class to target when open", () => {
             wrapper = renderPopover({ interactionKind: "click" });
             wrapper.simulateTarget("click");
-            wrapper.assertFindClass(CoreClasses.ACTIVE, true);
+            wrapper.assertFindClass(Classes.ACTIVE, true);
         });
     });
 
@@ -614,7 +613,7 @@ describe("<Popover>", () => {
 
         it("shows tooltip on hover", () => {
             root.find(`.${Classes.POPOVER_TARGET}`).last().simulate("mouseenter");
-            assert.lengthOf(root.find(`.${Classes.TOOLTIP2}`), 1);
+            assert.lengthOf(root.find(`.${Classes.TOOLTIP}`), 1);
         });
 
         it("shows popover on click", () => {
@@ -670,7 +669,7 @@ describe("<Popover>", () => {
         it("Classes.DISABLED does not close", () =>
             assertClickToClose(
                 // testing nested behavior too
-                <div className={CoreClasses.DISABLED}>
+                <div className={Classes.DISABLED}>
                     <button className={Classes.POPOVER_DISMISS} id="btn">
                         Dismiss
                     </button>
@@ -757,7 +756,7 @@ describe("<Popover>", () => {
                     <MenuItem text="Close" />
                 </Menu>,
             );
-            wrapper.find(`.${CoreClasses.MENU_ITEM}`).simulate("click");
+            wrapper.find(`.${Classes.MENU_ITEM}`).simulate("click");
             wrapper.assertIsOpen(false);
         });
     });
@@ -815,7 +814,7 @@ describe("<Popover>", () => {
             return wrapper!;
         };
         wrapper.sendEscapeKey = () => {
-            wrapper!.findClass(CoreClasses.OVERLAY_OPEN).simulate("keydown", {
+            wrapper!.findClass(Classes.OVERLAY_OPEN).simulate("keydown", {
                 nativeEvent: new KeyboardEvent("keydown"),
                 which: Keys.ESCAPE,
             });
