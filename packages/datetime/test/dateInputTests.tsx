@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { InputGroup, Intent, Keys, Popover } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover } from "@blueprintjs/core";
 
 import { Classes, DateInput, DatePicker, DateInputProps, TimePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
@@ -48,7 +48,7 @@ describe("<DateInput>", () => {
         );
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${PopoverClasses.POPOVER_TARGET}`).hostNodes();
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`).hostNodes();
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
