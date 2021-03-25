@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
+import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
+import { StrictModifier } from "react-popper";
 
-import { Position } from "../../common/position";
-import { Props } from "../../common/props";
+import { Props, Position } from "../../common";
 import { OverlayableProps } from "../overlay/overlay";
 
-// re-export symbols for library consumers
-export { PopperBoundary, PopperModifiers };
-
-/** `Position` with `"auto"` values, used by `Popover` and `Tooltip`. */
 export const PopoverPosition = {
     ...Position,
     AUTO: "auto" as "auto",
@@ -33,16 +29,34 @@ export const PopoverPosition = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
 
-/** Props shared between `Popover` and `Tooltip`. */
-export interface PopoverSharedProps extends OverlayableProps, Props {
+export { Boundary as PopperBoundary, Placement, placements as PopperPlacements };
+// copied from @popperjs/core, where it is not exported as public
+export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
+
+/**
+ * E: target element interface, defaults to HTMLElement in Popover component props interface.
+ */
+export interface PopoverTargetProps {
+    ref: React.Ref<any>;
+
+    /** Whether the popover or tooltip is currently open. */
+    isOpen: boolean;
+}
+
+/**
+ * Props shared between `Popover` and `Tooltip`.
+ *
+ * @template TProps HTML props interface for target element,
+ *                  defaults to props for HTMLElement in PopoverProps and TooltipProps
+ */
+export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
     /**
-     * Determines the boundary element used by Popper for its `flip` and
-     * `preventOverflow` modifiers. Three shorthand keywords are supported;
-     * Popper will find the correct DOM element itself.
+     * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
+     * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
      *
-     * @default "scrollParent"
+     * @see https://popper.js.org/docs/v2/utils/detect-overflow/#boundary
      */
-    boundary?: PopperBoundary;
+    boundary?: Boundary;
 
     /**
      * When enabled, clicks inside a `Classes.POPOVER_DISMISS` element
@@ -113,11 +127,18 @@ export interface PopoverSharedProps extends OverlayableProps, Props {
     minimal?: boolean;
 
     /**
-     * Popper modifier options, passed directly to internal Popper instance. See
-     * https://popper.js.org/docs/modifiers/ for complete
-     * details.
+     * Overrides for Popper.js built-in modifiers.
+     * Each override is is a full modifier object (omitting its name), keyed by its modifier name.
+     *
+     * For example, the arrow modifier can be disabled by providing `{ arrow: { enabled: false } }`.
+     *
+     * @see https://popper.js.org/docs/v2/modifiers/
      */
-    modifiers?: PopperModifiers;
+    modifiers?: Partial<
+        {
+            [M in StrictModifierNames]: StrictModifier<M>;
+        }
+    >;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*
@@ -135,6 +156,22 @@ export interface PopoverSharedProps extends OverlayableProps, Props {
     openOnTargetFocus?: boolean;
 
     /**
+     * Target renderer which receives props injected by Popover which should be spread onto
+     * the rendered element. This function should return a single React node.
+     *
+     * Mutually exclusive with children, targetClassName, and targetTagName.
+     */
+    renderTarget?: (props: PopoverTargetProps & TProps) => JSX.Element;
+
+    /**
+     * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.
+     * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
+     *
+     * @see https://popper.js.org/docs/v2/utils/detect-overflow/#rootboundary
+     */
+    rootBoundary?: RootBoundary;
+
+    /**
      * The placement (relative to the target) at which the popover should appear.
      * Mutually exclusive with `position` prop.
      *
@@ -142,7 +179,6 @@ export interface PopoverSharedProps extends OverlayableProps, Props {
      * and will allow the popover to reposition itself to remain onscreen as the
      * user scrolls around.
      *
-     * @see https://popper.js.org/docs/v1/#Popper.placements
      * @default "auto"
      */
     placement?: Placement;
@@ -165,24 +201,15 @@ export interface PopoverSharedProps extends OverlayableProps, Props {
     position?: PopoverPosition;
 
     /**
-     * Space-delimited string of class names applied to the target element.
-     */
-    targetClassName?: string;
-
-    /**
-     * HTML props to spread to target element. Use `targetTagName` to change
-     * the type of element rendered. Note that `ref` is not supported.
-     */
-    targetProps?: React.HTMLAttributes<HTMLElement>;
-
-    /**
      * HTML tag name for the target element. This must be an HTML element to
      * ensure that it supports the necessary DOM event handlers.
      *
      * By default, a `<span>` tag is used so popovers appear as inline-block
      * elements and can be nested in text. Use `<div>` tag for a block element.
      *
-     * @default "span"
+     * Mutually exclusive with renderTarget.
+     *
+     * @default "span" ("div" if fill={true})
      */
     targetTagName?: keyof JSX.IntrinsicElements;
 
@@ -202,12 +229,4 @@ export interface PopoverSharedProps extends OverlayableProps, Props {
      * @default true
      */
     usePortal?: boolean;
-
-    /**
-     * HTML tag name for the wrapper element, which also receives the
-     * `className` prop.
-     *
-     * @default "span"
-     */
-    wrapperTagName?: keyof JSX.IntrinsicElements;
 }

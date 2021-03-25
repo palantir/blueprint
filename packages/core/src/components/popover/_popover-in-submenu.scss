@@ -5,10 +5,10 @@
 @import "~@blueprintjs/core/src/components/menu/common";
 
 .#{$ns}-submenu {
-  .#{$ns}-popover2-target {
+  .#{$ns}-popover-target {
     display: block;
 
-    &.#{$ns}-popover2-open > .#{$ns}-menu-item {
+    &.#{$ns}-popover-open > .#{$ns}-menu-item {
       // keep a trail of hovered items as submenus are opened
       @include menu-item();
       @include menu-item-intent();
@@ -16,12 +16,12 @@
     }
   }
 
-  &.#{$ns}-popover2 {
+  &.#{$ns}-popover {
     box-shadow: none;
     // horizontal padding leaves some space from parent menu item, and extends mouse zone
     padding: 0 $half-grid-size;
 
-    > .#{$ns}-popover2-content {
+    > .#{$ns}-popover-content {
       box-shadow: $pt-popover-box-shadow;
     }
 
@@ -29,7 +29,7 @@
     &.#{$ns}-dark {
       box-shadow: none;
 
-      > .#{$ns}-popover2-content {
+      > .#{$ns}-popover-content {
         box-shadow: $pt-dark-popover-box-shadow;
       }
     }

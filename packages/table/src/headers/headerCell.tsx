@@ -17,8 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { Classes as CoreClasses, Props, Utils as CoreUtils } from "@blueprintjs/core";
-import { ContextMenu2 } from "@blueprintjs/popover2";
+import { Classes as CoreClasses, ContextMenu, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { ResizeHandle } from "../interactions/resizeHandle";
@@ -127,11 +126,11 @@ export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderC
         );
 
         return (
-            <ContextMenu2 content={menuRenderer?.(index) ?? undefined}>
+            <ContextMenu content={menuRenderer?.(index) ?? undefined}>
                 <div className={classes} style={style}>
                     {children}
                 </div>
-            </ContextMenu2>
+            </ContextMenu>
         );
     }
 }

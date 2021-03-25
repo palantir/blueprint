@@ -17,8 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
-import { ContextMenu2, ContextMenu2RenderProps } from "@blueprintjs/popover2";
+import { AbstractComponent, ContextMenu, ContextMenuRenderProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { CellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
@@ -106,7 +105,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
             >
-                <ContextMenu2
+                <ContextMenu
                     disabled={!enableBodyContextMenu}
                     content={this.renderContextMenu}
                     onContextMenu={this.handleContextMenu}
@@ -129,17 +128,17 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                             viewportRect={this.props.viewportRect}
                         />
                     </div>
-                </ContextMenu2>
+                </ContextMenu>
             </DragSelectable>
         );
     }
 
-    private renderContextMenu = ({ mouseEvent }: ContextMenu2RenderProps) => {
+    private renderContextMenu = ({ mouseEvent }: ContextMenuRenderProps) => {
         const { grid, bodyContextMenuRenderer, selectedRegions } = this.props;
         const { numRows, numCols } = grid;
 
         if (bodyContextMenuRenderer == null || mouseEvent == null) {
-            // either context menu is disabled, or it was just closed by the ContextMenu2 component
+            // either context menu is disabled, or it was just closed by the ContextMenu component
             return undefined;
         }
 

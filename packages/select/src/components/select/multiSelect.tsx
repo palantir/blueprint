@@ -22,10 +22,11 @@ import {
     DISPLAYNAME_PREFIX,
     TagInputProps,
     Keys,
+    Popover,
+    PopoverProps,
     TagInput,
     TagInputAddMethod,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps } from "../../common";
 import { QueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -72,7 +73,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<Popover2Props> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /** Controlled selected values. */
     selectedItems?: T[];
@@ -156,7 +157,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         };
 
         return (
-            <Popover2
+            <Popover
                 autoFocus={false}
                 canEscapeKeyClose={true}
                 enforceFocus={false}
@@ -192,7 +193,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                         values={selectedItems.map(this.props.tagRenderer)}
                     />
                 </div>
-            </Popover2>
+            </Popover>
         );
     };
 

@@ -16,9 +16,21 @@
 
 import React from "react";
 
-import { Button, H5, Icon, InputGroup, Intent, Menu, MenuItem, Spinner, Switch, Tag } from "@blueprintjs/core";
+import {
+    Button,
+    H5,
+    Icon,
+    InputGroup,
+    Intent,
+    Menu,
+    MenuItem,
+    Popover,
+    Spinner,
+    Switch,
+    Tag,
+    Tooltip,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface InputGroupExampleState {
     disabled: boolean;
@@ -57,7 +69,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
         const maybeSpinner = filterValue ? <Spinner size={Icon.SIZE_STANDARD} /> : undefined;
 
         const lockButton = (
-            <Tooltip2 content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
+            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
                     disabled={disabled}
                     icon={showPassword ? "unlock" : "lock"}
@@ -65,11 +77,11 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                     minimal={true}
                     onClick={this.handleLockClick}
                 />
-            </Tooltip2>
+            </Tooltip>
         );
 
         const permissionsMenu = (
-            <Popover2
+            <Popover
                 content={
                     <Menu>
                         <MenuItem text="can edit" />
@@ -82,14 +94,14 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                 <Button disabled={disabled} minimal={true} rightIcon="caret-down">
                     can edit
                 </Button>
-            </Popover2>
+            </Popover>
         );
 
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Tooltip2 content="My input value state is updated asynchronously with a 10ms delay">
+                <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
                     <InputGroup
                         asyncControl={true}
                         disabled={disabled}
@@ -101,7 +113,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
                         small={small}
                         value={filterValue}
                     />
-                </Tooltip2>
+                </Tooltip>
                 <InputGroup
                     disabled={disabled}
                     large={large}

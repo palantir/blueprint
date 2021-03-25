@@ -58,17 +58,11 @@ export const PANEL_STACK_REQUIRES_PANEL = ns + ` <PanelStack> requires at least 
 export const OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED =
     ns + ` <OverflowList> does not support changing observeParents after mounting.`;
 
-export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
-export const POPOVER_HAS_BACKDROP_INTERACTION =
-    ns + ` <Popover hasBackdrop={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
-export const POPOVER_WARN_TOO_MANY_CHILDREN =
-    ns +
-    ` <Popover> supports one or two children; additional children are ignored.` +
-    ` First child is the target, second child is the content. You may instead supply these two as props.`;
-export const POPOVER_WARN_DOUBLE_CONTENT =
-    ns + ` <Popover> with two children ignores content prop; use either prop or children.`;
+export const POPOVER_REQUIRES_TARGET = `${ns} <Popover> requires renderTarget prop or a child element.`;
+export const POPOVER_HAS_BACKDROP_INTERACTION = `${ns} <Popover hasBackdrop={true}> requires interactionKind="click".`;
+export const POPOVER_WARN_TOO_MANY_CHILDREN = `${ns} <Popover> supports only one child which is rendered as its target; additional children are ignored.`;
 export const POPOVER_WARN_DOUBLE_TARGET =
-    ns + ` <Popover> with children ignores target prop; use either prop or children.`;
+    ns + ` <Popover> with children ignores renderTarget prop; use either prop or children.`;
 export const POPOVER_WARN_EMPTY_CONTENT = ns + ` Disabling <Popover> with empty/whitespace content...`;
 export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover usePortal={false}> ignores hasBackdrop`;
 export const POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX =

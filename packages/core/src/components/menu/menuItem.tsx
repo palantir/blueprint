@@ -15,15 +15,14 @@
  */
 
 import classNames from "classnames";
-import { Modifiers } from "popper.js";
 import React from "react";
 
 import { CaretRight } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, Position } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
-import { PopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
+import { PopoverProps, Popover } from "../popover/popover";
 import { Text } from "../text/text";
 import { Menu } from "./menu";
 
@@ -191,34 +190,32 @@ export class MenuItem extends AbstractPureComponent<MenuItemProps & React.Anchor
         }
         const { disabled, popoverProps } = this.props;
         return (
-            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 captureDismiss={false}
                 disabled={disabled}
                 enforceFocus={false}
                 hoverCloseDelay={0}
-                interactionKind={PopoverInteractionKind.HOVER}
-                modifiers={SUBMENU_POPOVER_MODIFIERS}
-                position={Position.RIGHT_TOP}
+                interactionKind="hover"
+                modifiers={{
+                    // 20px padding - scrollbar width + a bit
+                    flip: { options: { padding: 20 } },
+                    // shift popover up 5px so MenuItems align
+                    offset: { options: { offset: [undefined, -5] } },
+                    preventOverflow: { options: { padding: 20 } },
+                }}
+                placement="right-start"
                 usePortal={false}
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
                 popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
-                target={target}
-            />
+            >
+                {target}
+            </Popover>
         );
     }
 }
-
-const SUBMENU_POPOVER_MODIFIERS: Modifiers = {
-    // 20px padding - scrollbar width + a bit
-    flip: { boundariesElement: "viewport", padding: 20 },
-    // shift popover up 5px so MenuItems align
-    offset: { offset: -5 },
-    preventOverflow: { boundariesElement: "viewport", padding: 20 },
-};
 
 // props to ignore when disabled
 const DISABLED_PROPS: React.AnchorHTMLAttributes<HTMLAnchorElement> = {

@@ -25,13 +25,14 @@ import {
     InputGroupProps,
     InputGroup,
     Intent,
+    Popover,
+    PopoverProps,
     Props,
     RefCallback,
     RefObject,
     Keys,
     refHandler,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
@@ -104,11 +105,11 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Pr
     onError?: (errorDate: Date) => void;
 
     /**
-     * Props to pass to the `Popover2`.
+     * Props to pass to the `Popover`.
      * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
      */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<Popover2Props> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /**
      * Element to render on right side of input.
@@ -241,7 +242,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         const { inputProps = {}, popoverProps = {} } = this.props;
         const isErrorState = value != null && (!isDateValid(value) || !this.isDateInRange(value));
         return (
-            <Popover2
+            <Popover
                 isOpen={this.state.isOpen && !this.props.disabled}
                 fill={this.props.fill}
                 {...popoverProps}
@@ -268,7 +269,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
                     onKeyDown={this.handleInputKeyDown}
                     value={dateString}
                 />
-            </Popover2>
+            </Popover>
         );
     }
 

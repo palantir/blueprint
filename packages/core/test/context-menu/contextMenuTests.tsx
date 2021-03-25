@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,129 +14,47 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
-
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import React from "react";
-import { spy } from "sinon";
 
-import { AlignLeft, AlignCenter, AlignRight } from "@blueprintjs/icons";
+import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { Classes, ContextMenu, ContextMenuTarget, Menu, MenuItem } from "../../src";
+import { ContextMenu, ContextMenuProps, Popover } from "../../src";
 
 const MENU_ITEMS = [
-    <MenuItem key="left" icon={<AlignLeft />} text="Align Left" />,
-    <MenuItem key="center" icon={<AlignCenter />} text="Align Center" />,
-    <MenuItem key="right" icon={<AlignRight />} text="Align Right" />,
+    <MenuItem key="left" icon="align-left" text="Align Left" />,
+    <MenuItem key="center" icon="align-center" text="Align Center" />,
+    <MenuItem key="right" icon="align-right" text="Align Right" />,
 ];
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
+const TARGET_CLASSNAME = "test-target";
 
-describe("ContextMenu", () => {
-    before(() => assert.isNull(getPopover()));
-    afterEach(() => ContextMenu.hide());
-
-    it("Decorator does not mutate the original class", () => {
-        class TestComponent extends React.Component {
-            public render() {
-                return <div />;
-            }
-
-            public renderContextMenu() {
-                return MENU;
-            }
-        }
-
-        // eslint-disable-next-line deprecation/deprecation
-        const TargettedTestComponent = ContextMenuTarget(TestComponent);
-
-        // it's not the same Component
-        assert.notStrictEqual(TargettedTestComponent, TestComponent);
+describe("ContextMenu2", () => {
+    it("renders children and Popover2", () => {
+        const ctxMenu = mountTestMenu();
+        assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
+        assert.isTrue(ctxMenu.find(Popover).exists());
     });
 
-    it("React renders ContextMenu", () => {
-        ContextMenu.show(MENU, { left: 0, top: 0 });
-        assertContextMenuWasRendered();
+    it("opens popover on right click", () => {
+        const ctxMenu = mountTestMenu();
+        openCtxMenu(ctxMenu);
+        assert.isTrue(ctxMenu.find(Popover).prop("isOpen"));
     });
 
-    it("invokes onClose callback when menu closed", done => {
-        ContextMenu.show(MENU, { left: 0, top: 0 }, done);
-        ContextMenu.hide();
-    });
+    function mountTestMenu(props: Partial<ContextMenuProps> = {}) {
+        return mount(
+            <ContextMenu content={MENU} transitionDuration={0} {...props}>
+                <div className={TARGET_CLASSNAME} />
+            </ContextMenu>,
+        );
+    }
 
-    it("removes element from the DOM after closing", done => {
-        ContextMenu.show(MENU, { left: 0, top: 0 });
-        ContextMenu.hide();
-        setTimeout(() => {
-            assert.isTrue(document.querySelector(`.${Classes.CONTEXT_MENU}`) == null);
-            done();
-        }, 200);
-    });
-
-    it("does not invoke previous onClose callback", () => {
-        const onClose = spy();
-        ContextMenu.show(MENU, { left: 0, top: 0 }, onClose);
-        ContextMenu.show(MENU, { left: 10, top: 10 });
-        ContextMenu.hide();
-        assert.isTrue(onClose.notCalled, "onClose was called");
-    });
-
-    describe("decorator", () => {
-        it("is connected via `ContextMenuTarget`", () => {
-            mount(<RightClickMe />).simulate("contextmenu");
-            assertContextMenuWasRendered();
-        });
-
-        it("supports nesting targets", () => {
-            const childItems = MENU_ITEMS.concat(<MenuItem key="child" text="child!" />);
-            const rightClickMe = mount(
-                <RightClickMe>
-                    <RightClickMe items={childItems} />
-                </RightClickMe>,
-            );
-            rightClickMe.simulate("contextmenu");
-            assertContextMenuWasRendered();
-
-            rightClickMe.find(RightClickMe).last().simulate("contextmenu");
-            assertContextMenuWasRendered(childItems.length);
-        });
-
-        /* -- uncomment this test to confirm compilation failure -- */
-        // it("TypeScript compilation fails if decorated class does not implement renderContextMenu", () => {
-        //     @ContextMenuTarget
-        //     return class TypeScriptFail extends React.Component {
-        //         public render() { return <article />; }
-        //     }
-        // });
-    });
+    function openCtxMenu(ctxMenu: ReactWrapper) {
+        ctxMenu
+            .find(`.${TARGET_CLASSNAME}`)
+            .simulate("contextmenu", { defaultPrevented: false, clientX: 10, clientY: 10 })
+            .update();
+    }
 });
-
-function getPopover() {
-    return document.querySelector(`.${Classes.POPOVER}.${Classes.MINIMAL}`);
-}
-
-function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
-    const menu = document.querySelector(`.${Classes.CONTEXT_MENU}`);
-    assert.isNotNull(menu);
-    // popover is rendered in a Portal
-    const popover = getPopover();
-    assert.isNotNull(popover);
-    const menuItems = popover!.querySelectorAll(`.${Classes.MENU_ITEM}`);
-    assert.lengthOf(menuItems, expectedLength);
-}
-
-// eslint-disable-next-line deprecation/deprecation
-@ContextMenuTarget
-class RightClickMe extends React.Component<{ items?: JSX.Element[] }> {
-    public static defaultProps = {
-        items: MENU_ITEMS,
-    };
-
-    public render() {
-        return <div>{this.props.children}</div>;
-    }
-
-    public renderContextMenu() {
-        return <Menu>{this.props.items}</Menu>;
-    }
-}

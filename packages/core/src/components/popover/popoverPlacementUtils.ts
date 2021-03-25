@@ -16,7 +16,7 @@
 
 import { Placement } from "@popperjs/core";
 
-import { PopoverPosition } from "@blueprintjs/core";
+import { PopoverPosition } from "./popoverSharedProps";
 
 /**
  * Convert a position to a placement.

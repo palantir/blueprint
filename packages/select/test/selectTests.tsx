@@ -19,8 +19,7 @@ import { mount } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { InputGroup } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { InputGroup, Popover } from "@blueprintjs/core";
 
 import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ItemRendererProps, SelectProps, SelectState, Select } from "../src";
@@ -54,18 +53,18 @@ describe("<Select>", () => {
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
         assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
         assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
-        assert.lengthOf(wrapper.find(Popover2), 1, "should render Popover");
+        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
     });
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
-        assert.strictEqual(wrapper.find(Popover2).prop("disabled"), true);
+        assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
     });
 
     it("disabled=true doesn't call itemRenderer", () => {
@@ -91,7 +90,7 @@ describe("<Select>", () => {
         const modifiers = {}; // our own instance
         const wrapper = select({ popoverProps: { onOpening, modifiers } });
         wrapper.find("article").simulate("click");
-        assert.strictEqual(wrapper.find(Popover2).prop("modifiers"), modifiers);
+        assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
     });
 

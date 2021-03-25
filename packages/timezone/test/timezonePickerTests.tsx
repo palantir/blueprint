@@ -20,8 +20,7 @@ import moment from "moment-timezone";
 import React from "react";
 import sinon from "sinon";
 
-import { Classes, Button, ButtonProps, InputGroupProps, InputGroup } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { Classes, Button, ButtonProps, InputGroupProps, InputGroup, Popover, PopoverProps } from "@blueprintjs/core";
 import { Select } from "@blueprintjs/select";
 
 import { TimezonePickerProps, TimezonePickerState, TimezoneDisplayFormat, TimezonePicker } from "../src";
@@ -62,7 +61,7 @@ describe("<TimezonePicker>", () => {
         // remove isOpen from popoverProps so it's
         const timezonePicker = mount(<TimezonePicker {...DEFAULT_PROPS} popoverProps={{ usePortal: false }} />);
         timezonePicker.find(Button).simulate("click");
-        assert.isTrue(timezonePicker.find(Popover2).prop("isOpen"));
+        assert.isTrue(timezonePicker.find(Popover).prop("isOpen"));
     });
 
     it("if disabled=true, clicking on button target does not open popover", () => {
@@ -70,7 +69,7 @@ describe("<TimezonePicker>", () => {
             <TimezonePicker {...DEFAULT_PROPS} disabled={true} popoverProps={{ usePortal: false }} />,
         );
         timezonePicker.find(Button).simulate("click");
-        assert.isFalse(timezonePicker.find(Popover2).prop("isOpen"));
+        assert.isFalse(timezonePicker.find(Popover).prop("isOpen"));
     });
 
     it("if query is empty, shows initial items", () => {
@@ -182,7 +181,7 @@ describe("<TimezonePicker>", () => {
     });
 
     it("popover can be controlled with popover props", () => {
-        const popoverProps: Popover2Props = {
+        const popoverProps: PopoverProps = {
             isOpen: true,
             placement: "right",
             usePortal: false,
@@ -190,7 +189,7 @@ describe("<TimezonePicker>", () => {
         const timezonePicker = mount(<TimezonePicker {...DEFAULT_PROPS} popoverProps={popoverProps} />);
         const popover = findPopover(timezonePicker);
         for (const key of Object.keys(popoverProps)) {
-            assert.deepEqual(popover.prop(key), popoverProps[key as keyof Popover2Props]);
+            assert.deepEqual(popover.prop(key), popoverProps[key as keyof PopoverProps]);
         }
     });
 
@@ -236,7 +235,7 @@ describe("<TimezonePicker>", () => {
     }
 
     function findPopover(timezonePicker: TimezonePickerWrapper) {
-        return timezonePicker.find(Popover2);
+        return timezonePicker.find(Popover);
     }
 
     function findInputGroup(timezonePicker: TimezonePickerWrapper) {

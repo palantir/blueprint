@@ -33,6 +33,9 @@ describe("Core isomorphic rendering", () => {
         Breadcrumbs: {
             props: { items: [] },
         },
+        ContextMenu: {
+            props: { children: React.createElement("div"), content: React.createElement("div") },
+        },
         Dialog: {
             props: { isOpen: true, usePortal: false },
         },

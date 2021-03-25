@@ -19,8 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import sinon from "sinon";
 
-import { InputGroup, Keys, MenuItem } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
+import { InputGroup, Keys, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
 
 import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
 import { ItemRendererProps, QueryList } from "../src";
@@ -63,7 +62,7 @@ describe("Suggest", () => {
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
-            const popover = wrapper.find(Popover2);
+            const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
             assert.lengthOf(popover.find(MenuItem), 100, "should render 100 items in popover");
@@ -241,11 +240,11 @@ describe("Suggest", () => {
             const modifiers = {}; // our own instance
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
-            assert.strictEqual(wrapper.find(Popover2).prop("modifiers"), modifiers);
+            assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
             assert.isTrue(onOpening.calledOnce);
         });
 
-        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<Popover2Props> {
+        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<PopoverProps> {
             return {
                 ...defaultProps.popoverProps,
                 isOpen,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,35 @@
 
 import React from "react";
 
-import { Button, Intent, PopoverProps, Popover, Position } from "@blueprintjs/core";
+import { Button, Intent, PopoverProps, Popover } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { FileMenu } from "./common/fileMenu";
+import { FileMenu } from "../core-examples/common/fileMenu";
 
 export class PopoverMinimalExample extends React.PureComponent<ExampleProps> {
-    public render() {
-        const baseProps: PopoverProps = { content: <FileMenu />, position: Position.BOTTOM_LEFT };
+    public static displayName = "PopoverMinimalExample";
 
-        /* eslint-disable deprecation/deprecation */
+    public render() {
+        const baseProps: Partial<PopoverProps> = { content: <FileMenu />, placement: "bottom-end" };
+
         return (
             <Example options={false} {...this.props}>
-                <Popover {...baseProps} minimal={true}>
-                    <Button intent={Intent.PRIMARY}>Minimal</Button>
-                </Popover>
-                <Popover {...baseProps}>
-                    <Button>Default</Button>
-                </Popover>
+                <Popover
+                    {...baseProps}
+                    minimal={true}
+                    // tslint:disable-next-line jsx-no-lambda
+                    renderTarget={({ isOpen, ref, ...p }) => (
+                        <Button {...p} active={isOpen} elementRef={ref} intent={Intent.PRIMARY} text="Minimal" />
+                    )}
+                />
+                <Popover
+                    {...baseProps}
+                    // tslint:disable-next-line jsx-no-lambda
+                    renderTarget={({ isOpen, ref, ...p }) => (
+                        <Button {...p} active={isOpen} elementRef={ref} text="Default" />
+                    )}
+                />
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 }

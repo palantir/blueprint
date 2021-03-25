@@ -27,12 +27,13 @@ import {
     InputGroupProps,
     InputGroup,
     Intent,
+    Popover,
+    PopoverProps,
     Props,
     RefObject,
     Keys,
     refHandler,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { DateRange } from "./common/dateRange";
 import { areSameTime, isDateValid, isDayInRange } from "./common/dateUtils";
@@ -123,7 +124,7 @@ export interface DateRangeInputProps extends DatePickerBaseProps, DateFormatProp
      * The props to pass to the popover.
      * `autoFocus`, `content`, and `enforceFocus` will be ignored to avoid compromising usability.
      */
-    popoverProps?: Partial<Popover2Props>;
+    popoverProps?: Partial<PopoverProps>;
 
     /**
      * Whether the entire text field should be selected on focus.
@@ -330,7 +331,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
-            <Popover2
+            <Popover
                 isOpen={this.state.isOpen}
                 placement="bottom-start"
                 {...this.props.popoverProps}
@@ -344,7 +345,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
                     {this.renderInputGroup(Boundary.START)}
                     {this.renderInputGroup(Boundary.END)}
                 </div>
-            </Popover2>
+            </Popover>
         );
     }
 

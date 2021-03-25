@@ -24,13 +24,14 @@ import {
     getRef,
     InputGroupProps,
     InputGroup,
+    Popover,
+    PopoverProps,
     Ref,
     RefObject,
     Keys,
     refHandler,
 } from "@blueprintjs/core";
 import { Cross, Search } from "@blueprintjs/icons";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps } from "../../common";
 import { QueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -62,7 +63,7 @@ export interface SelectProps<T> extends ListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<Popover2Props> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -136,7 +137,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         const { handleKeyDown, handleKeyUp } = listProps;
         return (
-            <Popover2
+            <Popover
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
@@ -162,7 +163,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 >
                     {this.props.children}
                 </div>
-            </Popover2>
+            </Popover>
         );
     };
 

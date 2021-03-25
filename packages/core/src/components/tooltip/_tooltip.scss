@@ -1,7 +1,6 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
 @import "../popover/common";
 @import "./common";
 
@@ -29,6 +28,12 @@
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
   }
+
+  // // need to adjust arrow placement a little bit for tooltips
+  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow { transform: translateY(-3px); }
+  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow { transform: translateX(-3px); }
+  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow { transform: translateY(3px); }
+  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow { transform: translateX(3px); }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {

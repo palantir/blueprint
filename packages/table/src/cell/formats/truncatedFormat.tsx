@@ -17,9 +17,8 @@
 import classNames from "classnames";
 import React from "react";
 
-import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Popover, Props } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";
-import { Popover2 } from "@blueprintjs/popover2";
 
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
@@ -215,7 +214,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
     private renderPopover() {
         const { children, preformatted } = this.props;
 
-        // `<Popover2>` will always check the content's position on update
+        // `<Popover>` will always check the content's position on update
         // regardless if it is open or not. This negatively affects perf due to
         // layout thrashing. So instead we manage the popover state ourselves
         // and mimic its popover target
@@ -226,7 +225,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
-                <Popover2
+                <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     content={popoverContent}
                     placement="bottom"
@@ -234,11 +233,11 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
                     onClose={this.handlePopoverClose}
                 >
                     <More />
-                </Popover2>
+                </Popover>
             );
         } else {
-            // NOTE: This structure matches what `<Popover2>` does internally. If
-            // `<Popover2>` changes, this must be updated.
+            // NOTE: This structure matches what `<Popover>` does internally. If
+            // `<Popover>` changes, this must be updated.
             return (
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
                     <More />

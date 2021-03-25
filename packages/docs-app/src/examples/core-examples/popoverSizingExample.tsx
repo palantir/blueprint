@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,26 @@
 
 import React from "react";
 
-import { Button, Popover, Position } from "@blueprintjs/core";
+import { Button, Popover } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { FileMenu } from "./common/fileMenu";
+import { FileMenu } from "../core-examples/common/fileMenu";
 
 export class PopoverSizingExample extends React.PureComponent<ExampleProps> {
+    public static displayName = "PopoverSizingExample";
+
     public render() {
-        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={false} {...this.props}>
-                <Popover content={<FileMenu className="docs-popover-sizing-example" />} position={Position.BOTTOM_LEFT}>
-                    <Button>Open...</Button>
-                </Popover>
+                <Popover
+                    content={<FileMenu className="docs-popover-sizing-example" />}
+                    placement="bottom-end"
+                    // tslint:disable-next-line jsx-no-lambda
+                    renderTarget={({ isOpen, ref, ...p }) => (
+                        <Button {...p} active={isOpen} elementRef={ref} text="Open..." />
+                    )}
+                />
             </Example>
         );
-        /* eslint-enable deprecation/deprecation */
     }
 }
