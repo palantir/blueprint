@@ -16,9 +16,6 @@
 
 import "../common/configureDom4";
 
-import * as contextMenu from "./context-menu/contextMenu";
-export const ContextMenu = contextMenu;
-
 export * from "./alert/alert";
 export * from "./breadcrumbs/breadcrumb";
 export * from "./breadcrumbs/breadcrumbs";
@@ -27,7 +24,7 @@ export * from "./button/buttonGroup";
 export * from "./callout/callout";
 export * from "./card/card";
 export * from "./collapse/collapse";
-export * from "./context-menu/contextMenuTarget";
+export { ContextMenu, ContextMenuProps, ContextMenuRenderProps } from "./context-menu/contextMenu";
 export * from "./dialog/dialog";
 export * from "./dialog/multistepDialog";
 export * from "./dialog/dialogStep";
@@ -60,8 +57,15 @@ export * from "./overlay/overlay";
 export * from "./text/text";
 export { PanelStack, PanelStackProps } from "./panel-stack/panelStack";
 export { Panel, PanelProps } from "./panel-stack/panelTypes";
-export * from "./popover/popover";
-export * from "./popover/popoverSharedProps";
+export { PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
+export {
+    PopoverSharedProps,
+    PopoverTargetProps,
+    PopperBoundary,
+    Placement,
+    PopperPlacements,
+    StrictModifierNames,
+} from "./popover/popoverSharedProps";
 export * from "./portal/portal";
 export * from "./progress-bar/progressBar";
 export * from "./resize-sensor/resizeSensor";
@@ -77,7 +81,7 @@ export * from "./tag/tag";
 export * from "./tag-input/tagInput";
 export * from "./toast/toast";
 export * from "./toast/toaster";
-export * from "./tooltip/tooltip";
+export { TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, TreeProps } from "./tree/tree";
 export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
 export { TreeNode } from "./tree/treeNode";

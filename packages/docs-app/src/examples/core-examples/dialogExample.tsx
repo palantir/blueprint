@@ -16,9 +16,8 @@
 
 import React from "react";
 
-import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch } from "@blueprintjs/core";
+import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
-import { Tooltip2 } from "@blueprintjs/popover2";
 
 import { BlueprintExampleData } from "../../tags/types";
 
@@ -91,9 +90,9 @@ export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExa
                     </div>
                     <div className={Classes.DIALOG_FOOTER}>
                         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                            <Tooltip2 content="This button is hooked up to close the dialog.">
+                            <Tooltip content="This button is hooked up to close the dialog.">
                                 <Button onClick={this.handleClose}>Close</Button>
-                            </Tooltip2>
+                            </Tooltip>
                             <AnchorButton
                                 intent={Intent.PRIMARY}
                                 href="https://www.palantir.com/palantir-foundry/"

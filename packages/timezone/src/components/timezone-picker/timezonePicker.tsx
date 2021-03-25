@@ -24,11 +24,11 @@ import {
     DISPLAYNAME_PREFIX,
     ButtonProps,
     InputGroupProps,
+    PopoverProps,
     Props,
     MenuItem,
 } from "@blueprintjs/core";
 import { CaretDown } from "@blueprintjs/icons";
-import { Popover2Props } from "@blueprintjs/popover2";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
@@ -103,8 +103,8 @@ export interface TimezonePickerProps extends Props {
      */
     inputProps?: InputGroupProps;
 
-    /** Props to spread to `Popover2`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<Popover2Props>;
+    /** Props to spread to `Popover`. Note that `content` cannot be changed. */
+    popoverProps?: Partial<PopoverProps>;
 }
 
 export interface TimezonePickerState {
@@ -148,7 +148,7 @@ export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, T
             placeholder: "Search for timezones...",
             ...inputProps,
         };
-        const finalPopoverProps: Partial<Popover2Props> = {
+        const finalPopoverProps: Partial<PopoverProps> = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
         };

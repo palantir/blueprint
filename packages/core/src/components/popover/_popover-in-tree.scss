@@ -3,10 +3,9 @@
 
 @import "./common";
 
-label.#{$ns}-label {
-  .#{$ns}-popover2-target {
-    display: block;
-    margin-top: $pt-grid-size / 2;
-    text-transform: none;
+.#{$ns}-tree-node-secondary-label {
+  .#{$ns}-popover-target {
+    align-items: center;
+    display: flex;
   }
 }

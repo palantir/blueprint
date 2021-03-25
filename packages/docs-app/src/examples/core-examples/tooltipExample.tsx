@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,17 @@
 
 import React from "react";
 
-import { Button, Classes, H1, Intent, Popover, Position, Switch, Tooltip } from "@blueprintjs/core";
+import { Button, ButtonGroup, Classes, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-/* eslint-disable deprecation/deprecation */
+export interface TooltipExampleState {
+    isOpen: boolean;
+}
 
-export class TooltipExample extends React.PureComponent<ExampleProps, { isOpen: boolean }> {
-    public state = {
+export class TooltipExample extends React.PureComponent<ExampleProps, TooltipExampleState> {
+    public static displayName = "TooltipExample";
+
+    public state: TooltipExampleState = {
         isOpen: false,
     };
 
@@ -86,36 +90,36 @@ export class TooltipExample extends React.PureComponent<ExampleProps, { isOpen: 
                 <div>
                     <Tooltip
                         className={Classes.TOOLTIP_INDICATOR}
-                        content="Intent.PRIMARY"
-                        intent={Intent.PRIMARY}
-                        position={Position.LEFT}
+                        content="primary"
+                        intent="primary"
+                        placement="left"
                         usePortal={false}
                     >
                         Available
                     </Tooltip>{" "}
                     <Tooltip
                         className={Classes.TOOLTIP_INDICATOR}
-                        content="Intent.SUCCESS"
-                        intent={Intent.SUCCESS}
-                        position={Position.TOP}
+                        content="success"
+                        intent="success"
+                        placement="top"
                         usePortal={false}
                     >
                         in the full
                     </Tooltip>{" "}
                     <Tooltip
                         className={Classes.TOOLTIP_INDICATOR}
-                        content="Intent.WARNING"
-                        intent={Intent.WARNING}
-                        position={Position.BOTTOM}
+                        content="warning"
+                        intent="warning"
+                        placement="bottom"
                         usePortal={false}
                     >
                         range of
                     </Tooltip>{" "}
                     <Tooltip
                         className={Classes.TOOLTIP_INDICATOR}
-                        content="Intent.DANGER"
-                        intent={Intent.DANGER}
-                        position={Position.RIGHT}
+                        content="danger"
+                        intent="danger"
+                        placement="right"
                         usePortal={false}
                     >
                         visual intents!
@@ -124,17 +128,26 @@ export class TooltipExample extends React.PureComponent<ExampleProps, { isOpen: 
                 <br />
                 <Popover
                     content={<H1>Popover!</H1>}
-                    position={Position.RIGHT}
+                    placement="right"
                     popoverClassName={Classes.POPOVER_CONTENT_SIZING}
                 >
-                    <Tooltip
-                        content={<span>This button also has a popover!</span>}
-                        position={Position.RIGHT}
-                        usePortal={false}
-                    >
-                        <Button intent={Intent.SUCCESS} text="Hover and click me" />
+                    <Tooltip content={<span>This button also has a popover!</span>} placement="right" usePortal={false}>
+                        <Button intent="success" text="Hover and click me" />
                     </Tooltip>
                 </Popover>
+                <br />
+
+                <ButtonGroup>
+                    <Tooltip content="Each" placement="bottom">
+                        <Button intent="primary" text="Group" />
+                    </Tooltip>
+                    <Tooltip content="has" placement="bottom">
+                        <Button intent="primary" text="of" />
+                    </Tooltip>
+                    <Tooltip content="a tooltip" placement="bottom">
+                        <Button intent="primary" text="buttons" />
+                    </Tooltip>
+                </ButtonGroup>
             </Example>
         );
     }

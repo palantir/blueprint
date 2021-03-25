@@ -21,15 +21,16 @@ import {
     AbstractPureComponent,
     DISPLAYNAME_PREFIX,
     getRef,
-    InputGroupProps,
     InputGroup,
-    Ref,
-    RefObject,
+    InputGroupProps,
     Keys,
+    Popover,
     PopoverInteractionKind,
+    PopoverProps,
+    Ref,
     refHandler,
+    RefObject,
 } from "@blueprintjs/core";
-import { Popover2, Popover2Props } from "@blueprintjs/popover2";
 
 import { Classes, ListItemsProps } from "../../common";
 import { QueryListRendererProps, QueryList } from "../query-list/queryList";
@@ -87,7 +88,7 @@ export interface SuggestProps<T> extends ListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<Popover2Props> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -155,7 +156,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
-            const timeout = this.props.popoverProps?.transitionDuration ?? Popover2.defaultProps.transitionDuration;
+            const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
             setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
@@ -185,7 +186,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         }
 
         return (
-            <Popover2
+            <Popover
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
@@ -215,7 +216,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                     placeholder={inputPlaceholder}
                     value={inputValue}
                 />
-            </Popover2>
+            </Popover>
         );
     };
 

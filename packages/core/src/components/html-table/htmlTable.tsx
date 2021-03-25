@@ -38,7 +38,6 @@ export interface HTMLTableProps extends React.TableHTMLAttributes<HTMLTableEleme
 
 export class HTMLTable extends AbstractPureComponent<HTMLTableProps> {
     public render() {
-        // eslint-disable-next-line deprecation/deprecation
         const { bordered, className, condensed, elementRef, interactive, striped, ...htmlProps } = this.props;
         const classes = classNames(
             Classes.HTML_TABLE,

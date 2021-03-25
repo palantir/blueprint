@@ -18,7 +18,7 @@ import classNames from "classnames";
 import download from "downloadjs";
 import React from "react";
 
-import { Classes, ContextMenuTarget, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
+import { Classes, ContextMenu, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ClickToCopy } from "./clickToCopy";
 
@@ -35,42 +35,39 @@ function downloadIconFile(iconName: IconName, iconSize: 16 | 20) {
     download(`${GITHUB_RAW_PATH}/${iconSize}px/${iconName}.svg`);
 }
 
-// eslint-disable-next-line deprecation/deprecation
-@ContextMenuTarget
 export class DocsIcon extends React.PureComponent<DocsIconProps> {
     public render() {
         const { iconName, displayName, tags } = this.props;
         return (
-            <ClickToCopy className="docs-icon" data-tags={tags} value={iconName}>
-                <Icon icon={iconName} size={Icon.SIZE_LARGE} />
-                <div className="docs-icon-name">{displayName}</div>
-                <div className="docs-icon-detail">
-                    <p className="docs-code">{iconName}</p>
-                    <div className={Classes.TEXT_MUTED}>Right-click to download</div>
-                    <div
-                        className={classNames("docs-clipboard-message", Classes.TEXT_MUTED)}
-                        data-hover-message="Click to copy name"
-                    />
-                </div>
-            </ClickToCopy>
-        );
-    }
-
-    public renderContextMenu() {
-        const { iconName } = this.props;
-        return (
-            <Menu>
-                <MenuItem
-                    icon={<Icon icon={iconName} size={Icon.SIZE_STANDARD} />}
-                    text="Download 16px SVG"
-                    onClick={this.handleClick16}
-                />
-                <MenuItem
-                    icon={<Icon icon={iconName} size={Icon.SIZE_LARGE} />}
-                    text="Download 20px SVG"
-                    onClick={this.handleClick20}
-                />
-            </Menu>
+            <ContextMenu
+                content={
+                    <Menu>
+                        <MenuItem
+                            icon={<Icon icon={iconName} size={Icon.SIZE_STANDARD} />}
+                            text="Download 16px SVG"
+                            onClick={this.handleClick16}
+                        />
+                        <MenuItem
+                            icon={<Icon icon={iconName} size={Icon.SIZE_LARGE} />}
+                            text="Download 20px SVG"
+                            onClick={this.handleClick20}
+                        />
+                    </Menu>
+                }
+            >
+                <ClickToCopy className="docs-icon" data-tags={tags} value={iconName}>
+                    <Icon icon={iconName} size={Icon.SIZE_LARGE} />
+                    <div className="docs-icon-name">{displayName}</div>
+                    <div className="docs-icon-detail">
+                        <p className="docs-code">{iconName}</p>
+                        <div className={Classes.TEXT_MUTED}>Right-click to download</div>
+                        <div
+                            className={classNames("docs-clipboard-message", Classes.TEXT_MUTED)}
+                            data-hover-message="Click to copy name"
+                        />
+                    </div>
+                </ClickToCopy>
+            </ContextMenu>
         );
     }
 

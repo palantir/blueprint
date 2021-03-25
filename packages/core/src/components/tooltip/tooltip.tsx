@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IntentProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps } from "../../common";
+import * as Classes from "../../common/classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
+import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import { PopoverSharedProps } from "../popover/popoverSharedProps";
 
-export interface TooltipProps extends PopoverSharedProps, IntentProps {
+export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>> extends PopoverSharedProps<TProps>, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
@@ -67,9 +68,7 @@ export interface TooltipProps extends PopoverSharedProps, IntentProps {
     transitionDuration?: number;
 }
 
-/** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
-
-export class Tooltip extends AbstractPureComponent<TooltipProps> {
+export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
     public static defaultProps: Partial<TooltipProps> = {
@@ -79,8 +78,7 @@ export class Tooltip extends AbstractPureComponent<TooltipProps> {
         transitionDuration: 100,
     };
 
-    // eslint-disable-next-line deprecation/deprecation
-    private popover: Popover | null = null;
+    private popover: Popover<T> | null = null;
 
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
@@ -92,10 +90,18 @@ export class Tooltip extends AbstractPureComponent<TooltipProps> {
         );
 
         return (
-            /* eslint-disable deprecation/deprecation */
             <Popover
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
-                modifiers={{ arrow: { enabled: !this.props.minimal } }}
+                modifiers={{
+                    arrow: {
+                        enabled: !this.props.minimal,
+                    },
+                    offset: {
+                        options: {
+                            offset: [0, TOOLTIP_ARROW_SVG_SIZE / 2],
+                        },
+                    },
+                }}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}

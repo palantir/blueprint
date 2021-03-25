@@ -16,16 +16,15 @@
 
 import React from "react";
 
-import { Button, Classes, Code } from "@blueprintjs/core";
+import { Button, Classes, Code, Popover, Placement } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2, Placement } from "@blueprintjs/popover2";
 
-const EXAMPLE_CLASS = "docs-popover2-placement-example";
-const SIDE_LABEL_CLASS = "docs-popover2-placement-label-side";
-const ALIGNMENT_LABEL_CLASS = "docs-popover2-placement-label-alignment";
+const EXAMPLE_CLASS = "docs-popover-placement-example";
+const SIDE_LABEL_CLASS = "docs-popover-placement-label-side";
+const ALIGNMENT_LABEL_CLASS = "docs-popover-placement-label-alignment";
 
-export class Popover2PlacementExample extends React.PureComponent<ExampleProps> {
-    public static displayName = "Popover2PlacementExample";
+export class PopoverPlacementExample extends React.PureComponent<ExampleProps> {
+    public static displayName = "PopoverPlacementExample";
 
     public render() {
         return (
@@ -107,7 +106,7 @@ export class Popover2PlacementExample extends React.PureComponent<ExampleProps> 
         );
 
         return (
-            <Popover2
+            <Popover
                 content={content}
                 placement={placement}
                 usePortal={false}
