@@ -37,6 +37,7 @@ export interface IPrecisionSelectProps {
 
     /**
      * Label to show over the dropdown of precisions.
+     *
      * @default "Precision"
      */
     label?: string;

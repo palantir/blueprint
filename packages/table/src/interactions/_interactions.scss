@@ -52,7 +52,7 @@ $reorder-handle-width: 22px !default;
   }
 }
 
-// stylelint-disable-next-line max-line-length
+/* stylelint-disable-next-line max-line-length */
 .#{$ns}-table-column-header-cell.#{$ns}-table-has-reorder-handle:not(.#{$ns}-table-has-interaction-bar) {
   .#{$ns}-table-column-name-text {
     padding-left: $reorder-handle-width;

@@ -1,0 +1,103 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "~@blueprintjs/core/src/common/react-transition";
+
+.#{$ns}-panel-stack2 {
+  overflow: hidden;
+  position: relative;
+}
+
+.#{$ns}-panel-stack2-header {
+  align-items: center;
+  box-shadow: 0 1px $pt-divider-black;
+  display: flex;
+  flex-shrink: 0;
+  height: $pt-grid-size * 3;
+  z-index: 1;
+
+  .#{$ns}-dark & {
+    box-shadow: 0 1px $pt-dark-divider-white;
+  }
+
+  // two span children act as spacers to keep the title centered.
+  > span {
+    align-items: stretch;
+    display: flex;
+    flex: 1;
+  }
+
+  .#{$ns}-heading {
+    margin: 0 ($pt-grid-size / 2);
+  }
+}
+
+.#{$ns}-button.#{$ns}-panel-stack2-header-back {
+  margin-left: $pt-grid-size / 2;
+  padding-left: 0;
+  white-space: nowrap;
+
+  .#{$ns}-icon {
+    // reduce margins around icon so it fits better in tight header
+    margin: 0 2px;
+  }
+}
+
+.#{$ns}-panel-stack2-view {
+  @include position-all(absolute, 0);
+
+  background-color: $white;
+  border-right: 1px solid $pt-divider-black;
+  display: flex;
+  flex-direction: column;
+
+  // border between panels, visible during transition
+  margin-right: -1px;
+  overflow-y: auto;
+  z-index: 1;
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray4;
+  }
+
+  &:nth-last-child(n + 4) {
+    display: none;
+  }
+}
+
+// PUSH transition: enter from right (100%), existing panel moves off left.
+.#{$ns}-panel-stack2-push {
+  @include react-transition-phase(
+    "#{$ns}-panel-stack2",
+    "enter",
+    (transform: translateX(100%) translate(0%), opacity: 0 1),
+    $easing: ease,
+    $duration: $pt-transition-duration * 4
+  );
+  @include react-transition-phase(
+    "#{$ns}-panel-stack2",
+    "exit",
+    (transform: translateX(-50%) translate(0%), opacity: 0 1),
+    $easing: ease,
+    $duration: $pt-transition-duration * 4
+  );
+}
+
+// POP transition: enter from left (-50%), existing panel moves off right.
+.#{$ns}-panel-stack2-pop {
+  @include react-transition-phase(
+    "#{$ns}-panel-stack2",
+    "enter",
+    (transform: translateX(-50%) translate(0%), opacity: 0 1),
+    $easing: ease,
+    $duration: $pt-transition-duration * 4
+  );
+  @include react-transition-phase(
+    "#{$ns}-panel-stack2",
+    "exit",
+    (transform: translateX(100%) translate(0%), opacity: 0 1),
+    $easing: ease,
+    $duration: $pt-transition-duration * 4
+  );
+}

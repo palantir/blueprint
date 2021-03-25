@@ -35,6 +35,7 @@ export interface IPortalProps extends IProps {
 
     /**
      * The HTML element that children will be mounted to.
+     *
      * @default document.body
      */
     container?: HTMLElement;
@@ -70,7 +71,7 @@ export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
     public context: IPortalContext & IWindowOverrideContext;
     public state: IPortalState = { hasMounted: false };
 
-    private portalElement: HTMLElement;
+    private portalElement: HTMLElement | null = null;
     private get container() {
         if (this.props.container == null) {
             return typeof this.window.document !== "undefined" ? this.window.document.body : null;
@@ -82,7 +83,12 @@ export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
         // Only render `children` once this component has mounted in a browser environment, so they are
         // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        if (cannotCreatePortal || typeof this.window?.document === "undefined" || !this.state.hasMounted) {
+        if (
+            cannotCreatePortal ||
+            typeof this.window?.document === "undefined" ||
+            !this.state.hasMounted ||
+            this.portalElement === null
+        ) {
             return null;
         } else {
             return ReactDOM.createPortal(this.props.children, this.portalElement);
@@ -95,6 +101,7 @@ export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
         }
         this.portalElement = this.createContainerElement();
         this.container.appendChild(this.portalElement);
+        /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();
@@ -104,9 +111,12 @@ export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
     public componentDidUpdate(prevProps: IPortalProps) {
         // update className prop on portal DOM element
         if (this.portalElement != null && prevProps.className !== this.props.className) {
-            this.portalElement.classList.remove(prevProps.className);
+            if (prevProps.className !== undefined) {
+                this.portalElement.classList.remove(prevProps.className);
+            }
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
+
         if (cannotCreatePortal) {
             this.unstableRenderNoPortal();
         }
@@ -132,6 +142,9 @@ export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
     }
 
     private unstableRenderNoPortal() {
+        if (this.portalElement === null) {
+            return;
+        }
         ReactDOM.unstable_renderSubtreeIntoContainer(
             /* parentComponent */ this,
             <div>{this.props.children}</div>,

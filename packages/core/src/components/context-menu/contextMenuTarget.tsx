@@ -22,16 +22,17 @@ import {
     CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT,
     CONTEXTMENU_WARN_DECORATOR_NO_METHOD,
 } from "../../common/errors";
-import { getDisplayName, isFunction, safeInvoke } from "../../common/utils";
+import { getDisplayName, isFunction } from "../../common/utils";
 import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTargetComponent extends React.Component {
     render(): React.ReactElement<any> | null | undefined;
-    renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element | undefined;
-    onContextMenuClose?(): void;
+    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
+    onContextMenuClose?: () => void;
 }
 
+/** @deprecated use ContextMenu2 */
 export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderContextMenu)) {
         console.warn(CONTEXTMENU_WARN_DECORATOR_NO_METHOD);
@@ -62,13 +63,15 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                 if (isFunction(this.renderContextMenu)) {
                     const menu = this.renderContextMenu(e);
                     if (menu != null) {
+                        // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
+                        /* eslint-disable-next-line react/no-find-dom-node */
                         const darkTheme = isDarkTheme(ReactDOM.findDOMNode(this));
                         e.preventDefault();
                         ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, this.onContextMenuClose, darkTheme);
                     }
                 }
 
-                safeInvoke(oldOnContextMenu, e);
+                oldOnContextMenu?.(e);
             };
 
             return React.cloneElement(element, { onContextMenu });

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IOptionProps, Utils } from "@blueprintjs/core";
 import * as React from "react";
 import { CaptionElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IOptionProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
@@ -42,9 +43,11 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
     public state: IDatePickerCaptionState = { monthRightOffset: 0 };
 
     private containerElement: HTMLElement;
+
     private displayedMonthText: string;
 
     private handleMonthSelectChange = this.dateChangeHandler((d, month) => d.setMonth(month), this.props.onMonthChange);
+
     private handleYearSelectChange = this.dateChangeHandler((d, year) => d.setFullYear(year), this.props.onYearChange);
 
     public render() {
@@ -109,7 +112,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
     }
 
     public componentDidMount() {
-        requestAnimationFrame(() => this.positionArrows());
+        this.requestAnimationFrame(() => this.positionArrows());
     }
 
     public componentDidUpdate() {
@@ -132,10 +135,14 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
     private dateChangeHandler(updater: (date: Date, value: number) => void, handler?: (value: number) => void) {
         return (e: React.FormEvent<HTMLSelectElement>) => {
             const value = parseInt((e.target as HTMLSelectElement).value, 10);
+            // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
+            if (isNaN(value)) {
+                return;
+            }
             const newDate = clone(this.props.date);
             updater(newDate, value);
-            Utils.safeInvoke(this.props.onDateChange, newDate);
-            Utils.safeInvoke(handler, value);
+            this.props.onDateChange?.(newDate);
+            handler?.(value);
         };
     }
 }

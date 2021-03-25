@@ -1,5 +1,5 @@
 {
-    "version": "3.5.3",
+    "version": "4.0.3",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "declaration": true,
@@ -7,13 +7,7 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "jsx": "react",
-        "lib": [
-          "dom",
-          "dom.iterable",
-          "es5",
-          "es2015.collection",
-          "es2015.iterable"
-        ],
+        "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable"],
         "module": "es2015",
         "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
@@ -24,6 +18,7 @@
         "pretty": true,
         "removeComments": false,
         "sourceMap": true,
+        "strict": true,
         "stripInternal": true,
         "target": "es5",
         "typeRoots": ["../node_modules/@types"]

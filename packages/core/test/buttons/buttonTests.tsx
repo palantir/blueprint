@@ -28,7 +28,7 @@ describe("Buttons:", () => {
 });
 
 function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) {
-    describe(`<${component.displayName.split(".")[1]}>`, () => {
+    describe(`<${component.displayName!.split(".")[1]}>`, () => {
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
             assert.isTrue(wrapper.is(tagName));
@@ -45,6 +45,11 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         it("renders the button text prop", () => {
             const wrapper = button({ text: "some text" }, true);
             assert.equal(wrapper.text(), "some text");
+        });
+
+        it("renders the button text prop", () => {
+            const wrapper = mount(<Button data-test-foo="bar" />);
+            assert.isTrue(wrapper.find('[data-test-foo="bar"]').exists());
         });
 
         it("wraps string children in spans", () => {
@@ -105,14 +110,8 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         if (typeof React.createRef !== "undefined") {
             it("matches buttonRef with elementRef using createRef", done => {
-                const elementRef = React.createRef<HTMLElement>();
-
-                const wrapper = button(
-                    {
-                        elementRef,
-                    },
-                    true,
-                );
+                const elementRef = React.createRef<HTMLButtonElement>();
+                const wrapper = button({ elementRef }, true);
 
                 // wait for the whole lifecycle to run
                 setTimeout(() => {
@@ -123,14 +122,10 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         }
 
         it("matches buttonRef with elementRef using callback", done => {
-            let elementRef: HTMLElement = null;
-            const buttonRefCallback = (ref: HTMLElement) => {
-                elementRef = ref;
-            };
-
+            let elementRef: HTMLElement | null = null;
             const wrapper = button(
                 {
-                    elementRef: buttonRefCallback,
+                    elementRef: (ref: HTMLButtonElement | null) => (elementRef = ref),
                 },
                 true,
             );
@@ -144,7 +139,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         if (typeof React.useRef !== "undefined") {
             it("matches buttonRef with elementRef using useRef", done => {
-                let elementRef: React.MutableRefObject<HTMLElement>;
+                let elementRef: React.RefObject<HTMLElement>;
                 const Component = component;
 
                 const Test = () => {

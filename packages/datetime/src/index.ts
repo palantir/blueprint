@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+import { DayModifiers as IDatePickerDayModifiers, LocaleUtils } from "react-day-picker";
+
 import * as classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 
 // re-exporting these symbols to preserve compatility
-import { DayModifiers as IDatePickerDayModifiers, LocaleUtils } from "react-day-picker";
 
 type IDatePickerLocaleUtils = typeof LocaleUtils;
 export { DateUtils, IDatePickerLocaleUtils, IDatePickerDayModifiers };

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import {
     mount as untypedMount,
     MountRendererProps,
@@ -22,9 +22,9 @@ import {
     ShallowRendererProps,
 } from "enzyme";
 import * as React from "react";
-import { spy } from "sinon";
+import { spy, stub, SinonStub } from "sinon";
 
-import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import {
     Button,
@@ -93,6 +93,12 @@ describe("<NumericInput>", () => {
             const value = component.state().value;
             expect(value).to.equal("1");
         });
+
+        it("accepts defaultValue prop", () => {
+            const component = mount(<NumericInput defaultValue={2} />);
+            const value = component.state().value;
+            expect(value).to.equal("2");
+        });
     });
 
     describe("Button position", () => {
@@ -115,17 +121,12 @@ describe("<NumericInput>", () => {
             expect(component.find(ButtonGroup).exists()).to.be.false;
         });
 
-        it("does not render the buttons when buttonPosition is null", () => {
-            const component = shallow(<NumericInput buttonPosition={null} />);
-            expect(component.find(ButtonGroup).exists()).to.be.false;
-        });
-
         it(`always renders the children in a ControlGroup`, () => {
             // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
             const component = shallow(<NumericInput />);
             expect(component.find(ControlGroup).exists()).to.be.true;
-            component.setProps({ buttonPosition: null });
+            component.setProps({ buttonPosition: "none" });
             expect(component.find(ControlGroup).exists()).to.be.true;
         });
     });
@@ -135,10 +136,7 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput />);
 
             component.find("input").simulate("change", { target: { value: "11" } });
-
-            const value = component.state().value;
-            const expectedValue = "11";
-            expect(value).to.equal(expectedValue);
+            expect(component.state().value).to.equal("11");
         });
 
         it("allows entry of non-numeric characters", () => {
@@ -154,21 +152,23 @@ describe("<NumericInput>", () => {
         it("provides numeric value to onValueChange as a number and a string", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            const nextValue = "1";
 
-            component.setState({ value: "1" });
+            component.find("input").simulate("change", { target: { value: nextValue } });
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.calledWith(1, "1")).to.be.true;
+            expect(onValueChangeSpy.calledWith(+nextValue, nextValue)).to.be.true;
         });
 
         it("provides non-numeric value to onValueChange as NaN and a string", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            const invalidValue = "non-numeric-value";
 
-            component.setState({ value: "non-numeric-value" });
+            component.find("input").simulate("change", { target: { value: invalidValue } });
 
             expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.calledWith(NaN, "non-numeric-value")).to.be.true;
+            expect(onValueChangeSpy.calledWith(NaN, invalidValue)).to.be.true;
         });
 
         it("accepts a numeric value", () => {
@@ -181,16 +181,6 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput value={"10"} />);
             const value = component.state().value;
             expect(value).to.equal("10");
-        });
-
-        it("in controlled mode, accepts successive value changes containing non-numeric characters", () => {
-            const component = mount(<NumericInput />);
-            component.setProps({ value: "1" });
-            expect(component.state().value).to.equal("1");
-            component.setProps({ value: "1 +" });
-            expect(component.state().value).to.equal("1 +");
-            component.setProps({ value: "1 + 1" });
-            expect(component.state().value).to.equal("1 + 1");
         });
 
         it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
@@ -757,7 +747,7 @@ describe("<NumericInput>", () => {
                 const inputField = component.find("input");
 
                 inputField.simulate("change", { target: { value: "-5" } });
-                inputField.simulate("blur");
+                inputField.simulate("blur", { target: { value: "-5" } });
                 expect(component.state().value).to.equal(MIN.toString());
             });
 
@@ -767,7 +757,7 @@ describe("<NumericInput>", () => {
                 const inputField = component.find("input");
 
                 inputField.simulate("change", { target: { value: "5" } });
-                inputField.simulate("blur");
+                inputField.simulate("blur", { target: { value: "5" } });
                 expect(component.state().value).to.equal(MAX.toString());
             });
 
@@ -780,7 +770,7 @@ describe("<NumericInput>", () => {
                 const inputField = component.find("input");
 
                 inputField.simulate("change", { target: { value: "-5" } });
-                inputField.simulate("blur");
+                inputField.simulate("blur", { target: { value: "-5" } });
 
                 const args = onValueChange.getCall(1).args;
                 expect(onValueChange.calledTwice).to.be.true;
@@ -793,46 +783,46 @@ describe("<NumericInput>", () => {
     // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
     // in component constructors
     describe("Validation", () => {
-        it("throws an error if min >= max", () => {
-            expectPropValidationError(NumericInput, { min: 2, max: 1 }, Errors.NUMERIC_INPUT_MIN_MAX);
+        let consoleError: SinonStub;
+
+        before(() => (consoleError = stub(console, "error")));
+        afterEach(() => consoleError.resetHistory());
+        after(() => consoleError.restore());
+
+        it("logs an error if min >= max", () => {
+            mount(<NumericInput min={2} max={1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MIN_MAX)).to.be.true;
         });
 
-        it("throws an error if stepSize is null", () => {
-            expectPropValidationError(NumericInput, { stepSize: null }, Errors.NUMERIC_INPUT_STEP_SIZE_NULL);
+        it("logs an error if stepSize <= 0", () => {
+            mount(<NumericInput stepSize={-1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        it("throws an error if stepSize <= 0", () => {
-            expectPropValidationError(NumericInput, { stepSize: -1 }, Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+        it("logs an error if minorStepSize <= 0", () => {
+            mount(<NumericInput minorStepSize={-0.1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        it("throws an error if minorStepSize <= 0", () => {
-            expectPropValidationError(
-                NumericInput,
-                { minorStepSize: -0.1 },
-                Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE,
-            );
+        it("logs an error if majorStepSize <= 0", () => {
+            mount(<NumericInput majorStepSize={-0.1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        it("throws an error if majorStepSize <= 0", () => {
-            expectPropValidationError(
-                NumericInput,
-                { majorStepSize: -0.1 },
-                Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE,
-            );
+        it("logs an error if majorStepSize <= stepSize", () => {
+            mount(<NumericInput majorStepSize={0.5} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
-        it("throws an error if majorStepSize <= stepSize", () => {
-            expectPropValidationError(NumericInput, { majorStepSize: 0.5 }, Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
-        });
-
-        it("throws an error if stepSize <= minorStepSize", () => {
-            expectPropValidationError(NumericInput, { minorStepSize: 2 }, Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+        it("logs an error if stepSize <= minorStepSize", () => {
+            mount(<NumericInput minorStepSize={2} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
-            const component = mount(<NumericInput value={"<invalid>"} />);
+            const component = mount(<ControlledNumericInput value={"<invalid>"} />);
 
-            const value = component.state().value;
+            const value = component.find(NumericInput).state().value;
             expect(value).to.equal("<invalid>");
 
             const incrementButton = component.find(Button).first();
@@ -843,9 +833,9 @@ describe("<NumericInput>", () => {
         });
 
         it("clears the field if the value is invalid when decrementing", () => {
-            const component = mount(<NumericInput value={"<invalid>"} />);
+            const component = mount(<ControlledNumericInput value={"<invalid>"} />);
 
-            const value = component.state().value;
+            const value = component.find(NumericInput).state().value;
             expect(value).to.equal("<invalid>");
 
             const decrementButton = component.find(Button).last();
@@ -862,6 +852,141 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
             component.setProps({ value: 1 });
             expect(onValueChangeSpy.notCalled).to.be.true;
+        });
+
+        it("state.value only changes with prop change", () => {
+            const initialValue = 10;
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput value={initialValue} onValueChange={onValueChangeSpy} />);
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
+            let inputElement = component.find("input");
+            expect(inputElement.props().value).to.equal("10");
+            expect(onValueChangeSpy.calledOnceWithExactly(11, "11", inputElement.getDOMNode()));
+
+            component.setProps({ value: 11 }).update();
+            inputElement = component.find("input");
+            expect(inputElement.props().value).to.equal("11");
+        });
+
+        it("accepts successive value changes containing non-numeric characters", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            component.setProps({ value: "1" });
+            expect(component.state().value).to.equal("1");
+            component.setProps({ value: "1 +" });
+            expect(component.state().value).to.equal("1 +");
+            component.setProps({ value: "1 + 1" });
+            expect(component.state().value).to.equal("1 + 1");
+        });
+    });
+
+    describe("Localization", () => {
+        it("accepts the number in a different locale", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            const nextValue = "99,99";
+            const nextValueNumber = 99.99;
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+        });
+
+        it("accepts the number in a different locale [Arabic - Bahrain (ar-BH)]", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"ar-BH"} />);
+            const nextValue = "٩٫٩٩";
+            const nextValueNumber = 9.99;
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+        });
+
+        it("changing the locale it changes the value (en-US to it-IT)", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            const nextValue = "99.99";
+            const formattedValue = "99,99";
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+            expect(onValueChangeSpy.lastCall.calledWith(+nextValue, nextValue)).to.be.true;
+
+            component.setProps({ locale: "it-IT" });
+
+            expect(onValueChangeSpy.lastCall.calledWith(+nextValue, formattedValue)).to.be.true;
+        });
+
+        it("changing the locale it changes the value (it-IT to undefined)", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"it-IT"} />);
+            const nextValue = "99,99";
+            const usValue = "99.99";
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+            expect(onValueChangeSpy.lastCall.calledWith(+usValue, nextValue)).to.be.true;
+
+            component.setProps({ locale: undefined });
+
+            expect(onValueChangeSpy.lastCall.calledWith(+usValue, usValue)).to.be.true;
+        });
+
+        it("doesn't accept the number in a different format", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            const invalidValue = "77,99";
+
+            component.find("input").simulate("change", { target: { value: invalidValue } });
+
+            expect(onValueChangeSpy.calledOnce).to.be.true;
+            expect(onValueChangeSpy.calledWith(NaN, invalidValue)).to.be.true;
+        });
+
+        it("increments the number with the specified locale", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            const nextValue = "7,9";
+            const nextValueNumber = 7.9;
+            const valueAfterDecrement = "8,9";
+            const valueNumberAfterDecrement = 8.9;
+
+            component.find("input").simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+
+            const incrementButton = component.find(Button).first();
+            incrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
+            expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
+        });
+
+        it("decrements the number with the specified locale", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            const nextValue = "7,9";
+            const nextValueNumber = 7.9;
+            const valueAfterDecrement = "6,9";
+            const valueNumberAfterDecrement = 6.9;
+
+            component
+                .find("input")
+                .first()
+                .simulate("change", { target: { value: nextValue } });
+
+            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+
+            const decrementButton = component.find(Button).last();
+            decrementButton.simulate("mousedown");
+            dispatchMouseEvent(document, "mouseup");
+
+            expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
         });
     });
 
@@ -954,29 +1079,64 @@ describe("<NumericInput>", () => {
             expect(component.find("input").prop("value")).to.equal("1.101");
 
             // one significant digit too many
-            component.setState({ value: "1.0001" });
+            setNextValue(component, "1.0001");
             incrementButton.simulate("mousedown", { altKey: true });
             expect(component.find("input").prop("value")).to.equal("1.001");
         });
 
-        it("changes max precision appropriately when the [*]stepSize props change", () => {
-            const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
-            const incrementButton = component.find(Button).first();
+        it("changes max precision appropriately when the min/max stepSize props change", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(
+                <NumericInput
+                    majorStepSize={1}
+                    stepSize={0.1}
+                    minorStepSize={0.001}
+                    value="0.0001"
+                    onValueChange={onValueChangeSpy}
+                />,
+            );
 
             // excess digits should truncate to max precision
-            component.setState({ value: "0.0001" });
+            let incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", { altKey: true });
-            expect(component.find("input").prop("value")).to.equal("0.001");
+            expect(onValueChangeSpy.calledOnceWith(0.001, "0.001"));
+            onValueChangeSpy.resetHistory();
 
             // now try a smaller step size, and expect no truncation
-            component.setProps({ minorStepSize: 0.0001, value: "0.0001" });
+            component.setProps({ minorStepSize: 0.0001 });
+            incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", { altKey: true });
-            expect(component.find("input").prop("value")).to.equal("0.0002");
+            expect(onValueChangeSpy.calledOnceWith(0.0002, "0.0002"));
+            onValueChangeSpy.resetHistory();
 
             // now try a larger step size, and expect more truncation than before
-            component.setProps({ minorStepSize: 0.1, value: "0.0001" });
+            component.setProps({ minorStepSize: 0.1 });
+            incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", { altKey: true });
-            expect(component.find("input").prop("value")).to.equal("0.1");
+            expect(onValueChangeSpy.calledOnceWith(0.01, "0.01"));
+            onValueChangeSpy.resetHistory();
+        });
+
+        it("must not call handleButtonClick if component is disabled", () => {
+            const SPACE_KEYSTROKE = { keyCode: Keys.SPACE, which: Keys.SPACE };
+
+            const component = mount(<NumericInput disabled={true} />);
+
+            const incrementButton = component.find(Button).first();
+            const handleButtonClickSpy = spy(component.instance(), "handleButtonClick" as any);
+
+            incrementButton.simulate("mousedown");
+            incrementButton.simulate("mousedown", { altKey: true });
+            incrementButton.simulate("keyDown", SPACE_KEYSTROKE);
+            incrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
+
+            const decrementButton = component.find(Button).last();
+            decrementButton.simulate("mousedown");
+            decrementButton.simulate("mousedown", { altKey: true });
+            decrementButton.simulate("keyDown", SPACE_KEYSTROKE);
+            decrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
+
+            expect(handleButtonClickSpy.notCalled).to.be.true;
         });
     });
 
@@ -992,9 +1152,15 @@ describe("<NumericInput>", () => {
         const majorStepSize = overrides.majorStepSize !== undefined ? overrides.majorStepSize : 20;
         const minorStepSize = overrides.minorStepSize !== undefined ? overrides.minorStepSize : 0.2;
 
-        return mount(
-            <NumericInput majorStepSize={majorStepSize} minorStepSize={minorStepSize} stepSize={2} value={10} />,
+        const controledWrapper = mount(
+            <ControlledNumericInput
+                majorStepSize={majorStepSize}
+                minorStepSize={minorStepSize}
+                stepSize={2}
+                value={10}
+            />,
         );
+        return controledWrapper.find(NumericInput);
     }
 
     function runInteractionSuite(
@@ -1162,7 +1328,7 @@ describe("<NumericInput>", () => {
                 minorStepSize: null,
             });
 
-            component.setState({ value: "3e2" }); // i.e. 300
+            setNextValue(component, "3e2"); // i.e. 300
 
             simulateIncrement(component);
 
@@ -1198,4 +1364,41 @@ describe("<NumericInput>", () => {
             expect(valueToCheck).to.be.true;
         });
     }
+
+    // instance.setState() doesn't work like it used to, so we use this helper function to
+    // limit the places where we reach into NumericInput internals
+    function setNextValue(wrapper: ReactWrapper, value: string) {
+        const numericInput = wrapper.find(NumericInput);
+
+        try {
+            if (numericInput.exists()) {
+                (numericInput.instance() as any).handleNextValue(value);
+            } else {
+                (wrapper.instance() as any).handleNextValue(value);
+            }
+        } catch (e) {
+            if (e instanceof ReferenceError) {
+                assert.fail("Unable to set next value on mounted NumericInput");
+            }
+            throw e;
+        }
+    }
 });
+
+/**
+ * Wraps NumericInput to make it behave like a controlled component, treating props.value as a default value
+ */
+class ControlledNumericInput extends React.PureComponent<INumericInputProps, { value?: string }> {
+    public state = {
+        // treat value as "defaultValue"
+        value: this.props.value?.toString(),
+    };
+
+    public render() {
+        return <NumericInput {...this.props} value={this.state.value} onValueChange={this.handleValueChange} />;
+    }
+
+    private handleValueChange = (_valueAsNumber: number, value: string) => {
+        this.setState({ value });
+    };
+}

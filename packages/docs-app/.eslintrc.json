@@ -1,0 +1,7 @@
+{
+    "extends": "../../.eslintrc.js",
+    "rules": {
+        "react/display-name": "off",
+        "react/jsx-no-bind": "off"
+    }
+}

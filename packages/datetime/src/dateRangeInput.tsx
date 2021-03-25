@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { DayPickerProps } from "react-day-picker";
+import DayPicker from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
 import {
@@ -25,19 +25,16 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     getRef,
-    HTMLInputProps,
-    IInputGroupProps,
+    IInputGroupProps2,
     InputGroup,
     Intent,
     IPopoverProps,
     IProps,
-    IRefCallback,
     IRefObject,
-    isRefObject,
     Keys,
     Popover,
     Position,
-    Utils,
+    refHandler,
 } from "@blueprintjs/core";
 
 import { DateRange } from "./common/dateRange";
@@ -48,17 +45,26 @@ import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./da
 import { DateRangePicker } from "./dateRangePicker";
 import { IDateRangeShortcut } from "./shortcuts";
 
+// we handle events in a kind of generic way in this component, so here we enumerate all the different kinds of events which we have handlers for
+type InputEvent =
+    | React.MouseEvent<HTMLInputElement>
+    | React.KeyboardEvent<HTMLInputElement>
+    | React.FocusEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLInputElement>;
+
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
      * If `false`, clicking a selected date will clear the selection.
+     *
      * @default false
      */
     allowSingleDayRange?: boolean;
 
     /**
      * Whether the calendar popover should close when a date range is fully selected.
+     *
      * @default true
      */
     closeOnSelection?: boolean;
@@ -66,19 +72,10 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     /**
      * Whether displayed months in the calendar are contiguous.
      * If false, each side of the calendar can move independently to non-contiguous months.
+     *
      * @default true
      */
     contiguousCalendarMonths?: boolean;
-
-    /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `numberOfMonths`, `fromMonth` (use
-     * `minDate`), `month` (use `initialMonth`), `toMonth` (use `maxDate`).
-     */
-    dayPickerProps?: DayPickerProps;
 
     /**
      * The default date range to be used in the component when uncontrolled.
@@ -88,6 +85,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
 
     /**
      * Whether the text inputs are non-interactive.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -97,7 +95,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    endInputProps?: HTMLInputProps & IInputGroupProps;
+    endInputProps?: IInputGroupProps2;
 
     /**
      * Called when the user selects a day.
@@ -119,6 +117,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
     /**
      * The error message to display when the selected dates overlap.
      * This can only happen when typing dates in the input field.
+     *
      * @default "Overlapping dates"
      */
     overlappingDatesMessage?: string;
@@ -131,6 +130,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
 
     /**
      * Whether the entire text field should be selected on focus.
+     *
      * @default false
      */
     selectAllOnFocus?: boolean;
@@ -140,12 +140,14 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
      * If an array is provided, the custom shortcuts will be displayed.
+     *
      * @default true
      */
     shortcuts?: boolean | IDateRangeShortcut[];
 
     /**
      * Whether to show only a single month calendar.
+     *
      * @default false
      */
     singleMonthOnly?: boolean;
@@ -155,7 +157,7 @@ export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatP
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
      * `ref` is not supported; use `inputRef` instead.
      */
-    startInputProps?: HTMLInputProps & IInputGroupProps;
+    startInputProps?: IInputGroupProps2;
 
     /**
      * The currently selected date range.
@@ -233,22 +235,21 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 
-    private startInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null;
-    private endInputRef: HTMLInputElement | IRefObject<HTMLInputElement> | null;
-    private refHandlers = {
-        endInputRef: isRefObject<HTMLInputElement>(this.props.endInputProps.inputRef)
-            ? (this.endInputRef = this.props.endInputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.endInputRef = ref;
-                  (this.props.endInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-        startInputRef: isRefObject<HTMLInputElement>(this.props.startInputProps.inputRef)
-            ? (this.startInputRef = this.props.startInputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.startInputRef = ref;
-                  (this.props.startInputProps.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-    };
+    public startInputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
+    public endInputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+
+    private handleStartInputRef = refHandler<HTMLInputElement, "startInputElement">(
+        this,
+        "startInputElement",
+        this.props.startInputProps.inputRef,
+    );
+
+    private handleEndInputRef = refHandler<HTMLInputElement, "endInputElement">(
+        this,
+        "endInputElement",
+        this.props.endInputProps.inputRef,
+    );
 
     public constructor(props: IDateRangeInputProps, context?: any) {
         super(props, context);
@@ -274,8 +275,8 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         super.componentDidUpdate(prevProps, prevState);
         const { isStartInputFocused, isEndInputFocused, shouldSelectAfterUpdate } = this.state;
 
-        const startInputRef = getRef(this.startInputRef);
-        const endInputRef = getRef(this.endInputRef);
+        const startInputRef = getRef(this.startInputElement);
+        const endInputRef = getRef(this.endInputElement);
 
         const shouldFocusStartInput = this.shouldFocusInputRef(isStartInputFocused, startInputRef);
         const shouldFocusEndInput = this.shouldFocusInputRef(isEndInputFocused, endInputRef);
@@ -333,6 +334,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 isOpen={this.state.isOpen}
                 position={Position.BOTTOM_LEFT}
@@ -347,6 +349,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
                     {this.renderInputGroup(Boundary.START)}
                     {this.renderInputGroup(Boundary.END)}
                 </div>
+                {/* eslint-disable-next-line deprecation/deprecation */}
             </Popover>
         );
     }
@@ -477,7 +480,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
             this.setState({ ...baseStateChange, selectedEnd, selectedStart });
         }
 
-        Utils.safeInvoke(this.props.onChange, selectedRange);
+        this.props.onChange?.(selectedRange);
     };
 
     private handleShortcutChange = (_: IDateRangeShortcut, selectedShortcutIndex: number) => {
@@ -529,48 +532,56 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
 
     // instantiate these two functions once so we don't have to for each callback on each render.
 
-    private handleStartInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private handleStartInputEvent = (e: InputEvent) => {
         this.handleInputEvent(e, Boundary.START);
     };
 
-    private handleEndInputEvent = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private handleEndInputEvent = (e: InputEvent) => {
         this.handleInputEvent(e, Boundary.END);
     };
 
-    private handleInputEvent = (e: React.SyntheticEvent<HTMLInputElement>, boundary: Boundary) => {
+    private handleInputEvent = (e: InputEvent, boundary: Boundary) => {
+        const inputProps = this.getInputProps(boundary);
+
         switch (e.type) {
             case "blur":
                 this.handleInputBlur(e, boundary);
+                inputProps.onBlur?.(e as React.FocusEvent<HTMLInputElement>);
                 break;
             case "change":
                 this.handleInputChange(e, boundary);
+                inputProps.onChange?.(e as React.ChangeEvent<HTMLInputElement>);
                 break;
             case "click":
-                this.handleInputClick(e as React.MouseEvent<HTMLInputElement>);
+                e = e as React.MouseEvent<HTMLInputElement>;
+                this.handleInputClick(e);
+                inputProps.onClick?.(e);
                 break;
             case "focus":
                 this.handleInputFocus(e, boundary);
+                inputProps.onFocus?.(e as React.FocusEvent<HTMLInputElement>);
                 break;
             case "keydown":
-                this.handleInputKeyDown(e as React.KeyboardEvent<HTMLInputElement>);
+                e = e as React.KeyboardEvent<HTMLInputElement>;
+                this.handleInputKeyDown(e);
+                inputProps.onKeyDown?.(e);
                 break;
             case "mousedown":
+                e = e as React.MouseEvent<HTMLInputElement>;
                 this.handleInputMouseDown();
+                inputProps.onMouseDown?.(e);
                 break;
             default:
                 break;
         }
-
-        const inputProps = this.getInputProps(boundary);
-        const callbackFn = this.getInputGroupCallbackForEvent(e, inputProps);
-
-        Utils.safeInvoke(callbackFn, e);
     };
 
     // add a keydown listener to persistently change focus when tabbing:
     // - if focused in start field, Tab moves focus to end field
     // - if focused in end field, Shift+Tab moves focus to start field
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable deprecation/deprecation */
         const isTabPressed = e.which === Keys.TAB;
         const isEnterPressed = e.which === Keys.ENTER;
         const isShiftPressed = e.shiftKey;
@@ -690,7 +701,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
                     [keys.selectedValue]: maybeNextDate,
                 };
             }
-            Utils.safeInvoke(this.props.onError, this.getDateRangeForCallback(maybeNextDate, boundary));
+            this.props.onError?.(this.getDateRangeForCallback(maybeNextDate, boundary));
         }
 
         this.setState(nextState);
@@ -715,7 +726,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
             } else {
                 nextState = { ...baseState, [keys.selectedValue]: null };
             }
-            Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(null, boundary));
+            this.props.onChange?.(this.getDateRangeForCallback(null, boundary));
         } else if (this.isDateValidAndInRange(maybeNextDate)) {
             // note that error cases that depend on both fields (e.g. overlapping dates) should fall
             // through into this block so that the UI can update immediately, possibly with an error
@@ -732,7 +743,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
                 nextState = { ...baseState, [keys.selectedValue]: maybeNextDate };
             }
             if (this.isNextDateRangeValid(maybeNextDate, boundary)) {
-                Utils.safeInvoke(this.props.onChange, this.getDateRangeForCallback(maybeNextDate, boundary));
+                this.props.onChange?.(this.getDateRangeForCallback(maybeNextDate, boundary));
             }
         } else {
             // again, clear the hover string to ensure the most recent keystroke appears
@@ -745,9 +756,9 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     // Callbacks - Popover
     // ===================
 
-    private handlePopoverClose = () => {
+    private handlePopoverClose = (event: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
-        Utils.safeInvoke(this.props.popoverProps.onClose);
+        this.props.popoverProps.onClose?.(event);
     };
 
     // Helpers
@@ -814,29 +825,6 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         }) as DateRange;
     };
 
-    private getInputGroupCallbackForEvent = (
-        e: React.SyntheticEvent<HTMLInputElement>,
-        inputProps: HTMLInputProps & IInputGroupProps,
-    ) => {
-        // use explicit switch cases to ensure callback function names remain grep-able in the codebase.
-        switch (e.type) {
-            case "blur":
-                return inputProps.onBlur;
-            case "change":
-                return inputProps.onChange;
-            case "click":
-                return inputProps.onClick;
-            case "focus":
-                return inputProps.onFocus;
-            case "keydown":
-                return inputProps.onKeyDown;
-            case "mousedown":
-                return inputProps.onMouseDown;
-            default:
-                return undefined;
-        }
-    };
-
     private getInputDisplayString = (boundary: Boundary) => {
         const { values } = this.getStateKeysAndValuesForBoundary(boundary);
         const { isInputFocused, inputString, selectedValue, hoverString } = values;
@@ -878,7 +866,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
     };
 
     private getInputRef = (boundary: Boundary) => {
-        return boundary === Boundary.START ? this.refHandlers.startInputRef : this.refHandlers.endInputRef;
+        return boundary === Boundary.START ? this.handleStartInputRef : this.handleEndInputRef;
     };
 
     private getStateKeysAndValuesForBoundary = (boundary: Boundary): IStateKeysAndValuesObject => {
@@ -918,7 +906,7 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         }
     };
 
-    private getDateRangeForCallback = (currDate: Date | null, currBoundary?: Boundary) => {
+    private getDateRangeForCallback = (currDate: Date | null, currBoundary?: Boundary): DateRange => {
         const otherBoundary = this.getOtherBoundary(currBoundary);
         const otherDate = this.getStateKeysAndValuesForBoundary(otherBoundary).values.selectedValue;
 
@@ -938,10 +926,10 @@ export class DateRangeInput extends AbstractPureComponent2<IDateRangeInputProps,
         }
 
         if (boundary === Boundary.START) {
-            const isAfter = DayPicker.DateUtils.isDayAfter(date, otherBoundaryDate);
+            const isAfter = date > otherBoundaryDate;
             return isAfter || (!allowSingleDayRange && DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
         } else {
-            const isBefore = DayPicker.DateUtils.isDayBefore(date, otherBoundaryDate);
+            const isBefore = date < otherBoundaryDate;
             return isBefore || (!allowSingleDayRange && DayPicker.DateUtils.isSameDay(date, otherBoundaryDate));
         }
     };

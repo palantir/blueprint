@@ -15,11 +15,13 @@
  */
 
 import * as React from "react";
+
 import { isNodeEnv } from "./utils";
 
 /**
  * An abstract component that Blueprint components can extend
  * in order to add some common functionality like runtime props validation.
+ *
  * @deprecated componentWillReceiveProps is deprecated in React 16.9; use AbstractComponent2 instead
  */
 export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
@@ -29,7 +31,7 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];
 
-    constructor(props?: P, context?: any) {
+    constructor(props: P, context?: any) {
         super(props, context);
         if (!isNodeEnv("production")) {
             this.validateProps(this.props);
@@ -49,6 +51,7 @@ export abstract class AbstractComponent<P, S> extends React.Component<P, S> {
     /**
      * Set a timeout and remember its ID.
      * All stored timeouts will be cleared when component unmounts.
+     *
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {

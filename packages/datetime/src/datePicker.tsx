@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps, Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
+import DayPicker, { CaptionElementProps, DayModifiers, NavbarElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractPureComponent2, Button, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -32,37 +33,16 @@ import { TimePicker } from "./timePicker";
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
+     *
      * @default true
      */
     canClearSelection?: boolean;
-
-    /**
-     * Props to pass to ReactDayPicker. See API documentation
-     * [here](http://react-day-picker.js.org/api/DayPicker).
-     *
-     * The following props are managed by the component and cannot be configured:
-     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
-     * `initialMonth`), `toMonth` (use `maxDate`).
-     *
-     * In case of supplying your owner `renderDay` function, make sure to apply the appropriate
-     * CSS wrapper class to obtain default Blueprint styling.
-     * eg.
-     * `<div className={Classes.DATEPICKER_DAY_WRAPPER}>{CONTENT_HERE}</div>`
-     *
-     */
-    dayPickerProps?: DayPickerProps;
 
     /**
      * Initial day the calendar will display as selected.
      * This should not be set if `value` is set.
      */
     defaultValue?: Date;
-
-    /**
-     * Whether the current day should be highlighted in the calendar.
-     * @default false
-     */
-    highlightCurrentDay?: boolean;
 
     /**
      * Called when the user selects a day.
@@ -80,6 +60,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.
+     *
      * @default false
      */
     showActionsBar?: boolean;
@@ -100,12 +81,14 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
 
     /**
      * Text for the today button in the action bar.
+     *
      * @default "Today"
      */
     todayButtonText?: string;
 
     /**
      * Text for the reset button in the action bar.
+     *
      * @default "Clear"
      */
     clearButtonText?: string;
@@ -113,7 +96,7 @@ export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      */
-    value?: Date;
+    value?: Date | null;
 }
 
 export interface IDatePickerState {
@@ -217,28 +200,26 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     protected validateProps(props: IDatePickerProps) {
         const { defaultValue, initialMonth, maxDate, minDate, value } = props;
         if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate, maxDate])) {
-            throw new Error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
+            console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
         }
 
         if (initialMonth != null && !DateUtils.isMonthInRange(initialMonth, [minDate, maxDate])) {
-            throw new Error(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
+            console.error(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
         }
 
         if (maxDate != null && minDate != null && maxDate < minDate && !DateUtils.areSameDay(maxDate, minDate)) {
-            throw new Error(Errors.DATEPICKER_MAX_DATE_INVALID);
+            console.error(Errors.DATEPICKER_MAX_DATE_INVALID);
         }
 
         if (value != null && !DateUtils.isDayInRange(value, [minDate, maxDate])) {
-            throw new Error(Errors.DATEPICKER_VALUE_INVALID);
+            console.error(Errors.DATEPICKER_VALUE_INVALID);
         }
     }
-
-    private isToday = (date: Date) => DateUtils.areSameDay(date, new Date());
 
     private shouldHighlightCurrentDay = (date: Date) => {
         const { highlightCurrentDay } = this.props;
 
-        return highlightCurrentDay && this.isToday(date);
+        return highlightCurrentDay && DateUtils.isToday(date);
     };
 
     private getDatePickerModifiers = () => {
@@ -292,14 +273,18 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     }
 
     private maybeRenderTimePicker() {
-        const { timePrecision, timePickerProps } = this.props;
+        const { timePrecision, timePickerProps, minDate, maxDate } = this.props;
         if (timePrecision == null && timePickerProps === DatePicker.defaultProps.timePickerProps) {
             return null;
         }
+        const applyMin = DateUtils.areSameDay(this.state.value, minDate);
+        const applyMax = DateUtils.areSameDay(this.state.value, maxDate);
         return (
             <div className={Classes.DATEPICKER_TIMEPICKER_WRAPPER}>
                 <TimePicker
                     precision={timePrecision}
+                    minTime={applyMin ? minDate : undefined}
+                    maxTime={applyMax ? maxDate : undefined}
                     {...timePickerProps}
                     onChange={this.handleTimeChange}
                     value={this.state.value}
@@ -343,7 +328,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     }
 
     private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
-        Utils.safeInvoke(this.props.dayPickerProps.onDayClick, day, modifiers, e);
+        this.props.dayPickerProps.onDayClick?.(day, modifiers, e);
         if (modifiers.disabled) {
             return;
         }
@@ -370,7 +355,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
         }
 
         const datePickerShortcut = { ...shortcut, date: shortcut.dateRange[0] };
-        Utils.safeInvoke(onShortcutChange, datePickerShortcut, selectedShortcutIndex);
+        onShortcutChange?.(datePickerShortcut, selectedShortcutIndex);
     };
 
     private updateDay = (day: Date) => {
@@ -417,7 +402,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
             this.updateValue(date, false, this.ignoreNextMonthChange);
             this.ignoreNextMonthChange = false;
         }
-        Utils.safeInvoke(this.props.dayPickerProps.onMonthChange, date);
+        this.props.dayPickerProps.onMonthChange?.(date);
     };
 
     private handleTodayClick = () => {
@@ -430,7 +415,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
     };
 
     private handleTimeChange = (time: Date) => {
-        Utils.safeInvoke(this.props.timePickerProps.onChange, time);
+        this.props.timePickerProps.onChange?.(time);
         const { value } = this.state;
         const newValue = DateUtils.getDateTime(value != null ? value : new Date(), time);
         this.updateValue(newValue, true);
@@ -441,7 +426,7 @@ export class DatePicker extends AbstractPureComponent2<IDatePickerProps, IDatePi
      */
     private updateValue(value: Date, isUserChange: boolean, skipOnChange = false) {
         if (!skipOnChange) {
-            Utils.safeInvoke(this.props.onChange, value, isUserChange);
+            this.props.onChange?.(value, isUserChange);
         }
         if (this.props.value === undefined) {
             this.setState({ value });

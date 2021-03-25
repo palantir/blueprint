@@ -78,7 +78,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
   }
 
   // a bunch of deep compound selectors ahead, but there's not really a better way to do this right now
-  // stylelint-disable selector-max-compound-selectors
+  /* stylelint-disable selector-max-compound-selectors */
   .#{$ns}-dark & {
     th {
       color: $pt-dark-heading-color;
@@ -95,7 +95,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
       }
     }
   }
-  // stylelint-enable selector-max-compound-selectors
+  /* stylelint-enable selector-max-compound-selectors */
 }
 
 table.#{$ns}-html-table {
@@ -157,7 +157,7 @@ table.#{$ns}-html-table {
   }
 
   .#{$ns}-dark & {
-    // stylelint-disable selector-max-compound-selectors
+    /* stylelint-disable selector-max-compound-selectors */
     &.#{$ns}-html-table-striped {
       tbody tr:nth-child(odd) td {
         background: rgba($gray1, 0.15);
@@ -183,7 +183,7 @@ table.#{$ns}-html-table {
           box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
 
           // easier than the alternative...
-          // stylelint-disable max-nesting-depth
+          /* stylelint-disable max-nesting-depth */
           &:first-child {
             box-shadow: none;
           }
@@ -203,6 +203,6 @@ table.#{$ns}-html-table {
         }
       }
     }
-    // stylelint-enable selector-max-compound-selectors
+    /* stylelint-enable selector-max-compound-selectors */
   }
 }

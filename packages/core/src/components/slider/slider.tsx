@@ -16,6 +16,7 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
@@ -24,12 +25,14 @@ export interface ISliderProps extends ISliderBaseProps {
     /**
      * Initial value of the slider. This determines the other end of the
      * track fill: from `initialValue` to `value`.
+     *
      * @default 0
      */
     initialValue?: number;
 
     /**
      * Value of slider.
+     *
      * @default 0
      */
     value?: number;
@@ -57,13 +60,13 @@ export class Slider extends AbstractPureComponent2<ISliderProps> {
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
-                    value={value}
-                    intentAfter={value < initialValue ? intent : undefined}
-                    intentBefore={value >= initialValue ? intent : undefined}
+                    value={value!}
+                    intentAfter={value! < initialValue! ? intent : undefined}
+                    intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
                 />
-                <MultiSlider.Handle value={initialValue} interactionKind="none" />
+                <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>
         );
     }

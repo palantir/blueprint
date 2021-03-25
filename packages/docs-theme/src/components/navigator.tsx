@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Classes, Icon, IInputGroupProps, MenuItem, Utils } from "@blueprintjs/core";
-import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
-
 import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
+
+import { Classes, Icon, IInputGroupProps2, MenuItem } from "@blueprintjs/core";
+import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/utils";
 
@@ -47,7 +47,7 @@ export interface INavigationSection {
 }
 
 const NavOmnibar = Omnibar.ofType<INavigationSection>();
-const INPUT_PROPS: IInputGroupProps = { placeholder: "Fuzzy search headings..." };
+const INPUT_PROPS: IInputGroupProps2 = { placeholder: "Fuzzy search headings..." };
 
 export class Navigator extends React.PureComponent<INavigatorProps> {
     private sections: INavigationSection[];
@@ -55,7 +55,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
-            if (Utils.safeInvoke(this.props.itemExclude, node) === true) {
+            if (this.props.itemExclude?.(node) === true) {
                 // ignore excluded item
                 return;
             }

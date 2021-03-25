@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+
 import { isNodeEnv } from "./utils";
 
 /**
@@ -25,8 +26,11 @@ import { isNodeEnv } from "./utils";
 export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
     // unsafe lifecycle methods
     public componentWillUpdate: never;
+
     public componentWillReceiveProps: never;
+
     public componentWillMount: never;
+
     // this should be static, not an instance method
     public getDerivedStateFromProps: never;
 
@@ -36,7 +40,9 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
     // Not bothering to remove entries when their timeouts finish because clearing invalid ID is a no-op
     private timeoutIds: number[] = [];
 
-    constructor(props?: P, context?: any) {
+    private requestIds: number[] = [];
+
+    constructor(props: P, context?: any) {
         super(props, context);
         if (!isNodeEnv("production")) {
             this.validateProps(this.props);
@@ -51,11 +57,25 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
 
     public componentWillUnmount() {
         this.clearTimeouts();
+        this.cancelAnimationFrames();
+    }
+
+    /**
+     * Request an animation frame and remember its ID.
+     * All pending requests will be canceled when component unmounts.
+     *
+     * @returns a "cancel" function that will cancel the request when invoked.
+     */
+    public requestAnimationFrame(callback: () => void) {
+        const handle = window.requestAnimationFrame(callback);
+        this.requestIds.push(handle);
+        return () => window.cancelAnimationFrame(handle);
     }
 
     /**
      * Set a timeout and remember its ID.
      * All stored timeouts will be cleared when component unmounts.
+     *
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {
@@ -73,6 +93,18 @@ export abstract class AbstractComponent2<P, S = {}, SS = {}> extends React.Compo
                 window.clearTimeout(timeoutId);
             }
             this.timeoutIds = [];
+        }
+    };
+
+    /**
+     * Clear all known animation frame requests.
+     */
+    public cancelAnimationFrames = () => {
+        if (this.requestIds.length > 0) {
+            for (const requestId of this.requestIds) {
+                window.cancelAnimationFrame(requestId);
+            }
+            this.requestIds = [];
         }
     };
 

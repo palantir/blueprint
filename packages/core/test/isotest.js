@@ -46,6 +46,10 @@ describe("Core isomorphic rendering", () => {
         Icon: {
             props: { icon: "build" },
         },
+        MultistepDialog: {
+            props: { isOpen: true, usePortal: false},
+            children: React.createElement(Core.DialogStep, { key: 1, id: 1, title: "Step one", panel: React.createElement('div') }),
+        },
         KeyCombo: {
             props: { combo: "?" },
         },

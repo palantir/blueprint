@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
@@ -40,9 +40,12 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
         selectAllOnFocus: false,
     };
 
-    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
+
     private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
+
     private toggleAlwaysRenderInput = handleBooleanChange(alwaysRenderInput => this.setState({ alwaysRenderInput }));
 
     public render() {
@@ -109,6 +112,7 @@ export class EditableTextExample extends React.PureComponent<IExampleProps, IEdi
     }
 
     private handleReportChange = (report: string) => this.setState({ report });
+
     private handleMaxLengthChange = (maxLength: number) => {
         if (maxLength === 0) {
             this.setState({ maxLength: undefined });

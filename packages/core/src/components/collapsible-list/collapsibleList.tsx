@@ -48,6 +48,7 @@ export interface ICollapsibleListProps extends IProps {
 
     /**
      * Which direction the items should collapse from: start or end of the children.
+     *
      * @default Boundary.START
      */
     collapseFrom?: Boundary;
@@ -59,6 +60,7 @@ export interface ICollapsibleListProps extends IProps {
 
     /**
      * Exact number of visible items.
+     *
      * @default 3
      */
     visibleItemCount?: number;
@@ -68,11 +70,9 @@ export interface ICollapsibleListProps extends IProps {
 export class CollapsibleList extends React.Component<ICollapsibleListProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.CollapsibleList`;
 
-    public static defaultProps: ICollapsibleListProps = {
+    public static defaultProps: Partial<ICollapsibleListProps> = {
         collapseFrom: Boundary.START,
-        dropdownTarget: null,
         visibleItemCount: 3,
-        visibleItemRenderer: null,
     };
 
     public render() {
@@ -94,9 +94,10 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
         }
 
         // construct dropdown menu for collapsed items
-        let collapsedPopover: JSX.Element;
+        let collapsedPopover: JSX.Element | undefined;
         if (collapsedChildren.length > 0) {
             const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
+            /* eslint-disable deprecation/deprecation */
             collapsedPopover = (
                 <li className={this.props.visibleItemClassName}>
                     <Popover
@@ -108,6 +109,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
                     </Popover>
                 </li>
             );
+            /* eslint-enable deprecation/deprecation */
         }
 
         return (
@@ -121,15 +123,17 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
 
     // splits the list of children into two arrays: visible and collapsed
     private partitionChildren(): [CollapsibleItem[], CollapsibleItem[]] {
-        if (this.props.children == null) {
-            return [[], []];
-        }
-        const childrenArray = React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
+        const childrenArray = React.Children.map(this.props.children, (child: React.ReactNode, index: number) => {
             if (!isElementOfType(child, MenuItem)) {
                 throw new Error(Errors.COLLAPSIBLE_LIST_INVALID_CHILD);
             }
             return React.cloneElement(child as JSX.Element, { key: `visible-${index}` });
         });
+
+        if (childrenArray == null) {
+            return [[], []];
+        }
+
         if (this.props.collapseFrom === Boundary.START) {
             // reverse START list so we can always slice visible items from the front of the list
             childrenArray.reverse();

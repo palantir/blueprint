@@ -17,7 +17,8 @@
 import * as React from "react";
 
 import { Button, H5, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IntentSelect } from "./common/intentSelect";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
@@ -61,13 +62,21 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
     };
 
     private handleAddOnBlurChange = handleBooleanChange(addOnBlur => this.setState({ addOnBlur }));
+
     private handleAddOnPasteChange = handleBooleanChange(addOnPaste => this.setState({ addOnPaste }));
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
-    private handleIntentChange = handleStringChange((intent: Intent) => this.setState({ intent }));
+
+    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
+
     private handleLeftIconChange = handleBooleanChange(leftIcon => this.setState({ leftIcon }));
+
     private handleTagIntentsChange = handleBooleanChange(tagIntents => this.setState({ tagIntents }));
+
     private handleTagMinimalChange = handleBooleanChange(tagMinimal => this.setState({ tagMinimal }));
 
     public render() {
@@ -85,7 +94,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
         // define a new function every time so switch changes will cause it to re-render
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
         // example purposes!!
-        const getTagProps = (_v: string, index: number): ITagProps => ({
+        const getTagProps = (_v: React.ReactNode, index: number): ITagProps => ({
             intent: tagIntents ? INTENTS[index % INTENTS.length] : Intent.NONE,
             large: props.large,
             minimal: tagMinimal,

@@ -1,5 +1,5 @@
 {
-  "rules": {
-    "blueprint-html-components": true
-  }
+    "rules": {
+        "blueprint-html-components": true
+    }
 }

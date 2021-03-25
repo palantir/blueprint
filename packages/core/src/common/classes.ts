@@ -51,10 +51,10 @@ export const ELEVATION_2 = elevationClass(Elevation.TWO);
 export const ELEVATION_3 = elevationClass(Elevation.THREE);
 export const ELEVATION_4 = elevationClass(Elevation.FOUR);
 
-export const INTENT_PRIMARY = intentClass(Intent.PRIMARY);
-export const INTENT_SUCCESS = intentClass(Intent.SUCCESS);
-export const INTENT_WARNING = intentClass(Intent.WARNING);
-export const INTENT_DANGER = intentClass(Intent.DANGER);
+export const INTENT_PRIMARY = intentClass(Intent.PRIMARY)!;
+export const INTENT_SUCCESS = intentClass(Intent.SUCCESS)!;
+export const INTENT_WARNING = intentClass(Intent.WARNING)!;
+export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
 
@@ -76,6 +76,10 @@ export const HEADING = `${NS}-heading`;
 export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 export const RTL = `${NS}-rtl`;
+
+// layout utilities
+/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block */
+export const FIXED_POSITIONING_CONTAINING_BLOCK = `${NS}-fixed-positioning-containing-block`;
 
 // components
 export const ALERT = `${NS}-alert`;
@@ -115,6 +119,11 @@ export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
 export const DIALOG_HEADER = `${DIALOG}-header`;
+
+export const DIALOG_STEP = `${NS}-dialog-step`;
+export const DIALOG_STEP_CONTAINER = `${DIALOG_STEP}-container`;
+export const DIALOG_STEP_TITLE = `${DIALOG_STEP}-title`;
+export const DIALOG_STEP_ICON = `${DIALOG_STEP}-icon`;
 
 export const DIVIDER = `${NS}-divider`;
 
@@ -179,6 +188,12 @@ export const MENU_SUBMENU = `${NS}-submenu`;
 export const MENU_DIVIDER = `${MENU}-divider`;
 export const MENU_HEADER = `${MENU}-header`;
 
+export const MULTISTEP_DIALOG = `${NS}-multistep-dialog`;
+export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
+export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
+export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
+export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
+
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
 export const NAVBAR_HEADING = `${NAVBAR}-heading`;
@@ -205,9 +220,15 @@ export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
 export const PANEL_STACK_HEADER_BACK = `${PANEL_STACK}-header-back`;
 export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
 
+export const PANEL_STACK2 = `${NS}-panel-stack2`;
+export const PANEL_STACK2_HEADER = `${PANEL_STACK}-header`;
+export const PANEL_STACK2_HEADER_BACK = `${PANEL_STACK}-header-back`;
+export const PANEL_STACK2_VIEW = `${PANEL_STACK}-view`;
+
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
+export const POPOVER_CAPTURING_DISMISS = `${POPOVER}-capturing-dismiss`;
 export const POPOVER_CONTENT = `${POPOVER}-content`;
 export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
@@ -278,7 +299,9 @@ export const TREE_NODE_SELECTED = `${TREE_NODE}-selected`;
 export const TREE_ROOT = `${NS}-tree-root`;
 
 export const ICON = `${NS}-icon`;
+/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_STANDARD = `${ICON}-standard`;
+/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_LARGE = `${ICON}-large`;
 
 /**
@@ -290,7 +313,7 @@ export function getClassNamespace() {
 }
 
 /** Return CSS class for alignment. */
-export function alignmentClass(alignment: Alignment) {
+export function alignmentClass(alignment: Alignment | undefined) {
     switch (alignment) {
         case Alignment.LEFT:
             return ALIGN_LEFT;
@@ -301,15 +324,28 @@ export function alignmentClass(alignment: Alignment) {
     }
 }
 
-export function elevationClass(elevation: Elevation) {
-    if (elevation == null) {
+export function elevationClass(elevation: Elevation): string;
+export function elevationClass(elevation: undefined): undefined;
+export function elevationClass(elevation: Elevation | undefined): string | undefined;
+export function elevationClass(elevation: Elevation | undefined) {
+    if (elevation === undefined) {
         return undefined;
     }
     return `${NS}-elevation-${elevation}`;
 }
 
-/** Returns CSS class for icon name. */
-export function iconClass(iconName?: string) {
+/**
+ * Returns CSS class for icon name.
+ *
+ * @deprecated These CSS classes rely on Blueprint's icon fonts, which are a legacy feature and will be
+ * removed the next major version (4.x). Use the `<Icon>` React component and `iconName` string enum prop
+ * APIs instead – they render SVGs, which do not suffer from the blurriness of icon fonts and have
+ * equivalent browser support.
+ */
+export function iconClass(iconName: string): string;
+export function iconClass(iconName: undefined): undefined;
+export function iconClass(iconName: string | undefined): string | undefined;
+export function iconClass(iconName: string | undefined) {
     if (iconName == null) {
         return undefined;
     }
@@ -317,15 +353,21 @@ export function iconClass(iconName?: string) {
 }
 
 /** Return CSS class for intent. */
-export function intentClass(intent?: Intent) {
+export function intentClass(intent: Intent): string;
+export function intentClass(intent: typeof Intent.NONE | undefined): undefined;
+export function intentClass(intent: Intent | undefined): Intent | undefined;
+export function intentClass(intent: Intent | undefined) {
     if (intent == null || intent === Intent.NONE) {
         return undefined;
     }
     return `${NS}-intent-${intent.toLowerCase()}`;
 }
 
-export function positionClass(position: Position) {
-    if (position == null) {
+export function positionClass(position: Position): string;
+export function positionClass(position: undefined): undefined;
+export function positionClass(position: Position | undefined): string | undefined;
+export function positionClass(position: Position | undefined) {
+    if (position === undefined) {
         return undefined;
     }
     return `${NS}-position-${position}`;

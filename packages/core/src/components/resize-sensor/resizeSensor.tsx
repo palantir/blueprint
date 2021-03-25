@@ -18,18 +18,10 @@ import * as React from "react";
 import { findDOMNode } from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
 import ResizeObserver from "resize-observer-polyfill";
+
 import { AbstractPureComponent2 } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
-
-/** A parallel type to `ResizeObserverEntry` (from resize-observer-polyfill). */
-export interface IResizeEntry {
-    /** Measured dimensions of the target. */
-    contentRect: DOMRectReadOnly;
-
-    /** The resized element. */
-    target: Element;
-}
+import { IResizeEntry } from "./resizeObserverTypes";
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface IResizeSensorProps {
@@ -53,6 +45,7 @@ export interface IResizeSensorProps {
      *
      * Only enable this prop if a parent element resizes in a way that does
      * not also cause the child element to resize.
+     *
      * @default false
      */
     observeParents?: boolean;
@@ -63,7 +56,8 @@ export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
     private element: Element | null = null;
-    private observer = new ResizeObserver(entries => safeInvoke(this.props.onResize, entries));
+
+    private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
 
     public render() {
         // pass-through render of single child
@@ -122,6 +116,8 @@ export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
             // using findDOMNode for two reasons:
             // 1. cloning to insert a ref is unwieldy and not performant.
             // 2. ensure that we resolve to an actual DOM node (instead of any JSX ref instance).
+            // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
+            /* eslint-disable-next-line react/no-find-dom-node */
             return findDOMNode(this);
         } catch {
             // swallow error if findDOMNode is run on unmounted component.

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent2, IProps, IRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -52,7 +52,7 @@ export interface ITableQuadrantProps extends IProps {
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.
      */
-    bodyRef?: (ref: HTMLElement | null) => any;
+    bodyRef?: IRef<HTMLDivElement>;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -62,6 +62,7 @@ export interface ITableQuadrantProps extends IProps {
 
     /**
      * If `false`, hides the row headers and settings menu.
+     *
      * @default true
      */
     enableRowHeader?: boolean;
@@ -83,7 +84,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's outermost element.
      */
-    quadrantRef?: (ref: HTMLElement | null) => any;
+    quadrantRef?: IRef<HTMLDivElement>;
 
     /**
      * The quadrant type. Informs the values of the parameters that will be passed to the
@@ -118,7 +119,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
      */
-    scrollContainerRef?: (ref: HTMLElement | null) => any;
+    scrollContainerRef?: IRef<HTMLDivElement>;
 
     /**
      * CSS styles to apply to the quadrant's outermost element.
@@ -142,10 +143,9 @@ export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
 
         const className = classNames(Classes.TABLE_QUADRANT, this.getQuadrantCssClass(), this.props.className);
 
-        const maybeMenu = enableRowHeader && CoreUtils.safeInvoke(this.props.menuRenderer);
-        const maybeRowHeader =
-            enableRowHeader && CoreUtils.safeInvoke(this.props.rowHeaderCellRenderer, showFrozenRowsOnly);
-        const maybeColumnHeader = CoreUtils.safeInvoke(this.props.columnHeaderCellRenderer, showFrozenColumnsOnly);
+        const maybeMenu = enableRowHeader && this.props.menuRenderer?.();
+        const maybeRowHeader = enableRowHeader && this.props.rowHeaderCellRenderer?.(showFrozenRowsOnly);
+        const maybeColumnHeader = this.props.columnHeaderCellRenderer?.(showFrozenColumnsOnly);
         const body =
             quadrantType != null
                 ? bodyRenderer(quadrantType, showFrozenRowsOnly, showFrozenColumnsOnly)

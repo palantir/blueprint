@@ -18,15 +18,16 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { ESCAPE } from "../../common/keys";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { isNodeEnv, safeInvoke } from "../../common/utils";
+import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { IToastProps, Toast } from "./toast";
 
-export type IToastOptions = IToastProps & { key?: string };
+export type IToastOptions = IToastProps & { key: string };
 export type ToasterPosition =
     | typeof Position.TOP
     | typeof Position.TOP_LEFT
@@ -63,12 +64,14 @@ export interface IToasterProps extends IProps {
      * Whether a toast should acquire application focus when it first opens.
      * This is disabled by default so that toasts do not interrupt the user's flow.
      * Note that `enforceFocus` is always disabled for `Toaster`s.
+     *
      * @default false
      */
     autoFocus?: boolean;
 
     /**
      * Whether pressing the `esc` key should clear all active toasts.
+     *
      * @default true
      */
     canEscapeKeyClear?: boolean;
@@ -79,12 +82,14 @@ export interface IToasterProps extends IProps {
      *
      * This prop is ignored by `Toaster.create()` as that method always appends a new element
      * to the container.
+     *
      * @default true
      */
     usePortal?: boolean;
 
     /**
      * Position of `Toaster` within its container.
+     *
      * @default Position.TOP
      */
     position?: ToasterPosition;
@@ -93,6 +98,7 @@ export interface IToasterProps extends IProps {
      * The maximum number of active toasts that can be displayed at once.
      *
      * When the limit is about to be exceeded, the oldest active toast is removed.
+     *
      * @default undefined
      */
     maxToasts?: number;
@@ -133,8 +139,8 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         return toaster;
     }
 
-    public state = {
-        toasts: [] as IToastOptions[],
+    public state: IToasterState = {
+        toasts: [],
     };
 
     // auto-incrementing identifier for un-keyed toasts
@@ -163,7 +169,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
             toasts: toasts.filter(t => {
                 const matchesKey = t.key === key;
                 if (matchesKey) {
-                    safeInvoke(t.onDismiss, timeoutExpired);
+                    t.onDismiss?.(timeoutExpired);
                 }
                 return !matchesKey;
             }),
@@ -171,7 +177,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     }
 
     public clear() {
-        this.state.toasts.map(t => safeInvoke(t.onDismiss, false));
+        this.state.toasts.forEach(t => t.onDismiss?.(false));
         this.setState({ toasts: [] });
     }
 
@@ -180,7 +186,6 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     }
 
     public render() {
-        // $pt-transition-duration * 3 + $pt-transition-duration / 2
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
             <Overlay
@@ -192,6 +197,7 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || this.props.children != null}
                 onClose={this.handleClose}
+                // $pt-transition-duration * 3 + $pt-transition-duration / 2
                 transitionDuration={350}
                 transitionName={Classes.TOAST}
                 usePortal={this.props.usePortal}
@@ -202,9 +208,9 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         );
     }
 
-    protected validateProps(props: IToasterProps) {
+    protected validateProps({ maxToasts }: IToasterProps) {
         // maximum number of toasts should not be a number less than 1
-        if (props.maxToasts < 1) {
+        if (maxToasts !== undefined && maxToasts < 1) {
             throw new Error(TOASTER_MAX_TOASTS_INVALID);
         }
     }
@@ -216,13 +222,13 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     private dismissIfAtLimit() {
         if (this.state.toasts.length === this.props.maxToasts) {
             // dismiss the oldest toast to stay within the maxToasts limit
-            this.dismiss(this.state.toasts[this.state.toasts.length - 1].key);
+            this.dismiss(this.state.toasts[this.state.toasts.length - 1].key!);
         }
     }
 
-    private renderToast(toast: IToastOptions) {
+    private renderToast = (toast: IToastOptions) => {
         return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
-    }
+    };
 
     private createToastOptions(props: IToastProps, key = `toast-${this.toastId++}`) {
         // clone the object before adding the key prop to avoid leaking the mutation
@@ -230,18 +236,23 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
     }
 
     private getPositionClasses() {
-        const positions = this.props.position.split("-");
+        const positions = this.props.position!.split("-");
         // NOTE that there is no -center class because that's the default style
-        return positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`);
+        return [
+            ...positions.map(p => `${Classes.TOAST_CONTAINER}-${p.toLowerCase()}`),
+            `${Classes.TOAST_CONTAINER}-${this.props.usePortal ? "in-portal" : "inline"}`,
+        ];
     }
 
     private getDismissHandler = (toast: IToastOptions) => (timeoutExpired: boolean) => {
         this.dismiss(toast.key, timeoutExpired);
     };
 
-    private handleClose = (e: React.KeyboardEvent<HTMLElement>) => {
+    private handleClose = (e: React.SyntheticEvent<HTMLElement>) => {
         // NOTE that `e` isn't always a KeyboardEvent but that's the only type we care about
-        if (e.which === ESCAPE) {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
+        if ((e as React.KeyboardEvent<HTMLElement>).which === ESCAPE) {
             this.clear();
         }
     };

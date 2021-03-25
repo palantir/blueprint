@@ -13,7 +13,7 @@ This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It
 ## Installation
 
 ```
-yarn add @blueprintjs/eslint-plugin
+yarn add --dev @blueprintjs/eslint-plugin
 ```
 
 ## Usage
@@ -24,7 +24,7 @@ Simply add this plugin in your `.eslintrc` file to use the add the plugin. The p
 
 ```json
 plugins: [
-    "@blueprintjs/blueprint"
+    "@blueprintjs"
 ]
 ```
 

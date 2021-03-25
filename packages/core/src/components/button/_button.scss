@@ -32,7 +32,7 @@ Styleguide button
 
   &:empty {
     // override padding from other modifiers (for CSS icon support)
-    // stylelint-disable-next-line declaration-no-important
+    /* stylelint-disable-next-line declaration-no-important */
     padding: 0 !important;
   }
 
@@ -155,7 +155,7 @@ Styleguide button
   &[class*="#{$ns}-intent-"] {
     &::before,
     #{$icon-classes} {
-      // stylelint-disable-next-line declaration-no-important
+      /* stylelint-disable-next-line declaration-no-important */
       color: inherit !important;
     }
   }

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { Classes } from "@blueprintjs/core";
 import { IHeadingNode, IPageNode } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes } from "@blueprintjs/core";
 
 export interface INavMenuItemProps {
     /** CSS classes to apply to the root element, for proper appearance in the tree. */

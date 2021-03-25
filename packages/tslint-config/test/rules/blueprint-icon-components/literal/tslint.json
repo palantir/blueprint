@@ -1,7 +1,7 @@
 {
-  "rules": {
-    "blueprint-icon-components": {
-      "options": ["literal"]
+    "rules": {
+        "blueprint-icon-components": {
+            "options": ["literal"]
+        }
     }
-  }
 }

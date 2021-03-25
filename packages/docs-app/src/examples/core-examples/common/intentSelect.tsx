@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { HTMLSelect, Intent, Label } from "@blueprintjs/core";
 import * as React from "react";
+
+import { HTMLSelect, Intent, Label } from "@blueprintjs/core";
 
 const INTENTS = [
     { label: "None", value: Intent.NONE },

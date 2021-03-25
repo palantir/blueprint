@@ -83,12 +83,14 @@ $pt-dark-intent-text-colors: (
 
 // returns the padding necessary to center text in a container of the given height.
 // default line-height is that of base typography, 18px assuming 14px font-size.
+
 @function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
   @return floor(($height - $line-height) / 2);
 }
 
 // Removes the unit from a Sass numeric value (if present): `strip-unit(12px) => 12`
 // @see https://css-tricks.com/snippets/sass/strip-unit-function/
+
 @function strip-unit($number) {
   @if type-of($number) == "number" and not unitless($number) {
     @return $number / ($number * 0 + 1);
@@ -97,30 +99,8 @@ $pt-dark-intent-text-colors: (
   @return $number;
 }
 
-@mixin force-hardware-acceleration() {
-  // CSS animations are typically smoother when they run on the GPU. most browsers trigger GPU
-  // ("hardware") acceleration automatically when certain CSS rules are applied (like `transform`).
-  //
-  // the transform rule below has no visual effect, but it achieves the following:
-  //   - creates a new stacking context
-  //   - creates a new containing block for fixed-position descendants
-  //   - "tricks" the browser into using hardware acceleration
-  //
-  // `will-change: transform` does the same thing, but it suffers from a Chrome bug that could make
-  // the styled element blurry when transform'd (e.g. this happens when a Blueprint Table is in a
-  // Popover that animates open). we should move to `will-change` and delete this mixin once that
-  // bug is fixed (tracking in issue #859).
-  //
-  // see the following YouTube video and Chrome bug report for more:
-  //   - https://www.youtube.com/watch?v=iSvUlSpIbNk
-  //   - https://bugs.chromium.org/p/chromium/issues/detail?id=596382
-  //
-  // see this post for more on will-change: https://dev.opera.com/articles/css-will-change-property/
-  transform: translateZ(0);
-  // will-change: transform;
-}
+// Isolates z-indices
 
 @mixin new-render-layer() {
-  // a semantic rename of the mixin above for when you just want to isolate z-indices
-  @include force-hardware-acceleration();
+  transform: translateZ(0);
 }

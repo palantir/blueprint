@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { Utils } from "@blueprintjs/core";
 import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
 import * as React from "react";
 
@@ -42,18 +41,20 @@ export function smartSearch(query: string, ...content: string[]) {
     return terms.every(term => dataToSearch.some(d => d.indexOf(term) >= 0));
 }
 
-export interface IKeyEventMap {
+export interface IKeyEventMap<T = HTMLElement> {
     /** event handler invoked on all events */
-    all?: React.KeyboardEventHandler<HTMLElement>;
+    all?: React.KeyboardEventHandler<T>;
 
     /** map keycodes to specific event handlers */
-    [keyCode: number]: React.KeyboardEventHandler<HTMLElement>;
+    [keyCode: number]: React.KeyboardEventHandler<T>;
 }
 
-export function createKeyEventHandler(actions: IKeyEventMap, preventDefault = false) {
-    return (e: React.KeyboardEvent<HTMLElement>) => {
+export function createKeyEventHandler<T = HTMLElement>(actions: IKeyEventMap<T>, preventDefault = false) {
+    return (e: React.KeyboardEvent<T>) => {
         for (const k of Object.keys(actions)) {
             const key = Number(k);
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+            // eslint-disable-next-line deprecation/deprecation
             if (e.which === key) {
                 if (preventDefault) {
                     e.preventDefault();
@@ -61,7 +62,7 @@ export function createKeyEventHandler(actions: IKeyEventMap, preventDefault = fa
                 actions[key](e);
             }
         }
-        Utils.safeInvoke(actions.all, e);
+        actions.all?.(e);
     };
 }
 

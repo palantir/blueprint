@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { Utils } from "@blueprintjs/core";
 import {
     IBlock,
     IKssPluginData,
@@ -23,6 +22,8 @@ import {
     ITsDocBase,
     ITypescriptPluginData,
 } from "@documentalist/client";
+
+import { Utils } from "@blueprintjs/core";
 
 /* eslint-disable @typescript-eslint/ban-types */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
@@ -55,19 +56,19 @@ export interface IDocumentationContext {
      * Get the Documentalist data.
      * Use the `hasTypescriptData` and `hasKssData` typeguards before accessing those plugins' data.
      */
-    getDocsData(): IDocsData;
+    getDocsData: () => IDocsData;
 
     /** Render a block of Documentalist documentation to a React node. */
-    renderBlock(block: IBlock): React.ReactNode;
+    renderBlock: (block: IBlock) => React.ReactNode;
 
     /** Render a Documentalist Typescript type string to a React node. */
-    renderType(type: string): React.ReactNode;
+    renderType: (type: string) => React.ReactNode;
 
     /** Render the text of a "View source" link. */
-    renderViewSourceLinkText(entry: ITsDocBase): React.ReactNode;
+    renderViewSourceLinkText: (entry: ITsDocBase) => React.ReactNode;
 
     /** Open the API browser to the given member name. */
-    showApiDocs(name: string): void;
+    showApiDocs: (name: string) => void;
 }
 
 /**
@@ -97,7 +98,7 @@ export const DocumentationContextTypes = {
 // simple alternative to prop-types dependency
 function assertFunctionProp<T>(obj: T, key: keyof T) {
     if (obj[key] != null && Utils.isFunction(obj[key])) {
-        return undefined;
+        return null;
     }
     return new Error(`[Blueprint] Documentation context ${key} must be function.`);
 }

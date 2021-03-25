@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes, HTMLTable } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes, HTMLTable } from "@blueprintjs/core";
 
 export interface IModifierTableProps {
     /** Message to display when children is empty. */

@@ -34,6 +34,15 @@ export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boo
 }
 
 /**
+ * Returns true if children are a mappable children array
+ *
+ * @internal
+ */
+export function isReactChildrenElementOrElements(children: React.ReactNode): children is JSX.Element[] | JSX.Element {
+    return !isReactNodeEmpty(children, true) && children !== true;
+}
+
+/**
  * Converts a React node to an element: non-empty string or number or
  * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
  * and booleans are discarded.
@@ -80,6 +89,7 @@ export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
  * NOTE: This function only checks equality of `displayName` for performance and
  * to tolerate multiple minor versions of a component being included in one
  * application bundle.
+ *
  * @param element JSX element in question
  * @param ComponentType desired component type of element
  */
@@ -95,3 +105,17 @@ export function isElementOfType<P = {}>(
         element.type.displayName === ComponentType.displayName
     );
 }
+
+/**
+ * Returns React.createRef if it's available, or a ref-like object if not.
+ */
+export function createReactRef<T>() {
+    return typeof React.createRef !== "undefined" ? React.createRef<T>() : { current: null };
+}
+
+/**
+ * Replacement type for { polyfill } from "react-lifecycles-compat" useful in some places where
+ * the correct type is not inferred automatically. This should be removed once Blueprint depends on React >= 16.
+ * HACKHACK part of https://github.com/palantir/blueprint/issues/4342
+ */
+export type LifecycleCompatPolyfill<P, T extends React.ComponentClass<P>> = (Comp: T) => T & { [K in keyof T]: T[K] };

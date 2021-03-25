@@ -15,6 +15,7 @@
  */
 
 import { expect } from "chai";
+
 import { Clipboard } from "../src/common/clipboard";
 
 describe("Clipboard", () => {

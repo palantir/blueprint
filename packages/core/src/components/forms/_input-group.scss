@@ -120,7 +120,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       color: $pt-text-color-muted;
 
       // same goes for dark
-      // stylelint-disable-next-line selector-max-compound-selectors
+      /* stylelint-disable-next-line selector-max-compound-selectors */
       .#{$ns}-dark & {
         color: $pt-dark-text-color-muted;
       }
@@ -132,7 +132,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
     &.#{$ns}-minimal:disabled {
       // override more specific selector above
-      // stylelint-disable declaration-no-important
+      /* stylelint-disable declaration-no-important */
       color: $pt-icon-color-disabled !important;
 
       #{$icon-classes} {

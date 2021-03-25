@@ -33,6 +33,7 @@ class GridEntry<T> {
 
 export class SparseGridMutableStore<T> {
     private list: Array<GridEntry<T>>;
+
     private map: { [key: string]: GridEntry<T> };
 
     public constructor() {

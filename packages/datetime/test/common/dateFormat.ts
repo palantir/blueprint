@@ -21,3 +21,14 @@ export const DATE_FORMAT: IDateFormatProps = {
     parseDate: str => new Date(str),
     placeholder: "M/D/YYYY",
 };
+
+export const DATETIME_FORMAT: IDateFormatProps = {
+    formatDate: date => {
+        const hour = `${date.getHours()}`.padStart(2, "0");
+        const minute = `${date.getMinutes()}`.padStart(2, "0");
+        const dateString = [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
+        return `${dateString} ${hour}:${minute}`;
+    },
+    parseDate: str => new Date(str),
+    placeholder: "M/D/YYYY HH:mm",
+};

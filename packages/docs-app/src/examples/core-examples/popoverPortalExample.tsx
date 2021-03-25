@@ -29,7 +29,9 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
     };
 
     private scrollContainerLeftRef: HTMLDivElement;
+
     private scrollContainerRightRef: HTMLDivElement;
+
     private refHandlers = {
         scrollContainerLeft: (ref: HTMLDivElement) => (this.scrollContainerLeftRef = ref),
         scrollContainerRight: (ref: HTMLDivElement) => (this.scrollContainerRightRef = ref),
@@ -51,6 +53,7 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
             </>
         );
 
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example className="docs-popover-portal-example" options={options} {...this.props}>
                 <div
@@ -85,6 +88,7 @@ export class PopoverPortalExample extends React.PureComponent<IExampleProps, IPo
                 </em>
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     private handleOpen = () => this.setState({ isOpen: !this.state.isOpen });

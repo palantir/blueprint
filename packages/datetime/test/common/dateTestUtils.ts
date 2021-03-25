@@ -16,6 +16,7 @@
 
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
+
 import * as Classes from "../../src/common/classes";
 
 /**
@@ -27,6 +28,13 @@ export function toDateString(date: Date) {
     const month = date.getMonth() + 1; // 0-indexed => 1-indexed
     const day = date.getDate();
     return [month, day, year].join("/");
+}
+
+export function toDateHourMinuteString(date: Date) {
+    const hour = `${date.getHours()}`.padStart(2, "0");
+    const minute = `${date.getMinutes()}`.padStart(2, "0");
+    const dateString = toDateString(date);
+    return `${dateString} ${hour}:${minute}`;
 }
 
 /**

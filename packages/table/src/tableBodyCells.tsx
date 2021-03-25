@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
@@ -59,6 +60,7 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
      * `RenderMode.BATCH_ON_UPDATE`, because there are actually multiple updates
      * that need to happen at higher levels before the table is considered fully
      * "mounted"; thus, we let higher components tell us when to switch modes.
+     *
      * @default RenderMode.BATCH
      */
     renderMode?: RenderMode.BATCH | RenderMode.NONE;
@@ -71,13 +73,13 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProp
     viewportRect: Rect;
 }
 
-const SHALLOW_COMPARE_BLACKLIST: Array<keyof ITableBodyCellsProps> = ["viewportRect"];
+const SHALLOW_COMPARE_DENYLIST: Array<keyof ITableBodyCellsProps> = ["viewportRect"];
 
 /**
  * We don't want to reset the batcher when this set of keys changes. Any other
  * changes should reset the batcher's internal cache.
  */
-const BATCHER_RESET_PROP_KEYS_BLACKLIST: Array<keyof ITableBodyCellsProps> = [
+const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof ITableBodyCellsProps> = [
     "columnIndexEnd",
     "columnIndexStart",
     "rowIndexEnd",
@@ -102,7 +104,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
     public shouldComponentUpdate(nextProps?: ITableBodyCellsProps) {
         return (
             !CoreUtils.shallowCompareKeys(nextProps, this.props, {
-                exclude: SHALLOW_COMPARE_BLACKLIST,
+                exclude: SHALLOW_COMPARE_DENYLIST,
             }) ||
             // "viewportRect" is not a plain object, so we can't just deep
             // compare; we need custom logic.
@@ -112,7 +114,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
 
     public componentDidUpdate(prevProps: ITableBodyCellsProps) {
         const shouldResetBatcher = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
-            exclude: BATCHER_RESET_PROP_KEYS_BLACKLIST,
+            exclude: BATCHER_RESET_PROP_KEYS_DENYLIST,
         });
         if (shouldResetBatcher) {
             this.batcher.reset();
@@ -220,7 +222,7 @@ export class TableBodyCells extends AbstractComponent2<ITableBodyCellsProps> {
         const { onCompleteRender, renderMode } = this.props;
 
         if (renderMode === RenderMode.NONE || (renderMode === RenderMode.BATCH && this.batcher.isDone())) {
-            CoreUtils.safeInvoke(onCompleteRender);
+            onCompleteRender?.();
         }
     }
 

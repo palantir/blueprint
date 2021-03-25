@@ -1,5 +1,18 @@
 @# Tooltip
 
+<div class="@ns-callout @ns-intent-danger @ns-icon-error">
+    <h4 class="@ns-heading">
+
+Deprecated: use [Tooltip2](#popover2-package/tooltip2)
+
+</h4>
+
+This component is **deprecated since @blueprintjs/core v3.38.0** in favor of the new
+Tooltip2 component available in the `@blueprintjs/popover2` package. You should migrate
+to the new API which will become the standard in Blueprint v4.
+
+</div>
+
 A tooltip is a lightweight popover for showing additional information during hover interactions.
 
 @reactExample TooltipExample
@@ -20,7 +33,7 @@ import { Button, Popover, Position, Tooltip } from "@blueprintjs/core";
     <Tooltip content="I has a popover!" position={Position.RIGHT}>
         <Button>Hover and click me</Button>
     </Tooltip>
-</Popover>
+</Popover>;
 ```
 
 @## Props
@@ -30,10 +43,11 @@ some exceptions. Notably, it only supports `HOVER` interactions and the `target`
 prop is not supported.
 
 When creating a tooltip, you must specify both:
-- its _content_ via the `content` prop, and
-- its _target_ as either:
-    - a single child element, or
-    - an instrinsic element string identifier (N.B. this doesn't work if you are using any of the target props, so use an element instead, i.e. `<div>...</div>` instead of `"div"`).
+
+-   its _content_ via the `content` prop, and
+-   its _target_ as either:
+    -   a single child element, or
+    -   an instrinsic element string identifier (N.B. this doesn't work if you are using any of the target props, so use an element instead, i.e. `<div>...</div>` instead of `"div"`).
 
 The content will appear in a contrasting popover when the target is hovered.
 

@@ -17,8 +17,8 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-
 import { spy } from "sinon";
+
 import { IOverflowListProps, IOverflowListState, OverflowList } from "../../src/components/overflow-list/overflowList";
 
 type OverflowProps = IOverflowListProps<ITestItem>;
@@ -47,12 +47,9 @@ describe("<OverflowList>", function (this) {
     });
 
     afterEach(() => {
-        if (wrapper !== undefined) {
-            // clean up wrapper to remove Portal element from DOM
-            wrapper.unmount();
-            wrapper.detach();
-            wrapper = undefined;
-        }
+        // clean up wrapper to remove Portal element from DOM
+        wrapper?.unmount();
+        wrapper?.detach();
         testsContainerElement.remove();
         onOverflowSpy.resetHistory();
     });

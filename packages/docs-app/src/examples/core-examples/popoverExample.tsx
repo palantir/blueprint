@@ -42,7 +42,7 @@ import {
     Example,
     handleBooleanChange,
     handleNumberChange,
-    handleStringChange,
+    handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
 
@@ -110,16 +110,22 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
     };
 
     private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
-    private handleInteractionChange = handleStringChange((interactionKind: PopoverInteractionKind) => {
+
+    private handleInteractionChange = handleValueChange((interactionKind: PopoverInteractionKind) => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === PopoverInteractionKind.CLICK;
         this.setState({ interactionKind, hasBackdrop });
     });
-    private handlePositionChange = handleStringChange((position: PopoverPosition) => this.setState({ position }));
-    private handleBoundaryChange = handleStringChange((boundary: PopperBoundary) => this.setState({ boundary }));
+
+    private handlePositionChange = handleValueChange((position: PopoverPosition) => this.setState({ position }));
+
+    private handleBoundaryChange = handleValueChange((boundary: PopperBoundary) => this.setState({ boundary }));
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+
     private toggleIsOpen = handleBooleanChange(isOpen => this.setState({ isOpen }));
+
     private toggleMinimal = handleBooleanChange(minimal => this.setState({ minimal }));
+
     private toggleUsePortal = handleBooleanChange(usePortal => {
         if (usePortal) {
             this.setState({ hasBackdrop: false, inheritDarkTheme: false });
@@ -129,6 +135,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
 
     public render() {
         const { exampleIndex, sliderValue, ...popoverProps } = this.state;
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
@@ -150,6 +157,7 @@ export class PopoverExample extends React.PureComponent<IExampleProps, IPopoverE
                 </div>
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
     private renderOptions() {

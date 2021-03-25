@@ -234,3 +234,7 @@ export function get24HourFrom12Hour(hour: number, isPm: boolean): number {
     const newHour = hour === 12 ? 0 : hour;
     return isPm ? newHour + 12 : newHour;
 }
+
+export function isToday(date: Date): boolean {
+    return areSameDay(date, new Date());
+}

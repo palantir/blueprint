@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-import {
-    Classes,
-    Hotkey,
-    Hotkeys,
-    HotkeysTarget,
-    Menu,
-    MenuItem,
-    NavbarHeading,
-    Popover,
-    Position,
-    Tag,
-} from "@blueprintjs/core";
-import { NavButton } from "@blueprintjs/docs-theme";
 import { INpmPackage } from "@documentalist/client";
 import * as React from "react";
+
+import { Classes, HotkeysTarget2, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
+import { NavButton } from "@blueprintjs/docs-theme";
+import { Popover2 } from "@blueprintjs/popover2";
+
 import { Logo } from "./logo";
 
 export interface INavHeaderProps {
@@ -38,46 +30,47 @@ export interface INavHeaderProps {
     packageData: INpmPackage;
 }
 
-@HotkeysTarget
 export class NavHeader extends React.PureComponent<INavHeaderProps> {
     public render() {
         const { useDarkTheme } = this.props;
         return (
-            <>
-                <div className="docs-nav-title">
-                    <a className="docs-logo" href="/">
-                        <Logo />
-                    </a>
-                    <div>
-                        <NavbarHeading className="docs-heading">
-                            <span>Blueprint</span> {this.renderVersionsMenu()}
-                        </NavbarHeading>
-                        <a className={Classes.TEXT_MUTED} href="https://github.com/palantir/blueprint" target="_blank">
-                            <small>View on GitHub</small>
+            <HotkeysTarget2
+                hotkeys={[
+                    {
+                        combo: "shift + d",
+                        global: true,
+                        label: "Toggle dark theme",
+                        onKeyDown: this.handleDarkSwitchChange,
+                    },
+                ]}
+            >
+                <>
+                    <div className="docs-nav-title">
+                        <a className="docs-logo" href="/">
+                            <Logo />
                         </a>
+                        <div>
+                            <NavbarHeading className="docs-heading">
+                                <span>Blueprint</span> {this.renderVersionsMenu()}
+                            </NavbarHeading>
+                            <a
+                                className={Classes.TEXT_MUTED}
+                                href="https://github.com/palantir/blueprint"
+                                target="_blank"
+                            >
+                                <small>View on GitHub</small>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div className="docs-nav-divider" />
-                <NavButton
-                    icon={useDarkTheme ? "flash" : "moon"}
-                    hotkey="shift + d"
-                    text={useDarkTheme ? "Light theme" : "Dark theme"}
-                    onClick={this.handleDarkSwitchChange}
-                />
-            </>
-        );
-    }
-
-    public renderHotkeys() {
-        return (
-            <Hotkeys>
-                <Hotkey
-                    global={true}
-                    combo="shift + d"
-                    label="Toggle dark theme"
-                    onKeyDown={this.handleDarkSwitchChange}
-                />
-            </Hotkeys>
+                    <div className="docs-nav-divider" />
+                    <NavButton
+                        icon={useDarkTheme ? "flash" : "moon"}
+                        hotkey="shift + d"
+                        text={useDarkTheme ? "Light theme" : "Dark theme"}
+                        onClick={this.handleDarkSwitchChange}
+                    />
+                </>
+            </HotkeysTarget2>
         );
     }
 
@@ -95,18 +88,15 @@ export class NavHeader extends React.PureComponent<INavHeaderProps> {
             .filter(v => +major(v) > 0)
             .map(v => <MenuItem href={v === current ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />);
         return (
-            <Popover position={Position.BOTTOM}>
+            <Popover2 content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">
                 <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
                     v{major(current)}
                 </Tag>
-                <Menu className="docs-version-list">{releaseItems}</Menu>
-            </Popover>
+            </Popover2>
         );
     }
 
-    private handleDarkSwitchChange = () => {
-        this.props.onToggleDark(!this.props.useDarkTheme);
-    };
+    private handleDarkSwitchChange = () => this.props.onToggleDark(!this.props.useDarkTheme);
 }
 
 /** Get major component of semver string. */

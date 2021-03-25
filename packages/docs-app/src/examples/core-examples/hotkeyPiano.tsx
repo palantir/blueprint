@@ -14,142 +14,12 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
-
-import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
+import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
-class Oscillator {
-    public oscillator: OscillatorNode;
-
-    public constructor(private context: AudioContext, freq: number) {
-        this.oscillator = this.context.createOscillator();
-        this.oscillator.type = "sine";
-        this.oscillator.frequency.value = freq;
-        this.oscillator.start(0);
-    }
-}
-
-class Envelope {
-    public amplitude: AudioParam;
-    public gain: GainNode;
-
-    private attackLevel = 0.8;
-    private attackTime = 0.1;
-    private sustainLevel = 0.3;
-    private sustainTime = 0.1;
-    private releaseTime = 0.4;
-
-    public constructor(private context: AudioContext) {
-        this.gain = this.context.createGain();
-        this.amplitude = this.gain.gain;
-        this.amplitude.value = 0;
-    }
-
-    public on() {
-        const now = this.context.currentTime;
-        this.amplitude.cancelScheduledValues(now);
-        this.amplitude.setValueAtTime(this.amplitude.value, now);
-        this.amplitude.linearRampToValueAtTime(this.attackLevel, now + this.attackTime);
-        this.amplitude.exponentialRampToValueAtTime(this.sustainLevel, now + this.attackTime + this.sustainTime);
-    }
-
-    public off() {
-        const now = this.context.currentTime;
-        // The below code helps remove waveform popping artifacts, but there is
-        // a bug in Firefox that breaks the whole example if we use it.
-        // this.amplitude.cancelScheduledValues(now);
-        // this.amplitude.setValueAtTime(this.amplitude.value, now);
-        this.amplitude.exponentialRampToValueAtTime(0.01, now + this.releaseTime);
-        this.amplitude.linearRampToValueAtTime(0, now + this.releaseTime + 0.01);
-    }
-}
-
-// alph sorting does not follow a logical order here
-// tslint:disable object-literal-sort-keys
-const Scale: { [note: string]: number } = {
-    A3: 220.0,
-    "A#3": 233.08,
-    B3: 246.94,
-    C4: 261.63,
-    "C#4": 277.18,
-    D4: 293.66,
-    "D#4": 311.13,
-    E4: 329.63,
-    F4: 349.23,
-    "F#4": 369.99,
-    G4: 392.0,
-    "G#4": 415.3,
-    A4: 440.0,
-    "A#4": 466.16,
-    B4: 493.88,
-    C5: 523.25,
-    "C#5": 554.37,
-    D5: 587.33,
-    "D#5": 622.25,
-    E5: 659.25,
-    F5: 698.46,
-    "F#5": 739.99,
-    G5: 783.99,
-    "G#5": 830.61,
-    A5: 880.0,
-    "A#5": 932.33,
-    B5: 987.77,
-};
-// tslint:enable object-literal-sort-keys
-
-interface IPianoKeyProps {
-    note: string;
-    hotkey: string;
-    pressed: boolean;
-    context: AudioContext;
-}
-
-class PianoKey extends React.Component<IPianoKeyProps> {
-    private oscillator: Oscillator;
-    private envelope: Envelope;
-
-    public constructor(props: IPianoKeyProps) {
-        super(props);
-
-        const { context, note } = this.props;
-        this.oscillator = new Oscillator(context, Scale[note]);
-        this.envelope = new Envelope(context);
-        this.oscillator.oscillator.connect(this.envelope.gain);
-        this.envelope.gain.connect(context.destination);
-    }
-
-    public componentDidUpdate(prevProps: IPianoKeyProps) {
-        if (prevProps.pressed === false && this.props.pressed === true) {
-            this.envelope.on();
-        } else if (prevProps.pressed === true && this.props.pressed === false) {
-            this.envelope.off();
-        }
-    }
-
-    public render() {
-        const { hotkey, note, pressed } = this.props;
-        const classes = classNames("piano-key", {
-            "piano-key-pressed": pressed,
-            "piano-key-sharp": /\#/.test(note),
-        });
-        const elevation = classNames(pressed ? Classes.ELEVATION_0 : Classes.ELEVATION_2);
-        return (
-            <div className={classes}>
-                <div className={elevation}>
-                    <div className="piano-key-text">
-                        <span className="piano-key-note">{note}</span>
-                        <br />
-                        <kbd className="piano-key-hotkey">{hotkey}</kbd>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
+import { PianoKey } from "./audio";
 
 export interface IHotkeyPianoState {
     keys: boolean[];
@@ -158,6 +28,7 @@ export interface IHotkeyPianoState {
 // eslint-disable-next-line @typescript-eslint/dot-notation
 const AUDIO_CONTEXT = (window as any)["AudioContext"] != null ? new AudioContext() : null;
 
+// eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 export class HotkeyPiano extends React.PureComponent<IExampleProps, IHotkeyPianoState> {
     public state: IHotkeyPianoState = {

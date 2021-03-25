@@ -164,7 +164,7 @@ $tag-round-adjustment: 2px !default;
   cursor: pointer;
   display: flex;
   margin-bottom: -$tag-padding-top;
-  // stylelint-disable-next-line declaration-no-important
+  /* stylelint-disable-next-line declaration-no-important */
   margin-right: -$tag-padding !important;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
@@ -190,10 +190,9 @@ $tag-round-adjustment: 2px !default;
   }
 
   .#{$ns}-large & {
-    // stylelint-disable-next-line declaration-no-important
+    /* stylelint-disable-next-line declaration-no-important */
     margin-right: -$tag-padding-large !important;
-    padding: ($tag-height-large - $pt-icon-size-large) / 2;
-    padding-left: 0;
+    padding: 0 ($tag-padding-large / 2) 0 0;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);
