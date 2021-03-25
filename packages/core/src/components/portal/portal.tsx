@@ -66,12 +66,15 @@ const portalContextTypes: ValidationMap<IPortalContext> = {
  */
 export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
+
     public static contextTypes = { ...portalContextTypes, ...windowOverrideContextTypes };
 
     public context: IPortalContext & IWindowOverrideContext;
+
     public state: IPortalState = { hasMounted: false };
 
     private portalElement: HTMLElement | null = null;
+
     private get container() {
         if (this.props.container == null) {
             return typeof this.window.document !== "undefined" ? this.window.document.body : null;

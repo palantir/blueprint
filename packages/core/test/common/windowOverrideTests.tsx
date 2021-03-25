@@ -18,6 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
+
 import { Button, NumericInput } from "../../src";
 import { IWindowOverrideContext, windowOverrideContextTypes } from "../../src/common/windowOverrideContext";
 
