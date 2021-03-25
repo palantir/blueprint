@@ -28,8 +28,8 @@ const MENU_ITEMS = [
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
 const TARGET_CLASSNAME = "test-target";
 
-describe("ContextMenu2", () => {
-    it("renders children and Popover2", () => {
+describe("ContextMenu", () => {
+    it("renders children and Popover", () => {
         const ctxMenu = mountTestMenu();
         assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
         assert.isTrue(ctxMenu.find(Popover).exists());
