@@ -17,7 +17,7 @@
 import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
 import { StrictModifier } from "react-popper";
 
-import { OverlayableProps, Props } from "@blueprintjs/core";
+import { OverlayableProps, Props, PopoverPosition } from "@blueprintjs/core";
 
 export { Boundary as PopperBoundary, Placement, placements as PlacementOptions };
 // copied from @popperjs/core, where it is not exported as public
@@ -162,12 +162,8 @@ export interface Popover2SharedProps<TProps> extends OverlayableProps, Props {
     rootBoundary?: RootBoundary;
 
     /**
-     * A space-delimited string of class names applied to the popover element.
-     */
-    popoverClassName?: string;
-
-    /**
      * The placement (relative to the target) at which the popover should appear.
+     * Mutually exclusive with `position` prop.
      *
      * The default value of `"auto"` will choose the best placement when opened
      * and will allow the popover to reposition itself to remain onscreen as the
@@ -176,6 +172,23 @@ export interface Popover2SharedProps<TProps> extends OverlayableProps, Props {
      * @default "auto"
      */
     placement?: Placement;
+
+    /**
+     * A space-delimited string of class names applied to the popover element.
+     */
+    popoverClassName?: string;
+
+    /**
+     * The position (relative to the target) at which the popover should appear.
+     * Mutually exclusive with `placement` prop.
+     *
+     * The default value of `"auto"` will choose the best position when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
+     *
+     * @default "auto"
+     */
+    position?: PopoverPosition;
 
     /**
      * HTML tag name for the target element. This must be an HTML element to

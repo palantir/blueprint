@@ -3088,5 +3088,11 @@
         "iconName": "shapes",
         "tags": "shapes, geometric,",
         "group": "interface"
+    },
+    {
+        "displayName": "Shared Filter",
+        "iconName": "shared-filter",
+        "tags": "notification, filter, shared",
+        "group": "interface"
     }
 ]

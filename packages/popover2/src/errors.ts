@@ -23,4 +23,6 @@ export const POPOVER2_WARN_DOUBLE_TARGET =
     ns + ` <Popover2> with children ignores renderTarget prop; use either prop or children.`;
 export const POPOVER2_WARN_EMPTY_CONTENT = ns + ` Disabling <Popover2> with empty/whitespace content...`;
 export const POPOVER2_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover2 usePortal={false}> ignores hasBackdrop`;
+export const POPOVER2_WARN_PLACEMENT_AND_POSITION_MUTEX =
+    ns + ` <Popover2> supports either placement or position prop, not both.`;
 export const POPOVER2_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover2> onInteraction is ignored when uncontrolled.`;
