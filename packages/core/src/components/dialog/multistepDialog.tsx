@@ -20,17 +20,19 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { isFunction } from "../../common/utils";
 import { Button, IButtonProps } from "../button/buttons";
 import { Dialog, IDialogProps } from "./dialog";
 import { DialogStep, DialogStepId, IDialogStepProps } from "./dialogStep";
 
 type DialogStepElement = React.ReactElement<IDialogStepProps & { children: React.ReactNode }>;
+type AllowedButtonProps = Pick<IButtonProps, "disabled" | "text">;
 
 export interface IMultistepDialogProps extends IDialogProps {
     /**
      * Props for the back button.
      */
-    backButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
+    backButtonProps?: Partial<AllowedButtonProps> | ((step: DialogStepId) => Partial<AllowedButtonProps>);
 
     /**
      * Props for the button to display on the final step.
@@ -40,7 +42,7 @@ export interface IMultistepDialogProps extends IDialogProps {
     /**
      * Props for the next button.
      */
-    nextButtonProps?: Partial<Pick<IButtonProps, "disabled" | "text">>;
+    nextButtonProps?: Partial<AllowedButtonProps> | ((step: DialogStepId) => Partial<AllowedButtonProps>);
 
     /**
      * A callback that is invoked when the user selects a different step by clicking on back, next, or a step itself.
@@ -164,14 +166,21 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
 
     private renderButtons() {
         const { selectedIndex } = this.state;
+        const steps = this.getDialogStepChildren();
+        const stepId = steps[selectedIndex].props.id;
         const buttons = [];
+
         if (this.state.selectedIndex > 0) {
+            const backButtonProps = isFunction(this.props.backButtonProps)
+                ? this.props.backButtonProps(stepId)
+                : this.props.backButtonProps;
+
             buttons.push(
                 <Button
                     key="back"
                     onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
                     text="Back"
-                    {...this.props.backButtonProps}
+                    {...backButtonProps}
                 />,
             );
         }
@@ -179,13 +188,17 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
             buttons.push(<Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />);
         } else {
+            const nextButtonProps = isFunction(this.props.nextButtonProps)
+                ? this.props.nextButtonProps(stepId)
+                : this.props.nextButtonProps;
+
             buttons.push(
                 <Button
                     intent="primary"
                     key="next"
                     onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
                     text="Next"
-                    {...this.props.nextButtonProps}
+                    {...nextButtonProps}
                 />,
             );
         }
