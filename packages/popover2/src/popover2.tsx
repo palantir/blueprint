@@ -22,10 +22,10 @@ import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps
 import {
     AbstractPureComponent2,
     Classes as CoreClasses,
-    combineRefs,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
     isRefCallback,
+    mergeRefs,
     Overlay,
     ResizeSensor,
     Utils,
@@ -288,7 +288,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         }
 
         if (isRefCallback(ref)) {
-            ref = combineRefs(ref, this.refHandlers.target);
+            ref = mergeRefs(ref, this.refHandlers.target);
         }
 
         const targetEventHandlers = isHoverInteractionKind

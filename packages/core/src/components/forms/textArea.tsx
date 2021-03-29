@@ -18,16 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import {
-    AbstractPureComponent2,
-    Classes,
-    getRef,
-    IRef,
-    IRefObject,
-    isRefCallback,
-    isRefObject,
-    refHandler,
-} from "../../common";
+import { AbstractPureComponent2, Classes, IRef, IRefCallback, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
 export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -70,29 +61,25 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
     public state: ITextAreaState = {};
 
     // used to measure and set the height of the component on first mount
-    public textareaElement: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
+    public textareaElement: HTMLTextAreaElement | null = null;
 
-    private handleRef: IRef<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
+    private handleRef: IRefCallback<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
 
     public componentDidMount() {
         if (this.props.growVertically && this.textareaElement !== null) {
             // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
             /* eslint-disable-next-line react/no-did-mount-set-state */
             this.setState({
-                height: getRef(this.textareaElement)!.scrollHeight,
+                height: this.textareaElement?.scrollHeight,
             });
         }
     }
 
     public componentDidUpdate(prevProps: ITextAreaProps) {
-        const { inputRef } = this.props;
-        if (prevProps.inputRef !== inputRef) {
-            if (isRefObject<HTMLTextAreaElement>(inputRef)) {
-                inputRef.current = (this.textareaElement as IRefObject<HTMLTextAreaElement>).current;
-                this.textareaElement = inputRef;
-            } else if (isRefCallback<HTMLTextAreaElement>(inputRef)) {
-                inputRef(this.textareaElement as HTMLTextAreaElement | null);
-            }
+        if (prevProps.inputRef !== this.props.inputRef) {
+            setRef(prevProps.inputRef, null);
+            this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);
+            setRef(this.props.inputRef, this.textareaElement);
         }
     }
 

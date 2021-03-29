@@ -21,10 +21,8 @@ import {
     AbstractPureComponent2,
     Alignment,
     Classes,
-    getRef,
     IActionProps,
     IElementRefProps,
-    IRefObject,
     Keys,
     MaybeElement,
     Utils,
@@ -105,7 +103,7 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
         isActive: false,
     };
 
-    protected abstract buttonRef: HTMLElement | IRefObject<HTMLElement> | null;
+    protected abstract buttonRef: HTMLElement | null;
 
     private currentKeyDown?: number;
 
@@ -165,7 +163,7 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
         /* eslint-disable deprecation/deprecation */
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
-            getRef(this.buttonRef)?.click();
+            this.buttonRef?.click();
         }
         this.currentKeyDown = undefined;
         this.props.onKeyUp?.(e);

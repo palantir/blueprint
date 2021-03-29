@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, getRef, IRef, IRefObject, Keys, refHandler, Utils } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IIntentProps, IProps, MaybeElement } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { ITagProps, Tag } from "../tag/tag";
@@ -222,7 +222,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
         isInputFocused: false,
     };
 
-    public inputElement: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
     private handleRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
@@ -274,6 +274,14 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
                 {this.props.rightElement}
             </div>
         );
+    }
+
+    public componentDidUpdate(prevProps: ITagInputProps) {
+        if (prevProps.inputRef !== this.props.inputRef) {
+            setRef(prevProps.inputRef, null);
+            this.handleRef = refHandler(this, "inputElement", this.props.inputRef);
+            setRef(this.props.inputRef, this.inputElement);
+        }
     }
 
     private addTags = (value: string, method: TagInputAddMethod = "default") => {
@@ -347,7 +355,7 @@ export class TagInput extends AbstractPureComponent2<ITagInputProps, ITagInputSt
     }
 
     private handleContainerClick = () => {
-        getRef(this.inputElement)?.focus();
+        this.inputElement?.focus();
     };
 
     private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {

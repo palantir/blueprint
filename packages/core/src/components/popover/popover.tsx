@@ -20,7 +20,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps } from "react-popper";
 
-import { AbstractPureComponent2, Classes, IRef, refHandler } from "../../common";
+import { AbstractPureComponent2, Classes, IRef, refHandler, setRef } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, HTMLDivProps } from "../../common/props";
 import * as Utils from "../../common/utils";
@@ -221,8 +221,15 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         this.updateDarkParent();
     }
 
-    public componentDidUpdate(props: IPopoverProps, state: IPopoverState) {
-        super.componentDidUpdate(props, state);
+    public componentDidUpdate(prevProps: IPopoverProps, prevState: IPopoverState) {
+        super.componentDidUpdate(prevProps, prevState);
+
+        if (prevProps.popoverRef !== this.props.popoverRef) {
+            setRef(prevProps.popoverRef, null);
+            this.handlePopoverRef = refHandler(this, "popoverElement", this.props.popoverRef);
+            setRef(this.props.popoverRef, this.popoverElement);
+        }
+
         this.updateDarkParent();
 
         const nextIsOpen = this.getIsOpen(this.props);
@@ -570,7 +577,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     }
 
     private isElementInPopover(element: Element) {
-        return this.popoverElement != null && this.popoverElement.contains(element);
+        return this.popoverElement?.contains(element);
     }
 
     private isHoverInteractionKind() {
