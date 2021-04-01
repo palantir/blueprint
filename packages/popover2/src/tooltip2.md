@@ -29,7 +29,7 @@ required because the tooltip needs information from popover disable itself when 
 popover is open is open, thus preventing both elements from appearing at the same time.
 
 ```tsx
-import { Button, combineRefs } from "@blueprintjs/core";
+import { Button, mergeRefs } from "@blueprintjs/core";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 <Popover2
@@ -43,7 +43,7 @@ import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
                     {...popoverProps}
                     {...tooltipProps}
                     active={isPopoverOpen}
-                    elementRef={combineRefs(ref1, ref2)}
+                    elementRef={mergeRefs(ref1, ref2)}
                     text="Hover and click me"
                 />
             )}
