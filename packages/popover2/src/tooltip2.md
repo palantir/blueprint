@@ -38,7 +38,7 @@ import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
         <Tooltip2
             content="I have a popover!"
             disabled={isPopoverOpen}
-            renderTarget={({ isOpen: isTooltipOpen, ref2, ...tooltipProps }) => (
+            renderTarget={({ isOpen: isTooltipOpen, ref: ref2, ...tooltipProps }) => (
                 <Button
                     {...popoverProps}
                     {...tooltipProps}
