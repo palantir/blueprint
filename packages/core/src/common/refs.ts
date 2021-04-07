@@ -42,6 +42,11 @@ export function setRef<T extends HTMLElement>(refTarget: IRef<T> | undefined | n
     }
 }
 
+/** @deprecated use mergeRefs() instead */
+export function combineRefs<T extends HTMLElement>(ref1: IRefCallback<T>, ref2: IRefCallback<T>) {
+    return mergeRefs(ref1, ref2);
+}
+
 /**
  * Utility for merging refs into one singular callback ref.
  * If using in a functional component, would recomend using `useMemo` to preserve function identity.
