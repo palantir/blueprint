@@ -92,7 +92,7 @@ describe("Core isomorphic rendering", () => {
             props: { content: React.createElement("h1", {}, "content") },
             children: requiredChild,
         },
-        Toaster: {
+        OverlayToaster: {
             props: { usePortal: false },
             children: React.createElement(Core.Toast, { message: "Toast" }),
         },
