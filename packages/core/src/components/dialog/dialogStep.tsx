@@ -20,8 +20,10 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { IButtonProps } from "../button/buttons";
 
 export type DialogStepId = string | number;
+export type DialogStepButtonProps = Partial<Pick<IButtonProps, "disabled" | "text">>;
 
 export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
@@ -43,6 +45,16 @@ export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "tit
      * Content of step title element, rendered in a list left of the active panel.
      */
     title?: React.ReactNode;
+
+    /**
+     * Props for the back button.
+     */
+    backButtonProps?: DialogStepButtonProps;
+
+    /**
+     * Props for the next button.
+     */
+    nextButtonProps?: DialogStepButtonProps;
 }
 
 @polyfill
