@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import React from "react";
-import { findDOMNode } from "react-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes, Keys } from "../../common";
@@ -212,13 +211,11 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         hasEverOpened: this.props.isOpen,
     };
 
-    // an HTMLElement that contains the backdrop and any children, to query for focus target
-    public containerElement: HTMLElement | null = null;
+    // an HTMLElement that contains the overlaid child component, to query for focus target
+    public containerElement: HTMLElement | undefined | null = null;
 
     private refHandlers = {
-        // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
-        /* eslint-disable-next-line react/no-find-dom-node */
-        container: (ref: TransitionGroup) => (this.containerElement = findDOMNode(ref) as HTMLElement),
+        container: (el: HTMLElement | undefined | null) => (this.containerElement = el),
     };
 
     public render() {
@@ -249,13 +246,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         );
 
         const transitionGroup = (
-            <TransitionGroup
-                appear={true}
-                className={containerClasses}
-                component="div"
-                onKeyDown={this.handleKeyDown}
-                ref={this.refHandlers.container}
-            >
+            <TransitionGroup appear={true} className={containerClasses} component="div" onKeyDown={this.handleKeyDown}>
                 {childrenWithTransitions}
             </TransitionGroup>
         );
@@ -341,6 +332,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         return (
             <CSSTransition
                 classNames={transitionName}
+                nodeRef={this.refHandlers.container}
                 onEntering={onOpening}
                 onEntered={onOpened}
                 onExiting={onClosing}
@@ -443,7 +435,8 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
 
     private handleDocumentClick = (e: MouseEvent) => {
         const { canOutsideClickClose, isOpen, onClose } = this.props;
-        // get the actually target even if we are in an open mode Shadow DOM
+        // get the actual target even if we are in a Shadow DOM
+        // see https://github.com/palantir/blueprint/issues/4220
         const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
         const stackIndex = Overlay.openStack.indexOf(this);
@@ -462,7 +455,8 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     };
 
     private handleDocumentFocus = (e: FocusEvent) => {
-        // get the actually target even if we are in an open mode Shadow DOM
+        // get the actual target even if we are in a Shadow DOM
+        // see https://github.com/palantir/blueprint/issues/4220
         const eventTarget = e.composed ? e.composedPath()[0] : e.target;
         if (
             this.props.enforceFocus &&

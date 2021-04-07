@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-import React from "react";
-import { findDOMNode } from "react-dom";
+import React, { cloneElement, useEffect, useMemo, useRef } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
-import { AbstractPureComponent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ResizeEntry } from "./resizeObserverTypes";
 
 /** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 export interface ResizeSensorProps {
+    /**
+     * Single child, must be an element and not a string or fragment.
+     */
+    children: JSX.Element;
+
     /**
      * Callback invoked when the wrapped element resizes.
      *
@@ -50,76 +53,41 @@ export interface ResizeSensorProps {
     observeParents?: boolean;
 }
 
-export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
+export const ResizeSensor: React.FC<ResizeSensorProps> = props => {
+    const observer = useMemo(
+        () =>
+            new ResizeObserver(entries => {
+                props.onResize?.(entries);
+            }),
+        [props.children, props.onResize],
+    );
+    const elementRef = useRef<HTMLElement>();
 
-    private element: Element | null = null;
-
-    private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
-
-    public render() {
-        // pass-through render of single child
-        return React.Children.only(this.props.children);
-    }
-
-    public componentDidMount() {
-        this.observeElement();
-    }
-
-    public componentDidUpdate(prevProps: ResizeSensorProps) {
-        this.observeElement(this.props.observeParents !== prevProps.observeParents);
-    }
-
-    public componentWillUnmount() {
-        this.observer.disconnect();
-    }
-
-    /**
-     * Observe the DOM element, if defined and different from the currently
-     * observed element. Pass `force` argument to skip element checks and always
-     * re-observe.
-     */
-    private observeElement(force = false) {
-        const element = this.getElement();
-        if (!(element instanceof Element)) {
-            // stop everything if not defined
-            this.observer.disconnect();
-            return;
+    // effect to observe this element
+    useEffect(() => {
+        if (elementRef.current instanceof Element) {
+            // N.B. observer callback is invoked immediately when observing new elements
+            observer.observe(elementRef.current);
         }
 
-        if (element === this.element && !force) {
-            // quit if given same element -- nothing to update (unless forced)
-            return;
-        } else {
-            // clear observer list if new element
-            this.observer.disconnect();
-            // remember element reference for next time
-            this.element = element;
-        }
+        return () => observer.disconnect();
+    }, [observer, elementRef.current]);
 
-        // observer callback is invoked immediately when observing new elements
-        this.observer.observe(element);
-
-        if (this.props.observeParents) {
-            let parent = element.parentElement;
+    // effect to observe parents
+    useEffect(() => {
+        if (props.observeParents && elementRef.current instanceof Element) {
+            let parent = elementRef.current.parentElement;
             while (parent != null) {
-                this.observer.observe(parent);
+                observer.observe(parent);
                 parent = parent.parentElement;
             }
         }
-    }
 
-    private getElement() {
-        try {
-            // using findDOMNode for two reasons:
-            // 1. cloning to insert a ref is unwieldy and not performant.
-            // 2. ensure that we resolve to an actual DOM node (instead of any JSX ref instance).
-            // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
-            /* eslint-disable-next-line react/no-find-dom-node */
-            return findDOMNode(this);
-        } catch {
-            // swallow error if findDOMNode is run on unmounted component.
-            return null;
-        }
-    }
-}
+        // this is probably redundant with the first effect defined above, but do it anyway just in case
+        return () => observer.disconnect();
+    }, [observer, props.observeParents]);
+
+    const onlyChild = React.Children.only(props.children);
+    return cloneElement(onlyChild, { ref: elementRef });
+};
+ResizeSensor.displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;

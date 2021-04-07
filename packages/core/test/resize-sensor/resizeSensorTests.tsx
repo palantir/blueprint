@@ -38,7 +38,6 @@ describe("<ResizeSensor>", () => {
         const onResize = spy();
         mountResizeSensor(onResize);
         await resize({ width: 200 });
-        await resize({ width: 200 }); // this one is ignored
         await resize({ height: 100 });
         await resize({ width: 55 });
         assert.equal(onResize.callCount, 3);
@@ -98,9 +97,9 @@ interface SizeProps {
     height?: number;
 }
 
-type ResizeTesterProps = ResizeSensorProps & SizeProps;
-const ResizeTester: React.FunctionComponent<ResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
-    <ResizeSensor {...resizeProps}>
+type ResizeTesterProps = Omit<ResizeSensorProps, "children"> & SizeProps;
+const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...sensorProps }) => (
+    <ResizeSensor {...sensorProps}>
         <div key={id} style={{ width, height }} />
     </ResizeSensor>
 );

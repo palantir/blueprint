@@ -18,6 +18,15 @@ function handleResize(entries: ResizeEntry[]) {
 </ResizeSensor>
 ```
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">DOM ref required</h4>
+
+ResizeSensor's implementation relies on a React ref being attached to a DOM element,
+so the child of this component _must be a native DOM element_ or utilize
+[`React.forwardRef()`](https://reactjs.org/docs/forwarding-refs.html).
+
+</div>
+
 @## Props
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
