@@ -168,7 +168,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         const buttons = [];
 
         if (this.state.selectedIndex > 0) {
-            const backButtonProps = steps[selectedIndex].props.backButtonProps || this.props.backButtonProps;
+            const backButtonProps = steps[selectedIndex].props.backButtonProps ?? this.props.backButtonProps;
 
             buttons.push(
                 <Button
@@ -183,7 +183,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         if (selectedIndex === this.getDialogStepChildren().length - 1) {
             buttons.push(<Button intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />);
         } else {
-            const nextButtonProps = steps[selectedIndex].props.nextButtonProps || this.props.nextButtonProps;
+            const nextButtonProps = steps[selectedIndex].props.nextButtonProps ?? this.props.nextButtonProps;
 
             buttons.push(
                 <Button
