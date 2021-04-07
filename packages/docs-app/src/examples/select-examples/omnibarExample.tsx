@@ -16,7 +16,17 @@
 
 import React from "react";
 
-import { Button, H5, HotkeysTarget, KeyComboTag, MenuItem, Position, Switch, Toaster } from "@blueprintjs/core";
+import {
+    Button,
+    H5,
+    HotkeysTarget,
+    KeyComboTag,
+    MenuItem,
+    OverlayToaster,
+    Position,
+    Switch,
+    Toaster,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 
@@ -83,7 +93,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
                         onItemSelect={this.handleItemSelect}
                         onClose={this.handleClose}
                     />
-                    <Toaster position={Position.TOP} ref={this.refHandlers.toaster} />
+                    <OverlayToaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>
             </HotkeysTarget>
         );

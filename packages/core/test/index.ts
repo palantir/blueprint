@@ -63,7 +63,7 @@ import "./tabs/tabsTests";
 import "./tag-input/tagInputTests";
 import "./tag/tagTests";
 import "./text/textTests";
-import "./toast/toasterTests";
+import "./toast/overlayToasterTests";
 import "./toast/toastTests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";

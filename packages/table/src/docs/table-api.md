@@ -22,7 +22,7 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
 @method Table.resizeRowsByApproximateHeight
 
 
-`ICellMapper` is just a function that takes a cell-coordinate and returns a generic type:
+`CellMapper` is just a function that takes a cell-coordinate and returns a generic type:
 
 
 

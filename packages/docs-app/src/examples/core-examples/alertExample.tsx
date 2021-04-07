@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { Alert, Button, H5, Intent, Switch, Toaster, ToasterInstance } from "@blueprintjs/core";
+import { Alert, Button, H5, Intent, OverlayToaster, Switch, Toaster } from "@blueprintjs/core";
 import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { BlueprintExampleData } from "../../tags/types";
@@ -40,7 +40,7 @@ export class AlertExample extends React.PureComponent<ExampleProps<BlueprintExam
         willLoad: false,
     };
 
-    private toaster: ToasterInstance;
+    private toaster: Toaster;
 
     private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyCancel => this.setState({ canEscapeKeyCancel }));
 
@@ -106,7 +106,7 @@ export class AlertExample extends React.PureComponent<ExampleProps<BlueprintExam
                     </p>
                 </Alert>
 
-                <Toaster ref={ref => (this.toaster = ref)} />
+                <OverlayToaster ref={ref => (this.toaster = ref)} />
             </Example>
         );
     }

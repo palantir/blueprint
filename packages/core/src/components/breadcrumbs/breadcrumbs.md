@@ -44,7 +44,7 @@ export class BreadcrumbsExample extends React.Component {
 
 The `Breadcrumb` component renders an `a.@ns-breadcrumb` if given an `href` or
 `onClick` and a `span.@ns-breadcrumb` otherwise. Typically you will supply an
-array of `IBreadcrumbProps` to the `<Breadcrumbs items>` prop and only render
+array of `BreadcrumbProps` to the `<Breadcrumbs items>` prop and only render
 this component directly when defining a custom `breadcrumbRenderer`.
 
 @interface BreadcrumbProps

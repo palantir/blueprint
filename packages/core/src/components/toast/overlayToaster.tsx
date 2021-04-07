@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,40 +25,13 @@ import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
 import { Overlay } from "../overlay/overlay";
 import { ToastProps, Toast } from "./toast";
-
-export type ToastOptions = ToastProps & { key: string };
-export type ToasterPosition =
-    | typeof Position.TOP
-    | typeof Position.TOP_LEFT
-    | typeof Position.TOP_RIGHT
-    | typeof Position.BOTTOM
-    | typeof Position.BOTTOM_LEFT
-    | typeof Position.BOTTOM_RIGHT;
-
-/** Instance methods available on a `<Toaster>` component instance. */
-export interface ToasterInstance {
-    /**
-     * Shows a new toast to the user, or updates an existing toast corresponding to the provided key (optional).
-     *
-     * Returns the unique key of the toast.
-     */
-    show(props: ToastProps, key?: string): string;
-
-    /** Dismiss the given toast instantly. */
-    dismiss(key: string): void;
-
-    /** Dismiss all toasts instantly. */
-    clear(): void;
-
-    /** Returns the props for all current toasts. */
-    getToasts(): ToastOptions[];
-}
+import { Toaster, ToastOptions, ToasterPosition } from "./toaster";
 
 /**
  * Props supported by the `<Toaster>` component.
  * These props can be passed as an argument to the static `Toaster.create(props?, container?)` method.
  */
-export interface ToasterProps extends Props {
+export interface OverlayToasterProps extends Props {
     /**
      * Whether a toast should acquire application focus when it first opens.
      * This is disabled by default so that toasts do not interrupt the user's flow.
@@ -103,14 +76,14 @@ export interface ToasterProps extends Props {
     maxToasts?: number;
 }
 
-export interface ToasterState {
+export interface OverlayToasterState {
     toasts: ToastOptions[];
 }
 
-export class Toaster extends AbstractPureComponent<ToasterProps, ToasterState> implements ToasterInstance {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Toaster`;
+export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, OverlayToasterState> implements Toaster {
+    public static displayName = `${DISPLAYNAME_PREFIX}.OverlayToaster`;
 
-    public static defaultProps: ToasterProps = {
+    public static defaultProps: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
@@ -121,23 +94,23 @@ export class Toaster extends AbstractPureComponent<ToasterProps, ToasterState> i
      * Create a new `Toaster` instance that can be shared around your application.
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
-    public static create(props?: ToasterProps, container = document.body): ToasterInstance {
+    public static create(props?: OverlayToasterProps, container = document.body): Toaster {
         if (props != null && props.usePortal != null && !isNodeEnv("production")) {
             console.warn(TOASTER_WARN_INLINE);
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
-        const toaster = ReactDOM.render<ToasterProps>(
-            <Toaster {...props} usePortal={false} />,
+        const toaster = ReactDOM.render<OverlayToasterProps>(
+            <OverlayToaster {...props} usePortal={false} />,
             containerElement,
-        ) as Toaster;
+        ) as OverlayToaster;
         if (toaster == null) {
             throw new Error(TOASTER_CREATE_NULL);
         }
         return toaster;
     }
 
-    public state: ToasterState = {
+    public state: OverlayToasterState = {
         toasts: [],
     };
 
@@ -206,7 +179,7 @@ export class Toaster extends AbstractPureComponent<ToasterProps, ToasterState> i
         );
     }
 
-    protected validateProps({ maxToasts }: ToasterProps) {
+    protected validateProps({ maxToasts }: OverlayToasterProps) {
         // maximum number of toasts should not be a number less than 1
         if (maxToasts !== undefined && maxToasts < 1) {
             throw new Error(TOASTER_MAX_TOASTS_INVALID);

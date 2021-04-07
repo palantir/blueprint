@@ -104,7 +104,7 @@ will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h4 class="@ns-heading">Avoiding type conflicts</h4>
 
-The "Create Item" option is represented by the reserved type `ICreateNewItem`
+The "Create Item" option is represented by the reserved type `CreateNewItem`
 exported from this package. It is exceedingly unlikely but technically possible
 for your custom type `<T>` to conflict with this type. If your type conflicts,
 you may see unexpected behavior; to resolve, consider changing the schema for

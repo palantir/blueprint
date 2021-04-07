@@ -23,10 +23,11 @@ import {
     H5,
     HTMLSelect,
     Intent,
-    ToasterProps,
+    OverlayToasterProps,
     ToastProps,
     Label,
     NumericInput,
+    OverlayToaster,
     Position,
     ProgressBar,
     Switch,
@@ -48,8 +49,8 @@ const POSITIONS = [
     Position.BOTTOM_RIGHT,
 ];
 
-export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, ToasterProps> {
-    public state: ToasterProps = {
+export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, OverlayToasterProps> {
+    public state: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
@@ -131,7 +132,7 @@ export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExam
             <Example options={this.renderOptions()} {...this.props}>
                 {this.TOAST_BUILDERS.map(this.renderToastDemo, this)}
                 <Button onClick={this.handleProgressToast} text="Upload file" />
-                <Toaster {...this.state} ref={this.refHandlers.toaster} />
+                <OverlayToaster {...this.state} ref={this.refHandlers.toaster} />
             </Example>
         );
     }
