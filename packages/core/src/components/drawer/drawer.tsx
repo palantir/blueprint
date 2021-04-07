@@ -58,6 +58,14 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
     position?: Position;
 
     /**
+     * Whether the application should return focus to the last active element in the
+     * document after this drawer closes.
+     *
+     * @default true
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
      * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
      * and `height` otherwise.
      *
@@ -106,6 +114,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     public static defaultProps: IDrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        shouldReturnFocusOnClose: true,
         style: {},
         vertical: false,
     };
@@ -212,7 +221,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     };
 
     private handleClosed = (node: HTMLElement) => {
-        if (this.lastActiveElementBeforeOpened instanceof HTMLElement) {
+        if (this.props.shouldReturnFocusOnClose && this.lastActiveElementBeforeOpened instanceof HTMLElement) {
             this.lastActiveElementBeforeOpened.focus();
         }
         this.props.onClosed?.(node);
