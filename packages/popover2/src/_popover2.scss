@@ -82,7 +82,8 @@ $popover2-width: $pt-grid-size * 35 !default;
   transform: rotate(45deg);
 }
 
-.#{$ns}-popover2-backdrop {
+// use a more specific selector to ensure that we override core's _overlay.scss styles
+.#{$ns}-overlay-backdrop.#{$ns}-popover2-backdrop {
   background: rgba($white, 0);
 }
 
