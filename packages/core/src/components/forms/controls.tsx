@@ -22,7 +22,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler } from "../../common";
+import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 
 export interface IControlProps extends IProps, HTMLInputProps {
@@ -266,8 +266,13 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
         this.updateIndeterminate();
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: ICheckboxProps) {
         this.updateIndeterminate();
+        if (prevProps.inputRef !== this.props.inputRef) {
+            setRef(prevProps.inputRef, null);
+            this.handleInputRef = refHandler(this, "input", this.props.inputRef);
+            setRef(this.props.inputRef, this.input);
+        }
     }
 
     private updateIndeterminate() {

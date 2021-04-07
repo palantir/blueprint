@@ -70,13 +70,26 @@ describe("<TextArea>", () => {
     it("updates on ref change", () => {
         let textArea: HTMLTextAreaElement | null = null;
         let textAreaNew: HTMLTextAreaElement | null = null;
-        const textAreaRefCallback = (ref: HTMLTextAreaElement | null) => (textArea = ref);
-        const textAreaNewRefCallback = (ref: HTMLTextAreaElement | null) => (textAreaNew = ref);
+        let callCount = 0;
+        let newCallCount = 0;
+        const textAreaRefCallback = (ref: HTMLTextAreaElement | null) => {
+            callCount += 1;
+            textArea = ref;
+        };
+        const textAreaNewRefCallback = (ref: HTMLTextAreaElement | null) => {
+            newCallCount += 1;
+            textAreaNew = ref;
+        };
 
         const textAreawrapper = mount(<TextArea id="textarea" inputRef={textAreaRefCallback} />);
         assert.instanceOf(textArea, HTMLTextAreaElement);
+        assert.strictEqual(callCount, 1);
 
         textAreawrapper.setProps({ inputRef: textAreaNewRefCallback });
+        textAreawrapper.update();
+        assert.strictEqual(callCount, 2);
+        assert.isNull(textArea);
+        assert.strictEqual(newCallCount, 1);
         assert.instanceOf(textAreaNew, HTMLTextAreaElement);
     });
 
@@ -89,6 +102,7 @@ describe("<TextArea>", () => {
             assert.instanceOf(textAreaRef.current, HTMLTextAreaElement);
 
             textAreawrapper.setProps({ inputRef: textAreaNewRef });
+            assert.isNull(textAreaRef.current);
             assert.instanceOf(textAreaNewRef.current, HTMLTextAreaElement);
         });
     }

@@ -34,6 +34,7 @@ import {
     Position,
     refHandler,
     removeNonHTMLProps,
+    setRef,
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
@@ -342,6 +343,12 @@ export class NumericInput extends AbstractPureComponent2<HTMLInputProps & INumer
 
     public componentDidUpdate(prevProps: INumericInputProps, prevState: INumericInputState) {
         super.componentDidUpdate(prevProps, prevState);
+
+        if (prevProps.inputRef !== this.props.inputRef) {
+            setRef(prevProps.inputRef, null);
+            this.inputRef = refHandler(this, "inputElement", this.props.inputRef);
+            setRef(this.props.inputRef, this.inputElement);
+        }
 
         if (this.state.shouldSelectAfterUpdate) {
             this.inputElement?.setSelectionRange(0, this.state.value.length);

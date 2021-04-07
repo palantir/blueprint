@@ -20,7 +20,7 @@
 import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { IRef, IRefObject, refHandler } from "../../common/refs";
+import { IRef, refHandler, setRef } from "../../common/refs";
 import { AbstractButton, IButtonProps, IAnchorButtonProps } from "./abstractButton";
 
 export { IAnchorButtonProps, IButtonProps };
@@ -29,7 +29,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
-    public buttonRef: HTMLButtonElement | IRefObject<HTMLButtonElement> | null = null;
+    public buttonRef: HTMLButtonElement | null = null;
 
     protected handleRef: IRef<HTMLButtonElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
@@ -45,13 +45,21 @@ export class Button extends AbstractButton<HTMLButtonElement> {
             </button>
         );
     }
+
+    public componentDidUpdate(prevProps: IButtonProps) {
+        if (prevProps.elementRef !== this.props.elementRef) {
+            setRef(prevProps.elementRef, null);
+            this.handleRef = refHandler(this, "buttonRef", this.props.elementRef);
+            setRef(this.props.elementRef, this.buttonRef);
+        }
+    }
 }
 
 export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 
     // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
-    public buttonRef: HTMLAnchorElement | IRefObject<HTMLAnchorElement> | null = null;
+    public buttonRef: HTMLAnchorElement | null = null;
 
     protected handleRef: IRef<HTMLAnchorElement> = refHandler(this, "buttonRef", this.props.elementRef);
 
@@ -71,5 +79,13 @@ export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
                 {this.renderChildren()}
             </a>
         );
+    }
+
+    public componentDidUpdate(prevProps: IAnchorButtonProps) {
+        if (prevProps.elementRef !== this.props.elementRef) {
+            setRef(prevProps.elementRef, null);
+            this.handleRef = refHandler(this, "buttonRef", this.props.elementRef);
+            setRef(this.props.elementRef, this.buttonRef);
+        }
     }
 }
