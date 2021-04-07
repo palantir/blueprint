@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { Classes, MultistepDialog, DialogStep, DialogStepId } from "../../src";
+import { Classes, MultistepDialog, DialogStep } from "../../src";
 
 const NEXT_BUTTON = "[text='Next']";
 const BACK_BUTTON = "[text='Back']";
@@ -202,16 +202,10 @@ describe("<MultistepDialog>", () => {
     });
 
     it("disables next for second step when disabled on nextButtonProps is set to true", () => {
-        const getNextButtonProps = (stepId: DialogStepId) => {
-            if (stepId === "two") return { disabled: true };
-
-            return {};
-        };
-
         const dialog = mount(
-            <MultistepDialog nextButtonProps={getNextButtonProps} isOpen={true} usePortal={false}>
+            <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
-                <DialogStep id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} nextButtonProps={{ disabled: true }} />
                 <DialogStep id="three" title="Step 3" panel={<Panel />} />
             </MultistepDialog>,
         );
@@ -222,6 +216,24 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         assert.strictEqual(dialog.find(NEXT_BUTTON).prop("disabled"), true);
         dialog.find(NEXT_BUTTON).simulate("click");
+        assert.strictEqual(dialog.state("selectedIndex"), 1);
+        dialog.unmount();
+    });
+
+    it("disables back for second step when disabled on backButtonProps is set to true", () => {
+        const dialog = mount(
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} backButtonProps={{ disabled: true }} />
+                <DialogStep id="three" title="Step 3" panel={<Panel />} />
+            </MultistepDialog>,
+        );
+
+        assert.strictEqual(dialog.state("selectedIndex"), 0);
+        dialog.find(NEXT_BUTTON).simulate("click");
+        assert.strictEqual(dialog.state("selectedIndex"), 1);
+        assert.strictEqual(dialog.find(BACK_BUTTON).prop("disabled"), true);
+        dialog.find(BACK_BUTTON).simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         dialog.unmount();
     });
