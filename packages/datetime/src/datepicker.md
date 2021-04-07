@@ -24,7 +24,7 @@ in the [**react-day-picker** documentation](http://www.gpbl.org/react-day-picker
 The menu on the left of the calendars provides "shortcuts" that allow users to
 quickly select common dates. The items in this menu are controlled through
 the `shortcuts` prop: `true` to show presets, `false` to hide (default), or an
-array of `IDatePickerShortcut` objects to define custom shortcuts.
+array of `DatePickerShortcut` objects to define custom shortcuts.
 
 The **preset shortcuts** can be seen in the example above. They are as follows:
 

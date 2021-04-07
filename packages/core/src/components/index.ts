@@ -79,6 +79,7 @@ export * from "./tabs/tab";
 export * from "./tabs/tabs";
 export * from "./tag/tag";
 export * from "./tag-input/tagInput";
+export * from "./toast/overlayToaster";
 export * from "./toast/toast";
 export * from "./toast/toaster";
 export { TooltipProps, Tooltip } from "./tooltip/tooltip";
