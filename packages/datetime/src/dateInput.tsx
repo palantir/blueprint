@@ -438,7 +438,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         let relatedTarget = e.relatedTarget as HTMLElement;
         if (relatedTarget == null) {
             // Support IE11 (#2924)
-            relatedTarget = document.activeElement as HTMLElement;
+            relatedTarget = this.window.document.activeElement as HTMLElement;
         }
         const eventTarget = e.target as HTMLElement;
         // Beware: this.popoverContentElement is sometimes null under Chrome

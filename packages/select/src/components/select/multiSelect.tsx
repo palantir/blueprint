@@ -215,10 +215,11 @@ export class MultiSelect<T> extends AbstractPureComponent2<IMultiSelectProps<T>,
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = this.input === document.activeElement;
+            const isInputFocused = this.input === this.window.document.activeElement;
 
             if (this.input != null && !isInputFocused) {
                 // input is no longer focused, we should close the popover
+                console.warn("Closing");
                 this.setState({ isOpen: false });
             } else if (!this.props.openOnKeyDown) {
                 // we should open immediately on click focus events

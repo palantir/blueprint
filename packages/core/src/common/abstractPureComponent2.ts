@@ -17,6 +17,7 @@
 import * as React from "react";
 
 import { isNodeEnv } from "./utils";
+import { IWindowOverrideContext, windowOverrideContextTypes } from "./windowOverrideContext";
 
 /**
  * An abstract component that Blueprint components can extend
@@ -24,6 +25,8 @@ import { isNodeEnv } from "./utils";
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.PureComponent<P, S, SS> {
+    public static contextTypes = windowOverrideContextTypes;
+
     // unsafe lifecycle method
     public componentWillUpdate: never;
 
@@ -33,6 +36,16 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
 
     // this should be static, not an instance method
     public getDerivedStateFromProps: never;
+
+    /** Get the browser window, using the context-provided window override if available. */
+    protected get window() {
+        const context = this.context as IWindowOverrideContext | undefined;
+        if (context != null && context.windowOverride != null) {
+            return context.windowOverride;
+        } else {
+            return window;
+        }
+    }
 
     /** Component displayName should be `public static`. This property exists to prevent incorrect usage. */
     protected displayName: never;
@@ -67,9 +80,9 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
      * @returns a "cancel" function that will cancel the request when invoked.
      */
     public requestAnimationFrame(callback: () => void) {
-        const handle = window.requestAnimationFrame(callback);
+        const handle = this.window.requestAnimationFrame(callback);
         this.requestIds.push(handle);
-        return () => window.cancelAnimationFrame(handle);
+        return () => this.window.cancelAnimationFrame(handle);
     }
 
     /**
@@ -79,9 +92,9 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
      * @returns a "cancel" function that will clear timeout when invoked.
      */
     public setTimeout(callback: () => void, timeout?: number) {
-        const handle = window.setTimeout(callback, timeout);
+        const handle = this.window.setTimeout(callback, timeout);
         this.timeoutIds.push(handle);
-        return () => window.clearTimeout(handle);
+        return () => this.window.clearTimeout(handle);
     }
 
     /**
@@ -90,7 +103,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     public clearTimeouts = () => {
         if (this.timeoutIds.length > 0) {
             for (const timeoutId of this.timeoutIds) {
-                window.clearTimeout(timeoutId);
+                this.window.clearTimeout(timeoutId);
             }
             this.timeoutIds = [];
         }
@@ -102,7 +115,7 @@ export abstract class AbstractPureComponent2<P, S = {}, SS = {}> extends React.P
     public cancelAnimationFrames = () => {
         if (this.requestIds.length > 0) {
             for (const requestId of this.requestIds) {
-                window.cancelAnimationFrame(requestId);
+                this.window.cancelAnimationFrame(requestId);
             }
             this.requestIds = [];
         }

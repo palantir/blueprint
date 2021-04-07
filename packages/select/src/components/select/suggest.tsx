@@ -159,7 +159,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
             // wait until the transition ends so there isn't a flash of content in the popover
             /* eslint-disable-next-line deprecation/deprecation */
             const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
-            setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
+            this.setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
@@ -282,7 +282,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = getRef(this.inputElement) === document.activeElement;
+            const isInputFocused = getRef(this.inputElement) === this.window.document.activeElement;
 
             if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover

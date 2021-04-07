@@ -17,6 +17,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { AbstractPureComponent2, IWindowOverrideContext, windowOverrideContextTypes } from "../../common";
 import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
@@ -49,7 +50,7 @@ export interface IPortalContext {
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
+const portalContextTypes: ValidationMap<IPortalContext> = {
     blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
@@ -63,20 +64,23 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
-export class Portal extends React.Component<IPortalProps, IPortalState> {
+export class Portal extends AbstractPureComponent2<IPortalProps, IPortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 
-    public static contextTypes = REACT_CONTEXT_TYPES;
+    public static contextTypes = { ...portalContextTypes, ...windowOverrideContextTypes };
 
-    public static defaultProps: IPortalProps = {
-        container: typeof document !== "undefined" ? document.body : undefined,
-    };
-
-    public context: IPortalContext = {};
+    public context: IPortalContext & IWindowOverrideContext;
 
     public state: IPortalState = { hasMounted: false };
 
     private portalElement: HTMLElement | null = null;
+
+    private get container() {
+        if (this.props.container == null) {
+            return typeof this.window.document !== "undefined" ? this.window.document.body : null;
+        }
+        return this.props.container;
+    }
 
     public render() {
         // Only render `children` once this component has mounted in a browser environment, so they are
@@ -84,7 +88,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
         if (
             cannotCreatePortal ||
-            typeof document === "undefined" ||
+            typeof this.window?.document === "undefined" ||
             !this.state.hasMounted ||
             this.portalElement === null
         ) {
@@ -95,11 +99,11 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     public componentDidMount() {
-        if (!this.props.container) {
+        if (this.container == null) {
             return;
         }
         this.portalElement = this.createContainerElement();
-        this.props.container.appendChild(this.portalElement);
+        this.container.appendChild(this.portalElement);
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
         if (cannotCreatePortal) {
@@ -131,7 +135,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
     }
 
     private createContainerElement() {
-        const container = document.createElement("div");
+        const container = this.window.document.createElement("div");
         container.classList.add(Classes.PORTAL);
         maybeAddClass(container.classList, this.props.className);
         if (this.context != null) {

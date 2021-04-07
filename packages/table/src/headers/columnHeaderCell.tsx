@@ -23,9 +23,11 @@ import {
     Icon,
     IconName,
     IProps,
+    IWindowOverrideContext,
     Popover,
     Position,
     Utils as CoreUtils,
+    windowOverrideContextTypes,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
@@ -90,7 +92,10 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         menuIcon: "chevron-down",
     };
 
-    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
+    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes & IWindowOverrideContext> = {
+        ...columnInteractionBarContextTypes,
+        ...windowOverrideContextTypes,
+    };
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
