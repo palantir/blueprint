@@ -16,7 +16,7 @@ required because the tooltip needs information from popover disable itself when 
 popover is open is open, thus preventing both elements from appearing at the same time.
 
 ```tsx
-import { Button, combineRefs, Popover, Tooltip } from "@blueprintjs/core";
+import { Button, mergeRefs, Popover, Tooltip } from "@blueprintjs/core";
 
 <Popover
     content={<h1>Popover!</h1>}
@@ -24,12 +24,12 @@ import { Button, combineRefs, Popover, Tooltip } from "@blueprintjs/core";
         <Tooltip
             content="I have a popover!"
             disabled={isPopoverOpen}
-            renderTarget={({ isOpen: isTooltipOpen, ref2, ...tooltipProps }) => (
+            renderTarget={({ isOpen: isTooltipOpen, ref: ref2, ...tooltipProps }) => (
                 <Button
                     {...popoverProps}
                     {...tooltipProps}
                     active={isPopoverOpen}
-                    elementRef={combineRefs(ref1, ref2)}
+                    elementRef={mergeRefs(ref1, ref2)}
                     text="Hover and click me"
                 />
             )}

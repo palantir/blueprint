@@ -21,17 +21,16 @@ import type { DayPickerProps } from "react-day-picker";
 import {
     AbstractPureComponent,
     DISPLAYNAME_PREFIX,
-    getRef,
     InputGroupProps,
     InputGroup,
     Intent,
-    Popover,
     PopoverProps,
     Props,
-    RefCallback,
-    RefObject,
+    Ref,
     Keys,
+    Popover,
     refHandler,
+    setRef,
 } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
@@ -85,7 +84,7 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Pr
     /**
      * Props to pass to the [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
-     * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
+     * `type` is fixed to "text".
      */
     inputProps?: InputGroupProps;
 
@@ -178,7 +177,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         valueString: null,
     };
 
-    public inputElement: HTMLInputElement | RefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
     public popoverContentElement: HTMLDivElement | null = null;
 
@@ -192,7 +191,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
         this.props.inputProps?.inputRef,
     );
 
-    private handlePopoverContentRef: RefCallback<HTMLDivElement> = refHandler(this, "popoverContentElement");
+    private handlePopoverContentRef: Ref<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
     public componentWillUnmount() {
         this.unregisterPopoverBlurHandler();
@@ -210,7 +209,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
                 if (
                     e.key === "Tab" &&
                     !e.shiftKey &&
-                    this.lastTabbableElement.classList.contains(Classes.DATEPICKER_DAY)
+                    this.lastTabbableElement?.classList.contains(Classes.DATEPICKER_DAY)
                 ) {
                     this.setState({ isOpen: false });
                 }
@@ -275,6 +274,13 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
 
     public componentDidUpdate(prevProps: DateInputProps, prevState: DateInputState) {
         super.componentDidUpdate(prevProps, prevState);
+
+        if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
+            setRef(prevProps.inputProps?.inputRef, null);
+            this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+            setRef(this.props.inputProps?.inputRef, this.inputElement);
+        }
+
         if (prevProps.value !== this.props.value) {
             this.setState({ value: this.props.value });
         }
@@ -410,7 +416,7 @@ export class DateInput extends AbstractPureComponent<DateInputProps, DateInputSt
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
-            getRef(this.inputElement).blur();
+            this.inputElement?.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };

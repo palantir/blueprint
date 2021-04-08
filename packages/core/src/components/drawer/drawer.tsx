@@ -52,14 +52,22 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
 
     /**
      * Position of a drawer. All angled positions will be casted into pure positions
-     * (TOP, BOTTOM, LEFT or RIGHT).
+     * (top, bottom, left, or right).
      *
-     * @default Position.RIGHT
+     * @default "right"
      */
     position: Position;
 
     /**
-     * CSS size of the drawer. This sets `width` if horizontal position (default)
+     * Whether the application should return focus to the last active element in the
+     * document after this drawer closes.
+     *
+     * @default true
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
+     * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
      * and `height` otherwise.
      *
      * Constants are available for common sizes:
@@ -98,6 +106,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
         canOutsideClickClose: true,
         isOpen: false,
         position: "right",
+        shouldReturnFocusOnClose: true,
         style: {},
     };
 
@@ -197,7 +206,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
     };
 
     private handleClosed = (node: HTMLElement) => {
-        if (this.lastActiveElementBeforeOpened instanceof HTMLElement) {
+        if (this.props.shouldReturnFocusOnClose && this.lastActiveElementBeforeOpened instanceof HTMLElement) {
             this.lastActiveElementBeforeOpened.focus();
         }
         this.props.onClosed?.(node);

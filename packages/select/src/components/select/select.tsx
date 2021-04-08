@@ -21,15 +21,14 @@ import {
     AbstractPureComponent,
     Button,
     DISPLAYNAME_PREFIX,
-    getRef,
     InputGroupProps,
     InputGroup,
-    Popover,
     PopoverProps,
     Ref,
-    RefObject,
     Keys,
+    Popover,
     refHandler,
+    setRef,
 } from "@blueprintjs/core";
 import { Cross, Search } from "@blueprintjs/icons";
 
@@ -89,7 +88,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    public inputElement: HTMLInputElement | RefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
     private queryList: QueryList<T> | null = null;
 
@@ -113,7 +112,13 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         );
     }
 
-    public componentDidUpdate(_prevProps: SelectProps<T>, prevState: SelectState) {
+    public componentDidUpdate(prevProps: SelectProps<T>, prevState: SelectState) {
+        if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
+            setRef(prevProps.inputProps?.inputRef, null);
+            this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+            setRef(this.props.inputProps?.inputRef, this.inputElement);
+        }
+
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }
@@ -212,7 +217,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false) {
-                getRef(this.inputElement)?.focus();
+                this.inputElement?.focus();
             }
         });
 

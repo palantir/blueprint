@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Classes, getRef, Ref, RefObject, Keys, refHandler, Utils } from "../../common";
+import { AbstractPureComponent, Classes, Ref, Keys, refHandler, setRef, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { TagProps, Tag } from "../tag/tag";
@@ -220,7 +220,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         isInputFocused: false,
     };
 
-    public inputElement: HTMLInputElement | RefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
     private handleRef: Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
@@ -272,6 +272,14 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
                 {this.props.rightElement}
             </div>
         );
+    }
+
+    public componentDidUpdate(prevProps: TagInputProps) {
+        if (prevProps.inputRef !== this.props.inputRef) {
+            setRef(prevProps.inputRef, null);
+            this.handleRef = refHandler(this, "inputElement", this.props.inputRef);
+            setRef(this.props.inputRef, this.inputElement);
+        }
     }
 
     private addTags = (value: string, method: TagInputAddMethod = "default") => {
@@ -345,7 +353,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
     }
 
     private handleContainerClick = () => {
-        getRef(this.inputElement)?.focus();
+        this.inputElement?.focus();
     };
 
     private handleContainerBlur = ({ currentTarget }: React.FocusEvent<HTMLDivElement>) => {
