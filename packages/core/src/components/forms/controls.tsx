@@ -21,7 +21,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractPureComponent, Alignment, Classes, Ref, refHandler } from "../../common";
+import { AbstractPureComponent, Alignment, Classes, Ref, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
 export interface ControlProps extends Props, HTMLInputProps {
@@ -262,8 +262,13 @@ export class Checkbox extends AbstractPureComponent<CheckboxProps, CheckboxState
         this.updateIndeterminate();
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: CheckboxProps) {
         this.updateIndeterminate();
+        if (prevProps.inputRef !== this.props.inputRef) {
+            setRef(prevProps.inputRef, null);
+            this.handleInputRef = refHandler(this, "input", this.props.inputRef);
+            setRef(this.props.inputRef, this.input);
+        }
     }
 
     private updateIndeterminate() {

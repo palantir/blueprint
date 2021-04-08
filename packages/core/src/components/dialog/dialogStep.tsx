@@ -19,8 +19,10 @@ import React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { ButtonProps } from "../button/buttons";
 
 export type DialogStepId = string | number;
+export type DialogStepButtonProps = Partial<Pick<ButtonProps, "disabled" | "text">>;
 
 export interface DialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
@@ -42,6 +44,16 @@ export interface DialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title
      * Content of step title element, rendered in a list left of the active panel.
      */
     title?: React.ReactNode;
+
+    /**
+     * Props for the back button.
+     */
+    backButtonProps?: DialogStepButtonProps;
+
+    /**
+     * Props for the next button.
+     */
+    nextButtonProps?: DialogStepButtonProps;
 }
 
 export class DialogStep extends AbstractPureComponent<DialogStepProps> {

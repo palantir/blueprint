@@ -21,11 +21,16 @@ import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { Button, ButtonProps } from "../button/buttons";
 import { Dialog, DialogProps } from "./dialog";
-import { DialogStep, DialogStepId, DialogStepProps } from "./dialogStep";
+import { DialogStep, DialogStepId, DialogStepProps, DialogStepButtonProps } from "./dialogStep";
 
 type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
 export interface MultistepDialogProps extends DialogProps {
+    /**
+     * Props for the back button.
+     */
+    backButtonProps?: DialogStepButtonProps;
+
     /**
      * Props for the button to display on the final step.
      */
@@ -34,7 +39,7 @@ export interface MultistepDialogProps extends DialogProps {
     /**
      * Props for the next button.
      */
-    nextButtonProps?: Partial<Pick<ButtonProps, "disabled" | "text">>;
+    nextButtonProps?: DialogStepButtonProps;
 
     /**
      * A callback that is invoked when the user selects a different step by clicking on back, next, or a step itself.
@@ -156,34 +161,40 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
     }
 
     private renderButtons() {
+        const { selectedIndex } = this.state;
+        const steps = this.getDialogStepChildren();
         const buttons = [];
+
         if (this.state.selectedIndex > 0) {
-            buttons.push(<Button key="back" onClick={this.getBackClickHandler()} text="Back" />);
+            const backButtonProps = steps[selectedIndex].props.backButtonProps ?? this.props.backButtonProps;
+
+            buttons.push(
+                <Button
+                    key="back"
+                    onClick={this.getDialogStepChangeHandler(selectedIndex - 1)}
+                    text="Back"
+                    {...backButtonProps}
+                />,
+            );
         }
 
         if (this.state.selectedIndex === this.getDialogStepChildren().length - 1) {
             buttons.push(this.renderFinalButton());
         } else {
+            const nextButtonProps = steps[selectedIndex].props.nextButtonProps ?? this.props.nextButtonProps;
+
             buttons.push(
                 <Button
                     intent="primary"
                     key="next"
-                    onClick={this.getNextClickHandler()}
+                    onClick={this.getDialogStepChangeHandler(selectedIndex + 1)}
                     text="Next"
-                    {...this.props.nextButtonProps}
+                    {...nextButtonProps}
                 />,
             );
         }
 
         return buttons;
-    }
-
-    private getBackClickHandler() {
-        return this.getDialogStepChangeHandler(this.state.selectedIndex - 1);
-    }
-
-    private getNextClickHandler() {
-        return this.getDialogStepChangeHandler(this.state.selectedIndex + 1);
     }
 
     private getDialogStepChangeHandler(index: number) {

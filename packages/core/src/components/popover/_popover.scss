@@ -87,7 +87,7 @@ $popover-width: $pt-grid-size * 35 !default;
   transform: rotate(45deg);
 }
 
-.#{$ns}-popover-backdrop {
+.#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
   background: rgba($white, 0);
 }
 
