@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { cloneElement, createRef } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes, Keys } from "../../common";
@@ -211,12 +211,8 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         hasEverOpened: this.props.isOpen,
     };
 
-    // an HTMLElement that contains the overlaid child component, to query for focus target
-    public containerElement: HTMLElement | undefined | null = null;
-
-    private refHandlers = {
-        container: (el: HTMLElement | undefined | null) => (this.containerElement = el),
-    };
+    /** Ref for container element, containing all children and the backdrop */
+    public containerElement = createRef<HTMLDivElement>();
 
     public render() {
         // oh snap! no reason to render anything at all if we're being truly lazy
@@ -246,9 +242,11 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         );
 
         const transitionGroup = (
-            <TransitionGroup appear={true} className={containerClasses} component="div" onKeyDown={this.handleKeyDown}>
-                {childrenWithTransitions}
-            </TransitionGroup>
+            <div className={containerClasses} onKeyDown={this.handleKeyDown} ref={this.containerElement}>
+                <TransitionGroup appear={true} component={null}>
+                    {childrenWithTransitions}
+                </TransitionGroup>
+            </div>
         );
         if (usePortal) {
             return (
@@ -286,17 +284,18 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     public bringFocusInsideOverlay() {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return this.requestAnimationFrame(() => {
-            // container ref may be undefined between component mounting and Portal rendering
+            // content element ref may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            if (this.containerElement == null || document.activeElement == null || !this.props.isOpen) {
+            if (this.containerElement.current == null || document.activeElement == null || !this.props.isOpen) {
                 return;
             }
 
-            const isFocusOutsideModal = !this.containerElement.contains(document.activeElement);
+            const container = this.containerElement.current;
+            const isFocusOutsideModal = !container.contains(document.activeElement);
             if (isFocusOutsideModal) {
-                // element marked autofocus has higher priority than the other clowns
-                const autofocusElement = this.containerElement.querySelector("[autofocus]") as HTMLElement;
-                const wrapperElement = this.containerElement.querySelector("[tabindex]") as HTMLElement;
+                // element marked autofocus has higher priority than other attributes
+                const autofocusElement = container.querySelector<HTMLElement>("[autofocus]");
+                const wrapperElement = container.querySelector<HTMLElement>("[tabindex]");
                 if (autofocusElement != null) {
                     autofocusElement.focus();
                 } else if (wrapperElement != null) {
@@ -315,24 +314,25 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             return null;
         }
 
-        // add a special class to each child element that will automatically set the appropriate
-        // CSS position mode under the hood. also, make the container focusable so we can
-        // trap focus inside it (via `enforceFocus`).
+        // decorate the child with a few injected props
+        const tabIndex = this.props.enforceFocus || this.props.autoFocus ? 0 : undefined;
         const decoratedChild =
             typeof child === "object" ? (
-                React.cloneElement(child as React.ReactElement, {
+                cloneElement(child as React.ReactElement, {
                     className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
-                    tabIndex: this.props.enforceFocus || this.props.autoFocus ? 0 : undefined,
+                    tabIndex,
                 })
             ) : (
-                <span className={Classes.OVERLAY_CONTENT}>{child}</span>
+                <span className={Classes.OVERLAY_CONTENT} tabIndex={tabIndex}>
+                    {child}
+                </span>
             );
+
         const { onOpening, onOpened, onClosing, onClosed, transitionDuration, transitionName } = this.props;
 
         return (
             <CSSTransition
                 classNames={transitionName}
-                nodeRef={this.refHandlers.container}
                 onEntering={onOpening}
                 onEntered={onOpened}
                 onExiting={onClosing}
@@ -445,7 +445,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             .some(({ containerElement: elem }) => {
                 // `elem` is the container of backdrop & content, so clicking on that container
                 // should not count as being "inside" the overlay.
-                return elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget);
+                return elem.current?.contains(eventTarget) && !elem.current.isSameNode(eventTarget);
             });
 
         if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
@@ -460,9 +460,9 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         const eventTarget = e.composed ? e.composedPath()[0] : e.target;
         if (
             this.props.enforceFocus &&
-            this.containerElement != null &&
+            this.containerElement.current != null &&
             eventTarget instanceof Node &&
-            !this.containerElement.contains(eventTarget as HTMLElement)
+            !this.containerElement.current.contains(eventTarget as HTMLElement)
         ) {
             // prevent default focus behavior (sometimes auto-scrolls the page)
             e.preventDefault();
