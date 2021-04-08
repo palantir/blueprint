@@ -570,8 +570,9 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         }
 
         const eventTarget = e.target as HTMLElement;
-        // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetElement, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
+        const isClickInsideTarget = Utils.elementIsOrContains(this.targetElement, eventTarget);
+        // if click was in target, target event listener will handle things, so don't close here
+        if (!isClickInsideTarget || e.nativeEvent instanceof KeyboardEvent) {
             this.setOpenState(false, e);
         }
     };

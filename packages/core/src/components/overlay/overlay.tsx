@@ -284,7 +284,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     public bringFocusInsideOverlay() {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return this.requestAnimationFrame(() => {
-            // content element ref may be undefined between component mounting and Portal rendering
+            // container element may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
             if (this.containerElement.current == null || document.activeElement == null || !this.props.isOpen) {
                 return;
@@ -349,6 +349,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         const {
             backdropClassName,
             backdropProps,
+            canOutsideClickClose,
             hasBackdrop,
             isOpen,
             transitionDuration,
@@ -367,7 +368,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
                         {...backdropProps}
                         className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
                         onMouseDown={this.handleBackdropMouseDown}
-                        tabIndex={this.props.canOutsideClickClose ? 0 : undefined}
+                        tabIndex={canOutsideClickClose ? 0 : undefined}
                     />
                 </CSSTransition>
             );
@@ -443,7 +444,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         const isClickInThisOverlayOrDescendant = Overlay.openStack
             .slice(stackIndex)
             .some(({ containerElement: elem }) => {
-                // `elem` is the container of backdrop & content, so clicking on that container
+                // `elem` is the container of backdrop & content, so clicking directly on that container
                 // should not count as being "inside" the overlay.
                 return elem.current?.contains(eventTarget) && !elem.current.isSameNode(eventTarget);
             });
