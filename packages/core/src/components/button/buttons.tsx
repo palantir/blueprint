@@ -14,78 +14,152 @@
  * limitations under the License.
  */
 
-// HACKHACK: these components should go in separate files
-/* eslint-disable max-classes-per-file */
+import classNames from "classnames";
+import React, { forwardRef, useCallback, useRef, useState } from "react";
 
-import React from "react";
-
+import { Classes, Keys, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { Ref, refHandler, setRef } from "../../common/refs";
-import { AbstractButton, ButtonProps, AnchorButtonProps } from "./abstractButton";
+import { mergeRefs } from "../../common/refs";
+import { Icon } from "../icon/icon";
+import { Spinner } from "../spinner/spinner";
+import { ButtonProps } from "./buttonProps";
 
-export { AnchorButtonProps, ButtonProps };
+export { ButtonProps };
 
-export class Button extends AbstractButton<HTMLButtonElement> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
+export type AnchorButtonProps = ButtonProps<HTMLAnchorElement>;
 
-    // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
-    public buttonRef: HTMLButtonElement | null = null;
+export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+    const commonAttributes = useSharedButtonAttributes(props, ref);
 
-    protected handleRef: Ref<HTMLButtonElement> = refHandler(this, "buttonRef", this.props.elementRef);
+    return (
+        <button type="button" {...removeNonHTMLProps(props)} {...commonAttributes}>
+            {renderButtonContents(props)}
+        </button>
+    );
+});
+Button.displayName = `${DISPLAYNAME_PREFIX}.Button`;
 
-    public render() {
-        return (
-            <button
-                type="button"
-                ref={this.handleRef}
-                {...removeNonHTMLProps(this.props)}
-                {...this.getCommonButtonProps()}
-            >
-                {this.renderChildren()}
-            </button>
-        );
-    }
-
-    public componentDidUpdate(prevProps: ButtonProps) {
-        if (prevProps.elementRef !== this.props.elementRef) {
-            setRef(prevProps.elementRef, null);
-            this.handleRef = refHandler(this, "buttonRef", this.props.elementRef);
-            setRef(this.props.elementRef, this.buttonRef);
-        }
-    }
-}
-
-export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
-
-    // need to keep this ref so that we can access it in AbstractButton#handleKeyUp
-    public buttonRef: HTMLAnchorElement | null = null;
-
-    protected handleRef: Ref<HTMLAnchorElement> = refHandler(this, "buttonRef", this.props.elementRef);
-
-    public render() {
-        const { href, tabIndex = 0 } = this.props;
-        const commonProps = this.getCommonButtonProps();
+export const AnchorButton: React.FC<AnchorButtonProps> = forwardRef<HTMLAnchorElement, AnchorButtonProps>(
+    (props, ref) => {
+        const { href, tabIndex = 0 } = props;
+        const commonProps = useSharedButtonAttributes(props, ref);
 
         return (
             <a
                 role="button"
-                ref={this.handleRef}
-                {...removeNonHTMLProps(this.props)}
+                {...removeNonHTMLProps(props)}
                 {...commonProps}
                 href={commonProps.disabled ? undefined : href}
                 tabIndex={commonProps.disabled ? -1 : tabIndex}
             >
-                {this.renderChildren()}
+                {renderButtonContents(props)}
             </a>
         );
-    }
+    },
+);
+AnchorButton.displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 
-    public componentDidUpdate(prevProps: AnchorButtonProps) {
-        if (prevProps.elementRef !== this.props.elementRef) {
-            setRef(prevProps.elementRef, null);
-            this.handleRef = refHandler(this, "buttonRef", this.props.elementRef);
-            setRef(this.props.elementRef, this.buttonRef);
-        }
-    }
+/**
+ * Most of the button logic lives in this shared hook.
+ */
+function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonElement>(
+    props: ButtonProps<E>,
+    ref: React.Ref<E>,
+) {
+    const { active, alignText, fill, large, loading, outlined, minimal, small, tabIndex } = props;
+    const disabled = props.disabled || loading;
+
+    // the current key being pressed
+    const [currentKeyDown, setCurrentKeyDown] = useState<number | undefined>();
+    // whether the button is in "active" state
+    const [isActive, setIsActive] = useState(false);
+    // our local ref for the button element, merged with the consumer's own ref (if supplied) in this hook's return value
+    const buttonRef = useRef<E | null>(null);
+
+    const handleBlur = useCallback(
+        (e: React.FocusEvent<any>) => {
+            if (isActive) {
+                setIsActive(false);
+            }
+            props.onBlur?.(e);
+        },
+        [isActive, props.onBlur],
+    );
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent<any>) => {
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+            /* eslint-disable deprecation/deprecation */
+            if (Keys.isKeyboardClick(e.which)) {
+                e.preventDefault();
+                if (e.which !== currentKeyDown) {
+                    setIsActive(true);
+                }
+            }
+            setCurrentKeyDown(e.which);
+            props.onKeyDown?.(e);
+        },
+        [currentKeyDown, props.onKeyDown],
+    );
+    const handleKeyUp = useCallback(
+        (e: React.KeyboardEvent<any>) => {
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+            /* eslint-disable deprecation/deprecation */
+            if (Keys.isKeyboardClick(e.which)) {
+                setIsActive(false);
+                buttonRef.current?.click();
+            }
+            setCurrentKeyDown(undefined);
+            props.onKeyUp?.(e);
+        },
+        [props.onKeyUp],
+    );
+
+    const className = classNames(
+        Classes.BUTTON,
+        {
+            [Classes.ACTIVE]: !disabled && (active || isActive),
+            [Classes.DISABLED]: disabled,
+            [Classes.FILL]: fill,
+            [Classes.LARGE]: large,
+            [Classes.LOADING]: loading,
+            [Classes.MINIMAL]: minimal,
+            [Classes.OUTLINED]: outlined,
+            [Classes.SMALL]: small,
+        },
+        Classes.alignmentClass(alignText),
+        Classes.intentClass(props.intent),
+        props.className,
+    );
+
+    return {
+        className,
+        disabled,
+        onBlur: handleBlur,
+        onClick: disabled ? undefined : props.onClick,
+        onKeyDown: handleKeyDown,
+        onKeyUp: handleKeyUp,
+        ref: mergeRefs(buttonRef, ref),
+        tabIndex: disabled ? -1 : tabIndex,
+    };
+}
+
+/**
+ * Shared rendering code for button contents.
+ */
+function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(props: ButtonProps<E>) {
+    const { children, icon, loading, rightIcon, text } = props;
+    const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
+    return (
+        <>
+            {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />}
+            <Icon key="leftIcon" icon={icon} />
+            {hasTextContent && (
+                <span key="text" className={Classes.BUTTON_TEXT}>
+                    {text}
+                    {children}
+                </span>
+            )}
+            <Icon key="rightIcon" icon={rightIcon} />
+        </>
+    );
 }

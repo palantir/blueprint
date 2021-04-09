@@ -62,22 +62,16 @@ export class PopoverDismissExample extends React.PureComponent<
                                     placement="right"
                                     usePortal={false}
                                     // tslint:disable-next-line jsx-no-lambda
-                                    renderTarget={({ isOpen, ref, ...p }) => (
-                                        <Button
-                                            {...p}
-                                            active={isOpen}
-                                            elementRef={ref}
-                                            text="Nested"
-                                            rightIcon="caret-right"
-                                        />
+                                    renderTarget={({ isOpen, ...p }) => (
+                                        <Button {...p} active={isOpen} text="Nested" rightIcon="caret-right" />
                                     )}
                                 />
                             </div>
                         </>
                     }
                     // tslint:disable-next-line jsx-no-lambda
-                    renderTarget={({ isOpen, ref, ...p }) => (
-                        <Button {...p} active={isOpen} elementRef={ref} intent="primary" text="Try it out" />
+                    renderTarget={({ isOpen, ...p }) => (
+                        <Button {...p} active={isOpen} intent="primary" text="Try it out" />
                     )}
                 />
                 <p className="docs-reopen-message">

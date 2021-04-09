@@ -1,4 +1,4 @@
-@# Button
+@# Buttons
 
 Buttons trigger actions when clicked.
 

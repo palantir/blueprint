@@ -84,8 +84,8 @@ export class PopoverExample extends React.PureComponent {
                         <Button className={Classes.POPOVER_DISMISS} text="Dismiss" />
                     </div>
                 }
-                renderTarget={({ isOpen, ref, ...targetProps }) => (
-                    <Button {...targetProps} elementRef={ref} intent="primary" text="Popover target" />
+                renderTarget={({ isOpen, ...targetProps }) => (
+                    <Button {...targetProps} intent="primary" text="Popover target" />
                 )}
             />
         );

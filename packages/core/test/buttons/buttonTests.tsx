@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
@@ -27,13 +27,14 @@ describe("Buttons:", () => {
     buttonTestSuite(AnchorButton, "a");
 });
 
-function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) {
+function buttonTestSuite(component: React.FC<any>, tagName: string) {
     describe(`<${component.displayName!.split(".")[1]}>`, () => {
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
-            assert.isTrue(wrapper.is(tagName));
-            assert.isTrue(wrapper.hasClass(Classes.BUTTON));
-            assert.isTrue(wrapper.hasClass("foo"));
+            const el = wrapper.find(tagName);
+            assert.isTrue(el.exists());
+            assert.isTrue(el.hasClass(Classes.BUTTON));
+            assert.isTrue(el.hasClass("foo"));
         });
 
         it('icon="style" renders Icon as first child', () => {
@@ -54,7 +55,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         it("wraps string children in spans", () => {
             // so text can be hidden when loading
-            const wrapper = button({}, true, "raw string", <em>not a string</em>);
+            const wrapper = button({}, "raw string", <em>not a string</em>);
             assert.equal(wrapper.find("span").length, 1, "span not found");
             assert.equal(wrapper.find("em").length, 1, "em not found");
         });
@@ -64,9 +65,14 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.equal(wrapper.text(), "0");
         });
 
-        it('doesn\'t render a span if text=""', () => {
-            assert.equal(button({}, true, "").find("span").length, 0);
-            assert.equal(button({ text: "" }, true).find("span").length, 0);
+        it('doesn\'t render a text span if children=""', () => {
+            const wrapper = button({}, "");
+            assert.equal(wrapper.find("span").length, 0);
+        });
+
+        it('doesn\'t render a text span if text=""', () => {
+            const wrapper = button({ text: "" });
+            assert.equal(wrapper.find("span").length, 0);
         });
 
         it("renders a loading spinner when the loading prop is true", () => {
@@ -76,7 +82,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
         it("button is disabled when the loading prop is true", () => {
             const wrapper = button({ loading: true });
-            assert.isTrue(wrapper.hasClass(Classes.DISABLED));
+            assert.isTrue(wrapper.find(tagName).hasClass(Classes.DISABLED));
         });
 
         it("clicking button triggers onClick prop", () => {
@@ -100,117 +106,38 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
         });
 
-        it("calls onClick when enter key released", done => {
-            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.ENTER });
-        });
-
-        it("calls onClick when space key released", done => {
-            checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
-        });
-
-        if (typeof React.createRef !== "undefined") {
-            it("matches buttonRef with elementRef.current using createRef", done => {
-                const elementRef = React.createRef<HTMLButtonElement>();
-                const wrapper = button({ elementRef }, true);
-
-                // wait for the whole lifecycle to run
-                setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef);
-                    done();
-                }, 0);
-            });
-        }
-
-        it("matches buttonRef with elementRef using callback", done => {
-            let elementRef: HTMLElement | null = null;
-            const wrapper = button(
-                {
-                    elementRef: (ref: HTMLButtonElement | null) => (elementRef = ref),
-                },
-                true,
-            );
-
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(elementRef, (wrapper.instance() as any).buttonRef);
-                done();
-            }, 0);
-        });
-
-        it("updates on ref change", () => {
-            const Component = component;
-            let elementRef: HTMLElement | null = null;
-            let elementRefNew: HTMLElement | null = null;
-            let callCount = 0;
-            let newCallCount = 0;
-
-            const buttonRefCallback = (ref: HTMLElement | null) => {
-                callCount += 1;
-                elementRef = ref;
-            };
-            const buttonNewRefCallback = (ref: HTMLElement | null) => {
-                newCallCount += 1;
-                elementRefNew = ref;
-            };
-
-            const wrapper = mount(<Component elementRef={buttonRefCallback} />);
-
-            assert.instanceOf(elementRef, HTMLElement);
-            assert.strictEqual(callCount, 1);
-
-            wrapper.setProps({ elementRef: buttonNewRefCallback });
+        it("attaches ref with createRef", () => {
+            const ref = React.createRef<HTMLButtonElement>();
+            const wrapper = button({ ref });
             wrapper.update();
-            assert.strictEqual(callCount, 2);
-            assert.isNull(elementRef);
-            assert.strictEqual(newCallCount, 1);
-            assert.instanceOf(elementRefNew, HTMLElement);
+            assert.isTrue(
+                ref.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
+                `ref.current should be a(n) ${tagName} element`,
+            );
         });
 
-        if (typeof React.useRef !== "undefined") {
-            it("matches buttonRef with elementRef.current using useRef", done => {
-                let elementRef: React.RefObject<HTMLElement>;
-                const Component = component;
+        it("attaches ref with useRef", () => {
+            let elementRef: React.RefObject<any> | undefined;
+            const Component = component;
 
-                const Test = () => {
-                    elementRef = React.useRef<HTMLButtonElement>(null);
+            const Test = () => {
+                elementRef = React.useRef<any>(null);
 
-                    return <Component elementRef={elementRef} />;
-                };
+                return <Component ref={elementRef} />;
+            };
 
-                const wrapper = mount(<Test />);
+            const wrapper = mount(<Test />);
+            wrapper.update();
 
-                // wait for the whole lifecycle to run
-                setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.find(Component).instance() as any).buttonRef);
-                    done();
-                }, 0);
-            });
-        }
+            assert.isTrue(
+                elementRef?.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
+                `ref.current should be a(n) ${tagName} element`,
+            );
+        });
 
-        function button(props: ButtonProps, useMount = false, ...children: React.ReactNode[]) {
+        function button(props: ButtonProps, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
-            return useMount ? mount(element) : shallow(element);
-        }
-
-        function checkClickTriggeredOnKeyUp(
-            done: Mocha.Done,
-            buttonProps: Partial<ButtonProps>,
-            keyEventProps: Partial<React.KeyboardEvent<any>>,
-        ) {
-            const wrapper = button(buttonProps, true);
-
-            // mock the DOM click() function, because enzyme only handles
-            // simulated React events
-            const buttonRef = (wrapper.instance() as any).buttonRef;
-            const onClick = spy(buttonRef, "click");
-
-            wrapper.simulate("keyup", keyEventProps);
-
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(onClick.callCount, 1);
-                done();
-            }, 0);
+            return mount(element);
         }
 
         function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
