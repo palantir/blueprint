@@ -105,10 +105,3 @@ export function isElementOfType<P = {}>(
         element.type.displayName === ComponentType.displayName
     );
 }
-
-/**
- * Returns React.createRef if it's available, or a ref-like object if not.
- */
-export function createReactRef<T>() {
-    return typeof React.createRef !== "undefined" ? React.createRef<T>() : { current: null };
-}

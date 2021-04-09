@@ -19,16 +19,9 @@ import classNames from "classnames";
 import React from "react";
 import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
 
-import {
-    AbstractPureComponent,
-    Classes,
-    DISPLAYNAME_PREFIX,
-    HTMLDivProps,
-    isRefCallback,
-    mergeRefs,
-    Utils,
-} from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, HTMLDivProps, mergeRefs, Utils } from "../../common";
 import * as Errors from "../../common/errors";
+import { Ref, refHandler, setRef } from "../../common/refs";
 import { Overlay } from "../overlay/overlay";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
@@ -81,9 +74,9 @@ export interface PopoverProps<TProps = React.HTMLProps<HTMLElement>> extends Pop
     hasBackdrop?: boolean;
 
     /**
-     * Ref supplied to the `Classes.POPOVER` element.
+     * Ref attached to the `Classes.POPOVER` element.
      */
-    popoverRef?: (ref: HTMLElement | null) => void;
+    popoverRef?: Ref<HTMLElement>;
 
     /**
      * Popper.js positioning strategy.
@@ -104,8 +97,6 @@ export interface PopoverState {
  */
 export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
-
-    private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
     public static defaultProps: PopoverProps = {
         boundary: "clippingParents",
@@ -144,13 +135,11 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
     /** DOM element that contains the target. */
     public targetElement: HTMLElement | null = null;
 
-    private refHandlers = {
-        popover: (ref: HTMLElement | null) => {
-            this.popoverElement = ref;
-            this.props.popoverRef?.(ref);
-        },
-        target: (ref: HTMLElement | null) => (this.targetElement = ref),
-    };
+    /** Popover ref handler */
+    private popoverRef: Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+
+    /** Target ref handler */
+    private targetRef: Ref<HTMLElement> = el => (this.targetElement = el);
 
     private cancelOpenTimeout?: () => void;
 
@@ -205,7 +194,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
             <Manager>
                 <Reference>{this.renderTarget}</Reference>
                 <Popper
-                    innerRef={this.refHandlers.popover}
+                    innerRef={this.popoverRef}
                     placement={placement ?? positionToPlacement(position)}
                     strategy={positioningStrategy}
                     modifiers={this.computePopperModifiers()}
@@ -220,8 +209,8 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         this.updateDarkParent();
     }
 
-    public componentDidUpdate(props: PopoverProps<T>, state: PopoverState) {
-        super.componentDidUpdate(props, state);
+    public componentDidUpdate(prevProps: PopoverProps<T>, prevState: PopoverState) {
+        super.componentDidUpdate(prevProps, prevState);
         this.updateDarkParent();
 
         const nextIsOpen = this.getIsOpen(this.props);
@@ -234,6 +223,12 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         } else if (this.props.disabled && this.state.isOpen && this.props.isOpen == null) {
             // special case: close an uncontrolled popover when disabled is set to true
             this.setOpenState(false);
+        }
+
+        if (prevProps.popoverRef !== this.props.popoverRef) {
+            setRef(prevProps.popoverRef, null);
+            this.popoverRef = refHandler(this, "popoverElement", this.props.popoverRef);
+            setRef(this.props.popoverRef, this.popoverElement);
         }
     }
 
@@ -275,19 +270,18 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
-    private renderTarget = ({ ref }: ReferenceChildrenProps) => {
+    private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
         const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
+
         let { targetTagName } = this.props;
         if (fill) {
             targetTagName = "div";
         }
 
-        if (isRefCallback(ref)) {
-            ref = mergeRefs(ref, this.refHandlers.target);
-        }
+        const ref = mergeRefs(popperChildRef, this.targetRef);
 
         const targetEventHandlers = isHoverInteractionKind
             ? {
@@ -350,7 +344,11 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
             target = wrappedTarget;
         }
 
-        return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
+        return (
+            <ResizeSensor targetRef={ref} onResize={this.reposition}>
+                {target}
+            </ResizeSensor>
+        );
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
@@ -412,7 +410,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.POPOVER_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                    <ResizeSensor onResize={this.reposition}>
+                    <ResizeSensor onResize={this.reposition} targetRef={this.popoverRef}>
                         <div
                             className={popoverClasses}
                             style={{ transformOrigin }}
@@ -543,7 +541,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER}`);
-        const isEventFromSelf = eventPopover === this.popoverRef.current;
+        const isEventFromSelf = eventPopover === this.popoverElement;
         const isEventPopoverCapturing = eventPopover?.classList.contains(Classes.POPOVER_CAPTURING_DISMISS);
 
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.

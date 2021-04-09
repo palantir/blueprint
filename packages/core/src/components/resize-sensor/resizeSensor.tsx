@@ -52,6 +52,12 @@ export interface ResizeSensorProps {
      * @default false
      */
     observeParents?: boolean;
+
+    /**
+     * If you attach a `ref` to the child yourself when rendering it, you must pass the
+     * same value here (otherwise, ResizeSensor won't be able to attach its own).
+     */
+    targetRef?: React.Ref<any>;
 }
 
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
@@ -65,6 +71,12 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
 
     public render() {
         const onlyChild = React.Children.only(this.props.children);
+
+        // if we're provided a ref to the child already, we don't need to attach one ourselves
+        if (this.props.targetRef !== undefined) {
+            return onlyChild;
+        }
+
         return cloneElement(onlyChild, { ref: this.elementRef });
     }
 
