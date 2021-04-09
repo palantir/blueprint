@@ -19,11 +19,17 @@ import * as React from "react";
 
 import * as Classes from "../../common/classes";
 import { IActionProps, ILinkProps } from "../../common/props";
-import { Icon } from "../icon/icon";
+import {Icon} from "../icon/icon";
 
 export interface IBreadcrumbProps extends IActionProps, ILinkProps {
     /** Whether this breadcrumb is the current breadcrumb. */
     current?: boolean;
+    /**
+     * Size of the icon
+     *
+     * @default Icon.SIZE_STANDARD = 16
+     */
+    iconSize?: number;
 }
 
 export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbProps => {
@@ -36,12 +42,19 @@ export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbP
         breadcrumbProps.className,
     );
 
-    const icon = breadcrumbProps.icon != null ? <Icon icon={breadcrumbProps.icon} /> : undefined;
+    const renderIcon = ({ icon, iconSize = Icon.SIZE_STANDARD }: IBreadcrumbProps) => {
+        if(icon) {
+           return (
+                <Icon icon={breadcrumbProps.icon} iconSize={iconSize} />
+            );
+        }
+        return undefined;
+    }
 
     if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
         return (
             <span className={classes}>
-                {icon}
+                {renderIcon(breadcrumbProps)}
                 {breadcrumbProps.text}
                 {breadcrumbProps.children}
             </span>
@@ -55,7 +68,7 @@ export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbP
             tabIndex={breadcrumbProps.disabled ? undefined : 0}
             target={breadcrumbProps.target}
         >
-            {icon}
+            {renderIcon(breadcrumbProps)}
             {breadcrumbProps.text}
             {breadcrumbProps.children}
         </a>

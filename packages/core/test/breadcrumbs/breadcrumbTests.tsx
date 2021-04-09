@@ -55,4 +55,10 @@ describe("Breadcrumb", () => {
         assert.lengthOf(shallow(<Breadcrumb />).find(Icon), 0);
         assert.lengthOf(shallow(<Breadcrumb icon="folder-close" />).find(Icon), 1);
     });
+    it("renders an icon if one is provided with iconSize", () => {
+        assert.lengthOf(shallow(<Breadcrumb />).find(Icon), 0);
+        assert.lengthOf(shallow(<Breadcrumb icon="folder-close"  />).find(Icon), 1);
+       const component = shallow(<Breadcrumb icon="folder-close" iconSize={Icon.SIZE_LARGE} />);
+       assert.equal(component.find(Icon).props().iconSize, Icon.SIZE_LARGE);
+    });
 });
