@@ -3,7 +3,7 @@
 <!-- Exact ordering of items in the navbar: -->
 
 @page breadcrumbs
-@page button
+@page buttons
 @page button-group
 @page callout
 @page card

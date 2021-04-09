@@ -76,7 +76,7 @@ export class OverlayExample extends React.PureComponent<ExampleProps<BlueprintEx
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Button elementRef={this.refHandlers.button} onClick={this.handleOpen} text="Show overlay" />
+                <Button ref={this.refHandlers.button} onClick={this.handleOpen} text="Show overlay" />
                 <Overlay onClose={this.handleClose} className={Classes.OVERLAY_SCROLL_CONTAINER} {...this.state}>
                     <div className={classes}>
                         <H3>I'm an Overlay!</H3>

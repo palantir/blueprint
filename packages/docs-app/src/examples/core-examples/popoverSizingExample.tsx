@@ -31,9 +31,7 @@ export class PopoverSizingExample extends React.PureComponent<ExampleProps> {
                     content={<FileMenu className="docs-popover-sizing-example" />}
                     placement="bottom-end"
                     // tslint:disable-next-line jsx-no-lambda
-                    renderTarget={({ isOpen, ref, ...p }) => (
-                        <Button {...p} active={isOpen} elementRef={ref} text="Open..." />
-                    )}
+                    renderTarget={({ isOpen, ...p }) => <Button {...p} active={isOpen} text="Open..." />}
                 />
             </Example>
         );

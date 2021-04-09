@@ -15,19 +15,19 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
 import { AnchorButton, Button, Classes, ButtonProps, Icon, Spinner } from "../../src";
 import * as Keys from "../../src/common/keys";
 
-describe("Buttons:", () => {
+describe.only("Buttons:", () => {
     buttonTestSuite(Button, "button");
     buttonTestSuite(AnchorButton, "a");
 });
 
-function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) {
+function buttonTestSuite(component: React.FC<any>, tagName: string) {
     describe(`<${component.displayName!.split(".")[1]}>`, () => {
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
@@ -108,33 +108,14 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
-        if (typeof React.createRef !== "undefined") {
-            it("matches buttonRef with elementRef.current using createRef", done => {
-                const elementRef = React.createRef<HTMLButtonElement>();
-                const wrapper = button({ elementRef }, true);
-
-                // wait for the whole lifecycle to run
-                setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef);
-                    done();
-                }, 0);
-            });
-        }
-
-        it("matches buttonRef with elementRef using callback", done => {
-            let elementRef: HTMLElement | null = null;
-            const wrapper = button(
-                {
-                    elementRef: (ref: HTMLButtonElement | null) => (elementRef = ref),
-                },
-                true,
+        it("attaches ref with createRef", () => {
+            const ref = React.createRef<HTMLButtonElement>();
+            const wrapper = button({ ref }, true);
+            wrapper.update();
+            assert.isTrue(
+                ref.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
+                `ref.current should be a(n) ${tagName} element`,
             );
-
-            // wait for the whole lifecycle to run
-            setTimeout(() => {
-                assert.equal(elementRef, (wrapper.instance() as any).buttonRef);
-                done();
-            }, 0);
         });
 
         it("updates on ref change", () => {
@@ -153,7 +134,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
                 elementRefNew = ref;
             };
 
-            const wrapper = mount(<Component elementRef={buttonRefCallback} />);
+            const wrapper = mount(<Component ref={buttonRefCallback} />);
 
             assert.instanceOf(elementRef, HTMLElement);
             assert.strictEqual(callCount, 1);
@@ -166,30 +147,28 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             assert.instanceOf(elementRefNew, HTMLElement);
         });
 
-        if (typeof React.useRef !== "undefined") {
-            it("matches buttonRef with elementRef.current using useRef", done => {
-                let elementRef: React.RefObject<HTMLElement>;
-                const Component = component;
+        it("attaches ref with useRef", () => {
+            let elementRef: React.RefObject<any> | undefined;
+            const Component = component;
 
-                const Test = () => {
-                    elementRef = React.useRef<HTMLButtonElement>(null);
+            const Test = () => {
+                elementRef = React.useRef<any>(null);
 
-                    return <Component elementRef={elementRef} />;
-                };
+                return <Component ref={elementRef} />;
+            };
 
-                const wrapper = mount(<Test />);
+            const wrapper = mount(<Test />);
+            wrapper.update();
 
-                // wait for the whole lifecycle to run
-                setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.find(Component).instance() as any).buttonRef);
-                    done();
-                }, 0);
-            });
-        }
+            assert.isTrue(
+                elementRef?.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
+                `ref.current should be a(n) ${tagName} element`,
+            );
+        });
 
-        function button(props: ButtonProps, useMount = false, ...children: React.ReactNode[]) {
+        function button(props: ButtonProps, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
-            return useMount ? mount(element) : shallow(element);
+            return mount(element);
         }
 
         function checkClickTriggeredOnKeyUp(

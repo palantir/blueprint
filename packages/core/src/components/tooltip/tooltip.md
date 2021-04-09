@@ -29,7 +29,7 @@ import { Button, mergeRefs, Popover, Tooltip } from "@blueprintjs/core";
                     {...popoverProps}
                     {...tooltipProps}
                     active={isPopoverOpen}
-                    elementRef={mergeRefs(ref1, ref2)}
+                    ref={mergeRefs(ref1, ref2)}
                     text="Hover and click me"
                 />
             )}

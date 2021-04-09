@@ -111,14 +111,8 @@ export class PopoverPlacementExample extends React.PureComponent<ExampleProps> {
                 placement={placement}
                 usePortal={false}
                 // tslint:disable-next-line jsx-no-lambda
-                renderTarget={({ isOpen, ref, ...p }) => (
-                    <Button
-                        {...p}
-                        active={isOpen}
-                        elementRef={ref}
-                        className={Classes.MONOSPACE_TEXT}
-                        text={buttonLabel}
-                    />
+                renderTarget={({ isOpen, ...p }) => (
+                    <Button {...p} active={isOpen} className={Classes.MONOSPACE_TEXT} text={buttonLabel} />
                 )}
             />
         );
