@@ -77,10 +77,9 @@ export class PopoverPortalExample extends React.PureComponent<ExampleProps, Popo
                             content="I am in a Portal (default)."
                             isOpen={this.state.isOpen}
                             usePortal={true}
+                            // strip out `isOpen` so that it is not rendered to HTML element
                             // tslint:disable-next-line jsx-no-lambda
-                            renderTarget={({ isOpen, ref, ...p }) => (
-                                <Code {...p} elementRef={ref}>{`usePortal={true}`}</Code>
-                            )}
+                            renderTarget={({ isOpen, ...p }) => <Code {...p}>{`usePortal={true}`}</Code>}
                         />
                     </div>
                 </div>
@@ -98,10 +97,9 @@ export class PopoverPortalExample extends React.PureComponent<ExampleProps, Popo
                             modifiers={{
                                 preventOverflow: { enabled: false },
                             }}
+                            // strip out `isOpen` so that it is not rendered to HTML element
                             // tslint:disable-next-line jsx-no-lambda
-                            renderTarget={({ isOpen, ref, ...p }) => (
-                                <Code {...p} elementRef={ref}>{`usePortal={false}`}</Code>
-                            )}
+                            renderTarget={({ isOpen, ...p }) => <Code {...p}>{`usePortal={false}`}</Code>}
                         />
                     </div>
                 </div>
