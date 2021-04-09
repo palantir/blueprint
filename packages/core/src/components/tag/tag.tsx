@@ -15,20 +15,11 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { forwardRef } from "react";
 
 import { SmallCross } from "@blueprintjs/icons";
 
-import {
-    AbstractPureComponent,
-    Classes,
-    DISPLAYNAME_PREFIX,
-    ElementRefProps,
-    IntentProps,
-    Props,
-    MaybeElement,
-    Utils,
-} from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
@@ -36,7 +27,7 @@ import { Text } from "../text/text";
 export interface TagProps
     extends Props,
         IntentProps,
-        ElementRefProps<HTMLSpanElement>,
+        React.RefAttributes<HTMLSpanElement>,
         React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Whether the tag should appear in an active state.
@@ -117,70 +108,65 @@ export interface TagProps
     htmlTitle?: string;
 }
 
-export class Tag extends AbstractPureComponent<TagProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
-
-    public render() {
-        const {
-            active,
-            children,
-            className,
-            fill,
-            icon,
-            intent,
-            interactive,
-            large,
-            minimal,
-            multiline,
-            onRemove,
-            rightIcon,
-            round,
-            tabIndex = 0,
-            htmlTitle,
-            elementRef,
-            ...htmlProps
-        } = this.props;
-        const isRemovable = Utils.isFunction(onRemove);
-        const tagClasses = classNames(
-            Classes.TAG,
-            Classes.intentClass(intent),
-            {
-                [Classes.ACTIVE]: active,
-                [Classes.FILL]: fill,
-                [Classes.INTERACTIVE]: interactive,
-                [Classes.LARGE]: large,
-                [Classes.MINIMAL]: minimal,
-                [Classes.ROUND]: round,
-            },
-            className,
-        );
-        const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
-        const removeButton = isRemovable ? (
-            <button
-                type="button"
-                className={Classes.TAG_REMOVE}
-                onClick={this.onRemoveClick}
-                tabIndex={interactive ? tabIndex : undefined}
-            >
-                <SmallCross size={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
-            </button>
-        ) : null;
-
-        return (
-            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={elementRef}>
-                <Icon icon={icon} />
-                {!isReactNodeEmpty(children) && (
-                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
-                        {children}
-                    </Text>
-                )}
-                <Icon icon={rightIcon} />
-                {removeButton}
-            </span>
-        );
-    }
-
-    private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        this.props.onRemove?.(e, this.props);
+export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
+    const {
+        active,
+        children,
+        className,
+        fill,
+        icon,
+        intent,
+        interactive,
+        large,
+        minimal,
+        multiline,
+        onRemove,
+        rightIcon,
+        round,
+        tabIndex = 0,
+        htmlTitle,
+        ...htmlProps
+    } = props;
+    const isRemovable = Utils.isFunction(onRemove);
+    const tagClasses = classNames(
+        Classes.TAG,
+        Classes.intentClass(intent),
+        {
+            [Classes.ACTIVE]: active,
+            [Classes.FILL]: fill,
+            [Classes.INTERACTIVE]: interactive,
+            [Classes.LARGE]: large,
+            [Classes.MINIMAL]: minimal,
+            [Classes.ROUND]: round,
+        },
+        className,
+    );
+    const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
+    const handleRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        props.onRemove?.(e, props);
     };
-}
+    const removeButton = isRemovable ? (
+        <button
+            type="button"
+            className={Classes.TAG_REMOVE}
+            onClick={handleRemoveClick}
+            tabIndex={interactive ? tabIndex : undefined}
+        >
+            <SmallCross size={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
+        </button>
+    ) : null;
+
+    return (
+        <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={ref}>
+            <Icon icon={icon} />
+            {!isReactNodeEmpty(children) && (
+                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
+                    {children}
+                </Text>
+            )}
+            <Icon icon={rightIcon} />
+            {removeButton}
+        </span>
+    );
+});
+Tag.displayName = `${DISPLAYNAME_PREFIX}.Tag`;

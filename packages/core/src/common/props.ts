@@ -19,7 +19,6 @@ import React from "react";
 import { IconName } from "@blueprintjs/icons";
 
 import { Intent } from "./intent";
-import { Ref } from "./refs";
 
 export const DISPLAYNAME_PREFIX = "Blueprint3";
 
@@ -94,10 +93,6 @@ export interface ControlledProps {
     value?: string;
 }
 
-export interface ElementRefProps<E extends HTMLElement> {
-    /** A ref handler or a ref object that receives the native HTML element rendered by this component. */
-    elementRef?: Ref<E>;
-}
 /**
  * An interface for an option in a list, such as in a `<select>` or `RadioGroup`.
  * These props can be spread directly to an `<option>` or `<Radio>` element.
@@ -120,7 +115,6 @@ const INVALID_PROPS = [
     "asyncControl", // InputGroupProps
     "containerRef",
     "current",
-    "elementRef",
     "fill",
     "icon",
     "inputRef",
