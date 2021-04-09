@@ -42,14 +42,15 @@ export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbP
         breadcrumbProps.className,
     );
 
-    const renderIcon = ({ icon, iconSize = Icon.SIZE_STANDARD }: IBreadcrumbProps) => {
-        if(icon) {
-           return (
-                <Icon icon={breadcrumbProps.icon} iconSize={iconSize} />
-            );
+    const renderIcon = ({
+        icon,
+        iconSize = Icon.SIZE_STANDARD,
+    }: IBreadcrumbProps) => {
+        if (icon) {
+            return <Icon icon={breadcrumbProps.icon} iconSize={iconSize} />;
         }
         return undefined;
-    }
+    };
 
     if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
         return (
@@ -64,7 +65,9 @@ export const Breadcrumb: React.FunctionComponent<IBreadcrumbProps> = breadcrumbP
         <a
             className={classes}
             href={breadcrumbProps.href}
-            onClick={breadcrumbProps.disabled ? undefined : breadcrumbProps.onClick}
+            onClick={
+                breadcrumbProps.disabled ? undefined : breadcrumbProps.onClick
+            }
             tabIndex={breadcrumbProps.disabled ? undefined : 0}
             target={breadcrumbProps.target}
         >
