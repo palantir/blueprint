@@ -15,16 +15,15 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { forwardRef } from "react";
 
 import { DoubleCaretVertical, SVGIconProps } from "@blueprintjs/icons";
 
-import { AbstractPureComponent } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { ElementRefProps, OptionProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, OptionProps } from "../../common/props";
 
 export interface HTMLSelectProps
-    extends ElementRefProps<HTMLSelectElement>,
+    extends React.RefAttributes<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
     /** Whether this element is non-interactive. */
     disabled?: boolean;
@@ -61,43 +60,32 @@ export interface HTMLSelectProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class HTMLSelect extends AbstractPureComponent<HTMLSelectProps> {
-    public render() {
-        const {
-            className,
-            disabled,
-            elementRef,
-            fill,
-            iconProps,
-            large,
-            minimal,
-            options = [],
-            ...htmlProps
-        } = this.props;
-        const classes = classNames(
-            HTML_SELECT,
-            {
-                [DISABLED]: disabled,
-                [FILL]: fill,
-                [LARGE]: large,
-                [MINIMAL]: minimal,
-            },
-            className,
-        );
+export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => {
+    const { className, children, disabled, fill, iconProps, large, minimal, options = [], ...htmlProps } = props;
+    const classes = classNames(
+        HTML_SELECT,
+        {
+            [DISABLED]: disabled,
+            [FILL]: fill,
+            [LARGE]: large,
+            [MINIMAL]: minimal,
+        },
+        className,
+    );
 
-        const optionChildren = options.map(option => {
-            const props: OptionProps = typeof option === "object" ? option : { value: option };
-            return <option {...props} key={props.value} children={props.label || props.value} />;
-        });
+    const optionChildren = options.map(option => {
+        const optionProps: OptionProps = typeof option === "object" ? option : { value: option };
+        return <option {...optionProps} key={optionProps.value} children={optionProps.label || optionProps.value} />;
+    });
 
-        return (
-            <div className={classes}>
-                <select disabled={disabled} ref={elementRef} {...htmlProps} multiple={false}>
-                    {optionChildren}
-                    {htmlProps.children}
-                </select>
-                <DoubleCaretVertical {...iconProps} />
-            </div>
-        );
-    }
-}
+    return (
+        <div className={classes}>
+            <select disabled={disabled} ref={ref} {...htmlProps} multiple={false}>
+                {optionChildren}
+                {children}
+            </select>
+            <DoubleCaretVertical {...iconProps} />
+        </div>
+    );
+});
+HTMLSelect.displayName = `${DISPLAYNAME_PREFIX}.HTMLSelect`;

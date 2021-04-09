@@ -63,7 +63,7 @@ export interface ResizeSensorProps {
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private elementRef = createRef<HTMLElement>();
+    private targetRef = createRef<HTMLElement>();
 
     private prevElement: HTMLElement | undefined = undefined;
 
@@ -77,7 +77,7 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
             return onlyChild;
         }
 
-        return cloneElement(onlyChild, { ref: this.elementRef });
+        return cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidMount() {
@@ -98,27 +98,27 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
-        if (!(this.elementRef.current instanceof Element)) {
+        if (!(this.targetRef.current instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
             return;
         }
 
-        if (this.elementRef.current === this.prevElement && !force) {
+        if (this.targetRef.current === this.prevElement && !force) {
             // quit if given same element -- nothing to update (unless forced)
             return;
         } else {
             // clear observer list if new element
             this.observer.disconnect();
             // remember element reference for next time
-            this.prevElement = this.elementRef.current;
+            this.prevElement = this.targetRef.current;
         }
 
         // observer callback is invoked immediately when observing new elements
-        this.observer.observe(this.elementRef.current);
+        this.observer.observe(this.targetRef.current);
 
         if (this.props.observeParents) {
-            let parent = this.elementRef.current.parentElement;
+            let parent = this.targetRef.current.parentElement;
             while (parent != null) {
                 this.observer.observe(parent);
                 parent = parent.parentElement;

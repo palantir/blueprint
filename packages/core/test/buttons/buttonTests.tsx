@@ -117,20 +117,20 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
         });
 
         it("attaches ref with useRef", () => {
-            let elementRef: React.RefObject<any> | undefined;
+            let buttonRef: React.RefObject<any> | undefined;
             const Component = component;
 
             const Test = () => {
-                elementRef = React.useRef<any>(null);
+                buttonRef = React.useRef<any>(null);
 
-                return <Component ref={elementRef} />;
+                return <Component ref={buttonRef} />;
             };
 
             const wrapper = mount(<Test />);
             wrapper.update();
 
             assert.isTrue(
-                elementRef?.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
+                buttonRef?.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
                 `ref.current should be a(n) ${tagName} element`,
             );
         });

@@ -82,12 +82,12 @@ describe("<Tag>", () => {
 
     if (typeof React.createRef !== "undefined") {
         it("supports ref objects", done => {
-            const elementRef = React.createRef<HTMLSpanElement>();
-            const wrapper = mount(<Tag elementRef={elementRef}>Hello</Tag>);
+            const tagRef = React.createRef<HTMLSpanElement>();
+            const wrapper = mount(<Tag ref={tagRef}>Hello</Tag>);
 
             // wait for the whole lifecycle to run
             setTimeout(() => {
-                assert.equal(elementRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
+                assert.equal(tagRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
                 done();
             }, 0);
         });

@@ -15,11 +15,13 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { forwardRef } from "react";
 
-import { AbstractPureComponent, Classes, ElementRefProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 
-export interface HTMLTableProps extends React.TableHTMLAttributes<HTMLTableElement>, ElementRefProps<HTMLTableElement> {
+export interface HTMLTableProps
+    extends React.TableHTMLAttributes<HTMLTableElement>,
+        React.RefAttributes<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 
@@ -36,20 +38,19 @@ export interface HTMLTableProps extends React.TableHTMLAttributes<HTMLTableEleme
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class HTMLTable extends AbstractPureComponent<HTMLTableProps> {
-    public render() {
-        const { bordered, className, condensed, elementRef, interactive, striped, ...htmlProps } = this.props;
-        const classes = classNames(
-            Classes.HTML_TABLE,
-            {
-                [Classes.HTML_TABLE_BORDERED]: bordered,
-                [Classes.HTML_TABLE_CONDENSED]: condensed,
-                [Classes.HTML_TABLE_STRIPED]: striped,
-                [Classes.INTERACTIVE]: interactive,
-            },
-            className,
-        );
-        // eslint-disable-next-line @blueprintjs/html-components
-        return <table {...htmlProps} ref={elementRef} className={classes} />;
-    }
-}
+export const HTMLTable: React.FC<HTMLTableProps> = forwardRef((props, ref) => {
+    const { bordered, className, condensed, interactive, striped, ...htmlProps } = props;
+    const classes = classNames(
+        Classes.HTML_TABLE,
+        {
+            [Classes.HTML_TABLE_BORDERED]: bordered,
+            [Classes.HTML_TABLE_CONDENSED]: condensed,
+            [Classes.HTML_TABLE_STRIPED]: striped,
+            [Classes.INTERACTIVE]: interactive,
+        },
+        className,
+    );
+    // eslint-disable-next-line @blueprintjs/html-components
+    return <table {...htmlProps} ref={ref} className={classes} />;
+});
+HTMLTable.displayName = `${DISPLAYNAME_PREFIX}.HTMLTable`;
