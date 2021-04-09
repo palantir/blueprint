@@ -29,11 +29,11 @@ export { ButtonProps };
 export type AnchorButtonProps = ButtonProps<HTMLAnchorElement>;
 
 export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-    const commonProps = useSharedButtonAttributes(props, ref);
+    const commonAttributes = useSharedButtonAttributes(props, ref);
 
     return (
-        <button type="button" {...removeNonHTMLProps(props)} {...commonProps}>
-            <ButtonContents {...props} />
+        <button type="button" {...removeNonHTMLProps(props)} {...commonAttributes}>
+            {renderButtonContents(props)}
         </button>
     );
 });
@@ -52,7 +52,7 @@ export const AnchorButton: React.FC<AnchorButtonProps> = forwardRef<HTMLAnchorEl
                 href={commonProps.disabled ? undefined : href}
                 tabIndex={commonProps.disabled ? -1 : tabIndex}
             >
-                <ButtonContents {...props} />
+                {renderButtonContents(props)}
             </a>
         );
     },
@@ -146,13 +146,14 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 /**
  * Shared rendering code for button contents.
  */
-function ButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(props: ButtonProps<E>) {
+function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(props: ButtonProps<E>) {
     const { children, icon, loading, rightIcon, text } = props;
+    const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
         <>
             {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />}
             <Icon key="leftIcon" icon={icon} />
-            {(!Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children)) && (
+            {hasTextContent && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
                     {children}
