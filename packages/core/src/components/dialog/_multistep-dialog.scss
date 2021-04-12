@@ -27,7 +27,7 @@ $step-radius: $pt-border-radius * 2 !default;
   background-color: $light-gray5;
   border-left: 1px solid $pt-divider-black;
   border-radius: 0 0 $dialog-border-radius 0;
-  flex: 2;
+  flex: 3;
 
   .#{$ns}-dark & {
     background-color: $dark-gray3;
