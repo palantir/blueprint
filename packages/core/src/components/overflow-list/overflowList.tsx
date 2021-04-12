@@ -83,6 +83,14 @@ export interface IOverflowListProps<T> extends IProps {
      */
     overflowRenderer: (overflowItems: T[]) => React.ReactNode;
 
+    /**
+     * Will force the overflowRenderer to always be called, even if there are zero items.
+     * 
+     * Typical usage is for popovers so they do not close.
+     * @default false
+     */
+    alwaysRenderOverflow?: boolean;
+
     /** CSS properties to apply to the root element. */
     style?: React.CSSProperties;
 
@@ -157,6 +165,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
             prevProps.items !== this.props.items ||
             prevProps.minVisibleItems !== this.props.minVisibleItems ||
             prevProps.overflowRenderer !== this.props.overflowRenderer ||
+            prevProps.alwaysRenderOverflow !== this.props.alwaysRenderOverflow ||
             prevProps.visibleItemRenderer !== this.props.visibleItemRenderer
         ) {
             // reset visible state if the above props change.
@@ -206,7 +215,7 @@ export class OverflowList<T> extends React.Component<IOverflowListProps<T>, IOve
 
     private maybeRenderOverflow() {
         const { overflow } = this.state;
-        if (overflow.length === 0) {
+        if (overflow.length === 0 && this.props.alwaysRenderOverflow !== true) {
             return null;
         }
         return this.props.overflowRenderer(overflow);
