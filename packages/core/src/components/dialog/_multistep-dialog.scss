@@ -121,6 +121,7 @@ $step-radius: $pt-border-radius * 2 !default;
 
 .#{$ns}-dialog-step-title {
   color: $gray1;
+  flex: 1;
   padding-left: 10px;
 
   .#{$ns}-dark & {
