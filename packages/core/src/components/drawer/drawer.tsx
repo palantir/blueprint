@@ -132,14 +132,18 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
         const { size, style, position, vertical } = this.props;
         const realPosition = position ? getPositionIgnoreAngles(position) : undefined;
 
-        const classes = classNames(
+        const drawer_classes = classNames(
             Classes.DRAWER,
             {
                 [Classes.VERTICAL]: !realPosition && vertical,
                 [Classes.positionClass(realPosition) ?? ""]: true,
             },
-            this.props.className,
         );
+
+        const overlay_classes = classNames(
+            Classes.OVERLAY_CONTAINER,
+            this.props.className,
+        )
 
         const styleProp =
             size == null
@@ -151,11 +155,11 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
         return (
             <Overlay
                 {...this.props}
-                className={Classes.OVERLAY_CONTAINER}
+                className={overlay_classes}
                 onOpening={this.handleOpening}
                 onClosed={this.handleClosed}
             >
-                <div className={classes} style={styleProp}>
+                <div className={drawer_classes} style={styleProp}>
                     {this.maybeRenderHeader()}
                     {this.props.children}
                 </div>
