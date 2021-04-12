@@ -57,7 +57,7 @@ $step-radius: $pt-border-radius * 2 !default;
     border-bottom: 1px solid $pt-dark-divider-black;
   }
 
-  &.#{$ns}-active {
+  &.#{$ns}-dialog-step-viewed {
     background-color: $white;
     .#{$ns}-dark & {
       background: $dark-gray4;
@@ -79,7 +79,7 @@ $step-radius: $pt-border-radius * 2 !default;
   }
 
   // by default, steps are inactive until they are visited
-  .#{$ns}-active & {
+  .#{$ns}-dialog-step-viewed & {
     background-color: $white;
     cursor: pointer;
 
@@ -111,11 +111,11 @@ $step-radius: $pt-border-radius * 2 !default;
     background-color: $pt-dark-icon-color-disabled;
   }
 
-  &.#{$ns}-active {
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
     background-color: $blue4;
   }
 
-  &.#{$ns}-dialog-step-viewed {
+  .#{$ns}-dialog-step-viewed & {
     background-color: $gray3;
   }
 }
@@ -130,7 +130,7 @@ $step-radius: $pt-border-radius * 2 !default;
   }
 
   // by default, step title is active only when the step is selected
-  &.#{$ns}-active {
+  .#{$ns}-active & {
     color: $blue4;
   }
 }
