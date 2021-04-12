@@ -123,7 +123,14 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         return (
             <div className={classNames(Classes.DIALOG_STEP_CONTAINER, { [Classes.ACTIVE]: hasBeenViewed })} key={index}>
                 <div className={Classes.DIALOG_STEP} onClick={this.handleClickDialogStep(index)}>
-                    <div className={Classes.DIALOG_STEP_ICON}>{stepNumber}</div>
+                    <div
+                        className={classNames(Classes.DIALOG_STEP_ICON, {
+                            [Classes.ACTIVE]: currentlySelected,
+                            [Classes.DIALOG_STEP_VIEWED]: hasBeenViewed && !currentlySelected,
+                        })}
+                    >
+                        {stepNumber}
+                    </div>
                     <div className={classNames(Classes.DIALOG_STEP_TITLE, { [Classes.ACTIVE]: currentlySelected })}>
                         {step.props.title}
                     </div>
