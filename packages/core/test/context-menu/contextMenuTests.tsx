@@ -73,7 +73,9 @@ describe("ContextMenu", () => {
                             className={classNames(props.className, TARGET_CLASSNAME)}
                             onContextMenu={props.onContextMenu}
                             ref={props.ref}
-                        />
+                        >
+                            {props.popover}
+                        </div>
                     )}
                 </ContextMenu>,
             );
