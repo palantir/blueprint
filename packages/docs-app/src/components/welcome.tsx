@@ -23,8 +23,12 @@ export class Welcome extends React.PureComponent {
         return (
             <div className="blueprint-welcome">
                 <WelcomeCard href="#blueprint/getting-started" icon="star" title="Getting started" sameTab={true} />
-                <WelcomeCard href="https://github.com/palantir/blueprint" icon="git-repo" title="palantir/blueprint" />
-                <WelcomeCard href="https://codesandbox.io/s/nko3k41y60" icon="code-block" title="Code Sandbox" />
+                <WelcomeCard href="https://github.com/palantir/blueprint" icon="git-repo" title="Git repository" />
+                <WelcomeCard
+                    href="https://codesandbox.io/s/blueprint-sandbox-et9xy"
+                    icon="code-block"
+                    title="Code Sandbox"
+                />
                 <WelcomeCard
                     href="https://github.com/palantir/blueprint#contributing"
                     icon="git-merge"
