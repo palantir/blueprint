@@ -17,7 +17,7 @@
 import { INpmPackage } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, Intent, Menu, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
 import { Popover2 } from "@blueprintjs/popover2";
 
@@ -86,7 +86,21 @@ export class NavHeader extends React.PureComponent<INavHeaderProps> {
         ];
         const releaseItems = versions
             .filter(v => +major(v) > 0)
-            .map(v => <MenuItem href={v === current ? "/docs" : `/docs/versions/${major(v)}`} key={v} text={v} />);
+            .map(v => {
+                let href;
+                let intent: Intent | undefined;
+                // pre-release versions are not served as the default docs, they are inside the /versions/ folder
+                if (this.props.useNextVersion) {
+                    const isLatestStableMajor = +major(v) === +major(current) - 1;
+                    href = isLatestStableMajor ? "/docs" : `/docs/versions/${major(v)}`;
+                    if (isLatestStableMajor) {
+                        intent = "primary";
+                    }
+                } else {
+                    href = v === current ? "/docs" : `/docs/versions/${major(v)}`;
+                }
+                return <MenuItem href={href} intent={intent} key={v} text={v} />;
+            });
         return (
             <Popover2 content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">
                 <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
