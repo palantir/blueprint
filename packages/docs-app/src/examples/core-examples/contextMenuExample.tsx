@@ -17,12 +17,12 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
 
-import { Classes, ContextMenu, ContextMenuRenderProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, ContextMenu, ContextMenuContentProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuExample: React.FC<ExampleProps> = props => {
     const renderContent = useCallback(
-        ({ targetOffset }: ContextMenuRenderProps) => (
+        ({ targetOffset }: ContextMenuContentProps) => (
             <Menu>
                 <MenuItem icon="select" text="Select all" />
                 <MenuItem icon="insert" text="Insert...">

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { AbstractComponent, ContextMenu, ContextMenuRenderProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, ContextMenu, ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { CellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
@@ -133,7 +133,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
         );
     }
 
-    private renderContextMenu = ({ mouseEvent }: ContextMenuRenderProps) => {
+    private renderContextMenu = ({ mouseEvent }: ContextMenuContentProps) => {
         const { grid, bodyContextMenuRenderer, selectedRegions } = this.props;
         const { numRows, numCols } = grid;
 

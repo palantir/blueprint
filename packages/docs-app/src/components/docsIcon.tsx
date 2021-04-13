@@ -18,7 +18,7 @@ import classNames from "classnames";
 import download from "downloadjs";
 import React from "react";
 
-import { Classes, ContextMenu, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
+import { Classes, ContextMenu, ContextMenuChildrenProps, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ClickToCopy } from "./clickToCopy";
 
@@ -55,18 +55,27 @@ export class DocsIcon extends React.PureComponent<DocsIconProps> {
                     </Menu>
                 }
             >
-                <ClickToCopy className="docs-icon" data-tags={tags} value={iconName}>
-                    <Icon icon={iconName} size={Icon.SIZE_LARGE} />
-                    <div className="docs-icon-name">{displayName}</div>
-                    <div className="docs-icon-detail">
-                        <p className="docs-code">{iconName}</p>
-                        <div className={Classes.TEXT_MUTED}>Right-click to download</div>
-                        <div
-                            className={classNames("docs-clipboard-message", Classes.TEXT_MUTED)}
-                            data-hover-message="Click to copy name"
-                        />
-                    </div>
-                </ClickToCopy>
+                {(props: ContextMenuChildrenProps) => (
+                    <ClickToCopy
+                        className={classNames("docs-icon", props.className)}
+                        data-tags={tags}
+                        onContextMenu={props.onContextMenu}
+                        ref={props.ref}
+                        value={iconName}
+                    >
+                        {props.popover}
+                        <Icon icon={iconName} size={Icon.SIZE_LARGE} />
+                        <div className="docs-icon-name">{displayName}</div>
+                        <div className="docs-icon-detail">
+                            <p className="docs-code">{iconName}</p>
+                            <div className={Classes.TEXT_MUTED}>Right-click to download</div>
+                            <div
+                                className={classNames("docs-clipboard-message", Classes.TEXT_MUTED)}
+                                data-hover-message="Click to copy name"
+                            />
+                        </div>
+                    </ClickToCopy>
+                )}
             </ContextMenu>
         );
     }

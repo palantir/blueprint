@@ -15,12 +15,12 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { forwardRef, useCallback, useRef, useState } from "react";
 
 import { HTMLDivProps, Props, Keys, removeNonHTMLProps } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
-export interface ClickToCopyProps extends Props, HTMLDivProps {
+export interface ClickToCopyProps extends Props, React.RefAttributes<any>, HTMLDivProps {
     /**
      * Additional class names to apply after value has been copied
      *
@@ -30,10 +30,6 @@ export interface ClickToCopyProps extends Props, HTMLDivProps {
 
     /** Value to copy when clicked */
     value: string;
-}
-
-export interface ClickToCopyState {
-    hasCopied?: boolean;
 }
 
 /**
@@ -46,72 +42,66 @@ export interface ClickToCopyState {
  *  - `[data-copied-message="<message>"]` will be shown when the element has been copied.
  * The message is reset to default when the user mouses off the element after copying it.
  */
-export class ClickToCopy extends React.PureComponent<ClickToCopyProps, ClickToCopyState> {
-    public static defaultProps: ClickToCopyProps = {
-        copiedClassName: "docs-clipboard-copied",
-        value: "",
-    };
+export const ClickToCopy: React.FC<ClickToCopyProps> = forwardRef<any, ClickToCopyProps>((props, ref) => {
+    const { className, children, copiedClassName, value } = props;
+    const [hasCopied, setHasCopied] = useState(false);
+    const inputRef = useRef<HTMLInputElement>();
 
-    public state: ClickToCopyState = {
-        hasCopied: false,
-    };
-
-    private inputElement: HTMLInputElement;
-
-    private refHandlers = {
-        input: (input: HTMLInputElement) => (this.inputElement = input),
-    };
-
-    public render() {
-        const { className, children, copiedClassName, value } = this.props;
-        return (
-            <div
-                {...removeNonHTMLProps(this.props, ["copiedClassName", "value"], true)}
-                className={classNames("docs-clipboard", className, {
-                    [copiedClassName!]: this.state.hasCopied,
-                })}
-                onClick={this.handleClick}
-                onMouseLeave={this.handleMouseLeave}
-            >
-                <input
-                    onBlur={this.handleInputBlur}
-                    onKeyDown={this.handleKeyDown}
-                    readOnly={true}
-                    ref={this.refHandlers.input}
-                    value={value}
-                />
-                {children}
-            </div>
-        );
-    }
-
-    private copy = () => {
-        this.inputElement.select();
+    const copy = useCallback(() => {
+        inputRef.current?.select();
         document.execCommand("copy");
-        this.setState({ hasCopied: true });
-    };
+        setHasCopied(true);
+    }, [inputRef]);
 
-    private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        this.copy();
-        this.props.onClick?.(e);
-    };
-
-    private handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-        this.setState({ hasCopied: false });
-        this.props.onMouseLeave?.(e);
-    };
-
-    private handleInputBlur = () => {
-        this.setState({ hasCopied: false });
-    };
-
-    // eslint-disable-line @typescript-eslint/member-ordering
-    private handleKeyDown = createKeyEventHandler(
-        {
-            all: this.props.onKeyDown,
-            [Keys.SPACE]: this.copy,
-            [Keys.ENTER]: this.copy,
+    const handleClick = useCallback(
+        (e: React.MouseEvent<HTMLDivElement>) => {
+            copy();
+            props.onClick?.(e);
         },
-        true,
+        [copy, props.onClick],
     );
-}
+
+    const handleMouseLeave = useCallback(
+        (e: React.MouseEvent<HTMLDivElement>) => {
+            setHasCopied(false);
+            props.onMouseLeave?.(e);
+        },
+        [props.onMouseLeave],
+    );
+
+    const handleInputBlur = useCallback(() => {
+        setHasCopied(false);
+    }, []);
+
+    const handleKeyDown = useCallback(
+        createKeyEventHandler(
+            {
+                all: props.onKeyDown,
+                [Keys.SPACE]: copy,
+                [Keys.ENTER]: copy,
+            },
+            true,
+        ),
+        [copy, props.onKeyDown],
+    );
+
+    return (
+        <div
+            {...removeNonHTMLProps(props, ["copiedClassName", "value"], true)}
+            className={classNames("docs-clipboard", className, {
+                [copiedClassName!]: hasCopied,
+            })}
+            onClick={handleClick}
+            onMouseLeave={handleMouseLeave}
+            ref={ref}
+        >
+            <input onBlur={handleInputBlur} onKeyDown={handleKeyDown} readOnly={true} ref={inputRef} value={value} />
+            {children}
+        </div>
+    );
+});
+ClickToCopy.displayName = "ClickToCopy";
+ClickToCopy.defaultProps = {
+    copiedClassName: "docs-clipboard-copied",
+    value: "",
+};
