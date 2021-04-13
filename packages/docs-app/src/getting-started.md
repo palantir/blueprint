@@ -21,13 +21,13 @@ The `main` module exports all symbols from all modules so you don't have to impo
 1.  After installation, you'll be able to import the React components in your application:
 
     ```tsx
-    import { Button, Intent, Spinner } from "@blueprintjs/core";
+    import { Button, Spinner } from "@blueprintjs/core";
 
     // using JSX:
-    const mySpinner = <Spinner intent={Intent.PRIMARY} />;
+    const mySpinner = <Spinner intent="primary" />;
 
     // use React.createElement if you're not using JSX.
-    const myButton = React.createElement(Button, { intent: Intent.SUCCESS }, "button content");
+    const myButton = React.createElement(Button, { intent: "success" }, "button text");
     ```
 
 1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the
@@ -91,7 +91,9 @@ install typings for Blueprint's dependencies before you can consume it:
 npm install --save @types/react @types/react-dom
 ```
 
-Blueprint's declaration files require **TypeScript 2.3+** for default generic parameter arguments: `<P = {}>`.
+Blueprint's declaration files require **TypeScript 3.8 or newer** for certain language features (like type-only imports/exports).
+We strive to be compatible with most TypeScript versions, but sometimes there are `lib.d.ts` changes which can create
+compiler incompatibilities if you are using a `tsc` version different from the one used to build Blueprint (currently v4.1).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
@@ -106,18 +108,18 @@ You can render any component in any JavaScript application with `ReactDOM.render
 using a jQuery plugin.
 
 ```tsx
-import { Classes, Intent, Spinner } from "@blueprintjs/core";
+import { Classes, Spinner } from "@blueprintjs/core";
 
 const myContainerElement = document.getElementById("container");
 
 // with JSX
-ReactDOM.render(<Spinner className={Classes.SMALL} intent={Intent.PRIMARY} />, myContainerElement);
+ReactDOM.render(<Spinner className={Classes.SMALL} intent="primary" />, myContainerElement);
 
 // with vanilla JS, use React.createElement
 ReactDOM.render(
     React.createElement(Spinner, {
         className: Classes.SMALL,
-        intent: Intent.PRIMARY,
+        intent: "primary",
     }),
     myContainerElement,
 );
@@ -133,12 +135,12 @@ Check out the [React API docs](https://facebook.github.io/react/docs/react-api.h
 
 @## CDN consumption
 
-Blueprint supports the venerable [unpkg CDN](https://unpkg.com). Each package provides a UMD
+Blueprint supports the [unpkg CDN](https://unpkg.com). Each package provides a UMD
 `dist/[name].bundle.js` file containing the bundled source code. The UMD wrapper exposes each
 library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
 
 These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `react-transition-group`, `popper.js`, and
+`normalize.css`, `classnames`, `dom4`, `react`, `react-dom`, `react-transition-group`, `@popperjs/core`, and
 `react-popper` are available at runtime.
 
 ```html
@@ -150,25 +152,25 @@ These bundles _do not include_ external dependencies; your application will need
         <title>Blueprint Starter Kit</title>
 
         <!-- Style dependencies -->
-        <link href="https://unpkg.com/normalize.css@^7.0.0" rel="stylesheet" />
+        <link href="https://unpkg.com/normalize.css@^8.0.1" rel="stylesheet" />
         <!-- Blueprint stylesheets -->
-        <link href="https://unpkg.com/@blueprintjs/icons@^3.4.0/lib/css/blueprint-icons.css" rel="stylesheet" />
-        <link href="https://unpkg.com/@blueprintjs/core@^3.10.0/lib/css/blueprint.css" rel="stylesheet" />
+        <link href="https://unpkg.com/@blueprintjs/icons@^4.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
+        <link href="https://unpkg.com/@blueprintjs/core@^4.0.0/lib/css/blueprint.css" rel="stylesheet" />
     </head>
     <body>
         <!-- Blueprint dependencies -->
         <script src="https://unpkg.com/classnames@^2.2"></script>
-        <script src="https://unpkg.com/dom4@^1.8"></script>
-        <script src="https://unpkg.com/tslib@^1.9.0"></script>
-        <script src="https://unpkg.com/react@^16.2.0/umd/react.production.min.js"></script>
-        <script src="https://unpkg.com/react-dom@^16.2.0/umd/react-dom.production.min.js"></script>
-        <script src="https://unpkg.com/react-transition-group@^2.2.1/dist/react-transition-group.min.js"></script>
-        <script src="https://unpkg.com/popper.js@^1.14.1/dist/umd/popper.js"></script>
-        <script src="https://unpkg.com/react-popper@^1.0.0/dist/index.umd.min.js"></script>
+        <script src="https://unpkg.com/dom4@^2.1"></script>
+        <script src="https://unpkg.com/tslib@~1.13.0"></script>
+        <script src="https://unpkg.com/react@^16.14.0/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@^16.14.0/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/react-transition-group@^4.4.1/dist/react-transition-group.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@^2.5.4/dist/umd/popper.js"></script>
+        <script src="https://unpkg.com/react-popper@^2.2.4/dist/index.umd.min.js"></script>
         <script src="https://unpkg.com/resize-observer-polyfill@^1.5.0"></script>
-        <!-- Blueprint packages (note: icons script must come first) -->
-        <script src="https://unpkg.com/@blueprintjs/icons@^3.4.0"></script>
-        <script src="https://unpkg.com/@blueprintjs/core@^3.10.0"></script>
+        <!-- Blueprint packages (note: packages must be topo-sorted, where dependencies come first) -->
+        <script src="https://unpkg.com/@blueprintjs/icons@^4.0.0"></script>
+        <script src="https://unpkg.com/@blueprintjs/core@^4.0.0"></script>
 
         <div id="btn"></div>
         <script>
