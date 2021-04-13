@@ -20,7 +20,7 @@ import React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { DocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, DocumentationProps, NavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import { Banner, Documentation, DocumentationProps, NavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -62,6 +62,12 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
     public state = { themeName: getTheme() };
 
     public render() {
+        const banner = (
+            <Banner href="https://blueprintjs.com/docs/">
+                This is a pre-release version of Blueprint v4.x. Click here to view the docs for the latest stable
+                release (v3.x) &rarr;
+            </Banner>
+        );
         const footer = (
             <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
                 &copy; {new Date().getFullYear()}
@@ -86,6 +92,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
                 <Documentation
                     {...this.props}
                     className={this.state.themeName}
+                    banner={banner}
                     footer={footer}
                     header={header}
                     navigatorExclude={isNavSection}
