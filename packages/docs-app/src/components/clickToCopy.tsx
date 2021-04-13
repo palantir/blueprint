@@ -28,6 +28,9 @@ export interface ClickToCopyProps extends Props, HTMLDivProps {
      */
     copiedClassName?: string;
 
+    /** TODO(adahiya) */
+    forwardedRef?: React.Ref<any>;
+
     /** Value to copy when clicked */
     value: string;
 }
@@ -63,7 +66,7 @@ export class ClickToCopy extends React.PureComponent<ClickToCopyProps, ClickToCo
     };
 
     public render() {
-        const { className, children, copiedClassName, value } = this.props;
+        const { className, children, copiedClassName, forwardedRef, value } = this.props;
         return (
             <div
                 {...removeNonHTMLProps(this.props, ["copiedClassName", "value"], true)}
@@ -72,6 +75,7 @@ export class ClickToCopy extends React.PureComponent<ClickToCopyProps, ClickToCo
                 })}
                 onClick={this.handleClick}
                 onMouseLeave={this.handleMouseLeave}
+                ref={forwardedRef}
             >
                 <input
                     onBlur={this.handleInputBlur}

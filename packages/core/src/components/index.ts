@@ -24,7 +24,12 @@ export * from "./button/buttonGroup";
 export * from "./callout/callout";
 export * from "./card/card";
 export * from "./collapse/collapse";
-export { ContextMenu, ContextMenuProps, ContextMenuRenderProps } from "./context-menu/contextMenu";
+export {
+    ContextMenu,
+    ContextMenuProps,
+    ContextMenuChildrenProps,
+    ContextMenuContentProps,
+} from "./context-menu/contextMenu";
 export * from "./dialog/dialog";
 export * from "./dialog/multistepDialog";
 export * from "./dialog/dialogStep";
