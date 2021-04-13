@@ -57,10 +57,10 @@ export class DocsIcon extends React.PureComponent<DocsIconProps> {
             >
                 {(props: ContextMenuChildrenProps) => (
                     <ClickToCopy
-                        className="docs-icon"
+                        className={classNames("docs-icon", props.className)}
                         data-tags={tags}
-                        forwardedRef={props.ref}
                         onContextMenu={props.onContextMenu}
+                        ref={props.ref}
                         value={iconName}
                     >
                         {props.popover}

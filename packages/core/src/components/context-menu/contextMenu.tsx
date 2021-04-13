@@ -28,6 +28,9 @@ type Offset = {
     top: number;
 };
 
+/**
+ * Render props relevant to the _content_ of a context menu (rendered as the underlying Popover's content).
+ */
 export interface ContextMenuContentProps {
     /** Whether the context menu is currently open */
     isOpen: boolean;
@@ -39,18 +42,24 @@ export interface ContextMenuContentProps {
     mouseEvent: React.MouseEvent<HTMLElement> | undefined;
 }
 
+/**
+ * Render props for advanced usage of ContextMenu.
+ */
 export interface ContextMenuChildrenProps {
-    /** TODO(adahiya) */
+    /** Context menu container element class */
+    className: string;
+
+    /** Render props relevant to the content of this context menu */
     contentProps: ContextMenuContentProps;
 
-    /** TODO(adahiya) */
-    onContextMenu?: React.MouseEventHandler<HTMLElement>;
+    /** Context menu handler which implements the custom context menu interaction */
+    onContextMenu: React.MouseEventHandler<HTMLElement>;
 
-    /** TODO(adahiya) */
+    /** Popover element rendered by ContextMenu, used to establish a click target to position the menu */
     popover: JSX.Element | undefined;
 
-    /** TODO(adahiya) */
-    ref: React.Ref<HTMLElement>;
+    /** DOM ref for the context menu target, used to calculate menu position on the page */
+    ref: React.Ref<any>;
 }
 
 export interface ContextMenuProps
@@ -66,7 +75,13 @@ export interface ContextMenuProps
     /**
      * The context menu target. This may optionally be a render function so you can use
      * component state to render the target.
-     * TODO(adahiya)
+     *
+     * If you choose to supply `children` as a function, it will be called with a `ContextMenuChildrenProps` object.
+     * You must return a single React element and render out these props correctly in order for ContextMenu to work:
+     *
+     *   - `onContextMenu` and `ref must be attached to the container element (if it is not a native DOM element,
+     *     make sure they get forwarded to the real DOM somehow).
+     *   - `popover` must be rendered in place inside the container element, usually as its first child.
      */
     children: React.ReactNode | ((props: ContextMenuChildrenProps) => React.ReactElement);
 
@@ -98,7 +113,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     const [targetOffset, setTargetOffset] = useState<Offset>({ left: 0, top: 0 });
     const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const containerRef = useRef<HTMLElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     // If disabled prop is changed, we don't want our old context menu to stick around.
     // If it has just been enabled (disabled = false), then the menu ought to be opened by
@@ -177,8 +192,11 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         [containerRef.current, onContextMenu, disabled],
     );
 
+    const containerClassName = classNames(className, Classes.CONTEXT_MENU);
+
     if (Utils.isFunction(children)) {
         return children({
+            className: containerClassName,
             contentProps,
             onContextMenu: handleContextMenu,
             popover: maybePopover,
@@ -186,11 +204,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         });
     } else {
         return (
-            <div
-                className={classNames(className, Classes.CONTEXT_MENU)}
-                ref={containerRef as React.RefObject<HTMLDivElement>}
-                onContextMenu={handleContextMenu}
-            >
+            <div className={containerClassName} ref={containerRef} onContextMenu={handleContextMenu}>
                 {maybePopover}
                 {children}
             </div>
