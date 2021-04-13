@@ -47,6 +47,6 @@ Icons.loadAll({
 });
 
 ReactDOM.render(
-    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,
+    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={true} />,
     document.querySelector("#blueprint-documentation"),
 );
