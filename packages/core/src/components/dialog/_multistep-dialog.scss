@@ -99,7 +99,7 @@ $step-radius: $pt-border-radius * 2 !default;
 
 .#{$ns}-dialog-step-icon {
   align-items: center;
-  background-color: $light-gray1;
+  background-color: $pt-text-color-disabled;
   border-radius: 50%;
   color: $white;
   display: flex;
@@ -121,7 +121,7 @@ $step-radius: $pt-border-radius * 2 !default;
 }
 
 .#{$ns}-dialog-step-title {
-  color: $gray1;
+  color: $pt-text-color-disabled;
   flex: 1;
   padding-left: 10px;
 
@@ -130,7 +130,15 @@ $step-radius: $pt-border-radius * 2 !default;
   }
 
   // by default, step title is active only when the step is selected
-  .#{$ns}-active & {
+  .#{$ns}-active.#{$ns}-active.#{$ns}-dialog-step-viewed & {
     color: $blue4;
+  }
+
+  .#{$ns}-dialog-step-viewed & {
+    color: $pt-text-color;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color;
+    }
   }
 }
