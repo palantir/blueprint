@@ -184,6 +184,7 @@ export interface IOverlayState {
 }
 
 // HACKHACK: https://github.com/palantir/blueprint/issues/4342
+// eslint-disable-next-line deprecation/deprecation
 @(polyfill as LifecycleCompatPolyfill<IOverlayProps, any>)
 export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;

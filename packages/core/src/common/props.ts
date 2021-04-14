@@ -83,9 +83,9 @@ export interface ILinkProps {
 }
 
 /**
- * @deprecated use IControlledProps2.
- *
  * Interface for a controlled input.
+ *
+ * @deprecated use IControlledProps2.
  */
 export interface IControlledProps {
     /** Initial value of the input, for uncontrolled usage. */
@@ -106,10 +106,14 @@ export interface IControlledProps2 {
     value?: string;
 }
 
+/**
+ * @deprecated will be removed in Blueprint v4.0, where components will use `ref` prop instead
+ */
 export interface IElementRefProps<E extends HTMLElement> {
     /** A ref handler or a ref object that receives the native HTML element rendered by this component. */
     elementRef?: IRef<E>;
 }
+
 /**
  * An interface for an option in a list, such as in a `<select>` or `RadioGroup`.
  * These props can be spread directly to an `<option>` or `<Radio>` element.

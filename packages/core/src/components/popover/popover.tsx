@@ -100,6 +100,7 @@ export interface IPopoverState {
 export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
+    // eslint-disable-next-line deprecation/deprecation
     private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
     public static defaultProps: IPopoverProps = {

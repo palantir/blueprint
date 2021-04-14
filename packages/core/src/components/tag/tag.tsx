@@ -35,6 +35,7 @@ import { Text } from "../text/text";
 export interface ITagProps
     extends IProps,
         IIntentProps,
+        // eslint-disable-next-line deprecation/deprecation
         IElementRefProps<HTMLSpanElement>,
         React.HTMLAttributes<HTMLSpanElement> {
     /**

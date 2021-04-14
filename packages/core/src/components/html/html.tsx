@@ -23,6 +23,7 @@ import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
+    // eslint-disable-next-line deprecation/deprecation
 ): React.FunctionComponent<React.HTMLProps<E> & IElementRefProps<E>> {
     /* eslint-disable-next-line react/display-name */
     return props => {

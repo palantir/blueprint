@@ -32,6 +32,8 @@ export interface IContextMenuTargetComponent extends React.Component {
     onContextMenuClose?: () => void;
 }
 
+/* eslint-disable deprecation/deprecation */
+
 /** @deprecated use ContextMenu2 */
 export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderContextMenu)) {
