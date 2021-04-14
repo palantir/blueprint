@@ -15,6 +15,7 @@
  */
 
 import { assert } from "chai";
+import classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
@@ -31,25 +32,57 @@ const MENU = <Menu>{MENU_ITEMS}</Menu>;
 const TARGET_CLASSNAME = "test-target";
 
 describe("ContextMenu2", () => {
-    it("renders children and Popover2", () => {
-        const ctxMenu = mountTestMenu();
-        assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
-        assert.isTrue(ctxMenu.find(Popover2).exists());
+    describe("basic usage", () => {
+        it("renders children and Popover2", () => {
+            const ctxMenu = mountTestMenu();
+            assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
+            assert.isTrue(ctxMenu.find(Popover2).exists());
+        });
+
+        it("opens popover on right click", () => {
+            const ctxMenu = mountTestMenu();
+            openCtxMenu(ctxMenu);
+            assert.isTrue(ctxMenu.find(Popover2).prop("isOpen"));
+        });
+
+        function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
+            return mount(
+                <ContextMenu2 content={MENU} transitionDuration={0} {...props}>
+                    <div className={TARGET_CLASSNAME} />
+                </ContextMenu2>,
+            );
+        }
     });
 
-    it("opens popover on right click", () => {
-        const ctxMenu = mountTestMenu();
-        openCtxMenu(ctxMenu);
-        assert.isTrue(ctxMenu.find(Popover2).prop("isOpen"));
-    });
+    describe("advanced usage", () => {
+        it("renders children and Popover", () => {
+            const ctxMenu = mountTestMenu();
+            assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
+            assert.isTrue(ctxMenu.find(Popover2).exists());
+        });
 
-    function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
-        return mount(
-            <ContextMenu2 content={MENU} transitionDuration={0} {...props}>
-                <div className={TARGET_CLASSNAME} />
-            </ContextMenu2>,
-        );
-    }
+        it("opens popover on right click", () => {
+            const ctxMenu = mountTestMenu();
+            openCtxMenu(ctxMenu);
+            assert.isTrue(ctxMenu.find(Popover2).prop("isOpen"));
+        });
+
+        function mountTestMenu() {
+            return mount(
+                <ContextMenu2 content={MENU} transitionDuration={0}>
+                    {props => (
+                        <div
+                            className={classNames(props.className, TARGET_CLASSNAME)}
+                            onContextMenu={props.onContextMenu}
+                            ref={props.ref}
+                        >
+                            {props.popover}
+                        </div>
+                    )}
+                </ContextMenu2>,
+            );
+        }
+    });
 
     function openCtxMenu(ctxMenu: ReactWrapper) {
         ctxMenu

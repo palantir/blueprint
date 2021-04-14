@@ -15,7 +15,7 @@
  */
 
 import { cloneDeep } from "lodash-es";
-import React, { useCallback, useReducer } from "react";
+import * as React from "react";
 
 import { Classes, Icon, Intent, ITreeNode, Tree } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
@@ -63,27 +63,30 @@ function treeExampleReducer(state: ITreeNode[], action: TreeAction) {
 }
 
 export const TreeExample: React.FC<IExampleProps> = props => {
-    const [nodes, dispatch] = useReducer(treeExampleReducer, INITIAL_STATE);
+    const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
 
-    const handleNodeClick = useCallback((node: ITreeNode, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
-        const originallySelected = node.isSelected;
-        if (!e.shiftKey) {
-            dispatch({ type: "DESELECT_ALL" });
-        }
-        dispatch({
-            payload: { path: nodePath, isSelected: originallySelected == null ? true : !originallySelected },
-            type: "SET_IS_SELECTED",
-        });
-    }, []);
+    const handleNodeClick = React.useCallback(
+        (node: ITreeNode, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
+            const originallySelected = node.isSelected;
+            if (!e.shiftKey) {
+                dispatch({ type: "DESELECT_ALL" });
+            }
+            dispatch({
+                payload: { path: nodePath, isSelected: originallySelected == null ? true : !originallySelected },
+                type: "SET_IS_SELECTED",
+            });
+        },
+        [],
+    );
 
-    const handleNodeCollapse = useCallback((_node: ITreeNode, nodePath: NodePath) => {
+    const handleNodeCollapse = React.useCallback((_node: ITreeNode, nodePath: NodePath) => {
         dispatch({
             payload: { path: nodePath, isExpanded: false },
             type: "SET_IS_EXPANDED",
         });
     }, []);
 
-    const handleNodeExpand = useCallback((_node: ITreeNode, nodePath: NodePath) => {
+    const handleNodeExpand = React.useCallback((_node: ITreeNode, nodePath: NodePath) => {
         dispatch({
             payload: { path: nodePath, isExpanded: true },
             type: "SET_IS_EXPANDED",
