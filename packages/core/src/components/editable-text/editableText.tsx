@@ -282,7 +282,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         // Eg, a lot of developers use inline functions for callback props – like this: <EditableText onEdit={() => { ... }} />.)
         const callbackKeys = Object.keys(this.props)
             .concat(Object.keys(prevProps))
-            .filter(key => key.match(/^on[A-Z]/)) as (keyof IEditableTextProps)[];
+            .filter(key => key.match(/^on[A-Z]/)) as Array<keyof IEditableTextProps>;
         if (!shallowCompareKeys(this.props, prevProps, { exclude: callbackKeys })) {
             this.updateInputDimensions();
         }
