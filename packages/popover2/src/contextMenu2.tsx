@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import * as React from "react";
 
 import {
     Classes as CoreClasses,
@@ -86,30 +86,30 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     popoverClassName,
     ...restProps
 }) => {
-    const [targetOffset, setTargetOffset] = useState<Offset>({ left: 0, top: 0 });
-    const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLDivElement>>();
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const [targetOffset, setTargetOffset] = React.useState<Offset>({ left: 0, top: 0 });
+    const [mouseEvent, setMouseEvent] = React.useState<React.MouseEvent<HTMLDivElement>>();
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
     // If disabled prop is changed, we don't want our old context menu to stick around.
     // If it has just been enabled (disabled = false), then the menu ought to be opened by
     // a new mouse event. Users should not be updating this prop in the onContextMenu callback
     // for this component (that will lead to unpredictable behavior).
-    useEffect(() => {
+    React.useEffect(() => {
         setIsOpen(false);
     }, [disabled]);
 
-    const cancelContextMenu = useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
+    const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
 
-    const handlePopoverInteraction = useCallback((nextOpenState: boolean) => {
+    const handlePopoverInteraction = React.useCallback((nextOpenState: boolean) => {
         if (!nextOpenState) {
             setIsOpen(false);
             setMouseEvent(undefined);
         }
     }, []);
 
-    const targetRef = useRef<HTMLDivElement>(null);
-    const renderTarget = useCallback(
+    const targetRef = React.useRef<HTMLDivElement>(null);
+    const renderTarget = React.useCallback(
         ({ ref }: IPopover2TargetProps) => (
             <div
                 className={Classes.CONTEXT_MENU2_POPOVER2_TARGET}
@@ -119,7 +119,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
         ),
         [targetOffset],
     );
-    const isDarkTheme = useMemo(() => CoreUtils.isDarkTheme(targetRef.current), [targetRef.current]);
+    const isDarkTheme = React.useMemo(() => CoreUtils.isDarkTheme(targetRef.current), [targetRef.current]);
 
     const renderProps: ContextMenu2RenderProps = { isOpen, mouseEvent, targetOffset };
 
@@ -151,7 +151,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             />
         );
 
-    const handleContextMenu = useCallback(
+    const handleContextMenu = React.useCallback(
         (e: React.MouseEvent<HTMLDivElement>) => {
             // support nested menus (inner menu target would have called preventDefault())
             if (e.defaultPrevented) {
