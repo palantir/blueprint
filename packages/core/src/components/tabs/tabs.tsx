@@ -96,6 +96,7 @@ export interface ITabsState {
 }
 
 // HACKHACK: https://github.com/palantir/blueprint/issues/4342
+// eslint-disable-next-line deprecation/deprecation
 @(polyfill as Utils.LifecycleCompatPolyfill<ITabsProps, any>)
 export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */

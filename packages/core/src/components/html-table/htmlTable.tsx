@@ -22,6 +22,7 @@ import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common"
 
 export interface IHTMLTableProps
     extends React.TableHTMLAttributes<HTMLTableElement>,
+        // eslint-disable-next-line deprecation/deprecation
         IElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;

@@ -32,6 +32,7 @@ import { Spinner } from "../spinner/spinner";
 
 export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
     extends IActionProps,
+        // eslint-disable-next-line deprecation/deprecation
         IElementRefProps<E> {
     /**
      * If set to `true`, the button will display in an active state.

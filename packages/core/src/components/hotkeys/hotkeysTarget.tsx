@@ -33,6 +33,8 @@ export interface IHotkeysTargetComponent extends React.Component {
     renderHotkeys: () => React.ReactElement<IHotkeysProps>;
 }
 
+/* eslint-disable deprecation/deprecation */
+
 /** @deprecated use `useHotkeys` hook or `<HotkeysTarget2>` component */
 export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(WrappedComponent: T) {
     if (!isFunction(WrappedComponent.prototype.renderHotkeys)) {

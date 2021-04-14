@@ -64,7 +64,7 @@ export function ensureElement(child: React.ReactNode | undefined, tagName: keyof
     }
 }
 
-export function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
+function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
     return (
         typeof child === "object" &&
         typeof (child as any).type !== "undefined" &&
@@ -75,10 +75,13 @@ export function isReactElement<T = any>(child: React.ReactNode): child is React.
 /**
  * Represents anything that has a `name` property such as Functions.
  */
-export interface INamed {
+interface INamed {
     name?: string;
 }
 
+/**
+ * @deprecated will be removed in 4.0
+ */
 export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
     return (ComponentClass as React.ComponentType).displayName || (ComponentClass as INamed).name || "Unknown";
 }
@@ -108,6 +111,8 @@ export function isElementOfType<P = {}>(
 
 /**
  * Returns React.createRef if it's available, or a ref-like object if not.
+ *
+ * @deprecated use React.createRef or React.useRef
  */
 export function createReactRef<T>() {
     return typeof React.createRef !== "undefined" ? React.createRef<T>() : { current: null };
@@ -117,5 +122,7 @@ export function createReactRef<T>() {
  * Replacement type for { polyfill } from "react-lifecycles-compat" useful in some places where
  * the correct type is not inferred automatically. This should be removed once Blueprint depends on React >= 16.
  * HACKHACK part of https://github.com/palantir/blueprint/issues/4342
+ *
+ * @deprecated use React 16
  */
 export type LifecycleCompatPolyfill<P, T extends React.ComponentClass<P>> = (Comp: T) => T & { [K in keyof T]: T[K] };
