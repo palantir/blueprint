@@ -20,7 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
-import { clamp } from "../../common/utils";
+import { clamp, shallowCompareKeys } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
 export interface IEditableTextProps extends IIntentProps, IProps {
@@ -274,7 +274,18 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         if (this.state.isEditing && !prevState.isEditing) {
             this.props.onEdit?.(this.state.value);
         }
-        this.updateInputDimensions();
+
+        // Updating input dimensions is expensive (due to https://gist.github.com/paulirish/5d52fb081b3570c81e3a),
+        // so we don’t update them when only callbacks change. The assumption is that changing an event listener
+        // would never affect the UI, so there’s no need to recalculate the input size.
+        // (This matters because in the userland, it’s frequent for callback props to change on every rerender.
+        // Eg, a lot of developers use inline functions for callback props – like this: <EditableText onEdit={() => { ... }} />.)
+        const callbackKeys = Object.keys(this.props)
+            .concat(Object.keys(prevProps))
+            .filter(key => key.match(/^on[A-Z]/));
+        if (!shallowCompareKeys(this.props, prevProps, { exclude: callbackKeys })) {
+            this.updateInputDimensions();
+        }
     }
 
     public cancelEditing = () => {
