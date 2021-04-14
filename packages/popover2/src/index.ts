@@ -16,7 +16,14 @@
 
 export * as Classes from "./classes";
 export * as Errors from "./errors";
-export { ContextMenu2, ContextMenu2Props, ContextMenu2RenderProps } from "./contextMenu2";
+export {
+    ContextMenu2,
+    ContextMenu2Props,
+    ContextMenu2ChildrenProps,
+    ContextMenu2ContentProps,
+    // eslint-disable-next-line deprecation/deprecation
+    ContextMenu2RenderProps,
+} from "./contextMenu2";
 export {
     IPopover2SharedProps,
     IPopover2TargetProps,
