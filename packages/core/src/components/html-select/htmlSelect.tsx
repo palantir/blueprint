@@ -15,16 +15,15 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React, { forwardRef } from "react";
 
-import { AbstractPureComponent2 } from "../../common";
+import { DoubleCaretVertical, SVGIconProps } from "@blueprintjs/icons";
+
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { IElementRefProps, IOptionProps } from "../../common/props";
-import { Icon, IIconProps } from "../icon/icon";
+import { DISPLAYNAME_PREFIX, OptionProps } from "../../common/props";
 
-export interface IHTMLSelectProps
-    extends IElementRefProps<HTMLSelectElement>,
+export interface HTMLSelectProps
+    extends React.RefAttributes<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
     /** Whether this element is non-interactive. */
     disabled?: boolean;
@@ -32,8 +31,8 @@ export interface IHTMLSelectProps
     /** Whether this element should fill its container. */
     fill?: boolean;
 
-    /** Props to spread to the `<Icon>` element. */
-    iconProps?: Partial<IIconProps>;
+    /** Props to spread to the icon element. */
+    iconProps?: Partial<SVGIconProps>;
 
     /** Whether to use large styles. */
     large?: boolean;
@@ -52,7 +51,7 @@ export interface IHTMLSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | IOptionProps>;
+    options?: Array<string | number | OptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;
@@ -60,44 +59,33 @@ export interface IHTMLSelectProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
-export class HTMLSelect extends AbstractPureComponent2<IHTMLSelectProps> {
-    public render() {
-        const {
-            className,
-            disabled,
-            elementRef,
-            fill,
-            iconProps,
-            large,
-            minimal,
-            options = [],
-            ...htmlProps
-        } = this.props;
-        const classes = classNames(
-            HTML_SELECT,
-            {
-                [DISABLED]: disabled,
-                [FILL]: fill,
-                [LARGE]: large,
-                [MINIMAL]: minimal,
-            },
-            className,
-        );
 
-        const optionChildren = options.map(option => {
-            const props: IOptionProps = typeof option === "object" ? option : { value: option };
-            return <option {...props} key={props.value} children={props.label || props.value} />;
-        });
+export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => {
+    const { className, children, disabled, fill, iconProps, large, minimal, options = [], ...htmlProps } = props;
+    const classes = classNames(
+        HTML_SELECT,
+        {
+            [DISABLED]: disabled,
+            [FILL]: fill,
+            [LARGE]: large,
+            [MINIMAL]: minimal,
+        },
+        className,
+    );
 
-        return (
-            <div className={classes}>
-                <select disabled={disabled} ref={elementRef} {...htmlProps} multiple={false}>
-                    {optionChildren}
-                    {htmlProps.children}
-                </select>
-                <Icon icon="double-caret-vertical" {...iconProps} />
-            </div>
-        );
-    }
-}
+    const optionChildren = options.map(option => {
+        const optionProps: OptionProps = typeof option === "object" ? option : { value: option };
+        return <option {...optionProps} key={optionProps.value} children={optionProps.label || optionProps.value} />;
+    });
+
+    return (
+        <div className={classes}>
+            <select disabled={disabled} ref={ref} {...htmlProps} multiple={false}>
+                {optionChildren}
+                {children}
+            </select>
+            <DoubleCaretVertical {...iconProps} />
+        </div>
+    );
+});
+HTMLSelect.displayName = `${DISPLAYNAME_PREFIX}.HTMLSelect`;

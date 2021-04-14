@@ -15,14 +15,14 @@
  */
 
 import { ITag } from "@documentalist/client";
-import * as React from "react";
+import React from "react";
 
-export interface IDocsMap {
+export interface DocsMap {
     [name: string]: React.ComponentClass;
 }
 
 export class ReactDocsTagRenderer {
-    constructor(private docs: IDocsMap) {}
+    constructor(private docs: DocsMap) {}
 
     /**
      * Given the name of a component, like `"ColorSchemes"`, attempts to resolve

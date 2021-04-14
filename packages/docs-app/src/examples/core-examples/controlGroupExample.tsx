@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, ControlGroup, HTMLSelect, InputGroup, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
 
-export interface IControlGroupExampleState {
+export interface ControlGroupExampleState {
     fill: boolean;
     vertical: boolean;
 }
 
-export class ControlGroupExample extends React.PureComponent<IExampleProps, IControlGroupExampleState> {
-    public state: IControlGroupExampleState = {
+export class ControlGroupExample extends React.PureComponent<ExampleProps, ControlGroupExampleState> {
+    public state: ControlGroupExampleState = {
         fill: false,
         vertical: false,
     };

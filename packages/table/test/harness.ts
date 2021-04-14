@@ -16,8 +16,8 @@
 
 /* eslint-disable  max-classes-per-file */
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
 // tslint:disable-next-line:no-submodule-imports
 import { Browser } from "@blueprintjs/core/lib/esm/compatibility";
@@ -25,7 +25,7 @@ import { Browser } from "@blueprintjs/core/lib/esm/compatibility";
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
 export type KeyboardEventType = "keypress" | "keydown" | "keyup";
 
-export interface IHarnessMouseOptions {
+export interface HarnessMouseOptions {
     /** @default 0 */
     offsetX?: number;
 
@@ -126,7 +126,7 @@ export class ElementHarness {
 
     public mouse(
         eventType: MouseEventType = "click",
-        offsetXOrOptions: number | IHarnessMouseOptions = 0, // TODO: Change all tests to the object API
+        offsetXOrOptions: number | HarnessMouseOptions = 0, // TODO: Change all tests to the object API
         offsetY = 0,
         isMetaKeyDown = false,
         isShiftKeyDown = false,

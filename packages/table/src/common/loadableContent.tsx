@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
-export interface ILoadableContentProps {
+export interface LoadableContentProps {
     /**
      * If true, render a skeleton. Otherwise render the single, non-string child passed to this
      * component.
@@ -34,15 +34,15 @@ export interface ILoadableContentProps {
 }
 
 // This class expects a single, non-string child.
-export class LoadableContent extends React.PureComponent<ILoadableContentProps> {
+export class LoadableContent extends React.PureComponent<LoadableContentProps> {
     private style: React.CSSProperties;
 
-    public constructor(props: ILoadableContentProps) {
+    public constructor(props: LoadableContentProps) {
         super(props);
         this.style = this.calculateStyle(props.variableLength);
     }
 
-    public componentDidUpdate(prevProps: ILoadableContentProps) {
+    public componentDidUpdate(prevProps: LoadableContentProps) {
         if ((!prevProps.loading && this.props.loading) || prevProps.variableLength !== this.props.variableLength) {
             this.style = this.calculateStyle(this.props.variableLength);
         }

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { AnchorButton, Button, Classes, Code, Dialog, H5, Intent, Switch, Tooltip } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import { BlueprintExampleData } from "../../tags/types";
 
-export interface IDialogExampleState {
+export interface DialogExampleState {
     autoFocus: boolean;
     canEscapeKeyClose: boolean;
     canOutsideClickClose: boolean;
@@ -29,8 +29,8 @@ export interface IDialogExampleState {
     isOpen: boolean;
     usePortal: boolean;
 }
-export class DialogExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IDialogExampleState> {
-    public state: IDialogExampleState = {
+export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, DialogExampleState> {
+    public state: DialogExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
         canOutsideClickClose: true,

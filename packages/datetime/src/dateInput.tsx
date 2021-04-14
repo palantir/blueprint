@@ -15,35 +15,32 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 import type { DayPickerProps } from "react-day-picker";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     DISPLAYNAME_PREFIX,
-    getRef,
-    HTMLInputProps,
-    IInputGroupProps,
+    InputGroupProps,
     InputGroup,
     Intent,
-    IPopoverProps,
-    IProps,
-    IRefCallback,
-    IRefObject,
-    isRefObject,
+    PopoverProps,
+    Props,
+    Ref,
     Keys,
     Popover,
+    refHandler,
+    setRef,
 } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { isDateValid, isDayInRange } from "./common/dateUtils";
-import { getFormattedDateString, IDateFormatProps } from "./dateFormat";
+import { getFormattedDateString, DateFormatProps } from "./dateFormat";
 import { DatePicker } from "./datePicker";
-import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
-import { IDatePickerShortcut } from "./shortcuts";
+import { getDefaultMaxDate, getDefaultMinDate, DatePickerBaseProps } from "./datePickerCore";
+import { DatePickerShortcut } from "./shortcuts";
 
-export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
+export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.
@@ -87,9 +84,9 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     /**
      * Props to pass to the [input group](#core/components/text-inputs.input-group).
      * `disabled` and `value` will be ignored in favor of the top-level props on this component.
-     * `type` is fixed to "text" and `ref` is not supported; use `inputRef` instead.
+     * `type` is fixed to "text".
      */
-    inputProps?: HTMLInputProps & IInputGroupProps;
+    inputProps?: InputGroupProps;
 
     /**
      * Called when the user selects a new valid date through the `DatePicker` or by typing
@@ -111,7 +108,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      * Note that `content`, `autoFocus`, and `enforceFocus` cannot be changed.
      */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<IPopoverProps> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /**
      * Element to render on right side of input.
@@ -133,7 +130,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
      *
      * @default false
      */
-    shortcuts?: boolean | IDatePickerShortcut[];
+    shortcuts?: boolean | DatePickerShortcut[];
 
     /**
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
@@ -151,7 +148,7 @@ export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps,
     todayButtonText?: string;
 }
 
-export interface IDateInputState {
+export interface DateInputState {
     value: Date;
     valueString: string;
     isInputFocused: boolean;
@@ -159,11 +156,10 @@ export interface IDateInputState {
     selectedShortcutIndex?: number;
 }
 
-@polyfill
-export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInputState> {
+export class DateInput extends AbstractPureComponent<DateInputProps, DateInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
-    public static defaultProps: Partial<IDateInputProps> = {
+    public static defaultProps: Partial<DateInputProps> = {
         closeOnSelection: true,
         dayPickerProps: {},
         disabled: false,
@@ -174,29 +170,28 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         reverseMonthAndYearMenus: false,
     };
 
-    public state: IDateInputState = {
+    public state: DateInputState = {
         isInputFocused: false,
         isOpen: false,
         value: this.props.value !== undefined ? this.props.value : this.props.defaultValue,
         valueString: null,
     };
 
-    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
-    private popoverContentEl: HTMLElement | null = null;
+    public popoverContentElement: HTMLDivElement | null = null;
 
     // Last element in popover that is tabbable, and the one that triggers popover closure
     // when the user press TAB on it
     private lastTabbableElement: HTMLElement | null = null;
 
-    private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-    };
+    private handleInputRef = refHandler<HTMLInputElement, "inputElement">(
+        this,
+        "inputElement",
+        this.props.inputProps?.inputRef,
+    );
+
+    private handlePopoverContentRef: Ref<HTMLDivElement> = refHandler(this, "popoverContentElement");
 
     public componentWillUnmount() {
         this.unregisterPopoverBlurHandler();
@@ -214,7 +209,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
                 if (
                     e.key === "Tab" &&
                     !e.shiftKey &&
-                    this.lastTabbableElement.classList.contains(Classes.DATEPICKER_DAY)
+                    this.lastTabbableElement?.classList.contains(Classes.DATEPICKER_DAY)
                 ) {
                     this.setState({ isOpen: false });
                 }
@@ -230,7 +225,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         };
 
         const wrappedPopoverContent = (
-            <div ref={ref => (this.popoverContentEl = ref)}>
+            <div ref={this.handlePopoverContentRef}>
                 <DatePicker
                     {...this.props}
                     dayPickerProps={dayPickerProps}
@@ -265,7 +260,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
                     type="text"
                     {...inputProps}
                     disabled={this.props.disabled}
-                    inputRef={this.refHandlers.input}
+                    inputRef={this.handleInputRef}
                     onBlur={this.handleInputBlur}
                     onChange={this.handleInputChange}
                     onClick={this.handleInputClick}
@@ -277,8 +272,15 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         );
     }
 
-    public componentDidUpdate(prevProps: IDateInputProps, prevState: IDateInputState) {
+    public componentDidUpdate(prevProps: DateInputProps, prevState: DateInputState) {
         super.componentDidUpdate(prevProps, prevState);
+
+        if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
+            setRef(prevProps.inputProps?.inputRef, null);
+            this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+            setRef(this.props.inputProps?.inputRef, this.inputElement);
+        }
+
         if (prevProps.value !== this.props.value) {
             this.setState({ value: this.props.value });
         }
@@ -414,7 +416,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             this.setState({ isOpen: false });
         } else if (e.which === Keys.ESCAPE) {
             this.setState({ isOpen: false });
-            getRef(this.inputEl).blur();
+            this.inputElement?.blur();
         }
         this.safeInvokeInputProp("onKeyDown", e);
     };
@@ -422,7 +424,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     private getLastTabbableElement = () => {
         // Popover contents are well structured, but the selector will need
         // to be updated if more focusable components are added in the future
-        const tabbableElements = this.popoverContentEl?.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
+        const tabbableElements = this.popoverContentElement?.querySelectorAll("input, [tabindex]:not([tabindex='-1'])");
         const numOfElements = tabbableElements?.length ?? 0;
         // Keep track of the last focusable element in popover and add
         // a blur handler, so that when:
@@ -441,10 +443,10 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
             relatedTarget = document.activeElement as HTMLElement;
         }
         const eventTarget = e.target as HTMLElement;
-        // Beware: this.popoverContentEl is sometimes null under Chrome
+        // Beware: this.popoverContentElement is sometimes null under Chrome
         if (
             relatedTarget == null ||
-            (this.popoverContentEl != null && !this.popoverContentEl.contains(relatedTarget))
+            (this.popoverContentElement != null && !this.popoverContentElement.contains(relatedTarget))
         ) {
             // Exclude the following blur operations that makes "body" the activeElement
             // and would close the Popover unexpectedly
@@ -464,7 +466,7 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
     };
 
     private registerPopoverBlurHandler = () => {
-        if (this.popoverContentEl != null) {
+        if (this.popoverContentElement != null) {
             this.unregisterPopoverBlurHandler();
             this.lastTabbableElement = this.getLastTabbableElement();
             this.lastTabbableElement?.addEventListener("blur", this.handlePopoverBlur);
@@ -475,12 +477,12 @@ export class DateInput extends AbstractPureComponent2<IDateInputProps, IDateInpu
         this.lastTabbableElement?.removeEventListener("blur", this.handlePopoverBlur);
     };
 
-    private handleShortcutChange = (_: IDatePickerShortcut, selectedShortcutIndex: number) => {
+    private handleShortcutChange = (_: DatePickerShortcut, selectedShortcutIndex: number) => {
         this.setState({ selectedShortcutIndex });
     };
 
     /** safe wrapper around invoking input props event handler (prop defaults to undefined) */
-    private safeInvokeInputProp(name: keyof HTMLInputProps, e: React.SyntheticEvent<HTMLElement>) {
+    private safeInvokeInputProp(name: keyof InputGroupProps, e: React.SyntheticEvent<HTMLElement>) {
         const { inputProps = {} } = this.props;
         inputProps[name]?.(e);
     }

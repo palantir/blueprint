@@ -15,30 +15,21 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { MenuDivider } from "./menuDivider";
-// eslint-disable-next-line import/no-cycle
-import { MenuItem } from "./menuItem";
+import { AbstractPureComponent, Classes, Ref } from "../../common";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface IMenuProps extends IProps, React.HTMLAttributes<HTMLUListElement> {
+export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
     /** Whether the menu items in this menu should use a large appearance. */
     large?: boolean;
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
-    ulRef?: (ref: HTMLUListElement | null) => any;
+    ulRef?: Ref<HTMLUListElement>;
 }
 
-@polyfill
-export class Menu extends AbstractPureComponent2<IMenuProps> {
+export class Menu extends AbstractPureComponent<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
-
-    public static Divider = MenuDivider;
-
-    public static Item = MenuItem;
 
     public render() {
         const { className, children, large, ulRef, ...htmlProps } = this.props;

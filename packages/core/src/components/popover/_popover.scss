@@ -1,7 +1,12 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 @import "./common";
+@import "./popover-in-button-group";
+@import "./popover-in-control-group";
+@import "./popover-in-label";
+@import "./popover-in-submenu";
+@import "./popover-in-tree";
 
 $popover-width: $pt-grid-size * 35 !default;
 
@@ -12,7 +17,7 @@ $popover-width: $pt-grid-size * 35 !default;
     $arrow-target-offset: -4px
   );
   @include popover-appearance(
-    $popover-background-color,
+    $pt-popover-background-color,
     inherit,
     $pt-popover-box-shadow,
     $pt-drop-shadow-opacity,
@@ -64,7 +69,7 @@ $popover-width: $pt-grid-size * 35 !default;
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover-appearance(
-      $dark-popover-background-color,
+      $pt-dark-popover-background-color,
       inherit,
       $pt-dark-popover-box-shadow,
       $pt-dark-drop-shadow-opacity,
@@ -82,16 +87,11 @@ $popover-width: $pt-grid-size * 35 !default;
   transform: rotate(45deg);
 }
 
-// remove arrow when popover is pinned inside its container
-.#{$ns}-tether-pinned .#{$ns}-popover-arrow {
-  display: none;
-}
-
-.#{$ns}-popover-backdrop {
+.#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
   background: rgba($white, 0);
 }
 
-.#{$ns}-transition-container {
+.#{$ns}-popover-transition-container {
   @include fade-transition();
 
   // ensure element size exactly equals its children, no edge-case 4px spacing!
@@ -109,9 +109,9 @@ $popover-width: $pt-grid-size * 35 !default;
   }
 
   // Popper.js applies this attribute when the target fully leaves boundaries
-  &[data-x-out-of-boundaries] {
-    display: none;
-  }
+  // &[data-x-out-of-boundaries] {
+  //   display: none;
+  // }
 }
 
 span.#{$ns}-popover-target {
@@ -120,8 +120,4 @@ span.#{$ns}-popover-target {
 
   // this is important for span tag as default inline display height only includes text.
   // div tag can be used for display: block, which works fine.
-}
-
-.#{$ns}-popover-wrapper.#{$ns}-fill {
-  width: 100%;
 }

@@ -16,12 +16,12 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, IOverlayProps, Overlay, Portal, Utils } from "../../src";
+import { Classes, OverlayProps, Overlay, Portal, Utils } from "../../src";
 import * as Keys from "../../src/common/keys";
 import { findInPortal } from "../utils";
 
@@ -36,7 +36,7 @@ The `wrapper` variable below and the `mountWrapper` method should be used for fu
 For shallow mounts, be sure to call `shallowWrapper.unmount()` after the assertions.
 */
 describe("<Overlay>", () => {
-    let wrapper: ReactWrapper<IOverlayProps, any>;
+    let wrapper: ReactWrapper<OverlayProps, any>;
     let isMounted = false;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,151 +15,210 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { IOverlayLifecycleProps } from "../overlay/overlay";
-import { Popover } from "../popover/popover";
-import { PopperModifiers } from "../popover/popoverSharedProps";
+import { mergeRefs, Props, Utils } from "../../common";
+import * as Classes from "../../common/classes";
+import { OverlayLifecycleProps } from "../overlay/overlay";
+import { PopoverProps, Popover } from "../popover/popover";
+import { PopoverTargetProps } from "../popover/popoverSharedProps";
 
-export interface IOffset {
+type Offset = {
     left: number;
     top: number;
-}
-
-interface IContextMenuState {
-    isOpen: boolean;
-    isDarkTheme: boolean;
-    menu?: JSX.Element;
-    offset?: IOffset;
-    onClose?: () => void;
-}
-
-const POPPER_MODIFIERS: PopperModifiers = {
-    preventOverflow: { boundariesElement: "viewport" },
 };
-const TRANSITION_DURATION = 100;
 
-type IContextMenuProps = IOverlayLifecycleProps;
+/**
+ * Render props relevant to the _content_ of a context menu (rendered as the underlying Popover's content).
+ */
+export interface ContextMenuContentProps {
+    /** Whether the context menu is currently open */
+    isOpen: boolean;
 
-/* istanbul ignore next */
-@polyfill
-class ContextMenu extends AbstractPureComponent2<IContextMenuProps, IContextMenuState> {
-    public state: IContextMenuState = {
-        isDarkTheme: false,
-        isOpen: false,
-    };
+    /** The computed target offset (x, y) coordinates for the context menu click event */
+    targetOffset: Offset;
 
-    public render() {
-        // prevent right-clicking in a context menu
-        const content = <div onContextMenu={this.cancelContextMenu}>{this.state.menu}</div>;
-        const popoverClassName = classNames({ [Classes.DARK]: this.state.isDarkTheme });
+    /** The context menu click event. If isOpen is false, this will be undefined. */
+    mouseEvent: React.MouseEvent<HTMLElement> | undefined;
+}
 
-        // HACKHACK: workaround until we have access to Popper#scheduleUpdate().
-        // https://github.com/palantir/blueprint/issues/692
-        // Generate key based on offset so a new Popover instance is created
-        // when offset changes, to force recomputing position.
-        const key = this.state.offset === undefined ? "" : `${this.state.offset.left}x${this.state.offset.top}`;
+/**
+ * Render props for advanced usage of ContextMenu.
+ */
+export interface ContextMenuChildrenProps {
+    /** Context menu container element class */
+    className: string;
 
-        // wrap the popover in a positioned div to make sure it is properly
-        // offset on the screen.
+    /** Render props relevant to the content of this context menu */
+    contentProps: ContextMenuContentProps;
+
+    /** Context menu handler which implements the custom context menu interaction */
+    onContextMenu: React.MouseEventHandler<HTMLElement>;
+
+    /** Popover element rendered by ContextMenu, used to establish a click target to position the menu */
+    popover: JSX.Element | undefined;
+
+    /** DOM ref for the context menu target, used to calculate menu position on the page */
+    ref: React.Ref<any>;
+}
+
+export interface ContextMenuProps
+    extends OverlayLifecycleProps,
+        Pick<PopoverProps, "popoverClassName" | "transitionDuration">,
+        Props {
+    /**
+     * Menu content. This will usually be a Blueprint `<Menu>` component.
+     * This optionally functions as a render prop so you can use component state to render content.
+     */
+    content: JSX.Element | ((props: ContextMenuContentProps) => JSX.Element);
+
+    /**
+     * The context menu target. This may optionally be a render function so you can use
+     * component state to render the target.
+     *
+     * If you choose to supply `children` as a function, it will be called with a `ContextMenuChildrenProps` object.
+     * You must return a single React element and render out these props correctly in order for ContextMenu to work:
+     *
+     *   - `onContextMenu` and `ref must be attached to the container element (if it is not a native DOM element,
+     *     make sure they get forwarded to the real DOM somehow).
+     *   - `popover` must be rendered in place inside the container element, usually as its first child.
+     */
+    children: React.ReactNode | ((props: ContextMenuChildrenProps) => React.ReactElement);
+
+    /**
+     * Whether the context menu is disabled.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+
+    /**
+     * An optional context menu event handler. This can be useful if you want to do something with the
+     * mouse event unrelated to rendering the context menu itself, especially if that involves setting
+     * React state (which is an error to do in the render code path of this component).
+     */
+    onContextMenu?: React.MouseEventHandler<HTMLElement>;
+}
+
+export const ContextMenu: React.FC<ContextMenuProps> = ({
+    className,
+    children,
+    content,
+    disabled = false,
+    transitionDuration = 100,
+    onContextMenu,
+    popoverClassName,
+    ...restProps
+}) => {
+    const [targetOffset, setTargetOffset] = useState<Offset>({ left: 0, top: 0 });
+    const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLElement>>();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // If disabled prop is changed, we don't want our old context menu to stick around.
+    // If it has just been enabled (disabled = false), then the menu ought to be opened by
+    // a new mouse event. Users should not be updating this prop in the onContextMenu callback
+    // for this component (that will lead to unpredictable behavior).
+    useEffect(() => {
+        setIsOpen(false);
+    }, [disabled]);
+
+    const cancelContextMenu = useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
+
+    const handlePopoverInteraction = useCallback((nextOpenState: boolean) => {
+        if (!nextOpenState) {
+            setIsOpen(false);
+            setMouseEvent(undefined);
+        }
+    }, []);
+
+    const targetRef = useRef<HTMLDivElement>(null);
+    const renderTarget = useCallback(
+        ({ ref }: PopoverTargetProps) => (
+            <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={targetOffset} ref={mergeRefs(ref, targetRef)} />
+        ),
+        [targetOffset],
+    );
+    const isDarkTheme = useMemo(() => Utils.isDarkTheme(targetRef.current), [targetRef.current]);
+
+    const contentProps: ContextMenuContentProps = { isOpen, mouseEvent, targetOffset };
+
+    // only render the popover if there is content in the context menu;
+    // this avoid doing unnecessary rendering & computation
+    const menu = disabled ? undefined : Utils.isFunction(content) ? content(contentProps) : content;
+    const maybePopover =
+        menu === undefined ? undefined : (
+            <Popover
+                {...restProps}
+                content={
+                    // this prevents right-clicking inside our context menu
+                    <div onContextMenu={cancelContextMenu}>{menu}</div>
+                }
+                enforceFocus={false}
+                // Generate key based on offset so a new Popover instance is created
+                // when offset changes, to force recomputing position.
+                key={`${targetOffset.left}x${targetOffset.top}`}
+                hasBackdrop={true}
+                isOpen={isOpen}
+                minimal={true}
+                onInteraction={handlePopoverInteraction}
+                popoverClassName={classNames(popoverClassName, { [Classes.DARK]: isDarkTheme })}
+                placement="right-start"
+                positioningStrategy="fixed"
+                rootBoundary="viewport"
+                renderTarget={renderTarget}
+                transitionDuration={transitionDuration}
+            />
+        );
+
+    const handleContextMenu = useCallback(
+        (e: React.MouseEvent<HTMLElement>) => {
+            // support nested menus (inner menu target would have called preventDefault())
+            if (e.defaultPrevented) {
+                return;
+            }
+
+            if (!disabled) {
+                e.preventDefault();
+                e.persist();
+                setMouseEvent(e);
+                const { left, top } = getContainingBlockOffset(containerRef.current);
+                setTargetOffset({ left: e.clientX - left, top: e.clientY - top });
+                setIsOpen(true);
+            }
+
+            onContextMenu?.(e);
+        },
+        [containerRef.current, onContextMenu, disabled],
+    );
+
+    const containerClassName = classNames(className, Classes.CONTEXT_MENU);
+
+    if (Utils.isFunction(children)) {
+        return children({
+            className: containerClassName,
+            contentProps,
+            onContextMenu: handleContextMenu,
+            popover: maybePopover,
+            ref: containerRef,
+        });
+    } else {
         return (
-            <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={this.state.offset}>
-                <Popover
-                    {...this.props}
-                    backdropProps={{ onContextMenu: this.handleBackdropContextMenu }}
-                    content={content}
-                    enforceFocus={false}
-                    key={key}
-                    hasBackdrop={true}
-                    isOpen={this.state.isOpen}
-                    minimal={true}
-                    modifiers={POPPER_MODIFIERS}
-                    onInteraction={this.handlePopoverInteraction}
-                    position={Position.RIGHT_TOP}
-                    popoverClassName={popoverClassName}
-                    target={<div />}
-                    transitionDuration={TRANSITION_DURATION}
-                />
+            <div className={containerClassName} ref={containerRef} onContextMenu={handleContextMenu}>
+                {maybePopover}
+                {children}
             </div>
         );
     }
+};
+ContextMenu.displayName = "Blueprint.ContextMenu";
 
-    public show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme = false) {
-        this.setState({ isOpen: true, menu, offset, onClose, isDarkTheme });
-    }
-
-    public hide() {
-        this.state.onClose?.();
-        this.setState({ isOpen: false, onClose: undefined });
-    }
-
-    private cancelContextMenu = (e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault();
-
-    private handleBackdropContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-        // React function to remove from the event pool, useful when using a event within a callback
-        e.persist();
-        e.preventDefault();
-        // wait for backdrop to disappear so we can find the "real" element at event coordinates.
-        // timeout duration is equivalent to transition duration so we know it's animated out.
-        this.setTimeout(() => {
-            // retrigger context menu event at the element beneath the backdrop.
-            // if it has a `contextmenu` event handler then it'll be invoked.
-            // if it doesn't, no native menu will show (at least on OSX) :(
-            const newTarget = document.elementFromPoint(e.clientX, e.clientY);
-            const { view, ...newEventInit } = e;
-            newTarget?.dispatchEvent(new MouseEvent("contextmenu", newEventInit));
-        }, TRANSITION_DURATION);
-    };
-
-    private handlePopoverInteraction = (nextOpenState: boolean) => {
-        if (!nextOpenState) {
-            // delay the actual hiding till the event queue clears
-            // to avoid flicker of opening twice
-            this.requestAnimationFrame(() => this.hide());
+function getContainingBlockOffset(targetElement: HTMLElement | null | undefined): { left: number; top: number } {
+    if (targetElement != null) {
+        const containingBlock = targetElement.closest(`.${Classes.FIXED_POSITIONING_CONTAINING_BLOCK}`);
+        if (containingBlock != null) {
+            return containingBlock.getBoundingClientRect();
         }
-    };
-}
-
-let contextMenuElement: HTMLElement | undefined;
-let contextMenu: ContextMenu | undefined;
-
-/**
- * Show the given menu element at the given offset from the top-left corner of the viewport.
- * The menu will appear below-right of this point and will flip to below-left if there is not enough
- * room onscreen. The optional callback will be invoked when this menu closes.
- */
-export function show(menu: JSX.Element, offset: IOffset, onClose?: () => void, isDarkTheme?: boolean) {
-    if (contextMenuElement === undefined) {
-        contextMenuElement = document.createElement("div");
-        contextMenuElement.classList.add(Classes.CONTEXT_MENU);
-        document.body.appendChild(contextMenuElement);
-        contextMenu = ReactDOM.render<IContextMenuProps>(
-            <ContextMenu onClosed={remove} />,
-            contextMenuElement,
-        ) as ContextMenu;
     }
-
-    contextMenu!.show(menu, offset, onClose, isDarkTheme);
-}
-
-/** Hide the open context menu. */
-export function hide() {
-    contextMenu?.hide();
-}
-
-/** Return whether a context menu is currently open. */
-export function isOpen() {
-    return contextMenu != null && contextMenu.state.isOpen;
-}
-
-function remove() {
-    if (contextMenuElement != null) {
-        ReactDOM.unmountComponentAtNode(contextMenuElement);
-        contextMenuElement.remove();
-        contextMenuElement = undefined;
-        contextMenu = undefined;
-    }
+    return { left: 0, top: 0 };
 }

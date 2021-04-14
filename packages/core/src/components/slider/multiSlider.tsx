@@ -15,25 +15,24 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes, Intent } from "../../common";
+import { AbstractPureComponent, Classes, Intent } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
 import { Handle } from "./handle";
-import { HandleInteractionKind, HandleType, IHandleProps } from "./handleProps";
+import { HandleInteractionKind, HandleType, HandleProps } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
 /**
  * SFC used to pass slider handle props to a `MultiSlider`.
  * This element is not rendered directly.
  */
-const MultiSliderHandle: React.FunctionComponent<IHandleProps> = () => null;
+const MultiSliderHandle: React.FunctionComponent<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
-export interface ISliderBaseProps extends IProps, IIntentProps {
+export interface SliderBaseProps extends Props, IntentProps {
     /**
      * Whether the slider is non-interactive.
      *
@@ -97,9 +96,12 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
      * If `true`, labels will use number value formatted to `labelPrecision` decimal places.
      * If `false`, labels will not be shown.
      *
+     * The callback is provided a numeric value and optional rendering options, which include:
+     * - isHandleTooltip: whether this label is being rendered within a handle tooltip
+     *
      * @default true
      */
-    labelRenderer?: boolean | ((value: number) => string | JSX.Element);
+    labelRenderer?: boolean | ((value: number, opts?: { isHandleTooltip: boolean }) => string | JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
@@ -109,7 +111,7 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
     vertical?: boolean;
 }
 
-export interface IMultiSliderProps extends ISliderBaseProps {
+export interface MultiSliderProps extends SliderBaseProps {
     /** Default intent of a track segment, used only if no handle specifies `intentBefore/After`. */
     defaultTrackIntent?: Intent;
 
@@ -120,7 +122,7 @@ export interface IMultiSliderProps extends ISliderBaseProps {
     onRelease?(values: number[]): void;
 }
 
-export interface ISliderState {
+export interface SliderState {
     labelPrecision: number;
     /** the client size, in pixels, of one tick */
     tickSize: number;
@@ -128,9 +130,8 @@ export interface ISliderState {
     tickSizeRatio: number;
 }
 
-@polyfill
-export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISliderState> {
-    public static defaultSliderProps: ISliderBaseProps = {
+export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderState> {
+    public static defaultSliderProps: SliderBaseProps = {
         disabled: false,
         max: 10,
         min: 0,
@@ -139,7 +140,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         vertical: false,
     };
 
-    public static defaultProps: IMultiSliderProps = {
+    public static defaultProps: MultiSliderProps = {
         ...MultiSlider.defaultSliderProps,
         defaultTrackIntent: Intent.NONE,
     };
@@ -148,16 +149,16 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
 
     public static Handle = MultiSliderHandle;
 
-    public static getDerivedStateFromProps(props: IMultiSliderProps) {
+    public static getDerivedStateFromProps(props: MultiSliderProps) {
         return { labelPrecision: MultiSlider.getLabelPrecision(props) };
     }
 
-    private static getLabelPrecision({ labelPrecision, stepSize }: IMultiSliderProps) {
+    private static getLabelPrecision({ labelPrecision, stepSize }: MultiSliderProps) {
         // infer default label precision from stepSize because that's how much the handle moves.
         return labelPrecision == null ? Utils.countDecimalPlaces(stepSize!) : labelPrecision;
     }
 
-    public state: ISliderState = {
+    public state: SliderState = {
         labelPrecision: getLabelPrecision(this.props),
         tickSize: 0,
         tickSizeRatio: 0,
@@ -167,7 +168,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
 
     private trackElement: HTMLElement | null = null;
 
-    public getSnapshotBeforeUpdate(prevProps: IMultiSliderProps): null {
+    public getSnapshotBeforeUpdate(prevProps: MultiSliderProps): null {
         const prevHandleProps = getSortedInteractiveHandleProps(prevProps);
         const newHandleProps = getSortedInteractiveHandleProps(this.props);
         if (newHandleProps.length !== prevHandleProps.length) {
@@ -202,12 +203,12 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         this.updateTickSize();
     }
 
-    public componentDidUpdate(prevProps: IMultiSliderProps, prevState: ISliderState) {
+    public componentDidUpdate(prevProps: MultiSliderProps, prevState: SliderState) {
         super.componentDidUpdate(prevProps, prevState);
         this.updateTickSize();
     }
 
-    protected validateProps(props: React.PropsWithChildren<IMultiSliderProps>) {
+    protected validateProps(props: React.PropsWithChildren<MultiSliderProps>) {
         if (props.stepSize! <= 0) {
             throw new Error(Errors.SLIDER_ZERO_STEP);
         }
@@ -230,12 +231,12 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         }
     }
 
-    private formatLabel(value: number) {
+    private formatLabel(value: number, isHandleTooltip: boolean = false) {
         const { labelRenderer } = this.props;
         if (labelRenderer === false) {
             return undefined;
         } else if (Utils.isFunction(labelRenderer)) {
-            return labelRenderer(value);
+            return labelRenderer(value, { isHandleTooltip });
         } else {
             return value.toFixed(this.state.labelPrecision);
         }
@@ -266,7 +267,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         trackStops.push({ value: this.props.max! });
 
         // render from current to previous, then increment previous
-        let previous: IHandleProps = { value: this.props.min! };
+        let previous: HandleProps = { value: this.props.min! };
         const handles: JSX.Element[] = [];
         for (let index = 0; index < trackStops.length; index++) {
             const current = trackStops[index];
@@ -276,7 +277,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         return handles;
     }
 
-    private renderTrackFill(index: number, start: IHandleProps, end: IHandleProps) {
+    private renderTrackFill(index: number, start: HandleProps, end: HandleProps) {
         // ensure startRatio <= endRatio
         const [startRatio, endRatio] = [this.getOffsetRatio(start.value), this.getOffsetRatio(end.value)].sort(
             (left, right) => left - right,
@@ -304,15 +305,18 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
             return null;
         }
 
-        return handleProps.map(({ value, type }, index) => (
+        return handleProps.map(({ value, type, className }, index) => (
             <Handle
-                className={classNames({
-                    [Classes.START]: type === HandleType.START,
-                    [Classes.END]: type === HandleType.END,
-                })}
+                className={classNames(
+                    {
+                        [Classes.START]: type === HandleType.START,
+                        [Classes.END]: type === HandleType.END,
+                    },
+                    className,
+                )}
                 disabled={disabled}
                 key={`${index}-${handleProps.length}`}
-                label={this.formatLabel(value)}
+                label={this.formatLabel(value, true)}
                 max={max!}
                 min={min!}
                 onChange={this.getHandlerForIndex(index, this.handleChange)}
@@ -449,7 +453,7 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
         return Utils.clamp((value - this.props.min!) * this.state.tickSizeRatio, 0, 1);
     }
 
-    private getTrackIntent(start: IHandleProps, end?: IHandleProps): Intent {
+    private getTrackIntent(start: HandleProps, end?: HandleProps): Intent {
         if (!this.props.showTrackFill) {
             return Intent.NONE;
         }
@@ -471,18 +475,18 @@ export class MultiSlider extends AbstractPureComponent2<IMultiSliderProps, ISlid
     }
 }
 
-function getLabelPrecision({ labelPrecision, stepSize = MultiSlider.defaultSliderProps.stepSize! }: IMultiSliderProps) {
+function getLabelPrecision({ labelPrecision, stepSize = MultiSlider.defaultSliderProps.stepSize! }: MultiSliderProps) {
     // infer default label precision from stepSize because that's how much the handle moves.
     return labelPrecision == null ? Utils.countDecimalPlaces(stepSize) : labelPrecision;
 }
 
-function getSortedInteractiveHandleProps(props: React.PropsWithChildren<IMultiSliderProps>): IHandleProps[] {
+function getSortedInteractiveHandleProps(props: React.PropsWithChildren<MultiSliderProps>): HandleProps[] {
     return getSortedHandleProps(props, childProps => childProps.interactionKind !== HandleInteractionKind.NONE);
 }
 
 function getSortedHandleProps(
-    { children }: React.PropsWithChildren<IMultiSliderProps>,
-    predicate: (props: IHandleProps) => boolean = () => true,
+    { children }: React.PropsWithChildren<MultiSliderProps>,
+    predicate: (props: HandleProps) => boolean = () => true,
 ) {
     const maybeHandles = React.Children.map(children, child =>
         Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null,

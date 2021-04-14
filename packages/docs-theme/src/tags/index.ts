@@ -16,7 +16,7 @@
 
 import { ITag } from "@documentalist/client";
 
-export interface ITagRendererMap {
+export interface TagRendererMap {
     [tagName: string]: React.ComponentType<ITag> | undefined;
 }
 

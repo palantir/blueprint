@@ -15,14 +15,14 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, ContextMenu, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
-export interface IHeaderCellProps extends IProps {
+export interface HeaderCellProps extends Props {
     /**
      * The index of the cell in the header. If provided, this will be passed as an argument to any
      * callbacks when they are invoked.
@@ -72,7 +72,7 @@ export interface IHeaderCellProps extends IProps {
     style?: React.CSSProperties;
 }
 
-export interface IInternalHeaderCellProps extends IHeaderCellProps {
+export interface InternalHeaderCellProps extends HeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
      *
@@ -86,24 +86,23 @@ export interface IInternalHeaderCellProps extends IHeaderCellProps {
     isSelected?: boolean;
 }
 
-export interface IHeaderCellState {
+export interface HeaderCellState {
     isActive: boolean;
 }
 
-@ContextMenuTarget
-export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
-    public state: IHeaderCellState = {
+export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderCellState> {
+    public state: HeaderCellState = {
         isActive: false,
     };
 
-    public shouldComponentUpdate(nextProps: IHeaderCellProps) {
+    public shouldComponentUpdate(nextProps: HeaderCellProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, ["style"])
         );
     }
 
-    public renderContextMenu(_event: React.MouseEvent<HTMLElement>) {
+    public renderContextMenu() {
         const { menuRenderer } = this.props;
 
         if (CoreUtils.isFunction(menuRenderer)) {
@@ -115,20 +114,23 @@ export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeade
     }
 
     public render() {
+        const { children, index, isActive, isSelected, loading, menuRenderer, style } = this.props;
         const classes = classNames(
             Classes.TABLE_HEADER,
             {
-                [Classes.TABLE_HEADER_ACTIVE]: this.props.isActive || this.state.isActive,
-                [Classes.TABLE_HEADER_SELECTED]: this.props.isSelected,
-                [CoreClasses.LOADING]: this.props.loading,
+                [Classes.TABLE_HEADER_ACTIVE]: isActive || isActive,
+                [Classes.TABLE_HEADER_SELECTED]: isSelected,
+                [CoreClasses.LOADING]: loading,
             },
             this.props.className,
         );
 
         return (
-            <div className={classes} style={this.props.style}>
-                {this.props.children}
-            </div>
+            <ContextMenu content={menuRenderer?.(index) ?? undefined}>
+                <div className={classes} style={style}>
+                    {children}
+                </div>
+            </ContextMenu>
         );
     }
 }

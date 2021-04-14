@@ -16,20 +16,20 @@
 
 import { expect } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
-import { IResizableProps, IResizeableState, Resizable } from "../src/interactions/resizable";
+import { ResizableProps, ResizeableState, Resizable } from "../src/interactions/resizable";
 import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
 import { ReactHarness } from "./harness";
 
-interface IResizableDivProps {
+interface ResizableDivProps {
     resizeHandle?: ResizeHandle;
     style?: React.CSSProperties;
 }
 
-class ResizableDiv extends React.Component<IResizableDivProps> {
+class ResizableDiv extends React.Component<ResizableDivProps> {
     public render() {
         const { style } = this.props;
         return (
@@ -57,7 +57,7 @@ describe("Resizable", () => {
         const onResizeEnd = sinon.spy();
         const onLayoutLock = sinon.spy();
 
-        const wrapper = mount<IResizableProps, IResizeableState>(
+        const wrapper = mount<ResizableProps, ResizeableState>(
             <Resizable
                 maxSize={150}
                 minSize={50}

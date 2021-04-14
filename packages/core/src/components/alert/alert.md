@@ -17,4 +17,4 @@ These interactions can be enabled via props.
 `onConfirm` and `onCancel` props to respond to those interactions separately, or
 use `onClose` to handle both at the same time.
 
-@interface IAlertProps
+@interface AlertProps

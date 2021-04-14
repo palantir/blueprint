@@ -16,14 +16,14 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { ARROW_DOWN, ARROW_UP } from "../../src/common/keys";
-import { Handle, IHandleState, IInternalHandleProps } from "../../src/components/slider/handle";
+import { Handle, HandleState, InternalHandleProps } from "../../src/components/slider/handle";
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
-const HANDLE_PROPS: IInternalHandleProps = {
+const HANDLE_PROPS: InternalHandleProps = {
     disabled: false,
     label: "",
     max: 10,
@@ -126,8 +126,8 @@ describe("<Handle>", () => {
 
     function mountHandle(
         value: number,
-        props: Partial<IInternalHandleProps> = {},
-    ): ReactWrapper<IInternalHandleProps, IHandleState> {
+        props: Partial<InternalHandleProps> = {},
+    ): ReactWrapper<InternalHandleProps, HandleState> {
         return mount(<Handle {...HANDLE_PROPS} label={value.toString()} value={value} {...props} />, {
             attachTo: testsContainerElement,
         });

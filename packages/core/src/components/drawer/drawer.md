@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Drawer
 
 Drawers overlay content over existing parts of the UI and are anchored to the edge of the screen.
@@ -18,4 +14,4 @@ Use the `size` prop to set the size of the `Drawer`. This prop sets CSS `width` 
 - `Drawer.SIZE_STANDARD = 50%` (default)
 - `Drawer.SIZE_LARGE = 90%`
 
-@interface IDrawerProps
+@interface DrawerProps

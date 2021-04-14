@@ -15,20 +15,20 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { Classes, Menu } from "@blueprintjs/core";
 
 import { Clipboard } from "../src/common/clipboard";
-import { CopyCellsMenuItem, MenuContext } from "../src/interactions/menus";
+import { CopyCellsMenuItem, MenuContextImpl } from "../src/interactions/menus";
 import { Regions } from "../src/regions";
 import { ReactHarness } from "./harness";
 
 describe("Menus", () => {
     describe("MenuContext", () => {
         it("uses selected regions if clicked inside selection", () => {
-            const context = new MenuContext(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
+            const context = new MenuContextImpl(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             expect(context.getRegions()).to.deep.equal([Regions.column(1)]);
             expect(context.getUniqueCells()).to.deep.equal([
                 [0, 1],
@@ -38,7 +38,7 @@ describe("Menus", () => {
         });
 
         it("uses target cell if clicked outside selection", () => {
-            const context = new MenuContext(Regions.cell(1, 2), [Regions.column(1)], 3, 3);
+            const context = new MenuContextImpl(Regions.cell(1, 2), [Regions.column(1)], 3, 3);
             expect(context.getTarget()).to.deep.equal(Regions.cell(1, 2));
             expect(context.getSelectedRegions()).to.deep.equal([Regions.column(1)]);
             expect(context.getRegions()).to.deep.equal([Regions.cell(1, 2)]);
@@ -60,7 +60,7 @@ describe("Menus", () => {
         });
 
         it("copies cells", () => {
-            const context = new MenuContext(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
+            const context = new MenuContextImpl(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             const getCellData = () => "X";
             const onCopySpy = sinon.spy();
             const menu = harness.mount(

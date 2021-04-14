@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
 import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
 // tslint:disable-next-line:no-submodule-imports
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
-import { Example, handleNumberChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleNumberChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PrecisionSelect } from "./common/precisionSelect";
 
-export interface ITimePickerExampleState {
+export interface TimePickerExampleState {
     autoFocus: boolean;
     precision?: TimePrecision;
     selectAllOnFocus?: boolean;
@@ -47,7 +47,7 @@ enum MaximumHours {
     TWO_AM = 2,
 }
 
-export class TimePickerExample extends React.PureComponent<IExampleProps, ITimePickerExampleState> {
+export class TimePickerExample extends React.PureComponent<ExampleProps, TimePickerExampleState> {
     public state = {
         autoFocus: true,
         disabled: false,

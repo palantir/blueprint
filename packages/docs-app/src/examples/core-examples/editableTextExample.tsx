@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Classes, EditableText, FormGroup, H1, H5, Intent, NumericInput, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
 const INPUT_ID = "EditableTextExample-max-length";
 
-export interface IEditableTextExampleState {
+export interface EditableTextExampleState {
     alwaysRenderInput?: boolean;
     confirmOnEnterKey?: boolean;
     intent?: Intent;
@@ -32,8 +32,8 @@ export interface IEditableTextExampleState {
     selectAllOnFocus?: boolean;
 }
 
-export class EditableTextExample extends React.PureComponent<IExampleProps, IEditableTextExampleState> {
-    public state: IEditableTextExampleState = {
+export class EditableTextExample extends React.PureComponent<ExampleProps, EditableTextExampleState> {
+    public state: EditableTextExampleState = {
         alwaysRenderInput: true,
         confirmOnEnterKey: false,
         report: "",

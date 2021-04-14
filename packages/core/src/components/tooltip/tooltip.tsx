@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps } from "../../common";
+import * as Classes from "../../common/classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
-import { IPopoverSharedProps } from "../popover/popoverSharedProps";
+import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
+import { PopoverSharedProps } from "../popover/popoverSharedProps";
 
-export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
+export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>> extends PopoverSharedProps<TProps>, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
@@ -68,18 +68,17 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
     transitionDuration?: number;
 }
 
-@polyfill
-export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
+export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
-    public static defaultProps: Partial<ITooltipProps> = {
+    public static defaultProps: Partial<TooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         minimal: false,
         transitionDuration: 100,
     };
 
-    private popover: Popover | null = null;
+    private popover: Popover<T> | null = null;
 
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
@@ -93,7 +92,16 @@ export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
         return (
             <Popover
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
-                modifiers={{ arrow: { enabled: !this.props.minimal } }}
+                modifiers={{
+                    arrow: {
+                        enabled: !this.props.minimal,
+                    },
+                    offset: {
+                        options: {
+                            offset: [0, TOOLTIP_ARROW_SVG_SIZE / 2],
+                        },
+                    },
+                }}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}

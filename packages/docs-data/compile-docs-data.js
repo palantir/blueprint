@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable header/header, no-console */
 
 /**
  * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
@@ -6,20 +7,19 @@
  */
 
 // @ts-check
-const { Classes } = require("@blueprintjs/core/lib/cjs/common");
-const { execSync, spawn } = require("child_process");
 const dm = require("@documentalist/compiler");
 const fs = require("fs");
-const glob = require("glob");
 const path = require("path");
 const semver = require("semver");
+
 const docsUtils = require("./docsUtils");
+
+// this is defined in core by webpack.DefinePlugin, but we aren't running webpack here
+const NS = "bp4";
 
 // assume we are running from packages/docs-app
 const ROOT_DIR = path.resolve(process.cwd(), "../../");
-const PACKAGES_DIR = path.resolve(process.cwd(), "../");
 const GENERATED_SRC_DIR = path.resolve(process.cwd(), "./src/generated");
-const BUILD_DIR = path.resolve(process.cwd(), "build");
 const NAV_PAGE_NAME = "_nav";
 
 const DOCS_DATA_PATH = path.join(GENERATED_SRC_DIR, "docs.json");
@@ -49,7 +49,7 @@ function generateDocumentalistData() {
         markdown: { renderer: docsUtils.markedRenderer },
         sourceBaseDir: ROOT_DIR,
         // must mark our @Decorator APIs as reserved so we can use them in code samples
-        reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget"],
+        reservedTags: ["import", "ContextMenuTarget"],
     })
         .use(".md", new dm.MarkdownPlugin({ navPage: NAV_PAGE_NAME }))
         .use(
@@ -88,5 +88,5 @@ function transformDocumentalistData(key, value) {
 
 /** @param {any} text replace `#{$ns}` with Blueprint class namespace. if not a string, simply returns `text`. */
 function replaceNS(text) {
-    return typeof text === "string" ? text.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace()) : text;
+    return typeof text === "string" ? text.replace(/#{\$ns}|@ns/g, NS) : text;
 }

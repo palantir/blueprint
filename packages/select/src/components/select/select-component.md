@@ -104,7 +104,7 @@ will invoke `onItemSelect` with the item returned from `createNewItemFromQuery`.
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h4 class="@ns-heading">Avoiding type conflicts</h4>
 
-The "Create Item" option is represented by the reserved type `ICreateNewItem`
+The "Create Item" option is represented by the reserved type `CreateNewItem`
 exported from this package. It is exceedingly unlikely but technically possible
 for your custom type `<T>` to conflict with this type. If your type conflicts,
 you may see unexpected behavior; to resolve, consider changing the schema for
@@ -113,7 +113,7 @@ your items.
 </div>
 
 ```tsx
-function createFilm(title: string): IFilm {
+function createFilm(title: string): Film {
     return {
         rank: /* ... */,
         title,
@@ -176,11 +176,11 @@ activeItem={isCreateNewItemActive ? getCreateNewItem() : activeItem}
 Altogether, the code might look something like this:
 
 ```tsx
-const currentActiveItem: Film | ICreateNewItem | null;
-const isCreateNewItemActive: Film | ICreateNewItem | null;
+const currentActiveItem: Film | CreateNewItem | null;
+const isCreateNewItemActive: Film | CreateNewItem | null;
 
 function handleActiveItemChange(
-    activeItem: Film | ICreateNewItem | null,
+    activeItem: Film | CreateNewItem | null,
     isCreateNewItem: boolean,
 ) {
     currentActiveItem = activeItem;
@@ -205,7 +205,7 @@ ReactDOM.render(
 
 @## JavaScript API
 
-@interface ISelectProps
+@interface SelectProps
 
 @### Item renderer
 
@@ -219,7 +219,7 @@ import { ItemRenderer, ItemPredicate, Select } from "@blueprintjs/select";
 
 const FilmSelect = Select.ofType<Film>();
 
-const filterFilm: ItemPredicate<IFilm> = (query, film) => {
+const filterFilm: ItemPredicate<Film> = (query, film) => {
     return film.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
 };
 
@@ -241,7 +241,7 @@ const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers }) => {
 <FilmSelect itemPredicate={filterFilm} itemRenderer={renderFilm} items={...} onItemSelect={...} />
 ```
 
-@interface IItemRendererProps
+@interface ItemRendererProps
 
 @### Item list renderer
 
@@ -272,4 +272,4 @@ const renderMenu: ItemListRenderer<Film> = ({ items, itemsParentRef, query, rend
 />
 ```
 
-@interface IItemListRendererProps
+@interface ItemListRendererProps

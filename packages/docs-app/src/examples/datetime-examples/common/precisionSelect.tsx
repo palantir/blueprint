@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Classes, HTMLSelect } from "@blueprintjs/core";
 import { TimePrecision } from "@blueprintjs/datetime";
 
-export interface IPrecisionSelectProps {
+export interface PrecisionSelectProps {
     /**
      * The precision-string option to display as selected.
      */
@@ -43,7 +43,7 @@ export interface IPrecisionSelectProps {
     label?: string;
 }
 
-export const PrecisionSelect: React.FunctionComponent<IPrecisionSelectProps> = props => (
+export const PrecisionSelect: React.FunctionComponent<PrecisionSelectProps> = props => (
     <label className={Classes.LABEL}>
         {props.label || "Precision"}
         <HTMLSelect value={props.value} onChange={props.onChange}>

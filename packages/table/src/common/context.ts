@@ -14,12 +14,12 @@
  */
 
 import * as PropTypes from "prop-types";
-import * as React from "react";
+import React from "react";
 
-export interface IColumnInteractionBarContextTypes {
+export interface ColumnInteractionBarContextTypes {
     enableColumnInteractionBar: boolean;
 }
 
-export const columnInteractionBarContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = {
+export const columnInteractionBarContextTypes: React.ValidationMap<ColumnInteractionBarContextTypes> = {
     enableColumnInteractionBar: PropTypes.bool,
 };

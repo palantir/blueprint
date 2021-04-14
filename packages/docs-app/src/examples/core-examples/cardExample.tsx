@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, Card, Classes, Elevation, H5, Label, Slider, Switch } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface ICardExampleState {
+export interface CardExampleState {
     elevation: Elevation;
     interactive: boolean;
 }
 
-export class CardExample extends React.PureComponent<IExampleProps, ICardExampleState> {
-    public state: ICardExampleState = {
+export class CardExample extends React.PureComponent<ExampleProps, CardExampleState> {
+    public state: CardExampleState = {
         elevation: 0,
         interactive: false,
     };

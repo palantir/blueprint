@@ -12,7 +12,7 @@ markup. It supports a `value` prop between 0 and 1 that determines the width of
 the progress meter. Omitting `value` will result in an "indeterminate" progress
 meter that fills the entire bar.
 
-@interface IProgressBarProps
+@interface ProgressBarProps
 
 @## CSS
 

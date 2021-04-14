@@ -88,15 +88,15 @@ export function wrapTimeAtUnit(unit: TimeUnit, time: number) {
 }
 
 export function getTimeUnitClassName(unit: TimeUnit) {
-    return TimeUnitMetadata[unit].className;
+    return TimeUnitMetadataStore[unit].className;
 }
 
 export function getTimeUnitMax(unit: TimeUnit) {
-    return TimeUnitMetadata[unit].max;
+    return TimeUnitMetadataStore[unit].max;
 }
 
 export function getTimeUnitMin(unit: TimeUnit) {
-    return TimeUnitMetadata[unit].min;
+    return TimeUnitMetadataStore[unit].min;
 }
 
 export function getDefaultMinTime(): Date {
@@ -107,7 +107,7 @@ export function getDefaultMaxTime(): Date {
     return new Date(0, 0, 0, DEFAULT_MAX_HOUR, DEFAULT_MAX_MINUTE, DEFAULT_MAX_SECOND, DEFAULT_MAX_MILLISECOND);
 }
 
-interface ITimeUnitMetadata {
+interface TimeUnitMetadata {
     className: string;
     max: number;
     min: number;
@@ -129,7 +129,7 @@ const DEFAULT_MAX_MILLISECOND = 999;
  * A datastore (internal to this file) mapping TimeUnits to useful information about them.
  * Use the `get*` methods above to access these fields.
  */
-const TimeUnitMetadata: Record<TimeUnit, ITimeUnitMetadata> = {
+const TimeUnitMetadataStore: Record<TimeUnit, TimeUnitMetadata> = {
     [TimeUnit.HOUR_24]: {
         className: Classes.TIMEPICKER_HOUR,
         max: DEFAULT_MAX_HOUR,

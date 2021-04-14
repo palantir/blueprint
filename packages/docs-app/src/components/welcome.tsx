@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Card, H4, Icon, IconName } from "@blueprintjs/core";
 
@@ -23,8 +23,12 @@ export class Welcome extends React.PureComponent {
         return (
             <div className="blueprint-welcome">
                 <WelcomeCard href="#blueprint/getting-started" icon="star" title="Getting started" sameTab={true} />
-                <WelcomeCard href="https://github.com/palantir/blueprint" icon="git-repo" title="palantir/blueprint" />
-                <WelcomeCard href="https://codesandbox.io/s/nko3k41y60" icon="code-block" title="Code Sandbox" />
+                <WelcomeCard href="https://github.com/palantir/blueprint" icon="git-repo" title="Git repository" />
+                <WelcomeCard
+                    href="https://codesandbox.io/s/blueprint-sandbox-et9xy"
+                    icon="code-block"
+                    title="Code Sandbox"
+                />
                 <WelcomeCard
                     href="https://github.com/palantir/blueprint#contributing"
                     icon="git-merge"
@@ -43,7 +47,7 @@ const WelcomeCard: React.FunctionComponent<{
 }> = props => (
     <a href={props.href} target={props.sameTab ? "" : "_blank"}>
         <Card interactive={true}>
-            <Icon icon={props.icon} iconSize={40} />
+            <Icon icon={props.icon} size={40} />
             <H4>{props.title}</H4>
             {props.children}
         </Card>

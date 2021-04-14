@@ -16,11 +16,11 @@
 
 import { IHeadingNode, IPageData, isPageNode, ITsDocBase } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
-import { AnchorButton, Classes, setHotkeysDialogProps, Tag } from "@blueprintjs/core";
-import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
+import { DocsCompleteData } from "@blueprintjs/docs-data";
+import { Banner, Documentation, DocumentationProps, NavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -32,9 +32,13 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
+// HACKHACK: this is brittle
 // detect Components page and subheadings
 const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
-const isNavSection = ({ route }: IHeadingNode) => COMPONENTS_PATTERN.test(route);
+const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
+const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const isNavSection = ({ route }: IHeadingNode) =>
+    COMPONENTS_PATTERN.test(route) || CONTEXT_PATTERN.test(route) || HOOKS_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -46,18 +50,24 @@ export function setTheme(themeName: string) {
     localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
 }
 
-export interface IBlueprintDocsProps {
-    docs: IDocsCompleteData;
-    defaultPageId: IDocumentationProps["defaultPageId"];
-    tagRenderers: IDocumentationProps["tagRenderers"];
+export interface BlueprintDocsProps {
+    docs: DocsCompleteData;
+    defaultPageId: DocumentationProps["defaultPageId"];
+    tagRenderers: DocumentationProps["tagRenderers"];
     /** Whether to use `next` versions for packages (as opposed to `latest`). */
     useNextVersion: boolean;
 }
 
-export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeName: string }> {
+export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeName: string }> {
     public state = { themeName: getTheme() };
 
     public render() {
+        const banner = (
+            <Banner href="https://blueprintjs.com/docs/">
+                This is a pre-release version of Blueprint v4.x. Click here to view the docs for the latest stable
+                release (v3.x) &rarr;
+            </Banner>
+        );
         const footer = (
             <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
                 &copy; {new Date().getFullYear()}
@@ -78,21 +88,24 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
             />
         );
         return (
-            <Documentation
-                {...this.props}
-                className={this.state.themeName}
-                footer={footer}
-                header={header}
-                navigatorExclude={isNavSection}
-                onComponentUpdate={this.handleComponentUpdate}
-                renderNavMenuItem={this.renderNavMenuItem}
-                renderPageActions={this.renderPageActions}
-                renderViewSourceLinkText={this.renderViewSourceLinkText}
-            />
+            <HotkeysProvider>
+                <Documentation
+                    {...this.props}
+                    className={this.state.themeName}
+                    banner={banner}
+                    footer={footer}
+                    header={header}
+                    navigatorExclude={isNavSection}
+                    onComponentUpdate={this.handleComponentUpdate}
+                    renderNavMenuItem={this.renderNavMenuItem}
+                    renderPageActions={this.renderPageActions}
+                    renderViewSourceLinkText={this.renderViewSourceLinkText}
+                />
+            </HotkeysProvider>
         );
     }
 
-    private renderNavMenuItem = (props: INavMenuItemProps) => {
+    private renderNavMenuItem = (props: NavMenuItemProps) => {
         const { route, title } = props.section;
         if (isNavSection(props.section)) {
             // non-interactive header that expands its menu
@@ -174,7 +187,6 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
     private handleToggleDark = (useDark: boolean) => {
         const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
         setTheme(nextThemeName);
-        setHotkeysDialogProps({ className: nextThemeName });
         this.setState({ themeName: nextThemeName });
     };
 }

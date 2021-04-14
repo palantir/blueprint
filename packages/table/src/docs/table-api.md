@@ -12,7 +12,7 @@ components are available in the __@blueprintjs/table__ package.
 The top-level component of the table is `Table`. You must at least define the
 number of rows (`numRows` prop) as well as a set of `Column` children.
 
-@interface ITableProps
+@interface TableProps
 
 @### Instance methods
 
@@ -22,12 +22,12 @@ number of rows (`numRows` prop) as well as a set of `Column` children.
 @method Table.resizeRowsByApproximateHeight
 
 
-`ICellMapper` is just a function that takes a cell-coordinate and returns a generic type:
+`CellMapper` is just a function that takes a cell-coordinate and returns a generic type:
 
 
 
 ```tsx
-type ICellMapper<T> = (rowIndex: number, columnIndex: number) => T;
+type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 ```
 
 
@@ -44,14 +44,14 @@ Because of this, the table's children are a list of `Column` components.
 
 Use the `rowHeaderCellRenderer` prop of `Table` to define row headers.
 
-@interface IColumnProps
+@interface ColumnProps
 
 @## Cell
 
 The `Cell` component renders content in the table body. `Cell`s should be
 returned from the `cellRenderer` method of each `Column`.
 
-@interface ICellProps
+@interface CellProps
 
 @## ColumnHeaderCell
 
@@ -62,7 +62,7 @@ The `columnHeaderCellRenderer` method on each `Column` should return a
 the name of the column. If you want to override the render behavior of the
 name, you can supply a `nameRenderer` prop to the `ColumnHeaderCell`.
 
-@interface IColumnHeaderCellProps
+@interface ColumnHeaderCellProps
 
 @## EditableName
 
@@ -70,14 +70,14 @@ Return a `EditableName` component from the `nameRenderer` prop on a
 `ColumnHeaderCell` to enable click-to-edit functionality in the column
 header.
 
-@interface IEditableNameProps
+@interface EditableNameProps
 
 @## EditableCell
 
 Return a `EditableCell` component from the `cellRenderer` prop on a
 `Column` to enable double-click-to-edit functionality in the table body.
 
-@interface IEditableCellProps
+@interface EditableCellProps
 
 @## Region
 
@@ -96,7 +96,7 @@ There are four different types of regions:
 
 Regions are defined in code according to the `IRegion` interface:
 
-@interface IRegion
+@interface Region
 
 You can construct region objects manually according to this interface, but we
 recommend using our exported __factory methods__ to help you construct the
@@ -182,7 +182,7 @@ const content = "A very long string...";
 return <Cell><TruncatedFormat>{content}</TruncatedFormat></Cell>
 ```
 
-@interface ITruncatedFormatProps
+@interface TruncatedFormatProps
 
 @## JSONFormat
 
@@ -193,4 +193,4 @@ const content = { any: "javascript variable", even: [null, "is", "okay", "too"] 
 return <Cell><JSONFormat>{content}</JSONFormat></Cell>
 ```
 
-@interface IJSONFormatProps
+@interface JSONFormatProps

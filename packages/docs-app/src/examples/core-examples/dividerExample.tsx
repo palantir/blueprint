@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, ButtonGroup, Divider, H5, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface IDividerExampleState {
+export interface DividerExampleState {
     vertical: boolean;
 }
 
-export class DividerExample extends React.PureComponent<IExampleProps, IDividerExampleState> {
-    public state: IDividerExampleState = { vertical: false };
+export class DividerExample extends React.PureComponent<ExampleProps, DividerExampleState> {
+    public state: DividerExampleState = { vertical: false };
 
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 

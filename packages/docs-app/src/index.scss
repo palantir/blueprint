@@ -55,3 +55,7 @@ Licensed under the Apache License, Version 2.0.
 code {
   transition: background-color $pt-transition-duration $pt-transition-ease;
 }
+
+.docs-root {
+  isolation: isolate;
+}

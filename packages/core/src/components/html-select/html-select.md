@@ -18,7 +18,7 @@ Use `HTMLSelect` exactly like you would use a native `<select>` with `value` (or
 `defaultValue`) and `onChange`. Options can be passed as `<option>` children for
 full flexibility or via the `options` prop for simple shorthand.
 
-@interface IHTMLSelectProps
+@interface HTMLSelectProps
 
 @## CSS
 

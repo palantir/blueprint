@@ -15,13 +15,13 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
-import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
+import { EditableText, IntentProps, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 
-export interface IEditableNameProps extends IIntentProps, IProps {
+export interface EditableNameProps extends IntentProps, Props {
     /**
      * The name displayed in the text box. Be sure to update this value when
      * rendering this component after a confirmed change.
@@ -54,15 +54,15 @@ export interface IEditableNameProps extends IIntentProps, IProps {
     index?: number;
 }
 
-export interface IEditableNameState {
+export interface EditableNameState {
     isEditing?: boolean;
     savedName?: string;
     dirtyName?: string;
 }
 
-export class EditableName extends React.PureComponent<IEditableNameProps, IEditableNameState> {
-    public constructor(props: IEditableNameProps, context?: any) {
-        super(props, context);
+export class EditableName extends React.PureComponent<EditableNameProps, EditableNameState> {
+    public constructor(props: EditableNameProps) {
+        super(props);
         this.state = {
             dirtyName: props.name,
             isEditing: false,
@@ -70,7 +70,7 @@ export class EditableName extends React.PureComponent<IEditableNameProps, IEdita
         };
     }
 
-    public componentDidUpdate(prevProps: IEditableNameProps) {
+    public componentDidUpdate(prevProps: EditableNameProps) {
         const { name } = this.props;
         if (name !== prevProps.name) {
             this.setState({ savedName: name, dirtyName: name });

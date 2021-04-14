@@ -16,12 +16,12 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 
-import { Classes, IPortalProps, Portal } from "../../src";
+import { Classes, PortalProps, Portal } from "../../src";
 
 describe("<Portal>", () => {
-    let portal: ReactWrapper<IPortalProps>;
+    let portal: ReactWrapper<PortalProps>;
 
     afterEach(() => {
         portal?.unmount();

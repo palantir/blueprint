@@ -21,10 +21,10 @@ import {
     shallow as untypedShallow,
     ShallowRendererProps,
 } from "enzyme";
-import * as React from "react";
-import { spy } from "sinon";
+import React from "react";
+import { spy, stub, SinonStub } from "sinon";
 
-import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import {
     Button,
@@ -33,7 +33,7 @@ import {
     HTMLInputProps,
     Icon,
     InputGroup,
-    INumericInputProps,
+    NumericInputProps,
     Keys,
     NumericInput,
     Position,
@@ -44,9 +44,9 @@ import * as Errors from "../../src/common/errors";
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
 // tslint:disable no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement<INumericInputProps>, options?: MountRendererProps) =>
+const mount = (el: React.ReactElement<NumericInputProps>, options?: MountRendererProps) =>
     untypedMount<NumericInput>(el, options);
-const shallow = (el: React.ReactElement<INumericInputProps>, options?: ShallowRendererProps) =>
+const shallow = (el: React.ReactElement<NumericInputProps>, options?: ShallowRendererProps) =>
     untypedShallow<NumericInput>(el, options);
 // tslint:enable no-unnecessary-callback-wrapper
 
@@ -449,12 +449,12 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard interactions in input field", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const inputField = component.find(InputGroup).find("input");
             inputField.simulate("keydown", addKeyCode(mockEvent, Keys.ARROW_UP));
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const inputField = component.find(InputGroup).find("input");
             inputField.simulate("keydown", addKeyCode(mockEvent, Keys.ARROW_DOWN));
         };
@@ -464,12 +464,12 @@ describe("<NumericInput>", () => {
 
     // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
     describe("Keyboard interactions on buttons (with Space key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent: IMockEvent = {}) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent: MockEvent = {}) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.SPACE));
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent: IMockEvent = {}) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent: MockEvent = {}) => {
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.SPACE));
         };
@@ -478,12 +478,12 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard interactions on buttons (with Enter key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.ENTER));
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.ENTER));
         };
@@ -492,12 +492,12 @@ describe("<NumericInput>", () => {
     });
 
     describe("Mouse interactions", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", mockEvent);
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("mousedown", mockEvent);
         };
@@ -783,36 +783,40 @@ describe("<NumericInput>", () => {
     // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
     // in component constructors
     describe("Validation", () => {
-        it("throws an error if min >= max", () => {
-            expectPropValidationError(NumericInput, { min: 2, max: 1 }, Errors.NUMERIC_INPUT_MIN_MAX);
+        let consoleError: SinonStub;
+
+        before(() => (consoleError = stub(console, "error")));
+        afterEach(() => consoleError.resetHistory());
+        after(() => consoleError.restore());
+
+        it("logs an error if min >= max", () => {
+            mount(<NumericInput min={2} max={1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MIN_MAX)).to.be.true;
         });
 
-        it("throws an error if stepSize <= 0", () => {
-            expectPropValidationError(NumericInput, { stepSize: -1 }, Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
+        it("logs an error if stepSize <= 0", () => {
+            mount(<NumericInput stepSize={-1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        it("throws an error if minorStepSize <= 0", () => {
-            expectPropValidationError(
-                NumericInput,
-                { minorStepSize: -0.1 },
-                Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE,
-            );
+        it("logs an error if minorStepSize <= 0", () => {
+            mount(<NumericInput minorStepSize={-0.1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        it("throws an error if majorStepSize <= 0", () => {
-            expectPropValidationError(
-                NumericInput,
-                { majorStepSize: -0.1 },
-                Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE,
-            );
+        it("logs an error if majorStepSize <= 0", () => {
+            mount(<NumericInput majorStepSize={-0.1} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        it("throws an error if majorStepSize <= stepSize", () => {
-            expectPropValidationError(NumericInput, { majorStepSize: 0.5 }, Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
+        it("logs an error if majorStepSize <= stepSize", () => {
+            mount(<NumericInput majorStepSize={0.5} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
-        it("throws an error if stepSize <= minorStepSize", () => {
-            expectPropValidationError(NumericInput, { minorStepSize: 2 }, Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
+        it("logs an error if stepSize <= minorStepSize", () => {
+            mount(<NumericInput minorStepSize={2} />);
+            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
@@ -1136,14 +1140,14 @@ describe("<NumericInput>", () => {
         });
     });
 
-    interface IMockEvent {
+    interface MockEvent {
         shiftKey?: boolean;
         altKey?: boolean;
         keyCode?: number;
         which?: number;
     }
 
-    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & INumericInputProps> = {}) {
+    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & NumericInputProps> = {}) {
         // allow `null` to override the default values here
         const majorStepSize = overrides.majorStepSize !== undefined ? overrides.majorStepSize : 20;
         const minorStepSize = overrides.minorStepSize !== undefined ? overrides.minorStepSize : 0.2;
@@ -1333,7 +1337,7 @@ describe("<NumericInput>", () => {
         });
     }
 
-    function addKeyCode(mockEvent: IMockEvent = {}, keyCode: number) {
+    function addKeyCode(mockEvent: MockEvent = {}, keyCode: number) {
         return { ...mockEvent, keyCode };
     }
 
@@ -1384,7 +1388,7 @@ describe("<NumericInput>", () => {
 /**
  * Wraps NumericInput to make it behave like a controlled component, treating props.value as a default value
  */
-class ControlledNumericInput extends React.PureComponent<INumericInputProps, { value?: string }> {
+class ControlledNumericInput extends React.PureComponent<NumericInputProps, { value?: string }> {
     public state = {
         // treat value as "defaultValue"
         value: this.props.value?.toString(),

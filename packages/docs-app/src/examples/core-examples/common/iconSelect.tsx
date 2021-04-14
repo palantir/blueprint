@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
 import { IconName, IconNames } from "@blueprintjs/icons";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 
-export interface IIconSelectProps {
+export interface IconSelectProps {
     iconName?: IconName;
     onChange: (iconName?: IconName) => void;
 }
@@ -32,7 +32,7 @@ ICON_NAMES.push(NONE);
 
 const TypedSelect = Select.ofType<IconType>();
 
-export class IconSelect extends React.PureComponent<IIconSelectProps> {
+export class IconSelect extends React.PureComponent<IconSelectProps> {
     public render() {
         const { iconName } = this.props;
         return (

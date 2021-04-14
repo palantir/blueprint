@@ -15,11 +15,11 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import * as ScrollUtils from "../../../src/common/internal/scrollUtils";
-import { IRegion, Regions } from "../../../src/regions";
+import { Region, Regions } from "../../../src/regions";
 
 describe("scrollUtils", () => {
     describe("getScrollPositionForRegion", () => {
@@ -36,7 +36,7 @@ describe("scrollUtils", () => {
             const TARGET_ROW = 2;
             const TARGET_COLUMN = 3;
 
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,
@@ -76,7 +76,7 @@ describe("scrollUtils", () => {
         });
 
         describe("with frozen rows", () => {
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,
@@ -138,7 +138,7 @@ describe("scrollUtils", () => {
         });
 
         describe("with frozen columns", () => {
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,
@@ -201,7 +201,7 @@ describe("scrollUtils", () => {
         });
 
         describe("with frozen rows and columns", () => {
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,

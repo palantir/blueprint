@@ -16,8 +16,10 @@
 // @ts-check
 
 require("@blueprintjs/test-commons/bootstrap");
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
+
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+
 const Core = require("../lib/cjs");
 
 const requiredChild = React.createElement("button");
@@ -31,6 +33,9 @@ describe("Core isomorphic rendering", () => {
         Breadcrumbs: {
             props: { items: [] },
         },
+        ContextMenu: {
+            props: { children: React.createElement("div"), content: React.createElement("div") },
+        },
         Dialog: {
             props: { isOpen: true, usePortal: false },
         },
@@ -40,13 +45,19 @@ describe("Core isomorphic rendering", () => {
         Hotkey: {
             props: hotkeyProps,
         },
-        Hotkeys: {
-            children: React.createElement(Core.Hotkey, hotkeyProps),
-        },
         Icon: {
             props: { icon: "build" },
         },
-        KeyCombo: {
+        MultistepDialog: {
+            props: { isOpen: true, usePortal: false },
+            children: React.createElement(Core.DialogStep, {
+                key: 1,
+                id: 1,
+                title: "Step one",
+                panel: React.createElement("div"),
+            }),
+        },
+        KeyComboTag: {
             props: { combo: "?" },
         },
         OverflowList: {
@@ -81,7 +92,7 @@ describe("Core isomorphic rendering", () => {
             props: { content: React.createElement("h1", {}, "content") },
             children: requiredChild,
         },
-        Toaster: {
+        OverlayToaster: {
             props: { usePortal: false },
             children: React.createElement(Core.Toast, { message: "Toast" }),
         },

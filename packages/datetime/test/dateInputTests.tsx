@@ -16,12 +16,12 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
-import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover } from "@blueprintjs/core";
 
-import { Classes, DateInput, DatePicker, IDateInputProps, TimePicker, TimePrecision } from "../src";
+import { Classes, DateInput, DatePicker, DateInputProps, TimePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
@@ -48,7 +48,7 @@ describe("<DateInput>", () => {
         );
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
+        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`).hostNodes();
         assert.isTrue(popoverTarget.hasClass(CLASS_1));
         assert.isTrue(popoverTarget.hasClass(CLASS_2));
     });
@@ -290,7 +290,7 @@ describe("<DateInput>", () => {
                     content: "fail",
                     fill: true,
                     onOpening,
-                    position: Position.TOP,
+                    placement: "top",
                     usePortal: false,
                 }}
             />,
@@ -301,7 +301,7 @@ describe("<DateInput>", () => {
         assert.strictEqual(popover.prop("autoFocus"), false, "autoFocus cannot be changed");
         assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
         assert.strictEqual(popover.prop("fill"), true);
-        assert.strictEqual(popover.prop("position"), Position.TOP);
+        assert.strictEqual(popover.prop("placement"), "top");
         assert.strictEqual(popover.prop("usePortal"), false);
         assert.isTrue(onOpening.calledOnce);
     });
@@ -640,7 +640,7 @@ describe("<DateInput>", () => {
         const formatDate = sinon.stub().returns("custom date");
         const parseDate = sinon.stub().returns(new Date());
         const locale = "LOCALE";
-        const props: IDateInputProps = { formatDate, locale, parseDate };
+        const props: DateInputProps = { formatDate, locale, parseDate };
 
         beforeEach(() => {
             formatDate.resetHistory();
@@ -688,7 +688,7 @@ describe("<DateInput>", () => {
     }
 
     function wrap(dateInput: JSX.Element) {
-        const wrapper = mount<IDateInputProps>(dateInput);
+        const wrapper = mount<DateInputProps>(dateInput);
         return {
             changeSelect: (className: string, value: React.ReactText) => {
                 return wrapper

@@ -3,9 +3,10 @@
  */
 
 const path = require("path");
-const webpack = require("webpack");
-const coreManifest = require("../core/package.json");
+
 const webpackBuildScripts = require("@blueprintjs/webpack-build-scripts");
+
+const coreManifest = require("../core/package.json");
 
 const COVERAGE_PERCENT = 80;
 const COVERAGE_PERCENT_HIGH = 90;
@@ -26,27 +27,12 @@ module.exports = function createKarmaConfig(
 
     const config = {
         basePath: dirname,
+        browserDisconnectTimeout: 10000,
+        browserDisconnectTolerance: 2,
         browserNoActivityTimeout: 100000,
         browsers: ["ChromeHeadless"],
         client: {
             useIframe: false,
-        },
-        coverageReporter: {
-            check: {
-                each: {
-                    lines: COVERAGE_PERCENT,
-                    statements: COVERAGE_PERCENT,
-                    excludes: coverageExcludes,
-                    overrides: coverageOverrides,
-                },
-            },
-            includeAllSources: true,
-            // save interim raw coverage report in memory. remapCoverage will output final report.
-            type: "in-memory",
-            watermarks: {
-                lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
-                statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
-            },
         },
         files: [
             {
@@ -63,22 +49,25 @@ module.exports = function createKarmaConfig(
             path.join(dirname, packageManifest.style),
             path.join(dirname, "test/index.ts"),
         ],
-        frameworks: ["mocha"],
+        frameworks: ["mocha", "webpack"],
         mime: {
             "text/x-typescript": ["ts", "tsx"],
         },
+        plugins: [
+            "karma-webpack",
+            "karma-mocha",
+            require("karma-coverage"),
+            require("karma-helpful-reporter"),
+            require("karma-junit-reporter"),
+            "karma-sourcemap-loader",
+            "karma-chrome-launcher",
+        ],
         port: KARMA_SERVER_PORT,
         preprocessors: {
-            [path.join(dirname, "test/**/*.ts")]: ["sourcemap"],
-            [path.join(dirname, "test/index.ts")]: ["webpack", "sourcemap"],
+            "src/index.ts": ["coverage"],
+            "test/index.ts": ["webpack", "sourcemap"],
         },
-        // define where to save final remapped coverage reports
-        remapCoverageReporter: {
-            "text-summary": null,
-            html: "./coverage/html",
-            cobertura: "./coverage/cobertura.xml",
-        },
-        reporters: ["mocha"],
+        reporters: ["helpful"],
         singleRun: true,
         webpack: webpackBuildScripts.karmaConfig,
         webpackMiddleware: {
@@ -94,18 +83,40 @@ module.exports = function createKarmaConfig(
     if (process.env.JUNIT_REPORT_PATH) {
         const outputDir = path.join(__dirname, "../..", process.env.JUNIT_REPORT_PATH, path.basename(dirname));
         console.info(`Karma report will appear in ${outputDir}`);
-        // disable mocha reporter on circle for HUGE performance increase
+        // disable other reporters on circle for performance boost
         config.reporters = ["dots", "junit"];
         config.junitReporter = {
-            outputDir: outputDir,
+            outputDir,
             outputFile: "report.xml",
             useBrowserName: false,
         };
     }
 
     if (coverage) {
-        // enable coverage. these plugins are already configured above.
-        config.reporters.push("coverage", "remap-coverage");
+        config.reporters.push("coverage");
+        config.coverageReporter = {
+            check: {
+                each: {
+                    lines: COVERAGE_PERCENT,
+                    statements: COVERAGE_PERCENT,
+                    excludes: coverageExcludes,
+                    overrides: coverageOverrides,
+                },
+            },
+            includeAllSources: true,
+            dir: "./coverage",
+            reporters: [
+                // reporters not supporting the `file` property
+                { type: "html", subdir: "html" },
+                // reporters supporting the `file` property, use `subdir` to directly
+                // output them in the `dir` directory
+                { type: "cobertura", subdir: ".", file: "cobertura.txt" },
+            ],
+            watermarks: {
+                lines: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
+                statements: [COVERAGE_PERCENT, COVERAGE_PERCENT_HIGH],
+            },
+        };
     }
 
     return config;

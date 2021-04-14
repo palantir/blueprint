@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Callout, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IDocsExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, DocsExampleProps } from "@blueprintjs/docs-theme";
 import { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ICalloutExampleState {
+export interface CalloutExampleState {
     icon?: IconName;
     intent?: Intent;
     showHeader: boolean;
 }
 
-export class CalloutExample extends React.PureComponent<IDocsExampleProps, ICalloutExampleState> {
-    public state: ICalloutExampleState = { showHeader: true };
+export class CalloutExample extends React.PureComponent<DocsExampleProps, CalloutExampleState> {
+    public state: CalloutExampleState = { showHeader: true };
 
     private handleHeaderChange = handleBooleanChange((showHeader: boolean) => this.setState({ showHeader }));
 

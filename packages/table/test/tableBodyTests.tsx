@@ -16,8 +16,8 @@
 
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { Cell } from "../src/cell/cell";
 import { Batcher } from "../src/common/batcher";
@@ -26,8 +26,8 @@ import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { MenuContext } from "../src/interactions/menus/menuContext";
-import { IRegion, Regions } from "../src/regions";
-import { ITableBodyProps, TableBody } from "../src/tableBody";
+import { Region, Regions } from "../src/regions";
+import { TableBodyProps, TableBody } from "../src/tableBody";
 
 describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.
@@ -112,8 +112,8 @@ describe("TableBody", () => {
 
     describe("bodyContextMenuRenderer", () => {
         // 0-indexed coordinates
-        const TARGET_ROW = 1;
-        const TARGET_COLUMN = 1;
+        const TARGET_ROW = 0;
+        const TARGET_COLUMN = 0;
         const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
@@ -129,7 +129,7 @@ describe("TableBody", () => {
 
         describe("on right-click", () => {
             const simulateAction = (tableBody: ReactWrapper<any, any>) => {
-                tableBody.simulate("contextmenu");
+                tableBody.simulate("contextmenu", { clientX: COLUMN_WIDTH / 2, clientY: ROW_HEIGHT / 2 });
             };
             runTestSuite(simulateAction);
         });
@@ -147,7 +147,8 @@ describe("TableBody", () => {
             it("selects a right-clicked cell if there is no active selection", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                checkOnSelectionCallback([TARGET_REGION]);
+                expect(onSelection.calledOnce).to.be.true;
+                expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
             });
 
             it("doesn't change the selected regions if the right-clicked cell is contained in one", () => {
@@ -167,12 +168,14 @@ describe("TableBody", () => {
                 ];
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, selectedRegions);
                 simulateAction(tableBody);
-                checkOnSelectionCallback([TARGET_REGION]);
+                expect(onSelection.calledOnce).to.be.true;
+                expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
             });
 
             it("renders context menu using new selection if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
+                expect(bodyContextMenuRenderer.calledOnce).to.be.true;
                 const menuContext = bodyContextMenuRenderer.firstCall.args[0] as MenuContext;
                 expect(menuContext.getSelectedRegions()).to.deep.equal([TARGET_REGION]);
             });
@@ -190,10 +193,11 @@ describe("TableBody", () => {
 
         function mountTableBodyForContextMenuTests(
             targetCellCoords: { row: number; col: number },
-            selectedRegions: IRegion[],
+            selectedRegions: Region[],
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
+                enableBodyContextMenu: true,
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
@@ -202,14 +206,9 @@ describe("TableBody", () => {
                 selectedRegions,
             });
         }
-
-        function checkOnSelectionCallback(expectedSelectedRegions: IRegion[]) {
-            expect(onSelection.calledOnce).to.be.true;
-            expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
-        }
     });
 
-    function mountTableBody(props: Partial<ITableBodyProps> = {}) {
+    function mountTableBody(props: Partial<TableBodyProps> = {}) {
         const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;
@@ -229,15 +228,15 @@ describe("TableBody", () => {
                 locator={null}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
-                // ISelectableProps
+                // SelectableProps
                 enableMultipleSelection={true}
                 onFocusedCell={noop}
                 onSelection={noop}
                 selectedRegions={[]}
-                // IRowIndices
+                // RowIndices
                 rowIndexStart={0}
                 rowIndexEnd={rowIndexEnd}
-                // IColumnIndices
+                // ColumnIndices
                 columnIndexStart={0}
                 columnIndexEnd={columnIndexEnd}
                 {...spreadableProps}

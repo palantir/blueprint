@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Intent } from "../../common";
+import { AbstractPureComponent, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { ISliderBaseProps, MultiSlider } from "./multiSlider";
+import { SliderBaseProps, MultiSlider } from "./multiSlider";
 
-export interface ISliderProps extends ISliderBaseProps {
+export interface SliderProps extends SliderBaseProps {
     /**
      * Initial value of the slider. This determines the other end of the
      * track fill: from `initialValue` to `value`.
@@ -44,9 +43,8 @@ export interface ISliderProps extends ISliderBaseProps {
     onRelease?(value: number): void;
 }
 
-@polyfill
-export class Slider extends AbstractPureComponent2<ISliderProps> {
-    public static defaultProps: ISliderProps = {
+export class Slider extends AbstractPureComponent<SliderProps> {
+    public static defaultProps: SliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,
         intent: Intent.PRIMARY,

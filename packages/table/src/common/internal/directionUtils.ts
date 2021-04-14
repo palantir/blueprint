@@ -15,9 +15,9 @@
  */
 
 import { Direction } from "../direction";
-import { IMovementDelta } from "../movementDelta";
+import { MovementDelta } from "../movementDelta";
 
-export function directionToDelta(direction: Direction): IMovementDelta {
+export function directionToDelta(direction: Direction): MovementDelta {
     switch (direction) {
         case Direction.UP:
             return { rows: -1, cols: 0 };

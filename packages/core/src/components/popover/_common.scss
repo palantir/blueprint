@@ -1,11 +1,15 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
 @import "../../common/react-transition";
 
-$popover-background-color: $white !default;
-$dark-popover-background-color: $dark-gray4 !default;
+$pt-popover-background-color: $white !default;
+$pt-popover-box-shadow: $pt-elevation-shadow-3 !default;
+$pt-tooltip-box-shadow: $pt-popover-box-shadow !default;
+$pt-dark-popover-background-color: $dark-gray4 !default;
+$pt-dark-popover-box-shadow: $pt-dark-elevation-shadow-3 !default;
+$pt-dark-tooltip-box-shadow: $pt-dark-popover-box-shadow !default;
 
 // $arrow-offset: amount to shift arrow along edge of popover
 // $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
@@ -34,93 +38,6 @@ $dark-popover-background-color: $dark-gray4 !default;
       margin: ceil(($arrow-square-size - $arrow-diagonal-half-size) * 0.5);
       // - 1 to compenstate for transparent pixel border shadow
       width: floor($arrow-diagonal-half-size - 1);
-    }
-  }
-
-  // shift content away from target edge to make space for the arrow
-  .#{$ns}-tether-element-attached-bottom.#{$ns}-tether-target-attached-top > & {
-    margin-bottom: $content-margin;
-    margin-top: -$content-margin;
-
-    > .#{$ns}-popover-arrow {
-      bottom: $arrow-position;
-
-      svg {
-        transform: rotate(-90deg);
-      }
-    }
-  }
-
-  .#{$ns}-tether-element-attached-left.#{$ns}-tether-target-attached-right > & {
-    margin-left: $content-margin;
-
-    > .#{$ns}-popover-arrow {
-      left: $arrow-position;
-
-      svg {
-        transform: rotate(0);
-      }
-    }
-  }
-
-  .#{$ns}-tether-element-attached-top.#{$ns}-tether-target-attached-bottom > & {
-    margin-top: $content-margin;
-
-    > .#{$ns}-popover-arrow {
-      top: $arrow-position;
-
-      svg {
-        transform: rotate(90deg);
-      }
-    }
-  }
-
-  .#{$ns}-tether-element-attached-right.#{$ns}-tether-target-attached-left > & {
-    // div will expand to the right and parent div won't be repositioned,
-    // so we need to use negative left margin to move content.
-    margin-left: -$content-margin;
-    // we keep the positive right margin for ease of arrow positioning.
-    margin-right: $content-margin;
-
-    > .#{$ns}-popover-arrow {
-      right: $arrow-position;
-
-      svg {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  // "center" and "middle" attachments
-  .#{$ns}-tether-element-attached-middle > & > .#{$ns}-popover-arrow {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .#{$ns}-tether-element-attached-center > & > .#{$ns}-popover-arrow {
-    right: 50%;
-    transform: translateX(50%);
-  }
-
-  // offset arrow away from corner spots so it appears centered in target
-  @each $side in (top, right, left, bottom) {
-    // giant selector is 1 character too long :(
-    /* stylelint-disable-next-line max-line-length */
-    .#{$ns}-tether-element-attached-#{$side}.#{$ns}-tether-target-attached-#{$side} > & > .#{$ns}-popover-arrow {
-      #{$side}: $computed-arrow-offset;
-    }
-  }
-
-  @each $top in (top, middle, bottom) {
-    @each $left in (left, center, right) {
-      .#{$ns}-tether-element-attached-#{$top}.#{$ns}-tether-element-attached-#{$left} > & {
-        @if ($top == middle) {
-          // "middle" is tether's way of saying "top == center"
-          transform-origin: center $left;
-        } @else {
-          transform-origin: $top $left;
-        }
-      }
     }
   }
 }

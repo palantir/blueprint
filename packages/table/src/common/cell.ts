@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-export interface ICellCoordinates {
+export interface CellCoordinates {
     col: number;
     row: number;
 }
 
-export interface IFocusedCellCoordinates extends ICellCoordinates {
+export interface FocusedCellCoordinates extends CellCoordinates {
     focusSelectionIndex: number;
 }

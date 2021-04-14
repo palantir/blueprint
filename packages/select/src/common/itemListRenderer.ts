@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-import { ICreateNewItem } from "./listItemsUtils";
+import { Ref } from "@blueprintjs/core";
+
+import { CreateNewItem } from "./listItemsUtils";
 
 /**
  * An object describing how to render the list of items.
  * An `itemListRenderer` receives this object as its sole argument.
  */
-export interface IItemListRendererProps<T> {
+export interface ItemListRendererProps<T> {
     /**
      * The currently focused item (for keyboard interactions), or `null` to
      * indicate that no item is active.
      */
-    activeItem: T | ICreateNewItem | null;
+    activeItem: T | CreateNewItem | null;
 
     /**
      * Array of items filtered by `itemListPredicate` or `itemPredicate`.
@@ -52,7 +54,7 @@ export interface IItemListRendererProps<T> {
      * A ref handler that should be attached to the parent HTML element of the menu items.
      * This is required for the active item to scroll into view automatically.
      */
-    itemsParentRef: (ref: HTMLElement | null) => void;
+    itemsParentRef: Ref<HTMLUListElement>;
 
     /**
      * Call this function to render an item.
@@ -70,7 +72,7 @@ export interface IItemListRendererProps<T> {
 }
 
 /** Type alias for a function that renders the list of items. */
-export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => JSX.Element | null;
+export type ItemListRenderer<T> = (itemListProps: ItemListRendererProps<T>) => JSX.Element | null;
 
 /**
  * `ItemListRenderer` helper method for rendering each item in `filteredItems`,
@@ -78,7 +80,7 @@ export type ItemListRenderer<T> = (itemListProps: IItemListRendererProps<T>) => 
  * and `initialContent` (when query is empty).
  */
 export function renderFilteredItems(
-    props: IItemListRendererProps<any>,
+    props: ItemListRendererProps<any>,
     noResults?: React.ReactNode,
     initialContent?: React.ReactNode | null,
 ): React.ReactNode {

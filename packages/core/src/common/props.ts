@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { IconName } from "@blueprintjs/icons";
 
 import { Intent } from "./intent";
-import { IRef } from "./refs";
 
 export const DISPLAYNAME_PREFIX = "Blueprint3";
 
@@ -45,12 +44,12 @@ export type MaybeElement = JSX.Element | false | null | undefined;
 /**
  * A shared base interface for all Blueprint component props.
  */
-export interface IProps {
+export interface Props {
     /** A space-delimited list of class names to pass along to a child element. */
     className?: string;
 }
 
-export interface IIntentProps {
+export interface IntentProps {
     /** Visual intent color to apply to element. */
     intent?: Intent;
 }
@@ -59,7 +58,7 @@ export interface IIntentProps {
  * Interface for a clickable action, such as a button or menu item.
  * These props can be spready directly to a `<Button>` or `<MenuItem>` element.
  */
-export interface IActionProps extends IIntentProps, IProps {
+export interface ActionProps extends IntentProps, Props {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
@@ -74,7 +73,7 @@ export interface IActionProps extends IIntentProps, IProps {
 }
 
 /** Interface for a link, with support for customizing target window. */
-export interface ILinkProps {
+export interface LinkProps {
     /** Link URL. */
     href?: string;
 
@@ -82,27 +81,23 @@ export interface ILinkProps {
     target?: string;
 }
 
-/** Interface for a controlled input. */
-export interface IControlledProps {
+/**
+ *
+ * Interface for a controlled input.
+ */
+export interface ControlledProps {
     /** Initial value of the input, for uncontrolled usage. */
     defaultValue?: string;
-
-    /** Change event handler. Use `event.target.value` for new value. */
-    onChange?: React.FormEventHandler<HTMLElement>;
 
     /** Form value of the input, for controlled usage. */
     value?: string;
 }
 
-export interface IElementRefProps<E extends HTMLElement> {
-    /** A ref handler or a ref object that receives the native HTML element rendered by this component. */
-    elementRef?: IRef<E>;
-}
 /**
  * An interface for an option in a list, such as in a `<select>` or `RadioGroup`.
  * These props can be spread directly to an `<option>` or `<Radio>` element.
  */
-export interface IOptionProps extends IProps {
+export interface OptionProps extends Props {
     /** Whether this option is non-interactive. */
     disabled?: boolean;
 
@@ -117,10 +112,9 @@ export interface IOptionProps extends IProps {
 const INVALID_PROPS = [
     "active",
     "alignText",
-    "asyncControl", // IInputGroupProps
+    "asyncControl", // InputGroupProps
     "containerRef",
     "current",
-    "elementRef",
     "fill",
     "icon",
     "inputRef",
@@ -131,10 +125,10 @@ const INVALID_PROPS = [
     "leftElement",
     "leftIcon",
     "minimal",
-    "onRemove", // ITagProps, ITagInputProps
-    "outlined", // IButtonProps
-    "panel", // ITabProps
-    "panelClassName", // ITabProps
+    "onRemove", // TagProps, TagInputProps
+    "outlined", // ButtonProps
+    "panel", // TabProps
+    "panelClassName", // TabProps
     "popoverProps",
     "rightElement",
     "rightIcon",

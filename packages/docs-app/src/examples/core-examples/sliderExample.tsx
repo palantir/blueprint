@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { H5, Slider, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface ISliderExampleState {
+export interface SliderExampleState {
     value1?: number;
     value2?: number;
     value3?: number;
     vertical?: boolean;
 }
 
-export class SliderExample extends React.PureComponent<IExampleProps, ISliderExampleState> {
-    public state: ISliderExampleState = {
+export class SliderExample extends React.PureComponent<ExampleProps, SliderExampleState> {
+    public state: SliderExampleState = {
         value1: 0,
         value2: 2.5,
         value3: 30,

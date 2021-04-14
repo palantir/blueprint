@@ -15,27 +15,21 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
-import {
-    DISPLAYNAME_PREFIX,
-    HTMLInputProps,
-    IInputGroupProps,
-    InputGroup,
-    IOverlayProps,
-    Overlay,
-} from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, InputGroupProps, InputGroup, OverlayProps, Overlay } from "@blueprintjs/core";
+import { Search } from "@blueprintjs/icons";
 
-import { Classes, IListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, ListItemsProps } from "../../common";
+import { QueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface IOmnibarProps<T> extends IListItemsProps<T> {
+export interface OmnibarProps<T> extends ListItemsProps<T> {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
      * to control this input.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: InputGroupProps;
 
     /**
      * Toggles the visibility of the omnibar.
@@ -56,14 +50,14 @@ export interface IOmnibarProps<T> extends IListItemsProps<T> {
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
 
     /** Props to spread to `Overlay`. */
-    overlayProps?: Partial<IOverlayProps>;
+    overlayProps?: Partial<OverlayProps>;
 }
 
-export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
+export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
     public static ofType<U>() {
-        return Omnibar as new (props: IOmnibarProps<U>) => Omnibar<U>;
+        return Omnibar as new (props: OmnibarProps<U>) => Omnibar<U>;
     }
 
     private TypedQueryList = QueryList.ofType<T>();
@@ -76,7 +70,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
         return <this.TypedQueryList {...restProps} initialContent={initialContent} renderer={this.renderQueryList} />;
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
         const handlers = isOpen ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
@@ -93,7 +87,7 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
                     <InputGroup
                         autoFocus={true}
                         large={true}
-                        leftIcon="search"
+                        leftIcon={<Search />}
                         placeholder="Search..."
                         {...inputProps}
                         onChange={listProps.handleQueryChange}

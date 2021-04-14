@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Duplicate, Refresh } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IButtonsExampleState {
+export interface ButtonsExampleState {
     active: boolean;
     disabled: boolean;
     iconOnly: boolean;
@@ -33,8 +34,8 @@ export interface IButtonsExampleState {
     wiggling: boolean;
 }
 
-export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsExampleState> {
-    public state: IButtonsExampleState = {
+export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExampleState> {
+    public state: ButtonsExampleState = {
         active: false,
         disabled: false,
         iconOnly: false,
@@ -94,7 +95,7 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
                     </p>
                     <Button
                         className={this.state.wiggling ? "docs-wiggle" : ""}
-                        icon="refresh"
+                        icon={<Refresh />}
                         onClick={this.beginWiggling}
                         {...buttonProps}
                     >
@@ -107,7 +108,7 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
                     </p>
                     <AnchorButton
                         href="#core/components/button"
-                        icon="duplicate"
+                        icon={<Duplicate />}
                         rightIcon="share"
                         target="_blank"
                         text={iconOnly ? undefined : "Duplicate this page"}

@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import { EditableText } from "../../src";
@@ -286,7 +286,7 @@ describe("<EditableText>", () => {
         });
 
         // fake interface because React's KeyboardEvent properties are not optional
-        interface IFakeKeyboardEvent {
+        interface FakeKeyboardEvent {
             altKey?: boolean;
             ctrlKey?: boolean;
             metaKey?: boolean;
@@ -296,7 +296,7 @@ describe("<EditableText>", () => {
             preventDefault?(): void;
         }
 
-        function simulateHelper(wrapper: ReactWrapper<any>, value: string, e: IFakeKeyboardEvent) {
+        function simulateHelper(wrapper: ReactWrapper<any>, value: string, e: FakeKeyboardEvent) {
             wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
         }
     });

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import {
     Button,
@@ -25,15 +25,14 @@ import {
     Menu,
     MenuItem,
     Popover,
-    Position,
     Spinner,
     Switch,
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface IInputGroupExampleState {
+export interface InputGroupExampleState {
     disabled: boolean;
     filterValue: string;
     large: boolean;
@@ -42,8 +41,8 @@ export interface IInputGroupExampleState {
     tagValue: string;
 }
 
-export class InputGroupExample extends React.PureComponent<IExampleProps, IInputGroupExampleState> {
-    public state: IInputGroupExampleState = {
+export class InputGroupExample extends React.PureComponent<ExampleProps, InputGroupExampleState> {
+    public state: InputGroupExampleState = {
         disabled: false,
         filterValue: "",
         large: false,
@@ -90,7 +89,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     </Menu>
                 }
                 disabled={disabled}
-                position={Position.BOTTOM_RIGHT}
+                placement="bottom-end"
             >
                 <Button disabled={disabled} minimal={true} rightIcon="caret-down">
                     can edit

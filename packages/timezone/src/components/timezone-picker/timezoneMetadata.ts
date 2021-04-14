@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import * as moment from "moment-timezone";
+import moment from "moment-timezone";
 
 // non-empty abbreviations that do not begin with -/+
 const ABBR_REGEX = /^[^-+]/;
 
-export interface ITimezoneMetadata {
+export interface TimezoneMetadata {
     timezone: string;
     abbreviation: string | undefined;
     offset: number;
@@ -27,7 +27,7 @@ export interface ITimezoneMetadata {
     population: number | undefined;
 }
 
-export function getTimezoneMetadata(timezone: string, date: Date = new Date()): ITimezoneMetadata {
+export function getTimezoneMetadata(timezone: string, date: Date = new Date()): TimezoneMetadata {
     const timestamp = date.getTime();
     const zone = moment.tz.zone(timezone);
     const zonedDate = moment.tz(timestamp, timezone);

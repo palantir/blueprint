@@ -16,9 +16,6 @@
 
 import "../common/configureDom4";
 
-import * as contextMenu from "./context-menu/contextMenu";
-export const ContextMenu = contextMenu;
-
 export * from "./alert/alert";
 export * from "./breadcrumbs/breadcrumb";
 export * from "./breadcrumbs/breadcrumbs";
@@ -27,9 +24,15 @@ export * from "./button/buttonGroup";
 export * from "./callout/callout";
 export * from "./card/card";
 export * from "./collapse/collapse";
-export * from "./collapsible-list/collapsibleList";
-export * from "./context-menu/contextMenuTarget";
+export {
+    ContextMenu,
+    ContextMenuProps,
+    ContextMenuChildrenProps,
+    ContextMenuContentProps,
+} from "./context-menu/contextMenu";
 export * from "./dialog/dialog";
+export * from "./dialog/multistepDialog";
+export * from "./dialog/dialogStep";
 export * from "./divider/divider";
 export * from "./drawer/drawer";
 export * from "./editable-text/editableText";
@@ -44,7 +47,7 @@ export * from "./forms/textArea";
 export * from "./html/html";
 export * from "./html-select/htmlSelect";
 export * from "./html-table/htmlTable";
-export * from "./hotkeys/index";
+export * from "./hotkeys";
 export * from "./icon/icon";
 export * from "./menu/menu";
 export * from "./menu/menuDivider";
@@ -57,10 +60,17 @@ export * from "./non-ideal-state/nonIdealState";
 export * from "./overflow-list/overflowList";
 export * from "./overlay/overlay";
 export * from "./text/text";
-export * from "./panel-stack/panelProps";
-export * from "./panel-stack/panelStack";
-export * from "./popover/popover";
-export * from "./popover/popoverSharedProps";
+export { PanelStack, PanelStackProps } from "./panel-stack/panelStack";
+export { Panel, PanelProps } from "./panel-stack/panelTypes";
+export { PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
+export {
+    PopoverSharedProps,
+    PopoverTargetProps,
+    PopperBoundary,
+    Placement,
+    PopperPlacements,
+    StrictModifierNames,
+} from "./popover/popoverSharedProps";
 export * from "./portal/portal";
 export * from "./progress-bar/progressBar";
 export * from "./resize-sensor/resizeSensor";
@@ -74,8 +84,10 @@ export * from "./tabs/tab";
 export * from "./tabs/tabs";
 export * from "./tag/tag";
 export * from "./tag-input/tagInput";
+export * from "./toast/overlayToaster";
 export * from "./toast/toast";
 export * from "./toast/toaster";
-export * from "./tooltip/tooltip";
-export * from "./tree/tree";
-export * from "./tree/treeNode";
+export { TooltipProps, Tooltip } from "./tooltip/tooltip";
+export { Tree, TreeProps } from "./tree/tree";
+export { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
+export { TreeNode } from "./tree/treeNode";

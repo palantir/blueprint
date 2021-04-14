@@ -19,12 +19,17 @@ import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 
-export interface ILocator {
+export interface Locator {
     /**
      * Returns the width that a column must be to contain all the content of
      * its cells without truncating or wrapping.
      */
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
+
+    /**
+     * Gets the viewport rect.
+     */
+    getViewportRect(): Rect;
 
     /**
      * Returns the height of the tallest cell in a given column -- specifically,
@@ -53,9 +58,18 @@ export interface ILocator {
      * coordinate. Returns -1 if the coordinate is not over a table cell.
      */
     convertPointToCell: (clientX: number, clientY: number) => { col: number; row: number };
+
+    /**
+     * Updates the grid.
+     */
+    setGrid(grid: Grid): this;
+
+    setNumFrozenRows(numFrozenRows: number): this;
+
+    setNumFrozenColumns(numFrozenColumns: number): this;
 }
 
-export class Locator implements ILocator {
+export class LocatorImpl implements Locator {
     public static CELL_HORIZONTAL_PADDING = 10;
 
     private grid: Grid;
@@ -117,7 +131,7 @@ export class Locator implements ILocator {
         let maxWidth = 0;
         for (let i = 0; i < columnHeaderAndBodyCells.length; i++) {
             const contentWidth = Utils.measureElementTextContent(columnHeaderAndBodyCells.item(i)).width;
-            const cellWidth = Math.ceil(contentWidth) + Locator.CELL_HORIZONTAL_PADDING * 2;
+            const cellWidth = Math.ceil(contentWidth) + LocatorImpl.CELL_HORIZONTAL_PADDING * 2;
             if (cellWidth > maxWidth) {
                 maxWidth = cellWidth;
             }

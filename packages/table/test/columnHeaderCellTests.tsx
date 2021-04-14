@@ -16,12 +16,12 @@
 
 import { expect } from "chai";
 import { shallow } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
-import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
+import { H4, Menu, MenuItem } from "@blueprintjs/core";
 
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
+import { ColumnHeaderCell, ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
@@ -84,7 +84,7 @@ describe("<ColumnHeaderCell>", () => {
 
         it("renders custom menu items", () => {
             const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
+            const menu = renderMenu(menuClickSpy);
             const renderMenuFn = () => menu;
 
             const columnHeaderCellRenderer = (columnIndex: number) => {
@@ -96,7 +96,7 @@ describe("<ColumnHeaderCell>", () => {
 
         it("renders custom menu items with a menuRenderer callback", () => {
             const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
+            const menu = renderMenu(menuClickSpy);
             const menuRenderer = sinon.stub().returns(menu);
 
             const columnHeaderCellRenderer = (columnIndex: number) => (
@@ -117,10 +117,10 @@ describe("<ColumnHeaderCell>", () => {
             );
         });
 
-        function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
+        function renderMenu(menuClickSpy: sinon.SinonSpy) {
             return (
                 <Menu>
-                    <MenuItem icon="export" onClick={menuClickSpy} text="Teleport" />
+                    <MenuItem className="export-item" icon="export" onClick={menuClickSpy} text="Teleport" />
                     <MenuItem icon="sort-alphabetical-desc" onClick={menuClickSpy} text="Down with ZA!" />
                     <MenuItem icon="curved-range-chart" onClick={menuClickSpy} text="Psi" />
                 </Menu>
@@ -129,8 +129,9 @@ describe("<ColumnHeaderCell>", () => {
 
         function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`).mouse("click");
-            ElementHarness.document().find('[data-icon="export"]').mouse("click");
+            // menu element is the popover target
+            table.find(`.${Classes.TABLE_TH_MENU}`).mouse("click");
+            ElementHarness.document().find(".export-item").mouse("click");
             expect(menuClickSpy.called).to.be.true;
         }
     });
@@ -151,7 +152,7 @@ describe("<ColumnHeaderCell>", () => {
             expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
-        function mount(props: Partial<IColumnHeaderCellProps>) {
+        function mount(props: Partial<ColumnHeaderCellProps>) {
             const element = harness.mount(
                 <ColumnHeaderCell
                     enableColumnReordering={props.enableColumnReordering}

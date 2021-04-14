@@ -15,7 +15,7 @@
  */
 
 import moment from "moment";
-import * as React from "react";
+import React from "react";
 
 import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
 import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
@@ -24,13 +24,13 @@ import {
     handleBooleanChange,
     handleNumberChange,
     handleValueChange,
-    IExampleProps,
+    ExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { MomentDateRange } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-export interface IDateRangePickerExampleState {
+export interface DateRangePickerExampleState {
     allowSingleDayRange?: boolean;
     singleMonthOnly?: boolean;
     contiguousCalendarMonths?: boolean;
@@ -42,12 +42,12 @@ export interface IDateRangePickerExampleState {
     timePrecision?: TimePrecision;
 }
 
-interface IDateOption {
+interface DateOption {
     label: string;
     value?: Date;
 }
 
-const MIN_DATE_OPTIONS: IDateOption[] = [
+const MIN_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
         label: "4 months ago",
@@ -59,7 +59,7 @@ const MIN_DATE_OPTIONS: IDateOption[] = [
     },
 ];
 
-const MAX_DATE_OPTIONS: IDateOption[] = [
+const MAX_DATE_OPTIONS: DateOption[] = [
     { label: "None", value: undefined },
     {
         label: "4 months from now",
@@ -71,8 +71,8 @@ const MAX_DATE_OPTIONS: IDateOption[] = [
     },
 ];
 
-export class DateRangePickerExample extends React.PureComponent<IExampleProps, IDateRangePickerExampleState> {
-    public state: IDateRangePickerExampleState = {
+export class DateRangePickerExample extends React.PureComponent<ExampleProps, DateRangePickerExampleState> {
+    public state: DateRangePickerExampleState = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dateRange: [null, null],
@@ -181,7 +181,7 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
     private renderSelectMenu(
         label: string,
         selectedValue: number | string,
-        options: IDateOption[],
+        options: DateOption[],
         onChange: React.FormEventHandler<HTMLElement>,
     ) {
         return (

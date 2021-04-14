@@ -16,17 +16,17 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { Classes } from "../../src/common";
 import { Boundary } from "../../src/common/boundary";
-import { Breadcrumb, IBreadcrumbProps } from "../../src/components/breadcrumbs/breadcrumb";
+import { Breadcrumb, BreadcrumbProps } from "../../src/components/breadcrumbs/breadcrumb";
 import { Breadcrumbs } from "../../src/components/breadcrumbs/breadcrumbs";
 import { MenuItem } from "../../src/components/menu/menuItem";
-import { IOverflowListProps, OverflowList } from "../../src/components/overflow-list/overflowList";
+import { OverflowListProps, OverflowList } from "../../src/components/overflow-list/overflowList";
 
-const ITEMS: IBreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
+const ITEMS: BreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
 
 // Note that the `Breadcrumbs` component in these tests is not actually mounted into the document.
 // That means the `OverflowList` will always render all items into the overflow (since it detects
@@ -44,7 +44,7 @@ describe("Breadcrumbs", () => {
                 overflowListProps={{ className: "overflow-list-class", tagName: "article" }}
             />,
         )
-            .find<IOverflowListProps<IBreadcrumbProps>>(OverflowList)
+            .find<OverflowListProps<BreadcrumbProps>>(OverflowList)
             .props();
         assert.equal(overflowListProps.className, `${Classes.BREADCRUMBS} overflow-list-class breadcrumbs-class`);
         assert.equal(overflowListProps.collapseFrom, Boundary.END);

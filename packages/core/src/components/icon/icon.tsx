@@ -15,32 +15,21 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
+import { IconComponent, IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE, SVGIconProps } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
 export { IconName };
 
-export interface IIconProps extends IIntentProps, IProps {
-    /** This component does not support custom children. Use the `icon` prop. */
-    children?: never;
-
+export interface IconProps extends IntentProps, Props, SVGIconProps {
     /**
-     * Color of icon. This is used as the `fill` attribute on the `<svg>` image
-     * so it will override any CSS `color` property, including that set by
-     * `intent`. If this prop is omitted, icon color is inherited from
-     * surrounding text.
+     * Whether the component should automatically load icon contents using an async import.
+     *
+     * @default true
      */
-    color?: string;
-
-    /**
-     * String for the `title` attribute on the rendered element, which will appear
-     * on hover as a native browser tooltip.
-     */
-    htmlTitle?: string;
+    autoLoad?: boolean;
 
     /**
      * Name of a Blueprint UI icon, or an icon element, to render. This prop is
@@ -58,41 +47,56 @@ export interface IIconProps extends IIntentProps, IProps {
      *   `<Element />` instead.
      */
     icon: IconName | MaybeElement;
-
-    /**
-     * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
-     * images, and chooses the appropriate resolution based on this prop.
-     *
-     * @default Icon.SIZE_STANDARD = 16
-     */
-    iconSize?: number;
-
-    /** CSS style properties. */
-    style?: React.CSSProperties;
-
-    /**
-     * HTML tag to use for the rendered element.
-     *
-     * @default "span"
-     */
-    tagName?: keyof JSX.IntrinsicElements;
-
-    /**
-     * Description string. This string does not appear in normal browsers, but
-     * it increases accessibility. For instance, screen readers will use it for
-     * aural feedback. By default, this is set to the icon's name. Pass an
-     * explicit falsy value to disable.
-     */
-    title?: string | false | null;
 }
 
-@polyfill
-export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>> {
+interface IconState {
+    iconComponent: IconComponent | undefined;
+}
+
+export class Icon extends AbstractPureComponent<
+    IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
+    IconState
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
-    public static readonly SIZE_STANDARD = 16;
+    public static defaultProps: Partial<IconProps> = {
+        autoLoad: true,
+        tagName: "span",
+    };
 
-    public static readonly SIZE_LARGE = 20;
+    public static readonly SIZE_STANDARD = ICON_SIZE_STANDARD;
+
+    public static readonly SIZE_LARGE = ICON_SIZE_LARGE;
+
+    public state: IconState = {
+        iconComponent: undefined,
+    };
+
+    // this component may have unmounted by the time iconContents load, so make sure we don't try to setState
+    private hasUnmounted = false;
+
+    public async componentDidMount() {
+        this.hasUnmounted = false;
+
+        const { icon } = this.props;
+
+        if (typeof icon === "string") {
+            await this.loadIconComponentModule(icon);
+        }
+    }
+
+    public async componentDidUpdate(prevProps: IconProps, _prevState: IconState) {
+        const { icon } = this.props;
+
+        if (prevProps.icon !== icon && typeof icon === "string") {
+            // reload the module to get the component, but it will be cached if it's the same icon
+            await this.loadIconComponentModule(icon);
+        }
+    }
+
+    public componentWillUnmount() {
+        this.hasUnmounted = true;
+    }
 
     public render(): JSX.Element | null {
         const { icon } = this.props;
@@ -102,47 +106,50 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
             return icon;
         }
 
+        // strip out props we don't want rendered to the DOM
         const {
+            autoLoad,
             className,
             color,
-            htmlTitle,
-            iconSize = Icon.SIZE_STANDARD,
+            size,
+            icon: _icon,
             intent,
-            title = icon,
-            tagName = "span",
-            ...htmlprops
-        } = this.props;
-
-        // choose which pixel grid is most appropriate for given icon size
-        const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
-        // render path elements, or nothing if icon name is unknown.
-        const paths = this.renderSvgPaths(pixelGridSize, icon);
-
-        // eslint-disable-next-line deprecation/deprecation
-        const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
-        const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
-
-        return React.createElement(
             tagName,
-            {
-                ...htmlprops,
-                className: classes,
+            title = icon,
+            htmlTitle = title,
+            ...htmlProps
+        } = this.props;
+        const { iconComponent: Component } = this.state;
+
+        if (Component == null) {
+            // fall back to icon font if unloaded or unable to load SVG implementation
+            return React.createElement(tagName!, {
+                ...htmlProps,
+                className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
                 title: htmlTitle,
-            },
-            <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
-                {title && <desc>{title}</desc>}
-                {paths}
-            </svg>,
-        );
+            });
+        } else {
+            return (
+                <Component
+                    className={classNames(Classes.intentClass(intent), className)}
+                    color={color}
+                    size={size}
+                    tagName={tagName}
+                    title={title}
+                    htmlTitle={htmlTitle as string | undefined}
+                    {...htmlProps}
+                />
+            );
+        }
     }
 
-    /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
-    private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
-        const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
-        const pathStrings = svgPathsRecord[iconName];
-        if (pathStrings == null) {
-            return null;
+    private async loadIconComponentModule(iconName: IconName) {
+        if (this.props.autoLoad && !this.hasUnmounted) {
+            // if it's already been loaded, this is a no-op
+            await Icons.load(iconName);
         }
-        return pathStrings.map((d, i) => <path key={i} d={d} fillRule="evenodd" />);
+
+        const iconComponent = Icons.getComponent(iconName);
+        this.setState({ iconComponent });
     }
 }

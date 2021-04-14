@@ -16,22 +16,21 @@
 
 import { expect } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import {
     Boundary,
-    Classes as CoreClasses,
+    Classes,
     HTMLDivProps,
     HTMLInputProps,
-    IInputGroupProps,
+    InputGroupProps,
     InputGroup,
-    IPopoverProps,
     Keys,
     Popover,
-    Position,
+    PopoverProps,
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
@@ -121,7 +120,7 @@ describe("<DateRangeInput>", () => {
         );
         wrapper.setState({ isOpen: true });
 
-        const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_WRAPPER}`).hostNodes();
+        const popoverTarget = wrapper.find(`.${Classes.POPOVER_TARGET}`).hostNodes();
         expect(popoverTarget.hasClass(CLASS_1)).to.be.true;
         expect(popoverTarget.hasClass(CLASS_2)).to.be.true;
     });
@@ -258,7 +257,7 @@ describe("<DateRangeInput>", () => {
 
         function runTestSuite(
             inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-            mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any,
+            mountFn: (inputGroupProps: InputGroupProps) => any,
         ) {
             it("allows custom placeholder text", () => {
                 const root = mountFn({ placeholder: "Hello" });
@@ -517,14 +516,14 @@ describe("<DateRangeInput>", () => {
 
     describe("popoverProps", () => {
         it("accepts custom popoverProps", () => {
-            const popoverProps: Partial<IPopoverProps> = {
+            const popoverProps: Partial<PopoverProps> = {
                 backdropProps: {},
-                position: Position.TOP_LEFT,
+                placement: "top-start",
                 usePortal: false,
             };
             const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
             expect(popover.prop("backdropProps")).to.equal(popoverProps.backdropProps);
-            expect(popover.prop("position")).to.equal(popoverProps.position);
+            expect(popover.prop("placement")).to.equal(popoverProps.placement);
         });
 
         it("ignores autoFocus, enforceFocus, and content in custom popoverProps", () => {
@@ -1056,7 +1055,7 @@ describe("<DateRangeInput>", () => {
                 str: HOVER_TEST_STR_5,
             };
 
-            interface IHoverTextDateConfig {
+            interface HoverTextDateConfig {
                 day: number;
                 date: Date;
                 str: string;
@@ -1090,14 +1089,14 @@ describe("<DateRangeInput>", () => {
                 changeInputText(getEndInput(root), "");
             });
 
-            function setSelectedRangeForHoverTest(selectedDateConfigs: IHoverTextDateConfig[]) {
+            function setSelectedRangeForHoverTest(selectedDateConfigs: HoverTextDateConfig[]) {
                 const [startConfig, endConfig] = selectedDateConfigs;
                 changeInputText(getStartInput(root), startConfig == null ? "" : startConfig.str);
                 changeInputText(getEndInput(root), endConfig == null ? "" : endConfig.str);
             }
 
             describe("when selected date range is [null, null]", () => {
-                const SELECTED_RANGE = [null, null] as IHoverTextDateConfig[];
+                const SELECTED_RANGE = [null, null] as HoverTextDateConfig[];
                 const HOVER_TEST_DATE_CONFIG = HOVER_TEST_DATE_CONFIG_1;
 
                 beforeEach(() => {

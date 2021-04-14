@@ -20,7 +20,7 @@ Semantically:
 The menu on the left of the calendars provides "shortcuts" that allow users to
 quickly select common date ranges. The items in this menu are controlled through
 the `shortcuts` prop: `true` to show presets (default), `false` to hide, or an
-array of `IDateRangeShortcut` objects to define custom shortcuts.
+array of `DateRangeShortcut` objects to define custom shortcuts.
 
 The **preset shortcuts** can be seen in the example above. They are as follows:
 
@@ -35,7 +35,7 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 **Custom shortcuts** use the following interface:
 
-@interface IDateRangeShortcut
+@interface DateRangeShortcut
 
 @## Props
 
@@ -53,7 +53,7 @@ import { DateRangePicker } from "@blueprintjs/datetime";
 />
 ```
 
-@interface IDateRangePickerProps
+@interface DateRangePickerProps
 
 @## Localization
 

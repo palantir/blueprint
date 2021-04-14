@@ -15,19 +15,18 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
-import { IHandleProps } from "./handleProps";
+import { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
 /**
  * Props for the internal <Handle> component needs some additional info from the parent Slider.
  */
-export interface IInternalHandleProps extends IHandleProps {
+export interface InternalHandleProps extends HandleProps {
     disabled?: boolean;
     label: JSX.Element | string | undefined;
     max: number;
@@ -38,7 +37,7 @@ export interface IInternalHandleProps extends IHandleProps {
     vertical: boolean;
 }
 
-export interface IHandleState {
+export interface HandleState {
     /** whether slider handle is currently being dragged */
     isMoving?: boolean;
 }
@@ -47,8 +46,8 @@ export interface IHandleState {
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
-@polyfill
-export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandleState> {
+
+export class Handle extends AbstractPureComponent<InternalHandleProps, HandleState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 
     public state = {
@@ -135,7 +134,7 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
 
-    protected validateProps(props: IInternalHandleProps) {
+    protected validateProps(props: InternalHandleProps) {
         for (const prop of NUMBER_PROPS) {
             if (typeof (props as any)[prop] !== "number") {
                 throw new Error(`[Blueprint] <Handle> requires number value for ${prop} prop`);

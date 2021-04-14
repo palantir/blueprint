@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
-import { isFunction } from "../../common/utils";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-/** Detect if `React.createPortal()` API method does not exist. */
-const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
-
-export interface IPortalProps extends IProps {
+export interface PortalProps extends Props {
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */
@@ -40,17 +36,17 @@ export interface IPortalProps extends IProps {
     container?: HTMLElement;
 }
 
-export interface IPortalState {
+export interface PortalState {
     hasMounted: boolean;
 }
 
-export interface IPortalContext {
+export interface PortalContext {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
-    blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
+const REACT_CONTEXT_TYPES: ValidationMap<PortalContext> = {
+    blueprintPortalClassName: (obj: PortalContext, key: keyof PortalContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
         }
@@ -63,18 +59,18 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  */
-export class Portal extends React.Component<IPortalProps, IPortalState> {
+export class Portal extends React.Component<PortalProps, PortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 
     public static contextTypes = REACT_CONTEXT_TYPES;
 
-    public static defaultProps: IPortalProps = {
+    public static defaultProps: PortalProps = {
         container: typeof document !== "undefined" ? document.body : undefined,
     };
 
-    public context: IPortalContext = {};
+    public context: PortalContext = {};
 
-    public state: IPortalState = { hasMounted: false };
+    public state: PortalState = { hasMounted: false };
 
     private portalElement: HTMLElement | null = null;
 
@@ -82,12 +78,7 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         // Only render `children` once this component has mounted in a browser environment, so they are
         // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
         // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        if (
-            cannotCreatePortal ||
-            typeof document === "undefined" ||
-            !this.state.hasMounted ||
-            this.portalElement === null
-        ) {
+        if (typeof document === "undefined" || !this.state.hasMounted || this.portalElement === null) {
             return null;
         } else {
             return ReactDOM.createPortal(this.props.children, this.portalElement);
@@ -102,12 +93,9 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
         this.props.container.appendChild(this.portalElement);
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
-        if (cannotCreatePortal) {
-            this.unstableRenderNoPortal();
-        }
     }
 
-    public componentDidUpdate(prevProps: IPortalProps) {
+    public componentDidUpdate(prevProps: PortalProps) {
         // update className prop on portal DOM element
         if (this.portalElement != null && prevProps.className !== this.props.className) {
             if (prevProps.className !== undefined) {
@@ -115,17 +103,10 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             }
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
-
-        if (cannotCreatePortal) {
-            this.unstableRenderNoPortal();
-        }
     }
 
     public componentWillUnmount() {
         if (this.portalElement != null) {
-            if (cannotCreatePortal) {
-                ReactDOM.unmountComponentAtNode(this.portalElement);
-            }
             this.portalElement.remove();
         }
     }
@@ -138,17 +119,6 @@ export class Portal extends React.Component<IPortalProps, IPortalState> {
             maybeAddClass(container.classList, this.context.blueprintPortalClassName);
         }
         return container;
-    }
-
-    private unstableRenderNoPortal() {
-        if (this.portalElement === null) {
-            return;
-        }
-        ReactDOM.unstable_renderSubtreeIntoContainer(
-            /* parentComponent */ this,
-            <div>{this.props.children}</div>,
-            this.portalElement,
-        );
     }
 }
 

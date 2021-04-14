@@ -15,13 +15,12 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes, Elevation } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { AbstractPureComponent, Classes, Elevation } from "../../common";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface ICardProps extends IProps, HTMLDivProps {
+export interface CardProps extends Props, HTMLDivProps {
     /**
      * Controls the intensity of the drop shadow beneath the card: the higher
      * the elevation, the higher the drop shadow. At elevation `0`, no drop
@@ -49,11 +48,10 @@ export interface ICardProps extends IProps, HTMLDivProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-@polyfill
-export class Card extends AbstractPureComponent2<ICardProps> {
+export class Card extends AbstractPureComponent<CardProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
 
-    public static defaultProps: ICardProps = {
+    public static defaultProps: CardProps = {
         elevation: Elevation.ZERO,
         interactive: false,
     };

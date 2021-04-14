@@ -15,14 +15,13 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
-export interface IProgressBarProps extends IProps, IIntentProps {
+export interface ProgressBarProps extends Props, IntentProps {
     /**
      * Whether the background should animate.
      *
@@ -45,8 +44,7 @@ export interface IProgressBarProps extends IProps, IIntentProps {
     value?: number;
 }
 
-@polyfill
-export class ProgressBar extends AbstractPureComponent2<IProgressBarProps> {
+export class ProgressBar extends AbstractPureComponent<ProgressBarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 
     public render() {

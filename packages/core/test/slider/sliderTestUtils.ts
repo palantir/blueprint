@@ -18,9 +18,9 @@ import { ReactWrapper } from "enzyme";
 
 import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 
-import { Handle, IInternalHandleProps } from "../../src/components/slider/handle";
+import { Handle, InternalHandleProps } from "../../src/components/slider/handle";
 
-interface IMoveOptions {
+interface MoveOptions {
     /** Size in pixels of one drag event. Direction of drag is determined by `vertical` option. */
     dragSize?: number;
     /** Number of drag events of length `dragSize` to perform. */
@@ -43,7 +43,7 @@ export const DRAG_SIZE = 20;
  * Simulates a full move of a slider handle: engage, move, release.
  * Supports touch and vertical events. Use options to configure exact movement.
  */
-export function simulateMovement(wrapper: ReactWrapper<IInternalHandleProps>, options: IMoveOptions) {
+export function simulateMovement(wrapper: ReactWrapper<InternalHandleProps>, options: MoveOptions) {
     const { from = 0, handleIndex = 0, touch = false } = options;
     const handle = wrapper.find(Handle).at(handleIndex);
     const eventData =
@@ -66,7 +66,7 @@ export const mouseUpHorizontal = (clientX: number) => genericRelease({ dragTimes
 // Private helpers
 // ===============
 
-function genericMove(options: IMoveOptions) {
+function genericMove(options: MoveOptions) {
     const { dragSize = DRAG_SIZE, from = 0, dragTimes = 1, touch } = options;
     const eventName = touch ? "touchmove" : "mousemove";
     for (let i = 0; i < dragTimes; i += 1) {
@@ -75,14 +75,14 @@ function genericMove(options: IMoveOptions) {
     }
 }
 
-function genericRelease(options: IMoveOptions) {
+function genericRelease(options: MoveOptions) {
     const { dragSize = DRAG_SIZE, from = 0, dragTimes = 1, touch } = options;
     const eventName = touch ? "touchend" : "mouseup";
     const clientPixel = from + dragTimes * dragSize;
     dispatchEvent(options, eventName, clientPixel);
 }
 
-function dispatchEvent(options: IMoveOptions, eventName: string, clientPixel: number) {
+function dispatchEvent(options: MoveOptions, eventName: string, clientPixel: number) {
     const { touch, vertical, verticalHeight = 0 } = options;
     const dispatchFn = touch ? dispatchTouchEvent : dispatchMouseEvent;
     if (vertical) {

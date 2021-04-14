@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
-export interface IAsyncControllableInputProps
+export interface AsyncControllableInputProps
     extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     inputRef?: React.LegacyRef<HTMLInputElement>;
 }
 
-type InputValue = IAsyncControllableInputProps["value"];
+type InputValue = AsyncControllableInputProps["value"];
 
-export interface IAsyncControllableInputState {
+export interface AsyncControllableInputState {
     /**
      * Whether we are in the middle of a composition event.
      *
@@ -64,14 +63,14 @@ export interface IAsyncControllableInputState {
  *
  * Note: this component does not apply any Blueprint-specific styling.
  */
-@polyfill
+
 export class AsyncControllableInput extends React.PureComponent<
-    IAsyncControllableInputProps,
-    IAsyncControllableInputState
+    AsyncControllableInputProps,
+    AsyncControllableInputState
 > {
     public static displayName = `${DISPLAYNAME_PREFIX}.AsyncControllableInput`;
 
-    public state: IAsyncControllableInputState = {
+    public state: AsyncControllableInputState = {
         hasPendingUpdate: false,
         isComposing: false,
         nextValue: this.props.value,
@@ -79,9 +78,9 @@ export class AsyncControllableInput extends React.PureComponent<
     };
 
     public static getDerivedStateFromProps(
-        nextProps: IAsyncControllableInputProps,
-        nextState: IAsyncControllableInputState,
-    ): Partial<IAsyncControllableInputState> | null {
+        nextProps: AsyncControllableInputProps,
+        nextState: AsyncControllableInputState,
+    ): Partial<AsyncControllableInputState> | null {
         if (nextState.isComposing || nextProps.value === undefined) {
             // don't derive anything from props if:
             // - in uncontrolled mode, OR

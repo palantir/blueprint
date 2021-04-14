@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
-import { H5, Position, Switch } from "@blueprintjs/core";
-import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { H5, Switch } from "@blueprintjs/core";
+import { DateInput, DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-export interface IDateInputExampleState {
+export interface DateInputExampleState {
     closeOnSelection: boolean;
     date: Date | null;
     disabled: boolean;
     fill: boolean;
-    format: IDateFormatProps;
+    format: DateFormatProps;
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
 }
 
-export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
-    public state: IDateInputExampleState = {
+export class DateInputExample extends React.PureComponent<ExampleProps, DateInputExampleState> {
+    public state: DateInputExampleState = {
         closeOnSelection: true,
         date: null,
         disabled: false,
@@ -76,7 +76,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                     {...format}
                     defaultValue={new Date()}
                     onChange={this.handleDateChange}
-                    popoverProps={{ position: Position.BOTTOM }}
+                    popoverProps={{ placement: "bottom" }}
                     timePickerProps={
                         timePrecision === undefined
                             ? undefined
@@ -126,5 +126,5 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
 
     private handleDateChange = (date: Date | null) => this.setState({ date });
 
-    private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
+    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
 }

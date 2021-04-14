@@ -16,14 +16,15 @@
 
 import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
-import * as React from "react";
+import React from "react";
 
-import { Classes, Icon, IInputGroupProps, MenuItem } from "@blueprintjs/core";
+import { Classes, InputGroupProps, MenuItem } from "@blueprintjs/core";
+import { CaretRight } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
-import { eachLayoutNode } from "../common/utils";
+import { eachLayoutNode } from "../common/documentalistUtils";
 
-export interface INavigatorProps {
+export interface NavigatorProps {
     /** Whether navigator is open. */
     isOpen: boolean;
 
@@ -40,17 +41,17 @@ export interface INavigatorProps {
     onClose: () => void;
 }
 
-export interface INavigationSection {
+export interface NavigationSection {
     path: string[];
     route: string;
     title: string;
 }
 
-const NavOmnibar = Omnibar.ofType<INavigationSection>();
-const INPUT_PROPS: IInputGroupProps = { placeholder: "Fuzzy search headings..." };
+const NavOmnibar = Omnibar.ofType<NavigationSection>();
+const INPUT_PROPS: InputGroupProps = { placeholder: "Fuzzy search headings..." };
 
-export class Navigator extends React.PureComponent<INavigatorProps> {
-    private sections: INavigationSection[];
+export class Navigator extends React.PureComponent<NavigatorProps> {
+    private sections: NavigationSection[];
 
     public componentDidMount() {
         this.sections = [];
@@ -84,7 +85,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
         );
     }
 
-    private filterMatches: ItemListPredicate<INavigationSection> = (query, items) =>
+    private filterMatches: ItemListPredicate<NavigationSection> = (query, items) =>
         filter(items, query, {
             key: "route",
             maxInners: items.length / 5,
@@ -93,14 +94,14 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
             usePathScoring: true,
         });
 
-    private renderItem: ItemRenderer<INavigationSection> = (section, props) => {
+    private renderItem: ItemRenderer<NavigationSection> = (section, props) => {
         if (!props.modifiers.matchesPredicate) {
             return null;
         }
 
         // insert caret-right between each path element
         const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
-            elems.push(el, <Icon key={el} icon="caret-right" />);
+            elems.push(el, <CaretRight key={el} />);
             return elems;
         }, []);
         pathElements.pop();
@@ -124,7 +125,7 @@ export class Navigator extends React.PureComponent<INavigatorProps> {
     };
 
     // updating location.hash will trigger hashchange event, which Documentation will receive and use to navigate.
-    private handleItemSelect = (item: INavigationSection) => {
+    private handleItemSelect = (item: NavigationSection) => {
         location.hash = item.route;
         this.props.onClose();
     };

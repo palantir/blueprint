@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Classes, H5, InputGroup, NonIdealState, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface INonIdealStateExampleState {
+export interface NonIdealStateExampleState {
     action: boolean;
     description: boolean;
     icon: boolean;
 }
 
-export class NonIdealStateExample extends React.PureComponent<IExampleProps, INonIdealStateExampleState> {
-    public state: INonIdealStateExampleState = {
+export class NonIdealStateExample extends React.PureComponent<ExampleProps, NonIdealStateExampleState> {
+    public state: NonIdealStateExampleState = {
         action: true,
         description: true,
         icon: true,

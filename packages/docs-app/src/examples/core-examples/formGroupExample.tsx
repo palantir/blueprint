@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { FormGroup, H5, InputGroup, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IFormGroupExampleState {
+export interface FormGroupExampleState {
     disabled: boolean;
     helperText: boolean;
     inline: boolean;
@@ -30,8 +30,8 @@ export interface IFormGroupExampleState {
     requiredLabel: boolean;
 }
 
-export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGroupExampleState> {
-    public state: IFormGroupExampleState = {
+export class FormGroupExample extends React.PureComponent<ExampleProps, FormGroupExampleState> {
+    public state: FormGroupExampleState = {
         disabled: false,
         helperText: false,
         inline: false,

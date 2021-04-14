@@ -16,11 +16,11 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { spy } from "sinon";
 
-import { Classes, ITreeNode, ITreeProps, Tree } from "../../src";
+import { Classes, TreeNodeInfo, TreeProps, Tree } from "../../src";
 
 describe("<Tree>", () => {
     let testsContainerElement: Element;
@@ -37,17 +37,17 @@ describe("<Tree>", () => {
 
     it("renders its contents", () => {
         const tree = renderTree({ contents: [{ id: 0, label: "Node" }] });
-        assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
+        assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
     it("handles undefined input well", () => {
         const tree = renderTree({ contents: undefined });
-        assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
+        assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
     it("handles empty input well", () => {
         const tree = renderTree({ contents: [] });
-        assert.lengthOf(tree.find({ className: Classes.TREE }), 1);
+        assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
     it("hasCaret forces a caret to be/not be displayed", () => {
@@ -303,12 +303,12 @@ describe("<Tree>", () => {
         return assertNodeHasClass(tree, nodeClass, hasCaret ? Classes.TREE_NODE_CARET : Classes.TREE_NODE_CARET_NONE);
     }
 
-    function renderTree(props?: Partial<ITreeProps>) {
+    function renderTree(props?: Partial<TreeProps>) {
         return mount(<Tree contents={createDefaultContents()} {...props} />);
     }
 
     // tslint:disable object-literal-sort-keys
-    function createDefaultContents(): ITreeNode[] {
+    function createDefaultContents(): TreeNodeInfo[] {
         return [
             { id: 0, className: "c0", label: "Item 0" },
             {

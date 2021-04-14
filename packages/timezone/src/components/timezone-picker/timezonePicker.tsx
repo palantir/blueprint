@@ -15,31 +15,30 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    HTMLInputProps,
-    IButtonProps,
-    IInputGroupProps,
-    IPopoverProps,
-    IProps,
+    ButtonProps,
+    InputGroupProps,
+    PopoverProps,
+    Props,
     MenuItem,
 } from "@blueprintjs/core";
+import { CaretDown } from "@blueprintjs/icons";
 import { ItemListPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { formatTimezone, TimezoneDisplayFormat } from "./timezoneDisplayFormat";
-import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./timezoneItems";
+import { getInitialTimezoneItems, getTimezoneItems, TimezoneItem } from "./timezoneItems";
 
 export { TimezoneDisplayFormat };
 
-export interface ITimezonePickerProps extends IProps {
+export interface TimezonePickerProps extends Props {
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
      * See https://www.iana.org/time-zones for more information.
@@ -94,7 +93,7 @@ export interface ITimezonePickerProps extends IProps {
      * Props to spread to the target `Button`.
      * This prop will be ignored if `children` is provided.
      */
-    buttonProps?: Partial<IButtonProps>;
+    buttonProps?: Partial<ButtonProps>;
 
     /**
      * Props to spread to the filter `InputGroup`.
@@ -102,23 +101,22 @@ export interface ITimezonePickerProps extends IProps {
      * If you want to control the filter input, you can pass `value` and `onChange` here
      * to override `Select`'s own behavior.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: InputGroupProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
-    popoverProps?: Partial<IPopoverProps>;
+    popoverProps?: Partial<PopoverProps>;
 }
 
-export interface ITimezonePickerState {
+export interface TimezonePickerState {
     query: string;
 }
 
-const TypedSelect = Select.ofType<ITimezoneItem>();
+const TypedSelect = Select.ofType<TimezoneItem>();
 
-@polyfill
-export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps, ITimezonePickerState> {
+export class TimezonePicker extends AbstractPureComponent<TimezonePickerProps, TimezonePickerState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezonePicker`;
 
-    public static defaultProps: Partial<ITimezonePickerProps> = {
+    public static defaultProps: Partial<TimezonePickerProps> = {
         date: new Date(),
         disabled: false,
         inputProps: {},
@@ -128,12 +126,12 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         valueDisplayFormat: TimezoneDisplayFormat.OFFSET,
     };
 
-    private timezoneItems: ITimezoneItem[];
+    private timezoneItems: TimezoneItem[];
 
-    private initialTimezoneItems: ITimezoneItem[];
+    private initialTimezoneItems: TimezoneItem[];
 
-    constructor(props: ITimezonePickerProps, context?: any) {
-        super(props, context);
+    constructor(props: TimezonePickerProps) {
+        super(props);
 
         const { date = new Date(), showLocalTimezone, inputProps = {} } = props;
         this.state = { query: inputProps.value || "" };
@@ -146,11 +144,11 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         const { children, className, disabled, inputProps, popoverProps } = this.props;
         const { query } = this.state;
 
-        const finalInputProps: IInputGroupProps & HTMLInputProps = {
+        const finalInputProps: InputGroupProps = {
             placeholder: "Search for timezones...",
             ...inputProps,
         };
-        const finalPopoverProps: Partial<IPopoverProps> = {
+        const finalPopoverProps: Partial<PopoverProps> = {
             ...popoverProps,
             popoverClassName: classNames(Classes.TIMEZONE_PICKER_POPOVER, popoverProps.popoverClassName),
         };
@@ -170,12 +168,12 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
                 disabled={disabled}
                 onQueryChange={this.handleQueryChange}
             >
-                {children != null ? children : this.renderButton()}
+                {children ?? this.renderButton()}
             </TypedSelect>
         );
     }
 
-    public componentDidUpdate(prevProps: ITimezonePickerProps, prevState: ITimezonePickerState) {
+    public componentDidUpdate(prevProps: TimezonePickerProps, prevState: TimezonePickerState) {
         super.componentDidUpdate(prevProps, prevState);
         const { date: nextDate = new Date(), inputProps: nextInputProps = {} } = this.props;
 
@@ -187,7 +185,7 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         }
     }
 
-    protected validateProps(props: IPopoverProps & { children?: React.ReactNode }) {
+    protected validateProps(props: TimezonePickerProps & { children?: React.ReactNode }) {
         const childrenCount = React.Children.count(props.children);
         if (childrenCount > 1) {
             console.warn(Errors.TIMEZONE_PICKER_WARN_TOO_MANY_CHILDREN);
@@ -201,17 +199,17 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         ) : (
             <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
         );
-        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} {...buttonProps} />;
+        return <Button rightIcon={<CaretDown />} disabled={disabled} text={buttonContent} {...buttonProps} />;
     }
 
-    private filterItems: ItemListPredicate<ITimezoneItem> = (query, items) => {
+    private filterItems: ItemListPredicate<TimezoneItem> = (query, items) => {
         // using list predicate so only one RegExp instance is needed
         // escape bad regex characters, let spaces act as any separator
         const expr = new RegExp(query.replace(/([[()+*?])/g, "\\$1").replace(" ", "[ _/\\(\\)]+"), "i");
         return items.filter(item => expr.test(item.text + item.label));
     };
 
-    private renderItem: ItemRenderer<ITimezoneItem> = (item, { handleClick, modifiers }) => {
+    private renderItem: ItemRenderer<TimezoneItem> = (item, { handleClick, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -228,7 +226,11 @@ export class TimezonePicker extends AbstractPureComponent2<ITimezonePickerProps,
         );
     };
 
-    private handleItemSelect = (timezone: ITimezoneItem) => this.props.onChange?.(timezone.timezone);
+    private handleItemSelect = (timezone: TimezoneItem) => {
+        this.props.onChange?.(timezone.timezone);
+    };
 
-    private handleQueryChange = (query: string) => this.setState({ query });
+    private handleQueryChange = (query: string) => {
+        this.setState({ query });
+    };
 }

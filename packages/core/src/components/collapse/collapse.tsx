@@ -15,13 +15,12 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface ICollapseProps extends IProps {
+export interface CollapseProps extends Props {
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
@@ -56,7 +55,7 @@ export interface ICollapseProps extends IProps {
     transitionDuration?: number;
 }
 
-export interface ICollapseState {
+export interface CollapseState {
     /** The state the element is currently in. */
     animationState: AnimationStates;
 
@@ -114,18 +113,17 @@ export enum AnimationStates {
     CLOSED,
 }
 
-@polyfill
-export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
-    public static defaultProps: ICollapseProps = {
+    public static defaultProps: CollapseProps = {
         component: "div",
         isOpen: false,
         keepChildrenMounted: false,
         transitionDuration: 200,
     };
 
-    public static getDerivedStateFromProps(props: ICollapseProps, state: ICollapseState) {
+    public static getDerivedStateFromProps(props: CollapseProps, state: CollapseState) {
         const { isOpen } = props;
         const { animationState } = state;
 
@@ -160,7 +158,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         return null;
     }
 
-    public state: ICollapseState = {
+    public state: CollapseState = {
         animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
         height: undefined,
         heightWhenOpen: undefined,
@@ -182,6 +180,9 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
             transition: isAutoHeight ? "none" : undefined,
         };
 
+        // in order to give hints to child elements which rely on CSS fixed positioning, we need to apply a class
+        // to the element which creates a new containing block with a non-empty `transform` property
+        // see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
         const contentsStyle = {
             // only use heightWhenOpen while closing
             transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
@@ -196,7 +197,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
                 style: containerStyle,
             },
             <div
-                className={Classes.COLLAPSE_BODY}
+                className={classNames(Classes.COLLAPSE_BODY, Classes.FIXED_POSITIONING_CONTAINING_BLOCK)}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
                 aria-hidden={!isContentVisible && this.props.keepChildrenMounted}

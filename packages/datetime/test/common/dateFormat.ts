@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { IDateFormatProps } from "../../src/dateFormat";
+import { DateFormatProps } from "../../src/dateFormat";
 
-export const DATE_FORMAT: IDateFormatProps = {
+export const DATE_FORMAT: DateFormatProps = {
     formatDate: date => [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/"),
     parseDate: str => new Date(str),
     placeholder: "M/D/YYYY",
 };
 
-export const DATETIME_FORMAT: IDateFormatProps = {
+export const DATETIME_FORMAT: DateFormatProps = {
     formatDate: date => {
         const hour = `${date.getHours()}`.padStart(2, "0");
         const minute = `${date.getMinutes()}`.padStart(2, "0");

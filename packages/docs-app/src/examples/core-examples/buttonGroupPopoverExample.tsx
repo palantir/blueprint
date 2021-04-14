@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
-import { Alignment, Button, ButtonGroup, H5, IconName, Popover, Position, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Alignment, Button, ButtonGroup, H5, IconName, Popover, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { FileMenu } from "./common/fileMenu";
 
-export interface IButtonGroupPopoverExampleState {
+export interface ButtonGroupPopoverExampleState {
     alignText: Alignment;
     fill: boolean;
     large: boolean;
@@ -30,8 +30,8 @@ export interface IButtonGroupPopoverExampleState {
     vertical: boolean;
 }
 
-export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps, IButtonGroupPopoverExampleState> {
-    public state: IButtonGroupPopoverExampleState = {
+export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps, ButtonGroupPopoverExampleState> {
+    public state: ButtonGroupPopoverExampleState = {
         alignText: Alignment.CENTER,
         fill: false,
         large: false,
@@ -72,9 +72,8 @@ export class ButtonGroupPopoverExample extends React.PureComponent<IExampleProps
     private renderButton(text: string, iconName: IconName) {
         const { vertical } = this.state;
         const rightIconName: IconName = vertical ? "caret-right" : "caret-down";
-        const position = vertical ? Position.RIGHT_TOP : Position.BOTTOM_LEFT;
         return (
-            <Popover content={<FileMenu />} position={position}>
+            <Popover content={<FileMenu />} placement={vertical ? "right-start" : "bottom-start"}>
                 <Button rightIcon={rightIconName} icon={iconName} text={text} />
             </Popover>
         );

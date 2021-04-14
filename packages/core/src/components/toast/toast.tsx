@@ -15,23 +15,24 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
+import { Cross } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, ActionProps, IntentProps, LinkProps, Props, MaybeElement } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
 
-export interface IToastProps extends IProps, IIntentProps {
+export interface ToastProps extends Props, IntentProps {
     /**
      * Action rendered as a minimal `AnchorButton`. The toast is dismissed automatically when the
      * user clicks the action button. Note that the `intent` prop is ignored (the action button
      * cannot have its own intent color that might conflict with the toast's intent). Omit this
      * prop to omit the action button.
      */
-    action?: IActionProps & ILinkProps;
+    action?: ActionProps & LinkProps;
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
     icon?: IconName | MaybeElement;
@@ -54,9 +55,8 @@ export interface IToastProps extends IProps, IIntentProps {
     timeout?: number;
 }
 
-@polyfill
-export class Toast extends AbstractPureComponent2<IToastProps> {
-    public static defaultProps: IToastProps = {
+export class Toast extends AbstractPureComponent<ToastProps> {
+    public static defaultProps: ToastProps = {
         className: "",
         message: "",
         timeout: 5000,
@@ -79,7 +79,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
                 <span className={Classes.TOAST_MESSAGE}>{message}</span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    <Button icon="cross" onClick={this.handleCloseClick} />
+                    <Button icon={<Cross />} onClick={this.handleCloseClick} />
                 </ButtonGroup>
             </div>
         );
@@ -89,7 +89,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
         this.startTimeout();
     }
 
-    public componentDidUpdate(prevProps: IToastProps) {
+    public componentDidUpdate(prevProps: ToastProps) {
         if (prevProps.timeout !== this.props.timeout) {
             if (this.props.timeout! > 0) {
                 this.startTimeout();

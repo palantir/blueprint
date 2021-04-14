@@ -58,4 +58,4 @@ document flow. Otherwise, content will be set to `position: fixed` to cover the 
 </div>
 ```
 
-@interface IOverlayProps
+@interface OverlayProps

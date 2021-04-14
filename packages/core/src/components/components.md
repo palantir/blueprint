@@ -1,19 +1,18 @@
 @# Components
 
-<!-- Exact ordering of components in the navbar: -->
+<!-- Exact ordering of items in the navbar: -->
 
 @page breadcrumbs
-@page button
+@page buttons
 @page button-group
 @page callout
 @page card
 @page collapse
-@page collapsible-list
 @page divider
 @page editable-text
 @page html
 @page html-table
-@page hotkeys
+@page hotkeys-target
 @page icon
 @page menu
 @page navbar

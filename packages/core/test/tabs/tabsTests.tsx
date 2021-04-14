@@ -15,17 +15,17 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import * as Keys from "../../src/common/keys";
 import { Tab } from "../../src/components/tabs/tab";
-import { ITabsProps, ITabsState, Tabs } from "../../src/components/tabs/tabs";
+import { TabsProps, TabsState, Tabs } from "../../src/components/tabs/tabs";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";
-    // default tabs content is generated from these IDs in each test
+    // default tabs content is generated from these Dsin each test
     const TAB_IDS = ["first", "second", "third"];
 
     // selectors using ARIA role
@@ -141,7 +141,7 @@ describe("<Tabs>", () => {
         }
     });
 
-    it("sets aria-* attributes with matching IDs", () => {
+    it("sets aria-* attributes with matching Ds", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         wrapper.find(TAB).forEach(title => {
             // title "controls" tab element
@@ -149,7 +149,7 @@ describe("<Tabs>", () => {
             const tab = wrapper.find(`#${titleControls}`);
             // tab element "labelled by" title element
             assert.isTrue(tab.is(TAB_PANEL), "aria-controls isn't TAB_PANEL");
-            assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched IDs");
+            assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched Ds");
         });
     });
 
@@ -390,13 +390,13 @@ describe("<Tabs>", () => {
         });
     });
 
-    function findTabById(wrapper: ReactWrapper<ITabsProps>, id: string) {
+    function findTabById(wrapper: ReactWrapper<TabsProps>, id: string) {
         // Need this to get the right overload signature
         // eslint-disable-line @typescript-eslint/consistent-type-assertions
         return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
     }
 
-    function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabId: string) {
+    function assertIndicatorPosition(wrapper: ReactWrapper<TabsProps, TabsState>, selectedTabId: string) {
         const style = wrapper.state().indicatorWrapperStyle;
         assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
         const node = wrapper.getDOMNode();

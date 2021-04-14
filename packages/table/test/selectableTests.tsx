@@ -18,10 +18,10 @@ import { expect } from "chai";
 import React from "react";
 import sinon from "sinon";
 
-import { IFocusedCellCoordinates } from "../src/common/cell";
+import { FocusedCellCoordinates } from "../src/common/cell";
 import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
-import { DragSelectable, IDragSelectableProps } from "../src/interactions/selectable";
-import { IRegion, Regions } from "../src/regions";
+import { DragSelectable, DragSelectableProps } from "../src/interactions/selectable";
+import { Region, Regions } from "../src/regions";
 import { ElementHarness, ReactHarness } from "./harness";
 
 const REGION = Regions.cell(0, 0);
@@ -581,7 +581,7 @@ describe("DragSelectable", () => {
         });
     });
 
-    function mountDragSelectable(props: Partial<IDragSelectableProps> = {}) {
+    function mountDragSelectable(props: Partial<DragSelectableProps> = {}) {
         return harness.mount(
             <DragSelectable
                 enableMultipleSelection={true}
@@ -600,16 +600,16 @@ describe("DragSelectable", () => {
         return component.find(".selectable", index);
     }
 
-    function toCell(region: IRegion) {
+    function toCell(region: Region) {
         // assumes a 1-cell region
         return { row: region.rows[0], col: region.cols[0] };
     }
 
-    function toFocusedCell(singleCellRegion: IRegion) {
+    function toFocusedCell(singleCellRegion: Region) {
         return FocusedCellUtils.toFullCoordinates(toCell(singleCellRegion));
     }
 
-    function expectSingleCellRegion(region: IRegion) {
+    function expectSingleCellRegion(region: Region) {
         // helper function to assert the test regions are all single cells
         const [startRow, endRow] = region.rows;
         const [startCol, endCol] = region.cols;
@@ -625,21 +625,21 @@ describe("DragSelectable", () => {
         expect(onFocusedCell.called).to.be.false;
     }
 
-    function expectOnSelectionCalledWith(selectedRegions: IRegion[]) {
+    function expectOnSelectionCalledWith(selectedRegions: Region[]) {
         expect(onSelection.called, "should call onSelection").to.be.true;
         expect(onSelection.firstCall.args[0], "should call onSelection with correct arg").to.deep.equal(
             selectedRegions,
         );
     }
 
-    function expectOnFocusCalledWith(regionOrCoords: IRegion | IFocusedCellCoordinates, focusSelectionIndex: number) {
+    function expectOnFocusCalledWith(regionOrCoords: Region | FocusedCellCoordinates, focusSelectionIndex: number) {
         expect(onFocusedCell.called, "should call onFocusedCell").to.be.true;
 
-        const region = regionOrCoords as IRegion;
+        const region = regionOrCoords as Region;
         const expectedCoords =
             region.rows != null
                 ? { col: region.cols[0], row: region.rows[0] }
-                : (regionOrCoords as IFocusedCellCoordinates);
+                : (regionOrCoords as FocusedCellCoordinates);
         expect(onFocusedCell.firstCall.args[0], "should call onFocusedCell with correct arg").to.deep.equal({
             ...expectedCoords,
             focusSelectionIndex,

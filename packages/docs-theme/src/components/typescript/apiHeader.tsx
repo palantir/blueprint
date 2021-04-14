@@ -15,16 +15,16 @@
  */
 
 import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
-import * as React from "react";
+import React from "react";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 
 export class ApiHeader extends React.PureComponent<ITsDocBase> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.ApiHeader";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         return (

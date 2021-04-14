@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Alignment, Classes, H3, H5, InputGroup, Navbar, Switch, Tab, TabId, Tabs } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface ITabsExampleState {
+export interface TabsExampleState {
     activePanelOnly: boolean;
     animate: boolean;
     navbarTabId: TabId;
     vertical: boolean;
 }
 
-export class TabsExample extends React.PureComponent<IExampleProps, ITabsExampleState> {
-    public state: ITabsExampleState = {
+export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleState> {
+    public state: TabsExampleState = {
         activePanelOnly: false,
         animate: true,
         navbarTabId: "Home",

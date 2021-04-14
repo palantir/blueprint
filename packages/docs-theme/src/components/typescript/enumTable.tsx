@@ -16,27 +16,27 @@
 
 import { ITsEnum, ITsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IEnumTableProps extends IProps {
+export interface EnumTableProps extends Props {
     data: ITsEnum;
 }
 
-export class EnumTable extends React.PureComponent<IEnumTableProps> {
+export class EnumTable extends React.PureComponent<EnumTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
     public static displayName = "Docs2.EnumTable";
 
-    public context: IDocumentationContext;
+    public context: DocumentationContext;
 
     public render() {
         const { data } = this.props;

@@ -15,13 +15,12 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface ITextProps extends IProps {
+export interface TextProps extends Props {
     /**
      * Indicates that this component should be truncated with an ellipsis if it overflows its container.
      * The `title` attribute will also be added when content overflows to show the full text of the children on hover.
@@ -43,21 +42,20 @@ export interface ITextProps extends IProps {
     title?: string;
 }
 
-export interface ITextState {
+export interface TextState {
     textContent: string;
     isContentOverflowing: boolean;
 }
 
-@polyfill
-export class Text extends AbstractPureComponent2<ITextProps, ITextState> {
+export class Text extends AbstractPureComponent<TextProps, TextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
 
-    public static defaultProps: Partial<ITextProps> = {
+    public static defaultProps: Partial<TextProps> = {
         ellipsize: false,
         tagName: "div",
     };
 
-    public state: ITextState = {
+    public state: TextState = {
         isContentOverflowing: false,
         textContent: "",
     };

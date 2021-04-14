@@ -16,16 +16,16 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
 import { HTMLSelect } from "@blueprintjs/core";
 
-import { Classes, IDatePickerLocaleUtils } from "../src";
-import { DatePickerCaption, IDatePickerCaptionProps } from "../src/datePickerCaption";
+import { Classes, DatePickerLocaleUtils } from "../src";
+import { DatePickerCaption, DatePickerCaptionProps } from "../src/datePickerCaption";
 
 describe("<DatePickerCaption>", () => {
-    const LOCALE_UTILS: IDatePickerLocaleUtils = {
+    const LOCALE_UTILS: DatePickerLocaleUtils = {
         getMonths: () => [
             "January",
             "February",
@@ -114,7 +114,7 @@ describe("<DatePickerCaption>", () => {
         assert.isTrue(options.last().prop("disabled"), "2017 is not disabled");
     });
 
-    function renderDatePickerCaption(props?: Partial<IDatePickerCaptionProps>) {
+    function renderDatePickerCaption(props?: Partial<DatePickerCaptionProps>) {
         const wrapper = mount(
             <DatePickerCaption
                 classNames={{} as any}

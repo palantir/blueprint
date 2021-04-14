@@ -15,21 +15,20 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
 // allow the empty interface so we can label it clearly in the docs
-export interface INavbarHeadingProps extends IProps, HTMLDivProps {
+export interface NavbarHeadingProps extends Props, HTMLDivProps {
     // Empty
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
-export class NavbarHeading extends AbstractPureComponent2<INavbarHeadingProps> {
+
+export class NavbarHeading extends AbstractPureComponent<NavbarHeadingProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
 
     public render() {

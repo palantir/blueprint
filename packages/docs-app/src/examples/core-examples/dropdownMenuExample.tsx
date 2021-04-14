@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
-import { Button, Menu, MenuDivider, MenuItem, Popover, Position } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
-export class DropdownMenuExample extends React.PureComponent<IExampleProps> {
+export class DropdownMenuExample extends React.PureComponent<ExampleProps> {
     public render() {
         const exampleMenu = (
             <Menu>
@@ -36,7 +36,7 @@ export class DropdownMenuExample extends React.PureComponent<IExampleProps> {
         );
         return (
             <Example options={false} {...this.props}>
-                <Popover content={exampleMenu} position={Position.RIGHT_BOTTOM}>
+                <Popover content={exampleMenu} placement="right-end">
                     <Button icon="share" text="Open in..." />
                 </Popover>
             </Example>

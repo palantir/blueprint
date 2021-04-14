@@ -18,7 +18,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 // this component is not part of the public API, but we want to test its implementation in isolation

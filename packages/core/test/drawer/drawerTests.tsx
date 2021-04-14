@@ -16,11 +16,11 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy, stub } from "sinon";
 
 import { Button, Classes, Drawer, Position } from "../../src";
-import { DRAWER_ANGLE_POSITIONS_ARE_CASTED, DRAWER_VERTICAL_IS_IGNORED } from "../../src/common/errors";
+import { DRAWER_ANGLE_POSITIONS_ARE_CASTED } from "../../src/common/errors";
 import * as Keys from "../../src/common/keys";
 
 describe("<Drawer>", () => {
@@ -79,24 +79,6 @@ describe("<Drawer>", () => {
             );
 
             assert.isTrue(warnSpy.alwaysCalledWith(DRAWER_ANGLE_POSITIONS_ARE_CASTED));
-            warnSpy.restore();
-        });
-
-        it("overrides vertical (with console warning)", () => {
-            const warnSpy = stub(console, "warn");
-
-            const drawerLeft = mount(
-                <Drawer isOpen={true} usePortal={false} vertical={true} position={Position.LEFT} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-
-            // vertical size becomes height (opposite test)
-            assert.equal(drawerLeft.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
-            // vertical adds class (opposite test)
-            assert.isFalse(drawerLeft.find(`.${Classes.VERTICAL}`).exists());
-
-            assert.isTrue(warnSpy.alwaysCalledWith(DRAWER_VERTICAL_IS_IGNORED));
             warnSpy.restore();
         });
 
@@ -209,24 +191,6 @@ describe("<Drawer>", () => {
             </Drawer>,
         );
         assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
-    });
-
-    it("vertical size becomes height", () => {
-        const drawer = mount(
-            <Drawer isOpen={true} usePortal={false} size={100} vertical={true}>
-                {createDrawerContents()}
-            </Drawer>,
-        );
-        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
-    });
-
-    it("vertical adds class", () => {
-        const drawer = mount(
-            <Drawer isOpen={true} usePortal={false} vertical={true}>
-                {createDrawerContents()}
-            </Drawer>,
-        );
-        assert.isTrue(drawer.find(`.${Classes.VERTICAL}`).exists());
     });
 
     it("portalClassName appears on Portal", () => {

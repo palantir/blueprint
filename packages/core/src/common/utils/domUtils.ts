@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { isFunction } from "./functionUtils";
-
 export function elementIsOrContains(element: HTMLElement, testElement: HTMLElement) {
     return element === testElement || element.contains(testElement);
 }
@@ -27,6 +25,7 @@ export function elementIsOrContains(element: HTMLElement, testElement: HTMLEleme
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
+/* istanbul ignore next */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
     const throttledFunc = throttleImpl((event: Event) => {
         target.dispatchEvent(new CustomEvent(newEventName, event));
@@ -35,7 +34,7 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     return throttledFunc;
 }
 
-export interface IThrottledReactEventOptions {
+export interface ThrottledReactEventOptions {
     preventDefault?: boolean;
 }
 
@@ -47,7 +46,7 @@ export interface IThrottledReactEventOptions {
  */
 export function throttleReactEventCallback<E extends React.SyntheticEvent = React.SyntheticEvent>(
     callback: (event: E, ...otherArgs: any[]) => any,
-    options: IThrottledReactEventOptions = {},
+    options: ThrottledReactEventOptions = {},
 ) {
     const throttledFunc = throttleImpl(
         callback,
@@ -79,20 +78,14 @@ function throttleImpl<T extends Function>(
 ) {
     let isRunning = false;
     const func = (...args: any[]) => {
-        // don't use safeInvoke, because we might have more than its max number
-        // of typed params
-        if (isFunction(onBeforeIsRunningCheck)) {
-            onBeforeIsRunningCheck(...args);
-        }
+        onBeforeIsRunningCheck?.(...args);
 
         if (isRunning) {
             return;
         }
         isRunning = true;
 
-        if (isFunction(onAfterIsRunningCheck)) {
-            onAfterIsRunningCheck(...args);
-        }
+        onAfterIsRunningCheck?.(...args);
 
         requestAnimationFrame(() => {
             onAnimationFrameRequested(...args);

@@ -15,13 +15,12 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, IProps {
+export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**
      * Whether the file input is non-interactive.
      * Setting this to `true` will automatically disable the child input too.
@@ -82,11 +81,11 @@ export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElem
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
-@polyfill
-export class FileInput extends AbstractPureComponent2<IFileInputProps> {
+
+export class FileInput extends AbstractPureComponent<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
-    public static defaultProps: IFileInputProps = {
+    public static defaultProps: FileInputProps = {
         hasSelection: false,
         inputProps: {},
         text: "Choose file...",

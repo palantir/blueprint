@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import { ICellCoordinate, IRegion, RegionCardinality, Regions } from "../src/regions";
+import { CellCoordinate, Region, RegionCardinality, Regions } from "../src/regions";
 
 describe("Regions", () => {
     describe("factories", () => {
@@ -100,8 +100,8 @@ describe("Regions", () => {
         const isValid = Regions.isRegionValidForTable;
 
         describe("in an NxN table", () => {
-            const expectTrue = (region: IRegion, msg?: string) => expect(isValid(region, N, N), msg).to.be.true;
-            const expectFalse = (region: IRegion, msg?: string) => expect(isValid(region, N, N), msg).to.be.false;
+            const expectTrue = (region: Region, msg?: string) => expect(isValid(region, N, N), msg).to.be.true;
+            const expectFalse = (region: Region, msg?: string) => expect(isValid(region, N, N), msg).to.be.false;
 
             describe("cell regions", () => {
                 it("returns false if row index out-of-bounds", () => {
@@ -152,7 +152,7 @@ describe("Regions", () => {
         });
 
         describe("in an N-row, 0-column table", () => {
-            const expectFalse = (region: IRegion, msg?: string) =>
+            const expectFalse = (region: Region, msg?: string) =>
                 expect(isValid(region, N, VALID_INDEX_LOW), msg).to.be.false;
 
             it("always returns false", () => {
@@ -166,7 +166,7 @@ describe("Regions", () => {
         });
 
         describe("in an N-column, 0-row table", () => {
-            const expectFalse = (region: IRegion, msg?: string) =>
+            const expectFalse = (region: Region, msg?: string) =>
                 expect(isValid(region, VALID_INDEX_LOW, N), msg).to.be.false;
 
             it("always returns false", () => {
@@ -180,7 +180,7 @@ describe("Regions", () => {
         });
 
         describe("in a 0-column, 0-row table", () => {
-            const expectFalse = (region: IRegion, msg?: string) =>
+            const expectFalse = (region: Region, msg?: string) =>
                 expect(isValid(region, VALID_INDEX_LOW, VALID_INDEX_LOW), msg).to.be.false;
 
             it("always returns false", () => {
@@ -276,7 +276,7 @@ describe("Regions", () => {
             [0, 1],
             [1, 0],
             [2, 0],
-        ] as ICellCoordinate[];
+        ] as CellCoordinate[];
         const sparse = Regions.sparseMapCells(cells, () => "X");
         // normal deep equals doesn't work here so we use JSON.stringify
         expect(JSON.stringify(sparse)).to.equal(

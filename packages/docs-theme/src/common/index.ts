@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
-export * from "./utils";
+export * from "./documentalistUtils";
+export * from "./eventHandlerUtils";
+export * from "./stringUtils";

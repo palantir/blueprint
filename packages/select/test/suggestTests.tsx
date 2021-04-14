@@ -16,27 +16,27 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
-import * as sinon from "sinon";
+import React from "react";
+import sinon from "sinon";
 
-import { InputGroup, IPopoverProps, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { InputGroup, Keys, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
-import { IItemRendererProps, QueryList } from "../src";
-import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
+import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { ItemRendererProps, QueryList } from "../src";
+import { SuggestProps, SuggestState, Suggest } from "../src/components/select/suggest";
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<IFilm>();
+    const FilmSuggest = Suggest.ofType<Film>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
-        inputValueRenderer: sinon.SinonSpy<[IFilm], string>;
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        inputValueRenderer: sinon.SinonSpy<[Film], string>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 
@@ -49,7 +49,7 @@ describe("Suggest", () => {
         };
     });
 
-    selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
+    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
         mount(
             <Suggest
                 {...props}
@@ -92,7 +92,7 @@ describe("Suggest", () => {
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList; // private ref
+            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
@@ -106,7 +106,7 @@ describe("Suggest", () => {
                 popoverProps: { transitionDuration: 5 },
                 selectedItem: TOP_100_FILMS[10],
             });
-            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList as QueryList<IFilm>; // private ref
+            const queryList = ((wrapper.instance() as Suggest<Film>) as any).queryList as QueryList<Film>; // private ref
 
             assert.deepEqual(
                 queryList.state.activeItem,
@@ -244,7 +244,7 @@ describe("Suggest", () => {
             assert.isTrue(onOpening.calledOnce);
         });
 
-        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<IPopoverProps> {
+        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<PopoverProps> {
             return {
                 ...defaultProps.popoverProps,
                 isOpen,
@@ -324,7 +324,7 @@ describe("Suggest", () => {
         });
     });
 
-    function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
+    function suggest(props: Partial<SuggestProps<Film>> = {}, query?: string) {
         const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
         if (query !== undefined) {
             wrapper.setState({ query });
@@ -333,7 +333,7 @@ describe("Suggest", () => {
     }
 });
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }
 
@@ -341,7 +341,7 @@ function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
     wrapper.find("a").at(index).simulate("click");
 }
 
-function inputValueRenderer(item: IFilm) {
+function inputValueRenderer(item: Film) {
     return item.title;
 }
 

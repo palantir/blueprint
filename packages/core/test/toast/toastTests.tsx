@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { SinonSpy, spy } from "sinon";
 
 import { AnchorButton, Button, Toast } from "../../src";
@@ -26,7 +26,6 @@ describe("<Toast>", () => {
         const { action, dismiss } = wrap(<Toast message="Hello World" />);
         assert.lengthOf(action, 0);
         assert.lengthOf(dismiss, 1);
-        assert.strictEqual(dismiss.prop("icon"), "cross");
     });
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {

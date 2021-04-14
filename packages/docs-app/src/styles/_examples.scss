@@ -1,8 +1,9 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "~@blueprintjs/icons/lib/scss/variables";
 @import "~@blueprintjs/core/src/common/react-transition";
+@import "~@blueprintjs/core/src/components/icon/icon-mixins";
 
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "$=") {
@@ -61,6 +62,10 @@
   max-width: 280px;
 }
 
+.docs-multistep-dialog-example-step {
+  min-height: 150px;
+}
+
 #{example("TagExample")} {
   .docs-example {
     flex-direction: column;
@@ -73,7 +78,7 @@
     height: $pt-grid-size * 25;
   }
 
-  .context-menu-node {
+  .docs-context-menu-node {
     $node-size: $pt-grid-size * 8;
     $icon-size: $pt-icon-size-standard * 2;
     $node-border-width: 4px;
@@ -89,13 +94,13 @@
     &::before {
       @include pt-icon($icon-size, 16);
       color: $white;
-      content: $pt-icon-envelope;
+      content: map-get($blueprint-icon-codepoints, "envelope");
       left: ($node-size - $icon-size) / 2 - $node-border-width;
       position: relative;
       top: ($node-size - $icon-size) / 2 - $node-border-width;
     }
 
-    &.context-menu-open {
+    &.docs-context-menu-open {
       box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
     }
   }
@@ -255,17 +260,20 @@
 #{example("PopoverExample")} {
   .docs-example {
     display: block;
-    max-height: 700px;
+    max-height: 785px;
     overflow: scroll;
+    padding: 0;
+    position: relative; // create a stacking context for when usePortal={false}
   }
 
   .docs-popover-example-scroll {
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 1500px;
+    height: 1700px;
     justify-content: center;
-    width: 1000px;
+    margin: 0;
+    width: 1600px;
 
     > p {
       margin-top: $pt-grid-size;
@@ -282,6 +290,7 @@
   }
 
   .#{$ns}-popover-content {
+    min-width: 300px;
     padding: $pt-grid-size * 2;
 
     .#{$ns}-button:not(:first-child) {
@@ -316,7 +325,7 @@
   }
 }
 
-.docs-popover-position-example {
+.docs-popover-placement-example {
   em {
     color: $pt-text-color-muted;
     display: inline-block;
@@ -372,7 +381,7 @@
   text-align: center;
 }
 
-.docs-popover-position-label-side {
+.docs-popover-placement-label-side {
   color: $cobalt3;
 
   .#{$ns}-dark & {
@@ -380,7 +389,7 @@
   }
 }
 
-.docs-popover-position-label-alignment {
+.docs-popover-placement-label-alignment {
   color: $forest3;
 
   .#{$ns}-dark & {
@@ -413,6 +422,7 @@
     flex: 1 1 auto;
     overflow-x: scroll;
     overflow-y: hidden;
+    position: relative;
 
     .#{$ns}-dark & {
       background: $dark-gray5;
@@ -467,6 +477,13 @@
 #{example("ButtonGroupPopoverExample")} {
   .docs-example > * {
     margin: 0;
+  }
+}
+
+#{example("ToastExample")} {
+  .docs-example {
+    // necessary for inline Toaster (usePortal={false})
+    position: relative;
   }
 }
 

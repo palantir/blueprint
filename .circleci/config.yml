@@ -128,20 +128,13 @@ jobs:
             0) yarn lerna run --parallel test:typeCheck ;; \
             1) yarn lerna run --scope "@blueprintjs/core" test:karma ;; \
             2) yarn lerna run --scope "@blueprintjs/datetime" test:karma ;; \
-            3) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
-            4) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
-            5) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
+            4) yarn lerna run --scope "@blueprintjs/select" test:karma ;; \
+            5) yarn lerna run --scope "@blueprintjs/table" test:karma ;; \
+            6) yarn lerna run --scope "@blueprintjs/timezone" test:karma ;; \
             esac
           when: always
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
-
-  test-react-15:
-    # copy test-react-16 and override environment
-    <<: *test-react
-    environment:
-      JUNIT_REPORT_PATH: reports
-      REACT: 15 # use React 15 for this job
 
   test-iso-react-16: &test-iso
     docker: *docker-node-lts
@@ -155,13 +148,6 @@ jobs:
       - run: yarn lerna run --parallel test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
-
-  test-iso-react-15:
-    # copy test-iso-react-16 and override environment
-    <<: *test-iso
-    environment:
-      JUNIT_REPORT_PATH: reports
-      REACT: 15 # use React 15 for this job
 
   deploy-preview:
     docker: *docker-node-lts
@@ -199,11 +185,7 @@ workflows:
           requires: [checkout-code]
       - dist:
           requires: [compile]
-      - test-react-15:
-          requires: [compile]
       - test-react-16:
-          requires: [compile]
-      - test-iso-react-15:
           requires: [compile]
       - test-iso-react-16:
           requires: [compile]
@@ -214,9 +196,7 @@ workflows:
             [
               dist,
               lint,
-              test-react-15,
               test-react-16,
-              test-iso-react-15,
               test-iso-react-16,
             ]
           filters:

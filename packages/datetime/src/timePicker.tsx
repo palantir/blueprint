@@ -15,9 +15,9 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, IProps, Keys } from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Props, Keys } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -41,7 +41,7 @@ export const TimePrecision = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 
-export interface ITimePickerProps extends IProps {
+export interface TimePickerProps extends Props {
     /**
      * Whether to focus the first input when it opens initially.
      *
@@ -140,7 +140,7 @@ export interface ITimePickerProps extends IProps {
     value?: Date | null;
 }
 
-export interface ITimePickerState {
+export interface TimePickerState {
     hourText?: string;
     minuteText?: string;
     secondText?: string;
@@ -149,8 +149,8 @@ export interface ITimePickerState {
     isPm?: boolean;
 }
 
-export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
-    public static defaultProps: ITimePickerProps = {
+export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
+    public static defaultProps: TimePickerProps = {
         autoFocus: false,
         disabled: false,
         maxTime: getDefaultMaxTime(),
@@ -163,8 +163,8 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 
-    public constructor(props?: ITimePickerProps, context?: any) {
-        super(props, context);
+    public constructor(props?: TimePickerProps) {
+        super(props);
 
         let value = props.minTime;
         if (props.value != null) {
@@ -214,7 +214,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         );
     }
 
-    public componentDidUpdate(prevProps: ITimePickerProps) {
+    public componentDidUpdate(prevProps: TimePickerProps) {
         const didMinTimeChange = prevProps.minTime !== this.props.minTime;
         const didMaxTimeChange = prevProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;
@@ -354,9 +354,9 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     // begin method definitions: state modification
 
     /**
-     * Generates a full ITimePickerState object with all text fields set to formatted strings based on value
+     * Generates a full TimePickerState object with all text fields set to formatted strings based on value
      */
-    private getFullStateFromValue(value: Date, useAmPm: boolean): ITimePickerState {
+    private getFullStateFromValue(value: Date, useAmPm: boolean): TimePickerState {
         const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
         const hourUnit = useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
         /* tslint:disable:object-literal-sort-keys */
@@ -398,7 +398,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         }
     }
 
-    private updateState(state: ITimePickerState) {
+    private updateState(state: TimePickerState) {
         let newState = state;
         const hasNewValue = newState.value != null && !DateUtils.areSameTime(newState.value, this.state.value);
 
@@ -447,11 +447,11 @@ function getStringValueFromInputEvent(e: React.SyntheticEvent<HTMLInputElement>)
     return (e.target as HTMLInputElement).value;
 }
 
-interface IKeyEventMap {
+interface KeyEventMap {
     [key: number]: () => void;
 }
 
-function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: IKeyEventMap, preventDefault = true) {
+function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>, actions: KeyEventMap, preventDefault = true) {
     for (const k of Object.keys(actions)) {
         const key = Number(k);
         // HACKHACK: https://github.com/palantir/blueprint/issues/4165

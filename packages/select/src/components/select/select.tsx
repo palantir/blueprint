@@ -15,29 +15,27 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     Button,
     DISPLAYNAME_PREFIX,
-    getRef,
-    HTMLInputProps,
-    IInputGroupProps,
+    InputGroupProps,
     InputGroup,
-    IPopoverProps,
-    IRefCallback,
-    IRefObject,
-    isRefObject,
+    PopoverProps,
+    Ref,
     Keys,
     Popover,
-    Position,
+    refHandler,
+    setRef,
 } from "@blueprintjs/core";
+import { Cross, Search } from "@blueprintjs/icons";
 
-import { Classes, IListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, ListItemsProps } from "../../common";
+import { QueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface ISelectProps<T> extends IListItemsProps<T> {
+export interface SelectProps<T> extends ListItemsProps<T> {
     /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
@@ -60,11 +58,11 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
      * to control this input.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: InputGroupProps;
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<IPopoverProps> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -75,36 +73,30 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     resetOnClose?: boolean;
 }
 
-export interface ISelectState {
+export interface SelectState {
     isOpen: boolean;
 }
 
-export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectState> {
+export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     public static ofType<U>() {
-        return Select as new (props: ISelectProps<U>) => Select<U>;
+        return Select as new (props: SelectProps<U>) => Select<U>;
     }
 
-    public state: ISelectState = { isOpen: false };
+    public state: SelectState = { isOpen: false };
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
     private queryList: QueryList<T> | null = null;
 
     private previousFocusedElement: HTMLElement | undefined;
 
-    private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps!.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
-    };
+    private handleInputRef: Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+
+    private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -114,29 +106,35 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             <this.TypedQueryList
                 {...restProps}
                 onItemSelect={this.handleItemSelect}
-                ref={this.refHandlers.queryList}
+                ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
             />
         );
     }
 
-    public componentDidUpdate(_prevProps: ISelectProps<T>, prevState: ISelectState) {
+    public componentDidUpdate(prevProps: SelectProps<T>, prevState: SelectState) {
+        if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
+            setRef(prevProps.inputProps?.inputRef, null);
+            this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+            setRef(this.props.inputProps?.inputRef, this.inputElement);
+        }
+
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
         const input = (
             <InputGroup
-                leftIcon="search"
+                leftIcon={<Search />}
                 placeholder="Filter..."
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
-                inputRef={this.refHandlers.input}
+                inputRef={this.handleInputRef}
                 onChange={listProps.handleQueryChange}
                 value={listProps.query}
             />
@@ -149,9 +147,15 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 disabled={disabled}
-                position={Position.BOTTOM_LEFT}
+                placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                content={
+                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {filterable ? input : undefined}
+                        {listProps.itemList}
+                    </div>
+                }
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 onOpening={this.handlePopoverOpening}
@@ -164,16 +168,12 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
                 >
                     {this.props.children}
                 </div>
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    {filterable ? input : undefined}
-                    {listProps.itemList}
-                </div>
             </Popover>
         );
     };
 
     private maybeRenderClearButton(query: string) {
-        return query.length > 0 ? <Button icon="cross" minimal={true} onClick={this.resetQuery} /> : undefined;
+        return query.length > 0 ? <Button icon={<Cross />} minimal={true} onClick={this.resetQuery} /> : undefined;
     }
 
     private handleTargetKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -217,7 +217,7 @@ export class Select<T> extends AbstractPureComponent2<ISelectProps<T>, ISelectSt
             const { inputProps = {} } = this.props;
             // autofocus is enabled by default
             if (inputProps.autoFocus !== false) {
-                getRef(this.inputEl)?.focus();
+                this.inputElement?.focus();
             }
         });
 

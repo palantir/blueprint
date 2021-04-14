@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
+
+const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
@@ -24,7 +25,7 @@ module.exports = Object.assign({}, baseConfig, {
 
     // we override module rules since we don't want file-loader to be triggered for inline SVGs
     module: {
-        rules: baseConfig.module.rules.slice(0, 2).concat([
+        rules: baseConfig.module.rules.slice(0, 3).concat([
             {
                 test: /^((?!svgs).)*\.(eot|ttf|woff|woff2|svg|png)$/,
                 loader: require.resolve("file-loader"),
@@ -34,6 +35,7 @@ module.exports = Object.assign({}, baseConfig, {
 
     output: {
         filename: "[name].js",
+        publicPath: "",
         path: path.resolve(__dirname, "./dist"),
     },
 

@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import * as React from "react";
+import React from "react";
 import { SinonSpy, spy } from "sinon";
 
 import * as Utils from "../../src/common/utils";
@@ -39,31 +39,6 @@ describe("Utils", () => {
         assert.isFalse(Utils.isReactNodeEmpty(<div />), "<div />");
         assert.isFalse(Utils.isReactNodeEmpty([null, <div key="div" />]), "array");
     });
-
-    /* eslint-disable deprecation/deprecation */
-    it.skip("safeInvoke", () => {
-        assert.doesNotThrow(() => Utils.safeInvoke(undefined, 1, "2", true, 4));
-
-        // try the max number of args (4)
-        const callback = spy();
-        Utils.safeInvoke(callback, 1, "2", true, 4);
-        assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
-    });
-
-    it.skip("safeInvokeOrValue", () => {
-        assert.doesNotThrow(() => Utils.safeInvokeOrValue(undefined, 1, "2", true, 4));
-
-        // try the max number of args (4)
-        const callback = spy();
-        Utils.safeInvokeOrValue(callback, 1, "2", true, 4);
-        assert.isTrue(callback.firstCall.calledWith(1, "2", true, 4));
-
-        // try passing a value
-        const value = "3";
-        const result = Utils.safeInvokeOrValue(value);
-        assert.strictEqual(result, value);
-    });
-    /* eslint-enable deprecation/deprecation */
 
     it("elementIsOrContains", () => {
         const child = document.createElement("span");

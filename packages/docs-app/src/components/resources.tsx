@@ -15,13 +15,13 @@
  */
 
 import download from "downloadjs";
-import * as React from "react";
+import React from "react";
 
 import { Callout, Card } from "@blueprintjs/core";
 
 const URL_BASE = "https://raw.githubusercontent.com/palantir/blueprint/develop/resources/sketch";
 
-const RESOURCES: IResourceProps[] = [
+const RESOURCES: ResourceProps[] = [
     { fileName: "blueprint-core-kit.sketch", lastUpdated: "April 14, 2020" },
     { fileName: "blueprint-icons.sketch", lastUpdated: "April 14, 2020" },
     { fileName: "blueprint-colors.sketchpalette", lastUpdated: "January 22, 2020" },
@@ -43,12 +43,12 @@ export const Resources: React.FunctionComponent = () => (
     </>
 );
 
-interface IResourceProps {
+interface ResourceProps {
     fileName: string;
     lastUpdated: string;
 }
 
-class ResourceCard extends React.PureComponent<IResourceProps> {
+class ResourceCard extends React.PureComponent<ResourceProps> {
     public render() {
         return (
             <Card className="blueprint-resource" interactive={true} onClick={this.handleClick}>

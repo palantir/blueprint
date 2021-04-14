@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ITagExampleState {
+export interface TagExampleState {
     fill: boolean;
     icon: boolean;
     intent: Intent;
@@ -34,8 +34,8 @@ export interface ITagExampleState {
     tags: string[];
 }
 
-export class TagExample extends React.PureComponent<IExampleProps, ITagExampleState> {
-    public state: ITagExampleState = {
+export class TagExample extends React.PureComponent<ExampleProps, TagExampleState> {
+    public state: TagExampleState = {
         fill: false,
         icon: false,
         intent: Intent.NONE,

@@ -16,14 +16,14 @@
 
 import { IKssPluginData, ITag } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { DocumentationContextTypes, DocumentationContext } from "../common/context";
 import { Example } from "../components/example";
 
-export interface ICssExampleState {
+export interface CssExampleState {
     modifiers: Set<string>;
 }
 
@@ -32,9 +32,9 @@ export class CssExample extends React.PureComponent<ITag> {
 
     public static displayName = "Docs2.CssExample";
 
-    public context: IDocumentationContext | undefined;
+    public context: DocumentationContext | undefined;
 
-    public state: ICssExampleState = { modifiers: new Set<string>() };
+    public state: CssExampleState = { modifiers: new Set<string>() };
 
     public render() {
         const { value } = this.props;

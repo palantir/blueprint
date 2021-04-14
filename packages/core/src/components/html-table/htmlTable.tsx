@@ -15,14 +15,13 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React, { forwardRef } from "react";
 
-import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 
-export interface IHTMLTableProps
+export interface HTMLTableProps
     extends React.TableHTMLAttributes<HTMLTableElement>,
-        IElementRefProps<HTMLTableElement> {
+        React.RefAttributes<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
 
@@ -32,36 +31,26 @@ export interface IHTMLTableProps
     /** Enables hover styles on row. */
     interactive?: boolean;
 
-    /**
-     * Use small, condensed appearance for this element and all child elements.
-     *
-     * @deprecated
-     */
-    small?: boolean;
-
     /** Use an alternate background color on odd rows. */
     striped?: boolean;
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
-export class HTMLTable extends AbstractPureComponent2<IHTMLTableProps> {
-    public render() {
-        // eslint-disable-next-line deprecation/deprecation
-        const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;
-        const classes = classNames(
-            Classes.HTML_TABLE,
-            {
-                [Classes.HTML_TABLE_BORDERED]: bordered,
-                [Classes.HTML_TABLE_CONDENSED]: condensed,
-                [Classes.HTML_TABLE_STRIPED]: striped,
-                [Classes.INTERACTIVE]: interactive,
-                [Classes.SMALL]: small,
-            },
-            className,
-        );
-        // eslint-disable-next-line @blueprintjs/html-components
-        return <table {...htmlProps} ref={elementRef} className={classes} />;
-    }
-}
+
+export const HTMLTable: React.FC<HTMLTableProps> = forwardRef((props, ref) => {
+    const { bordered, className, condensed, interactive, striped, ...htmlProps } = props;
+    const classes = classNames(
+        Classes.HTML_TABLE,
+        {
+            [Classes.HTML_TABLE_BORDERED]: bordered,
+            [Classes.HTML_TABLE_CONDENSED]: condensed,
+            [Classes.HTML_TABLE_STRIPED]: striped,
+            [Classes.INTERACTIVE]: interactive,
+        },
+        className,
+    );
+    // eslint-disable-next-line @blueprintjs/html-components
+    return <table {...htmlProps} ref={ref} className={classes} />;
+});
+HTMLTable.displayName = `${DISPLAYNAME_PREFIX}.HTMLTable`;

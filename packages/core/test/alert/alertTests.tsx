@@ -16,10 +16,12 @@
 
 import { assert } from "chai";
 import { mount, shallow, ShallowWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { SinonStub, spy, stub } from "sinon";
 
-import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src";
+import { WarningSign } from "@blueprintjs/icons";
+
+import { Alert, Button, Classes, AlertProps, ButtonProps, Icon, Intent, Keys } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
@@ -60,7 +62,7 @@ describe("<Alert>", () => {
 
     it("renders the icon correctly", () => {
         const wrapper = shallow(
-            <Alert icon="warning-sign" isOpen={true} confirmButtonText="Delete">
+            <Alert icon={<WarningSign />} isOpen={true} confirmButtonText="Delete">
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
@@ -85,14 +87,14 @@ describe("<Alert>", () => {
     describe("confirm button", () => {
         const onConfirm = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
 
         beforeEach(() => {
             onConfirm.resetHistory();
             onClose.resetHistory();
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     confirmButtonText="Delete"
@@ -126,15 +128,15 @@ describe("<Alert>", () => {
     describe("cancel button", () => {
         const onCancel = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
-        let cancelButton: ShallowWrapper<IButtonProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
+        let cancelButton: ShallowWrapper<ButtonProps, any>;
 
         beforeEach(() => {
             onCancel.resetHistory();
             onClose.resetHistory();
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     cancelButtonText="Cancel"
@@ -167,7 +169,7 @@ describe("<Alert>", () => {
         });
 
         it("canEscapeKeyCancel enables escape key", () => {
-            const alert = mount<IAlertProps>(
+            const alert = mount<AlertProps>(
                 <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
@@ -186,7 +188,7 @@ describe("<Alert>", () => {
         });
 
         it("canOutsideClickCancel enables outside click", () => {
-            const alert = mount<IAlertProps>(
+            const alert = mount<AlertProps>(
                 <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
@@ -202,6 +204,38 @@ describe("<Alert>", () => {
             assert.isTrue(onCancel.calledOnce);
 
             alert.unmount();
+        });
+    });
+
+    describe("load state", () => {
+        let wrapper: ShallowWrapper<AlertProps, any>;
+        let findCancelButton: () => ShallowWrapper<ButtonProps, any>;
+        let findSubmitButton: () => ShallowWrapper<ButtonProps, any>;
+
+        beforeEach(() => {
+            wrapper = shallow(
+                <Alert
+                    icon={<WarningSign />}
+                    intent={Intent.PRIMARY}
+                    isOpen={true}
+                    loading={true}
+                    cancelButtonText="Cancel"
+                    confirmButtonText="Delete"
+                >
+                    <p>Are you sure you want to delete this file?</p>
+                    <p>There is no going back.</p>
+                </Alert>,
+            );
+            findSubmitButton = () => wrapper.find(Button).first();
+            findCancelButton = () => wrapper.find(Button).last();
+        });
+
+        it("Properly displays buttons when set to loading", () => {
+            assert.isTrue(findCancelButton().prop("disabled"));
+            assert.isTrue(findSubmitButton().prop("loading"));
+            wrapper.setProps({ loading: false });
+            assert.isFalse(findCancelButton().prop("disabled"));
+            assert.isFalse(findSubmitButton().prop("loading"));
         });
     });
 

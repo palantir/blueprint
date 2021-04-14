@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { H5, Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IProgressExampleState {
+export interface ProgressExampleState {
     hasValue: boolean;
     intent?: Intent;
     value: number;
 }
 
-export class ProgressExample extends React.PureComponent<IExampleProps, IProgressExampleState> {
-    public state: IProgressExampleState = {
+export class ProgressExample extends React.PureComponent<ExampleProps, ProgressExampleState> {
+    public state: ProgressExampleState = {
         hasValue: false,
         value: 0.7,
     };

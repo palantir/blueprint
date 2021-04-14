@@ -71,17 +71,13 @@ All Blueprint CSS classes begin with a namespace prefix to isolate our styles
 from other frameworks: `.button` is a very common name, but only Blueprint
 defines `.@ns-button`.
 
-Beginning with Blueprint 3.0, this namespace will be versioned by major version
-of the library so two major versions can be used together on a single page. This
-means the namespace at the beginning of every class _will change in each
-subsequent major version_. In Blueprint 1.x and 2.x this namespace was `pt-`,
-but in Blueprint 3.0 it will change to `bp3-` and increase accordingly.
+This CSS namespace is versioned by major version of the library so two major versions of Blueprint
+can be used together on a single page.
 
 ### Custom namespace
 
-The namespace can be changed _at build time_ to produce a custom Blueprint build
-(though this usage is not recommended and we cannot offer support for it). This
-requires several things:
+The namespace can be changed _at build time_ to produce a custom Blueprint build.
+This requires several things:
 
 1. You must use Sass and import Blueprint Sass source into your app, rather than using the CSS file distributed in the NPM package.
     - Compiling Blueprint Sass source requires two additional tools:
@@ -90,7 +86,15 @@ requires several things:
       [sass-inline-svg](https://github.com/haithembelhaj/sass-inline-svg) for
       inlining SVG images.
 1. Define the `$ns` Sass variable in your app styles before importing `blueprint.scss` to update the generated CSS.
-1. When bundling your code, set the `BLUEPRINT_NAMESPACE` environment variable to the same value to update the generated `Classes` constants. The easiest way to do this is on the command line: `BLUEPRINT_NAMESPACE="custom" webpack ...args`
+1. When bundling your JS code, define the `BLUEPRINT_NAMESPACE` variable to the same value; this will update the generated `Classes` constants. The easiest way to do is with webpack's [DefinePlugin](https://webpack.js.org/plugins/define-plugin/).
+
+```js
+plugins: [
+    new webpack.DefinePlugin({
+        BLUEPRINT_NAMESPACE: "my-custom-namespace",
+    }),
+];
+```
 
 @## Linting
 

@@ -12,6 +12,6 @@ For more information on controlled usage, generic components, creating new items
 
 @reactExample MultiSelectExample
 
-@interface IMultiSelectProps
+@interface MultiSelectProps
 
-@interface ISelectItemRendererProps
+@interface SelectItemRendererProps

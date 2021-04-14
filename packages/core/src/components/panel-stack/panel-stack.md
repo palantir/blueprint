@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Panel stack
 
 `PanelStack` manages a stack of panels and displays only the topmost panel.
@@ -22,49 +18,66 @@ React trees mounted, change the `renderActivePanelOnly` prop.
 
 @## Panels
 
-Panels are supplied as `IPanel` objects like `{ component, props, title }`,
-where `component` and `props` are used to render the panel element and `title`
-will appear in the header and back button. This breakdown allows the component
-to avoid cloning elements. Note that each panel is only mounted when it is atop
-the stack and is unmounted when it is closed or when a panel opens above it.
+Panels are supplied as `Panel<T>` objects, where `renderPanel` and `props` are
+used to render the panel element and `title` will appear in the header and back button.
+This breakdown allows the component to avoid cloning elements.
+Note that each panel is only mounted when it is atop the stack and is unmounted when
+it is closed or when a panel opens above it.
 
-`PanelStack` injects its own `IPanelProps` into each panel (in addition to the
-`props` defined alongside the `component`), providing methods to imperatively
-close the current panel or open a new one on top of it.
+`PanelStack` injects panel action callbacks into each panel renderer in addition to
+the `props` defined by `Panel<T>`. These allow you to close the current panel or open a
+new one on top of it during the panel's lifecycle. For example:
 
 ```tsx
-import { Button, IPanelProps, PanelStack } from "@blueprintjs/core";
+import { Button, PanelProps } from "@blueprintjs/core";
 
-class MyPanel extends React.Component<IPanelProps> {
-    public render() {
-        return <Button onClick={this.openSettingsPanel} text="Settings" />
-    }
+type SettingsPanelInfo = { /* ...  */ };
+type AccountSettingsPanelInfo = { /* ...  */ };
+type NotificationSettingsPanelInfo = { /* ...  */ };
 
-    private openSettingsPanel() {
-        // openPanel (and closePanel) are injected by PanelStack
-        this.props.openPanel({
-            component: SettingsPanel, // <- class or stateless function type
-            props: { enabled: true }, // <- SettingsPanel props without IPanelProps
-            title: "Settings",        // <- appears in header and back button
+const AccountSettingsPanel: React.FC<PanelProps<AccountSettingsPanelInfo>> = props => {
+    // implementation
+};
+
+const NotificationSettingsPanel: React.FC<PanelProps<NotificationSettingsPanelInfo>> = props => {
+    // implementation
+};
+
+const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
+    const { openPanel, closePanel, ...info } = props;
+
+    const openAccountSettings = () =>
+        openPanel({
+            props: {
+                /* ... */
+            },
+            renderPanel: AccountSettingsPanel,
+            title: "Account settings",
         });
-    }
-}
+    const openNotificationSettings = () =>
+        openPanel({
+            props: {
+                /* ... */
+            },
+            renderPanel: NotificationSettingsPanel,
+            title: "Notification settings",
+        });
 
-class SettingsPanel extends React.Component<IPanelProps & { enabled: boolean }> {
-    // ...
+    return (
+        <>
+            <Button onClick={openAccountSettings} text="Account settings" />
+            <Button onClick={openNotificationSettings} text="Notification settings" />
+        </>
+    );
 }
-
-<PanelStack initialPanel={{ component: MyPanel, title: "Home" }} />
 ```
 
-@interface IPanel
+@interface Panel
 
-@interface IPanelProps
+@interface PanelActions
 
 @## Props
 
-The panel stack cannot be controlled but `onClose` and `onOpen` callbacks are
-available to listen for changes.
+PanelStack can be operated as a controlled or uncontrolled component.
 
-@interface IPanelStackProps
-
+@interface PanelStackProps

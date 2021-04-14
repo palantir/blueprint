@@ -15,22 +15,12 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import {
-    AbstractPureComponent2,
-    Classes,
-    getRef,
-    IRef,
-    IRefCallback,
-    IRefObject,
-    isRefCallback,
-    isRefObject,
-} from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { AbstractPureComponent, Classes, Ref, RefCallback, refHandler, setRef } from "../../common";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
-export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * Whether the text area should take up the full width of its container.
      */
@@ -54,52 +44,41 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
     /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
-    inputRef?: IRef<HTMLTextAreaElement>;
+    inputRef?: Ref<HTMLTextAreaElement>;
 }
 
-export interface ITextAreaState {
+export interface TextAreaState {
     height?: number;
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
-export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaState> {
+
+export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
-    public state: ITextAreaState = {};
+    public state: TextAreaState = {};
 
-    // keep our own ref so that we can measure and set the height of the component on first mount
-    private textareaRef: HTMLTextAreaElement | IRefObject<HTMLTextAreaElement> | null = null;
+    // used to measure and set the height of the component on first mount
+    public textareaElement: HTMLTextAreaElement | null = null;
 
-    private refHandlers = {
-        textarea: isRefObject<HTMLTextAreaElement>(this.props.inputRef)
-            ? (this.textareaRef = this.props.inputRef)
-            : (ref: HTMLTextAreaElement | null) => {
-                  this.textareaRef = ref;
-                  (this.props.inputRef as IRefCallback<HTMLTextAreaElement>)?.(ref);
-              },
-    };
+    private handleRef: RefCallback<HTMLTextAreaElement> = refHandler(this, "textareaElement", this.props.inputRef);
 
     public componentDidMount() {
-        if (this.props.growVertically && this.textareaRef !== null) {
+        if (this.props.growVertically && this.textareaElement !== null) {
             // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
             /* eslint-disable-next-line react/no-did-mount-set-state */
             this.setState({
-                height: getRef(this.textareaRef)!.scrollHeight,
+                height: this.textareaElement?.scrollHeight,
             });
         }
     }
 
-    public componentDidUpdate(prevProps: ITextAreaProps) {
-        const { inputRef } = this.props;
-        if (prevProps.inputRef !== inputRef) {
-            if (isRefObject<HTMLTextAreaElement>(inputRef)) {
-                inputRef.current = (this.textareaRef as IRefObject<HTMLTextAreaElement>).current;
-                this.textareaRef = inputRef;
-            } else if (isRefCallback<HTMLTextAreaElement>(inputRef)) {
-                inputRef(this.textareaRef as HTMLTextAreaElement | null);
-            }
+    public componentDidUpdate(prevProps: TextAreaProps) {
+        if (prevProps.inputRef !== this.props.inputRef) {
+            setRef(prevProps.inputRef, null);
+            this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);
+            setRef(this.props.inputRef, this.textareaElement);
         }
     }
 
@@ -133,7 +112,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
                 {...htmlProps}
                 className={rootClasses}
                 onChange={this.handleChange}
-                ref={this.refHandlers.textarea}
+                ref={this.handleRef}
                 style={style}
             />
         );

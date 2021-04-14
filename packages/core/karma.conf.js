@@ -3,22 +3,27 @@
  */
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
-const fs = require("fs");
-const path = require("path");
 
 module.exports = function (config) {
+    const coverageExcludes = [
+        // not worth full coverage
+        "src/accessibility/*",
+        "src/common/abstractComponent*",
+        "src/common/abstractPureComponent*",
+        "src/compatibility/*",
+        // HACKHACK: for karma upgrade only
+        "src/common/refs.ts",
+        // HACKHACK: need to add hotkeys tests
+        "src/components/hotkeys/hotkey.tsx",
+        "src/components/hotkeys/hotkeys.tsx",
+        "src/components/hotkeys/hotkeysDialog.tsx",
+        "src/components/hotkeys/hotkeysTarget.tsx",
+        "src/context/hotkeys/hotkeysProvider.tsx",
+    ];
+
     const baseConfig = createKarmaConfig({
         dirname: __dirname,
-        coverageExcludes: [
-            // not worth full coverage
-            "src/accessibility/*",
-            "src/common/abstractComponent*",
-            "src/common/abstractPureComponent*",
-            "src/compatibility/*",
-            // deprecations
-            "src/common/utils/functionUtils.ts",
-            "src/common/utils/safeInvokeMember.ts",
-        ],
+        coverageExcludes,
     });
     config.set(baseConfig);
     config.set({

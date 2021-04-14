@@ -30,20 +30,35 @@ rare cases where custom styling is necessary and should be used sparingly:
 
 @## Icon variables
 
-Most icons should be displayed using the `span.@ns-icon-*` classes or via modifier classes on
-components like `.@ns-button`. In rare cases, you may need direct access to the content
-string that generates each icon in the icon font. Blueprint provides these variables with
-straightforward names (see the [Icons section](#icons) for the full list of identifiers):
+Most icons should be displayed using the `<Icon>` component from `@blueprintjs/icons` or the
+`icon` and `iconName` prop APIs available on many Blueprint components. These APIs have the advantage
+of rendering SVGs directly onto the page.
 
-- `$pt-icon-style`
-- `$pt-icon-align-left`
-- `$pt-icon-align-center`
-- ...
+In some cases you may use the icon fonts instead with the CSS API targeting selectors of the kind
+`span.@ns-icon-*` (be sure to include `.@ns-icon-standard` or `.@ns-icon-large` as well).
 
-Variables are also provided for the two icon font families and their pixel sizes:
+In rare cases, you may need direct access to the code points the icon font. Blueprint provides these
+variables in Sass as a map and in TypeScript as an object (see the [Icons section](#icons) for the
+full list of identifiers):
 
-- `$icons16-family`
-- `$icons20-family`
+```css.scss
+@import "~@blueprintjs/icons/lib/scss/variables";
+
+.my-custom-icon {
+    content: map-get($blueprint-icon-codepoints, "tick");
+}
+```
+
+```ts
+import { IconCodepoints } from "@blueprintjs/icons";
+
+document.querySelector(".my-custom-icon").style.content = IconCodepoints["tick"];
+```
+
+Sass variables are also provided for the two icon font families and their pixel sizes:
+
+- `$blueprint-icons-16`
+- `$blueprint-icons-20`
 - `$pt-icon-size-standard`
 - `$pt-icon-size-large`
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { MenuItem } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
 
-export interface IFilm {
+export interface Film {
     /** Title of film. */
     title: string;
     /** Release year. */
@@ -29,7 +29,7 @@ export interface IFilm {
 }
 
 /** Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top */
-export const TOP_100_FILMS: IFilm[] = [
+export const TOP_100_FILMS: Film[] = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
     { title: "The Godfather: Part II", year: 1974 },
@@ -132,7 +132,7 @@ export const TOP_100_FILMS: IFilm[] = [
     { title: "Monty Python and the Holy Grail", year: 1975 },
 ].map((m, index) => ({ ...m, rank: index + 1 }));
 
-export const renderFilm: ItemRenderer<IFilm> = (film, { handleClick, modifiers, query }) => {
+export const renderFilm: ItemRenderer<Film> = (film, { handleClick, modifiers, query }) => {
     if (!modifiers.matchesPredicate) {
         return null;
     }
@@ -163,7 +163,7 @@ export const renderCreateFilmOption = (
     />
 );
 
-export const filterFilm: ItemPredicate<IFilm> = (query, film, _index, exactMatch) => {
+export const filterFilm: ItemPredicate<Film> = (query, film, _index, exactMatch) => {
     const normalizedTitle = film.title.toLowerCase();
     const normalizedQuery = query.toLowerCase();
 
@@ -215,7 +215,7 @@ export const filmSelectProps = {
     items: TOP_100_FILMS,
 };
 
-export function createFilm(title: string): IFilm {
+export function createFilm(title: string): Film {
     return {
         rank: 100 + Math.floor(Math.random() * 100 + 1),
         title,
@@ -223,32 +223,32 @@ export function createFilm(title: string): IFilm {
     };
 }
 
-export function areFilmsEqual(filmA: IFilm, filmB: IFilm) {
+export function areFilmsEqual(filmA: Film, filmB: Film) {
     // Compare only the titles (ignoring case) just for simplicity.
     return filmA.title.toLowerCase() === filmB.title.toLowerCase();
 }
 
-export function doesFilmEqualQuery(film: IFilm, query: string) {
+export function doesFilmEqualQuery(film: Film, query: string) {
     return film.title.toLowerCase() === query.toLowerCase();
 }
 
-export function arrayContainsFilm(films: IFilm[], filmToFind: IFilm): boolean {
-    return films.some((film: IFilm) => film.title === filmToFind.title);
+export function arrayContainsFilm(films: Film[], filmToFind: Film): boolean {
+    return films.some((film: Film) => film.title === filmToFind.title);
 }
 
-export function addFilmToArray(films: IFilm[], filmToAdd: IFilm) {
+export function addFilmToArray(films: Film[], filmToAdd: Film) {
     return [...films, filmToAdd];
 }
 
-export function deleteFilmFromArray(films: IFilm[], filmToDelete: IFilm) {
+export function deleteFilmFromArray(films: Film[], filmToDelete: Film) {
     return films.filter(film => film !== filmToDelete);
 }
 
 export function maybeAddCreatedFilmToArrays(
-    items: IFilm[],
-    createdItems: IFilm[],
-    film: IFilm,
-): { createdItems: IFilm[]; items: IFilm[] } {
+    items: Film[],
+    createdItems: Film[],
+    film: Film,
+): { createdItems: Film[]; items: Film[] } {
     const isNewlyCreatedItem = !arrayContainsFilm(items, film);
     return {
         createdItems: isNewlyCreatedItem ? addFilmToArray(createdItems, film) : createdItems,
@@ -258,10 +258,10 @@ export function maybeAddCreatedFilmToArrays(
 }
 
 export function maybeDeleteCreatedFilmFromArrays(
-    items: IFilm[],
-    createdItems: IFilm[],
-    film: IFilm,
-): { createdItems: IFilm[]; items: IFilm[] } {
+    items: Film[],
+    createdItems: Film[],
+    film: Film,
+): { createdItems: Film[]; items: Film[] } {
     const wasItemCreatedByUser = arrayContainsFilm(createdItems, film);
 
     // Delete the item if the user manually created it.

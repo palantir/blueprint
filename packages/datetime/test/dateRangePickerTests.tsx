@@ -16,19 +16,18 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
+import React from "react";
 import ReactDayPicker from "react-day-picker";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
-import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {
     Classes as DateClasses,
     DateRange,
     DateRangePicker,
-    IDatePickerModifiers,
-    IDateRangePickerProps,
+    DatePickerModifiers,
+    DateRangePickerProps,
     TimePicker,
     TimePrecision,
 } from "../src";
@@ -36,8 +35,8 @@ import * as DateUtils from "../src/common/dateUtils";
 import * as Errors from "../src/common/errors";
 import { Months } from "../src/common/months";
 import { DatePickerNavbar } from "../src/datePickerNavbar";
-import { IDateRangePickerState } from "../src/dateRangePicker";
-import { IDateRangeShortcut, Shortcuts } from "../src/shortcuts";
+import { DateRangePickerState } from "../src/dateRangePicker";
+import { DateRangeShortcut, Shortcuts } from "../src/shortcuts";
 import { assertDayDisabled } from "./common/dateTestUtils";
 
 describe("<DateRangePicker>", () => {
@@ -117,27 +116,27 @@ describe("<DateRangePicker>", () => {
         });
 
         it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
-            const blueprintModifiers: IDatePickerModifiers = {
+            const blueprintModifiers: DatePickerModifiers = {
                 blueprint: () => true,
             };
             const blueprintLocaleUtils = {
                 ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "b",
             };
-            const blueprintProps: IDateRangePickerProps = {
+            const blueprintProps: DateRangePickerProps = {
                 locale: "blueprint",
                 localeUtils: blueprintLocaleUtils,
                 modifiers: blueprintModifiers,
             };
 
-            const dayPickerModifiers: IDatePickerModifiers = {
+            const dayPickerModifiers: DatePickerModifiers = {
                 dayPicker: () => true,
             };
             const dayPickerLocaleUtils = {
                 ...ReactDayPicker.LocaleUtils,
                 formatDay: () => "d",
             };
-            const dayPickerProps: IDateRangePickerProps = {
+            const dayPickerProps: DateRangePickerProps = {
                 locale: "dayPicker",
                 localeUtils: dayPickerLocaleUtils,
                 modifiers: dayPickerModifiers,
@@ -600,16 +599,26 @@ describe("<DateRangePicker>", () => {
         });
     });
 
-    describe("minDate/maxDate bounds", () => {
+    describe("validation: minDate/maxDate bounds", () => {
         const TODAY = new Date(2015, Months.FEBRUARY, 5);
         const LAST_WEEK_START = new Date(2015, Months.JANUARY, 29);
         const LAST_MONTH_START = new Date(2015, Months.JANUARY, 5);
         const TWO_WEEKS_AGO_START = new Date(2015, Months.JANUARY, 22);
 
+        let consoleError: sinon.SinonStub;
+
+        before(() => (consoleError = sinon.stub(console, "error")));
+        afterEach(() => consoleError.resetHistory());
+        after(() => consoleError.restore());
+
         it("maxDate must be later than minDate", () => {
-            const minDate = new Date(2000, Months.JANUARY, 10);
-            const maxDate = new Date(2000, Months.JANUARY, 8);
-            expectPropValidationError(DateRangePicker, { minDate, maxDate }, Errors.DATERANGEPICKER_MAX_DATE_INVALID);
+            mount(
+                <DateRangePicker
+                    minDate={new Date(2000, Months.JANUARY, 10)}
+                    maxDate={new Date(2000, Months.JANUARY, 8)}
+                />,
+            );
+            assert.isTrue(consoleError.calledOnceWith(Errors.DATERANGEPICKER_MAX_DATE_INVALID));
         });
 
         it("only days outside bounds have disabled class", () => {
@@ -620,46 +629,48 @@ describe("<DateRangePicker>", () => {
             assert.isFalse(left.findDay(10).hasClass(DateClasses.DATEPICKER_DAY_DISABLED));
         });
 
-        it("an error is thrown if defaultValue is outside bounds", () => {
-            const minDate = new Date(2015, Months.JANUARY, 5);
-            const maxDate = new Date(2015, Months.JANUARY, 7);
-            const defaultValue = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            expectPropValidationError(
-                DateRangePicker,
-                { defaultValue, minDate, maxDate },
-                Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID,
+        it("an error is logged if defaultValue is outside bounds", () => {
+            mount(
+                <DateRangePicker
+                    defaultValue={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
+                    minDate={new Date(2015, Months.JANUARY, 5)}
+                    maxDate={new Date(2015, Months.JANUARY, 7)}
+                />,
             );
+            assert.isTrue(consoleError.calledOnceWith(Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID));
         });
 
-        it("an error is thrown if initialMonth is outside month bounds", () => {
-            const minDate = new Date(2015, Months.JANUARY, 5);
-            const maxDate = new Date(2015, Months.JANUARY, 7);
-            const initialMonth = new Date(2015, Months.FEBRUARY, 12);
-            expectPropValidationError(
-                DateRangePicker,
-                { initialMonth, minDate, maxDate },
-                Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID,
+        it("an error is logged if initialMonth is outside month bounds", () => {
+            mount(
+                <DateRangePicker
+                    initialMonth={new Date(2015, Months.FEBRUARY, 12)}
+                    minDate={new Date(2015, Months.JANUARY, 5)}
+                    maxDate={new Date(2015, Months.JANUARY, 7)}
+                />,
             );
+            assert.isTrue(consoleError.calledOnceWith(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID));
         });
 
-        it("an error is not thrown if initialMonth is outside day bounds but inside month bounds", () => {
-            const minDate = new Date(2015, Months.JANUARY, 5);
-            const maxDate = new Date(2015, Months.JANUARY, 7);
-            const initialMonth = new Date(2015, Months.JANUARY, 12);
-            assert.doesNotThrow(() => {
-                render({ initialMonth, minDate, maxDate });
-            });
+        it("no error if initialMonth is outside day bounds but inside month bounds", () => {
+            mount(
+                <DateRangePicker
+                    initialMonth={new Date(2015, Months.JANUARY, 12)}
+                    minDate={new Date(2015, Months.JANUARY, 5)}
+                    maxDate={new Date(2015, Months.JANUARY, 7)}
+                />,
+            );
+            assert.isTrue(consoleError.notCalled);
         });
 
-        it("an error is thrown if value is outside bounds", () => {
-            const minDate = new Date(2015, Months.JANUARY, 5);
-            const maxDate = new Date(2015, Months.JANUARY, 7);
-            const value = [new Date(2015, Months.JANUARY, 12), null] as DateRange;
-            expectPropValidationError(
-                DateRangePicker,
-                { value, minDate, maxDate },
-                Errors.DATERANGEPICKER_VALUE_INVALID,
+        it("an error is logged if value is outside bounds", () => {
+            mount(
+                <DateRangePicker
+                    value={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
+                    minDate={new Date(2015, Months.JANUARY, 5)}
+                    maxDate={new Date(2015, Months.JANUARY, 7)}
+                />,
             );
+            assert.isTrue(consoleError.calledOnceWith(Errors.DATERANGEPICKER_VALUE_INVALID));
         });
 
         it("onChange not fired when a day outside of bounds is clicked", () => {
@@ -1248,7 +1259,7 @@ describe("<DateRangePicker>", () => {
             const startTime = new Date(defaultRange[1].getTime());
             startTime.setHours(startTime.getHours() - 2);
 
-            const shortcuts: IDateRangeShortcut[] = [
+            const shortcuts: DateRangeShortcut[] = [
                 {
                     dateRange: [startTime, endTime] as DateRange,
                     includeTime: true,
@@ -1276,7 +1287,7 @@ describe("<DateRangePicker>", () => {
         return !day.hasClass(DateClasses.DATEPICKER_DAY_OUTSIDE);
     }
 
-    function render(props?: IDateRangePickerProps) {
+    function render(props?: DateRangePickerProps) {
         onChangeSpy = sinon.spy();
         onHoverChangeSpy = sinon.spy();
         const wrapper = wrap(<DateRangePicker onChange={onChangeSpy} onHoverChange={onHoverChangeSpy} {...props} />);
@@ -1284,7 +1295,7 @@ describe("<DateRangePicker>", () => {
     }
 
     function wrap(datepicker: JSX.Element) {
-        const wrapper = mount<IDateRangePickerProps, IDateRangePickerState>(datepicker);
+        const wrapper = mount<DateRangePickerProps, DateRangePickerState>(datepicker);
 
         const findTimeInput = (precision: TimePrecision | "hour", which: "left" | "right") =>
             wrapper.find(`.${DateClasses.TIMEPICKER}-${precision}`).at(which === "left" ? 0 : 1);
@@ -1341,10 +1352,7 @@ describe("<DateRangePicker>", () => {
         return harness;
     }
 
-    function wrapDayPicker(
-        parent: ReactWrapper<IDateRangePickerProps, IDateRangePickerState>,
-        which: "left" | "right",
-    ) {
+    function wrapDayPicker(parent: ReactWrapper<DateRangePickerProps, DateRangePickerState>, which: "left" | "right") {
         const harness = {
             get wrapper() {
                 // use accessor to ensure it's always the latest reference

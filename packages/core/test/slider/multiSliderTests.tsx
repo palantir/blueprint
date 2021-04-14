@@ -16,13 +16,13 @@
 
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as sinon from "sinon";
+import React from "react";
+import ReactDOM from "react-dom";
+import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
+import { Classes, MultiSliderProps, MultiSlider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -57,6 +57,17 @@ describe("<MultiSlider>", () => {
             mouseUpHorizontal(0);
             assert.equal(onRelease.callCount, 1);
             assert.deepEqual(onRelease.firstCall.args[0], [0, 5, 10]);
+        });
+
+        it("propagates className to the handles", () => {
+            const slider = mount(
+                <MultiSlider>
+                    <MultiSlider.Handle value={3} className="testClass" />
+                    <MultiSlider.Handle value={5} />
+                </MultiSlider>,
+                { attachTo: testsContainerElement },
+            );
+            assert.lengthOf(slider.find("span.testClass"), 1);
         });
 
         it("moving mouse on the first handle updates the first value", () => {
@@ -325,7 +336,7 @@ describe("<MultiSlider>", () => {
         });
     });
 
-    function renderSlider(joinedProps: IMultiSliderProps & { values?: [number, number, number] } = {}) {
+    function renderSlider(joinedProps: MultiSliderProps & { values?: [number, number, number] } = {}) {
         const { values = [0, 5, 10], ...props } = joinedProps;
         return mount(
             <MultiSlider {...props}>

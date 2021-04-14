@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import {
     Alignment,
@@ -27,14 +27,14 @@ import {
     NavbarHeading,
     Switch,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface INavbarExampleState {
+export interface NavbarExampleState {
     alignRight: boolean;
 }
 
-export class NavbarExample extends React.PureComponent<IExampleProps, INavbarExampleState> {
-    public state: INavbarExampleState = {
+export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExampleState> {
+    public state: NavbarExampleState = {
         alignRight: false,
     };
 

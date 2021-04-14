@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
-import { AbstractComponent2, DISPLAYNAME_PREFIX, IProps, Keys, Menu, Utils } from "@blueprintjs/core";
+import { AbstractComponent, DISPLAYNAME_PREFIX, Props, Keys, Menu, Utils } from "@blueprintjs/core";
 
 import {
     executeItemsEqual,
     getActiveItem,
     getCreateNewItem,
-    ICreateNewItem,
-    IItemListRendererProps,
-    IItemModifiers,
-    IListItemsProps,
+    CreateNewItem,
+    ItemListRendererProps,
+    ItemModifiers,
+    ListItemsProps,
     isCreateNewItem,
     renderFilteredItems,
 } from "../../common";
 
-export interface IQueryListProps<T> extends IListItemsProps<T> {
+export interface QueryListProps<T> extends ListItemsProps<T> {
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but
      * not activeItem.
@@ -55,7 +55,7 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
      * Customize rendering of the component.
      * Receives an object with props that should be applied to elements as necessary.
      */
-    renderer: (listProps: IQueryListRendererProps<T>) => JSX.Element;
+    renderer: (listProps: QueryListRendererProps<T>) => JSX.Element;
 
     /**
      * Whether the list is disabled.
@@ -69,9 +69,9 @@ export interface IQueryListProps<T> extends IListItemsProps<T> {
  * An object describing how to render a `QueryList`.
  * A `QueryList` `renderer` receives this object as its sole argument.
  */
-export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
-    extends Pick<IQueryListState<T>, "activeItem" | "filteredItems" | "query">,
-        IProps {
+export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
+    extends Pick<QueryListState<T>, "activeItem" | "filteredItems" | "query">,
+        Props {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.
@@ -118,9 +118,9 @@ export interface IQueryListRendererProps<T> // Omit `createNewItem`, because it'
     itemList: React.ReactNode;
 }
 
-export interface IQueryListState<T> {
+export interface QueryListState<T> {
     /** The currently focused item (for keyboard interactions). */
-    activeItem: T | ICreateNewItem | null;
+    activeItem: T | CreateNewItem | null;
 
     /**
      * The item returned from `createNewItemFromQuery(this.state.query)`, cached
@@ -137,7 +137,7 @@ export interface IQueryListState<T> {
     query: string;
 }
 
-export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryListState<T>> {
+export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.QueryList`;
 
     public static defaultProps = {
@@ -146,7 +146,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     };
 
     public static ofType<U>() {
-        return QueryList as new (props: IQueryListProps<U>) => QueryList<U>;
+        return QueryList as new (props: QueryListProps<U>) => QueryList<U>;
     }
 
     private itemsParentRef?: HTMLElement | null;
@@ -167,7 +167,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
      * or key interactions). When scrollToActiveItem = false, used to detect if
      * an unexpected external change to the active item has been made.
      */
-    private expectedNextActiveItem: T | ICreateNewItem | null = null;
+    private expectedNextActiveItem: T | CreateNewItem | null = null;
 
     /**
      * Flag which is set to true while in between an ENTER "keydown" event and its
@@ -184,8 +184,8 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
      */
     private isEnterKeyPressed = false;
 
-    public constructor(props: IQueryListProps<T>, context?: any) {
-        super(props, context);
+    public constructor(props: QueryListProps<T>) {
+        super(props);
 
         const { query = "" } = props;
         const createNewItem = props.createNewItemFromQuery?.(query);
@@ -223,7 +223,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         });
     }
 
-    public componentDidUpdate(prevProps: IQueryListProps<T>) {
+    public componentDidUpdate(prevProps: QueryListProps<T>) {
         if (this.props.activeItem !== undefined && this.props.activeItem !== this.state.activeItem) {
             this.shouldCheckActiveItemInViewport = true;
             this.setState({ activeItem: this.props.activeItem });
@@ -323,7 +323,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         }
     }
 
-    public setActiveItem(activeItem: T | ICreateNewItem | null) {
+    public setActiveItem(activeItem: T | CreateNewItem | null) {
         this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
@@ -339,7 +339,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
     }
 
     /** default `itemListRenderer` implementation */
-    private renderItemList = (listProps: IItemListRendererProps<T>) => {
+    private renderItemList = (listProps: ItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
 
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
@@ -364,7 +364,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
         if (this.props.disabled !== true) {
             const { activeItem, query } = this.state;
             const matchesPredicate = this.state.filteredItems.indexOf(item) >= 0;
-            const modifiers: IItemModifiers = {
+            const modifiers: ItemModifiers = {
                 active: executeItemsEqual(this.props.itemsEqual, getActiveItem(activeItem), item),
                 disabled: isItemDisabled(item, index, this.props.itemDisabled),
                 matchesPredicate,
@@ -539,7 +539,7 @@ export class QueryList<T> extends AbstractComponent2<IQueryListProps<T>, IQueryL
      * @param direction amount to move in each iteration, typically +/-1
      * @param startIndex item to start iteration
      */
-    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | ICreateNewItem | null {
+    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | CreateNewItem | null {
         if (this.isCreateItemRendered()) {
             const reachedCreate =
                 (startIndex === 0 && direction === -1) ||
@@ -589,7 +589,7 @@ function pxToNumber(value: string | null) {
     return value == null ? 0 : parseInt(value.slice(0, -2), 10);
 }
 
-function getMatchingItem<T>(query: string, { items, itemPredicate }: IQueryListProps<T>): T | undefined {
+function getMatchingItem<T>(query: string, { items, itemPredicate }: QueryListProps<T>): T | undefined {
     if (Utils.isFunction(itemPredicate)) {
         // .find() doesn't exist in ES5. Alternative: use a for loop instead of
         // .filter() so that we can return as soon as we find the first match.
@@ -603,7 +603,7 @@ function getMatchingItem<T>(query: string, { items, itemPredicate }: IQueryListP
     return undefined;
 }
 
-function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: IQueryListProps<T>) {
+function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: QueryListProps<T>) {
     if (Utils.isFunction(itemListPredicate)) {
         // note that implementations can reorder the items here
         return itemListPredicate(query, items);
@@ -623,7 +623,7 @@ function wrapNumber(value: number, min: number, max: number) {
     return value;
 }
 
-function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: IListItemsProps<T>["itemDisabled"]) {
+function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: ListItemsProps<T>["itemDisabled"]) {
     if (itemDisabled == null || item == null) {
         return false;
     } else if (Utils.isFunction(itemDisabled)) {
@@ -646,7 +646,7 @@ export function getFirstEnabledItem<T>(
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,
-): T | ICreateNewItem | null {
+): T | CreateNewItem | null {
     if (items.length === 0) {
         return null;
     }

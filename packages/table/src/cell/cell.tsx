@@ -14,13 +14,14 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    IIntentProps,
-    IProps,
+    IntentProps,
+    Props,
+    Ref,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
@@ -29,7 +30,7 @@ import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 
-export interface ICellProps extends IIntentProps, IProps {
+export interface CellProps extends IntentProps, Props {
     key?: string;
 
     style?: React.CSSProperties;
@@ -106,14 +107,14 @@ export interface ICellProps extends IIntentProps, IProps {
     /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
-    cellRef?: (ref: HTMLElement | null) => void;
+    cellRef?: Ref<HTMLDivElement>;
 }
 
-export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
+export type CellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<CellProps>;
 
 export const emptyCellRenderer = () => <Cell />;
 
-export class Cell extends React.Component<ICellProps> {
+export class Cell extends React.Component<CellProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
 
     public static defaultProps = {
@@ -121,7 +122,7 @@ export class Cell extends React.Component<ICellProps> {
         wrapText: false,
     };
 
-    public shouldComponentUpdate(nextProps: ICellProps) {
+    public shouldComponentUpdate(nextProps: CellProps) {
         // deeply compare "style," because a new but identical object might have been provided.
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||

@@ -15,17 +15,16 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2 } from "../../common";
+import { AbstractPureComponent } from "../../common";
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 
-export interface INonIdealStateProps extends IProps {
+export interface NonIdealStateProps extends Props {
     /** An action to resolve the non-ideal state which appears after `description`. */
     action?: JSX.Element;
 
@@ -48,8 +47,7 @@ export interface INonIdealStateProps extends IProps {
     title?: React.ReactNode;
 }
 
-@polyfill
-export class NonIdealState extends AbstractPureComponent2<INonIdealStateProps> {
+export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
     public render() {
@@ -72,7 +70,7 @@ export class NonIdealState extends AbstractPureComponent2<INonIdealStateProps> {
         } else {
             return (
                 <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} iconSize={Icon.SIZE_LARGE * 3} />
+                    <Icon icon={icon} size={Icon.SIZE_LARGE * 3} />
                 </div>
             );
         }

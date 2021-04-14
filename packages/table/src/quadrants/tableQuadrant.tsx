@@ -15,10 +15,9 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractComponent2, IProps } from "@blueprintjs/core";
+import { AbstractComponent, Props, Ref } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -47,12 +46,12 @@ export enum QuadrantType {
     TOP_LEFT = "top-left",
 }
 
-export interface ITableQuadrantProps extends IProps {
+export interface TableQuadrantProps extends Props {
     /**
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.
      */
-    bodyRef?: (ref: HTMLElement | null) => any;
+    bodyRef?: Ref<HTMLDivElement>;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -84,7 +83,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's outermost element.
      */
-    quadrantRef?: (ref: HTMLElement | null) => any;
+    quadrantRef?: Ref<HTMLDivElement>;
 
     /**
      * The quadrant type. Informs the values of the parameters that will be passed to the
@@ -119,7 +118,7 @@ export interface ITableQuadrantProps extends IProps {
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.
      */
-    scrollContainerRef?: (ref: HTMLElement | null) => any;
+    scrollContainerRef?: Ref<HTMLDivElement>;
 
     /**
      * CSS styles to apply to the quadrant's outermost element.
@@ -127,11 +126,10 @@ export interface ITableQuadrantProps extends IProps {
     style?: React.CSSProperties;
 }
 
-@polyfill
-export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
+export class TableQuadrant extends AbstractComponent<TableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<ITableQuadrantProps> = {
+    public static defaultProps: Partial<TableQuadrantProps> = {
         enableRowHeader: true,
     };
 
@@ -180,7 +178,7 @@ export class TableQuadrant extends AbstractComponent2<ITableQuadrantProps> {
         );
     }
 
-    protected validateProps(nextProps: ITableQuadrantProps) {
+    protected validateProps(nextProps: TableQuadrantProps) {
         const { quadrantType } = nextProps;
         if (nextProps.onScroll != null && quadrantType != null && quadrantType !== QuadrantType.MAIN) {
             console.warn(Errors.QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED);

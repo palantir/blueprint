@@ -13,15 +13,12 @@
  * limitations under the License.
  */
 
-// tslint:disable-next-line:no-submodule-imports
-import "@blueprintjs/test-commons/polyfill";
-import "dom4";
-
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import { docsData } from "@blueprintjs/docs-data";
 import { createDefaultRenderers, ReactDocsTagRenderer, ReactExampleTagRenderer } from "@blueprintjs/docs-theme";
+import { Icons } from "@blueprintjs/icons";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
 import * as ReactDocs from "./tags/reactDocs";
@@ -36,7 +33,20 @@ const tagRenderers = {
     reactExample: reactExample.render,
 };
 
+// this compiles all the icon modules into this chunk, so async Icon.load() calls don't block later
+Icons.loadAll({
+    loader: async name => {
+        return (
+            await import(
+                /* webpackInclude: /\.js$/ */
+                /* webpackMode: "eager" */
+                `@blueprintjs/icons/lib/esm/generated/components/${name}`
+            )
+        ).default;
+    },
+});
+
 ReactDOM.render(
-    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,
+    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={true} />,
     document.querySelector("#blueprint-documentation"),
 );

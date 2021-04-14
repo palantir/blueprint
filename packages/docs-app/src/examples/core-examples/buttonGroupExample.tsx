@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import { Alignment, AnchorButton, Button, ButtonGroup, H5, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 
-export interface IButtonGroupExampleState {
+export interface ButtonGroupExampleState {
     alignText: Alignment;
     fill: boolean;
     iconOnly: boolean;
@@ -30,8 +30,8 @@ export interface IButtonGroupExampleState {
     vertical: boolean;
 }
 
-export class ButtonGroupExample extends React.PureComponent<IExampleProps, IButtonGroupExampleState> {
-    public state: IButtonGroupExampleState = {
+export class ButtonGroupExample extends React.PureComponent<ExampleProps, ButtonGroupExampleState> {
+    public state: ButtonGroupExampleState = {
         alignText: Alignment.CENTER,
         fill: false,
         iconOnly: false,

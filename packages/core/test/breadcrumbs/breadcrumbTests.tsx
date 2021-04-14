@@ -15,9 +15,11 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
-import * as React from "react";
+import { mount, shallow } from "enzyme";
+import React from "react";
 import { spy } from "sinon";
+
+import { FolderClose } from "@blueprintjs/icons";
 
 import { Breadcrumb, Classes, Icon } from "../../src";
 
@@ -52,7 +54,7 @@ describe("Breadcrumb", () => {
     });
 
     it("renders an icon if one is provided", () => {
-        assert.lengthOf(shallow(<Breadcrumb />).find(Icon), 0);
-        assert.lengthOf(shallow(<Breadcrumb icon="folder-close" />).find(Icon), 1);
+        assert.lengthOf(mount(<Breadcrumb />).find(Icon), 0);
+        assert.lengthOf(mount(<Breadcrumb icon={<FolderClose />} />).find(FolderClose), 1);
     });
 });

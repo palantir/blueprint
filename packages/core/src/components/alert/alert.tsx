@@ -15,10 +15,9 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, Intent, Props, MaybeElement } from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -27,9 +26,9 @@ import {
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, IconName } from "../icon/icon";
-import { IOverlayLifecycleProps } from "../overlay/overlay";
+import { OverlayLifecycleProps } from "../overlay/overlay";
 
-export interface IAlertProps extends IOverlayLifecycleProps, IProps {
+export interface AlertProps extends OverlayLifecycleProps, Props {
     /**
      * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
@@ -73,6 +72,14 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
      * This prop is required because the component is controlled.
      */
     isOpen: boolean;
+
+    /**
+     * If set to `true`, the confirm button will be set to its loading state. The cancel button, if
+     * visible, will be disabled.
+     *
+     * @default false
+     */
+    loading?: boolean;
 
     /**
      * CSS styles to apply to the alert.
@@ -122,13 +129,13 @@ export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
-@polyfill
-export class Alert extends AbstractPureComponent2<IAlertProps> {
-    public static defaultProps: IAlertProps = {
+export class Alert extends AbstractPureComponent<AlertProps> {
+    public static defaultProps: AlertProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
         confirmButtonText: "OK",
         isOpen: false,
+        loading: false,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Alert`;
@@ -141,6 +148,7 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
             className,
             icon,
             intent,
+            loading,
             cancelButtonText,
             confirmButtonText,
             onClose,
@@ -156,18 +164,20 @@ export class Alert extends AbstractPureComponent2<IAlertProps> {
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.ALERT_BODY}>
-                    <Icon icon={icon} iconSize={40} intent={intent} />
+                    <Icon icon={icon} size={40} intent={intent} />
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>
-                    <Button intent={intent} text={confirmButtonText} onClick={this.handleConfirm} />
-                    {cancelButtonText && <Button text={cancelButtonText} onClick={this.handleCancel} />}
+                    <Button loading={loading} intent={intent} text={confirmButtonText} onClick={this.handleConfirm} />
+                    {cancelButtonText && (
+                        <Button text={cancelButtonText} disabled={loading} onClick={this.handleCancel} />
+                    )}
                 </div>
             </Dialog>
         );
     }
 
-    protected validateProps(props: IAlertProps) {
+    protected validateProps(props: AlertProps) {
         if (props.onClose == null && (props.cancelButtonText == null) !== (props.onCancel == null)) {
             console.warn(ALERT_WARN_CANCEL_PROPS);
         }

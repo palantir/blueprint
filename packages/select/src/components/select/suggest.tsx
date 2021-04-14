@@ -15,29 +15,26 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 
 import {
-    AbstractPureComponent2,
+    AbstractPureComponent,
     DISPLAYNAME_PREFIX,
-    getRef,
-    HTMLInputProps,
-    IInputGroupProps,
+    InputGroupProps,
     InputGroup,
-    IPopoverProps,
-    IRefCallback,
-    IRefObject,
-    isRefObject,
+    PopoverProps,
+    Ref,
     Keys,
     Popover,
     PopoverInteractionKind,
-    Position,
+    refHandler,
+    setRef,
 } from "@blueprintjs/core";
 
-import { Classes, IListItemsProps } from "../../common";
-import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
+import { Classes, ListItemsProps } from "../../common";
+import { QueryListRendererProps, QueryList } from "../query-list/queryList";
 
-export interface ISuggestProps<T> extends IListItemsProps<T> {
+export interface SuggestProps<T> extends ListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -59,7 +56,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: InputGroupProps;
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
@@ -90,7 +87,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
 
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    popoverProps?: Partial<IPopoverProps> & object;
+    popoverProps?: Partial<PopoverProps> & object;
 
     /**
      * Whether the active item should be reset to the first matching item _when
@@ -101,15 +98,15 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
     resetOnClose?: boolean;
 }
 
-export interface ISuggestState<T> {
+export interface SuggestState<T> {
     isOpen: boolean;
     selectedItem: T | null;
 }
 
-export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISuggestState<T>> {
+export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
-    public static defaultProps: Partial<ISuggestProps<any>> = {
+    public static defaultProps: Partial<SuggestProps<any>> = {
         closeOnSelect: true,
         fill: false,
         openOnKeyDown: false,
@@ -117,29 +114,23 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     };
 
     public static ofType<U>() {
-        return Suggest as new (props: ISuggestProps<U>) => Suggest<U>;
+        return Suggest as new (props: SuggestProps<U>) => Suggest<U>;
     }
 
-    public state: ISuggestState<T> = {
+    public state: SuggestState<T> = {
         isOpen: (this.props.popoverProps != null && this.props.popoverProps.isOpen) || false,
         selectedItem: this.getInitialSelectedItem(),
     };
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private inputEl: HTMLInputElement | IRefObject<HTMLInputElement> | null = null;
+    public inputElement: HTMLInputElement | null = null;
 
     private queryList: QueryList<T> | null = null;
 
-    private refHandlers = {
-        input: isRefObject<HTMLInputElement>(this.props.inputProps?.inputRef)
-            ? (this.inputEl = this.props.inputProps!.inputRef)
-            : (ref: HTMLInputElement | null) => {
-                  this.inputEl = ref;
-                  (this.props.inputProps?.inputRef as IRefCallback<HTMLInputElement>)?.(ref);
-              },
-        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
-    };
+    private handleInputRef: Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+
+    private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -149,13 +140,19 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                 {...restProps}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
-                ref={this.refHandlers.queryList}
+                ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
             />
         );
     }
 
-    public componentDidUpdate(_prevProps: ISuggestProps<T>, prevState: ISuggestState<T>) {
+    public componentDidUpdate(prevProps: SuggestProps<T>, prevState: SuggestState<T>) {
+        if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
+            setRef(prevProps.inputProps?.inputRef, null);
+            this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
+            setRef(this.props.inputProps?.inputRef, this.inputElement);
+        }
+
         // If the selected item prop changes, update the underlying state.
         if (this.props.selectedItem !== undefined && this.props.selectedItem !== this.state.selectedItem) {
             this.setState({ selectedItem: this.props.selectedItem });
@@ -164,9 +161,8 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
-            setTimeout(() => {
-                this.maybeResetActiveItemToSelectedItem();
-            }, this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration);
+            const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
+            setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
         if (this.state.isOpen && !prevState.isOpen && this.queryList != null) {
@@ -174,7 +170,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         }
     }
 
-    private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         const { fill, inputProps = {}, popoverProps = {} } = this.props;
         const { isOpen, selectedItem } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
@@ -199,9 +195,14 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
-                position={Position.BOTTOM_LEFT}
+                placement="bottom-start"
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
+                content={
+                    <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {listProps.itemList}
+                    </div>
+                }
                 interactionKind={PopoverInteractionKind.CLICK}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
@@ -212,7 +213,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                     autoComplete={autoComplete}
                     disabled={this.props.disabled}
                     {...inputProps}
-                    inputRef={this.refHandlers.input}
+                    inputRef={this.handleInputRef}
                     onChange={listProps.handleQueryChange}
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
@@ -220,9 +221,6 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
                     placeholder={inputPlaceholder}
                     value={inputValue}
                 />
-                <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                    {listProps.itemList}
-                </div>
             </Popover>
         );
     };
@@ -230,8 +228,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     private selectText = () => {
         // wait until the input is properly focused to select the text inside of it
         this.requestAnimationFrame(() => {
-            const input = getRef(this.inputEl);
-            input?.setSelectionRange(0, input.value.length);
+            this.inputElement?.setSelectionRange(0, this.inputElement.value.length);
         });
     };
 
@@ -250,11 +247,11 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         let nextOpenState: boolean;
 
         if (!this.props.closeOnSelect) {
-            getRef(this.inputEl)?.focus();
+            this.inputElement?.focus();
             this.selectText();
             nextOpenState = true;
         } else {
-            getRef(this.inputEl)?.blur();
+            this.inputElement?.blur();
             nextOpenState = false;
         }
 
@@ -287,9 +284,9 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
     private handlePopoverInteraction = (nextOpenState: boolean) =>
         this.requestAnimationFrame(() => {
-            const isInputFocused = getRef(this.inputEl) === document.activeElement;
+            const isInputFocused = this.inputElement === document.activeElement;
 
-            if (this.inputEl != null && !isInputFocused) {
+            if (this.inputElement != null && !isInputFocused) {
                 // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });
             }
@@ -322,7 +319,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
             const { which } = evt;
 
             if (which === Keys.ESCAPE || which === Keys.TAB) {
-                getRef(this.inputEl)?.blur();
+                this.inputElement?.blur();
                 this.setState({ isOpen: false });
             } else if (
                 this.props.openOnKeyDown &&

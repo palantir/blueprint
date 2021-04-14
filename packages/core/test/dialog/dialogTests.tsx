@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import React from "react";
 import { spy } from "sinon";
 
 import { Button, Classes, Dialog, H4, Icon } from "../../src";
@@ -151,7 +151,7 @@ describe("<Dialog>", () => {
     function createDialogContents(): JSX.Element[] {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
-                <Icon icon="inbox" iconSize={Icon.SIZE_LARGE} />
+                <Icon icon="inbox" size={Icon.SIZE_LARGE} />
                 <H4>Dialog header</H4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>

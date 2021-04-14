@@ -15,19 +15,20 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
+import React from "react";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { SmallCross } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
-import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
+import { BackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 
-export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps {
+export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * drawer's header. Note that the header will only be rendered if `title` is
@@ -51,11 +52,19 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 
     /**
      * Position of a drawer. All angled positions will be casted into pure positions
-     * (TOP, BOTTOM, LEFT or RIGHT).
+     * (top, bottom, left, or right).
      *
-     * @default Position.RIGHT
+     * @default "right"
      */
-    position?: Position;
+    position: Position;
+
+    /**
+     * Whether the application should return focus to the last active element in the
+     * document after this drawer closes.
+     *
+     * @default true
+     */
+    shouldReturnFocusOnClose?: boolean;
 
     /**
      * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
@@ -88,26 +97,17 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
      * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
-
-    /**
-     * Whether the drawer should appear with vertical styling.
-     * It will be ignored if `position` prop is set
-     *
-     * @default false
-     * @deprecated use `position` instead
-     */
-    vertical?: boolean;
 }
 
-@polyfill
-export class Drawer extends AbstractPureComponent2<IDrawerProps> {
+export class Drawer extends AbstractPureComponent<DrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 
-    public static defaultProps: IDrawerProps = {
+    public static defaultProps: DrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        position: "right",
+        shouldReturnFocusOnClose: true,
         style: {},
-        vertical: false,
     };
 
     public static readonly SIZE_SMALL = "360px";
@@ -119,14 +119,12 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     private lastActiveElementBeforeOpened: Element | null | undefined;
 
     public render() {
-        // eslint-disable-next-line deprecation/deprecation
-        const { size, style, position, vertical } = this.props;
-        const realPosition = position ? getPositionIgnoreAngles(position) : undefined;
+        const { size, style, position } = this.props;
+        const realPosition = getPositionIgnoreAngles(position);
 
         const classes = classNames(
             Classes.DRAWER,
             {
-                [Classes.VERTICAL]: !realPosition && vertical,
                 [Classes.positionClass(realPosition) ?? ""]: true,
             },
             this.props.className,
@@ -137,7 +135,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
                 ? style
                 : {
                       ...style,
-                      [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
+                      [isPositionHorizontal(realPosition) ? "height" : "width"]: size,
                   };
         return (
             <Overlay
@@ -154,7 +152,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
         );
     }
 
-    protected validateProps(props: IDrawerProps) {
+    protected validateProps(props: DrawerProps) {
         if (props.title == null) {
             if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);
@@ -164,10 +162,6 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
             }
         }
         if (props.position != null) {
-            // eslint-disable-next-line deprecation/deprecation
-            if (props.vertical) {
-                console.warn(Errors.DRAWER_VERTICAL_IS_IGNORED);
-            }
             if (props.position !== getPositionIgnoreAngles(props.position)) {
                 console.warn(Errors.DRAWER_ANGLE_POSITIONS_ARE_CASTED);
             }
@@ -182,7 +176,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
+                    icon={<SmallCross size={Icon.SIZE_LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -199,7 +193,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
         }
         return (
             <div className={Classes.DRAWER_HEADER}>
-                <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
+                <Icon icon={icon} size={Icon.SIZE_LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>
@@ -212,7 +206,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
     };
 
     private handleClosed = (node: HTMLElement) => {
-        if (this.lastActiveElementBeforeOpened instanceof HTMLElement) {
+        if (this.props.shouldReturnFocusOnClose && this.lastActiveElementBeforeOpened instanceof HTMLElement) {
             this.lastActiveElementBeforeOpened.focus();
         }
         this.props.onClosed?.(node);

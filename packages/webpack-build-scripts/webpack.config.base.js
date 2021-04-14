@@ -13,36 +13,55 @@
  * limitations under the License.
  */
 
-const path = require("path");
-
-// webpack plugins
-const { CheckerPlugin } = require("awesome-typescript-loader");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const ForkTsCheckerNotifierWebpackPlugin = require("fork-ts-checker-notifier-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path");
+const webpack = require("webpack");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
 const { getPackageName } = require("./utils");
 
-// globals
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
-const DEV_PORT = process.env.PORT || 9000;
 const PACKAGE_NAME = getPackageName();
+const { NODE_ENV = "development", PORT = 9000 } = process.env;
+const isProductionBuild = NODE_ENV === "production";
 
 /**
  * Configure plugins loaded based on environment.
  */
 const plugins = [
-    // Used for async error reporting
-    // Can remove after https://github.com/webpack/webpack/issues/3460 resolved
-    new CheckerPlugin(),
+    new ForkTsCheckerWebpackPlugin(
+        isProductionBuild
+            ? {
+                  async: false,
+                  typescript: {
+                      configFile: "src/tsconfig.json",
+                      useTypescriptIncrementalApi: true,
+                      memoryLimit: 4096,
+                  },
+              }
+            : {
+                  typescript: {
+                      configFile: "src/tsconfig.json",
+                  },
+              },
+    ),
 
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
+
+    new webpack.DefinePlugin({
+        NODE_ENV: JSON.stringify(NODE_ENV),
+    }),
 ];
 
-if (!IS_PRODUCTION) {
+if (!isProductionBuild) {
     plugins.push(
-        // Trigger an OS notification when the build succeeds in dev mode.
-        new WebpackNotifierPlugin({ title: PACKAGE_NAME }),
+        new ReactRefreshWebpackPlugin(),
+        new ForkTsCheckerNotifierWebpackPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
+        new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
+        new webpack.HotModuleReplacementPlugin(),
     );
 }
 
@@ -50,7 +69,7 @@ if (!IS_PRODUCTION) {
 // compile Sass, apply PostCSS, interpret CSS as modules.
 const scssLoaders = [
     // Only extract CSS to separate file in production mode.
-    IS_PRODUCTION
+    isProductionBuild
         ? {
               loader: MiniCssExtractPlugin.loader,
           }
@@ -74,15 +93,17 @@ const scssLoaders = [
 ];
 
 module.exports = {
-    devtool: IS_PRODUCTION ? false : "inline-source-map",
+    // to automatically find tsconfig.json
+    context: process.cwd(),
+
+    devtool: isProductionBuild ? false : "inline-source-map",
 
     devServer: {
         contentBase: "./src",
         disableHostCheck: true,
         historyApiFallback: true,
         https: false,
-        // TODO: enable HMR
-        // hot: true,
+        hot: true,
         index: path.resolve(__dirname, "src/index.html"),
         inline: true,
         stats: "errors-only",
@@ -91,18 +112,23 @@ module.exports = {
             warnings: true,
             errors: true,
         },
-        port: DEV_PORT,
+        port: PORT,
     },
 
-    mode: IS_PRODUCTION ? "production" : "development",
+    mode: isProductionBuild ? "production" : "development",
 
     module: {
         rules: [
             {
+                test: /\.js$/,
+                use: require.resolve("source-map-loader"),
+            },
+            {
                 test: /\.tsx?$/,
-                loader: require.resolve("awesome-typescript-loader"),
+                loader: require.resolve("ts-loader"),
                 options: {
-                    configFileName: "./src/tsconfig.json",
+                    configFile: "src/tsconfig.json",
+                    transpileOnly: true,
                 },
             },
             {
@@ -125,4 +151,7 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"],
     },
+
+    // add support for IE11 (otherwise, webpack 5 uses some ES2015 syntax by default)
+    target: ["web", "es5"],
 };

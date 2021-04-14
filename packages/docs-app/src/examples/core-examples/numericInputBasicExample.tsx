@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React from "react";
 
 import {
     H5,
     HTMLSelect,
     Intent,
-    INumericInputProps,
-    IOptionProps,
+    NumericInputProps,
+    OptionProps,
     Label,
     NumericInput,
     Position,
@@ -32,7 +32,7 @@ import {
     handleNumberChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
+    ExampleProps,
 } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -58,8 +58,8 @@ const BUTTON_POSITIONS = [
     { label: "Right", value: Position.RIGHT },
 ];
 
-export class NumericInputBasicExample extends React.PureComponent<IExampleProps, INumericInputProps> {
-    public state: INumericInputProps = {
+export class NumericInputBasicExample extends React.PureComponent<ExampleProps, NumericInputProps> {
+    public state: NumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: "right",
         disabled: false,
@@ -82,7 +82,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
 
     private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
-    private handleButtonPositionChange = handleValueChange((buttonPosition: INumericInputProps["buttonPosition"]) =>
+    private handleButtonPositionChange = handleValueChange((buttonPosition: NumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),
     );
 
@@ -168,7 +168,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
     private renderSelectMenu(
         label: string,
         value: number | string,
-        options: IOptionProps[],
+        options: OptionProps[],
         onChange: React.FormEventHandler,
     ) {
         return (

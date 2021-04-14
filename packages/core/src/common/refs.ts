@@ -14,27 +14,72 @@
  * limitations under the License.
  */
 
-export type IRef<T = HTMLElement> = IRefObject<T> | IRefCallback<T>;
+export type Ref<T extends HTMLElement = HTMLElement> = RefObject<T> | RefCallback<T>;
 
 // compatible with React.Ref type in @types/react@^16
-export interface IRefObject<T = HTMLElement> {
+export interface RefObject<T extends HTMLElement = HTMLElement> {
     current: T | null;
 }
 
-export function isRefObject<T extends HTMLElement>(value: IRef<T> | undefined | null): value is IRefObject<T> {
-    return value != null && typeof (value as IRefObject<T>).current !== "undefined";
+export function isRefObject<T extends HTMLElement>(value: Ref<T> | undefined | null): value is RefObject<T> {
+    return value != null && typeof value !== "function";
 }
 
-export type IRefCallback<T = HTMLElement> = (ref: T | null) => any;
+export type RefCallback<T extends HTMLElement = HTMLElement> = (ref: T | null) => any;
 
-export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined): value is IRefCallback<T> {
+export function isRefCallback<T extends HTMLElement>(value: Ref<T> | undefined | null): value is RefCallback<T> {
     return typeof value === "function";
 }
 
-export function getRef<T = HTMLElement>(ref: T | IRefObject<T> | null) {
+/**
+ * Assign the given ref to a target, either a React ref object or a callback which takes the ref as its first argument.
+ */
+export function setRef<T extends HTMLElement>(refTarget: Ref<T> | undefined | null, ref: T | null): void {
+    if (isRefObject<T>(refTarget)) {
+        refTarget.current = ref;
+    } else if (isRefCallback(refTarget)) {
+        refTarget(ref);
+    }
+}
+
+/** @deprecated use mergeRefs() instead */
+export function combineRefs<T extends HTMLElement>(ref1: RefCallback<T>, ref2: RefCallback<T>) {
+    return mergeRefs(ref1, ref2);
+}
+
+/**
+ * Utility for merging refs into one singular callback ref.
+ * If using in a functional component, would recomend using `useMemo` to preserve function identity.
+ */
+export function mergeRefs<T extends HTMLElement>(...refs: Array<Ref<T> | null>): RefCallback<T> {
+    return value => {
+        refs.forEach(ref => {
+            setRef(ref, value);
+        });
+    };
+}
+
+export function getRef<T extends HTMLElement>(ref: T | RefObject<T> | null): T | null {
     if (ref === null) {
         return null;
     }
 
-    return (ref as IRefObject<T>).current ?? (ref as T);
+    return (ref as RefObject<T>).current ?? (ref as T);
+}
+
+/**
+ * Creates a ref handler which assigns the ref returned by React for a mounted component to a field on the target object.
+ * The target object is usually a component class.
+ *
+ * If provided, it will also update the given `refProp` with the value of the ref.
+ */
+export function refHandler<T extends HTMLElement, K extends string>(
+    refTargetParent: { [k in K]: T | null },
+    refTargetKey: K,
+    refProp?: Ref<T> | undefined | null,
+): RefCallback<T> {
+    return (ref: T | null) => {
+        refTargetParent[refTargetKey] = ref;
+        setRef(refProp, ref);
+    };
 }
