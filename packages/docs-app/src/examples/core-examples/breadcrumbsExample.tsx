@@ -110,7 +110,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                         collapseFrom={collapseFrom}
                         items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
                         currentBreadcrumbRenderer={renderCurrentAsInput ? this.renderBreadcrumbInput : undefined}
-                        overflowListProps={{alwaysRenderOverflow}}
+                        overflowListProps={{ alwaysRenderOverflow }}
                     />
                 </Card>
             </Example>
