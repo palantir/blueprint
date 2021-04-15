@@ -129,8 +129,8 @@ $step-radius: $pt-border-radius * 2 !default;
     color: $pt-dark-text-color-disabled;
   }
 
-  // by default, step title is active only when the step is selected
-  .#{$ns}-active.#{$ns}-active.#{$ns}-dialog-step-viewed & {
+  // step title is active only when the step is selected
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
     color: $blue4;
   }
 
