@@ -107,6 +107,11 @@ describe("<OverflowList>", function (this) {
         overflowList().assertHasOverflow(true);
     });
 
+
+    it("should render overflow if alwaysRenderOverflow props is true", () => {
+        overflowList(200, { alwaysRenderOverflow: true }).assertHasOverflow(true);
+    });
+
     it("renders overflow items in the correct order (collapse from start)", () => {
         overflowList(45, { collapseFrom: "start" }).assertOverflowItems(0, 1);
     });
