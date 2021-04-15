@@ -111,7 +111,7 @@ export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
             <li>
                 <Popover position={position} {...this.props.popoverProps}>
                     <span className={Classes.BREADCRUMBS_COLLAPSED} />
-                    <Menu>{orderedItems > 0 ? orderedItems.map(this.renderOverflowBreadcrumb) : <MenuItem disabled={true} text="No items to show" key="no-results" />}</Menu>
+                    <Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>
                 </Popover>
             </li>
         );
