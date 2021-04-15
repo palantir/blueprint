@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
+import moment from "moment";
+import * as React from "react";
+
 import { Classes, H5, HTMLSelect, Label, Switch } from "@blueprintjs/core";
+import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
 import {
     Example,
     handleBooleanChange,
     handleNumberChange,
-    handleStringChange,
+    handleValueChange,
     IExampleProps,
 } from "@blueprintjs/docs-theme";
-import moment from "moment";
-import * as React from "react";
 
-import { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
 import { MomentDateRange } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
@@ -61,8 +62,12 @@ const MIN_DATE_OPTIONS: IDateOption[] = [
 const MAX_DATE_OPTIONS: IDateOption[] = [
     { label: "None", value: undefined },
     {
-        label: "1 month ago",
-        value: moment().add(-1, "months").toDate(),
+        label: "4 months from now",
+        value: moment().add(4, "months").toDate(),
+    },
+    {
+        label: "1 year from now",
+        value: moment().add(1, "years").toDate(),
     },
 ];
 
@@ -79,17 +84,23 @@ export class DateRangePickerExample extends React.PureComponent<IExampleProps, I
     };
 
     private handleMaxDateIndexChange = handleNumberChange(maxDateIndex => this.setState({ maxDateIndex }));
+
     private handleMinDateIndexChange = handleNumberChange(minDateIndex => this.setState({ minDateIndex }));
-    private handlePrecisionChange = handleStringChange((timePrecision: TimePrecision | undefined) =>
+
+    private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | undefined) =>
         this.setState({ timePrecision }),
     );
 
     private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
         this.setState({ reverseMonthAndYearMenus }),
     );
+
     private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
+
     private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
+
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
     private toggleContiguousCalendarMonths = handleBooleanChange(contiguousCalendarMonths => {
         this.setState({ contiguousCalendarMonths });
     });

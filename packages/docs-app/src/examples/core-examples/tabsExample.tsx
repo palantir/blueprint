@@ -35,7 +35,9 @@ export class TabsExample extends React.PureComponent<IExampleProps, ITabsExample
     };
 
     private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
+
     private toggleAnimate = handleBooleanChange(animate => this.setState({ animate }));
+
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
     public render() {

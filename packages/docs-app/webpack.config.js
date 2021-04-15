@@ -13,17 +13,26 @@
  * limitations under the License.
  */
 
-const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
+const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
+
 module.exports = Object.assign({}, baseConfig, {
     entry: {
-        "docs-app": ["./src/index.tsx", "./src/index.scss"],
+        "docs-app": [
+            // environment polyfills
+            "dom4",
+            "./polyfill.js",
+            // bundle entry points
+            "./src/index.tsx",
+            "./src/index.scss",
+        ],
     },
 
     output: {
         filename: "[name].js",
+        publicPath: "",
         path: path.resolve(__dirname, "./dist"),
     },
 

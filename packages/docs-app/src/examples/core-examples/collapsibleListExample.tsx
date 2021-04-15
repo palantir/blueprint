@@ -28,7 +28,7 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 export interface ICollapsibleListExampleState {
     collapseFrom?: Boundary;
@@ -46,7 +46,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
         visibleItemCount: 3,
     };
 
-    private handleChangeCollapse = handleStringChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
+    private handleChangeCollapse = handleValueChange((collapseFrom: Boundary) => this.setState({ collapseFrom }));
 
     public render() {
         const options = (
@@ -70,6 +70,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
             </>
         );
 
+        /* eslint-disable deprecation/deprecation */
         return (
             <Example options={options} {...this.props}>
                 <CollapsibleList
@@ -87,15 +88,16 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
                 </CollapsibleList>
             </Example>
         );
+        /* eslint-enable deprecation/deprecation */
     }
 
-    private renderBreadcrumb(props: IMenuItemProps) {
+    private renderBreadcrumb = (props: IMenuItemProps) => {
         if (props.href != null) {
             return <a className={Classes.BREADCRUMB}>{props.text}</a>;
         } else {
             return <span className={classNames(Classes.BREADCRUMB, Classes.BREADCRUMB_CURRENT)}>{props.text}</span>;
         }
-    }
+    };
 
     private handleChangeCount = (visibleItemCount: number) => this.setState({ visibleItemCount });
 }

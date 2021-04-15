@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { LocaleUtils } from "react-day-picker";
+import { DayPickerProps, LocaleUtils } from "react-day-picker";
+
 import { Months } from "./common/months";
 import { ITimePickerProps, TimePrecision } from "./timePicker";
 
@@ -29,6 +30,29 @@ export interface IDatePickerModifiers {
 }
 
 export interface IDatePickerBaseProps {
+    /**
+     * Props to pass to ReactDayPicker. See API documentation
+     * [here](http://react-day-picker.js.org/api/DayPicker).
+     *
+     * The following props are managed by the component and cannot be configured:
+     * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
+     * `initialMonth`), `toMonth` (use `maxDate`).
+     *
+     * In case of supplying your owner `renderDay` function, make sure to apply the appropriate
+     * CSS wrapper class to obtain default Blueprint styling.
+     * eg.
+     * `<div className={Classes.DATEPICKER_DAY_WRAPPER}>{CONTENT_HERE}</div>`
+     *
+     */
+    dayPickerProps?: DayPickerProps;
+
+    /**
+     * Whether the current day should be highlighted in the calendar.
+     *
+     * @default false
+     */
+    highlightCurrentDay?: boolean;
+
     /**
      * The initial month the calendar displays.
      */
@@ -47,12 +71,14 @@ export interface IDatePickerBaseProps {
 
     /**
      * The latest date the user can select.
+     *
      * @default Dec. 31st of this year.
      */
     maxDate?: Date;
 
     /**
      * The earliest date the user can select.
+     *
      * @default Jan. 1st, 20 years in the past.
      */
     minDate?: Date;
@@ -67,6 +93,7 @@ export interface IDatePickerBaseProps {
     /**
      * If `true`, the month menu will appear to the left of the year menu.
      * Otherwise, the month menu will apear to the right of the year menu.
+     *
      * @default false
      */
     reverseMonthAndYearMenus?: boolean;

@@ -63,17 +63,16 @@ Blueprint can instead be quickly added to a page using the Unpkg CDN.
 
 @### Language features
 
-Note that since the minimum supported version of React is [v16](https://reactjs.org/blog/2017/09/26/react-v16.0.html),
-all of its [JavaScript Environment Requirements](https://reactjs.org/docs/javascript-environment-requirements.html) apply to
-Blueprint as well. Blueprint components require the following ES2015 features:
+Blueprint components require the following ES2015 features:
 
 -   `Map`
 -   `Set`
--   `Array.fill`
--   `Array.from`
+-   `Array.prototype.fill`
+-   `Array.prototype.from`
+-   `String.prototype.startsWith`
 
-We recommend polyfilling these features using [es6-shim](https://github.com/paulmillr/es6-shim) or
-[core-js](https://github.com/zloirock/core-js).
+Popper.js also has some polyfill requirements, [see the docs here](https://popper.js.org/docs/v2/browser-support/).
+We recommend polyfilling these features using [core-js](https://github.com/zloirock/core-js).
 
 @### DOM4
 

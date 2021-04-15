@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
@@ -24,12 +25,14 @@ export interface ICollapseProps extends IProps {
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
+     *
      * @default "div"
      */
     component?: React.ElementType;
 
     /**
      * Whether the component is open or closed.
+     *
      * @default false
      */
     isOpen?: boolean;
@@ -37,6 +40,7 @@ export interface ICollapseProps extends IProps {
     /**
      * Whether the child components will remain mounted when the `Collapse` is closed.
      * Setting to true may improve performance by avoiding re-mounting children.
+     *
      * @default false
      */
     keepChildrenMounted?: boolean;
@@ -46,6 +50,7 @@ export interface ICollapseProps extends IProps {
      * the duration of the animation in CSS. Only set this prop if you override
      * Blueprint's default transitions with new transitions of a different
      * length.
+     *
      * @default 200
      */
     transitionDuration?: number;
@@ -162,7 +167,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
     };
 
     // The element containing the contents of the collapse.
-    private contents: HTMLElement;
+    private contents: HTMLElement | null = null;
 
     public render() {
         const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
@@ -177,6 +182,9 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
             transition: isAutoHeight ? "none" : undefined,
         };
 
+        // in order to give hints to child elements which rely on CSS fixed positioning, we need to apply a class
+        // to the element which creates a new containing block with a non-empty `transform` property
+        // see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
         const contentsStyle = {
             // only use heightWhenOpen while closing
             transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
@@ -185,13 +193,13 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         };
 
         return React.createElement(
-            this.props.component,
+            this.props.component!,
             {
                 className: classNames(Classes.COLLAPSE, this.props.className),
                 style: containerStyle,
             },
             <div
-                className={Classes.COLLAPSE_BODY}
+                className={classNames(Classes.COLLAPSE_BODY, Classes.FIXED_POSITIONING_CONTAINING_BLOCK)}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
                 aria-hidden={!isContentVisible && this.props.keepChildrenMounted}
@@ -203,14 +211,21 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
     public componentDidMount() {
         this.forceUpdate();
+        // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
+        /* eslint-disable react/no-did-mount-set-state */
         if (this.props.isOpen) {
             this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
         } else {
             this.setState({ animationState: AnimationStates.CLOSED, height: "0px" });
         }
+        /* eslint-disable react/no-did-mount-set-state */
     }
 
     public componentDidUpdate() {
+        if (this.contents == null) {
+            return;
+        }
+
         const { transitionDuration } = this.props;
         const { animationState } = this.state;
 
@@ -235,7 +250,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         }
     }
 
-    private contentsRefHandler = (el: HTMLElement) => {
+    private contentsRefHandler = (el: HTMLElement | null) => {
         this.contents = el;
         if (this.contents != null) {
             const height = this.contents.clientHeight;

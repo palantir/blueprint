@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-data",
-    "version": "3.31.0",
+    "version": "3.43.0",
     "main": "src/index.js",
     "types": "src/index.d.ts",
     "private": true,
@@ -10,15 +10,15 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.31.0",
-        "@blueprintjs/docs-theme": "^3.6.5",
-        "@documentalist/compiler": "~2.8.1",
+        "@blueprintjs/core": "^3.43.0",
+        "@blueprintjs/docs-theme": "^3.9.10",
+        "@documentalist/compiler": "~3.0.0",
         "better-handlebars": "github:wmeldon/better-handlebars",
         "glob": "^7.1.6",
         "highlights": "^3.1.4",
         "language-less": "github:atom/language-less",
-        "marked": "^1.1.1",
-        "semver": "^7.3.2",
+        "marked": "^1.2.5",
+        "semver": "^7.3.4",
         "tree-sitter-typescript": "~0.16.1"
     },
     "repository": {

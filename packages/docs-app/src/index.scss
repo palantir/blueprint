@@ -11,6 +11,7 @@ Licensed under the Apache License, Version 2.0.
 @import "~@blueprintjs/core/lib/css/blueprint.css";
 @import "~@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 @import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import "~@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 @import "~@blueprintjs/select/lib/css/blueprint-select.css";
 @import "~@blueprintjs/table/lib/css/table.css";
 @import "~@blueprintjs/timezone/lib/css/blueprint-timezone.css";
@@ -54,4 +55,8 @@ Licensed under the Apache License, Version 2.0.
 .editor,
 code {
   transition: background-color $pt-transition-duration $pt-transition-ease;
+}
+
+.docs-root {
+  isolation: isolate;
 }

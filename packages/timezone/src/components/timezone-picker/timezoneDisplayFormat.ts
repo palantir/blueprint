@@ -15,9 +15,11 @@
  */
 
 import * as moment from "moment-timezone";
+
 import { getTimezoneMetadata } from "./timezoneMetadata";
 
 export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite";
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TimezoneDisplayFormat = {
     /** Abbreviation format: `"HST"` */
     ABBREVIATION: "abbreviation" as "abbreviation",

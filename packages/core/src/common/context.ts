@@ -16,12 +16,12 @@
 
 // simplified typings copied from @types/prop-types, to avoid that explicit dependency
 
-export type Validator = (
+export type Validator<K> = (
     props: { [key: string]: any },
-    propName: string,
+    propName: K,
     componentName: string,
     location: string,
     propFullName: string,
-) => Error | null;
+) => Error | undefined;
 
-export type ValidationMap<T> = { [K in keyof T]?: Validator };
+export type ValidationMap<T> = { [K in keyof T]?: Validator<K> };

@@ -280,7 +280,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   Styleguide switch
   */
 
-  // stylelint-disable-next-line order/order
+  /* stylelint-disable-next-line order/order */
   $switch-width: 1.75em !default;
   $switch-indicator-margin: 2px !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
@@ -367,7 +367,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       border: none;
       border-radius: $switch-width;
       // override default button styles, never have a box-shadow here.
-      // stylelint-disable-next-line declaration-no-important
+      /* stylelint-disable-next-line declaration-no-important */
       box-shadow: none !important;
       min-width: $switch-width;
       transition: background-color $pt-transition-duration $pt-transition-ease;

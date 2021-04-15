@@ -21,6 +21,7 @@ import * as ReactDOM from "react-dom";
 import * as sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
+
 import { Classes, IMultiSliderProps, MultiSlider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
@@ -56,6 +57,17 @@ describe("<MultiSlider>", () => {
             mouseUpHorizontal(0);
             assert.equal(onRelease.callCount, 1);
             assert.deepEqual(onRelease.firstCall.args[0], [0, 5, 10]);
+        });
+
+        it("propagates className to the handles", () => {
+            const slider = mount(
+                <MultiSlider>
+                    <MultiSlider.Handle value={3} className="testClass" />
+                    <MultiSlider.Handle value={5} />
+                </MultiSlider>,
+                { attachTo: testsContainerElement },
+            );
+            assert.lengthOf(slider.find("span.testClass"), 1);
         });
 
         it("moving mouse on the first handle updates the first value", () => {
@@ -160,20 +172,32 @@ describe("<MultiSlider>", () => {
         it("values outside of bounds are clamped", () => {
             const slider = renderSlider({ values: [-1, 5, 12] });
             slider.find(`.${Classes.SLIDER_PROGRESS}`).forEach(progress => {
-                const { left, right } = progress.prop("style");
+                const { left, right } = progress.prop("style")!;
                 // CSS properties are percentage strings, but parsing will ignore trailing "%".
                 // percentages should be in 0-100% range.
-                assert.isAtLeast(parseFloat(left.toString()), 0);
-                assert.isAtMost(parseFloat(right.toString()), 100);
+                assert.isAtLeast(parseFloat(left!.toString()), 0);
+                assert.isAtMost(parseFloat(right!.toString()), 100);
             });
         });
     });
 
     describe("labels", () => {
+        it("renders label with labelStepSize fallback of 1 when not provided", () => {
+            // [0 1 2 3 4 5]
+            const wrapper = renderSlider({ min: 0, max: 5 });
+            assertLabelCount(wrapper, 6);
+        });
+
         it("renders label for value and for each labelStepSize", () => {
             // [0  10  20  30  40  50]
             const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: 10 });
             assertLabelCount(wrapper, 6);
+        });
+
+        it("renders labels provided in labelValues prop", () => {
+            const labelValues = [0, 30, 50, 60];
+            const wrapper = renderSlider({ min: 0, max: 50, labelValues });
+            assertLabelCount(wrapper, 4);
         });
 
         it("renders all labels even when floating point approx would cause the last one to be skipped", () => {
@@ -186,6 +210,12 @@ describe("<MultiSlider>", () => {
             const labelRenderer = (val: number) => val + "#";
             const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: 10, labelRenderer });
             assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
+        });
+
+        it("renders result of labelRenderer() in each label with labelValues", () => {
+            const labelRenderer = (val: number) => val + "#";
+            const wrapper = renderSlider({ min: 0, max: 50, labelValues: [20, 40, 50], labelRenderer });
+            assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "20#40#50#");
         });
 
         it("default labelRenderer() fixes decimal places to labelPrecision", () => {
@@ -229,7 +259,7 @@ describe("<MultiSlider>", () => {
 
         it("intentAfter beats intentBefore", () => {
             const intents = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
-                const match = segment.prop("className").match(/-intent-(\w+)/) || [];
+                const match = segment.prop("className")?.match(/-intent-(\w+)/) || [];
                 return match[1];
             });
             // last segment has default intent
@@ -240,7 +270,7 @@ describe("<MultiSlider>", () => {
             slider.setProps({ showTrackFill: false });
             slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
                 // segments rendered but they nave no intent
-                assert.isNull(segment.prop("className").match(/-intent-(\w+)/));
+                assert.isNull(segment.prop("className")?.match(/-intent-(\w+)/));
             });
         });
 
@@ -252,7 +282,7 @@ describe("<MultiSlider>", () => {
                 </MultiSlider>,
             );
             const locations = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
-                const match = segment.prop("style");
+                const match = segment.prop("style")!;
                 return [match.left, match.right];
             });
             assert.deepEqual(locations, [
@@ -280,7 +310,7 @@ describe("<MultiSlider>", () => {
 
             const trackBackgrounds = slider
                 .find(`.${Classes.SLIDER_PROGRESS}`)
-                .map(segment => segment.prop("style").background);
+                .map(segment => segment.prop("style")?.background);
 
             assert.equal(trackBackgrounds[0], "red");
             assert.equal(trackBackgrounds[1], "yellow");

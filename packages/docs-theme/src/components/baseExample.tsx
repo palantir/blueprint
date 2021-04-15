@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Utils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Utils } from "@blueprintjs/core";
 
 export const WARNING_BASE_EXAMPLE_DEPRECATED = `[Blueprint] BaseExample is deprecated and will be removed in the next beta. Compose new Example component instead of extending BaseExample.`;
 
@@ -28,15 +29,17 @@ export interface IBaseExampleProps {
 /**
  * Starter class for all React example components.
  * Examples and options are rendered into separate containers.
+ *
  * @deprecated
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class BaseExample<S extends {}> extends React.Component<IBaseExampleProps, S> {
     /** Define this prop to add a className to the example container */
-    protected className: string;
+    protected className: string | undefined;
 
     // Can't put this in state, because the state typing is generic.
     private hasDelayedBeforeInitialRender = false;
+
     private hasCompletedInitialRender = false;
 
     public shouldComponentUpdate(nextProps: IBaseExampleProps, nextState: S) {
@@ -125,6 +128,11 @@ export function handleBooleanChange(handler: (checked: boolean) => void) {
 /** Event handler that exposes the target element's value as a string. */
 export function handleStringChange(handler: (value: string) => void) {
     return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
+}
+
+/** Event handler that exposes the target element's value as an inferred generic type. */
+export function handleValueChange<T>(handler: (value: T) => void) {
+    return (event: React.FormEvent<HTMLElement>) => handler(((event.target as HTMLInputElement).value as unknown) as T);
 }
 
 /** Event handler that exposes the target element's value as a number. */

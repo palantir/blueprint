@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
 import { ReactWrapper } from "enzyme";
-import { Handle } from "../../src/components/slider/handle";
+
+import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
+
+import { Handle, IInternalHandleProps } from "../../src/components/slider/handle";
 
 interface IMoveOptions {
     /** Size in pixels of one drag event. Direction of drag is determined by `vertical` option. */
@@ -41,10 +43,13 @@ export const DRAG_SIZE = 20;
  * Simulates a full move of a slider handle: engage, move, release.
  * Supports touch and vertical events. Use options to configure exact movement.
  */
-export function simulateMovement(wrapper: ReactWrapper, options: IMoveOptions) {
-    const { from, handleIndex = 0, touch } = options;
+export function simulateMovement(wrapper: ReactWrapper<IInternalHandleProps>, options: IMoveOptions) {
+    const { from = 0, handleIndex = 0, touch = false } = options;
     const handle = wrapper.find(Handle).at(handleIndex);
-    const eventData = options.vertical ? { clientY: options.verticalHeight - from } : { clientX: from };
+    const eventData =
+        options.vertical !== undefined && options.verticalHeight !== undefined
+            ? { clientY: options.verticalHeight - from }
+            : { clientX: from };
     if (touch) {
         handle.simulate("touchstart", { changedTouches: [eventData] });
     } else {

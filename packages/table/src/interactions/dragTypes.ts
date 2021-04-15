@@ -91,12 +91,14 @@ export interface IDragHandler {
     /**
      * This prevents mouse events from performing their default operation such
      * as text selection.
+     *
      * @default true
      */
     preventDefault?: boolean;
 
     /**
      * This prevents the event from propagating up to parent elements.
+     *
      * @default false
      */
     stopPropagation?: boolean;

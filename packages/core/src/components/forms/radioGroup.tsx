@@ -16,6 +16,7 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, IOptionProps, IProps } from "../../common/props";
@@ -100,7 +101,7 @@ export class RadioGroup extends AbstractPureComponent2<IRadioGroupProps> {
     }
 
     private renderOptions() {
-        return this.props.options.map(option => (
+        return this.props.options?.map(option => (
             <Radio {...this.getRadioProps(option)} key={option.value} labelElement={option.label || option.value} />
         ));
     }

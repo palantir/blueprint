@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { Code, Intent, IProps, Tag } from "@blueprintjs/core";
 import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Code, Intent, IProps, Tag } from "@blueprintjs/core";
+
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
@@ -31,6 +33,7 @@ export interface IMethodTableProps extends IProps {
 
 export class MethodTable extends React.PureComponent<IMethodTableProps> {
     public static contextTypes = DocumentationContextTypes;
+
     public static displayName = "Docs2.MethodTable";
 
     public context: IDocumentationContext;
@@ -112,13 +115,13 @@ export class MethodTable extends React.PureComponent<IMethodTableProps> {
         if (entry == null) {
             return null;
         }
+
         const { renderBlock, renderType } = this.context;
-        const { returnType } = entry;
 
         return (
-            <tr key={name}>
+            <tr key={entry.name}>
                 <td className="docs-prop-name">
-                    <Code className="docs-prop-type">{renderType(returnType)}</Code>
+                    <Code className="docs-prop-type">{renderType(entry.returnType)}</Code>
                 </td>
                 <td className="docs-prop-details">
                     <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>

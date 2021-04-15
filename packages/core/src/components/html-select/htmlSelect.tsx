@@ -17,13 +17,14 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2 } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { IOptionProps } from "../../common/props";
-import { IElementRefProps } from "../html/html";
+import { IElementRefProps, IOptionProps } from "../../common/props";
 import { Icon, IIconProps } from "../icon/icon";
 
 export interface IHTMLSelectProps
+    // eslint-disable-next-line deprecation/deprecation
     extends IElementRefProps<HTMLSelectElement>,
         React.SelectHTMLAttributes<HTMLSelectElement> {
     /** Whether this element is non-interactive. */

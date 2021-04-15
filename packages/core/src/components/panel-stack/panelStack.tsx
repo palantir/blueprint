@@ -18,11 +18,14 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { IProps } from "../../common/props";
 import { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
+
+/* eslint-disable deprecation/deprecation */
 
 export interface IPanelStackProps extends IProps {
     /**
@@ -49,12 +52,14 @@ export interface IPanelStackProps extends IProps {
      * If false, PanelStack will render all panels in the stack to the DOM, allowing their
      * React component trees to maintain state as a user navigates through the stack.
      * Panels other than the currently active one will be invisible.
+     *
      * @default true
      */
     renderActivePanelOnly?: boolean;
 
     /**
      * Whether to show the header with the "back" button in each panel.
+     *
      * @default true
      */
     showPanelHeader?: boolean;
@@ -74,11 +79,17 @@ export interface IPanelStackState {
     stack: IPanel[];
 }
 
+/** @deprecated use `PanelStack2<T>` */
 @polyfill
 export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelStackState> {
     public state: IPanelStackState = {
         direction: "push",
-        stack: this.props.stack != null ? this.props.stack.slice().reverse() : [this.props.initialPanel],
+        stack:
+            this.props.stack != null
+                ? this.props.stack.slice().reverse()
+                : this.props.initialPanel !== undefined
+                ? [this.props.initialPanel]
+                : [],
     };
 
     public componentDidUpdate(prevProps: IPanelStackProps, prevState: IPanelStackState) {
@@ -86,7 +97,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
 
         // Always update local stack if stack prop changes
         if (this.props.stack !== prevProps.stack && prevProps.stack != null) {
-            this.setState({ stack: this.props.stack.slice().reverse() });
+            this.setState({ stack: this.props.stack!.slice().reverse() });
         }
 
         // Only update animation direction if stack length changes
@@ -94,7 +105,7 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
         const prevStackLength = prevProps.stack != null ? prevProps.stack.length : 0;
         if (stackLength !== prevStackLength && prevProps.stack != null) {
             this.setState({
-                direction: prevProps.stack.length - this.props.stack.length < 0 ? "push" : "pop",
+                direction: prevProps.stack.length - this.props.stack!.length < 0 ? "push" : "pop",
             });
         }
     }
@@ -117,10 +128,10 @@ export class PanelStack extends AbstractPureComponent2<IPanelStackProps, IPanelS
             (props.initialPanel == null && props.stack == null) ||
             (props.initialPanel != null && props.stack != null)
         ) {
-            throw new Error(Errors.PANEL_STACK_INITIAL_PANEL_STACK_MUTEX);
+            console.error(Errors.PANEL_STACK_INITIAL_PANEL_STACK_MUTEX);
         }
         if (props.stack != null && props.stack.length === 0) {
-            throw new Error(Errors.PANEL_STACK_REQUIRES_PANEL);
+            console.error(Errors.PANEL_STACK_REQUIRES_PANEL);
         }
     }
 

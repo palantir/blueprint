@@ -31,7 +31,6 @@ $table-quadrant-scroll-container-overflow: 20px;
 }
 
 .#{$ns}-table-quadrant-scroll-container {
-  @include force-hardware-acceleration();
   bottom: 0;
   left: 0;
   overflow: auto;
@@ -39,6 +38,7 @@ $table-quadrant-scroll-container-overflow: 20px;
   right: 0;
   top: 0;
   user-select: none;
+  will-change: transform; // forces hardware acceleration for smoother animations
 
   // We disable x or y scrolling when we are displaying "ghost" cells that
   // overflow the body.

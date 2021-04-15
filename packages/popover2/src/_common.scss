@@ -1,0 +1,88 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "~@blueprintjs/core/src/common/variables";
+@import "~@blueprintjs/core/src/common/react-transition";
+
+$pt-popover2-background-color: $white !default;
+$pt-popover2-box-shadow: $pt-elevation-shadow-3 !default;
+$pt-tooltip2-box-shadow: $pt-popover-box-shadow !default;
+$pt-dark-popover2-background-color: $dark-gray4 !default;
+$pt-dark-popover2-box-shadow: $pt-dark-elevation-shadow-3 !default;
+$pt-dark-tooltip2-box-shadow: $pt-dark-popover-box-shadow !default;
+
+// $arrow-offset: amount to shift arrow along edge of popover2
+// $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover2 edge)
+
+@mixin popover2-sizing($arrow-square-size, $arrow-offset, $arrow-target-offset) {
+  // since this is a 45-45-90 triangle, half hypotenuse === side * sqrt(2) / 2 === side / sqrt(2)
+  // fun fact: there's no built-in square root function in SASS
+  $arrow-diagonal-half-size: $arrow-square-size / 1.41421356;
+  // we want the margin to be the size of the part of the arrow that is showing plus
+  // a little extra space.
+  $content-margin: floor($arrow-diagonal-half-size + $arrow-target-offset);
+  // we want to move the arrow out from where it's positioned by the gap amount
+  // plus the extra amount of width that is added by its 45 deg rotation.
+  $arrow-position: -$arrow-square-size * 0.5 + $arrow-offset;
+  // because the 45 deg rotation will make out div stick out a little bit further,
+  // we have to slide it over by that amount first and then by the set offset value
+  $computed-arrow-offset: ($arrow-diagonal-half-size - $arrow-square-size) * 0.5 + $arrow-offset;
+
+  .#{$ns}-popover2-arrow {
+    height: $arrow-square-size;
+    position: absolute;
+    width: $arrow-square-size;
+
+    &::before {
+      height: floor($arrow-diagonal-half-size - 1);
+      margin: ceil(($arrow-square-size - $arrow-diagonal-half-size) * 0.5);
+      // - 1 to compenstate for transparent pixel border shadow
+      width: floor($arrow-diagonal-half-size - 1);
+    }
+  }
+}
+
+// set background and text colors. also set box-shadow if provided (so modifier styles don't have to
+// reassign default shadows).
+
+@mixin popover2-appearance(
+  $background-color,
+  $text-color,
+  $shadows,
+  $arrow-drop-shadow-opacity,
+  $arrow-border-shadow-opacity
+) {
+  box-shadow: $shadows;
+
+  .#{$ns}-popover2-content {
+    background: $background-color;
+    color: $text-color;
+  }
+
+  .#{$ns}-popover2-arrow::before {
+    box-shadow: 1px 1px 6px rgba($black, $arrow-drop-shadow-opacity);
+  }
+
+  .#{$ns}-popover2-arrow-border {
+    fill: $black;
+    fill-opacity: $arrow-border-shadow-opacity;
+  }
+
+  .#{$ns}-popover2-arrow-fill {
+    fill: $background-color;
+  }
+}
+
+@mixin fade-transition() {
+  @include react-transition("#{$ns}-popover2", (opacity: 0 1), $before: "&");
+}
+
+@mixin scale-transition() {
+  @include react-transition(
+    "#{$ns}-popover2",
+    (transform: scale(0.3) scale(1)),
+    $duration: $pt-transition-duration * 3,
+    $easing: $pt-transition-ease-bounce,
+    $after: "> &"
+  );
+}

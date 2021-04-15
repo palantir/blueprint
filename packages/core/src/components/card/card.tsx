@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
@@ -51,6 +52,7 @@ export interface ICardProps extends IProps, HTMLDivProps {
 @polyfill
 export class Card extends AbstractPureComponent2<ICardProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Card`;
+
     public static defaultProps: ICardProps = {
         elevation: Elevation.ZERO,
         interactive: false,
@@ -61,7 +63,7 @@ export class Card extends AbstractPureComponent2<ICardProps> {
         const classes = classNames(
             Classes.CARD,
             { [Classes.INTERACTIVE]: interactive },
-            Classes.elevationClass(elevation),
+            Classes.elevationClass(elevation!),
             className,
         );
         return <div className={classes} {...htmlProps} />;

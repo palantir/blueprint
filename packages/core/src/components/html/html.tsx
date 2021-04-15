@@ -16,17 +16,16 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
-export interface IElementRefProps<E extends HTMLElement> {
-    /** Ref handler to access the instance of the internal HTML element. */
-    elementRef?: (ref: E | null) => void;
-}
+import { IElementRefProps } from "../../common";
+import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
+    // eslint-disable-next-line deprecation/deprecation
 ): React.FunctionComponent<React.HTMLProps<E> & IElementRefProps<E>> {
+    /* eslint-disable-next-line react/display-name */
     return props => {
         const { className, elementRef, ...htmlProps } = props;
         return React.createElement(tagName, {

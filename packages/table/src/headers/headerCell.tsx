@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+
 import * as Classes from "../common/classes";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
@@ -38,6 +39,7 @@ export interface IHeaderCellProps extends IProps {
      * If `true`, the row/column `name` will be replaced with a fixed-height skeleton, and the
      * `resizeHandle` will not be rendered. If passing in additional children to this component, you
      * will also want to conditionally apply `Classes.SKELETON` where appropriate.
+     *
      * @default false
      */
     loading?: boolean;
@@ -73,6 +75,7 @@ export interface IHeaderCellProps extends IProps {
 export interface IInternalHeaderCellProps extends IHeaderCellProps {
     /**
      * Specifies if the cell is reorderable.
+     *
      * @internal users should pass `isReorderable` to `ColumnHeader` or `RowHeader` instead
      */
     isReorderable?: boolean;
@@ -87,6 +90,7 @@ export interface IHeaderCellState {
     isActive: boolean;
 }
 
+// eslint-disable-next-line deprecation/deprecation
 @ContextMenuTarget
 export class HeaderCell extends React.Component<IInternalHeaderCellProps, IHeaderCellState> {
     public state: IHeaderCellState = {

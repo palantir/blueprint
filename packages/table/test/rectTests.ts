@@ -15,6 +15,7 @@
  */
 
 import { expect } from "chai";
+
 import { Rect } from "../src/common/rect";
 
 describe("Rect", () => {

@@ -61,6 +61,10 @@
   max-width: 280px;
 }
 
+.docs-multistep-dialog-example-step {
+  min-height: 150px;
+}
+
 #{example("TagExample")} {
   .docs-example {
     flex-direction: column;
@@ -73,7 +77,7 @@
     height: $pt-grid-size * 25;
   }
 
-  .context-menu-node {
+  .docs-context-menu-node {
     $node-size: $pt-grid-size * 8;
     $icon-size: $pt-icon-size-standard * 2;
     $node-border-width: 4px;
@@ -95,7 +99,7 @@
       top: ($node-size - $icon-size) / 2 - $node-border-width;
     }
 
-    &.context-menu-open {
+    &.docs-context-menu-open {
       box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
     }
   }
@@ -252,20 +256,25 @@
   height: 200%;
 }
 
+#{example("Popover2Example")},
 #{example("PopoverExample")} {
   .docs-example {
     display: block;
-    max-height: 700px;
+    max-height: 785px;
     overflow: scroll;
+    padding: 0;
+    position: relative; // create a stacking context for when usePortal={false}
   }
 
+  .docs-popover2-example-scroll,
   .docs-popover-example-scroll {
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 1500px;
+    height: 1700px;
     justify-content: center;
-    width: 1000px;
+    margin: 0;
+    width: 1600px;
 
     > p {
       margin-top: $pt-grid-size;
@@ -273,6 +282,7 @@
   }
 }
 
+#{example("Popover2DismissExample")},
 #{example("PopoverDismissExample")} {
   height: 220px;
 
@@ -281,7 +291,9 @@
     width: 240px;
   }
 
+  .#{$ns}-popover2-content,
   .#{$ns}-popover-content {
+    min-width: 300px;
     padding: $pt-grid-size * 2;
 
     .#{$ns}-button:not(:first-child) {
@@ -294,6 +306,7 @@
   }
 }
 
+#{example("PanelStack2Example")},
 #{example("PanelStackExample")} {
   .docs-panel-stack-example {
     box-shadow: $pt-elevation-shadow-0;
@@ -316,6 +329,7 @@
   }
 }
 
+.docs-popover2-placement-example,
 .docs-popover-position-example {
   em {
     color: $pt-text-color-muted;
@@ -344,12 +358,14 @@
     flex-direction: column;
   }
 
-  .#{$ns}-popover-wrapper {
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover2-wrapper {
     // Add a bit of space between borders of consecutive buttons.
     margin: $pt-grid-size / 2;
   }
 
-  .#{$ns}-popover-content {
+  .#{$ns}-popover-content,
+  .#{$ns}-popover2-content {
     align-items: center;
     display: flex;
     height: 7 * $pt-grid-size;
@@ -366,12 +382,14 @@
   }
 }
 
+.docs-popover2-placement-value-code-block,
 .docs-popover-position-value-code-block {
   font-size: $pt-font-size-large;
   font-weight: 600;
   text-align: center;
 }
 
+.docs-popover2-placement-label-side,
 .docs-popover-position-label-side {
   color: $cobalt3;
 
@@ -380,6 +398,7 @@
   }
 }
 
+.docs-popover2-placement-label-alignment,
 .docs-popover-position-label-alignment {
   color: $forest3;
 
@@ -388,12 +407,14 @@
   }
 }
 
+.docs-popover2-minimal-example,
 .docs-popover-minimal-example {
   .#{$ns}-button:first-child {
     margin-right: $pt-grid-size;
   }
 }
 
+.docs-popover2-interaction-kind-example,
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
     font-family: $pt-font-family-monospace;
@@ -401,24 +422,29 @@
   }
 }
 
+.docs-popover2-sizing-example,
 .docs-popover-sizing-example {
   max-height: $pt-grid-size * 15;
   overflow-y: auto;
 }
 
+.docs-popover2-portal-example,
 .docs-popover-portal-example {
+  .docs-popover2-portal-example-scroll-container,
   .docs-popover-portal-example-scroll-container {
     background: $light-gray3;
     border-radius: $pt-border-radius;
     flex: 1 1 auto;
     overflow-x: scroll;
     overflow-y: hidden;
+    position: relative;
 
     .#{$ns}-dark & {
       background: $dark-gray5;
     }
   }
 
+  .docs-popover2-portal-example-scroll-content,
   .docs-popover-portal-example-scroll-content {
     // can't compute this height easily using SCSS variables. instead of using
     // JS to measure, just hardcode it since we have full control of all the
@@ -437,7 +463,9 @@
   }
 }
 
+.docs-popover2-portal-example-popover,
 .docs-popover-portal-example-popover {
+  .#{$ns}-popover2-content,
   .#{$ns}-popover-content {
     padding: $pt-grid-size;
     white-space: nowrap;
@@ -453,6 +481,7 @@
   line-height: $pt-navbar-height;
 }
 
+#{example("Tooltip2Example")},
 #{example("TooltipExample")} {
   .docs-example {
     flex-direction: column;
@@ -467,6 +496,13 @@
 #{example("ButtonGroupPopoverExample")} {
   .docs-example > * {
     margin: 0;
+  }
+}
+
+#{example("ToastExample")} {
+  .docs-example {
+    // necessary for inline Toaster (usePortal={false})
+    position: relative;
   }
 }
 

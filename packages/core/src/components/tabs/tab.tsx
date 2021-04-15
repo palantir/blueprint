@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
@@ -31,6 +32,7 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
 
     /**
      * Whether the tab is disabled.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -61,9 +63,8 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
 
 @polyfill
 export class Tab extends AbstractPureComponent2<ITabProps> {
-    public static defaultProps: ITabProps = {
+    public static defaultProps: Partial<ITabProps> = {
         disabled: false,
-        id: undefined,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tab`;

@@ -16,6 +16,7 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -31,6 +32,7 @@ enum RangeIndex {
 export interface IRangeSliderProps extends ISliderBaseProps {
     /**
      * Range value of slider. Handles will be rendered at each position in the range.
+     *
      * @default [0, 10]
      */
     value?: NumberRange;
@@ -56,8 +58,8 @@ export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
         const { value, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={value[RangeIndex.START]} type="start" intentAfter={props.intent} />
-                <MultiSlider.Handle value={value[RangeIndex.END]} type="end" />
+                <MultiSlider.Handle value={value![RangeIndex.START]} type="start" intentAfter={props.intent} />
+                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" />
             </MultiSlider>
         );
     }

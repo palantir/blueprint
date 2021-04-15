@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+
 import { Intent, IProps } from "../../common";
 
 export const HandleType = {
@@ -27,6 +28,7 @@ export const HandleType = {
     /** An end handle appears as the right or bottom half of a square. */
     END: "end" as "end",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleType = typeof HandleType[keyof typeof HandleType];
 
 export const HandleInteractionKind = {
@@ -42,6 +44,7 @@ export const HandleInteractionKind = {
      */
     NONE: "none" as "none",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = typeof HandleInteractionKind[keyof typeof HandleInteractionKind];
 
 export interface IHandleProps extends IProps {
@@ -62,6 +65,7 @@ export interface IHandleProps extends IProps {
 
     /**
      * How this handle interacts with other handles.
+     *
      * @default "lock"
      */
     interactionKind?: HandleInteractionKind;
@@ -78,6 +82,7 @@ export interface IHandleProps extends IProps {
 
     /**
      * Handle appearance type.
+     *
      * @default "full"
      */
     type?: HandleType;

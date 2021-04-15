@@ -55,6 +55,7 @@ describe("<Icon>", () => {
     });
 
     it("prefixed icon renders blank icon", () => {
+        // eslint-disable-next-line deprecation/deprecation
         assert.lengthOf(shallow(<Icon icon={Classes.iconClass("airplane") as any} />).find("path"), 0);
     });
 

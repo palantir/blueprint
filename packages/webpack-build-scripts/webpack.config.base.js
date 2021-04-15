@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
-const path = require("path");
-
-// webpack plugins
-const { CheckerPlugin } = require("awesome-typescript-loader");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const ForkTsCheckerNotifierWebpackPlugin = require("fork-ts-checker-notifier-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path");
+const webpack = require("webpack");
 const WebpackNotifierPlugin = require("webpack-notifier");
 
 const { getPackageName } = require("./utils");
@@ -31,33 +32,52 @@ const PACKAGE_NAME = getPackageName();
  * Configure plugins loaded based on environment.
  */
 const plugins = [
-    // Used for async error reporting
-    // Can remove after https://github.com/webpack/webpack/issues/3460 resolved
-    new CheckerPlugin(),
+    new ForkTsCheckerWebpackPlugin(
+        IS_PRODUCTION
+            ? {
+                  async: false,
+                  typescript: {
+                      configFile: "src/tsconfig.json",
+                      useTypescriptIncrementalApi: true,
+                      memoryLimit: 4096,
+                  },
+              }
+            : {
+                  typescript: {
+                      configFile: "src/tsconfig.json",
+                  },
+              },
+    ),
 
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
+
+    // pipe env variables to FE build, setting defaults where appropriate (null means optional)
+    new webpack.EnvironmentPlugin({
+        NODE_ENV: "development",
+        BLUEPRINT_NAMESPACE: null,
+        REACT_APP_BLUEPRINT_NAMESPACE: null,
+    }),
 ];
 
 if (!IS_PRODUCTION) {
     plugins.push(
-        // Trigger an OS notification when the build succeeds in dev mode.
-        new WebpackNotifierPlugin({ title: PACKAGE_NAME }),
+        new ReactRefreshWebpackPlugin(),
+        new ForkTsCheckerNotifierWebpackPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
+        new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
+        new webpack.HotModuleReplacementPlugin(),
     );
 }
-
-const extractPlugin = {
-    loader: MiniCssExtractPlugin.loader,
-    options: {
-        esModule: true,
-    },
-};
 
 // Module loaders for .scss files, used in reverse order:
 // compile Sass, apply PostCSS, interpret CSS as modules.
 const scssLoaders = [
     // Only extract CSS to separate file in production mode.
-    IS_PRODUCTION ? extractPlugin : require.resolve("style-loader"),
+    IS_PRODUCTION
+        ? {
+              loader: MiniCssExtractPlugin.loader,
+          }
+        : require.resolve("style-loader"),
     {
         loader: require.resolve("css-loader"),
         options: {
@@ -68,13 +88,18 @@ const scssLoaders = [
     {
         loader: require.resolve("postcss-loader"),
         options: {
-            plugins: [require("autoprefixer"), require("cssnano")({ preset: "default" })],
+            postcssOptions: {
+                plugins: [require("autoprefixer"), require("cssnano")({ preset: "default" })],
+            },
         },
     },
     require.resolve("sass-loader"),
 ];
 
 module.exports = {
+    // to automatically find tsconfig.json
+    context: process.cwd(),
+
     devtool: IS_PRODUCTION ? false : "inline-source-map",
 
     devServer: {
@@ -82,8 +107,7 @@ module.exports = {
         disableHostCheck: true,
         historyApiFallback: true,
         https: false,
-        // TODO: enable HMR
-        // hot: true,
+        hot: true,
         index: path.resolve(__dirname, "src/index.html"),
         inline: true,
         stats: "errors-only",
@@ -100,10 +124,15 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.js$/,
+                use: require.resolve("source-map-loader"),
+            },
+            {
                 test: /\.tsx?$/,
-                loader: require.resolve("awesome-typescript-loader"),
+                loader: require.resolve("ts-loader"),
                 options: {
-                    configFileName: "./src/tsconfig.json",
+                    configFile: "src/tsconfig.json",
+                    transpileOnly: true,
                 },
             },
             {
@@ -126,4 +155,7 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"],
     },
+
+    // add support for IE11 (otherwise, webpack 5 uses some ES2015 syntax by default)
+    target: ["web", "es5"],
 };

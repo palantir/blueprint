@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import * as React from "react";
+
 import { H5, Position, Switch } from "@blueprintjs/core";
 import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
-import * as React from "react";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { MomentDate } from "./common/momentDate";
@@ -49,13 +50,19 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     };
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
+
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
+
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
-    private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision | "none") =>
+
+    private toggleTimePrecision = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
+
     private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
         this.setState({ showTimeArrowButtons }),
     );
@@ -118,5 +125,6 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     }
 
     private handleDateChange = (date: Date | null) => this.setState({ date });
+
     private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
 }

@@ -100,7 +100,7 @@ export const Clipboard = {
             if (plaintext != null) {
                 // add plaintext fallback
                 // http://stackoverflow.com/questions/23211018/copy-to-clipboard-with-jquery-js-in-chrome
-                elem.addEventListener("copy", (e: UIEvent) => {
+                elem.addEventListener("copy", (e: ClipboardEvent) => {
                     e.preventDefault();
                     const clipboardData = (e as any).clipboardData || (window as any).clipboardData;
                     if (clipboardData != null) {

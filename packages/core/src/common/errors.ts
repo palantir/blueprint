@@ -36,6 +36,10 @@ export const HOTKEYS_WARN_DECORATOR_NO_METHOD = ns + ` @HotkeysTarget-decorated 
 export const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT =
     ns + ` "@HotkeysTarget-decorated components must return a single JSX.Element or an empty render.`;
 
+export const HOTKEYS_TARGET2_CHILDREN_LOCAL_HOTKEYS =
+    ns +
+    ` <HotkeysTarget2> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
+
 export const INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX =
     ns + ` <InputGroup> leftElement and leftIcon prop are mutually exclusive, with leftElement taking priority.`;
 
@@ -50,7 +54,6 @@ export const NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires majorStepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires stepSize to be strictly greater than zero.`;
-export const NUMERIC_INPUT_STEP_SIZE_NULL = ns + ` <NumericInput> requires stepSize to be defined.`;
 export const NUMERIC_INPUT_CONTROLLED_VALUE_INVALID =
     ns + ` <NumericInput> controlled value prop does not adhere to stepSize, min, and/or max constraints.`;
 
@@ -61,8 +64,6 @@ export const PANEL_STACK_REQUIRES_PANEL = ns + ` <PanelStack> requires at least 
 export const OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED =
     ns + ` <OverflowList> does not support changing observeParents after mounting.`;
 
-// TODO (clewis): Migrate old Popover validation errors to the component formerly known as Popover2.
-// See: https://github.com/palantir/blueprint/issues/1940
 export const POPOVER_REQUIRES_TARGET = ns + ` <Popover> requires target prop or at least one child element.`;
 export const POPOVER_HAS_BACKDROP_INTERACTION =
     ns + ` <Popover hasBackdrop={true}> requires interactionKind={PopoverInteractionKind.CLICK}.`;
@@ -76,6 +77,8 @@ export const POPOVER_WARN_DOUBLE_TARGET =
     ns + ` <Popover> with children ignores target prop; use either prop or children.`;
 export const POPOVER_WARN_EMPTY_CONTENT = ns + ` Disabling <Popover> with empty/whitespace content...`;
 export const POPOVER_WARN_HAS_BACKDROP_INLINE = ns + ` <Popover usePortal={false}> ignores hasBackdrop`;
+export const POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX =
+    ns + ` <Popover> supports either placement or position prop, not both.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
 
 export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
@@ -87,6 +90,9 @@ export const SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than ze
 export const SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
 export const RANGESLIDER_NULL_VALUE = ns + ` <RangeSlider> value prop must be an array of two non-null numbers.`;
 export const MULTISLIDER_INVALID_CHILD = ns + ` <MultiSlider> children must be <SliderHandle>s or <SliderTrackStop>s`;
+export const MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX =
+    ns +
+    ` <MultiSlider> labelStepSize and labelValues prop are mutually exclusive, with labelStepSize taking priority.`;
 
 export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE are ignored if size prop is set.`;
 

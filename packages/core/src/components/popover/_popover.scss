@@ -45,7 +45,7 @@ $popover-width: $pt-grid-size * 35 !default;
   &.#{$ns}-minimal {
     // popovers with no obvious trigger will never have margin because the arrow
     // is hidden so it is safe to remove in all cases always
-    margin: 0 !important; // stylelint-disable-line declaration-no-important
+    margin: 0 !important; /* stylelint-disable-line declaration-no-important */
 
     .#{$ns}-popover-arrow {
       display: none;

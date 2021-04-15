@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
-const webpack = require("webpack");
+
+const { baseConfig } = require("@blueprintjs/webpack-build-scripts");
 
 module.exports = Object.assign({}, baseConfig, {
     entry: {
@@ -26,6 +26,7 @@ module.exports = Object.assign({}, baseConfig, {
 
     output: {
         filename: "[name].bundle.js",
+        publicPath: "",
         path: path.resolve(__dirname, "./dist"),
     },
 

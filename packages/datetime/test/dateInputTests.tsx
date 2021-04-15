@@ -20,6 +20,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Intent, Keys, Popover, Position } from "@blueprintjs/core";
+
 import { Classes, DateInput, DatePicker, IDateInputProps, TimePicker, TimePrecision } from "../src";
 import { Months } from "../src/common/months";
 import { DATE_FORMAT } from "./common/dateFormat";
@@ -70,34 +71,39 @@ describe("<DateInput>", () => {
     it("Popover opens on input focus", () => {
         const wrapper = mount(<DateInput {...DATE_FORMAT} />);
         wrapper.find("input").simulate("focus");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("Popover doesn't open if disabled=true", () => {
         const wrapper = mount(<DateInput {...DATE_FORMAT} disabled={true} />);
         wrapper.find("input").simulate("focus");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("Popover closes when ESC key pressed", () => {
         const wrapper = mount(<DateInput {...DATE_FORMAT} />);
         wrapper.setState({ isOpen: true });
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         wrapper.find("input").simulate("keydown", { which: Keys.ESCAPE });
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
-    it("Popover closes when first day of the month is blurred", () => {
+    it("Popover closes when tabbing on first day of the month", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         wrapper.find("input").simulate("focus").simulate("blur");
         // First day of month is the only .DayPicker-Day with tabIndex == 0
+        /* eslint-disable-next-line deprecation/deprecation */
         const tabbables = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 });
-        const firstDay = tabbables.getDOMNode() as HTMLElement;
-        firstDay.dispatchEvent(createFocusEvent("blur"));
+        tabbables.simulate("keydown", { key: "Tab" });
         // manually updating wrapper is required with enzyme 3
         // ref: https://github.com/airbnb/enzyme/blob/master/docs/guides/migration-from-2-to-3.md#for-mount-updates-are-sometimes-required-when-they-werent-before
         wrapper.update();
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
@@ -105,9 +111,11 @@ describe("<DateInput>", () => {
         const defaultValue = new Date(2018, Months.FEBRUARY, 6, 15, 0, 0, 0);
         const wrapper = mount(<DateInput {...DATE_FORMAT} defaultValue={defaultValue} />);
         wrapper.find("input").simulate("focus").simulate("blur");
+        /* eslint-disable-next-line deprecation/deprecation */
         const tabbables = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 });
         const firstDay = tabbables.getDOMNode() as HTMLElement;
         const lastDayOfPrevMonth = wrapper
+            /* eslint-disable-next-line deprecation/deprecation */
             .find(Popover)
             .find(".DayPicker-Body > .DayPicker-Week .DayPicker-Day--outside")
             .last();
@@ -115,6 +123,7 @@ describe("<DateInput>", () => {
         const event = createFocusEvent("blur", relatedTarget);
         firstDay.dispatchEvent(event);
         wrapper.update();
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
@@ -124,6 +133,7 @@ describe("<DateInput>", () => {
         root.setState({ isOpen: true });
         root.find("input").simulate("focus").simulate("blur");
         changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
@@ -133,6 +143,7 @@ describe("<DateInput>", () => {
         root.setState({ isOpen: true });
         root.find("input").simulate("focus").simulate("blur");
         changeSelect(Classes.DATEPICKER_YEAR_SELECT, 2016);
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
@@ -149,6 +160,7 @@ describe("<DateInput>", () => {
         root.setState({ isOpen: true }).update();
         changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.MARCH);
         root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
@@ -165,6 +177,7 @@ describe("<DateInput>", () => {
         root.setState({ isOpen: true }).update();
         changeSelect(Classes.DATEPICKER_YEAR_SELECT, 2019);
         root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+        /* eslint-disable-next-line deprecation/deprecation */
         assert.isTrue(root.find(Popover).prop("isOpen"));
     });
 
@@ -297,6 +310,7 @@ describe("<DateInput>", () => {
         );
         wrapper.find("input").simulate("focus");
 
+        /* eslint-disable-next-line deprecation/deprecation */
         const popover = wrapper.find(Popover);
         assert.strictEqual(popover.prop("autoFocus"), false, "autoFocus cannot be changed");
         assert.notStrictEqual(popover.prop("content"), "fail", "content cannot be changed");
@@ -394,6 +408,7 @@ describe("<DateInput>", () => {
                 />,
             );
             changeSelect(Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+            /* eslint-disable-next-line deprecation/deprecation */
             assert.isTrue(root.find(Popover).prop("isOpen"));
         });
 
@@ -407,10 +422,12 @@ describe("<DateInput>", () => {
 
             // try typing a new time
             wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("change", { target: { value: "1" } });
+            /* eslint-disable-next-line deprecation/deprecation */
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
 
             // try keyboard-incrementing to a new time
             wrapper.find(`.${Classes.TIMEPICKER_MILLISECOND}`).simulate("keydown", { which: Keys.ARROW_UP });
+            /* eslint-disable-next-line deprecation/deprecation */
             assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         });
 
@@ -675,8 +692,10 @@ describe("<DateInput>", () => {
         it("parseDate returns false renders invalid date", () => {
             const invalidParse = sinon.stub().returns(false);
             const wrapper = mount(<DateInput {...props} parseDate={invalidParse} />);
-            wrapper.find("input").simulate("change", { target: { value: "invalid" } });
-            assert.strictEqual(wrapper.find("input").prop("value"), "");
+            const input = wrapper.find("input");
+            input.simulate("change", { target: { value: "invalid" } });
+            input.simulate("blur");
+            assert.strictEqual(wrapper.find("input").prop("value"), DateInput.defaultProps.invalidDateMessage);
         });
     });
 

@@ -1,0 +1,12 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "./common";
+
+.#{$ns}-context-menu2 .#{$ns}-popover2-target {
+  display: block;
+}
+
+.#{$ns}-context-menu2-popover2-target {
+  position: fixed;
+}

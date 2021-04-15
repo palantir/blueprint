@@ -28,7 +28,7 @@ describe("Buttons:", () => {
 });
 
 function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) {
-    describe(`<${component.displayName.split(".")[1]}>`, () => {
+    describe(`<${component.displayName!.split(".")[1]}>`, () => {
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
             assert.isTrue(wrapper.is(tagName));
@@ -109,33 +109,23 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         });
 
         if (typeof React.createRef !== "undefined") {
-            it("matches buttonRef with elementRef using createRef", done => {
-                const elementRef = React.createRef<HTMLElement>();
-
-                const wrapper = button(
-                    {
-                        elementRef,
-                    },
-                    true,
-                );
+            it("matches buttonRef with elementRef.current using createRef", done => {
+                const elementRef = React.createRef<HTMLButtonElement>();
+                const wrapper = button({ elementRef }, true);
 
                 // wait for the whole lifecycle to run
                 setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef.current);
+                    assert.equal(elementRef.current, (wrapper.instance() as any).buttonRef);
                     done();
                 }, 0);
             });
         }
 
         it("matches buttonRef with elementRef using callback", done => {
-            let elementRef: HTMLElement = null;
-            const buttonRefCallback = (ref: HTMLElement) => {
-                elementRef = ref;
-            };
-
+            let elementRef: HTMLElement | null = null;
             const wrapper = button(
                 {
-                    elementRef: buttonRefCallback,
+                    elementRef: (ref: HTMLButtonElement | null) => (elementRef = ref),
                 },
                 true,
             );
@@ -147,9 +137,38 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             }, 0);
         });
 
+        it("updates on ref change", () => {
+            const Component = component;
+            let elementRef: HTMLElement | null = null;
+            let elementRefNew: HTMLElement | null = null;
+            let callCount = 0;
+            let newCallCount = 0;
+
+            const buttonRefCallback = (ref: HTMLElement | null) => {
+                callCount += 1;
+                elementRef = ref;
+            };
+            const buttonNewRefCallback = (ref: HTMLElement | null) => {
+                newCallCount += 1;
+                elementRefNew = ref;
+            };
+
+            const wrapper = mount(<Component elementRef={buttonRefCallback} />);
+
+            assert.instanceOf(elementRef, HTMLElement);
+            assert.strictEqual(callCount, 1);
+
+            wrapper.setProps({ elementRef: buttonNewRefCallback });
+            wrapper.update();
+            assert.strictEqual(callCount, 2);
+            assert.isNull(elementRef);
+            assert.strictEqual(newCallCount, 1);
+            assert.instanceOf(elementRefNew, HTMLElement);
+        });
+
         if (typeof React.useRef !== "undefined") {
-            it("matches buttonRef with elementRef using useRef", done => {
-                let elementRef: React.MutableRefObject<HTMLElement>;
+            it("matches buttonRef with elementRef.current using useRef", done => {
+                let elementRef: React.RefObject<HTMLElement>;
                 const Component = component;
 
                 const Test = () => {
@@ -162,7 +181,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
 
                 // wait for the whole lifecycle to run
                 setTimeout(() => {
-                    assert.equal(elementRef.current, (wrapper.find(Component).instance() as any).buttonRef.current);
+                    assert.equal(elementRef.current, (wrapper.find(Component).instance() as any).buttonRef);
                     done();
                 }, 0);
             });

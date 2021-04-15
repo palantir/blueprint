@@ -45,6 +45,7 @@ describe("ContextMenu", () => {
             }
         }
 
+        // eslint-disable-next-line deprecation/deprecation
         const TargettedTestComponent = ContextMenuTarget(TestComponent);
 
         // it's not the same Component
@@ -118,10 +119,11 @@ function assertContextMenuWasRendered(expectedLength = MENU_ITEMS.length) {
     // popover is rendered in a Portal
     const popover = getPopover();
     assert.isNotNull(popover);
-    const menuItems = popover.querySelectorAll(`.${Classes.MENU_ITEM}`);
+    const menuItems = popover!.querySelectorAll(`.${Classes.MENU_ITEM}`);
     assert.lengthOf(menuItems, expectedLength);
 }
 
+// eslint-disable-next-line deprecation/deprecation
 @ContextMenuTarget
 class RightClickMe extends React.Component<{ items?: JSX.Element[] }> {
     public static defaultProps = {

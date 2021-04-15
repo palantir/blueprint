@@ -57,6 +57,7 @@ export interface ITreeNode<T = {}> extends IProps {
 
     /**
      * Whether this node is selected.
+     *
      * @default false
      */
     isSelected?: boolean;
@@ -99,8 +100,8 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
 
-    public static ofType<T>() {
-        return TreeNode as new (props: ITreeNodeProps<T>) => TreeNode<T>;
+    public static ofType<U>() {
+        return TreeNode as new (props: ITreeNodeProps<U>) => TreeNode<U>;
     }
 
     public render() {

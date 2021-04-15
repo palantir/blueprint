@@ -970,28 +970,28 @@
         "iconName": "arrow-up",
         "tags": "direction, north",
         "group": "interface",
-        "content": "\\2191 "
+        "content": "\\2191"
     },
     {
         "displayName": "Arrow: down",
         "iconName": "arrow-down",
         "tags": "direction, south",
         "group": "interface",
-        "content": "\\2193 "
+        "content": "\\2193"
     },
     {
         "displayName": "Arrows: horizontal",
         "iconName": "arrows-horizontal",
         "tags": "direction, level",
         "group": "interface",
-        "content": "\\2194 "
+        "content": "\\2194"
     },
     {
         "displayName": "Arrows: vertical",
         "iconName": "arrows-vertical",
         "tags": "direction, level",
         "group": "interface",
-        "content": "\\2195 "
+        "content": "\\2195"
     },
     {
         "displayName": "Resolve",
@@ -3489,6 +3489,96 @@
         "displayName": "Geofence",
         "iconName": "geofence",
         "tags": "region, geo, fence",
+        "group": "interface"
+    },
+    {
+        "displayName": "Data Connection",
+        "iconName": "data-connection",
+        "tags": "connectivity, connection, database, data, status, health",
+        "group": "interface"
+    },
+    {
+        "displayName": "Switch",
+        "iconName": "switch",
+        "tags": "switch, electric, electrical",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Array",
+        "iconName": "array",
+        "tags": "array",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Boolean Array",
+        "iconName": "array-boolean",
+        "tags": "array, boolean",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Date Array",
+        "iconName": "array-date",
+        "tags": "array, date",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Numeric Array",
+        "iconName": "array-numeric",
+        "tags": "array, numeric, number",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "String Array",
+        "iconName": "array-string",
+        "tags": "array, string",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Timestamp Array",
+        "iconName": "array-timestamp",
+        "tags": "array, timestamp",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Layer Outline",
+        "iconName": "layer-outline",
+        "tags": "zone, level, outline",
+        "group": "interface"
+    },
+    {
+        "displayName": "Notifications: snooze",
+        "iconName": "notifications-snooze",
+        "tags": "notification, information, message, snooze, suppress",
+        "group": "interface"
+    },
+    {
+        "displayName": "High Priority",
+        "iconName": "high-priority",
+        "tags": "notification, message",
+        "group": "interface"
+    },
+    {
+        "displayName": "Emoji",
+        "iconName": "emoji",
+        "tags": "message, chat, reaction",
+        "group": "interface"
+    },
+    {
+        "displayName": "Add Location",
+        "iconName": "add-location",
+        "tags": "location, add,",
+        "group": "interface"
+    },
+    {
+        "displayName": "Shapes",
+        "iconName": "shapes",
+        "tags": "shapes, geometric,",
+        "group": "interface"
+    },
+    {
+        "displayName": "Shared Filter",
+        "iconName": "shared-filter",
+        "tags": "notification, filter, shared",
         "group": "interface"
     }
 ]

@@ -31,9 +31,8 @@ some modifer props for common flexbox patterns:
     - Controls will expand horizontally by default, or vertically if the `vertical` prop is enabled.
     - Add the class `Classes.FIXED` to individual controls to revert them to their initial sizes.
 
-- Alternatively, enable the `fill` prop on specific controls (instead of on the
-  group) to expand them equally to fill the available space while other
-  controls retain their original sizes.
+- In addition, you may enable the `fill` prop on specific controls inside the group to expand them
+  fill more space while other controls retain their original sizes.
 
 You can adjust the specific size of a control with the `flex-basis` or `width`
 CSS properties.

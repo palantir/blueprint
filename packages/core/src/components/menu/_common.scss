@@ -31,6 +31,7 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 
 // customize modifier classes with params.
 // setting modifier to "" will generally apply it as default styles due to & selectors
+
 @mixin menu-item($disabled-selector: ".#{$ns}-disabled", $hover-selector: ":hover") {
   @include pt-flex-container(row, $menu-item-padding);
   align-items: flex-start;

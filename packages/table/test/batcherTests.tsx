@@ -15,6 +15,7 @@
  */
 
 import { expect } from "chai";
+
 import { Batcher } from "../src/common/batcher";
 
 describe("Batcher", () => {

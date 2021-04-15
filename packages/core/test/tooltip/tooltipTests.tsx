@@ -24,6 +24,8 @@ import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src";
 const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 
+/* eslint-disable deprecation/deprecation */
+
 describe("<Tooltip>", () => {
     it("propogates class names correctly", () => {
         const tooltip = renderTooltip({
@@ -31,8 +33,8 @@ describe("<Tooltip>", () => {
             isOpen: true,
             popoverClassName: "foo",
         });
-        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")), "tooltip");
-        assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")), "wrapper");
+        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")!), "tooltip");
+        assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")!), "wrapper");
     });
 
     it("wrapperTagName & targetTagName render the right elements", () => {
@@ -49,6 +51,20 @@ describe("<Tooltip>", () => {
         const onOpening = spy();
         renderTooltip({ isOpen: true, onOpening });
         assert.isTrue(onOpening.calledOnce);
+    });
+
+    it("applies minimal class & hides arrow when minimal is true", () => {
+        const tooltip = renderTooltip({ isOpen: true, minimal: true });
+        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
+        assert.isFalse(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
+    });
+
+    it("does not apply minimal class & shows arrow when minimal is false", () => {
+        const tooltip = renderTooltip({ isOpen: true });
+        // Minimal should be false by default.
+        assert.isFalse(tooltip.props().minimal);
+        assert.isFalse(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
+        assert.isTrue(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
     });
 
     describe("in uncontrolled mode", () => {
@@ -84,7 +100,7 @@ describe("<Tooltip>", () => {
             const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ isOpen: true });
 
-            function assertDisabledPopover(content?: string) {
+            function assertDisabledPopover(content: string) {
                 tooltip.setProps({ content });
                 assert.isFalse(tooltip.find(Overlay).prop("isOpen"), `"${content}"`);
                 assert.isTrue(warnSpy.calledOnce, "spy not called once");
@@ -93,6 +109,7 @@ describe("<Tooltip>", () => {
 
             assertDisabledPopover("");
             assertDisabledPopover("   ");
+            // @ts-expect-error
             assertDisabledPopover(null);
             warnSpy.restore();
         });

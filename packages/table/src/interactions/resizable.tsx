@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, IProps } from "@blueprintjs/core";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractPureComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+
 import { Utils } from "../common/index";
 import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 
@@ -25,6 +27,7 @@ export type IIndexedResizeCallback = (index: number, size: number) => void;
 export interface IResizableProps extends IProps, ILockableLayout {
     /**
      * Enables/disables the resize interaction for the column.
+     *
      * @default true
      */
     isResizable?: boolean;
@@ -83,7 +86,8 @@ export interface IResizeableState {
     unclampedSize?: number;
 }
 
-@polyfill
+// HACKHACK: https://github.com/palantir/blueprint/issues/4342
+@(polyfill as CoreUtils.LifecycleCompatPolyfill<IResizableProps, any>)
 export class Resizable extends AbstractPureComponent2<IResizableProps, IResizeableState> {
     public static defaultProps = {
         isResizable: true,
