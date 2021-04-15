@@ -52,6 +52,8 @@ const ITEMS: IBreadcrumbProps[] = [
     { href: "#", icon: "folder-close", text: "Wednesday" },
     { icon: "document", text: "image.jpg", current: true },
 ];
+// Show less items for always redner example so we can see when everything fits
+const ITEMS_FOR_ALWAYS_RENDER: IBreadcrumbProps[] = ITEMS.slice(3);
 
 export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBreadcrumbsExampleState> {
     public state: IBreadcrumbsExampleState = {
@@ -106,7 +108,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                 <Card elevation={0} style={{ width: `${width}%` }}>
                     <Breadcrumbs
                         collapseFrom={collapseFrom}
-                        items={ITEMS}
+                        items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
                         currentBreadcrumbRenderer={renderCurrentAsInput ? this.renderBreadcrumbInput : undefined}
                         overflowListProps={{alwaysRenderOverflow}}
                     />
