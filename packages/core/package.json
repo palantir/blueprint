@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "3.42.0",
+    "version": "3.43.0",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
