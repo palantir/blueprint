@@ -25,6 +25,7 @@ import { IButtonProps } from "../button/buttons";
 export type DialogStepId = string | number;
 export type DialogStepButtonProps = Partial<Pick<IButtonProps, "disabled" | "text">>;
 
+export type DialogStepProps = IDialogStepProps;
 export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Unique identifier used to identify which step is selected.

@@ -20,6 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common";
 
+export type HTMLTableProps = IHTMLTableProps;
 export interface IHTMLTableProps
     extends React.TableHTMLAttributes<HTMLTableElement>,
         // eslint-disable-next-line deprecation/deprecation

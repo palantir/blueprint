@@ -23,6 +23,7 @@ import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
 export type TabId = string | number;
 
+export type TabProps = ITabProps;
 export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Content of tab title, rendered in a list above the active panel.

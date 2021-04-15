@@ -28,6 +28,7 @@ import { Text } from "../text/text";
 // eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
+export type MenuItemProps = IMenuItemProps;
 export interface IMenuItemProps extends IActionProps, ILinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */

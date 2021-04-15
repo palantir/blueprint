@@ -53,6 +53,7 @@ import {
     toMaxPrecision,
 } from "./numericInputUtils";
 
+export type NumericInputProps = INumericInputProps;
 export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * Whether to allow only floating-point number characters in the field,

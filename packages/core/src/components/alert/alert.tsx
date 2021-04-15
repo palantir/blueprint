@@ -29,6 +29,7 @@ import { Dialog } from "../dialog/dialog";
 import { Icon, IconName } from "../icon/icon";
 import { IOverlayLifecycleProps } from "../overlay/overlay";
 
+export type AlertProps = IAlertProps;
 export interface IAlertProps extends IOverlayLifecycleProps, IProps {
     /**
      * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.

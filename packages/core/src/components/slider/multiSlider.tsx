@@ -112,6 +112,7 @@ export interface ISliderBaseProps extends IProps, IIntentProps {
     vertical?: boolean;
 }
 
+export type MultiSliderProps = IMultiSliderProps;
 export interface IMultiSliderProps extends ISliderBaseProps {
     /** Default intent of a track segment, used only if no handle specifies `intentBefore/After`. */
     defaultTrackIntent?: Intent;

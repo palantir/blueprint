@@ -24,6 +24,7 @@ import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
 
+export type ToastProps = IToastProps;
 export interface IToastProps extends IProps, IIntentProps {
     /**
      * Action rendered as a minimal `AnchorButton`. The toast is dismissed automatically when the

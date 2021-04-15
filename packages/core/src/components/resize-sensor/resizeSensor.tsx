@@ -23,7 +23,7 @@ import { AbstractPureComponent2 } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { IResizeEntry } from "./resizeObserverTypes";
 
-/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
+export type ResizeSensorProps = IResizeSensorProps;
 export interface IResizeSensorProps {
     /**
      * Callback invoked when the wrapped element resizes.
@@ -51,6 +51,7 @@ export interface IResizeSensorProps {
     observeParents?: boolean;
 }
 
+/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 @polyfill
 export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;

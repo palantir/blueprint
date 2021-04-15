@@ -21,6 +21,7 @@ import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
+export type SliderProps = ISliderProps;
 export interface ISliderProps extends ISliderBaseProps {
     /**
      * Initial value of the slider. This determines the other end of the

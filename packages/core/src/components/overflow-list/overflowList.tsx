@@ -32,6 +32,7 @@ export enum OverflowDirection {
     SHRINK,
 }
 
+export type OverflowListProps<T> = IOverflowListProps<T>;
 export interface IOverflowListProps<T> extends IProps {
     /**
      * Which direction the items should collapse from: start or end of the

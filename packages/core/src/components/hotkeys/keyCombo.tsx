@@ -36,6 +36,7 @@ const KeyIcons: { [key: string]: IconName } = {
     up: "arrow-up",
 };
 
+export type KeyComboTagProps = IKeyComboProps;
 export interface IKeyComboProps extends IProps {
     /** The key combo to display, such as `"cmd + s"`. */
     combo: string;

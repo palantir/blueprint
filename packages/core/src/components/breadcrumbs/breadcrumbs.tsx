@@ -25,6 +25,7 @@ import { IOverflowListProps, OverflowList } from "../overflow-list/overflowList"
 import { IPopoverProps, Popover } from "../popover/popover";
 import { Breadcrumb, IBreadcrumbProps } from "./breadcrumb";
 
+export type BreadcrumbsProps = IBreadcrumbsProps;
 export interface IBreadcrumbsProps extends IProps {
     /**
      * Callback invoked to render visible breadcrumbs. Best practice is to

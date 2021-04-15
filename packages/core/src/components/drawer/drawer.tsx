@@ -27,6 +27,7 @@ import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
+export type DrawerProps = IDrawerProps;
 export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the

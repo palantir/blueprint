@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
+export type NavbarGroupProps = INavbarGroupProps;
 export interface INavbarGroupProps extends IProps, HTMLDivProps {
     /**
      * The side of the navbar on which the group should appear.

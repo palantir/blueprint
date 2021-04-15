@@ -26,6 +26,7 @@ import { DialogStep, DialogStepId, IDialogStepProps, DialogStepButtonProps } fro
 
 type DialogStepElement = React.ReactElement<IDialogStepProps & { children: React.ReactNode }>;
 
+export type MultistepDialogProps = IMultistepDialogProps;
 export interface IMultistepDialogProps extends IDialogProps {
     /**
      * Props for the back button.

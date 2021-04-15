@@ -36,6 +36,7 @@ const MIN_SIZE = 10;
 const STROKE_WIDTH = 4;
 const MIN_STROKE_WIDTH = 16;
 
+export type SpinnerProps = ISpinnerProps;
 export interface ISpinnerProps extends IProps, IIntentProps {
     /**
      * Width and height of the spinner in pixels. The size cannot be less than

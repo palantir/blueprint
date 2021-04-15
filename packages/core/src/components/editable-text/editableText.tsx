@@ -23,6 +23,7 @@ import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
+export type EditableTextProps = IEditableTextProps;
 export interface IEditableTextProps extends IIntentProps, IProps {
     /**
      * EXPERIMENTAL FEATURE.

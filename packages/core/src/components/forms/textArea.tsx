@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, IRef, IRefCallback, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
+export type TextAreaProps = ITextAreaProps;
 export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * Whether the text area should take up the full width of its container.

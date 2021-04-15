@@ -26,6 +26,7 @@ import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
 
+export type DialogProps = IDialogProps;
 export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps {
     /**
      * Toggles the visibility of the overlay and its children.

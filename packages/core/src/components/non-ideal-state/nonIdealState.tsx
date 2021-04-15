@@ -25,6 +25,7 @@ import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 
+export type NonIdealStateProps = INonIdealStateProps;
 export interface INonIdealStateProps extends IProps {
     /** An action to resolve the non-ideal state which appears after `description`. */
     action?: JSX.Element;

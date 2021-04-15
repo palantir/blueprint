@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
+export type CardProps = ICardProps;
 export interface ICardProps extends IProps, HTMLDivProps {
     /**
      * Controls the intensity of the drop shadow beneath the card: the higher

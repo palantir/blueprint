@@ -30,6 +30,7 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
+export type ButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement> = IButtonProps<E>;
 export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = HTMLButtonElement>
     extends IActionProps,
         // eslint-disable-next-line deprecation/deprecation
@@ -88,6 +89,7 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
 }
 
 export type IAnchorButtonProps = IButtonProps<HTMLAnchorElement>;
+export type AnchorButtonProps = IAnchorButtonProps;
 
 export interface IButtonState {
     isActive: boolean;

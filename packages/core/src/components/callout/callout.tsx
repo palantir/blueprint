@@ -31,7 +31,7 @@ import {
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 
-/** This component also supports the full range of HTML `<div>` props. */
+export type CalloutProps = ICalloutProps;
 export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
@@ -59,6 +59,7 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     title?: string;
 }
 
+/** This component supports the full range of HTML `<div>` props. */
 @polyfill
 export class Callout extends AbstractPureComponent2<ICalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;

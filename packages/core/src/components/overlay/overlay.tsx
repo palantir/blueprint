@@ -27,6 +27,7 @@ import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
+export type OverlayableProps = IOverlayableProps;
 export interface IOverlayableProps extends IOverlayLifecycleProps {
     /**
      * Whether the overlay should acquire application focus when it first opens.
@@ -112,6 +113,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
     onClose?: (event: React.SyntheticEvent<HTMLElement>) => void;
 }
 
+export type OverlayLifecycleProps = IOverlayLifecycleProps;
 export interface IOverlayLifecycleProps {
     /**
      * Lifecycle method invoked just before the CSS _close_ transition begins on
@@ -140,6 +142,7 @@ export interface IOverlayLifecycleProps {
     onOpened?: (node: HTMLElement) => void;
 }
 
+export type BackdropProps = IBackdropProps;
 export interface IBackdropProps {
     /** CSS class names to apply to backdrop element. */
     backdropClassName?: string;
@@ -163,6 +166,7 @@ export interface IBackdropProps {
     hasBackdrop?: boolean;
 }
 
+export type OverlayProps = IOverlayProps;
 export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps {
     /**
      * Toggles the visibility of the overlay and its children.

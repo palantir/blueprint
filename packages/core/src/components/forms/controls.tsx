@@ -25,6 +25,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
 
+export type ControlProps = IControlProps;
 export interface IControlProps extends IProps, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
 
@@ -142,6 +143,7 @@ const Control: React.FunctionComponent<IControlInternalProps> = ({
 // Switch
 //
 
+export type SwitchProps = ISwitchProps;
 export interface ISwitchProps extends IControlProps {
     /**
      * Text to display inside the switch indicator when checked.
@@ -193,6 +195,7 @@ export class Switch extends AbstractPureComponent2<ISwitchProps> {
 //
 
 export type IRadioProps = IControlProps;
+export type RadioProps = IRadioProps;
 
 @polyfill
 export class Radio extends AbstractPureComponent2<IRadioProps> {
@@ -207,6 +210,7 @@ export class Radio extends AbstractPureComponent2<IRadioProps> {
 // Checkbox
 //
 
+export type CheckboxProps = ICheckboxProps;
 export interface ICheckboxProps extends IControlProps {
     /** Whether this checkbox is initially indeterminate (uncontrolled mode). */
     defaultIndeterminate?: boolean;

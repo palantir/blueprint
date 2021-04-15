@@ -22,6 +22,7 @@ import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 import { clamp } from "../../common/utils";
 
+export type ProgressBarProps = IProgressBarProps;
 export interface IProgressBarProps extends IProps, IIntentProps {
     /**
      * Whether the background should animate.

@@ -22,6 +22,7 @@ import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { ITabProps, TabId } from "./tab";
 
+export type TabTitleProps = ITabTitleProps;
 export interface ITabTitleProps extends ITabProps {
     /** Handler invoked when this tab is clicked. */
     onClick: (id: TabId, event: React.MouseEvent<HTMLElement>) => void;

@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
+export type TextProps = ITextProps;
 export interface ITextProps extends IProps {
     /**
      * Indicates that this component should be truncated with an ellipsis if it overflows its container.

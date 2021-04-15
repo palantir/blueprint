@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
+export type FormGroupProps = IFormGroupProps;
 export interface IFormGroupProps extends IIntentProps, IProps {
     /**
      * A space-delimited list of class names to pass along to the

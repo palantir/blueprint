@@ -23,6 +23,7 @@ import { DISPLAYNAME_PREFIX, IOptionProps, IProps } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
 import { IRadioProps, Radio } from "./controls";
 
+export type RadioGroupProps = IRadioGroupProps;
 export interface IRadioGroupProps extends IProps {
     /**
      * Whether the group and _all_ its radios are disabled.

@@ -21,6 +21,7 @@ import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 import { H6 } from "../html/html";
 
+export type MenuDividerProps = IMenuDividerProps;
 export interface IMenuDividerProps extends IProps {
     /** This component does not support children. */
     children?: never;

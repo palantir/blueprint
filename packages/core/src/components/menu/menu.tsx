@@ -25,6 +25,7 @@ import { MenuDivider } from "./menuDivider";
 // eslint-disable-next-line import/no-cycle
 import { MenuItem } from "./menuItem";
 
+export type MenuProps = IMenuProps;
 export interface IMenuProps extends IProps, React.HTMLAttributes<HTMLUListElement> {
     /** Whether the menu items in this menu should use a large appearance. */
     large?: boolean;

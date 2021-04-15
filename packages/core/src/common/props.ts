@@ -49,11 +49,13 @@ export interface IProps {
     /** A space-delimited list of class names to pass along to a child element. */
     className?: string;
 }
+export type Props = IProps;
 
 export interface IIntentProps {
     /** Visual intent color to apply to element. */
     intent?: Intent;
 }
+export type IntentProps = IIntentProps;
 
 /**
  * Interface for a clickable action, such as a button or menu item.
@@ -72,6 +74,7 @@ export interface IActionProps extends IIntentProps, IProps {
     /** Action text. Can be any single React renderable. */
     text?: React.ReactNode;
 }
+export type ActionProps = IActionProps;
 
 /** Interface for a link, with support for customizing target window. */
 export interface ILinkProps {
@@ -81,6 +84,7 @@ export interface ILinkProps {
     /** Link target attribute. Use `"_blank"` to open in a new window. */
     target?: string;
 }
+export type LinkProps = ILinkProps;
 
 /**
  * Interface for a controlled input.
@@ -105,6 +109,7 @@ export interface IControlledProps2 {
     /** Form value of the input, for controlled usage. */
     value?: string;
 }
+export type ControlledProps2 = IControlledProps2;
 
 /**
  * @deprecated will be removed in Blueprint v4.0, where components will use `ref` prop instead
@@ -128,6 +133,7 @@ export interface IOptionProps extends IProps {
     /** Value of this option. */
     value: string | number;
 }
+export type OptionProps = IOptionProps;
 
 /** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */
 const INVALID_PROPS = [

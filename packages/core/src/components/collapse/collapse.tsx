@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
+export type CollapseProps = ICollapseProps;
 export interface ICollapseProps extends IProps {
     /**
      * Component to render as the root element.

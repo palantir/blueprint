@@ -25,10 +25,12 @@ export type IKeyBlacklist<T> = IKeyDenylist<T>;
 export interface IKeyAllowlist<T> {
     include: Array<keyof T>;
 }
+export type KeyAllowlist<T> = IKeyAllowlist<T>;
 
 export interface IKeyDenylist<T> {
     exclude: Array<keyof T>;
 }
+export type KeyDenylist<T> = IKeyDenylist<T>;
 
 /**
  * Returns true if the arrays are equal. Elements will be shallowly compared by

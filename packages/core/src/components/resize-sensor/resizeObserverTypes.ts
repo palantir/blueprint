@@ -16,6 +16,8 @@
 
 /** This file contains types duplicated from resize-observer-polyfill which are not exported in a consumer-friendly way. */
 
+export type ResizeEntry = IResizeEntry;
+
 /** Equivalent to `ResizeObserverEntry` */
 export interface IResizeEntry {
     /** Measured dimensions of the target. */
@@ -25,6 +27,7 @@ export interface IResizeEntry {
     readonly target: Element;
 }
 
+export type DOMRectReadOnly = IDOMRectReadOnly;
 interface IDOMRectReadOnly {
     readonly x: number;
     readonly y: number;

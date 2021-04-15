@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
+export type ButtonGroupProps = IButtonGroupProps;
 export interface IButtonGroupProps extends IProps, HTMLDivProps {
     /**
      * Text alignment within button. By default, icons and text will be centered

@@ -24,6 +24,7 @@ import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 
+export type TooltipProps = ITooltipProps;
 export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
     /**
      * The content that will be displayed inside of the tooltip.

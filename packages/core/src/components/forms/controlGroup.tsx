@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
+export type ControlGroupProps = IControlGroupProps;
 export interface IControlGroupProps extends IProps, HTMLDivProps {
     /**
      * Whether the control group should take up the full width of its container.

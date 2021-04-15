@@ -29,6 +29,7 @@ import { IPopoverProps, Popover } from "../popover/popover";
 
 type CollapsibleItem = React.ReactElement<IMenuItemProps>;
 
+export type CollapsibleListProps = ICollapsibleListProps;
 export interface ICollapsibleListProps extends IProps {
     /**
      * Element to render as dropdown target with `CLICK` interaction to show collapsed menu.

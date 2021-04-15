@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
 
+export type NavbarHeadingProps = INavbarHeadingProps;
 // allow the empty interface so we can label it clearly in the docs
 export interface INavbarHeadingProps extends IProps, HTMLDivProps {
     // Empty

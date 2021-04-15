@@ -23,6 +23,7 @@ import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classe
 import { IElementRefProps, IOptionProps } from "../../common/props";
 import { Icon, IIconProps } from "../icon/icon";
 
+export type HTMLSelectProps = IHTMLSelectProps;
 export interface IHTMLSelectProps
     // eslint-disable-next-line deprecation/deprecation
     extends IElementRefProps<HTMLSelectElement>,

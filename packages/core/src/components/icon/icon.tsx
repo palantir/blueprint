@@ -24,6 +24,7 @@ import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IPro
 
 export { IconName };
 
+export type IconProps = IIconProps;
 export interface IIconProps extends IIntentProps, IProps {
     /** This component does not support custom children. Use the `icon` prop. */
     children?: never;

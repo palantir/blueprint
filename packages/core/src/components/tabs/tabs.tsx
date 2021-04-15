@@ -30,6 +30,7 @@ type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
 
+export type TabsProps = ITabsProps;
 export interface ITabsProps extends IProps {
     /**
      * Whether the selected tab indicator should animate its movement.

@@ -30,6 +30,8 @@ export type TreeEventHandler<T = {}> = (
 ) => void;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
+export type TreeProps<T = {}> = ITreeProps<T>;
+// eslint-disable-next-line @typescript-eslint/ban-types
 export interface ITreeProps<T = {}> extends IProps {
     /**
      * The data specifying the contents and appearance of the tree.

@@ -23,6 +23,8 @@ import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
+export type TreeNodeInfo<T = {}> = ITreeNode<T>;
+// eslint-disable-next-line @typescript-eslint/ban-types
 export interface ITreeNode<T = {}> extends IProps {
     /**
      * Child tree nodes of this node.
@@ -80,6 +82,8 @@ export interface ITreeNode<T = {}> extends IProps {
     nodeData?: T;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type TreeNodeProps<T = {}> = ITreeNodeProps<T>;
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
     children?: React.ReactNode;

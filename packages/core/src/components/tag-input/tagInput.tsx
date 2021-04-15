@@ -33,6 +33,7 @@ import { ITagProps, Tag } from "../tag/tag";
  */
 export type TagInputAddMethod = "default" | "blur" | "paste";
 
+export type TagInputProps = ITagInputProps;
 export interface ITagInputProps extends IIntentProps, IProps {
     /**
      * If true, `onAdd` will be invoked when the input loses focus.

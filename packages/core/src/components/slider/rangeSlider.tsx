@@ -29,6 +29,7 @@ enum RangeIndex {
     END = 1,
 }
 
+export type RangeSliderProps = IRangeSliderProps;
 export interface IRangeSliderProps extends ISliderBaseProps {
     /**
      * Range value of slider. Handles will be rendered at each position in the range.

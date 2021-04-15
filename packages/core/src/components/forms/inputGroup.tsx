@@ -33,13 +33,15 @@ import {
 import { Icon, IconName } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
 
+// eslint-disable-next-line deprecation/deprecation
+export type InputGroupProps = IInputGroupProps;
+
 /**
  * @deprecated use IInputGroupProps2.
  *
  * NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
  * Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
  */
-
 export interface IInputGroupProps
     // eslint-disable-next-line deprecation/deprecation
     extends IControlledProps,
@@ -109,6 +111,7 @@ export interface IInputGroupProps
     type?: string;
 }
 
+export type InputGroupProps2 = IInputGroupProps2;
 export interface IInputGroupProps2
     extends Omit<HTMLInputProps, keyof IControlledProps2>,
         IControlledProps2,

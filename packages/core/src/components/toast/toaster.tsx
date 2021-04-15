@@ -257,3 +257,6 @@ export class Toaster extends AbstractPureComponent2<IToasterProps, IToasterState
         }
     };
 }
+
+export const OverlayToaster = Toaster;
+export type OverlayToasterProps = IToasterProps;

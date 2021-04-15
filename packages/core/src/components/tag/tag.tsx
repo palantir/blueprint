@@ -32,6 +32,7 @@ import { isReactNodeEmpty } from "../../common/utils";
 import { Icon, IconName } from "../icon/icon";
 import { Text } from "../text/text";
 
+export type TagProps = ITagProps;
 export interface ITagProps
     extends IProps,
         IIntentProps,

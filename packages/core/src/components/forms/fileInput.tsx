@@ -21,6 +21,7 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
+export type FileInputProps = IFileInputProps;
 export interface IFileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, IProps {
     /**
      * Whether the file input is non-interactive.

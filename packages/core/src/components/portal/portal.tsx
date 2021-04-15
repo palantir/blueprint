@@ -26,6 +26,7 @@ import { isFunction } from "../../common/utils";
 /** Detect if `React.createPortal()` API method does not exist. */
 const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
 
+export type PortalProps = IPortalProps;
 export interface IPortalProps extends IProps {
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.

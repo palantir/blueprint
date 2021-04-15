@@ -26,7 +26,7 @@ import { NavbarHeading } from "./navbarHeading";
 
 export { INavbarDividerProps } from "./navbarDivider";
 
-// allow the empty interface so we can label it clearly in the docs
+export type NavbarProps = INavbarProps;
 export interface INavbarProps extends IProps, HTMLDivProps {
     /**
      * Whether this navbar should be fixed to the top of the viewport (using CSS `position: fixed`).
