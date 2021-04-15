@@ -22,6 +22,7 @@ import { DISPLAYNAME_PREFIX, IInputGroupProps2, InputGroup, IOverlayProps, Overl
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
+export type OmnibarProps<T> = IOmnibarProps<T>;
 export interface IOmnibarProps<T> extends IListItemsProps<T> {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and

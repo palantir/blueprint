@@ -21,6 +21,7 @@ import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 
+export type EditableNameProps = IEditableNameProps;
 export interface IEditableNameProps extends IIntentProps, IProps {
     /**
      * The name displayed in the text box. Be sure to update this value when

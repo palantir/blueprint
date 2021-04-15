@@ -23,6 +23,7 @@ export { Boundary as PopperBoundary, Placement, placements as PlacementOptions }
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 
+export type Popover2TargetProps = IPopover2TargetProps;
 /**
  * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
  */
@@ -33,6 +34,7 @@ export interface IPopover2TargetProps {
     isOpen: boolean;
 }
 
+export type Popover2SharedProps<T> = IPopover2SharedProps<T>;
 /**
  * Props shared between `Popover2` and `Tooltip2`.
  *

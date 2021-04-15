@@ -79,6 +79,7 @@ export enum TableLoadingOption {
     ROW_HEADERS = "row-header",
 }
 
+export type StyledRegionGroup = IStyledRegionGroup;
 export interface IStyledRegionGroup {
     className?: string;
     regions: IRegion[];
@@ -112,6 +113,7 @@ export interface IRegion {
      */
     cols?: ICellInterval | null;
 }
+export type Region = IRegion;
 
 export class Regions {
     /**

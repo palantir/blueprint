@@ -20,6 +20,7 @@ import { IconName } from "@blueprintjs/core";
 
 import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
 
+export type TimezoneItem = ITimezoneItem;
 /** Timezone-specific QueryList item */
 export interface ITimezoneItem {
     /** Key to be used as the rendered react key. */

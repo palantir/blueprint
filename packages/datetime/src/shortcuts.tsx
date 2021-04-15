@@ -38,6 +38,7 @@ export interface IDateShortcutBase {
     includeTime?: boolean;
 }
 
+export type DateRangeShortcut = IDateRangeShortcut;
 export interface IDateRangeShortcut extends IDateShortcutBase {
     /**
      * Date range represented by this shortcut. Note that time components of a
@@ -46,6 +47,7 @@ export interface IDateRangeShortcut extends IDateShortcutBase {
     dateRange: DateRange;
 }
 
+export type DatePickerShortcut = IDatePickerShortcut;
 export interface IDatePickerShortcut extends IDateShortcutBase {
     /**
      * Date represented by this shortcut. Note that time components of a

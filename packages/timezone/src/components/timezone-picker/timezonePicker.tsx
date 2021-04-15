@@ -38,6 +38,7 @@ import { getInitialTimezoneItems, getTimezoneItems, ITimezoneItem } from "./time
 
 export { TimezoneDisplayFormat };
 
+export type TimezonePickerProps = ITimezonePickerProps;
 export interface ITimezonePickerProps extends IProps {
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".

@@ -30,6 +30,7 @@ import {
     renderFilteredItems,
 } from "../../common";
 
+export type QueryListProps<T> = IQueryListProps<T>;
 export interface IQueryListProps<T> extends IListItemsProps<T> {
     /**
      * Initial active item, useful if the parent component is controlling its selectedItem but

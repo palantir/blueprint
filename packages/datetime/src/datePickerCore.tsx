@@ -28,6 +28,7 @@ import { ITimePickerProps, TimePrecision } from "./timePicker";
 export interface IDatePickerModifiers {
     [name: string]: (date: Date) => boolean;
 }
+export type DatePickerModifiers = IDatePickerModifiers;
 
 export interface IDatePickerBaseProps {
     /**

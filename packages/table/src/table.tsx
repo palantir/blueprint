@@ -97,6 +97,7 @@ interface IResizeRowsByApproximateHeightResolvedOptions {
     getNumBufferLines?: number;
 }
 
+export type TableProps = ITableProps;
 export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
     /**
      * The children of a `Table` component, which must be React elements

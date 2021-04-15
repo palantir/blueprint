@@ -41,6 +41,7 @@ export const TimePrecision = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 
+export type TimePickerProps = ITimePickerProps;
 export interface ITimePickerProps extends IProps {
     /**
      * Whether to focus the first input when it opens initially.

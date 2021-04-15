@@ -35,6 +35,7 @@ import {
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
+export type SelectProps<T> = ISelectProps<T>;
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the dropdown list can be filtered.

@@ -30,6 +30,7 @@ import { DatePickerNavbar } from "./datePickerNavbar";
 import { IDatePickerShortcut, IDateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
+export type DatePickerProps = IDatePickerProps;
 export interface IDatePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.

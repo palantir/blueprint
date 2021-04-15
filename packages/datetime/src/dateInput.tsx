@@ -41,6 +41,7 @@ import { DatePicker } from "./datePicker";
 import { getDefaultMaxDate, getDefaultMinDate, IDatePickerBaseProps } from "./datePickerCore";
 import { IDatePickerShortcut } from "./shortcuts";
 
+export type DateInputProps = IDateInputProps;
 export interface IDateInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.

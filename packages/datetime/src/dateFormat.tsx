@@ -17,6 +17,7 @@
 import { isDateValid, isDayInRange } from "./common/dateUtils";
 import { IDatePickerBaseProps } from "./datePickerCore";
 
+export type DateFormatProps = IDateFormatProps;
 export interface IDateFormatProps {
     /**
      * The error message to display when the date selected is invalid.

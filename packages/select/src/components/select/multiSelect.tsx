@@ -35,6 +35,7 @@ import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
 // N.B. selectedItems should really be a required prop, but is left optional for backwards compatibility
 
+export type MultiSelectProps<T> = IMultiSelectProps<T>;
 export interface IMultiSelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the component should take up the full width of its container.

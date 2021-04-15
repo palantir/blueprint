@@ -51,6 +51,7 @@ type InputEvent =
     | React.FocusEvent<HTMLInputElement>
     | React.ChangeEvent<HTMLInputElement>;
 
+export type DateRangeInputProps = IDateRangeInputProps;
 export interface IDateRangeInputProps extends IDatePickerBaseProps, IDateFormatProps, IProps {
     /**
      * Whether the start and end dates of the range can be the same day.

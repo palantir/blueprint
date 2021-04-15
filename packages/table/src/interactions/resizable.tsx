@@ -23,6 +23,7 @@ import { Utils } from "../common/index";
 import { ILockableLayout, Orientation, ResizeHandle } from "./resizeHandle";
 
 export type IIndexedResizeCallback = (index: number, size: number) => void;
+export type IndexedResizeCallback = IIndexedResizeCallback;
 
 export interface IResizableProps extends IProps, ILockableLayout {
     /**

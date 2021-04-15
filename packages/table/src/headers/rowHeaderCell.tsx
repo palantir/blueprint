@@ -23,6 +23,7 @@ import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
+export type RowHeaderCellProps = IRowHeaderCellProps;
 export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
     /**
      * Specifies if the row is reorderable.

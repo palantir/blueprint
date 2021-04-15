@@ -22,7 +22,7 @@ import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import * as Classes from "../../common/classes";
 import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
-/* istanbul ignore next */
+export type JSONFormatProps = IJSONFormatProps;
 export interface IJSONFormatProps extends ITruncatedFormatProps {
     children?: any;
 
@@ -42,6 +42,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     stringify?: (obj: any) => string;
 }
 
+/* istanbul ignore next */
 export class JSONFormat extends React.Component<IJSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 

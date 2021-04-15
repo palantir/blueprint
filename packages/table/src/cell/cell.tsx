@@ -30,6 +30,7 @@ import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 
+export type CellProps = ICellProps;
 export interface ICellProps extends IIntentProps, IProps {
     key?: string;
 
@@ -111,6 +112,7 @@ export interface ICellProps extends IIntentProps, IProps {
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
+export type CellRenderer = ICellRenderer;
 
 export const emptyCellRenderer = () => <Cell />;
 

@@ -30,6 +30,7 @@ import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
+export type EditableCellProps = IEditableCellProps;
 export interface IEditableCellProps extends ICellProps {
     /**
      * Whether the given cell is the current active/focused cell.

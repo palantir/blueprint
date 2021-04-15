@@ -75,6 +75,7 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
     numBufferLines: number;
 }
 
+export type TruncatedFormatProps = ITruncatedFormatProps;
 export interface ITruncatedFormatProps extends IProps {
     children?: string;
 

@@ -23,6 +23,7 @@ import { IColumnHeaderRenderer } from "./headers/columnHeader";
 import { IColumnNameProps } from "./headers/columnHeaderCell";
 import { ColumnLoadingOption } from "./regions";
 
+export type ColumnProps = IColumnProps;
 export interface IColumnProps extends IColumnNameProps, IProps {
     /**
      * A unique ID, similar to React's `key`. This is used, for example, to

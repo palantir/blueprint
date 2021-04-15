@@ -27,10 +27,12 @@ export {
 export {
     IPopover2SharedProps,
     IPopover2TargetProps,
+    Popover2SharedProps,
+    Popover2TargetProps,
     PopperBoundary,
     Placement,
     PlacementOptions,
     StrictModifierNames,
 } from "./popover2SharedProps";
-export { IPopover2Props, Popover2, Popover2InteractionKind } from "./popover2";
-export { ITooltip2Props, Tooltip2 } from "./tooltip2";
+export { IPopover2Props, Popover2Props, Popover2, Popover2InteractionKind } from "./popover2";
+export { ITooltip2Props, Tooltip2Props, Tooltip2 } from "./tooltip2";
