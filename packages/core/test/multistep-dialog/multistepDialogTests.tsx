@@ -57,7 +57,7 @@ describe("<MultistepDialog>", () => {
         );
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 2);
+        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
         assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 0);
         dialog.unmount();
     });
@@ -72,8 +72,8 @@ describe("<MultistepDialog>", () => {
         dialog.find(NEXT_BUTTON).simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
-        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 2);
+        assert.strictEqual(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
+        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 1);
         dialog.unmount();
     });
 
@@ -88,14 +88,14 @@ describe("<MultistepDialog>", () => {
         dialog.find(NEXT_BUTTON).simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
-        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 2);
+        assert.strictEqual(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
+        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 1);
 
         dialog.find(BACK_BUTTON).simulate("click");
         const newSteps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(newSteps.at(0).find(`.${Classes.ACTIVE}`).length, 2);
-        assert.strictEqual(newSteps.at(1).find(`.${Classes.ACTIVE}`).length, 1);
+        assert.strictEqual(newSteps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
+        assert.strictEqual(newSteps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
         dialog.unmount();
     });
 
@@ -157,8 +157,8 @@ describe("<MultistepDialog>", () => {
         step.at(0).simulate("click");
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 2);
-        assert.strictEqual(steps.at(1).find(`.${Classes.ACTIVE}`).length, 1);
+        assert.strictEqual(steps.at(0).find(`.${Classes.ACTIVE}`).length, 1);
+        assert.strictEqual(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`).length, 1);
         dialog.unmount();
     });
 
