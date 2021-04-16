@@ -20,7 +20,13 @@ import { IconName } from "@blueprintjs/core";
 
 import { getTimezoneMetadata, ITimezoneMetadata } from "./timezoneMetadata";
 
-/** Timezone-specific QueryList item */
+// eslint-disable-next-line deprecation/deprecation
+export type TimezoneItem = ITimezoneItem;
+/**
+ * Timezone-specific QueryList item
+ *
+ * @deprecated use TimezoneItem
+ */
 export interface ITimezoneItem {
     /** Key to be used as the rendered react key. */
     key: string;
@@ -43,7 +49,7 @@ export interface ITimezoneItem {
  *
  * @param date the date to use when determining timezone offsets
  */
-export function getTimezoneItems(date: Date): ITimezoneItem[] {
+export function getTimezoneItems(date: Date): TimezoneItem[] {
     return moment.tz
         .names()
         .map(timezone => getTimezoneMetadata(timezone, date))
@@ -59,7 +65,7 @@ export function getTimezoneItems(date: Date): ITimezoneItem[] {
  * @param date the date to use when determining timezone offsets
  * @param includeLocalTimezone whether to include the local timezone
  */
-export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolean): ITimezoneItem[] {
+export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolean): TimezoneItem[] {
     const populous = getPopulousTimezoneItems(date);
     const local = getLocalTimezoneItem(date);
     return includeLocalTimezone && local !== undefined ? [local, ...populous] : populous;
@@ -70,7 +76,7 @@ export function getInitialTimezoneItems(date: Date, includeLocalTimezone: boolea
  *
  * @param date the date to use when determining timezone offsets
  */
-export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
+export function getLocalTimezoneItem(date: Date): TimezoneItem | undefined {
     const timezone = moment.tz.guess();
     if (timezone !== undefined) {
         const timestamp = date.getTime();
@@ -94,7 +100,7 @@ export function getLocalTimezoneItem(date: Date): ITimezoneItem | undefined {
  *
  * @param date the date to use when determining timezone offsets
  */
-function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
+function getPopulousTimezoneItems(date: Date): TimezoneItem[] {
     // Filter out noisy timezones. See https://github.com/moment/moment-timezone/issues/227
     const timezones = moment.tz.names().filter(timezone => /\//.test(timezone) && !/Etc\//.test(timezone));
 
@@ -123,7 +129,7 @@ function getPopulousTimezoneItems(date: Date): ITimezoneItem[] {
     );
 }
 
-function toTimezoneItem({ abbreviation, offsetAsString, timezone }: ITimezoneMetadata): ITimezoneItem {
+function toTimezoneItem({ abbreviation, offsetAsString, timezone }: ITimezoneMetadata): TimezoneItem {
     return {
         key: timezone,
         label: offsetAsString,

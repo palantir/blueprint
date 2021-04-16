@@ -17,7 +17,7 @@
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractComponent2, IProps, IRef, setRef, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent2, Props, IRef, setRef, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
@@ -39,7 +39,7 @@ type QuadrantRefHandler = IRef<HTMLDivElement>;
 type IQuadrantRefs = IQuadrantRefMap<HTMLDivElement>;
 type IQuadrantRefHandlers = IQuadrantRefMap<QuadrantRefHandler>;
 
-export interface ITableQuadrantStackProps extends IProps {
+export interface ITableQuadrantStackProps extends Props {
     /**
      * A callback that receives a `ref` to the main quadrant's table-body element.
      */

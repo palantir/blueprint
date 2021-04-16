@@ -19,23 +19,28 @@ import { DayModifiers as IDatePickerDayModifiers, LocaleUtils } from "react-day-
 import * as classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 
+/* eslint-disable deprecation/deprecation */
+
 // re-exporting these symbols to preserve compatility
 
 type IDatePickerLocaleUtils = typeof LocaleUtils;
 export { DateUtils, IDatePickerLocaleUtils, IDatePickerDayModifiers };
+
+type DatePickerLocaleUtils = IDatePickerLocaleUtils;
+type DatePickerDayModifiers = IDatePickerDayModifiers;
+export { DatePickerLocaleUtils, DatePickerDayModifiers };
 
 export const Classes = classes;
 
 export { DateRange } from "./common/dateRange";
 export { Months } from "./common/months";
 export { TimeUnit } from "./common/timeUnit";
-export { IDateFormatProps } from "./dateFormat";
-export { DateInput, IDateInputProps } from "./dateInput";
-export { DatePicker, IDatePickerProps } from "./datePicker";
-export { IDatePickerModifiers } from "./datePickerCore";
-// eslint-disable-next-line deprecation/deprecation
+export { DateFormatProps, IDateFormatProps } from "./dateFormat";
+export { DateInput, DateInputProps, IDateInputProps } from "./dateInput";
+export { DatePicker, DatePickerProps, IDatePickerProps } from "./datePicker";
+export { DatePickerModifiers, IDatePickerModifiers } from "./datePickerCore";
 export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
-export { DateRangeInput, IDateRangeInputProps } from "./dateRangeInput";
-export { DateRangePicker, IDateRangePickerProps } from "./dateRangePicker";
-export { ITimePickerProps, TimePicker, TimePrecision } from "./timePicker";
-export { IDatePickerShortcut, IDateRangeShortcut } from "./shortcuts";
+export { DateRangeInput, DateRangeInputProps, IDateRangeInputProps } from "./dateRangeInput";
+export { DateRangePicker, DateRangePickerProps, IDateRangePickerProps } from "./dateRangePicker";
+export { ITimePickerProps, TimePicker, TimePickerProps, TimePrecision } from "./timePicker";
+export { DatePickerShortcut, DateRangeShortcut, IDatePickerShortcut, IDateRangeShortcut } from "./shortcuts";

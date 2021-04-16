@@ -20,7 +20,7 @@ import * as React from "react";
 import {
     AbstractPureComponent2,
     DISPLAYNAME_PREFIX,
-    IInputGroupProps2,
+    InputGroupProps2,
     InputGroup,
     IPopoverProps,
     IRef,
@@ -35,6 +35,9 @@ import {
 import { Classes, IListItemsProps } from "../../common";
 import { IQueryListRendererProps, QueryList } from "../query-list/queryList";
 
+// eslint-disable-next-line deprecation/deprecation
+export type SuggestProps<T> = ISuggestProps<T>;
+/** @deprecated use SuggestProps */
 export interface ISuggestProps<T> extends IListItemsProps<T> {
     /**
      * Whether the popover should close after selecting an item.
@@ -57,7 +60,7 @@ export interface ISuggestProps<T> extends IListItemsProps<T> {
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
      */
-    inputProps?: IInputGroupProps2;
+    inputProps?: InputGroupProps2;
 
     /** Custom renderer to transform an item into a string for the input value. */
     inputValueRenderer: (item: T) => string;
@@ -104,10 +107,10 @@ export interface ISuggestState<T> {
     selectedItem: T | null;
 }
 
-export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISuggestState<T>> {
+export class Suggest<T> extends AbstractPureComponent2<SuggestProps<T>, ISuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
-    public static defaultProps: Partial<ISuggestProps<any>> = {
+    public static defaultProps: Partial<SuggestProps<any>> = {
         closeOnSelect: true,
         fill: false,
         openOnKeyDown: false,
@@ -115,7 +118,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
     };
 
     public static ofType<U>() {
-        return Suggest as new (props: ISuggestProps<U>) => Suggest<U>;
+        return Suggest as new (props: SuggestProps<U>) => Suggest<U>;
     }
 
     public state: ISuggestState<T> = {
@@ -147,7 +150,7 @@ export class Suggest<T> extends AbstractPureComponent2<ISuggestProps<T>, ISugges
         );
     }
 
-    public componentDidUpdate(prevProps: ISuggestProps<T>, prevState: ISuggestState<T>) {
+    public componentDidUpdate(prevProps: SuggestProps<T>, prevState: ISuggestState<T>) {
         if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
             setRef(prevProps.inputProps?.inputRef, null);
             this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);

@@ -17,6 +17,7 @@
 import { ICellCoordinate, IRegion, Regions } from "../../regions";
 
 export type IContextMenuRenderer = (context: IMenuContext) => JSX.Element;
+export type ContextMenuRenderer = IContextMenuRenderer;
 
 export interface IMenuContext {
     /**

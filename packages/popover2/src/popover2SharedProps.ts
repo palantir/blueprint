@@ -17,14 +17,16 @@
 import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
 import { StrictModifier } from "react-popper";
 
-import { IOverlayableProps, IProps, PopoverPosition } from "@blueprintjs/core";
+import { OverlayableProps, Props, PopoverPosition } from "@blueprintjs/core";
 
 export { Boundary as PopperBoundary, Placement, placements as PlacementOptions };
 // copied from @popperjs/core, where it is not exported as public
 export type StrictModifierNames = NonNullable<StrictModifiers["name"]>;
 
+// eslint-disable-next-line deprecation/deprecation
+export type Popover2TargetProps = IPopover2TargetProps;
 /**
- * E: target element interface, defaults to HTMLElement in Popover2 component props interface.
+ * @deprecated use Popover2TargetProps
  */
 export interface IPopover2TargetProps {
     ref: React.Ref<any>;
@@ -33,13 +35,16 @@ export interface IPopover2TargetProps {
     isOpen: boolean;
 }
 
+// eslint-disable-next-line deprecation/deprecation
+export type Popover2SharedProps<T> = IPopover2SharedProps<T>;
 /**
  * Props shared between `Popover2` and `Tooltip2`.
  *
  * @template TProps HTML props interface for target element,
  *                  defaults to props for HTMLElement in IPopover2Props and ITooltip2Props
+ * @deprecated use Popover2SharedProps
  */
-export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps {
+export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
     /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
      * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
@@ -151,7 +156,7 @@ export interface IPopover2SharedProps<TProps> extends IOverlayableProps, IProps 
      *
      * Mutually exclusive with children, targetClassName, and targetTagName.
      */
-    renderTarget?: (props: IPopover2TargetProps & TProps) => JSX.Element;
+    renderTarget?: (props: Popover2TargetProps & TProps) => JSX.Element;
 
     /**
      * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.

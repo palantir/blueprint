@@ -24,7 +24,7 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    IProps,
+    Props,
     IRef,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
@@ -97,7 +97,10 @@ interface IResizeRowsByApproximateHeightResolvedOptions {
     getNumBufferLines?: number;
 }
 
-export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
+// eslint-disable-next-line deprecation/deprecation
+export type TableProps = ITableProps;
+/** @deprecated use TableProps */
+export interface ITableProps extends Props, IRowHeights, IColumnWidths {
     /**
      * The children of a `Table` component, which must be React elements
      * that use `IColumnProps`.
@@ -455,10 +458,10 @@ export interface ITableSnapshot {
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 @polyfill
-export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSnapshot> {
+export class Table extends AbstractComponent2<TableProps, ITableState, ITableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
-    public static defaultProps: ITableProps = {
+    public static defaultProps: TableProps = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
         enableFocusedCell: false,
@@ -479,7 +482,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
 
     public static childContextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
 
-    public static getDerivedStateFromProps(props: ITableProps, state: ITableState) {
+    public static getDerivedStateFromProps(props: TableProps, state: ITableState) {
         const {
             children,
             defaultColumnWidth,
@@ -582,7 +585,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
 
     private static SHALLOW_COMPARE_PROP_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
-    ] as Array<keyof ITableProps>;
+    ] as Array<keyof TableProps>;
 
     private static SHALLOW_COMPARE_STATE_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
@@ -601,7 +604,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     }
 
     private static isSelectionModeEnabled(
-        props: ITableProps,
+        props: TableProps,
         selectionMode: RegionCardinality,
         selectionModes = props.selectionModes,
     ) {
@@ -643,7 +646,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
      */
     private didCompletelyMount = false;
 
-    public constructor(props: ITableProps, context?: any) {
+    public constructor(props: TableProps, context?: any) {
         super(props, context);
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = this.props;
@@ -809,7 +812,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         };
     }
 
-    public shouldComponentUpdate(nextProps: ITableProps, nextState: ITableState) {
+    public shouldComponentUpdate(nextProps: TableProps, nextState: ITableState) {
         const propKeysDenylist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
         const stateKeysDenylist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
 
@@ -947,7 +950,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         return { nextScrollLeft, nextScrollTop };
     }
 
-    public componentDidUpdate(prevProps: ITableProps, prevState: ITableState, snapshot: ITableSnapshot) {
+    public componentDidUpdate(prevProps: TableProps, prevState: ITableState, snapshot: ITableSnapshot) {
         super.componentDidUpdate(prevProps, prevState, snapshot);
 
         const didChildrenChange =
@@ -983,7 +986,7 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
         }
     }
 
-    protected validateProps(props: ITableProps) {
+    protected validateProps(props: TableProps) {
         const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
         const numColumns = React.Children.count(children);
 
@@ -2267,13 +2270,13 @@ export class Table extends AbstractComponent2<ITableProps, ITableState, ITableSn
     }
 }
 
-function clampNumFrozenColumns(props: ITableProps) {
+function clampNumFrozenColumns(props: TableProps) {
     const { numFrozenColumns } = props;
     const numColumns = React.Children.count(props.children);
     return clampPotentiallyNullValue(numFrozenColumns, numColumns);
 }
 
-function clampNumFrozenRows(props: ITableProps) {
+function clampNumFrozenRows(props: TableProps) {
     const { numFrozenRows, numRows } = props;
     return clampPotentiallyNullValue(numFrozenRows, numRows);
 }

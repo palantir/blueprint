@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 export * as Classes from "./classes";
 export * as Errors from "./errors";
 export {
@@ -21,16 +23,17 @@ export {
     ContextMenu2Props,
     ContextMenu2ChildrenProps,
     ContextMenu2ContentProps,
-    // eslint-disable-next-line deprecation/deprecation
     ContextMenu2RenderProps,
 } from "./contextMenu2";
 export {
     IPopover2SharedProps,
     IPopover2TargetProps,
+    Popover2SharedProps,
+    Popover2TargetProps,
     PopperBoundary,
     Placement,
     PlacementOptions,
     StrictModifierNames,
 } from "./popover2SharedProps";
-export { IPopover2Props, Popover2, Popover2InteractionKind } from "./popover2";
-export { ITooltip2Props, Tooltip2 } from "./tooltip2";
+export { IPopover2Props, Popover2Props, Popover2, Popover2InteractionKind } from "./popover2";
+export { ITooltip2Props, Tooltip2Props, Tooltip2 } from "./tooltip2";

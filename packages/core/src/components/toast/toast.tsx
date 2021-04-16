@@ -19,19 +19,20 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IActionProps, IIntentProps, ILinkProps, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, ActionProps, IntentProps, LinkProps, Props, MaybeElement } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon, IconName } from "../icon/icon";
 
-export interface IToastProps extends IProps, IIntentProps {
+export type ToastProps = IToastProps;
+export interface IToastProps extends Props, IntentProps {
     /**
      * Action rendered as a minimal `AnchorButton`. The toast is dismissed automatically when the
      * user clicks the action button. Note that the `intent` prop is ignored (the action button
      * cannot have its own intent color that might conflict with the toast's intent). Omit this
      * prop to omit the action button.
      */
-    action?: IActionProps & ILinkProps;
+    action?: ActionProps & LinkProps;
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
     icon?: IconName | MaybeElement;

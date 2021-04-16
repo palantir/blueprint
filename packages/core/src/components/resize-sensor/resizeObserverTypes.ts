@@ -16,15 +16,25 @@
 
 /** This file contains types duplicated from resize-observer-polyfill which are not exported in a consumer-friendly way. */
 
-/** Equivalent to `ResizeObserverEntry` */
+// eslint-disable-next-line deprecation/deprecation
+export type ResizeEntry = IResizeEntry;
+
+/**
+ * Equivalent to `ResizeObserverEntry`
+ *
+ * @deprecated use ResizeEntry
+ */
 export interface IResizeEntry {
     /** Measured dimensions of the target. */
-    readonly contentRect: IDOMRectReadOnly;
+    readonly contentRect: DOMRectReadOnly;
 
     /** The resized element. */
     readonly target: Element;
 }
 
+// eslint-disable-next-line deprecation/deprecation
+export type DOMRectReadOnly = IDOMRectReadOnly;
+/** @deprecated use DOMRectReadOnly */
 interface IDOMRectReadOnly {
     readonly x: number;
     readonly y: number;

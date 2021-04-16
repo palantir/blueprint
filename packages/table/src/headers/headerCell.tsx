@@ -17,12 +17,12 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, ContextMenuTarget, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Classes as CoreClasses, ContextMenuTarget, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { ResizeHandle } from "../interactions/resizeHandle";
 
-export interface IHeaderCellProps extends IProps {
+export interface IHeaderCellProps extends Props {
     /**
      * The index of the cell in the header. If provided, this will be passed as an argument to any
      * callbacks when they are invoked.

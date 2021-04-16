@@ -24,7 +24,7 @@ import {
     Drawer,
     H5,
     HTMLSelect,
-    IOptionProps,
+    OptionProps,
     Label,
     Position,
     Switch,
@@ -165,7 +165,7 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
     private handleClose = () => this.setState({ isOpen: false });
 }
 
-const SIZES: Array<string | IOptionProps> = [
+const SIZES: Array<string | OptionProps> = [
     { label: "Default", value: undefined },
     { label: "Small", value: Drawer.SIZE_SMALL },
     { label: "Standard", value: Drawer.SIZE_STANDARD },

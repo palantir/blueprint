@@ -21,9 +21,10 @@ import * as React from "react";
 
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { IRef, refHandler, setRef } from "../../common/refs";
-import { AbstractButton, IButtonProps, IAnchorButtonProps } from "./abstractButton";
+import { AbstractButton, IButtonProps, IAnchorButtonProps, ButtonProps, AnchorButtonProps } from "./abstractButton";
 
-export { IAnchorButtonProps, IButtonProps };
+// eslint-disable-next-line deprecation/deprecation
+export { IAnchorButtonProps, IButtonProps, ButtonProps, AnchorButtonProps };
 
 export class Button extends AbstractButton<HTMLButtonElement> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Button`;
@@ -46,7 +47,7 @@ export class Button extends AbstractButton<HTMLButtonElement> {
         );
     }
 
-    public componentDidUpdate(prevProps: IButtonProps) {
+    public componentDidUpdate(prevProps: ButtonProps) {
         if (prevProps.elementRef !== this.props.elementRef) {
             setRef(prevProps.elementRef, null);
             this.handleRef = refHandler(this, "buttonRef", this.props.elementRef);
@@ -81,7 +82,7 @@ export class AnchorButton extends AbstractButton<HTMLAnchorElement> {
         );
     }
 
-    public componentDidUpdate(prevProps: IAnchorButtonProps) {
+    public componentDidUpdate(prevProps: AnchorButtonProps) {
         if (prevProps.elementRef !== this.props.elementRef) {
             setRef(prevProps.elementRef, null);
             this.handleRef = refHandler(this, "buttonRef", this.props.elementRef);

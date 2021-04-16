@@ -19,7 +19,7 @@ import * as React from "react";
 import DayPicker, { CaptionElementProps, DayModifiers, DayPickerProps, NavbarElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, Boundary, DISPLAYNAME_PREFIX, Divider, Props } from "@blueprintjs/core";
 
 import * as DateClasses from "./common/classes";
 import { DateRange } from "./common/dateRange";
@@ -33,15 +33,18 @@ import {
     getDefaultMinDate,
     HOVERED_RANGE_MODIFIER,
     IDatePickerBaseProps,
-    IDatePickerModifiers,
+    DatePickerModifiers,
     SELECTED_RANGE_MODIFIER,
 } from "./datePickerCore";
 import { DatePickerNavbar } from "./datePickerNavbar";
 import { DateRangeSelectionStrategy } from "./dateRangeSelectionStrategy";
-import { IDateRangeShortcut, Shortcuts } from "./shortcuts";
+import { DateRangeShortcut, Shortcuts } from "./shortcuts";
 import { TimePicker } from "./timePicker";
 
-export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type DateRangePickerProps = IDateRangePickerProps;
+/** @deprecated use DateRangePickerProps */
+export interface IDateRangePickerProps extends IDatePickerBaseProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -91,7 +94,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
     /**
      * Called when the `shortcuts` props is enabled and the user changes the shortcut.
      */
-    onShortcutChange?: (shortcut: IDateRangeShortcut, index: number) => void;
+    onShortcutChange?: (shortcut: DateRangeShortcut, index: number) => void;
 
     /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
@@ -101,7 +104,7 @@ export interface IDateRangePickerProps extends IDatePickerBaseProps, IProps {
      *
      * @default true
      */
-    shortcuts?: boolean | IDateRangeShortcut[];
+    shortcuts?: boolean | DateRangeShortcut[];
 
     /**
      * The currently selected shortcut.
@@ -134,8 +137,8 @@ export interface IDateRangePickerState {
 }
 
 @polyfill
-export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProps, IDateRangePickerState> {
-    public static defaultProps: IDateRangePickerProps = {
+export class DateRangePicker extends AbstractPureComponent2<DateRangePickerProps, IDateRangePickerState> {
+    public static defaultProps: DateRangePickerProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
@@ -150,7 +153,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
 
     // these will get merged with the user's own
-    private modifiers: IDatePickerModifiers = {
+    private modifiers: DatePickerModifiers = {
         [SELECTED_RANGE_MODIFIER]: day => {
             const { value } = this.state;
             return value[0] != null && value[1] != null && DateUtils.isDayInRange(day, value, true);
@@ -187,7 +190,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         },
     };
 
-    public constructor(props: IDateRangePickerProps, context?: any) {
+    public constructor(props: DateRangePickerProps, context?: any) {
         super(props, context);
         const value = getInitialValue(props);
         const time: DateRange = value;
@@ -244,7 +247,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         );
     }
 
-    public componentDidUpdate(prevProps: IDateRangePickerProps, prevState: IDateRangePickerState) {
+    public componentDidUpdate(prevProps: DateRangePickerProps, prevState: IDateRangePickerState) {
         super.componentDidUpdate(prevProps, prevState);
 
         if (
@@ -265,7 +268,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         }
     }
 
-    protected validateProps(props: IDateRangePickerProps) {
+    protected validateProps(props: DateRangePickerProps) {
         const { defaultValue, initialMonth, maxDate, minDate, boundaryToModify, value } = props;
         const dateRange: DateRange = [minDate, maxDate];
 
@@ -557,7 +560,7 @@ export class DateRangePicker extends AbstractPureComponent2<IDateRangePickerProp
         this.handleNextState(nextValue);
     };
 
-    private handleShortcutClick = (shortcut: IDateRangeShortcut, selectedShortcutIndex: number) => {
+    private handleShortcutClick = (shortcut: DateRangeShortcut, selectedShortcutIndex: number) => {
         const { onChange, contiguousCalendarMonths, onShortcutChange } = this.props;
         const { dateRange, includeTime } = shortcut;
         if (includeTime) {
@@ -766,7 +769,7 @@ function getStateChange(
     return {};
 }
 
-function getInitialValue(props: IDateRangePickerProps): DateRange | null {
+function getInitialValue(props: DateRangePickerProps): DateRange | null {
     if (props.value != null) {
         return props.value;
     }
@@ -776,7 +779,7 @@ function getInitialValue(props: IDateRangePickerProps): DateRange | null {
     return [null, null];
 }
 
-function getInitialMonth(props: IDateRangePickerProps, value: DateRange): Date {
+function getInitialMonth(props: DateRangePickerProps, value: DateRange): Date {
     const today = new Date();
     // != because we must have a real `Date` to begin the calendar on.
     if (props.initialMonth != null) {

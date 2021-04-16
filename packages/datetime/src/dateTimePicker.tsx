@@ -18,14 +18,14 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
-import { DatePicker, IDatePickerProps } from "./datePicker";
-import { ITimePickerProps, TimePicker } from "./timePicker";
+import { DatePicker, DatePickerProps } from "./datePicker";
+import { TimePickerProps, TimePicker } from "./timePicker";
 
-export interface IDateTimePickerProps extends IProps {
+export interface IDateTimePickerProps extends Props {
     /**
      * The initial date and time value that will be set.
      * This will be ignored if `value` is set.
@@ -38,7 +38,7 @@ export interface IDateTimePickerProps extends IProps {
      * Any props to be passed on to the `DatePicker` other than the `value` and `onChange` props as they come directly
      * from the `DateTimePicker` props.
      */
-    datePickerProps?: IDatePickerProps;
+    datePickerProps?: DatePickerProps;
 
     /**
      * Callback invoked when the user changes the date or time.
@@ -49,7 +49,7 @@ export interface IDateTimePickerProps extends IProps {
      * Any props to be passed on to the `TimePicker` other than the `value` and `onChange` props as they come directly
      * from the `DateTimePicker` props.
      */
-    timePickerProps?: ITimePickerProps;
+    timePickerProps?: TimePickerProps;
 
     /**
      * The currently set date and time. If this prop is provided, the component acts in a controlled manner.
@@ -105,7 +105,7 @@ export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps,
         );
     }
 
-    public componentDidUpdate(prevProps: IDatePickerProps) {
+    public componentDidUpdate(prevProps: DatePickerProps) {
         if (this.props.value === prevProps.value) {
             return;
         } else if (this.props.value != null) {

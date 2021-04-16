@@ -19,9 +19,12 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface ICollapseProps extends IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type CollapseProps = ICollapseProps;
+/** @deprecated use CollapseProps */
+export interface ICollapseProps extends Props {
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
@@ -115,17 +118,17 @@ export enum AnimationStates {
 }
 
 @polyfill
-export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
-    public static defaultProps: ICollapseProps = {
+    public static defaultProps: CollapseProps = {
         component: "div",
         isOpen: false,
         keepChildrenMounted: false,
         transitionDuration: 200,
     };
 
-    public static getDerivedStateFromProps(props: ICollapseProps, state: ICollapseState) {
+    public static getDerivedStateFromProps(props: CollapseProps, state: ICollapseState) {
         const { isOpen } = props;
         const { animationState } = state;
 

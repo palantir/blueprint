@@ -19,8 +19,8 @@ import * as React from "react";
 import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    IIntentProps,
-    IProps,
+    IntentProps,
+    Props,
     IRef,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
@@ -30,7 +30,8 @@ import { LoadableContent } from "../common/loadableContent";
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 
-export interface ICellProps extends IIntentProps, IProps {
+export type CellProps = ICellProps;
+export interface ICellProps extends IntentProps, Props {
     key?: string;
 
     style?: React.CSSProperties;
@@ -111,6 +112,7 @@ export interface ICellProps extends IIntentProps, IProps {
 }
 
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
+export type CellRenderer = ICellRenderer;
 
 export const emptyCellRenderer = () => <Cell />;
 

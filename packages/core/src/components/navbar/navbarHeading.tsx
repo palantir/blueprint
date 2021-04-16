@@ -19,17 +19,19 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-// allow the empty interface so we can label it clearly in the docs
-export interface INavbarHeadingProps extends IProps, HTMLDivProps {
-    // Empty
+// eslint-disable-next-line deprecation/deprecation
+export type NavbarHeadingProps = INavbarHeadingProps;
+/** @deprecated use NavbarHeadingProps */
+export interface INavbarHeadingProps extends Props, HTMLDivProps {
+    // allow the empty interface so we can label it clearly in the docs
 }
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class NavbarHeading extends AbstractPureComponent2<INavbarHeadingProps> {
+export class NavbarHeading extends AbstractPureComponent2<NavbarHeadingProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
 
     public render() {

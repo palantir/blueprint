@@ -18,7 +18,7 @@ import * as React from "react";
 import { CaptionElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IOptionProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, Divider, HTMLSelect, Icon, OptionProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
@@ -61,10 +61,10 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
         const startMonth = displayYear === minYear ? minDate.getMonth() : 0;
         const endMonth = displayYear === maxYear ? maxDate.getMonth() + 1 : undefined;
         const monthOptionElements = months
-            .map<IOptionProps>((month, i) => ({ label: month, value: i }))
+            .map<OptionProps>((month, i) => ({ label: month, value: i }))
             .slice(startMonth, endMonth);
 
-        const years: Array<number | IOptionProps> = [minYear];
+        const years: Array<number | OptionProps> = [minYear];
         for (let year = minYear + 1; year <= maxYear; ++year) {
             years.push(year);
         }

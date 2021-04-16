@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent2, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
@@ -27,7 +27,7 @@ import { Grid, IColumnIndices, IRowIndices } from "./common/grid";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 
-export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, IProps {
+export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, Props {
     /**
      * A cell renderer for the cells in the body.
      */

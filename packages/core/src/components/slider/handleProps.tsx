@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Intent, IProps } from "../../common";
+import { Intent, Props } from "../../common";
 
 export const HandleType = {
     /** A full handle appears as a small square. */
@@ -47,7 +47,10 @@ export const HandleInteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = typeof HandleInteractionKind[keyof typeof HandleInteractionKind];
 
-export interface IHandleProps extends IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type HandleProps = IHandleProps;
+/** @deprecated use HandleProps */
+export interface IHandleProps extends Props {
     /** Numeric value of this handle. */
     value: number;
 

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractComponent2, IProps, IRef } from "@blueprintjs/core";
+import { AbstractComponent2, Props, IRef } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
@@ -47,7 +47,7 @@ export enum QuadrantType {
     TOP_LEFT = "top-left",
 }
 
-export interface ITableQuadrantProps extends IProps {
+export interface ITableQuadrantProps extends Props {
     /**
      * A callback that receives a `ref` to the quadrant's body-wrapping element. Will need to be
      * provided only for the MAIN quadrant, because that quadrant contains the main table body.

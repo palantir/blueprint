@@ -19,9 +19,12 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface INavbarGroupProps extends IProps, HTMLDivProps {
+// eslint-disable-next-line deprecation/deprecation
+export type NavbarGroupProps = INavbarGroupProps;
+/** @deprecated use NavbarGroupProps */
+export interface INavbarGroupProps extends Props, HTMLDivProps {
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.
@@ -34,10 +37,10 @@ export interface INavbarGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class NavbarGroup extends AbstractPureComponent2<INavbarGroupProps> {
+export class NavbarGroup extends AbstractPureComponent2<NavbarGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarGroup`;
 
-    public static defaultProps: INavbarGroupProps = {
+    public static defaultProps: NavbarGroupProps = {
         align: Alignment.LEFT,
     };
 

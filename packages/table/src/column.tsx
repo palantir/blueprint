@@ -16,14 +16,15 @@
 
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, IProps } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Props } from "@blueprintjs/core";
 
 import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
 import { IColumnHeaderRenderer } from "./headers/columnHeader";
 import { IColumnNameProps } from "./headers/columnHeaderCell";
 import { ColumnLoadingOption } from "./regions";
 
-export interface IColumnProps extends IColumnNameProps, IProps {
+export type ColumnProps = IColumnProps;
+export interface IColumnProps extends IColumnNameProps, Props {
     /**
      * A unique ID, similar to React's `key`. This is used, for example, to
      * maintain the width of a column between re-ordering and rendering. If no

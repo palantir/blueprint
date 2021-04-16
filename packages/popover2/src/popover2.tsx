@@ -35,7 +35,7 @@ import * as Classes from "./classes";
 import * as Errors from "./errors";
 import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
-import { IPopover2SharedProps } from "./popover2SharedProps";
+import { Popover2SharedProps } from "./popover2SharedProps";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip2 } from "./tooltip2";
 import { getBasePlacement, getTransformOrigin } from "./utils";
@@ -49,7 +49,10 @@ export const Popover2InteractionKind = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Popover2InteractionKind = typeof Popover2InteractionKind[keyof typeof Popover2InteractionKind];
 
-export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends IPopover2SharedProps<TProps> {
+// eslint-disable-next-line deprecation/deprecation
+export type Popover2Props<TProps = React.HTMLProps<HTMLElement>> = IPopover2Props<TProps>;
+/** @deprecated use Popover2Props */
+export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends Popover2SharedProps<TProps> {
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
@@ -104,12 +107,13 @@ export interface IPopover2State {
 /**
  * @template T target component props inteface
  */
-export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopover2State> {
+export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
 
+    // eslint-disable-next-line deprecation/deprecation
     private popoverRef = Utils.createReactRef<HTMLDivElement>();
 
-    public static defaultProps: IPopover2Props = {
+    public static defaultProps: Popover2Props = {
         boundary: "clippingParents",
         captureDismiss: false,
         defaultIsOpen: false,
@@ -179,7 +183,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         );
     };
 
-    private getIsOpen(props: IPopover2Props<T>) {
+    private getIsOpen(props: Popover2Props<T>) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {
             return false;
@@ -222,7 +226,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         this.updateDarkParent();
     }
 
-    public componentDidUpdate(props: IPopover2Props<T>, state: IPopover2State) {
+    public componentDidUpdate(props: Popover2Props<T>, state: IPopover2State) {
         super.componentDidUpdate(props, state);
         this.updateDarkParent();
 
@@ -239,7 +243,7 @@ export class Popover2<T> extends AbstractPureComponent2<IPopover2Props<T>, IPopo
         }
     }
 
-    protected validateProps(props: IPopover2Props & { children?: React.ReactNode }) {
+    protected validateProps(props: Popover2Props & { children?: React.ReactNode }) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER2_WARN_UNCONTROLLED_ONINTERACTION);
         }

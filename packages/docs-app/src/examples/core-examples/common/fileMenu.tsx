@@ -16,9 +16,9 @@
 
 import * as React from "react";
 
-import { IProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Props, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
-export interface IFileMenuProps extends IProps {
+export interface IFileMenuProps extends Props {
     shouldDismissPopover?: boolean;
 }
 

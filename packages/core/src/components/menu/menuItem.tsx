@@ -20,7 +20,7 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
@@ -28,7 +28,10 @@ import { Text } from "../text/text";
 // eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
-export interface IMenuItemProps extends IActionProps, ILinkProps {
+// eslint-disable-next-line deprecation/deprecation
+export type MenuItemProps = IMenuItemProps;
+/** @deprecated use MenuItemProps */
+export interface IMenuItemProps extends ActionProps, LinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */
     text: React.ReactNode;
@@ -109,8 +112,8 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 }
 
 @polyfill
-export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
-    public static defaultProps: IMenuItemProps = {
+export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+    public static defaultProps: MenuItemProps = {
         disabled: false,
         multiline: false,
         popoverProps: {},

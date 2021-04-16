@@ -19,11 +19,14 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 import { Browser } from "../../compatibility";
 
-export interface IEditableTextProps extends IIntentProps, IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type EditableTextProps = IEditableTextProps;
+/** @deprecated use EditableTextProps */
+export interface IEditableTextProps extends IntentProps, Props {
     /**
      * EXPERIMENTAL FEATURE.
      *
@@ -140,10 +143,10 @@ const BUFFER_WIDTH_DEFAULT = 5;
 const BUFFER_WIDTH_IE = 30;
 
 @polyfill
-export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEditableTextState> {
+export class EditableText extends AbstractPureComponent2<EditableTextProps, IEditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
-    public static defaultProps: IEditableTextProps = {
+    public static defaultProps: EditableTextProps = {
         alwaysRenderInput: false,
         confirmOnEnterKey: false,
         defaultValue: "",
@@ -187,7 +190,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         },
     };
 
-    public constructor(props: IEditableTextProps, context?: any) {
+    public constructor(props: EditableTextProps, context?: any) {
         super(props, context);
 
         const value = props.value == null ? props.defaultValue : props.value;
@@ -256,7 +259,7 @@ export class EditableText extends AbstractPureComponent2<IEditableTextProps, IEd
         this.updateInputDimensions();
     }
 
-    public componentDidUpdate(prevProps: IEditableTextProps, prevState: IEditableTextState) {
+    public componentDidUpdate(prevProps: EditableTextProps, prevState: IEditableTextState) {
         const newState: IEditableTextState = {};
         // allow setting the value to undefined/null in controlled mode
         if (this.props.value !== prevProps.value && (prevProps.value != null || this.props.value != null)) {

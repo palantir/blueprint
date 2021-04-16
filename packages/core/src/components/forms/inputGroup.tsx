@@ -24,14 +24,17 @@ import {
     DISPLAYNAME_PREFIX,
     HTMLInputProps,
     IControlledProps,
-    IControlledProps2,
-    IIntentProps,
-    IProps,
+    ControlledProps2,
+    IntentProps,
+    Props,
     MaybeElement,
     removeNonHTMLProps,
 } from "../../common/props";
 import { Icon, IconName } from "../icon/icon";
 import { AsyncControllableInput } from "./asyncControllableInput";
+
+// eslint-disable-next-line deprecation/deprecation
+export type InputGroupProps = IInputGroupProps;
 
 /**
  * @deprecated use IInputGroupProps2.
@@ -39,12 +42,11 @@ import { AsyncControllableInput } from "./asyncControllableInput";
  * NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
  * Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
  */
-
 export interface IInputGroupProps
     // eslint-disable-next-line deprecation/deprecation
     extends IControlledProps,
-        IIntentProps,
-        IProps {
+        IntentProps,
+        Props {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
@@ -109,11 +111,14 @@ export interface IInputGroupProps
     type?: string;
 }
 
+// eslint-disable-next-line deprecation/deprecation
+export type InputGroupProps2 = IInputGroupProps2;
+/** @deprecated use InputGroupProps2 */
 export interface IInputGroupProps2
-    extends Omit<HTMLInputProps, keyof IControlledProps2>,
-        IControlledProps2,
-        IIntentProps,
-        IProps {
+    extends Omit<HTMLInputProps, keyof ControlledProps2>,
+        ControlledProps2,
+        IntentProps,
+        Props {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
@@ -184,7 +189,7 @@ export interface IInputGroupState {
 }
 
 @polyfill
-export class InputGroup extends AbstractPureComponent2<IInputGroupProps2, IInputGroupState> {
+export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
     public state: IInputGroupState = {};
@@ -241,14 +246,14 @@ export class InputGroup extends AbstractPureComponent2<IInputGroupProps2, IInput
         this.updateInputWidth();
     }
 
-    public componentDidUpdate(prevProps: IInputGroupProps2) {
+    public componentDidUpdate(prevProps: InputGroupProps2) {
         const { leftElement, rightElement } = this.props;
         if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
             this.updateInputWidth();
         }
     }
 
-    protected validateProps(props: IInputGroupProps2) {
+    protected validateProps(props: InputGroupProps2) {
         if (props.leftElement != null && props.leftIcon != null) {
             console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }
