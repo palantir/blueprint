@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IProps, Utils } from "@blueprintjs/core";
+import { Props, Utils } from "@blueprintjs/core";
 
 import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
@@ -34,7 +34,7 @@ export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
-export interface IListItemsProps<T> extends IProps {
+export interface IListItemsProps<T> extends Props {
     /**
      * The currently focused item for keyboard interactions, or `null` to
      * indicate that no item is active. If omitted or `undefined`, this prop will be
