@@ -23,10 +23,12 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Alignment, Classes, IRef, refHandler, setRef } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
+// eslint-disable-next-line deprecation/deprecation
 export type ControlProps = IControlProps;
-export interface IControlProps extends IProps, HTMLInputProps {
+/** @deprecated use ControlProps */
+export interface IControlProps extends Props, HTMLInputProps {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
 
     /**
@@ -90,7 +92,7 @@ export interface IControlProps extends IProps, HTMLInputProps {
 }
 
 /** Internal props for Checkbox/Radio/Switch to render correctly. */
-interface IControlInternalProps extends IControlProps {
+interface IControlInternalProps extends ControlProps {
     type: "checkbox" | "radio";
     typeClassName: string;
     indicatorChildren?: React.ReactNode;
@@ -143,8 +145,10 @@ const Control: React.FunctionComponent<IControlInternalProps> = ({
 // Switch
 //
 
+// eslint-disable-next-line deprecation/deprecation
 export type SwitchProps = ISwitchProps;
-export interface ISwitchProps extends IControlProps {
+/** @deprecated use SwitchProps */
+export interface ISwitchProps extends ControlProps {
     /**
      * Text to display inside the switch indicator when checked.
      * If `innerLabel` is provided and this prop is omitted, then `innerLabel`
@@ -161,7 +165,7 @@ export interface ISwitchProps extends IControlProps {
 }
 
 @polyfill
-export class Switch extends AbstractPureComponent2<ISwitchProps> {
+export class Switch extends AbstractPureComponent2<SwitchProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
     public render() {
@@ -194,11 +198,13 @@ export class Switch extends AbstractPureComponent2<ISwitchProps> {
 // Radio
 //
 
-export type IRadioProps = IControlProps;
+/** @deprecated use RadioProps */
+export type IRadioProps = ControlProps;
+// eslint-disable-next-line deprecation/deprecation
 export type RadioProps = IRadioProps;
 
 @polyfill
-export class Radio extends AbstractPureComponent2<IRadioProps> {
+export class Radio extends AbstractPureComponent2<RadioProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
     public render() {
@@ -210,8 +216,10 @@ export class Radio extends AbstractPureComponent2<IRadioProps> {
 // Checkbox
 //
 
+// eslint-disable-next-line deprecation/deprecation
 export type CheckboxProps = ICheckboxProps;
-export interface ICheckboxProps extends IControlProps {
+/** @deprecated use CheckboxProps */
+export interface ICheckboxProps extends ControlProps {
     /** Whether this checkbox is initially indeterminate (uncontrolled mode). */
     defaultIndeterminate?: boolean;
 
@@ -232,10 +240,10 @@ export interface ICheckboxState {
 }
 
 @polyfill
-export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxState> {
+export class Checkbox extends AbstractPureComponent2<CheckboxProps, ICheckboxState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
 
-    public static getDerivedStateFromProps({ indeterminate }: ICheckboxProps): ICheckboxState | null {
+    public static getDerivedStateFromProps({ indeterminate }: CheckboxProps): ICheckboxState | null {
         // put props into state if controlled by props
         if (indeterminate != null) {
             return { indeterminate };
@@ -270,7 +278,7 @@ export class Checkbox extends AbstractPureComponent2<ICheckboxProps, ICheckboxSt
         this.updateIndeterminate();
     }
 
-    public componentDidUpdate(prevProps: ICheckboxProps) {
+    public componentDidUpdate(prevProps: CheckboxProps) {
         this.updateIndeterminate();
         if (prevProps.inputRef !== this.props.inputRef) {
             setRef(prevProps.inputRef, null);

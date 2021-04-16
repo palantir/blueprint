@@ -23,11 +23,13 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isFunction, LifecycleCompatPolyfill } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
+// eslint-disable-next-line deprecation/deprecation
 export type OverlayableProps = IOverlayableProps;
+/** @deprecated use OverlayableProps */
 export interface IOverlayableProps extends IOverlayLifecycleProps {
     /**
      * Whether the overlay should acquire application focus when it first opens.
@@ -166,8 +168,10 @@ export interface IBackdropProps {
     hasBackdrop?: boolean;
 }
 
+// eslint-disable-next-line deprecation/deprecation
 export type OverlayProps = IOverlayProps;
-export interface IOverlayProps extends IOverlayableProps, IBackdropProps, IProps {
+/** @deprecated use OverlayProps */
+export interface IOverlayProps extends OverlayableProps, IBackdropProps, Props {
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -189,11 +193,11 @@ export interface IOverlayState {
 
 // HACKHACK: https://github.com/palantir/blueprint/issues/4342
 // eslint-disable-next-line deprecation/deprecation
-@(polyfill as LifecycleCompatPolyfill<IOverlayProps, any>)
-export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState> {
+@(polyfill as LifecycleCompatPolyfill<OverlayProps, any>)
+export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
-    public static defaultProps: IOverlayProps = {
+    public static defaultProps: OverlayProps = {
         autoFocus: true,
         backdropProps: {},
         canEscapeKeyClose: true,
@@ -207,7 +211,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         usePortal: true,
     };
 
-    public static getDerivedStateFromProps({ isOpen: hasEverOpened }: IOverlayProps) {
+    public static getDerivedStateFromProps({ isOpen: hasEverOpened }: OverlayProps) {
         if (hasEverOpened) {
             return { hasEverOpened };
         }
@@ -286,7 +290,7 @@ export class Overlay extends AbstractPureComponent2<IOverlayProps, IOverlayState
         }
     }
 
-    public componentDidUpdate(prevProps: IOverlayProps) {
+    public componentDidUpdate(prevProps: OverlayProps) {
         if (prevProps.isOpen && !this.props.isOpen) {
             this.overlayWillClose();
         } else if (!prevProps.isOpen && this.props.isOpen) {

@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 export * from "./hotkeysTypes";
 export * from "./hotkeys";
 export { Hotkey, IHotkeyProps } from "./hotkey";
-export { KeyCombo, IKeyComboProps } from "./keyCombo";
-// eslint-disable-next-line import/no-cycle, deprecation/deprecation
+export { KeyCombo, KeyComboTagProps, IKeyComboProps } from "./keyCombo";
+// eslint-disable-next-line import/no-cycle
 export { HotkeysTarget, IHotkeysTargetComponent } from "./hotkeysTarget";
 export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 // eslint-disable-next-line import/no-cycle

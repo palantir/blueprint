@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
@@ -36,8 +36,10 @@ const KeyIcons: { [key: string]: IconName } = {
     up: "arrow-up",
 };
 
+// eslint-disable-next-line deprecation/deprecation
 export type KeyComboTagProps = IKeyComboProps;
-export interface IKeyComboProps extends IProps {
+/** @deprecated use KeyComboTagProps */
+export interface IKeyComboProps extends Props {
     /** The key combo to display, such as `"cmd + s"`. */
     combo: string;
 
@@ -52,7 +54,7 @@ export interface IKeyComboProps extends IProps {
 }
 
 @polyfill
-export class KeyCombo extends AbstractPureComponent2<IKeyComboProps> {
+export class KeyCombo extends AbstractPureComponent2<KeyComboTagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyCombo`;
 
     public render() {

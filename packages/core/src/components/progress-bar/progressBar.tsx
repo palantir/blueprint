@@ -19,11 +19,13 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
+// eslint-disable-next-line deprecation/deprecation
 export type ProgressBarProps = IProgressBarProps;
-export interface IProgressBarProps extends IProps, IIntentProps {
+/** @deprecated use ProgressBarProps */
+export interface IProgressBarProps extends Props, IntentProps {
     /**
      * Whether the background should animate.
      *
@@ -47,7 +49,7 @@ export interface IProgressBarProps extends IProps, IIntentProps {
 }
 
 @polyfill
-export class ProgressBar extends AbstractPureComponent2<IProgressBarProps> {
+export class ProgressBar extends AbstractPureComponent2<ProgressBarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
 
     public render() {

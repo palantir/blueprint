@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { IProps } from "../../common";
+import { Props } from "../../common";
 
-export interface IHotkeysProps extends IProps {
+export interface IHotkeysProps extends Props {
     /**
      * In order to make local hotkeys work on elements that are not normally
      * focusable, such as `<div>`s or `<span>`s, we add a `tabIndex` attribute

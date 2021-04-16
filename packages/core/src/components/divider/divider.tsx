@@ -20,9 +20,9 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2 } from "../../common";
 import { DIVIDER } from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement> {
+export interface IDividerProps extends Props, React.HTMLAttributes<HTMLElement> {
     /**
      * HTML tag to use for element.
      *

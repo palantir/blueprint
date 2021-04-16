@@ -19,14 +19,16 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
-import { IButtonProps } from "../button/buttons";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { ButtonProps } from "../button/buttons";
 
 export type DialogStepId = string | number;
-export type DialogStepButtonProps = Partial<Pick<IButtonProps, "disabled" | "text">>;
+export type DialogStepButtonProps = Partial<Pick<ButtonProps, "disabled" | "text">>;
 
+// eslint-disable-next-line deprecation/deprecation
 export type DialogStepProps = IDialogStepProps;
-export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
+/** @deprecated use DialogStepProps */
+export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Unique identifier used to identify which step is selected.
      */
@@ -59,7 +61,7 @@ export interface IDialogStepProps extends IProps, Omit<HTMLDivProps, "id" | "tit
 }
 
 @polyfill
-export class DialogStep extends AbstractPureComponent2<IDialogStepProps> {
+export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
 
     // this component is never rendered directly; see MultistepDialog#renderDialogStepPanel()
