@@ -19,6 +19,8 @@ import { DayModifiers as IDatePickerDayModifiers, LocaleUtils } from "react-day-
 import * as classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 
+/* eslint-disable deprecation/deprecation */
+
 // re-exporting these symbols to preserve compatility
 
 type IDatePickerLocaleUtils = typeof LocaleUtils;
@@ -37,7 +39,6 @@ export { DateFormatProps, IDateFormatProps } from "./dateFormat";
 export { DateInput, DateInputProps, IDateInputProps } from "./dateInput";
 export { DatePicker, DatePickerProps, IDatePickerProps } from "./datePicker";
 export { DatePickerModifiers, IDatePickerModifiers } from "./datePickerCore";
-// eslint-disable-next-line deprecation/deprecation
 export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
 export { DateRangeInput, DateRangeInputProps, IDateRangeInputProps } from "./dateRangeInput";
 export { DateRangePicker, DateRangePickerProps, IDateRangePickerProps } from "./dateRangePicker";
