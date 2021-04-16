@@ -134,7 +134,7 @@ $step-radius: $pt-border-radius * 2 !default;
     color: $blue4;
   }
 
-  .#{$ns}-dialog-step-viewed & {
+  .#{$ns}-dialog-step-viewed:not(.#{$ns}-active) & {
     color: $pt-text-color;
 
     .#{$ns}-dark & {
