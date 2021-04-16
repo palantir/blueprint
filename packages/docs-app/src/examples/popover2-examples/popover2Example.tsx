@@ -42,7 +42,7 @@ import {
 } from "@blueprintjs/docs-theme";
 import {
     Classes,
-    IPopover2SharedProps,
+    Popover2SharedProps,
     Placement,
     PlacementOptions,
     Popover2,
@@ -69,7 +69,7 @@ export interface IPopover2ExampleState {
     isControlled: boolean;
     isOpen?: boolean;
     minimal?: boolean;
-    modifiers?: IPopover2SharedProps<HTMLElement>["modifiers"];
+    modifiers?: Popover2SharedProps<HTMLElement>["modifiers"];
     placement?: Placement;
     sliderValue?: number;
     usePortal?: boolean;

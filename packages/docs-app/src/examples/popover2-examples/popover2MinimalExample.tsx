@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Button, Intent } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { IPopover2Props, Popover2 } from "@blueprintjs/popover2";
+import { Popover2Props, Popover2 } from "@blueprintjs/popover2";
 
 import { FileMenu } from "../core-examples/common/fileMenu";
 
@@ -26,7 +26,7 @@ export class Popover2MinimalExample extends React.PureComponent<IExampleProps> {
     public static displayName = "Popover2MinimalExample";
 
     public render() {
-        const baseProps: Partial<IPopover2Props> = { content: <FileMenu />, placement: "bottom-end" };
+        const baseProps: Partial<Popover2Props> = { content: <FileMenu />, placement: "bottom-end" };
 
         return (
             <Example options={false} {...this.props}>

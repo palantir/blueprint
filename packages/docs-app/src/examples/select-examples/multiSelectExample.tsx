@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, H5, Intent, TagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
 
@@ -83,7 +83,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
 
     public render() {
         const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
-        const getTagProps = (_value: React.ReactNode, index: number): ITagProps => ({
+        const getTagProps = (_value: React.ReactNode, index: number): TagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
         });
