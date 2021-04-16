@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 export * as Classes from "./classes";
 export * as Errors from "./errors";
 export {
@@ -21,7 +23,6 @@ export {
     ContextMenu2Props,
     ContextMenu2ChildrenProps,
     ContextMenu2ContentProps,
-    // eslint-disable-next-line deprecation/deprecation
     ContextMenu2RenderProps,
 } from "./contextMenu2";
 export {
