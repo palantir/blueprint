@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 
-export interface IGuideLayerProps extends IProps {
+export interface IGuideLayerProps extends Props {
     /**
      *  The left-offset location of the vertical guides
      */

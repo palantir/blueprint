@@ -22,7 +22,7 @@ import {
     AbstractPureComponent2,
     Icon,
     IconName,
-    IProps,
+    Props,
     Popover,
     Position,
     Utils as CoreUtils,
@@ -53,7 +53,7 @@ export interface IColumnNameProps {
      * The callback will also receive the column index if an `index` was originally
      * provided via props.
      */
-    nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
+    nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
 export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {

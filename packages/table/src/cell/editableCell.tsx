@@ -22,7 +22,7 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    IEditableTextProps,
+    EditableTextProps,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
@@ -71,7 +71,7 @@ export interface IEditableCellProps extends ICellProps {
     /**
      * Props that should be passed to the EditableText when it is used to edit
      */
-    editableTextProps?: IEditableTextProps;
+    editableTextProps?: EditableTextProps;
 }
 
 export interface IEditableCellState {

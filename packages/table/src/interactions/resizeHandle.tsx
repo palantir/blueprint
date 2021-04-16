@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Draggable } from "./draggable";
@@ -32,7 +32,7 @@ export interface ILockableLayout {
     onLayoutLock: (isLayoutLocked?: boolean) => void;
 }
 
-export interface IResizeHandleProps extends IProps, ILockableLayout {
+export interface IResizeHandleProps extends Props, ILockableLayout {
     /**
      * A callback that is called while the user is dragging the resize
      * handle.

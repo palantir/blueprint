@@ -17,12 +17,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
+import { Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { DragEvents } from "./dragEvents";
 import { IDragHandler } from "./dragTypes";
 
-export interface IDraggableProps extends IProps, IDragHandler {}
+export interface IDraggableProps extends Props, IDragHandler {}
 
 const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof IDraggableProps>;
 

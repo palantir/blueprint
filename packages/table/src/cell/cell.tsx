@@ -19,8 +19,8 @@ import * as React from "react";
 import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
-    IIntentProps,
-    IProps,
+    IntentProps,
+    Props,
     IRef,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
@@ -31,7 +31,7 @@ import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 
 export type CellProps = ICellProps;
-export interface ICellProps extends IIntentProps, IProps {
+export interface ICellProps extends IntentProps, Props {
     key?: string;
 
     style?: React.CSSProperties;
