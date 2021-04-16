@@ -53,16 +53,16 @@ const ITEMS: BreadcrumbProps[] = [
     { icon: "document", text: "image.jpg", current: true },
 ];
 // Show less items for always redner example so we can see when everything fits
-const ITEMS_FOR_ALWAYS_RENDER: IBreadcrumbProps[] = [
+const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
     { href: "#", icon: "folder-close", text: "Root" },
-    { icon: "document", text: "image.jpg", current: true }
+    { icon: "document", text: "image.jpg", current: true },
 ];
 
 export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBreadcrumbsExampleState> {
     public state: IBreadcrumbsExampleState = {
+        alwaysRenderOverflow: false,
         collapseFrom: Boundary.START,
         renderCurrentAsInput: false,
-        alwaysRenderOverflow: false,
         width: 50,
     };
 

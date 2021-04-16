@@ -91,7 +91,7 @@ export interface IOverflowListProps<T> extends Props {
 
     /**
      * Will force the overflowRenderer to always be called, even if there are zero items.
-     * 
+     *
      * Typical usage is for popovers so they do not close.
      * @default false
      */

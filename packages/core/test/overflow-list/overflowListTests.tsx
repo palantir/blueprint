@@ -104,7 +104,6 @@ describe("<OverflowList>", function (this) {
         overflowList().assertHasOverflow(true);
     });
 
-
     it("should render overflow if alwaysRenderOverflow props is true", () => {
         overflowList(200, { alwaysRenderOverflow: true }).assertHasOverflow(true);
     });
