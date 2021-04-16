@@ -18,11 +18,11 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IProps } from "../../common";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { HotkeyConfig } from "../../hooks";
 import { KeyCombo } from "./keyCombo";
 
-export type IHotkeyProps = IProps & HotkeyConfig;
+export type IHotkeyProps = Props & HotkeyConfig;
 
 @polyfill
 export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {

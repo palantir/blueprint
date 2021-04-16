@@ -29,6 +29,9 @@ module.exports = {
                 "@typescript-eslint/no-unused-expressions": "off",
                 // HACKHACK: test dependencies are only declared at root but used in all packages.
                 "import/no-extraneous-dependencies": "off",
+                // HACKHACK: added to reduce diff in https://github.com/palantir/blueprint/pull/4644,
+                // can be removed in v4.0
+                "deprecation/deprecation": "off",
             },
         },
         {

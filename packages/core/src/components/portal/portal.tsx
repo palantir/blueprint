@@ -20,13 +20,14 @@ import * as ReactDOM from "react-dom";
 import * as Classes from "../../common/classes";
 import { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isFunction } from "../../common/utils";
 
 /** Detect if `React.createPortal()` API method does not exist. */
 const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
 
-export interface IPortalProps extends IProps {
+export type PortalProps = IPortalProps;
+export interface IPortalProps extends Props {
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */

@@ -20,13 +20,16 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { Button, IButtonProps } from "../button/buttons";
-import { Dialog, IDialogProps } from "./dialog";
-import { DialogStep, DialogStepId, IDialogStepProps, DialogStepButtonProps } from "./dialogStep";
+import { Button, ButtonProps } from "../button/buttons";
+import { Dialog, DialogProps } from "./dialog";
+import { DialogStep, DialogStepId, DialogStepProps, DialogStepButtonProps } from "./dialogStep";
 
-type DialogStepElement = React.ReactElement<IDialogStepProps & { children: React.ReactNode }>;
+type DialogStepElement = React.ReactElement<DialogStepProps & { children: React.ReactNode }>;
 
-export interface IMultistepDialogProps extends IDialogProps {
+// eslint-disable-next-line deprecation/deprecation
+export type MultistepDialogProps = IMultistepDialogProps;
+/** @deprecated use MultistepDialogProps */
+export interface IMultistepDialogProps extends DialogProps {
     /**
      * Props for the back button.
      */
@@ -35,7 +38,7 @@ export interface IMultistepDialogProps extends IDialogProps {
     /**
      * Props for the button to display on the final step.
      */
-    finalButtonProps?: Partial<IButtonProps>;
+    finalButtonProps?: Partial<ButtonProps>;
 
     /**
      * Props for the next button.
@@ -73,10 +76,10 @@ const INITIAL_STATE = {
 };
 
 @polyfill
-export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProps, IMultistepDialogState> {
+export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps, IMultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 
-    public static defaultProps: Partial<IMultistepDialogProps> = {
+    public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
     };
@@ -94,7 +97,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
         );
     }
 
-    public componentDidUpdate(prevProps: IMultistepDialogProps) {
+    public componentDidUpdate(prevProps: MultistepDialogProps) {
         if (
             (prevProps.resetOnClose === undefined || prevProps.resetOnClose) &&
             !prevProps.isOpen &&
@@ -219,7 +222,7 @@ export class MultistepDialog extends AbstractPureComponent2<IMultistepDialogProp
     }
 
     /** Filters children to only `<DialogStep>`s */
-    private getDialogStepChildren(props: IMultistepDialogProps & { children?: React.ReactNode } = this.props) {
+    private getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode } = this.props) {
         return React.Children.toArray(props.children).filter(isDialogStepElement);
     }
 }

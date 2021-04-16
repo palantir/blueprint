@@ -19,9 +19,12 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef, IRefCallback, refHandler, setRef } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
 
-export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+// eslint-disable-next-line deprecation/deprecation
+export type TextAreaProps = ITextAreaProps;
+/** @deprecated use TextAreaProps */
+export interface ITextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * Whether the text area should take up the full width of its container.
      */
@@ -55,7 +58,7 @@ export interface ITextAreaState {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaState> {
+export class TextArea extends AbstractPureComponent2<TextAreaProps, ITextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
     public state: ITextAreaState = {};
@@ -75,7 +78,7 @@ export class TextArea extends AbstractPureComponent2<ITextAreaProps, ITextAreaSt
         }
     }
 
-    public componentDidUpdate(prevProps: ITextAreaProps) {
+    public componentDidUpdate(prevProps: TextAreaProps) {
         if (prevProps.inputRef !== this.props.inputRef) {
             setRef(prevProps.inputRef, null);
             this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);

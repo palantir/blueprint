@@ -21,9 +21,11 @@ import ResizeObserver from "resize-observer-polyfill";
 
 import { AbstractPureComponent2 } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { IResizeEntry } from "./resizeObserverTypes";
+import { ResizeEntry } from "./resizeObserverTypes";
 
-/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
+// eslint-disable-next-line deprecation/deprecation
+export type ResizeSensorProps = IResizeSensorProps;
+/** @deprecated use ResizeSensorProps */
 export interface IResizeSensorProps {
     /**
      * Callback invoked when the wrapped element resizes.
@@ -35,7 +37,7 @@ export interface IResizeSensorProps {
      * Note that this method is called _asynchronously_ after a resize is
      * detected and typically it will be called no more than once per frame.
      */
-    onResize: (entries: IResizeEntry[]) => void;
+    onResize: (entries: ResizeEntry[]) => void;
 
     /**
      * If `true`, all parent DOM elements of the container will also be
@@ -51,8 +53,9 @@ export interface IResizeSensorProps {
     observeParents?: boolean;
 }
 
+/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
 @polyfill
-export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
+export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
     private element: Element | null = null;
@@ -68,7 +71,7 @@ export class ResizeSensor extends AbstractPureComponent2<IResizeSensorProps> {
         this.observeElement();
     }
 
-    public componentDidUpdate(prevProps: IResizeSensorProps) {
+    public componentDidUpdate(prevProps: ResizeSensorProps) {
         this.observeElement(this.props.observeParents !== prevProps.observeParents);
     }
 

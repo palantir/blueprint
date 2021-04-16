@@ -19,12 +19,15 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps } from "../../common/props";
 // eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 
-export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
+// eslint-disable-next-line deprecation/deprecation
+export type TooltipProps = ITooltipProps;
+/** @deprecated use TooltipProps */
+export interface ITooltipProps extends IPopoverSharedProps, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
@@ -70,10 +73,10 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
 
 /** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
 @polyfill
-export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
+export class Tooltip extends AbstractPureComponent2<TooltipProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
-    public static defaultProps: Partial<ITooltipProps> = {
+    public static defaultProps: Partial<TooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         minimal: false,

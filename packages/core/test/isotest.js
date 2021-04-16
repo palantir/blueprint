@@ -16,8 +16,11 @@
 // @ts-check
 
 require("@blueprintjs/test-commons/bootstrap");
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+
 const React = require("react");
+
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+
 const Core = require("../lib/cjs");
 
 const requiredChild = React.createElement("button");
@@ -47,8 +50,13 @@ describe("Core isomorphic rendering", () => {
             props: { icon: "build" },
         },
         MultistepDialog: {
-            props: { isOpen: true, usePortal: false},
-            children: React.createElement(Core.DialogStep, { key: 1, id: 1, title: "Step one", panel: React.createElement('div') }),
+            props: { isOpen: true, usePortal: false },
+            children: React.createElement(Core.DialogStep, {
+                key: 1,
+                id: 1,
+                title: "Step one",
+                panel: React.createElement("div"),
+            }),
         },
         KeyCombo: {
             props: { combo: "?" },
@@ -58,6 +66,9 @@ describe("Core isomorphic rendering", () => {
         },
         Overlay: {
             props: { lazy: false, usePortal: false },
+        },
+        OverlayToaster: {
+            skip: true,
         },
         PanelStack: {
             props: {

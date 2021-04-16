@@ -21,6 +21,9 @@ import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
+// eslint-disable-next-line deprecation/deprecation
+export type SliderProps = ISliderProps;
+/** @deprecated use SliderProps */
 export interface ISliderProps extends ISliderBaseProps {
     /**
      * Initial value of the slider. This determines the other end of the
@@ -45,8 +48,8 @@ export interface ISliderProps extends ISliderBaseProps {
 }
 
 @polyfill
-export class Slider extends AbstractPureComponent2<ISliderProps> {
-    public static defaultProps: ISliderProps = {
+export class Slider extends AbstractPureComponent2<SliderProps> {
+    public static defaultProps: SliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,
         intent: Intent.PRIMARY,

@@ -20,9 +20,12 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2 } from "../../common";
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { IElementRefProps, IOptionProps } from "../../common/props";
-import { Icon, IIconProps } from "../icon/icon";
+import { IElementRefProps, OptionProps } from "../../common/props";
+import { Icon, IconProps } from "../icon/icon";
 
+// eslint-disable-next-line deprecation/deprecation
+export type HTMLSelectProps = IHTMLSelectProps;
+/** @deprecated use HTMLSelectPRops */
 export interface IHTMLSelectProps
     // eslint-disable-next-line deprecation/deprecation
     extends IElementRefProps<HTMLSelectElement>,
@@ -34,7 +37,7 @@ export interface IHTMLSelectProps
     fill?: boolean;
 
     /** Props to spread to the `<Icon>` element. */
-    iconProps?: Partial<IIconProps>;
+    iconProps?: Partial<IconProps>;
 
     /** Whether to use large styles. */
     large?: boolean;
@@ -53,7 +56,7 @@ export interface IHTMLSelectProps
      * `{ label?, value }` objects. If no `label` is supplied, `value`
      * will be used as the label.
      */
-    options?: Array<string | number | IOptionProps>;
+    options?: Array<string | number | OptionProps>;
 
     /** Controlled value of this component. */
     value?: string | number;
@@ -62,7 +65,7 @@ export interface IHTMLSelectProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class HTMLSelect extends AbstractPureComponent2<IHTMLSelectProps> {
+export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
     public render() {
         const {
             className,
@@ -87,7 +90,7 @@ export class HTMLSelect extends AbstractPureComponent2<IHTMLSelectProps> {
         );
 
         const optionChildren = options.map(option => {
-            const props: IOptionProps = typeof option === "object" ? option : { value: option };
+            const props: OptionProps = typeof option === "object" ? option : { value: option };
             return <option {...props} key={props.value} children={props.label || props.value} />;
         });
 

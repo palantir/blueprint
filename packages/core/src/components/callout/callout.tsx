@@ -23,16 +23,18 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    IIntentProps,
+    IntentProps,
     Intent,
-    IProps,
+    Props,
     MaybeElement,
 } from "../../common";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
 
-/** This component also supports the full range of HTML `<div>` props. */
-export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
+// eslint-disable-next-line deprecation/deprecation
+export type CalloutProps = ICalloutProps;
+/** @deprecated use CalloutProps */
+export interface ICalloutProps extends IntentProps, Props, HTMLDivProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *
@@ -59,8 +61,9 @@ export interface ICalloutProps extends IIntentProps, IProps, HTMLDivProps {
     title?: string;
 }
 
+/** This component supports the full range of HTML `<div>` props. */
 @polyfill
-export class Callout extends AbstractPureComponent2<ICalloutProps> {
+export class Callout extends AbstractPureComponent2<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
@@ -82,7 +85,7 @@ export class Callout extends AbstractPureComponent2<ICalloutProps> {
         );
     }
 
-    private getIconName(icon?: ICalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
+    private getIconName(icon?: CalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
         // 1. no icon
         if (icon === null) {
             return undefined;

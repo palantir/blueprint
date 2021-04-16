@@ -27,6 +27,7 @@ import { Header, IHeaderProps } from "./header";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
+export type RowHeaderRenderer = IRowHeaderRenderer;
 
 export interface IRowHeights {
     minRowHeight?: number;

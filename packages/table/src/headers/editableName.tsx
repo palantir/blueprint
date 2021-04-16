@@ -17,11 +17,12 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { EditableText, IIntentProps, IProps } from "@blueprintjs/core";
+import { EditableText, IntentProps, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 
-export interface IEditableNameProps extends IIntentProps, IProps {
+export type EditableNameProps = IEditableNameProps;
+export interface IEditableNameProps extends IntentProps, Props {
     /**
      * The name displayed in the text box. Be sure to update this value when
      * rendering this component after a confirmed change.

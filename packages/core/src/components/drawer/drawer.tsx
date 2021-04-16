@@ -21,13 +21,16 @@ import { polyfill } from "react-lifecycles-compat";
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
-import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
+import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 
-export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type DrawerProps = IDrawerProps;
+/** @deprecated use DrawerProps */
+export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * drawer's header. Note that the header will only be rendered if `title` is
@@ -108,10 +111,10 @@ export interface IDrawerProps extends IOverlayableProps, IBackdropProps, IProps 
 }
 
 @polyfill
-export class Drawer extends AbstractPureComponent2<IDrawerProps> {
+export class Drawer extends AbstractPureComponent2<DrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 
-    public static defaultProps: IDrawerProps = {
+    public static defaultProps: DrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
         shouldReturnFocusOnClose: true,
@@ -163,7 +166,7 @@ export class Drawer extends AbstractPureComponent2<IDrawerProps> {
         );
     }
 
-    protected validateProps(props: IDrawerProps) {
+    protected validateProps(props: DrawerProps) {
         if (props.title == null) {
             if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);

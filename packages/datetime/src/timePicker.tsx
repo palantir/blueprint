@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, IProps, Keys } from "@blueprintjs/core";
+import { Classes as CoreClasses, DISPLAYNAME_PREFIX, HTMLSelect, Icon, Intent, Props, Keys } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
@@ -41,7 +41,10 @@ export const TimePrecision = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TimePrecision = typeof TimePrecision[keyof typeof TimePrecision];
 
-export interface ITimePickerProps extends IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type TimePickerProps = ITimePickerProps;
+/** @deprecated use TimePickerProps */
+export interface ITimePickerProps extends Props {
     /**
      * Whether to focus the first input when it opens initially.
      *
@@ -149,8 +152,8 @@ export interface ITimePickerState {
     isPm?: boolean;
 }
 
-export class TimePicker extends React.Component<ITimePickerProps, ITimePickerState> {
-    public static defaultProps: ITimePickerProps = {
+export class TimePicker extends React.Component<TimePickerProps, ITimePickerState> {
+    public static defaultProps: TimePickerProps = {
         autoFocus: false,
         disabled: false,
         maxTime: getDefaultMaxTime(),
@@ -163,7 +166,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
 
     public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 
-    public constructor(props?: ITimePickerProps, context?: any) {
+    public constructor(props?: TimePickerProps, context?: any) {
         super(props, context);
 
         let value = props.minTime;
@@ -214,7 +217,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
         );
     }
 
-    public componentDidUpdate(prevProps: ITimePickerProps) {
+    public componentDidUpdate(prevProps: TimePickerProps) {
         const didMinTimeChange = prevProps.minTime !== this.props.minTime;
         const didMaxTimeChange = prevProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;

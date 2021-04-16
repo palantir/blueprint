@@ -29,6 +29,9 @@ enum RangeIndex {
     END = 1,
 }
 
+// eslint-disable-next-line deprecation/deprecation
+export type RangeSliderProps = IRangeSliderProps;
+/** @deprecated use RangeSliderProps */
 export interface IRangeSliderProps extends ISliderBaseProps {
     /**
      * Range value of slider. Handles will be rendered at each position in the range.
@@ -45,8 +48,8 @@ export interface IRangeSliderProps extends ISliderBaseProps {
 }
 
 @polyfill
-export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
-    public static defaultProps: IRangeSliderProps = {
+export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
+    public static defaultProps: RangeSliderProps = {
         ...MultiSlider.defaultSliderProps,
         intent: Intent.PRIMARY,
         value: [0, 10],
@@ -64,7 +67,7 @@ export class RangeSlider extends AbstractPureComponent2<IRangeSliderProps> {
         );
     }
 
-    protected validateProps(props: IRangeSliderProps) {
+    protected validateProps(props: RangeSliderProps) {
         const { value } = props;
         if (value == null || value[RangeIndex.START] == null || value[RangeIndex.END] == null) {
             throw new Error(Errors.RANGESLIDER_NULL_VALUE);

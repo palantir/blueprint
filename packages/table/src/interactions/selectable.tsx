@@ -32,6 +32,7 @@ export type ISelectedRegionTransform = (
     event: MouseEvent | KeyboardEvent,
     coords?: ICoordinateData,
 ) => IRegion;
+export type SelectedRegionTransform = ISelectedRegionTransform;
 
 export interface ISelectableProps {
     /**

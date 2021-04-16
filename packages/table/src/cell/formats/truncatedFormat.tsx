@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, Icon, IProps, Popover, Position } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, Icon, Props, Popover, Position } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
@@ -75,7 +75,8 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
     numBufferLines: number;
 }
 
-export interface ITruncatedFormatProps extends IProps {
+export type TruncatedFormatProps = ITruncatedFormatProps;
+export interface ITruncatedFormatProps extends Props {
     children?: string;
 
     /**

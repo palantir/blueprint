@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
-export { Cell, ICellProps, ICellRenderer } from "./cell/cell";
+export { Cell, CellProps, ICellProps, ICellRenderer, CellRenderer } from "./cell/cell";
 
-export { EditableCell, IEditableCellProps } from "./cell/editableCell";
+export { EditableCell, IEditableCellProps, EditableCellProps } from "./cell/editableCell";
 
-export { JSONFormat, IJSONFormatProps } from "./cell/formats/jsonFormat";
+export { JSONFormat, IJSONFormatProps, JSONFormatProps } from "./cell/formats/jsonFormat";
 
-export { TruncatedPopoverMode, TruncatedFormat, ITruncatedFormatProps } from "./cell/formats/truncatedFormat";
+export {
+    TruncatedPopoverMode,
+    TruncatedFormat,
+    TruncatedFormatProps,
+    ITruncatedFormatProps,
+} from "./cell/formats/truncatedFormat";
 
-export { Column, IColumnProps } from "./column";
+export { Column, ColumnProps, IColumnProps } from "./column";
 
 export { AnyRect, Clipboard, Grid, Rect, RenderMode, Utils } from "./common/index";
 
 export { IDraggableProps, Draggable } from "./interactions/draggable";
 
-export { IClientCoordinates, ICoordinateData, IDragHandler } from "./interactions/dragTypes";
+export {
+    IClientCoordinates,
+    ClientCoordinates,
+    ICoordinateData,
+    CoordinateData,
+    IDragHandler,
+    DragHandler,
+} from "./interactions/dragTypes";
 
-export { CopyCellsMenuItem, IContextMenuRenderer, IMenuContext } from "./interactions/menus";
+export { CopyCellsMenuItem, IContextMenuRenderer, ContextMenuRenderer, IMenuContext } from "./interactions/menus";
 
 export { ILockableLayout, IResizeHandleProps, Orientation, ResizeHandle } from "./interactions/resizeHandle";
 
@@ -42,12 +54,13 @@ export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from 
 
 export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 
-export { IEditableNameProps, EditableName } from "./headers/editableName";
+export { IEditableNameProps, EditableNameProps, EditableName } from "./headers/editableName";
 
 export {
     ColumnLoadingOption,
     ICellInterval,
     IRegion,
+    Region,
     IStyledRegionGroup,
     RegionCardinality,
     Regions,
@@ -56,4 +69,5 @@ export {
     TableLoadingOption,
 } from "./regions";
 
-export { ITableProps, Table } from "./table";
+// eslint-disable-next-line deprecation/deprecation
+export { ITableProps, TableProps, Table } from "./table";

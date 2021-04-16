@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { HTMLDivProps, IProps, Keys, removeNonHTMLProps } from "@blueprintjs/core";
+import { HTMLDivProps, Props, Keys, removeNonHTMLProps } from "@blueprintjs/core";
 import { createKeyEventHandler } from "@blueprintjs/docs-theme";
 
-export interface IClickToCopyProps extends IProps, HTMLDivProps {
+export interface IClickToCopyProps extends Props, HTMLDivProps {
     /**
      * Additional class names to apply after value has been copied
      *

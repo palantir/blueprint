@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, ITagProps, Switch, TagInput } from "@blueprintjs/core";
+import { Button, H5, Intent, TagProps, Switch, TagInput } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -94,7 +94,7 @@ export class TagInputExample extends React.PureComponent<IExampleProps, ITagInpu
         // define a new function every time so switch changes will cause it to re-render
         // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
         // example purposes!!
-        const getTagProps = (_v: React.ReactNode, index: number): ITagProps => ({
+        const getTagProps = (_v: React.ReactNode, index: number): TagProps => ({
             intent: tagIntents ? INTENTS[index % INTENTS.length] : Intent.NONE,
             large: props.large,
             minimal: tagMinimal,

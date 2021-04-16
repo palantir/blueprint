@@ -19,18 +19,21 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import * as Utils from "../../common/utils";
-import { ITabProps, Tab, TabId } from "./tab";
+import { TabProps, Tab, TabId } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
 export const Expander: React.FunctionComponent = () => <div className={Classes.FLEX_EXPANDER} />;
 
-type TabElement = React.ReactElement<ITabProps & { children: React.ReactNode }>;
+type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
 
-export interface ITabsProps extends IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type TabsProps = ITabsProps;
+/** @deprecated use TabsProps */
+export interface ITabsProps extends Props {
     /**
      * Whether the selected tab indicator should animate its movement.
      *
@@ -98,13 +101,13 @@ export interface ITabsState {
 // HACKHACK: https://github.com/palantir/blueprint/issues/4342
 // eslint-disable-next-line deprecation/deprecation
 @(polyfill as Utils.LifecycleCompatPolyfill<ITabsProps, any>)
-export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
+export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
     public static Expander = Expander;
 
     public static Tab = Tab;
 
-    public static defaultProps: Partial<ITabsProps> = {
+    public static defaultProps: Partial<TabsProps> = {
         animate: true,
         large: false,
         renderActiveTabPanelOnly: false,
@@ -113,7 +116,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 
-    public static getDerivedStateFromProps({ selectedTabId }: ITabsProps) {
+    public static getDerivedStateFromProps({ selectedTabId }: TabsProps) {
         if (selectedTabId !== undefined) {
             // keep state in sync with controlled prop, so state is canonical source of truth
             return { selectedTabId };
@@ -127,7 +130,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };
 
-    constructor(props: ITabsProps) {
+    constructor(props: TabsProps) {
         super(props);
         const selectedTabId = this.getInitialSelectedTabId();
         this.state = { selectedTabId };
@@ -174,7 +177,7 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
         this.moveSelectionIndicator(false);
     }
 
-    public componentDidUpdate(prevProps: ITabsProps, prevState: ITabsState) {
+    public componentDidUpdate(prevProps: TabsProps, prevState: ITabsState) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
@@ -214,12 +217,12 @@ export class Tabs extends AbstractPureComponent2<ITabsProps, ITabsState> {
         return undefined;
     }
 
-    private getTabChildrenProps(props: ITabsProps & { children?: React.ReactNode } = this.props) {
+    private getTabChildrenProps(props: TabsProps & { children?: React.ReactNode } = this.props) {
         return this.getTabChildren(props).map(child => child.props);
     }
 
     /** Filters children to only `<Tab>`s */
-    private getTabChildren(props: ITabsProps & { children?: React.ReactNode } = this.props) {
+    private getTabChildren(props: TabsProps & { children?: React.ReactNode } = this.props) {
         return React.Children.toArray(props.children).filter(isTabElement);
     }
 

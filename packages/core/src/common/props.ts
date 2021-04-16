@@ -44,22 +44,31 @@ export type MaybeElement = JSX.Element | false | null | undefined;
 
 /**
  * A shared base interface for all Blueprint component props.
+ *
+ * @deprecated use Props
  */
 export interface IProps {
     /** A space-delimited list of class names to pass along to a child element. */
     className?: string;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type Props = IProps;
 
+/** @deprecated use IntentProps */
 export interface IIntentProps {
     /** Visual intent color to apply to element. */
     intent?: Intent;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type IntentProps = IIntentProps;
 
 /**
  * Interface for a clickable action, such as a button or menu item.
  * These props can be spready directly to a `<Button>` or `<MenuItem>` element.
+ *
+ * @deprecated use ActionProps
  */
-export interface IActionProps extends IIntentProps, IProps {
+export interface IActionProps extends IntentProps, Props {
     /** Whether this action is non-interactive. */
     disabled?: boolean;
 
@@ -72,8 +81,14 @@ export interface IActionProps extends IIntentProps, IProps {
     /** Action text. Can be any single React renderable. */
     text?: React.ReactNode;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type ActionProps = IActionProps;
 
-/** Interface for a link, with support for customizing target window. */
+/**
+ * Interface for a link, with support for customizing target window.
+ *
+ * @deprecated use LinkProps
+ */
 export interface ILinkProps {
     /** Link URL. */
     href?: string;
@@ -81,6 +96,8 @@ export interface ILinkProps {
     /** Link target attribute. Use `"_blank"` to open in a new window. */
     target?: string;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type LinkProps = ILinkProps;
 
 /**
  * Interface for a controlled input.
@@ -105,6 +122,7 @@ export interface IControlledProps2 {
     /** Form value of the input, for controlled usage. */
     value?: string;
 }
+export type ControlledProps2 = IControlledProps2;
 
 /**
  * @deprecated will be removed in Blueprint v4.0, where components will use `ref` prop instead
@@ -117,8 +135,10 @@ export interface IElementRefProps<E extends HTMLElement> {
 /**
  * An interface for an option in a list, such as in a `<select>` or `RadioGroup`.
  * These props can be spread directly to an `<option>` or `<Radio>` element.
+ *
+ * @deprecated use OptionProps
  */
-export interface IOptionProps extends IProps {
+export interface IOptionProps extends Props {
     /** Whether this option is non-interactive. */
     disabled?: boolean;
 
@@ -128,6 +148,8 @@ export interface IOptionProps extends IProps {
     /** Value of this option. */
     value: string | number;
 }
+// eslint-disable-next-line deprecation/deprecation
+export type OptionProps = IOptionProps;
 
 /** A collection of curated prop keys used across our Components which are not valid HTMLElement props. */
 const INVALID_PROPS = [

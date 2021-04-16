@@ -22,7 +22,7 @@ import {
     Classes,
     CollapsibleList,
     H5,
-    IMenuItemProps,
+    MenuItemProps,
     Label,
     MenuItem,
     RadioGroup,
@@ -91,7 +91,7 @@ export class CollapsibleListExample extends React.PureComponent<IExampleProps, I
         /* eslint-enable deprecation/deprecation */
     }
 
-    private renderBreadcrumb = (props: IMenuItemProps) => {
+    private renderBreadcrumb = (props: MenuItemProps) => {
         if (props.href != null) {
             return <a className={Classes.BREADCRUMB}>{props.text}</a>;
         } else {

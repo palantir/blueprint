@@ -18,16 +18,19 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
+// eslint-disable-next-line @typescript-eslint/ban-types, deprecation/deprecation
+export type TreeNodeInfo<T = {}> = ITreeNode<T>;
+/** @deprecated use TreeNodeInfo */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface ITreeNode<T = {}> extends IProps {
+export interface ITreeNode<T = {}> extends Props {
     /**
      * Child tree nodes of this node.
      */
-    childNodes?: Array<ITreeNode<T>>;
+    childNodes?: Array<TreeNodeInfo<T>>;
 
     /**
      * Whether this tree node is non-interactive. Enabling this prop will ignore
@@ -81,7 +84,9 @@ export interface ITreeNode<T = {}> extends IProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
+export type TreeNodeProps<T = {}> = ITreeNodeProps<T>;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface ITreeNodeProps<T = {}> extends TreeNodeInfo<T> {
     children?: React.ReactNode;
     contentRef?: (node: TreeNode<T>, element: HTMLDivElement | null) => void;
     depth: number;

@@ -20,13 +20,16 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName } from "../icon/icon";
-import { IBackdropProps, IOverlayableProps, Overlay } from "../overlay/overlay";
+import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 
-export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type DialogProps = IDialogProps;
+/** @deprecated use DialogProps */
+export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -76,8 +79,8 @@ export interface IDialogProps extends IOverlayableProps, IBackdropProps, IProps 
 }
 
 @polyfill
-export class Dialog extends AbstractPureComponent2<IDialogProps> {
-    public static defaultProps: IDialogProps = {
+export class Dialog extends AbstractPureComponent2<DialogProps> {
+    public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
     };
@@ -97,7 +100,7 @@ export class Dialog extends AbstractPureComponent2<IDialogProps> {
         );
     }
 
-    protected validateProps(props: IDialogProps) {
+    protected validateProps(props: DialogProps) {
         if (props.title == null) {
             if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);

@@ -20,11 +20,14 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
 export { IconName };
 
-export interface IIconProps extends IIntentProps, IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type IconProps = IIconProps;
+/** @deprecated use IconProps */
+export interface IIconProps extends IntentProps, Props {
     /** This component does not support custom children. Use the `icon` prop. */
     children?: never;
 
@@ -87,7 +90,7 @@ export interface IIconProps extends IIntentProps, IProps {
 }
 
 @polyfill
-export class Icon extends AbstractPureComponent2<IIconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
+export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
     public static readonly SIZE_STANDARD = 16;
