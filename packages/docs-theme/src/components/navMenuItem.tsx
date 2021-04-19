@@ -20,6 +20,9 @@ import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
+// eslint-disable-next-line deprecation/deprecation
+export type NavMenuItemProps = INavMenuItemProps;
+/** @deprecated use NavMenuItemProps */
 export interface INavMenuItemProps {
     /** CSS classes to apply to the root element, for proper appearance in the tree. */
     className: string;
@@ -40,7 +43,7 @@ export interface INavMenuItemProps {
     section: IPageNode | IHeadingNode;
 }
 
-export const NavMenuItem: React.FunctionComponent<INavMenuItemProps> = props => {
+export const NavMenuItem: React.FC<NavMenuItemProps> = props => {
     const { className, isActive, isExpanded, section, ...htmlProps } = props;
     return (
         <a className={classNames(Classes.MENU_ITEM, className)} {...htmlProps}>

@@ -16,11 +16,11 @@
 
 import * as React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 
-export interface IApiLinkProps extends IProps {
+export interface IApiLinkProps extends Props {
     children?: never;
     name: string;
 }

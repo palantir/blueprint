@@ -18,12 +18,12 @@ import { ITsTypeAlias } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ApiHeader } from "./apiHeader";
 
-export interface ITypeAliasTableProps extends IProps {
+export interface ITypeAliasTableProps extends Props {
     data: ITsTypeAlias;
 }
 

@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { IProps } from "@blueprintjs/core";
+import { Props } from "@blueprintjs/core";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface IExampleProps<T = {}> extends IProps {
+export interface IExampleProps<T = {}> extends Props {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.

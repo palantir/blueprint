@@ -26,7 +26,7 @@ import {
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Classes, Intent, Props, Tag } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
@@ -35,7 +35,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IInterfaceTableProps extends IProps {
+export interface IInterfaceTableProps extends Props {
     data: ITsClass | ITsInterface;
     title: string;
 }

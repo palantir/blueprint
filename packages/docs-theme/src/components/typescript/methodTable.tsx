@@ -18,7 +18,7 @@ import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/cli
 import classNames from "classnames";
 import * as React from "react";
 
-import { Code, Intent, IProps, Tag } from "@blueprintjs/core";
+import { Code, Intent, Props, Tag } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
@@ -27,7 +27,7 @@ import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IMethodTableProps extends IProps {
+export interface IMethodTableProps extends Props {
     data: ITsMethod;
 }
 
