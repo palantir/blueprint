@@ -18,21 +18,21 @@ import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } f
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, IProps, Utils } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, Props, Utils } from "@blueprintjs/core";
 
 import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
 import { eachLayoutNode } from "../common/utils";
-import { ITagRendererMap, TypescriptExample } from "../tags";
+import { TagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
 import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
-import { INavMenuItemProps } from "./navMenuItem";
+import { NavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
 import { ApiLink } from "./typescript/apiLink";
 
-export interface IDocumentationProps extends IProps {
+export interface IDocumentationProps extends Props {
     /**
      * An element to place above the documentation, along the top of the viewport.
      * For best results, use a `Banner` from this package.
@@ -89,7 +89,7 @@ export interface IDocumentationProps extends IProps {
      * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
      * The default implementation renders a `NavMenuItem` element, which is exported from this package.
      */
-    renderNavMenuItem?: (props: INavMenuItemProps) => JSX.Element;
+    renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
 
     /**
      * Callback invoked to render actions for a documentation page.
@@ -105,7 +105,7 @@ export interface IDocumentationProps extends IProps {
     scrollParent?: HTMLElement;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
-    tagRenderers: ITagRendererMap;
+    tagRenderers: TagRendererMap;
 }
 
 export interface IDocumentationState {

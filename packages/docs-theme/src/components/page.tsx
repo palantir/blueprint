@@ -19,16 +19,16 @@ import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
-import { ITagRendererMap } from "../tags";
+import { TagRendererMap } from "../tags";
 import { renderBlock } from "./block";
 
 export interface IPageProps {
     page: IPageData;
     renderActions: (page: IPageData) => React.ReactNode;
-    tagRenderers: ITagRendererMap;
+    tagRenderers: TagRendererMap;
 }
 
-export const Page: React.FunctionComponent<IPageProps> = ({ page, renderActions, tagRenderers }) => {
+export const Page: React.FC<IPageProps> = ({ page, renderActions, tagRenderers }) => {
     // apply running text styles to blocks in pages (but not on blocks in examples)
     const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
     return (

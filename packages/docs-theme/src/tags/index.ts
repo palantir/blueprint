@@ -16,6 +16,9 @@
 
 import { ITag } from "@documentalist/client";
 
+// eslint-disable-next-line deprecation/deprecation
+export type TagRendererMap = ITagRendererMap;
+/** @deprecated use TagRendererMap */
 export interface ITagRendererMap {
     [tagName: string]: React.ComponentType<ITag> | undefined;
 }

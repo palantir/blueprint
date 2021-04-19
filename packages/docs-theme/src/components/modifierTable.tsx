@@ -30,7 +30,7 @@ export interface IModifierTableProps {
     descriptionTitle?: string;
 }
 
-export const ModifierTable: React.FunctionComponent<IModifierTableProps> = ({
+export const ModifierTable: React.FC<IModifierTableProps> = ({
     children,
     descriptionTitle = "Description",
     emptyMessage,

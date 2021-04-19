@@ -18,7 +18,7 @@ import { IHeadingNode, IPageNode } from "@documentalist/client";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
 
-import { Classes, Icon, IInputGroupProps2, MenuItem } from "@blueprintjs/core";
+import { Classes, Icon, InputGroupProps2, MenuItem } from "@blueprintjs/core";
 import { ItemListPredicate, ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/utils";
@@ -47,7 +47,7 @@ export interface INavigationSection {
 }
 
 const NavOmnibar = Omnibar.ofType<INavigationSection>();
-const INPUT_PROPS: IInputGroupProps2 = { placeholder: "Fuzzy search headings..." };
+const INPUT_PROPS: InputGroupProps2 = { placeholder: "Fuzzy search headings..." };
 
 export class Navigator extends React.PureComponent<INavigatorProps> {
     private sections: INavigationSection[];
