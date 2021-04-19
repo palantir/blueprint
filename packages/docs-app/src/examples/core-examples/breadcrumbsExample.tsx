@@ -35,6 +35,7 @@ import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-th
 export interface IBreadcrumbsExampleState {
     collapseFrom: Boundary;
     renderCurrentAsInput: boolean;
+    alwaysRenderOverflow: boolean;
     width: number;
 }
 
@@ -51,9 +52,15 @@ const ITEMS: BreadcrumbProps[] = [
     { href: "#", icon: "folder-close", text: "Wednesday" },
     { icon: "document", text: "image.jpg", current: true },
 ];
+// Show less items for always redner example so we can see when everything fits
+const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
+    { href: "#", icon: "folder-close", text: "Root" },
+    { icon: "document", text: "image.jpg", current: true },
+];
 
 export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBreadcrumbsExampleState> {
     public state: IBreadcrumbsExampleState = {
+        alwaysRenderOverflow: false,
         collapseFrom: Boundary.START,
         renderCurrentAsInput: false,
         width: 50,
@@ -76,6 +83,12 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                     selectedValue={this.state.collapseFrom.toString()}
                 />
                 <Checkbox
+                    name="alwaysRenderOverflow"
+                    label="Always render overflow"
+                    onChange={this.handleChangeAlwaysRenderOverflow}
+                    checked={this.state.alwaysRenderOverflow}
+                />
+                <Checkbox
                     name="renderCurrent"
                     label="Render current breadcrumb as input"
                     onChange={this.handleChangeRenderCurrentAsInput}
@@ -94,14 +107,15 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
             </>
         );
 
-        const { collapseFrom, renderCurrentAsInput, width } = this.state;
+        const { collapseFrom, renderCurrentAsInput, width, alwaysRenderOverflow } = this.state;
         return (
             <Example options={options} {...this.props}>
                 <Card elevation={0} style={{ width: `${width}%` }}>
                     <Breadcrumbs
                         collapseFrom={collapseFrom}
-                        items={ITEMS}
+                        items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
                         currentBreadcrumbRenderer={renderCurrentAsInput ? this.renderBreadcrumbInput : undefined}
+                        overflowListProps={{ alwaysRenderOverflow }}
                     />
                 </Card>
             </Example>
@@ -116,6 +130,9 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
 
     private handleChangeRenderCurrentAsInput = () =>
         this.setState({ renderCurrentAsInput: !this.state.renderCurrentAsInput });
+
+    private handleChangeAlwaysRenderOverflow = () =>
+        this.setState({ alwaysRenderOverflow: !this.state.alwaysRenderOverflow });
 
     private renderBreadcrumbInput = ({ text }: BreadcrumbProps) => {
         return <BreadcrumbInput defaultValue={typeof text === "string" ? text : undefined} />;

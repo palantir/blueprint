@@ -117,9 +117,13 @@ export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
         /* eslint-disable deprecation/deprecation */
         return (
             <li>
-                <Popover position={position} {...this.props.popoverProps}>
+                <Popover
+                    position={position}
+                    disabled={orderedItems.length === 0}
+                    content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
+                    {...this.props.popoverProps}
+                >
                     <span className={Classes.BREADCRUMBS_COLLAPSED} />
-                    <Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>
                 </Popover>
             </li>
         );
