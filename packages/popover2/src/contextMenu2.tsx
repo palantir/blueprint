@@ -73,7 +73,7 @@ export interface ContextMenu2ChildrenProps {
 
 export interface ContextMenu2Props
     extends IOverlayLifecycleProps,
-        Pick<Popover2Props, "popoverClassName" | "transitionDuration">,
+        Pick<Popover2Props, "popoverClassName" | "transitionDuration" | "usePortal">,
         Props {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
