@@ -52,7 +52,7 @@ export interface RadioGroupProps extends Props {
 
     /**
      * Array of options to render in the group. This prop is mutually exclusive
-     * with `children`: either provide an array of `IOptionProps` objects or
+     * with `children`: either provide an array of `OptionProps` objects or
      * provide `<Radio>` children elements.
      */
     options?: OptionProps[];

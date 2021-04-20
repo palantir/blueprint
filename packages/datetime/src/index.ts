@@ -19,7 +19,7 @@ import { DayModifiers as DatePickerDayModifiers, LocaleUtils } from "react-day-p
 import * as classes from "./common/classes";
 import * as DateUtils from "./common/dateUtils";
 
-// re-exporting these symbols to preserve compatility
+// re-exporting these symbols to preserve compatibility
 
 type DatePickerLocaleUtils = typeof LocaleUtils;
 export { DateUtils, DatePickerLocaleUtils, DatePickerDayModifiers };

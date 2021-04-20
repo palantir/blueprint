@@ -81,7 +81,6 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
 
 // TODO: write tests (ignoring for now to get a build passing quickly)
 /* istanbul ignore next */
-
 export class FileInput extends AbstractPureComponent<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 

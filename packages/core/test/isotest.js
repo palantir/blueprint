@@ -66,6 +66,10 @@ describe("Core isomorphic rendering", () => {
         Overlay: {
             props: { lazy: false, usePortal: false },
         },
+        OverlayToaster: {
+            props: { usePortal: false },
+            children: React.createElement(Core.Toast, { message: "Toast" }),
+        },
         PanelStack: {
             props: {
                 initialPanel: { component: () => null, props: {}, title: "" },
@@ -91,10 +95,6 @@ describe("Core isomorphic rendering", () => {
         Tooltip: {
             props: { content: React.createElement("h1", {}, "content") },
             children: requiredChild,
-        },
-        OverlayToaster: {
-            props: { usePortal: false },
-            children: React.createElement(Core.Toast, { message: "Toast" }),
         },
     });
 });

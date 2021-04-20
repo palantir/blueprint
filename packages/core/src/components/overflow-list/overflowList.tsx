@@ -34,6 +34,15 @@ export enum OverflowDirection {
 
 export interface OverflowListProps<T> extends Props {
     /**
+     * Whether to force the overflowRenderer to always be called, even if there are zero items
+     * overflowing. This may be useful, for example, if your overflow renderer contains a Popover
+     * which you do not want to close as the list is resized.
+     *
+     * @default false
+     */
+    alwaysRenderOverflow?: boolean;
+
+    /**
      * Which direction the items should collapse from: start or end of the
      * children. This also determines whether `overflowRenderer` appears before
      * (`START`) or after (`END`) the visible items.
@@ -120,6 +129,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
     public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
     public static defaultProps: Partial<OverflowListProps<any>> = {
+        alwaysRenderOverflow: false,
         collapseFrom: Boundary.START,
         minVisibleItems: 0,
     };
@@ -163,6 +173,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
             prevProps.items !== this.props.items ||
             prevProps.minVisibleItems !== this.props.minVisibleItems ||
             prevProps.overflowRenderer !== this.props.overflowRenderer ||
+            prevProps.alwaysRenderOverflow !== this.props.alwaysRenderOverflow ||
             prevProps.visibleItemRenderer !== this.props.visibleItemRenderer
         ) {
             // reset visible state if the above props change.
@@ -212,7 +223,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
 
     private maybeRenderOverflow() {
         const { overflow } = this.state;
-        if (overflow.length === 0) {
+        if (overflow.length === 0 && !this.props.alwaysRenderOverflow) {
             return null;
         }
         return this.props.overflowRenderer(overflow);

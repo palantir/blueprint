@@ -37,7 +37,6 @@ export interface HTMLTableProps
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-
 export const HTMLTable: React.FC<HTMLTableProps> = forwardRef((props, ref) => {
     const { bordered, className, condensed, interactive, striped, ...htmlProps } = props;
     const classes = classNames(

@@ -64,23 +64,12 @@ export function ensureElement(child: React.ReactNode | undefined, tagName: keyof
     }
 }
 
-export function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
+function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
     return (
         typeof child === "object" &&
         typeof (child as any).type !== "undefined" &&
         typeof (child as any).props !== "undefined"
     );
-}
-
-/**
- * Represents anything that has a `name` property such as Functions.
- */
-export interface Named {
-    name?: string;
-}
-
-export function getDisplayName(ComponentClass: React.ComponentType | Named) {
-    return (ComponentClass as React.ComponentType).displayName || (ComponentClass as Named).name || "Unknown";
 }
 
 /**

@@ -27,7 +27,6 @@ export interface NavbarDividerProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-
 export class NavbarDivider extends AbstractPureComponent<NavbarDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarDivider`;
 

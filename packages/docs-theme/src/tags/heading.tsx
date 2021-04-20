@@ -21,7 +21,7 @@ import React from "react";
 import { Classes } from "@blueprintjs/core";
 import { Link } from "@blueprintjs/icons";
 
-export const Heading: React.FunctionComponent<IHeadingTag> = ({ level, route, value }) =>
+export const Heading: React.FC<IHeadingTag> = ({ level, route, value }) =>
     // use createElement so we can dynamically choose tag based on depth
     React.createElement(
         `h${level}`,
