@@ -17,12 +17,13 @@
 import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
 import React from "react";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 
 export class ApiHeader extends React.PureComponent<ITsDocBase> {
     public static contextTypes = DocumentationContextTypes;
 
-    public static displayName = "Docs2.ApiHeader";
+    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.ApiHeader`;
 
     public context: DocumentationContext;
 

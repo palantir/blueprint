@@ -19,6 +19,7 @@ import React from "react";
 
 import { Props } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { DocumentationContextTypes, DocumentationContext } from "../common/context";
 import { MethodTable } from "../components/typescript/methodTable";
 
@@ -47,4 +48,4 @@ export const Method: React.FunctionComponent<ITag & Props> = (
     }
 };
 Method.contextTypes = DocumentationContextTypes;
-Method.displayName = "Docs2.Method";
+Method.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Method`;

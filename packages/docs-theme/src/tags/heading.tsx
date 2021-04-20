@@ -21,6 +21,8 @@ import React from "react";
 import { Classes } from "@blueprintjs/core";
 import { Link } from "@blueprintjs/icons";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+
 export const Heading: React.FC<IHeadingTag> = ({ level, route, value }) =>
     // use createElement so we can dynamically choose tag based on depth
     React.createElement(
@@ -32,4 +34,4 @@ export const Heading: React.FC<IHeadingTag> = ({ level, route, value }) =>
         </a>,
         value,
     );
-Heading.displayName = "Docs2.Heading";
+Heading.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Heading`;

@@ -20,6 +20,7 @@ import React from "react";
 
 import { Props } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ApiHeader } from "./apiHeader";
 
@@ -30,7 +31,7 @@ export interface TypeAliasTableProps extends Props {
 export class TypeAliasTable extends React.PureComponent<TypeAliasTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
-    public static displayName = "Docs2.TypeAliasTable";
+    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.TypeAliasTable`;
 
     public context: DocumentationContext;
 

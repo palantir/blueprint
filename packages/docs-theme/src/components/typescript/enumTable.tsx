@@ -20,6 +20,7 @@ import React from "react";
 
 import { Props } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
@@ -34,7 +35,7 @@ export interface EnumTableProps extends Props {
 export class EnumTable extends React.PureComponent<EnumTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
-    public static displayName = "Docs2.EnumTable";
+    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.EnumTable`;
 
     public context: DocumentationContext;
 

@@ -20,6 +20,7 @@ import React from "react";
 
 import { Code, Intent, Props, Tag } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
@@ -34,7 +35,7 @@ export interface MethodTableProps extends Props {
 export class MethodTable extends React.PureComponent<MethodTableProps> {
     public static contextTypes = DocumentationContextTypes;
 
-    public static displayName = "Docs2.MethodTable";
+    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.MethodTable`;
 
     public context: DocumentationContext;
 
