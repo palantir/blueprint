@@ -19,6 +19,7 @@ import React from "react";
 
 import { Props } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { DocumentationContextTypes, DocumentationContext } from "../common/context";
 import { EnumTable } from "../components/typescript/enumTable";
 import { InterfaceTable } from "../components/typescript/interfaceTable";
@@ -46,4 +47,4 @@ export const TypescriptExample: React.FunctionComponent<ITag & Props> = (
     }
 };
 TypescriptExample.contextTypes = DocumentationContextTypes;
-TypescriptExample.displayName = "Docs2.TypescriptExample";
+TypescriptExample.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.TypescriptExample`;

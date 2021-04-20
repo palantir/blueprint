@@ -20,6 +20,7 @@ import React from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { DocumentationContextTypes, DocumentationContext } from "../common/context";
 import { Example } from "../components/example";
 
@@ -30,7 +31,7 @@ export interface CssExampleState {
 export class CssExample extends React.PureComponent<ITag> {
     public static contextTypes = DocumentationContextTypes;
 
-    public static displayName = "Docs2.CssExample";
+    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.CssExample`;
 
     public context: DocumentationContext | undefined;
 
