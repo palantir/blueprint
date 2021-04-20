@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/landing-app",
-    "version": "3.17.24",
+    "version": "3.18.0",
     "description": "Blueprint landing page",
     "private": true,
     "scripts": {
@@ -16,7 +16,7 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.43.0",
+        "@blueprintjs/core": "^3.44.0",
         "classnames": "^2.2",
         "react": "^16.14.0",
         "react-dom": "^16.14.0"
