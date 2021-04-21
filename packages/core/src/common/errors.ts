@@ -69,8 +69,6 @@ export const POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX =
     ns + ` <Popover> supports either placement or position prop, not both.`;
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
 
-export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
-
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;
 
