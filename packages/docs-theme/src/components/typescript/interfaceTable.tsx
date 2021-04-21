@@ -24,12 +24,12 @@ import {
     ITsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
-import React from "react";
+import React, { useCallback, useContext } from "react";
 
 import { Classes, Intent, Props, Tag } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
-import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
+import { DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
@@ -43,36 +43,15 @@ export interface InterfaceTableProps extends Props {
 
 // rendered inside RUNNING_TEXT
 /* eslint-disable @blueprintjs/html-components */
-export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
-    public static contextTypes = DocumentationContextTypes;
 
-    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.InterfaceTable`;
+export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data, title }) => {
+    const { renderBlock, renderType } = useContext(DocumentationContext);
 
-    public context: DocumentationContext;
-
-    public render() {
-        const { data, title } = this.props;
-        const { renderBlock } = this.context;
-        const propRows = [...data.properties, ...data.methods]
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map(this.renderPropRow);
-        return (
-            <div className={classNames("docs-modifiers", this.props.className)}>
-                <ApiHeader {...data} />
-                {renderBlock(data.documentation)}
-                <ModifierTable emptyMessage="This interface is empty." title={title}>
-                    {propRows}
-                    {this.renderIndexSignature(data.indexSignature)}
-                </ModifierTable>
-            </div>
-        );
-    }
-
-    private renderPropRow = (entry: ITsProperty | ITsMethod) => {
-        const { renderBlock, renderType } = this.context;
+    const renderPropRow = useCallback((entry: ITsProperty | ITsMethod) => {
         const {
             flags: { isDeprecated, isExternal, isOptional },
             name,
+            inheritedFrom,
         } = entry;
         const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0];
 
@@ -110,17 +89,24 @@ export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
                 <td className="docs-prop-details">
                     <code className="docs-prop-type">{typeInfo}</code>
                     <div className="docs-prop-description">{renderBlock(documentation)}</div>
-                    <div className="docs-prop-tags">{this.renderTags(entry)}</div>
+                    <div className="docs-prop-tags">
+                        {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
+                        <DeprecatedTag isDeprecated={isDeprecated} />
+                        {inheritedFrom && (
+                            <Tag minimal={true}>
+                                Inherited from <code>{renderType(inheritedFrom)}</code>
+                            </Tag>
+                        )}
+                    </div>
                 </td>
             </tr>
         );
-    };
+    }, []);
 
-    private renderIndexSignature(entry?: ITsSignature) {
+    const renderIndexSignature = useCallback((entry?: ITsSignature) => {
         if (entry == null) {
             return null;
         }
-        const { renderBlock, renderType } = this.context;
         // HACKHACK: Documentalist's indexSignature support isn't _great_, but it's certainly _good enough_
         // entry.type looks like "{ [name: string]: (date: Date) => boolean }"
         const [signature, returnType] = entry.type.slice(2, -2).split("]: ");
@@ -135,24 +121,21 @@ export class InterfaceTable extends React.PureComponent<InterfaceTableProps> {
                 </td>
             </tr>
         );
-    }
+    }, []);
 
-    private renderTags(entry: ITsProperty | ITsMethod) {
-        const { renderType } = this.context;
-        const {
-            flags: { isDeprecated, isOptional },
-            inheritedFrom,
-        } = entry;
-        return (
-            <>
-                {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
-                <DeprecatedTag isDeprecated={isDeprecated} />
-                {inheritedFrom && (
-                    <Tag minimal={true}>
-                        Inherited from <code>{renderType(inheritedFrom)}</code>
-                    </Tag>
-                )}
-            </>
-        );
-    }
-}
+    const propRows = [...data.properties, ...data.methods]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(renderPropRow);
+
+    return (
+        <div className={classNames("docs-modifiers", className)}>
+            <ApiHeader {...data} />
+            {renderBlock(data.documentation)}
+            <ModifierTable emptyMessage="This interface is empty." title={title}>
+                {propRows}
+                {renderIndexSignature(data.indexSignature)}
+            </ModifierTable>
+        </div>
+    );
+};
+InterfaceTable.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.InterfaceTable`;

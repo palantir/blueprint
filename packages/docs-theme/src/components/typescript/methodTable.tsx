@@ -16,12 +16,12 @@
 
 import { isTag, ITsMethod, ITsParameter, ITsSignature } from "@documentalist/client";
 import classNames from "classnames";
-import React from "react";
+import React, { useCallback, useContext } from "react";
 
 import { Code, Intent, Props, Tag } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
-import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
+import { DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
@@ -32,33 +32,10 @@ export interface MethodTableProps extends Props {
     data: ITsMethod;
 }
 
-export class MethodTable extends React.PureComponent<MethodTableProps> {
-    public static contextTypes = DocumentationContextTypes;
+export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => {
+    const { renderBlock, renderType } = useContext(DocumentationContext);
 
-    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.MethodTable`;
-
-    public context: DocumentationContext;
-
-    public render() {
-        const { data } = this.props;
-        const propRows = [...data.signatures]
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((entry: ITsSignature) => entry.parameters.map(parameter => this.renderPropRow(parameter)));
-        return (
-            <div className={classNames("docs-modifiers", this.props.className)}>
-                <ApiHeader {...data} />
-                <ModifierTable emptyMessage="No return" title="Returns" descriptionTitle="">
-                    {this.renderReturnSignature(data.signatures[0])}
-                </ModifierTable>
-                <ModifierTable emptyMessage="This parameter is empty." title="Parameters">
-                    {propRows}
-                </ModifierTable>
-            </div>
-        );
-    }
-
-    private renderPropRow = (parameter: ITsParameter) => {
-        const { renderBlock, renderType } = this.context;
+    const renderPropRow = useCallback((parameter: ITsParameter) => {
         const {
             flags: { isDeprecated, isExternal, isOptional },
             name,
@@ -94,30 +71,19 @@ export class MethodTable extends React.PureComponent<MethodTableProps> {
                 <td className="docs-prop-details">
                     <Code className="docs-prop-type">{typeInfo}</Code>
                     <div className="docs-prop-description">{renderBlock(documentation)}</div>
-                    <div className="docs-prop-tags">{this.renderTags(parameter)}</div>
+                    <div className="docs-prop-tags">
+                        {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
+                        <DeprecatedTag isDeprecated={isDeprecated} />
+                    </div>
                 </td>
             </tr>
         );
-    };
+    }, []);
 
-    private renderTags(entry: ITsParameter) {
-        const {
-            flags: { isDeprecated, isOptional },
-        } = entry;
-        return (
-            <>
-                {!isOptional && <Tag children="Required" intent={Intent.SUCCESS} minimal={true} />}
-                <DeprecatedTag isDeprecated={isDeprecated} />
-            </>
-        );
-    }
-
-    private renderReturnSignature(entry?: ITsSignature) {
+    const renderReturnSignature = useCallback((entry?: ITsSignature) => {
         if (entry == null) {
             return null;
         }
-
-        const { renderBlock, renderType } = this.context;
 
         return (
             <tr key={entry.name}>
@@ -129,5 +95,21 @@ export class MethodTable extends React.PureComponent<MethodTableProps> {
                 </td>
             </tr>
         );
-    }
-}
+    }, []);
+
+    const propRows = [...data.signatures]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((entry: ITsSignature) => entry.parameters.map(renderPropRow));
+    return (
+        <div className={classNames("docs-modifiers", className)}>
+            <ApiHeader {...data} />
+            <ModifierTable emptyMessage="No return" title="Returns" descriptionTitle="">
+                {renderReturnSignature(data.signatures[0])}
+            </ModifierTable>
+            <ModifierTable emptyMessage="This parameter is empty." title="Parameters">
+                {propRows}
+            </ModifierTable>
+        </div>
+    );
+};
+MethodTable.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.MethodTable`;

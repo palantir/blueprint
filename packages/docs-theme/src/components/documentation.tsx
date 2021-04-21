@@ -21,7 +21,7 @@ import React from "react";
 import { Classes, Drawer, FocusStyleManager, HotkeysTarget, Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
-import { DocumentationContextTypes, hasTypescriptData, DocsData, DocumentationContext } from "../common/context";
+import { hasTypescriptData, DocsData, DocumentationContext, DocumentationContextApi } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
 import { TagRendererMap, TypescriptExample } from "../tags";
 import { renderBlock } from "./block";
@@ -118,8 +118,6 @@ export interface DocumentationState {
 }
 
 export class Documentation extends React.PureComponent<DocumentationProps, DocumentationState> {
-    public static childContextTypes = DocumentationContextTypes;
-
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
@@ -150,20 +148,6 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         });
     }
 
-    public getChildContext(): DocumentationContext {
-        const { docs, renderViewSourceLinkText } = this.props;
-        return {
-            getDocsData: () => docs,
-            renderBlock: block => renderBlock(block, this.props.tagRenderers),
-            renderType: hasTypescriptData(docs)
-                ? type =>
-                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />)
-                : type => type,
-            renderViewSourceLinkText: renderViewSourceLinkText ?? (() => "View source"),
-            showApiDocs: this.handleApiBrowserOpen,
-        };
-    }
-
     public render() {
         const { activeApiMember, activePageId, activeSectionId, isApiBrowserOpen } = this.state;
         const { nav, pages } = this.props.docs;
@@ -174,80 +158,86 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         );
         const apiClasses = classNames("docs-api-drawer", this.props.className);
         return (
-            <HotkeysTarget
-                hotkeys={[
-                    {
-                        combo: "shift+s",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Open navigator",
-                        onKeyDown: this.handleOpenNavigator,
-                        preventDefault: true,
-                    },
-                    {
-                        combo: "[",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Previous section",
-                        onKeyDown: this.handlePreviousSection,
-                    },
-                    {
-                        combo: "]",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Next section",
-                        onKeyDown: this.handleNextSection,
-                    },
-                ]}
-            >
-                <div className={rootClasses}>
-                    {this.props.banner}
-                    <div className="docs-app">
-                        <div className="docs-nav-wrapper">
-                            <div className="docs-nav" ref={this.refHandlers.nav}>
-                                {this.props.header}
-                                <div className="docs-nav-divider" />
-                                <NavButton
-                                    icon={<Search />}
-                                    hotkey="shift + s"
-                                    text="Search..."
-                                    onClick={this.handleOpenNavigator}
-                                />
-                                <div className="docs-nav-divider" />
-                                <NavMenu
-                                    activePageId={activePageId}
-                                    activeSectionId={activeSectionId}
-                                    items={nav}
-                                    level={0}
-                                    onItemClick={this.handleNavigation}
-                                    renderNavMenuItem={this.props.renderNavMenuItem}
-                                />
-                                {this.props.footer}
+            <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
+                <HotkeysTarget
+                    hotkeys={[
+                        {
+                            combo: "shift+s",
+                            global: true,
+                            group: "Navigation (global)",
+                            label: "Open navigator",
+                            onKeyDown: this.handleOpenNavigator,
+                            preventDefault: true,
+                        },
+                        {
+                            combo: "[",
+                            global: true,
+                            group: "Navigation (global)",
+                            label: "Previous section",
+                            onKeyDown: this.handlePreviousSection,
+                        },
+                        {
+                            combo: "]",
+                            global: true,
+                            group: "Navigation (global)",
+                            label: "Next section",
+                            onKeyDown: this.handleNextSection,
+                        },
+                    ]}
+                >
+                    <div className={rootClasses}>
+                        {this.props.banner}
+                        <div className="docs-app">
+                            <div className="docs-nav-wrapper">
+                                <div className="docs-nav" ref={this.refHandlers.nav}>
+                                    {this.props.header}
+                                    <div className="docs-nav-divider" />
+                                    <NavButton
+                                        icon={<Search />}
+                                        hotkey="shift + s"
+                                        text="Search..."
+                                        onClick={this.handleOpenNavigator}
+                                    />
+                                    <div className="docs-nav-divider" />
+                                    <NavMenu
+                                        activePageId={activePageId}
+                                        activeSectionId={activeSectionId}
+                                        items={nav}
+                                        level={0}
+                                        onItemClick={this.handleNavigation}
+                                        renderNavMenuItem={this.props.renderNavMenuItem}
+                                    />
+                                    {this.props.footer}
+                                </div>
                             </div>
-                        </div>
-                        <main
-                            className={classNames("docs-content-wrapper", Classes.FILL)}
-                            ref={this.refHandlers.content}
-                            role="main"
-                        >
-                            <Page
-                                page={pages[activePageId]}
-                                renderActions={this.props.renderPageActions}
-                                tagRenderers={this.props.tagRenderers}
+                            <main
+                                className={classNames("docs-content-wrapper", Classes.FILL)}
+                                ref={this.refHandlers.content}
+                                role="main"
+                            >
+                                <Page
+                                    page={pages[activePageId]}
+                                    renderActions={this.props.renderPageActions}
+                                    tagRenderers={this.props.tagRenderers}
+                                />
+                            </main>
+                            <Drawer
+                                className={apiClasses}
+                                isOpen={isApiBrowserOpen}
+                                onClose={this.handleApiBrowserClose}
+                            >
+                                <TypescriptExample tag="typescript" value={activeApiMember} />
+                            </Drawer>
+                            <Navigator
+                                isOpen={this.state.isNavigatorOpen}
+                                items={nav}
+                                itemExclude={this.props.navigatorExclude}
+                                onClose={this.handleCloseNavigator}
                             />
-                        </main>
-                        <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
-                            <TypescriptExample tag="typescript" value={activeApiMember} />
-                        </Drawer>
-                        <Navigator
-                            isOpen={this.state.isNavigatorOpen}
-                            items={nav}
-                            itemExclude={this.props.navigatorExclude}
-                            onClose={this.handleCloseNavigator}
-                        />
+                        </div>
                     </div>
-                </div>
-            </HotkeysTarget>
+                </HotkeysTarget>
+            </DocumentationContext.Provider>
         );
     }
 
@@ -282,6 +272,20 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         }
 
         this.props.onComponentUpdate?.(activePageId);
+    }
+
+    private getDocumentationContextApi(): DocumentationContextApi {
+        const { docs, renderViewSourceLinkText } = this.props;
+        return {
+            getDocsData: () => docs,
+            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderType: hasTypescriptData(docs)
+                ? type =>
+                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />)
+                : type => type,
+            renderViewSourceLinkText: renderViewSourceLinkText ?? (() => "View source"),
+            showApiDocs: this.handleApiBrowserOpen,
+        };
     }
 
     private updateHash() {
