@@ -19,7 +19,7 @@ import ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import { PortalContext, PortalContextState } from "../../context";
+import { PortalContext, PortalContextState } from "../../context/portal/portalProvider";
 
 export interface PortalProps extends Props {
     /**
