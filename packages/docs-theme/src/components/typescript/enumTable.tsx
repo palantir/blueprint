@@ -16,12 +16,12 @@
 
 import { ITsEnum, ITsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
-import React from "react";
+import React, { useCallback, useContext } from "react";
 
 import { Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
-import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
+import { DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
@@ -32,61 +32,51 @@ export interface EnumTableProps extends Props {
     data: ITsEnum;
 }
 
-export class EnumTable extends React.PureComponent<EnumTableProps> {
-    public static contextTypes = DocumentationContextTypes;
+export const EnumTable: React.FC<EnumTableProps> = props => {
+    const { renderBlock } = useContext(DocumentationContext);
 
-    public static displayName = `${COMPONENT_DISPLAY_NAMESPACE}.EnumTable`;
+    const renderPropRow = useCallback(
+        (entry: ITsEnumMember) => {
+            const {
+                flags: { isDeprecated, isExternal },
+                name,
+            } = entry;
 
-    public context: DocumentationContext;
+            const classes = classNames("docs-prop-name", {
+                "docs-prop-is-deprecated": !!isDeprecated,
+                "docs-prop-is-internal": !isExternal,
+            });
 
-    public render() {
-        const { data } = this.props;
-        const { renderBlock } = this.context;
-        return (
-            <div className={classNames("docs-modifiers", this.props.className)}>
-                <ApiHeader {...data} />
-                {renderBlock(data.documentation)}
-                <ModifierTable emptyMessage="This enum is empty." title="Members">
-                    {data.members.map(this.renderPropRow)}
-                </ModifierTable>
-            </div>
-        );
-    }
+            // this is inside RUNNING_TEXT
+            /* eslint-disable @blueprintjs/html-components */
+            return (
+                <tr key={name}>
+                    <td className={classes}>
+                        <code>{name}</code>
+                    </td>
+                    <td className="docs-prop-details">
+                        <code className="docs-prop-type">
+                            <strong>{entry.defaultValue}</strong>
+                        </code>
+                        <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
+                        <div className="docs-prop-tags">
+                            <DeprecatedTag isDeprecated={isDeprecated} />
+                        </div>
+                    </td>
+                </tr>
+            );
+        },
+        [renderBlock],
+    );
 
-    private renderPropRow = (entry: ITsEnumMember) => {
-        // this is inside RUNNING_TEXT
-        /* eslint-disable @blueprintjs/html-components */
-        const { renderBlock } = this.context;
-        const {
-            flags: { isDeprecated, isExternal },
-            name,
-        } = entry;
-
-        const classes = classNames("docs-prop-name", {
-            "docs-prop-is-deprecated": !!isDeprecated,
-            "docs-prop-is-internal": !isExternal,
-        });
-
-        return (
-            <tr key={name}>
-                <td className={classes}>
-                    <code>{name}</code>
-                </td>
-                <td className="docs-prop-details">
-                    <code className="docs-prop-type">
-                        <strong>{entry.defaultValue}</strong>
-                    </code>
-                    <div className="docs-prop-description">{renderBlock(entry.documentation)}</div>
-                    <div className="docs-prop-tags">{this.renderTags(entry)}</div>
-                </td>
-            </tr>
-        );
-    };
-
-    private renderTags(entry: ITsEnumMember) {
-        const {
-            flags: { isDeprecated },
-        } = entry;
-        return <DeprecatedTag isDeprecated={isDeprecated} />;
-    }
-}
+    return (
+        <div className={classNames("docs-modifiers", props.className)}>
+            <ApiHeader {...props.data} />
+            {renderBlock(props.data.documentation)}
+            <ModifierTable emptyMessage="This enum is empty." title="Members">
+                {props.data.members.map(renderPropRow)}
+            </ModifierTable>
+        </div>
+    );
+};
+EnumTable.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.EnumTable`;

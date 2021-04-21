@@ -22,8 +22,7 @@ import {
     ITsDocBase,
     ITypescriptPluginData,
 } from "@documentalist/client";
-
-import { Utils } from "@blueprintjs/core";
+import React, { createContext } from "react";
 
 /* eslint-disable @typescript-eslint/ban-types */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
@@ -46,12 +45,10 @@ export function hasKssData(docs: DocsData): docs is IMarkdownPluginData & IKssPl
 }
 
 /**
- * Use React context to transparently provide helpful functions to children.
- * This is basically the pauper's Redux store connector: some central state from the root
- * `Documentation` component is exposed to its children so those in the know can speak
- * directly to their parent.
+ * Use React context to provide data and rendering functions from the root `Documentation`
+ * component to other ancestor components defined by the docs-theme package.
  */
-export interface DocumentationContext {
+export interface DocumentationContextApi {
     /**
      * Get the Documentalist data.
      * Use the `hasTypescriptData` and `hasKssData` typeguards before accessing those plugins' data.
@@ -71,34 +68,10 @@ export interface DocumentationContext {
     showApiDocs: (name: string) => void;
 }
 
-/**
- * To enable context access in a React component, assign `static contextTypes` and declare `context` type:
- *
- * ```tsx
- * export class ContextComponent extends React.PureComponent<ApiLinkProps> {
- *     public static contextTypes = DocumentationContextTypes;
- *     public context: DocumentationContext;
- *
- *     public render() {
- *         return this.context.renderBlock(this.props.block);
- *     }
- * }
- * ```
- *
- * NOTE: This does not reference prop-types to avoid copious "cannot be named" errors.
- */
-export const DocumentationContextTypes = {
-    getDocsData: assertFunctionProp,
-    renderBlock: assertFunctionProp,
-    renderType: assertFunctionProp,
-    renderViewSourceLinkText: assertFunctionProp,
-    showApiDocs: assertFunctionProp,
-};
-
-// simple alternative to prop-types dependency
-function assertFunctionProp<T>(obj: T, key: keyof T) {
-    if (obj[key] != null && Utils.isFunction(obj[key])) {
-        return null;
-    }
-    return new Error(`[Blueprint] Documentation context ${key} must be function.`);
-}
+export const DocumentationContext = createContext<DocumentationContextApi>({
+    getDocsData: () => ({} as DocsData),
+    renderBlock: (_block: IBlock) => undefined,
+    renderType: (type: string) => type,
+    renderViewSourceLinkText: (entry: ITsDocBase) => entry.sourceUrl,
+    showApiDocs: () => void 0,
+});

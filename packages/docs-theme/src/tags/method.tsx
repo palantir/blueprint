@@ -15,18 +15,16 @@
  */
 
 import { isTsClass, isTsMethod, ITag, ITsClass, ITypescriptPluginData } from "@documentalist/client";
-import React from "react";
+import React, { useContext } from "react";
 
 import { Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
-import { DocumentationContextTypes, DocumentationContext } from "../common/context";
+import { DocumentationContext } from "../common/context";
 import { MethodTable } from "../components/typescript/methodTable";
 
-export const Method: React.FunctionComponent<ITag & Props> = (
-    { className, value },
-    { getDocsData }: DocumentationContext,
-) => {
+export const Method: React.FC<ITag & Props> = ({ className, value }) => {
+    const { getDocsData } = useContext(DocumentationContext);
     const { typescript } = getDocsData() as ITypescriptPluginData;
     const member = typescript[value];
 
@@ -47,5 +45,4 @@ export const Method: React.FunctionComponent<ITag & Props> = (
         throw new Error(`"@method ${value}": unknown member kind "${(member as any).kind}"`);
     }
 };
-Method.contextTypes = DocumentationContextTypes;
 Method.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Method`;
