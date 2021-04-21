@@ -5,28 +5,29 @@ hierarchy. It is an essential piece of [`Overlay`](#core/components/overlay), re
 the overlay contents cover the application below. In most cases you do not need to use a `Portal`
 directly; this documentation is provided simply for reference.
 
-@## React 15
+@## Portal context options
 
-In a **React 15** environment, `Portal` will use `ReactDOM.unstable_renderSubtreeIntoContainer` to achieve the teleportation effect, which has a few caveats:
+`Portal` supports some customization through [React context](https://reactjs.org/docs/context.html).
+Using this API can be helpful if you need to apply some custom styling or logic to _all_ Blueprint
+components which use portals (popovers, tooltips, dialogs, etc.). You can do so by rendering a
+`<PortalProvider>` in your React tree (usually, this should be done near the root of your application).
 
-1. `Portal` `children` are wrapped in an extra `<div>` inside the portal container element.
-1. Test harnesses such as `enzyme` cannot trivially find elements "through" Portals as they're not in the same React tree.
-1. React `context` _is_ preserved (this one's a good thing).
+```tsx
+import { Button, Popover, PortalProvider } from "@blueprintjs/core";
+import React from "react";
+import ReactDOM from "react-dom";
 
-In a **React 16+** environment, the `Portal` component will use [`ReactDOM.createPortal`](https://reactjs.org/docs/portals.html) which preserves the React tree perfectly and does not require any of the above caveats.
+ReactDOM.render(
+    <PortalProvider portalClassName="my-custom-class">
+        <Popover content="My portal has a custom class">
+            <Button text="Example" />
+        </Popover>
+    </PortalProvider>
+    document.querySelector("#app"),
+);
+```
 
-@## React context
-
-`Portal` supports the following options on its [React context](https://facebook.github.io/react/docs/context.html).
-To use them, supply a child context to a subtree that contains the Portals you want to customize.
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-
-Blueprint uses the React 15-compatible `getChildContext()` API instead of the newer React 16.3 `React.createContext()` API.
-
-</div>
-
-@interface PortalContext
+@interface PortalProviderProps
 
 @## Props
 
