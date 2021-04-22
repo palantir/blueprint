@@ -45,6 +45,9 @@ describe("Core isomorphic rendering", () => {
         Hotkey: {
             props: hotkeyProps,
         },
+        Hotkeys: {
+            children: React.createElement(Core.Hotkey, hotkeyProps),
+        },
         Icon: {
             props: { icon: "build" },
         },
