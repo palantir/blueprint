@@ -15,9 +15,9 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
 export interface TextProps extends Props {
@@ -42,62 +42,37 @@ export interface TextProps extends Props {
     title?: string;
 }
 
-export interface TextState {
-    textContent: string;
-    isContentOverflowing: boolean;
-}
+export const Text: React.FC<TextProps> = ({ children, tagName, title, className, ellipsize }) => {
+    const textRef = useRef<HTMLElement>();
+    const [textContent, setTextContent] = useState<string>("");
+    const [isContentOverflowing, setIsContentOverflowing] = useState<boolean>();
 
-export class Text extends AbstractPureComponent<TextProps, TextState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
-
-    public static defaultProps: Partial<TextProps> = {
-        ellipsize: false,
-        tagName: "div",
-    };
-
-    public state: TextState = {
-        isContentOverflowing: false,
-        textContent: "",
-    };
-
-    private textRef: HTMLElement | null = null;
-
-    public componentDidMount() {
-        this.update();
-    }
-
-    public componentDidUpdate() {
-        this.update();
-    }
-
-    public render() {
-        const classes = classNames(
-            {
-                [Classes.TEXT_OVERFLOW_ELLIPSIS]: this.props.ellipsize,
-            },
-            this.props.className,
-        );
-        const { children, tagName, title } = this.props;
-
-        return React.createElement(
-            tagName!,
-            {
-                className: classes,
-                ref: (ref: HTMLElement | null) => (this.textRef = ref),
-                title: title ?? (this.state.isContentOverflowing ? this.state.textContent : undefined),
-            },
-            children,
-        );
-    }
-
-    private update() {
-        if (this.textRef?.textContent == null) {
-            return;
+    // try to be conservative about running this effect, since querying scrollWidth causes the browser to reflow / recalculate styles,
+    // which can be very expensive for long lists (for example, in long Menus)
+    useLayoutEffect(() => {
+        if (textRef.current?.textContent != null) {
+            setIsContentOverflowing(ellipsize! && textRef.current.scrollWidth > textRef.current.clientWidth);
+            setTextContent(textRef.current.textContent);
         }
-        const newState = {
-            isContentOverflowing: this.props.ellipsize! && this.textRef.scrollWidth > this.textRef.clientWidth,
-            textContent: this.textRef.textContent,
-        };
-        this.setState(newState);
-    }
-}
+    }, [textRef, children, ellipsize]);
+
+    return React.createElement(
+        tagName!,
+        {
+            className: classNames(
+                {
+                    [Classes.TEXT_OVERFLOW_ELLIPSIS]: ellipsize,
+                },
+                className,
+            ),
+            ref: textRef,
+            title: title ?? (isContentOverflowing ? textContent : undefined),
+        },
+        children,
+    );
+};
+Text.defaultProps = {
+    ellipsize: false,
+    tagName: "div",
+};
+Text.displayName = `${DISPLAYNAME_PREFIX}.Text`;
