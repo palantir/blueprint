@@ -79,7 +79,7 @@ describe("Controls:", () => {
     controlsTests(Radio, "radio", Classes.RADIO);
 
     function controlsTests(classType: ControlType, propType: string, className: string, moreTests?: () => void) {
-        describe(`<${classType.displayName.split(".")[1]}>`, () => {
+        describe(`<${classType.displayName!.split(".")[1]}>`, () => {
             it(`renders .${Classes.CONTROL}.${className}`, () => {
                 const control = mountControl();
                 assert.isTrue(control.find(`.${Classes.CONTROL}`).hasClass(className));

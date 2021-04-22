@@ -19,9 +19,9 @@
 /* eslint-disable max-classes-per-file, @typescript-eslint/no-empty-interface */
 
 import classNames from "classnames";
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import { AbstractPureComponent, Alignment, Classes, Ref, refHandler, setRef } from "../../common";
+import { Alignment, Classes, mergeRefs, Ref } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
 export interface ControlProps extends Props, HTMLInputProps {
@@ -98,7 +98,7 @@ interface ControlInternalProps extends ControlProps {
  * Renders common control elements, with additional props to customize appearance.
  * This component is not exported and is only used in this file for `Checkbox`, `Radio`, and `Switch` below.
  */
-const Control: React.FunctionComponent<ControlInternalProps> = ({
+const Control: React.FC<ControlInternalProps> = ({
     alignIndicator,
     children,
     className,
@@ -157,34 +157,25 @@ export interface SwitchProps extends ControlProps {
     innerLabel?: string;
 }
 
-export class Switch extends AbstractPureComponent<SwitchProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Switch`;
-
-    public render() {
-        const { innerLabelChecked, innerLabel, ...controlProps } = this.props;
-        const switchLabels =
-            innerLabel || innerLabelChecked
-                ? [
-                      <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
-                          <div className={Classes.SWITCH_INNER_TEXT}>
-                              {innerLabelChecked ? innerLabelChecked : innerLabel}
-                          </div>
-                      </div>,
-                      <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
-                          <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
-                      </div>,
-                  ]
-                : null;
-        return (
-            <Control
-                {...controlProps}
-                type="checkbox"
-                typeClassName={Classes.SWITCH}
-                indicatorChildren={switchLabels}
-            />
-        );
-    }
-}
+export const Switch: React.FC<SwitchProps> = ({ innerLabelChecked, innerLabel, ...controlProps }) => {
+    const switchLabels =
+        innerLabel || innerLabelChecked
+            ? [
+                  <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                      <div className={Classes.SWITCH_INNER_TEXT}>
+                          {innerLabelChecked ? innerLabelChecked : innerLabel}
+                      </div>
+                  </div>,
+                  <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                      <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
+                  </div>,
+              ]
+            : null;
+    return (
+        <Control {...controlProps} type="checkbox" typeClassName={Classes.SWITCH} indicatorChildren={switchLabels} />
+    );
+};
+Switch.displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
 //
 // Radio
@@ -192,13 +183,8 @@ export class Switch extends AbstractPureComponent<SwitchProps> {
 
 export type RadioProps = ControlProps;
 
-export class Radio extends AbstractPureComponent<RadioProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Radio`;
-
-    public render() {
-        return <Control {...this.props} type="radio" typeClassName={Classes.RADIO} />;
-    }
-}
+export const Radio: React.FC<RadioProps> = props => <Control {...props} type="radio" typeClassName={Classes.RADIO} />;
+Radio.displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
 //
 // Checkbox
@@ -224,66 +210,47 @@ export interface CheckboxState {
     indeterminate: boolean;
 }
 
-export class Checkbox extends AbstractPureComponent<CheckboxProps, CheckboxState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
+export const Checkbox: React.FC<CheckboxProps> = ({
+    defaultIndeterminate,
+    indeterminate,
+    inputRef: inputRefProp,
+    onChange,
+    ...controlProps
+}) => {
+    const [isIndeterminate, setIsIndeterminate] = useState<boolean>(indeterminate || defaultIndeterminate || false);
+    const inputRefLocal = useRef<HTMLInputElement>(null);
+    const handleChange = useCallback(
+        (evt: React.ChangeEvent<HTMLInputElement>) => {
+            // update state immediately only if uncontrolled
+            if (indeterminate === undefined) {
+                setIsIndeterminate(evt.target.indeterminate);
+            }
+            // otherwise wait for props change. always invoke handler.
+            onChange?.(evt);
+        },
+        [onChange],
+    );
 
-    public static getDerivedStateFromProps({ indeterminate }: CheckboxProps): CheckboxState | null {
-        // put props into state if controlled by props
-        if (indeterminate != null) {
-            return { indeterminate };
+    useEffect(() => {
+        if (indeterminate !== undefined) {
+            setIsIndeterminate(indeterminate);
         }
+    }, [indeterminate]);
 
-        return null;
-    }
-
-    public state: CheckboxState = {
-        indeterminate: this.props.indeterminate || this.props.defaultIndeterminate || false,
-    };
-
-    // must maintain internal reference for `indeterminate` support
-    public input: HTMLInputElement | null = null;
-
-    private handleInputRef: Ref<HTMLInputElement> = refHandler(this, "input", this.props.inputRef);
-
-    public render() {
-        const { defaultIndeterminate, indeterminate, ...controlProps } = this.props;
-        return (
-            <Control
-                {...controlProps}
-                inputRef={this.handleInputRef}
-                onChange={this.handleChange}
-                type="checkbox"
-                typeClassName={Classes.CHECKBOX}
-            />
-        );
-    }
-
-    public componentDidMount() {
-        this.updateIndeterminate();
-    }
-
-    public componentDidUpdate(prevProps: CheckboxProps) {
-        this.updateIndeterminate();
-        if (prevProps.inputRef !== this.props.inputRef) {
-            setRef(prevProps.inputRef, null);
-            this.handleInputRef = refHandler(this, "input", this.props.inputRef);
-            setRef(this.props.inputRef, this.input);
+    useEffect(() => {
+        if (inputRefLocal.current != null) {
+            inputRefLocal.current.indeterminate = isIndeterminate;
         }
-    }
+    }, [inputRefLocal, isIndeterminate]);
 
-    private updateIndeterminate() {
-        if (this.input != null) {
-            this.input.indeterminate = this.state.indeterminate;
-        }
-    }
-
-    private handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        const { indeterminate } = evt.target;
-        // update state immediately only if uncontrolled
-        if (this.props.indeterminate == null) {
-            this.setState({ indeterminate });
-        }
-        // otherwise wait for props change. always invoke handler.
-        this.props.onChange?.(evt);
-    };
-}
+    return (
+        <Control
+            {...controlProps}
+            inputRef={inputRefProp === undefined ? inputRefLocal : mergeRefs(inputRefLocal, inputRefProp)}
+            onChange={handleChange}
+            type="checkbox"
+            typeClassName={Classes.CHECKBOX}
+        />
+    );
+};
+Checkbox.displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
