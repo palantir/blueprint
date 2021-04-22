@@ -487,6 +487,13 @@
   }
 }
 
+.docs-text-example-dropdown-menu {
+  max-height: 500px;
+  // force ellipsize: true to do some actual work
+  max-width: 250px;
+  overflow: auto;
+}
+
 //
 // DATETIME
 //
