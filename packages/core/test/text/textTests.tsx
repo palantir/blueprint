@@ -20,7 +20,7 @@ import React from "react";
 
 import { Classes, Text } from "../../src";
 
-describe.only("<Text>", () => {
+describe("<Text>", () => {
     it("adds the className prop", () => {
         const textContent = "textContent";
         const className = "bp-test-class";
