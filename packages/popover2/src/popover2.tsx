@@ -27,7 +27,7 @@ import {
     isRefCallback,
     mergeRefs,
     Overlay,
-    ResizeSensor,
+    ResizeSensor2,
     Utils,
 } from "@blueprintjs/core";
 
@@ -356,7 +356,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             target = wrappedTarget;
         }
 
-        return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
+        return <ResizeSensor2 onResize={this.reposition}>{target}</ResizeSensor2>;
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
@@ -418,7 +418,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                    <ResizeSensor onResize={this.reposition}>
+                    <ResizeSensor2 onResize={this.reposition}>
                         <div
                             className={popoverClasses}
                             style={{ transformOrigin }}
@@ -430,7 +430,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                             )}
                             <div className={Classes.POPOVER2_CONTENT}>{this.props.content}</div>
                         </div>
-                    </ResizeSensor>
+                    </ResizeSensor2>
                 </div>
             </Overlay>
         );
