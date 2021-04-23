@@ -116,7 +116,7 @@ export class Icon extends AbstractPureComponent<
             intent,
             tagName,
             title = icon,
-            htmlTitle = title,
+            htmlTitle,
             ...htmlProps
         } = this.props;
         const { iconComponent: Component } = this.state;
@@ -136,7 +136,7 @@ export class Icon extends AbstractPureComponent<
                     size={size}
                     tagName={tagName}
                     title={title}
-                    htmlTitle={htmlTitle as string | undefined}
+                    htmlTitle={htmlTitle}
                     {...htmlProps}
                 />
             );

@@ -30,7 +30,7 @@ export interface SVGIconProps {
 
     /**
      * String for the `title` attribute on the rendered element, which will appear
-     * on hover as a native browser tooltip. Defaults to the title prop.
+     * on hover as a native browser tooltip.
      */
     htmlTitle?: string;
 
