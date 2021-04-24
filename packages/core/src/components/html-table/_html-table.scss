@@ -124,7 +124,8 @@ table.#{$ns}-html-table {
       box-shadow: inset $table-border-width 0 0 0 $table-border-color;
     }
 
-    tbody tr td {
+    tbody tr td,
+    tfoot tr td {
       box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
 
       &:not(:first-child) {
@@ -144,7 +145,8 @@ table.#{$ns}-html-table {
   }
 
   &.#{$ns}-interactive {
-    tbody tr {
+    tbody tr,
+    tfoot tr {
       &:hover td {
         background-color: rgba($gray5, 0.3);
         cursor: pointer;
@@ -170,7 +172,8 @@ table.#{$ns}-html-table {
         box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
       }
 
-      tbody tr td {
+      tbody tr td,
+      tfoot tr td {
         box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
 
         &:not(:first-child) {
@@ -192,7 +195,8 @@ table.#{$ns}-html-table {
     }
 
     &.#{$ns}-interactive {
-      tbody tr {
+      tbody tr,
+      tfoot tr {
         &:hover td {
           background-color: rgba($gray1, 0.3);
           cursor: pointer;
