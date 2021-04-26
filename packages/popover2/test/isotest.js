@@ -16,8 +16,9 @@
 // @ts-check
 
 require("@blueprintjs/test-commons/bootstrap");
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 const React = require("react");
+
+const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
 
 const Popover2Package = require("../lib/cjs");
 
@@ -27,6 +28,10 @@ describe("Core isomorphic rendering", () => {
     generateIsomorphicTests(Popover2Package, {
         Popover2: {
             children: requiredChild,
+        },
+        ResizeSensor2: {
+            children: requiredChild,
+            className: false,
         },
         Tooltip2: {
             props: { content: React.createElement("h1", {}, "content") },

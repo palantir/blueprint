@@ -86,10 +86,6 @@ describe("Core isomorphic rendering", () => {
             children: requiredChild,
             className: false,
         },
-        ResizeSensor2: {
-            children: requiredChild,
-            className: false,
-        },
         Tabs: {
             children: React.createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
         },
