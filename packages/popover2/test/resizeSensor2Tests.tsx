@@ -19,7 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { spy } from "sinon";
 
-import { ResizeSensor2Props, ResizeSensor2 } from "../../src/components/resize-sensor2/resizeSensor2";
+import { ResizeSensor2Props, ResizeSensor2 } from "../src/resizeSensor2";
 
 describe("<ResizeSensor2>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()

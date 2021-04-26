@@ -17,9 +17,7 @@
 import * as React from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
-import { AbstractPureComponent2 } from "../../common";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { ResizeEntry } from "../resize-sensor/resizeObserverTypes";
+import { AbstractPureComponent2, DISPLAYNAME_PREFIX, ResizeEntry } from "@blueprintjs/core";
 
 /** `ResizeSensor2` requires a single DOM element child and will error otherwise. */
 export interface ResizeSensor2Props {

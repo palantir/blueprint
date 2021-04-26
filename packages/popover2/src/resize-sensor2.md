@@ -1,10 +1,10 @@
-@# Resize sensor (v2)
+@# ResizeSensor2
 
 `ResizeSensor2` is a component that provides a `"resize"` event for its single
 DOM element child. It is a thin wrapper around
 [`ResizeObserver`][resizeobserver] to provide React bindings.
 
-Compared to `ResizeSensor`, this component features some __small breaking changes__:
+Compared to [`ResizeSensor`](#core/components/resize-sensor), this component features some __small breaking changes__:
 
 - The child of `<ResizeSensor2>` can only be a single DOM element or React component.
 - The child (target) of `<ResizeSensor2>` _must be a native DOM element_ or utilize [`React.forwardRef()`](forwardRef) to forward any injected ref to the underlying DOM element.

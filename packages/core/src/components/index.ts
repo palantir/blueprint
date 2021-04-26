@@ -69,7 +69,6 @@ export * from "./portal/portal";
 export * from "./progress-bar/progressBar";
 export * from "./resize-sensor/resizeSensor";
 export * from "./resize-sensor/resizeObserverTypes";
-export * from "./resize-sensor2/resizeSensor2";
 export * from "./slider/handleProps";
 export * from "./slider/multiSlider";
 export * from "./slider/rangeSlider";

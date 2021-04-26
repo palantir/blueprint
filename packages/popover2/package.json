@@ -40,6 +40,7 @@
         "classnames": "^2.2",
         "dom4": "^2.1.5",
         "react-popper": "^2.2.4",
+        "resize-observer-polyfill": "^1.5.1",
         "tslib": "~1.13.0"
     },
     "peerDependencies": {

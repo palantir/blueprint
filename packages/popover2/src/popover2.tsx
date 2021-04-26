@@ -27,7 +27,6 @@ import {
     isRefCallback,
     mergeRefs,
     Overlay,
-    ResizeSensor2,
     Utils,
 } from "@blueprintjs/core";
 
@@ -36,6 +35,7 @@ import * as Errors from "./errors";
 import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
 import { Popover2SharedProps } from "./popover2SharedProps";
+import { ResizeSensor2 } from "./resizeSensor2";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip2 } from "./tooltip2";
 import { getBasePlacement, getTransformOrigin } from "./utils";

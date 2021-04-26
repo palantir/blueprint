@@ -24,7 +24,6 @@
 @page panel-stack2
 @page progress-bar
 @page resize-sensor
-@page resize-sensor2
 @page skeleton
 @page spinner
 @page tabs
