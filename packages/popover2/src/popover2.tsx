@@ -24,10 +24,9 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
-    isRefCallback,
+    refHandler,
     mergeRefs,
     Overlay,
-    ResizeSensor,
     Utils,
 } from "@blueprintjs/core";
 
@@ -36,6 +35,7 @@ import * as Errors from "./errors";
 import { POPOVER_ARROW_SVG_SIZE, Popover2Arrow } from "./popover2Arrow";
 import { positionToPlacement } from "./popover2PlacementUtils";
 import { Popover2SharedProps } from "./popover2SharedProps";
+import { ResizeSensor2 } from "./resizeSensor2";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip2 } from "./tooltip2";
 import { getBasePlacement, getTransformOrigin } from "./utils";
@@ -110,9 +110,6 @@ export interface IPopover2State {
 export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopover2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover2`;
 
-    // eslint-disable-next-line deprecation/deprecation
-    private popoverRef = Utils.createReactRef<HTMLDivElement>();
-
     public static defaultProps: Popover2Props = {
         boundary: "clippingParents",
         captureDismiss: false,
@@ -150,13 +147,11 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     /** DOM element that contains the target. */
     public targetElement: HTMLElement | null = null;
 
-    private refHandlers = {
-        popover: (ref: HTMLElement | null) => {
-            this.popoverElement = ref;
-            this.props.popoverRef?.(ref);
-        },
-        target: (ref: HTMLElement | null) => (this.targetElement = ref),
-    };
+    /** Popover ref handler */
+    private popoverRef: React.Ref<HTMLDivElement> = refHandler(this, "popoverElement", this.props.popoverRef);
+
+    /** Target ref handler */
+    private targetRef: React.Ref<HTMLElement> = el => (this.targetElement = el);
 
     private cancelOpenTimeout?: () => void;
 
@@ -211,7 +206,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             <Manager>
                 <Reference>{this.renderTarget}</Reference>
                 <Popper
-                    innerRef={this.refHandlers.popover}
+                    innerRef={this.popoverRef}
                     placement={placement ?? positionToPlacement(position)}
                     strategy={positioningStrategy}
                     modifiers={this.computePopperModifiers()}
@@ -281,19 +276,18 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
      */
     public reposition = () => this.popperScheduleUpdate?.();
 
-    private renderTarget = ({ ref }: ReferenceChildrenProps) => {
+    private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
         const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
+
         let { targetTagName } = this.props;
         if (fill) {
             targetTagName = "div";
         }
 
-        if (isRefCallback(ref)) {
-            ref = mergeRefs(ref, this.refHandlers.target);
-        }
+        const ref = mergeRefs(popperChildRef, this.targetRef);
 
         const targetEventHandlers = isHoverInteractionKind
             ? {
@@ -356,7 +350,11 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             target = wrappedTarget;
         }
 
-        return <ResizeSensor onResize={this.reposition}>{target}</ResizeSensor>;
+        return (
+            <ResizeSensor2 targetRef={ref} onResize={this.reposition}>
+                {target}
+            </ResizeSensor2>
+        );
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
@@ -418,7 +416,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
-                    <ResizeSensor onResize={this.reposition}>
+                    <ResizeSensor2 onResize={this.reposition}>
                         <div
                             className={popoverClasses}
                             style={{ transformOrigin }}
@@ -430,7 +428,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                             )}
                             <div className={Classes.POPOVER2_CONTENT}>{this.props.content}</div>
                         </div>
-                    </ResizeSensor>
+                    </ResizeSensor2>
                 </div>
             </Overlay>
         );
@@ -549,7 +547,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER2}`);
-        const isEventFromSelf = eventPopover === this.popoverRef.current;
+        const isEventFromSelf = eventPopover === this.popoverElement;
         const isEventPopoverCapturing = eventPopover?.classList.contains(Classes.POPOVER2_CAPTURING_DISMISS);
 
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
