@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { SmallCross } from "@blueprintjs/icons";
+import { SmallCross, ICON_SIZE_LARGE } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
@@ -176,7 +176,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<SmallCross size={Icon.SIZE_LARGE} />}
+                    icon={<SmallCross size={ICON_SIZE_LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -193,7 +193,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
         }
         return (
             <div className={Classes.DRAWER_HEADER}>
-                <Icon icon={icon} size={Icon.SIZE_LARGE} />
+                <Icon icon={icon} size={ICON_SIZE_LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>

@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import React from "react";
 
+import { ICON_SIZE_LARGE } from "@blueprintjs/icons";
+
 import {
     AbstractPureComponent,
     Classes,
@@ -73,7 +75,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} size={Icon.SIZE_LARGE} />}
+                {iconName && <Icon icon={iconName} size={ICON_SIZE_LARGE} />}
                 {title && <H4>{title}</H4>}
                 {children}
             </div>

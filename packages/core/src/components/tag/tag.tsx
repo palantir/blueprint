@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React, { forwardRef } from "react";
 
-import { SmallCross } from "@blueprintjs/icons";
+import { SmallCross, ICON_SIZE_LARGE, ICON_SIZE_STANDARD } from "@blueprintjs/icons";
 
 import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
@@ -152,7 +152,7 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
             onClick={handleRemoveClick}
             tabIndex={interactive ? tabIndex : undefined}
         >
-            <SmallCross size={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
+            <SmallCross size={isLarge ? ICON_SIZE_LARGE : ICON_SIZE_STANDARD} />
         </button>
     ) : null;
 

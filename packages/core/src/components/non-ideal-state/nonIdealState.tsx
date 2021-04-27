@@ -17,6 +17,8 @@
 import classNames from "classnames";
 import React from "react";
 
+import { ICON_SIZE_LARGE } from "@blueprintjs/icons";
+
 import { AbstractPureComponent } from "../../common";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
@@ -70,7 +72,7 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
         } else {
             return (
                 <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} size={Icon.SIZE_LARGE * 3} />
+                    <Icon icon={icon} size={ICON_SIZE_LARGE * 3} />
                 </div>
             );
         }
