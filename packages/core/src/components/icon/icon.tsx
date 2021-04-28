@@ -17,11 +17,12 @@
 import classNames from "classnames";
 import React, { forwardRef, useEffect, useState } from "react";
 
-import { IconComponent, IconName, Icons, SVGIconProps } from "@blueprintjs/icons";
+import { IconComponent, ICON_SIZE_LARGE, ICON_SIZE_STANDARD, IconName, Icons, SVGIconProps } from "@blueprintjs/icons";
 
 import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
-export { IconName };
+// re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
+export { IconName, ICON_SIZE_LARGE, ICON_SIZE_STANDARD };
 
 export interface IconProps extends IntentProps, Props, SVGIconProps {
     /**
@@ -49,74 +50,73 @@ export interface IconProps extends IntentProps, Props, SVGIconProps {
     icon: IconName | MaybeElement;
 }
 
-export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = forwardRef<
-    HTMLDivElement | SVGElement,
-    IconProps
->((props, ref) => {
-    const { icon } = props;
-    if (icon == null || typeof icon === "boolean") {
-        return null;
-    } else if (typeof icon !== "string") {
-        return icon;
-    }
-
-    const {
-        autoLoad,
-        className,
-        color,
-        size,
-        icon: _icon,
-        intent,
-        tagName,
-        title = icon,
-        htmlTitle,
-        ...htmlProps
-    } = props;
-    const [Component, setIconComponent] = useState<IconComponent>();
-
-    useEffect(() => {
-        let shouldCancelIconLoading = false;
-        if (typeof icon === "string") {
-            if (autoLoad) {
-                // load the module to get the component (it will be cached if it's the same icon)
-                Icons.load(icon).then(() => {
-                    // if this effect expired by the time icon loaded, then don't set state
-                    if (!shouldCancelIconLoading) {
-                        setIconComponent(Icons.getComponent(icon));
-                    }
-                });
-            } else {
-                setIconComponent(Icons.getComponent(icon));
-            }
+export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = forwardRef<any, IconProps>(
+    (props, ref) => {
+        const { icon } = props;
+        if (icon == null || typeof icon === "boolean") {
+            return null;
+        } else if (typeof icon !== "string") {
+            return icon;
         }
-        return () => {
-            shouldCancelIconLoading = true;
-        };
-    }, [autoLoad, icon]);
 
-    if (Component == null) {
-        // fall back to icon font if unloaded or unable to load SVG implementation
-        return React.createElement(tagName!, {
-            ...htmlProps,
-            className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
-            ref,
-            title: htmlTitle,
-        });
-    } else {
-        return (
-            <Component
-                className={classNames(Classes.intentClass(intent), className)}
-                color={color}
-                size={size}
-                tagName={tagName}
-                title={title}
-                htmlTitle={htmlTitle}
-                ref={ref}
-                {...htmlProps}
-            />
-        );
-    }
-});
+        const {
+            autoLoad,
+            className,
+            color,
+            size,
+            icon: _icon,
+            intent,
+            tagName,
+            title = icon,
+            htmlTitle,
+            ...htmlProps
+        } = props;
+        const [Component, setIconComponent] = useState<IconComponent>();
+
+        useEffect(() => {
+            let shouldCancelIconLoading = false;
+            if (typeof icon === "string") {
+                if (autoLoad) {
+                    // load the module to get the component (it will be cached if it's the same icon)
+                    Icons.load(icon).then(() => {
+                        // if this effect expired by the time icon loaded, then don't set state
+                        if (!shouldCancelIconLoading) {
+                            setIconComponent(Icons.getComponent(icon));
+                        }
+                    });
+                } else {
+                    setIconComponent(Icons.getComponent(icon));
+                }
+            }
+            return () => {
+                shouldCancelIconLoading = true;
+            };
+        }, [autoLoad, icon]);
+
+        if (Component == null) {
+            // fall back to icon font if unloaded or unable to load SVG implementation
+            return React.createElement(tagName!, {
+                ...htmlProps,
+                className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
+                ref,
+                title: htmlTitle,
+            });
+        } else {
+            return (
+                <Component
+                    className={classNames(Classes.intentClass(intent), className)}
+                    color={color}
+                    size={size}
+                    tagName={tagName}
+                    title={title}
+                    htmlTitle={htmlTitle}
+                    ref={ref}
+                    {...htmlProps}
+                />
+            );
+        }
+    },
+);
 Icon.defaultProps = {
     autoLoad: true,
     tagName: "span",
