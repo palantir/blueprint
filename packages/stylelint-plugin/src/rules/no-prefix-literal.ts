@@ -27,7 +27,7 @@ const messages = stylelint.utils.ruleMessages(ruleName, {
     expected: (unfixed: string, fixed: string) => `Use the \`${fixed}\` variable instead of the \`${unfixed}\` literal`,
 });
 
-const bannedPrefixes = ["bp1", "bp2", "bp3", "bp4"];
+const bannedPrefixes = ["bp", "bp3", "bp4"];
 
 interface Options {
     disableFix?: boolean;
@@ -130,7 +130,7 @@ const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> =
 };
 
 const BpVariableImportMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "~@blueprntjs/core/lib/scss/variables",
+    [CssSyntax.SASS]: "~@blueprintjs/core/lib/scss/variables",
     [CssSyntax.LESS]: "~@blueprintjs/core/lib/less/variables",
 };
 

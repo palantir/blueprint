@@ -32,7 +32,7 @@ it("Warns when .bp3 is present", async () => {
     expect(result.errored).to.be.true;
 });
 
-it("Warns when nested .bp3 is present", async () => {
+it("Warns when nested .bp3 is present even when not first selector", async () => {
     const result = await stylelint.lint({
         files: "test/fixtures/contains-nested-bp3.scss",
         config,
