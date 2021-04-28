@@ -20,7 +20,7 @@ import type { RuleTesterContext } from "stylelint";
  * no imports present then it's inserted at the top of the file (but below any copyright headers).
  */
 export function insertImport(root: Root, context: RuleTesterContext, importPath: string): void {
-    const newline = (context as any).newline || "\n";
+    const newline: string = (context as any).newline || "\n";
     const ruleOrComment = getLastImport(root) || getCopyrightHeader(root);
     if (ruleOrComment != null) {
         const importNode = postcss.atRule({
@@ -44,10 +44,13 @@ export function insertImport(root: Root, context: RuleTesterContext, importPath:
             },
         });
         root.prepend(importNode);
-        // Add space before next block
+        // Make sure there are at least two newlines before the next child
         const nextChild = root.nodes?.[1];
         if (nextChild != null) {
-            nextChild.raws.before = `${newline}${newline}${nextChild.raws.before || ""}`;
+            const nExistingNewlines = nextChild.raws.before?.split("")?.filter(char => char === newline).length ?? 0;
+            nextChild.raws.before = `${newline.repeat(Math.max(0, 2 - nExistingNewlines))}${
+                nextChild.raws.before || ""
+            }`;
         }
     }
 }
