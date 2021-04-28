@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-// we need some empty interfaces to show up in docs
-// HACKHACK: these components should go in separate files
-/* eslint-disable max-classes-per-file, @typescript-eslint/no-empty-interface */
-
 import classNames from "classnames";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
 import { Alignment, Classes, mergeRefs, Ref } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, Props } from "../../common/props";
 
-export interface ControlProps extends Props, HTMLInputProps {
+export interface ControlProps extends Props, HTMLInputProps, React.RefAttributes<any> {
     // NOTE: HTML props are duplicated here to provide control-specific documentation
 
     /**
@@ -96,24 +92,25 @@ interface ControlInternalProps extends ControlProps {
 
 /**
  * Renders common control elements, with additional props to customize appearance.
- * This component is not exported and is only used in this file for `Checkbox`, `Radio`, and `Switch` below.
+ * This function is not exported and is only used within this module for `Checkbox`, `Radio`, and `Switch` below.
  */
-const Control: React.FC<ControlInternalProps> = ({
-    alignIndicator,
-    children,
-    className,
-    indicatorChildren,
-    inline,
-    inputRef,
-    label,
-    labelElement,
-    large,
-    style,
-    type,
-    typeClassName,
-    tagName = "label",
-    ...htmlProps
-}) => {
+function renderControl(props: ControlInternalProps, ref: React.Ref<any>) {
+    const {
+        alignIndicator,
+        children,
+        className,
+        indicatorChildren,
+        inline,
+        inputRef,
+        label,
+        labelElement,
+        large,
+        style,
+        type,
+        typeClassName,
+        tagName = "label",
+        ...htmlProps
+    } = props;
     const classes = classNames(
         Classes.CONTROL,
         typeClassName,
@@ -128,14 +125,14 @@ const Control: React.FC<ControlInternalProps> = ({
 
     return React.createElement(
         tagName,
-        { className: classes, style },
+        { className: classes, style, ref },
         <input {...htmlProps} ref={inputRef} type={type} />,
         <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
         label,
         labelElement,
         children,
     );
-};
+}
 
 //
 // Switch
@@ -157,7 +154,7 @@ export interface SwitchProps extends ControlProps {
     innerLabel?: string;
 }
 
-export const Switch: React.FC<SwitchProps> = ({ innerLabelChecked, innerLabel, ...controlProps }) => {
+export const Switch: React.FC<SwitchProps> = forwardRef(({ innerLabelChecked, innerLabel, ...controlProps }, ref) => {
     const switchLabels =
         innerLabel || innerLabelChecked
             ? [
@@ -171,10 +168,16 @@ export const Switch: React.FC<SwitchProps> = ({ innerLabelChecked, innerLabel, .
                   </div>,
               ]
             : null;
-    return (
-        <Control {...controlProps} type="checkbox" typeClassName={Classes.SWITCH} indicatorChildren={switchLabels} />
+    return renderControl(
+        {
+            ...controlProps,
+            indicatorChildren: switchLabels,
+            type: "checkbox",
+            typeClassName: Classes.SWITCH,
+        },
+        ref,
     );
-};
+});
 Switch.displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
 //
@@ -183,7 +186,16 @@ Switch.displayName = `${DISPLAYNAME_PREFIX}.Switch`;
 
 export type RadioProps = ControlProps;
 
-export const Radio: React.FC<RadioProps> = props => <Control {...props} type="radio" typeClassName={Classes.RADIO} />;
+export const Radio: React.FC<RadioProps> = forwardRef((props, ref) =>
+    renderControl(
+        {
+            ...props,
+            type: "radio",
+            typeClassName: Classes.RADIO,
+        },
+        ref,
+    ),
+);
 Radio.displayName = `${DISPLAYNAME_PREFIX}.Radio`;
 
 //
@@ -205,18 +217,8 @@ export interface CheckboxProps extends ControlProps {
     indeterminate?: boolean;
 }
 
-export interface CheckboxState {
-    // Checkbox adds support for uncontrolled indeterminate state
-    indeterminate: boolean;
-}
-
-export const Checkbox: React.FC<CheckboxProps> = ({
-    defaultIndeterminate,
-    indeterminate,
-    inputRef: inputRefProp,
-    onChange,
-    ...controlProps
-}) => {
+export const Checkbox: React.FC<CheckboxProps> = forwardRef((props, ref) => {
+    const { defaultIndeterminate, indeterminate, inputRef: inputRefProp, onChange, ...controlProps } = props;
     const [isIndeterminate, setIsIndeterminate] = useState<boolean>(indeterminate || defaultIndeterminate || false);
     const inputRefLocal = useRef<HTMLInputElement>(null);
     const handleChange = useCallback(
@@ -243,14 +245,15 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         }
     }, [inputRefLocal, isIndeterminate]);
 
-    return (
-        <Control
-            {...controlProps}
-            inputRef={inputRefProp === undefined ? inputRefLocal : mergeRefs(inputRefLocal, inputRefProp)}
-            onChange={handleChange}
-            type="checkbox"
-            typeClassName={Classes.CHECKBOX}
-        />
+    return renderControl(
+        {
+            ...controlProps,
+            inputRef: inputRefProp === undefined ? inputRefLocal : mergeRefs(inputRefLocal, inputRefProp),
+            onChange: handleChange,
+            type: "checkbox",
+            typeClassName: Classes.CHECKBOX,
+        },
+        ref,
     );
-};
+});
 Checkbox.displayName = `${DISPLAYNAME_PREFIX}.Checkbox`;
