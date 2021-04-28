@@ -1508,7 +1508,7 @@
 
 "@types/stylelint@^9.10.1":
   version "9.10.1"
-  resolved "https://registry.yarnpkg.com/artifactory/api/npm/all-npm/@types/stylelint/-/stylelint-9.10.1.tgz#211832381e43fd0774217b59f02ab389d82643ea"
+  resolved "https://registry.yarnpkg.com/@types/stylelint/-/stylelint-9.10.1.tgz#211832381e43fd0774217b59f02ab389d82643ea"
   integrity sha1-IRgyOB5D/Qd0IXtZ8CqzidgmQ+o=
   dependencies:
     postcss "7.x.x"
