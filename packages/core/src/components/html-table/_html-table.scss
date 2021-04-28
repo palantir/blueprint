@@ -80,7 +80,8 @@ $dark-table-border-color: $pt-dark-divider-white !default;
     color: $pt-text-color;
   }
 
-  tbody tr:first-child {
+  tbody tr:first-child,
+  tfoot tr:first-child {
     th,
     td {
       box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
@@ -98,7 +99,8 @@ $dark-table-border-color: $pt-dark-divider-white !default;
       color: $pt-dark-text-color;
     }
 
-    tbody tr:first-child {
+    tbody tr:first-child,
+    tfoot tr:first-child {
       th,
       td {
         box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
