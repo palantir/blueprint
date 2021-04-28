@@ -13,6 +13,7 @@ Markup:
       <th>Project</th>
       <th>Description</th>
       <th>Technologies</th>
+      <th>Contributors</th>
     </tr>
   </thead>
   <tbody>
@@ -20,18 +21,27 @@ Markup:
       <td>Blueprint</td>
       <td>CSS framework and UI toolkit</td>
       <td>Sass, TypeScript, React</td>
+      <td>268</td>
     </tr>
     <tr>
       <td>TSLint</td>
       <td>Static analysis linter for TypeScript</td>
       <td>TypeScript</td>
+      <td>403</td>
     </tr>
     <tr>
       <td>Plottable</td>
       <td>Composable charting library built on top of D3</td>
       <td>SVG, TypeScript, D3</td>
+      <td>737</td>
     </tr>
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan=3>Total</td>
+      <td>1408</td>
+    </tr>
+  </tfoot>
 </table>
 
 .#{$ns}-html-table-bordered - Bordered appearance
@@ -145,8 +155,7 @@ table.#{$ns}-html-table {
   }
 
   &.#{$ns}-interactive {
-    tbody tr,
-    tfoot tr {
+    tbody tr {
       &:hover td {
         background-color: rgba($gray5, 0.3);
         cursor: pointer;
@@ -195,8 +204,7 @@ table.#{$ns}-html-table {
     }
 
     &.#{$ns}-interactive {
-      tbody tr,
-      tfoot tr {
+      tbody tr {
         &:hover td {
           background-color: rgba($gray1, 0.3);
           cursor: pointer;
