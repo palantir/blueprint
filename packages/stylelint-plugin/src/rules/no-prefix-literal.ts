@@ -83,8 +83,9 @@ export default stylelint.createPlugin(ruleName, ((
     let hasBpVariablesImport: boolean | undefined; // undefined means not checked yet
     function assertBpVariablesImportExists(cssSyntaxType: CssSyntax.SASS | CssSyntax.LESS) {
         const importPath = options?.variablesImportPath?.[cssSyntaxType] ?? BpVariableImportMap[cssSyntaxType];
+        const extension = CssExtensionMap[cssSyntaxType];
         if (hasBpVariablesImport == null) {
-            hasBpVariablesImport = checkImportExists(root, importPath);
+            hasBpVariablesImport = checkImportExists(root, [importPath, `${importPath}.${extension}`]);
         }
         if (!hasBpVariablesImport) {
             insertImport(root, context, importPath);
@@ -124,6 +125,11 @@ enum CssSyntax {
     OTHER = "other",
 }
 
+const CssExtensionMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
+    [CssSyntax.SASS]: "scss",
+    [CssSyntax.LESS]: "less",
+};
+
 const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
     [CssSyntax.SASS]: "#{$ns}",
     [CssSyntax.LESS]: "@{ns}",
@@ -138,10 +144,10 @@ const BpVariableImportMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> =
  * Returns the flavor of the CSS we're dealing with.
  */
 function getCssSyntax(fileName: string): CssSyntax {
-    if (fileName.endsWith(".scss")) {
-        return CssSyntax.SASS;
-    } else if (fileName.endsWith(".less")) {
-        return CssSyntax.LESS;
+    for (const cssSyntax of Object.keys(CssExtensionMap)) {
+        if (fileName.endsWith(`.${CssExtensionMap[cssSyntax as Exclude<CssSyntax, CssSyntax.OTHER>]}`)) {
+            return cssSyntax as Exclude<CssSyntax, CssSyntax.OTHER>;
+        }
     }
     return CssSyntax.OTHER;
 }

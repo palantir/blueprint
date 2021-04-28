@@ -58,3 +58,13 @@ it("Returns true if our import exists, and works with single quotes", () => {
 `);
     expect(checkImportExists(root, "some_path")).to.be.true;
 });
+
+it("Can match multiple paths", () => {
+    const root = postcss.parse(`
+@import 'some_path.scss';
+.some-class {
+    width: 10px;
+}
+`);
+    expect(checkImportExists(root, ["some_path", "some_path.scss"])).to.be.true;
+});

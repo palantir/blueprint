@@ -16,14 +16,17 @@ import type { Root } from "postcss";
 
 /**
  * Returns true if the given import exists in the file, otherwise returns false.
+ * If `importPath` is an array, any of the strings has to match in order fortrue to be returned.
  */
-export function checkImportExists(root: Root, importPath: string): boolean {
+export function checkImportExists(root: Root, importPath: string | string[]): boolean {
     let hasBpVarsImport = false;
     root.walkAtRules(/^import$/i, atRule => {
-        // `atRule.params` includes quotes around the string, so we strip them.
-        if (stripQuotes(atRule.params) === importPath) {
-            hasBpVarsImport = true;
-            return false; // Stop the iteration
+        for (const path of typeof importPath === "string" ? [importPath] : importPath) {
+            // `atRule.params` includes quotes around the string, so we strip them.
+            if (stripQuotes(atRule.params) === path) {
+                hasBpVarsImport = true;
+                return false; // Stop the iteration
+            }
         }
         return true;
     });
