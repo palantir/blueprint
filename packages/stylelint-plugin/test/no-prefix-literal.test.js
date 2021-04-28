@@ -20,7 +20,6 @@ const config = {
     plugins: ["@blueprintjs/stylelint-plugin"],
     rules: {
         "@blueprintjs/no-prefix-literal": true,
-        "at-rule-semicolon-newline-after": "always",
     },
 };
 
@@ -30,6 +29,22 @@ it("Warns when .bp3 is present", async () => {
         config,
     });
     expect(result.errored).to.be.true;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(1);
+    expect(warnings[0].line).to.be.eq(1);
+    expect(warnings[0].column).to.be.eq(2);
+});
+
+it("Warns when .bp3 is present (CSS modules)", async () => {
+    const result = await stylelint.lint({
+        files: "test/fixtures/contains-bp3.module.scss",
+        config,
+    });
+    expect(result.errored).to.be.true;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(1);
+    expect(warnings[0].line).to.be.eq(1);
+    expect(warnings[0].column).to.be.eq(10);
 });
 
 it("Warns when nested .bp3 is present even when not first selector", async () => {
@@ -38,6 +53,22 @@ it("Warns when nested .bp3 is present even when not first selector", async () =>
         config,
     });
     expect(result.errored).to.be.true;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(1);
+    expect(warnings[0].line).to.be.eq(2);
+    expect(warnings[0].column).to.be.eq(21);
+});
+
+it("Warns when nested .bp3 is present even when not first selector (CSS modules)", async () => {
+    const result = await stylelint.lint({
+        files: "test/fixtures/contains-nested-bp3.module.scss",
+        config,
+    });
+    expect(result.errored).to.be.true;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(1);
+    expect(warnings[0].line).to.be.eq(2);
+    expect(warnings[0].column).to.be.eq(29);
 });
 
 it("Doesn't warn bp3 string is present but not as a prefix", async () => {
@@ -48,10 +79,74 @@ it("Doesn't warn bp3 string is present but not as a prefix", async () => {
     expect(result.errored).to.be.false;
 });
 
+it("Doesn't warn bp3 string is present but not as a prefix (CSS modules)", async () => {
+    const result = await stylelint.lint({
+        files: "test/fixtures/contains-non-prefix-bp3.module.scss",
+        config,
+    });
+    expect(result.errored).to.be.false;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(0);
+});
+
 it("Doesn't warn when .bp3 is not present", async () => {
     const result = await stylelint.lint({
         files: "test/fixtures/does-not-contain-bp3.scss",
         config,
     });
     expect(result.errored).to.be.false;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(0);
+});
+
+it("Doesn't warn when .bp3 is not present (CSS modules)", async () => {
+    const result = await stylelint.lint({
+        files: "test/fixtures/does-not-contain-bp3.module.scss",
+        config,
+    });
+    expect(result.errored).to.be.false;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(0);
+});
+
+it("Doesn't warn when .bp3 is present but lint rule is disabled", async () => {
+    const result = await stylelint.lint({
+        files: "test/fixtures/contains-bp3-disabled.scss",
+        config,
+    });
+    expect(result.errored).to.be.false;
+    const warnings = result.results[0].warnings;
+    expect(warnings).lengthOf(0);
+});
+
+it("Accepts a valid secondary config", async () => {
+    const result = await stylelint.lint({
+        files: "test/fixtures/contains-bp3.scss",
+        config: {
+            plugins: ["@blueprintjs/stylelint-plugin"],
+            rules: {
+                "@blueprintjs/no-prefix-literal": [
+                    true,
+                    { disableFix: true, variablesImportPath: { sass: "some-path" } },
+                ],
+            },
+        },
+    });
+    expect(result.results[0].invalidOptionWarnings.length).to.be.eq(0);
+});
+
+it("Rejects an invalid secondary config", async () => {
+    const result = await stylelint.lint({
+        files: "test/fixtures/contains-bp3.scss",
+        config: {
+            plugins: ["@blueprintjs/stylelint-plugin"],
+            rules: {
+                "@blueprintjs/no-prefix-literal": [
+                    true,
+                    { disableFix: "yes", variablesImportPath: { scss: "some-path", somethingElse: "some-other-path" } },
+                ],
+            },
+        },
+    });
+    expect(result.results[0].invalidOptionWarnings.length).to.be.eq(2);
 });
