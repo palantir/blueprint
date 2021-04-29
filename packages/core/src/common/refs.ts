@@ -14,27 +14,30 @@
  * limitations under the License.
  */
 
-export type IRef<T extends HTMLElement = HTMLElement> = IRefObject<T> | IRefCallback<T>;
+import * as React from "react";
 
-// compatible with React.Ref type in @types/react@^16
-export interface IRefObject<T extends HTMLElement = HTMLElement> {
-    current: T | null;
-}
+type Writable<T> = {
+    -readonly [K in keyof T]: T[K];
+};
 
-export function isRefObject<T extends HTMLElement>(value: IRef<T> | undefined | null): value is IRefObject<T> {
+export type IRef<T extends HTMLElement = HTMLElement> = IRefObject<T> | IRefCallback<T> | null;
+
+export type IRefObject<T extends HTMLElement = HTMLElement> = Writable<React.RefObject<T>>;
+
+export function isRefObject<T extends HTMLElement>(value?: IRef<T>): value is IRefObject<T> {
     return value != null && typeof value !== "function";
 }
 
-export type IRefCallback<T extends HTMLElement = HTMLElement> = (ref: T | null) => any;
+export type IRefCallback<T extends HTMLElement = HTMLElement> = React.RefCallback<T>;
 
-export function isRefCallback<T extends HTMLElement>(value: IRef<T> | undefined | null): value is IRefCallback<T> {
+export function isRefCallback<T extends HTMLElement>(value?: IRef<T>): value is IRefCallback<T> {
     return typeof value === "function";
 }
 
 /**
  * Assign the given ref to a target, either a React ref object or a callback which takes the ref as its first argument.
  */
-export function setRef<T extends HTMLElement>(refTarget: IRef<T> | undefined | null, ref: T | null): void {
+export function setRef<T extends HTMLElement>(refTarget: IRef<T> | undefined, ref: T | null): void {
     if (isRefObject<T>(refTarget)) {
         refTarget.current = ref;
     } else if (isRefCallback(refTarget)) {
@@ -51,7 +54,7 @@ export function combineRefs<T extends HTMLElement>(ref1: IRefCallback<T>, ref2: 
  * Utility for merging refs into one singular callback ref.
  * If using in a functional component, would recomend using `useMemo` to preserve function identity.
  */
-export function mergeRefs<T extends HTMLElement>(...refs: Array<IRef<T> | null>): IRefCallback<T> {
+export function mergeRefs<T extends HTMLElement>(...refs: Array<IRef<T>>): IRefCallback<T> {
     return value => {
         refs.forEach(ref => {
             setRef(ref, value);
