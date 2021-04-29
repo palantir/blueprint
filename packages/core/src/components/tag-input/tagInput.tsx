@@ -20,7 +20,7 @@ import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 import { TagProps, Tag } from "../tag/tag";
 
 /**
@@ -255,7 +255,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
                 <Icon
                     className={Classes.TAG_INPUT_ICON}
                     icon={leftIcon}
-                    iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD}
+                    iconSize={isLarge ? IconSize.LARGE : IconSize.STANDARD}
                 />
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}

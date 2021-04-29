@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Button, Classes, Dialog, H4, Icon } from "../../src";
+import { Button, Classes, Dialog, H4, Icon, IconSize } from "../../src";
 import * as Keys from "../../src/common/keys";
 
 describe("<Dialog>", () => {
@@ -151,7 +151,7 @@ describe("<Dialog>", () => {
     function createDialogContents(): JSX.Element[] {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
-                <Icon icon="inbox" iconSize={Icon.SIZE_LARGE} />
+                <Icon icon="inbox" iconSize={IconSize.LARGE} />
                 <H4>Dialog header</H4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>

@@ -24,8 +24,14 @@ import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../c
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+
+export enum DrawerSize {
+    SMALL = "360px",
+    STANDARD = "50%",
+    LARGE = "90%",
+}
 
 // eslint-disable-next-line deprecation/deprecation
 export type DrawerProps = IDrawerProps;
@@ -73,11 +79,11 @@ export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
      * and `height` otherwise.
      *
      * Constants are available for common sizes:
-     * - `Drawer.SIZE_SMALL = 360px`
-     * - `Drawer.SIZE_STANDARD = 50%`
-     * - `Drawer.SIZE_LARGE = 90%`
+     * - `DrawerSize.SMALL = 360px`
+     * - `DrawerSize.STANDARD = 50%`
+     * - `DrawerSize.LARGE = 90%`
      *
-     * @default Drawer.SIZE_STANDARD = "50%"
+     * @default DrawerSize.STANDARD = "50%"
      */
     size?: number | string;
 
@@ -122,10 +128,13 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
         vertical: false,
     };
 
+    /** @deprecated use DrawerSize.SMALL */
     public static readonly SIZE_SMALL = "360px";
 
+    /** @deprecated use DrawerSize.STANDARD */
     public static readonly SIZE_STANDARD = "50%";
 
+    /** @deprecated use DrawerSize.LARGE */
     public static readonly SIZE_LARGE = "90%";
 
     private lastActiveElementBeforeOpened: Element | null | undefined;
@@ -194,7 +203,7 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
+                    icon={<Icon icon="small-cross" iconSize={IconSize.LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -211,7 +220,7 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
         }
         return (
             <div className={Classes.DRAWER_HEADER}>
-                <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
+                <Icon icon={icon} iconSize={IconSize.LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>

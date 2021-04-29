@@ -29,7 +29,7 @@ import {
     Utils,
 } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 import { Text } from "../text/text";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -166,7 +166,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
                 onClick={this.onRemoveClick}
                 tabIndex={interactive ? tabIndex : undefined}
             >
-                <Icon icon="small-cross" iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
+                <Icon icon="small-cross" iconSize={isLarge ? IconSize.LARGE : IconSize.LARGE} />
             </button>
         ) : null;
 

@@ -24,6 +24,11 @@ import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, Props
 
 export { IconName };
 
+export enum IconSize {
+    STANDARD = 16,
+    LARGE = 20,
+}
+
 // eslint-disable-next-line deprecation/deprecation
 export type IconProps = IIconProps;
 /** @deprecated use IconProps */
@@ -66,7 +71,7 @@ export interface IIconProps extends IntentProps, Props {
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
      * images, and chooses the appropriate resolution based on this prop.
      *
-     * @default Icon.SIZE_STANDARD = 16
+     * @default IconSize.STANDARD = 16
      */
     iconSize?: number;
 
@@ -93,9 +98,11 @@ export interface IIconProps extends IntentProps, Props {
 export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
-    public static readonly SIZE_STANDARD = 16;
+    /** @deprecated use IconSize.STANDARD */
+    public static readonly SIZE_STANDARD = IconSize.STANDARD;
 
-    public static readonly SIZE_LARGE = 20;
+    /** @deprecated use IconSize.LARGE */
+    public static readonly SIZE_LARGE = IconSize.LARGE;
 
     public render(): JSX.Element | null {
         const { icon } = this.props;
@@ -109,7 +116,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             className,
             color,
             htmlTitle,
-            iconSize = Icon.SIZE_STANDARD,
+            iconSize = IconSize.STANDARD,
             intent,
             title = icon,
             tagName = "span",
@@ -117,7 +124,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         } = this.props;
 
         // choose which pixel grid is most appropriate for given icon size
-        const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
+        const pixelGridSize = iconSize >= IconSize.LARGE ? IconSize.LARGE : IconSize.STANDARD;
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
@@ -141,7 +148,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
 
     /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
     private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
-        const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
+        const svgPathsRecord = pathsSize === IconSize.STANDARD ? IconSvgPaths16 : IconSvgPaths20;
         const pathStrings = svgPathsRecord[iconName];
         if (pathStrings == null) {
             return null;

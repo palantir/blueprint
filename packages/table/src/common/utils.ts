@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Icon } from "@blueprintjs/core";
+import { IconSize } from "@blueprintjs/core";
 
 // used to exclude icons from column header measure
 export const CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT = "bp-table-text-no-measure";
 // supposed width of the icons placeholder
-const EXCLUDED_ICON_PLACEHOLDER_WIDTH = Icon.SIZE_STANDARD;
+const EXCLUDED_ICON_PLACEHOLDER_WIDTH = IconSize.STANDARD;
 
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually

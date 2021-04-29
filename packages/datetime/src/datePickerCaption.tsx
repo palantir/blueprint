@@ -18,7 +18,7 @@ import * as React from "react";
 import { CaptionElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Divider, HTMLSelect, Icon, OptionProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IconSize, OptionProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
@@ -128,7 +128,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
         );
         const monthSelectWidth =
             this.containerElement == null ? 0 : this.containerElement.firstElementChild.clientWidth;
-        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - Icon.SIZE_STANDARD - 2);
+        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
         this.setState({ monthRightOffset: rightOffset });
     }
 

@@ -27,7 +27,7 @@ import {
     MaybeElement,
     Utils,
 } from "../../common";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 import { Spinner } from "../spinner/spinner";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -186,7 +186,7 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
     protected renderChildren(): React.ReactNode {
         const { children, icon, loading, rightIcon, text } = this.props;
         return [
-            loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={Icon.SIZE_LARGE} />,
+            loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />,
             <Icon key="leftIcon" icon={icon} />,
             (!Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children)) && (
                 <span key="text" className={Classes.BUTTON_TEXT}>

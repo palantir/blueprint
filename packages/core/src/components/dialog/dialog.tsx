@@ -23,7 +23,7 @@ import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -119,7 +119,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" iconSize={Icon.SIZE_LARGE} />}
+                    icon={<Icon icon="small-cross" iconSize={IconSize.LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -136,7 +136,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} iconSize={Icon.SIZE_LARGE} />
+                <Icon icon={icon} iconSize={IconSize.LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>
