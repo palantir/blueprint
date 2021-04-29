@@ -34,7 +34,6 @@ interface Options {
     variablesImportPath?: Partial<Record<Exclude<CssSyntax, CssSyntax.OTHER>, string>>;
 }
 
-// eslint-disable-next-line import/no-default-export
 export default stylelint.createPlugin(ruleName, ((
     enabled: boolean,
     options: Options | undefined,
