@@ -129,13 +129,13 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
     };
 
     /** @deprecated use DrawerSize.SMALL */
-    public static readonly SIZE_SMALL = "360px";
+    public static readonly SIZE_SMALL = DrawerSize.SMALL;
 
     /** @deprecated use DrawerSize.STANDARD */
-    public static readonly SIZE_STANDARD = "50%";
+    public static readonly SIZE_STANDARD = DrawerSize.STANDARD;
 
     /** @deprecated use DrawerSize.LARGE */
-    public static readonly SIZE_LARGE = "90%";
+    public static readonly SIZE_LARGE = DrawerSize.LARGE;
 
     private lastActiveElementBeforeOpened: Element | null | undefined;
 

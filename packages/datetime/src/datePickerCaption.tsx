@@ -18,7 +18,7 @@ import * as React from "react";
 import { CaptionElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IconSize, OptionProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, Divider, HTMLSelect, IconSize, OptionProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
