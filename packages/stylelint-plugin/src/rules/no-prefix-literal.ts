@@ -130,8 +130,8 @@ const CssExtensionMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
 };
 
 const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "#{$ns}",
-    [CssSyntax.LESS]: "@{ns}",
+    [CssSyntax.SASS]: "#{$bp-ns}",
+    [CssSyntax.LESS]: "@{bp-ns}",
 };
 
 const BpVariableImportMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
