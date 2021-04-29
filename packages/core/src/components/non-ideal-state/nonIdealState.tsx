@@ -23,7 +23,7 @@ import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 
 // eslint-disable-next-line deprecation/deprecation
 export type NonIdealStateProps = INonIdealStateProps;
@@ -75,7 +75,7 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
         } else {
             return (
                 <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} iconSize={Icon.SIZE_LARGE * 3} />
+                    <Icon icon={icon} iconSize={IconSize.LARGE * 3} />
                 </div>
             );
         }

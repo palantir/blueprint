@@ -16,7 +16,19 @@
 
 import * as React from "react";
 
-import { Button, H5, Icon, InputGroup, Intent, Menu, MenuItem, Spinner, Switch, Tag } from "@blueprintjs/core";
+import {
+    Button,
+    H5,
+    Icon,
+    IconSize,
+    InputGroup,
+    Intent,
+    Menu,
+    MenuItem,
+    Spinner,
+    Switch,
+    Tag,
+} from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
@@ -54,7 +66,7 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     public render() {
         const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
 
-        const maybeSpinner = filterValue ? <Spinner size={Icon.SIZE_STANDARD} /> : undefined;
+        const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
         const lockButton = (
             <Tooltip2 content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>

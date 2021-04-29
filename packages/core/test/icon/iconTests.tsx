@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { IconName } from "@blueprintjs/icons";
 
-import { Classes, Icon, IIconProps, Intent } from "../../src";
+import { Classes, Icon, IconSize, IIconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
     it("tagName dictates HTML tag", () => {
@@ -30,10 +30,10 @@ describe("<Icon>", () => {
     });
 
     it("iconSize=16 renders standard size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
+        assertIconSize(<Icon icon="graph" iconSize={IconSize.STANDARD} />, IconSize.STANDARD));
 
     it("iconSize=20 renders large size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
+        assertIconSize(<Icon icon="graph" iconSize={IconSize.LARGE} />, IconSize.LARGE));
 
     it("renders intent class", () =>
         assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));

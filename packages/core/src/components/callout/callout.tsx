@@ -29,7 +29,7 @@ import {
     MaybeElement,
 } from "../../common";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 
 // eslint-disable-next-line deprecation/deprecation
 export type CalloutProps = ICalloutProps;
@@ -78,7 +78,7 @@ export class Callout extends AbstractPureComponent2<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} iconSize={Icon.SIZE_LARGE} />}
+                {iconName && <Icon icon={iconName} iconSize={IconSize.LARGE} />}
                 {title && <H4>{title}</H4>}
                 {children}
             </div>

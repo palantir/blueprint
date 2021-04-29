@@ -41,7 +41,7 @@ which SVG is rendered and `iconSize` determines which pixel grid is used:
 grid.
 
 ```tsx
-import { Icon, Intent } from "@blueprintjs/core";
+import { Icon, IconSize, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 // string literals are supported through IconName union type
@@ -49,7 +49,7 @@ import { IconNames } from "@blueprintjs/icons";
 <Icon icon="globe" iconSize={20} />
 
 // constants are provided for name and size
-<Icon icon={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE} intent={Intent.PRIMARY} />
+<Icon icon={IconNames.GRAPH} iconSize={IconSize.LARGE} intent={Intent.PRIMARY} />
 
 // can pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />

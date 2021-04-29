@@ -22,6 +22,7 @@ import {
     Code,
     Divider,
     Drawer,
+    DrawerSize,
     H5,
     HTMLSelect,
     OptionProps,
@@ -167,9 +168,9 @@ export class DrawerExample extends React.PureComponent<IExampleProps<IBlueprintE
 
 const SIZES: Array<string | OptionProps> = [
     { label: "Default", value: undefined },
-    { label: "Small", value: Drawer.SIZE_SMALL },
-    { label: "Standard", value: Drawer.SIZE_STANDARD },
-    { label: "Large", value: Drawer.SIZE_LARGE },
+    { label: "Small", value: DrawerSize.SMALL },
+    { label: "Standard", value: DrawerSize.STANDARD },
+    { label: "Large", value: DrawerSize.LARGE },
     "72%",
     "560px",
 ];
