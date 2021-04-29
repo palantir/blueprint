@@ -1,5 +1,5 @@
 .some-class {
-  :global(.#{$ns})-button {
+  :global(.#{$bp-ns})-button {
     width: 10px;
   }
 }
