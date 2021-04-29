@@ -23,6 +23,10 @@ Markup:
 .#{$ns}-fill - Expand to fill parent container
 .#{$ns}-large - Large size
 .#{$ns}-minimal - Minimal appearance
+.#{$ns}-intent-primary - Primary intent
+.#{$ns}-intent-success - Success intent
+.#{$ns}-intent-warning - Warning intent
+.#{$ns}-intent-danger - Danger intent
 
 Styleguide select
 */
@@ -44,6 +48,18 @@ Styleguide select
     &::-ms-expand {
       // IE11 styling to hide the arrow
       display: none;
+    }
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      select {
+        @include pt-input-intent($color);
+
+        .#{$ns}-dark & {
+          @include pt-dark-input-intent($color);
+        }
+      }
     }
   }
 

@@ -19,8 +19,8 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2 } from "../../common";
-import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { IElementRefProps, OptionProps } from "../../common/props";
+import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL, intentClass } from "../../common/classes";
+import { IElementRefProps, OptionProps, IntentProps } from "../../common/props";
 import { Icon, IconProps } from "../icon/icon";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -29,7 +29,8 @@ export type HTMLSelectProps = IHTMLSelectProps;
 export interface IHTMLSelectProps
     // eslint-disable-next-line deprecation/deprecation
     extends IElementRefProps<HTMLSelectElement>,
-        React.SelectHTMLAttributes<HTMLSelectElement> {
+        React.SelectHTMLAttributes<HTMLSelectElement>,
+        IntentProps {
     /** Whether this element is non-interactive. */
     disabled?: boolean;
 
@@ -73,12 +74,14 @@ export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
             elementRef,
             fill,
             iconProps,
+            intent,
             large,
             minimal,
             options = [],
             ...htmlProps
         } = this.props;
         const classes = classNames(
+            intentClass(intent),
             HTML_SELECT,
             {
                 [DISABLED]: disabled,
