@@ -7,7 +7,7 @@
     "@blueprintjs/stylelint-plugin"
   ],
   "rules": {
-    "@blueprintjs/no-prefix-literal": true,
+    "@blueprintjs/no-prefix-literal": [true, { "disableFix": true }],
     "declaration-empty-line-before": null,
     "indentation": [2, {
       "ignore": ["value"]
