@@ -14,7 +14,7 @@
  */
 
 import { Root, Result } from "postcss";
-import parser from "postcss-selector-parser";
+import selectorParser from "postcss-selector-parser";
 import stylelint from "stylelint";
 import type { Plugin, RuleTesterContext } from "stylelint";
 
@@ -93,7 +93,7 @@ export default stylelint.createPlugin(ruleName, ((
     }
 
     root.walkRules(rule => {
-        parser(selectors => {
+        rule.selector = selectorParser(selectors => {
             selectors.walkClasses(selector => {
                 for (const bannedPrefix of bannedPrefixes) {
                     if (!selector.value.startsWith(`${bannedPrefix}-`)) {
@@ -101,7 +101,10 @@ export default stylelint.createPlugin(ruleName, ((
                     }
                     if ((context as any).fix && !disableFix) {
                         assertBpVariablesImportExists(cssSyntax);
-                        rule.selector = rule.selector.replace(bannedPrefix, BpPrefixVariableMap[cssSyntax]);
+                        const fixed = BpPrefixVariableMap[cssSyntax] + selector.value.substr(bannedPrefix.length);
+                        // Note - selector.value = "#{$var}" escapes special characters and produces "\#\{\$var\}",
+                        // and to work around that we use selector.toString instead.
+                        selector.toString = () => `.${fixed}`;
                     } else {
                         stylelint.utils.report({
                             // HACKHACK - offset by one because otherwise the error is reported at a wrong position

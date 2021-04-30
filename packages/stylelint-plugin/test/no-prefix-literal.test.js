@@ -155,4 +155,14 @@ describe("no-prefix-literal", () => {
         });
         expect(result.results[0].invalidOptionWarnings.length).to.be.eq(2);
     });
+
+    it("Works for a double bp selector", async () => {
+        const result = await stylelint.lint({
+            files: "test/fixtures/contains-double-bp-selector.scss",
+            config,
+        });
+        expect(result.errored).to.be.true;
+        const warnings = result.results[0].warnings;
+        expect(warnings).lengthOf(2);
+    });
 });
