@@ -17,12 +17,12 @@
 import classNames from "classnames";
 import React, { forwardRef, useEffect, useState } from "react";
 
-import { IconComponent, ICON_SIZE_LARGE, ICON_SIZE_STANDARD, IconName, Icons, SVGIconProps } from "@blueprintjs/icons";
+import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
 
 import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
-export { IconName, ICON_SIZE_LARGE, ICON_SIZE_STANDARD };
+export { IconName, IconSize };
 
 export interface IconProps extends IntentProps, Props, SVGIconProps {
     /**
@@ -119,6 +119,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
 );
 Icon.defaultProps = {
     autoLoad: true,
+    size: IconSize.STANDARD,
     tagName: "span",
 };
 Icon.displayName = `${DISPLAYNAME_PREFIX}.Icon`;

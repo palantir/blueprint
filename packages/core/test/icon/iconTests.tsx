@@ -19,20 +19,11 @@ import { mount } from "enzyme";
 import React from "react";
 import { stub, SinonStub } from "sinon";
 
-import {
-    Graph,
-    Add,
-    Calendar,
-    Airplane,
-    Icons,
-    IconName,
-    ICON_SIZE_LARGE,
-    ICON_SIZE_STANDARD,
-} from "@blueprintjs/icons";
+import { Graph, Add, Calendar, Airplane, Icons, IconName, IconSize } from "@blueprintjs/icons";
 
 import { Classes, Icon, IconProps, Intent } from "../../src";
 
-describe.only("<Icon>", () => {
+describe("<Icon>", () => {
     let iconLoader: SinonStub;
 
     before(() => {
@@ -56,11 +47,11 @@ describe.only("<Icon>", () => {
         assert.isTrue(wrapper.find("i").exists());
     });
 
-    it.only("size=16 renders standard size", async () =>
-        assertIconSize(<Icon icon="graph" size={ICON_SIZE_STANDARD} />, ICON_SIZE_STANDARD));
+    it("size=16 renders standard size", async () =>
+        assertIconSize(<Icon icon="graph" size={IconSize.STANDARD} />, IconSize.STANDARD));
 
     it("size=20 renders large size", async () =>
-        assertIconSize(<Icon icon="graph" size={ICON_SIZE_LARGE} />, ICON_SIZE_LARGE));
+        assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
 
     it("renders intent class", async () => {
         const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);

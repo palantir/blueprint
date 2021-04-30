@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { H5, Intent, Label, Slider, Spinner, Switch } from "@blueprintjs/core";
+import { H5, Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleValueChange, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -31,7 +31,7 @@ export interface SpinnerExampleState {
 export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExampleState> {
     public state: SpinnerExampleState = {
         hasValue: false,
-        size: Spinner.SIZE_STANDARD,
+        size: SpinnerSize.STANDARD,
         value: 0.7,
     };
 
@@ -58,7 +58,7 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExa
                 <Slider
                     labelStepSize={50}
                     min={0}
-                    max={Spinner.SIZE_LARGE * 2}
+                    max={SpinnerSize.LARGE * 2}
                     showTrackFill={false}
                     stepSize={5}
                     value={size}

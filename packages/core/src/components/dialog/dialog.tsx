@@ -17,14 +17,14 @@
 import classNames from "classnames";
 import React from "react";
 
-import { SmallCross, ICON_SIZE_LARGE } from "@blueprintjs/icons";
+import { SmallCross, IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 import { BackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
@@ -116,7 +116,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<SmallCross size={ICON_SIZE_LARGE} />}
+                    icon={<SmallCross size={IconSize.LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -133,7 +133,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} size={ICON_SIZE_LARGE} />
+                <Icon icon={icon} size={IconSize.LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>

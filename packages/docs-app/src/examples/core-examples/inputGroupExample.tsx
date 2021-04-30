@@ -31,7 +31,7 @@ import {
     Tooltip,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
-import { ICON_SIZE_STANDARD } from "@blueprintjs/icons";
+import { IconSize } from "@blueprintjs/icons";
 
 export interface InputGroupExampleState {
     disabled: boolean;
@@ -67,7 +67,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
     public render() {
         const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
 
-        const maybeSpinner = filterValue ? <Spinner size={ICON_SIZE_STANDARD} /> : undefined;
+        const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>

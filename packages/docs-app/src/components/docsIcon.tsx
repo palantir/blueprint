@@ -19,7 +19,7 @@ import download from "downloadjs";
 import React from "react";
 
 import { Classes, ContextMenu, ContextMenuChildrenProps, Icon, IconName, Menu, MenuItem } from "@blueprintjs/core";
-import { ICON_SIZE_LARGE } from "@blueprintjs/icons";
+import { IconSize } from "@blueprintjs/icons";
 
 import { ClickToCopy } from "./clickToCopy";
 
@@ -44,12 +44,12 @@ export class DocsIcon extends React.PureComponent<DocsIconProps> {
                 content={
                     <Menu>
                         <MenuItem
-                            icon={<Icon icon={iconName} />}
+                            icon={<Icon icon={iconName} size={IconSize.STANDARD} />}
                             text="Download 16px SVG"
                             onClick={this.handleClick16}
                         />
                         <MenuItem
-                            icon={<Icon icon={iconName} />}
+                            icon={<Icon icon={iconName} size={IconSize.LARGE} />}
                             text="Download 20px SVG"
                             onClick={this.handleClick20}
                         />
@@ -65,7 +65,7 @@ export class DocsIcon extends React.PureComponent<DocsIconProps> {
                         value={iconName}
                     >
                         {props.popover}
-                        <Icon icon={iconName} size={ICON_SIZE_LARGE} />
+                        <Icon icon={iconName} size={IconSize.LARGE} />
                         <div className="docs-icon-name">{displayName}</div>
                         <div className="docs-icon-detail">
                             <p className="docs-code">{iconName}</p>

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { SmallCross, ICON_SIZE_LARGE } from "@blueprintjs/icons";
+import { SmallCross, IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
@@ -25,8 +25,14 @@ import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../c
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 import { BackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+
+export enum DrawerSize {
+    SMALL = "360px",
+    STANDARD = "50%",
+    LARGE = "90%",
+}
 
 export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
     /**
@@ -71,11 +77,11 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
      * and `height` otherwise.
      *
      * Constants are available for common sizes:
-     * - `Drawer.SIZE_SMALL = 360px`
-     * - `Drawer.SIZE_STANDARD = 50%`
-     * - `Drawer.SIZE_LARGE = 90%`
+     * - `DrawerSize.SMALL = 360px`
+     * - `DrawerSize.STANDARD = 50%`
+     * - `DrawerSize.LARGE = 90%`
      *
-     * @default Drawer.SIZE_STANDARD = "50%"
+     * @default DrawerSize.STANDARD = "50%"
      */
     size?: number | string;
 
@@ -110,11 +116,14 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
         style: {},
     };
 
-    public static readonly SIZE_SMALL = "360px";
+    /** @deprecated use DrawerSize.SMALL */
+    public static readonly SIZE_SMALL = DrawerSize.SMALL;
 
-    public static readonly SIZE_STANDARD = "50%";
+    /** @deprecated use DrawerSize.STANDARD */
+    public static readonly SIZE_STANDARD = DrawerSize.STANDARD;
 
-    public static readonly SIZE_LARGE = "90%";
+    /** @deprecated use DrawerSize.LARGE */
+    public static readonly SIZE_LARGE = DrawerSize.LARGE;
 
     private lastActiveElementBeforeOpened: Element | null | undefined;
 
@@ -176,7 +185,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<SmallCross size={ICON_SIZE_LARGE} />}
+                    icon={<SmallCross size={IconSize.LARGE} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -193,7 +202,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
         }
         return (
             <div className={Classes.DRAWER_HEADER}>
-                <Icon icon={icon} size={ICON_SIZE_LARGE} />
+                <Icon icon={icon} size={IconSize.LARGE} />
                 <H4>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>

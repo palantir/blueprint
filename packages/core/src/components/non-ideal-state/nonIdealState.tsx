@@ -17,14 +17,14 @@
 import classNames from "classnames";
 import React from "react";
 
-import { ICON_SIZE_LARGE } from "@blueprintjs/icons";
+import { IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent } from "../../common";
 import * as Classes from "../../common/classes";
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 
 export interface NonIdealStateProps extends Props {
     /** An action to resolve the non-ideal state which appears after `description`. */
@@ -72,7 +72,7 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
         } else {
             return (
                 <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} size={ICON_SIZE_LARGE * 3} />
+                    <Icon icon={icon} size={IconSize.LARGE * 3} />
                 </div>
             );
         }

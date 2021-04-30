@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { ICON_SIZE_LARGE } from "@blueprintjs/icons";
+import { IconName, IconSize } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent,
@@ -30,7 +30,7 @@ import {
     MaybeElement,
 } from "../../common";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` props. */
 export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
@@ -75,7 +75,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} size={ICON_SIZE_LARGE} />}
+                {iconName && <Icon icon={iconName} size={IconSize.LARGE} />}
                 {title && <H4>{title}</H4>}
                 {children}
             </div>

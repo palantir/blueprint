@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import React from "react";
 
-import { ICON_SIZE_LARGE, ICON_SIZE_STANDARD } from "@blueprintjs/icons";
+import { IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes, Ref, Keys, refHandler, setRef, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 import { TagProps, Tag } from "../tag/tag";
 
 /**
@@ -252,7 +252,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
                 <Icon
                     className={Classes.TAG_INPUT_ICON}
                     icon={leftIcon}
-                    size={isLarge ? ICON_SIZE_LARGE : ICON_SIZE_STANDARD}
+                    size={isLarge ? IconSize.LARGE : IconSize.STANDARD}
                 />
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}
