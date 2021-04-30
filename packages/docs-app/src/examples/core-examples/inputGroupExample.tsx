@@ -20,6 +20,7 @@ import {
     Button,
     H5,
     Icon,
+    IconSize,
     InputGroup,
     Intent,
     Menu,
@@ -66,7 +67,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
     public render() {
         const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
 
-        const maybeSpinner = filterValue ? <Spinner size={Icon.SIZE_STANDARD} /> : undefined;
+        const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
         const lockButton = (
             <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>

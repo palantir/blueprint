@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import React, { forwardRef } from "react";
 
-import { SmallCross } from "@blueprintjs/icons";
+import { IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
 import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
 export interface TagProps
@@ -152,7 +152,7 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
             onClick={handleRemoveClick}
             tabIndex={interactive ? tabIndex : undefined}
         >
-            <SmallCross size={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
+            <SmallCross size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
         </button>
     ) : null;
 

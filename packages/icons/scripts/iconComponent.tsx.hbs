@@ -15,20 +15,20 @@
 
 import React from "react";
 import { SVGIconProps } from "../../svgIconProps";
-import { ICON_SIZE_STANDARD, ICON_SIZE_LARGE } from "../../constants";
+import { IconSize } from "../../constants";
 import * as Classes from "../../classes";
 
 export const {{pascalCase iconName}}: React.FC<SVGIconProps> = ({
     className,
     color,
-    size = ICON_SIZE_STANDARD,
+    size = IconSize.STANDARD,
     title = "{{iconName}}",
     htmlTitle,
     tagName = "span",
     ...htmlProps
 }) => {
-    const isLarge = size >= ICON_SIZE_LARGE;
-    const pixelGridSize =  isLarge ? ICON_SIZE_LARGE : ICON_SIZE_STANDARD;
+    const isLarge = size >= IconSize.LARGE;
+    const pixelGridSize =  isLarge ? IconSize.LARGE : IconSize.STANDARD;
     const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
     const path = (
         <path

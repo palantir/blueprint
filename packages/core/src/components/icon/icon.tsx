@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import React from "react";
 
-import { IconComponent, IconName, Icons, ICON_SIZE_STANDARD, ICON_SIZE_LARGE, SVGIconProps } from "@blueprintjs/icons";
+import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
-export { IconName };
+export { IconName, IconSize };
 
 export interface IconProps extends IntentProps, Props, SVGIconProps {
     /**
@@ -61,12 +61,15 @@ export class Icon extends AbstractPureComponent<
 
     public static defaultProps: Partial<IconProps> = {
         autoLoad: true,
+        size: IconSize.STANDARD,
         tagName: "span",
     };
 
-    public static readonly SIZE_STANDARD = ICON_SIZE_STANDARD;
+    /** @deprecated use IconSize.STANDARD */
+    public static readonly SIZE_STANDARD = IconSize.STANDARD;
 
-    public static readonly SIZE_LARGE = ICON_SIZE_LARGE;
+    /** @deprecated use IconSize.LARGE */
+    public static readonly SIZE_LARGE = IconSize.LARGE;
 
     public state: IconState = {
         iconComponent: undefined,

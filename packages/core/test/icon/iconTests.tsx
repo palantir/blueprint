@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
 
-import { Icons, IconName } from "@blueprintjs/icons";
+import { Icons, IconName, IconSize } from "@blueprintjs/icons";
 
 import { Classes, Icon, IconProps, Intent } from "../../src";
 
@@ -35,10 +35,10 @@ describe("<Icon>", () => {
     });
 
     it("size=16 renders standard size", async () =>
-        assertIconSize(<Icon icon="graph" size={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
+        assertIconSize(<Icon icon="graph" size={IconSize.STANDARD} />, IconSize.STANDARD));
 
     it("size=20 renders large size", async () =>
-        assertIconSize(<Icon icon="graph" size={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
+        assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
 
     it("renders intent class", async () => {
         const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);

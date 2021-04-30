@@ -28,7 +28,7 @@ import {
     MaybeElement,
 } from "../../common";
 import { H4 } from "../html/html";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` props. */
 export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
@@ -73,7 +73,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} size={Icon.SIZE_LARGE} />}
+                {iconName && <Icon icon={iconName} size={IconSize.LARGE} />}
                 {title && <H4>{title}</H4>}
                 {children}
             </div>

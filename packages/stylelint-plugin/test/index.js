@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
- *
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,11 +13,6 @@
  * limitations under the License.
  */
 
-import { BlueprintIcons_16Id as IconName, BlueprintIcons_16 as IconNames } from "./generated/16px/blueprint-icons-16";
-
-export { IconName, IconNames };
-
-export enum IconSize {
-    STANDARD = 16,
-    LARGE = 20,
-}
+require("./no-prefix-literal.test");
+require("./checkImportExists.test");
+require("./insertImport.test");
