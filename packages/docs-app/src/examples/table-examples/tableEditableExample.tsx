@@ -125,12 +125,12 @@ export class TableEditableExample extends React.PureComponent<IExampleProps, ITa
     private setArrayState<T>(key: string, index: number, value: T) {
         const values = (this.state as any)[key].slice() as T[];
         values[index] = value;
-        this.setState({ [key]: values });
+        this.setState({ ...this.state, [key]: values });
     }
 
     private setSparseState<T>(stateKey: string, dataKey: string, value: T) {
         const stateData = (this.state as any)[stateKey] as { [key: string]: T };
         const values = { ...stateData, [dataKey]: value };
-        this.setState({ [stateKey]: values });
+        this.setState({ ...this.state, [stateKey]: values });
     }
 }
