@@ -17,14 +17,14 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
-import { stub, SinonStub } from "sinon";
+import Sinon, { stub } from "sinon";
 
 import { Graph, Add, Calendar, Airplane, Icons, IconName, IconSize } from "@blueprintjs/icons";
 
 import { Classes, Icon, IconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
-    let iconLoader: SinonStub;
+    let iconLoader: Sinon.SinonStub;
 
     before(() => {
         stub(Icons, "load").resolves(undefined);
@@ -100,12 +100,14 @@ describe("<Icon>", () => {
 
     it("title sets content of <desc> element", async () => {
         const wrapper = mount(<Icon icon="airplane" title="bird" />);
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         assert.equal(wrapper.find("desc").text(), "bird");
     });
 
     it("desc defaults to icon name", async () => {
         const wrapper = mount(<Icon icon="airplane" />);
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         assert.equal(wrapper.find("desc").text(), "airplane");
     });
@@ -121,6 +123,7 @@ describe("<Icon>", () => {
     /** Asserts that rendered icon has width/height equal to size. */
     async function assertIconSize(icon: React.ReactElement<IconProps>, size: number) {
         const wrapper = mount(icon);
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         const svg = wrapper.find("svg");
         assert.strictEqual(svg.prop("width"), size);
@@ -130,8 +133,18 @@ describe("<Icon>", () => {
     /** Asserts that rendered icon has color equal to color. */
     async function assertIconColor(icon: React.ReactElement<IconProps>, color?: string) {
         const wrapper = mount(icon);
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         const svg = wrapper.find("svg");
         assert.deepEqual(svg.prop("fill"), color);
     }
 });
+
+async function waitUntilSpyCalledOnce(spy: Sinon.SinonSpy, timeout = 1000, interval = 50): Promise<void> {
+    await new Promise(resolve => setTimeout(resolve, interval));
+    if (spy.calledOnce) {
+        return;
+    } else {
+        return waitUntilSpyCalledOnce(spy, timeout - interval, interval);
+    }
+}
