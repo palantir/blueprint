@@ -17,19 +17,32 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import React from "react";
+import Sinon, { stub } from "sinon";
 
-import { Icons, IconName, IconSize } from "@blueprintjs/icons";
+import { Graph, Add, Calendar, Airplane, Icons, IconName, IconSize } from "@blueprintjs/icons";
 
 import { Classes, Icon, IconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
-    before(async () => {
-        await Icons.load(["graph", "add", "calendar", "airplane"]);
+    let iconLoader: Sinon.SinonStub;
+
+    before(() => {
+        stub(Icons, "load").resolves(undefined);
+        // stub the dynamic icon loader with a synchronous, static one
+        iconLoader = stub(Icons, "getComponent");
+        iconLoader.returns(undefined);
+        iconLoader.withArgs("graph").returns(Graph);
+        iconLoader.withArgs("add").returns(Add);
+        iconLoader.withArgs("calendar").returns(Calendar);
+        iconLoader.withArgs("airplane").returns(Airplane);
+    });
+
+    afterEach(() => {
+        iconLoader?.resetHistory();
     });
 
     it("tagName dictates HTML tag", async () => {
         const wrapper = mount(<Icon icon="calendar" tagName="i" />);
-        await wrapper.instance().componentDidMount!();
         wrapper.update();
         assert.isTrue(wrapper.find("i").exists());
     });
@@ -59,14 +72,12 @@ describe("<Icon>", () => {
 
     it("unknown icon name renders blank icon", async () => {
         const wrapper = mount(<Icon icon={"unknown" as any} />);
-        await wrapper.instance().componentDidMount!();
         wrapper.update();
         assert.lengthOf(wrapper.find("path"), 0);
     });
 
     it("prefixed icon renders blank icon", async () => {
         const wrapper = mount(<Icon icon={Classes.iconClass("airplane") as any} />);
-        await wrapper.instance().componentDidMount!();
         wrapper.update();
         assert.lengthOf(wrapper.find("path"), 0);
     });
@@ -76,7 +87,6 @@ describe("<Icon>", () => {
         // Blueprint components which accept `icon?: IconName | JSX.Element`.
         const onClick = () => true;
         const wrapper = mount(<Icon icon={<article onClick={onClick} />} />);
-        await wrapper.instance().componentDidMount!();
         wrapper.update();
         assert.isTrue(wrapper.childAt(0).is("article"));
         assert.strictEqual(wrapper.find("article").prop("onClick"), onClick);
@@ -84,21 +94,20 @@ describe("<Icon>", () => {
 
     it("icon=undefined renders nothing", async () => {
         const wrapper = mount(<Icon icon={undefined} />);
-        await wrapper.instance().componentDidMount!();
         wrapper.update();
         assert.isTrue(wrapper.isEmptyRender());
     });
 
     it("title sets content of <desc> element", async () => {
         const wrapper = mount(<Icon icon="airplane" title="bird" />);
-        await wrapper.instance().componentDidMount!();
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         assert.equal(wrapper.find("desc").text(), "bird");
     });
 
     it("desc defaults to icon name", async () => {
         const wrapper = mount(<Icon icon="airplane" />);
-        await wrapper.instance().componentDidMount!();
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         assert.equal(wrapper.find("desc").text(), "airplane");
     });
@@ -106,7 +115,6 @@ describe("<Icon>", () => {
     /** Asserts that rendered icon has an SVG path. */
     async function assertIconHasPath(icon: React.ReactElement<IconProps>, iconName: IconName) {
         const wrapper = mount(icon);
-        await wrapper.instance().componentDidMount!();
         wrapper.update();
         assert.strictEqual(wrapper.text(), iconName);
         assert.isAbove(wrapper.find("path").length, 0, "should find at least one path element");
@@ -115,7 +123,7 @@ describe("<Icon>", () => {
     /** Asserts that rendered icon has width/height equal to size. */
     async function assertIconSize(icon: React.ReactElement<IconProps>, size: number) {
         const wrapper = mount(icon);
-        await wrapper.instance().componentDidMount!();
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         const svg = wrapper.find("svg");
         assert.strictEqual(svg.prop("width"), size);
@@ -125,9 +133,18 @@ describe("<Icon>", () => {
     /** Asserts that rendered icon has color equal to color. */
     async function assertIconColor(icon: React.ReactElement<IconProps>, color?: string) {
         const wrapper = mount(icon);
-        await wrapper.instance().componentDidMount!();
+        await waitUntilSpyCalledOnce(iconLoader);
         wrapper.update();
         const svg = wrapper.find("svg");
         assert.deepEqual(svg.prop("fill"), color);
     }
 });
+
+async function waitUntilSpyCalledOnce(spy: Sinon.SinonSpy, timeout = 1000, interval = 50): Promise<void> {
+    await new Promise(resolve => setTimeout(resolve, interval));
+    if (spy.calledOnce) {
+        return;
+    } else {
+        return waitUntilSpyCalledOnce(spy, timeout - interval, interval);
+    }
+}

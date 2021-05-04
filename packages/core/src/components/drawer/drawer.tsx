@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import { SmallCross } from "@blueprintjs/icons";
+import { SmallCross, IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
@@ -25,7 +25,7 @@ import { getPositionIgnoreAngles, isPositionHorizontal, Position } from "../../c
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
-import { Icon, IconName, IconSize } from "../icon/icon";
+import { Icon } from "../icon/icon";
 import { BackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
 
 export enum DrawerSize {

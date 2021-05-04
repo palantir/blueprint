@@ -15,12 +15,13 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 
 import { IconComponent, IconName, Icons, IconSize, SVGIconProps } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
+// re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { IconName, IconSize };
 
 export interface IconProps extends IntentProps, Props, SVGIconProps {
@@ -49,67 +50,15 @@ export interface IconProps extends IntentProps, Props, SVGIconProps {
     icon: IconName | MaybeElement;
 }
 
-interface IconState {
-    iconComponent: IconComponent | undefined;
-}
-
-export class Icon extends AbstractPureComponent<
-    IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
-    IconState
-> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
-
-    public static defaultProps: Partial<IconProps> = {
-        autoLoad: true,
-        size: IconSize.STANDARD,
-        tagName: "span",
-    };
-
-    /** @deprecated use IconSize.STANDARD */
-    public static readonly SIZE_STANDARD = IconSize.STANDARD;
-
-    /** @deprecated use IconSize.LARGE */
-    public static readonly SIZE_LARGE = IconSize.LARGE;
-
-    public state: IconState = {
-        iconComponent: undefined,
-    };
-
-    // this component may have unmounted by the time iconContents load, so make sure we don't try to setState
-    private hasUnmounted = false;
-
-    public async componentDidMount() {
-        this.hasUnmounted = false;
-
-        const { icon } = this.props;
-
-        if (typeof icon === "string") {
-            await this.loadIconComponentModule(icon);
-        }
-    }
-
-    public async componentDidUpdate(prevProps: IconProps, _prevState: IconState) {
-        const { icon } = this.props;
-
-        if (prevProps.icon !== icon && typeof icon === "string") {
-            // reload the module to get the component, but it will be cached if it's the same icon
-            await this.loadIconComponentModule(icon);
-        }
-    }
-
-    public componentWillUnmount() {
-        this.hasUnmounted = true;
-    }
-
-    public render(): JSX.Element | null {
-        const { icon } = this.props;
+export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = forwardRef<any, IconProps>(
+    (props, ref) => {
+        const { icon } = props;
         if (icon == null || typeof icon === "boolean") {
             return null;
         } else if (typeof icon !== "string") {
             return icon;
         }
 
-        // strip out props we don't want rendered to the DOM
         const {
             autoLoad,
             className,
@@ -121,14 +70,35 @@ export class Icon extends AbstractPureComponent<
             title = icon,
             htmlTitle,
             ...htmlProps
-        } = this.props;
-        const { iconComponent: Component } = this.state;
+        } = props;
+        const [Component, setIconComponent] = useState<IconComponent>();
+
+        useEffect(() => {
+            let shouldCancelIconLoading = false;
+            if (typeof icon === "string") {
+                if (autoLoad) {
+                    // load the module to get the component (it will be cached if it's the same icon)
+                    Icons.load(icon).then(() => {
+                        // if this effect expired by the time icon loaded, then don't set state
+                        if (!shouldCancelIconLoading) {
+                            setIconComponent(Icons.getComponent(icon));
+                        }
+                    });
+                } else {
+                    setIconComponent(Icons.getComponent(icon));
+                }
+            }
+            return () => {
+                shouldCancelIconLoading = true;
+            };
+        }, [autoLoad, icon]);
 
         if (Component == null) {
             // fall back to icon font if unloaded or unable to load SVG implementation
             return React.createElement(tagName!, {
                 ...htmlProps,
                 className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
+                ref,
                 title: htmlTitle,
             });
         } else {
@@ -140,19 +110,16 @@ export class Icon extends AbstractPureComponent<
                     tagName={tagName}
                     title={title}
                     htmlTitle={htmlTitle}
+                    ref={ref}
                     {...htmlProps}
                 />
             );
         }
-    }
-
-    private async loadIconComponentModule(iconName: IconName) {
-        if (this.props.autoLoad && !this.hasUnmounted) {
-            // if it's already been loaded, this is a no-op
-            await Icons.load(iconName);
-        }
-
-        const iconComponent = Icons.getComponent(iconName);
-        this.setState({ iconComponent });
-    }
-}
+    },
+);
+Icon.defaultProps = {
+    autoLoad: true,
+    size: IconSize.STANDARD,
+    tagName: "span",
+};
+Icon.displayName = `${DISPLAYNAME_PREFIX}.Icon`;

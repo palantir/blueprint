@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { forwardRef } from "react";
 import { SVGIconProps } from "../../svgIconProps";
 import { IconSize } from "../../constants";
 import * as Classes from "../../classes";
 
-export const {{pascalCase iconName}}: React.FC<SVGIconProps> = ({
+export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, SVGIconProps>(({
     className,
     color,
     size = IconSize.STANDARD,
@@ -26,7 +26,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = ({
     htmlTitle,
     tagName = "span",
     ...htmlProps
-}) => {
+}, ref) => {
     const isLarge = size >= IconSize.LARGE;
     const pixelGridSize =  isLarge ? IconSize.LARGE : IconSize.STANDARD;
     const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
@@ -43,7 +43,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = ({
 
     if (tagName === null) {
         return (
-            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox} {...htmlProps}>
+            <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox} ref={ref} {...htmlProps}>
                 {title && <desc>{title}</desc>}
                 {path}
             </svg>
@@ -54,6 +54,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = ({
             {
                 ...htmlProps,
                 className: `${className} ${Classes.ICON}`,
+                ref,
                 title: htmlTitle,
             },
             <svg fill={color} data-icon="{{iconName}}" width={size} height={size} viewBox={viewBox}>
@@ -62,5 +63,6 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = ({
             </svg>
         );
     }
-};
+});
+{{pascalCase iconName}}.displayName = `Blueprint4.Icon.{{pascalCase iconName}}`;
 export default {{pascalCase iconName}};

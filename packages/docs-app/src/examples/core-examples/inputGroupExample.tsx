@@ -20,7 +20,6 @@ import {
     Button,
     H5,
     Icon,
-    IconSize,
     InputGroup,
     Intent,
     Menu,
@@ -32,6 +31,7 @@ import {
     Tooltip,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { IconSize } from "@blueprintjs/icons";
 
 export interface InputGroupExampleState {
     disabled: boolean;
