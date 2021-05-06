@@ -78,8 +78,9 @@ export interface ContextMenu2Props
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
+     * This should only be `undefined` if `disabled` is also set to `true`.
      */
-    content: JSX.Element | ((props: ContextMenu2ContentProps) => JSX.Element);
+    content: JSX.Element | ((props: ContextMenu2ContentProps) => JSX.Element) | undefined;
 
     /**
      * The context menu target. This may optionally be a render function so you can use
