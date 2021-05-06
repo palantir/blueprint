@@ -70,4 +70,9 @@ describe("checkImportExists", () => {
     `);
         expect(checkImportExists(root, ["some_path", "some_path.scss"])).to.be.true;
     });
+
+    it("Handles less references", () => {
+        const root = postcss.parse(`@import (reference) "some_path";`);
+        expect(checkImportExists(root, "some_path")).to.be.true;
+    });
 });

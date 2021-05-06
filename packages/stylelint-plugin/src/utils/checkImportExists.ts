@@ -23,8 +23,7 @@ export function checkImportExists(root: Root, importPath: string | string[]): bo
     let hasBpVarsImport = false;
     root.walkAtRules(/^import$/i, atRule => {
         for (const path of typeof importPath === "string" ? [importPath] : importPath) {
-            // `atRule.params` includes quotes around the string, so we strip them.
-            if (stripQuotes(atRule.params) === path) {
+            if (stripQuotes(stripLessReference(atRule.params)) === path) {
                 hasBpVarsImport = true;
                 return false; // Stop the iteration
             }
@@ -32,6 +31,14 @@ export function checkImportExists(root: Root, importPath: string | string[]): bo
         return true;
     });
     return hasBpVarsImport;
+}
+
+function stripLessReference(str: string): string {
+    const LESS_REFERENCE = "(reference)";
+    if (str.startsWith(`${LESS_REFERENCE} `)) {
+        return str.substr(LESS_REFERENCE.length + 1);
+    }
+    return str;
 }
 
 function stripQuotes(str: string): string {
