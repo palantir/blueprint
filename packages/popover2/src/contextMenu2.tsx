@@ -220,11 +220,16 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             ref: containerRef,
         });
     } else {
-        return React.createElement(tagName, {
-            className: containerClassName,
-            ref: containerRef,
-            onContextMenu: handleContextMenu,
-        }, maybePopover, children);
+        return React.createElement(
+            tagName,
+            {
+                className: containerClassName,
+                onContextMenu: handleContextMenu,
+                ref: containerRef,
+            },
+            maybePopover,
+            children,
+        );
     }
 };
 ContextMenu2.displayName = "Blueprint.ContextMenu2";
