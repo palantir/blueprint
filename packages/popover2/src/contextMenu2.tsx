@@ -101,6 +101,15 @@ export interface ContextMenu2Props
      * React state (which is an error to do in the render code path of this component).
      */
     onContextMenu?: React.MouseEventHandler<HTMLElement>;
+
+    /**
+     * HTML tag to use for container element. Only used if this component's children are specified as
+     * React node(s), not when it is a render function (in that case, you get to render whatever tag
+     * you wish).
+     *
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
 }
 
 export const ContextMenu2: React.FC<ContextMenu2Props> = ({
@@ -111,6 +120,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     transitionDuration = 100,
     onContextMenu,
     popoverClassName,
+    tagName = "div",
     ...restProps
 }) => {
     const [targetOffset, setTargetOffset] = React.useState<Offset>({ left: 0, top: 0 });
@@ -210,11 +220,15 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             ref: containerRef,
         });
     } else {
-        return (
-            <div className={containerClassName} ref={containerRef} onContextMenu={handleContextMenu}>
-                {maybePopover}
-                {children}
-            </div>
+        return React.createElement(
+            tagName,
+            {
+                className: containerClassName,
+                onContextMenu: handleContextMenu,
+                ref: containerRef,
+            },
+            maybePopover,
+            children,
         );
     }
 };

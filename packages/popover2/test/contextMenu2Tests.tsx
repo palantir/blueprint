@@ -21,7 +21,7 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { ContextMenu2, ContextMenu2Props, Popover2 } from "../src";
+import { Classes, ContextMenu2, ContextMenu2Props, Popover2 } from "../src";
 
 const MENU_ITEMS = [
     <MenuItem key="left" icon="align-left" text="Align Left" />,
@@ -43,6 +43,11 @@ describe("ContextMenu2", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
             assert.isTrue(ctxMenu.find(Popover2).prop("isOpen"));
+        });
+
+        it("renders custom HTML tag if specified", () => {
+            const ctxMenu = mountTestMenu({ tagName: "span" });
+            assert.isTrue(ctxMenu.find(`span.${Classes.CONTEXT_MENU2}`).exists());
         });
 
         function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
