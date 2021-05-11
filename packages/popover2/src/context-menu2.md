@@ -15,7 +15,7 @@ transition to the next major version of Blueprint. See the full
 </div>
 
 Context menus present the user with a list of actions when right-clicking on a target element.
-They are essentially an opinionated version of Popover2, configured with the appropriate
+They essentially generate an opinionated Popover2 instance configured with the appropriate
 interaction handlers.
 
 @reactExample ContextMenu2Example
@@ -47,18 +47,19 @@ export default function ContextMenuExample() {
 }
 ```
 
-`<ContextMenu2>` will render a `<div>` wrapper element which you may customize in a few ways:
-
-- Change the HTML tag with the `tagName` prop
-- Attach common mouse event handlers: `onClick`, `onDoubleClick`, `onMouseDown`, `onMouseUp`
+`<ContextMenu2>` will render a `<div>` wrapper element around its children. You can treat this
+component as a `<div>`, since extra props will be forwarded down to the DOM element. For example,
+you can add an `onClick` handler. You may also customize the tag name of the generated wrapper
+element using the `tagName` prop.
 
 ### Advanced usage
 
 By default, `<ContextMenu2>` will render a wrapper element around its children to contain the
 generated popover, attach an event handler, and get a DOM ref for layout measurement. If this
-container breaks your HTML and/or CSS layout in some way and you wish to omit it, you may do so by
-utilizing ContextMenu2's advanced rendering API, which uses a `children` render function. If you
-use this approach, you must take care to properly use the render props supplied to `children()`:
+wrapper element breaks your HTML and/or CSS layout in some way and you wish to omit it, you may
+do so by utilizing ContextMenu2's advanced rendering API which uses a `children` render function.
+If you use this approach, you must take care to properly use all the render props supplied to
+the `children()` function:
 
 ```tsx
 import classNames from "classnames";

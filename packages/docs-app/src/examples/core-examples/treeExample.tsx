@@ -106,6 +106,8 @@ export const TreeExample: React.FC<IExampleProps> = props => {
     );
 };
 
+const contentSizing = { popoverProps: { popoverClassName: Popover2Classes.POPOVER2_CONTENT_SIZING } };
+
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
 const INITIAL_STATE: TreeNodeInfo[] = [
     {
@@ -113,7 +115,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         hasCaret: true,
         icon: "folder-close",
         label: (
-            <ContextMenu2 popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING} content={<div>Hello there!</div>}>
+            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
                 Folder 0
             </ContextMenu2>
         ),
@@ -123,7 +125,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         icon: "folder-close",
         isExpanded: true,
         label: (
-            <ContextMenu2 popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING} content={<div>Hello there!</div>}>
+            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
                 <Tooltip2 content="I'm a folder <3" placement="right">
                     Folder 1
                 </Tooltip2>
@@ -150,10 +152,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 hasCaret: true,
                 icon: "folder-close",
                 label: (
-                    <ContextMenu2
-                        popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING}
-                        content={<div>Hello there!</div>}
-                    >
+                    <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
                         <Tooltip2 content="foo" placement="right">
                             Folder 2
                         </Tooltip2>
@@ -167,10 +166,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                         hasCaret: true,
                         icon: "folder-close",
                         label: (
-                            <ContextMenu2
-                                popoverClassName={Popover2Classes.POPOVER2_CONTENT_SIZING}
-                                content={<div>Hello there!</div>}
-                            >
+                            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
                                 Folder 3
                             </ContextMenu2>
                         ),
