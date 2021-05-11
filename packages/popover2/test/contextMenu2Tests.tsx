@@ -31,7 +31,7 @@ const MENU_ITEMS = [
 const MENU = <Menu>{MENU_ITEMS}</Menu>;
 const TARGET_CLASSNAME = "test-target";
 
-describe.only("ContextMenu2", () => {
+describe("ContextMenu2", () => {
     describe("basic usage", () => {
         it("renders children and Popover2", () => {
             const ctxMenu = mountTestMenu();
