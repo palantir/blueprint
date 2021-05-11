@@ -74,6 +74,7 @@ export interface ContextMenu2ChildrenProps {
 export interface ContextMenu2Props
     extends IOverlayLifecycleProps,
         Pick<Popover2Props, "popoverClassName" | "transitionDuration">,
+        Pick<React.DOMAttributes<HTMLElement>, "onClick" | "onDoubleClick" | "onMouseDown" | "onMouseUp">,
         Props {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
@@ -119,6 +120,10 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     disabled = false,
     transitionDuration = 100,
     onContextMenu,
+    onClick,
+    onDoubleClick,
+    onMouseDown,
+    onMouseUp,
     popoverClassName,
     tagName = "div",
     ...restProps
@@ -224,7 +229,11 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             tagName,
             {
                 className: containerClassName,
+                onClick,
                 onContextMenu: handleContextMenu,
+                onDoubleClick,
+                onMouseDown,
+                onMouseUp,
                 ref: containerRef,
             },
             maybePopover,
