@@ -115,10 +115,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         hasCaret: true,
         icon: "folder-close",
         label: (
-            <ContextMenu2
-                popoverProps={{ popoverClassName: Popover2Classes.POPOVER2_CONTENT_SIZING }}
-                content={<div>Hello there!</div>}
-            >
+            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
                 Folder 0
             </ContextMenu2>
         ),
