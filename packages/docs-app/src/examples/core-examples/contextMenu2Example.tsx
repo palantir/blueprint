@@ -36,11 +36,15 @@ export const ContextMenu2Example: React.FC<IExampleProps> = props => {
                     <MenuItem icon="layout-circle" text="Circle" />
                     <MenuItem icon="layout-grid" text="Grid" />
                 </MenuItem>
-                <MenuDivider />
-                <MenuItem
-                    disabled={true}
-                    text={`Clicked at (${Math.round(targetOffset.left)}, ${Math.round(targetOffset.top)})`}
-                />
+                {targetOffset === undefined ? undefined : (
+                    <>
+                        <MenuDivider />
+                        <MenuItem
+                            disabled={true}
+                            text={`Clicked at (${Math.round(targetOffset.left)}, ${Math.round(targetOffset.top)})`}
+                        />
+                    </>
+                )}
             </Menu>
         ),
         [],
