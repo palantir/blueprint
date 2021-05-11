@@ -21,7 +21,7 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { Classes, ContextMenu2, ContextMenu2Props, Popover2 } from "../src";
+import { Classes, ContextMenu2, ContextMenu2ContentProps, ContextMenu2Props, Popover2 } from "../src";
 
 const MENU_ITEMS = [
     <MenuItem key="left" icon="align-left" text="Align Left" />,
@@ -59,7 +59,7 @@ describe("ContextMenu2", () => {
         }
     });
 
-    describe("advanced usage", () => {
+    describe("advanced usage (child render function API)", () => {
         it("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
             assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
@@ -72,16 +72,37 @@ describe("ContextMenu2", () => {
             assert.isTrue(ctxMenu.find(Popover2).prop("isOpen"));
         });
 
-        function mountTestMenu() {
+        it("handles context menu event, even if content is undefined", () => {
+            const ctxMenu = mountTestMenu({ content: undefined });
+            let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+            openCtxMenu(ctxMenu);
+            clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo({ left: 10, top: 10 }));
+        });
+
+        it("does not handle context menu event when disabled={true}", () => {
+            const ctxMenu = mountTestMenu({ disabled: true });
+            let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+            openCtxMenu(ctxMenu);
+            clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+        });
+
+        function mountTestMenu(props?: Partial<ContextMenu2Props>) {
             return mount(
-                <ContextMenu2 content={MENU} transitionDuration={0}>
-                    {props => (
+                <ContextMenu2 content={MENU} transitionDuration={0} {...props}>
+                    {ctxMenuProps => (
                         <div
-                            className={classNames(props.className, TARGET_CLASSNAME)}
-                            onContextMenu={props.onContextMenu}
-                            ref={props.ref}
+                            className={classNames(ctxMenuProps.className, TARGET_CLASSNAME)}
+                            onContextMenu={ctxMenuProps.onContextMenu}
+                            ref={ctxMenuProps.ref}
                         >
-                            {props.popover}
+                            {ctxMenuProps.popover}
+                            <span data-testid="content-clicked-info">
+                                {renderClickedInfo(ctxMenuProps.contentProps.targetOffset)}
+                            </span>
                         </div>
                     )}
                 </ContextMenu2>,
@@ -94,5 +115,9 @@ describe("ContextMenu2", () => {
             .find(`.${TARGET_CLASSNAME}`)
             .simulate("contextmenu", { defaultPrevented: false, clientX: 10, clientY: 10 })
             .update();
+    }
+
+    function renderClickedInfo(targetOffset: ContextMenu2ContentProps["targetOffset"]) {
+        return targetOffset === undefined ? "" : `Clicked at (${targetOffset.left}, ${targetOffset.top})`;
     }
 });

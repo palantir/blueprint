@@ -38,11 +38,14 @@ type Offset = {
  * Render props relevant to the _content_ of a context menu (rendered as the underlying Popover's content).
  */
 export interface ContextMenu2ContentProps {
-    /** Whether the context menu is currently open */
+    /** Whether the context menu is currently open. */
     isOpen: boolean;
 
-    /** The computed target offset (x, y) coordinates for the context menu click event */
-    targetOffset: Offset;
+    /**
+     * The computed target offset (x, y) coordinates for the context menu click event.
+     * On first render, before any context menu click event has occurred, this will be undefined.
+     */
+    targetOffset: Offset | undefined;
 
     /** The context menu click event. If isOpen is false, this will be undefined. */
     mouseEvent: React.MouseEvent<HTMLElement> | undefined;
@@ -79,7 +82,6 @@ export interface ContextMenu2Props
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
-     * This should only be `undefined` if `disabled` is also set to `true`.
      */
     content: JSX.Element | ((props: ContextMenu2ContentProps) => JSX.Element) | undefined;
 
@@ -128,7 +130,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
     tagName = "div",
     ...restProps
 }) => {
-    const [targetOffset, setTargetOffset] = React.useState<Offset>({ left: 0, top: 0 });
+    const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
     const [mouseEvent, setMouseEvent] = React.useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -177,9 +179,9 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
                     <div onContextMenu={cancelContextMenu}>{menu}</div>
                 }
                 enforceFocus={false}
-                // Generate key based on offset so a new Popover instance is created
+                // Generate key based on offset so that a new Popover instance is created
                 // when offset changes, to force recomputing position.
-                key={`${targetOffset.left}x${targetOffset.top}`}
+                key={getPopoverKey(targetOffset)}
                 hasBackdrop={true}
                 isOpen={isOpen}
                 minimal={true}
@@ -200,7 +202,12 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
                 return;
             }
 
-            if (!disabled) {
+            // If disabled, we should avoid this extra work. Otherwise: if using the child function API,
+            // we need to make sure contentProps is up to date for correctness, so we handle the event regardless
+            // of whether the consumer returned an undefined menu.
+            const shouldHandleEvent = !disabled && (CoreUtils.isFunction(children) || maybePopover !== undefined);
+
+            if (shouldHandleEvent) {
                 e.preventDefault();
                 e.persist();
                 setMouseEvent(e);
@@ -251,4 +258,8 @@ function getContainingBlockOffset(targetElement: HTMLElement | null | undefined)
         }
     }
     return { left: 0, top: 0 };
+}
+
+function getPopoverKey(targetOffset: Offset | undefined) {
+    return targetOffset === undefined ? "default" : `${targetOffset.left}x${targetOffset.top}`;
 }
