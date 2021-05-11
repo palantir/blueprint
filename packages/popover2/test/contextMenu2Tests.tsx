@@ -52,7 +52,7 @@ describe("ContextMenu2", () => {
 
         function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
             return mount(
-                <ContextMenu2 content={MENU} transitionDuration={0} {...props}>
+                <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu2>,
             );
@@ -92,7 +92,7 @@ describe("ContextMenu2", () => {
 
         function mountTestMenu(props?: Partial<ContextMenu2Props>) {
             return mount(
-                <ContextMenu2 content={MENU} transitionDuration={0} {...props}>
+                <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     {ctxMenuProps => (
                         <div
                             className={classNames(ctxMenuProps.className, TARGET_CLASSNAME)}
