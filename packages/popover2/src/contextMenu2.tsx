@@ -75,7 +75,7 @@ export interface ContextMenu2ChildrenProps {
 }
 
 export interface ContextMenu2Props
-    extends Omit<React.DOMAttributes<HTMLElement>, "children" | "className" | "onContextMenu">,
+    extends Omit<React.HTMLAttributes<HTMLElement>, "children" | "className" | "onContextMenu">,
         Props {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
