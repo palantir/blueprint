@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
 
-import { Classes, ContextMenu, ContextMenuContentProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, ContextMenu, ContextMenuChildrenProps, ContextMenuContentProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuExample: React.FC<ExampleProps> = props => {
@@ -35,8 +35,15 @@ export const ContextMenuExample: React.FC<ExampleProps> = props => {
                     <MenuItem icon="layout-circle" text="Circle" />
                     <MenuItem icon="layout-grid" text="Grid" />
                 </MenuItem>
-                <MenuDivider />
-                <MenuItem disabled={true} text={`Clicked at (${targetOffset.left}, ${targetOffset.top})`} />
+                {targetOffset === undefined ? undefined : (
+                    <>
+                        <MenuDivider />
+                        <MenuItem
+                            disabled={true}
+                            text={`Clicked at (${Math.round(targetOffset.left)}, ${Math.round(targetOffset.top)})`}
+                        />
+                    </>
+                )}
             </Menu>
         ),
         [],
@@ -54,7 +61,16 @@ export const ContextMenuExample: React.FC<ExampleProps> = props => {
 
 const GraphNode: React.FC = () => {
     const children = useCallback(
-        ({ isOpen }) => <div className={classNames("docs-context-menu-node", { "docs-context-menu-open": isOpen })} />,
+        (props: ContextMenuChildrenProps) => (
+            <div
+                className={classNames("docs-context-menu-node", props.className, {
+                    "docs-context-menu-open": props.contentProps.isOpen,
+                })}
+                onContextMenu={props.onContextMenu}
+            >
+                {props.popover}
+            </div>
+        ),
         [],
     );
 

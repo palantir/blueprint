@@ -102,6 +102,8 @@ export const TreeExample: React.FC<ExampleProps> = props => {
     );
 };
 
+const contentSizing = { popoverProps: { popoverClassName: Classes.POPOVER_CONTENT_SIZING } };
+
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
 const INITIAL_STATE: TreeNodeInfo[] = [
     {
@@ -109,7 +111,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         hasCaret: true,
         icon: "folder-close",
         label: (
-            <ContextMenu popoverClassName={Classes.POPOVER_CONTENT_SIZING} content={<div>Hello there!</div>}>
+            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                 Folder 0
             </ContextMenu>
         ),
@@ -119,7 +121,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         icon: "folder-close",
         isExpanded: true,
         label: (
-            <ContextMenu popoverClassName={Classes.POPOVER_CONTENT_SIZING} content={<div>Hello there!</div>}>
+            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                 <Tooltip content="I'm a folder <3" placement="right">
                     Folder 1
                 </Tooltip>
@@ -146,7 +148,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 hasCaret: true,
                 icon: "folder-close",
                 label: (
-                    <ContextMenu popoverClassName={Classes.POPOVER_CONTENT_SIZING} content={<div>Hello there!</div>}>
+                    <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                         <Tooltip content="foo" placement="right">
                             Folder 2
                         </Tooltip>
@@ -160,10 +162,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                         hasCaret: true,
                         icon: "folder-close",
                         label: (
-                            <ContextMenu
-                                popoverClassName={Classes.POPOVER_CONTENT_SIZING}
-                                content={<div>Hello there!</div>}
-                            >
+                            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                                 Folder 3
                             </ContextMenu>
                         ),
