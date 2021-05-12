@@ -76,6 +76,7 @@ export interface ContextMenu2ChildrenProps {
 
 export interface ContextMenu2Props
     extends Omit<React.HTMLAttributes<HTMLElement>, "children" | "className" | "onContextMenu">,
+        React.RefAttributes<any>,
         Props {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
@@ -118,16 +119,17 @@ export interface ContextMenu2Props
     tagName?: keyof JSX.IntrinsicElements;
 }
 
-export const ContextMenu2: React.FC<ContextMenu2Props> = ({
-    className,
-    children,
-    content,
-    disabled = false,
-    onContextMenu,
-    popoverProps,
-    tagName = "div",
-    ...restProps
-}) => {
+export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, ContextMenu2Props>((props, userRef) => {
+    const {
+        className,
+        children,
+        content,
+        disabled = false,
+        onContextMenu,
+        popoverProps,
+        tagName = "div",
+        ...restProps
+    } = props;
     const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
     const [mouseEvent, setMouseEvent] = React.useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
@@ -235,14 +237,14 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = ({
             {
                 className: containerClassName,
                 onContextMenu: handleContextMenu,
-                ref: containerRef,
+                ref: mergeRefs(containerRef, userRef),
                 ...restProps,
             },
             maybePopover,
             children,
         );
     }
-};
+});
 ContextMenu2.displayName = "Blueprint.ContextMenu2";
 
 function getContainingBlockOffset(targetElement: HTMLElement | null | undefined): { left: number; top: number } {

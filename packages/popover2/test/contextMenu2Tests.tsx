@@ -50,6 +50,13 @@ describe("ContextMenu2", () => {
             assert.isTrue(ctxMenu.find(`span.${Classes.CONTEXT_MENU2}`).exists());
         });
 
+        it("supports custom refs", () => {
+            const ref = React.createRef<HTMLElement>();
+            mountTestMenu({ className: "test-container", ref });
+            assert.isDefined(ref.current);
+            assert.isTrue(ref.current?.classList.contains("test-container"));
+        });
+
         function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {
             return mount(
                 <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
