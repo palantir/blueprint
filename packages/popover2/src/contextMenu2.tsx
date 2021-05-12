@@ -229,7 +229,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
             contentProps,
             onContextMenu: handleContextMenu,
             popover: maybePopover,
-            ref: mergeRefs(containerRef, userRef),
+            ref: containerRef,
         });
     } else {
         return React.createElement(
