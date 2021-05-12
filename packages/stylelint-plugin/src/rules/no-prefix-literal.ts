@@ -27,7 +27,7 @@ const messages = stylelint.utils.ruleMessages(ruleName, {
     expected: (unfixed: string, fixed: string) => `Use the \`${fixed}\` variable instead of the \`${unfixed}\` literal`,
 });
 
-const bannedPrefixes = ["bp", "bp3", "bp4"];
+const bannedPrefixes = ["bp3", "bp4"];
 
 interface Options {
     disableFix?: boolean;
