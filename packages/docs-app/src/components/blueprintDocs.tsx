@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { AnchorButton, Classes, HotkeysProvider, Tag } from "@blueprintjs/core";
 import { IDocsCompleteData } from "@blueprintjs/docs-data";
-import { Banner, Documentation, IDocumentationProps, INavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
+import { Banner, Documentation, IDocumentationProps, NavMenuItemProps, NavMenuItem } from "@blueprintjs/docs-theme";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -104,7 +104,7 @@ export class BlueprintDocs extends React.Component<IBlueprintDocsProps, { themeN
         );
     }
 
-    private renderNavMenuItem = (props: INavMenuItemProps) => {
+    private renderNavMenuItem = (props: NavMenuItemProps) => {
         const { route, title } = props.section;
         if (isNavSection(props.section)) {
             // non-interactive header that expands its menu
