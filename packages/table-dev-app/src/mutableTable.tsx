@@ -26,7 +26,7 @@ import {
     H4,
     H6,
     HTMLSelect,
-    IButtonProps,
+    ButtonProps,
     Intent,
     Menu,
     MenuDivider,
@@ -741,7 +741,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         );
     }
 
-    private renderButton(label: string, props: IButtonProps) {
+    private renderButton(label: string, props: ButtonProps) {
         return <Button fill={true} intent={Intent.PRIMARY} text={label} {...props} />;
     }
 

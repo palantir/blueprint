@@ -69,6 +69,17 @@ jobs:
           root: "."
           paths: [packages/*/lib, packages/*/src/generated]
 
+  format-check:
+    docker: *docker-node-lts
+    environment:
+      JUNIT_REPORT_PATH: reports
+      NODE_ENV: test
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: yarn format-check
+
   lint:
     docker: *docker-node-lts
     resource_class: large
@@ -80,22 +91,10 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: mkdir -p ./reports/eslint ./reports/stylelint
-      # we need to compile the lint rules for blueprint
-      - run: yarn compile --scope "@blueprintjs/eslint-plugin"
+      # types and lint rules should already be compiled since this job depends on the 'compile' job
       - run: yarn lint
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
-
-  format-check:
-    docker: *docker-node-lts
-    environment:
-      JUNIT_REPORT_PATH: reports
-      NODE_ENV: test
-    steps:
-      - checkout
-      - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: "." }
-      - run: yarn format-check
 
   dist:
     docker: *docker-node-lts
@@ -214,10 +213,10 @@ workflows:
           requires: [checkout-code]
       - compile:
           requires: [checkout-code]
-      - lint:
-          requires: [checkout-code]
       - format-check:
           requires: [checkout-code]
+      - lint:
+          requires: [compile]
       - dist:
           requires: [compile]
       - test-react-15:
