@@ -280,12 +280,12 @@ export class EditableText extends AbstractPureComponent2<EditableTextProps, IEdi
         // updateInputDimensions is an expensive method. Call it only when the props
         // it depends on change
         if (
+            this.props.alwaysRenderInput !== prevProps.alwaysRenderInput ||
             this.props.maxLines !== prevProps.maxLines ||
             this.props.minLines !== prevProps.minLines ||
             this.props.minWidth !== prevProps.minWidth ||
             this.props.multiline !== prevProps.multiline ||
-            this.state.value !== prevState.value ||
-            this.props.alwaysRenderInput !== prevProps.alwaysRenderInput
+            this.state.value !== prevState.value
         ) {
             this.updateInputDimensions();
         }
