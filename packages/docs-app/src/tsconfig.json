@@ -5,6 +5,8 @@
         "lib": ["dom", "es5", "es6"],
         "outDir": "../dist",
         "sourceMap": false,
-        "strictNullChecks": false
+        "strictNullChecks": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false
     }
 }

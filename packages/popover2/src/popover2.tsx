@@ -293,6 +293,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             ? {
                   // HOVER handlers
                   onBlur: this.handleTargetBlur,
+                  onContextMenu: this.handleTargetContextMenu,
                   onFocus: this.handleTargetFocus,
                   onMouseEnter: this.handleMouseEnter,
                   onMouseLeave: this.handleMouseLeave,
@@ -511,9 +512,18 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         this.lostFocusOnSamePage = e.relatedTarget != null;
     };
 
+    private handleTargetContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+        if (!e.defaultPrevented) {
+            // if a right-click was successfully triggered on the target, we should consider the mouse to have
+            // left the target, since a context menu is being shown
+            this.isMouseInTargetOrPopover = false;
+        }
+    };
+
     private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = true;
 
+        console.log("triggered mouse enter...", this.targetElement);
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
         if (
@@ -532,6 +542,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = false;
 
+        console.log("triggered mouse leave!!", this.targetElement);
         // wait until the event queue is flushed, because we want to leave the
         // popover open if the mouse entered the popover immediately after
         // leaving the target (or vice versa).

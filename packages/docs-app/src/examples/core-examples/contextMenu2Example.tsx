@@ -17,9 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, Menu, MenuDivider, MenuItem, Tooltip, Tag, ContextMenuTarget } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { ContextMenu2, ContextMenu2ChildrenProps, ContextMenu2ContentProps } from "@blueprintjs/popover2";
+import { ContextMenu2, ContextMenu2ChildrenProps, ContextMenu2ContentProps, Tooltip2 } from "@blueprintjs/popover2";
 
 export const ContextMenu2Example: React.FC<IExampleProps> = props => {
     const renderContent = React.useCallback(
@@ -51,14 +51,108 @@ export const ContextMenu2Example: React.FC<IExampleProps> = props => {
     );
 
     return (
-        <ContextMenu2 content={renderContent}>
-            <Example className="docs-context-menu-example" options={false} {...props}>
-                <GraphNode />
-                <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
-            </Example>
-        </ContextMenu2>
+        <Example className="docs-context-menu-example" options={false} {...props}>
+            <Popover2Example />
+            <LegacyContextMenuExample />
+        </Example>
     );
+    // return (
+    //     <ContextMenu2 content={renderContent}>
+    //         <Example className="docs-context-menu-example" options={false} {...props}>
+    //             <GraphNode />
+    //             <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
+    //         </Example>
+    //     </ContextMenu2>
+    // );
 };
+
+function Popover2Example() {
+    return (
+        <div style={{ margin: 20 }}>
+            <Tooltip2 content="hello">
+                <div>
+                    <ContextMenu2
+                        content={
+                            <Menu>
+                                <MenuItem text="First" />
+                                <MenuItem text="Second" />
+                            </Menu>
+                        }
+                    >
+                        <Tag interactive={true}>Tooltip2 + ContextMenu2 (hover and right click me)</Tag>
+                    </ContextMenu2>
+                </div>
+            </Tooltip2>
+            <br />
+            <br />
+            <Tooltip content="hello">
+                <div>
+                    <ContextMenu2
+                        content={
+                            <Menu>
+                                <MenuItem text="First" />
+                                <MenuItem text="Second" />
+                            </Menu>
+                        }
+                    >
+                        <Tag interactive={true}>Tooltip + ContextMenu2 (hover and right click me)</Tag>
+                    </ContextMenu2>
+                </div>
+            </Tooltip>
+        </div>
+    );
+}
+
+function LegacyContextMenuExample() {
+    return (
+        <div style={{ margin: 20 }}>
+            <Tooltip2 content="hello">
+                <div>
+                    <ContextMenu
+                        content={
+                            <Menu>
+                                <MenuItem text="First" />
+                                <MenuItem text="Second" />
+                            </Menu>
+                        }
+                    >
+                        <Tag interactive={true}>Tooltip2 + @ContextMenuTarget (hover and right click me)</Tag>
+                    </ContextMenu>
+                </div>
+            </Tooltip2>
+            <br />
+            <br />
+            <Tooltip content="hello">
+                <div>
+                    <ContextMenu
+                        content={
+                            <Menu>
+                                <MenuItem text="First" />
+                                <MenuItem text="Second" />
+                            </Menu>
+                        }
+                    >
+                        <Tag interactive={true}>Tooltip + @ContextMenuTarget (hover and right click me)</Tag>
+                    </ContextMenu>
+                </div>
+            </Tooltip>
+        </div>
+    );
+}
+
+@ContextMenuTarget
+class ContextMenu extends React.Component<{
+    children: React.ReactElement;
+    content: React.ReactElement;
+}> {
+    public render() {
+        return this.props.children;
+    }
+
+    public renderContextMenu() {
+        return this.props.content;
+    }
+}
 
 const GraphNode: React.FC = () => {
     const children = React.useCallback(
