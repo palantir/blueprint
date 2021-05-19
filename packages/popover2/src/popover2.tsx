@@ -513,10 +513,12 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     };
 
     private handleTargetContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        if (!e.defaultPrevented) {
-            // if a right-click was successfully triggered on the target, we should consider the mouse to have
-            // left the target, since a context menu is being shown
-            this.isMouseInTargetOrPopover = false;
+        // we assume that when someone prevents the default interaction on this event (a browser native context menu),
+        // they are showing a custom context menu (as ContextMenu2 does)
+        if (e.defaultPrevented) {
+            // if custom context menu is being shown, we should consider the mouse to have left the target
+            // this.handleMouseLeave(e);
+            this.setOpenState(false, e, this.props.hoverCloseDelay);
         }
     };
 
