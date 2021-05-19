@@ -58,7 +58,7 @@ The children you provide to this component are rendered as contents inside the
 Children of the `MultistepDialog` are filtered down to only `DialogStep` components and rendered in order.
 `DialogStep` children are managed by the component; clicking one will change selection.
 
-@interface MultistepDialogProps
+@interface IMultistepDialogProps
 
 @### DialogStep
 
@@ -67,4 +67,4 @@ parent `MultistepDialog` wrapper. `DialogStep` title text can be set via the `ti
 
 The associated step panel will be visible when the `DialogStep` is selected.
 
-@interface DialogStepProps
+@interface IDialogStepProps
