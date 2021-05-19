@@ -15,7 +15,7 @@ We use the term "dialog" to avoid confusion with the adjective.
 
 Blueprint provides two types of dialogs:
 
-1. Standard dialog: use the `Dialog` component for a dialog that only requires one view. 
+1. Standard dialog: use the `Dialog` component for a dialog that only requires one view.
 1. Multistep dialog: use the `MultistepDialog` component for a dialog with multiple sequential views.
 
 @## Dialog
@@ -55,16 +55,16 @@ The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG` element. Typically, you will want to render a panel with
 `Classes.DIALOG_BODY` that contains the body content for each step.
 
-Children of the `MultistepDialog` are filtered down to only `Step` components and rendered in order.
-`Step` children are managed by the component; clicking one will change selection. 
+Children of the `MultistepDialog` are filtered down to only `DialogStep` components and rendered in order.
+`DialogStep` children are managed by the component; clicking one will change selection.
 
 @interface IMultistepDialogProps
 
-@### Step
+@### DialogStep
 
-`Step` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
-parent `MultistepDialog` wrapper. Step title text can be set via the `title` prop.
+`DialogStep` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
+parent `MultistepDialog` wrapper. `DialogStep` title text can be set via the `title` prop.
 
-The associated step panel will be visible when the `Step` is selected.
+The associated step panel will be visible when the `DialogStep` is selected.
 
-@interface IStepProps
+@interface IDialogStepProps
