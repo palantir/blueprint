@@ -241,11 +241,14 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     private getInitialIndexFromProps(props: MultistepDialogProps) {
         if (props.initialStepIndex) {
-            const boundedInitialIndex = Math.max(0, Math.min(props.initialStepIndex, this.getDialogStepChildren(props).length - 1));
+            const boundedInitialIndex = Math.max(
+                0,
+                Math.min(props.initialStepIndex, this.getDialogStepChildren(props).length - 1),
+            );
             return {
                 lastViewedIndex: boundedInitialIndex,
                 selectedIndex: boundedInitialIndex,
-            }
+            };
         } else {
             return INITIAL_STATE;
         }

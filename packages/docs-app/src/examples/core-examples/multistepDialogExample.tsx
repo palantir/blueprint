@@ -104,7 +104,14 @@ export class MultistepDialogExample extends React.PureComponent<
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal, initialStepIndex } = this.state;
+        const {
+            autoFocus,
+            enforceFocus,
+            canEscapeKeyClose,
+            canOutsideClickClose,
+            usePortal,
+            initialStepIndex,
+        } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -120,7 +127,12 @@ export class MultistepDialogExample extends React.PureComponent<
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
                 <Label>Initial step index (0-indexed)</Label>
-                <NumericInput value={initialStepIndex} onValueChange={this.handleInitialStepIndexChange} max={2} min={-1} />
+                <NumericInput
+                    value={initialStepIndex}
+                    onValueChange={this.handleInitialStepIndexChange}
+                    max={2}
+                    min={-1}
+                />
             </>
         );
     }
