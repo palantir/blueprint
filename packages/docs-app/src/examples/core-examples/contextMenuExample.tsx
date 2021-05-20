@@ -17,7 +17,15 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
 
-import { Classes, ContextMenu, ContextMenuChildrenProps, ContextMenuContentProps, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import {
+    Classes,
+    ContextMenu,
+    ContextMenuChildrenProps,
+    ContextMenuContentProps,
+    Menu,
+    MenuDivider,
+    MenuItem,
+} from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuExample: React.FC<ExampleProps> = props => {

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { mergeRefs, Props, Utils } from "../../common";
 import * as Classes from "../../common/classes";
@@ -67,12 +67,13 @@ export interface ContextMenuChildrenProps {
 
 export interface ContextMenuProps
     extends Omit<React.HTMLAttributes<HTMLElement>, "children" | "className" | "onContextMenu">,
+        React.RefAttributes<any>,
         Props {
     /**
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
      */
-    content: JSX.Element | ((props: ContextMenuContentProps) => JSX.Element) | undefined;
+    content: JSX.Element | ((props: ContextMenuContentProps) => JSX.Element | undefined) | undefined;
 
     /**
      * The context menu target. This may optionally be a render function so you can use
@@ -116,16 +117,17 @@ export interface ContextMenuProps
     tagName?: keyof JSX.IntrinsicElements;
 }
 
-export const ContextMenu: React.FC<ContextMenuProps> = ({
-    className,
-    children,
-    content,
-    disabled = false,
-    onContextMenu,
-    popoverProps,
-    tagName = "div",
-    ...restProps
-}) => {
+export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMenuProps>((props, userRef) => {
+    const {
+        className,
+        children,
+        content,
+        disabled = false,
+        onContextMenu,
+        popoverProps,
+        tagName = "div",
+        ...restProps
+    } = props;
     const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
     const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -229,14 +231,14 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
             {
                 className: containerClassName,
                 onContextMenu: handleContextMenu,
-                ref: containerRef,
+                ref: mergeRefs(containerRef, userRef),
                 ...restProps,
             },
             maybePopover,
             children,
         );
     }
-};
+});
 ContextMenu.displayName = "Blueprint.ContextMenu";
 
 function getContainingBlockOffset(targetElement: HTMLElement | null | undefined): { left: number; top: number } {
