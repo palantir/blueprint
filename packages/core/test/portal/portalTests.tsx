@@ -86,6 +86,26 @@ describe("<Portal>", () => {
         assert.isTrue(portalElement?.classList.contains(Classes.PORTAL));
     });
 
+    it("does not crash when removing multiple classes from className", () => {
+        portal = mount(
+            <Portal className="class-one class-two">
+                <p>test</p>
+            </Portal>,
+        );
+        portal.setProps({ className: undefined });
+        // no assertion necessary - will crash on incorrect code
+    });
+
+    it("does not crash when an empty string is provided for className", () => {
+        portal = mount(
+            <Portal className="">
+                <p>test</p>
+            </Portal>,
+        );
+        portal.setProps({ className: "class-one" });
+        // no assertion necessary - will crash on incorrect code
+    });
+
     it("children mount before onChildrenMount invoked", done => {
         function spy() {
             // can't use `portal` in here as `mount()` has not finished, so query DOM directly
