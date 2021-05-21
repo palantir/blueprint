@@ -57,6 +57,8 @@ export interface IMultistepDialogProps extends DialogProps {
     /**
      * Whether to reset the dialog state to its initial state on close.
      * By default, closing the dialog will reset its state.
+     *
+     * @default true
      */
     resetOnClose?: boolean;
 
@@ -77,11 +79,6 @@ const PADDING_BOTTOM = 0;
 
 const MIN_WIDTH = 800;
 
-const INITIAL_STATE = {
-    lastViewedIndex: 0,
-    selectedIndex: 0,
-};
-
 @polyfill
 export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps, IMultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
@@ -89,15 +86,10 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
+        resetOnClose: true,
     };
 
-    public state: IMultistepDialogState;
-
-    constructor(props: MultistepDialogProps) {
-        super(props);
-
-        this.state = this.getInitialIndexFromProps(props);
-    }
+    public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
         return (
@@ -112,7 +104,7 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     public componentDidUpdate(prevProps: MultistepDialogProps) {
         if (
-            (prevProps.resetOnClose === undefined || prevProps.resetOnClose) &&
+            (prevProps.resetOnClose || prevProps.initialStepIndex !== this.props.initialStepIndex) &&
             !prevProps.isOpen &&
             this.props.isOpen
         ) {
@@ -250,7 +242,10 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
                 selectedIndex: boundedInitialIndex,
             };
         } else {
-            return INITIAL_STATE;
+            return {
+                lastViewedIndex: 0,
+                selectedIndex: 0,
+            };
         }
     }
 }
