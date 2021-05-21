@@ -55,9 +55,9 @@ export class MultistepDialogExample extends React.PureComponent<
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
+        initialStepIndex: 0,
         isOpen: false,
         usePortal: true,
-        initialStepIndex: 0,
     };
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
