@@ -57,8 +57,17 @@ export interface IMultistepDialogProps extends DialogProps {
     /**
      * Whether to reset the dialog state to its initial state on close.
      * By default, closing the dialog will reset its state.
+     *
+     * @default true
      */
     resetOnClose?: boolean;
+
+    /**
+     * A 0 indexed initial step to start off on, to start in the middle of the dialog, for example.
+     * If the provided index exceeds the number of steps, it defaults to the last step.
+     * If a negative index is provided, it defaults to the first step.
+     */
+    initialStepIndex?: number;
 }
 
 interface IMultistepDialogState {
@@ -70,11 +79,6 @@ const PADDING_BOTTOM = 0;
 
 const MIN_WIDTH = 800;
 
-const INITIAL_STATE = {
-    lastViewedIndex: 0,
-    selectedIndex: 0,
-};
-
 @polyfill
 export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps, IMultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
@@ -82,9 +86,10 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     public static defaultProps: Partial<MultistepDialogProps> = {
         canOutsideClickClose: true,
         isOpen: false,
+        resetOnClose: true,
     };
 
-    public state: IMultistepDialogState = INITIAL_STATE;
+    public state: IMultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
         return (
@@ -99,11 +104,11 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
 
     public componentDidUpdate(prevProps: MultistepDialogProps) {
         if (
-            (prevProps.resetOnClose === undefined || prevProps.resetOnClose) &&
+            (prevProps.resetOnClose || prevProps.initialStepIndex !== this.props.initialStepIndex) &&
             !prevProps.isOpen &&
             this.props.isOpen
         ) {
-            this.setState(INITIAL_STATE);
+            this.setState(this.getInitialIndexFromProps(this.props));
         }
     }
 
@@ -224,6 +229,24 @@ export class MultistepDialog extends AbstractPureComponent2<MultistepDialogProps
     /** Filters children to only `<DialogStep>`s */
     private getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode } = this.props) {
         return React.Children.toArray(props.children).filter(isDialogStepElement);
+    }
+
+    private getInitialIndexFromProps(props: MultistepDialogProps) {
+        if (props.initialStepIndex !== undefined) {
+            const boundedInitialIndex = Math.max(
+                0,
+                Math.min(props.initialStepIndex, this.getDialogStepChildren(props).length - 1),
+            );
+            return {
+                lastViewedIndex: boundedInitialIndex,
+                selectedIndex: boundedInitialIndex,
+            };
+        } else {
+            return {
+                lastViewedIndex: 0,
+                selectedIndex: 0,
+            };
+        }
     }
 }
 

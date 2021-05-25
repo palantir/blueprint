@@ -28,6 +28,8 @@ import {
     ButtonProps,
     RadioGroup,
     Radio,
+    NumericInput,
+    Label,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
@@ -41,6 +43,7 @@ export interface IMultistepDialogExampleState {
     isOpen: boolean;
     usePortal: boolean;
     value?: string;
+    initialStepIndex: number;
 }
 
 export class MultistepDialogExample extends React.PureComponent<
@@ -52,6 +55,7 @@ export class MultistepDialogExample extends React.PureComponent<
         canEscapeKeyClose: true,
         canOutsideClickClose: true,
         enforceFocus: true,
+        initialStepIndex: 0,
         isOpen: false,
         usePortal: true,
     };
@@ -100,7 +104,14 @@ export class MultistepDialogExample extends React.PureComponent<
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, usePortal } = this.state;
+        const {
+            autoFocus,
+            enforceFocus,
+            canEscapeKeyClose,
+            canOutsideClickClose,
+            usePortal,
+            initialStepIndex,
+        } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -115,6 +126,13 @@ export class MultistepDialogExample extends React.PureComponent<
                     onChange={this.handleOutsideClickChange}
                 />
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
+                <Label>Initial step index (0-indexed)</Label>
+                <NumericInput
+                    value={initialStepIndex}
+                    onValueChange={this.handleInitialStepIndexChange}
+                    max={2}
+                    min={-1}
+                />
             </>
         );
     }
@@ -124,6 +142,8 @@ export class MultistepDialogExample extends React.PureComponent<
     private handleClose = () => this.setState({ isOpen: false });
 
     private handleSelectionChange = handleStringChange(value => this.setState({ value }));
+
+    private handleInitialStepIndexChange = (newValue: number) => this.setState({ initialStepIndex: newValue });
 }
 
 export interface ISelectPanelProps {
