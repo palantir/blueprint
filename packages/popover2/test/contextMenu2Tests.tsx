@@ -21,7 +21,7 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { Classes, ContextMenu2, ContextMenu2ContentProps, ContextMenu2Props, Popover2 } from "../src";
+import { Classes, ContextMenu2, ContextMenu2ContentProps, ContextMenu2Props, Popover2, Tooltip2 } from "../src";
 
 const MENU_ITEMS = [
     <MenuItem key="left" icon="align-left" text="Align Left" />,
@@ -114,6 +114,48 @@ describe("ContextMenu2", () => {
                     )}
                 </ContextMenu2>,
             );
+        }
+    });
+
+    describe("interacting with other components", () => {
+        it("closes parent Tooltip2", () => {
+            const wrappedCtxMenu = mount(
+                <Tooltip2 content="hello">
+                    <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }}>
+                        <div className={TARGET_CLASSNAME} />
+                    </ContextMenu2>
+                </Tooltip2>,
+            );
+
+            openTooltip(wrappedCtxMenu);
+            openCtxMenu(wrappedCtxMenu);
+            assert.isTrue(
+                wrappedCtxMenu.find(ContextMenu2).find(Popover2).prop("isOpen"),
+                "ContextMenu2 popover should be open",
+            );
+            assert.lengthOf(wrappedCtxMenu.find(Classes.TOOLTIP2), 0, "Tooltip2 should be closed");
+        });
+
+        it("closes child Tooltip2", () => {
+            const ctxMenu = mount(
+                <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }}>
+                    <Tooltip2 content="hello">
+                        <div className={TARGET_CLASSNAME} />
+                    </Tooltip2>
+                </ContextMenu2>,
+            );
+
+            openTooltip(ctxMenu);
+            openCtxMenu(ctxMenu);
+            assert.isTrue(
+                ctxMenu.find(ContextMenu2).find(Popover2).first().prop("isOpen"),
+                "ContextMenu2 popover should be open",
+            );
+            assert.lengthOf(ctxMenu.find(Classes.TOOLTIP2), 0, "Tooltip2 should be closed");
+        });
+
+        function openTooltip(wrapper: ReactWrapper) {
+            wrapper.find(`.${TARGET_CLASSNAME}`).simulate("mouseenter");
         }
     });
 

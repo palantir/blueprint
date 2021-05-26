@@ -514,18 +514,15 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
     private handleTargetContextMenu = (e: React.MouseEvent<HTMLElement>) => {
         // we assume that when someone prevents the default interaction on this event (a browser native context menu),
-        // they are showing a custom context menu (as ContextMenu2 does)
+        // they are showing a custom context menu (as ContextMenu2 does); in this case, we should close this popover/tooltip
         if (e.defaultPrevented) {
-            // if custom context menu is being shown, we should consider the mouse to have left the target
-            // this.handleMouseLeave(e);
-            this.setOpenState(false, e, this.props.hoverCloseDelay);
+            this.setOpenState(false, e);
         }
     };
 
     private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = true;
 
-        console.log("triggered mouse enter...", this.targetElement);
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
         // trigger the mouse leave event, as hovering over the popover shouldn't count.
         if (
@@ -544,7 +541,6 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = false;
 
-        console.log("triggered mouse leave!!", this.targetElement);
         // wait until the event queue is flushed, because we want to leave the
         // popover open if the mouse entered the popover immediately after
         // leaving the target (or vice versa).
