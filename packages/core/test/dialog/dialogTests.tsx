@@ -64,6 +64,21 @@ describe("<Dialog>", () => {
         document.body.removeChild(container);
     });
 
+    it("renders with dialog role", () => {
+        const container = document.createElement("div");
+        document.body.appendChild(container);
+        mount(
+            <Dialog isOpen={true} portalContainer={container}>
+                {createDialogContents()}
+            </Dialog>,
+        );
+        assert.equal(
+            container.querySelector("[role='tab']"),
+            container.querySelector(`.${Classes.DIALOG}`),
+            "missing dialog role",
+        );
+    });
+
     it("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
