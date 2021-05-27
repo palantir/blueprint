@@ -20,7 +20,7 @@ import { Button, H5, HotkeysTarget2, KeyCombo, MenuItem, Position, Switch, Toast
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 
-import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./films";
+import { areFilmsEqual, createFilm, filmSelectProps, IFilm, renderCreateFilmOption } from "./../../common/films";
 
 const FilmOmnibar = Omnibar.ofType<IFilm>();
 

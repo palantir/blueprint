@@ -50,6 +50,8 @@ import {
     StrictModifierNames,
 } from "@blueprintjs/popover2";
 
+import FilmSelect from "../../common/filmSelect";
+
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
 
 const INTERACTION_KINDS = [
@@ -207,7 +209,8 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                         <option value="1">Input</option>
                         <option value="2">Slider</option>
                         <option value="3">Menu</option>
-                        <option value="4">Empty</option>
+                        <option value="4">Select</option>
+                        <option value="5">Empty</option>
                     </HTMLSelect>
                 </Label>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
@@ -317,6 +320,9 @@ export class Popover2Example extends React.PureComponent<IExampleProps, IPopover
                     <MenuItem icon="underline" text="Underline" />
                 </MenuItem>
             </Menu>,
+            <div key="filmselect" style={{ padding: 20 }}>
+                <FilmSelect popoverProps={{ captureDismiss: true }} />
+            </div>,
         ][index];
     }
 
