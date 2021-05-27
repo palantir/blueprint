@@ -129,7 +129,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         ...restProps
     } = props;
 
-    // click target offset relative to the page (e.pageX/pageY), since the target will be rendered in a Portal
+    // click target offset relative to the viewport (e.clientX/clientY), since the target will be rendered in a Portal
     const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
     // hold a reference to the click mouse event to pass to content/child render functions
     const [mouseEvent, setMouseEvent] = React.useState<React.MouseEvent<HTMLElement>>();
@@ -216,7 +216,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 e.preventDefault();
                 e.persist();
                 setMouseEvent(e);
-                setTargetOffset({ left: e.pageX, top: e.pageY });
+                setTargetOffset({ left: e.clientX, top: e.clientY });
                 setIsOpen(true);
             }
 

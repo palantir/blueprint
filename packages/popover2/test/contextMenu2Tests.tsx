@@ -161,7 +161,7 @@ describe("ContextMenu2", () => {
     function openCtxMenu(ctxMenu: ReactWrapper) {
         ctxMenu
             .find(`.${TARGET_CLASSNAME}`)
-            .simulate("contextmenu", { defaultPrevented: false, pageX: 10, pageY: 10 })
+            .simulate("contextmenu", { defaultPrevented: false, clientX: 10, clientY: 10 })
             .update();
     }
 
