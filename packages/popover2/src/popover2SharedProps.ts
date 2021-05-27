@@ -168,7 +168,8 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
 
     /**
      * The placement (relative to the target) at which the popover should appear.
-     * Mutually exclusive with `position` prop.
+     * Mutually exclusive with `position` prop. Prefer using this over `position`,
+     * as it more closely aligns with Popper.js semantics.
      *
      * The default value of `"auto"` will choose the best placement when opened
      * and will allow the popover to reposition itself to remain onscreen as the
