@@ -178,6 +178,12 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         );
     };
 
+    // popper innerRef gives us a handle on the transition container, since that's what we render as the overlay child,
+    // so if we want to look at our actual popover element, we need to reach inside a bit
+    private getPopoverElement() {
+        return this.popoverElement?.querySelector(`.${Classes.POPOVER2}`);
+    }
+
     private getIsOpen(props: Popover2Props<T>) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {
@@ -548,7 +554,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER2}`);
         const eventPopoverV1 = eventTarget.closest(`.${CoreClasses.POPOVER}`);
-        const isEventFromSelf = (eventPopover ?? eventPopoverV1) === this.popoverElement;
+        const isEventFromSelf = (eventPopover ?? eventPopoverV1) === this.getPopoverElement();
 
         const isEventPopoverCapturing =
             eventPopover?.classList.contains(Classes.POPOVER2_CAPTURING_DISMISS) ??
@@ -631,7 +637,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     }
 
     private isElementInPopover(element: Element) {
-        return this.popoverElement != null && this.popoverElement.contains(element);
+        return this.getPopoverElement()?.contains(element) ?? false;
     }
 }
 
