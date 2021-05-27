@@ -104,7 +104,6 @@ describe("ContextMenu2", () => {
                         <div
                             className={classNames(ctxMenuProps.className, TARGET_CLASSNAME)}
                             onContextMenu={ctxMenuProps.onContextMenu}
-                            ref={ctxMenuProps.ref}
                         >
                             {ctxMenuProps.popover}
                             <span data-testid="content-clicked-info">
@@ -162,7 +161,7 @@ describe("ContextMenu2", () => {
     function openCtxMenu(ctxMenu: ReactWrapper) {
         ctxMenu
             .find(`.${TARGET_CLASSNAME}`)
-            .simulate("contextmenu", { defaultPrevented: false, clientX: 10, clientY: 10 })
+            .simulate("contextmenu", { defaultPrevented: false, pageX: 10, pageY: 10 })
             .update();
     }
 

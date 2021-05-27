@@ -20,6 +20,7 @@ import * as React from "react";
 import {
     Classes as CoreClasses,
     IOverlayLifecycleProps,
+    Portal,
     Props,
     Utils as CoreUtils,
     mergeRefs,
@@ -69,9 +70,6 @@ export interface ContextMenu2ChildrenProps {
 
     /** Popover element rendered by ContextMenu, used to establish a click target to position the menu */
     popover: JSX.Element | undefined;
-
-    /** DOM ref for the context menu target, used to calculate menu position on the page */
-    ref: React.Ref<any>;
 }
 
 export interface ContextMenu2Props
@@ -130,10 +128,12 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         tagName = "div",
         ...restProps
     } = props;
+
+    // click target offset relative to the page (e.pageX/pageY), since the target will be rendered in a Portal
     const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
+    // hold a reference to the click mouse event to pass to content/child render functions
     const [mouseEvent, setMouseEvent] = React.useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
-    const containerRef = React.useRef<HTMLDivElement>(null);
 
     // If disabled prop is changed, we don't want our old context menu to stick around.
     // If it has just been enabled (disabled = false), then the menu ought to be opened by
@@ -155,11 +155,13 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
     const targetRef = React.useRef<HTMLDivElement>(null);
     const renderTarget = React.useCallback(
         ({ ref }: Popover2TargetProps) => (
-            <div
-                className={Classes.CONTEXT_MENU2_POPOVER2_TARGET}
-                style={targetOffset}
-                ref={mergeRefs(ref, targetRef)}
-            />
+            <Portal>
+                <div
+                    className={Classes.CONTEXT_MENU2_POPOVER2_TARGET}
+                    style={targetOffset}
+                    ref={mergeRefs(ref, targetRef)}
+                />
+            </Portal>
         ),
         [targetOffset],
     );
@@ -214,14 +216,13 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 e.preventDefault();
                 e.persist();
                 setMouseEvent(e);
-                const { left, top } = getContainingBlockOffset(containerRef.current);
-                setTargetOffset({ left: e.clientX - left, top: e.clientY - top });
+                setTargetOffset({ left: e.pageX, top: e.pageY });
                 setIsOpen(true);
             }
 
             onContextMenu?.(e);
         },
-        [containerRef.current, onContextMenu, disabled],
+        [onContextMenu, disabled],
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU2);
@@ -232,7 +233,6 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
             contentProps,
             onContextMenu: handleContextMenu,
             popover: maybePopover,
-            ref: containerRef,
         });
     } else {
         return React.createElement(
@@ -240,7 +240,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
             {
                 className: containerClassName,
                 onContextMenu: handleContextMenu,
-                ref: mergeRefs(containerRef, userRef),
+                ref: userRef,
                 ...restProps,
             },
             maybePopover,
@@ -249,16 +249,6 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
     }
 });
 ContextMenu2.displayName = "Blueprint.ContextMenu2";
-
-function getContainingBlockOffset(targetElement: HTMLElement | null | undefined): { left: number; top: number } {
-    if (targetElement != null) {
-        const containingBlock = targetElement.closest(`.${CoreClasses.FIXED_POSITIONING_CONTAINING_BLOCK}`);
-        if (containingBlock != null) {
-            return containingBlock.getBoundingClientRect();
-        }
-    }
-    return { left: 0, top: 0 };
-}
 
 function getPopoverKey(targetOffset: Offset | undefined) {
     return targetOffset === undefined ? "default" : `${targetOffset.left}x${targetOffset.top}`;

@@ -97,7 +97,7 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
 
     public render() {
         return (
-            <div className={classNames(Classes.TREE, Classes.FIXED_POSITIONING_CONTAINING_BLOCK, this.props.className)}>
+            <div className={classNames(Classes.TREE, this.props.className)}>
                 {this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)}
             </div>
         );
