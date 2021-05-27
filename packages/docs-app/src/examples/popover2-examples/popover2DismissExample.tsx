@@ -38,9 +38,11 @@ export class Popover2DismissExample extends React.PureComponent<
         return (
             <Example options={false} {...this.props}>
                 <Popover2
-                    // don't autofocus because it is open by default on the page,
-                    // and it will make users scroll to this example if autofocused
+                    inheritDarkTheme={false}
+                    // don't autofocus or enforce focus because it is open by default on the page,
+                    // and that will make unexpectedly users scroll to this example
                     autoFocus={false}
+                    enforceFocus={false}
                     isOpen={this.state.isOpen}
                     onInteraction={this.handleInteraction}
                     onClosed={this.reopen}
@@ -58,6 +60,7 @@ export class Popover2DismissExample extends React.PureComponent<
                                 />
                                 <Popover2
                                     autoFocus={false}
+                                    enforceFocus={false}
                                     captureDismiss={this.state.captureDismiss}
                                     content={POPOVER_CONTENTS}
                                     placement="right"
