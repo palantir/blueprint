@@ -293,6 +293,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             ? {
                   // HOVER handlers
                   onBlur: this.handleTargetBlur,
+                  onContextMenu: this.handleTargetContextMenu,
                   onFocus: this.handleTargetFocus,
                   onMouseEnter: this.handleMouseEnter,
                   onMouseLeave: this.handleMouseLeave,
@@ -509,6 +510,14 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;
+    };
+
+    private handleTargetContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+        // we assume that when someone prevents the default interaction on this event (a browser native context menu),
+        // they are showing a custom context menu (as ContextMenu2 does); in this case, we should close this popover/tooltip
+        if (e.defaultPrevented) {
+            this.setOpenState(false, e);
+        }
     };
 
     private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {

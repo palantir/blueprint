@@ -174,6 +174,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         menu === undefined ? undefined : (
             <Popover2
                 {...popoverProps}
+                autoFocus={false}
                 content={
                     // this prevents right-clicking inside our context menu
                     <div onContextMenu={cancelContextMenu}>{menu}</div>
@@ -186,7 +187,9 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 isOpen={isOpen}
                 minimal={true}
                 onInteraction={handlePopoverInteraction}
-                popoverClassName={classNames(popoverProps?.popoverClassName, { [CoreClasses.DARK]: isDarkTheme })}
+                popoverClassName={classNames(Classes.CONTEXT_MENU2_POPOVER2, popoverProps?.popoverClassName, {
+                    [CoreClasses.DARK]: isDarkTheme,
+                })}
                 placement="right-start"
                 positioningStrategy="fixed"
                 rootBoundary="viewport"
