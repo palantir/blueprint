@@ -178,6 +178,12 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         );
     };
 
+    // popper innerRef gives us a handle on the transition container, since that's what we render as the overlay child,
+    // so if we want to look at our actual popover element, we need to reach inside a bit
+    private getPopoverElement() {
+        return this.popoverElement?.querySelector(`.${Classes.POPOVER2}`);
+    }
+
     private getIsOpen(props: Popover2Props<T>) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {
@@ -556,25 +562,33 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER2}`);
-        const isEventFromSelf = eventPopover === this.popoverElement;
-        const isEventPopoverCapturing = eventPopover?.classList.contains(Classes.POPOVER2_CAPTURING_DISMISS);
+        const eventPopoverV1 = eventTarget.closest(`.${CoreClasses.POPOVER}`);
+        const isEventFromSelf = (eventPopover ?? eventPopoverV1) === this.getPopoverElement();
+
+        const isEventPopoverCapturing =
+            eventPopover?.classList.contains(Classes.POPOVER2_CAPTURING_DISMISS) ??
+            eventPopoverV1?.classList.contains(CoreClasses.POPOVER_CAPTURING_DISMISS) ??
+            false;
 
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
         const dismissElement = eventTarget.closest(
             `.${Classes.POPOVER2_DISMISS}, .${Classes.POPOVER2_DISMISS_OVERRIDE}`,
         );
-        const shouldDismiss = dismissElement?.classList.contains(Classes.POPOVER2_DISMISS);
-
         // dismiss selectors from the "V1" version of Popover in the core pacakge
         // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover2
         // this can be removed once Popover2 is merged into core in v4.0
         const dismissElementV1 = eventTarget.closest(
             `.${CoreClasses.POPOVER_DISMISS}, .${CoreClasses.POPOVER_DISMISS_OVERRIDE}`,
         );
-        const shouldDismissV1 = dismissElementV1?.classList.contains(CoreClasses.POPOVER_DISMISS);
+
+        const shouldDismiss =
+            dismissElement?.classList.contains(Classes.POPOVER2_DISMISS) ??
+            dismissElementV1?.classList.contains(CoreClasses.POPOVER_DISMISS) ??
+            false;
 
         const isDisabled = eventTarget.closest(`:disabled, .${CoreClasses.DISABLED}`) != null;
-        if ((shouldDismiss || shouldDismissV1) && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
+
+        if (shouldDismiss && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
             this.setOpenState(false, e);
         }
     };
@@ -632,7 +646,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     }
 
     private isElementInPopover(element: Element) {
-        return this.popoverElement != null && this.popoverElement.contains(element);
+        return this.getPopoverElement()?.contains(element) ?? false;
     }
 }
 

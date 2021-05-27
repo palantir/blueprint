@@ -30,7 +30,7 @@ import {
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmOption,
     TOP_100_FILMS,
-} from "./films";
+} from "../../common/films";
 
 const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 
