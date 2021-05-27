@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/popover2",
-    "version": "0.9.0",
+    "version": "0.10.0",
     "description": "Popover2 and dependent components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,7 +35,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.44.3",
+        "@blueprintjs/core": "^3.45.0",
         "@popperjs/core": "^2.5.4",
         "classnames": "^2.2",
         "dom4": "^2.1.5",
