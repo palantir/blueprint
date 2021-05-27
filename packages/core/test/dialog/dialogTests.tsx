@@ -73,7 +73,7 @@ describe("<Dialog>", () => {
             </Dialog>,
         );
         assert.equal(
-            container.querySelector("[role='tab']"),
+            container.querySelector("[role='dialog']"),
             container.querySelector(`.${Classes.DIALOG}`),
             "missing dialog role",
         );
