@@ -19,7 +19,7 @@ import classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 
-import { Menu, MenuItem } from "@blueprintjs/core";
+import { Classes as CoreClasses, Menu, MenuItem, Keys } from "@blueprintjs/core";
 
 import { Classes, ContextMenu2, ContextMenu2ContentProps, ContextMenu2Props, Popover2, Tooltip2 } from "../src";
 
@@ -55,6 +55,19 @@ describe("ContextMenu2", () => {
             mountTestMenu({ className: "test-container", ref });
             assert.isDefined(ref.current);
             assert.isTrue(ref.current?.classList.contains("test-container"));
+        });
+
+        it("closes popover on ESC key press", () => {
+            const ctxMenu = mountTestMenu();
+            openCtxMenu(ctxMenu);
+            ctxMenu
+                .find(`.${CoreClasses.OVERLAY_OPEN}`)
+                .hostNodes()
+                .simulate("keydown", {
+                    nativeEvent: new KeyboardEvent("keydown"),
+                    which: Keys.ESCAPE,
+                });
+            assert.isFalse(ctxMenu.find(Popover2).prop("isOpen"));
         });
 
         function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {

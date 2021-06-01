@@ -23,6 +23,7 @@ import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover2, Popover2InteractionKind } from "./popover2";
 import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
+import { Popover2Context, Popover2ContextState, Popover2Provider } from "./popover2Context";
 import { Popover2SharedProps } from "./popover2SharedProps";
 
 // eslint-disable-next-line deprecation/deprecation
@@ -87,7 +88,25 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
     private popover: Popover2<T> | null = null;
 
     public render() {
-        const { children, intent, popoverClassName, ...restProps } = this.props;
+        // if we have an ancestor Popover2Context, we should take its state into account in this render path,
+        // it was likely created by a parent ContextMenu2
+        return (
+            <Popover2Context.Consumer>
+                {([ctxState]) => <Popover2Provider initialState={ctxState}>{this.renderPopover}</Popover2Provider>}
+            </Popover2Context.Consumer>
+        );
+    }
+
+    public reposition() {
+        if (this.popover != null) {
+            this.popover.reposition();
+        }
+    }
+
+    // any descendants of this tooltip which interact with Popover2Context will be able to update our ctxState,
+    // likely a child ContextMenu2
+    private renderPopover = (ctxState: Popover2ContextState) => {
+        const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(
             Classes.TOOLTIP2,
             { [CoreClasses.MINIMAL]: this.props.minimal },
@@ -111,6 +130,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
+                disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}
                 popoverClassName={classes}
@@ -120,11 +140,5 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 {children}
             </Popover2>
         );
-    }
-
-    public reposition() {
-        if (this.popover != null) {
-            this.popover.reposition();
-        }
-    }
+    };
 }
