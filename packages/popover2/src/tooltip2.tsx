@@ -23,8 +23,8 @@ import * as Classes from "./classes";
 // eslint-disable-next-line import/no-cycle
 import { Popover2, Popover2InteractionKind } from "./popover2";
 import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
-import { Popover2Context, Popover2ContextState, Popover2Provider } from "./popover2Context";
 import { Popover2SharedProps } from "./popover2SharedProps";
+import { Tooltip2Context, Tooltip2ContextState, Tooltip2Provider } from "./tooltip2Context";
 
 // eslint-disable-next-line deprecation/deprecation
 export type Tooltip2Props<TProps = React.HTMLProps<HTMLElement>> = ITooltip2Props<TProps>;
@@ -88,12 +88,12 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
     private popover: Popover2<T> | null = null;
 
     public render() {
-        // if we have an ancestor Popover2Context, we should take its state into account in this render path,
+        // if we have an ancestor Tooltip2Context, we should take its state into account in this render path,
         // it was likely created by a parent ContextMenu2
         return (
-            <Popover2Context.Consumer>
-                {([ctxState]) => <Popover2Provider initialState={ctxState}>{this.renderPopover}</Popover2Provider>}
-            </Popover2Context.Consumer>
+            <Tooltip2Context.Consumer>
+                {([state]) => <Tooltip2Provider initialState={state}>{this.renderPopover}</Tooltip2Provider>}
+            </Tooltip2Context.Consumer>
         );
     }
 
@@ -103,9 +103,8 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
         }
     }
 
-    // any descendants of this tooltip which interact with Popover2Context will be able to update our ctxState,
-    // likely a child ContextMenu2
-    private renderPopover = (ctxState: Popover2ContextState) => {
+    // any descendant ContextMenu2s may update this ctxState
+    private renderPopover = (ctxState: Tooltip2ContextState) => {
         const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(
             Classes.TOOLTIP2,

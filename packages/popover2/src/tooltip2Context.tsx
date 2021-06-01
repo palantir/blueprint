@@ -16,19 +16,19 @@
 
 import * as React from "react";
 
-export interface Popover2ContextState {
+export interface Tooltip2ContextState {
     forceDisabled?: boolean;
 }
 
-type Popover2Action = { type: "FORCE_DISABLED_STATE" } | { type: "RESET_DISABLED_STATE" };
-const noOpDispatch: React.Dispatch<Popover2Action> = () => null;
+type Tooltip2Action = { type: "FORCE_DISABLED_STATE" } | { type: "RESET_DISABLED_STATE" };
+const noOpDispatch: React.Dispatch<Tooltip2Action> = () => null;
 
-export const Popover2Context = React.createContext<[Popover2ContextState, React.Dispatch<Popover2Action>]>([
+export const Tooltip2Context = React.createContext<[Tooltip2ContextState, React.Dispatch<Tooltip2Action>]>([
     {},
     noOpDispatch,
 ]);
 
-const popover2Reducer = (state: Popover2ContextState, action: Popover2Action) => {
+const tooltip2Reducer = (state: Tooltip2ContextState, action: Tooltip2Action) => {
     switch (action.type) {
         case "FORCE_DISABLED_STATE":
             return { forceDisabled: true };
@@ -39,16 +39,16 @@ const popover2Reducer = (state: Popover2ContextState, action: Popover2Action) =>
     }
 };
 
-interface Popover2ProviderProps {
-    children: React.ReactNode | ((ctxState: Popover2ContextState) => React.ReactNode);
-    initialState?: Partial<Popover2ContextState>;
+interface Tooltip2ProviderProps {
+    children: React.ReactNode | ((ctxState: Tooltip2ContextState) => React.ReactNode);
+    initialState?: Partial<Tooltip2ContextState>;
 }
 
-export const Popover2Provider = ({ children, initialState = {} }: Popover2ProviderProps) => {
-    const [state, dispatch] = React.useReducer(popover2Reducer, initialState);
+export const Tooltip2Provider = ({ children, initialState = {} }: Tooltip2ProviderProps) => {
+    const [state, dispatch] = React.useReducer(tooltip2Reducer, initialState);
     return (
-        <Popover2Context.Provider value={[state, dispatch]}>
+        <Tooltip2Context.Provider value={[state, dispatch]}>
             {typeof children === "function" ? children(state) : children}
-        </Popover2Context.Provider>
+        </Tooltip2Context.Provider>
     );
 };
