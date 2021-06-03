@@ -272,7 +272,18 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         if (this.state.isEditing && !prevState.isEditing) {
             this.props.onEdit?.(this.state.value);
         }
-        this.updateInputDimensions();
+        // updateInputDimensions is an expensive method. Call it only when the props
+        // it depends on change
+        if (
+            this.state.value !== prevState.value ||
+            this.props.alwaysRenderInput !== prevProps.alwaysRenderInput ||
+            this.props.maxLines !== prevProps.maxLines ||
+            this.props.minLines !== prevProps.minLines ||
+            this.props.minWidth !== prevProps.minWidth ||
+            this.props.multiline !== prevProps.multiline
+        ) {
+            this.updateInputDimensions();
+        }
     }
 
     public cancelEditing = () => {

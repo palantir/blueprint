@@ -53,7 +53,6 @@ export interface TextAreaState {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-
 export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 

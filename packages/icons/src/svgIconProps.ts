@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
-export interface SVGIconProps {
+import React from "react";
+
+export interface SVGIconProps extends React.RefAttributes<any> {
     /** A space-delimited list of class names to pass along to the SVG element. */
     className?: string;
 
@@ -30,7 +32,7 @@ export interface SVGIconProps {
 
     /**
      * String for the `title` attribute on the rendered element, which will appear
-     * on hover as a native browser tooltip. Defaults to the title prop.
+     * on hover as a native browser tooltip.
      */
     htmlTitle?: string;
 

@@ -1,0 +1,10 @@
+{
+    "root": true,
+    "extends": ["../../.eslintrc.js"],
+    "rules": {
+        "no-duplicate-imports": "off",
+        "@typescript-eslint/no-duplicate-imports": ["error"],
+        "import/no-default-export": "off"
+    },
+    "ignorePatterns": ["node_modules", "dist", "lib", "fixtures", "coverage", "__snapshots__", "generated"]
+}

@@ -45,6 +45,9 @@ describe("Core isomorphic rendering", () => {
         Hotkey: {
             props: hotkeyProps,
         },
+        Hotkeys: {
+            children: React.createElement(Core.Hotkey, hotkeyProps),
+        },
         Icon: {
             props: { icon: "build" },
         },
@@ -65,6 +68,10 @@ describe("Core isomorphic rendering", () => {
         },
         Overlay: {
             props: { lazy: false, usePortal: false },
+        },
+        OverlayToaster: {
+            props: { usePortal: false },
+            children: React.createElement(Core.Toast, { message: "Toast" }),
         },
         PanelStack: {
             props: {
@@ -91,10 +98,6 @@ describe("Core isomorphic rendering", () => {
         Tooltip: {
             props: { content: React.createElement("h1", {}, "content") },
             children: requiredChild,
-        },
-        OverlayToaster: {
-            props: { usePortal: false },
-            children: React.createElement(Core.Toast, { message: "Toast" }),
         },
     });
 });

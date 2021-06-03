@@ -20,6 +20,8 @@ import React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+
 export interface NavMenuItemProps {
     /** CSS classes to apply to the root element, for proper appearance in the tree. */
     className: string;
@@ -49,4 +51,4 @@ export const NavMenuItem: React.FunctionComponent<NavMenuItemProps> = props => {
         </a>
     );
 };
-NavMenuItem.displayName = "Docs2.NavMenuItem";
+NavMenuItem.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.NavMenuItem`;

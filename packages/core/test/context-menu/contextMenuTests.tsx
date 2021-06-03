@@ -19,7 +19,7 @@ import classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 
-import { ContextMenu, ContextMenuChildrenProps, ContextMenuProps, Menu, MenuItem, Popover } from "../../src";
+import { Classes, ContextMenu, ContextMenuContentProps, ContextMenuProps, Menu, MenuItem, Popover } from "../../src";
 
 const MENU_ITEMS = [
     <MenuItem key="left" icon="align-left" text="Align Left" />,
@@ -43,16 +43,21 @@ describe("ContextMenu", () => {
             assert.isTrue(ctxMenu.find(Popover).prop("isOpen"));
         });
 
+        it("renders custom HTML tag if specified", () => {
+            const ctxMenu = mountTestMenu({ tagName: "span" });
+            assert.isTrue(ctxMenu.find(`span.${Classes.CONTEXT_MENU}`).exists());
+        });
+
         function mountTestMenu(props: Partial<ContextMenuProps> = {}) {
             return mount(
-                <ContextMenu content={MENU} transitionDuration={0} {...props}>
+                <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu>,
             );
         }
     });
 
-    describe("advanced usage", () => {
+    describe("advanced usage (child render function API)", () => {
         it("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
             assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
@@ -65,16 +70,37 @@ describe("ContextMenu", () => {
             assert.isTrue(ctxMenu.find(Popover).prop("isOpen"));
         });
 
-        function mountTestMenu() {
+        it("handles context menu event, even if content is undefined", () => {
+            const ctxMenu = mountTestMenu({ content: undefined });
+            let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+            openCtxMenu(ctxMenu);
+            clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo({ left: 10, top: 10 }));
+        });
+
+        it("does not handle context menu event when disabled={true}", () => {
+            const ctxMenu = mountTestMenu({ disabled: true });
+            let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+            openCtxMenu(ctxMenu);
+            clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
+            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+        });
+
+        function mountTestMenu(props?: Partial<ContextMenuProps>) {
             return mount(
-                <ContextMenu content={MENU} transitionDuration={0}>
-                    {(props: ContextMenuChildrenProps) => (
+                <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
+                    {ctxMenuProps => (
                         <div
-                            className={classNames(props.className, TARGET_CLASSNAME)}
-                            onContextMenu={props.onContextMenu}
-                            ref={props.ref}
+                            className={classNames(ctxMenuProps.className, TARGET_CLASSNAME)}
+                            onContextMenu={ctxMenuProps.onContextMenu}
+                            ref={ctxMenuProps.ref}
                         >
-                            {props.popover}
+                            {ctxMenuProps.popover}
+                            <span data-testid="content-clicked-info">
+                                {renderClickedInfo(ctxMenuProps.contentProps.targetOffset)}
+                            </span>
                         </div>
                     )}
                 </ContextMenu>,
@@ -87,5 +113,9 @@ describe("ContextMenu", () => {
             .find(`.${TARGET_CLASSNAME}`)
             .simulate("contextmenu", { defaultPrevented: false, clientX: 10, clientY: 10 })
             .update();
+    }
+
+    function renderClickedInfo(targetOffset: ContextMenuContentProps["targetOffset"]) {
+        return targetOffset === undefined ? "" : `Clicked at (${targetOffset.left}, ${targetOffset.top})`;
     }
 });

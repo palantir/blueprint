@@ -18,7 +18,7 @@ import { BlueprintIcons_16Id as IconName, BlueprintIcons_16 as IconNames } from 
 
 export { IconName, IconNames };
 
-export type IconSize = 16 | 20;
-
-export const ICON_SIZE_STANDARD: IconSize = 16;
-export const ICON_SIZE_LARGE: IconSize = 20;
+export enum IconSize {
+    STANDARD = 16,
+    LARGE = 20,
+}

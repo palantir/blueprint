@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { useCallback, useContext } from "react";
 
 import { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, DocumentationContext } from "../../common/context";
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
+import { DocumentationContext } from "../../common/context";
 
 export interface ApiLinkProps extends Props {
     children?: never;
@@ -28,22 +29,17 @@ export interface ApiLinkProps extends Props {
 /**
  * Renders a link to open a symbol in the API Browser.
  */
-export class ApiLink extends React.PureComponent<ApiLinkProps> {
-    public static contextTypes = DocumentationContextTypes;
-
-    public context: DocumentationContext;
-
-    public render() {
-        const { className, name } = this.props;
-        return (
-            <a className={className} href={`#api/${name}`} onClick={this.handleClick}>
-                {name}
-            </a>
-        );
-    }
-
-    private handleClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+export const ApiLink: React.FC<ApiLinkProps> = ({ className, name }) => {
+    const { showApiDocs } = useContext(DocumentationContext);
+    const handleClick = useCallback((evt: React.MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();
-        this.context.showApiDocs(this.props.name);
-    };
-}
+        showApiDocs(name);
+    }, []);
+
+    return (
+        <a className={className} href={`#api/${name}`} onClick={handleClick}>
+            {name}
+        </a>
+    );
+};
+ApiLink.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.ApiLink`;

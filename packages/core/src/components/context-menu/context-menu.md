@@ -1,7 +1,7 @@
 @# ContextMenu
 
 Context menus present the user with a list of actions when right-clicking on a target element.
-They are essentially an opinionated version of Popover, configured with the appropriate
+They essentially generate an opinionated Popover instance configured with the appropriate
 interaction handlers.
 
 @reactExample ContextMenuExample
@@ -32,16 +32,19 @@ export default function ContextMenuExample() {
 }
 ```
 
-Both `content` and `children` props support the [render prop](https://reactjs.org/docs/render-props.html)
-pattern, so you may use information about the context menu's state to in your render code.
+`<ContextMenu>` will render a `<div>` wrapper element around its children. You can treat this
+component as a `<div>`, since extra props will be forwarded down to the DOM element. For example,
+you can add an `onClick` handler. You may also customize the tag name of the generated wrapper
+element using the `tagName` prop.
 
 ### Advanced usage
 
-By default, `<ContextMenu>` will render a container `<div>` element around its children, to contain the
-generated Popover and attach an event handler. If this container breaks your HTML and/or CSS layout in some
-way and you wish to omit it, you may do so by utilizing ContextMenu's advanced rendering API, which
-uses a `children` render function. If you use this approach, you must take care to properly use the
-render props supplied to `children()`:
+By default, `<ContextMenu>` will render a wrapper element around its children to contain the
+generated popover, attach an event handler, and get a DOM ref for layout measurement. If this
+wrapper element breaks your HTML and/or CSS layout in some way and you wish to omit it, you may
+do so by utilizing ContextMenu's advanced rendering API which uses a `children` render function.
+If you use this approach, you must take care to properly use all the render props supplied to
+the `children()` function:
 
 ```tsx
 import classNames from "classnames";
@@ -58,12 +61,13 @@ export default function AdvancedContextMenuExample() {
                 </Menu>
             }
         >
-            {(props: ContextMenuChildrenProps) => (
+            {(ctxMenuProps: ContextMenuChildrenProps) => (
                 <div
-                    className={classNames("my-context-menu-target", props.className)}
-                    onContextMenu={props.onContextMenu}
-                    ref={props.ref}
+                    className={classNames("my-context-menu-target", ctxMenuProps.className)}
+                    onContextMenu={ctxMenuProps.onContextMenu}
+                    ref={ctxMenuProps.ref}
                 >
+                    {ctxMenuProps.popover}
                     Right click me!
                 </div>
             )}
@@ -71,6 +75,10 @@ export default function AdvancedContextMenuExample() {
     )
 }
 ```
+
+Both `content` and `children` props support the [render prop](https://reactjs.org/docs/render-props.html)
+pattern, so you may use information about the context menu's state (such as `isOpen: boolean`) in your
+render code.
 
 @## Props
 

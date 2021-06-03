@@ -20,7 +20,7 @@ import { IconName } from "@blueprintjs/icons";
 
 import { Intent } from "./intent";
 
-export const DISPLAYNAME_PREFIX = "Blueprint3";
+export const DISPLAYNAME_PREFIX = "Blueprint4";
 
 /**
  * Alias for all valid HTML props for `<div>` element.
@@ -82,7 +82,6 @@ export interface LinkProps {
 }
 
 /**
- *
  * Interface for a controlled input.
  */
 export interface ControlledProps {
@@ -93,10 +92,6 @@ export interface ControlledProps {
     value?: string;
 }
 
-/**
- * An interface for an option in a list, such as in a `<select>` or `RadioGroup`.
- * These props can be spread directly to an `<option>` or `<Radio>` element.
- */
 export interface OptionProps extends Props {
     /** Whether this option is non-interactive. */
     disabled?: boolean;

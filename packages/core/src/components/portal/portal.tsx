@@ -18,9 +18,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import * as Classes from "../../common/classes";
-import { ValidationMap } from "../../common/context";
-import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
+import { PortalContext, PortalContextState } from "../../context/portal/portalProvider";
 
 export interface PortalProps extends Props {
     /**
@@ -40,20 +39,6 @@ export interface PortalState {
     hasMounted: boolean;
 }
 
-export interface PortalContext {
-    /** Additional CSS classes to add to all `Portal` elements in this React context. */
-    blueprintPortalClassName?: string;
-}
-
-const REACT_CONTEXT_TYPES: ValidationMap<PortalContext> = {
-    blueprintPortalClassName: (obj: PortalContext, key: keyof PortalContext) => {
-        if (obj[key] != null && typeof obj[key] !== "string") {
-            return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
-        }
-        return undefined;
-    },
-};
-
 /**
  * This component detaches its contents and re-attaches them to document.body.
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
@@ -62,13 +47,11 @@ const REACT_CONTEXT_TYPES: ValidationMap<PortalContext> = {
 export class Portal extends React.Component<PortalProps, PortalState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 
-    public static contextTypes = REACT_CONTEXT_TYPES;
-
     public static defaultProps: PortalProps = {
         container: typeof document !== "undefined" ? document.body : undefined,
     };
 
-    public context: PortalContext = {};
+    public static contextType = PortalContext;
 
     public state: PortalState = { hasMounted: false };
 
@@ -86,10 +69,10 @@ export class Portal extends React.Component<PortalProps, PortalState> {
     }
 
     public componentDidMount() {
-        if (!this.props.container) {
+        if (this.props.container == null) {
             return;
         }
-        this.portalElement = this.createContainerElement();
+        this.portalElement = this.createPortalElement();
         this.props.container.appendChild(this.portalElement);
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({ hasMounted: true }, this.props.onChildrenMount);
@@ -106,18 +89,14 @@ export class Portal extends React.Component<PortalProps, PortalState> {
     }
 
     public componentWillUnmount() {
-        if (this.portalElement != null) {
-            this.portalElement.remove();
-        }
+        this.portalElement?.remove();
     }
 
-    private createContainerElement() {
+    private createPortalElement() {
         const container = document.createElement("div");
         container.classList.add(Classes.PORTAL);
         maybeAddClass(container.classList, this.props.className);
-        if (this.context != null) {
-            maybeAddClass(container.classList, this.context.blueprintPortalClassName);
-        }
+        maybeAddClass(container.classList, (this.context as PortalContextState)?.portalClassName);
         return container;
     }
 }

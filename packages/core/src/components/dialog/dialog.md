@@ -55,16 +55,16 @@ The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG` element. Typically, you will want to render a panel with
 `Classes.DIALOG_BODY` that contains the body content for each step.
 
-Children of the `MultistepDialog` are filtered down to only `Step` components and rendered in order.
-`Step` children are managed by the component; clicking one will change selection.
+Children of the `MultistepDialog` are filtered down to only `DialogStep` components and rendered in order.
+`DialogStep` children are managed by the component; clicking one will change selection.
 
 @interface MultistepDialogProps
 
-@### Step
+@### DialogStep
 
-`Step` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
-parent `MultistepDialog` wrapper. Step title text can be set via the `title` prop.
+`DialogStep` is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
+parent `MultistepDialog` wrapper. `DialogStep` title text can be set via the `title` prop.
 
-The associated step panel will be visible when the `Step` is selected.
+The associated step panel will be visible when the `DialogStep` is selected.
 
-@interface StepProps
+@interface DialogStepProps

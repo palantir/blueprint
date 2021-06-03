@@ -16,8 +16,8 @@ changes. Omitting `value` will result in an "indeterminate" spinner where the
 head spins indefinitely (this is the default appearance).
 
 The `size` prop determines the pixel width/height of the spinner. Size constants
-are provided as static properties: `Spinner.SIZE_SMALL`,
-`Spinner.SIZE_STANDARD`, `Spinner.SIZE_LARGE`. Small and large sizes can be set
+are provided as an enum: `SpinnerSize.SMALL`,
+`SpinnerSize.STANDARD`, `SpinnerSize.LARGE`. Small and large sizes can be set
 by including `Classes.SMALL` or `Classes.LARGE` in `className` instead of the
 `size` prop (this prevents an API break when upgrading to 3.x).
 

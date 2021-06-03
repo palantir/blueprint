@@ -18,9 +18,9 @@ import React from "react";
 
 import { Intent, Tag } from "@blueprintjs/core";
 
-export const DeprecatedTag: React.FunctionComponent<{ isDeprecated: boolean | string | undefined }> = ({
-    isDeprecated,
-}) => {
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
+
+export const DeprecatedTag: React.FC<{ isDeprecated: boolean | string | undefined }> = ({ isDeprecated }) => {
     if (isDeprecated === true || typeof isDeprecated === "string") {
         return (
             <Tag intent={Intent.DANGER} minimal={true}>
@@ -34,7 +34,7 @@ export const DeprecatedTag: React.FunctionComponent<{ isDeprecated: boolean | st
     }
     return null;
 };
-DeprecatedTag.displayName = "Docs2.DeprecatedTag";
+DeprecatedTag.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.DeprecatedTag`;
 
 /**
  * Minimal markdown renderer that supports only backtick `code` elements and triple-backtick `pre` elements.

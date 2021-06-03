@@ -15,6 +15,7 @@
  */
 
 export { Hotkey, HotkeyProps } from "./hotkey";
+export { Hotkeys, HotkeysProps } from "./hotkeys";
 export { KeyComboTag, KeyComboTagProps } from "./keyComboTag";
 export { KeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 export { HotkeysDialog } from "./hotkeysDialog";

@@ -24,7 +24,7 @@ import { MenuContext } from "./menuContext";
 
 export interface CopyCellsMenuItemProps extends MenuItemProps {
     /**
-     * The `IMenuContext` that launched the menu.
+     * The `MenuContext` that launched the menu.
      */
     context: MenuContext;
 

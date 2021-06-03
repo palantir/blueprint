@@ -71,7 +71,7 @@ export {
     PopperPlacements,
     StrictModifierNames,
 } from "./popover/popoverSharedProps";
-export * from "./portal/portal";
+export { Portal, PortalProps } from "./portal/portal";
 export * from "./progress-bar/progressBar";
 export * from "./resize-sensor/resizeSensor";
 export * from "./resize-sensor/resizeObserverTypes";

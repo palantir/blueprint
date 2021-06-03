@@ -46,7 +46,6 @@ export interface HandleState {
 const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
-
 export class Handle extends AbstractPureComponent<InternalHandleProps, HandleState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 

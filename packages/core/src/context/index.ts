@@ -15,3 +15,4 @@
  */
 
 export { HotkeysContext, HotkeysProvider, HotkeysProviderProps } from "./hotkeys/hotkeysProvider";
+export { PortalContext, PortalContextState, PortalProvider, PortalProviderProps } from "./portal/portalProvider";

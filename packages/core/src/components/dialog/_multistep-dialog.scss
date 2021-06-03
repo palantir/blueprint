@@ -27,7 +27,8 @@ $step-radius: $pt-border-radius * 2 !default;
   background-color: $light-gray5;
   border-left: 1px solid $pt-divider-black;
   border-radius: 0 0 $dialog-border-radius 0;
-  flex: 2;
+  flex: 3;
+  min-width: 0;
 
   .#{$ns}-dark & {
     background-color: $dark-gray3;
@@ -56,7 +57,7 @@ $step-radius: $pt-border-radius * 2 !default;
     border-bottom: 1px solid $pt-dark-divider-black;
   }
 
-  &.#{$ns}-active {
+  &.#{$ns}-dialog-step-viewed {
     background-color: $white;
     .#{$ns}-dark & {
       background: $dark-gray4;
@@ -78,7 +79,7 @@ $step-radius: $pt-border-radius * 2 !default;
   }
 
   // by default, steps are inactive until they are visited
-  .#{$ns}-active & {
+  .#{$ns}-dialog-step-viewed & {
     background-color: $white;
     cursor: pointer;
 
@@ -98,7 +99,7 @@ $step-radius: $pt-border-radius * 2 !default;
 
 .#{$ns}-dialog-step-icon {
   align-items: center;
-  background-color: $light-gray1;
+  background-color: $pt-text-color-disabled;
   border-radius: 50%;
   color: $white;
   display: flex;
@@ -110,21 +111,34 @@ $step-radius: $pt-border-radius * 2 !default;
     background-color: $pt-dark-icon-color-disabled;
   }
 
-  .#{$ns}-active & {
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
     background-color: $blue4;
+  }
+
+  .#{$ns}-dialog-step-viewed & {
+    background-color: $gray3;
   }
 }
 
 .#{$ns}-dialog-step-title {
-  color: $gray1;
+  color: $pt-text-color-disabled;
+  flex: 1;
   padding-left: 10px;
 
   .#{$ns}-dark & {
     color: $pt-dark-text-color-disabled;
   }
 
-  // by default, step title is active only when the step is selected
-  &.#{$ns}-active {
+  // step title is active only when the step is selected
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
     color: $blue4;
+  }
+
+  .#{$ns}-dialog-step-viewed:not(.#{$ns}-active) & {
+    color: $pt-text-color;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color;
+    }
   }
 }
