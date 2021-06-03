@@ -25,37 +25,42 @@ import {
     NavbarDivider,
     NavbarGroup,
     NavbarHeading,
-    Switch,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface NavbarExampleState {
-    alignRight: boolean;
+    alignment: Alignment;
 }
 
 export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExampleState> {
     public state: NavbarExampleState = {
-        alignRight: false,
+        alignment: Alignment.LEFT
     };
 
-    private handleAlignRightChange = handleBooleanChange(alignRight => this.setState({ alignRight }));
+    private handleAlignChange = (alignment: Alignment) => this.setState({ alignment });
 
     public render() {
-        const { alignRight } = this.state;
+        const { alignment, showRightGroup } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
-                <Switch checked={alignRight} label="Align right" onChange={this.handleAlignRightChange} />
+                <AlignmentSelect label="Alignment" align={this.state.alignment} onChange={this.handleAlignChange} />
             </>
         );
         return (
             <Example options={options} {...this.props}>
                 <Navbar>
-                    <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
+                    <NavbarGroup align={Alignment.RIGHT}>
                         <NavbarHeading>Blueprint</NavbarHeading>
-                        <NavbarDivider />
+                    </NavbarGroup>
+                    <NavbarGroup align={alignment}>
                         <Button className={Classes.MINIMAL} icon="home" text="Home" />
+                        <NavbarDivider />
                         <Button className={Classes.MINIMAL} icon="document" text="Files" />
+                    </NavbarGroup>
+                    <NavbarGroup align={Alignment.RIGHT}>
+                        <Button className={Classes.MINIMAL} icon="cog" />
                     </NavbarGroup>
                 </Navbar>
             </Example>
