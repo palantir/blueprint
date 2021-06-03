@@ -132,7 +132,8 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
 
     // ancestor Tooltip2Context state doesn't affect us since we don't care about parent ContextMenu2s, we only want to
     // force disable parent Tooltip2s in certain cases through dispatching actions
-    const [, popover2Dispatch] = React.useContext(Tooltip2Context);
+    // N.B. any calls to this dispatch function will be no-ops if there is no Tooltip2Provider ancestor of this component
+    const [, tooltipCtxDispatch] = React.useContext(Tooltip2Context);
     // click target offset relative to the viewport (e.clientX/clientY), since the target will be rendered in a Portal
     const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
     // hold a reference to the click mouse event to pass to content/child render functions
@@ -145,7 +146,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
     // for this component (that will lead to unpredictable behavior).
     React.useEffect(() => {
         setIsOpen(false);
-        popover2Dispatch({ type: "RESET_DISABLED_STATE" });
+        tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
     }, [disabled]);
 
     const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
@@ -154,7 +155,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         if (!nextOpenState) {
             setIsOpen(false);
             setMouseEvent(undefined);
-            popover2Dispatch({ type: "RESET_DISABLED_STATE" });
+            tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
         }
     }, []);
 
@@ -191,6 +192,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 // when offset changes, to force recomputing position.
                 key={getPopoverKey(targetOffset)}
                 hasBackdrop={true}
+                backdropProps={{ className: Classes.CONTEXT_MENU2_BACKDROP }}
                 isOpen={isOpen}
                 minimal={true}
                 onInteraction={handlePopoverInteraction}
@@ -223,7 +225,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
                 setMouseEvent(e);
                 setTargetOffset({ left: e.clientX, top: e.clientY });
                 setIsOpen(true);
-                popover2Dispatch({ type: "FORCE_DISABLED_STATE" });
+                tooltipCtxDispatch({ type: "FORCE_DISABLED_STATE" });
             }
 
             onContextMenu?.(e);
@@ -253,7 +255,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
           );
 
     // force descendant Tooltip2s to be disabled when this context menu is open
-    return <Tooltip2Provider initialState={{ forceDisabled: isOpen }}>{child}</Tooltip2Provider>;
+    return <Tooltip2Provider forceDisable={isOpen}>{child}</Tooltip2Provider>;
 });
 ContextMenu2.displayName = "Blueprint.ContextMenu2";
 

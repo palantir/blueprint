@@ -92,7 +92,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
         // it was likely created by a parent ContextMenu2
         return (
             <Tooltip2Context.Consumer>
-                {([state]) => <Tooltip2Provider initialState={state}>{this.renderPopover}</Tooltip2Provider>}
+                {([state]) => <Tooltip2Provider {...state}>{this.renderPopover}</Tooltip2Provider>}
             </Tooltip2Context.Consumer>
         );
     }

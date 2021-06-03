@@ -41,11 +41,24 @@ const tooltip2Reducer = (state: Tooltip2ContextState, action: Tooltip2Action) =>
 
 interface Tooltip2ProviderProps {
     children: React.ReactNode | ((ctxState: Tooltip2ContextState) => React.ReactNode);
-    initialState?: Partial<Tooltip2ContextState>;
+    forceDisable?: boolean;
 }
 
-export const Tooltip2Provider = ({ children, initialState = {} }: Tooltip2ProviderProps) => {
-    const [state, dispatch] = React.useReducer(tooltip2Reducer, initialState);
+export const Tooltip2Provider = ({ children, forceDisable }: Tooltip2ProviderProps) => {
+    const [state, dispatch] = React.useReducer(tooltip2Reducer, {});
+    // // if we have a parent context controlling our state, just use its value and don't use the local state
+    // // we just generated through useReducer()
+    // const contextValue: [Tooltip2ContextState, React.Dispatch<Tooltip2Action>] =
+    //     stateFromProps === undefined ? [state, dispatch] : [stateFromProps, noOpDispatch];
+
+    React.useEffect(() => {
+        if (forceDisable) {
+            dispatch({ type: "FORCE_DISABLED_STATE" });
+        } else {
+            dispatch({ type: "RESET_DISABLED_STATE" });
+        }
+    }, [forceDisable]);
+
     return (
         <Tooltip2Context.Provider value={[state, dispatch]}>
             {typeof children === "function" ? children(state) : children}
