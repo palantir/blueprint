@@ -33,7 +33,7 @@ export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExamp
     private handleAlignChange = (alignment: Alignment) => this.setState({ alignment });
 
     public render() {
-        const { alignment, showRightGroup } = this.state;
+        const { alignment } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
