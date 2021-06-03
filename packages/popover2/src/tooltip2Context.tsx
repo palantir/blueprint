@@ -46,10 +46,6 @@ interface Tooltip2ProviderProps {
 
 export const Tooltip2Provider = ({ children, forceDisable }: Tooltip2ProviderProps) => {
     const [state, dispatch] = React.useReducer(tooltip2Reducer, {});
-    // // if we have a parent context controlling our state, just use its value and don't use the local state
-    // // we just generated through useReducer()
-    // const contextValue: [Tooltip2ContextState, React.Dispatch<Tooltip2Action>] =
-    //     stateFromProps === undefined ? [state, dispatch] : [stateFromProps, noOpDispatch];
 
     React.useEffect(() => {
         if (forceDisable) {
