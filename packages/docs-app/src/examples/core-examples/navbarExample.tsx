@@ -16,17 +16,9 @@
 
 import React from "react";
 
-import {
-    Alignment,
-    Button,
-    Classes,
-    H5,
-    Navbar,
-    NavbarDivider,
-    NavbarGroup,
-    NavbarHeading,
-} from "@blueprintjs/core";
+import { Alignment, Button, Classes, H5, Navbar, NavbarDivider, NavbarGroup, NavbarHeading } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface NavbarExampleState {
@@ -35,7 +27,7 @@ export interface NavbarExampleState {
 
 export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExampleState> {
     public state: NavbarExampleState = {
-        alignment: Alignment.LEFT
+        alignment: Alignment.LEFT,
     };
 
     private handleAlignChange = (alignment: Alignment) => this.setState({ alignment });
