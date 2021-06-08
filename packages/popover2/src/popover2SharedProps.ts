@@ -127,6 +127,10 @@ export interface IPopover2SharedProps<TProps> extends OverlayableProps, Props {
      *
      * For example, the arrow modifier can be disabled by providing `{ arrow: { enabled: false } }`.
      *
+     * Some of Popover2's default modifiers may get disabled under certain circumstances, but you may
+     * choose to re-enable and customize them. For example, "offset" is disabled when `minimal={true}`,
+     * but you can re-enable it with `{ offset: { enabled: true } }`.
+     *
      * @see https://popper.js.org/docs/v2/modifiers/
      */
     modifiers?: Partial<
