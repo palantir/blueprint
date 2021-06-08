@@ -215,7 +215,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                     innerRef={this.popoverRef}
                     placement={placement ?? positionToPlacement(position)}
                     strategy={positioningStrategy}
-                    modifiers={this.computePopperModifiers()}
+                    modifiers={this.getPopperModifiers()}
                 >
                     {this.renderPopover}
                 </Popper>
@@ -441,7 +441,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         );
     };
 
-    private computePopperModifiers(): StrictModifier[] {
+    private getPopperModifiers(): StrictModifier[] {
         const { modifiers } = this.props;
         return [
             {
