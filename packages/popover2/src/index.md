@@ -9,6 +9,8 @@ provides successors to Popover and Tooltip in `@blueprintjs/core`:
 
 -   [`Popover2`](#popover2-package/popover2)
 -   [`Tooltip2`](#popover2-package/tooltip2)
+-   [`ContextMenu2`](#popover2-package/context-menu2)
+-   [`ResizeSensor2`](#popover2-package/resize-sensor2)
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 

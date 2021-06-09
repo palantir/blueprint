@@ -17,14 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    Classes as CoreClasses,
-    IOverlayLifecycleProps,
-    Portal,
-    Props,
-    Utils as CoreUtils,
-    mergeRefs,
-} from "@blueprintjs/core";
+import { Classes as CoreClasses, IOverlayLifecycleProps, Portal, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import { Popover2Props, Popover2 } from "./popover2";
@@ -159,20 +152,21 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         }
     }, []);
 
+    // we need a ref on the real target to check for dark theme,
+    // but Popover2 should attach its ref to the virtual target we render inside a Portal
     const targetRef = React.useRef<HTMLDivElement>(null);
     const renderTarget = React.useCallback(
         ({ ref }: Popover2TargetProps) => (
-            <Portal>
-                <div
-                    className={Classes.CONTEXT_MENU2_POPOVER2_TARGET}
-                    style={targetOffset}
-                    ref={mergeRefs(ref, targetRef)}
-                />
-            </Portal>
+            <div ref={targetRef}>
+                <Portal>
+                    <div className={Classes.CONTEXT_MENU2_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
+                </Portal>
+            </div>
         ),
         [targetOffset],
     );
-    const isDarkTheme = React.useMemo(() => CoreUtils.isDarkTheme(targetRef.current), [targetRef.current]);
+    // if the menu was just opened, we should check for dark theme (but don't do this on every render)
+    const isDarkTheme = React.useMemo(() => CoreUtils.isDarkTheme(targetRef.current), [targetRef, isOpen]);
 
     const contentProps: ContextMenu2ContentProps = { isOpen, mouseEvent, targetOffset };
 
