@@ -23,17 +23,17 @@ import {
     areFilmsEqual,
     createFilm,
     filmSelectProps,
-    IFilm,
+    Film,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmOption,
     TOP_100_FILMS,
 } from "./films";
 
-const FilmSelect = Select.ofType<IFilm>();
+const FilmSelect = Select.ofType<Film>();
 
 type Props = Omit<
-    SelectProps<IFilm>,
+    SelectProps<Film>,
     | "createNewItemFromQuery"
     | "createNewItemRenderer"
     | "items"
@@ -51,9 +51,9 @@ export default function ({ allowCreate = false, ...restProps }: Props) {
     const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
     const [items, setItems] = React.useState(filmSelectProps.items);
-    const [createdItems, setCreatedItems] = React.useState<IFilm[]>([]);
+    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
     const [film, setFilm] = React.useState(TOP_100_FILMS[0]);
-    const handleItemSelect = React.useCallback((newFilm: IFilm) => {
+    const handleItemSelect = React.useCallback((newFilm: Film) => {
         // Delete the old film from the list if it was newly created.
         const step1Result = maybeDeleteCreatedFilmFromArrays(items, createdItems, film);
         // Add the new film to the list if it is newly created.

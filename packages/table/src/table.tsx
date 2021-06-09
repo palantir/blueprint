@@ -19,7 +19,6 @@ import React from "react";
 
 import {
     AbstractComponent,
-    Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HotkeyProps,
     HotkeysTarget,

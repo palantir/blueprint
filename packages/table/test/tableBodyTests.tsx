@@ -172,7 +172,8 @@ describe("TableBody", () => {
                 expect(onSelection.firstCall.args[0]).to.deep.equal([TARGET_REGION]);
             });
 
-            it("renders context menu using new selection if selection changed on right-click", () => {
+            // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/4754
+            it.skip("renders context menu using new selection if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
                 expect(bodyContextMenuRenderer.calledOnce).to.be.true;
