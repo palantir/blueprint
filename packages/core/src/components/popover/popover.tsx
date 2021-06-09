@@ -166,6 +166,12 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         );
     };
 
+    // popper innerRef gives us a handle on the transition container, since that's what we render as the overlay child,
+    // so if we want to look at our actual popover element, we need to reach inside a bit
+    private getPopoverElement() {
+        return this.popoverElement?.querySelector(`.${Classes.POPOVER}`);
+    }
+
     private getIsOpen(props: PopoverProps<T>) {
         // disabled popovers should never be allowed to open.
         if (props.disabled) {
@@ -197,7 +203,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                     innerRef={this.popoverRef}
                     placement={placement ?? positionToPlacement(position)}
                     strategy={positioningStrategy}
-                    modifiers={this.computePopperModifiers()}
+                    modifiers={this.getPopperModifiers()}
                 >
                     {this.renderPopover}
                 </Popper>
@@ -287,6 +293,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
             ? {
                   // HOVER handlers
                   onBlur: this.handleTargetBlur,
+                  onContextMenu: this.handleTargetContextMenu,
                   onFocus: this.handleTargetFocus,
                   onMouseEnter: this.handleMouseEnter,
                   onMouseLeave: this.handleMouseLeave,
@@ -428,7 +435,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         );
     };
 
-    private computePopperModifiers(): StrictModifier[] {
+    private getPopperModifiers(): StrictModifier[] {
         const { modifiers } = this.props;
         return [
             {
@@ -505,6 +512,14 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         this.lostFocusOnSamePage = e.relatedTarget != null;
     };
 
+    private handleTargetContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+        // we assume that when someone prevents the default interaction on this event (a browser native context menu),
+        // they are showing a custom context menu (as ContextMenu2 does); in this case, we should close this popover/tooltip
+        if (e.defaultPrevented) {
+            this.setOpenState(false, e);
+        }
+    };
+
     private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = true;
 
@@ -541,23 +556,15 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
     private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER}`);
-        const isEventFromSelf = eventPopover === this.popoverElement;
+        const isEventFromSelf = eventPopover === this.getPopoverElement();
         const isEventPopoverCapturing = eventPopover?.classList.contains(Classes.POPOVER_CAPTURING_DISMISS);
 
         // an OVERRIDE inside a DISMISS does not dismiss, and a DISMISS inside an OVERRIDE will dismiss.
         const dismissElement = eventTarget.closest(`.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`);
         const shouldDismiss = dismissElement?.classList.contains(Classes.POPOVER_DISMISS);
 
-        // dismiss selectors from the "V1" version of Popover in the core pacakge
-        // we expect these to be rendered by MenuItem, which at this point has no knowledge of Popover
-        // this can be removed once Popover is merged into core in v4.0
-        const dismissElementV1 = eventTarget.closest(
-            `.${Classes.POPOVER_DISMISS}, .${Classes.POPOVER_DISMISS_OVERRIDE}`,
-        );
-        const shouldDismissV1 = dismissElementV1?.classList.contains(Classes.POPOVER_DISMISS);
-
         const isDisabled = eventTarget.closest(`:disabled, .${Classes.DISABLED}`) != null;
-        if ((shouldDismiss || shouldDismissV1) && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
+        if (shouldDismiss && !isDisabled && (!isEventPopoverCapturing || isEventFromSelf)) {
             this.setOpenState(false, e);
         }
     };
@@ -615,7 +622,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
     }
 
     private isElementInPopover(element: Element) {
-        return this.popoverElement != null && this.popoverElement.contains(element);
+        return this.getPopoverElement()?.contains(element) ?? false;
     }
 }
 

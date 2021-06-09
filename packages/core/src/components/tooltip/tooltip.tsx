@@ -23,6 +23,7 @@ import * as Classes from "../../common/classes";
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import { PopoverSharedProps } from "../popover/popoverSharedProps";
+import { TooltipContext, TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps = React.HTMLProps<HTMLElement>> extends PopoverSharedProps<TProps>, IntentProps {
     /**
@@ -81,7 +82,24 @@ export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
     private popover: Popover<T> | null = null;
 
     public render() {
-        const { children, intent, popoverClassName, ...restProps } = this.props;
+        // if we have an ancestor TooltipContext, we should take its state into account in this render path,
+        // it was likely created by a parent ContextMenu2
+        return (
+            <TooltipContext.Consumer>
+                {([state]) => <TooltipProvider {...state}>{this.renderPopover}</TooltipProvider>}
+            </TooltipContext.Consumer>
+        );
+    }
+
+    public reposition() {
+        if (this.popover != null) {
+            this.popover.reposition();
+        }
+    }
+
+    // any descendant ContextMenu2s may update this ctxState
+    private renderPopover = (ctxState: TooltipContextState) => {
+        const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(
             Classes.TOOLTIP,
             { [Classes.MINIMAL]: this.props.minimal },
@@ -105,6 +123,7 @@ export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
+                disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}
                 popoverClassName={classes}
@@ -114,11 +133,5 @@ export class Tooltip<T> extends React.PureComponent<TooltipProps<T>> {
                 {children}
             </Popover>
         );
-    }
-
-    public reposition() {
-        if (this.popover != null) {
-            this.popover.reposition();
-        }
-    }
+    };
 }

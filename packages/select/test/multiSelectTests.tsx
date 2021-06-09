@@ -23,7 +23,7 @@ import { Classes as CoreClasses, Keys, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEventWithCode } from "@blueprintjs/test-commons";
 
 // this is an awkward import across the monorepo, but we'd rather not introduce a cyclical dependency or create another package
-import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { ItemRendererProps, MultiSelectProps, MultiSelectState, MultiSelect } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 

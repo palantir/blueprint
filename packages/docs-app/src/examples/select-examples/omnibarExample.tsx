@@ -30,7 +30,7 @@ import {
 import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 
-import { areFilmsEqual, createFilm, filmSelectProps, Film, renderCreateFilmOption } from "./films";
+import { areFilmsEqual, createFilm, filmSelectProps, Film, renderCreateFilmOption } from "./../../common/films";
 
 const FilmOmnibar = Omnibar.ofType<Film>();
 

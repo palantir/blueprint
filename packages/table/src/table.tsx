@@ -19,7 +19,6 @@ import React from "react";
 
 import {
     AbstractComponent,
-    Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HotkeyProps,
     HotkeysTarget,
@@ -838,7 +837,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
         const classes = classNames(
             Classes.TABLE_CONTAINER,
-            CoreClasses.FIXED_POSITIONING_CONTAINING_BLOCK,
             {
                 [Classes.TABLE_REORDERING]: this.state.isReordering,
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),

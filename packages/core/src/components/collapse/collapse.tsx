@@ -180,9 +180,6 @@ export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState
             transition: isAutoHeight ? "none" : undefined,
         };
 
-        // in order to give hints to child elements which rely on CSS fixed positioning, we need to apply a class
-        // to the element which creates a new containing block with a non-empty `transform` property
-        // see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
         const contentsStyle = {
             // only use heightWhenOpen while closing
             transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
@@ -197,7 +194,7 @@ export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState
                 style: containerStyle,
             },
             <div
-                className={classNames(Classes.COLLAPSE_BODY, Classes.FIXED_POSITIONING_CONTAINING_BLOCK)}
+                className={Classes.COLLAPSE_BODY}
                 ref={this.contentsRefHandler}
                 style={contentsStyle}
                 aria-hidden={!isContentVisible && this.props.keepChildrenMounted}

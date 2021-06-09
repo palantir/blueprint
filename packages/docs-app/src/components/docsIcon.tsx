@@ -61,7 +61,6 @@ export class DocsIcon extends React.PureComponent<DocsIconProps> {
                         className={classNames("docs-icon", props.className)}
                         data-tags={tags}
                         onContextMenu={props.onContextMenu}
-                        ref={props.ref}
                         value={iconName}
                     >
                         {props.popover}

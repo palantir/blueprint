@@ -88,7 +88,10 @@ export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 export const RTL = `${NS}-rtl`;
 
 // layout utilities
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block */
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+ * @deprecated this is no longer needed for ContextMenu2, will be removed in v4.0
+ */
 export const FIXED_POSITIONING_CONTAINING_BLOCK = `${NS}-fixed-positioning-containing-block`;
 
 // components
@@ -117,6 +120,8 @@ export const COLLAPSE_BODY = `${COLLAPSE}-body`;
 
 export const CONTEXT_MENU = `${NS}-context-menu`;
 export const CONTEXT_MENU_POPOVER_TARGET = `${CONTEXT_MENU}-popover-target`;
+export const CONTEXT_MENU_POPOVER = `${CONTEXT_MENU}-popover`;
+export const CONTEXT_MENU_BACKDROP = `${CONTEXT_MENU}-backdrop`;
 
 export const CONTROL_GROUP = `${NS}-control-group`;
 
