@@ -28,7 +28,7 @@ import {
     Film,
     renderFilm,
     TOP_100_FILMS,
-} from "../../docs-app/src/examples/select-examples/films";
+} from "../../docs-app/src/common/films";
 import { ListItemsProps } from "../src";
 
 export function selectComponentSuite<P extends ListItemsProps<Film>, S>(

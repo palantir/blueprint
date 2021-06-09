@@ -15,13 +15,15 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { mergeRefs, Props, Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import { OverlayLifecycleProps } from "../overlay/overlay";
 import { PopoverProps, Popover } from "../popover/popover";
 import { PopoverTargetProps } from "../popover/popoverSharedProps";
+import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
+import { Portal } from "../portal/portal";
 
 type Offset = {
     left: number;
@@ -60,9 +62,6 @@ export interface ContextMenuChildrenProps {
 
     /** Popover element rendered by ContextMenu, used to establish a click target to position the menu */
     popover: JSX.Element | undefined;
-
-    /** DOM ref for the context menu target, used to calculate menu position on the page */
-    ref: React.Ref<any>;
 }
 
 export interface ContextMenuProps
@@ -128,10 +127,16 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
         tagName = "div",
         ...restProps
     } = props;
-    const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
+
+    // ancestor TooltipContext state doesn't affect us since we don't care about parent ContextMenu2s, we only want to
+    // force disable parent Tooltips in certain cases through dispatching actions
+    // N.B. any calls to this dispatch function will be no-ops if there is no TooltipProvider ancestor of this component
+    const [, tooltipCtxDispatch] = useContext(TooltipContext);
+    // click target offset relative to the viewport (e.clientX/clientY), since the target will be rendered in a Portal
+    const [targetOffset, setTargetOffset] = useState<Offset | undefined>(undefined);
+    // hold a reference to the click mouse event to pass to content/child render functions
     const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     // If disabled prop is changed, we don't want our old context menu to stick around.
     // If it has just been enabled (disabled = false), then the menu ought to be opened by
@@ -139,6 +144,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
     // for this component (that will lead to unpredictable behavior).
     useEffect(() => {
         setIsOpen(false);
+        tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
     }, [disabled]);
 
     const cancelContextMenu = useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
@@ -147,13 +153,20 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
         if (!nextOpenState) {
             setIsOpen(false);
             setMouseEvent(undefined);
+            tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
         }
     }, []);
 
     const targetRef = useRef<HTMLDivElement>(null);
     const renderTarget = useCallback(
         ({ ref }: PopoverTargetProps) => (
-            <div className={Classes.CONTEXT_MENU_POPOVER_TARGET} style={targetOffset} ref={mergeRefs(ref, targetRef)} />
+            <Portal>
+                <div
+                    className={Classes.CONTEXT_MENU_POPOVER_TARGET}
+                    style={targetOffset}
+                    ref={mergeRefs(ref, targetRef)}
+                />
+            </Portal>
         ),
         [targetOffset],
     );
@@ -177,10 +190,13 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
                 // when offset changes, to force recomputing position.
                 key={getPopoverKey(targetOffset)}
                 hasBackdrop={true}
+                backdropProps={{ className: Classes.CONTEXT_MENU_BACKDROP }}
                 isOpen={isOpen}
                 minimal={true}
                 onInteraction={handlePopoverInteraction}
-                popoverClassName={classNames(popoverProps?.popoverClassName, { [Classes.DARK]: isDarkTheme })}
+                popoverClassName={classNames(Classes.CONTEXT_MENU_POPOVER, popoverProps?.popoverClassName, {
+                    [Classes.DARK]: isDarkTheme,
+                })}
                 placement="right-start"
                 positioningStrategy="fixed"
                 rootBoundary="viewport"
@@ -205,51 +221,41 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
                 e.preventDefault();
                 e.persist();
                 setMouseEvent(e);
-                const { left, top } = getContainingBlockOffset(containerRef.current);
-                setTargetOffset({ left: e.clientX - left, top: e.clientY - top });
+                setTargetOffset({ left: e.clientX, top: e.clientY });
                 setIsOpen(true);
+                tooltipCtxDispatch({ type: "FORCE_DISABLED_STATE" });
             }
 
             onContextMenu?.(e);
         },
-        [containerRef.current, onContextMenu, disabled],
+        [onContextMenu, disabled],
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU);
 
-    if (Utils.isFunction(children)) {
-        return children({
-            className: containerClassName,
-            contentProps,
-            onContextMenu: handleContextMenu,
-            popover: maybePopover,
-            ref: containerRef,
-        });
-    } else {
-        return React.createElement(
-            tagName,
-            {
-                className: containerClassName,
-                onContextMenu: handleContextMenu,
-                ref: mergeRefs(containerRef, userRef),
-                ...restProps,
-            },
-            maybePopover,
-            children,
-        );
-    }
+    const child = Utils.isFunction(children)
+        ? children({
+              className: containerClassName,
+              contentProps,
+              onContextMenu: handleContextMenu,
+              popover: maybePopover,
+          })
+        : React.createElement(
+              tagName,
+              {
+                  className: containerClassName,
+                  onContextMenu: handleContextMenu,
+                  ref: userRef,
+                  ...restProps,
+              },
+              maybePopover,
+              children,
+          );
+
+    // force descendant Tooltips to be disabled when this context menu is open
+    return <TooltipProvider forceDisable={isOpen}>{child}</TooltipProvider>;
 });
 ContextMenu.displayName = "Blueprint.ContextMenu";
-
-function getContainingBlockOffset(targetElement: HTMLElement | null | undefined): { left: number; top: number } {
-    if (targetElement != null) {
-        const containingBlock = targetElement.closest(`.${Classes.FIXED_POSITIONING_CONTAINING_BLOCK}`);
-        if (containingBlock != null) {
-            return containingBlock.getBoundingClientRect();
-        }
-    }
-    return { left: 0, top: 0 };
-}
 
 function getPopoverKey(targetOffset: Offset | undefined) {
     return targetOffset === undefined ? "default" : `${targetOffset.left}x${targetOffset.top}`;

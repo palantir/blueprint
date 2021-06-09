@@ -838,7 +838,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
         const classes = classNames(
             Classes.TABLE_CONTAINER,
-            CoreClasses.FIXED_POSITIONING_CONTAINING_BLOCK,
             {
                 [Classes.TABLE_REORDERING]: this.state.isReordering,
                 [Classes.TABLE_NO_VERTICAL_SCROLL]: this.shouldDisableVerticalScroll(),

@@ -107,7 +107,7 @@ describe("<Tooltip2>", () => {
             function assertDisabledPopover(content: string) {
                 tooltip.setProps({ content });
                 assert.isFalse(tooltip.find(Overlay).exists(), `"${content}"`);
-                assert.isTrue(warnSpy.calledOnce, "spy not called once");
+                assert.isTrue(warnSpy.called, "spy not called");
                 warnSpy.resetHistory();
             }
 
@@ -140,7 +140,7 @@ describe("<Tooltip2>", () => {
             const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
             assert.isFalse(tooltip.find(Overlay).exists());
-            assert.isTrue(warnSpy.calledOnce);
+            assert.isTrue(warnSpy.called);
             warnSpy.restore();
         });
 

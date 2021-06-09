@@ -22,7 +22,7 @@ import sinon from "sinon";
 import { Menu } from "@blueprintjs/core";
 import { QueryListProps } from "@blueprintjs/select";
 
-import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import {
     QueryListRendererProps,
     QueryListState,

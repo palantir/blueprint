@@ -15,9 +15,9 @@ policy:
       organizations: [ "palantir" ]
 
 approval_rules:
-  - name: one admin has approved
+  - name: one admin has approved (PR contributors not allowed)
     options:
-      allow_contributor: true
+      allow_contributor: false
     requires:
       count: 1
       admins: true

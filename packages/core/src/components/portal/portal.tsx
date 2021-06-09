@@ -81,9 +81,7 @@ export class Portal extends React.Component<PortalProps, PortalState> {
     public componentDidUpdate(prevProps: PortalProps) {
         // update className prop on portal DOM element
         if (this.portalElement != null && prevProps.className !== this.props.className) {
-            if (prevProps.className !== undefined) {
-                this.portalElement.classList.remove(prevProps.className);
-            }
+            maybeRemoveClass(this.portalElement.classList, prevProps.className);
             maybeAddClass(this.portalElement.classList, this.props.className);
         }
     }
@@ -98,6 +96,12 @@ export class Portal extends React.Component<PortalProps, PortalState> {
         maybeAddClass(container.classList, this.props.className);
         maybeAddClass(container.classList, (this.context as PortalContextState)?.portalClassName);
         return container;
+    }
+}
+
+function maybeRemoveClass(classList: DOMTokenList, className?: string) {
+    if (className != null && className !== "") {
+        classList.remove(...className.split(" "));
     }
 }
 

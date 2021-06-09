@@ -21,7 +21,7 @@ import sinon from "sinon";
 
 import { InputGroup, Keys, MenuItem, Popover, PopoverProps } from "@blueprintjs/core";
 
-import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/examples/select-examples/films";
+import { Film, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
 import { ItemRendererProps, QueryList } from "../src";
 import { SuggestProps, SuggestState, Suggest } from "../src/components/select/suggest";
 import { selectComponentSuite } from "./selectComponentSuite";

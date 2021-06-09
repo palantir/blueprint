@@ -25,6 +25,7 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
+    Tooltip,
 } from "@blueprintjs/core";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 
@@ -60,7 +61,15 @@ export const ContextMenuExample: React.FC<ExampleProps> = props => {
     return (
         <ContextMenu content={renderContent}>
             <Example className="docs-context-menu-example" options={false} {...props}>
-                <GraphNode />
+                <Tooltip
+                    content={
+                        <div style={{ maxWidth: 230, textAlign: "center" }}>
+                            This tooltip will close when you open the node's context menu
+                        </div>
+                    }
+                >
+                    <GraphNode />
+                </Tooltip>
                 <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
             </Example>
         </ContextMenu>

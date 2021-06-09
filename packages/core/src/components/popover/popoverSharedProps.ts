@@ -132,6 +132,10 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
      *
      * For example, the arrow modifier can be disabled by providing `{ arrow: { enabled: false } }`.
      *
+     * Some of Popover2's default modifiers may get disabled under certain circumstances, but you may
+     * choose to re-enable and customize them. For example, "offset" is disabled when `minimal={true}`,
+     * but you can re-enable it with `{ offset: { enabled: true } }`.
+     *
      * @see https://popper.js.org/docs/v2/modifiers/
      */
     modifiers?: Partial<
@@ -173,7 +177,8 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
 
     /**
      * The placement (relative to the target) at which the popover should appear.
-     * Mutually exclusive with `position` prop.
+     * Mutually exclusive with `position` prop. Prefer using this over `position`,
+     * as it more closely aligns with Popper.js semantics.
      *
      * The default value of `"auto"` will choose the best placement when opened
      * and will allow the popover to reposition itself to remain onscreen as the
