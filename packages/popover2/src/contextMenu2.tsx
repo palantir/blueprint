@@ -17,7 +17,14 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes as CoreClasses, IOverlayLifecycleProps, Portal, Props, Utils as CoreUtils } from "@blueprintjs/core";
+import {
+    Classes as CoreClasses,
+    IOverlayLifecycleProps,
+    Portal,
+    Props,
+    Utils as CoreUtils,
+    mergeRefs,
+} from "@blueprintjs/core";
 
 import * as Classes from "./classes";
 import { Popover2Props, Popover2 } from "./popover2";
@@ -64,6 +71,9 @@ export interface ContextMenu2ChildrenProps {
 
     /** Popover element rendered by ContextMenu, used to establish a click target to position the menu */
     popover: JSX.Element | undefined;
+
+    /** DOM ref for the context menu target, used to detect dark theme */
+    ref: React.Ref<any>;
 }
 
 export interface ContextMenu2Props
@@ -132,6 +142,8 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
     // hold a reference to the click mouse event to pass to content/child render functions
     const [mouseEvent, setMouseEvent] = React.useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    // we need a ref on the child element (or the wrapper we generate) to check for dark theme
+    const childRef = React.useRef<HTMLDivElement>(null);
 
     // If disabled prop is changed, we don't want our old context menu to stick around.
     // If it has just been enabled (disabled = false), then the menu ought to be opened by
@@ -152,26 +164,22 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         }
     }, []);
 
-    // we need a ref on the real target to check for dark theme,
     // but Popover2 should attach its ref to the virtual target we render inside a Portal
-    const targetRef = React.useRef<HTMLDivElement>(null);
     const renderTarget = React.useCallback(
         ({ ref }: Popover2TargetProps) => (
-            <div ref={targetRef}>
-                <Portal>
-                    <div className={Classes.CONTEXT_MENU2_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
-                </Portal>
-            </div>
+            <Portal>
+                <div className={Classes.CONTEXT_MENU2_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
+            </Portal>
         ),
         [targetOffset],
     );
-    // if the menu was just opened, we should check for dark theme (but don't do this on every render)
-    const isDarkTheme = React.useMemo(() => CoreUtils.isDarkTheme(targetRef.current), [targetRef, isOpen]);
 
-    const contentProps: ContextMenu2ContentProps = { isOpen, mouseEvent, targetOffset };
+    // if the menu was just opened, we should check for dark theme (but don't do this on every render)
+    const isDarkTheme = React.useMemo(() => CoreUtils.isDarkTheme(childRef.current), [childRef, isOpen]);
 
     // only render the popover if there is content in the context menu;
     // this avoid doing unnecessary rendering & computation
+    const contentProps: ContextMenu2ContentProps = { isOpen, mouseEvent, targetOffset };
     const menu = disabled ? undefined : CoreUtils.isFunction(content) ? content(contentProps) : content;
     const maybePopover =
         menu === undefined ? undefined : (
@@ -235,13 +243,14 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
               contentProps,
               onContextMenu: handleContextMenu,
               popover: maybePopover,
+              ref: childRef,
           })
-        : React.createElement(
+        : React.createElement<React.HTMLAttributes<any>>(
               tagName,
               {
                   className: containerClassName,
                   onContextMenu: handleContextMenu,
-                  ref: userRef,
+                  ref: mergeRefs(childRef, userRef),
                   ...restProps,
               },
               maybePopover,
