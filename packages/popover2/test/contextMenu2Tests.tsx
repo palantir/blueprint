@@ -144,6 +144,43 @@ describe("ContextMenu2", () => {
         }
     });
 
+    describe("theming", () => {
+        it("detects dark theme", () => {
+            const wrapper = mount(
+                <div className={CoreClasses.DARK}>
+                    <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }}>
+                        <div className={TARGET_CLASSNAME} />
+                    </ContextMenu2>
+                </div>,
+            );
+
+            openCtxMenu(wrapper);
+            const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU2_POPOVER2}`).hostNodes();
+            assert.isTrue(
+                ctxMenuPopover.hasClass(CoreClasses.DARK),
+                "ContextMenu2 popover should be open WITH dark theme applied",
+            );
+        });
+
+        it("detects theme change (dark -> light)", () => {
+            const wrapper = mount(
+                <div className={CoreClasses.DARK}>
+                    <ContextMenu2 content={MENU} popoverProps={{ transitionDuration: 0 }}>
+                        <div className={TARGET_CLASSNAME} />
+                    </ContextMenu2>
+                </div>,
+            );
+
+            wrapper.setProps({ className: undefined });
+            openCtxMenu(wrapper);
+            const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU2_POPOVER2}`).hostNodes();
+            assert.isFalse(
+                ctxMenuPopover.hasClass(CoreClasses.DARK),
+                "ContextMenu2 popover should be open WITHOUT dark theme applied",
+            );
+        });
+    });
+
     describe("interacting with other components", () => {
         describe("with one level of nesting", () => {
             it("closes parent Tooltip2", () => {
