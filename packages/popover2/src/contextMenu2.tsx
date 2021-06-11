@@ -164,7 +164,7 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
         }
     }, []);
 
-    // but Popover2 should attach its ref to the virtual target we render inside a Portal
+    // Popover2 should attach its ref to the virtual target we render inside a Portal, not the "inline" child target
     const renderTarget = React.useCallback(
         ({ ref }: Popover2TargetProps) => (
             <Portal>
