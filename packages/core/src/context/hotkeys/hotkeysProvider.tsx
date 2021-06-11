@@ -31,14 +31,13 @@ type HotkeysAction =
     | { type: "ADD_HOTKEYS" | "REMOVE_HOTKEYS"; payload: HotkeyConfig[] }
     | { type: "CLOSE_DIALOG" | "OPEN_DIALOG" };
 
+export type HotkeysContextInstance = [HotkeysContextState, React.Dispatch<HotkeysAction>];
+
 const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
 
 // we can remove this guard once Blueprint depends on React 16
-export const HotkeysContext = React.createContext?.<[HotkeysContextState, React.Dispatch<HotkeysAction>]>([
-    initialHotkeysState,
-    noOpDispatch,
-]);
+export const HotkeysContext = React.createContext?.<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {
@@ -76,7 +75,12 @@ export interface HotkeysProviderProps {
  * Hotkeys context provider, necessary for the `useHotkeys` hook.
  */
 export const HotkeysProvider = ({ children, dialogProps, renderDialog }: HotkeysProviderProps) => {
-    const [state, dispatch] = React.useReducer(hotkeysReducer, initialHotkeysState);
+    // in case this component is nested, try to re-use the existing context state
+    const existingContext = React.useContext(HotkeysContext);
+    const hasExistingContext = existingContext[1] !== noOpDispatch;
+    const [state, dispatch] = hasExistingContext
+        ? existingContext
+        : React.useReducer(hotkeysReducer, initialHotkeysState);
     const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
@@ -88,10 +92,11 @@ export const HotkeysProvider = ({ children, dialogProps, renderDialog }: Hotkeys
         />
     );
 
+    // if we are working with an existing context, we don't need to generate our own dialog
     return (
         <HotkeysContext.Provider value={[state, dispatch]}>
             {children}
-            {dialog}
+            {hasExistingContext ? undefined : dialog}
         </HotkeysContext.Provider>
     );
 };
