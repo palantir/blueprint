@@ -79,12 +79,18 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     ) => {
         const isTextInput = isTargetATextInput(e);
         for (const key of global ? globalKeys : localKeys) {
-            const shouldIgnore = (isTextInput && !key.config.allowInInput) || key.config.disabled;
+            const {
+                allowInInput = false,
+                disabled = false,
+                preventDefault = false,
+                stopPropagation = false,
+            } = key.config;
+            const shouldIgnore = (isTextInput && !allowInInput) || disabled;
             if (!shouldIgnore && comboMatches(key.combo, combo)) {
-                if (key.config.preventDefault) {
+                if (preventDefault) {
                     e.preventDefault();
                 }
-                if (key.config.stopPropagation) {
+                if (stopPropagation) {
                     // set a flag just for unit testing. not meant to be referenced in feature work.
                     (e as any).isPropagationStopped = true;
                     e.stopPropagation();
