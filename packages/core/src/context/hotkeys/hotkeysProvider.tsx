@@ -36,7 +36,17 @@ export type HotkeysContextInstance = [HotkeysContextState, React.Dispatch<Hotkey
 const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
 
-// we can remove this guard once Blueprint depends on React 16
+// N.B. we can remove this optional call guard once Blueprint depends on React 16
+/**
+ * A React context used to register and deregister hotkeys as components are mounted and unmounted in an application.
+ * Users should take care to make sure that only _one_ of these is instantiated and used within an application, especially
+ * if using global hotkeys.
+ *
+ * You will likely not be using this HotkeysContext directly, except in cases where you need to get a direct handle on an
+ * exisitng context instance for advanced use cases involving nested HotkeysProviders.
+ *
+ * For more information, see the HotkeysProvider documentation.
+ */
 export const HotkeysContext = React.createContext?.<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
@@ -69,18 +79,17 @@ export interface HotkeysProviderProps {
 
     /** If provided, this dialog render function will be used in place of the default implementation. */
     renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
+
+    /** If provided, we will use this context instance instead of generating our own. */
+    value?: HotkeysContextInstance;
 }
 
 /**
  * Hotkeys context provider, necessary for the `useHotkeys` hook.
  */
-export const HotkeysProvider = ({ children, dialogProps, renderDialog }: HotkeysProviderProps) => {
-    // in case this component is nested, try to re-use the existing context state
-    const existingContext = React.useContext(HotkeysContext);
-    const hasExistingContext = existingContext[1] !== noOpDispatch;
-    const [state, dispatch] = hasExistingContext
-        ? existingContext
-        : React.useReducer(hotkeysReducer, initialHotkeysState);
+export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
+    const hasExistingContext = value != null;
+    const [state, dispatch] = value ?? React.useReducer(hotkeysReducer, initialHotkeysState);
     const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (

@@ -43,6 +43,74 @@ ReactDOM.render(
 );
 ```
 
+@## Advanced usage
+
+HotkeysProvider should not be nested, except in special cases. If you have a rendering boundary within your application
+through which React context is not preserved (for example, a plugin system which uses `ReactDOM.render()`) and you wish
+to use hotkeys in a descendant part of the tree below such a boundary, you may render a descendant provider and hydrate it
+with the root context instance. Without this context plumbing, you would end up with two "global" hotkeys dialogs in an
+application where you only want one.
+
+```tsx
+import { HotkeyConfig, HotkeysContext, HotkeysProvider, HotkeysTarget2 } from "@blueprintjs/core";
+import React, { useContext, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
+
+function App() {
+    const appHotkeys: HotkeyConfig[] = [
+        {
+            combo: "mod + o",
+            global: true,
+            label: "Open",
+        },
+    ];
+
+    return (
+        <HotkeysProvider>
+            <HotkeysTarget2 hotkeys={appHotkeys}>
+                <div>My app has hotkeys 😎</div>
+            </HotkeysTarget2>
+            <PluginSlot>
+                <Plugin />
+            </PluginSlot>
+        </HotkeysProvider>
+    );
+}
+
+function Plugin() {
+    const pluginHotkeys: HotkeyConfig[] = [
+        {
+            combo: "mod + f",
+            global: true,
+            label: "Search",
+        }
+    ];
+
+    return (
+        <HotkeysTarget2 hotkeys={pluginHotkeys}>
+            <div>This plugin also has hotkeys</div>
+        </HotkeysTarget2>
+    );
+}
+
+function PluginSlot(props) {
+    const hotkeysContext = useContext(HotkeysContext);
+    const ref = useRef<HTMLDivElement>();
+
+    useEffect(() => {
+        if (ref.current != null) {
+            ReactDOM.render(
+                <HotkeysProvider value={hotkeysContext}>
+                    {props.children}
+                </HotkeysProvider>
+            );
+        }
+    }, [ref]);
+
+    return <div ref={ref} />;
+}
+```
+
 @## Props
 
 @interface HotkeysProviderProps
