@@ -264,7 +264,10 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
 
         if (leftElement != null) {
             return (
-                <span className={Classes.INPUT_LEFT_CONTAINER} ref={this.refHandlers.leftElement}>
+                <span
+                    className={classNames(Classes.INPUT_LEFT_CONTAINER, Classes.INPUT_ACTION)}
+                    ref={this.refHandlers.leftElement}
+                >
                     {leftElement}
                 </span>
             );
