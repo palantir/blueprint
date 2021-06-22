@@ -45,7 +45,7 @@ const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
  * You will likely not be using this HotkeysContext directly, except in cases where you need to get a direct handle on an
  * exisitng context instance for advanced use cases involving nested HotkeysProviders.
  *
- * For more information, see the HotkeysProvider documentation.
+ * For more information, see the [HotkeysProvider documentation](https://blueprintjs.com/docs/#core/context/hotkeys-provider).
  */
 export const HotkeysContext = React.createContext?.<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
 

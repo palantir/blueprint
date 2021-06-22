@@ -48,8 +48,8 @@ ReactDOM.render(
 HotkeysProvider should not be nested, except in special cases. If you have a rendering boundary within your application
 through which React context is not preserved (for example, a plugin system which uses `ReactDOM.render()`) and you wish
 to use hotkeys in a descendant part of the tree below such a boundary, you may render a descendant provider and initialize
-it with the root context instance. This ensure that there will only be one "global" hotkeys dialogs in an application
-taht has multiple HotkeysProviders.
+it with the root context instance. This ensures that there will only be one "global" hotkeys dialogs in an application
+which has multiple HotkeysProviders.
 
 ```tsx
 import {
