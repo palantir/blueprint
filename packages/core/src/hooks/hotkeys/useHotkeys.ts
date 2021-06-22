@@ -22,6 +22,14 @@ import { HotkeyConfig } from "./hotkeyConfig";
 
 export interface UseHotkeysOptions {
     /**
+     * A custom document to reference when binding global event handlers.
+     * This can be useful when using iframes in an application.
+     *
+     * @default window.document
+     */
+    document?: Document;
+
+    /**
      * The key combo which will trigger the hotkeys dialog to open.
      *
      * @default "?"
@@ -41,7 +49,7 @@ export interface UseHotkeysReturnValue {
  * @param options hook options
  */
 export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
-    const { showDialogKeyCombo = "?" } = options;
+    const { document = window.document, showDialogKeyCombo = "?" } = options;
     const localKeys = React.useMemo(
         () =>
             keys

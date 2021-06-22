@@ -78,6 +78,8 @@ and configure the <kbd>?</kbd> key to open the generated hotkeys dialog, but it 
 event handlers with the returned `handleKeyDown` and `handleKeyUp` functions. The hook takes an optional
 second parameter which can customize some of its default behavior.
 
+@interface UseHotkeysOptions
+
 @method useHotkeys
 
 @interface HotkeyConfig
