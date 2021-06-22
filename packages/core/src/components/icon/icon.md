@@ -6,25 +6,16 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 
 </div>
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
-    <h4 class="@ns-heading">SVG icons in 2.0</h4>
-
-Blueprint 2.0 introduced SVG icon support and moved icon resources to a separate __@blueprintjs/icons__ package.
-The `Icon` component renders SVG paths and the icon classes are no longer used by any Blueprint React component.
-Icon font support has been preserved but should be considered a legacy feature that will be removed in a
-future major version.
-
-</div>
-
 This section describes two ways of using the UI icon font: via React `Icon`
 component to render SVG images or via CSS classes to use the icon font.
 
 Many Blueprint components provide an `icon` prop which accepts an icon name
-(such as `"history"`) or a JSX element to use as the icon.
+(such as `"history"`) or a JSX element to use as the icon. When you specify
+the name as a string, these components render `<Icon icon="..." />` under the hood.
 
 @reactExample IconExample
 
-@## Props
+@## Usage
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
@@ -41,15 +32,14 @@ which SVG is rendered and `iconSize` determines which pixel grid is used:
 grid.
 
 ```tsx
-import { Icon, IconSize, Intent } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
+import { Icon, IconSize } from "@blueprintjs/core";
 
 // string literals are supported through IconName union type
 <Icon icon="cross" />
 <Icon icon="globe" iconSize={20} />
 
 // constants are provided for name and size
-<Icon icon={IconNames.GRAPH} iconSize={IconSize.LARGE} intent={Intent.PRIMARY} />
+<Icon icon="graph" iconSize={IconSize.LARGE} intent="primary" />
 
 // can pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
@@ -64,18 +54,17 @@ import { IconNames } from "@blueprintjs/icons";
 </svg>
 ```
 
+@## Props
+
 @interface IIconProps
 
 @## CSS
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-warning-sign">
-    <h4 class="@ns-heading">Icon fonts are legacy in 2.0</h4>
+    <h4 class="@ns-heading">Some icons are missing in the icon font in 3.x</h4>
 
-Blueprint's icon fonts should be considered a legacy feature and will be removed in a future major version.
-The SVGs rendered by the React component do not suffer from the blurriness of icon fonts, and browser
-support is equivalent.
-
-__Important__: Blueprint icons added after `@blueprintjs/icons@3.14.0` do not have icon font support.
+Blueprint icons added after `@blueprintjs/icons@3.14.0` do not have icon font support.
+Support for the icon font for these icons will be restored in Blueprint v4.0.
 
 </div>
 
