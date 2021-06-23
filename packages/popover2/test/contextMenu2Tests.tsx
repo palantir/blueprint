@@ -47,7 +47,7 @@ const COMMON_TOOLTIP_PROPS: Partial<Tooltip2Props> = {
     usePortal: false,
 };
 
-describe.only("ContextMenu2", () => {
+describe("ContextMenu2", () => {
     describe("basic usage", () => {
         it("renders children and Popover2", () => {
             const ctxMenu = mountTestMenu();
