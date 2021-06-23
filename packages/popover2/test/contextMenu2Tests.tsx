@@ -18,6 +18,7 @@ import { assert } from "chai";
 import classNames from "classnames";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { Classes as CoreClasses, Menu, MenuItem, Keys } from "@blueprintjs/core";
 
@@ -83,6 +84,23 @@ describe("ContextMenu2", () => {
                     which: Keys.ESCAPE,
                 });
             assert.isFalse(ctxMenu.find(Popover2).prop("isOpen"));
+        });
+
+        it("clicks inside popover don't propagate to context menu wrapper", () => {
+            const itemClickSpy = spy();
+            const wrapperClickSpy = spy();
+            const ctxMenu = mountTestMenu({
+                content: (
+                    <Menu>
+                        <MenuItem data-testid="item" text="item" onClick={itemClickSpy} />
+                    </Menu>
+                ),
+                onClick: wrapperClickSpy,
+            });
+            openCtxMenu(ctxMenu);
+            ctxMenu.find("[data-testid='item']").hostNodes().simulate("click");
+            assert.isTrue(itemClickSpy.calledOnce, "menu item click handler should be called once");
+            assert.isFalse(wrapperClickSpy.called, "ctx menu wrapper click handler should not be called");
         });
 
         function mountTestMenu(props: Partial<ContextMenu2Props> = {}) {

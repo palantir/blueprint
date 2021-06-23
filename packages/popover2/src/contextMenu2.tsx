@@ -237,25 +237,29 @@ export const ContextMenu2: React.FC<ContextMenu2Props> = React.forwardRef<any, C
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU2);
 
-    const child = CoreUtils.isFunction(children)
-        ? children({
-              className: containerClassName,
-              contentProps,
-              onContextMenu: handleContextMenu,
-              popover: maybePopover,
-              ref: childRef,
-          })
-        : React.createElement<React.HTMLAttributes<any>>(
-              tagName,
-              {
-                  className: containerClassName,
-                  onContextMenu: handleContextMenu,
-                  ref: mergeRefs(childRef, userRef),
-                  ...restProps,
-              },
-              maybePopover,
-              children,
-          );
+    const child = CoreUtils.isFunction(children) ? (
+        children({
+            className: containerClassName,
+            contentProps,
+            onContextMenu: handleContextMenu,
+            popover: maybePopover,
+            ref: childRef,
+        })
+    ) : (
+        <>
+            {maybePopover}
+            {React.createElement<React.HTMLAttributes<any>>(
+                tagName,
+                {
+                    className: containerClassName,
+                    onContextMenu: handleContextMenu,
+                    ref: mergeRefs(childRef, userRef),
+                    ...restProps,
+                },
+                children,
+            )}
+        </>
+    );
 
     // force descendant Tooltip2s to be disabled when this context menu is open
     return <Tooltip2Provider forceDisable={isOpen}>{child}</Tooltip2Provider>;
