@@ -35,16 +35,16 @@ export default function ContextMenuExample() {
 `<ContextMenu>` will render a `<div>` wrapper element around its children. You can treat this
 component as a `<div>`, since extra props will be forwarded down to the DOM element. For example,
 you can add an `onClick` handler. You may also customize the tag name of the generated wrapper
-element using the `tagName` prop.
+element using the `tagName` prop. Note that the generated popover will be rendered as a _sibling_
+of this wrapper element.
 
 ### Advanced usage
 
-By default, `<ContextMenu>` will render a wrapper element around its children to contain the
-generated popover, attach an event handler, and get a DOM ref for layout measurement. If this
-wrapper element breaks your HTML and/or CSS layout in some way and you wish to omit it, you may
-do so by utilizing ContextMenu's advanced rendering API which uses a `children` render function.
-If you use this approach, you must take care to properly use all the render props supplied to
-the `children()` function:
+By default, `<ContextMenu2>` will render a wrapper element around its children to attach an event handler
+and get a DOM ref for theme detection. If this wrapper element breaks your HTML and/or CSS layout in
+some way and you wish to omit it, you may do so by utilizing ContextMenu2's advanced rendering API
+which uses a `children` render function. If you use this approach, you must take care to properly use
+all the render props supplied to the `children()` function:
 
 ```tsx
 import classNames from "classnames";

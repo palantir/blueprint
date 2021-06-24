@@ -31,13 +31,22 @@ type HotkeysAction =
     | { type: "ADD_HOTKEYS" | "REMOVE_HOTKEYS"; payload: HotkeyConfig[] }
     | { type: "CLOSE_DIALOG" | "OPEN_DIALOG" };
 
+export type HotkeysContextInstance = [HotkeysContextState, React.Dispatch<HotkeysAction>];
+
 const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
 
-export const HotkeysContext = createContext<[HotkeysContextState, React.Dispatch<HotkeysAction>]>([
-    initialHotkeysState,
-    noOpDispatch,
-]);
+/**
+ * A React context used to register and deregister hotkeys as components are mounted and unmounted in an application.
+ * Users should take care to make sure that only _one_ of these is instantiated and used within an application, especially
+ * if using global hotkeys.
+ *
+ * You will likely not be using this HotkeysContext directly, except in cases where you need to get a direct handle on an
+ * exisitng context instance for advanced use cases involving nested HotkeysProviders.
+ *
+ * For more information, see the [HotkeysProvider documentation](https://blueprintjs.com/docs/#core/context/hotkeys-provider).
+ */
+export const HotkeysContext = createContext<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {
@@ -69,13 +78,17 @@ export interface HotkeysProviderProps {
 
     /** If provided, this dialog render function will be used in place of the default implementation. */
     renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
+
+    /** If provided, we will use this context instance instead of generating our own. */
+    value?: HotkeysContextInstance;
 }
 
 /**
  * Hotkeys context provider, necessary for the `useHotkeys` hook.
  */
-export const HotkeysProvider = ({ children, dialogProps, renderDialog }: HotkeysProviderProps) => {
-    const [state, dispatch] = React.useReducer(hotkeysReducer, initialHotkeysState);
+export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
+    const hasExistingContext = value != null;
+    const [state, dispatch] = value ?? React.useReducer(hotkeysReducer, initialHotkeysState);
     const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
@@ -87,10 +100,11 @@ export const HotkeysProvider = ({ children, dialogProps, renderDialog }: Hotkeys
         />
     );
 
+    // if we are working with an existing context, we don't need to generate our own dialog
     return (
         <HotkeysContext.Provider value={[state, dispatch]}>
             {children}
-            {dialog}
+            {hasExistingContext ? undefined : dialog}
         </HotkeysContext.Provider>
     );
 };

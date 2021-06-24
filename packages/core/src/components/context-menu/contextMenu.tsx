@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { forwardRef, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { mergeRefs, Props, Utils } from "../../common";
 import * as Classes from "../../common/classes";
@@ -62,6 +62,9 @@ export interface ContextMenuChildrenProps {
 
     /** Popover element rendered by ContextMenu, used to establish a click target to position the menu */
     popover: JSX.Element | undefined;
+
+    /** DOM ref for the context menu target, used to detect dark theme */
+    ref: React.Ref<any>;
 }
 
 export interface ContextMenuProps
@@ -137,6 +140,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
     // hold a reference to the click mouse event to pass to content/child render functions
     const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLElement>>();
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    // we need a ref on the child element (or the wrapper we generate) to check for dark theme
+    const childRef = React.useRef<HTMLDivElement>(null);
 
     // If disabled prop is changed, we don't want our old context menu to stick around.
     // If it has just been enabled (disabled = false), then the menu ought to be opened by
@@ -157,25 +162,21 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
         }
     }, []);
 
-    const targetRef = useRef<HTMLDivElement>(null);
+    // Popover2 should attach its ref to the virtual target we render inside a Portal, not the "inline" child target
     const renderTarget = useCallback(
         ({ ref }: PopoverTargetProps) => (
             <Portal>
-                <div
-                    className={Classes.CONTEXT_MENU_POPOVER_TARGET}
-                    style={targetOffset}
-                    ref={mergeRefs(ref, targetRef)}
-                />
+                <div className={Classes.CONTEXT_MENU_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
             </Portal>
         ),
         [targetOffset],
     );
-    const isDarkTheme = useMemo(() => Utils.isDarkTheme(targetRef.current), [targetRef.current]);
-
-    const contentProps: ContextMenuContentProps = { isOpen, mouseEvent, targetOffset };
+    // if the menu was just opened, we should check for dark theme (but don't do this on every render)
+    const isDarkTheme = useMemo(() => Utils.isDarkTheme(childRef.current), [childRef, isOpen]);
 
     // only render the popover if there is content in the context menu;
     // this avoid doing unnecessary rendering & computation
+    const contentProps: ContextMenuContentProps = { isOpen, mouseEvent, targetOffset };
     const menu = disabled ? undefined : Utils.isFunction(content) ? content(contentProps) : content;
     const maybePopover =
         menu === undefined ? undefined : (
@@ -233,24 +234,29 @@ export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMe
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU);
 
-    const child = Utils.isFunction(children)
-        ? children({
-              className: containerClassName,
-              contentProps,
-              onContextMenu: handleContextMenu,
-              popover: maybePopover,
-          })
-        : React.createElement(
-              tagName,
-              {
-                  className: containerClassName,
-                  onContextMenu: handleContextMenu,
-                  ref: userRef,
-                  ...restProps,
-              },
-              maybePopover,
-              children,
-          );
+    const child = Utils.isFunction(children) ? (
+        children({
+            className: containerClassName,
+            contentProps,
+            onContextMenu: handleContextMenu,
+            popover: maybePopover,
+            ref: childRef,
+        })
+    ) : (
+        <>
+            {maybePopover}
+            {React.createElement<React.HTMLAttributes<any>>(
+                tagName,
+                {
+                    className: containerClassName,
+                    onContextMenu: handleContextMenu,
+                    ref: mergeRefs(childRef, userRef),
+                    ...restProps,
+                },
+                children,
+            )}
+        </>
+    );
 
     // force descendant Tooltips to be disabled when this context menu is open
     return <TooltipProvider forceDisable={isOpen}>{child}</TooltipProvider>;

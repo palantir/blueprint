@@ -175,6 +175,7 @@ Styleguide control-group
   // input group contents appear above input always
   .#{$ns}-input-group > .#{$ns}-icon,
   .#{$ns}-input-group > .#{$ns}-button,
+  .#{$ns}-input-group > .#{$ns}-input-left-container,
   .#{$ns}-input-group > .#{$ns}-input-action {
     z-index: index($control-group-stack, "input-group-children");
   }

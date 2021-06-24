@@ -13,11 +13,12 @@ This section describes two ways of using the UI icon font: via React `Icon`
 component to render SVG images or via CSS classes to use the icon font.
 
 Many Blueprint components provide an `icon` prop which accepts an icon name
-(such as `"history"`) or a JSX element to use as the icon.
+(such as `"history"`) or a JSX element to use as the icon. When you specify
+the name as a string, these components render `<Icon icon="..." />` under the hood.
 
 @reactExample IconExample
 
-@## Props
+@## Usage
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The

@@ -3094,5 +3094,29 @@
         "iconName": "shared-filter",
         "tags": "notification, filter, shared",
         "group": "interface"
+    },
+    {
+        "displayName": "One to one",
+        "iconName": "one-to-one",
+        "tags": "object, relation, ontology",
+        "group": "data"
+    },
+    {
+        "displayName": "One to many",
+        "iconName": "one-to-many",
+        "tags": "object, relation, ontology",
+        "group": "data"
+    },
+    {
+        "displayName": "Many to one",
+        "iconName": "many-to-one",
+        "tags": "object, relation, ontology",
+        "group": "data"
+    },
+    {
+        "displayName": "Many to many",
+        "iconName": "many-to-many",
+        "tags": "object, relation, ontology",
+        "group": "data"
     }
 ]

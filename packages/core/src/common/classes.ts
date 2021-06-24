@@ -119,7 +119,7 @@ export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
 
 export const CONTEXT_MENU = `${NS}-context-menu`;
-export const CONTEXT_MENU_POPOVER_TARGET = `${CONTEXT_MENU}-popover-target`;
+export const CONTEXT_MENU_VIRTUAL_TARGET = `${CONTEXT_MENU}-virtual-target`;
 export const CONTEXT_MENU_POPOVER = `${CONTEXT_MENU}-popover`;
 export const CONTEXT_MENU_BACKDROP = `${CONTEXT_MENU}-backdrop`;
 
