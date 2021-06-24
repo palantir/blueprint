@@ -84,6 +84,7 @@ const GraphNode: React.FC = () => {
                     "docs-context-menu-open": props.contentProps.isOpen,
                 })}
                 onContextMenu={props.onContextMenu}
+                ref={props.ref}
             >
                 {props.popover}
             </div>

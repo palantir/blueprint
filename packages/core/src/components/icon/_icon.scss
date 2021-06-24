@@ -42,7 +42,7 @@ $icon-classes: (
   }
 }
 
-// intent support for both SVG and legacy font icons
+// intent support for both SVG and font icons
 #{$icon-classes} {
   @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
@@ -56,7 +56,7 @@ $icon-classes: (
 }
 
 //
-// LEGACY icon font styles
+// Icon font styles
 //
 
 span.#{$ns}-icon-standard {
