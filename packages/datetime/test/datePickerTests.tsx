@@ -116,6 +116,32 @@ describe("<DatePicker>", () => {
             assertDayDisabled(getDay(21), false);
         });
 
+        it("enable out-of-range min dates if ignoreRange is true", () => {
+            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
+            const { getDay, clickPreviousMonth } = wrap(
+                <DatePicker
+                    defaultValue={defaultValue}
+                    minDate={new Date(2017, Months.AUGUST, 20)}
+                    ignoreRange={true}
+                />,
+            );
+            clickPreviousMonth();
+            assertDayDisabled(getDay(10), false);
+            assertDayDisabled(getDay(21), false);
+        });
+
+        it("enable out-of-range max dates if ignoreRange is true", () => {
+            const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
+            const { getDay } = wrap(
+                <DatePicker
+                    defaultValue={defaultValue}
+                    maxDate={new Date(2017, Months.SEPTEMBER, 20)}
+                    ignoreRange={true}
+                />,
+            );
+            assertDayDisabled(getDay(10), false);
+        });
+
         it("allows top-level locale, localeUtils, and modifiers to be overridden by same props in dayPickerProps", () => {
             const blueprintModifiers: IDatePickerModifiers = {
                 blueprint: () => true,

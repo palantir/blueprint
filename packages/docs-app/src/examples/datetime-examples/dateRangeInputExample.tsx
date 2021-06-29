@@ -36,6 +36,7 @@ export interface IDateRangeInputExampleState {
     shortcuts: boolean;
     singleMonthOnly: boolean;
     showTimeArrowButtons: boolean;
+    ignoreRange: boolean;
 }
 
 export class DateRangeInputExample extends React.PureComponent<IExampleProps, IDateRangeInputExampleState> {
@@ -46,6 +47,7 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
         disabled: false,
         enableTimePicker: false,
         format: FORMATS[0],
+        ignoreRange: false,
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,
@@ -79,6 +81,8 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
     private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
         this.setState({ showTimeArrowButtons }),
     );
+
+    private toggleIgnoreRange = handleBooleanChange(ignoreRange => this.setState({ ignoreRange }));
 
     public render() {
         const { enableTimePicker, format, range, showTimeArrowButtons, ...spreadProps } = this.state;
@@ -145,6 +149,11 @@ export class DateRangeInputExample extends React.PureComponent<IExampleProps, ID
                     checked={this.state.showTimeArrowButtons}
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
+                />
+                <Switch
+                    checked={this.state.ignoreRange}
+                    label="Ignore max and min date range"
+                    onChange={this.toggleIgnoreRange}
                 />
                 <FormatSelect key="Format" format={this.state.format} onChange={this.handleFormatChange} />
             </>
