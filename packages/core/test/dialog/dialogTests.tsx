@@ -151,7 +151,7 @@ describe("<Dialog>", () => {
     function createDialogContents(): JSX.Element[] {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
-                <Icon icon="inbox" iconSize={IconSize.LARGE} />
+                <Icon icon="inbox" size={IconSize.LARGE} />
                 <H4>Dialog header</H4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>

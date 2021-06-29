@@ -19,16 +19,16 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
-optional `iconSize` prop determines the exact width and height of the icon
-image; the icon element itself can be sized separately using CSS.
+optional `size` prop (previously called `iconSize`) determines the exact width
+and height of the icon image; the icon element itself can be sized separately using CSS.
 
 The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 (defaults to `span`), and additional props are passed to this element.
 
 Data files in the __@blueprintjs/icons__ package provide SVG path information
 for Blueprint's 300+ icons for 16px and 20px grids. The `icon` prop dictates
-which SVG is rendered and `iconSize` determines which pixel grid is used:
-`iconSize >= 20` will use the 20px grid and smaller icons will use the 16px
+which SVG is rendered and `size` determines which pixel grid is used:
+`size >= 20` will use the 20px grid and smaller icons will use the 16px
 grid.
 
 ```tsx
@@ -36,17 +36,17 @@ import { Icon, IconSize } from "@blueprintjs/core";
 
 // string literals are supported through IconName union type
 <Icon icon="cross" />
-<Icon icon="globe" iconSize={20} />
+<Icon icon="globe" size={20} />
 
 // constants are provided for name and size
-<Icon icon="graph" iconSize={IconSize.LARGE} intent="primary" />
+<Icon icon="graph" size={IconSize.LARGE} intent="primary" />
 
 // can pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
 ```
 
 ```html
-<Icon icon="globe" iconSize={30} />
+<Icon icon="globe" size={30} />
 <!-- renders the following HTML markup: -->
 <svg class="@ns-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
     <title>globe</title>

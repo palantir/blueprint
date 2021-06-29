@@ -29,11 +29,10 @@ describe("<Icon>", () => {
         assert.isTrue(icon.setProps({ tagName: "article" }).is("article"));
     });
 
-    it("iconSize=16 renders standard size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={IconSize.STANDARD} />, IconSize.STANDARD));
+    it("size=16 renders standard size", () =>
+        assertIconSize(<Icon icon="graph" size={IconSize.STANDARD} />, IconSize.STANDARD));
 
-    it("iconSize=20 renders large size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={IconSize.LARGE} />, IconSize.LARGE));
+    it("size=20 renders large size", () => assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
 
     it("renders intent class", () =>
         assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
