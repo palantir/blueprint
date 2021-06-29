@@ -36,17 +36,17 @@ import { Icon, IconSize } from "@blueprintjs/core";
 
 // string literals are supported through IconName union type
 <Icon icon="cross" />
-<Icon icon="globe" iconSize={20} />
+<Icon icon="globe" size={20} />
 
 // constants are provided for name and size
-<Icon icon="graph" iconSize={IconSize.LARGE} intent="primary" />
+<Icon icon="graph" size={IconSize.LARGE} intent="primary" />
 
 // can pass all valid HTML props
 <Icon icon="add" onClick={this.handleAdd} onKeyDown={this.handleAddKeys} />
 ```
 
 ```html
-<Icon icon="globe" iconSize={30} />
+<Icon icon="globe" size={30} />
 <!-- renders the following HTML markup: -->
 <svg class="@ns-icon" data-icon="globe" width="30" height="30" viewBox="0 0 20 20">
     <title>globe</title>

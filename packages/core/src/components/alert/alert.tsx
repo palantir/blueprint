@@ -169,7 +169,7 @@ export class Alert extends AbstractPureComponent2<AlertProps> {
                 portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.ALERT_BODY}>
-                    <Icon icon={icon} iconSize={40} intent={intent} />
+                    <Icon icon={icon} size={40} intent={intent} />
                     <div className={Classes.ALERT_CONTENTS}>{children}</div>
                 </div>
                 <div className={Classes.ALERT_FOOTER}>
