@@ -19,8 +19,8 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
-optional `size` prop (previously called `iconSize`) determines the exact width
-and height of the icon image; the icon element itself can be sized separately using CSS.
+optional `size` prop determines the exact width and height of the icon
+image; the icon element itself can be sized separately using CSS.
 
 The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 (defaults to `span`), and additional props are passed to this element.
