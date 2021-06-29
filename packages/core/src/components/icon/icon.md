@@ -22,7 +22,7 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 
 Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
-optional `iconSize` prop determines the exact width and height of the icon
+optional `size` prop determines the exact width and height of the icon
 image; the icon element itself can be sized separately using CSS.
 
 The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
@@ -30,8 +30,8 @@ The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 
 Data files in the __@blueprintjs/icons__ package provide SVG path information
 for Blueprint's 300+ icons for 16px and 20px grids. The `icon` prop dictates
-which SVG is rendered and `iconSize` determines which pixel grid is used:
-`iconSize >= 20` will use the 20px grid and smaller icons will use the 16px
+which SVG is rendered and `size` determines which pixel grid is used:
+`size >= 20` will use the 20px grid and smaller icons will use the 16px
 grid.
 
 ```tsx
