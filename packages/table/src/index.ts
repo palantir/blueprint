@@ -70,4 +70,6 @@ export {
 } from "./regions";
 
 // eslint-disable-next-line deprecation/deprecation
-export { ITableProps, TableProps, Table } from "./table";
+export { ITableProps, TableProps } from "./tableProps";
+
+export { Table } from "./table";
