@@ -59,13 +59,14 @@ import {
 } from "./regions";
 import {
     IResizeRowsByApproximateHeightOptions,
-    IResizeRowsByApproximateHeightResolvedOptions,
-} from "./resizeRowsTypes";
+    resizeRowsByApproximateHeight,
+    resizeRowsByTallestCell,
+} from "./resizeRows";
 import { TableBody } from "./tableBody";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps } from "./tableProps";
 import type { TableState, TableSnapshot } from "./tableState";
-import { clampNumFrozenColumns, clampNumFrozenRows } from "./tableUtils";
+import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
 
 /* eslint-disable deprecation/deprecation */
 
@@ -184,18 +185,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
 
         return null;
     }
-
-    // these default values for `resizeRowsByApproximateHeight` have been
-    // fine-tuned to work well with default Table font styles.
-    private static resizeRowsByApproximateHeightDefaults: Record<
-        keyof IResizeRowsByApproximateHeightOptions,
-        number
-    > = {
-        getApproximateCharWidth: 8,
-        getApproximateLineHeight: 18,
-        getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
-        getNumBufferLines: 1,
-    };
 
     private static SHALLOW_COMPARE_PROP_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in controlled mode)
@@ -325,43 +314,12 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         getCellText: ICellMapper<string>,
         options?: IResizeRowsByApproximateHeightOptions,
     ) {
-        const { numRows } = this.props;
-        const { columnWidths } = this.state;
-        const numColumns = columnWidths.length;
-
-        const rowHeights: number[] = [];
-
-        for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
-            let maxCellHeightInRow = 0;
-
-            // iterate through each cell in the row
-            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
-                // resolve all parameters to raw values
-                const {
-                    getApproximateCharWidth: approxCharWidth,
-                    getApproximateLineHeight: approxLineHeight,
-                    getCellHorizontalPadding: horizontalPadding,
-                    getNumBufferLines: numBufferLines,
-                } = this.resolveResizeRowsByApproximateHeightOptions(options, rowIndex, columnIndex);
-
-                const cellText = getCellText(rowIndex, columnIndex);
-                const approxCellHeight = Utils.getApproxCellHeight(
-                    cellText,
-                    columnWidths[columnIndex],
-                    approxCharWidth,
-                    approxLineHeight,
-                    horizontalPadding,
-                    numBufferLines,
-                );
-
-                if (approxCellHeight > maxCellHeightInRow) {
-                    maxCellHeightInRow = approxCellHeight;
-                }
-            }
-
-            rowHeights.push(maxCellHeightInRow);
-        }
-
+        const rowHeights = resizeRowsByApproximateHeight(
+            this.props.numRows,
+            this.state.columnWidths,
+            getCellText,
+            options,
+        );
         this.invalidateGrid();
         this.setState({ rowHeights });
     }
@@ -371,19 +329,13 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
      * If no indices are provided, default to using the tallest visible cell from all columns in view.
      */
     public resizeRowsByTallestCell(columnIndices?: number | number[]) {
-        let tallest = 0;
-        if (columnIndices == null) {
-            // Consider all columns currently in viewport
-            const viewportColumnIndices = this.grid.getColumnIndicesInRect(this.state.viewportRect);
-            for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {
-                tallest = Math.max(tallest, this.locator.getTallestVisibleCellInColumn(col));
-            }
-        } else {
-            const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
-            const tallestByColumns = columnIndicesArray.map(col => this.locator.getTallestVisibleCellInColumn(col));
-            tallest = Math.max(...tallestByColumns);
-        }
-        const rowHeights = Array(this.state.rowHeights.length).fill(tallest);
+        const rowHeights = resizeRowsByTallestCell(
+            this.grid,
+            this.state.viewportRect,
+            this.locator,
+            this.state.rowHeights.length,
+            columnIndices,
+        );
         this.invalidateGrid();
         this.setState({ rowHeights });
     }
@@ -810,7 +762,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         const rowIndices = this.grid.getRowIndicesInRect(viewportRect, enableGhostCells);
 
         const isViewportUnscrolledVertically = viewportRect != null && viewportRect.top === 0;
-        const areRowHeadersLoading = this.hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
+        const areRowHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.ROW_HEADERS);
         const areGhostRowsVisible = enableGhostCells && this.grid.isGhostIndex(rowIndices.rowIndexEnd, 0);
 
         return areGhostRowsVisible && (isViewportUnscrolledVertically || areRowHeadersLoading);
@@ -824,10 +776,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
 
         const isViewportUnscrolledHorizontally = viewportRect != null && viewportRect.left === 0;
         const areGhostColumnsVisible = enableGhostCells && this.grid.isGhostColumn(columnIndices.columnIndexEnd);
-        const areColumnHeadersLoading = this.hasLoadingOption(
-            this.props.loadingOptions,
-            TableLoadingOption.COLUMN_HEADERS,
-        );
+        const areColumnHeadersLoading = hasLoadingOption(this.props.loadingOptions, TableLoadingOption.COLUMN_HEADERS);
 
         return areGhostColumnsVisible && (isViewportUnscrolledHorizontally || areColumnHeadersLoading);
     }
@@ -874,7 +823,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
 
         const { id, loadingOptions, cellRenderer, columnHeaderCellRenderer, ...spreadableProps } = props;
 
-        const columnLoading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
+        const columnLoading = hasLoadingOption(loadingOptions, ColumnLoadingOption.HEADER);
 
         if (columnHeaderCellRenderer != null) {
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
@@ -934,7 +883,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     grid={this.grid}
                     isReorderable={enableColumnReordering}
                     isResizable={enableColumnResizing}
-                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
+                    loading={hasLoadingOption(loadingOptions, TableLoadingOption.COLUMN_HEADERS)}
                     locator={this.locator}
                     maxColumnWidth={maxColumnWidth}
                     measurableElementRef={refHandler}
@@ -995,7 +944,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     locator={this.locator}
                     isReorderable={enableRowReordering}
                     isResizable={enableRowResizing}
-                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
+                    loading={hasLoadingOption(loadingOptions, TableLoadingOption.ROW_HEADERS)}
                     maxRowHeight={maxRowHeight}
                     minRowHeight={minRowHeight}
                     onFocusedCell={this.handleFocus}
@@ -1011,7 +960,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     rowIndexStart={rowIndexStart}
                     rowIndexEnd={rowIndexEnd}
                 />
-
                 {this.maybeRenderRegions(this.styleRowHeaderRegion)}
             </div>
         );
@@ -1034,7 +982,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         } = columnProps;
 
         const cell = cellRenderer(rowIndex, columnIndex);
-        const { loading = this.hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
+        const { loading = hasLoadingOption(loadingOptions, ColumnLoadingOption.CELLS) } = cell.props;
 
         const cellProps: ICellProps = {
             ...restColumnProps,
@@ -1088,7 +1036,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
                     cellRenderer={this.bodyCellRenderer}
                     focusedCell={focusedCell}
                     grid={this.grid}
-                    loading={this.hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
+                    loading={hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={this.locator}
                     onCompleteRender={onCompleteRender}
                     onFocusedCell={this.handleFocus}
@@ -1449,13 +1397,6 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
         this.setState({ isLayoutLocked });
     };
 
-    private hasLoadingOption = (loadingOptions: string[], loadingOption: string) => {
-        if (loadingOptions == null) {
-            return undefined;
-        }
-        return loadingOptions.indexOf(loadingOption) >= 0;
-    };
-
     private updateLocator() {
         this.locator
             .setGrid(this.grid)
@@ -1514,35 +1455,4 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
     };
-
-    /**
-     * Returns an object with option keys mapped to their resolved values
-     * (falling back to default values as necessary).
-     */
-    private resolveResizeRowsByApproximateHeightOptions(
-        options: IResizeRowsByApproximateHeightOptions | null | undefined,
-        rowIndex: number,
-        columnIndex: number,
-    ) {
-        const optionKeys = Object.keys(Table.resizeRowsByApproximateHeightDefaults) as Array<
-            keyof IResizeRowsByApproximateHeightOptions
-        >;
-        const optionReducer = (
-            agg: IResizeRowsByApproximateHeightResolvedOptions,
-            key: keyof IResizeRowsByApproximateHeightOptions,
-        ) => {
-            const valueOrMapper = options?.[key];
-            if (typeof valueOrMapper === "function") {
-                agg[key] = valueOrMapper(rowIndex, columnIndex);
-            } else if (valueOrMapper != null) {
-                agg[key] = valueOrMapper;
-            } else {
-                agg[key] = Table.resizeRowsByApproximateHeightDefaults[key];
-            }
-
-            return agg;
-        };
-        const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
-        return resolvedOptions;
-    }
 }

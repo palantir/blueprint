@@ -131,12 +131,13 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
 
     private renderCell = ({ handleKeyDown, handleKeyUp }: UseHotkeysReturnValue) => {
         const {
+            editableTextProps,
             onCancel,
             onChange,
             onConfirm,
+            tabIndex = 0,
             truncated,
             wrapText,
-            editableTextProps,
             ...spreadableProps
         } = this.props;
 
@@ -181,6 +182,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                 onKeyDown={handleKeyDown}
                 onKeyPress={this.handleKeyPress}
                 onKeyUp={handleKeyUp}
+                tabIndex={tabIndex}
             >
                 <Draggable
                     onActivate={this.handleCellActivate}

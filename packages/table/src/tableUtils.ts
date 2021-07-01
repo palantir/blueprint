@@ -35,3 +35,10 @@ export function clampNumFrozenRows(props: TableProps) {
 function clampPotentiallyNullValue(value: number | null | undefined, max: number) {
     return value == null ? 0 : Utils.clamp(value, 0, max);
 }
+
+export function hasLoadingOption(loadingOptions: string[], loadingOption: string) {
+    if (loadingOptions == null) {
+        return undefined;
+    }
+    return loadingOptions.indexOf(loadingOption) >= 0;
+}
