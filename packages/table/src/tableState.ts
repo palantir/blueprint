@@ -88,3 +88,8 @@ export interface TableState {
 
     childrenArray: Array<React.ReactElement<IColumnProps>>;
 }
+
+export interface TableSnapshot {
+    nextScrollTop?: number;
+    nextScrollLeft?: number;
+}

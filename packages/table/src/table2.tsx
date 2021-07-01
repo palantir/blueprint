@@ -59,15 +59,14 @@ import {
     IResizeRowsByApproximateHeightOptions,
     IResizeRowsByApproximateHeightResolvedOptions,
 } from "./resizeRowsTypes";
-import type { ITableSnapshot } from "./table";
 import { getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
 import { TableBody } from "./tableBody";
 import { TableHotkeys } from "./tableHotkeys";
-import { TableProps } from "./tableProps";
-import { TableState } from "./tableState";
+import type { TableProps } from "./tableProps";
+import type { TableState, TableSnapshot } from "./tableState";
 import { clampNumFrozenColumns, clampNumFrozenRows } from "./tableUtils";
 
-export class Table2 extends AbstractComponent2<TableProps, TableState, ITableSnapshot> {
+export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table2`;
 
     public static defaultProps: TableProps = {
@@ -561,8 +560,10 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, ITableSna
         return { nextScrollLeft, nextScrollTop };
     }
 
-    public componentDidUpdate(prevProps: TableProps, prevState: TableState, snapshot: ITableSnapshot) {
+    public componentDidUpdate(prevProps: TableProps, prevState: TableState, snapshot: TableSnapshot) {
         super.componentDidUpdate(prevProps, prevState, snapshot);
+        this.hotkeysImpl.setState(this.state);
+        this.hotkeysImpl.setProps(this.props);
 
         const didChildrenChange =
             (React.Children.toArray(this.props.children) as Array<React.ReactElement<IColumnProps>>) !==
@@ -1226,7 +1227,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, ITableSna
         this.handleSelection([]);
     };
 
-    private syncViewportPosition = ({ nextScrollLeft, nextScrollTop }: ITableSnapshot) => {
+    private syncViewportPosition = ({ nextScrollLeft, nextScrollTop }: TableSnapshot) => {
         const { viewportRect } = this.state;
 
         if (nextScrollLeft !== undefined || nextScrollTop !== undefined) {

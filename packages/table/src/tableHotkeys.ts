@@ -22,15 +22,14 @@ import { Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
 import { IRegion, RegionCardinality, Regions } from "./regions";
-import { ITableSnapshot } from "./table";
-import { TableProps } from "./tableProps";
-import { TableState } from "./tableState";
+import type { TableProps } from "./tableProps";
+import type { TableState, TableSnapshot } from "./tableState";
 
 export interface TableHandlers {
     handleSelection: (selectedRegions: IRegion[]) => void;
     handleFocus: (focusedCell: IFocusedCellCoordinates) => void;
     getEnabledSelectionHandler: (selectionMode: RegionCardinality) => (selectedRegions: IRegion[]) => void;
-    syncViewportPosition: (snapshot: ITableSnapshot) => void;
+    syncViewportPosition: (snapshot: TableSnapshot) => void;
 }
 
 export class TableHotkeys {
@@ -45,6 +44,14 @@ export class TableHotkeys {
 
     public setGrid(grid: Grid) {
         this.grid = grid;
+    }
+
+    public setProps(props: TableProps) {
+        this.props = props;
+    }
+
+    public setState(state: TableState) {
+        this.state = state;
     }
 
     // Selection
@@ -304,7 +311,7 @@ export class TableHotkeys {
         const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
         const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
 
-        const ss: ITableSnapshot = {};
+        const ss: TableSnapshot = {};
 
         // keep the top end of an overly tall focused cell in view when moving left and right
         // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)

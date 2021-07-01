@@ -63,21 +63,16 @@ import {
 } from "./resizeRowsTypes";
 import { TableBody } from "./tableBody";
 import { TableHotkeys } from "./tableHotkeys";
-import { TableProps } from "./tableProps";
-import { TableState } from "./tableState";
+import type { TableProps } from "./tableProps";
+import type { TableState, TableSnapshot } from "./tableState";
 import { clampNumFrozenColumns, clampNumFrozenRows } from "./tableUtils";
 
-export interface ITableSnapshot {
-    nextScrollTop?: number;
-    nextScrollLeft?: number;
-}
+/* eslint-disable deprecation/deprecation */
 
 /** @deprecated use Table2, which supports usage of the new hotkeys API in the same application */
-// Table2 uses the new HotkeysTarget2 API
-// eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 @polyfill
-export class Table extends AbstractComponent2<TableProps, TableState, ITableSnapshot> {
+export class Table extends AbstractComponent2<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: TableProps = {
@@ -578,8 +573,10 @@ export class Table extends AbstractComponent2<TableProps, TableState, ITableSnap
         return { nextScrollLeft, nextScrollTop };
     }
 
-    public componentDidUpdate(prevProps: TableProps, prevState: TableState, snapshot: ITableSnapshot) {
+    public componentDidUpdate(prevProps: TableProps, prevState: TableState, snapshot: TableSnapshot) {
         super.componentDidUpdate(prevProps, prevState, snapshot);
+        this.hotkeysImpl.setState(this.state);
+        this.hotkeysImpl.setProps(this.props);
 
         const didChildrenChange =
             (React.Children.toArray(this.props.children) as Array<React.ReactElement<IColumnProps>>) !==
@@ -1379,7 +1376,7 @@ export class Table extends AbstractComponent2<TableProps, TableState, ITableSnap
         this.handleSelection([]);
     };
 
-    private syncViewportPosition = ({ nextScrollLeft, nextScrollTop }: ITableSnapshot) => {
+    private syncViewportPosition = ({ nextScrollLeft, nextScrollTop }: TableSnapshot) => {
         const { viewportRect } = this.state;
 
         if (nextScrollLeft !== undefined || nextScrollTop !== undefined) {

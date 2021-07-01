@@ -23,7 +23,7 @@ import * as sinon from "sinon";
 import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, ITableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
+import { Cell, Column, TableProps, RegionCardinality, Table, TableLoadingOption } from "../src";
 import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
@@ -32,7 +32,7 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { IRegion, Regions } from "../src/regions";
-import { ITableState } from "../src/table";
+import { TableState } from "../src/tableState";
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";
@@ -41,7 +41,7 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
 // tslint:disable-next-line no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement<ITableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
+const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
 describe("<Table>", function (this) {
     // allow retrying failed tests here to reduce flakes.
@@ -197,7 +197,7 @@ describe("<Table>", function (this) {
             });
         });
 
-        function mountTable(tableProps: Partial<ITableProps> = {}) {
+        function mountTable(tableProps: Partial<TableProps> = {}) {
             const containerElement = document.createElement("div");
             containerElement.style.width = `${CONTAINER_WIDTH}px`;
             containerElement.style.height = `${CONTAINER_HEIGHT}px`;
@@ -413,7 +413,7 @@ describe("<Table>", function (this) {
                 tableInstance = ref;
             }
 
-            function mountTable(tableProps: Partial<ITableProps> = {}) {
+            function mountTable(tableProps: Partial<TableProps> = {}) {
                 mount(
                     <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
                         <Table
@@ -837,7 +837,7 @@ describe("<Table>", function (this) {
             document.body.removeChild(containerElement);
         });
 
-        function mountTable(tableProps: Partial<ITableProps> = {}) {
+        function mountTable(tableProps: Partial<TableProps> = {}) {
             return harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
                 <Table
@@ -1035,7 +1035,7 @@ describe("<Table>", function (this) {
             expect(onSelection.firstCall.calledWith([Regions.column(0)]));
         });
 
-        function mountTable(props: Partial<ITableProps>) {
+        function mountTable(props: Partial<TableProps>) {
             const table = harness.mount(
                 <div style={{ width: CONTAINER_WIDTH_IN_PX, height: CONTAINER_HEIGHT_IN_PX }}>
                     <Table
@@ -1760,7 +1760,7 @@ describe("<Table>", function (this) {
         const CELL_INDEX = 0;
         const SELECTED_REGIONS = [Regions.row(0), Regions.column(0), Regions.cell(0, 0), Regions.table()];
 
-        let table: ReactWrapper<ITableProps, ITableState>;
+        let table: ReactWrapper<TableProps, TableState>;
 
         describe("disables all selection modes", () => {
             it("when numRows = 0", () => {
@@ -1810,7 +1810,7 @@ describe("<Table>", function (this) {
             });
         });
 
-        function mountTable(numRows: number, numCols: number, tableProps: Partial<ITableProps> = {}) {
+        function mountTable(numRows: number, numCols: number, tableProps: Partial<TableProps> = {}) {
             // this createTableOfSize API is backwards from the codebase's
             // normal [row, column] parameter order. :/
             return mount(
@@ -1925,7 +1925,7 @@ describe("<Table>", function (this) {
             expect(onSelection.calledOnce).to.be.false;
         });
 
-        function pressKeyWithShiftKey(component: ReactWrapper<ITableProps>, keyCode: number) {
+        function pressKeyWithShiftKey(component: ReactWrapper<TableProps>, keyCode: number) {
             const key = keyCode === Keys.ARROW_LEFT ? "left" : "right";
             component.simulate("keyDown", createKeyEventConfig(component, key, keyCode, true));
         }
