@@ -72,6 +72,7 @@ export interface ITableSnapshot {
     nextScrollLeft?: number;
 }
 
+/** @deprecated use Table2, which supports usage of the new hotkeys API in the same application */
 // Table2 uses the new HotkeysTarget2 API
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget

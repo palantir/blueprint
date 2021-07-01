@@ -37,14 +37,14 @@ import {
     Cell,
     Column,
     ColumnHeaderCell,
-    EditableCell,
+    EditableCell2,
     EditableName,
     IStyledRegionGroup,
     JSONFormat,
     RegionCardinality,
     Regions,
     RowHeaderCell,
-    Table,
+    Table2,
     TableLoadingOption,
     TruncatedFormat,
     TruncatedPopoverMode,
@@ -314,12 +314,12 @@ const DEFAULT_STATE: IMutableTableState = {
 export class MutableTable extends React.Component<{}, IMutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
-    private tableInstance: Table;
+    private tableInstance: Table2;
 
     private stateStore: LocalStore<IMutableTableState>;
 
     private refHandlers = {
-        table: (ref: Table) => (this.tableInstance = ref),
+        table: (ref: Table2) => (this.tableInstance = ref),
     };
 
     public constructor(props: any, context?: any) {
@@ -387,7 +387,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
     private renderTable() {
         return (
-            <Table
+            <Table2
                 bodyContextMenuRenderer={this.renderBodyContextMenu}
                 enableColumnInteractionBar={this.state.showTableInteractionBar}
                 enableColumnReordering={this.state.enableColumnReordering}
@@ -421,7 +421,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                 styledRegionGroups={this.getStyledRegionGroups()}
             >
                 {this.renderColumns()}
-            </Table>
+            </Table2>
         );
     }
 
@@ -561,7 +561,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
 
         if (this.state.enableCellEditing) {
             return (
-                <EditableCell
+                <EditableCell2
                     className={classes}
                     columnIndex={columnIndex}
                     loading={this.state.showCellsLoading}
