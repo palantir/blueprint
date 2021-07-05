@@ -15,8 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
