@@ -52,7 +52,10 @@ export interface ITextState {
 }
 
 @polyfill
-export class Text extends AbstractPureComponent2<TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">, ITextState> {
+export class Text extends AbstractPureComponent2<
+    TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">,
+    ITextState
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Text`;
 
     public static defaultProps: Partial<TextProps> = {
@@ -76,12 +79,9 @@ export class Text extends AbstractPureComponent2<TextProps & Omit<React.HTMLAttr
 
     public render() {
         const { children, className, ellipsize, tagName = "div", title, ...htmlProps } = this.props;
-        const classes = classNames(
-            {
-                [Classes.TEXT_OVERFLOW_ELLIPSIS]: ellipsize,
-            },
-            className,
-        );
+        const classes = classNames(className, {
+            [Classes.TEXT_OVERFLOW_ELLIPSIS]: ellipsize,
+        });
 
         return React.createElement(
             tagName,
