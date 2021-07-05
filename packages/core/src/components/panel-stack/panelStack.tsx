@@ -71,9 +71,6 @@ interface PanelStackComponent {
     displayName: string;
 }
 
-/**
- * @template T type union of all possible panels in this stack
- */
 export const PanelStack: PanelStackComponent = (props: PanelStackProps) => {
     const { renderActivePanelOnly = true, showPanelHeader = true } = props;
     const [direction, setDirection] = useState("push");
