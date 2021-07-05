@@ -143,11 +143,11 @@ export const PanelStack2Example: React.FC<IExampleProps> = props => {
         <Example options={stackList} {...props}>
             <PanelStack2
                 className="docs-panel-stack-example"
-                initialPanel={initialPanel}
                 onOpen={addToPanelStack}
                 onClose={removeFromPanelStack}
                 renderActivePanelOnly={activePanelOnly}
                 showPanelHeader={showHeader}
+                stack={currentPanelStack}
             />
         </Example>
     );
