@@ -21,40 +21,37 @@ import { ChevronLeft } from "@blueprintjs/icons";
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
 import { Text } from "../text/text";
-import { Panel, PanelProps } from "./panelTypes";
+import { Panel } from "./panelTypes";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export interface PanelViewProps<T extends Panel<object>> {
+export interface PanelViewProps {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
      */
-    onClose: (removedPanel: T) => void;
+    onClose: (removedPanel: Panel) => void;
 
     /**
      * Callback invoked when a panel invokes the `openPanel(panel)` injected
      * prop method.
      */
-    onOpen: (addedPanel: T) => void;
+    onOpen: (addedPanel: Panel) => void;
 
     /** The panel to be displayed. */
-    panel: T;
+    panel: Panel;
 
     /** The previous panel in the stack, for rendering the "back" button. */
-    previousPanel?: T;
+    previousPanel?: Panel;
 
     /** Whether to show the header with the "back" button. */
     showHeader: boolean;
 }
 
 interface PanelViewComponent {
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>>(props: PanelViewProps<T>): JSX.Element | null;
+    (props: PanelViewProps): JSX.Element | null;
     displayName: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const PanelView: PanelViewComponent = <T extends Panel<object>>(props: PanelViewProps<T>) => {
+export const PanelView: PanelViewComponent = (props: PanelViewProps) => {
     const handleClose = useCallback(() => props.onClose(props.panel), [props.onClose, props.panel]);
 
     const maybeBackButton =
@@ -82,17 +79,10 @@ export const PanelView: PanelViewComponent = <T extends Panel<object>>(props: Pa
                     <span />
                 </div>
             )}
-            {/*
-             * Cast is required because of error TS2345, where technically `panel.props` could be
-             * instantiated with a type unrelated to our generic constraint `T` here. We know
-             * we're sending the right values here though, and it makes the consumer API for this
-             * component type safe, so it's ok to do this...
-             */}
             {props.panel.renderPanel({
                 closePanel: handleClose,
                 openPanel: props.onOpen,
-                ...props.panel.props,
-            } as PanelProps<T>)}
+            })}
         </div>
     );
 };
