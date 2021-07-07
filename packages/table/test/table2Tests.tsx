@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -44,6 +44,11 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
 const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table2>(el, options);
 
 describe("<Table2>", function (this) {
+    if (React.version.startsWith("15")) {
+        it("skipped tests for backwards-incompatible component", () => assert(true));
+        return;
+    }
+
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
