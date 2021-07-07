@@ -425,6 +425,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
                 onScroll={this.handleRootScroll}
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
+                tabIndex={0}
             >
                 <TableQuadrantStack
                     bodyRef={this.refHandlers.cellContainer}
