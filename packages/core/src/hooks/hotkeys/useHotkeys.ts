@@ -49,7 +49,7 @@ export interface UseHotkeysReturnValue {
  * @param options hook options
  */
 export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
-    const { document = window.document, showDialogKeyCombo = "?" } = options;
+    const { document = getDefaultDocument(), showDialogKeyCombo = "?" } = options;
     const localKeys = React.useMemo(
         () =>
             keys
@@ -138,11 +138,12 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     );
 
     React.useEffect(() => {
-        document.addEventListener("keydown", handleGlobalKeyDown);
-        document.addEventListener("keyup", handleGlobalKeyUp);
+        // document is guaranteed to be defined inside effects
+        document!.addEventListener("keydown", handleGlobalKeyDown);
+        document!.addEventListener("keyup", handleGlobalKeyUp);
         return () => {
-            document.removeEventListener("keydown", handleGlobalKeyDown);
-            document.removeEventListener("keyup", handleGlobalKeyUp);
+            document!.removeEventListener("keydown", handleGlobalKeyDown);
+            document!.removeEventListener("keyup", handleGlobalKeyUp);
         };
     }, [handleGlobalKeyDown, handleGlobalKeyUp]);
 
@@ -180,4 +181,11 @@ function isTargetATextInput(e: KeyboardEvent) {
     }
 
     return true;
+}
+
+function getDefaultDocument(): Document | undefined {
+    if (typeof window === "undefined") {
+        return undefined;
+    }
+    return window.document;
 }

@@ -18,6 +18,8 @@ export { Cell, CellProps, ICellProps, ICellRenderer, CellRenderer } from "./cell
 
 export { EditableCell, IEditableCellProps, EditableCellProps } from "./cell/editableCell";
 
+export { EditableCell2, EditableCell2Props } from "./cell/editableCell2";
+
 export { JSONFormat, IJSONFormatProps, JSONFormatProps } from "./cell/formats/jsonFormat";
 
 export {
@@ -70,4 +72,9 @@ export {
 } from "./regions";
 
 // eslint-disable-next-line deprecation/deprecation
-export { ITableProps, TableProps, Table } from "./table";
+export { ITableProps, TableProps } from "./tableProps";
+
+// eslint-disable-next-line deprecation/deprecation
+export { Table } from "./table";
+
+export { Table2 } from "./table2";
