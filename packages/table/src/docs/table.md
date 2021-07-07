@@ -1,6 +1,6 @@
 @# Table
 
-A highly interactive React `Table` component.
+A highly interactive table component.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
@@ -14,6 +14,11 @@ Do not forget to include `table.css` on your page.
 ```sh
 npm install --save @blueprintjs/table
 ```
+
+<div class="@ns-callout @ns-large @ns-intent-success @ns-icon-star">
+
+There is a new version of the table component compatible with the new hotkeys API, see [Table2](#table/table2).
+</div>
 
 ### Features
 
@@ -62,5 +67,6 @@ const cellRenderer = (rowIndex: number) => {
 
 @reactExample TableDollarExample
 
+@page table2
 @page features
 @page api
