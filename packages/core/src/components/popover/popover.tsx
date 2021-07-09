@@ -365,6 +365,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
               };
+        finalTargetProps["aria-haspopup"] = "true";
         finalTargetProps.className = classNames(
             Classes.POPOVER_TARGET,
             { [Classes.POPOVER_OPEN]: isOpen },

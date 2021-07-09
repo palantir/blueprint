@@ -311,6 +311,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const targetProps = {
+            "aria-haspopup": "true",
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
             // applied to the generated target wrapper element.
