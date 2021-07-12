@@ -84,13 +84,24 @@ interface PanelStack2Component {
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
-    const { renderActivePanelOnly = true, showPanelHeader = true } = props;
+    const { renderActivePanelOnly = true, showPanelHeader = true, stack: propsStack } = props;
     const [direction, setDirection] = React.useState("push");
 
     const [localStack, setLocalStack] = React.useState<T[]>(
         props.initialPanel !== undefined ? [props.initialPanel] : [],
     );
-    const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
+    const stack = React.useMemo(() => (propsStack != null ? propsStack.slice().reverse() : localStack), [
+        localStack,
+        propsStack,
+    ]);
+    const stackLength = React.useRef<number>(stack.length);
+    React.useEffect(() => {
+        if (stack.length !== stackLength.current) {
+            // Adjust the direction in case the stack size has changed, controlled or uncontrolled
+            setDirection(stack.length - stackLength.current < 0 ? "pop" : "push");
+        }
+        stackLength.current = stack.length;
+    }, [stack]);
 
     if (stack.length === 0) {
         return null;
@@ -100,7 +111,6 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         (panel: T) => {
             props.onOpen?.(panel);
             if (props.stack == null) {
-                setDirection("push");
                 setLocalStack(prevStack => [panel, ...prevStack]);
             }
         },
@@ -114,7 +124,6 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
             }
             props.onClose?.(panel);
             if (props.stack == null) {
-                setDirection("pop");
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
