@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { useEffect, useMemo, useRef } from "react";
+import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
@@ -90,12 +90,12 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
     const [localStack, setLocalStack] = React.useState<T[]>(
         props.initialPanel !== undefined ? [props.initialPanel] : [],
     );
-    const stack = useMemo(() => (propsStack != null ? propsStack.slice().reverse() : localStack), [
+    const stack = React.useMemo(() => (propsStack != null ? propsStack.slice().reverse() : localStack), [
         localStack,
         propsStack,
     ]);
-    const stackLength = useRef<number>(stack.length);
-    useEffect(() => {
+    const stackLength = React.useRef<number>(stack.length);
+    React.useEffect(() => {
         if (stack.length !== stackLength.current) {
             // Adjust the direction in case the stack size has changed, controlled or uncontrolled
             setDirection(stack.length - stackLength.current < 0 ? "pop" : "push");
