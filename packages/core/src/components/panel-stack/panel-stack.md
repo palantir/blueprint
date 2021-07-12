@@ -18,15 +18,15 @@ React trees mounted, change the `renderActivePanelOnly` prop.
 
 @## Panels
 
-Panels are supplied as `Panel<T>` objects, where `renderPanel` and `props` are
-used to render the panel element and `title` will appear in the header and back button.
-This breakdown allows the component to avoid cloning elements.
-Note that each panel is only mounted when it is atop the stack and is unmounted when
+Panels are supplied as `Panel` objects, where `renderPanel` and `props` are
+used to render the panel element and `title` will appear in the header and back
+button. This breakdown allows the component to avoid cloning elements. Note
+that each panel is only mounted when it is atop the stack and is unmounted when
 it is closed or when a panel opens above it.
 
-`PanelStack` injects panel action callbacks into each panel renderer in addition to
-the `props` defined by `Panel<T>`. These allow you to close the current panel or open a
-new one on top of it during the panel's lifecycle. For example:
+`PanelStack` injects panel action callbacks into each panel renderer. These
+allow you to close the current panel or open a new one on top of it during the
+panel's lifecycle. For example:
 
 ```tsx
 import { Button, PanelProps } from "@blueprintjs/core";
@@ -35,31 +35,25 @@ type SettingsPanelInfo = { /* ...  */ };
 type AccountSettingsPanelInfo = { /* ...  */ };
 type NotificationSettingsPanelInfo = { /* ...  */ };
 
-const AccountSettingsPanel: React.FC<PanelProps<AccountSettingsPanelInfo>> = props => {
+const AccountSettingsPanel: React.FC<PanelProps & AccountSettingsPanelInfo> = props => {
     // implementation
 };
 
-const NotificationSettingsPanel: React.FC<PanelProps<NotificationSettingsPanelInfo>> = props => {
+const NotificationSettingsPanel: React.FC<PanelProps & NotificationSettingsPanelInfo> = props => {
     // implementation
 };
 
-const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
+const SettingsPanel: React.FC<PanelProps & SettingsPanelInfo> = props => {
     const { openPanel, closePanel, ...info } = props;
 
     const openAccountSettings = () =>
         openPanel({
-            props: {
-                /* ... */
-            },
-            renderPanel: AccountSettingsPanel,
+            renderPanel: panelProps => <AccountSettingsPanel {...panelProps} {...} />,
             title: "Account settings",
         });
     const openNotificationSettings = () =>
         openPanel({
-            props: {
-                /* ... */
-            },
-            renderPanel: NotificationSettingsPanel,
+            renderPanel: panelProps => <NotificationSettingsPanel {...panelProps} {...} />,
             title: "Notification settings",
         });
 
@@ -74,7 +68,7 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 
 @interface Panel
 
-@interface PanelActions
+@interface PanelProps
 
 @## Props
 
