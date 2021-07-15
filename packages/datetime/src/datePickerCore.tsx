@@ -96,7 +96,7 @@ export interface IDatePickerBaseProps {
 
     /**
      * If `true`, the month menu will appear to the left of the year menu.
-     * Otherwise, the month menu will apear to the right of the year menu.
+     * Otherwise, the month menu will appear to the right of the year menu.
      *
      * @default false
      */
@@ -120,6 +120,13 @@ export interface IDatePickerBaseProps {
      * Passing any non-empty object to this prop will cause the `TimePicker` to appear.
      */
     timePickerProps?: TimePickerProps;
+
+    /**
+     * Allow selecting dates that fall outside of minDate and maxDate.
+     *
+     * @default false
+     */
+    ignoreRange?: boolean;
 }
 
 export const DISABLED_MODIFIER = "disabled";

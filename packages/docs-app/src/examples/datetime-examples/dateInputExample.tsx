@@ -34,6 +34,7 @@ export interface IDateInputExampleState {
     shortcuts: boolean;
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
+    ignoreRange: boolean;
 }
 
 export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
@@ -43,6 +44,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         disabled: false,
         fill: false,
         format: FORMATS[0],
+        ignoreRange: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showTimeArrowButtons: false,
@@ -66,6 +68,8 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
     private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
         this.setState({ showTimeArrowButtons }),
     );
+
+    private toggleIgnoreRange = handleBooleanChange(ignoreRange => this.setState({ ignoreRange }));
 
     public render() {
         const { date, format, showTimeArrowButtons, timePrecision, ...spreadProps } = this.state;
@@ -107,6 +111,11 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                 <Switch label="Disabled" checked={disabled} onChange={this.toggleDisabled} />
                 <Switch label="Fill" checked={fill} onChange={this.toggleFill} />
                 <Switch label="Reverse month and year menus" checked={reverse} onChange={this.toggleReverseMenus} />
+                <Switch
+                    checked={this.state.ignoreRange}
+                    label="Ignore max and min date range"
+                    onChange={this.toggleIgnoreRange}
+                />
                 <FormatSelect format={format} onChange={this.handleFormatChange} />
                 <PrecisionSelect
                     allowNone={true}

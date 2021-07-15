@@ -69,7 +69,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
             years.push(year);
         }
         // allow out-of-bounds years but disable the option. this handles the Dec 2016 case in #391.
-        if (displayYear > maxYear) {
+        if (displayYear > maxYear || displayYear < minYear) {
             years.push({ value: displayYear, disabled: true });
         }
 
