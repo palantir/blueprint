@@ -103,10 +103,6 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         stackLength.current = stack.length;
     }, [stack]);
 
-    if (stack.length === 0) {
-        return null;
-    }
-
     const handlePanelOpen = React.useCallback(
         (panel: T) => {
             props.onOpen?.(panel);
@@ -129,6 +125,11 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         },
         [stack, props.onClose],
     );
+
+    // early return, after all hooks are called
+    if (stack.length === 0) {
+        return null;
+    }
 
     const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
     const panels = panelsToRender
