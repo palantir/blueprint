@@ -77,6 +77,8 @@ If `exit` phase is given then property values are animated in reverse, from fina
 
   #{transition-name($phase, $name, $before, $after)} {
     @include each-prop($properties, $start-index);
+    // fixes OverflowList in Overlays: https://github.com/palantir/blueprint/issues/4616
+    transition-duration: 10ms;
   }
 
   #{transition-name(#{$phase}-active, $name, $before, $after)} {
