@@ -19,7 +19,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { EditableText } from "../../src";
+import { EditableText, TriggerSource } from "../../src";
 import * as Keys from "../../src/common/keys";
 
 describe("<EditableText>", () => {
@@ -146,6 +146,36 @@ describe("<EditableText>", () => {
             assert.isTrue(cancelSpy.notCalled, "onCancel called");
             assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
             assert.isTrue(confirmSpy.calledWith(OLD_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
+        });
+
+        it("calls onConfirm with TriggerSource.ENTER as second argument when Enter pressed", () => {
+            const confirmSpy = spy();
+
+            const component = mount(<EditableText isEditing={true} onConfirm={confirmSpy} />);
+
+            component.find("input").simulate("keydown", { which: Keys.ENTER });
+
+            assert.isTrue(confirmSpy.calledOnce, "onConfirm was not called once");
+            assert.equal(
+                confirmSpy.args[0][1],
+                TriggerSource.ENTER,
+                "onConfirm second argument was not TriggerSource.ENTER",
+            );
+        });
+
+        it("calls onConfirm with TriggerSource.FOCUS as second argument when lose focus", () => {
+            const confirmSpy = spy();
+
+            const component = mount(<EditableText isEditing={true} onConfirm={confirmSpy} />);
+
+            component.find("input").simulate("blur");
+
+            assert.isTrue(confirmSpy.calledOnce, "onConfirm was not called once");
+            assert.equal(
+                confirmSpy.args[0][1],
+                TriggerSource.BLUR,
+                "onConfirm second argument was not TriggerSource.FOCUS",
+            );
         });
 
         it("calls onEdit when entering edit mode and passes the initial value to the callback", () => {
