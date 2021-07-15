@@ -217,7 +217,7 @@ describe("<PanelStack2>", () => {
             let stack: Array<Panel<TestPanelInfo>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
             panelStackWrapper = renderPanelStack({
                 onClose: () => {
-                    stack = stack.slice(0, stack.length - 1);
+                    stack = stack.slice(0, -1);
                 },
                 stack,
             });

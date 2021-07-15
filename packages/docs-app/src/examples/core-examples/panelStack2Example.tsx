@@ -125,10 +125,7 @@ export const PanelStack2Example: React.FC<IExampleProps> = props => {
         (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [...stack, newPanel]),
         [],
     );
-    const removeFromPanelStack = React.useCallback(
-        () => setCurrentPanelStack(stack => stack.slice(0, stack.length - 1)),
-        [],
-    );
+    const removeFromPanelStack = React.useCallback(() => setCurrentPanelStack(stack => stack.slice(0, -1)), []);
 
     const stackList = (
         <>
