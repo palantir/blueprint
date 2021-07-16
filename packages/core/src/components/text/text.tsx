@@ -42,7 +42,14 @@ export interface TextProps extends Props {
     title?: string;
 }
 
-export const Text: React.FC<TextProps> = ({ children, tagName, title, className, ellipsize }) => {
+export const Text: React.FC<TextProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = ({
+    children,
+    tagName = "div",
+    title,
+    className,
+    ellipsize,
+    ...htmlProps
+}) => {
     const textRef = useRef<HTMLElement>();
     const [textContent, setTextContent] = useState<string>("");
     const [isContentOverflowing, setIsContentOverflowing] = useState<boolean>();
@@ -57,8 +64,9 @@ export const Text: React.FC<TextProps> = ({ children, tagName, title, className,
     }, [textRef, children, ellipsize]);
 
     return React.createElement(
-        tagName!,
+        tagName,
         {
+            ...htmlProps,
             className: classNames(
                 {
                     [Classes.TEXT_OVERFLOW_ELLIPSIS]: ellipsize,
@@ -73,6 +81,5 @@ export const Text: React.FC<TextProps> = ({ children, tagName, title, className,
 };
 Text.defaultProps = {
     ellipsize: false,
-    tagName: "div",
 };
 Text.displayName = `${DISPLAYNAME_PREFIX}.Text`;

@@ -57,11 +57,17 @@ export default class extends React.PureComponent {
 
 Hotkeys must define a group, or be marked as global. The component will automatically bind global event handlers
 and configure the <kbd>?</kbd> key to open the generated hotkeys dialog, but it is up to you to bind _local_
-event handlers with the `handleKeyDown` and `handleKeyUp` functions in the child render function.
-The component takes an optional `options` prop which can customize some of the hook's default behavior.
+event handlers with the `handleKeyDown` and `handleKeyUp` functions in the child render function. Note that
+you will likely have to set a non-negative `tabIndex` on the DOM node to which these local event handlers are
+bound for them to work correctly.
+
+`<HotkeysTarget2>` takes an optional `options: UseHotkeysOptions` prop which can customize some of the hook's
+default behavior.
 
 @## Props
 
 @interface HotkeysTargetProps
 
 @interface HotkeyConfig
+
+@interface UseHotkeysOptions

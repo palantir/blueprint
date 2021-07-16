@@ -74,4 +74,6 @@ const SettingsPanel: React.FC<PanelProps & SettingsPanelInfo> = props => {
 
 PanelStack can be operated as a controlled or uncontrolled component.
 
+If controlled, panels should be added to and removed from the _end_ of the `stack` array.
+
 @interface PanelStackProps

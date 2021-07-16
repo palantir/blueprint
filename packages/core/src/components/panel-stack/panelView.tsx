@@ -67,6 +67,18 @@ export const PanelView: PanelViewComponent = (props: PanelViewProps) => {
             />
         );
 
+    // `props.panel.renderPanel` is simply a function that returns a JSX.Element. It may be an FC which
+    // uses hooks. In order to avoid React errors due to inconsistent hook calls, we must encapsulate
+    // those hooks with their own lifecycle through a very simple wrapper component.
+    const PanelWrapper: React.FunctionComponent = React.useMemo(
+        () => () =>
+            props.panel.renderPanel({
+                closePanel: handleClose,
+                openPanel: props.onOpen,
+            }),
+        [props.panel.renderPanel, handleClose, props.onOpen],
+    );
+
     return (
         <div className={Classes.PANEL_STACK_VIEW}>
             {props.showHeader && (
@@ -79,10 +91,7 @@ export const PanelView: PanelViewComponent = (props: PanelViewProps) => {
                     <span />
                 </div>
             )}
-            {props.panel.renderPanel({
-                closePanel: handleClose,
-                openPanel: props.onOpen,
-            })}
+            <PanelWrapper />
         </div>
     );
 };

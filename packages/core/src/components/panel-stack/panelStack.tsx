@@ -72,21 +72,27 @@ interface PanelStackComponent {
 }
 
 export const PanelStack: PanelStackComponent = (props: PanelStackProps) => {
-    const { renderActivePanelOnly = true, showPanelHeader = true } = props;
+    const { renderActivePanelOnly = true, showPanelHeader = true, stack: propsStack } = props;
     const [direction, setDirection] = useState("push");
 
     const [localStack, setLocalStack] = useState<Panel[]>(props.initialPanel !== undefined ? [props.initialPanel] : []);
-    const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
-
-    if (stack.length === 0) {
-        return null;
-    }
+    const stack = React.useMemo(() => (propsStack != null ? propsStack.slice().reverse() : localStack), [
+        localStack,
+        propsStack,
+    ]);
+    const stackLength = React.useRef<number>(stack.length);
+    React.useEffect(() => {
+        if (stack.length !== stackLength.current) {
+            // Adjust the direction in case the stack size has changed, controlled or uncontrolled
+            setDirection(stack.length - stackLength.current < 0 ? "pop" : "push");
+        }
+        stackLength.current = stack.length;
+    }, [stack]);
 
     const handlePanelOpen = useCallback(
         (panel: Panel) => {
             props.onOpen?.(panel);
             if (props.stack == null) {
-                setDirection("push");
                 setLocalStack(prevStack => [panel, ...prevStack]);
             }
         },
@@ -100,12 +106,16 @@ export const PanelStack: PanelStackComponent = (props: PanelStackProps) => {
             }
             props.onClose?.(panel);
             if (props.stack == null) {
-                setDirection("pop");
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
         [stack, props.onClose],
     );
+
+    // early return, after all hooks are called
+    if (stack.length === 0) {
+        return null;
+    }
 
     const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
     const panels = panelsToRender

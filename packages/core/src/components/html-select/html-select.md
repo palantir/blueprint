@@ -22,10 +22,6 @@ full flexibility or via the `options` prop for simple shorthand.
 
 @## CSS
 
-The CSS API for this component uses a different CSS class than the React component
-in order to apply the icon via the CSS-only icon font. (The React component
-renders the icon as SVG.)
-
 Put class modifiers on the wrapper and attribute modifiers and event handlers
 directly on the `<select>`.
 

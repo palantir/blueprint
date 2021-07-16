@@ -16,6 +16,7 @@
 
 import React, { createContext } from "react";
 
+import { shallowCompareKeys } from "../../common/utils";
 import { HotkeysDialog, HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog";
 import { HotkeyConfig } from "../../hooks";
 
@@ -51,9 +52,20 @@ export const HotkeysContext = createContext<HotkeysContextInstance>([initialHotk
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {
         case "ADD_HOTKEYS":
+            // only pick up unique hotkeys which haven't been registered already
+            const newUniqueHotkeys = [];
+            for (const a of action.payload) {
+                let isUnique = true;
+                for (const b of state.hotkeys) {
+                    isUnique &&= !shallowCompareKeys(a, b, { exclude: ["onKeyDown", "onKeyUp"] });
+                }
+                if (isUnique) {
+                    newUniqueHotkeys.push(a);
+                }
+            }
             return {
                 ...state,
-                hotkeys: [...state.hotkeys, ...action.payload],
+                hotkeys: [...state.hotkeys, ...newUniqueHotkeys],
             };
         case "REMOVE_HOTKEYS":
             return {

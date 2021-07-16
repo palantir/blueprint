@@ -109,8 +109,8 @@ export const PanelStackExample: React.FC<ExampleProps> = props => {
 
     const toggleActiveOnly = useCallback(handleBooleanChange(setActivePanelOnly), []);
     const toggleShowHeader = useCallback(handleBooleanChange(setShowHeader), []);
-    const addToPanelStack = useCallback((newPanel: Panel) => setCurrentPanelStack(stack => [newPanel, ...stack]), []);
-    const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);
+    const addToPanelStack = useCallback((newPanel: Panel) => setCurrentPanelStack(stack => [...stack, newPanel]), []);
+    const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(0, -1)), []);
 
     const stackList = (
         <>
@@ -128,11 +128,11 @@ export const PanelStackExample: React.FC<ExampleProps> = props => {
         <Example options={stackList} {...props}>
             <PanelStack
                 className="docs-panel-stack-example"
-                initialPanel={initialPanel}
                 onOpen={addToPanelStack}
                 onClose={removeFromPanelStack}
                 renderActivePanelOnly={activePanelOnly}
                 showPanelHeader={showHeader}
+                stack={currentPanelStack}
             />
         </Example>
     );

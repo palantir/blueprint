@@ -187,6 +187,11 @@ describe("<Popover>", () => {
             });
             assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
         });
+
+        it("renders with aria-haspopup attr", () => {
+            wrapper = renderPopover({ isOpen: true });
+            assert.isTrue(wrapper.find("[aria-haspopup='true']").exists());
+        });
     });
 
     describe("basic functionality", () => {

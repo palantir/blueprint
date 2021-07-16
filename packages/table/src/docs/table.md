@@ -1,6 +1,6 @@
 @# Table
 
-A highly interactive React `Table` component.
+A highly interactive table component.
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
@@ -30,16 +30,27 @@ npm install --save @blueprintjs/table
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
 and change the `numRows` prop on the `Table` to set the number of rows.
 
-For example, this code creates an empty table with three columns and five rows:
+`Table` uses `HotkeysTarget` from `@blueprintjs/core` to bind some built-in hotkeys. For this feature
+to work, must configure a [HotkeysProvider](#core/context/hotkeys-provider) in your application.
+
+This code creates an empty table with three columns and five rows:
 
 ```tsx
+import { HotkeysProvider } from "@blueprintjs/core";
 import { Column, Table } from "@blueprintjs/table";
+import React from "react";
+import ReactDOM from "react-dom";
 
-<Table numRows={5}>
-    <Column />
-    <Column />
-    <Column />
-</Table>
+ReactDOM.render(
+    <HotkeysProvider>
+        <Table numRows={5}>
+            <Column />
+            <Column />
+            <Column />
+        </Table>
+    </HotkeysProvider>,
+    document.querySelector("#app"),
+);
 ```
 
 The table is **data-agnostic**. It doesn't store any data internally, so it is up to you to bind the table to your data.
