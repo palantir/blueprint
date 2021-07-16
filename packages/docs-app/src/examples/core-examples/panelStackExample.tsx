@@ -26,26 +26,21 @@ import React, { useCallback, useState } from "react";
 import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
 import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Panel1Info {
-    // empty
-}
-
-const Panel1: React.FC<PanelProps<Panel1Info>> = props => {
+const Panel1: React.FC<PanelProps> = props => {
     const [counter, setCounter] = useState(0);
     const shouldOpenPanelType2 = counter % 2 === 0;
 
     const openNewPanel = () => {
         if (shouldOpenPanelType2) {
             props.openPanel({
-                props: { counter },
-                renderPanel: Panel2,
+                renderPanel: panelProps => <Panel2 {...panelProps} counter={counter} />,
                 title: `Panel 2`,
             });
         } else {
             props.openPanel({
-                props: { intent: counter % 3 === 0 ? Intent.SUCCESS : Intent.WARNING },
-                renderPanel: Panel3,
+                renderPanel: panelProps => (
+                    <Panel3 {...panelProps} intent={counter % 3 === 0 ? Intent.SUCCESS : Intent.WARNING} />
+                ),
                 title: `Panel 3`,
             });
         }
@@ -63,14 +58,13 @@ const Panel1: React.FC<PanelProps<Panel1Info>> = props => {
     );
 };
 
-interface Panel2Info {
+interface Panel2Props {
     counter: number;
 }
 
-const Panel2: React.FC<PanelProps<Panel2Info>> = props => {
+const Panel2: React.FC<PanelProps & Panel2Props> = props => {
     const openNewPanel = () => {
         props.openPanel({
-            props: {},
             renderPanel: Panel1,
             title: `Panel 1`,
         });
@@ -84,14 +78,13 @@ const Panel2: React.FC<PanelProps<Panel2Info>> = props => {
     );
 };
 
-interface Panel3Info {
+interface Panel3Props {
     intent: Intent;
 }
 
-const Panel3: React.FC<PanelProps<Panel3Info>> = props => {
+const Panel3: React.FC<PanelProps & Panel3Props> = props => {
     const openNewPanel = () => {
         props.openPanel({
-            props: {},
             renderPanel: Panel1,
             title: `Panel 1`,
         });
@@ -104,10 +97,7 @@ const Panel3: React.FC<PanelProps<Panel3Info>> = props => {
     );
 };
 
-const initialPanel: Panel<Panel1Info> = {
-    props: {
-        panelNumber: 1,
-    },
+const initialPanel: Panel = {
     renderPanel: Panel1,
     title: "Panel 1",
 };
@@ -115,16 +105,11 @@ const initialPanel: Panel<Panel1Info> = {
 export const PanelStackExample: React.FC<ExampleProps> = props => {
     const [activePanelOnly, setActivePanelOnly] = useState(true);
     const [showHeader, setShowHeader] = useState(true);
-    const [currentPanelStack, setCurrentPanelStack] = useState<Array<Panel<Panel1Info | Panel2Info | Panel3Info>>>([
-        initialPanel,
-    ]);
+    const [currentPanelStack, setCurrentPanelStack] = useState<Panel[]>([initialPanel]);
 
     const toggleActiveOnly = useCallback(handleBooleanChange(setActivePanelOnly), []);
     const toggleShowHeader = useCallback(handleBooleanChange(setShowHeader), []);
-    const addToPanelStack = useCallback(
-        (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [newPanel, ...stack]),
-        [],
-    );
+    const addToPanelStack = useCallback((newPanel: Panel) => setCurrentPanelStack(stack => [newPanel, ...stack]), []);
     const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(1)), []);
 
     const stackList = (

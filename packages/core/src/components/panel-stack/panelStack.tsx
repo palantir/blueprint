@@ -22,30 +22,26 @@ import { Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
 import { Panel } from "./panelTypes";
 import { PanelView } from "./panelView";
 
-/**
- * @template T type union of all possible panels in this stack
- */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export interface PanelStackProps<T extends Panel<object>> extends Props {
+export interface PanelStackProps extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
      * This prop is only used in uncontrolled mode and is thus mutually
      * exclusive with the `stack` prop.
      */
-    initialPanel?: T;
+    initialPanel?: Panel;
 
     /**
      * Callback invoked when the user presses the back button or a panel
      * closes itself with a `closePanel()` action.
      */
-    onClose?: (removedPanel: T) => void;
+    onClose?: (removedPanel: Panel) => void;
 
     /**
      * Callback invoked when a panel opens a new panel with an `openPanel(panel)`
      * action.
      */
-    onOpen?: (addedPanel: T) => void;
+    onOpen?: (addedPanel: Panel) => void;
 
     /**
      * If false, PanelStack will render all panels in the stack to the DOM, allowing their
@@ -67,27 +63,19 @@ export interface PanelStackProps<T extends Panel<object>> extends Props {
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
-    stack?: T[];
+    stack?: Panel[];
 }
 
 interface PanelStackComponent {
-    /**
-     * @template T type union of all possible panels in this stack
-     */
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>>(props: PanelStackProps<T>): JSX.Element | null;
+    (props: PanelStackProps): JSX.Element | null;
     displayName: string;
 }
 
-/**
- * @template T type union of all possible panels in this stack
- */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: PanelStackProps<T>) => {
+export const PanelStack: PanelStackComponent = (props: PanelStackProps) => {
     const { renderActivePanelOnly = true, showPanelHeader = true } = props;
     const [direction, setDirection] = useState("push");
 
-    const [localStack, setLocalStack] = useState<T[]>(props.initialPanel !== undefined ? [props.initialPanel] : []);
+    const [localStack, setLocalStack] = useState<Panel[]>(props.initialPanel !== undefined ? [props.initialPanel] : []);
     const stack = props.stack != null ? props.stack.slice().reverse() : localStack;
 
     if (stack.length === 0) {
@@ -95,7 +83,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
     }
 
     const handlePanelOpen = useCallback(
-        (panel: T) => {
+        (panel: Panel) => {
             props.onOpen?.(panel);
             if (props.stack == null) {
                 setDirection("push");
@@ -105,7 +93,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
         [props.onOpen],
     );
     const handlePanelClose = React.useCallback(
-        (panel: T) => {
+        (panel: Panel) => {
             // only remove this panel if it is at the top and not the only one.
             if (stack[0] !== panel || stack.length <= 1) {
                 return;
@@ -121,7 +109,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
 
     const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
     const panels = panelsToRender
-        .map((panel: T, index: number) => {
+        .map((panel, index) => {
             // With renderActivePanelOnly={false} we would keep all the CSSTransitions rendered,
             // therefore they would not trigger the "enter" transition event as they were entered.
             // To force the enter event, we want to change the key, but stack.length is not enough
@@ -133,7 +121,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
 
             return (
                 <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
-                    <PanelView<T>
+                    <PanelView
                         onClose={handlePanelClose}
                         onOpen={handlePanelOpen}
                         panel={panel}

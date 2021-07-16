@@ -21,11 +21,7 @@ import { spy } from "sinon";
 
 import { Classes, Panel, PanelProps, PanelStackProps, PanelStack } from "../../src";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type TestPanelInfo = {};
-type TestPanelType = Panel<TestPanelInfo>;
-
-const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
+const TestPanel: React.FC<PanelProps> = props => {
     const newPanel = { renderPanel: TestPanel, title: "New Panel 1" };
 
     return (
@@ -39,16 +35,14 @@ const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
 
 describe("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
-    let panelStackWrapper: PanelStackWrapper<TestPanelType>;
+    let panelStackWrapper: PanelStackWrapper;
 
-    const initialPanel: Panel<TestPanelInfo> = {
-        props: {},
+    const initialPanel: Panel = {
         renderPanel: TestPanel,
         title: "Test Title",
     };
 
-    const emptyTitleInitialPanel: Panel<TestPanelInfo> = {
-        props: {},
+    const emptyTitleInitialPanel: Panel = {
         renderPanel: TestPanel,
     };
 
@@ -205,7 +199,7 @@ describe("<PanelStack>", () => {
     });
 
     it("can render a panel stack with multiple initial panels and close one", () => {
-        let stack: Array<Panel<TestPanelInfo>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
+        let stack: Panel[] = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
         panelStackWrapper = renderPanelStack({
             onClose: () => {
                 const newStack = stack.slice();
@@ -258,15 +252,14 @@ describe("<PanelStack>", () => {
         assert.equal(panelHeaders.at(1).text(), stack[1].title);
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    interface PanelStackWrapper<T extends Panel<object>> extends ReactWrapper<PanelStackProps<T>, any> {
+    interface PanelStackWrapper extends ReactWrapper<PanelStackProps, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(props: PanelStackProps<TestPanelType>): PanelStackWrapper<TestPanelType> {
+    function renderPanelStack(props: PanelStackProps): PanelStackWrapper {
         panelStackWrapper = mount(<PanelStack {...props} />, {
             attachTo: testsContainerElement,
-        }) as PanelStackWrapper<TestPanelType>;
+        }) as PanelStackWrapper;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }
