@@ -35,6 +35,7 @@ $dark-navbar-background-color: $dark-gray5 !default;
 .#{$ns}-navbar {
   background-color: $navbar-background-color;
   box-shadow: $pt-elevation-shadow-1;
+  display: flex;
   height: $pt-navbar-height;
   padding: 0 $navbar-padding;
   position: relative;
@@ -73,13 +74,22 @@ $dark-navbar-background-color: $dark-gray5 !default;
   align-items: center;
   display: flex;
   height: $pt-navbar-height;
+  justify-content: center;
 
   &.#{$ns}-align-left {
-    float: left;
+    flex: 0;
+    order: 0;
+  }
+
+  &.#{$ns}-align-center {
+    flex: 1;
+    order: 1;
   }
 
   &.#{$ns}-align-right {
-    float: right;
+    flex: 0;
+    margin-left: auto;
+    order: 2;
   }
 }
 
