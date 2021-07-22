@@ -3,7 +3,7 @@
 
 @import "./common";
 
-.#{$ns}-context-menu2 .#{$ns}-popover2-target {
+.#{$ns}-context-menu2 > .#{$ns}-popover2-target {
   display: block;
 }
 
