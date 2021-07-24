@@ -88,6 +88,13 @@ export interface ITabsProps extends Props {
     vertical?: boolean;
 
     /**
+     * Classes to add to tabList container
+     *
+     * @default undefined
+     */
+    tabListClasses?: string;
+
+    /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
@@ -152,7 +159,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         ) : null;
 
         const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
-        const tabListClasses = classNames(Classes.TAB_LIST, {
+        const tabListClasses = classNames(Classes.TAB_LIST, this.props.tabListClasses, {
             [Classes.LARGE]: this.props.large,
         });
 
