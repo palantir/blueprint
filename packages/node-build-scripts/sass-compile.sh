@@ -6,12 +6,12 @@ if [ $# -eq 0 ]; then
 fi
 
 # set OUTPUT env varible to change output directory
-OUTPUT="${OUTPUT:-lib/css/}"
+OUTPUT="${OUTPUT:-lib/css}"
 
 # dependencies are hoisted to root node_modules, so load packages from there
 ROOT_NM=../../node_modules
 
 $ROOT_NM/.bin/sass \
   --load-path $ROOT_NM \
-  $0:$OUTPUT \
-  $@
+  $1:$OUTPUT \
+  "${@:2}" # everything after the first positional argument
