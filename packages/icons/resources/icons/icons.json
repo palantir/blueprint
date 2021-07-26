@@ -3479,4 +3479,16 @@
         "tags": "send, deliver, paper-airplane, post",
         "group": "action"
     }
+    {
+        "displayName": "Stadium",
+        "iconName": "stadium",
+        "tags": "race track, ellipse, discorectangle",
+        "group": "miscellaneous"
+    }
+    {
+        "displayName": "Area of interest",
+        "iconName": "area-of-interest",
+        "tags": "NAI, named area, location",
+        "group": "interface"
+    }
 ]
