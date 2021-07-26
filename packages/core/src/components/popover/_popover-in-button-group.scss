@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "./common";
-@import "~@blueprintjs/core/src/components/button/common";
+@import "@blueprintjs/core/src/components/button/common";
 
 .#{$ns}-button-group {
   // support wrapping buttons in a tooltip, which adds a wrapper element

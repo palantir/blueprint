@@ -121,3 +121,36 @@ export default stylelint.createPlugin(ruleName, ((
         }).processSync(rule.selector);
     });
 }) as Plugin);
+
+// enum CssSyntax {
+//     SASS = "sass",
+//     LESS = "less",
+//     OTHER = "other",
+// }
+
+// const CssExtensionMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
+//     [CssSyntax.SASS]: "scss",
+//     [CssSyntax.LESS]: "less",
+// };
+
+// const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
+//     [CssSyntax.SASS]: "#{$bp-ns}",
+//     [CssSyntax.LESS]: "@{bp-ns}",
+// };
+
+// const BpVariableImportMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
+//     [CssSyntax.SASS]: "@blueprintjs/core/lib/scss/variables",
+//     [CssSyntax.LESS]: "@blueprintjs/core/lib/less/variables",
+// };
+
+// /**
+//  * Returns the flavor of the CSS we're dealing with.
+//  */
+// function getCssSyntax(fileName: string): CssSyntax {
+//     for (const cssSyntax of Object.keys(CssExtensionMap)) {
+//         if (fileName.endsWith(`.${CssExtensionMap[cssSyntax as Exclude<CssSyntax, CssSyntax.OTHER>]}`)) {
+//             return cssSyntax as Exclude<CssSyntax, CssSyntax.OTHER>;
+//         }
+//     }
+//     return CssSyntax.OTHER;
+// }

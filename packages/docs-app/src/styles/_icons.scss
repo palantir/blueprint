@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/common/variables";
 
 $svg-icon-size: 36px;
 
@@ -113,7 +113,7 @@ $icons-per-row: 5;
   }
 
   // remove margin on last row of icons
-  &:nth-last-child(-n + $icons-per-row) {
+  &:nth-last-child(-n+#{$icons-per-row}) {
     margin-bottom: 0;
   }
 }

@@ -1,8 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/core/src/common/react-transition";
-@import "~@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/common/react-transition";
+@import "@blueprintjs/core/src/common/variables";
 
 $omnibar-height: 60vh !default;
 $omnibar-width: $pt-grid-size * 50 !default;

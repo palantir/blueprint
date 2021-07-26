@@ -48,7 +48,7 @@ Blueprint provides variables for colors in Sass, Less, and JavaScript.
 Example in Sass:
 
 ```css.scss
-@import "~@blueprintjs/core/lib/scss/variables";
+@import "@blueprintjs/core/lib/scss/variables";
 
 .rule {
     color: $pt-link-color;
@@ -59,7 +59,7 @@ Example in Sass:
 Example in Less:
 
 ```css.less
-@import "~@blueprintjs/core/lib/less/variables";
+@import "@blueprintjs/core/lib/less/variables";
 
 .rule {
     color: @pt-link-color;

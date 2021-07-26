@@ -39,7 +39,7 @@ import { Classes } from "@blueprintjs/core";
 ```css.scss
 // interpolate the $ns variable to generate forward-compatible class names.
 // this approach is *not encouraged* as it increases maintenance cost.
-@import "~@blueprintjs/core/lib/scss/variables";
+@import "@blueprintjs/core/lib/scss/variables";
 .#{$ns}-menu-item {
 }
 ```

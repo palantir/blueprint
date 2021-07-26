@@ -15,7 +15,6 @@
         "fork-ts-checker-notifier-webpack-plugin": "^3.0.0",
         "fork-ts-checker-webpack-plugin": "^6.1.0",
         "mini-css-extract-plugin": "^1.3.5",
-        "node-sass": "^5.0.0",
         "postcss": "^8.2.4",
         "postcss-discard-comments": "^4.0.2",
         "postcss-loader": "^5.0.0",

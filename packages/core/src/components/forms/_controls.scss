@@ -206,7 +206,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       &::before {
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
-        background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $white)));
+        // background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $white)));
       }
     }
 
