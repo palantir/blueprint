@@ -118,7 +118,10 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
             { className: classes },
             React.createElement(
                 tagName,
-                { className: Classes.SPINNER_ANIMATION },
+                {
+                    className: Classes.SPINNER_ANIMATION,
+                    role: "progressbar",
+                },
                 <svg
                     width={size}
                     height={size}
