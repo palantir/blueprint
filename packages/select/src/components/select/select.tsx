@@ -194,9 +194,9 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         this.props.onItemSelect?.(item, event);
     };
 
-    private handlePopoverInteraction = (isOpen: boolean) => {
+    private handlePopoverInteraction = (isOpen: boolean, event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen });
-        this.props.popoverProps?.onInteraction?.(isOpen);
+        this.props.popoverProps?.onInteraction?.(isOpen, event);
     };
 
     private handlePopoverOpening = (node: HTMLElement) => {
