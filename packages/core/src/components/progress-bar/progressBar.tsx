@@ -60,11 +60,18 @@ export class ProgressBar extends AbstractPureComponent2<ProgressBarProps> {
             { [Classes.PROGRESS_NO_ANIMATION]: !animate, [Classes.PROGRESS_NO_STRIPES]: !stripes },
             className,
         );
+        const percent = value == null ? undefined : 100 * clamp(value, 0, 1);
         // don't set width if value is null (rely on default CSS value)
-        const width = value == null ? undefined : 100 * clamp(value, 0, 1) + "%";
+        const width = percent == null ? undefined : percent + "%";
 
         return (
-            <div className={classes}>
+            <div
+                aria-valuemax={100}
+                aria-valuemin={0}
+                aria-valuenow={percent == null ? undefined : Math.round(percent)}
+                className={classes}
+                role="progressbar"
+            >
                 <div className={Classes.PROGRESS_METER} style={{ width }} />
             </div>
         );
