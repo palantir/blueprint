@@ -34,6 +34,15 @@ export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boo
 }
 
 /**
+ * Returns true if children are a mappable children array
+ *
+ * @internal
+ */
+export function isReactChildrenElementOrElements(children: React.ReactNode): children is JSX.Element[] | JSX.Element {
+    return !isReactNodeEmpty(children, true) && children !== true;
+}
+
+/**
  * Converts a React node to an element: non-empty string or number or
  * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
  * and booleans are discarded.
@@ -55,7 +64,7 @@ export function ensureElement(child: React.ReactNode | undefined, tagName: keyof
     }
 }
 
-export function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
+function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
     return (
         typeof child === "object" &&
         typeof (child as any).type !== "undefined" &&
@@ -66,10 +75,13 @@ export function isReactElement<T = any>(child: React.ReactNode): child is React.
 /**
  * Represents anything that has a `name` property such as Functions.
  */
-export interface INamed {
+interface INamed {
     name?: string;
 }
 
+/**
+ * @deprecated will be removed in 4.0
+ */
 export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
     return (ComponentClass as React.ComponentType).displayName || (ComponentClass as INamed).name || "Unknown";
 }
@@ -80,6 +92,7 @@ export function getDisplayName(ComponentClass: React.ComponentType | INamed) {
  * NOTE: This function only checks equality of `displayName` for performance and
  * to tolerate multiple minor versions of a component being included in one
  * application bundle.
+ *
  * @param element JSX element in question
  * @param ComponentType desired component type of element
  */
@@ -95,3 +108,21 @@ export function isElementOfType<P = {}>(
         element.type.displayName === ComponentType.displayName
     );
 }
+
+/**
+ * Returns React.createRef if it's available, or a ref-like object if not.
+ *
+ * @deprecated use React.createRef or React.useRef
+ */
+export function createReactRef<T>() {
+    return typeof React.createRef !== "undefined" ? React.createRef<T>() : { current: null };
+}
+
+/**
+ * Replacement type for { polyfill } from "react-lifecycles-compat" useful in some places where
+ * the correct type is not inferred automatically. This should be removed once Blueprint depends on React >= 16.
+ * HACKHACK part of https://github.com/palantir/blueprint/issues/4342
+ *
+ * @deprecated use React 16
+ */
+export type LifecycleCompatPolyfill<P, T extends React.ComponentClass<P>> = (Comp: T) => T & { [K in keyof T]: T[K] };

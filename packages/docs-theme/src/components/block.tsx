@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-import { Classes, Code, H3 } from "@blueprintjs/core";
 import { IBlock } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
-import { ITagRendererMap } from "../tags";
+
+import { Classes, Code, H3 } from "@blueprintjs/core";
+
+import { TagRendererMap } from "../tags";
 
 export function renderBlock(
     /** the block to render */
     block: IBlock | undefined,
     /** known tag renderers */
-    tagRenderers: ITagRendererMap,
+    tagRenderers: TagRendererMap,
     /** class names to apply to element wrapping string content. */
     textClassName?: string,
 ): JSX.Element | null {

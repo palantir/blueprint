@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes, Icon, IconName, KeyCombo } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Classes, Icon, IconName, KeyCombo } from "@blueprintjs/core";
 
 export interface INavButtonProps {
     icon: IconName;
@@ -25,7 +26,7 @@ export interface INavButtonProps {
     onClick: () => void;
 }
 
-export const NavButton: React.FunctionComponent<INavButtonProps> = props => (
+export const NavButton: React.FC<INavButtonProps> = props => (
     <div className={classNames("docs-nav-button", Classes.TEXT_MUTED)} onClick={props.onClick}>
         <Icon icon={props.icon} />
         <span className={Classes.FILL}>{props.text}</span>

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { Classes, Icon } from "@blueprintjs/core";
 import { IHeadingTag } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-export const Heading: React.FunctionComponent<IHeadingTag> = ({ level, route, value }) =>
+import { Classes, Icon } from "@blueprintjs/core";
+
+export const Heading: React.FC<IHeadingTag> = ({ level, route, value }) =>
     // use createElement so we can dynamically choose tag based on depth
     React.createElement(
         `h${level}`,

@@ -16,20 +16,26 @@
 
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
+// eslint-disable-next-line deprecation/deprecation
+export type SliderProps = ISliderProps;
+/** @deprecated use SliderProps */
 export interface ISliderProps extends ISliderBaseProps {
     /**
      * Initial value of the slider. This determines the other end of the
      * track fill: from `initialValue` to `value`.
+     *
      * @default 0
      */
     initialValue?: number;
 
     /**
      * Value of slider.
+     *
      * @default 0
      */
     value?: number;
@@ -42,8 +48,8 @@ export interface ISliderProps extends ISliderBaseProps {
 }
 
 @polyfill
-export class Slider extends AbstractPureComponent2<ISliderProps> {
-    public static defaultProps: ISliderProps = {
+export class Slider extends AbstractPureComponent2<SliderProps> {
+    public static defaultProps: SliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,
         intent: Intent.PRIMARY,
@@ -57,13 +63,13 @@ export class Slider extends AbstractPureComponent2<ISliderProps> {
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
-                    value={value}
-                    intentAfter={value < initialValue ? intent : undefined}
-                    intentBefore={value >= initialValue ? intent : undefined}
+                    value={value!}
+                    intentAfter={value! < initialValue! ? intent : undefined}
+                    intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
                 />
-                <MultiSlider.Handle value={initialValue} interactionKind="none" />
+                <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>
         );
     }

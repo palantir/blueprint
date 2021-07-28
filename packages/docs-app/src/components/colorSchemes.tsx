@@ -20,6 +20,7 @@ import * as React from "react";
 
 import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
 import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs-theme";
+
 import { ColorBar } from "./colorPalettes";
 
 const MIN_STEPS = 3;

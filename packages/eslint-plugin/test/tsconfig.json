@@ -1,0 +1,9 @@
+{
+    "extends": "../src/tsconfig.json",
+    "compilerOptions": {
+        "declaration": false,
+        "module": "commonjs",
+        "noEmit": true,
+        "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable", "es2015.promise"]
+    }
+}

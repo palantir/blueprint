@@ -16,8 +16,12 @@
 
 import * as React from "react";
 
+/* eslint-disable deprecation/deprecation */
+
 /**
  * An object describing a panel in a `PanelStack`.
+ *
+ * @deprecated use `Panel<T>`
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface IPanel<P = {}> {
@@ -27,6 +31,11 @@ export interface IPanel<P = {}> {
      * dynamically when needed.
      */
     component: React.ComponentType<P & IPanelProps>;
+
+    /**
+     * HTML title to be passed to the <Text> component
+     */
+    htmlTitle?: string;
 
     /**
      * The props passed to the component type when it is rendered. The methods
@@ -49,6 +58,8 @@ export interface IPanel<P = {}> {
  * import { IPanelProps } from "@blueprintjs/core";
  * export class SettingsPanel extends React.Component<IPanelProps & ISettingsPanelProps> {...}
  * ```
+ *
+ * @deprecated use `PanelActions<T>`
  */
 export interface IPanelProps {
     /**

@@ -33,7 +33,8 @@ import {
     Toaster,
     ToasterPosition,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IBlueprintExampleData } from "../../tags/types";
 
 type IToastDemo = IToastProps & { button: string };
@@ -52,6 +53,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
+        usePortal: true,
     };
 
     private TOAST_BUILDERS: IToastDemo[] = [
@@ -109,14 +111,20 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     ];
 
     private toaster: Toaster;
+
     private refHandlers = {
         toaster: (ref: Toaster) => (this.toaster = ref),
     };
+
     private progressToastInterval?: number;
 
-    private handlePositionChange = handleStringChange((position: ToasterPosition) => this.setState({ position }));
+    private handlePositionChange = handleValueChange((position: ToasterPosition) => this.setState({ position }));
+
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
+
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
+
+    private toggleUsePortal = handleBooleanChange(usePortal => this.setState({ usePortal }));
 
     public render() {
         return (
@@ -129,7 +137,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
     }
 
     protected renderOptions() {
-        const { autoFocus, canEscapeKeyClear, position, maxToasts } = this.state;
+        const { autoFocus, canEscapeKeyClear, position, maxToasts, usePortal } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -149,14 +157,15 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                 </Label>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />
+                <Switch label="Use portal" checked={usePortal} onChange={this.toggleUsePortal} />
             </>
         );
     }
 
-    private renderToastDemo(toast: IToastDemo, index: number) {
+    private renderToastDemo = (toast: IToastDemo, index: number) => {
         // tslint:disable-next-line:jsx-no-lambda
         return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
-    }
+    };
 
     private renderProgress(amount: number): IToastProps {
         return {

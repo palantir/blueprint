@@ -67,15 +67,9 @@
     "no-multiple-empty-lines": "off",
     "no-new-func": "error",
     "no-new-wrappers": "error",
-    "no-redeclare": "error",
     "no-reserved-keys": "off",
     "no-restricted-properties": [
         "error",
-        {
-            "object": "Object",
-            "property": "assign",
-            "message": "use object spread: { ...a, ...b }"
-        },
         {
             "object": "Object",
             "property": "getOwnPropertyNames",
@@ -94,12 +88,6 @@
     ],
     "no-return-await": "error",
     "no-sequences": "error",
-    "no-shadow": [
-        "error",
-        {
-            "hoist": "all"
-        }
-    ],
     "no-space-before-semi": "off",
     "no-spaced-func": "off",
     "no-sparse-arrays": "error",

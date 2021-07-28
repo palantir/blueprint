@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 /**
  * @license Copyright 2019 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Runs ESLint, with support for generating JUnit report
@@ -8,11 +7,12 @@
 // @ts-check
 "use strict";
 
-const path = require("path");
-const fs = require("fs");
-const { junitReportPath } = require("./utils");
 const { spawn } = require("cross-spawn");
+const fs = require("fs");
 const glob = require("glob");
+const path = require("path");
+
+const { junitReportPath } = require("./utils");
 
 let format = "codeframe";
 let out;

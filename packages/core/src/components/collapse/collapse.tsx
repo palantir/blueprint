@@ -17,19 +17,25 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
 
-export interface ICollapseProps extends IProps {
+import { AbstractPureComponent2, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
+
+// eslint-disable-next-line deprecation/deprecation
+export type CollapseProps = ICollapseProps;
+/** @deprecated use CollapseProps */
+export interface ICollapseProps extends Props {
     /**
      * Component to render as the root element.
      * Useful when rendering a `Collapse` inside a `<table>`, for instance.
+     *
      * @default "div"
      */
     component?: React.ElementType;
 
     /**
      * Whether the component is open or closed.
+     *
      * @default false
      */
     isOpen?: boolean;
@@ -37,6 +43,7 @@ export interface ICollapseProps extends IProps {
     /**
      * Whether the child components will remain mounted when the `Collapse` is closed.
      * Setting to true may improve performance by avoiding re-mounting children.
+     *
      * @default false
      */
     keepChildrenMounted?: boolean;
@@ -46,6 +53,7 @@ export interface ICollapseProps extends IProps {
      * the duration of the animation in CSS. Only set this prop if you override
      * Blueprint's default transitions with new transitions of a different
      * length.
+     *
      * @default 200
      */
     transitionDuration?: number;
@@ -110,17 +118,17 @@ export enum AnimationStates {
 }
 
 @polyfill
-export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseState> {
+export class Collapse extends AbstractPureComponent2<CollapseProps, ICollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
-    public static defaultProps: ICollapseProps = {
+    public static defaultProps: CollapseProps = {
         component: "div",
         isOpen: false,
         keepChildrenMounted: false,
         transitionDuration: 200,
     };
 
-    public static getDerivedStateFromProps(props: ICollapseProps, state: ICollapseState) {
+    public static getDerivedStateFromProps(props: CollapseProps, state: ICollapseState) {
         const { isOpen } = props;
         const { animationState } = state;
 
@@ -162,7 +170,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
     };
 
     // The element containing the contents of the collapse.
-    private contents: HTMLElement;
+    private contents: HTMLElement | null = null;
 
     public render() {
         const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
@@ -185,7 +193,7 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
         };
 
         return React.createElement(
-            this.props.component,
+            this.props.component!,
             {
                 className: classNames(Classes.COLLAPSE, this.props.className),
                 style: containerStyle,
@@ -203,14 +211,21 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
 
     public componentDidMount() {
         this.forceUpdate();
+        // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
+        /* eslint-disable react/no-did-mount-set-state */
         if (this.props.isOpen) {
             this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
         } else {
             this.setState({ animationState: AnimationStates.CLOSED, height: "0px" });
         }
+        /* eslint-disable react/no-did-mount-set-state */
     }
 
     public componentDidUpdate() {
+        if (this.contents == null) {
+            return;
+        }
+
         const { transitionDuration } = this.props;
         const { animationState } = this.state;
 
@@ -223,17 +238,19 @@ export class Collapse extends AbstractPureComponent2<ICollapseProps, ICollapseSt
             });
             this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
         } else if (animationState === AnimationStates.CLOSING_START) {
+            const { clientHeight } = this.contents;
             this.setTimeout(() =>
                 this.setState({
                     animationState: AnimationStates.CLOSING,
                     height: "0px",
+                    heightWhenOpen: clientHeight,
                 }),
             );
             this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
         }
     }
 
-    private contentsRefHandler = (el: HTMLElement) => {
+    private contentsRefHandler = (el: HTMLElement | null) => {
         this.contents = el;
         if (this.contents != null) {
             const height = this.contents.clientHeight;

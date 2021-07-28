@@ -24,6 +24,7 @@ export class DragEvents {
      * event to any existing state. For example, holding CTRL before dragging may select another
      * region in addition to an existing one, while the absence of a modifier key may clear the
      * existing selection first.
+     *
      * @param event the mouse event for the drag interaction
      */
     public static isAdditive(event: MouseEvent) {
@@ -31,12 +32,17 @@ export class DragEvents {
     }
 
     private handler: IDragHandler;
+
     private element: HTMLElement;
 
     private activationCoordinates: IClientCoordinates;
+
     private doubleClickTimeoutToken: number;
+
     private isActivated: boolean;
+
     private isDragging: boolean;
+
     private lastCoordinates: IClientCoordinates;
 
     public attach(element: HTMLElement, handler: IDragHandler) {

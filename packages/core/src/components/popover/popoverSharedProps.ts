@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { Boundary as PopperBoundary, Modifiers as PopperModifiers } from "popper.js";
+import { Boundary as PopperBoundary, Modifiers as PopperModifiers, Placement } from "popper.js";
+
 import { Position } from "../../common/position";
-import { IProps } from "../../common/props";
-import { IOverlayableProps } from "../overlay/overlay";
+import { Props } from "../../common/props";
+import { OverlayableProps } from "../overlay/overlay";
 
 // re-export symbols for library consumers
 export { PopperBoundary, PopperModifiers };
@@ -29,37 +30,40 @@ export const PopoverPosition = {
     AUTO_END: "auto-end" as "auto-end",
     AUTO_START: "auto-start" as "auto-start",
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverPosition = typeof PopoverPosition[keyof typeof PopoverPosition];
 
 /** Props shared between `Popover` and `Tooltip`. */
-export interface IPopoverSharedProps extends IOverlayableProps, IProps {
+export interface IPopoverSharedProps extends OverlayableProps, Props {
     /**
      * Determines the boundary element used by Popper for its `flip` and
      * `preventOverflow` modifiers. Three shorthand keywords are supported;
      * Popper will find the correct DOM element itself.
+     *
      * @default "scrollParent"
      */
     boundary?: PopperBoundary;
 
     /**
-     * When enabled, `preventDefault()` is invoked on `click` events that close
-     * this popover, which will prevent those clicks from closing outer
-     * popovers. When disabled, clicking inside a `Classes.POPOVER_DISMISS`
-     * element will close the parent popover.
+     * When enabled, clicks inside a `Classes.POPOVER_DISMISS` element
+     * will only close the current popover and not outer popovers.
+     * When disabled, the current popover and any ancestor popovers will be closed.
      *
-     * See http://blueprintjs.com/docs/#core/components/popover.closing-on-click
+     * @see http://blueprintjs.com/docs/#core/components/popover.closing-on-click
      * @default false
      */
     captureDismiss?: boolean;
 
     /**
      * Initial opened state when uncontrolled.
+     *
      * @default false
      */
     defaultIsOpen?: boolean;
 
     /**
      * Prevents the popover from appearing when `true`.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -68,6 +72,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * The amount of time in milliseconds the popover should remain open after
      * the user hovers off the trigger. The timer is canceled if the user mouses
      * over the target before it expires.
+     *
      * @default 300
      */
     hoverCloseDelay?: number;
@@ -76,6 +81,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * The amount of time in milliseconds the popover should wait before opening
      * after the user hovers over the trigger. The timer is canceled if the user
      * mouses away from the target before it expires.
+     *
      * @default 150
      */
     hoverOpenDelay?: number;
@@ -83,6 +89,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     /**
      * Whether a popover that uses a `Portal` should automatically inherit the
      * dark theme from its parent.
+     *
      * @default true
      */
     inheritDarkTheme?: boolean;
@@ -92,9 +99,18 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * controlled mode, where the only way to change visibility is by updating
      * this property. If `disabled={true}`, this prop will be ignored, and the
      * popover will remain closed.
+     *
      * @default undefined
      */
     isOpen?: boolean;
+
+    /**
+     * Whether to apply minimal styling to this popover or tooltip. Minimal popovers
+     * do not have an arrow pointing to their target and use a subtler animation.
+     *
+     * @default false
+     */
+    minimal?: boolean;
 
     /**
      * Popper modifier options, passed directly to internal Popper instance. See
@@ -113,9 +129,23 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * Whether the popover should open when its target is focused. If `true`,
      * target will render with `tabindex="0"` to make it focusable via keyboard
      * navigation.
+     *
      * @default true
      */
     openOnTargetFocus?: boolean;
+
+    /**
+     * The placement (relative to the target) at which the popover should appear.
+     * Mutually exclusive with `position` prop.
+     *
+     * The default value of `"auto"` will choose the best placement when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
+     *
+     * @see https://popper.js.org/docs/v1/#Popper.placements
+     * @default "auto"
+     */
+    placement?: Placement;
 
     /**
      * A space-delimited string of class names applied to the popover element.
@@ -124,10 +154,12 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
 
     /**
      * The position (relative to the target) at which the popover should appear.
+     * Mutually exclusive with `placement` prop.
      *
      * The default value of `"auto"` will choose the best position when opened
      * and will allow the popover to reposition itself to remain onscreen as the
      * user scrolls around.
+     *
      * @default "auto"
      */
     position?: PopoverPosition;
@@ -149,6 +181,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      *
      * By default, a `<span>` tag is used so popovers appear as inline-block
      * elements and can be nested in text. Use `<div>` tag for a block element.
+     *
      * @default "span"
      */
     targetTagName?: keyof JSX.IntrinsicElements;
@@ -165,6 +198,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
      * Not using a `Portal` can result in smoother performance when scrolling
      * and allows the popover content to inherit CSS styles from surrounding
      * elements, but it remains subject to the overflow bounds of its ancestors.
+     *
      * @default true
      */
     usePortal?: boolean;
@@ -172,6 +206,7 @@ export interface IPopoverSharedProps extends IOverlayableProps, IProps {
     /**
      * HTML tag name for the wrapper element, which also receives the
      * `className` prop.
+     *
      * @default "span"
      */
     wrapperTagName?: keyof JSX.IntrinsicElements;

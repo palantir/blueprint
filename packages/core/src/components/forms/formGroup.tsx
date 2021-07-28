@@ -17,10 +17,14 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps, IProps } from "../../common/props";
 
-export interface IFormGroupProps extends IIntentProps, IProps {
+import { AbstractPureComponent2, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
+
+// eslint-disable-next-line deprecation/deprecation
+export type FormGroupProps = IFormGroupProps;
+/** @deprecated use FormGroupProps */
+export interface IFormGroupProps extends IntentProps, Props {
     /**
      * A space-delimited list of class names to pass along to the
      * `Classes.FORM_CONTENT` element that contains `children`.
@@ -62,7 +66,7 @@ export interface IFormGroupProps extends IIntentProps, IProps {
 }
 
 @polyfill
-export class FormGroup extends AbstractPureComponent2<IFormGroupProps> {
+export class FormGroup extends AbstractPureComponent2<FormGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
 
     public render() {

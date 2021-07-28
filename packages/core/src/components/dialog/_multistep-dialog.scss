@@ -1,0 +1,144 @@
+// Copyright 2020 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "~@blueprintjs/icons/src/icons";
+@import "../../common/mixins";
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+$dialog-border-radius: $pt-border-radius * 2 !default;
+$step-radius: $pt-border-radius * 2 !default;
+
+.#{$ns}-multistep-dialog-panels {
+  display: flex;
+}
+
+.#{$ns}-multistep-dialog-left-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .#{$ns}-dark & {
+    background: $dark-gray2;
+  }
+}
+
+.#{$ns}-multistep-dialog-right-panel {
+  background-color: $light-gray5;
+  border-left: 1px solid $pt-divider-black;
+  border-radius: 0 0 $dialog-border-radius 0;
+  flex: 3;
+  min-width: 0;
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray3;
+    border-left: 1px solid $pt-dark-divider-black;
+  }
+}
+
+.#{$ns}-multistep-dialog-footer {
+  background-color: $white;
+  border-radius: 0  0 $dialog-border-radius 0;
+  border-top: 1px solid $pt-divider-black;
+  padding: 10px;
+
+  .#{$ns}-dark & {
+    background: $dark-gray4;
+    border-top: 1px solid $pt-dark-divider-black;
+  }
+}
+
+.#{$ns}-dialog-step-container {
+  background-color: $light-gray5;
+  border-bottom: 1px solid $pt-divider-black;
+
+  .#{$ns}-dark & {
+    background: $dark-gray3;
+    border-bottom: 1px solid $pt-dark-divider-black;
+  }
+
+  &.#{$ns}-dialog-step-viewed {
+    background-color: $white;
+    .#{$ns}-dark & {
+      background: $dark-gray4;
+    }
+  }
+}
+
+.#{$ns}-dialog-step {
+  align-items: center;
+  background-color: $light-gray5;
+  border-radius: $step-radius;
+  cursor: not-allowed;
+  display: flex;
+  margin: 4px;
+  padding: 6px 14px;
+
+  .#{$ns}-dark & {
+    background: $dark-gray3;
+  }
+
+  // by default, steps are inactive until they are visited
+  .#{$ns}-dialog-step-viewed & {
+    background-color: $white;
+    cursor: pointer;
+
+    .#{$ns}-dark & {
+      background: $dark-gray4;
+    }
+  }
+
+  &:hover {
+    background-color: $light-gray5;
+
+    .#{$ns}-dark & {
+      background: $dark-gray3;
+    }
+  }
+}
+
+.#{$ns}-dialog-step-icon {
+  align-items: center;
+  background-color: $pt-text-color-disabled;
+  border-radius: 50%;
+  color: $white;
+  display: flex;
+  height: 25px;
+  justify-content: center;
+  width: 25px;
+
+  .#{$ns}-dark & {
+    background-color: $pt-dark-icon-color-disabled;
+  }
+
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
+    background-color: $blue4;
+  }
+
+  .#{$ns}-dialog-step-viewed & {
+    background-color: $gray3;
+  }
+}
+
+.#{$ns}-dialog-step-title {
+  color: $pt-text-color-disabled;
+  flex: 1;
+  padding-left: 10px;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-disabled;
+  }
+
+  // step title is active only when the step is selected
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
+    color: $blue4;
+  }
+
+  .#{$ns}-dialog-step-viewed:not(.#{$ns}-active) & {
+    color: $pt-text-color;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color;
+    }
+  }
+}

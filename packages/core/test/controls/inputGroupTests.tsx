@@ -67,4 +67,41 @@ describe("<InputGroup>", () => {
         mount(<InputGroup inputRef={ref => (input = ref)} />);
         assert.instanceOf(input, HTMLInputElement);
     });
+
+    // this test was added to validate a regression introduced by AsyncControllableInput,
+    // see https://github.com/palantir/blueprint/issues/4375
+    it("accepts controlled update truncating the input value", () => {
+        class TestComponent extends React.PureComponent<
+            { initialValue: string; transformInput: (value: string) => string },
+            { value: string }
+        > {
+            public state = { value: this.props.initialValue };
+
+            public render() {
+                return <InputGroup type="text" value={this.state.value} onChange={this.handleChange} />;
+            }
+
+            private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                this.setState({
+                    value: this.props.transformInput(e.target.value),
+                });
+            };
+        }
+
+        const wrapper = mount(
+            <TestComponent
+                initialValue="abc"
+                // tslint:disable-next-line:jsx-no-lambda
+                transformInput={(value: string) => value.substr(0, 3)}
+            />,
+        );
+
+        let input = wrapper.find("input");
+        assert.strictEqual(input.prop("value"), "abc");
+
+        input.simulate("change", { target: { value: "abcd" } });
+        input = wrapper.find("input");
+        // value should not change because our change handler prevents it from being longer than characters
+        assert.strictEqual(input.prop("value"), "abc");
+    });
 });

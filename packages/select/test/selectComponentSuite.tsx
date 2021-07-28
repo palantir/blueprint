@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
 import { assert } from "chai";
 import { ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
+
+import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
+
 import {
     areFilmsEqual,
     createFilm,
@@ -26,7 +28,7 @@ import {
     IFilm,
     renderFilm,
     TOP_100_FILMS,
-} from "../../docs-app/src/examples/select-examples/films";
+} from "../../docs-app/src/common/films";
 import { IListItemsProps } from "../src";
 
 export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(

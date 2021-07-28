@@ -15,6 +15,7 @@
  */
 
 import { expect } from "chai";
+
 import { ICellCoordinate, IRegion, RegionCardinality, Regions } from "../src/regions";
 
 describe("Regions", () => {

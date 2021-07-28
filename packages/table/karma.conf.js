@@ -3,9 +3,8 @@
  */
 
 const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
-const path = require("path");
-const coreManifest = require("../core/package.json");
-const packageManifest = require("./package.json");
+
+const REACT = process.env.REACT || "16";
 
 module.exports = function (config) {
     const baseConfig = createKarmaConfig({
@@ -22,7 +21,12 @@ module.exports = function (config) {
                 lines: 70,
                 statements: 70,
             },
+            "src/tableHotkeys*": {
+                lines: 70,
+                statements: 70,
+            },
         },
+        coverageExcludes: REACT === "15" ? ["src/table2.tsx", "src/table2Utils.ts", "src/cell/editableCell2.tsx"] : [],
     });
     config.set(baseConfig);
     config.set({

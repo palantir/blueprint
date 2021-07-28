@@ -13,7 +13,7 @@ $banner-height: $pt-grid-size * 4;
   align-items: center;
 
   box-shadow: inset 0 -1px 0 $pt-divider-black;
-  // stylelint-disable declaration-no-important
+  /* stylelint-disable declaration-no-important */
   color: $white !important;
   flex: 0 0 auto;
   justify-content: center;

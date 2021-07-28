@@ -13,6 +13,7 @@ Markup:
       <th>Project</th>
       <th>Description</th>
       <th>Technologies</th>
+      <th>Contributors</th>
     </tr>
   </thead>
   <tbody>
@@ -20,18 +21,27 @@ Markup:
       <td>Blueprint</td>
       <td>CSS framework and UI toolkit</td>
       <td>Sass, TypeScript, React</td>
+      <td>268</td>
     </tr>
     <tr>
       <td>TSLint</td>
       <td>Static analysis linter for TypeScript</td>
       <td>TypeScript</td>
+      <td>403</td>
     </tr>
     <tr>
       <td>Plottable</td>
       <td>Composable charting library built on top of D3</td>
       <td>SVG, TypeScript, D3</td>
+      <td>737</td>
     </tr>
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan=3>Total</td>
+      <td>1408</td>
+    </tr>
+  </tfoot>
 </table>
 
 .#{$ns}-html-table-bordered - Bordered appearance
@@ -70,7 +80,8 @@ $dark-table-border-color: $pt-dark-divider-white !default;
     color: $pt-text-color;
   }
 
-  tbody tr:first-child {
+  tbody tr:first-child,
+  tfoot tr:first-child {
     th,
     td {
       box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
@@ -78,7 +89,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
   }
 
   // a bunch of deep compound selectors ahead, but there's not really a better way to do this right now
-  // stylelint-disable selector-max-compound-selectors
+  /* stylelint-disable selector-max-compound-selectors */
   .#{$ns}-dark & {
     th {
       color: $pt-dark-heading-color;
@@ -88,14 +99,15 @@ $dark-table-border-color: $pt-dark-divider-white !default;
       color: $pt-dark-text-color;
     }
 
-    tbody tr:first-child {
+    tbody tr:first-child,
+    tfoot tr:first-child {
       th,
       td {
         box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
       }
     }
   }
-  // stylelint-enable selector-max-compound-selectors
+  /* stylelint-enable selector-max-compound-selectors */
 }
 
 table.#{$ns}-html-table {
@@ -124,7 +136,8 @@ table.#{$ns}-html-table {
       box-shadow: inset $table-border-width 0 0 0 $table-border-color;
     }
 
-    tbody tr td {
+    tbody tr td,
+    tfoot tr td {
       box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
 
       &:not(:first-child) {
@@ -157,7 +170,7 @@ table.#{$ns}-html-table {
   }
 
   .#{$ns}-dark & {
-    // stylelint-disable selector-max-compound-selectors
+    /* stylelint-disable selector-max-compound-selectors */
     &.#{$ns}-html-table-striped {
       tbody tr:nth-child(odd) td {
         background: rgba($gray1, 0.15);
@@ -170,7 +183,8 @@ table.#{$ns}-html-table {
         box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
       }
 
-      tbody tr td {
+      tbody tr td,
+      tfoot tr td {
         box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
 
         &:not(:first-child) {
@@ -183,7 +197,7 @@ table.#{$ns}-html-table {
           box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
 
           // easier than the alternative...
-          // stylelint-disable max-nesting-depth
+          /* stylelint-disable max-nesting-depth */
           &:first-child {
             box-shadow: none;
           }
@@ -203,6 +217,6 @@ table.#{$ns}-html-table {
         }
       }
     }
-    // stylelint-enable selector-max-compound-selectors
+    /* stylelint-enable selector-max-compound-selectors */
   }
 }

@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { IconName } from "@blueprintjs/icons";
 
-import { Classes, Icon, IIconProps, Intent } from "../../src";
+import { Classes, Icon, IconSize, IIconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
     it("tagName dictates HTML tag", () => {
@@ -29,11 +29,10 @@ describe("<Icon>", () => {
         assert.isTrue(icon.setProps({ tagName: "article" }).is("article"));
     });
 
-    it("iconSize=16 renders standard size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_STANDARD} />, Icon.SIZE_STANDARD));
+    it("size=16 renders standard size", () =>
+        assertIconSize(<Icon icon="graph" size={IconSize.STANDARD} />, IconSize.STANDARD));
 
-    it("iconSize=20 renders large size", () =>
-        assertIconSize(<Icon icon="graph" iconSize={Icon.SIZE_LARGE} />, Icon.SIZE_LARGE));
+    it("size=20 renders large size", () => assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
 
     it("renders intent class", () =>
         assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
@@ -55,6 +54,7 @@ describe("<Icon>", () => {
     });
 
     it("prefixed icon renders blank icon", () => {
+        // eslint-disable-next-line deprecation/deprecation
         assert.lengthOf(shallow(<Icon icon={Classes.iconClass("airplane") as any} />).find("path"), 0);
     });
 

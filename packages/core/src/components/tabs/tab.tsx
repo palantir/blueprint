@@ -17,12 +17,16 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
 export type TabId = string | number;
 
-export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
+// eslint-disable-next-line deprecation/deprecation
+export type TabProps = ITabProps;
+/** @deprecated use TabProps */
+export interface ITabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Content of tab title, rendered in a list above the active panel.
      * Can also be set via the `title` prop.
@@ -31,6 +35,7 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
 
     /**
      * Whether the tab is disabled.
+     *
      * @default false
      */
     disabled?: boolean;
@@ -60,10 +65,9 @@ export interface ITabProps extends IProps, Omit<HTMLDivProps, "id" | "title" | "
 }
 
 @polyfill
-export class Tab extends AbstractPureComponent2<ITabProps> {
-    public static defaultProps: ITabProps = {
+export class Tab extends AbstractPureComponent2<TabProps> {
+    public static defaultProps: Partial<TabProps> = {
         disabled: false,
-        id: undefined,
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tab`;

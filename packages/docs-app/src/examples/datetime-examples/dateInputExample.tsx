@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { H5, Position, Switch } from "@blueprintjs/core";
-import { DateInput, IDateFormatProps, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 import * as React from "react";
+
+import { H5, Position, Switch } from "@blueprintjs/core";
+import { DateInput, DateFormatProps, TimePrecision } from "@blueprintjs/datetime";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { FORMATS, FormatSelect } from "./common/formatSelect";
 import { MomentDate } from "./common/momentDate";
@@ -28,10 +29,11 @@ export interface IDateInputExampleState {
     date: Date | null;
     disabled: boolean;
     fill: boolean;
-    format: IDateFormatProps;
+    format: DateFormatProps;
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     timePrecision: TimePrecision | undefined;
+    showTimeArrowButtons: boolean;
 }
 
 export class DateInputExample extends React.PureComponent<IExampleProps, IDateInputExampleState> {
@@ -43,20 +45,30 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
         format: FORMATS[0],
         reverseMonthAndYearMenus: false,
         shortcuts: false,
+        showTimeArrowButtons: false,
         timePrecision: undefined,
     };
 
     private toggleSelection = handleBooleanChange(closeOnSelection => this.setState({ closeOnSelection }));
+
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
+
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
+
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
-    private toggleTimePrecision = handleStringChange((timePrecision: TimePrecision | "none") =>
+
+    private toggleTimePrecision = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
 
+    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
+        this.setState({ showTimeArrowButtons }),
+    );
+
     public render() {
-        const { date, format, ...spreadProps } = this.state;
+        const { date, format, showTimeArrowButtons, timePrecision, ...spreadProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <DateInput
@@ -65,6 +77,11 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                     defaultValue={new Date()}
                     onChange={this.handleDateChange}
                     popoverProps={{ position: Position.BOTTOM }}
+                    timePickerProps={
+                        timePrecision === undefined
+                            ? undefined
+                            : { showArrowButtons: showTimeArrowButtons, precision: timePrecision }
+                    }
                 />
                 <MomentDate date={date} />
             </Example>
@@ -80,6 +97,7 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
             format,
             timePrecision,
             shortcuts,
+            showTimeArrowButtons,
         } = this.state;
         return (
             <>
@@ -96,10 +114,17 @@ export class DateInputExample extends React.PureComponent<IExampleProps, IDateIn
                     onChange={this.toggleTimePrecision}
                     value={timePrecision}
                 />
+                <Switch
+                    disabled={this.state.timePrecision === undefined}
+                    checked={showTimeArrowButtons}
+                    label="Show timepicker arrow buttons"
+                    onChange={this.toggleTimepickerArrowButtons}
+                />
             </>
         );
     }
 
     private handleDateChange = (date: Date | null) => this.setState({ date });
-    private handleFormatChange = (format: IDateFormatProps) => this.setState({ format });
+
+    private handleFormatChange = (format: DateFormatProps) => this.setState({ format });
 }

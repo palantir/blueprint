@@ -17,16 +17,16 @@
 import * as React from "react";
 
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, Table } from "@blueprintjs/table";
+import { Cell, Column, Table2 } from "@blueprintjs/table";
 
 export class TableDollarExample extends React.PureComponent<IExampleProps> {
     public render() {
         const cellRenderer = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={10}>
+                <Table2 numRows={10}>
                     <Column name="Dollars" cellRenderer={cellRenderer} />
-                </Table>
+                </Table2>
             </Example>
         );
     }

@@ -15,11 +15,13 @@
  */
 
 import { Placement } from "popper.js";
+
 import { Position } from "../../common/position";
 import { PopoverPosition } from "./popoverSharedProps";
 
 /**
  * Convert a position to a placement.
+ *
  * @param position the position to convert
  */
 export function positionToPlacement(position: PopoverPosition): Placement {

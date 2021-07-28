@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { AbstractPureComponent2, Divider, HTMLSelect, Icon, IOptionProps, Utils } from "@blueprintjs/core";
 import * as React from "react";
 import { CaptionElementProps } from "react-day-picker";
 import { polyfill } from "react-lifecycles-compat";
+
+import { AbstractPureComponent2, Divider, HTMLSelect, IconSize, OptionProps } from "@blueprintjs/core";
 
 import * as Classes from "./common/classes";
 import { clone } from "./common/dateUtils";
@@ -42,9 +43,11 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
     public state: IDatePickerCaptionState = { monthRightOffset: 0 };
 
     private containerElement: HTMLElement;
+
     private displayedMonthText: string;
 
     private handleMonthSelectChange = this.dateChangeHandler((d, month) => d.setMonth(month), this.props.onMonthChange);
+
     private handleYearSelectChange = this.dateChangeHandler((d, year) => d.setFullYear(year), this.props.onYearChange);
 
     public render() {
@@ -58,10 +61,10 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
         const startMonth = displayYear === minYear ? minDate.getMonth() : 0;
         const endMonth = displayYear === maxYear ? maxDate.getMonth() + 1 : undefined;
         const monthOptionElements = months
-            .map<IOptionProps>((month, i) => ({ label: month, value: i }))
+            .map<OptionProps>((month, i) => ({ label: month, value: i }))
             .slice(startMonth, endMonth);
 
-        const years: Array<number | IOptionProps> = [minYear];
+        const years: Array<number | OptionProps> = [minYear];
         for (let year = minYear + 1; year <= maxYear; ++year) {
             years.push(year);
         }
@@ -109,7 +112,7 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
     }
 
     public componentDidMount() {
-        requestAnimationFrame(() => this.positionArrows());
+        this.requestAnimationFrame(() => this.positionArrows());
     }
 
     public componentDidUpdate() {
@@ -125,17 +128,21 @@ export class DatePickerCaption extends AbstractPureComponent2<IDatePickerCaption
         );
         const monthSelectWidth =
             this.containerElement == null ? 0 : this.containerElement.firstElementChild.clientWidth;
-        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - Icon.SIZE_STANDARD - 2);
+        const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
         this.setState({ monthRightOffset: rightOffset });
     }
 
     private dateChangeHandler(updater: (date: Date, value: number) => void, handler?: (value: number) => void) {
         return (e: React.FormEvent<HTMLSelectElement>) => {
             const value = parseInt((e.target as HTMLSelectElement).value, 10);
+            // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
+            if (isNaN(value)) {
+                return;
+            }
             const newDate = clone(this.props.date);
             updater(newDate, value);
-            Utils.safeInvoke(this.props.onDateChange, newDate);
-            Utils.safeInvoke(handler, value);
+            this.props.onDateChange?.(newDate);
+            handler?.(value);
         };
     }
 }

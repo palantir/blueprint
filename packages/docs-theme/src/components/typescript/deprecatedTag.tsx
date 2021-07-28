@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { Intent, Tag } from "@blueprintjs/core";
 import * as React from "react";
 
-export const DeprecatedTag: React.FunctionComponent<{ isDeprecated: boolean | string | undefined }> = ({
-    isDeprecated,
-}) => {
+import { Intent, Tag } from "@blueprintjs/core";
+
+export const DeprecatedTag: React.FC<{ isDeprecated: boolean | string | undefined }> = ({ isDeprecated }) => {
     if (isDeprecated === true || typeof isDeprecated === "string") {
         return (
             <Tag intent={Intent.DANGER} minimal={true}>

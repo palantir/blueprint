@@ -2,9 +2,9 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const { CheckerPlugin } = require("awesome-typescript-loader");
-// const CircularDependencyPlugin = require("circular-dependency-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const path = require("path");
+const webpack = require("webpack");
 
 const REACT = process.env.REACT || "16";
 
@@ -13,6 +13,7 @@ const REACT = process.env.REACT || "16";
  */
 module.exports = {
     bail: true,
+    context: process.cwd(),
     devtool: "inline-source-map",
     mode: "development",
 
@@ -33,6 +34,11 @@ module.exports = {
                   }
                 : {},
         extensions: [".css", ".js", ".ts", ".tsx"],
+        fallback: {
+            assert: require.resolve("assert/"),
+            buffer: false,
+            stream: false,
+        },
     },
 
     module: {
@@ -43,9 +49,10 @@ module.exports = {
             },
             {
                 test: /\.tsx?$/,
-                loader: "awesome-typescript-loader",
+                loader: "ts-loader",
                 options: {
-                    configFileName: "./test/tsconfig.json",
+                    configFile: "test/tsconfig.json",
+                    transpileOnly: true,
                 },
             },
             {
@@ -68,12 +75,14 @@ module.exports = {
     },
 
     plugins: [
-        new CheckerPlugin(),
+        new webpack.ProvidePlugin({
+            process: "process/browser",
+        }),
 
-        // TODO: enable this
-        // new CircularDependencyPlugin({
-        //     exclude: /.js|node_modules/,
-        //     failOnError: true,
-        // }),
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                configFile: "test/tsconfig.json",
+            },
+        }),
     ],
 };

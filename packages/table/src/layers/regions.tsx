@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-import { IProps, Utils as CoreUtils } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Props, Utils as CoreUtils } from "@blueprintjs/core";
+
 import * as Classes from "../common/classes";
 import { QuadrantType } from "../quadrants/tableQuadrant";
 import { IRegion, Regions } from "../regions";
 
 export type IRegionStyler = (region: IRegion, quadrantType?: QuadrantType) => React.CSSProperties;
 
-export interface IRegionLayerProps extends IProps {
+export interface IRegionLayerProps extends Props {
     /**
      * The array of regions to render.
      */

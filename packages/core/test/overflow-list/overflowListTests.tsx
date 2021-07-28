@@ -17,8 +17,8 @@
 import { assert } from "chai";
 import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
-
 import { spy } from "sinon";
+
 import { IOverflowListProps, IOverflowListState, OverflowList } from "../../src/components/overflow-list/overflowList";
 
 type OverflowProps = IOverflowListProps<ITestItem>;
@@ -47,12 +47,9 @@ describe("<OverflowList>", function (this) {
     });
 
     afterEach(() => {
-        if (wrapper !== undefined) {
-            // clean up wrapper to remove Portal element from DOM
-            wrapper.unmount();
-            wrapper.detach();
-            wrapper = undefined;
-        }
+        // clean up wrapper to remove Portal element from DOM
+        wrapper?.unmount();
+        wrapper?.detach();
         testsContainerElement.remove();
         onOverflowSpy.resetHistory();
     });
@@ -105,6 +102,10 @@ describe("<OverflowList>", function (this) {
 
     it("renders the overflow if not all items are displayed", () => {
         overflowList().assertHasOverflow(true);
+    });
+
+    it("should render overflow if alwaysRenderOverflow props is true", () => {
+        overflowList(200, { alwaysRenderOverflow: true }).assertHasOverflow(true);
     });
 
     it("renders overflow items in the correct order (collapse from start)", () => {

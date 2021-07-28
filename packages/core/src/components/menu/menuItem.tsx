@@ -15,19 +15,23 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-
 import { Modifiers } from "popper.js";
+import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Position } from "../../common";
-import { DISPLAYNAME_PREFIX, IActionProps, ILinkProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, ActionProps, LinkProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { IPopoverProps, Popover, PopoverInteractionKind } from "../popover/popover";
 import { Text } from "../text/text";
+// this cyclic import can be removed in v4.0 (https://github.com/palantir/blueprint/issues/3829)
 // eslint-disable-next-line import/no-cycle
 import { Menu } from "./menu";
 
-export interface IMenuItemProps extends IActionProps, ILinkProps {
+// eslint-disable-next-line deprecation/deprecation
+export type MenuItemProps = IMenuItemProps;
+/** @deprecated use MenuItemProps */
+export interface IMenuItemProps extends ActionProps, LinkProps {
     // override from IActionProps to make it required
     /** Item text, required for usability. */
     text: React.ReactNode;
@@ -70,6 +74,7 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
     /**
      * Whether the text should be allowed to wrap to multiple lines.
      * If `false`, text will be truncated with an ellipsis when it reaches `max-width`.
+     *
      * @default false
      */
     multiline?: boolean;
@@ -83,12 +88,14 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
 
     /**
      * Whether an enabled item without a submenu should automatically close its parent popover when clicked.
+     *
      * @default true
      */
     shouldDismissPopover?: boolean;
 
     /**
      * Name of the HTML tag that wraps the MenuItem.
+     *
      * @default "a"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -97,17 +104,23 @@ export interface IMenuItemProps extends IActionProps, ILinkProps {
      * A space-delimited list of class names to pass along to the text wrapper element.
      */
     textClassName?: string;
+
+    /**
+     * HTML title to be passed to the <Text> component
+     */
+    htmlTitle?: string;
 }
 
 @polyfill
-export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
-    public static defaultProps: IMenuItemProps = {
+export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> {
+    public static defaultProps: MenuItemProps = {
         disabled: false,
         multiline: false,
         popoverProps: {},
         shouldDismissPopover: true,
         text: "",
     };
+
     public static displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
     public render() {
@@ -126,6 +139,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
             text,
             textClassName,
             tagName = "a",
+            htmlTitle,
             ...htmlProps
         } = this.props;
         const hasSubmenu = children != null;
@@ -152,7 +166,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
                 className: anchorClasses,
             },
             <Icon icon={icon} />,
-            <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline}>
+            <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
                 {text}
             </Text>,
             this.maybeRenderLabel(labelElement),
@@ -182,6 +196,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
         }
         const { disabled, popoverProps } = this.props;
         return (
+            /* eslint-disable-next-line deprecation/deprecation */
             <Popover
                 autoFocus={false}
                 captureDismiss={false}
@@ -195,7 +210,7 @@ export class MenuItem extends AbstractPureComponent2<IMenuItemProps & React.Anch
                 {...popoverProps}
                 content={<Menu>{children}</Menu>}
                 minimal={true}
-                popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 target={target}
             />
         );

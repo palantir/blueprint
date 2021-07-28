@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-import { IProps } from "@blueprintjs/core";
 import { isTsClass, isTsMethod, ITag, ITsClass, ITypescriptPluginData } from "@documentalist/client";
 import * as React from "react";
+
+import { Props } from "@blueprintjs/core";
+
 import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
 import { MethodTable } from "../components/typescript/methodTable";
 
-export const Method: React.FunctionComponent<ITag & IProps> = (
-    { className, value },
-    { getDocsData }: IDocumentationContext,
-) => {
+export const Method: React.FC<ITag & Props> = ({ className, value }, { getDocsData }: IDocumentationContext) => {
     const { typescript } = getDocsData() as ITypescriptPluginData;
     const member = typescript[value];
 
@@ -37,11 +36,11 @@ export const Method: React.FunctionComponent<ITag & IProps> = (
                 return <MethodTable className={className} data={classMethod} />;
             }
         }
-        throw new Error(`Unknown @method ${name}`);
+        throw new Error(`Unknown @method ${value}`);
     } else if (isTsMethod(member)) {
         return <MethodTable className={className} data={member} />;
     } else {
-        throw new Error(`"@method ${name}": unknown member kind "${(member as any).kind}"`);
+        throw new Error(`"@method ${value}": unknown member kind "${(member as any).kind}"`);
     }
 };
 Method.contextTypes = DocumentationContextTypes;

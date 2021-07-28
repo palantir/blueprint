@@ -60,7 +60,7 @@ Page layout elements
   height: 100vh;
 
   // these rules allow the nav background-color to cover all area to the left
-  // stylelint-disable-next-line order/properties-order
+  /* stylelint-disable-next-line order/properties-order */
   margin-left: -$background-shift;
   overflow-y: auto;
   padding-bottom: $sidebar-padding * 2;
@@ -123,7 +123,8 @@ Lefthand navigation menu
     &.#{$ns}-active,
     &.docs-nav-expanded {
       // bold text instead of background color
-      background-color: transparent !important; // stylelint-disable-line declaration-no-important
+      /* stylelint-disable-next-line declaration-no-important */
+      background-color: transparent !important;
       font-weight: 600;
     }
 

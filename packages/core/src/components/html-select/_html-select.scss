@@ -9,7 +9,7 @@
 HTML select
 
 Markup:
-<div class="#{$ns}-select {{.modifier}}">
+<div class="#{$ns}-html-select {{.modifier}}">
   <select {{:modifier}}>
     <option selected>Choose an item...</option>
     <option value="1">One</option>
@@ -17,6 +17,7 @@ Markup:
     <option value="3">Three</option>
     <option value="4">Four</option>
   </select>
+  <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
 </div>
 
 :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-select</code> for icon coloring (not shown below).
@@ -95,6 +96,13 @@ Styleguide select
   }
 }
 
+.#{$ns}-html-select {
+  .#{$ns}-icon {
+    @extend %pt-select-arrow;
+  }
+}
+
+// N.B. this icon implementation is deprecated and will be removed in Blueprint 4.0
 .#{$ns}-select {
   &::after {
     @extend %pt-select-arrow;

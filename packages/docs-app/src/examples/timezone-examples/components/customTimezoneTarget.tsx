@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { Colors, Icon, Intent, Tooltip } from "@blueprintjs/core";
+import * as React from "react";
+
+import { Colors, Icon, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
+import { Tooltip2 } from "@blueprintjs/popover2";
 import { getTimezoneMetadata } from "@blueprintjs/timezone";
-import React from "react";
 
 export interface ICustomTimezonePickerTargetProps {
     timezone: string;
@@ -40,7 +42,7 @@ export class CustomTimezonePickerTarget extends React.PureComponent<
     public render() {
         const { isHovering } = this.state;
         return (
-            <Tooltip content={this.getTooltipContent()}>
+            <Tooltip2 content={this.getTooltipContent()}>
                 <div
                     onMouseEnter={this.handleMouseEnter}
                     onMouseLeave={this.handleMouseLeave}
@@ -50,7 +52,7 @@ export class CustomTimezonePickerTarget extends React.PureComponent<
                     &nbsp;
                     <Icon color={Colors.GRAY1} icon={IconNames.CARET_DOWN} />
                 </div>
-            </Tooltip>
+            </Tooltip2>
         );
     }
 
@@ -72,5 +74,6 @@ export class CustomTimezonePickerTarget extends React.PureComponent<
     }
 
     private handleMouseEnter = () => this.setState({ isHovering: true });
+
     private handleMouseLeave = () => this.setState({ isHovering: false });
 }

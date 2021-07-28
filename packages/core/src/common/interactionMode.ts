@@ -47,7 +47,8 @@ export class InteractionModeEngine {
 
     private reset() {
         this.container.classList.remove(this.className);
-        this.container.removeEventListener("keydown", this.handleKeyDown);
+        // HACKHACK: see https://github.com/palantir/blueprint/issues/4342
+        this.container.removeEventListener("keydown", this.handleKeyDown as EventListener);
         this.container.removeEventListener("mousedown", this.handleMouseDown);
     }
 
@@ -63,6 +64,7 @@ export class InteractionModeEngine {
     private handleMouseDown = () => {
         this.reset();
         this.container.classList.add(this.className);
-        this.container.addEventListener("keydown", this.handleKeyDown);
+        // HACKHACK: see https://github.com/palantir/blueprint/issues/4342
+        this.container.addEventListener("keydown", this.handleKeyDown as EventListener);
     };
 }

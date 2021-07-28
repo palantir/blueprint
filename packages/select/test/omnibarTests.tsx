@@ -16,6 +16,7 @@
 
 import { mount } from "enzyme";
 import * as React from "react";
+
 import { Omnibar } from "../src";
 import { selectComponentSuite } from "./selectComponentSuite";
 

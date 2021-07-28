@@ -16,6 +16,7 @@
 
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
 import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+
 import { createRule } from "./utils/createRule";
 
 export const OPTION_COMPONENT = "component";

@@ -17,13 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2 } from "../../common";
 import { DIVIDER } from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 
-export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement> {
+export interface IDividerProps extends Props, React.HTMLAttributes<HTMLElement> {
     /**
      * HTML tag to use for element.
+     *
      * @default "div"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -35,7 +37,7 @@ export interface IDividerProps extends IProps, React.HTMLAttributes<HTMLElement>
 export class Divider extends AbstractPureComponent2<IDividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 
-    public render() {
+    public render(): JSX.Element {
         const { className, tagName = "div", ...htmlProps } = this.props;
         const classes = classNames(DIVIDER, className);
         return React.createElement(tagName, {

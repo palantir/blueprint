@@ -73,6 +73,10 @@ its own state. In uncontrolled mode, simply provide an `onValueChange` callback
 in the props to access the value as the user manipulates it. The value will be
 provided to the callback both as a number and as a string.
 
+In general, uncontrolled mode is the recommended API for this component, as it allows
+users to type non-numeric digits like `.` and `-` (for decimals and negative numbers, respectively)
+more easily.
+
 ```tsx
 import { NumericInput } from "@blueprintjs/core";
 
@@ -90,10 +94,29 @@ export class NumericInputExample extends React.Component {
 
 @### Controlled mode
 
-If you prefer to have more control over your numeric input's behavior, you can
+If you need to have more control over your numeric input's behavior, you can
 specify the `value` property to use the component in **controlled mode**.
-numeric input supports arbitrary text entry--not just numeric digits–-so the
-`value` can be provided as either a number or a string.
+
+Note that NumericInput supports arbitrary text entry (not just numeric digits)
+so the `value` __should always be provided as a string, not a number__. Accordingly,
+change event handlers should use the same data type, namely the _second_ parameter of
+the `onValueChange` callback. This allows users to type non-numeric characters like decimal
+points (".") without the component eagerly coercing those strings to their parsed numeric
+equivalents (`0.` becomes `0`, fractional data entry impossible).
+
+Exceptions to this rule may occur if your input only supports _positive integers_, which will not
+have any non-numeric characters. See the [precision section](#core/components/numeric-input.precision)
+to learn how to enforce this kind of constraint.
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+
+When handling changes in controlled mode, always use the _second_ parameter of the
+`onValueChange` callback, which provides the value as a string. This allows users to type
+non-numeric characters like decimal points (".") without the component eagerly coercing
+those strings to their parsed numeric equivalents (`0.` becomes `0`, fractional data entry
+impossible).
+
+</div>
 
 The combined support of arbitrary text entry, controlled mode, and custom
 callbacks makes it possible to extend the numeric input's basic functionality in
@@ -118,8 +141,19 @@ string }> {
     }
 
     private handleValueChange = (_valueAsNumber: number, valueAsString: string) {
+        // Important: use the string value to allow typing decimal places and negative numbers
         const result = SomeLibrary.evaluateMathExpression(valueAsString);
         this.setState({ value: result });
     }
 }
 ```
+
+@### Numeric precision
+
+`NumericInput` determines its maximum precision by looking at both the `minorStepSize` and `stepSize` props.
+If `minorStepSize` is non-null, the number of decimal places in that value will be the maximum precision.
+Otherwise, the component will count the decimal places in `stepSize`.
+
+Configuring these props allows you to expand or constrain the precision of the input. For example, to limit
+the input to only integers, you can simply set `minorStepSize={null}` and allow the default `stepSize` of `1`
+to take precedence.

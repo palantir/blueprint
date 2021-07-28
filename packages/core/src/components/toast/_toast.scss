@@ -62,7 +62,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   pointer-events: all;
 
   // override inline styles (#367): toasts rely on relative positioning for stacking.
-  // stylelint-disable-next-line declaration-no-important
+  /* stylelint-disable-next-line declaration-no-important */
   position: relative !important;
 
   .#{$ns}-button-group {
@@ -102,7 +102,7 @@ $toast-margin: $pt-grid-size * 2 !default;
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
-  // stylelint-disable declaration-no-important
+  /* stylelint-disable declaration-no-important */
   &[class*="#{$ns}-intent-"] .#{$ns}-button {
     &,
     &::before,
@@ -130,7 +130,7 @@ $toast-margin: $pt-grid-size * 2 !default;
       background: rgba($white, 0.3) !important;
     }
   }
-  // stylelint-enable declaration-no-important
+  /* stylelint-enable declaration-no-important */
 
   // define these last so they override default dark colors above
   @each $intent, $color in $pt-intent-colors {
@@ -150,7 +150,7 @@ $toast-margin: $pt-grid-size * 2 !default;
 .#{$ns}-toast-container {
   align-items: center;
   // override inline overlay styles (#2626)
-  // stylelint-disable-next-line declaration-no-important
+  /* stylelint-disable-next-line declaration-no-important */
   display: flex !important;
   flex-direction: column;
   left: 0;
@@ -165,11 +165,18 @@ $toast-margin: $pt-grid-size * 2 !default;
   // container will not block clicks on elements behind it
   pointer-events: none;
 
-  position: fixed;
   right: 0;
 
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
+
+  &.#{$ns}-toast-container-in-portal {
+    position: fixed;
+  }
+
+  &.#{$ns}-toast-container-inline {
+    position: absolute;
+  }
 
   &.#{$ns}-toast-container-top {
     top: 0;

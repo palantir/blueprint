@@ -1,0 +1,5 @@
+#some-id {
+  div > .some-class:global(.bp3-button):global(.some-other-class) {
+    width: 10px;
+  }
+}

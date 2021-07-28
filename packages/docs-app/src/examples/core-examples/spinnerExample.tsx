@@ -16,8 +16,9 @@
 
 import * as React from "react";
 
-import { H5, Intent, Label, Slider, Spinner, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { H5, Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
+import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { IntentSelect } from "./common/intentSelect";
 
 export interface ISpinnerExampleState {
@@ -30,12 +31,13 @@ export interface ISpinnerExampleState {
 export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerExampleState> {
     public state: ISpinnerExampleState = {
         hasValue: false,
-        size: Spinner.SIZE_STANDARD,
+        size: SpinnerSize.STANDARD,
         value: 0.7,
     };
 
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
-    private handleModifierChange = handleStringChange((intent: Intent) => this.setState({ intent }));
+
+    private handleModifierChange = handleValueChange((intent: Intent) => this.setState({ intent }));
 
     public render() {
         const { size, hasValue, intent, value } = this.state;
@@ -56,7 +58,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                 <Slider
                     labelStepSize={50}
                     min={0}
-                    max={Spinner.SIZE_LARGE * 2}
+                    max={SpinnerSize.LARGE * 2}
                     showTrackFill={false}
                     stepSize={5}
                     value={size}
@@ -81,5 +83,6 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
     private renderLabel = (value: number) => value.toFixed(1);
 
     private handleValueChange = (value: number) => this.setState({ value });
+
     private handleSizeChange = (size: number) => this.setState({ size });
 }

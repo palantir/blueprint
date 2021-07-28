@@ -21,15 +21,18 @@ import { Boundary } from "../../common/boundary";
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 import { Position } from "../../common/position";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
 import { Menu } from "../menu/menu";
-import { IMenuItemProps, MenuItem } from "../menu/menuItem";
+import { MenuItemProps, MenuItem } from "../menu/menuItem";
 import { IPopoverProps, Popover } from "../popover/popover";
 
-type CollapsibleItem = React.ReactElement<IMenuItemProps>;
+type CollapsibleItem = React.ReactElement<MenuItemProps>;
 
-export interface ICollapsibleListProps extends IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type CollapsibleListProps = ICollapsibleListProps;
+/** @deprecated use CollapsibleListProps */
+export interface ICollapsibleListProps extends Props {
     /**
      * Element to render as dropdown target with `CLICK` interaction to show collapsed menu.
      */
@@ -44,10 +47,11 @@ export interface ICollapsibleListProps extends IProps {
      * Callback invoked to render each visible item. The item will be wrapped in an `li` with
      * the optional `visibleItemClassName` prop.
      */
-    visibleItemRenderer: (props: IMenuItemProps, index: number) => JSX.Element;
+    visibleItemRenderer: (props: MenuItemProps, index: number) => JSX.Element;
 
     /**
      * Which direction the items should collapse from: start or end of the children.
+     *
      * @default Boundary.START
      */
     collapseFrom?: Boundary;
@@ -59,20 +63,19 @@ export interface ICollapsibleListProps extends IProps {
 
     /**
      * Exact number of visible items.
+     *
      * @default 3
      */
     visibleItemCount?: number;
 }
 
 /** @deprecated use `<OverflowList>` for automatic overflow based on available space. */
-export class CollapsibleList extends React.Component<ICollapsibleListProps> {
+export class CollapsibleList extends React.Component<CollapsibleListProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.CollapsibleList`;
 
-    public static defaultProps: ICollapsibleListProps = {
+    public static defaultProps: Partial<CollapsibleListProps> = {
         collapseFrom: Boundary.START,
-        dropdownTarget: null,
         visibleItemCount: 3,
-        visibleItemRenderer: null,
     };
 
     public render() {
@@ -94,9 +97,10 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
         }
 
         // construct dropdown menu for collapsed items
-        let collapsedPopover: JSX.Element;
+        let collapsedPopover: JSX.Element | undefined;
         if (collapsedChildren.length > 0) {
             const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
+            /* eslint-disable deprecation/deprecation */
             collapsedPopover = (
                 <li className={this.props.visibleItemClassName}>
                     <Popover
@@ -108,6 +112,7 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
                     </Popover>
                 </li>
             );
+            /* eslint-enable deprecation/deprecation */
         }
 
         return (
@@ -121,15 +126,17 @@ export class CollapsibleList extends React.Component<ICollapsibleListProps> {
 
     // splits the list of children into two arrays: visible and collapsed
     private partitionChildren(): [CollapsibleItem[], CollapsibleItem[]] {
-        if (this.props.children == null) {
-            return [[], []];
-        }
-        const childrenArray = React.Children.map(this.props.children, (child: JSX.Element, index: number) => {
+        const childrenArray = React.Children.map(this.props.children, (child: React.ReactNode, index: number) => {
             if (!isElementOfType(child, MenuItem)) {
                 throw new Error(Errors.COLLAPSIBLE_LIST_INVALID_CHILD);
             }
             return React.cloneElement(child as JSX.Element, { key: `visible-${index}` });
         });
+
+        if (childrenArray == null) {
+            return [[], []];
+        }
+
         if (this.props.collapseFrom === Boundary.START) {
             // reverse START list so we can always slice visible items from the front of the list
             childrenArray.reverse();

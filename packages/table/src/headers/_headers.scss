@@ -205,7 +205,7 @@ $dark-selectable-header-menu-selected-hover-background:
     }
 
     // need to use a long selector here to properly scope the style
-    // stylelint-disable-next-line selector-max-compound-selectors,max-line-length
+    /* stylelint-disable-next-line selector-max-compound-selectors,max-line-length */
     .#{$ns}-dark .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
       background-color: $dark-selectable-header-menu-selected-background;
     }
@@ -356,7 +356,7 @@ $dark-selectable-header-menu-selected-hover-background:
   white-space: normal;
 
   // react-select does not conform to our naming scheme
-  // stylelint-disable selector-class-pattern
+  /* stylelint-disable selector-class-pattern */
   .is-searchable {
     &:not(.is-focused) > .Select-control {
       background: none;
@@ -375,7 +375,7 @@ $dark-selectable-header-menu-selected-hover-background:
   .Select-value {
     right: -$cell-border-width;
   }
-  // stylelint-enable selector-class-pattern
+  /* stylelint-enable selector-class-pattern */
 }
 
 .#{$ns}-table-column-name,

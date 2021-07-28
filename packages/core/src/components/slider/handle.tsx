@@ -17,25 +17,25 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes, Keys } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { clamp, safeInvoke } from "../../common/utils";
-import { IHandleProps } from "./handleProps";
+import { clamp } from "../../common/utils";
+import { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
 /**
  * Props for the internal <Handle> component needs some additional info from the parent Slider.
- * N.B. some properties need to be optional for spread in slider.tsx to work
  */
-export interface IInternalHandleProps extends IHandleProps {
+export interface IInternalHandleProps extends HandleProps {
     disabled?: boolean;
-    label: React.ReactChild;
-    max?: number;
-    min?: number;
-    stepSize?: number;
-    tickSize?: number;
-    tickSizeRatio?: number;
-    vertical?: boolean;
+    label: JSX.Element | string | undefined;
+    max: number;
+    min: number;
+    stepSize: number;
+    tickSize: number;
+    tickSizeRatio: number;
+    vertical: boolean;
 }
 
 export interface IHandleState {
@@ -55,7 +55,8 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         isMoving: false,
     };
 
-    private handleElement: HTMLElement;
+    private handleElement: HTMLElement | null = null;
+
     private refHandlers = {
         handle: (el: HTMLSpanElement) => (this.handleElement = el),
     };
@@ -67,28 +68,18 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     }
 
     public render() {
-        const { className, disabled, label, min, tickSizeRatio, value, vertical } = this.props;
+        const { className, disabled, label } = this.props;
         const { isMoving } = this.state;
-
-        // The handle midpoint of RangeSlider is actually shifted by a margin to
-        // be on the edge of the visible handle element. Because the midpoint
-        // calculation does not take this margin into account, we instead
-        // measure the long side (which is equal to the short side plus the
-        // margin).
-        const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
-        const offsetRatio = (value - min) * tickSizeRatio;
-        const offsetCalc = `calc(${formatPercentage(offsetRatio)} - ${handleMidpoint}px)`;
-        const style: React.CSSProperties = vertical ? { bottom: offsetCalc } : { left: offsetCalc };
 
         return (
             <span
                 className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
-                onKeyDown={disabled ? null : this.handleKeyDown}
-                onKeyUp={disabled ? null : this.handleKeyUp}
-                onMouseDown={disabled ? null : this.beginHandleMovement}
-                onTouchStart={disabled ? null : this.beginHandleTouchMovement}
+                onKeyDown={disabled ? undefined : this.handleKeyDown}
+                onKeyUp={disabled ? undefined : this.handleKeyUp}
+                onMouseDown={disabled ? undefined : this.beginHandleMovement}
+                onTouchStart={disabled ? undefined : this.beginHandleTouchMovement}
                 ref={this.refHandlers.handle}
-                style={style}
+                style={this.getStyleProperties()}
                 tabIndex={0}
             >
                 {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}
@@ -152,6 +143,24 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         }
     }
 
+    private getStyleProperties = (): React.CSSProperties => {
+        if (this.handleElement == null) {
+            return {};
+        }
+
+        // The handle midpoint of RangeSlider is actually shifted by a margin to
+        // be on the edge of the visible handle element. Because the midpoint
+        // calculation does not take this margin into account, we instead
+        // measure the long side (which is equal to the short side plus the
+        // margin).
+
+        const { min = 0, tickSizeRatio, value, vertical } = this.props;
+        const { handleMidpoint } = this.getHandleMidpointAndOffset(this.handleElement, true);
+        const offsetRatio = (value - min) * tickSizeRatio;
+        const offsetCalc = `calc(${formatPercentage(offsetRatio)} - ${handleMidpoint}px)`;
+        return vertical ? { bottom: offsetCalc } : { left: offsetCalc };
+    };
+
     private endHandleMovement = (event: MouseEvent) => {
         this.handleMoveEndedAt(this.mouseEventClientOffset(event));
     };
@@ -164,9 +173,8 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         this.removeDocumentEventListeners();
         this.setState({ isMoving: false });
         // always invoke onRelease; changeValue may call onChange if value is different
-        const { onRelease } = this.props;
         const finalValue = this.changeValue(this.clientToValue(clientPixel));
-        safeInvoke(onRelease, finalValue);
+        this.props.onRelease?.(finalValue);
     };
 
     private handleHandleMovement = (event: MouseEvent) => {
@@ -185,6 +193,8 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         const { which } = event;
         if (which === Keys.ARROW_DOWN || which === Keys.ARROW_LEFT) {
             this.changeValue(value - stepSize);
@@ -197,8 +207,10 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
+        /* eslint-disable-next-line deprecation/deprecation */
         if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {
-            safeInvoke(this.props.onRelease, this.props.value);
+            this.props.onRelease?.(this.props.value);
         }
     };
 
@@ -206,7 +218,7 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     private changeValue(newValue: number, callback = this.props.onChange) {
         newValue = this.clamp(newValue);
         if (!isNaN(newValue) && this.props.value !== newValue) {
-            safeInvoke(callback, newValue);
+            callback?.(newValue);
         }
         return newValue;
     }

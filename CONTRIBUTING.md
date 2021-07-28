@@ -32,9 +32,11 @@ A typical contributor workflow looks like this:
     - [Development practices](https://github.com/palantir/blueprint/wiki/Development-practices)
     - [Coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
     - [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)
-1. Ensure your code is **tested**, **linted**, and **formatted**.
+1. Ensure your code **compiles properly** and is **tested**, **linted**, and **formatted**.
+    - Run `yarn compile` at the repo root to build all libraries.
+    - Run `yarn bundle` at the repo root to build the Blueprint documentation and other bundles.
     - Add unit tests as necessary when fixing bugs or adding features; run them with `yarn test`
-      in the relevant `packages/` directory.
+      in the relevant package directory.
     - Linting is best handled by your editor for real-time feedback (see
       [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run
       `yarn lint` to be 100% safe.
@@ -45,9 +47,12 @@ A typical contributor workflow looks like this:
       Instead, when using the CLI or in a CI environment, you should run the `yarn format` script to fix all
       formatting issues across the Blueprint monorepo.
 1. Submit a Pull Request on GitHub and fill out the template.
-    - ⚠️ __DO NOT enable CircleCI for your fork of Blueprint.__ Our build
-      will run on your fork when you open a PR. You can run NPM scripts locally
-      to validate before pushing code.
+    - ⚠️ __DO NOT enable CircleCI for your fork of Blueprint.__ When you open a PR, your branch will be checked out
+      and built in palantir's CI pipeline automatically. There is no need to enable the CI build for your fork's
+      pipeline. If you do, this may cause problems in the CI build.
+      - If you have already opened a PR where CircleCI built the code in your own personal or organization pipeline,
+        you will likely have to disable the project from building at app.circleci.com/settings/project/github/\<your-username\>/website
+        and open a new PR.
 1. Team members will review your code and merge it after approvals.
     - You may be asked to make modifications to code style or to fix bugs you may have not noticed.
     - Please respond to comments in a timely fashion (even if to tell us you need more time).

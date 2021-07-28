@@ -22,7 +22,7 @@ import {
     Hotkey,
     Hotkeys,
     HotkeysTarget,
-    IEditableTextProps,
+    EditableTextProps,
     Utils as CoreUtils,
 } from "@blueprintjs/core";
 
@@ -30,6 +30,7 @@ import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
 import { Cell, ICellProps } from "./cell";
 
+export type EditableCellProps = IEditableCellProps;
 export interface IEditableCellProps extends ICellProps {
     /**
      * Whether the given cell is the current active/focused cell.
@@ -70,7 +71,7 @@ export interface IEditableCellProps extends ICellProps {
     /**
      * Props that should be passed to the EditableText when it is used to edit
      */
-    editableTextProps?: IEditableTextProps;
+    editableTextProps?: EditableTextProps;
 }
 
 export interface IEditableCellState {
@@ -79,6 +80,8 @@ export interface IEditableCellState {
     dirtyValue?: string;
 }
 
+// HACKHACK(adahiya): fix for Blueprint 4.0
+// eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
 export class EditableCell extends React.Component<IEditableCellProps, IEditableCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
@@ -89,6 +92,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     };
 
     private cellRef: HTMLElement;
+
     private refHandlers = {
         cell: (ref: HTMLElement) => {
             this.cellRef = ref;
@@ -245,7 +249,7 @@ export class EditableCell extends React.Component<IEditableCellProps, IEditableC
     private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
         // pass through the row and column indices if they were provided as props by the consumer
         const { rowIndex, columnIndex } = this.props;
-        CoreUtils.safeInvoke(callback, value, rowIndex, columnIndex);
+        callback?.(value, rowIndex, columnIndex);
     }
 
     private handleCellActivate = (_event: MouseEvent) => {

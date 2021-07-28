@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Icon } from "@blueprintjs/core";
+import { IconSize } from "@blueprintjs/core";
 
 // used to exclude icons from column header measure
 export const CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT = "bp-table-text-no-measure";
 // supposed width of the icons placeholder
-const EXCLUDED_ICON_PLACEHOLDER_WIDTH = Icon.SIZE_STANDARD;
+const EXCLUDED_ICON_PLACEHOLDER_WIDTH = IconSize.STANDARD;
 
 /**
  * Since Firefox doesn't provide a computed "font" property, we manually
@@ -29,10 +29,10 @@ const CSS_FONT_PROPERTIES = ["font-style", "font-variant", "font-weight", "font-
 
 // the functions using these interfaces now live in core. it's not clear how to
 // import interfaces from core and re-export them here, so just redefine them.
-export interface IKeyWhitelist<T> {
+export interface IKeyAllowlist<T> {
     include: Array<keyof T>;
 }
-export interface IKeyBlacklist<T> {
+export interface IKeyDenylist<T> {
     exclude: Array<keyof T>;
 }
 
@@ -78,7 +78,7 @@ export const Utils = {
      * Note that this isn't technically mathematically equivalent to base 26 since
      * there is no zero element.
      */
-    toBase26Alpha(num: number): string {
+    toBase26Alpha: (num: number) => {
         let str = "";
         while (true) {
             const letter = num % 26;
@@ -96,7 +96,7 @@ export const Utils = {
      * Returns traditional spreadsheet-style cell names
      * e.g. (A1, B2, ..., Z44, AA1) with rows 1-indexed.
      */
-    toBase26CellName(rowIndex: number, columnIndex: number): string {
+    toBase26CellName: (rowIndex: number, columnIndex: number) => {
         return `${Utils.toBase26Alpha(columnIndex)}${rowIndex + 1}`;
     },
 

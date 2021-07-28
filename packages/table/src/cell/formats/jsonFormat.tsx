@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
+
+import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
+
 import * as Classes from "../../common/classes";
 import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
-/* istanbul ignore next */
+export type JSONFormatProps = IJSONFormatProps;
 export interface IJSONFormatProps extends ITruncatedFormatProps {
     children?: any;
 
@@ -28,6 +30,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
      * By default, we omit stringifying native JavaScript strings since
      * `JSON.stringify` awkwardly adds double-quotes to the display value.
      * This behavior can be turned off by setting this boolean to `false`.
+     *
      * @default true
      */
     omitQuotesOnStrings?: boolean;
@@ -39,6 +42,7 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
     stringify?: (obj: any) => string;
 }
 
+/* istanbul ignore next */
 export class JSONFormat extends React.Component<IJSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 

@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { AnchorButton, Intent } from "@blueprintjs/core";
 import { ITag } from "@documentalist/client";
 import * as React from "react";
+
+import { AnchorButton, Intent } from "@blueprintjs/core";
+
 import { IExampleProps } from "../components/example";
 
 export interface IExample {
@@ -38,7 +40,7 @@ export class ReactExampleTagRenderer {
      * it to an actual example component exported by one of the packages. Also returns
      * the URL of the source code on GitHub.
      */
-    public render: React.FunctionComponent<ITag> = ({ value: exampleName }) => {
+    public render: React.FC<ITag> = ({ value: exampleName }) => {
         if (exampleName == null) {
             return null;
         }

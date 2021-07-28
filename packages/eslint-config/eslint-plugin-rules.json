@@ -1,13 +1,52 @@
 {
+    "header/header": [
+        "error",
+        "block",
+        {
+            "pattern": "Copyright \\d{4} Palantir Technologies, Inc\\. All rights reserved.",
+            "template": "Copyright 2020 Palantir Technologies, Inc. All rights reserved.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License."
+        },
+        2
+    ],
     "import/no-default-export": "error",
     "import/no-extraneous-dependencies": [
         "error",
         {
-            "devDependencies": ["**/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}"]
+            "devDependencies": ["**/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}", "webpack.config.js", "karma.conf.js"]
         }
     ],
-    "import/order": "off",
+    "import/order": [
+        "error",
+        {
+            "alphabetize": {
+                "order": "asc",
+                "caseInsensitive": true
+            },
+            "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"], ["unknown", "object"]],
+            "newlines-between": "always"
+        }
+    ],
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": "off",
-    "jsdoc/newline-after-description": "off"
+    "jsdoc/newline-after-description": "error",
+    "react/display-name": "error",
+    "react/jsx-boolean-value": ["error", "always"],
+    "react/jsx-key": [
+        "error",
+        {
+            "checkFragmentShorthand": true
+        }
+    ],
+    "react/jsx-no-bind": [
+        "error",
+        {
+            "ignoreDOMComponents": true,
+            "ignoreRefs": true
+        }
+    ],
+    "react/no-did-mount-set-state": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-string-refs": "error",
+    "react/self-closing-comp": "error"
 }

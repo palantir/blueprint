@@ -15,6 +15,7 @@
  */
 
 import { expect } from "chai";
+
 import { Utils } from "../src/common/utils";
 
 describe("Utils", () => {

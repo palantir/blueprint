@@ -17,28 +17,40 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import {
     AbstractPureComponent2,
     Classes,
     DISPLAYNAME_PREFIX,
-    IIntentProps,
-    IProps,
+    IElementRefProps,
+    IntentProps,
+    Props,
     MaybeElement,
     Utils,
 } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
-import { Icon, IconName } from "../icon/icon";
+import { Icon, IconName, IconSize } from "../icon/icon";
 import { Text } from "../text/text";
 
-export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HTMLSpanElement> {
+// eslint-disable-next-line deprecation/deprecation
+export type TagProps = ITagProps;
+/** @deprecated use TagProps */
+export interface ITagProps
+    extends Props,
+        IntentProps,
+        // eslint-disable-next-line deprecation/deprecation
+        IElementRefProps<HTMLSpanElement>,
+        React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Whether the tag should appear in an active state.
+     *
      * @default false
      */
     active?: boolean;
 
     /**
      * Whether the tag should take up the full width of its container.
+     *
      * @default false
      */
     fill?: boolean;
@@ -58,12 +70,14 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
 
     /**
      * Whether this tag should use large styles.
+     *
      * @default false
      */
     large?: boolean;
 
     /**
      * Whether this tag should use minimal styles.
+     *
      * @default false
      */
     minimal?: boolean;
@@ -73,6 +87,7 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * If false, a single line of text will be truncated with an ellipsis if
      * it overflows. Note that icons will be vertically centered relative to
      * multiline text.
+     *
      * @default false
      */
     multiline?: boolean;
@@ -87,20 +102,26 @@ export interface ITagProps extends IProps, IIntentProps, React.HTMLAttributes<HT
      * Click handler for remove button.
      * The remove button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: ITagProps) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: TagProps) => void;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the children. */
     rightIcon?: IconName | MaybeElement;
 
     /**
      * Whether this tag should have rounded ends.
+     *
      * @default false
      */
     round?: boolean;
+
+    /**
+     * HTML title to be passed to the <Text> component
+     */
+    htmlTitle?: string;
 }
 
 @polyfill
-export class Tag extends AbstractPureComponent2<ITagProps> {
+export class Tag extends AbstractPureComponent2<TagProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tag`;
 
     public render() {
@@ -119,6 +140,8 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
             rightIcon,
             round,
             tabIndex = 0,
+            htmlTitle,
+            elementRef,
             ...htmlProps
         } = this.props;
         const isRemovable = Utils.isFunction(onRemove);
@@ -137,16 +160,21 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
         );
         const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
         const removeButton = isRemovable ? (
-            <button type="button" className={Classes.TAG_REMOVE} onClick={this.onRemoveClick}>
-                <Icon icon="small-cross" iconSize={isLarge ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD} />
+            <button
+                type="button"
+                className={Classes.TAG_REMOVE}
+                onClick={this.onRemoveClick}
+                tabIndex={interactive ? tabIndex : undefined}
+            >
+                <Icon icon="small-cross" size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
             </button>
         ) : null;
 
         return (
-            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined}>
+            <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={elementRef}>
                 <Icon icon={icon} />
                 {!isReactNodeEmpty(children) && (
-                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span">
+                    <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
                         {children}
                     </Text>
                 )}
@@ -157,6 +185,6 @@ export class Tag extends AbstractPureComponent2<ITagProps> {
     }
 
     private onRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        Utils.safeInvoke(this.props.onRemove, e, this.props);
+        this.props.onRemove?.(e, this.props);
     };
 }

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { DISPLAYNAME_PREFIX, Icon, IProps, Popover, Position } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
+import { DISPLAYNAME_PREFIX, Icon, Props, Popover, Position } from "@blueprintjs/core";
+
 import * as Classes from "../../common/classes";
 import { Utils } from "../../common/utils";
-
 import { Locator } from "../../locator";
 
 // amount in pixels that the content div width changes when truncated vs when
@@ -41,6 +41,7 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
      * Approximate character width (in pixels), used to determine whether to display the popover in approx truncation mode.
      * The default value should work for normal table styles,
      * but should be changed as necessary if the fonts or styles are changed significantly.
+     *
      * @default 8
      */
     approximateCharWidth: number;
@@ -48,6 +49,7 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
     /**
      * Approximate line height (in pixels), used to determine whether to display the popover in approx truncation mode.
      * The default value should work for normal table styles, but should be changed if the fonts or styles are changed significantly.
+     *
      * @default 18
      */
     approximateLineHeight: number;
@@ -56,6 +58,7 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
      * Total horizonal cell padding (both sides), used to determine whether to display the popover in approx truncation mode.
      * The default value should work for normal table styles,
      * but should be changed as necessary if the fonts or styles are changed significantly.
+     *
      * @default 20
      */
     cellHorizontalPadding: number;
@@ -66,18 +69,21 @@ export interface ITrucatedFormateMeasureByApproximateOptions {
      * after the math calculates how many lines the text is expected to take.
      * The default value should work for normal table styles,
      * but should be changed as necessary if the fonts or styles are changed significantly.
+     *
      * @default 0
      */
     numBufferLines: number;
 }
 
-export interface ITruncatedFormatProps extends IProps {
+export type TruncatedFormatProps = ITruncatedFormatProps;
+export interface ITruncatedFormatProps extends Props {
     children?: string;
 
     /**
      * Should the component keep track of the truncation state of the string content. If true, the
      * value of `truncateLength` is ignored. When combined with a `showPopover` value of
      * `WHEN_TRUNCATED`, popovers will only render when necessary.
+     *
      * @default false;
      */
     detectTruncation?: boolean;
@@ -103,6 +109,7 @@ export interface ITruncatedFormatProps extends IProps {
     /**
      * Sets the popover content style to `white-space: pre` if `true` or
      * `white-space: normal` if `false`.
+     *
      * @default false
      */
     preformatted?: boolean;
@@ -116,6 +123,7 @@ export interface ITruncatedFormatProps extends IProps {
      * - `WHEN_TRUNCATED`: show the popover only when the text is truncated (default).
      * - `WHEN_TRUNCATED_APPROX`: show the popover only when the text is trunctated, but use
      *   a formula to calculate this based on text length, which is faster but less accurate.
+     *
      * @default WHEN_TRUNCATED
      */
     showPopover?: TruncatedPopoverMode;
@@ -124,12 +132,14 @@ export interface ITruncatedFormatProps extends IProps {
      * Number of characters that are displayed before being truncated and appended with the
      * `truncationSuffix` prop. A value of 0 will disable truncation. This prop is ignored if
      * `detectTruncation` is `true`.
+     *
      * @default 2000
      */
     truncateLength?: number;
 
     /**
      * The string that is appended to the display string if it is truncated.
+     *
      * @default "..."
      */
     truncationSuffix?: string;
@@ -215,6 +225,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
+                /* eslint-disable-next-line deprecation/deprecation */
                 <Popover
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     modifiers={{ preventOverflow: { boundariesElement: "window" } }}
@@ -224,6 +235,7 @@ export class TruncatedFormat extends React.PureComponent<ITruncatedFormatProps, 
                     onClose={this.handlePopoverClose}
                 >
                     <Icon icon="more" />
+                    {/* eslint-disable-next-line deprecation/deprecation */}
                 </Popover>
             );
         } else {

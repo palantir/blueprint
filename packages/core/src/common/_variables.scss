@@ -7,6 +7,8 @@
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
 // Do not quote this value, for Less consumers.
 $ns: bp3 !default;
+// Alias for BP users outside this repo
+$bp-ns: $ns;
 
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
@@ -64,6 +66,7 @@ $pt-navbar-height: $pt-grid-size * 5 !default;
 $pt-z-index-base: 0 !default;
 $pt-z-index-content: $pt-z-index-base + 10 !default;
 $pt-z-index-overlay: $pt-z-index-content + 10 !default;
+$pt-z-index-dialog-header: $pt-z-index-overlay + 10 !default;
 
 // Shadow opacities
 $pt-border-shadow-opacity: 0.1 !default;

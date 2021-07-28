@@ -17,13 +17,26 @@
 // we use the empty object {} a lot in this public API
 /* eslint-disable @typescript-eslint/ban-types */
 
-export interface IKeyWhitelist<T> {
+/* eslint-disable deprecation/deprecation */
+
+/** @deprecated use IKeyAllowlist */
+export type IKeyWhitelist<T> = IKeyAllowlist<T>;
+/** @deprecated use IKeyDenylist */
+export type IKeyBlacklist<T> = IKeyDenylist<T>;
+
+/** @deprecated use KeyAllowlist */
+export interface IKeyAllowlist<T> {
     include: Array<keyof T>;
 }
+export type KeyAllowlist<T> = IKeyAllowlist<T>;
 
-export interface IKeyBlacklist<T> {
+/** @deprecated use KeyDenylist */
+export interface IKeyDenylist<T> {
     exclude: Array<keyof T>;
 }
+export type KeyDenylist<T> = IKeyDenylist<T>;
+
+/* eslint-enable deprecation/deprecation */
 
 /**
  * Returns true if the arrays are equal. Elements will be shallowly compared by
@@ -44,9 +57,10 @@ export function arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any)
 /**
  * Shallow comparison between objects. If `keys` is provided, just that subset
  * of keys will be compared; otherwise, all keys will be compared.
+ *
  * @returns true if items are equal.
  */
-export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: KeyDenylist<T> | KeyAllowlist<T>) {
     // treat `null` and `undefined` as the same
     if (objA == null && objB == null) {
         return true;
@@ -70,6 +84,7 @@ export function shallowCompareKeys<T extends {}>(objA: T, objB: T, keys?: IKeyBl
 /**
  * Deep comparison between objects. If `keys` is provided, just that subset of
  * keys will be compared; otherwise, all keys will be compared.
+ *
  * @returns true if items are equal.
  */
 export function deepCompareKeys(objA: any, objB: any, keys?: Array<string | number | symbol>): boolean {
@@ -122,7 +137,7 @@ export function getDeepUnequalKeyValues<T extends {}>(
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function shallowCompareKeysImpl<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+function shallowCompareKeysImpl<T extends object>(objA: T, objB: T, keys: KeyDenylist<T> | KeyAllowlist<T>) {
     return filterKeys(objA, objB, keys).every(key => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key];
     });
@@ -141,17 +156,17 @@ function isSimplePrimitiveType(value: any) {
     return typeof value === "number" || typeof value === "string" || typeof value === "boolean";
 }
 
-function filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
-    if (isWhitelist(keys)) {
+function filterKeys<T>(objA: T, objB: T, keys: KeyDenylist<T> | KeyAllowlist<T>) {
+    if (isAllowlist(keys)) {
         return keys.include;
-    } else if (isBlacklist(keys)) {
+    } else if (isDenylist(keys)) {
         const keysA = Object.keys(objA);
         const keysB = Object.keys(objB);
 
         // merge keys from both objects into a big set for quick access
         const keySet = arrayToObject(keysA.concat(keysB));
 
-        // delete blacklisted keys from the key set
+        // delete denied keys from the key set
         keys.exclude.forEach(key => delete keySet[key]);
 
         // return the remaining keys as an array
@@ -161,12 +176,12 @@ function filterKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<
     return [];
 }
 
-function isWhitelist<T>(keys: any): keys is IKeyWhitelist<T> {
-    return keys != null && (keys as IKeyWhitelist<T>).include != null;
+function isAllowlist<T>(keys: any): keys is KeyAllowlist<T> {
+    return keys != null && (keys as KeyAllowlist<T>).include != null;
 }
 
-function isBlacklist<T>(keys: any): keys is IKeyBlacklist<T> {
-    return keys != null && (keys as IKeyBlacklist<T>).exclude != null;
+function isDenylist<T>(keys: any): keys is KeyDenylist<T> {
+    return keys != null && (keys as KeyDenylist<T>).exclude != null;
 }
 
 function arrayToObject(arr: any[]) {

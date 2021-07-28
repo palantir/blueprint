@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Cell, Column, IColumnProps, ITableProps, RenderMode, Table, Utils } from "../../src";
+import { Cell, Column, IColumnProps, TableProps, RenderMode, Table, Utils } from "../../src";
 
 export function createStringOfLength(length: number) {
     return new Array(length).fill("a").join("");
@@ -40,7 +40,7 @@ export function createTableWithData(columnNames: string[], data: string[][], col
     };
 
     // combine table overrides
-    const tablePropsWithDefaults: ITableProps = {
+    const tablePropsWithDefaults: TableProps = {
         numRows: data.length,
         renderMode: RenderMode.NONE, // much easier to test things when all cells render synchronously
         ...tableProps,

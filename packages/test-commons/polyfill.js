@@ -23,3 +23,4 @@ require("core-js/features/array/fill");
 require("core-js/features/array/from");
 require("core-js/features/map");
 require("core-js/features/set");
+require("core-js/features/string/starts-with");

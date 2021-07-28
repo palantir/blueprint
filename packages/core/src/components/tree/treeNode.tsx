@@ -18,17 +18,19 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps, MaybeElement } from "../../common/props";
-import { safeInvoke } from "../../common/utils";
+import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { Collapse } from "../collapse/collapse";
 import { Icon, IconName } from "../icon/icon";
 
+// eslint-disable-next-line @typescript-eslint/ban-types, deprecation/deprecation
+export type TreeNodeInfo<T = {}> = ITreeNode<T>;
+/** @deprecated use TreeNodeInfo */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface ITreeNode<T = {}> extends IProps {
+export interface ITreeNode<T = {}> extends Props {
     /**
      * Child tree nodes of this node.
      */
-    childNodes?: Array<ITreeNode<T>>;
+    childNodes?: Array<TreeNodeInfo<T>>;
 
     /**
      * Whether this tree node is non-interactive. Enabling this prop will ignore
@@ -58,6 +60,7 @@ export interface ITreeNode<T = {}> extends IProps {
 
     /**
      * Whether this node is selected.
+     *
      * @default false
      */
     isSelected?: boolean;
@@ -81,7 +84,9 @@ export interface ITreeNode<T = {}> extends IProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
+export type TreeNodeProps<T = {}> = ITreeNodeProps<T>;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface ITreeNodeProps<T = {}> extends TreeNodeInfo<T> {
     children?: React.ReactNode;
     contentRef?: (node: TreeNode<T>, element: HTMLDivElement | null) => void;
     depth: number;
@@ -100,8 +105,8 @@ export interface ITreeNodeProps<T = {}> extends ITreeNode<T> {
 export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
 
-    public static ofType<T>() {
-        return TreeNode as new (props: ITreeNodeProps<T>) => TreeNode<T>;
+    public static ofType<U>() {
+        return TreeNode as new (props: ITreeNodeProps<U>) => TreeNode<U>;
     }
 
     public render() {
@@ -169,30 +174,30 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
     private handleCaretClick = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         const { isExpanded, onCollapse, onExpand } = this.props;
-        safeInvoke(isExpanded ? onCollapse : onExpand, this, e);
+        (isExpanded ? onCollapse : onExpand)?.(this, e);
     };
 
     private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onClick, this, e);
+        this.props.onClick?.(this, e);
     };
 
     private handleContentRef = (element: HTMLDivElement | null) => {
-        safeInvoke(this.props.contentRef, this, element);
+        this.props.contentRef?.(this, element);
     };
 
     private handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onContextMenu, this, e);
+        this.props.onContextMenu?.(this, e);
     };
 
     private handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onDoubleClick, this, e);
+        this.props.onDoubleClick?.(this, e);
     };
 
     private handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onMouseEnter, this, e);
+        this.props.onMouseEnter?.(this, e);
     };
 
     private handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-        safeInvoke(this.props.onMouseLeave, this, e);
+        this.props.onMouseLeave?.(this, e);
     };
 }

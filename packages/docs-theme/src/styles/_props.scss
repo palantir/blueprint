@@ -2,14 +2,14 @@
 // Licensed under the Apache License, Version 2.0.
 
 .docs-prop-details code {
-  // stylelint-disable declaration-no-important
+  /* stylelint-disable declaration-no-important */
   background: none !important;
   box-shadow: none !important;
   color: inherit !important;
   font-size: small;
   font-weight: 600;
   padding: 0;
-  // stylelint-enable declaration-no-important
+  /* stylelint-enable declaration-no-important */
 }
 
 .docs-prop-default {

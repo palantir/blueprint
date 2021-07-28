@@ -27,6 +27,7 @@ export interface ILoadableContentProps {
 
     /**
      * If true, show a skeleton of random width (25-75% cell width) when rendering the loading state.
+     *
      * @default false
      */
     variableLength?: boolean;

@@ -16,29 +16,18 @@
 
 import * as React from "react";
 
-import { Button, H5, MenuItem, Switch } from "@blueprintjs/core";
+import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Select } from "@blueprintjs/select";
-import {
-    areFilmsEqual,
-    createFilm,
-    filmSelectProps,
-    IFilm,
-    maybeAddCreatedFilmToArrays,
-    maybeDeleteCreatedFilmFromArrays,
-    renderCreateFilmOption,
-    TOP_100_FILMS,
-} from "./films";
 
-const FilmSelect = Select.ofType<IFilm>();
+import { IFilm, TOP_100_FILMS } from "../../common/films";
+import FilmSelect from "../../common/filmSelect";
 
 export interface ISelectExampleState {
     allowCreate: boolean;
+    createFirst: boolean;
     createdItems: IFilm[];
-    film: IFilm;
     filterable: boolean;
     hasInitialContent: boolean;
-    items: IFilm[];
     minimal: boolean;
     resetOnClose: boolean;
     resetOnQuery: boolean;
@@ -50,13 +39,12 @@ export interface ISelectExampleState {
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
     public state: ISelectExampleState = {
         allowCreate: false,
+        createFirst: false,
         createdItems: [],
         disableItems: false,
         disabled: false,
-        film: TOP_100_FILMS[0],
         filterable: true,
         hasInitialContent: false,
-        items: filmSelectProps.items,
         minimal: false,
         resetOnClose: false,
         resetOnQuery: true,
@@ -64,49 +52,43 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     };
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+
+    private handleCreateFirstChange = this.handleSwitchChange("createFirst");
+
     private handleDisabledChange = this.handleSwitchChange("disabled");
+
     private handleFilterableChange = this.handleSwitchChange("filterable");
+
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
+
     private handleItemDisabledChange = this.handleSwitchChange("disableItems");
+
     private handleMinimalChange = this.handleSwitchChange("minimal");
+
     private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
+
     private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
+
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
 
     public render() {
-        const { allowCreate, disabled, disableItems, film, minimal, ...flags } = this.state;
+        const { allowCreate, disabled, disableItems, minimal, ...flags } = this.state;
 
         const initialContent = this.state.hasInitialContent ? (
             <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} />
         ) : undefined;
-        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmOption : null;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <FilmSelect
-                    {...filmSelectProps}
                     {...flags}
-                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
-                    createNewItemRenderer={maybeCreateNewItemRenderer}
+                    allowCreate={allowCreate}
+                    createNewItemPosition={this.state.createFirst ? "first" : "last"}
                     disabled={disabled}
                     itemDisabled={this.isItemDisabled}
-                    itemsEqual={areFilmsEqual}
-                    // we may customize the default filmSelectProps.items by
-                    // adding newly created items to the list, so pass our own
-                    items={this.state.items}
                     initialContent={initialContent}
-                    noResults={<MenuItem disabled={true} text="No results." />}
-                    onItemSelect={this.handleValueChange}
                     popoverProps={{ minimal }}
-                >
-                    <Button
-                        icon="film"
-                        rightIcon="caret-down"
-                        text={film ? `${film.title} (${film.year})` : "(No selection)"}
-                        disabled={disabled}
-                    />
-                </FilmSelect>
+                />
             </Example>
         );
     }
@@ -147,6 +129,12 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     checked={this.state.allowCreate}
                     onChange={this.handleAllowCreateChange}
                 />
+                <Switch
+                    label="Create new position: first"
+                    disabled={!this.state.allowCreate}
+                    checked={this.state.createFirst}
+                    onChange={this.handleCreateFirstChange}
+                />
                 <H5>Popover props</H5>
                 <Switch
                     label="Minimal popover style"
@@ -156,22 +144,6 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
             </>
         );
     }
-
-    private handleValueChange = (film: IFilm) => {
-        // Delete the old film from the list if it was newly created.
-        const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
-            this.state.items,
-            this.state.createdItems,
-            this.state.film,
-        );
-        // Add the new film to the list if it is newly created.
-        const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
-            items,
-            createdItems,
-            film,
-        );
-        this.setState({ createdItems: nextCreatedItems, film, items: nextItems });
-    };
 
     private handleSwitchChange(prop: keyof ISelectExampleState) {
         return (event: React.FormEvent<HTMLInputElement>) => {

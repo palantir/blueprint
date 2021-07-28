@@ -17,13 +17,14 @@
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, IProps } from "@blueprintjs/core";
+import { AbstractPureComponent2, Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
 import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
-export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
+export type RowHeaderCellProps = IRowHeaderCellProps;
+export interface IRowHeaderCellProps extends IHeaderCellProps, Props {
     /**
      * Specifies if the row is reorderable.
      */
@@ -44,7 +45,7 @@ export interface IRowHeaderCellProps extends IHeaderCellProps, IProps {
      * The callback will also receive the row index if an `index` was originally
      * provided via props.
      */
-    nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
+    nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
 @polyfill

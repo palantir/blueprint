@@ -53,10 +53,14 @@ describe("<Slider>", () => {
         assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
     });
 
-    it("renders result of labelRenderer() in each label", () => {
-        const labelRenderer = (val: number) => val + "#";
-        const wrapper = renderSlider(<Slider min={0} max={50} labelStepSize={10} labelRenderer={labelRenderer} />);
+    it("renders result of labelRenderer() in each label and differently in handle", () => {
+        const labelRenderer = (val: number, opts?: { isHandleTooltip: boolean }) =>
+            val + (opts?.isHandleTooltip ? "!" : "#");
+        const wrapper = renderSlider(
+            <Slider min={0} max={50} value={10} labelStepSize={10} labelRenderer={labelRenderer} />,
+        );
         assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
+        assert.strictEqual(wrapper.find(`.${Classes.SLIDER_HANDLE}`).find(`.${Classes.SLIDER_LABEL}`).text(), "10!");
     });
 
     it("moving mouse calls onChange with nearest value", () => {

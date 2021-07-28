@@ -18,6 +18,7 @@ import * as React from "react";
 
 import { Alignment, Checkbox, H5, Label, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export interface ICheckboxExampleState {
@@ -72,7 +73,10 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
 
     // eslint-disable @typescript-eslint/member-ordering
     private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
+
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 }

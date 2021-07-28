@@ -22,7 +22,7 @@ import {
     AbstractPureComponent2,
     Icon,
     IconName,
-    IProps,
+    Props,
     Popover,
     Position,
     Utils as CoreUtils,
@@ -53,7 +53,7 @@ export interface IColumnNameProps {
      * The callback will also receive the column index if an `index` was originally
      * provided via props.
      */
-    nameRenderer?: (name: string, index?: number) => React.ReactElement<IProps>;
+    nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
 export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
@@ -69,6 +69,7 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
 
     /**
      * The icon name or element for the header's menu button.
+     *
      * @default "chevron-down"
      */
     menuIcon?: IconName | JSX.Element;
@@ -89,9 +90,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         menuIcon: "chevron-down",
     };
 
-    public static contextTypes: React.ValidationMap<
-        IColumnInteractionBarContextTypes
-    > = columnInteractionBarContextTypes;
+    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
@@ -110,6 +109,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
     }
 
     public context: IColumnInteractionBarContextTypes;
+
     public state = {
         isActive: false,
     };
@@ -204,6 +204,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
+                {/* eslint-disable-next-line deprecation/deprecation */}
                 <Popover
                     content={menuRenderer(index)}
                     position={Position.BOTTOM}
@@ -213,11 +214,13 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
                     onClosing={this.handlePopoverClosing}
                 >
                     <Icon icon={menuIcon} />
+                    {/* eslint-disable-next-line deprecation/deprecation */}
                 </Popover>
             </div>
         );
     }
 
     private handlePopoverOpened = () => this.setState({ isActive: true });
+
     private handlePopoverClosing = () => this.setState({ isActive: false });
 }

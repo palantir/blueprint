@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
+import { Props } from "@blueprintjs/core";
+
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface IExampleProps<T = {}> extends IProps {
+export interface IExampleProps<T = {}> extends Props {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.
@@ -56,6 +57,7 @@ export interface IDocsExampleProps extends IExampleProps {
      * container. By default, options appear in a single column to the right of
      * the example. If this prop is enabled, then the options container becomes
      * a flex row; group options into columns by wrapping them in a `<div>`.
+     *
      * @default false
      */
     showOptionsBelowExample?: boolean;
@@ -71,6 +73,7 @@ export interface IDocsExampleProps extends IExampleProps {
     /**
      * Whether `forceUpdate()` should be invoked after the first render to
      * ensure correct DOM sizing.
+     *
      * @default true
      */
     forceUpdate?: boolean;

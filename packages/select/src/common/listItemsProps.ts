@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { IProps, Utils } from "@blueprintjs/core";
+import { Props, Utils } from "@blueprintjs/core";
+
 import { ItemListRenderer } from "./itemListRenderer";
 import { ItemRenderer } from "./itemRenderer";
 import { ICreateNewItem } from "./listItemsUtils";
@@ -22,6 +23,7 @@ import { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /**
  * Equality test comparator to determine if two {@link IListItemsProps} items are equivalent.
+ *
  * @return `true` if the two items are equivalent.
  */
 export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
@@ -32,7 +34,7 @@ export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
-export interface IListItemsProps<T> extends IProps {
+export interface IListItemsProps<T> extends Props {
     /**
      * The currently focused item for keyboard interactions, or `null` to
      * indicate that no item is active. If omitted or `undefined`, this prop will be
@@ -181,8 +183,17 @@ export interface IListItemsProps<T> extends IProps {
     ) => JSX.Element | undefined;
 
     /**
+     * Determines the position of the `createNewItem` within the list: first or
+     * last. Only relevant when `createNewItemRenderer` is defined.
+     *
+     * @default 'last'
+     */
+    createNewItemPosition?: "first" | "last";
+
+    /**
      * Whether the active item should be reset to the first matching item _every
      * time the query changes_ (via prop or by user input).
+     *
      * @default true
      */
     resetOnQuery?: boolean;
@@ -190,6 +201,7 @@ export interface IListItemsProps<T> extends IProps {
     /**
      * Whether the active item should be reset to the first matching item _when
      * an item is selected_. The query will also be reset to the empty string.
+     *
      * @default false
      */
     resetOnSelect?: boolean;
@@ -200,6 +212,7 @@ export interface IListItemsProps<T> extends IProps {
      * that result from built-in interactions (clicking, querying, or using
      * arrow keys) will scroll the active item into view. Ignored if the
      * `activeItem` prop is omitted (uncontrolled behavior).
+     *
      * @default true
      */
     scrollToActiveItem?: boolean;
@@ -215,6 +228,7 @@ export interface IListItemsProps<T> extends IProps {
 /**
  * Utility function for executing the {@link IListItemsProps#itemsEqual} prop to test
  * for equality between two items.
+ *
  * @return `true` if the two items are equivalent according to `itemsEqualProp`.
  */
 export function executeItemsEqual<T>(

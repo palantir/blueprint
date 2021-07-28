@@ -16,9 +16,10 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, ITagProps, MenuItem, Switch } from "@blueprintjs/core";
+import { Button, H5, Intent, TagProps, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 import { ItemRenderer, MultiSelect } from "@blueprintjs/select";
+
 import {
     areFilmsEqual,
     arrayContainsFilm,
@@ -29,7 +30,7 @@ import {
     maybeDeleteCreatedFilmFromArrays,
     renderCreateFilmOption,
     TOP_100_FILMS,
-} from "./films";
+} from "../../common/films";
 
 const FilmMultiSelect = MultiSelect.ofType<IFilm>();
 
@@ -65,17 +66,24 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
     };
 
     private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
+
     private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
+
     private handleResetChange = this.handleSwitchChange("resetOnSelect");
+
     private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
+
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
+
     private handleFillChange = this.handleSwitchChange("fill");
+
     private handleIntentChange = this.handleSwitchChange("intent");
+
     private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
 
     public render() {
         const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, ...flags } = this.state;
-        const getTagProps = (_value: string, index: number): ITagProps => ({
+        const getTagProps = (_value: React.ReactNode, index: number): TagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
         });
@@ -185,7 +193,7 @@ export class MultiSelectExample extends React.PureComponent<IExampleProps, IMult
         );
     };
 
-    private handleTagRemove = (_tag: string, index: number) => {
+    private handleTagRemove = (_tag: React.ReactNode, index: number) => {
         this.deselectFilm(index);
     };
 

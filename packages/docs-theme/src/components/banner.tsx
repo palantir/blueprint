@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-import { Classes, Intent, IProps } from "@blueprintjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
-export interface IBannerProps extends IProps {
+import { Classes, Intent, Props } from "@blueprintjs/core";
+
+export interface IBannerProps extends Props {
     /** Link URL. */
     href: string;
 
     /**
      * Intent color of banner.
+     *
      * @default Intent.PRIMARY
      */
     intent?: Intent;

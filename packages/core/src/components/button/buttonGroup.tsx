@@ -19,9 +19,12 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { AbstractPureComponent2, Alignment, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
 
-export interface IButtonGroupProps extends IProps, HTMLDivProps {
+// eslint-disable-next-line deprecation/deprecation
+export type ButtonGroupProps = IButtonGroupProps;
+/** @deprecated use ButtonGroupProps */
+export interface IButtonGroupProps extends Props, HTMLDivProps {
     /**
      * Text alignment within button. By default, icons and text will be centered
      * within the button. Passing `"left"` or `"right"` will align the button
@@ -32,24 +35,28 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 
     /**
      * Whether the button group should take up the full width of its container.
+     *
      * @default false
      */
     fill?: boolean;
 
     /**
      * Whether the child buttons should appear with minimal styling.
+     *
      * @default false
      */
     minimal?: boolean;
 
     /**
      * Whether the child buttons should appear with large styling.
+     *
      * @default false
      */
     large?: boolean;
 
     /**
      * Whether the button group should appear with vertical styling.
+     *
      * @default false
      */
     vertical?: boolean;
@@ -58,7 +65,7 @@ export interface IButtonGroupProps extends IProps, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class ButtonGroup extends AbstractPureComponent2<IButtonGroupProps> {
+export class ButtonGroup extends AbstractPureComponent2<ButtonGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;
 
     public render() {

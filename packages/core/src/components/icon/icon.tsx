@@ -19,11 +19,20 @@ import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
 import { IconName, IconSvgPaths16, IconSvgPaths20 } from "@blueprintjs/icons";
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IIntentProps, IProps, MaybeElement } from "../../common";
+
+import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, IntentProps, Props, MaybeElement } from "../../common";
 
 export { IconName };
 
-export interface IIconProps extends IIntentProps, IProps {
+export enum IconSize {
+    STANDARD = 16,
+    LARGE = 20,
+}
+
+// eslint-disable-next-line deprecation/deprecation
+export type IconProps = IIconProps;
+/** @deprecated use IconProps */
+export interface IIconProps extends IntentProps, Props {
     /** This component does not support custom children. Use the `icon` prop. */
     children?: never;
 
@@ -59,17 +68,24 @@ export interface IIconProps extends IIntentProps, IProps {
     icon: IconName | MaybeElement;
 
     /**
-     * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
-     * images, and chooses the appropriate resolution based on this prop.
-     * @default Icon.SIZE_STANDARD = 16
+     * @deprecated use size prop instead
      */
     iconSize?: number;
+
+    /**
+     * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
+     * images, and chooses the appropriate resolution based on this prop.
+     *
+     * @default IconSize.STANDARD = 16
+     */
+    size?: number;
 
     /** CSS style properties. */
     style?: React.CSSProperties;
 
     /**
      * HTML tag to use for the rendered element.
+     *
      * @default "span"
      */
     tagName?: keyof JSX.IntrinsicElements;
@@ -84,11 +100,14 @@ export interface IIconProps extends IIntentProps, IProps {
 }
 
 @polyfill
-export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttributes<HTMLElement>> {
+export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Icon`;
 
-    public static readonly SIZE_STANDARD = 16;
-    public static readonly SIZE_LARGE = 20;
+    /** @deprecated use IconSize.STANDARD */
+    public static readonly SIZE_STANDARD = IconSize.STANDARD;
+
+    /** @deprecated use IconSize.LARGE */
+    public static readonly SIZE_LARGE = IconSize.LARGE;
 
     public render(): JSX.Element | null {
         const { icon } = this.props;
@@ -102,18 +121,21 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
             className,
             color,
             htmlTitle,
-            iconSize = Icon.SIZE_STANDARD,
+            // eslint-disable-next-line deprecation/deprecation
+            iconSize,
             intent,
+            size = iconSize ?? IconSize.STANDARD,
             title = icon,
             tagName = "span",
             ...htmlprops
         } = this.props;
 
         // choose which pixel grid is most appropriate for given icon size
-        const pixelGridSize = iconSize >= Icon.SIZE_LARGE ? Icon.SIZE_LARGE : Icon.SIZE_STANDARD;
+        const pixelGridSize = size >= IconSize.LARGE ? IconSize.LARGE : IconSize.STANDARD;
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
+        // eslint-disable-next-line deprecation/deprecation
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
@@ -124,7 +146,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
                 className: classes,
                 title: htmlTitle,
             },
-            <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
+            <svg fill={color} data-icon={icon} width={size} height={size} viewBox={viewBox}>
                 {title && <desc>{title}</desc>}
                 {paths}
             </svg>,
@@ -133,7 +155,7 @@ export class Icon extends AbstractPureComponent2<IIconProps & React.DOMAttribute
 
     /** Render `<path>` elements for the given icon name. Returns `null` if name is unknown. */
     private renderSvgPaths(pathsSize: number, iconName: IconName): JSX.Element[] | null {
-        const svgPathsRecord = pathsSize === Icon.SIZE_STANDARD ? IconSvgPaths16 : IconSvgPaths20;
+        const svgPathsRecord = pathsSize === IconSize.STANDARD ? IconSvgPaths16 : IconSvgPaths20;
         const pathStrings = svgPathsRecord[iconName];
         if (pathStrings == null) {
             return null;

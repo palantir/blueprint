@@ -24,10 +24,7 @@ describe("<Portal>", () => {
     let portal: ReactWrapper<IPortalProps>;
 
     afterEach(() => {
-        if (portal != null) {
-            portal.unmount();
-            portal = null;
-        }
+        portal?.unmount();
     });
 
     it("attaches contents to document.body", () => {
@@ -86,7 +83,27 @@ describe("<Portal>", () => {
         );
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
-        assert.isTrue(portalElement.classList.contains(Classes.PORTAL));
+        assert.isTrue(portalElement?.classList.contains(Classes.PORTAL));
+    });
+
+    it("does not crash when removing multiple classes from className", () => {
+        portal = mount(
+            <Portal className="class-one class-two">
+                <p>test</p>
+            </Portal>,
+        );
+        portal.setProps({ className: undefined });
+        // no assertion necessary - will crash on incorrect code
+    });
+
+    it("does not crash when an empty string is provided for className", () => {
+        portal = mount(
+            <Portal className="">
+                <p>test</p>
+            </Portal>,
+        );
+        portal.setProps({ className: "class-one" });
+        // no assertion necessary - will crash on incorrect code
     });
 
     it("children mount before onChildrenMount invoked", done => {

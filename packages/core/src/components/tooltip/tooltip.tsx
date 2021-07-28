@@ -17,13 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+
 import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IIntentProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, IntentProps } from "../../common/props";
 // eslint-disable-next-line import/no-cycle
 import { Popover, PopoverInteractionKind } from "../popover/popover";
 import { IPopoverSharedProps } from "../popover/popoverSharedProps";
 
-export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
+// eslint-disable-next-line deprecation/deprecation
+export type TooltipProps = ITooltipProps;
+/** @deprecated use TooltipProps */
+export interface ITooltipProps extends IPopoverSharedProps, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
@@ -33,6 +37,7 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
      * The amount of time in milliseconds the tooltip should remain open after
      * the user hovers off the trigger. The timer is canceled if the user mouses
      * over the target before it expires.
+     *
      * @default 0
      */
     hoverCloseDelay?: number;
@@ -41,6 +46,7 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
      * The amount of time in milliseconds the tooltip should wait before opening
      * after the user hovers over the trigger. The timer is canceled if the user
      * mouses away from the target before it expires.
+     *
      * @default 100
      */
     hoverOpenDelay?: number;
@@ -48,6 +54,7 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
     /**
      * The kind of hover interaction that triggers the display of the tooltip.
      * Tooltips do not support click interactions.
+     *
      * @default PopoverInteractionKind.HOVER_TARGET_ONLY
      */
     interactionKind?: typeof PopoverInteractionKind.HOVER | typeof PopoverInteractionKind.HOVER_TARGET_ONLY;
@@ -58,30 +65,41 @@ export interface ITooltipProps extends IPopoverSharedProps, IIntentProps {
      * transition completes and must match the duration of the animation in CSS.
      * Only set this prop if you override Blueprint's default transitions with
      * new transitions of a different length.
+     *
      * @default 100
      */
     transitionDuration?: number;
 }
 
+/** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
 @polyfill
-export class Tooltip extends AbstractPureComponent2<ITooltipProps> {
+export class Tooltip extends AbstractPureComponent2<TooltipProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
-    public static defaultProps: Partial<ITooltipProps> = {
+    public static defaultProps: Partial<TooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
+        minimal: false,
         transitionDuration: 100,
     };
 
+    // eslint-disable-next-line deprecation/deprecation
     private popover: Popover | null = null;
 
     public render() {
         const { children, intent, popoverClassName, ...restProps } = this.props;
-        const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName);
+        const classes = classNames(
+            Classes.TOOLTIP,
+            { [Classes.MINIMAL]: this.props.minimal },
+            Classes.intentClass(intent),
+            popoverClassName,
+        );
 
         return (
+            /* eslint-disable deprecation/deprecation */
             <Popover
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
+                modifiers={{ arrow: { enabled: !this.props.minimal } }}
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}

@@ -20,11 +20,8 @@ export * from "./functionUtils";
 export * from "./jsUtils";
 export * from "./reactUtils";
 export * from "./safeInvokeMember";
+export { isDarkTheme } from "./isDarkTheme";
 
-/**
- * Utils.getRef() was added to the public API in @blueprintjs/core@3.27.0,
- * but ref utils were refactored in the next version. We keep this additional
- * export around for backwards compatibility.
- * @see https://github.com/palantir/blueprint/pull/4140
- */
-export { getRef } from "../refs";
+// ref utils used to live in this folder, but got refactored and moved elsewhere.
+// we keep this export here for backwards compatibility
+export { setRef, getRef } from "../refs";

@@ -19,7 +19,7 @@ import { mount, ReactWrapper } from "enzyme";
 import * as React from "react";
 import { stub } from "sinon";
 
-import { Classes, Spinner } from "../../src";
+import { Classes, Spinner, SpinnerSize } from "../../src";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../src/common/errors";
 
 describe("Spinner", () => {
@@ -38,10 +38,10 @@ describe("Spinner", () => {
 
     it("Classes.LARGE/SMALL determine default size", () => {
         const root = mount(<Spinner className={Classes.SMALL} />);
-        assert.equal(root.find("svg").prop("height"), Spinner.SIZE_SMALL, "small");
+        assert.equal(root.find("svg").prop("height"), SpinnerSize.SMALL, "small");
 
         root.setProps({ className: Classes.LARGE });
-        assert.equal(root.find("svg").prop("height"), Spinner.SIZE_LARGE, "large");
+        assert.equal(root.find("svg").prop("height"), SpinnerSize.LARGE, "large");
     });
 
     it("size overrides Classes.LARGE/SMALL", () => {
@@ -74,13 +74,13 @@ describe("Spinner", () => {
                 .find("svg")
                 .prop("viewBox");
         }
-        assert.notEqual(viewBox(Spinner.SIZE_SMALL), viewBox(Spinner.SIZE_LARGE), "expected different viewBoxes");
+        assert.notEqual(viewBox(SpinnerSize.SMALL), viewBox(SpinnerSize.LARGE), "expected different viewBoxes");
     });
 
     function assertStrokePercent(wrapper: ReactWrapper<any>, percent: number) {
         const head = wrapper.find(`.${Classes.SPINNER_HEAD}`);
         // NOTE: strokeDasharray is string "X X", but parseInt terminates at non-numeric character
-        const pathLength = parseInt(head.prop("strokeDasharray").toString(), 10);
+        const pathLength = parseInt(head.prop("strokeDasharray")!.toString(), 10);
         const offset = head.prop("strokeDashoffset");
         assert.strictEqual(offset, pathLength * (1 - percent));
     }

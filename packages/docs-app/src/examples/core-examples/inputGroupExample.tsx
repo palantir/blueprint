@@ -20,18 +20,17 @@ import {
     Button,
     H5,
     Icon,
+    IconSize,
     InputGroup,
     Intent,
     Menu,
     MenuItem,
-    Popover,
-    Position,
     Spinner,
     Switch,
     Tag,
-    Tooltip,
 } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 
 export interface IInputGroupExampleState {
     disabled: boolean;
@@ -53,18 +52,24 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
+
     private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
-    private handleFilterChange = handleStringChange(filterValue => this.setState({ filterValue }));
+
+    private handleFilterChange = handleStringChange(filterValue =>
+        window.setTimeout(() => this.setState({ filterValue }), 10),
+    );
+
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
         const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
 
-        const maybeSpinner = filterValue ? <Spinner size={Icon.SIZE_STANDARD} /> : undefined;
+        const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
         const lockButton = (
-            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
+            <Tooltip2 content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
                     disabled={disabled}
                     icon={showPassword ? "unlock" : "lock"}
@@ -72,11 +77,11 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     minimal={true}
                     onClick={this.handleLockClick}
                 />
-            </Tooltip>
+            </Tooltip2>
         );
 
         const permissionsMenu = (
-            <Popover
+            <Popover2
                 content={
                     <Menu>
                         <MenuItem text="can edit" />
@@ -84,28 +89,31 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     </Menu>
                 }
                 disabled={disabled}
-                position={Position.BOTTOM_RIGHT}
+                placement="bottom-end"
             >
                 <Button disabled={disabled} minimal={true} rightIcon="caret-down">
                     can edit
                 </Button>
-            </Popover>
+            </Popover2>
         );
 
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <InputGroup
-                    disabled={disabled}
-                    large={large}
-                    leftIcon="filter"
-                    onChange={this.handleFilterChange}
-                    placeholder="Filter histogram..."
-                    rightElement={maybeSpinner}
-                    small={small}
-                    value={filterValue}
-                />
+                <Tooltip2 content="My input value state is updated asynchronously with a 10ms delay">
+                    <InputGroup
+                        asyncControl={true}
+                        disabled={disabled}
+                        large={large}
+                        leftIcon="filter"
+                        onChange={this.handleFilterChange}
+                        placeholder="Filter histogram..."
+                        rightElement={maybeSpinner}
+                        small={small}
+                        value={filterValue}
+                    />
+                </Tooltip2>
                 <InputGroup
                     disabled={disabled}
                     large={large}

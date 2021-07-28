@@ -9,7 +9,8 @@ Blueprint provides two ways to create a text input:
 
 @## Input group
 
-An input group allows you to add icons and buttons _within_ a text input to expand its
+Input groups are a basic building block used to render text inputs across many Blueprint components.
+They allow you to add icons and buttons _within_ a text input to expand its appearance and
 functionality. For example, you might use an input group to build a visibility toggle for a password
 field.
 
@@ -27,6 +28,13 @@ always space for it.
 a controlled or uncontrolled fashion. In addition to its own props, it supports
 all valid props for HTML `<input>` elements and proxies them to that element in
 the DOM; the most common ones are detailed below.
+
+If controlled with the `value` prop, `InputGroup` has support for _asynchronous updates_, which may
+occur with some form handling libraries like `redux-form`. This is not broadly encouraged (a value
+returned from `onChange` should be sent back to the component as a controlled `value` synchronously),
+but there is basic support for it using the `asyncControl` prop. Note that the input cursor may jump
+to the end of the input if the speed of text entry (time between change events) is faster than the
+speed of the async update.
 
 @interface IInputGroupProps
 

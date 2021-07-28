@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { IProps } from "@blueprintjs/core";
 import { ITsEnum, ITsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
+
+import { Props } from "@blueprintjs/core";
+
 import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
 import { ApiHeader } from "./apiHeader";
@@ -25,12 +27,13 @@ import { DeprecatedTag } from "./deprecatedTag";
 
 export type Renderer<T> = (props: T) => React.ReactNode;
 
-export interface IEnumTableProps extends IProps {
+export interface IEnumTableProps extends Props {
     data: ITsEnum;
 }
 
 export class EnumTable extends React.PureComponent<IEnumTableProps> {
     public static contextTypes = DocumentationContextTypes;
+
     public static displayName = "Docs2.EnumTable";
 
     public context: IDocumentationContext;

@@ -18,23 +18,26 @@ import classNames from "classnames";
 import * as React from "react";
 
 import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, IProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
 import { isFunction } from "../../common/utils";
-import { ITreeNode, TreeNode } from "./treeNode";
+import { TreeNodeInfo, TreeNode } from "./treeNode";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type TreeEventHandler<T = {}> = (
-    node: ITreeNode<T>,
+    node: TreeNodeInfo<T>,
     nodePath: number[],
     e: React.MouseEvent<HTMLElement>,
 ) => void;
 
+// eslint-disable-next-line @typescript-eslint/ban-types, deprecation/deprecation
+export type TreeProps<T = {}> = ITreeProps<T>;
+/** @deprecated use TreeProps */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export interface ITreeProps<T = {}> extends IProps {
+export interface ITreeProps<T = {}> extends Props {
     /**
      * The data specifying the contents and appearance of the tree.
      */
-    contents: Array<ITreeNode<T>>;
+    contents: Array<TreeNodeInfo<T>>;
 
     /**
      * Invoked when a node is clicked anywhere other than the caret for expanding/collapsing the node.
@@ -75,18 +78,18 @@ export interface ITreeProps<T = {}> extends IProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export class Tree<T = {}> extends React.Component<ITreeProps<T>> {
+export class Tree<T = {}> extends React.Component<TreeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tree`;
 
-    public static ofType<T>() {
-        return Tree as new (props: ITreeProps<T>) => Tree<T>;
+    public static ofType<U>() {
+        return Tree as new (props: TreeProps<U>) => Tree<U>;
     }
 
-    public static nodeFromPath(path: number[], treeNodes: ITreeNode[]): ITreeNode {
+    public static nodeFromPath<U>(path: number[], treeNodes?: Array<TreeNodeInfo<U>>): TreeNodeInfo<U> {
         if (path.length === 1) {
-            return treeNodes[path[0]];
+            return treeNodes![path[0]];
         } else {
-            return Tree.nodeFromPath(path.slice(1), treeNodes[path[0]].childNodes);
+            return Tree.nodeFromPath(path.slice(1), treeNodes![path[0]].childNodes);
         }
     }
 
@@ -109,13 +112,13 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>> {
         return this.nodeRefs[nodeId];
     }
 
-    private renderNodes(treeNodes: Array<ITreeNode<T>>, currentPath?: number[], className?: string): JSX.Element {
+    private renderNodes(treeNodes: Array<TreeNodeInfo<T>> | undefined, currentPath?: number[], className?: string) {
         if (treeNodes == null) {
             return null;
         }
 
         const nodeItems = treeNodes.map((node, i) => {
-            const elementPath = currentPath.concat(i);
+            const elementPath = currentPath!.concat(i);
             const TypedTreeNode = TreeNode.ofType<T>();
             return (
                 <TypedTreeNode
@@ -177,7 +180,11 @@ export class Tree<T = {}> extends React.Component<ITreeProps<T>> {
         this.handlerHelper(this.props.onNodeMouseLeave, node, e);
     };
 
-    private handlerHelper(handlerFromProps: TreeEventHandler, node: TreeNode<T>, e: React.MouseEvent<HTMLElement>) {
+    private handlerHelper(
+        handlerFromProps: TreeEventHandler<T> | undefined,
+        node: TreeNode<T>,
+        e: React.MouseEvent<HTMLElement>,
+    ) {
         if (isFunction(handlerFromProps)) {
             const nodeData = Tree.nodeFromPath(node.props.path, this.props.contents);
             handlerFromProps(nodeData, node.props.path, e);

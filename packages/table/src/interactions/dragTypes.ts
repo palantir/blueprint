@@ -15,7 +15,9 @@
  */
 
 export type IClientCoordinates = [number, number];
+export type ClientCoordinates = IClientCoordinates;
 
+export type CoordinateData = ICoordinateData;
 /**
  * Various useful coordinate values are pre-computed for you and supplied to
  * onDragMove and onDragEnd callbacks.
@@ -47,6 +49,7 @@ export interface ICoordinateData {
     offset: IClientCoordinates;
 }
 
+export type DragHandler = IDragHandler;
 export interface IDragHandler {
     /**
      * Called when the mouse is pressed down. Drag and click operations may
@@ -91,12 +94,14 @@ export interface IDragHandler {
     /**
      * This prevents mouse events from performing their default operation such
      * as text selection.
+     *
      * @default true
      */
     preventDefault?: boolean;
 
     /**
      * This prevents the event from propagating up to parent elements.
+     *
      * @default false
      */
     stopPropagation?: boolean;

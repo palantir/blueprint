@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, Table, TableLoadingOption } from "@blueprintjs/table";
+import { Cell, Column, Table2, TableLoadingOption } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
     [key: string]: number | string;
@@ -54,9 +54,9 @@ export class TableLoadingExample extends React.PureComponent<IExampleProps, ITab
         ));
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={bigSpaceRocks.length} loadingOptions={this.getLoadingOptions()}>
+                <Table2 numRows={bigSpaceRocks.length} loadingOptions={this.getLoadingOptions()}>
                     {columns}
-                </Table>
+                </Table2>
             </Example>
         );
     }

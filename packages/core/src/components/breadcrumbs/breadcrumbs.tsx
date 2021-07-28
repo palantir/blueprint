@@ -18,24 +18,29 @@ import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Boundary, Classes, IProps, Position, removeNonHTMLProps } from "../../common";
+import { AbstractPureComponent2, Boundary, Classes, Props, Position, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
-import { IOverflowListProps, OverflowList } from "../overflow-list/overflowList";
+import { OverflowListProps, OverflowList } from "../overflow-list/overflowList";
 import { IPopoverProps, Popover } from "../popover/popover";
-import { Breadcrumb, IBreadcrumbProps } from "./breadcrumb";
+import { Breadcrumb, BreadcrumbProps } from "./breadcrumb";
 
-export interface IBreadcrumbsProps extends IProps {
+// eslint-disable-next-line deprecation/deprecation
+export type BreadcrumbsProps = IBreadcrumbsProps;
+/** @deprecated use BreadcrumbsProps */
+export interface IBreadcrumbsProps extends Props {
     /**
      * Callback invoked to render visible breadcrumbs. Best practice is to
      * render a `<Breadcrumb>` element. If `currentBreadcrumbRenderer` is also
      * supplied, that callback will be used for the current breadcrumb instead.
+     *
      * @default Breadcrumb
      */
-    breadcrumbRenderer?: (props: IBreadcrumbProps) => JSX.Element;
+    breadcrumbRenderer?: (props: BreadcrumbProps) => JSX.Element;
 
     /**
      * Which direction the breadcrumbs should collapse from: start or end.
+     *
      * @default Boundary.START
      */
     collapseFrom?: Boundary;
@@ -47,17 +52,18 @@ export interface IBreadcrumbsProps extends IProps {
      * If this prop is omitted, `breadcrumbRenderer` will be invoked for the
      * current breadcrumb instead.
      */
-    currentBreadcrumbRenderer?: (props: IBreadcrumbProps) => JSX.Element;
+    currentBreadcrumbRenderer?: (props: BreadcrumbProps) => JSX.Element;
 
     /**
      * All breadcrumbs to display. Breadcrumbs that do not fit in the container
      * will be rendered in an overflow menu instead.
      */
-    items: IBreadcrumbProps[];
+    items: BreadcrumbProps[];
 
     /**
      * The minimum number of visible breadcrumbs that should never collapse into
      * the overflow menu, regardless of DOM dimensions.
+     *
      * @default 0
      */
     minVisibleItems?: number;
@@ -66,7 +72,7 @@ export interface IBreadcrumbsProps extends IProps {
      * Props to spread to `OverflowList`. Note that `items`,
      * `overflowRenderer`, and `visibleItemRenderer` cannot be changed.
      */
-    overflowListProps?: Partial<IOverflowListProps<IBreadcrumbProps>>;
+    overflowListProps?: Partial<OverflowListProps<BreadcrumbProps>>;
 
     /**
      * Props to spread to the `Popover` showing the overflow menu.
@@ -75,8 +81,8 @@ export interface IBreadcrumbsProps extends IProps {
 }
 
 @polyfill
-export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
-    public static defaultProps: Partial<IBreadcrumbsProps> = {
+export class Breadcrumbs extends AbstractPureComponent2<BreadcrumbsProps> {
+    public static defaultProps: Partial<BreadcrumbsProps> = {
         collapseFrom: Boundary.START,
     };
 
@@ -96,7 +102,7 @@ export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
         );
     }
 
-    private renderOverflow = (items: IBreadcrumbProps[]) => {
+    private renderOverflow = (items: BreadcrumbProps[]) => {
         const { collapseFrom } = this.props;
         const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
         let orderedItems = items;
@@ -107,28 +113,35 @@ export class Breadcrumbs extends AbstractPureComponent2<IBreadcrumbsProps> {
             // order.
             orderedItems = items.slice().reverse();
         }
+
+        /* eslint-disable deprecation/deprecation */
         return (
             <li>
-                <Popover position={position} {...this.props.popoverProps}>
+                <Popover
+                    position={position}
+                    disabled={orderedItems.length === 0}
+                    content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
+                    {...this.props.popoverProps}
+                >
                     <span className={Classes.BREADCRUMBS_COLLAPSED} />
-                    <Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>
                 </Popover>
             </li>
         );
+        /* eslint-enable deprecation/deprecation */
     };
 
-    private renderOverflowBreadcrumb = (props: IBreadcrumbProps, index: number) => {
+    private renderOverflowBreadcrumb = (props: BreadcrumbProps, index: number) => {
         const isClickable = props.href != null || props.onClick != null;
         const htmlProps = removeNonHTMLProps(props);
         return <MenuItem disabled={!isClickable} {...htmlProps} text={props.text} key={index} />;
     };
 
-    private renderBreadcrumbWrapper = (props: IBreadcrumbProps, index: number) => {
+    private renderBreadcrumbWrapper = (props: BreadcrumbProps, index: number) => {
         const isCurrent = this.props.items[this.props.items.length - 1] === props;
         return <li key={index}>{this.renderBreadcrumb(props, isCurrent)}</li>;
     };
 
-    private renderBreadcrumb(props: IBreadcrumbProps, isCurrent: boolean) {
+    private renderBreadcrumb(props: BreadcrumbProps, isCurrent: boolean) {
         if (isCurrent && this.props.currentBreadcrumbRenderer != null) {
             return this.props.currentBreadcrumbRenderer(props);
         } else if (this.props.breadcrumbRenderer != null) {

@@ -17,11 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { AbstractPureComponent2, Classes } from "../../common";
-import { IElementRefProps } from "../html/html";
 
+import { AbstractPureComponent2, Classes, IElementRefProps } from "../../common";
+
+// eslint-disable-next-line deprecation/deprecation
+export type HTMLTableProps = IHTMLTableProps;
+/** @deprecated use HTMLTableProps */
 export interface IHTMLTableProps
     extends React.TableHTMLAttributes<HTMLTableElement>,
+        // eslint-disable-next-line deprecation/deprecation
         IElementRefProps<HTMLTableElement> {
     /** Enables borders between rows and cells. */
     bordered?: boolean;
@@ -34,6 +38,7 @@ export interface IHTMLTableProps
 
     /**
      * Use small, condensed appearance for this element and all child elements.
+     *
      * @deprecated
      */
     small?: boolean;
@@ -45,7 +50,7 @@ export interface IHTMLTableProps
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 @polyfill
-export class HTMLTable extends AbstractPureComponent2<IHTMLTableProps> {
+export class HTMLTable extends AbstractPureComponent2<HTMLTableProps> {
     public render() {
         // eslint-disable-next-line deprecation/deprecation
         const { bordered, className, condensed, elementRef, interactive, small, striped, ...htmlProps } = this.props;

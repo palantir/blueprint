@@ -2,32 +2,32 @@ version: 2
 
 aliases:
   - &docker-node-lts
-    - image: circleci/node:lts
+    - image: circleci/node:12
 
   - &docker-node-browsers
-    - image: circleci/node:lts-browsers
+    - image: circleci/node:12-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v2-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v3-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &restore-yarn-cache
     name: Restore yarnpkg cache
-    key: v2-yarn-cache
+    key: v3-yarn-cache
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v2-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v3-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
     name: Save yarnpkg cache
     paths:
       - ~/.cache/yarn
-    key: v2-yarn-cache
+    key: v3-yarn-cache
 
 references:
   reports_path: &reports_path
@@ -69,6 +69,17 @@ jobs:
           root: "."
           paths: [packages/*/lib, packages/*/src/generated]
 
+  format-check:
+    docker: *docker-node-lts
+    environment:
+      JUNIT_REPORT_PATH: reports
+      NODE_ENV: test
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: yarn format-check
+
   lint:
     docker: *docker-node-lts
     resource_class: large
@@ -80,22 +91,10 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: mkdir -p ./reports/eslint ./reports/stylelint
-      # we need to compile the lint rules for blueprint
-      - run: yarn compile --scope "@blueprintjs/eslint-plugin"
+      # types and lint rules should already be compiled since this job depends on the 'compile' job
       - run: yarn lint
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
-
-  format-check:
-    docker: *docker-node-lts
-    environment:
-      JUNIT_REPORT_PATH: reports
-      NODE_ENV: test
-    steps:
-      - checkout
-      - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: "." }
-      - run: yarn format-check
 
   dist:
     docker: *docker-node-lts
@@ -108,20 +107,6 @@ jobs:
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
-
-  test-jest:
-    docker: *docker-node-lts
-    environment:
-      JUNIT_REPORT_PATH: reports
-      # JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
-    steps:
-      - checkout
-      - restore_cache: *restore-node-modules-cache
-      - attach_workspace: { at: "." }
-      - run: mkdir ./reports
-      - run: yarn lerna run test:jest-ci
-      - store_test_results: { path: ./reports }
-      - store_artifacts: { path: ./reports }
 
   test-react-16: &test-react
     docker: *docker-node-browsers
@@ -156,6 +141,27 @@ jobs:
     environment:
       JUNIT_REPORT_PATH: reports
       REACT: 15 # use React 15 for this job
+
+  test-react-16-only:
+    # test packages which only work with React 16
+    docker: *docker-node-browsers
+    environment:
+      JUNIT_REPORT_PATH: reports
+    parallelism: 1
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: mkdir ./reports
+      - run:
+          command: |
+            case $CIRCLE_NODE_INDEX in \
+            0) yarn lerna run --scope "@blueprintjs/popover2" test:karma ;; \
+            esac
+          when: always
+      - store_test_results: { path: ./reports }
+      - store_artifacts: { path: ./reports }
+
 
   test-iso-react-16: &test-iso
     docker: *docker-node-lts
@@ -207,17 +213,17 @@ workflows:
           requires: [checkout-code]
       - compile:
           requires: [checkout-code]
-      - lint:
-          requires: [checkout-code]
       - format-check:
           requires: [checkout-code]
-      - dist:
+      - lint:
           requires: [compile]
-      - test-jest:
+      - dist:
           requires: [compile]
       - test-react-15:
           requires: [compile]
       - test-react-16:
+          requires: [compile]
+      - test-react-16-only:
           requires: [compile]
       - test-iso-react-15:
           requires: [compile]
@@ -232,6 +238,7 @@ workflows:
               lint,
               test-react-15,
               test-react-16,
+              test-react-16-only,
               test-iso-react-15,
               test-iso-react-16,
             ]
