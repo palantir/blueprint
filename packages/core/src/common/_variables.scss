@@ -14,8 +14,9 @@ $bp-ns: $ns;
 // (so other variables can use it to define themselves)
 $pt-grid-size: 10px !default;
 
-// see https://bitsofco.de/the-new-system-font-stack/
-$pt-font-family: -apple-system,
+:root {
+  // see https://bitsofco.de/the-new-system-font-stack/
+  --pt-font-family: -apple-system,
                  "BlinkMacSystemFont",
                  "Segoe UI",
                  "Roboto",
@@ -24,10 +25,13 @@ $pt-font-family: -apple-system,
                  "Cantarell",
                  "Open Sans",
                  "Helvetica Neue",
-                 "Icons16", // support inline Palantir icons
-                 sans-serif !default;
+                 "Icons16",
+                 sans-serif;
+  --pt-font-family-monospace: monospace;
+}
 
-$pt-font-family-monospace: monospace !default;
+$pt-font-family: var(--pt-font-family) !default;
+$pt-font-family-monospace: var(--pt-font-family-monospace) !default;
 
 $pt-font-size: $pt-grid-size * 1.4 !default;
 $pt-font-size-large: $pt-grid-size * 1.6 !default;
