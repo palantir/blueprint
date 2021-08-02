@@ -139,6 +139,10 @@ $dark-popover-background-color: $dark-gray4 !default;
 
   .#{$ns}-popover-content {
     background: $background-color;
+  }
+
+  .#{$ns}-popover-content,
+  .#{$ns}-heading {
     color: $text-color;
   }
 
