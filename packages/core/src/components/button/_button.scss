@@ -136,7 +136,9 @@ Styleguide button
       }
 
       #{$icon-classes} {
-        color: $pt-dark-icon-color;
+        &:not([class*="#{$ns}-intent-"]) {
+          color: $pt-dark-icon-color;
+        }
       }
     }
 
