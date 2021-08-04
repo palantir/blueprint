@@ -74,6 +74,13 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnClose?: boolean;
+
+    /**
+     * Whether the select popover should match the width of the target.
+     *
+     * @default false
+     */
+    matchTargetWidth?: boolean;
 }
 
 export interface ISelectState {
@@ -129,7 +136,31 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const {
+            filterable = true,
+            disabled = false,
+            inputProps = {},
+            popoverProps = {},
+            matchTargetWidth,
+        } = this.props;
+
+        if (matchTargetWidth) {
+            if (popoverProps.modifiers == null) {
+                popoverProps.modifiers = {};
+            }
+
+            popoverProps.modifiers.minWidth = {
+                enabled: true,
+                fn: data => {
+                    data.styles.width = `${data.offsets.reference.width}px`;
+                    return data;
+                },
+                order: 800,
+            };
+
+            popoverProps.usePortal = false;
+            popoverProps.wrapperTagName = "div";
+        }
 
         const input = (
             <InputGroup
@@ -155,7 +186,11 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popoverClassName={classNames(
+                    Classes.SELECT_POPOVER,
+                    popoverProps.popoverClassName,
+                    matchTargetWidth ? Classes.MATCH_TARGET_WIDTH : undefined,
+                )}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}

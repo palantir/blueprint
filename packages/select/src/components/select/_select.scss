@@ -29,3 +29,12 @@ $select-popover-max-width: $pt-grid-size * 40 !default;
     }
   }
 }
+
+.full-width {
+  width: 100%;
+
+  .#{$ns}-menu {
+    max-width: none;
+    min-width: 0;
+  }
+}
