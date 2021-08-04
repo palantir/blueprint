@@ -47,7 +47,7 @@ export const Breadcrumb: React.FunctionComponent<BreadcrumbProps> = breadcrumbPr
 
     const icon =
         breadcrumbProps.icon != null ? (
-            <Icon aria-label={breadcrumbProps.iconTitle} icon={breadcrumbProps.icon} />
+            <Icon title={breadcrumbProps.iconTitle} icon={breadcrumbProps.icon} />
         ) : undefined;
 
     if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
