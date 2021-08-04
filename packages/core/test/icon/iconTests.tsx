@@ -77,9 +77,14 @@ describe("<Icon>", () => {
         assert.equal(icon.find("desc").text(), "bird");
     });
 
-    it("desc defaults to icon name", () => {
+    it("does not add desc if title is not provided", () => {
         const icon = shallow(<Icon icon="airplane" />);
-        assert.equal(icon.find("desc").text(), "airplane");
+        assert.notExists(icon.find("desc"));
+    });
+
+    it("applies aria-hidden=true if title is not defined", () => {
+        const icon = shallow(<Icon icon="airplane" />);
+        assert.isTrue(icon.getDOMNode().getAttribute("aria-hidden"));
     });
 
     /** Asserts that rendered icon has given className. */

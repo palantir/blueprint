@@ -390,7 +390,8 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     private maybeRenderReorderHandle(index: number) {
         return !this.isReorderHandleEnabled()
             ? undefined
-            : this.wrapInDragReorderable(
+            : // TODO(accessibility): add aria-label when this drag handle is accessible
+              this.wrapInDragReorderable(
                   index,
                   <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
                       <div

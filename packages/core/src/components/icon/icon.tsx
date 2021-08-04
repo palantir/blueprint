@@ -93,8 +93,10 @@ export interface IIconProps extends IntentProps, Props {
     /**
      * Description string. This string does not appear in normal browsers, but
      * it increases accessibility. For instance, screen readers will use it for
-     * aural feedback. By default, this is set to the icon's name. Pass an
-     * explicit falsy value to disable.
+     * aural feedback.
+     *
+     * If not provided or false it will be inferred that the icon is decorative
+     * See https://www.w3.org/WAI/tutorials/images/decorative/
      */
     title?: string | false | null;
 }
@@ -139,13 +141,18 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
+        const props = {
+            ...htmlprops,
+            className: classes,
+            title: htmlTitle,
+        };
+        if (!title) {
+            props["aria-hidden"] = true;
+        }
+
         return React.createElement(
             tagName,
-            {
-                ...htmlprops,
-                className: classes,
-                title: htmlTitle,
-            },
+            props,
             <svg fill={color} data-icon={icon} width={size} height={size} viewBox={viewBox}>
                 {title && <desc>{title}</desc>}
                 {paths}

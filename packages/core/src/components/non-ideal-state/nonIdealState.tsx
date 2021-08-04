@@ -49,6 +49,12 @@ export interface INonIdealStateProps extends Props {
 
     /** The title of the non-ideal state. */
     title?: React.ReactNode;
+
+    /**
+     * Pass though value to icon's title attribute. Should be used for breadcrumbs without
+     * text or children defined
+     */
+     iconTitle?: string;
 }
 
 @polyfill
@@ -69,13 +75,13 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     }
 
     private maybeRenderVisual() {
-        const { icon } = this.props;
+        const { icon, iconTitle } = this.props;
         if (icon == null) {
             return null;
         } else {
             return (
                 <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} size={IconSize.LARGE * 3} />
+                    <Icon title={iconTitle} icon={icon} size={IconSize.LARGE * 3} />
                 </div>
             );
         }
