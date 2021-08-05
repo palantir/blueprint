@@ -63,6 +63,13 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      */
     inputProps?: InputGroupProps2;
 
+    /**
+     * Whether the select popover should match the width of the target.
+     *
+     * @default false
+     */
+    matchTargetWidth?: boolean;
+
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
@@ -74,13 +81,6 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      * @default false
      */
     resetOnClose?: boolean;
-
-    /**
-     * Whether the select popover should match the width of the target.
-     *
-     * @default false
-     */
-    matchTargetWidth?: boolean;
 }
 
 export interface ISelectState {
