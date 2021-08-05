@@ -64,19 +64,47 @@ describe("<Dialog>", () => {
         document.body.removeChild(container);
     });
 
-    it("renders with dialog role", () => {
-        const container = document.createElement("div");
-        document.body.appendChild(container);
-        mount(
-            <Dialog isOpen={true} portalContainer={container}>
-                {createDialogContents()}
-            </Dialog>,
-        );
-        assert.equal(
-            container.querySelector("[role='dialog']"),
-            container.querySelector(`.${Classes.DIALOG}`),
-            "missing dialog role",
-        );
+    describe("ally support", () => {
+        const mountDefaults = () => {
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            return mount(
+                <Dialog
+                    isOpen={true}
+                    portalContainer={container}
+                    aria-labelledby="dialog-title"
+                    aria-describedby="dialog-description"
+                >
+                    {createDialogContents()}
+                </Dialog>,
+            );
+        };
+
+        it("renders with role dialog", () => {
+            const dialog = mountDefaults();
+            const dialogElement = dialog.getDOMNode().querySelector(`.${Classes.DIALOG}`);
+            assert.equal(dialogElement?.getAttribute("role"), "dialog", "missing dialog role!!");
+        });
+
+        it("renders with default aria attributes", () => {
+            const dialog = mountDefaults();
+            const dialogElement = dialog.getDOMNode().querySelector(`.${Classes.DIALOG}`);
+            assert.equal(dialogElement?.getAttribute("aria-labelledby"), "dialog-title");
+            assert.equal(dialogElement?.getAttribute("aria-describedby"), "dialog-description");
+        });
+
+        it("uses title as default aria-labelledby", () => {
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            const dialog = mount(
+                <Dialog isOpen={true} portalContainer={container} title="Title by props">
+                    {createDialogContents()}
+                </Dialog>,
+            );
+            const dialogElement = dialog.getDOMNode().querySelector(`.${Classes.DIALOG}`);
+            // test existence here because id is generated
+            assert.exists(dialogElement?.getAttribute("aria-labelledby"));
+        });
     });
 
     it("attempts to close when overlay backdrop element is moused down", () => {
@@ -167,10 +195,10 @@ describe("<Dialog>", () => {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
                 <Icon icon="inbox" iconSize={IconSize.LARGE} />
-                <H4>Dialog header</H4>
+                <H4 id="dialog-title">Dialog header</H4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>
-                <p>
+                <p id="dialog-description">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna alqua. Ut enim ad minimum veniam, quis nostrud exercitation ullamco laboris nisi ut
                     aliquip ex ea commodo consequat.
