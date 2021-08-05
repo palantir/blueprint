@@ -137,14 +137,16 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
-        const child = React.Children.only(this.props.children) as React.ReactElement;
-
         const childProps: { fill?: boolean } = {};
 
         if (fill) {
             popoverProps.fill = true;
             childProps.fill = true;
         }
+
+        const children = React.Children.map(this.props.children, (child: React.ReactNode) => {
+            return React.cloneElement(child as React.ReactElement, { ...childProps });
+        });
 
         const input = (
             <InputGroup
@@ -179,7 +181,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
-                    {React.cloneElement(child, { ...childProps })}
+                    {children}
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
