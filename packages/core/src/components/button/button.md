@@ -4,6 +4,15 @@ Buttons trigger actions when clicked.
 
 @reactExample ButtonsExample
 
+### `AccessibleButton`
+
+```tsx
+<AccessibleButton onClick={() => console.log("clicked")} />
+// renders:
+<span role="button" tabIndex={0} />
+// and hooks up onKeyDown listener for enter and space presses
+```
+
 ### `AnchorButton`
 
 ```tsx
@@ -24,13 +33,14 @@ Buttons trigger actions when clicked.
     <h4 class="@ns-heading">
 
 Disabled `Button` prevents all interaction
+
 </h4>
 
 Use `AnchorButton` if you need mouse interaction events (such as hovering) on a disabled button.
 
 `Button` uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
 `AnchorButton` uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled`
-attribute. As a result, the `AnchorButton` component will prevent *only* the `onClick` handler
+attribute. As a result, the `AnchorButton` component will prevent _only_ the `onClick` handler
 when disabled but permit other events.
 
 </div>
@@ -56,12 +66,12 @@ override the component's default for it, such as `role` on `<AnchorButton>`.
 Use the `@ns-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for accessibility.
 
-* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
-  `<form>`) and `role="button"` on `<a>` tags for accessibility.
-* Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
-  focusable by default.
-* For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-  user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
-* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
+-   Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
+    `<form>`) and `role="button"` on `<a>` tags for accessibility.
+-   Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
+    focusable by default.
+-   For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
+    user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
+-   Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
 @css button

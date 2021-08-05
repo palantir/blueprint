@@ -16,10 +16,11 @@
 
 import * as React from "react";
 
-import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
+import { AccessibleButton, AnchorButton, Button, Code, Classes, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
+import classNames from "classnames";
 
 export interface IButtonsExampleState {
     active: boolean;
@@ -31,6 +32,7 @@ export interface IButtonsExampleState {
     minimal: boolean;
     outlined: boolean;
     wiggling: boolean;
+    accessibleButtonClicks: number;
 }
 
 export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsExampleState> {
@@ -44,6 +46,7 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
         minimal: false,
         outlined: false,
         wiggling: false,
+        accessibleButtonClicks: 0,
     };
 
     private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
@@ -86,6 +89,10 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
             </>
         );
 
+        const handleAccessibleButtonClick = () => {
+            this.setState({ accessibleButtonClicks: this.state.accessibleButtonClicks + 1 });
+        };
+
         return (
             <Example options={options} {...this.props}>
                 <div>
@@ -113,6 +120,21 @@ export class ButtonsExample extends React.PureComponent<IExampleProps, IButtonsE
                         text={iconOnly ? undefined : "Duplicate this page"}
                         {...buttonProps}
                     />
+                </div>
+                <div>
+                    <p>
+                        <Code>AccessibleButton</Code>
+                    </p>
+                    <AccessibleButton
+                        className={classNames(Classes.CARD, Classes.ELEVATION_2)}
+                        tagName="div"
+                        onClick={handleAccessibleButtonClick}
+                        disabled={buttonProps.disabled}
+                    >
+                        <h3>Accessible Button</h3>
+                        <p>My onClick has run {this.state.accessibleButtonClicks} times</p>
+                        <p>Also try triggering with enter or space while focused</p>
+                    </AccessibleButton>
                 </div>
             </Example>
         );
