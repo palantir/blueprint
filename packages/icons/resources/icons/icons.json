@@ -3604,5 +3604,17 @@
         "iconName": "many-to-many",
         "tags": "object, relation, ontology",
         "group": "data"
+    },
+    {
+        "displayName": "Rocket",
+        "iconName": "rocket",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Rocket slant",
+        "iconName": "rocket-slant",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
     }
 ]
