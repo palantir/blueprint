@@ -83,6 +83,11 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
      * by default the element displaying the `title` prop will be used
      */
     "aria-labelledby"?: string;
+
+    /**
+     * id of element that contains description text for this dialog
+     */
+    "aria-describedby"?: string;
 }
 
 @polyfill
@@ -111,6 +116,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                         className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
                         aria-labelledby={this.props["aria-labelledby"] || this.titleId}
+                        aria-describedby={this.props["aria-describedby"]}
                         style={this.props.style}
                     >
                         {this.maybeRenderHeader()}
