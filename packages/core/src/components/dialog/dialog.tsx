@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
+import { uniq } from "lodash-es";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
@@ -76,6 +77,12 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
      * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
+
+    /**
+     * id of element that contains title or label text for this dialog
+     * by default the element displaying the `title` prop will be used
+     */
+    "aria-labelledby"?: string;
 }
 
 @polyfill
@@ -85,7 +92,16 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         isOpen: false,
     };
 
+    titleId: string;
+
     public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
+
+    public constructor(props: DialogProps) {
+        super(props);
+
+        const id = uniq("bp-dialog");
+        this.titleId = `title-${id}`;
+    }
 
     public render() {
         return (
@@ -94,6 +110,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                     <div
                         className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
+                        aria-labelledby={this.props["aria-labelledby"] || this.titleId}
                         style={this.props.style}
                     >
                         {this.maybeRenderHeader()}
@@ -141,7 +158,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} iconSize={IconSize.LARGE} />
-                <H4>{title}</H4>
+                <H4 id={this.titleId}>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>
         );
