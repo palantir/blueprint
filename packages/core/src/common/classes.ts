@@ -78,7 +78,10 @@ export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 export const RTL = `${NS}-rtl`;
 
 // layout utilities
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block */
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+ * @deprecated this is no longer needed for ContextMenu2, will be removed in v4.0
+ */
 export const FIXED_POSITIONING_CONTAINING_BLOCK = `${NS}-fixed-positioning-containing-block`;
 
 // components
@@ -337,11 +340,6 @@ export function elevationClass(elevation: Elevation | undefined) {
 
 /**
  * Returns CSS class for icon name.
- *
- * @deprecated These CSS classes rely on Blueprint's icon fonts, which are a legacy feature and will be
- * removed the next major version (4.x). Use the `<Icon>` React component and `iconName` string enum prop
- * APIs instead – they render SVGs, which do not suffer from the blurriness of icon fonts and have
- * equivalent browser support.
  */
 export function iconClass(iconName: string): string;
 export function iconClass(iconName: undefined): undefined;

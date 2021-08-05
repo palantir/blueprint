@@ -166,7 +166,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
                 onClick={this.onRemoveClick}
                 tabIndex={interactive ? tabIndex : undefined}
             >
-                <Icon icon="small-cross" iconSize={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
+                <Icon icon="small-cross" size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
             </button>
         ) : null;
 

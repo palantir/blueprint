@@ -17,7 +17,7 @@ import * as React from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
 import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table } from "@blueprintjs/table";
+import { Cell, Column, ColumnHeaderCell, RowHeaderCell, Table2 } from "@blueprintjs/table";
 
 interface IBigSpaceRock {
     [key: string]: number | string;
@@ -78,13 +78,13 @@ export class CellLoadingExample extends React.PureComponent<IExampleProps, ICell
         );
         return (
             <Example options={options} showOptionsBelowExample={true} {...this.props}>
-                <Table
+                <Table2
                     numRows={bigSpaceRocks.length}
                     rowHeaderCellRenderer={this.renderRowHeaderCell}
                     enableColumnInteractionBar={true}
                 >
                     {this.renderColumns()}
-                </Table>
+                </Table2>
             </Example>
         );
     }

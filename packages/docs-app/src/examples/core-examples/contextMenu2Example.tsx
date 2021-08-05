@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { ContextMenu2, ContextMenu2ChildrenProps, ContextMenu2ContentProps } from "@blueprintjs/popover2";
+import { ContextMenu2, ContextMenu2ChildrenProps, ContextMenu2ContentProps, Tooltip2 } from "@blueprintjs/popover2";
 
 export const ContextMenu2Example: React.FC<IExampleProps> = props => {
     const renderContent = React.useCallback(
@@ -53,7 +53,15 @@ export const ContextMenu2Example: React.FC<IExampleProps> = props => {
     return (
         <ContextMenu2 content={renderContent}>
             <Example className="docs-context-menu-example" options={false} {...props}>
-                <GraphNode />
+                <Tooltip2
+                    content={
+                        <div style={{ maxWidth: 230, textAlign: "center" }}>
+                            This tooltip will close when you open the node's context menu
+                        </div>
+                    }
+                >
+                    <GraphNode />
+                </Tooltip2>
                 <span className={Classes.TEXT_MUTED}>Right-click on node or background.</span>
             </Example>
         </ContextMenu2>
@@ -68,6 +76,7 @@ const GraphNode: React.FC = () => {
                     "docs-context-menu-open": props.contentProps.isOpen,
                 })}
                 onContextMenu={props.onContextMenu}
+                ref={props.ref}
             >
                 {props.popover}
             </div>

@@ -24,6 +24,7 @@ import * as Classes from "./classes";
 import { Popover2, Popover2InteractionKind } from "./popover2";
 import { TOOLTIP_ARROW_SVG_SIZE } from "./popover2Arrow";
 import { Popover2SharedProps } from "./popover2SharedProps";
+import { Tooltip2Context, Tooltip2ContextState, Tooltip2Provider } from "./tooltip2Context";
 
 // eslint-disable-next-line deprecation/deprecation
 export type Tooltip2Props<TProps = React.HTMLProps<HTMLElement>> = ITooltip2Props<TProps>;
@@ -87,7 +88,24 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
     private popover: Popover2<T> | null = null;
 
     public render() {
-        const { children, intent, popoverClassName, ...restProps } = this.props;
+        // if we have an ancestor Tooltip2Context, we should take its state into account in this render path,
+        // it was likely created by a parent ContextMenu2
+        return (
+            <Tooltip2Context.Consumer>
+                {([state]) => <Tooltip2Provider {...state}>{this.renderPopover}</Tooltip2Provider>}
+            </Tooltip2Context.Consumer>
+        );
+    }
+
+    public reposition() {
+        if (this.popover != null) {
+            this.popover.reposition();
+        }
+    }
+
+    // any descendant ContextMenu2s may update this ctxState
+    private renderPopover = (ctxState: Tooltip2ContextState) => {
+        const { children, disabled, intent, popoverClassName, ...restProps } = this.props;
         const classes = classNames(
             Classes.TOOLTIP2,
             { [CoreClasses.MINIMAL]: this.props.minimal },
@@ -111,6 +129,7 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 {...restProps}
                 autoFocus={false}
                 canEscapeKeyClose={false}
+                disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}
                 popoverClassName={classes}
@@ -120,11 +139,5 @@ export class Tooltip2<T> extends React.PureComponent<Tooltip2Props<T>> {
                 {children}
             </Popover2>
         );
-    }
-
-    public reposition() {
-        if (this.popover != null) {
-            this.popover.reposition();
-        }
-    }
+    };
 }

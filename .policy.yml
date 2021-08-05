@@ -78,6 +78,8 @@ approval_rules:
           - "^vendor/.*$"
           - "^versions.props$"
           - "^versions.lock$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0"]
 
   - name: excavator only touched config files
     requires:
@@ -89,6 +91,8 @@ approval_rules:
         paths:
           - "^\\..*.yml$"
           - "^\\.github/.*$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0"]
 
   - name: bots updated package.json and lock files
     requires:
@@ -102,3 +106,5 @@ approval_rules:
         paths:
           - "^.*yarn.lock$"
           - "^.*package.json$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0"]

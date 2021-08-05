@@ -68,12 +68,17 @@ export interface IIconProps extends IntentProps, Props {
     icon: IconName | MaybeElement;
 
     /**
+     * @deprecated use size prop instead
+     */
+    iconSize?: number;
+
+    /**
      * Size of the icon, in pixels. Blueprint contains 16px and 20px SVG icon
      * images, and chooses the appropriate resolution based on this prop.
      *
      * @default IconSize.STANDARD = 16
      */
-    iconSize?: number;
+    size?: number;
 
     /** CSS style properties. */
     style?: React.CSSProperties;
@@ -116,15 +121,17 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             className,
             color,
             htmlTitle,
-            iconSize = IconSize.STANDARD,
+            // eslint-disable-next-line deprecation/deprecation
+            iconSize,
             intent,
+            size = iconSize ?? IconSize.STANDARD,
             title = icon,
             tagName = "span",
             ...htmlprops
         } = this.props;
 
         // choose which pixel grid is most appropriate for given icon size
-        const pixelGridSize = iconSize >= IconSize.LARGE ? IconSize.LARGE : IconSize.STANDARD;
+        const pixelGridSize = size >= IconSize.LARGE ? IconSize.LARGE : IconSize.STANDARD;
         // render path elements, or nothing if icon name is unknown.
         const paths = this.renderSvgPaths(pixelGridSize, icon);
 
@@ -139,7 +146,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
                 className: classes,
                 title: htmlTitle,
             },
-            <svg fill={color} data-icon={icon} width={iconSize} height={iconSize} viewBox={viewBox}>
+            <svg fill={color} data-icon={icon} width={size} height={size} viewBox={viewBox}>
                 {title && <desc>{title}</desc>}
                 {paths}
             </svg>,

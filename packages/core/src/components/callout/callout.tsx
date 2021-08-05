@@ -78,7 +78,7 @@ export class Callout extends AbstractPureComponent2<CalloutProps> {
 
         return (
             <div className={classes} {...htmlProps}>
-                {iconName && <Icon icon={iconName} iconSize={IconSize.LARGE} />}
+                {iconName && <Icon icon={iconName} size={IconSize.LARGE} />}
                 {title && <H4>{title}</H4>}
                 {children}
             </div>

@@ -22,6 +22,14 @@ import { HotkeyConfig } from "./hotkeyConfig";
 
 export interface UseHotkeysOptions {
     /**
+     * A custom document to reference when binding global event handlers.
+     * This can be useful when using iframes in an application.
+     *
+     * @default window.document
+     */
+    document?: Document;
+
+    /**
      * The key combo which will trigger the hotkeys dialog to open.
      *
      * @default "?"
@@ -41,7 +49,7 @@ export interface UseHotkeysReturnValue {
  * @param options hook options
  */
 export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
-    const { showDialogKeyCombo = "?" } = options;
+    const { document = getDefaultDocument(), showDialogKeyCombo = "?" } = options;
     const localKeys = React.useMemo(
         () =>
             keys
@@ -79,12 +87,18 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     ) => {
         const isTextInput = isTargetATextInput(e);
         for (const key of global ? globalKeys : localKeys) {
-            const shouldIgnore = (isTextInput && !key.config.allowInInput) || key.config.disabled;
+            const {
+                allowInInput = false,
+                disabled = false,
+                preventDefault = false,
+                stopPropagation = false,
+            } = key.config;
+            const shouldIgnore = (isTextInput && !allowInInput) || disabled;
             if (!shouldIgnore && comboMatches(key.combo, combo)) {
-                if (key.config.preventDefault) {
+                if (preventDefault) {
                     e.preventDefault();
                 }
-                if (key.config.stopPropagation) {
+                if (stopPropagation) {
                     // set a flag just for unit testing. not meant to be referenced in feature work.
                     (e as any).isPropagationStopped = true;
                     e.stopPropagation();
@@ -124,11 +138,12 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     );
 
     React.useEffect(() => {
-        document.addEventListener("keydown", handleGlobalKeyDown);
-        document.addEventListener("keyup", handleGlobalKeyUp);
+        // document is guaranteed to be defined inside effects
+        document!.addEventListener("keydown", handleGlobalKeyDown);
+        document!.addEventListener("keyup", handleGlobalKeyUp);
         return () => {
-            document.removeEventListener("keydown", handleGlobalKeyDown);
-            document.removeEventListener("keyup", handleGlobalKeyUp);
+            document!.removeEventListener("keydown", handleGlobalKeyDown);
+            document!.removeEventListener("keyup", handleGlobalKeyUp);
         };
     }, [handleGlobalKeyDown, handleGlobalKeyUp]);
 
@@ -166,4 +181,11 @@ function isTargetATextInput(e: KeyboardEvent) {
     }
 
     return true;
+}
+
+function getDefaultDocument(): Document | undefined {
+    if (typeof window === "undefined") {
+        return undefined;
+    }
+    return window.document;
 }

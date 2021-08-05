@@ -18,7 +18,7 @@ Migrating from [HotkeysTarget](#core/components/hotkeys)?
 `useHotkeys` is a replacement for HotkeysTarget. You are encouraged to use this new API in your function
 components, or the [HotkeysTarget2 component](#core/components/hotkeys-target2) in your component classes,
 as they will become the standard APIs in Blueprint v4. See the full
-[migration guide](https://github.com/palantir/blueprint/wiki/useHotkeys-migration) on the wiki.
+[migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
 
 </div>
 
@@ -77,6 +77,8 @@ Hotkeys must define a group, or be marked as global. The hook will automatically
 and configure the <kbd>?</kbd> key to open the generated hotkeys dialog, but it is up to you to bind _local_
 event handlers with the returned `handleKeyDown` and `handleKeyUp` functions. The hook takes an optional
 second parameter which can customize some of its default behavior.
+
+@interface UseHotkeysOptions
 
 @method useHotkeys
 

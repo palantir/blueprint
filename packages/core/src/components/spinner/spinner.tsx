@@ -115,7 +115,10 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
         // - SPINNER_ANIMATION isolates svg from parent display and is always centered inside root element.
         return React.createElement(
             tagName,
-            { className: classes },
+            {
+                className: classes,
+                role: "progressbar",
+            },
             React.createElement(
                 tagName,
                 { className: Classes.SPINNER_ANIMATION },

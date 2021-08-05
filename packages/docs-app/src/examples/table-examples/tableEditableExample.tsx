@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "@blueprintjs/table";
+import { Column, ColumnHeaderCell, EditableCell2, EditableName, Table2 } from "@blueprintjs/table";
 
 export interface ITableEditableExampleState {
     columnNames?: string[];
@@ -52,7 +52,7 @@ export class TableEditableExample extends React.PureComponent<IExampleProps, ITa
         });
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={7}>{columns}</Table>
+                <Table2 numRows={7}>{columns}</Table2>
             </Example>
         );
     }
@@ -61,7 +61,7 @@ export class TableEditableExample extends React.PureComponent<IExampleProps, ITa
         const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
         const value = this.state.sparseCellData[dataKey];
         return (
-            <EditableCell
+            <EditableCell2
                 value={value == null ? "" : value}
                 intent={this.state.sparseCellIntent[dataKey]}
                 onCancel={this.cellValidator(rowIndex, columnIndex)}
