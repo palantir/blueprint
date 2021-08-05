@@ -40,6 +40,12 @@ export type SelectProps<T> = ISelectProps<T>;
 /** @deprecated use SelectProps */
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill` and `tagInputProps.fill`.
+     */
+    fill?: boolean;
+
+    /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
      *
@@ -129,7 +135,16 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+
+        const child = React.Children.only(this.props.children) as React.ReactElement;
+
+        const childProps: { fill?: boolean } = {};
+
+        if (fill) {
+            popoverProps.fill = true;
+            childProps.fill = true;
+        }
 
         const input = (
             <InputGroup
@@ -164,7 +179,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
-                    {this.props.children}
+                    {React.cloneElement(child, { ...childProps })}
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}

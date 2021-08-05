@@ -34,6 +34,7 @@ export interface ISelectExampleState {
     resetOnSelect: boolean;
     disableItems: boolean;
     disabled: boolean;
+    fill: boolean;
 }
 
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
@@ -43,6 +44,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         createdItems: [],
         disableItems: false,
         disabled: false,
+        fill: false,
         filterable: true,
         hasInitialContent: false,
         minimal: false,
@@ -56,6 +58,8 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     private handleCreateFirstChange = this.handleSwitchChange("createFirst");
 
     private handleDisabledChange = this.handleSwitchChange("disabled");
+
+    private handleFillChange = this.handleSwitchChange("fill");
 
     private handleFilterableChange = this.handleSwitchChange("filterable");
 
@@ -114,6 +118,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     checked={this.state.resetOnSelect}
                     onChange={this.handleResetOnSelectChange}
                 />
+                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
                 <Switch
                     label="Use initial content"
                     checked={this.state.hasInitialContent}
