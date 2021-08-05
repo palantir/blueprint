@@ -105,6 +105,19 @@ describe("<Dialog>", () => {
             // test existence here because id is generated
             assert.exists(dialogElement?.getAttribute("aria-labelledby"));
         });
+
+        it("does not apply default aria-labelledby if no title", () => {
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            const dialog = mount(
+                <Dialog isOpen={true} portalContainer={container}>
+                    {createDialogContents()}
+                </Dialog>,
+            );
+            const dialogElement = dialog.getDOMNode().querySelector(`.${Classes.DIALOG}`);
+            // test existence here because id is generated
+            assert.notExists(dialogElement?.getAttribute("aria-labelledby"));
+        });
     });
 
     it("attempts to close when overlay backdrop element is moused down", () => {

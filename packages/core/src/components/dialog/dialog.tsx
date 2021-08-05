@@ -115,7 +115,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                     <div
                         className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
-                        aria-labelledby={this.props["aria-labelledby"] || this.titleId}
+                        aria-labelledby={this.props["aria-labelledby"] || this.props.title ? this.titleId : undefined}
                         aria-describedby={this.props["aria-describedby"]}
                         style={this.props.style}
                     >
