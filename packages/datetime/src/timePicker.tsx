@@ -169,9 +169,7 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
     public constructor(props?: TimePickerProps, context?: any) {
         super(props, context);
 
-        const value = this.getInitialValue();
-
-        this.state = this.getFullStateFromValue(value, props.useAmPm);
+        this.state = this.getFullStateFromValue(this.getInitialValue(), props.useAmPm);
     }
 
     public render() {
@@ -217,17 +215,17 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         const didMaxTimeChange = prevProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;
         const didPropValueChange = prevProps.value !== this.props.value;
-        const shouldStateUpdate = didMinTimeChange || didMaxTimeChange || didBoundsChange || didPropValueChange;
+        const shouldStateUpdate = didBoundsChange || didPropValueChange;
 
-        let value = this.props.value;
+        let value = this.state.value;
+        if (this.props.value == null) {
+            value = this.getInitialValue();
+        }
         if (didBoundsChange) {
             value = DateUtils.getTimeInRange(this.state.value, this.props.minTime, this.props.maxTime);
         }
         if (this.props.value != null && !DateUtils.areSameTime(this.props.value, prevProps.value)) {
             value = this.props.value;
-        }
-        if (this.props.value == null) {
-            value = this.getInitialValue();
         }
 
         if (shouldStateUpdate) {
@@ -427,7 +425,7 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         }
     }
 
-    private getInitialValue() {
+    private getInitialValue(): Date {
         let value = this.props.minTime;
         if (this.props.value != null) {
             value = this.props.value;
