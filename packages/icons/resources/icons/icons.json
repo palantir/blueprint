@@ -3604,5 +3604,11 @@
         "iconName": "many-to-many",
         "tags": "object, relation, ontology",
         "group": "data"
-    }
+    },
+    {
+        "displayName": "Buggy",
+        "iconName": "buggy",
+        "tags": "vehicle, car, transportation",
+        "group": "interface"
+      }
 ]
