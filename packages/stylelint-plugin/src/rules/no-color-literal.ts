@@ -13,29 +13,30 @@
  * limitations under the License.
  */
 
-import { Root, Result } from "postcss";
-import selectorParser from "postcss-selector-parser";
-import stylelint from "stylelint";
-import type { Plugin, RuleTesterContext } from "stylelint";
+import postcss, { Root, Result } from "postcss";
+import valueParser from "postcss-value-parser";
+import stylelint, { RuleTesterContext } from "stylelint";
+import type { Plugin } from "stylelint";
+
+import { Colors } from "@blueprintjs/core";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
-    BpPrefixVariableMap,
     BpVariableImportMap,
+    BpVariablePrefixMap,
     CssExtensionMap,
     CssSyntax,
     getCssSyntax,
     isCssSyntaxToStringMap,
 } from "../utils/cssSyntax";
+import { isHexColor, normalizeHexColor } from "../utils/hexColor";
 import { insertImport } from "../utils/insertImport";
 
-const ruleName = "@blueprintjs/no-prefix-literal";
+const ruleName = "@blueprintjs/no-color-literal";
 
 const messages = stylelint.utils.ruleMessages(ruleName, {
     expected: (unfixed: string, fixed: string) => `Use the \`${fixed}\` variable instead of the \`${unfixed}\` literal`,
 });
-
-const bannedPrefixes = ["bp3", "bp4"];
 
 interface Options {
     disableFix?: boolean;
@@ -93,31 +94,52 @@ export default stylelint.createPlugin(ruleName, ((
         }
     }
 
-    root.walkRules(rule => {
-        rule.selector = selectorParser(selectors => {
-            selectors.walkClasses(selector => {
-                for (const bannedPrefix of bannedPrefixes) {
-                    if (!selector.value.startsWith(`${bannedPrefix}-`)) {
-                        continue;
-                    }
-                    if ((context as any).fix && !disableFix) {
-                        assertBpVariablesImportExists(cssSyntax);
-                        const fixed = BpPrefixVariableMap[cssSyntax] + selector.value.substr(bannedPrefix.length);
-                        // Note - selector.value = "#{$var}" escapes special characters and produces "\#\{\$var\}",
-                        // and to work around that we use selector.toString instead.
-                        selector.toString = () => `.${fixed}`;
-                    } else {
-                        stylelint.utils.report({
-                            // HACKHACK - offset by one because otherwise the error is reported at a wrong position
-                            index: selector.sourceIndex + 1,
-                            message: messages.expected(bannedPrefix, BpPrefixVariableMap[cssSyntax]),
-                            node: rule,
-                            result,
-                            ruleName,
-                        });
-                    }
-                }
-            });
-        }).processSync(rule.selector);
+    root.walkDecls(decl => {
+        let needsFix = false;
+        const parsedValue = valueParser(decl.value);
+        parsedValue.walk(node => {
+            const value = node.value;
+            const type = node.type;
+            if (type !== "word" || !isHexColor(value)) {
+                return;
+            }
+            const normalizedHex = normalizeHexColor(value);
+            if (hexToColorName[normalizedHex] == null) {
+                return;
+            }
+            const fixed = BpVariablePrefixMap[cssSyntax] + hexToColorName[normalizedHex].toLocaleLowerCase();
+            if ((context as any).fix && !disableFix) {
+                assertBpVariablesImportExists(cssSyntax);
+                node.value = fixed;
+                needsFix = true;
+            } else {
+                stylelint.utils.report({
+                    index: declarationValueIndex(decl) + node.sourceIndex,
+                    message: messages.expected(value, fixed),
+                    node: decl,
+                    result,
+                    ruleName,
+                });
+            }
+        });
+        if (needsFix) {
+            decl.value = parsedValue.toString();
+        }
     });
 }) as Plugin);
+
+function declarationValueIndex(decl: postcss.Declaration) {
+    const beforeColon = decl.toString().indexOf(":");
+    const afterColon = decl.raw("between").length - decl.raw("between").indexOf(":");
+    return beforeColon + afterColon;
+}
+
+function getHexToColorName(): { [upperHex: string]: string } {
+    const ret: { [key: string]: string } = {};
+    for (const [name, hex] of Object.entries(Colors)) {
+        ret[normalizeHexColor(hex)] = name;
+    }
+    return ret;
+}
+
+const hexToColorName = getHexToColorName();

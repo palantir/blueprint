@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+require("./no-color-literal.test");
 require("./no-prefix-literal.test");
 require("./checkImportExists.test");
+require("./hexColor.test");
 require("./insertImport.test");
