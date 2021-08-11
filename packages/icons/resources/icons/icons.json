@@ -3604,5 +3604,17 @@
         "iconName": "many-to-many",
         "tags": "object, relation, ontology",
         "group": "data"
+    },
+    {
+        "displayName": "Antenna",
+        "iconName": "antenna",
+        "tags": "antenna, signal, communication",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Tank",
+        "iconName": "tank",
+        "tags": "tank, automobile, vehicle, armored",
+        "group": "interface"
     }
 ]
