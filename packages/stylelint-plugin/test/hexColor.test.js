@@ -15,7 +15,7 @@ limitations under the License.*/
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { expect } = require("chai");
 
-const { isHexColor } = require("../lib/utils/hexColor");
+const { isHexColor, normalizeHexColor } = require("../lib/utils/hexColor");
 
 describe("isHexColor", () => {
     it("Accepts valid colors", () => {
@@ -31,5 +31,19 @@ describe("isHexColor", () => {
         expect(isHexColor("#")).to.be.false;
         expect(isHexColor("#abcde")).to.be.false;
         expect(isHexColor("#FFx")).to.be.false;
+    });
+});
+
+describe("normalizeHexColor", () => {
+    it("Uppercases hex colors", () => {
+        expect(normalizeHexColor("#ffaabb")).to.be.eq("#FFAABB");
+    });
+
+    it("Converts three letter hexes into six letter hexes", () => {
+        expect(normalizeHexColor("#ABC")).to.be.eq("#AABBCC");
+    });
+
+    it("Converts lowercase three letter hexes into uppercase six letter hexes", () => {
+        expect(normalizeHexColor("#abc")).to.be.eq("#AABBCC");
     });
 });
