@@ -27,14 +27,14 @@ import { ICoordinateData } from "./interactions/dragTypes";
 import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
 import { DragSelectable, ISelectableProps } from "./interactions/selectable";
 import { ILocator } from "./locator";
-import { IRegion, Regions } from "./regions";
+import { Region, Regions } from "./regions";
 import { cellClassNames, ITableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
 
 export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps {
     /**
      * An optional callback for displaying a context menu when right-clicking
      * on the table body. The callback is supplied with an `IMenuContext`
-     * containing the `IRegion`s of interest.
+     * containing the `Region`s of interest.
      */
     bodyContextMenuRenderer?: IContextMenuRenderer;
 
@@ -131,7 +131,7 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
 
         const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
 
-        let nextSelectedRegions: IRegion[] = selectedRegions;
+        let nextSelectedRegions: Region[] = selectedRegions;
 
         // if the event did not happen within a selected region, clear all
         // selections and select the right-clicked cell.
