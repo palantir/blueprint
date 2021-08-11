@@ -58,6 +58,7 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
     const maybeBackButton =
         props.previousPanel === undefined ? null : (
             <Button
+                aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
                 icon="chevron-left"
                 minimal={true}

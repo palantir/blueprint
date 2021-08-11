@@ -156,9 +156,9 @@ describe("no-prefix-literal", () => {
         expect(result.results[0].invalidOptionWarnings.length).to.be.eq(2);
     });
 
-    it.skip("Works for a double bp selector", async () => {
+    it("Works for a double bp3 selector", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-double-bp-selector.scss",
+            files: "test/fixtures/no-prefix-literal/contains-double-bp3-selector.scss",
             config,
         });
         expect(result.errored).to.be.true;
