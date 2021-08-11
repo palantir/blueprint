@@ -24,4 +24,12 @@ describe("isHexColor", () => {
         expect(isHexColor("#abc")).to.be.true;
         expect(isHexColor("#ABc")).to.be.true;
     });
+
+    it("Rejects invalid colors", () => {
+        expect(isHexColor("FFFFFF")).to.be.false;
+        expect(isHexColor("#FFFFFX")).to.be.false;
+        expect(isHexColor("#")).to.be.false;
+        expect(isHexColor("#abcde")).to.be.false;
+        expect(isHexColor("#FFx")).to.be.false;
+    });
 });
