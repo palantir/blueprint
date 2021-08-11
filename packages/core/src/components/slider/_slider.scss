@@ -3,6 +3,11 @@
 
 @import "../tooltip/common";
 @import "./common";
+@import "~@blueprintjs/core/lib/scss/variables";
+
+.a {
+  border: 1px solid $white;
+}
 
 $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - $pt-grid-size !default;
