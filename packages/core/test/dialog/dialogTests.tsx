@@ -64,7 +64,7 @@ describe("<Dialog>", () => {
         document.body.removeChild(container);
     });
 
-    describe("ally support", () => {
+    describe("accessibility support", () => {
         const mountDefaults = () => {
             const container = document.createElement("div");
             document.body.appendChild(container);

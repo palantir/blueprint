@@ -70,3 +70,10 @@ export function countDecimalPlaces(num: number) {
     }
     return p;
 }
+
+const uniqueCountForPrefix = new Map<string, number>();
+export function uniqueId(prefix: string) {
+    const curCount = uniqueCountForPrefix.get(prefix) || 0;
+    uniqueCountForPrefix.set(prefix, curCount + 1);
+    return `///${prefix}-${curCount}///`;
+}

@@ -115,6 +115,15 @@ describe("Utils", () => {
         assert.equal(Utils.countDecimalPlaces(NaN), 0);
     });
 
+    it("uniqueId", () => {
+        const prefix = "testPrefix";
+        const otherPrefix = "otherPrefix";
+        assert.equal(Utils.uniqueId(prefix), `///${prefix}-0`);
+        assert.equal(Utils.uniqueId(prefix), `///${prefix}-1`);
+        assert.equal(Utils.uniqueId(prefix), `///${prefix}-2`);
+        assert.equal(Utils.uniqueId(otherPrefix), `///${otherPrefix}-0`);
+    });
+
     // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?
     it.skip("throttleEvent");
 

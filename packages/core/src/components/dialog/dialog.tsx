@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 import { polyfill } from "react-lifecycles-compat";
-import { uniq } from "lodash-es";
 
 import { AbstractPureComponent2, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon, IconName, IconSize } from "../icon/icon";
@@ -79,13 +79,15 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     transitionName?: string;
 
     /**
-     * id of element that contains title or label text for this dialog
-     * by default the element displaying the `title` prop will be used
+     * ID of the element that contains title or label text for this dialog.
+     *
+     * By default, if the `title` prop is supplied, this component will generate
+     * a unique ID for the `<H4>` title element and use that ID here.
      */
     "aria-labelledby"?: string;
 
     /**
-     * id of element that contains description text for this dialog
+     * ID of an element that contains description text inside this dialog.
      */
     "aria-describedby"?: string;
 }
@@ -104,7 +106,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
     public constructor(props: DialogProps) {
         super(props);
 
-        const id = uniq("bp-dialog");
+        const id = uniqueId("bp-dialog");
         this.titleId = `title-${id}`;
     }
 
