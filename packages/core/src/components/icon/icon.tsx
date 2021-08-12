@@ -141,18 +141,14 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
         const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
 
-        const props = {
-            ...htmlprops,
-            className: classes,
-            title: htmlTitle,
-        };
-        if (!title) {
-            props["aria-hidden"] = true;
-        }
-
         return React.createElement(
             tagName,
-            props,
+            {
+                ...htmlprops,
+                className: classes,
+                title: htmlTitle,
+                "aria-hidden": title != null ? true : undefined,
+            },
             <svg fill={color} data-icon={icon} width={size} height={size} viewBox={viewBox}>
                 {title && <desc>{title}</desc>}
                 {paths}

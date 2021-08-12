@@ -29,8 +29,8 @@ export interface IBreadcrumbProps extends ActionProps, LinkProps {
     current?: boolean;
 
     /**
-     * Pass though value to icon's title attribute. Should be used for breadcrumbs without
-     * text or children defined
+     * Pass through value to icon's title attribute. Should be used for breadcrumbs without
+     * text or children defined.
      */
     iconTitle?: string;
 }

@@ -160,8 +160,7 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
             const onClick = disabled === true ? undefined : this.handleCaretClick;
             return (
                 <Icon
-                    // TODO(accessibility): add below when component is accessible
-                    // title={isExpanded ? "Collapse group" : "Expand group"}
+                    title={isExpanded ? "Collapse group" : "Expand group"}
                     className={caretClasses}
                     onClick={onClick}
                     icon={"chevron-right"}
