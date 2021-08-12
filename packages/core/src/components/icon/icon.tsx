@@ -145,9 +145,9 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             tagName,
             {
                 ...htmlprops,
+                "aria-hidden": title != null ? true : undefined,
                 className: classes,
                 title: htmlTitle,
-                "aria-hidden": title != null ? true : undefined,
             },
             <svg fill={color} data-icon={icon} width={size} height={size} viewBox={viewBox}>
                 {title && <desc>{title}</desc>}
