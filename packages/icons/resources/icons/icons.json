@@ -3604,5 +3604,17 @@
         "iconName": "many-to-many",
         "tags": "object, relation, ontology",
         "group": "data"
+    },
+    {
+        "displayName": "Geometry: Stadium",
+        "iconName": "stadium-geometry",
+        "tags": "geometry, shape, race track, ellipse, discorectangle, obround",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Area of interest",
+        "iconName": "area-of-interest",
+        "tags": "NAI, named area, location",
+        "group": "interface"
     }
 ]
