@@ -3606,9 +3606,9 @@
         "group": "data"
     },
     {
-        "displayName": "Stadium",
-        "iconName": "stadium",
-        "tags": "race track, ellipse, discorectangle",
+        "displayName": "Geometry: Stadium",
+        "iconName": "stadium-geometry",
+        "tags": "geometry, shape, race track, ellipse, discorectangle, obround",
         "group": "miscellaneous"
     },
     {
