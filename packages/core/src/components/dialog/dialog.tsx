@@ -99,7 +99,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         isOpen: false,
     };
 
-    titleId: string;
+    private titleId: string;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
 
