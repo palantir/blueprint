@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-import type { IColumnProps } from "./column";
+import type { ColumnProps } from "./column";
 import type { Rect } from "./common";
 import type { IFocusedCellCoordinates } from "./common/cell";
-import type { IRegion } from "./regions";
+import type { Region } from "./regions";
 
 export interface TableState {
     /**
@@ -70,7 +70,7 @@ export interface TableState {
     /**
      * An array of Regions representing the selections of the table.
      */
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the
@@ -86,7 +86,7 @@ export interface TableState {
 
     columnIdToIndex: { [key: string]: number };
 
-    childrenArray: Array<React.ReactElement<IColumnProps>>;
+    childrenArray: Array<React.ReactElement<ColumnProps>>;
 }
 
 export interface TableSnapshot {

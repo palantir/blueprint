@@ -26,7 +26,9 @@ import { RegionCardinality, Regions } from "../regions";
 import { Header, IHeaderProps } from "./header";
 import { IRowHeaderCellProps, RowHeaderCell } from "./rowHeaderCell";
 
+/** @deprecated use RowHeaderRenderer */
 export type IRowHeaderRenderer = (rowIndex: number) => React.ReactElement<IRowHeaderCellProps>;
+// eslint-disable-next-line deprecation/deprecation
 export type RowHeaderRenderer = IRowHeaderRenderer;
 
 export interface IRowHeights {
@@ -44,7 +46,7 @@ export interface IRowHeaderProps extends IHeaderProps, IRowHeights, IRowIndices 
     /**
      * Renders the cell for each row header
      */
-    rowHeaderCellRenderer?: IRowHeaderRenderer;
+    rowHeaderCellRenderer?: RowHeaderRenderer;
 }
 
 export class RowHeader extends React.Component<IRowHeaderProps> {

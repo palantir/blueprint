@@ -29,7 +29,10 @@ import { RegionCardinality, Regions } from "../regions";
 import { ColumnHeaderCell, IColumnHeaderCellProps } from "./columnHeaderCell";
 import { Header, IHeaderProps } from "./header";
 
+/** @deprecated use ColumnHeaderRenderer */
 export type IColumnHeaderRenderer = (columnIndex: number) => React.ReactElement<IColumnHeaderCellProps>;
+// eslint-disable-next-line deprecation/deprecation
+export type ColumnHeaderRenderer = IColumnHeaderRenderer;
 
 export interface IColumnWidths {
     minColumnWidth?: number;
@@ -44,7 +47,7 @@ export interface IColumnHeaderProps extends IHeaderProps, IColumnWidths, IColumn
      * 2. A `<ColumnHeaderCell>` using the `name` prop from the `<Column>`
      * 3. A `<ColumnHeaderCell>` with a `name` generated from `Utils.toBase26Alpha`
      */
-    cellRenderer: IColumnHeaderRenderer;
+    cellRenderer: ColumnHeaderRenderer;
 
     /**
      * Ref handler that receives the HTML element that should be measured to
