@@ -30,7 +30,7 @@ import {
     EditableName,
     IColumnHeaderCellProps,
     IMenuContext,
-    IRegion,
+    Region,
     JSONFormat,
     RegionCardinality,
     Regions,
@@ -363,11 +363,11 @@ class RowSelectableTable extends React.Component {
         this.setState({ selectedRegions: [] });
     };
 
-    private handleSelection = (selectedRegions: IRegion[]) => {
+    private handleSelection = (selectedRegions: Region[]) => {
         this.setState({ selectedRegions });
     };
 
-    private selectedRegionTransform = (region: IRegion) => {
+    private selectedRegionTransform = (region: Region) => {
         // convert cell selection to row selection
         if (Regions.getRegionCardinality(region) === RegionCardinality.CELLS) {
             return Regions.row(region.rows[0], region.rows[1]);

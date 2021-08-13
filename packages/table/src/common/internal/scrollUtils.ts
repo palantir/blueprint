@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { IRegion, RegionCardinality, Regions } from "../../regions";
+import { Region, RegionCardinality, Regions } from "../../regions";
 
 /**
  * Returns the scroll{Left,Top} offsets of the provided region based on its
  * cardinality.
  */
 export function getScrollPositionForRegion(
-    region: IRegion,
+    region: Region,
     currScrollLeft: number,
     currScrollTop: number,
     getLeftOffset: (columnIndex: number) => number,

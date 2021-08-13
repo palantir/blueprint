@@ -43,18 +43,11 @@ import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeader
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
-import { IRegionStyler, RegionLayer } from "./layers/regions";
+import { RegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
-import {
-    ColumnLoadingOption,
-    IRegion,
-    RegionCardinality,
-    Regions,
-    SelectionModes,
-    TableLoadingOption,
-} from "./regions";
+import { ColumnLoadingOption, Region, RegionCardinality, Regions, SelectionModes, TableLoadingOption } from "./regions";
 import {
     IResizeRowsByApproximateHeightOptions,
     resizeRowsByApproximateHeight,
@@ -253,7 +246,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         let newRowHeights = Utils.times(numRows, () => defaultRowHeight);
         newRowHeights = Utils.assignSparseValues(newRowHeights, rowHeights);
 
-        const selectedRegions = props.selectedRegions == null ? ([] as IRegion[]) : props.selectedRegions;
+        const selectedRegions = props.selectedRegions == null ? ([] as Region[]) : props.selectedRegions;
         const focusedCell = FocusedCellUtils.getInitialFocusedCell(
             props.enableFocusedCell,
             props.focusedCell,
@@ -344,7 +337,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
      * simply scroll the target region as close to the top-left as possible until the bottom-right
      * corner is reached.
      */
-    public scrollToRegion(region: IRegion) {
+    public scrollToRegion(region: Region) {
         const { numFrozenColumnsClamped: numFrozenColumns, numFrozenRowsClamped: numFrozenRows } = this.state;
         const { left: currScrollLeft, top: currScrollTop } = this.state.viewportRect;
 
@@ -944,11 +937,11 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
 
     /**
      * Renders a `RegionLayer`, applying styles to the regions using the
-     * supplied `IRegionStyler`. `RegionLayer` is a `PureRender` component, so
-     * the `IRegionStyler` should be a new instance on every render if we
+     * supplied `RegionStyler`. `RegionLayer` is a `PureRender` component, so
+     * the `RegionStyler` should be a new instance on every render if we
      * intend to redraw the region layer.
      */
-    private maybeRenderRegions(getRegionStyle: IRegionStyler, quadrantType?: QuadrantType) {
+    private maybeRenderRegions(getRegionStyle: RegionStyler, quadrantType?: QuadrantType) {
         if (this.isGuidesShowing() && !this.state.isReordering) {
             // we want to show guides *and* the selection styles when reordering rows or columns
             return undefined;
@@ -984,7 +977,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
     };
 
-    private styleBodyRegion = (region: IRegion, quadrantType: QuadrantType): React.CSSProperties => {
+    private styleBodyRegion = (region: Region, quadrantType: QuadrantType): React.CSSProperties => {
         const { numFrozenColumns } = this.props;
 
         const cardinality = Regions.getRegionCardinality(region);
@@ -1031,7 +1024,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
     };
 
-    private styleMenuRegion = (region: IRegion): React.CSSProperties => {
+    private styleMenuRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
@@ -1054,7 +1047,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
     };
 
-    private styleColumnHeaderRegion = (region: IRegion): React.CSSProperties => {
+    private styleColumnHeaderRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
@@ -1077,7 +1070,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
     };
 
-    private styleRowHeaderRegion = (region: IRegion): React.CSSProperties => {
+    private styleRowHeaderRegion = (region: Region): React.CSSProperties => {
         const { viewportRect } = this.state;
         if (viewportRect == null) {
             return {};
@@ -1173,7 +1166,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         }
     };
 
-    private clearSelection = (_selectedRegions: IRegion[]) => {
+    private clearSelection = (_selectedRegions: Region[]) => {
         this.handleSelection([]);
     };
 
@@ -1216,7 +1209,7 @@ export class Table2 extends AbstractComponent2<TableProps, TableState, TableSnap
         this.props.onFocusedCell?.(focusedCell);
     };
 
-    private handleSelection = (selectedRegions: IRegion[]) => {
+    private handleSelection = (selectedRegions: Region[]) => {
         // only set selectedRegions state if not specified in props
         if (this.props.selectedRegions == null) {
             this.setState({ selectedRegions });

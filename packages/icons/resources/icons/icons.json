@@ -3606,6 +3606,24 @@
         "group": "data"
     },
     {
+        "displayName": "Geometry: Stadium",
+        "iconName": "stadium-geometry",
+        "tags": "geometry, shape, race track, ellipse, discorectangle, obround",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Area of interest",
+        "iconName": "area-of-interest",
+        "tags": "NAI, named area, location",
+        "group": "interface"
+    },
+    {
+        "displayName": "Buggy",
+        "iconName": "buggy",
+        "tags": "vehicle, car, transportation",
+        "group": "interface"
+    },
+    {
         "displayName": "Antenna",
         "iconName": "antenna",
         "tags": "antenna, signal, communication",

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { IRegion, RegionCardinality, Regions } from "../../regions";
-import { IFocusedCellCoordinates } from "../cell";
+import { Region, RegionCardinality, Regions } from "../../regions";
+import { FocusedCellCoordinates } from "../cell";
 import { Direction } from "../direction";
 import * as DirectionUtils from "./directionUtils";
 import * as FocusedCellUtils from "./focusedCellUtils";
@@ -47,14 +47,14 @@ import * as FocusedCellUtils from "./focusedCellUtils";
  * This function does not clamp the indices of the returned region; that is the
  * responsibility of the caller.
  */
-export function resizeRegion(region: IRegion, direction: Direction, focusedCell?: IFocusedCellCoordinates) {
+export function resizeRegion(region: Region, direction: Direction, focusedCell?: FocusedCellCoordinates) {
     if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_TABLE) {
         // return the same instance to maintain referential integrity and
         // possibly avoid unnecessary update lifecycles.
         return region;
     }
 
-    const nextRegion: IRegion = Regions.copy(region);
+    const nextRegion: Region = Regions.copy(region);
 
     let affectedRowIndex: number = 0;
     let affectedColumnIndex: number = 0;
