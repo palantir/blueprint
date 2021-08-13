@@ -3616,5 +3616,11 @@
         "iconName": "area-of-interest",
         "tags": "NAI, named area, location",
         "group": "interface"
+    },
+    {
+        "displayName": "Buggy",
+        "iconName": "buggy",
+        "tags": "vehicle, car, transportation",
+        "group": "interface"
     }
 ]
