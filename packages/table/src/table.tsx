@@ -45,7 +45,7 @@ import { ColumnHeaderCell, IColumnHeaderCellProps } from "./headers/columnHeader
 import { renderDefaultRowHeader, RowHeader } from "./headers/rowHeader";
 import { ResizeSensor } from "./interactions/resizeSensor";
 import { GuideLayer } from "./layers/guides";
-import { IRegionStyler, RegionLayer } from "./layers/regions";
+import { RegionStyler, RegionLayer } from "./layers/regions";
 import { Locator } from "./locator";
 import { QuadrantType } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
@@ -1091,11 +1091,11 @@ export class Table extends AbstractComponent2<TableProps, TableState, TableSnaps
 
     /**
      * Renders a `RegionLayer`, applying styles to the regions using the
-     * supplied `IRegionStyler`. `RegionLayer` is a `PureRender` component, so
-     * the `IRegionStyler` should be a new instance on every render if we
+     * supplied `RegionStyler`. `RegionLayer` is a `PureRender` component, so
+     * the `RegionStyler` should be a new instance on every render if we
      * intend to redraw the region layer.
      */
-    private maybeRenderRegions(getRegionStyle: IRegionStyler, quadrantType?: QuadrantType) {
+    private maybeRenderRegions(getRegionStyle: RegionStyler, quadrantType?: QuadrantType) {
         if (this.isGuidesShowing() && !this.state.isReordering) {
             // we want to show guides *and* the selection styles when reordering rows or columns
             return undefined;

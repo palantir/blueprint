@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable deprecation/deprecation */
+
 export { Cell, CellProps, ICellProps, ICellRenderer, CellRenderer } from "./cell/cell";
 
 export { EditableCell, IEditableCellProps, EditableCellProps } from "./cell/editableCell";
@@ -50,7 +52,9 @@ export { ILockableLayout, IResizeHandleProps, Orientation, ResizeHandle } from "
 
 export { ISelectableProps, IDragSelectableProps, DragSelectable } from "./interactions/selectable";
 
-export { IColumnHeaderRenderer } from "./headers/columnHeader";
+export { ColumnHeaderRenderer, IColumnHeaderRenderer } from "./headers/columnHeader";
+
+export { RowHeaderRenderer } from "./headers/rowHeader";
 
 export { ColumnHeaderCell, IColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
@@ -59,6 +63,8 @@ export { IRowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 export { IEditableNameProps, EditableNameProps, EditableName } from "./headers/editableName";
 
 export {
+    CellInterval,
+    CellCoordinate,
     ColumnLoadingOption,
     ICellInterval,
     IRegion,
@@ -68,13 +74,12 @@ export {
     Regions,
     RowLoadingOption,
     SelectionModes,
+    StyledRegionGroup,
     TableLoadingOption,
 } from "./regions";
 
-// eslint-disable-next-line deprecation/deprecation
 export { ITableProps, TableProps } from "./tableProps";
 
-// eslint-disable-next-line deprecation/deprecation
 export { Table } from "./table";
 
 export { Table2 } from "./table2";

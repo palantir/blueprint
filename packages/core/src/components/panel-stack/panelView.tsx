@@ -82,6 +82,7 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
         }
         return (
             <Button
+                aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
                 icon="chevron-left"
                 minimal={true}

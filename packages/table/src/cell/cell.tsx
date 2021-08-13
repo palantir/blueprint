@@ -111,7 +111,9 @@ export interface ICellProps extends IntentProps, Props {
     cellRef?: IRef<HTMLDivElement>;
 }
 
+/** @deprecated use CellRenderer */
 export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
+// eslint-disable-next-line deprecation/deprecation
 export type CellRenderer = ICellRenderer;
 
 export const emptyCellRenderer = () => <Cell />;

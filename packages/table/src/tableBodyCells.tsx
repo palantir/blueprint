@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractComponent2, Props, Utils as CoreUtils } from "@blueprintjs/core";
 
-import { emptyCellRenderer, ICellRenderer } from "./cell/cell";
+import { emptyCellRenderer, CellRenderer } from "./cell/cell";
 import { Batcher } from "./common/batcher";
 import { IFocusedCellCoordinates } from "./common/cell";
 import * as Classes from "./common/classes";
@@ -31,7 +31,7 @@ export interface ITableBodyCellsProps extends IRowIndices, IColumnIndices, Props
     /**
      * A cell renderer for the cells in the body.
      */
-    cellRenderer: ICellRenderer;
+    cellRenderer: CellRenderer;
 
     /**
      * The coordinates of the currently focused cell, for setting the "isFocused" prop on cells.

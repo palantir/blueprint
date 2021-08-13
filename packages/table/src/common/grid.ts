@@ -16,7 +16,7 @@
 
 import { CSSProperties } from "react";
 
-import { IRegion, RegionCardinality, Regions } from "../regions";
+import { Region, RegionCardinality, Regions } from "../regions";
 import * as Classes from "./classes";
 import { Rect } from "./rect";
 import { Utils } from "./utils";
@@ -319,7 +319,7 @@ export class Grid {
         return [];
     }
 
-    public getRegionStyle(region: IRegion): CSSProperties {
+    public getRegionStyle(region: Region): CSSProperties {
         const cardinality = Regions.getRegionCardinality(region);
         switch (cardinality) {
             case RegionCardinality.CELLS: {

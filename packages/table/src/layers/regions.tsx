@@ -21,15 +21,15 @@ import { Props, Utils as CoreUtils } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { QuadrantType } from "../quadrants/tableQuadrant";
-import { IRegion, Regions } from "../regions";
+import { Region, Regions } from "../regions";
 
-export type IRegionStyler = (region: IRegion, quadrantType?: QuadrantType) => React.CSSProperties;
+export type RegionStyler = (region: Region, quadrantType?: QuadrantType) => React.CSSProperties;
 
-export interface IRegionLayerProps extends Props {
+export interface RegionLayerProps extends Props {
     /**
      * The array of regions to render.
      */
-    regions?: IRegion[];
+    regions?: Region[];
 
     /**
      * The array of CSS styles to apply to each region. The ith style object in this array will be
@@ -39,10 +39,10 @@ export interface IRegionLayerProps extends Props {
 }
 
 // don't include "regions" or "regionStyles" in here, because they can't be shallowly compared
-const UPDATE_PROPS_KEYS = ["className"] as Array<keyof IRegionLayerProps>;
+const UPDATE_PROPS_KEYS = ["className"] as Array<keyof RegionLayerProps>;
 
-export class RegionLayer extends React.Component<IRegionLayerProps> {
-    public shouldComponentUpdate(nextProps: IRegionLayerProps) {
+export class RegionLayer extends React.Component<RegionLayerProps> {
+    public shouldComponentUpdate(nextProps: RegionLayerProps) {
         // shallowly comparable props like "className" tend not to change in the default table
         // implementation, so do that check last with hope that we return earlier and avoid it
         // altogether.
@@ -65,7 +65,7 @@ export class RegionLayer extends React.Component<IRegionLayerProps> {
         return regions.map(this.renderRegion);
     }
 
-    private renderRegion = (_region: IRegion, index: number) => {
+    private renderRegion = (_region: Region, index: number) => {
         const { className, regionStyles } = this.props;
         return (
             <div

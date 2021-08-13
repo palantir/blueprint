@@ -20,7 +20,7 @@ import * as React from "react";
 import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
 
 import { Grid } from "../common";
-import { IFocusedCellCoordinates } from "../common/cell";
+import { FocusedCellCoordinates } from "../common/cell";
 import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
@@ -30,7 +30,7 @@ import { Resizable } from "../interactions/resizable";
 import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, ISelectableProps } from "../interactions/selectable";
 import { ILocator } from "../locator";
-import { IRegion, RegionCardinality, Regions } from "../regions";
+import { Region, RegionCardinality, Regions } from "../regions";
 import { IHeaderCellProps } from "./headerCell";
 
 export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
@@ -39,7 +39,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     /**
      * The currently focused cell.
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell?: FocusedCellCoordinates;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -140,7 +140,7 @@ export interface IInternalHeaderProps extends IHeaderProps {
     /**
      * An array containing the table's selection Regions.
      */
-    selectedRegions: IRegion[];
+    selectedRegions: Region[];
 
     /**
      * Converts a point on the screen to a row or column index in the table grid.
@@ -216,7 +216,7 @@ export interface IInternalHeaderProps extends IHeaderProps {
      * Converts a range to a region. This should be Regions.column for column headers and
      * Regions.row for row headers.
      */
-    toRegion: (index1: number, index2?: number) => IRegion;
+    toRegion: (index1: number, index2?: number) => Region;
 
     /**
      * A callback that wraps the rendered cell components in additional parent elements as needed.
@@ -274,12 +274,12 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return this.props.convertPointToIndex(coord);
     };
 
-    private locateClick = (event: MouseEvent): IRegion => {
+    private locateClick = (event: MouseEvent): Region => {
         this.activationIndex = this.convertEventToIndex(event);
         return this.props.toRegion(this.activationIndex);
     };
 
-    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false): IRegion => {
+    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false): Region => {
         const coord = this.props.getDragCoordinate(coords.current);
         const indexStart = this.activationIndex;
         const indexEnd = this.props.convertPointToIndex(coord);
@@ -430,7 +430,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         );
     }
 
-    private handleDragSelectableSelection = (selectedRegions: IRegion[]) => {
+    private handleDragSelectableSelection = (selectedRegions: Region[]) => {
         this.props.onSelection(selectedRegions);
         this.setState({ hasValidSelection: false });
     };
