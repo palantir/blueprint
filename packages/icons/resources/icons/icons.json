@@ -3634,5 +3634,11 @@
         "iconName": "tank",
         "tags": "tank, automobile, vehicle, armored",
         "group": "interface"
+    },
+    {
+        "displayName": "Third Party",
+        "iconName": "third-party",
+        "tags": "third party, external",
+        "group": "interface"
     }
 ]
