@@ -16,34 +16,23 @@
 
 import * as React from "react";
 
-import { Classes, H5, Switch } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
 import { DateTimePicker } from "@blueprintjs/datetime";
 import { Example, IExampleProps } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 
-export class DateTimePickerExample extends React.PureComponent<
-    IExampleProps,
-    { date: Date; showArrowButtons: boolean; useAmPm: boolean }
-> {
-    public state = {
-        date: new Date(),
-        showArrowButtons: false,
-        useAmPm: true,
-    };
+export class DateTimePickerExample extends React.PureComponent<IExampleProps, { date: Date }> {
+    public state = { date: new Date() };
 
     public render() {
         return (
-            <Example options={this.renderOptions()} {...this.props}>
+            <Example options={false} {...this.props}>
                 {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateTimePicker
                     className={Classes.ELEVATION_1}
                     value={this.state.date}
-                    timePickerProps={{
-                        precision: "second",
-                        showArrowButtons: this.state.showArrowButtons,
-                        useAmPm: this.state.useAmPm,
-                    }}
+                    timePickerProps={{ precision: "second", useAmPm: true }}
                     onChange={this.handleDateChange}
                 />
                 <div>
@@ -52,28 +41,6 @@ export class DateTimePickerExample extends React.PureComponent<
             </Example>
         );
     }
-
-    private renderOptions() {
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch checked={this.state.useAmPm} label="Use AM/PM" onChange={this.toggleUseAmPm} />
-                <Switch
-                    checked={this.state.showArrowButtons}
-                    label="Show arrow buttons"
-                    onChange={this.toggleShowArrowButtons}
-                />
-            </>
-        );
-    }
-
-    private toggleUseAmPm = () => {
-        this.setState({ useAmPm: !this.state.useAmPm });
-    };
-
-    private toggleShowArrowButtons = () => {
-        this.setState({ showArrowButtons: !this.state.showArrowButtons });
-    };
 
     private handleDateChange = (date: Date) => this.setState({ date });
 }
