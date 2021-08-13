@@ -21,14 +21,14 @@ import { Direction } from "./common/direction";
 import { Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
-import { IRegion, RegionCardinality, Regions } from "./regions";
+import { Region, RegionCardinality, Regions } from "./regions";
 import type { TableProps } from "./tableProps";
 import type { TableState, TableSnapshot } from "./tableState";
 
 export interface TableHandlers {
-    handleSelection: (selectedRegions: IRegion[]) => void;
+    handleSelection: (selectedRegions: Region[]) => void;
     handleFocus: (focusedCell: IFocusedCellCoordinates) => void;
-    getEnabledSelectionHandler: (selectionMode: RegionCardinality) => (selectedRegions: IRegion[]) => void;
+    getEnabledSelectionHandler: (selectionMode: RegionCardinality) => (selectedRegions: Region[]) => void;
     syncViewportPosition: (snapshot: TableSnapshot) => void;
 }
 
@@ -107,7 +107,7 @@ export class TableHotkeys {
      * Replaces the selected region at the specified array index, with the
      * region provided.
      */
-    private updateSelectedRegionAtIndex(region: IRegion, index: number) {
+    private updateSelectedRegionAtIndex(region: Region, index: number) {
         const { children, numRows } = this.props;
         const { selectedRegions } = this.state;
         const numColumns = React.Children.count(children);
@@ -345,7 +345,7 @@ export class TableHotkeys {
         secondaryAxis: "row" | "col",
         isUpOrLeft: boolean,
         newFocusedCell: IFocusedCellCoordinates,
-        focusCellRegion: IRegion,
+        focusCellRegion: Region,
     ) {
         const { selectedRegions } = this.state;
 
