@@ -3634,5 +3634,12 @@
         "iconName": "tank",
         "tags": "tank, automobile, vehicle, armored",
         "group": "interface"
+    },
+    {
+        "displayName": "Header: three",
+        "iconName": "header-three",
+        "tags": "paragraph styling, formatting",
+        "group": "editor",
+        "content": "\\e793"
     }
 ]
