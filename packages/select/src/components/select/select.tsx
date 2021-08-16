@@ -41,7 +41,8 @@ export type SelectProps<T> = ISelectProps<T>;
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill` and `tagInputProps.fill`.
+     * This overrides `popoverProps.fill`. You also have to ensure that the child
+     * component has `fill` set to `true` or is styled appropriately.
      */
     fill?: boolean;
 
@@ -137,16 +138,9 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
 
-        const childProps: { fill?: boolean } = {};
-
         if (fill) {
             popoverProps.fill = true;
-            childProps.fill = true;
         }
-
-        const children = React.Children.map(this.props.children, (child: React.ReactNode) => {
-            return React.cloneElement(child as React.ReactElement, { ...childProps });
-        });
 
         const input = (
             <InputGroup
@@ -181,7 +175,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                     onKeyDown={this.state.isOpen ? handleKeyDown : this.handleTargetKeyDown}
                     onKeyUp={this.state.isOpen ? handleKeyUp : undefined}
                 >
-                    {children}
+                    {this.props.children}
                 </div>
                 <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                     {filterable ? input : undefined}
