@@ -65,6 +65,10 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
 
     /**
      * Whether the select popover should match the width of the target.
+     * Setting this to `true` will also set `usePortal` and `wrapperTagName` in `popoverProps` to `false`
+     * and `"div"` respectively.
+     * A popover modifier named `minWidth` with property of `order: 800` is also passed
+     * to `modifiers` in `popoverProps`.
      *
      * @default false
      */
@@ -186,11 +190,9 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(
-                    Classes.SELECT_POPOVER,
-                    popoverProps.popoverClassName,
-                    matchTargetWidth ? Classes.MATCH_TARGET_WIDTH : undefined,
-                )}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName, {
+                    [Classes.MATCH_TARGET_WIDTH]: matchTargetWidth,
+                })}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}
