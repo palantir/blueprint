@@ -190,7 +190,7 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName, {
-                    [Classes.MATCH_TARGET_WIDTH]: matchTargetWidth,
+                    [Classes.SELECT_MATCH_TARGET_WIDTH]: matchTargetWidth,
                 })}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
