@@ -1,0 +1,9 @@
+{
+    "extends": "../../../config/tsconfig.base",
+    "compilerOptions": {
+        "lib": ["es6", "dom"],
+        "module": "commonjs",
+        "outDir": "../lib",
+        "target": "ES2015"
+    }
+}

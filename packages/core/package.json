@@ -46,6 +46,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
+        "@blueprintjs/colors": "^0.0.0",
         "@blueprintjs/icons": "^3.27.0",
         "@types/dom4": "^2.0.1",
         "classnames": "^2.2",

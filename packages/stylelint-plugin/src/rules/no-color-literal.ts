@@ -18,7 +18,7 @@ import valueParser from "postcss-value-parser";
 import stylelint, { RuleTesterContext } from "stylelint";
 import type { Plugin } from "stylelint";
 
-import { Colors } from "@blueprintjs/core";
+import { Colors } from "@blueprintjs/colors";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
