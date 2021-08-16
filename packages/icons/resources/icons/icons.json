@@ -3640,5 +3640,17 @@
         "iconName": "third-party",
         "tags": "third party, external",
         "group": "interface"
+    },
+    {
+        "displayName": "Rocket",
+        "iconName": "rocket",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Rocket (slanted)",
+        "iconName": "rocket-slant",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
     }
 ]
