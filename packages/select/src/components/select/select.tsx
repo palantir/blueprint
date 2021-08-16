@@ -64,11 +64,10 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
     inputProps?: InputGroupProps2;
 
     /**
-     * Whether the select popover should match the width of the target.
-     * Setting this to `true` will also set `usePortal` and `wrapperTagName` in `popoverProps` to `false`
-     * and `"div"` respectively.
-     * A popover modifier named `minWidth` with property of `order: 800` is also passed
-     * to `modifiers` in `popoverProps`.
+     * Whether the select popover should be styled so that it matches the width of the target.
+     * This is done using a popper.js modifier passed through `popoverProps`.
+     *
+     * Note that setting `matchTargetWidth={true}` will also set `popoverProps.usePortal={false}` and `popoverProps.wrapperTagName="div"`.
      *
      * @default false
      */
