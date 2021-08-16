@@ -3618,6 +3618,30 @@
         "group": "interface"
     },
     {
+        "displayName": "Buggy",
+        "iconName": "buggy",
+        "tags": "vehicle, car, transportation",
+        "group": "interface"
+    },
+    {
+        "displayName": "Antenna",
+        "iconName": "antenna",
+        "tags": "antenna, signal, communication",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Tank",
+        "iconName": "tank",
+        "tags": "tank, automobile, vehicle, armored",
+        "group": "interface"
+    },
+    {
+        "displayName": "Third Party",
+        "iconName": "third-party",
+        "tags": "third party, external",
+        "group": "interface"
+    },
+    {
         "displayName": "Rocket",
         "iconName": "rocket",
         "tags": "rocket, fly, space",
