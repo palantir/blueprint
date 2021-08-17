@@ -7,6 +7,15 @@ $select-popover-max-height: $pt-grid-size * 30 !default;
 $select-popover-max-width: $pt-grid-size * 40 !default;
 
 .#{$ns}-select-popover {
+  &.#{$ns}-select-match-target-width {
+    width: 100%;
+
+    .#{$ns}-menu {
+      max-width: none;
+      min-width: 0;
+    }
+  }
+
   .#{$ns}-popover-content {
     // use padding on container rather than margin on input group
     // because top margin leaves some empty space with no background color.

@@ -3634,5 +3634,29 @@
         "iconName": "tank",
         "tags": "tank, automobile, vehicle, armored",
         "group": "interface"
+    },
+    {
+        "displayName": "Third Party",
+        "iconName": "third-party",
+        "tags": "third party, external",
+        "group": "interface"
+    },
+    {
+        "displayName": "Rocket",
+        "iconName": "rocket",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Rocket (slanted)",
+        "iconName": "rocket-slant",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Header: three",
+        "iconName": "header-three",
+        "tags": "paragraph styling, formatting",
+        "group": "editor"
     }
 ]
