@@ -6,9 +6,10 @@
     "scripts": {
         "clean": "rm -rf lib/*",
         "compile": "tsc -p src/",
-        "lint": "run-p lint:es",
+        "lint": "run-p lint:scss lint:es",
         "lint:es": "es-lint",
-        "lint-fix": "es-lint --fix",
+        "lint:scss": "sass-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "mocha test/index.js"
     },
     "dependencies": {},
