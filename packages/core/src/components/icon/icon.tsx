@@ -95,7 +95,8 @@ export interface IIconProps extends IntentProps, Props {
      * it increases accessibility. For instance, screen readers will use it for
      * aural feedback.
      *
-     * If not provided or false it will be inferred that the icon is decorative
+     * If not provided or false or an empty string it will be inferred that the
+     * icon is decorative and aria-hidden="true" will be applied
      * See https://www.w3.org/WAI/tutorials/images/decorative/
      */
     title?: string | false | null;
@@ -145,7 +146,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             tagName,
             {
                 ...htmlprops,
-                "aria-hidden": title == null ? true : undefined,
+                "aria-hidden": title ? true : undefined,
                 className: classes,
                 title: htmlTitle,
             },

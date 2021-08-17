@@ -23,17 +23,17 @@ import { Icon, IconName } from "../icon/icon";
 import { normalizeKeyCombo } from "./hotkeyParser";
 
 const KeyIcons: { [key: string]: { icon: IconName; iconTitle: string } } = {
-    alt: { icon: "key-option", iconTitle: "" },
-    cmd: { icon: "key-command", iconTitle: "" },
-    ctrl: { icon: "key-control", iconTitle: "" },
-    delete: { icon: "key-delete", iconTitle: "" },
-    down: { icon: "arrow-down", iconTitle: "" },
-    enter: { icon: "key-enter", iconTitle: "" },
-    left: { icon: "arrow-left", iconTitle: "" },
-    meta: { icon: "key-command", iconTitle: "" },
-    right: { icon: "arrow-right", iconTitle: "" },
-    shift: { icon: "key-shift", iconTitle: "" },
-    up: { icon: "arrow-up", iconTitle: "" },
+    alt: { icon: "key-option", iconTitle: "Alt/Option key" },
+    cmd: { icon: "key-command", iconTitle: "Command key" },
+    ctrl: { icon: "key-control", iconTitle: "Control key" },
+    delete: { icon: "key-delete", iconTitle: "Delete key" },
+    down: { icon: "arrow-down", iconTitle: "Down key" },
+    enter: { icon: "key-enter", iconTitle: "Enter key" },
+    left: { icon: "arrow-left", iconTitle: "Left key" },
+    meta: { icon: "key-command", iconTitle: "Command key" },
+    right: { icon: "arrow-right", iconTitle: "Right key" },
+    shift: { icon: "key-shift", iconTitle: "Shift key" },
+    up: { icon: "arrow-up", iconTitle: "Up key" },
 };
 
 // eslint-disable-next-line deprecation/deprecation
