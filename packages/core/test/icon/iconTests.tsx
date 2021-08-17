@@ -37,10 +37,6 @@ describe("<Icon>", () => {
     it("renders intent class", () =>
         assert.isTrue(shallow(<Icon icon="add" intent={Intent.DANGER} />).hasClass(Classes.INTENT_DANGER)));
 
-    it("renders icon name", () => {
-        assertIcon(<Icon icon="calendar" />, "calendar");
-    });
-
     it("renders icon without color", () => {
         assertIconColor(<Icon icon="add" />);
     });
@@ -84,15 +80,8 @@ describe("<Icon>", () => {
 
     it("applies aria-hidden=true if title is not defined", () => {
         const icon = shallow(<Icon icon="airplane" />);
-        assert.isTrue(icon.find("svg").prop("aria-hidden"));
+        assert.isTrue(icon.find(`.${Classes.ICON}`).prop("aria-hidden"));
     });
-
-    /** Asserts that rendered icon has given className. */
-    function assertIcon(icon: React.ReactElement<IIconProps>, iconName: IconName) {
-        const wrapper = shallow(icon);
-        assert.strictEqual(wrapper.text(), iconName);
-        assert.isAbove(wrapper.find("path").length, 0, "should find at least one path element");
-    }
 
     /** Asserts that rendered icon has width/height equal to size. */
     function assertIconSize(icon: React.ReactElement<IIconProps>, size: number) {

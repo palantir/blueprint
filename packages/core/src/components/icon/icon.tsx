@@ -127,7 +127,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             iconSize,
             intent,
             size = iconSize ?? IconSize.STANDARD,
-            title = icon,
+            title,
             tagName = "span",
             ...htmlprops
         } = this.props;
