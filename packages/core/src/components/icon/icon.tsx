@@ -145,7 +145,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             tagName,
             {
                 ...htmlprops,
-                "aria-hidden": title != null ? true : undefined,
+                "aria-hidden": title == null ? true : undefined,
                 className: classes,
                 title: htmlTitle,
             },
