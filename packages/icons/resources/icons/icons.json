@@ -3652,5 +3652,11 @@
         "iconName": "rocket-slant",
         "tags": "rocket, fly, space",
         "group": "miscellaneous"
+    },
+    {
+        "displayName": "Header: three",
+        "iconName": "header-three",
+        "tags": "paragraph styling, formatting",
+        "group": "editor"
     }
 ]
