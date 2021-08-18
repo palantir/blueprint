@@ -66,6 +66,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
 
     public render() {
         const { date, showTimeArrowButtons, useAmPm, ...props } = this.state;
+        const showTimePicker = this.state.timePrecision !== undefined;
 
         const options = (
             <>
@@ -89,13 +90,13 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     onChange={this.handlePrecisionChange}
                 />
                 <Switch
-                    disabled={this.state.timePrecision === undefined}
+                    disabled={!showTimePicker}
                     checked={showTimeArrowButtons}
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
                 />
                 <Switch
-                    disabled={this.state.timePrecision === undefined}
+                    disabled={!showTimePicker}
                     checked={this.state.useAmPm}
                     label="Use AM/PM"
                     onChange={this.toggleUseAmPm}
@@ -103,12 +104,19 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
             </>
         );
 
+        const timePickerProps = showTimePicker
+            ? {
+                  showArrowButtons: showTimeArrowButtons,
+                  useAmPm,
+              }
+            : undefined;
+
         return (
             <Example options={options} {...this.props}>
                 <DatePicker
                     className={Classes.ELEVATION_1}
                     onChange={this.handleDateChange}
-                    timePickerProps={{ showArrowButtons: showTimeArrowButtons, useAmPm }}
+                    timePickerProps={timePickerProps}
                     {...props}
                 />
                 <MomentDate date={date} withTime={props.timePrecision !== undefined} />
