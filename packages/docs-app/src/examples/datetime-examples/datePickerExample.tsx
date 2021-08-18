@@ -31,6 +31,7 @@ export interface IDatePickerExampleState {
     showActionsBar: boolean;
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
+    useAmPm?: boolean;
 }
 
 export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
@@ -42,6 +43,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
         showActionsBar: false,
         showTimeArrowButtons: false,
         timePrecision: undefined,
+        useAmPm: false,
     };
 
     private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
@@ -60,8 +62,10 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
         this.setState({ showTimeArrowButtons }),
     );
 
+    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
+
     public render() {
-        const { date, showTimeArrowButtons, ...props } = this.state;
+        const { date, showTimeArrowButtons, useAmPm, ...props } = this.state;
 
         const options = (
             <>
@@ -90,6 +94,12 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     label="Show timepicker arrow buttons"
                     onChange={this.toggleTimepickerArrowButtons}
                 />
+                <Switch
+                    disabled={this.state.timePrecision === undefined}
+                    checked={this.state.useAmPm}
+                    label="Use AM/PM"
+                    onChange={this.toggleUseAmPm}
+                />
             </>
         );
 
@@ -98,7 +108,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                 <DatePicker
                     className={Classes.ELEVATION_1}
                     onChange={this.handleDateChange}
-                    timePickerProps={{ showArrowButtons: showTimeArrowButtons }}
+                    timePickerProps={{ showArrowButtons: showTimeArrowButtons, useAmPm }}
                     {...props}
                 />
                 <MomentDate date={date} withTime={props.timePrecision !== undefined} />
