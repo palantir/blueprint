@@ -3658,5 +3658,11 @@
         "iconName": "header-three",
         "tags": "paragraph styling, formatting",
         "group": "editor"
+    },
+    {
+        "displayName": "Helicopter",
+        "iconName": "helicopter",
+        "tags": "helicopter, chopper, fly",
+        "group": "miscellaneous"
     }
 ]
