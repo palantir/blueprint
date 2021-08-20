@@ -103,19 +103,18 @@ export default stylelint.createPlugin(ruleName, ((
             if (type !== "word" || !isHexColor(value)) {
                 return;
             }
-            const normalizedHex = normalizeHexColor(value);
-            if (hexToColorName[normalizedHex] == null) {
+            const cssVar = getCssColorVariable(value, cssSyntax);
+            if (cssVar == null) {
                 return;
             }
-            const fixed = BpVariablePrefixMap[cssSyntax] + hexToColorName[normalizedHex].toLocaleLowerCase();
             if ((context as any).fix && !disableFix) {
                 assertBpVariablesImportExists(cssSyntax);
-                node.value = fixed;
+                node.value = cssVar;
                 needsFix = true;
             } else {
                 stylelint.utils.report({
                     index: declarationValueIndex(decl) + node.sourceIndex,
-                    message: messages.expected(value, fixed),
+                    message: messages.expected(value, cssVar),
                     node: decl,
                     result,
                     ruleName,
@@ -132,6 +131,17 @@ function declarationValueIndex(decl: postcss.Declaration) {
     const beforeColon = decl.toString().indexOf(":");
     const afterColon = decl.raw("between").length - decl.raw("between").indexOf(":");
     return beforeColon + afterColon;
+}
+
+/**
+ * Returns a CSS color variable for a given hex color, or undefined if one doesn't exist.
+ */
+function getCssColorVariable(hexColor: string, cssSyntax: CssSyntax.SASS | CssSyntax.LESS): string | undefined {
+    const normalizedHex = normalizeHexColor(hexColor);
+    if (hexToColorName[normalizedHex] == null) {
+        return undefined;
+    }
+    return BpVariablePrefixMap[cssSyntax] + hexToColorName[normalizedHex].toLocaleLowerCase().split("_").join("-");
 }
 
 function getHexToColorName(): { [upperHex: string]: string } {
