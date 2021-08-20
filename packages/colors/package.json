@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "Blueprint color definitions and utilities",
     "main": "lib/index.js",
     "scripts": {
@@ -12,7 +12,6 @@
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "mocha test/index.js"
     },
-    "dependencies": {},
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.5.1",
         "mocha": "^8.2.1",
