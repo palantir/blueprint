@@ -56,6 +56,13 @@ $pt-dark-tooltip2-box-shadow: $pt-dark-popover-box-shadow !default;
 
   .#{$ns}-popover2-content {
     background: $background-color;
+  }
+
+  // Some popovers (like tooltips) invert their foreground/background colors relative
+  // to what we expect for the theme. In those cases, we need to override global typography
+  // styles to get the right colors.
+  .#{$ns}-popover2-content,
+  .#{$ns}-heading {
     color: $text-color;
   }
 
