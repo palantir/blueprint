@@ -40,6 +40,13 @@ export type SelectProps<T> = ISelectProps<T>;
 /** @deprecated use SelectProps */
 export interface ISelectProps<T> extends IListItemsProps<T> {
     /**
+     * Whether the component should take up the full width of its container.
+     * This overrides `popoverProps.fill`. You also have to ensure that the child
+     * component has `fill` set to `true` or is styled appropriately.
+     */
+    fill?: boolean;
+
+    /**
      * Whether the dropdown list can be filtered.
      * Disabling this option will remove the `InputGroup` and ignore `inputProps`.
      *
@@ -140,12 +147,17 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const {
+            fill,
             filterable = true,
             disabled = false,
             inputProps = {},
             popoverProps = {},
             matchTargetWidth,
         } = this.props;
+
+        if (fill) {
+            popoverProps.fill = true;
+        }
 
         if (matchTargetWidth) {
             if (popoverProps.modifiers == null) {
