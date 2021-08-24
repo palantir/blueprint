@@ -64,69 +64,6 @@ describe("<Dialog>", () => {
         document.body.removeChild(container);
     });
 
-    describe("accessibility support", () => {
-        const mountDefaults = (className: string) => {
-            const container = document.createElement("div");
-            document.body.appendChild(container);
-            mount(
-                <Dialog
-                    className={className}
-                    isOpen={true}
-                    portalContainer={container}
-                    aria-labelledby="dialog-title"
-                    aria-describedby="dialog-description"
-                >
-                    {createDialogContents()}
-                </Dialog>,
-            );
-
-            return () => document.body.removeChild(container);
-        };
-
-        it("renders with role={dialog}", () => {
-            const cleanUp = mountDefaults("check-role");
-            const dialogElement = document.querySelector(`.check-role`);
-            assert.equal(dialogElement!.getAttribute("role"), "dialog", "missing dialog role!!");
-            cleanUp();
-        });
-
-        it("renders with provided aria-labelledby and aria-described by from props", () => {
-            const cleanUp = mountDefaults("renders-with-props");
-            const dialogElement = document.querySelector(`.renders-with-props`);
-            assert.equal(dialogElement?.getAttribute("aria-labelledby"), "dialog-title");
-            assert.equal(dialogElement?.getAttribute("aria-describedby"), "dialog-description");
-            cleanUp();
-        });
-
-        it("uses title as default aria-labelledby", () => {
-            const container = document.createElement("div");
-            document.body.appendChild(container);
-            mount(
-                <Dialog className="default-title" isOpen={true} portalContainer={container} title="Title by props">
-                    {createDialogContents()}
-                </Dialog>,
-            );
-            const dialogElement = document.querySelector(`.default-title`);
-            // test existence here because id is generated
-            assert.exists(dialogElement?.getAttribute("aria-labelledby"));
-            document.body.removeChild(container);
-        });
-
-        it("does not apply default aria-labelledby if no title", () => {
-            const container = document.createElement("div");
-            document.body.appendChild(container);
-            mount(
-                <Dialog className={"no-default-if-no-title"} isOpen={true} portalContainer={container}>
-                    {createDialogContents()}
-                </Dialog>,
-            );
-            const dialogElement = document.querySelector(`.no-default-if-no-title`);
-            // test existence here because id is generated
-            assert.notExists(dialogElement?.getAttribute("aria-labelledby"));
-            document.body.removeChild(container);
-        });
-    });
-
     it("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
@@ -207,6 +144,67 @@ describe("<Dialog>", () => {
     it("only adds its className in one location", () => {
         const dialog = mount(<Dialog className="foo" isOpen={true} title="title" usePortal={false} />);
         assert.lengthOf(dialog.find(".foo").hostNodes(), 1);
+    });
+
+    describe("accessibility features", () => {
+        const mountDialog = (className: string) => {
+            return mount(
+                <Dialog
+                    className={className}
+                    isOpen={true}
+                    portalContainer={container}
+                    aria-labelledby="dialog-title"
+                    aria-describedby="dialog-description"
+                >
+                    {createDialogContents()}
+                </Dialog>,
+            );
+        };
+
+        let container: HTMLElement | undefined;
+
+        beforeEach(() => {
+            container = document.createElement("div");
+            document.body.appendChild(container);
+        });
+
+        afterEach(() => {
+            if (container != null) {
+                document.body.removeChild(container);
+            }
+        });
+
+        it("renders with role={dialog}", () => {
+            const dialog = mountDialog("check-role");
+            assert.equal(dialog.find(`.check-role`).hostNodes().prop("role"), "dialog", "missing dialog role!!");
+        });
+
+        it("renders with provided aria-labelledby and aria-described by from props", () => {
+            const dialog = mountDialog("renders-with-props");
+            const dialogElement = dialog.find(`.renders-with-props`).hostNodes();
+            assert.equal(dialogElement.prop("aria-labelledby"), "dialog-title");
+            assert.equal(dialogElement.prop("aria-describedby"), "dialog-description");
+        });
+
+        it("uses title as default aria-labelledby", () => {
+            const dialog = mount(
+                <Dialog className="default-title" isOpen={true} portalContainer={container} title="Title by props">
+                    {createDialogContents()}
+                </Dialog>,
+            );
+            // test existence here because id is generated
+            assert.exists(dialog.find(".default-title").hostNodes().prop("aria-labelledby"));
+        });
+
+        it("does not apply default aria-labelledby if no title", () => {
+            const dialog = mount(
+                <Dialog className={"no-default-if-no-title"} isOpen={true} portalContainer={container}>
+                    {createDialogContents()}
+                </Dialog>,
+            );
+            // test existence here because id is generated
+            assert.notExists(dialog.find(".no-default-if-no-title").hostNodes().prop("aria-labelledby"));
+        });
     });
 
     // everything else about Dialog is tested by Overlay
