@@ -21,11 +21,11 @@ import type { IFocusedCellCoordinates } from "./common/cell";
 import type { IColumnIndices, IRowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { IColumnWidths } from "./headers/columnHeader";
-import type { IRowHeaderRenderer, IRowHeights } from "./headers/rowHeader";
+import type { RowHeaderRenderer, IRowHeights } from "./headers/rowHeader";
 import type { IContextMenuRenderer } from "./interactions/menus";
 import type { IIndexedResizeCallback } from "./interactions/resizable";
 import type { ISelectedRegionTransform } from "./interactions/selectable";
-import type { IRegion, IStyledRegionGroup, RegionCardinality, TableLoadingOption } from "./regions";
+import type { Region, StyledRegionGroup, RegionCardinality, TableLoadingOption } from "./regions";
 
 // eslint-disable-next-line deprecation/deprecation
 export type TableProps = ITableProps;
@@ -48,8 +48,8 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
     /**
      * An optional callback for displaying a context menu when right-clicking
      * on the table body. The callback is supplied with an array of
-     * `IRegion`s. If the mouse click was on a selection, the array will
-     * contain all selected regions. Otherwise it will have one `IRegion` that
+     * `Region`s. If the mouse click was on a selection, the array will
+     * contain all selected regions. Otherwise it will have one `Region` that
      * represents the clicked cell.
      */
     bodyContextMenuRenderer?: IContextMenuRenderer;
@@ -224,7 +224,7 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
     /**
      * A callback called when the selection is changed in the table.
      */
-    onSelection?: (selectedRegions: IRegion[]) => void;
+    onSelection?: (selectedRegions: Region[]) => void;
 
     /**
      * A callback called when the visible cell indices change in the table.
@@ -245,7 +245,7 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
     /**
      * Render each row's header cell.
      */
-    rowHeaderCellRenderer?: IRowHeaderRenderer;
+    rowHeaderCellRenderer?: RowHeaderRenderer;
 
     /**
      * A sparse number array with a length equal to the number of rows. Any
@@ -266,7 +266,7 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
      * selection you can pass to the `selectedRegions` prop. Therefore you can,
      * for example, convert cell clicks into row selections.
      */
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
 
     /**
      * An optional transform function that will be applied to the located
@@ -305,5 +305,5 @@ export interface ITableProps extends Props, IRowHeights, IColumnWidths {
      * Styled region groups are rendered as overlays above the table and are
      * marked with their own `className` for custom styling.
      */
-    styledRegionGroups?: IStyledRegionGroup[];
+    styledRegionGroups?: StyledRegionGroup[];
 }

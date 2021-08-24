@@ -39,8 +39,9 @@ import {
     ColumnHeaderCell,
     EditableCell2,
     EditableName,
-    IStyledRegionGroup,
+    StyledRegionGroup,
     JSONFormat,
+    Region,
     RegionCardinality,
     Regions,
     RowHeaderCell,
@@ -53,7 +54,6 @@ import {
 import { IFocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
 import { IColumnIndices, IRowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
-import { IRegion } from "@blueprintjs/table/src/regions";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";
@@ -206,12 +206,12 @@ function contains(arr: any[], value: any) {
     return arr.indexOf(value) >= 0;
 }
 
-function enforceWholeColumnSelection(region: IRegion) {
+function enforceWholeColumnSelection(region: Region) {
     delete region.rows;
     return region;
 }
 
-function enforceWholeRowSelection(region: IRegion) {
+function enforceWholeRowSelection(region: Region) {
     delete region.cols;
     return region;
 }
@@ -248,7 +248,7 @@ export interface IMutableTableState {
     scrollToRowIndex?: number;
     selectedFocusStyle?: FocusStyle;
     selectedRegionTransformPreset?: SelectedRegionTransformPreset;
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
     showCallbackLogs?: boolean;
     showCellsLoading?: boolean;
     showColumnHeadersLoading?: boolean;
@@ -881,7 +881,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
         this.maybeLogCallback("[onCompleteRender]");
     };
 
-    private onSelection = (selectedRegions: IRegion[]) => {
+    private onSelection = (selectedRegions: Region[]) => {
         this.maybeLogCallback(`[onSelection] selectedRegions =`, ...selectedRegions);
         this.setState({ selectedRegions });
     };
@@ -946,7 +946,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
     private handleScrollToButtonClick = () => {
         const { scrollToRowIndex, scrollToColumnIndex, scrollToRegionType } = this.state;
 
-        let region: IRegion;
+        let region: Region;
         switch (scrollToRegionType) {
             case RegionCardinality.CELLS:
                 region = Regions.cell(scrollToRowIndex, scrollToColumnIndex);
@@ -1107,7 +1107,7 @@ export class MutableTable extends React.Component<{}, IMutableTableState> {
                       className: "tbl-styled-region-danger",
                       regions: [Regions.cell(5, 3, 7, 7)],
                   },
-              ] as IStyledRegionGroup[]);
+              ] as StyledRegionGroup[]);
     }
 }
 

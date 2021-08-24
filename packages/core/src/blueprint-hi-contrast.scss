@@ -5,6 +5,8 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
+/* stylelint-disable @blueprintjs/no-color-literal */
+
 // override some intent colors to pass contrast requirements
 $pt-intent-primary: #106ba3 !default; // $blue2
 $pt-intent-success: #0d8050 !default; // $green2;
@@ -13,7 +15,7 @@ $pt-intent-danger: #c23030 !default; // $red2;
 
 // Import files in the same order that they are documented in the docs
 @import "common/variables";
-@import "common/colors";
+@import "~@blueprintjs/colors/src/colors";
 
 @import "reset";
 @import "typography";

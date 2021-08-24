@@ -25,3 +25,4 @@ export const OMNIBAR = `${NS}-omnibar`;
 export const OMNIBAR_OVERLAY = `${OMNIBAR}-overlay`;
 export const SELECT = `${NS}-select`;
 export const SELECT_POPOVER = `${SELECT}-popover`;
+export const SELECT_MATCH_TARGET_WIDTH = `${SELECT}-match-target-width`;

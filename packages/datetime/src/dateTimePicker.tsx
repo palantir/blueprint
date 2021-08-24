@@ -100,7 +100,11 @@ export class DateTimePicker extends AbstractPureComponent2<IDateTimePickerProps,
                     onChange={this.handleDateChange}
                     value={value}
                 />
-                <TimePicker {...this.props.timePickerProps} onChange={this.handleTimeChange} value={value} />
+                <TimePicker
+                    {...this.props.timePickerProps}
+                    onChange={this.handleTimeChange}
+                    value={this.state.timeValue}
+                />
             </div>
         );
     }

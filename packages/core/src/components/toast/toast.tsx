@@ -80,7 +80,7 @@ export class Toast extends AbstractPureComponent2<IToastProps> {
                 <span className={Classes.TOAST_MESSAGE}>{message}</span>
                 <ButtonGroup minimal={true}>
                     {this.maybeRenderActionButton()}
-                    <Button icon="cross" onClick={this.handleCloseClick} />
+                    <Button aria-label="Close" icon="cross" onClick={this.handleCloseClick} />
                 </ButtonGroup>
             </div>
         );

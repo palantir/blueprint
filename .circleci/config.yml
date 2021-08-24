@@ -11,23 +11,23 @@ aliases:
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v3-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v4-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &restore-yarn-cache
     name: Restore yarnpkg cache
-    key: v3-yarn-cache
+    key: v4-yarn-cache
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v3-yarn-deps-{{ checksum "yarn.lock" }}
+    key: v4-yarn-deps-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
     name: Save yarnpkg cache
     paths:
       - ~/.cache/yarn
-    key: v3-yarn-cache
+    key: v4-yarn-cache
 
 references:
   reports_path: &reports_path
@@ -108,6 +108,26 @@ jobs:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
 
+  test-node-libs:
+    docker: *docker-node-lts
+    environment:
+      JUNIT_REPORT_PATH: reports
+    parallelism: 2
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: mkdir -p ./reports
+      - run:
+          command: |
+            case $CIRCLE_NODE_INDEX in \
+            0) yarn lerna run --scope "@blueprintjs/eslint-plugin" test ;; \
+            1) yarn lerna run --scope "@blueprintjs/stylelint-plugin" test ;; \
+            esac
+          when: always
+      - store_test_results: { path: ./reports }
+      - store_artifacts: { path: ./reports }
+
   test-react-16: &test-react
     docker: *docker-node-browsers
     environment:
@@ -117,7 +137,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
-      - run: mkdir ./reports
+      - run: mkdir -p ./reports
       - run:
           # split karma tests into containers because they can take up a lot of memory
           # running them in one container caused Karma to time out frequently
@@ -161,7 +181,6 @@ jobs:
           when: always
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
-
 
   test-iso-react-16: &test-iso
     docker: *docker-node-lts
@@ -219,6 +238,8 @@ workflows:
           requires: [compile]
       - dist:
           requires: [compile]
+      - test-node-libs:
+          requires: [compile]
       - test-react-15:
           requires: [compile]
       - test-react-16:
@@ -236,6 +257,7 @@ workflows:
             [
               dist,
               lint,
+              test-node-libs,
               test-react-15,
               test-react-16,
               test-react-16-only,

@@ -22,16 +22,16 @@ import { IFocusedCellCoordinates } from "../common/cell";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
 import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
-import { IRegion, Regions } from "../regions";
+import { Region, Regions } from "../regions";
 import { DragEvents } from "./dragEvents";
 import { Draggable, IDraggableProps } from "./draggable";
 import { ICoordinateData } from "./dragTypes";
 
 export type ISelectedRegionTransform = (
-    region: IRegion,
+    region: Region,
     event: MouseEvent | KeyboardEvent,
     coords?: ICoordinateData,
-) => IRegion;
+) => Region;
 export type SelectedRegionTransform = ISelectedRegionTransform;
 
 export interface ISelectableProps {
@@ -61,21 +61,21 @@ export interface ISelectableProps {
      * array of `Region`s. This array should be considered the new selection
      * state for the entire table.
      */
-    onSelection: (regions: IRegion[]) => void;
+    onSelection: (regions: Region[]) => void;
 
     /**
      * An additional convenience callback invoked when the user releases the
      * mouse from either a click or a drag, indicating that the selection
      * interaction has ended.
      */
-    onSelectionEnd?: (regions: IRegion[]) => void;
+    onSelectionEnd?: (regions: Region[]) => void;
 
     /**
      * An array containing the table's selection Regions.
      *
      * @default []
      */
-    selectedRegions?: IRegion[];
+    selectedRegions?: Region[];
 
     /**
      * An optional transform function that will be applied to the located
@@ -105,14 +105,14 @@ export interface IDragSelectableProps extends ISelectableProps {
      * A callback that determines a `Region` for the single `MouseEvent`. If
      * no valid region can be found, `null` may be returned.
      */
-    locateClick: (event: MouseEvent) => IRegion;
+    locateClick: (event: MouseEvent) => Region;
 
     /**
      * A callback that determines a `Region` for the `MouseEvent` and
      * coordinate data representing a drag. If no valid region can be found,
      * `null` may be returned.
      */
-    locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => IRegion;
+    locateDrag: (event: MouseEvent, coords: ICoordinateData, returnEndOnly?: boolean) => Region;
 }
 
 export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
@@ -124,7 +124,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
 
     private didExpandSelectionOnActivate = false;
 
-    private lastEmittedSelectedRegions: IRegion[];
+    private lastEmittedSelectedRegions: Region[];
 
     public render() {
         const draggableProps = this.getDraggableProps();
@@ -285,7 +285,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         this.invokeOnFocusCallbackForRegion(nextSelectedRegion, 0);
     };
 
-    private handleExpandSelection = (region: IRegion) => {
+    private handleExpandSelection = (region: Region) => {
         const { focusedCell, selectedRegions } = this.props;
         this.didExpandSelectionOnActivate = true;
 
@@ -300,7 +300,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         }
     };
 
-    private handleAddDisjointSelection = (region: IRegion) => {
+    private handleAddDisjointSelection = (region: Region) => {
         const { selectedRegions } = this.props;
 
         // add the new region to the existing selections
@@ -311,7 +311,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         this.invokeOnFocusCallbackForRegion(region, nextSelectedRegions.length - 1);
     };
 
-    private handleReplaceSelection = (region: IRegion) => {
+    private handleReplaceSelection = (region: Region) => {
         // clear all selections and retain only the new one
         const nextSelectedRegions = [region];
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
@@ -323,7 +323,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
     // Callbacks
     // =========
 
-    private maybeInvokeSelectionCallback(nextSelectedRegions: IRegion[]) {
+    private maybeInvokeSelectionCallback(nextSelectedRegions: Region[]) {
         const { onSelection } = this.props;
         // invoke only if the selection changed. this is useful only on
         // mousemove; there's special handling for mousedown interactions that
@@ -337,7 +337,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
         }
     }
 
-    private invokeOnFocusCallbackForRegion = (focusRegion: IRegion, focusSelectionIndex = 0) => {
+    private invokeOnFocusCallbackForRegion = (focusRegion: Region, focusSelectionIndex = 0) => {
         const { onFocusedCell } = this.props;
         const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(focusRegion);
         onFocusedCell(FocusedCellUtils.toFullCoordinates(focusedCellCoords, focusSelectionIndex));
@@ -357,7 +357,7 @@ export class DragSelectable extends React.PureComponent<IDragSelectableProps> {
      * last-selected region with the expanded region. If a focused cell is provided,
      * the focused cell will serve as an anchor for the expansion.
      */
-    private expandSelectedRegions(regions: IRegion[], region: IRegion, focusedCell?: IFocusedCellCoordinates) {
+    private expandSelectedRegions(regions: Region[], region: Region, focusedCell?: IFocusedCellCoordinates) {
         if (regions.length === 0) {
             return [region];
         } else if (focusedCell != null) {

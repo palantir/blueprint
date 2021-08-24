@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "3.47.0",
+    "version": "3.48.0",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -32,7 +32,7 @@
         "dist": "run-s \"dist:*\"",
         "dist:bundle": "cross-env NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css/*.css",
-        "dist:variables": "generate-css-variables common/_colors.scss common/_color-aliases.scss common/_variables.scss",
+        "dist:variables": "generate-css-variables ../../colors/src/colors.scss common/_color-aliases.scss common/_variables.scss",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -46,7 +46,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/icons": "^3.27.0",
+        "@blueprintjs/colors": "^1.0.0",
+        "@blueprintjs/icons": "^3.28.0",
         "@types/dom4": "^2.0.1",
         "classnames": "^2.2",
         "dom4": "^2.1.5",
