@@ -28,12 +28,42 @@ Simply add this plugin in your `.stylelintrc` file and then pick the rules that 
         "@blueprintjs/stylelint-plugin"
     ],
     "rules": {
+        "@blueprintjs/no-color-literal": true,
         "@blueprintjs/no-prefix-literal": true
     }
 }
 ```
 
 ## Rules
+
+### `@blueprintjs/no-color-literal` (autofixable)
+
+Enforce usage of the color variables instead of color literals.
+
+```json
+{
+    "rules": {
+        "@blueprintjs/no-color-literal": true
+    }
+}
+```
+
+```diff
+-.my-class {
+-    border: 1px solid #137CBD;
+-}
++ @import "~@blueprintjs/core/lib/scss/variables";
++
++.my-class {
++    border: 1px solid $blue3;
++}
+```
+
+Optional secondary options:
+
+- `disableFix: boolean` - if true, autofix will be disabled
+- `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
+
 
 ### `@blueprintjs/no-prefix-literal` (autofixable)
 
@@ -53,7 +83,7 @@ The `@blueprintjs` package exports a `bp-ns` CSS variable which contains the pre
 -.bp3-button > div {
 -    border: 1px solid black;
 -}
-+ @import "~@blueprntjs/core/lib/scss/variables";
++ @import "~@blueprintjs/core/lib/scss/variables";
 +
 +.#{$bp-ns}-button > div {
 +    border: 1px solid black;

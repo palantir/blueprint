@@ -70,6 +70,16 @@ export interface ISelectProps<T> extends IListItemsProps<T> {
      */
     inputProps?: InputGroupProps2;
 
+    /**
+     * Whether the select popover should be styled so that it matches the width of the target.
+     * This is done using a popper.js modifier passed through `popoverProps`.
+     *
+     * Note that setting `matchTargetWidth={true}` will also set `popoverProps.usePortal={false}` and `popoverProps.wrapperTagName="div"`.
+     *
+     * @default false
+     */
+    matchTargetWidth?: boolean;
+
     /** Props to spread to `Popover`. Note that `content` cannot be changed. */
     // eslint-disable-next-line @typescript-eslint/ban-types
     popoverProps?: Partial<IPopoverProps> & object;
@@ -136,10 +146,35 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
 
     private renderQueryList = (listProps: IQueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
-        const { fill, filterable = true, disabled = false, inputProps = {}, popoverProps = {} } = this.props;
+        const {
+            fill,
+            filterable = true,
+            disabled = false,
+            inputProps = {},
+            popoverProps = {},
+            matchTargetWidth,
+        } = this.props;
 
         if (fill) {
             popoverProps.fill = true;
+        }
+
+        if (matchTargetWidth) {
+            if (popoverProps.modifiers == null) {
+                popoverProps.modifiers = {};
+            }
+
+            popoverProps.modifiers.minWidth = {
+                enabled: true,
+                fn: data => {
+                    data.styles.width = `${data.offsets.reference.width}px`;
+                    return data;
+                },
+                order: 800,
+            };
+
+            popoverProps.usePortal = false;
+            popoverProps.wrapperTagName = "div";
         }
 
         const input = (
@@ -166,7 +201,9 @@ export class Select<T> extends AbstractPureComponent2<SelectProps<T>, ISelectSta
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 onInteraction={this.handlePopoverInteraction}
-                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
+                popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName, {
+                    [Classes.SELECT_MATCH_TARGET_WIDTH]: matchTargetWidth,
+                })}
                 onOpening={this.handlePopoverOpening}
                 onOpened={this.handlePopoverOpened}
                 onClosing={this.handlePopoverClosing}

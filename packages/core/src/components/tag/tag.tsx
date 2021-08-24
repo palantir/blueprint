@@ -161,6 +161,7 @@ export class Tag extends AbstractPureComponent2<TagProps> {
         const isLarge = large || tagClasses.indexOf(Classes.LARGE) >= 0;
         const removeButton = isRemovable ? (
             <button
+                aria-label="Remove"
                 type="button"
                 className={Classes.TAG_REMOVE}
                 onClick={this.onRemoveClick}

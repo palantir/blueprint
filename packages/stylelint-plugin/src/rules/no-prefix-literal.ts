@@ -19,6 +19,14 @@ import stylelint from "stylelint";
 import type { Plugin, RuleTesterContext } from "stylelint";
 
 import { checkImportExists } from "../utils/checkImportExists";
+import {
+    BpPrefixVariableMap,
+    BpVariableImportMap,
+    CssExtensionMap,
+    CssSyntax,
+    getCssSyntax,
+    isCssSyntaxToStringMap,
+} from "../utils/cssSyntax";
 import { insertImport } from "../utils/insertImport";
 
 const ruleName = "@blueprintjs/no-prefix-literal";
@@ -56,14 +64,7 @@ export default stylelint.createPlugin(ruleName, ((
             optional: true,
             possible: {
                 disableFix: [true, false],
-                variablesImportPath: (obj: unknown) => {
-                    if (typeof obj !== "object" || obj == null) {
-                        return false;
-                    }
-                    // Check that the keys and their values are correct
-                    const allowedKeys = new Set<string>(Object.values(CssSyntax).filter(v => v !== CssSyntax.OTHER));
-                    return Object.keys(obj).every(key => allowedKeys.has(key) && typeof (obj as any)[key] === "string");
-                },
+                variablesImportPath: isCssSyntaxToStringMap,
             },
         },
     );
@@ -120,36 +121,3 @@ export default stylelint.createPlugin(ruleName, ((
         }).processSync(rule.selector);
     });
 }) as Plugin);
-
-enum CssSyntax {
-    SASS = "sass",
-    LESS = "less",
-    OTHER = "other",
-}
-
-const CssExtensionMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "scss",
-    [CssSyntax.LESS]: "less",
-};
-
-const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "#{$bp-ns}",
-    [CssSyntax.LESS]: "@{bp-ns}",
-};
-
-const BpVariableImportMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "~@blueprintjs/core/lib/scss/variables",
-    [CssSyntax.LESS]: "~@blueprintjs/core/lib/less/variables",
-};
-
-/**
- * Returns the flavor of the CSS we're dealing with.
- */
-function getCssSyntax(fileName: string): CssSyntax {
-    for (const cssSyntax of Object.keys(CssExtensionMap)) {
-        if (fileName.endsWith(`.${CssExtensionMap[cssSyntax as Exclude<CssSyntax, CssSyntax.OTHER>]}`)) {
-            return cssSyntax as Exclude<CssSyntax, CssSyntax.OTHER>;
-        }
-    }
-    return CssSyntax.OTHER;
-}

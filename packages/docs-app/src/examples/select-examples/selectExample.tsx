@@ -26,6 +26,7 @@ export interface ISelectExampleState {
     allowCreate: boolean;
     createFirst: boolean;
     createdItems: IFilm[];
+    fill: boolean;
     filterable: boolean;
     hasInitialContent: boolean;
     minimal: boolean;
@@ -34,7 +35,7 @@ export interface ISelectExampleState {
     resetOnSelect: boolean;
     disableItems: boolean;
     disabled: boolean;
-    fill: boolean;
+    matchTargetWidth: false;
 }
 
 export class SelectExample extends React.PureComponent<IExampleProps, ISelectExampleState> {
@@ -47,6 +48,7 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
         fill: false,
         filterable: true,
         hasInitialContent: false,
+        matchTargetWidth: false,
         minimal: false,
         resetOnClose: false,
         resetOnQuery: true,
@@ -74,6 +76,8 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
     private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
 
     private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
+
+    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
 
     public render() {
         const { allowCreate, disabled, disableItems, minimal, ...flags } = this.state;
@@ -128,6 +132,11 @@ export class SelectExample extends React.PureComponent<IExampleProps, ISelectExa
                     label="Disable films before 2000"
                     checked={this.state.disableItems}
                     onChange={this.handleItemDisabledChange}
+                />
+                <Switch
+                    label="Match target width"
+                    checked={this.state.matchTargetWidth}
+                    onChange={this.handleMatchTargetWidthChange}
                 />
                 <Switch
                     label="Allow creating new items"

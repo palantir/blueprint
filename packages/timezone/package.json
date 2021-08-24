@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/timezone",
-    "version": "3.9.6",
+    "version": "3.9.7",
     "description": "Components related to timezone selection and UI",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -35,8 +35,8 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.47.0",
-        "@blueprintjs/select": "^3.16.6",
+        "@blueprintjs/core": "^3.48.0",
+        "@blueprintjs/select": "^3.17.0",
         "classnames": "^2.2",
         "moment": "^2.29.0",
         "moment-timezone": "^0.5.31",

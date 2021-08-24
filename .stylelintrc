@@ -8,6 +8,7 @@
   ],
   "rules": {
     "@blueprintjs/no-prefix-literal": [true, { "disableFix": true }],
+    "@blueprintjs/no-color-literal": [true, { "disableFix": true }],
     "declaration-empty-line-before": null,
     "indentation": [2, {
       "ignore": ["value"]

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { IRegion, RegionCardinality, Regions } from "../../regions";
+import { Region, RegionCardinality, Regions } from "../../regions";
 
 /**
  * Returns the scroll{Left,Top} offsets of the provided region based on its
  * cardinality.
  */
 export function getScrollPositionForRegion(
-    region: IRegion,
+    region: Region,
     currScrollLeft: number,
     currScrollTop: number,
     getLeftOffset: (columnIndex: number) => number,
@@ -76,6 +76,9 @@ export function getScrollPositionForRegion(
  * If the target scroll bar is not present, 0 is returned.
  */
 export function measureScrollBarThickness(element: HTMLElement, direction: "horizontal" | "vertical") {
+    if (element == null) {
+        return 0;
+    }
     // offset size includes the scroll bar. client size does not.
     // the difference gives the thickness of the scroll bar.
     return direction === "horizontal"
