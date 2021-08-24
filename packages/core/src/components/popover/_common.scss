@@ -141,6 +141,9 @@ $dark-popover-background-color: $dark-gray4 !default;
     background: $background-color;
   }
 
+  // Some popovers (like tooltips) invert their foreground/background colors relative
+  // to what we expect for the theme. In those cases, we need to override global typography
+  // styles to get the right colors.
   .#{$ns}-popover-content,
   .#{$ns}-heading {
     color: $text-color;
