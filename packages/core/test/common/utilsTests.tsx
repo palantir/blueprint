@@ -116,12 +116,12 @@ describe("Utils", () => {
     });
 
     it("uniqueId", () => {
-        const prefix = "testPrefix";
-        const otherPrefix = "otherPrefix";
-        assert.equal(Utils.uniqueId(prefix), `///${prefix}-0///`);
-        assert.equal(Utils.uniqueId(prefix), `///${prefix}-1///`);
-        assert.equal(Utils.uniqueId(prefix), `///${prefix}-2///`);
-        assert.equal(Utils.uniqueId(otherPrefix), `///${otherPrefix}-0///`);
+        const ns = "testNamespace";
+        const otherNs = "otherNamespace";
+        assert.equal(Utils.uniqueId(ns), `${ns}-0`);
+        assert.equal(Utils.uniqueId(ns), `${ns}-1`);
+        assert.equal(Utils.uniqueId(ns), `${ns}-2`);
+        assert.equal(Utils.uniqueId(otherNs), `${otherNs}-0`);
     });
 
     // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?
