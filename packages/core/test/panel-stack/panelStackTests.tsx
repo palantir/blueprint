@@ -159,14 +159,18 @@ describe("<PanelStack>", () => {
         newPanelButton.simulate("click");
 
         const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-        assert.equal(backButtonWithoutTitle.text(), "chevron-left");
+        assert.equal(
+            backButtonWithoutTitle.text(),
+            "Go back",
+            "expected icon-only back button to have accessible title",
+        );
 
         const newPanelButtonOnNotEmpty = panelStackWrapper.find("#new-panel-button").hostNodes().at(1);
         assert.exists(newPanelButtonOnNotEmpty);
         newPanelButtonOnNotEmpty.simulate("click");
 
         const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK).hostNodes().at(1);
-        assert.equal(backButtonWithTitle.text(), "chevron-left");
+        assert.equal(backButtonWithTitle.text(), "Go back", "expected icon-only back button to have accessible title");
     });
 
     it("can render a panel stack in controlled mode", () => {

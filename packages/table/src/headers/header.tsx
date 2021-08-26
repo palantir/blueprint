@@ -396,7 +396,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                       <div
                           className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}
                       >
-                          <Icon icon="drag-handle-vertical" />
+                          <Icon icon="drag-handle-vertical" title="Press down to drag" />
                       </div>
                   </div>,
                   false,

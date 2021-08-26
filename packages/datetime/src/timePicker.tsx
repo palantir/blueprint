@@ -244,7 +244,10 @@ export class TimePicker extends React.Component<TimePickerProps, ITimePickerStat
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
             <span tabIndex={-1} className={classes} onClick={onClick}>
-                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
+                <Icon
+                    icon={isDirectionUp ? "chevron-up" : "chevron-down"}
+                    title={isDirectionUp ? "Increase" : "Decrease"}
+                />
             </span>
         );
     }

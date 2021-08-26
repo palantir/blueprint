@@ -93,8 +93,12 @@ export interface IIconProps extends IntentProps, Props {
     /**
      * Description string. This string does not appear in normal browsers, but
      * it increases accessibility. For instance, screen readers will use it for
-     * aural feedback. By default, this is set to the icon's name. Pass an
-     * explicit falsy value to disable.
+     * aural feedback.
+     *
+     * If this value is nullish, `false`, or an empty string, the component will assume
+     * that the icon is decorative and `aria-hidden="true"` will be applied.
+     *
+     * @see https://www.w3.org/WAI/tutorials/images/decorative/
      */
     title?: string | false | null;
 }
@@ -125,7 +129,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             iconSize,
             intent,
             size = iconSize ?? IconSize.STANDARD,
-            title = icon,
+            title,
             tagName = "span",
             ...htmlprops
         } = this.props;
@@ -143,6 +147,7 @@ export class Icon extends AbstractPureComponent2<IconProps & Omit<React.HTMLAttr
             tagName,
             {
                 ...htmlprops,
+                "aria-hidden": title ? undefined : true,
                 className: classes,
                 title: htmlTitle,
             },

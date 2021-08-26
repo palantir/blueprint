@@ -158,7 +158,14 @@ export class TreeNode<T = {}> extends React.Component<ITreeNodeProps<T>> {
                 isExpanded ? Classes.TREE_NODE_CARET_OPEN : Classes.TREE_NODE_CARET_CLOSED,
             );
             const onClick = disabled === true ? undefined : this.handleCaretClick;
-            return <Icon className={caretClasses} onClick={onClick} icon={"chevron-right"} />;
+            return (
+                <Icon
+                    title={isExpanded ? "Collapse group" : "Expand group"}
+                    className={caretClasses}
+                    onClick={onClick}
+                    icon={"chevron-right"}
+                />
+            );
         }
         return <span className={Classes.TREE_NODE_CARET_NONE} />;
     }

@@ -31,6 +31,9 @@ which SVG is rendered and `size` determines which pixel grid is used:
 `size >= 20` will use the 20px grid and smaller icons will use the 16px
 grid.
 
+If `title` is not provided to an Icon, `aria-hidden` will be set to true as
+it will be assumed that the icon is decorative if not labeled.
+
 ```tsx
 import { Icon, IconSize } from "@blueprintjs/core";
 
