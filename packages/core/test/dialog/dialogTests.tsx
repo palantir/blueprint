@@ -146,16 +146,64 @@ describe("<Dialog>", () => {
         assert.lengthOf(dialog.find(".foo").hostNodes(), 1);
     });
 
+    describe("accessibility features", () => {
+        const mountDialog = (className: string) => {
+            return mount(
+                <Dialog
+                    className={className}
+                    isOpen={true}
+                    usePortal={false}
+                    aria-labelledby="dialog-title"
+                    aria-describedby="dialog-description"
+                >
+                    {createDialogContents()}
+                </Dialog>,
+            );
+        };
+
+        it("renders with role={dialog}", () => {
+            const dialog = mountDialog("check-role");
+            assert.equal(dialog.find(`.check-role`).hostNodes().prop("role"), "dialog", "missing dialog role!!");
+        });
+
+        it("renders with provided aria-labelledby and aria-described by from props", () => {
+            const dialog = mountDialog("renders-with-props");
+            const dialogElement = dialog.find(`.renders-with-props`).hostNodes();
+            assert.equal(dialogElement.prop("aria-labelledby"), "dialog-title");
+            assert.equal(dialogElement.prop("aria-describedby"), "dialog-description");
+        });
+
+        it("uses title as default aria-labelledby", () => {
+            const dialog = mount(
+                <Dialog className="default-title" isOpen={true} usePortal={false} title="Title by props">
+                    {createDialogContents()}
+                </Dialog>,
+            );
+            // test existence here because id is generated
+            assert.exists(dialog.find(".default-title").hostNodes().prop("aria-labelledby"));
+        });
+
+        it("does not apply default aria-labelledby if no title", () => {
+            const dialog = mount(
+                <Dialog className={"no-default-if-no-title"} isOpen={true} usePortal={false}>
+                    {createDialogContents()}
+                </Dialog>,
+            );
+            // test existence here because id is generated
+            assert.notExists(dialog.find(".no-default-if-no-title").hostNodes().prop("aria-labelledby"));
+        });
+    });
+
     // everything else about Dialog is tested by Overlay
 
     function createDialogContents(): JSX.Element[] {
         return [
             <div className={Classes.DIALOG_HEADER} key={0}>
                 <Icon icon="inbox" size={IconSize.LARGE} />
-                <H4>Dialog header</H4>
+                <H4 id="dialog-title">Dialog header</H4>
             </div>,
             <div className={Classes.DIALOG_BODY} key={1}>
-                <p>
+                <p id="dialog-description">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna alqua. Ut enim ad minimum veniam, quis nostrud exercitation ullamco laboris nisi ut
                     aliquip ex ea commodo consequat.

@@ -115,6 +115,15 @@ describe("Utils", () => {
         assert.equal(Utils.countDecimalPlaces(NaN), 0);
     });
 
+    it("uniqueId", () => {
+        const ns = "testNamespace";
+        const otherNs = "otherNamespace";
+        assert.equal(Utils.uniqueId(ns), `${ns}-0`);
+        assert.equal(Utils.uniqueId(ns), `${ns}-1`);
+        assert.equal(Utils.uniqueId(ns), `${ns}-2`);
+        assert.equal(Utils.uniqueId(otherNs), `${otherNs}-0`);
+    });
+
     // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?
     it.skip("throttleEvent");
 
