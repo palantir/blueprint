@@ -28,6 +28,8 @@ import {
     Position,
     TagInput,
     TagInputAddMethod,
+    refHandler,
+    setRef,
 } from "@blueprintjs/core";
 
 import { Classes, IListItemsProps } from "../../common";
@@ -113,17 +115,25 @@ export class MultiSelect<T> extends AbstractPureComponent2<MultiSelectProps<T>, 
 
     private TypedQueryList = QueryList.ofType<T>();
 
-    private input: HTMLInputElement | null = null;
+    public input: HTMLInputElement | null = null;
 
-    private queryList: QueryList<T> | null = null;
+    public queryList: QueryList<T> | null = null;
 
-    private refHandlers = {
-        input: (ref: HTMLInputElement | null) => {
-            this.input = ref;
-            this.props.tagInputProps?.inputRef?.(ref);
-        },
+    private refHandlers: {
+        input: React.RefCallback<HTMLInputElement>;
+        queryList: React.RefCallback<QueryList<T>>;
+    } = {
+        input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
+
+    public componentDidUpdate(prevProps: MultiSelectProps<T>) {
+        if (prevProps.tagInputProps?.inputRef !== this.props.tagInputProps?.inputRef) {
+            setRef(prevProps.tagInputProps?.inputRef, null);
+            this.refHandlers.input = refHandler(this, "input", this.props.tagInputProps?.inputRef);
+            setRef(this.props.tagInputProps?.inputRef, this.input);
+        }
+    }
 
     public render() {
         // omit props specific to this component, spread the rest.

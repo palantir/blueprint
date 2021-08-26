@@ -77,7 +77,7 @@ export interface ITagInputProps extends IntentProps, Props {
     inputProps?: HTMLInputProps;
 
     /** Ref handler for the `<input>` element. */
-    inputRef?: (input: HTMLInputElement | null) => void;
+    inputRef?: IRef<HTMLInputElement>;
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;

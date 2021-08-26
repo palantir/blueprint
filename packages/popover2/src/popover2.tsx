@@ -28,6 +28,7 @@ import {
     mergeRefs,
     Overlay,
     Utils,
+    IRef,
 } from "@blueprintjs/core";
 
 import * as Classes from "./classes";
@@ -88,7 +89,7 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
     /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
-    popoverRef?: (ref: HTMLElement | null) => void;
+    popoverRef?: IRef<HTMLElement>;
 
     /**
      * Popper.js positioning strategy.
