@@ -152,7 +152,7 @@ describe("<Dialog>", () => {
                 <Dialog
                     className={className}
                     isOpen={true}
-                    portalContainer={container}
+                    usePortal={false}
                     aria-labelledby="dialog-title"
                     aria-describedby="dialog-description"
                 >
@@ -160,19 +160,6 @@ describe("<Dialog>", () => {
                 </Dialog>,
             );
         };
-
-        let container: HTMLElement | undefined;
-
-        beforeEach(() => {
-            container = document.createElement("div");
-            document.body.appendChild(container);
-        });
-
-        afterEach(() => {
-            if (container != null) {
-                document.body.removeChild(container);
-            }
-        });
 
         it("renders with role={dialog}", () => {
             const dialog = mountDialog("check-role");
@@ -188,7 +175,7 @@ describe("<Dialog>", () => {
 
         it("uses title as default aria-labelledby", () => {
             const dialog = mount(
-                <Dialog className="default-title" isOpen={true} portalContainer={container} title="Title by props">
+                <Dialog className="default-title" isOpen={true} usePortal={false} title="Title by props">
                     {createDialogContents()}
                 </Dialog>,
             );
@@ -198,7 +185,7 @@ describe("<Dialog>", () => {
 
         it("does not apply default aria-labelledby if no title", () => {
             const dialog = mount(
-                <Dialog className={"no-default-if-no-title"} isOpen={true} portalContainer={container}>
+                <Dialog className={"no-default-if-no-title"} isOpen={true} usePortal={false}>
                     {createDialogContents()}
                 </Dialog>,
             );
