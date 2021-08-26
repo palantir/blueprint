@@ -3664,5 +3664,11 @@
         "iconName": "helicopter",
         "tags": "helicopter, chopper, fly",
         "group": "miscellaneous"
+    },
+    {
+        "displayName": "Syringe",
+        "iconName": "syringe",
+        "tags": "syringe, vaccine, shot, medicine",
+        "group": "miscellaneous"
     }
 ]
