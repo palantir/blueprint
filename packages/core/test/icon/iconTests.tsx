@@ -18,9 +18,7 @@ import { assert } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { IconName } from "@blueprintjs/icons";
-
-import { Classes, Icon, IconSize, IIconProps, Intent } from "../../src";
+import { Classes, Icon, IconSize, IconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
     it("tagName dictates HTML tag", () => {
@@ -80,18 +78,18 @@ describe("<Icon>", () => {
 
     it("applies aria-hidden=true if title is not defined", () => {
         const icon = shallow(<Icon icon="airplane" />);
-        assert.isTrue(icon.find(`.${Classes.ICON}`).prop("aria-hidden"));
+        assert.isTrue(icon.find(`.${Classes.ICON}`).hostNodes().prop("aria-hidden"));
     });
 
     /** Asserts that rendered icon has width/height equal to size. */
-    function assertIconSize(icon: React.ReactElement<IIconProps>, size: number) {
+    function assertIconSize(icon: React.ReactElement<IconProps>, size: number) {
         const svg = shallow(icon).find("svg");
         assert.strictEqual(svg.prop("width"), size);
         assert.strictEqual(svg.prop("height"), size);
     }
 
     /** Asserts that rendered icon has color equal to color. */
-    function assertIconColor(icon: React.ReactElement<IIconProps>, color?: string) {
+    function assertIconColor(icon: React.ReactElement<IconProps>, color?: string) {
         const svg = shallow(icon).find("svg");
         assert.deepEqual(svg.prop("fill"), color);
     }

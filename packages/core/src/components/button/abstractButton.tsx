@@ -91,8 +91,7 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
 
     /**
      * Provide this to give a text label to icon only buttons. You likely don't need this prop
-     * if there is other text in the button already. There is not currently a way to provide
-     * an iconTitle to `rightIcon` - please open a feature request if you find a need for this.
+     * if there is other text in the button already.
      */
     iconTitle?: string;
 }

@@ -100,7 +100,7 @@ export class HTMLSelect extends AbstractPureComponent2<HTMLSelectProps> {
                     {optionChildren}
                     {htmlProps.children}
                 </select>
-                <Icon icon="double-caret-vertical" {...iconProps} />
+                <Icon icon="double-caret-vertical" title="Open dropdown" {...iconProps} />
             </div>
         );
     }
