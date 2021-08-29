@@ -52,7 +52,7 @@ Enforce usage of the color variables instead of color literals.
 -.my-class {
 -    border: 1px solid #137CBD;
 -}
-+ @import "~@blueprintjs/core/lib/scss/variables";
++ @import "@blueprintjs/core/lib/scss/variables";
 +
 +.my-class {
 +    border: 1px solid $blue3;
@@ -83,7 +83,7 @@ The `@blueprintjs` package exports a `bp-ns` CSS variable which contains the pre
 -.bp3-button > div {
 -    border: 1px solid black;
 -}
-+ @import "~@blueprintjs/core/lib/scss/variables";
++ @import "@blueprintjs/core/lib/scss/variables";
 +
 +.#{$bp-ns}-button > div {
 +    border: 1px solid black;

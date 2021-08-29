@@ -34,8 +34,8 @@ export const BpPrefixVariableMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, st
 };
 
 export const BpVariableImportMap: Record<Exclude<CssSyntax, CssSyntax.OTHER>, string> = {
-    [CssSyntax.SASS]: "~@blueprintjs/core/lib/scss/variables",
-    [CssSyntax.LESS]: "~@blueprintjs/core/lib/less/variables",
+    [CssSyntax.SASS]: "@blueprintjs/core/lib/scss/variables",
+    [CssSyntax.LESS]: "@blueprintjs/core/lib/less/variables",
 };
 
 /**
