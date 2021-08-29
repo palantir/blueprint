@@ -10,11 +10,13 @@
         "css-dist": "./css-dist.sh",
         "es-lint": "./es-lint.js",
         "generate-css-variables": "./generate-css-variables.js",
-        "sass-compile": "./sass-compile.sh",
+        "generate-icons-source": "./generate-icons-source.js",
+        "sass-compile": "./sass-compile.js",
         "sass-lint": "./sass-lint.js"
     },
     "dependencies": {
         "autoprefixer": "^10.0.4",
+        "chokidar": "^3.5.2",
         "cross-spawn": "^7.0.3",
         "eslint": "^7.15.0",
         "fantasticon": "^1.0.26",
