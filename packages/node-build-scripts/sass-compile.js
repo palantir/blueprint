@@ -50,6 +50,15 @@ function compileFile({ input, functions, output }) {
     return results;
 }
 
+function debounce(func, time) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), time);
+        return () => clearTimeout(timeout);
+    };
+}
+
 function compileDirectory({ input, functions, output }) {
     const files = fs.readdirSync(input).map(value => path.join(input, value));
     files
@@ -59,6 +68,8 @@ function compileDirectory({ input, functions, output }) {
         .filter(value => fs.statSync(value).isDirectory())
         .forEach(value => compileDirectory({ input: value, functions, output }));
 }
+
+const debouncedCompileDirectory = debounce(compileDirectory, 500);
 
 function compilePath({ input, functions, output, watch }) {
     output = output || input.replace(/\.s[ac]ss$/, ".css");
@@ -70,21 +81,23 @@ function compilePath({ input, functions, output, watch }) {
             watcher.once("ready", () => {
                 watcher.on("all", (event, payload) => {
                     const result = compileFile({ input, functions, output });
-                    watcher.unwatch()
                 });
             });
         }
     } else {
-        compileDirectory({ input, functions, output });
         if (watch) {
             const watcher = chokidar.watch(input);
+            console.log(`watching ${input}`);
             // don't initiate the watcher until after we've received ready, to avoid tons of
-            // pointless rerenders
+            // pointless recompilations
             watcher.once("ready", () => {
+                compileDirectory({ input, functions, output });
                 watcher.on("all", () => {
-                    compileDirectory({ input, functions, output });
+                    debouncedCompileDirectory({ input, functions, output });
                 });
             });
+        } else {
+            compileDirectory({ input, functions, output });
         }
     }
 }
@@ -94,5 +107,5 @@ let output = process.env.OUTPUT || path.join(process.cwd(), "lib/css");
 for (const pair of argv._) {
     const [input, _output] = pair.split(":");
     output = _output || output;
-    compilePath({ input, functions, output });
+    compilePath({ input, functions, output, watch: argv.watch });
 }
