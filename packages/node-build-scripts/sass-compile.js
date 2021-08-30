@@ -23,15 +23,13 @@ const { hideBin } = require("yargs/helpers");
 
 const argv = yargs.parse(hideBin(process.argv));
 
-let functions;
-if (argv.functions) {
-    const functionsPath = path.join(process.cwd(), argv.functions);
-    try {
-        functions = require(functionsPath);
-    } catch (ex) {
-        console.error(`[node-build-scripts] Could not find ${functionsPath}`);
-        process.exit(1);
-    }
+function debounce(func, time) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), time);
+        return () => clearTimeout(timeout);
+    };
 }
 
 function compileFile({ input, functions, output }) {
@@ -50,15 +48,6 @@ function compileFile({ input, functions, output }) {
     return results;
 }
 
-function debounce(func, time) {
-    let timeout;
-    return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), time);
-        return () => clearTimeout(timeout);
-    };
-}
-
 function compileDirectory({ input, functions, output }) {
     const files = fs.readdirSync(input).map(value => path.join(input, value));
     files
@@ -72,18 +61,29 @@ function compileDirectory({ input, functions, output }) {
 
 const debouncedCompileDirectory = debounce(compileDirectory, 500);
 
+function watchFile({ input, functions, output, includedFiles }) {
+    const watcher = chokidar.watch(includedFiles, { usePolling: true });
+    console.info(`[node-build-scripts] Watching ${input} and ${includedFiles.length} dependencies`);
+    watcher.once("ready", () => {
+        watcher.on("all", (event, payload) => {
+            watcher.close();
+            const {
+                stats: { includedFiles },
+            } = compileFile({ input, functions, output });
+            watchFile({ input, functions, output, includedFiles });
+        });
+    });
+}
+
 function compilePath({ input, functions, output, watch }) {
     output = output || input.replace(/\.s[ac]ss$/, ".css");
     const inputStat = fs.statSync(input);
     if (!inputStat.isDirectory()) {
-        const result = compileFile({ input, functions, output });
+        const {
+            stats: { includedFiles },
+        } = compileFile({ input, functions, output });
         if (watch) {
-            const watcher = chokidar.watch(result.stats.includedFiles);
-            watcher.once("ready", () => {
-                watcher.on("all", (event, payload) => {
-                    const result = compileFile({ input, functions, output });
-                });
-            });
+            watchFile({ input, functions, output, includedFiles });
         }
     } else {
         if (watch) {
@@ -100,6 +100,17 @@ function compilePath({ input, functions, output, watch }) {
         } else {
             compileDirectory({ input, functions, output });
         }
+    }
+}
+
+let functions;
+if (argv.functions) {
+    const functionsPath = path.join(process.cwd(), argv.functions);
+    try {
+        functions = require(functionsPath);
+    } catch (ex) {
+        console.error(`[node-build-scripts] Could not find ${functionsPath}`);
+        process.exit(1);
     }
 }
 
