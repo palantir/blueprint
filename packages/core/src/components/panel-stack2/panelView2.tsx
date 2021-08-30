@@ -66,7 +66,6 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>(props: 
                 small={true}
                 text={props.previousPanel.title}
                 title={props.previousPanel.htmlTitle}
-                iconTitle="Go back"
             />
         );
 

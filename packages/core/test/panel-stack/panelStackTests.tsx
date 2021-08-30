@@ -160,9 +160,9 @@ describe("<PanelStack>", () => {
 
         const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
         assert.equal(
-            backButtonWithoutTitle.text(),
-            "Go back",
-            "expected icon-only back button to have accessible title",
+            backButtonWithoutTitle.prop("aria-label"),
+            "Back",
+            "expected icon-only back button to have accessible label",
         );
 
         const newPanelButtonOnNotEmpty = panelStackWrapper.find("#new-panel-button").hostNodes().at(1);
@@ -170,7 +170,11 @@ describe("<PanelStack>", () => {
         newPanelButtonOnNotEmpty.simulate("click");
 
         const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK).hostNodes().at(1);
-        assert.equal(backButtonWithTitle.text(), "Go back", "expected icon-only back button to have accessible title");
+        assert.equal(
+            backButtonWithTitle.prop("aria-label"),
+            "Back",
+            "expected icon-only back button to have accessible label",
+        );
     });
 
     it("can render a panel stack in controlled mode", () => {

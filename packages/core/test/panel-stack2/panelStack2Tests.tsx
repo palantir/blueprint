@@ -167,9 +167,9 @@ describe("<PanelStack2>", () => {
 
             const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
             assert.equal(
-                backButtonWithoutTitle.text(),
-                "Go back",
-                "expected icon-only back button to have accessible title",
+                backButtonWithoutTitle.prop("aria-label"),
+                "Back",
+                "expected icon-only back button to have accessible label",
             );
 
             const newPanelButtonOnNotEmpty = panelStackWrapper.find("#new-panel-button").hostNodes().at(1);
@@ -178,9 +178,9 @@ describe("<PanelStack2>", () => {
 
             const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK).hostNodes().at(1);
             assert.equal(
-                backButtonWithTitle.text(),
-                "Go back",
-                "expected icon-only back button to have accessible title",
+                backButtonWithTitle.prop("aria-label"),
+                "Back",
+                "expected icon-only back button to have accessible label",
             );
         });
     });
