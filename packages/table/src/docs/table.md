@@ -52,16 +52,21 @@ The table is **data-agnostic**. It doesn't store any data internally, so it is u
 You can specify how the data is displayed by defining the `cellRenderer` prop on each `Column` component.
 This is useful when working with typed columnar data, like database results.
 
-For example, this creates a table that renders dollar values:
+For example, this creates a table that renders dollar and euro values:
 
 ```tsx
 import { Cell, Column, Table } from "@blueprintjs/table";
 
-const cellRenderer = (rowIndex: number) => {
-    return <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
-};
+const dollarCellRenderer = (rowIndex: number) => (
+    <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
+);
+const euroCellRenderer = (rowIndex: number) => (
+    <Cell>{`€${(rowIndex * 10 * 0.85).toFixed(2)}`}</Cell>
+);
+
 <Table numRows={10}>
-    <Column name="Dollars" cellRenderer={cellRenderer}/>
+    <Column name="Dollars" cellRenderer={dollarCellRenderer}/>
+    <Column name="Euros" cellRenderer={euroCellRenderer} />
 </Table>
 ```
 

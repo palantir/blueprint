@@ -103,8 +103,8 @@ export class Locator implements ILocator {
 
     public getViewportRect() {
         return new Rect(
-            this.scrollContainerElement.scrollLeft,
-            this.scrollContainerElement.scrollTop,
+            this.scrollContainerElement.scrollLeft || 0,
+            this.scrollContainerElement.scrollTop || 0,
             this.scrollContainerElement.clientWidth,
             this.scrollContainerElement.clientHeight,
         );
