@@ -29,7 +29,7 @@ if (argv.functions) {
     try {
         functions = require(functionsPath);
     } catch (ex) {
-        console.log(`Could not find ${functionsPath}`);
+        console.error(`[node-build-scripts] Could not find ${functionsPath}`);
         process.exit(1);
     }
 }
@@ -62,7 +62,8 @@ function debounce(func, time) {
 function compileDirectory({ input, functions, output }) {
     const files = fs.readdirSync(input).map(value => path.join(input, value));
     files
-        .filter(value => !path.basename(value).startsWith("_") && value.match(/\.s[ac]ss$/))
+        // filter out Sass partials (filenames start with underscore)
+        .filter(value => value.match(/\.s[ac]ss$/) && !path.basename(value).startsWith("_"))
         .forEach(value => compileFile({ input: value, functions, output }));
     files
         .filter(value => fs.statSync(value).isDirectory())
@@ -87,7 +88,7 @@ function compilePath({ input, functions, output, watch }) {
     } else {
         if (watch) {
             const watcher = chokidar.watch(input);
-            console.log(`watching ${input}`);
+            console.info(`[node-build-scripts] Watching ${input}`);
             // don't initiate the watcher until after we've received ready, to avoid tons of
             // pointless recompilations
             watcher.once("ready", () => {
