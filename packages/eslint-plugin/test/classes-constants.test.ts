@@ -35,6 +35,17 @@ const ruleTester = new TSESLint.RuleTester({
 console.info("Testing classes-constants rule...");
 ruleTester.run("classes-constants", classesConstantsRule, {
     invalid: [
+        // literal string (outside of JSX)
+        {
+            code: dedent`const className = "div.bp3-input-group";`,
+            errors: [{ messageId: "useBlueprintClasses", column: 18, line: 1 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                const className = \`div.\${Classes.INPUT_GROUP}\`;
+            `,
+        },
+
         // literal string
         {
             code: dedent`<div className="pt-fill" />`,
@@ -87,6 +98,7 @@ ruleTester.run("classes-constants", classesConstantsRule, {
                 <div className={Classes.FILL} />
             `,
         },
+
         // template string and other classes
         {
             code: "<div className={`pt-fill and-some-other-things`} />",
@@ -121,7 +133,6 @@ ruleTester.run("classes-constants", classesConstantsRule, {
         },
 
         // adding import to existing import
-
         {
             code: dedent`
                 import { Dialog } from "@blueprintjs/core";

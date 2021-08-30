@@ -62,6 +62,8 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
                   wrapForParent(getLiteralReplacement(nodeValue, ptClassStrings), node)
                 : getTemplateReplacement(nodeValue, ptClassStrings);
 
+        console.info(node);
+        console.info(replacementText);
         context.report({
             messageId: "useBlueprintClasses",
             node,
