@@ -90,7 +90,6 @@ export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
                 small={true}
                 text={this.props.previousPanel.title}
                 title={this.props.previousPanel.htmlTitle}
-                iconTitle="Go back"
             />
         );
     }

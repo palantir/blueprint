@@ -88,12 +88,6 @@ export interface IButtonProps<E extends HTMLButtonElement | HTMLAnchorElement = 
      * @default "button"
      */
     type?: "submit" | "reset" | "button";
-
-    /**
-     * Provide this to give a text label to icon only buttons. You likely don't need this prop
-     * if there is other text in the button already.
-     */
-    iconTitle?: string;
 }
 
 /** @deprecated use AnchorButtonProps */
@@ -190,10 +184,10 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
     };
 
     protected renderChildren(): React.ReactNode {
-        const { children, icon, loading, rightIcon, text, iconTitle } = this.props;
+        const { children, icon, loading, rightIcon, text } = this.props;
         return [
             loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={IconSize.LARGE} />,
-            <Icon key="leftIcon" icon={icon} title={iconTitle} />,
+            <Icon key="leftIcon" icon={icon} />,
             (!Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children)) && (
                 <span key="text" className={Classes.BUTTON_TEXT}>
                     {text}
