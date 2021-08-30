@@ -20,6 +20,7 @@
         "postcss-loader": "^5.0.0",
         "process": "^0.11.10",
         "react-refresh": "^0.9.0",
+        "sass": "^1.38.2",
         "sass-loader": "^11.0.0",
         "source-map-loader": "^2.0.0",
         "style-loader": "^2.0.0",
