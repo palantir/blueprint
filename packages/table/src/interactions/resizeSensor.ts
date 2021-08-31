@@ -58,6 +58,9 @@ export class ResizeSensor {
         let lastWidth: number;
         let lastHeight: number;
         const onScroll = () => {
+            if (element == null) {
+                return;
+            }
             const currentWidth = element.offsetWidth;
             const currentHeight = element.offsetHeight;
             if (currentWidth !== lastWidth || currentHeight !== lastHeight) {

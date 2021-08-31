@@ -38,6 +38,8 @@ export { SelectableProps, DragSelectableProps, DragSelectable } from "./interact
 
 export { ColumnHeaderRenderer } from "./headers/columnHeader";
 
+export { RowHeaderRenderer } from "./headers/rowHeader";
+
 export { ColumnHeaderCell, ColumnHeaderCellProps, HorizontalCellDivider } from "./headers/columnHeaderCell";
 
 export { RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
@@ -45,14 +47,15 @@ export { RowHeaderCellProps, RowHeaderCell } from "./headers/rowHeaderCell";
 export { EditableNameProps, EditableName } from "./headers/editableName";
 
 export {
-    ColumnLoadingOption,
+    CellCoordinate,
     CellInterval,
+    ColumnLoadingOption,
     Region,
-    StyledRegionGroup,
     RegionCardinality,
     Regions,
     RowLoadingOption,
     SelectionModes,
+    StyledRegionGroup,
     TableLoadingOption,
 } from "./regions";
 

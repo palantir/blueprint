@@ -166,14 +166,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     public constructor(props?: TimePickerProps) {
         super(props);
 
-        let value = props.minTime;
-        if (props.value != null) {
-            value = props.value;
-        } else if (props.defaultValue != null) {
-            value = props.defaultValue;
-        }
-
-        this.state = this.getFullStateFromValue(value, props.useAmPm);
+        this.state = this.getFullStateFromValue(this.getInitialValue(), props.useAmPm);
     }
 
     public render() {
@@ -219,9 +212,12 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         const didMaxTimeChange = prevProps.maxTime !== this.props.maxTime;
         const didBoundsChange = didMinTimeChange || didMaxTimeChange;
         const didPropValueChange = prevProps.value !== this.props.value;
-        const shouldStateUpdate = didMinTimeChange || didMaxTimeChange || didBoundsChange || didPropValueChange;
+        const shouldStateUpdate = didBoundsChange || didPropValueChange;
 
         let value = this.state.value;
+        if (this.props.value == null) {
+            value = this.getInitialValue();
+        }
         if (didBoundsChange) {
             value = DateUtils.getTimeInRange(this.state.value, this.props.minTime, this.props.maxTime);
         }
@@ -245,7 +241,10 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
             <span tabIndex={-1} className={classes} onClick={onClick}>
-                <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} />
+                <Icon
+                    icon={isDirectionUp ? "chevron-up" : "chevron-down"}
+                    title={isDirectionUp ? "Increase" : "Decrease"}
+                />
             </span>
         );
     }
@@ -424,6 +423,17 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         if (hasNewValue) {
             this.props.onChange?.(newState.value);
         }
+    }
+
+    private getInitialValue(): Date {
+        let value = this.props.minTime;
+        if (this.props.value != null) {
+            value = this.props.value;
+        } else if (this.props.defaultValue != null) {
+            value = this.props.defaultValue;
+        }
+
+        return value;
     }
 }
 

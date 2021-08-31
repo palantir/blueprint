@@ -83,7 +83,7 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => 
                 {optionChildren}
                 {children}
             </select>
-            <DoubleCaretVertical {...iconProps} />
+            <DoubleCaretVertical title="Open dropdown" {...iconProps} />
         </div>
     );
 });

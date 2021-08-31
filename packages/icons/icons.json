@@ -3118,5 +3118,71 @@
         "iconName": "many-to-many",
         "tags": "object, relation, ontology",
         "group": "data"
+    },
+    {
+        "displayName": "Geometry: Stadium",
+        "iconName": "stadium-geometry",
+        "tags": "geometry, shape, race track, ellipse, discorectangle, obround",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Area of interest",
+        "iconName": "area-of-interest",
+        "tags": "NAI, named area, location",
+        "group": "interface"
+    },
+    {
+        "displayName": "Buggy",
+        "iconName": "buggy",
+        "tags": "vehicle, car, transportation",
+        "group": "interface"
+    },
+    {
+        "displayName": "Antenna",
+        "iconName": "antenna",
+        "tags": "antenna, signal, communication",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Tank",
+        "iconName": "tank",
+        "tags": "tank, automobile, vehicle, armored",
+        "group": "interface"
+    },
+    {
+        "displayName": "Third Party",
+        "iconName": "third-party",
+        "tags": "third party, external",
+        "group": "interface"
+    },
+    {
+        "displayName": "Rocket",
+        "iconName": "rocket",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Rocket (slanted)",
+        "iconName": "rocket-slant",
+        "tags": "rocket, fly, space",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Header: three",
+        "iconName": "header-three",
+        "tags": "paragraph styling, formatting",
+        "group": "editor"
+    },
+    {
+        "displayName": "Helicopter",
+        "iconName": "helicopter",
+        "tags": "helicopter, chopper, fly",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Syringe",
+        "iconName": "syringe",
+        "tags": "syringe, vaccine, shot, medicine",
+        "group": "miscellaneous"
     }
 ]

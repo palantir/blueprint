@@ -67,7 +67,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
             icon: _icon,
             intent,
             tagName,
-            title = icon,
+            title,
             htmlTitle,
             ...htmlProps
         } = props;
@@ -97,6 +97,7 @@ export const Icon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, 
             // fall back to icon font if unloaded or unable to load SVG implementation
             return React.createElement(tagName!, {
                 ...htmlProps,
+                "aria-hidden": title ? undefined : true,
                 className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
                 ref,
                 title: htmlTitle,

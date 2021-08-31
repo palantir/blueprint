@@ -48,18 +48,22 @@ export interface SVGIconProps extends React.RefAttributes<any> {
     style?: React.CSSProperties;
 
     /**
-     * Description string. This string does not appear in normal browsers, but
-     * it increases accessibility. For instance, screen readers will use it for
-     * aural feedback. By default, this is set to the icon's name. Pass an
-     * explicit falsy value to disable.
-     */
-    title?: string | false | null;
-
-    /**
      * HTML tag to use for the rendered element. Commonly "span" or "div".
      * If `null`, no wrapper will be rendered, just the <svg>.
      *
      * @default "span"
      */
     tagName?: keyof JSX.IntrinsicElements | null;
+
+    /**
+     * Description string. This string does not appear in normal browsers, but
+     * it increases accessibility. For instance, screen readers will use it for
+     * aural feedback.
+     *
+     * If this value is nullish, `false`, or an empty string, the component will assume
+     * that the icon is decorative and `aria-hidden="true"` will be applied.
+     *
+     * @see https://www.w3.org/WAI/tutorials/images/decorative/
+     */
+    title?: string | false | null;
 }

@@ -22,6 +22,7 @@ import { SmallCross, IconName, IconSize } from "@blueprintjs/icons";
 import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
@@ -74,6 +75,19 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
      * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
+
+    /**
+     * ID of the element that contains title or label text for this dialog.
+     *
+     * By default, if the `title` prop is supplied, this component will generate
+     * a unique ID for the `<H4>` title element and use that ID here.
+     */
+    "aria-labelledby"?: string;
+
+    /**
+     * ID of an element that contains description text inside this dialog.
+     */
+    "aria-describedby"?: string;
 }
 
 export class Dialog extends AbstractPureComponent<DialogProps> {
@@ -82,13 +96,28 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         isOpen: false,
     };
 
+    private titleId: string;
+
     public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
+
+    public constructor(props: DialogProps) {
+        super(props);
+
+        const id = uniqueId("bp-dialog");
+        this.titleId = `title-${id}`;
+    }
 
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
                 <div className={Classes.DIALOG_CONTAINER}>
-                    <div className={classNames(Classes.DIALOG, this.props.className)} style={this.props.style}>
+                    <div
+                        className={classNames(Classes.DIALOG, this.props.className)}
+                        role="dialog"
+                        aria-labelledby={this.props["aria-labelledby"] || (this.props.title ? this.titleId : undefined)}
+                        aria-describedby={this.props["aria-describedby"]}
+                        style={this.props.style}
+                    >
                         {this.maybeRenderHeader()}
                         {this.props.children}
                     </div>
@@ -134,7 +163,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} size={IconSize.LARGE} />
-                <H4>{title}</H4>
+                <H4 id={this.titleId}>{title}</H4>
                 {this.maybeRenderCloseButton()}
             </div>
         );

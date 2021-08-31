@@ -105,11 +105,14 @@ describe("<Icon>", () => {
         assert.equal(wrapper.find("desc").text(), "bird");
     });
 
-    it("desc defaults to icon name", async () => {
-        const wrapper = mount(<Icon icon="airplane" />);
-        await waitUntilSpyCalledOnce(iconLoader);
-        wrapper.update();
-        assert.equal(wrapper.find("desc").text(), "airplane");
+    it("does not add desc if title is not provided", () => {
+        const icon = mount(<Icon icon="airplane" />);
+        assert.isEmpty(icon.find("desc"));
+    });
+
+    it("applies aria-hidden=true if title is not defined", () => {
+        const icon = mount(<Icon icon="airplane" />);
+        assert.isTrue(icon.find(`.${Classes.ICON}`).hostNodes().prop("aria-hidden"));
     });
 
     /** Asserts that rendered icon has an SVG path. */

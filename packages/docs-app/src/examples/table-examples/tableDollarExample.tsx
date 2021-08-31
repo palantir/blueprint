@@ -19,13 +19,20 @@ import React from "react";
 import { Example, ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table } from "@blueprintjs/table";
 
+// this will obviously get outdated, it's valid only as of August 2021
+const USD_TO_EURO_CONVERSION = 0.85;
+
 export class TableDollarExample extends React.PureComponent<ExampleProps> {
     public render() {
-        const cellRenderer = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
+        const dollarCellRenderer = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
+        const euroCellRenderer = (rowIndex: number) => (
+            <Cell>{`€${(rowIndex * 10 * USD_TO_EURO_CONVERSION).toFixed(2)}`}</Cell>
+        );
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={10}>
-                    <Column name="Dollars" cellRenderer={cellRenderer} />
+                <Table numRows={20}>
+                    <Column name="Dollars" cellRenderer={dollarCellRenderer} />
+                    <Column name="Euros" cellRenderer={euroCellRenderer} />
                 </Table>
             </Example>
         );

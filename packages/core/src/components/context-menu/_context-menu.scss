@@ -3,10 +3,6 @@
 
 @import "../../common/variables";
 
-.#{$ns}-context-menu .#{$ns}-popover-target {
-  display: block;
-}
-
 .#{$ns}-context-menu-virtual-target {
   position: fixed;
 }

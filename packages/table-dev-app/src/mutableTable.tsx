@@ -41,6 +41,7 @@ import {
     EditableName,
     StyledRegionGroup,
     JSONFormat,
+    Region,
     RegionCardinality,
     Regions,
     RowHeaderCell,
@@ -53,7 +54,6 @@ import {
 import { FocusedCellCoordinates } from "@blueprintjs/table/src/common/cell";
 import { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 import { RenderMode } from "@blueprintjs/table/src/common/renderMode";
-import { Region } from "@blueprintjs/table/src/regions";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
 import { LocalStore } from "./localStore";

@@ -17,10 +17,10 @@
 import React from "react";
 
 import { AnchorButton, Button, Code, H5, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, handleBooleanChange, ExampleProps } from "@blueprintjs/docs-theme";
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
-import { IntentSelect } from "./common/intentSelect";
+import { Size, SizeSelect } from "./common/sizeSelect";
 
 export interface ButtonsExampleState {
     active: boolean;
@@ -28,9 +28,9 @@ export interface ButtonsExampleState {
     iconOnly: boolean;
     intent: Intent;
     loading: boolean;
-    large: boolean;
     minimal: boolean;
     outlined: boolean;
+    size: Size;
     wiggling: boolean;
 }
 
@@ -40,10 +40,10 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
         disabled: false,
         iconOnly: false,
         intent: Intent.NONE,
-        large: false,
         loading: false,
         minimal: false,
         outlined: false,
+        size: "regular",
         wiggling: false,
     };
 
@@ -53,15 +53,13 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
 
     private handleIconOnlyChange = handleBooleanChange(iconOnly => this.setState({ iconOnly }));
 
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
-
     private handleLoadingChange = handleBooleanChange(loading => this.setState({ loading }));
 
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
 
     private handleOutlinedChange = handleBooleanChange(outlined => this.setState({ outlined }));
 
-    private handleIntentChange = handleStringChange(intent => this.setState({ intent: intent as Intent }));
+    private handleSizeChange = (size: Size) => this.setState({ size });
 
     private wiggleTimeoutId: number;
 
@@ -70,18 +68,17 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
     }
 
     public render() {
-        const { iconOnly, wiggling, ...buttonProps } = this.state;
+        const { iconOnly, wiggling, size, ...buttonProps } = this.state;
 
         const options = (
             <>
                 <H5>Props</H5>
                 <Switch label="Active" checked={this.state.active} onChange={this.handleActiveChange} />
                 <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
-                <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Loading" checked={this.state.loading} onChange={this.handleLoadingChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
                 <Switch label="Outlined" checked={this.state.outlined} onChange={this.handleOutlinedChange} />
-                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
+                <SizeSelect size={this.state.size} onChange={this.handleSizeChange} />
                 <H5>Example</H5>
                 <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
             </>
@@ -97,6 +94,8 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                         className={this.state.wiggling ? "docs-wiggle" : ""}
                         icon={<Refresh />}
                         onClick={this.beginWiggling}
+                        small={size === "small"}
+                        large={size === "large"}
                         {...buttonProps}
                     >
                         {!iconOnly && "Click to wiggle"}
@@ -112,6 +111,8 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                         rightIcon="share"
                         target="_blank"
                         text={iconOnly ? undefined : "Duplicate this page"}
+                        small={size === "small"}
+                        large={size === "large"}
                         {...buttonProps}
                     />
                 </div>

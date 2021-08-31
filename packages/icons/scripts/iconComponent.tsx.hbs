@@ -22,7 +22,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
     className,
     color,
     size = IconSize.STANDARD,
-    title = "{{iconName}}",
+    title,
     htmlTitle,
     tagName = "span",
     ...htmlProps
@@ -53,6 +53,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = forwardRef<any, S
             tagName,
             {
                 ...htmlProps,
+                "aria-hidden": title ? undefined : true,
                 className: `${className} ${Classes.ICON}`,
                 ref,
                 title: htmlTitle,

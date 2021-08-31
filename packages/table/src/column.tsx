@@ -44,13 +44,13 @@ export interface ColumnProps extends ColumnNameProps, Props {
     loadingOptions?: ColumnLoadingOption[];
 
     /**
-     * An instance of `ICellRenderer`, a function that takes a row and column
+     * An instance of `CellRenderer`, a function that takes a row and column
      * index, and returns a `Cell` React element.
      */
     cellRenderer?: CellRenderer;
 
     /**
-     * An instance of `IColumnHeaderRenderer`, a function that takes a column
+     * An instance of `ColumnHeaderRenderer`, a function that takes a column
      * index and returns a `ColumnHeaderCell` React element.
      */
     columnHeaderCellRenderer?: ColumnHeaderRenderer;

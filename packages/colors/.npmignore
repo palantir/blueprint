@@ -1,0 +1,4 @@
+coverage/
+test/
+.eslintrc.json
+.npmrc

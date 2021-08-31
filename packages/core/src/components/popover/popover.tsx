@@ -17,7 +17,7 @@
 import { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import React from "react";
-import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, StrictModifier } from "react-popper";
+import { Manager, Popper, PopperChildrenProps, Reference, ReferenceChildrenProps, Modifier } from "react-popper";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, HTMLDivProps, mergeRefs, Utils } from "../../common";
 import * as Errors from "../../common/errors";
@@ -436,8 +436,8 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
         );
     };
 
-    private getPopperModifiers(): StrictModifier[] {
-        const { modifiers } = this.props;
+    private getPopperModifiers(): Array<Modifier<string>> {
+        const { customModifiers = [], modifiers } = this.props;
         return [
             {
                 enabled: this.isArrowEnabled(),
@@ -485,6 +485,7 @@ export class Popover<T> extends AbstractPureComponent<PopoverProps<T>, PopoverSt
                     ...modifiers?.preventOverflow?.options,
                 },
             },
+            ...customModifiers,
         ];
     }
 

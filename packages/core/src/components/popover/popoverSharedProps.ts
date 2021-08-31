@@ -15,7 +15,7 @@
  */
 
 import { Boundary, Placement, placements, RootBoundary, StrictModifiers } from "@popperjs/core";
-import { StrictModifier } from "react-popper";
+import { Modifier, StrictModifier } from "react-popper";
 
 import { Props, Position } from "../../common";
 import { OverlayableProps } from "../overlay/overlay";
@@ -143,6 +143,9 @@ export interface PopoverSharedProps<TProps> extends OverlayableProps, Props {
             [M in StrictModifierNames]: StrictModifier<M>;
         }
     >;
+
+    // eslint-disable-next-line @typescript-eslint/array-type
+    customModifiers?: Array<Modifier<string>>;
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*

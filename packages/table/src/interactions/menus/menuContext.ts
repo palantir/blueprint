@@ -20,15 +20,15 @@ export type ContextMenuRenderer = (context: MenuContext) => JSX.Element;
 
 export interface MenuContext {
     /**
-     * Returns an array of `IRegion`s that represent the user-intended context
+     * Returns an array of `Region`s that represent the user-intended context
      * of this menu. If the mouse click was on a selection, the array will
-     * contain all selected regions. Otherwise it will have one `IRegion` that
-     * represents the clicked cell (the same `IRegion` from `getTarget`).
+     * contain all selected regions. Otherwise it will have one `Region` that
+     * represents the clicked cell (the same `Region` from `getTarget`).
      */
     getRegions: () => Region[];
 
     /**
-     * Returns the list of selected `IRegion` in the table, regardless of
+     * Returns the list of selected `Region` in the table, regardless of
      * where the users clicked to launch the context menu. For the user-
      * intended regions for this context, use `getRegions` instead.
      */

@@ -426,12 +426,14 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
+                    aria-label="increment"
                     disabled={disabled || isIncrementDisabled}
                     icon={<ChevronUp />}
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
                 <Button
+                    aria-label="decrement"
                     disabled={disabled || isDecrementDisabled}
                     icon={<ChevronDown />}
                     intent={intent}

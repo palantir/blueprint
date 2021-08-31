@@ -147,6 +147,7 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
     };
     const removeButton = isRemovable ? (
         <button
+            aria-label="Remove"
             type="button"
             className={Classes.TAG_REMOVE}
             onClick={handleRemoveClick}

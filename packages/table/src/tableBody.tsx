@@ -40,7 +40,7 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**
      * An optional callback for displaying a context menu when right-clicking
      * on the table body. The callback is supplied with an `IMenuContext`
-     * containing the `IRegion`s of interest.
+     * containing the `Region`s of interest.
      */
     bodyContextMenuRenderer?: ContextMenuRenderer;
 

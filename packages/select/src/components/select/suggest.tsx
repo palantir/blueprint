@@ -282,7 +282,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest document.activeElement
-    private handlePopoverInteraction = (nextOpenState: boolean) =>
+    private handlePopoverInteraction = (nextOpenState: boolean, event?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
             const isInputFocused = this.inputElement === document.activeElement;
 
@@ -290,7 +290,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                 // the input is no longer focused, we should close the popover
                 this.setState({ isOpen: false });
             }
-            this.props.popoverProps?.onInteraction?.(nextOpenState);
+            this.props.popoverProps?.onInteraction?.(nextOpenState, event);
         });
 
     private handlePopoverOpening = (node: HTMLElement) => {

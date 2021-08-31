@@ -253,9 +253,10 @@ export class Grid {
         }
 
         const searchEnd = includeGhostCells ? Math.max(this.numRows, Grid.DEFAULT_MAX_ROWS) : this.numRows;
+        const { top = 0, height } = rect;
         const { start, end } = this.getIndicesInInterval(
-            rect.top,
-            rect.top + rect.height,
+            top,
+            top + height,
             searchEnd,
             !includeGhostCells,
             this.getCumulativeHeightAt,
@@ -282,9 +283,10 @@ export class Grid {
         }
 
         const searchEnd = includeGhostCells ? Math.max(this.numCols, Grid.DEFAULT_MAX_COLUMNS) : this.numCols;
+        const { left = 0, width } = rect;
         const { start, end } = this.getIndicesInInterval(
-            rect.left,
-            rect.left + rect.width,
+            left,
+            left + width,
             searchEnd,
             !includeGhostCells,
             this.getCumulativeWidthAt,

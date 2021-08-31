@@ -397,7 +397,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
                       <div
                           className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}
                       >
-                          <DragHandleVertical />
+                          <DragHandleVertical title="Press down to drag" />
                       </div>
                   </div>,
                   false,

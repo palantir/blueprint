@@ -117,7 +117,6 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
-        timePickerProps: {},
         todayButtonText: "Today",
     };
 
@@ -272,7 +271,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
 
     private maybeRenderTimePicker() {
         const { timePrecision, timePickerProps, minDate, maxDate } = this.props;
-        if (timePrecision == null && timePickerProps === DatePicker.defaultProps.timePickerProps) {
+        if (timePrecision == null && timePickerProps === undefined) {
             return null;
         }
         const applyMin = DateUtils.areSameDay(this.state.value, minDate);
@@ -413,7 +412,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
     };
 
     private handleTimeChange = (time: Date) => {
-        this.props.timePickerProps.onChange?.(time);
+        this.props.timePickerProps?.onChange?.(time);
         const { value } = this.state;
         const newValue = DateUtils.getDateTime(value != null ? value : new Date(), time);
         this.updateValue(newValue, true);

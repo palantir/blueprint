@@ -456,7 +456,7 @@ export class Regions {
     }
 
     /**
-     * Using the supplied array of non-contiguous `IRegion`s, this method
+     * Using the supplied array of non-contiguous `Region`s, this method
      * returns an ordered array of every unique cell that exists in those
      * regions.
      */
@@ -509,7 +509,7 @@ export class Regions {
      * of cell values.
      *
      * We create a new 2-dimensional array representing the smallest single
-     * contiguous `IRegion` that contains all cells in the supplied array. We
+     * contiguous `Region` that contains all cells in the supplied array. We
      * invoke the mapper callback only on the cells in the supplied coordinate
      * array and store the result. Returns the resulting 2-dimensional array.
      */
@@ -529,7 +529,7 @@ export class Regions {
     }
 
     /**
-     * Returns the smallest single contiguous `IRegion` that contains all cells in the
+     * Returns the smallest single contiguous `Region` that contains all cells in the
      * supplied array.
      */
     public static getBoundingRegion(cells: CellCoordinate[]): Region {
@@ -643,7 +643,7 @@ export class Regions {
     }
 
     /**
-     * Iterates over the cells within an `IRegion`, invoking the callback with
+     * Iterates over the cells within an `Region`, invoking the callback with
      * each cell's coordinates.
      */
     private static eachCellInRegion(

@@ -24,6 +24,12 @@ import { Icon } from "../icon/icon";
 export interface BreadcrumbProps extends ActionProps, LinkProps {
     /** Whether this breadcrumb is the current breadcrumb. */
     current?: boolean;
+
+    /**
+     * Pass through value to icon's title attribute. Should be used for breadcrumbs without
+     * text or children defined.
+     */
+    iconTitle?: string;
 }
 
 export const Breadcrumb: React.FunctionComponent<BreadcrumbProps> = breadcrumbProps => {
@@ -36,7 +42,10 @@ export const Breadcrumb: React.FunctionComponent<BreadcrumbProps> = breadcrumbPr
         breadcrumbProps.className,
     );
 
-    const icon = breadcrumbProps.icon != null ? <Icon icon={breadcrumbProps.icon} /> : undefined;
+    const icon =
+        breadcrumbProps.icon != null ? (
+            <Icon title={breadcrumbProps.iconTitle} icon={breadcrumbProps.icon} />
+        ) : undefined;
 
     if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
         return (
