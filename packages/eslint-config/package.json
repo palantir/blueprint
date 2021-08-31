@@ -5,9 +5,9 @@
     "dependencies": {
         "@blueprintjs/eslint-plugin": "^0.4.0-alpha.0",
         "@blueprintjs/tslint-config": "^3.0.4",
-        "@typescript-eslint/eslint-plugin": "^4.9.1",
-        "@typescript-eslint/eslint-plugin-tslint": "^4.9.1",
-        "@typescript-eslint/parser": "^4.9.1",
+        "@typescript-eslint/eslint-plugin": "~4.15.0",
+        "@typescript-eslint/eslint-plugin-tslint": "~4.15.0",
+        "@typescript-eslint/parser": "~4.15.0",
         "eslint": "^7.15.0",
         "eslint-plugin-deprecation": "^1.2.0",
         "eslint-plugin-header": "^3.1.0",
