@@ -40,7 +40,11 @@ jobs:
       - checkout
       - restore_cache: *restore-yarn-cache
       - restore_cache: *restore-node-modules-cache
-      - run: sudo apt-get install python3.6
+      - run:
+          name: "Switch to Python v3.7"
+          command: |
+            pyenv versions
+            pyenv global 3.7.0
       - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
       - run:
           name: Check if yarn.lock changed during install
