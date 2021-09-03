@@ -15,7 +15,7 @@ $pt-intent-danger: #c23030 !default; // $red2;
 
 // Import files in the same order that they are documented in the docs
 @import "common/variables";
-@import "~@blueprintjs/colors/src/colors";
+@import "common/colors";
 
 @import "reset";
 @import "typography";
