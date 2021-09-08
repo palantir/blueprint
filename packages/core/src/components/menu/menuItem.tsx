@@ -161,6 +161,7 @@ export class MenuItem extends AbstractPureComponent2<MenuItemProps & React.Ancho
         const target = React.createElement(
             tagName,
             {
+                tabIndex: 0,
                 ...htmlProps,
                 ...(disabled ? DISABLED_PROPS : {}),
                 className: anchorClasses,
