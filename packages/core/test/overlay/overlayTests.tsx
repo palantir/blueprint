@@ -304,6 +304,25 @@ describe("<Overlay>", () => {
             assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
         });
 
+        it("returns focus to overlay after clicking an outside element if enforceFocus=true", done => {
+            mountWrapper(
+                <div>
+                    <Overlay
+                        enforceFocus={true}
+                        canOutsideClickClose={false}
+                        isOpen={true}
+                        usePortal={false}
+                        hasBackdrop={false}
+                    >
+                        {createOverlayContents()}
+                    </Overlay>
+                    <button id="buttonId" />
+                </div>,
+            );
+            wrapper.find("#buttonId").simulate("click");
+            assertFocus(`strong.${Classes.OVERLAY_CONTENT}`, done);
+        });
+
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
             const anotherContainer = document.createElement("div");
             document.documentElement.appendChild(anotherContainer);

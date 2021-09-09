@@ -435,6 +435,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     }
 
     private handleStartFocusTrapElementFocusIn = (e: FocusEvent) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
         if (
             e.relatedTarget != null &&
             this.containerElement!.contains(e.relatedTarget as Element) &&
@@ -447,6 +449,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     };
 
     private handleEndFocusTrapElementFocusIn = (e: FocusEvent) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
         if (
             e.relatedTarget != null &&
             this.containerElement!.contains(e.relatedTarget as Element) &&
@@ -462,6 +466,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         const focusableElements: HTMLElement[] =
             this.containerElement !== null
                 ? Array.from(
+                      // Order may not be correct if children elements use tabindex values > 0
                       this.containerElement.querySelectorAll(
                           [
                               "a[href]",
@@ -485,7 +490,6 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     }
 
     private overlayWillClose() {
-        document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
         this.startFocusTrapElement?.removeEventListener("focusin", this.handleStartFocusTrapElementFocusIn);
         this.endFocusTrapElement?.removeEventListener("focusin", this.handleEndFocusTrapElementFocusIn);
@@ -497,7 +501,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (openStack.length > 0) {
                 const lastOpenedOverlay = Overlay.getLastOpened();
                 if (lastOpenedOverlay.props.enforceFocus) {
-                    document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+                    lastOpenedOverlay.bringFocusInsideOverlay();
                 }
             }
 
@@ -508,20 +512,13 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     }
 
     private overlayWillOpen() {
-        const { openStack } = Overlay;
-        if (openStack.length > 0) {
-            document.removeEventListener("focus", Overlay.getLastOpened().handleDocumentFocus, /* useCapture */ true);
-        }
-        openStack.push(this);
+        Overlay.openStack.push(this);
 
         if (this.props.autoFocus) {
             this.bringFocusInsideOverlay();
         }
-        if (this.props.enforceFocus) {
-            document.addEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
-        }
 
-        if (this.props.canOutsideClickClose && !this.props.hasBackdrop) {
+        if (this.props.canOutsideClickClose || this.props.enforceFocus) {
             document.addEventListener("mousedown", this.handleDocumentClick);
         }
 
@@ -537,15 +534,14 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             onClose?.(e);
         }
         if (enforceFocus) {
-            // make sure document.activeElement is updated before bringing the focus back
             this.bringFocusInsideOverlay();
         }
         backdropProps?.onMouseDown?.(e);
     };
 
     private handleDocumentClick = (e: MouseEvent) => {
-        const { canOutsideClickClose, isOpen, onClose } = this.props;
-        // get the actually target even if we are in an open mode Shadow DOM
+        const { canOutsideClickClose, enforceFocus, isOpen, onClose } = this.props;
+        // get the actual target even if we are in an open mode Shadow DOM
         const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
         const stackIndex = Overlay.openStack.indexOf(this);
@@ -557,25 +553,14 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 return elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget);
             });
 
-        if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
-            // casting to any because this is a native event
-            onClose?.(e as any);
-        }
-    };
-
-    private handleDocumentFocus = (e: FocusEvent) => {
-        // get the actual target even if we are in an open mode Shadow DOM
-        const eventTarget = e.composed ? e.composedPath()[0] : e.target;
-        if (
-            this.props.enforceFocus &&
-            this.containerElement != null &&
-            eventTarget instanceof Node &&
-            !this.containerElement.contains(eventTarget as HTMLElement)
-        ) {
-            // prevent default focus behavior (sometimes auto-scrolls the page)
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            this.bringFocusInsideOverlay();
+        if (isOpen && !isClickInThisOverlayOrDescendant) {
+            if (canOutsideClickClose) {
+                // casting to any because this is a native event
+                onClose?.(e as any);
+            }
+            if (enforceFocus) {
+                this.bringFocusInsideOverlay();
+            }
         }
     };
 
