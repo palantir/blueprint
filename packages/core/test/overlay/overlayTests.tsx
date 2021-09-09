@@ -60,6 +60,10 @@ describe("<Overlay>", () => {
         }
     });
 
+    after(() => {
+        document.documentElement.removeChild(testsContainerElement);
+    });
+
     it("renders its content correctly", () => {
         const overlay = shallow(
             <Overlay isOpen={true} usePortal={false}>
@@ -252,11 +256,11 @@ describe("<Overlay>", () => {
             }, done);
         });
 
-        it("does not bring focus to overlay if autoFocus=false", done => {
+        it("does not bring focus to overlay if autoFocus=false and enforceFocus=false", done => {
             mountWrapper(
                 <div>
                     <button>something outside overlay for browser to focus on</button>
-                    <Overlay autoFocus={false} isOpen={true} usePortal={true}>
+                    <Overlay autoFocus={false} enforceFocus={false} isOpen={true} usePortal={true}>
                         <input type="text" />
                     </Overlay>
                 </div>,

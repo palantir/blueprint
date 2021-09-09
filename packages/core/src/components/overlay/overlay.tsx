@@ -264,7 +264,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         if (maybeBackdrop !== null) {
             childrenWithTransitions.unshift(maybeBackdrop);
         }
-        if (enforceFocus && childrenWithTransitions.length > 0) {
+        if (isOpen && enforceFocus && childrenWithTransitions.length > 0) {
             childrenWithTransitions.unshift(this.renderDummyElement(this.refHandlers.firstFocusable, "__first"));
             childrenWithTransitions.push(this.renderDummyElement(this.refHandlers.lastFocusable, "__last"));
         }
