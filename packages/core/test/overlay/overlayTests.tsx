@@ -247,8 +247,8 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             assertFocus(() => {
-                const backdrops = Array.from(document.querySelectorAll("." + Classes.OVERLAY_BACKDROP));
-                assert.include(backdrops, document.activeElement);
+                const contents = Array.from(document.querySelectorAll("." + Classes.OVERLAY_CONTENT));
+                assert.include(contents, document.activeElement);
             }, done);
         });
 
@@ -290,10 +290,7 @@ describe("<Overlay>", () => {
             buttonRef!.focus();
             assertFocus(() => {
                 assert.notStrictEqual(document.activeElement, buttonRef);
-                assert.isTrue(
-                    document.activeElement?.classList.contains(Classes.OVERLAY_BACKDROP),
-                    "focus on backdrop",
-                );
+                assert.isTrue(document.activeElement?.classList.contains(Classes.OVERLAY_CONTENT), "focus on content");
             }, done);
         });
 
