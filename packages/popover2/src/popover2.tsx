@@ -309,7 +309,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
                   // For keyboard accessibility, we trigger the same behavior as a click event upon pressing enter
-                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => event.key === "Enter" && this.handleTargetClick(event),
+                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
+                      event.key === "Enter" && this.handleTargetClick(event),
               };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
@@ -385,7 +386,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
             // treat Enter key the same as a click for accessibility
-            onKeyDown: (event) => event.key === "Enter" && this.handlePopoverClick(event),
+            onKeyDown: event => event.key === "Enter" && this.handlePopoverClick(event),
         };
         if (
             interactionKind === Popover2InteractionKind.HOVER ||
