@@ -229,10 +229,10 @@ The supported values are:
     -   **Opens when:** the target is hovered
     -   **Closes when:** the cursor is no longer inside the target
 -   `CLICK`:
-    -   **Opens when:** the target is clicked
+    -   **Opens when:** the target is clicked, or when Enter key is pressed while target is focused
     -   **Closes when:** the user clicks anywhere outside of the popover (including the target)
 -   `CLICK_TARGET_ONLY`:
-    -   **Opens when:** the target is clicked
+    -   **Opens when:** the target is clicked, or when Enter key is pressed while target is focused
     -   **Closes when:** the target is clicked
 
 The following example demonstrates the various interaction kinds (note: these Popovers contain [`MenuItem`](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
