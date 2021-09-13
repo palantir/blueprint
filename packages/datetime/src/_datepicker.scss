@@ -122,12 +122,12 @@ $header-margin: ($header-height - $pt-input-height) / 2 !default;
     }
 
     &.DayPicker-Day--selected {
-      background-color: $blue3;
+      background-color: $pt-intent-primary;
       border-radius: $pt-border-radius;
       color: $white;
 
       &:hover {
-        background-color: $blue2;
+        background-color: $pt-intent-primary2;
       }
     }
 

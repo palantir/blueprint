@@ -18,10 +18,10 @@ $pt-intent-text-colors: (
 );
 
 $pt-dark-intent-text-colors: (
-  "primary": $blue4,
-  "success": $green4,
-  "warning": $orange4,
-  "danger" : $red4,
+  "primary": $pt-dark-intent-primary,
+  "success": $pt-dark-intent-success,
+  "warning": $pt-dark-intent-warning,
+  "danger" : $pt-dark-intent-danger,
 );
 
 $cell-border-width : 1px !default;
