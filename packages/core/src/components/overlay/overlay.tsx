@@ -265,6 +265,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         const transitionGroup = (
             <TransitionGroup
                 appear={true}
+                aria-live="polite"
                 className={containerClasses}
                 component="div"
                 onKeyDown={this.handleKeyDown}

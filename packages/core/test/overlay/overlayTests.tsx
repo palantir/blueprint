@@ -84,6 +84,16 @@ describe("<Overlay>", () => {
         document.body.removeChild(container);
     });
 
+    it("sets aria-live", () => {
+        // Using an open Overlay because an initially closed Overlay will not render anything to the
+        // DOM
+        mountWrapper(<Overlay className="aria-test" isOpen={true} usePortal={false} />);
+        const overlayElement = document.querySelector(".aria-test");
+        assert.exists(overlayElement);
+        // Element#ariaLive not supported in Firefox or IE
+        assert.equal(overlayElement?.getAttribute("aria-live"), "polite");
+    });
+
     it("portalClassName appears on Portal", () => {
         const CLASS_TO_TEST = "bp-test-content";
         mountWrapper(
