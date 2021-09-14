@@ -24,6 +24,7 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     HTMLDivProps,
+    Keys,
     refHandler,
     mergeRefs,
     Overlay,
@@ -308,6 +309,10 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
             : {
                   // CLICK needs only one handler
                   onClick: this.handleTargetClick,
+                  // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+                  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) =>
+                      // eslint-disable-next-line deprecation/deprecation
+                      Keys.isKeyboardClick(event.keyCode) && this.handleTargetClick(event),
               };
         // Ensure target is focusable if relevant prop enabled
         const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
@@ -382,6 +387,9 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         const popoverHandlers: HTMLDivProps = {
             // always check popover clicks for dismiss class
             onClick: this.handlePopoverClick,
+            // treat ENTER/SPACE keys the same as a click for accessibility
+            // eslint-disable-next-line deprecation/deprecation
+            onKeyDown: event => Keys.isKeyboardClick(event.keyCode) && this.handlePopoverClick(event),
         };
         if (
             interactionKind === Popover2InteractionKind.HOVER ||
@@ -561,7 +569,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         });
     };
 
-    private handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
+    private handlePopoverClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         const eventTarget = e.target as HTMLElement;
         const eventPopover = eventTarget.closest(`.${Classes.POPOVER2}`);
         const eventPopoverV1 = eventTarget.closest(`.${CoreClasses.POPOVER}`);
@@ -607,7 +615,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
         }
     };
 
-    private handleTargetClick = (e: React.MouseEvent<HTMLElement>) => {
+    private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // ensure click did not originate from within inline popover before closing
         if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
             if (this.props.isOpen == null) {
