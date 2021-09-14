@@ -229,10 +229,24 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     public containerElement: HTMLElement | null = null;
 
+    // An empty, keyboard-focusable div at the beginning of the Overlay content
+    private startFocusTrapElement: HTMLDivElement | null = null;
+
+    // An empty, keyboard-focusable div at the end of the Overlay content
+    private endFocusTrapElement: HTMLDivElement | null = null;
+
     private refHandlers = {
         // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
         /* eslint-disable-next-line react/no-find-dom-node */
         container: (ref: TransitionGroup) => (this.containerElement = findDOMNode(ref) as HTMLElement),
+        firstFocusable: (ref: HTMLDivElement | null) => {
+            this.startFocusTrapElement = ref;
+            ref?.addEventListener("focusin", this.handleStartFocusTrapElementFocusIn);
+        },
+        lastFocusable: (ref: HTMLDivElement | null) => {
+            this.endFocusTrapElement = ref;
+            ref?.addEventListener("focusin", this.handleEndFocusTrapElementFocusIn);
+        },
     };
 
     public render() {
@@ -241,7 +255,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             return null;
         }
 
-        const { children, className, usePortal, isOpen } = this.props;
+        const { children, className, enforceFocus, usePortal, isOpen } = this.props;
 
         // TransitionGroup types require single array of children; does not support nested arrays.
         // So we must collapse backdrop and children into one array, and every item must be wrapped in a
@@ -251,6 +265,10 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         const maybeBackdrop = this.maybeRenderBackdrop();
         if (maybeBackdrop !== null) {
             childrenWithTransitions.unshift(maybeBackdrop);
+        }
+        if (isOpen && enforceFocus && childrenWithTransitions.length > 0) {
+            childrenWithTransitions.unshift(this.renderDummyElement(this.refHandlers.firstFocusable, "__first"));
+            childrenWithTransitions.push(this.renderDummyElement(this.refHandlers.lastFocusable, "__last"));
         }
 
         const containerClasses = classNames(
@@ -320,11 +338,13 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (isFocusOutsideModal) {
                 // element marked autofocus has higher priority than the other clowns
                 const autofocusElement = this.containerElement.querySelector("[autofocus]") as HTMLElement;
-                const wrapperElement = this.containerElement.querySelector("[tabindex]") as HTMLElement;
+                const firstKeyboardFocusableElement = this.getKeyboardFocusableElements().shift();
                 if (autofocusElement != null) {
                     autofocusElement.focus();
-                } else if (wrapperElement != null) {
-                    wrapperElement.focus();
+                } else if (firstKeyboardFocusableElement != null) {
+                    firstKeyboardFocusableElement.focus();
+                } else {
+                    this.startFocusTrapElement?.focus();
                 }
             }
         });
@@ -396,7 +416,6 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                         {...backdropProps}
                         className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
                         onMouseDown={this.handleBackdropMouseDown}
-                        tabIndex={this.props.canOutsideClickClose ? 0 : undefined}
                     />
                 </CSSTransition>
             );
@@ -405,9 +424,94 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         }
     }
 
+    private renderDummyElement(ref: (element: HTMLDivElement) => void, key: string) {
+        const { transitionDuration, transitionName } = this.props;
+        return (
+            <CSSTransition
+                classNames={transitionName}
+                key={key}
+                addEndListener={this.handleTransitionAddEnd}
+                timeout={transitionDuration}
+                unmountOnExit={true}
+            >
+                <div ref={ref} tabIndex={0} />
+            </CSSTransition>
+        );
+    }
+
+    /**
+     * Ensures repeatedly pressing shift+tab keeps focus inside the Overlay. Moves focus to
+     * the `endFocusTrapElement` or the first keyboard-focusable element in the Overlay (excluding
+     * the `startFocusTrapElement`), depending on whether the element losing focus is inside the
+     * Overlay.
+     */
+    private handleStartFocusTrapElementFocusIn = (e: FocusEvent) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (
+            e.relatedTarget != null &&
+            this.containerElement!.contains(e.relatedTarget as Element) &&
+            e.relatedTarget !== this.endFocusTrapElement
+        ) {
+            this.endFocusTrapElement?.focus();
+        } else {
+            this.getKeyboardFocusableElements().shift()?.focus();
+        }
+    };
+
+    /**
+     * Ensures repeatedly pressing tab keeps focus inside the Overlay. Moves focus to the
+     * `startFocusTrapElement` or the last keyboard-focusable element in the Overlay (excluding the
+     * `startFocusTrapElement`), depending on whether the element losing focus is inside the
+     * Overlay.
+     */
+    private handleEndFocusTrapElementFocusIn = (e: FocusEvent) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (
+            e.relatedTarget != null &&
+            this.containerElement!.contains(e.relatedTarget as Element) &&
+            e.relatedTarget !== this.startFocusTrapElement
+        ) {
+            this.startFocusTrapElement?.focus();
+        } else {
+            this.getKeyboardFocusableElements().pop()?.focus();
+        }
+    };
+
+    private getKeyboardFocusableElements() {
+        const focusableElements: HTMLElement[] =
+            this.containerElement !== null
+                ? Array.from(
+                      // Order may not be correct if children elements use tabindex values > 0.
+                      // Selectors derived from this SO question:
+                      // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
+                      this.containerElement.querySelectorAll(
+                          [
+                              'a[href]:not([tabindex="-1"])',
+                              'button:not([disabled]):not([tabindex="-1"])',
+                              'details:not([tabindex="-1"])',
+                              'input:not([disabled]):not([tabindex="-1"])',
+                              'select:not([disabled]):not([tabindex="-1"])',
+                              'textarea:not([disabled]):not([tabindex="-1"])',
+                              '[tabindex]:not([tabindex="-1"])',
+                          ].join(","),
+                      ),
+                  )
+                : [];
+        if (this.props.enforceFocus) {
+            // The first and last elements are dummy elements that help trap focus when enforceFocus
+            // is enabled
+            focusableElements.shift();
+            focusableElements.pop();
+        }
+        return focusableElements;
+    }
+
     private overlayWillClose() {
-        document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", this.handleDocumentClick);
+        this.startFocusTrapElement?.removeEventListener("focusin", this.handleStartFocusTrapElementFocusIn);
+        this.endFocusTrapElement?.removeEventListener("focusin", this.handleEndFocusTrapElementFocusIn);
 
         const { openStack } = Overlay;
         const stackIndex = openStack.indexOf(this);
@@ -416,7 +520,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (openStack.length > 0) {
                 const lastOpenedOverlay = Overlay.getLastOpened();
                 if (lastOpenedOverlay.props.enforceFocus) {
-                    document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+                    lastOpenedOverlay.bringFocusInsideOverlay();
                 }
             }
 
@@ -427,20 +531,13 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     }
 
     private overlayWillOpen() {
-        const { openStack } = Overlay;
-        if (openStack.length > 0) {
-            document.removeEventListener("focus", Overlay.getLastOpened().handleDocumentFocus, /* useCapture */ true);
-        }
-        openStack.push(this);
+        Overlay.openStack.push(this);
 
         if (this.props.autoFocus) {
             this.bringFocusInsideOverlay();
         }
-        if (this.props.enforceFocus) {
-            document.addEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
-        }
 
-        if (this.props.canOutsideClickClose && !this.props.hasBackdrop) {
+        if (this.props.canOutsideClickClose || this.props.enforceFocus) {
             document.addEventListener("mousedown", this.handleDocumentClick);
         }
 
@@ -456,15 +553,14 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             onClose?.(e);
         }
         if (enforceFocus) {
-            // make sure document.activeElement is updated before bringing the focus back
             this.bringFocusInsideOverlay();
         }
         backdropProps?.onMouseDown?.(e);
     };
 
     private handleDocumentClick = (e: MouseEvent) => {
-        const { canOutsideClickClose, isOpen, onClose } = this.props;
-        // get the actually target even if we are in an open mode Shadow DOM
+        const { canOutsideClickClose, enforceFocus, isOpen, onClose } = this.props;
+        // get the actual target even if we are in an open mode Shadow DOM
         const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
         const stackIndex = Overlay.openStack.indexOf(this);
@@ -476,25 +572,14 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 return elem && elem.contains(eventTarget) && !elem.isSameNode(eventTarget);
             });
 
-        if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
-            // casting to any because this is a native event
-            onClose?.(e as any);
-        }
-    };
-
-    private handleDocumentFocus = (e: FocusEvent) => {
-        // get the actually target even if we are in an open mode Shadow DOM
-        const eventTarget = e.composed ? e.composedPath()[0] : e.target;
-        if (
-            this.props.enforceFocus &&
-            this.containerElement != null &&
-            eventTarget instanceof Node &&
-            !this.containerElement.contains(eventTarget as HTMLElement)
-        ) {
-            // prevent default focus behavior (sometimes auto-scrolls the page)
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            this.bringFocusInsideOverlay();
+        if (isOpen && !isClickInThisOverlayOrDescendant) {
+            if (canOutsideClickClose) {
+                // casting to any because this is a native event
+                onClose?.(e as any);
+            }
+            if (enforceFocus) {
+                this.bringFocusInsideOverlay();
+            }
         }
     };
 
