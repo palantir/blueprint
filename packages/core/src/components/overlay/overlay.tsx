@@ -229,8 +229,10 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     public containerElement: HTMLElement | null = null;
 
+    // An empty, keyboard-focusable div at the beginning of the Overlay content
     private startFocusTrapElement: HTMLDivElement | null = null;
 
+    // An empty, keyboard-focusable div at the end of the Overlay content
     private endFocusTrapElement: HTMLDivElement | null = null;
 
     private refHandlers = {
@@ -335,7 +337,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             if (isFocusOutsideModal) {
                 // element marked autofocus has higher priority than the other clowns
                 const autofocusElement = this.containerElement.querySelector("[autofocus]") as HTMLElement;
-                const firstKeyboardFocusableElement = this.keyboardFocusableElements().shift();
+                const firstKeyboardFocusableElement = this.getKeyboardFocusableElements().shift();
                 if (autofocusElement != null) {
                     autofocusElement.focus();
                 } else if (firstKeyboardFocusableElement != null) {
@@ -434,6 +436,12 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         );
     }
 
+    /**
+     * Ensures repeatedly pressing shift+tab keeps focus inside the Overlay. Moves focus to
+     * the `endFocusTrapElement` or the first keyboard-focusable element in the Overlay (excluding
+     * the `startFocusTrapElement`), depending on whether the element losing focus is inside the
+     * Overlay.
+     */
     private handleStartFocusTrapElementFocusIn = (e: FocusEvent) => {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -444,10 +452,16 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         ) {
             this.endFocusTrapElement?.focus();
         } else {
-            this.keyboardFocusableElements().shift()?.focus();
+            this.getKeyboardFocusableElements().shift()?.focus();
         }
     };
 
+    /**
+     * Ensures repeatedly pressing tab keeps focus inside the Overlay. Moves focus to the
+     * `startFocusTrapElement` or the last keyboard-focusable element in the Overlay (excluding the
+     * `startFocusTrapElement`), depending on whether the element losing focus is inside the
+     * Overlay.
+     */
     private handleEndFocusTrapElementFocusIn = (e: FocusEvent) => {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -458,11 +472,11 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         ) {
             this.startFocusTrapElement?.focus();
         } else {
-            this.keyboardFocusableElements().pop()?.focus();
+            this.getKeyboardFocusableElements().pop()?.focus();
         }
     };
 
-    private keyboardFocusableElements() {
+    private getKeyboardFocusableElements() {
         const focusableElements: HTMLElement[] =
             this.containerElement !== null
                 ? Array.from(
