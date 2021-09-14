@@ -487,13 +487,13 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                       // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
                       this.containerElement.querySelectorAll(
                           [
-                              'a[href]:not([tabindex="-1"]',
-                              'button:not([disabled]):not([tabindex="-1"]',
-                              'details:not([tabindex="-1"]',
-                              'input:not([disabled]):not([tabindex="-1"]',
-                              'select:not([disabled]):not([tabindex="-1"]',
-                              'textarea:not([disabled]):not([tabindex="-1"]',
-                              '[tabindex]:not([tabindex="-1"]',
+                              'a[href]:not([tabindex="-1"])',
+                              'button:not([disabled]):not([tabindex="-1"])',
+                              'details:not([tabindex="-1"])',
+                              'input:not([disabled]):not([tabindex="-1"])',
+                              'select:not([disabled]):not([tabindex="-1"])',
+                              'textarea:not([disabled]):not([tabindex="-1"])',
+                              '[tabindex]:not([tabindex="-1"])',
                           ].join(","),
                       ),
                   )
