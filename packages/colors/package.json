@@ -9,10 +9,12 @@
         "compile:esm": "tsc -p src/",
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
-        "lint": "run-p lint:es",
+        "lint": "npm-run-all -p lint:scss lint:es",
+        "lint:scss": "sass-lint",
         "lint:es": "es-lint",
-        "lint-fix": "es-lint --fix",
-        "test": "mocha test/index.js"
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "mocha test/index.js",
+        "verify": "npm-run-all compile -p dist lint"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.5.1",
