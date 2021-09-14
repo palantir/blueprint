@@ -66,6 +66,14 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
     lazy?: boolean;
 
     /**
+     * Whether the application should return focus to the last active element in the
+     * document after this overlay closes.
+     *
+     * @default true
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
      * Indicates how long (in milliseconds) the overlay's enter/leave transition takes.
      * This is used by React `CSSTransition` to know when a transition completes and must match
      * the duration of the animation in CSS. Only set this prop if you override Blueprint's default
@@ -206,6 +214,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         hasBackdrop: true,
         isOpen: false,
         lazy: true,
+        shouldReturnFocusOnClose: true,
         transitionDuration: 300,
         transitionName: Classes.OVERLAY,
         usePortal: true,
@@ -221,6 +230,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
     private static openStack: Overlay[] = [];
 
     private static getLastOpened = () => Overlay.openStack[Overlay.openStack.length - 1];
+
+    private lastActiveElementBeforeOpened: Element | null | undefined;
 
     public state: IOverlayState = {
         hasEverOpened: this.props.isOpen,
@@ -371,7 +382,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             ) : (
                 <span className={Classes.OVERLAY_CONTENT}>{child}</span>
             );
-        const { onOpening, onOpened, onClosing, onClosed, transitionDuration, transitionName } = this.props;
+        const { onOpening, onOpened, onClosing, transitionDuration, transitionName } = this.props;
 
         // a breaking change in react-transition-group types requires us to be explicit about the type overload here,
         // using a technique similar to Select.ofType() in @blueprintjs/select
@@ -385,7 +396,7 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                 onEntering={onOpening}
                 onEntered={onOpened}
                 onExiting={onClosing}
-                onExited={onClosed}
+                onExited={this.handleTransitionExited}
                 timeout={transitionDuration}
                 addEndListener={this.handleTransitionAddEnd}
             >
@@ -545,7 +556,16 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
+
+        this.lastActiveElementBeforeOpened = document.activeElement;
     }
+
+    private handleTransitionExited = (node: HTMLElement) => {
+        if (this.props.shouldReturnFocusOnClose && this.lastActiveElementBeforeOpened instanceof HTMLElement) {
+            this.lastActiveElementBeforeOpened.focus();
+        }
+        this.props.onClosed?.(node);
+    };
 
     private handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         const { backdropProps, canOutsideClickClose, enforceFocus, onClose } = this.props;
