@@ -3670,5 +3670,41 @@
         "iconName": "syringe",
         "tags": "syringe, vaccine, shot, medicine",
         "group": "miscellaneous"
+    },
+    {
+        "displayName": "Temperature",
+        "iconName": "temperature",
+        "tags": "thermometer, climate, weather",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Waves",
+        "iconName": "waves",
+        "tags": "sea, ocean, tide",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Rain",
+        "iconName": "rain",
+        "tags": "precipitation, storm, weather",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Lightning",
+        "iconName": "lightning",
+        "tags": "thunder, bolt, strike, weather",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Wind",
+        "iconName": "wind",
+        "tags": "air, breath, draft, weather",
+        "group": "miscellaneous"
+    },
+    {
+        "displayName": "Hurricane",
+        "iconName": "hurricane",
+        "tags": "storm, cyclone, typhoon, tropical storm",
+        "group": "miscellaneous"
     }
 ]
