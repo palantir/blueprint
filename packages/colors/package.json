@@ -1,11 +1,18 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "3.0.0",
+    "version": "5.0.0",
     "description": "Blueprint color definitions",
     "main": "lib/index.js",
+    "style": "lib/css/colors.css",
+    "sideEffects": [
+        "**/*.css"
+    ],
     "scripts": {
         "clean": "rm -rf lib/*",
-        "compile": "tsc -p src/",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p src/",
+        "compile:css": "sass-compile ./src",
+        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix",
