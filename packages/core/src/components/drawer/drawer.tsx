@@ -67,14 +67,6 @@ export interface IDrawerProps extends OverlayableProps, IBackdropProps, Props {
     position?: Position;
 
     /**
-     * Whether the application should return focus to the last active element in the
-     * document after this drawer closes.
-     *
-     * @default true
-     */
-    shouldReturnFocusOnClose?: boolean;
-
-    /**
      * CSS size of the drawer. This sets `width` if `vertical={false}` (default)
      * and `height` otherwise.
      *
@@ -123,7 +115,6 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
     public static defaultProps: DrawerProps = {
         canOutsideClickClose: true,
         isOpen: false,
-        shouldReturnFocusOnClose: true,
         style: {},
         vertical: false,
     };
@@ -136,8 +127,6 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
 
     /** @deprecated use DrawerSize.LARGE */
     public static readonly SIZE_LARGE = DrawerSize.LARGE;
-
-    private lastActiveElementBeforeOpened: Element | null | undefined;
 
     public render() {
         // eslint-disable-next-line deprecation/deprecation
@@ -161,12 +150,7 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
                       [(realPosition ? isPositionHorizontal(realPosition) : vertical) ? "height" : "width"]: size,
                   };
         return (
-            <Overlay
-                {...this.props}
-                className={Classes.OVERLAY_CONTAINER}
-                onOpening={this.handleOpening}
-                onClosed={this.handleClosed}
-            >
+            <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
                 <div className={classes} style={styleProp}>
                     {this.maybeRenderHeader()}
                     {this.props.children}
@@ -226,16 +210,4 @@ export class Drawer extends AbstractPureComponent2<DrawerProps> {
             </div>
         );
     }
-
-    private handleOpening = (node: HTMLElement) => {
-        this.lastActiveElementBeforeOpened = document.activeElement;
-        this.props.onOpening?.(node);
-    };
-
-    private handleClosed = (node: HTMLElement) => {
-        if (this.props.shouldReturnFocusOnClose && this.lastActiveElementBeforeOpened instanceof HTMLElement) {
-            this.lastActiveElementBeforeOpened.focus();
-        }
-        this.props.onClosed?.(node);
-    };
 }
