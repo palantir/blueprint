@@ -480,15 +480,17 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
         const focusableElements: HTMLElement[] =
             this.containerElement !== null
                 ? Array.from(
-                      // Order may not be correct if children elements use tabindex values > 0
+                      // Order may not be correct if children elements use tabindex values > 0.
+                      // Selectors derived from this SO question:
+                      // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
                       this.containerElement.querySelectorAll(
                           [
-                              "a[href]",
-                              "button:not([disabled])",
-                              "details",
-                              "input:not([disabled])",
-                              "select:not([disabled])",
-                              "textarea:not([disabled])",
+                              'a[href]:not([tabindex="-1"]',
+                              'button:not([disabled]):not([tabindex="-1"]',
+                              'details:not([tabindex="-1"]',
+                              'input:not([disabled]):not([tabindex="-1"]',
+                              'select:not([disabled]):not([tabindex="-1"]',
+                              'textarea:not([disabled]):not([tabindex="-1"]',
                               '[tabindex]:not([tabindex="-1"]',
                           ].join(","),
                       ),
