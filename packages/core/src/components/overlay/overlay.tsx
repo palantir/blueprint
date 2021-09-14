@@ -342,6 +342,8 @@ export class Overlay extends AbstractPureComponent2<OverlayProps, IOverlayState>
                     autofocusElement.focus();
                 } else if (firstKeyboardFocusableElement != null) {
                     firstKeyboardFocusableElement.focus();
+                } else {
+                    this.startFocusTrapElement?.focus();
                 }
             }
         });
