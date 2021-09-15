@@ -20,10 +20,12 @@ const args = yargs(process.argv.slice(2))
         alias: "o",
         default: "variables",
         type: "string",
+        description: "The file name for the generated less and scss files",
     })
     .option("retainDefault", {
         default: false,
         type: "boolean",
+        description: "Set to true to retain the !default syntax for the generated scss file",
     }).argv;
 
 // Ignoring ts because yargs typings don't match the yargs docs:
