@@ -5,11 +5,18 @@
     "main": "lib/index.js",
     "scripts": {
         "clean": "rm -rf lib/*",
-        "compile": "tsc -p src/",
-        "lint": "run-p lint:es",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p src/",
+        "compile:css": "sass-compile ./src",
+        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dist": "run-s \"dist:*\"",
+        "dist:colors": "generate-css-variables --outputFileName colors _colors.scss",
+        "lint": "npm-run-all -p lint:scss lint:es",
+        "lint:scss": "sass-lint",
         "lint:es": "es-lint",
-        "lint-fix": "es-lint --fix",
-        "test": "mocha test/index.js"
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "mocha test/index.js",
+        "verify": "npm-run-all compile -p dist lint"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "^1.5.1",
