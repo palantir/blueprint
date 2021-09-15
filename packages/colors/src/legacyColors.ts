@@ -14,63 +14,29 @@
  * limitations under the License.
  */
 
-const grayScale = {
-    BLACK: "#101318",
+/**
+ * Blueprint 3.x colors
+ */
+export const LegacyColors = {
+    BLACK: "#10161A",
 
-    DARK_GRAY1: "#1b2028",
-    DARK_GRAY2: "#232a34",
-    DARK_GRAY3: "#2e3642",
-    DARK_GRAY4: "#353e4b",
-    DARK_GRAY5: "#404a59",
+    BLUE1: "#0E5A8A",
+    BLUE2: "#106BA3",
+    BLUE3: "#137CBD",
+    BLUE4: "#2B95D6",
+    BLUE5: "#48AFF0",
 
-    GRAY1: "#5f6d81",
-    GRAY2: "#728197",
-    GRAY3: "#8d99aa",
-    GRAY4: "#aab3c0",
-    GRAY5: "#c4cbd4",
-
-    LIGHT_GRAY1: "#d3d8de",
-    LIGHT_GRAY2: "#dce0e5",
-    LIGHT_GRAY3: "#e5e7eb",
-    LIGHT_GRAY4: "#edf0f3",
-    LIGHT_GRAY5: "#f6f7f9",
-
-    WHITE: "#FFFFFF",
-};
-
-const coreColors = {
-    BLUE1: "#164e9c",
-    BLUE2: "#125abe",
-    BLUE3: "#0b62da",
-    BLUE4: "#428efa",
-    BLUE5: "#80b5ff",
-
-    GREEN1: "#0b602e",
-    GREEN2: "#0d7337",
-    GREEN3: "#109347",
-    GREEN4: "#21b65e",
-    GREEN5: "#5bcd8a",
-
-    ORANGE1: "#97570c",
-    ORANGE2: "#b76e1a",
-    ORANGE3: "#d48326",
-    ORANGE4: "#f09f42",
-    ORANGE5: "#fbae56",
-
-    RED1: "#a52226",
-    RED2: "#bc2025",
-    RED3: "#da1b21",
-    RED4: "#f3585d",
-    RED5: "#ff8a8e",
-};
-
-// Extended colors are still using the "legacy" palette
-const extendedColors = {
     COBALT1: "#1F4B99",
     COBALT2: "#2458B3",
     COBALT3: "#2965CC",
     COBALT4: "#4580E6",
     COBALT5: "#669EFF",
+
+    DARK_GRAY1: "#182026",
+    DARK_GRAY2: "#202B33",
+    DARK_GRAY3: "#293742",
+    DARK_GRAY4: "#30404D",
+    DARK_GRAY5: "#394B59",
 
     FOREST1: "#1D7324",
     FOREST2: "#238C2C",
@@ -84,17 +50,47 @@ const extendedColors = {
     GOLD4: "#F2B824",
     GOLD5: "#FFC940",
 
+    GRAY1: "#5C7080",
+    GRAY2: "#738694",
+    GRAY3: "#8A9BA8",
+    GRAY4: "#A7B6C2",
+    GRAY5: "#BFCCD6",
+
+    GREEN1: "#0A6640",
+    GREEN2: "#0D8050",
+    GREEN3: "#0F9960",
+    GREEN4: "#15B371",
+    GREEN5: "#3DCC91",
+
     INDIGO1: "#5642A6",
     INDIGO2: "#634DBF",
     INDIGO3: "#7157D9",
     INDIGO4: "#9179F2",
     INDIGO5: "#AD99FF",
 
+    LIGHT_GRAY1: "#CED9E0",
+    LIGHT_GRAY2: "#D8E1E8",
+    LIGHT_GRAY3: "#E1E8ED",
+    LIGHT_GRAY4: "#EBF1F5",
+    LIGHT_GRAY5: "#F5F8FA",
+
     LIME1: "#728C23",
     LIME2: "#87A629",
     LIME3: "#9BBF30",
     LIME4: "#B6D94C",
     LIME5: "#D1F26D",
+
+    ORANGE1: "#A66321",
+    ORANGE2: "#BF7326",
+    ORANGE3: "#D9822B",
+    ORANGE4: "#F29D49",
+    ORANGE5: "#FFB366",
+
+    RED1: "#A82A2A",
+    RED2: "#C23030",
+    RED3: "#DB3737",
+    RED4: "#F55656",
+    RED5: "#FF7373",
 
     ROSE1: "#A82255",
     ROSE2: "#C22762",
@@ -125,13 +121,6 @@ const extendedColors = {
     VIOLET3: "#8F398F",
     VIOLET4: "#A854A8",
     VIOLET5: "#C274C2",
-};
 
-/**
- * Blueprint 5.x "modernized" colors
- */
-export const Colors = {
-    ...grayScale,
-    ...coreColors,
-    ...extendedColors,
+    WHITE: "#FFFFFF",
 };
