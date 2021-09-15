@@ -26,6 +26,8 @@ const args = yargs(process.argv.slice(2))
         type: "boolean",
     }).argv;
 
+// Ignoring ts because yargs typings don't match the yargs docs:
+// "Arguments without a corresponding flag show up in the argv._ array."
 // @ts-ignore
 const variablesSources = args._;
 
@@ -54,8 +56,10 @@ fs.writeFileSync(`${DEST_DIR}/scss/${outputFileName}.scss`, variablesScss);
 
 // convert scss to less
 const variablesLess = variablesScss
-    .replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g, (match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`)
-    .replace(/rgba\((\$[\w-]+), (\$[\w-]+)\)/g, (match, color, variable) => `fade(${color}, ${variable} * 100%)`)
+    // !default syntax is not valid in less, so remove it regardless of `retainDefault` flag
+    .replace(/\ \!default/g, "")
+    .replace(/rgba\((\$[\w-]+), ([\d\.]+)\)/g, (_match, color, opacity) => `fade(${color}, ${+opacity * 100}%)`)
+    .replace(/rgba\((\$[\w-]+), (\$[\w-]+)\)/g, (_match, color, variable) => `fade(${color}, ${variable} * 100%)`)
     .replace(/\$/g, "@");
 
 if (!fs.existsSync(`${DEST_DIR}/less`)) {
