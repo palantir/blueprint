@@ -88,6 +88,18 @@ export interface IPopover2Props<TProps = React.HTMLProps<HTMLElement>> extends P
     hasBackdrop?: boolean;
 
     /**
+     * Whether the application should return focus to the last active element in the
+     * document after this popover closes.
+     *
+     * This is automatically set to `false` if this is a hover interaction popover.
+     *
+     * If you are attaching a popover _and_ a tooltip to the same target, you must take
+     * care to either disable this prop for the popover _or_ disable the tooltip's
+     * `openOnTargetFocus` prop.
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: IRef<HTMLElement>;
@@ -372,7 +384,7 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { interactionKind, usePortal } = this.props;
+        const { interactionKind, shouldReturnFocusOnClose, usePortal } = this.props;
         const { isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
@@ -431,6 +443,8 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
                 usePortal={this.props.usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
+                // if hover interaciton, it doesn't make sense to take over focus control
+                shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >
                 <div className={Classes.POPOVER2_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
                     <ResizeSensor2 onResize={this.reposition}>
@@ -516,13 +530,19 @@ export class Popover2<T> extends AbstractPureComponent2<Popover2Props<T>, IPopov
 
     private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
-            // if the next element to receive focus is within the popover, we'll want to leave the
-            // popover open. e.relatedTarget ought to tell us the next element to receive focus, but if the user just
+            // e.relatedTarget ought to tell us the next element to receive focus, but if the user just
             // clicked on an element which is not focusable (either by default or with a tabIndex attribute),
             // it won't be set. So, we filter those out here and assume that a click handler somewhere else will
             // close the popover if necessary.
-            if (e.relatedTarget != null && !this.isElementInPopover(e.relatedTarget as HTMLElement)) {
-                this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+            if (e.relatedTarget != null) {
+                // if the next element to receive focus is within the popover, we'll want to leave the
+                // popover open.
+                if (
+                    e.relatedTarget !== this.popoverElement &&
+                    !this.isElementInPopover(e.relatedTarget as HTMLElement)
+                ) {
+                    this.handleMouseLeave((e as unknown) as React.MouseEvent<HTMLElement>);
+                }
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;

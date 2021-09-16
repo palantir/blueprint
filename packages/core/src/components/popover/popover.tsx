@@ -78,6 +78,18 @@ export interface IPopoverProps extends IPopoverSharedProps {
     hasBackdrop?: boolean;
 
     /**
+     * Whether the application should return focus to the last active element in the
+     * document after this popover closes.
+     *
+     * This is automatically set to `false` if this is a hover interaction popover.
+     *
+     * If you are attaching a popover _and_ a tooltip to the same target, you must take
+     * care to either disable this prop for the popover _or_ disable the tooltip's
+     * `openOnTargetFocus` prop.
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
      * Ref supplied to the `Classes.POPOVER` element.
      */
     popoverRef?: IRef<HTMLElement>;
@@ -163,7 +175,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
         // as JSX component instead of intrinsic element. but because of its
         // type, tsc actually recognizes that it is _any_ intrinsic element, so
         // it can typecheck the HTML props!!
-        const { className, disabled, fill, placement, position = "auto" } = this.props;
+        const { className, disabled, fill, placement, position = "auto", shouldReturnFocusOnClose } = this.props;
         const { isOpen } = this.state;
         let { wrapperTagName } = this.props;
         if (fill) {
@@ -204,6 +216,8 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
                 transitionName={Classes.POPOVER}
                 usePortal={this.props.usePortal}
                 portalContainer={this.props.portalContainer}
+                // if hover interaciton, it doesn't make sense to take over focus control
+                shouldReturnFocusOnClose={this.isHoverInteractionKind() ? false : shouldReturnFocusOnClose}
             >
                 <Popper
                     innerRef={this.handlePopoverRef}
@@ -296,7 +310,7 @@ export class Popover extends AbstractPureComponent2<IPopoverProps, IPopoverState
     }
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { usePortal, interactionKind } = this.props;
+        const { interactionKind, usePortal } = this.props;
         const { transformOrigin } = this.state;
 
         // Need to update our reference to this on every render as it will change.
